@@ -28,15 +28,15 @@ namespace urchin {
     }
 
     void LabelTranslator::checkMissingTranslation() const {
-        for(unsigned int i = 0; i < availableLanguages.size(); ++i) {
+        for (unsigned int i = 0; i < availableLanguages.size(); ++i) {
             std::string firstLanguage = availableLanguages[i];
             auto firstLanguageLabels = retrieveLanguageLabels(firstLanguage);
 
             std::string secondLanguage = availableLanguages[(i + 1) % availableLanguages.size()];
             auto secondLanguageLabels = retrieveLanguageLabels(secondLanguage);
 
-            for(auto& firstLanguageLabel : firstLanguageLabels) {
-                if(secondLanguageLabels.find(firstLanguageLabel.first) == secondLanguageLabels.end()) {
+            for (auto& firstLanguageLabel : firstLanguageLabels) {
+                if (secondLanguageLabels.find(firstLanguageLabel.first) == secondLanguageLabels.end()) {
                     logMissingTranslation(secondLanguage, firstLanguageLabel.first);
                     break;
                 }
@@ -52,7 +52,7 @@ namespace urchin {
         loadLanguageLabels(language);
 
         auto itFind = loadedLanguageLabels.find(labelKey);
-        if(itFind != loadedLanguageLabels.end()) {
+        if (itFind != loadedLanguageLabels.end()) {
             return itFind->second;
         }
 

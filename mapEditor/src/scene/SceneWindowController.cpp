@@ -40,13 +40,13 @@ namespace urchin {
         for (auto& extension : extensions) {
             bool extensionSupported = false;
             for (auto& supportedExtension : QVulkanInstance().supportedExtensions()) {
-                if(extension == std::string(supportedExtension.name.constData())) {
+                if (extension == std::string(supportedExtension.name.constData())) {
                     extensionSupported = true;
                     break;
                 }
             }
 
-            if(extensionSupported) {
+            if (extensionSupported) {
                 requiredExtensions.emplace_back(extension);
             }
         }

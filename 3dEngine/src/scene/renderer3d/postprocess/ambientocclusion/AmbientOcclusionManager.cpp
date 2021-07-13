@@ -202,7 +202,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::updateConfig(const Config& config) {
-        if(this->config.textureSize != config.textureSize ||
+        if (this->config.textureSize != config.textureSize ||
                 this->config.kernelSamples != config.kernelSamples ||
                 this->config.radius != config.radius ||
                 this->config.ambientOcclusionStrength != config.ambientOcclusionStrength ||
@@ -226,7 +226,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::checkConfig() const {
-        if(config.kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
+        if (config.kernelSamples > KERNEL_SAMPLES_SHADER_LIMIT) {
             throw std::invalid_argument("Kernel samples value is limited to " + std::to_string(KERNEL_SAMPLES_SHADER_LIMIT) + ". Value: " + std::to_string(config.kernelSamples));
         }
     }
@@ -234,7 +234,7 @@ namespace urchin {
     int AmbientOcclusionManager::retrieveTextureSizeFactor() const {
         if (config.textureSize == AOTextureSize::FULL_SIZE) {
             return 1;
-        }else if (config.textureSize == AOTextureSize::HALF_SIZE) {
+        } else if (config.textureSize == AOTextureSize::HALF_SIZE) {
             return 2;
         }
 

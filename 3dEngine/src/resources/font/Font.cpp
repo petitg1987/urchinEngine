@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     const Glyph& Font::getGlyph(char32_t unicodeCharacter) const {
-        if(unicodeCharacter > 0xFF) {
+        if (unicodeCharacter > 0xFF) {
             throw std::out_of_range("Unicode character " + std::to_string(unicodeCharacter) + " cannot be retrieved (not implemented)");
         }
         return glyph[unicodeCharacter];

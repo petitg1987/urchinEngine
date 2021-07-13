@@ -154,7 +154,7 @@ namespace urchin {
     void Terrain::setAmbient(float ambient) {
         this->ambient = ambient;
 
-        if(terrainRenderer) {
+        if (terrainRenderer) {
             terrainRenderer->updateUniformData(3, &ambient);
         }
         refreshGrassAmbient(); //grass uses ambient value: refresh is required

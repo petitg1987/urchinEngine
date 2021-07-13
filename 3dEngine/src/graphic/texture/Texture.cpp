@@ -24,8 +24,8 @@ namespace urchin {
             textureImage(nullptr),
             textureImageMemory(nullptr),
             textureImageView(nullptr) {
-        for(const void* imageDataPtr : dataPtr) {
-            if(imageDataPtr != nullptr) {
+        for (const void* imageDataPtr : dataPtr) {
+            if (imageDataPtr != nullptr) {
                 auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
                 this->dataPtr.emplace_back(std::vector<uint8_t>(imageDataCharPtr, imageDataCharPtr + getImageSize()));
             } else {
@@ -89,7 +89,7 @@ namespace urchin {
     }
 
     void Texture::initialize() {
-        if(!isInitialized) {
+        if (!isInitialized) {
             if (clearColorEnabled && !writableTexture) {
                 throw std::runtime_error("Clear color requested but texture is not marked as writable");
             }
@@ -115,7 +115,7 @@ namespace urchin {
     }
 
     void Texture::cleanup() {
-        if(isInitialized) {
+        if (isInitialized) {
             auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
 
             vkDestroyImageView(logicalDevice, textureImageView, nullptr);
@@ -197,7 +197,7 @@ namespace urchin {
         void* dataDestination;
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
         {
-            for(unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
+            for (unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
                 void *dataDestinationI = static_cast<uint8_t *>(dataDestination) + (imageIndex * getImageSize());
                 memcpy(dataDestinationI, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
@@ -207,7 +207,7 @@ namespace urchin {
         bool isCubeMap = textureType == TextureType::CUBE_MAP;
         textureImage = ImageHelper::createImage(width, height, layer, mipLevels, isCubeMap, getVkFormat(), getImageUsage(), textureImageMemory);
 
-        if(!isDepthFormat()) { //depth image layout transition is automatically done in render pass (see 'layout' and 'finalLayout' properties)
+        if (!isDepthFormat()) { //depth image layout transition is automatically done in render pass (see 'layout' and 'finalLayout' properties)
             transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);
             copyBufferToImage(stagingBuffer, textureImage);
             if (!hasMipmap()) {
@@ -227,12 +227,12 @@ namespace urchin {
 
     VkImageUsageFlags Texture::getImageUsage() const {
         VkImageUsageFlags usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-        if(hasMipmap()) {
+        if (hasMipmap()) {
             usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         }
         if (isDepthFormat()) {
             usage |= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
-        } else if(writableTexture) {
+        } else if (writableTexture) {
             usage |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
         }
         return usage;

@@ -67,14 +67,14 @@ namespace urchin {
         unsigned int sceneWidth, sceneHeight;
         GraphicService::instance()->getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
-        if(sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows
+        if (sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows
             cleanup();
             initialize();
         }
     }
 
     void ScreenRender::updateVerticalSync(bool verticalSyncEnabled) {
-        if(this->verticalSyncEnabled != verticalSyncEnabled) {
+        if (this->verticalSyncEnabled != verticalSyncEnabled) {
             this->verticalSyncEnabled = verticalSyncEnabled;
 
             cleanup();

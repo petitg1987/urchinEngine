@@ -73,7 +73,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateConfig(const Config& config) {
-        if(this->config.nbShadowMaps != config.nbShadowMaps ||
+        if (this->config.nbShadowMaps != config.nbShadowMaps ||
                 this->config.shadowMapResolution != config.shadowMapResolution ||
                 this->config.viewingShadowDistance != config.viewingShadowDistance ||
                 this->config.blurShadow != config.blurShadow) {

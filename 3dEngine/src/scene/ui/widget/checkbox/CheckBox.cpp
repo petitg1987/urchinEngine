@@ -6,7 +6,7 @@ namespace urchin {
             Widget(parent, position, size),
             nameSkin(std::move(nameSkin)),
             bIsChecked(false) {
-        if(parent) {
+        if (parent) {
             CheckBox::createOrUpdateWidget();
         }
     }
@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     void CheckBox::refreshTexture() {
-        if(checkBoxRenderer) {
+        if (checkBoxRenderer) {
             if (bIsChecked) {
                 checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::buildLinear()));
             } else {

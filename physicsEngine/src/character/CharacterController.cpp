@@ -51,7 +51,7 @@ namespace urchin {
         //clamp velocity to max horizontal speed
         Vector2<float> horizontalVelocity = velocity.xz();
         float velocityLength = horizontalVelocity.length();
-        if(velocityLength > config.getMaxHorizontalSpeed()) {
+        if (velocityLength > config.getMaxHorizontalSpeed()) {
             horizontalVelocity = (horizontalVelocity / velocityLength) * config.getMaxHorizontalSpeed();
             this->velocity = Vector3(horizontalVelocity.X, velocity.Y, horizontalVelocity.Y);
         }
@@ -131,7 +131,7 @@ namespace urchin {
         }
 
         //jump
-        if(makeJump) {
+        if (makeJump) {
             makeJump = false;
             bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
             if (closeToTheGround && !jumping) {

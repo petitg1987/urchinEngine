@@ -26,7 +26,7 @@ namespace urchin {
         if (values.empty()) {
             throw std::runtime_error("At least one value/key must be provided to sequence.");
         }
-        if(parent) {
+        if (parent) {
             Sequence::createOrUpdateWidget();
         }
     }

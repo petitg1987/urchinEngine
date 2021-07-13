@@ -43,7 +43,7 @@ namespace urchin {
         unsigned int newSceneWidth, newSceneHeight;
         framebufferSizeRetriever->getFramebufferSizeInPixel(newSceneWidth, newSceneHeight);
 
-        if((newSceneWidth > 1 && newSceneHeight > 1) && (sceneWidth != newSceneWidth || sceneHeight != newSceneHeight)) {
+        if ((newSceneWidth > 1 && newSceneHeight > 1) && (sceneWidth != newSceneWidth || sceneHeight != newSceneHeight)) {
             Logger::instance()->logInfo("Resize scene to " + std::to_string(newSceneWidth) + "x" + std::to_string(newSceneHeight));
 
             //scene properties
@@ -166,7 +166,7 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyPress(unsigned int key) {
-        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyPress(key)) {
                 return false;
             }
@@ -175,7 +175,7 @@ namespace urchin {
     }
 
     bool SceneManager::onKeyRelease(unsigned int key) {
-        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyRelease(key)) {
                 return false;
             }
@@ -184,7 +184,7 @@ namespace urchin {
     }
 
     bool SceneManager::onChar(char32_t unicodeCharacter) {
-        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onChar(unicodeCharacter)) {
                 return false;
             }
@@ -193,7 +193,7 @@ namespace urchin {
     }
 
     bool SceneManager::onMouseMove(double mouseX, double mouseY) {
-        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
@@ -210,8 +210,8 @@ namespace urchin {
 
         //renderer
         screenRenderTarget->disableAllRenderers();
-        for(auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
-            if(activeRenderer) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
+            if (activeRenderer) {
                 activeRenderer->prepareRendering(dt);
             }
         }

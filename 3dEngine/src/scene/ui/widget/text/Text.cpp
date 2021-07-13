@@ -15,7 +15,7 @@ namespace urchin {
             nameSkin(std::move(nameSkin)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
-        if(translatable) {
+        if (translatable) {
             labelKey = std::move(textOrKey);
             text = "@TO_TRANSLATE@";
         } else {
@@ -24,7 +24,7 @@ namespace urchin {
 
         refreshFont();
         refreshTextAndWidgetSize();
-        if(parent) {
+        if (parent) {
             Text::createOrUpdateWidget();
         }
     }
@@ -40,7 +40,7 @@ namespace urchin {
     Text::~Text() {
         cleanFont();
 
-        if(isTranslatableLabel()) {
+        if (isTranslatableLabel()) {
             i18nService->remove(this);
         }
     }
@@ -50,7 +50,7 @@ namespace urchin {
         refreshTextAndWidgetSize();
         refreshRenderer();
 
-        if(isTranslatableLabel()) {
+        if (isTranslatableLabel()) {
             i18nService->add(this);
         }
     }
@@ -145,11 +145,11 @@ namespace urchin {
             unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
 
             if (getMaxWidth() != 0 && lineLength + letterLength >= getMaxWidth()) { //cut too long line
-                if((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
+                if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
                     cutTextLines.push_back(u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex));
                     startLineIndex = lastSpaceIndex + 1;
                     lineLength = lengthFromLastSpace;
-                } else if((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
+                } else if ((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
                     cutTextLines.push_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
                     startLineIndex = letterIndex;
                     lineLength = letterLength;
@@ -161,7 +161,7 @@ namespace urchin {
             }
         }
 
-        if((int)u32Text.length() - (int)startLineIndex > 0) {
+        if ((int)u32Text.length() - (int)startLineIndex > 0) {
             cutTextLines.emplace_back(u32Text.substr(startLineIndex, u32Text.length() - startLineIndex));
         }
     }
@@ -262,7 +262,7 @@ namespace urchin {
     }
 
     void Text::refreshRendererData() {
-        if(textRenderer != nullptr) {
+        if (textRenderer != nullptr) {
             refreshCoordinates();
 
             textRenderer->updateData(0, vertexCoord);

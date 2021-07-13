@@ -10,7 +10,7 @@ namespace urchin {
             Widget(parent, position, size),
             filename(std::move(filename)),
             tex(nullptr) {
-        if(parent) {
+        if (parent) {
             StaticBitmap::createOrUpdateWidget();
         }
     }

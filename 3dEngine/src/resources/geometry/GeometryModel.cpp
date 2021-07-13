@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     void GeometryModel::refreshRenderer() {
-        if(!renderTarget) {
+        if (!renderTarget) {
             return;
         }
 

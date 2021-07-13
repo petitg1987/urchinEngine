@@ -101,7 +101,7 @@ namespace urchin {
     void ValidationLayer::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) const {
         createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-        if(DEBUG_DISPLAY_VULKAN_INFO) {
+        if (DEBUG_DISPLAY_VULKAN_INFO) {
             createInfo.messageSeverity |= VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
         }
         createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
@@ -110,9 +110,9 @@ namespace urchin {
 
     VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayer::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void*) {
         std::string validationMessage = std::string(pCallbackData->pMessage);
-        if(severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+        if (severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
             static unsigned int numErrorsLogged = 0;
-            if(!ignoreValidationMessage(validationMessage) && numErrorsLogged++ < MAX_ERRORS_LOG) {
+            if (!ignoreValidationMessage(validationMessage) && numErrorsLogged++ < MAX_ERRORS_LOG) {
                 Logger::instance()->logError("Vulkan validation layer error: " + validationMessage);
             }
         } else {

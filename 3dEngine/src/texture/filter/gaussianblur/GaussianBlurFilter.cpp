@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     std::string GaussianBlurFilter::getShaderName() const {
-        if(getTextureFormat() == TextureFormat::RG_32_FLOAT && getTextureType() == TextureType::ARRAY) {
+        if (getTextureFormat() == TextureFormat::RG_32_FLOAT && getTextureType() == TextureType::ARRAY) {
             return "texFilterGaussianBlurVec2Array";
         }
         throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
@@ -43,12 +43,12 @@ namespace urchin {
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         std::vector<float> offsetsShaderData(offsetsLinearSampling.size() * 4, 0.0f);
-        for(std::size_t i = 0; i < offsetsLinearSampling.size(); ++i) {
+        for (std::size_t i = 0; i < offsetsLinearSampling.size(); ++i) {
             offsetsShaderData[i * 4] = offsetsLinearSampling[i];
         }
 
         std::vector<float> weightsShaderData(weightsLinearSampling.size() * 4, 0.0f);
-        for(std::size_t i = 0; i < weightsLinearSampling.size(); ++i) {
+        for (std::size_t i = 0; i < weightsLinearSampling.size(); ++i) {
             weightsShaderData[i * 4] = weightsLinearSampling[i];
         }
 

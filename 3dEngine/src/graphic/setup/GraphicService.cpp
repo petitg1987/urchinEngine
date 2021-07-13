@@ -100,7 +100,7 @@ namespace urchin {
         validationLayer.initializeDebugMessengerForInstance(instanceCreateInfo);
 
         VkResult result = vkCreateInstance(&instanceCreateInfo, nullptr, &vkInstance);
-        if(result != VK_SUCCESS) {
+        if (result != VK_SUCCESS) {
             throw UserAuthorityException("Failed to create Vulkan instance with error code: " + std::to_string(result), "Upgrade your graphic drivers to support better Vulkan");
         }
     }

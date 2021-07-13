@@ -19,7 +19,7 @@ namespace urchin {
         if (sceneSound) {
             const SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
 
-            if(soundTrigger->getTriggerType() == ShapeTrigger::TriggerType::SHAPE_TRIGGER) {
+            if (soundTrigger->getTriggerType() == ShapeTrigger::TriggerType::SHAPE_TRIGGER) {
                 const auto& shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
                 GeometryModel* geometryModel = retrieveGeometry(shapeTrigger->getSoundShape());
                 soundTriggerModels.push_back(geometryModel);

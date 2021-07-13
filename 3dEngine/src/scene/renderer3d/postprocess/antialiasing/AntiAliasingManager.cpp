@@ -67,7 +67,7 @@ namespace urchin {
     }
 
     void AntiAliasingManager::updateConfig(const Config& config) {
-        if(this->config.quality != config.quality) {
+        if (this->config.quality != config.quality) {
             this->config = config;
 
             loadFxaaShader();

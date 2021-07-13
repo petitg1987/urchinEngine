@@ -23,7 +23,7 @@ namespace urchin {
             cursorPosition(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
-        if(parent) {
+        if (parent) {
             TextBox::createOrUpdateWidget();
         }
     }
@@ -173,7 +173,7 @@ namespace urchin {
         text->updateText(std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.to_bytes(textToDisplay));
 
         //event
-        if(allTextUpdated) {
+        if (allTextUpdated) {
             for (auto& eventListener : getEventListeners()) {
                 eventListener->onValueChange(this);
             }

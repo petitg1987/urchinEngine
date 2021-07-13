@@ -106,7 +106,7 @@ namespace urchin {
     }
 
     bool DataContainer::hasNewData(uint32_t frameIndex) const {
-        if(frameIndex >= MAX_FRAMES) {
+        if (frameIndex >= MAX_FRAMES) {
             throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
         }
 

@@ -12,7 +12,7 @@ namespace urchin {
             nameSkin(std::move(nameSkin)),
             text(nullptr),
             buttonText(std::move(buttonText)) {
-        if(parent) {
+        if (parent) {
             Button::createOrUpdateWidget();
         }
     }
@@ -63,7 +63,7 @@ namespace urchin {
             currentTexture = texInfoDefault;
         }
 
-        if(currentTexture != oldTexture) {
+        if (currentTexture != oldTexture) {
             buttonRenderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::buildLinear()));
         }
     }

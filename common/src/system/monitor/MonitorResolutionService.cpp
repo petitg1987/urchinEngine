@@ -72,8 +72,8 @@ namespace urchin {
     void MonitorResolutionService::sortUniqueResolutions() {
         assert(!resolutions.empty());
         sort(resolutions.begin(), resolutions.end(), [](const MonitorResolution& lhs, const MonitorResolution& rhs) {
-            if(lhs.getWidth() == rhs.getWidth()) {
-                if(lhs.getHeight() == rhs.getHeight()) {
+            if (lhs.getWidth() == rhs.getWidth()) {
+                if (lhs.getHeight() == rhs.getHeight()) {
                     return lhs.getFrequency() < rhs.getFrequency();
                 }
                 return lhs.getHeight() < rhs.getHeight();
@@ -89,8 +89,8 @@ namespace urchin {
     }
 
     unsigned int MonitorResolutionService::findClosestResolutionIndex(const std::string& monitorResolutionId) const {
-        for(unsigned int i = 0; i < resolutions.size(); ++i) {
-            if(resolutions[i].getId() == monitorResolutionId) {
+        for (unsigned int i = 0; i < resolutions.size(); ++i) {
+            if (resolutions[i].getId() == monitorResolutionId) {
                 return i;
             }
         }
@@ -104,7 +104,7 @@ namespace urchin {
         unsigned int closestResolutionIndex = 0;
         float bestScore = 0.0f;
 
-        for(unsigned int i = 0; i < resolutions.size(); ++i) {
+        for (unsigned int i = 0; i < resolutions.size(); ++i) {
             float widthScore = std::min((float)resolutions[i].getWidth(), (float)monitorResolution.getWidth()) /
                     std::max((float)resolutions[i].getWidth(), (float)monitorResolution.getWidth());
             float heightScore = std::min((float)resolutions[i].getHeight(), (float)monitorResolution.getHeight()) /
@@ -113,7 +113,7 @@ namespace urchin {
                     std::max((float)resolutions[i].getFrequency(), (float)monitorResolution.getFrequency());
             float score = widthScore * MONITOR_SIZE_WEIGHT + heightScore * MONITOR_SIZE_WEIGHT + frequencyScore;
 
-            if(score > bestScore) {
+            if (score > bestScore) {
                 bestScore = score;
                 closestResolutionIndex = i;
             }

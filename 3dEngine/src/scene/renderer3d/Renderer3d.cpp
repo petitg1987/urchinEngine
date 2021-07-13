@@ -327,7 +327,7 @@ namespace urchin {
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
         ambientOcclusionManager->onTexturesUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
 
-        if(isAntiAliasingActivated) {
+        if (isAntiAliasingActivated) {
             antiAliasingManager->onResize(sceneWidth, sceneHeight);
             antiAliasingManager->onTextureUpdate(lightingPassTexture);
         }
@@ -355,7 +355,7 @@ namespace urchin {
     void Renderer3d::setupDebugFramebuffers() {
         debugFramebuffers.clear();
 
-        if(camera) {
+        if (camera) {
             if (DEBUG_DISPLAY_DEPTH_BUFFER) {
                 float depthIntensity = 5.0f;
                 auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::DEPTH_VALUE, depthIntensity);
@@ -516,7 +516,7 @@ namespace urchin {
     }
 
     void Renderer3d::renderDebugFramebuffers() {
-        for(auto& debugFramebuffer : debugFramebuffers) {
+        for (auto& debugFramebuffer : debugFramebuffers) {
             debugFramebuffer->prepareRendering();
         }
     }

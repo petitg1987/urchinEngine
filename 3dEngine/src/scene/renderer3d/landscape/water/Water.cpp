@@ -123,7 +123,7 @@ namespace urchin {
     void Water::setWaterColor(const Vector3<float>& waterColor) {
         waterProperties.color = waterColor;
 
-        if(waterRenderer) {
+        if (waterRenderer) {
             waterRenderer->updateUniformData(1, &waterProperties);
         }
     }
@@ -179,7 +179,7 @@ namespace urchin {
     void Water::setWaveSpeed(float waveSpeed) {
         waterProperties.waveSpeed = waveSpeed;
 
-        if(waterRenderer) {
+        if (waterRenderer) {
             waterRenderer->updateUniformData(1, &waterProperties);
         }
     }
@@ -191,7 +191,7 @@ namespace urchin {
     void Water::setWaveStrength(float waveStrength) {
         waterProperties.waveStrength = waveStrength;
 
-        if(waterRenderer) {
+        if (waterRenderer) {
             waterRenderer->updateUniformData(1, &waterProperties);
         }
     }

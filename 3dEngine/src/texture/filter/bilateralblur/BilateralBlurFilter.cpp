@@ -40,7 +40,7 @@ namespace urchin {
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
-        if(getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT && getTextureType() == TextureType::DEFAULT) {
+        if (getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT && getTextureType() == TextureType::DEFAULT) {
             return "texFilterBilateralBlur";
         }
         throw std::runtime_error("Unimplemented bilateral blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
@@ -48,7 +48,7 @@ namespace urchin {
 
     void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         std::vector<float> offsetsShaderData(offsets.size() * 4, 0.0f);
-        for(std::size_t i = 0; i< offsets.size(); ++i) {
+        for (std::size_t i = 0; i< offsets.size(); ++i) {
             offsetsShaderData[i * 4] = offsets[i];
         }
 

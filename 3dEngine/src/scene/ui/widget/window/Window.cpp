@@ -16,7 +16,7 @@ namespace urchin {
             mousePositionY(0),
             state(DEFAULT),
             title(nullptr) {
-        if(parent) {
+        if (parent) {
             Window::createOrUpdateWidget();
         }
     }

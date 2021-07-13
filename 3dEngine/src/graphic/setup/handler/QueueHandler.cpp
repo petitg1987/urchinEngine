@@ -33,7 +33,7 @@ namespace urchin {
         }
 
         //if not found: search different queue families
-        if(!isAllQueueFamiliesFound()) {
+        if (!isAllQueueFamiliesFound()) {
             i = 0;
             for (const auto& queueFamily : queueFamilies) {
                 if (isGraphicsQueueFamily(queueFamily)) {

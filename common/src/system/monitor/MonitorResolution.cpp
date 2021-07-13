@@ -55,7 +55,7 @@ namespace urchin {
 
     std::string MonitorResolution::userDisplay(bool displayFrequency) const {
         std::string strResolution = std::to_string(width) + "x" + std::to_string(height) + " (" + retrieveAspectRatio() + ")";
-        if(displayFrequency) {
+        if (displayFrequency) {
             strResolution += " @ " + std::to_string(frequency) + "Hz";
         }
         return strResolution;

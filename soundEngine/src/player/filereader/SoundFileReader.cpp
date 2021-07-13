@@ -68,7 +68,7 @@ namespace urchin {
     }
 
     std::size_t SoundFileReader::read(void* buffer, std::size_t elementSize, std::size_t elementCount, void* dataSource) {
-        if(elementSize != 1) {
+        if (elementSize != 1) {
             throw std::runtime_error("Unsupported read from sound file with element size of: " + std::to_string(elementSize));
         }
         std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);

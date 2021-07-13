@@ -49,7 +49,7 @@ namespace urchin {
     std::string FileLogger::archive() const {
         std::string archiveFilename;
         std::string logFileContent = retrieveContent(std::numeric_limits<unsigned long>::max());
-        if(!logFileContent.empty()) {
+        if (!logFileContent.empty()) {
             std::string epoch = std::to_string(std::time(nullptr));
             std::string extension = FileUtil::getFileExtension(filename);
             archiveFilename = filename.substr(0, filename.size() - extension.size() - 1) + "_" + epoch + "." + extension;

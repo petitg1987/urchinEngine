@@ -66,12 +66,12 @@ namespace urchin {
     }
 
     void RenderTarget::notifyRendererEnabled(GenericRenderer* genericRenderer) {
-        if(!genericRenderer->isEnabled()) {
+        if (!genericRenderer->isEnabled()) {
             assert(false);
         }
 
         //move generic renderer at the end of the renderers list
-        for(auto it = renderers.begin(); it != renderers.end(); ++it) {
+        for (auto it = renderers.begin(); it != renderers.end(); ++it) {
             if (*it == genericRenderer) {
                 renderers.push_back(*it);
                 renderers.erase(it);
@@ -286,7 +286,7 @@ namespace urchin {
             queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
         }
 
-        for(auto& renderDependency : renderDependencies) {
+        for (auto& renderDependency : renderDependencies) {
             VkSemaphore queueSubmitSemaphore = renderDependency->retrieveQueueSubmitSemaphoreAndFlagUsed();
             if (queueSubmitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(queueSubmitSemaphore);

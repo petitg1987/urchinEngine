@@ -44,7 +44,7 @@ namespace urchin {
         this->shader = &shader;
         this->i18nService = i18nService;
 
-        if(createWidget) {
+        if (createWidget) {
             createOrUpdateWidget();
         }
 

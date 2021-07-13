@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     void TextureReader::initialize() {
-        if(!isInitialized) {
+        if (!isInitialized) {
             texture->initialize();
             param.initialize(texture->getMipLevels());
 
@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     void TextureReader::cleanup() {
-        if(isInitialized) {
+        if (isInitialized) {
             param.cleanup();
             texture = nullptr;
 

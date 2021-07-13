@@ -16,7 +16,7 @@ namespace urchin {
             lightOctreeManager(new OctreeManager<Light>(50.0f)),
             lastUpdatedLight(nullptr),
             globalAmbientColor(Point4<float>(0.0f, 0.0f, 0.0f, 0.0f)) {
-        if(maxLights > LIGHTS_SHADER_LIMIT) {
+        if (maxLights > LIGHTS_SHADER_LIMIT) {
             throw std::invalid_argument("Maximum lights value is limited to " + std::to_string(LIGHTS_SHADER_LIMIT));
         }
     }

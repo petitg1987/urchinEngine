@@ -67,7 +67,7 @@ namespace urchin {
     void Camera::useMouseToMoveCamera(bool use) {
         bUseMouse = use;
 
-        if(bUseMouse) {
+        if (bUseMouse) {
             resetPreviousMousePosition();
         }
     }

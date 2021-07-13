@@ -53,7 +53,7 @@ namespace urchin {
     }
 
     void DeviceHandler::cleanup() {
-        if(logicalDevice) {
+        if (logicalDevice) {
             vkDestroyDevice(logicalDevice, nullptr);
         }
     }
@@ -109,7 +109,7 @@ namespace urchin {
         //check required features
         for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
             auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset);
-            if(!isFeatureAvailable) {
+            if (!isFeatureAvailable) {
                 return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support");
             }
         }
@@ -123,14 +123,14 @@ namespace urchin {
 
         //check swap chain is adequate
         SwapChainSupportDetails swapChainSupport = SwapChainHandler::querySwapChainSupport(physicalDeviceToCheck);
-        if(swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
+        if (swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
             return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing adequate swap chain support");
         }
 
         //check required queue families
         QueueHandler queueFamilyHandler;
         queueFamilyHandler.initializeQueueFamilies(physicalDeviceToCheck, surface);
-        if(!queueFamilyHandler.isAllQueueFamiliesFound()) {
+        if (!queueFamilyHandler.isAllQueueFamiliesFound()) {
             return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing a queue family support");
         }
 
@@ -150,7 +150,7 @@ namespace urchin {
         vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
 
         for (const auto& extension : availableExtensions) {
-            if(strcmp(extension.extensionName, extensionName) == 0) {
+            if (strcmp(extension.extensionName, extensionName) == 0) {
                 return true;
             }
         }
