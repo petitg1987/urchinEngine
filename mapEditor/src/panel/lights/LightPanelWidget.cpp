@@ -174,7 +174,7 @@ namespace urchin {
 
         std::list<const SceneLight*> sceneLights = this->lightController->getSceneLights();
         for (auto& sceneLight : sceneLights) {
-            lightTableView->addLight(sceneLight);
+            lightTableView->addLight(*sceneLight);
         }
     }
 
@@ -253,16 +253,17 @@ namespace urchin {
         newSceneLightDialog.exec();
 
         if (newSceneLightDialog.result() == QDialog::Accepted) {
-            SceneLight* sceneLight = newSceneLightDialog.getSceneLight();
-            lightController->addSceneLight(sceneLight);
+            std::unique_ptr<SceneLight> sceneLight = newSceneLightDialog.moveSceneLight();
+            SceneLight* sceneLightPtr = sceneLight.get();
+            lightController->addSceneLight(std::move(sceneLight));
 
-            lightTableView->addLight(sceneLight);
+            lightTableView->addLight(*sceneLightPtr);
         }
     }
 
     void LightPanelWidget::removeSelectedLight() {
         if (lightTableView->hasSceneLightSelected()) {
-            const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
+            const SceneLight& sceneLight = *lightTableView->getSelectedSceneLight();
             lightController->removeSceneLight(sceneLight);
 
             lightTableView->removeSelectedLight();
@@ -271,7 +272,7 @@ namespace urchin {
 
     void LightPanelWidget::updateLightGeneralProperties() {
         if (!disableLightEvent) {
-            const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
+            const SceneLight& sceneLight = *lightTableView->getSelectedSceneLight();
 
             Point3<float> ambientColor((float)ambientR->value(), (float)ambientG->value(), (float)ambientB->value());
             bool produceShadow = produceShadowCheckBox->isChecked();
@@ -282,8 +283,8 @@ namespace urchin {
 
     void LightPanelWidget::updateLightSpecificProperties() {
         if (!disableLightEvent) {
-            const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
-            const Light* light = sceneLight->getLight();
+            const SceneLight& sceneLight = *lightTableView->getSelectedSceneLight();
+            const Light* light = sceneLight.getLight();
 
             if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());

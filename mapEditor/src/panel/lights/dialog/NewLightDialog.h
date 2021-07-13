@@ -20,7 +20,7 @@ namespace urchin {
 
             NewLightDialog(QWidget*, const LightController*);
 
-            SceneLight* getSceneLight() const;
+            std::unique_ptr<SceneLight> moveSceneLight();
 
         private:
             void setupNameFields(QGridLayout*);
@@ -40,7 +40,7 @@ namespace urchin {
             QComboBox* lightTypeComboBox;
 
             std::string lightName;
-            SceneLight* sceneLight;
+            std::unique_ptr<SceneLight> sceneLight;
     };
 
 }

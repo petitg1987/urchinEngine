@@ -28,35 +28,34 @@ namespace urchin {
             friend class MapHandler;
 
             Map(Renderer3d*, PhysicsWorld*, SoundManager*, AIManager*);
-            ~Map();
 
             const std::list<std::unique_ptr<SceneObject>>& getSceneObjects() const;
             SceneObject& getSceneObject(const std::string&) const;
             void addSceneObject(std::unique_ptr<SceneObject>);
             void removeSceneObject(SceneObject&);
 
-            const std::list<SceneLight*>& getSceneLights() const;
-            SceneLight* getSceneLight(const std::string&) const;
-            void addSceneLight(SceneLight*);
-            void removeSceneLight(SceneLight*);
+            const std::list<std::unique_ptr<SceneLight>>& getSceneLights() const;
+            SceneLight& getSceneLight(const std::string&) const;
+            void addSceneLight(std::unique_ptr<SceneLight>);
+            void removeSceneLight(SceneLight&);
 
-            const std::list<SceneTerrain*>& getSceneTerrains() const;
-            SceneTerrain* getSceneTerrain(const std::string&) const;
-            void addSceneTerrain(SceneTerrain*);
-            void removeSceneTerrain(SceneTerrain*);
+            const std::list<std::unique_ptr<SceneTerrain>>& getSceneTerrains() const;
+            SceneTerrain& getSceneTerrain(const std::string&) const;
+            void addSceneTerrain(std::unique_ptr<SceneTerrain>);
+            void removeSceneTerrain(SceneTerrain&);
 
-            const std::list<SceneWater*>& getSceneWaters() const;
-            SceneWater* getSceneWater(const std::string&) const;
-            void addSceneWater(SceneWater*);
-            void removeSceneWater(SceneWater*);
+            const std::list<std::unique_ptr<SceneWater>>& getSceneWaters() const;
+            SceneWater& getSceneWater(const std::string&) const;
+            void addSceneWater(std::unique_ptr<SceneWater>);
+            void removeSceneWater(SceneWater&);
 
             const SceneSky& getSceneSky() const;
             void updateSceneSky(std::unique_ptr<Skybox> skybox);
 
-            const std::list<SceneSound*>& getSceneSounds() const;
-            SceneSound* getSceneSound(const std::string&) const;
-            void addSceneSound(SceneSound*);
-            void removeSceneSound(SceneSound*);
+            const std::list<std::unique_ptr<SceneSound>>& getSceneSounds() const;
+            SceneSound& getSceneSound(const std::string&) const;
+            void addSceneSound(std::unique_ptr<SceneSound>);
+            void removeSceneSound(SceneSound&);
 
             const SceneAI& getSceneAI() const;
             void updateSceneAI(std::unique_ptr<NavMeshAgent>);
@@ -107,11 +106,11 @@ namespace urchin {
             AIManager* aiManager;
 
             std::list<std::unique_ptr<SceneObject>> sceneObjects;
-            std::list<SceneLight*> sceneLights;
-            std::list<SceneTerrain*> sceneTerrains;
-            std::list<SceneWater*> sceneWaters;
+            std::list<std::unique_ptr<SceneLight>> sceneLights;
+            std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
+            std::list<std::unique_ptr<SceneWater>> sceneWaters;
             std::unique_ptr<SceneSky> sceneSky;
-            std::list<SceneSound*> sceneSounds;
+            std::list<std::unique_ptr<SceneSound>> sceneSounds;
             std::unique_ptr<SceneAI> sceneAI;
     };
 

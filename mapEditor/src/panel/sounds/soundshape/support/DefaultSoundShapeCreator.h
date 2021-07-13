@@ -10,12 +10,12 @@ namespace urchin {
     class DefaultSoundShapeCreator {
 
         public:
-            explicit DefaultSoundShapeCreator(const SceneSound*);
+            explicit DefaultSoundShapeCreator(const SceneSound&);
 
             std::unique_ptr<SoundShape> createDefaultSoundShape(SoundShape::ShapeType) const;
 
         private:
-            const SceneSound* sceneSound;
+            const SceneSound& sceneSound;
     };
 
 }

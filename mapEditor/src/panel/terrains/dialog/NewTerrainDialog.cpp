@@ -73,7 +73,7 @@ namespace urchin {
 
     int NewTerrainDialog::buildSceneTerrain(int result) {
         try {
-            sceneTerrain = new SceneTerrain();
+            sceneTerrain = std::make_unique<SceneTerrain>();
 
             sceneTerrain->setName(terrainName);
 
@@ -88,16 +88,14 @@ namespace urchin {
             sceneTerrain->setTerrain(terrain);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            delete sceneTerrain;
-
             return QDialog::Rejected;
         }
 
         return result;
     }
 
-    SceneTerrain* NewTerrainDialog::getSceneTerrain() const {
-        return sceneTerrain;
+    std::unique_ptr<SceneTerrain> NewTerrainDialog::moveSceneTerrain() {
+        return std::move(sceneTerrain);
     }
 
     void NewTerrainDialog::showHeightFilenameDialog() {

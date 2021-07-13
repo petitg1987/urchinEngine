@@ -37,9 +37,9 @@ namespace urchin {
         return nullptr;
     }
 
-    void WaterTableView::addWater(const SceneWater* sceneWater) {
-        auto* itemWaterName = new QStandardItem(QString::fromStdString(sceneWater->getName()));
-        itemWaterName->setData(QVariant::fromValue(sceneWater), Qt::UserRole + 1);
+    void WaterTableView::addWater(const SceneWater& sceneWater) {
+        auto* itemWaterName = new QStandardItem(QString::fromStdString(sceneWater.getName()));
+        itemWaterName->setData(QVariant::fromValue(&sceneWater), Qt::UserRole + 1);
         itemWaterName->setEditable(false);
 
         int nextRow = watersListModel->rowCount();

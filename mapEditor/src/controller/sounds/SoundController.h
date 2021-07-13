@@ -14,19 +14,19 @@ namespace urchin {
             SoundController();
 
             std::list<const SceneSound*> getSceneSounds() const;
-            void addSceneSound(SceneSound*);
-            void removeSceneSound(const SceneSound*);
+            void addSceneSound(std::unique_ptr<SceneSound>);
+            void removeSceneSound(const SceneSound&);
 
-            void changeSoundTrigger(const SceneSound*, SoundTrigger::TriggerType);
-            void changeSoundShape(const SceneSound*, SoundShape::ShapeType);
+            void changeSoundTrigger(const SceneSound&, SoundTrigger::TriggerType);
+            void changeSoundShape(const SceneSound&, SoundShape::ShapeType);
 
-            const SceneSound* updateSceneSoundGeneralProperties(const SceneSound*, float);
-            const SceneSound* updateSceneSpatialSoundProperties(const SceneSound*, const Point3<float>&, float);
-            const SceneSound* updateSceneSoundTriggerGeneralProperties(const SceneSound*, SoundTrigger::PlayBehavior);
-            const SceneSound* updateSceneSoundShape(const SceneSound*, std::unique_ptr<const SoundShape>);
+            const SceneSound& updateSceneSoundGeneralProperties(const SceneSound&, float);
+            const SceneSound& updateSceneSpatialSoundProperties(const SceneSound&, const Point3<float>&, float);
+            const SceneSound& updateSceneSoundTriggerGeneralProperties(const SceneSound&, SoundTrigger::PlayBehavior);
+            const SceneSound& updateSceneSoundShape(const SceneSound&, std::unique_ptr<const SoundShape>);
 
         private:
-            SceneSound* findSceneSound(const SceneSound*);
+            SceneSound& findSceneSound(const SceneSound&);
     };
 
 }

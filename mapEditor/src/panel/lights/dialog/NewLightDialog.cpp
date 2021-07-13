@@ -64,7 +64,7 @@ namespace urchin {
     }
 
     int NewLightDialog::buildSceneLight(int result) {
-        sceneLight = new SceneLight();
+        sceneLight = std::make_unique<SceneLight>();
 
         sceneLight->setName(lightName);
 
@@ -85,8 +85,8 @@ namespace urchin {
         return result;
     }
 
-    SceneLight* NewLightDialog::getSceneLight() const {
-        return sceneLight;
+    std::unique_ptr<SceneLight> NewLightDialog::moveSceneLight() {
+        return std::move(sceneLight);
     }
 
     void NewLightDialog::done(int r) {

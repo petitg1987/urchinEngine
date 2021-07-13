@@ -40,15 +40,15 @@ namespace urchin {
         return nullptr;
     }
 
-    void TerrainTableView::addTerrain(const SceneTerrain* sceneTerrain) {
-        auto* itemTerrainName = new QStandardItem(QString::fromStdString(sceneTerrain->getName()));
-        itemTerrainName->setData(QVariant::fromValue(sceneTerrain), Qt::UserRole + 1);
+    void TerrainTableView::addTerrain(const SceneTerrain& sceneTerrain) {
+        auto* itemTerrainName = new QStandardItem(QString::fromStdString(sceneTerrain.getName()));
+        itemTerrainName->setData(QVariant::fromValue(&sceneTerrain), Qt::UserRole + 1);
         itemTerrainName->setEditable(false);
 
-        std::string pathFileName = sceneTerrain->getTerrain()->getMesh()->getHeightFilename();
+        std::string pathFileName = sceneTerrain.getTerrain()->getMesh()->getHeightFilename();
         auto* itemHeightFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(pathFileName)));
         itemHeightFile->setToolTip(QString::fromStdString(pathFileName));
-        itemHeightFile->setData(QVariant::fromValue(sceneTerrain), Qt::UserRole + 1);
+        itemHeightFile->setData(QVariant::fromValue(&sceneTerrain), Qt::UserRole + 1);
         itemHeightFile->setEditable(false);
 
         int nextRow = terrainsListModel->rowCount();

@@ -24,7 +24,7 @@ namespace urchin {
             bool hasSceneWaterSelected() const;
             const SceneWater* getSelectedSceneWater() const;
 
-            void addWater(const SceneWater*);
+            void addWater(const SceneWater&);
             bool removeSelectedWater();
             void removeAllWaters();
 

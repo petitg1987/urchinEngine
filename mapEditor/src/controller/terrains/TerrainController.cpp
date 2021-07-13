@@ -9,34 +9,36 @@ namespace urchin {
     }
 
     std::list<const SceneTerrain*> TerrainController::getSceneTerrains() const {
-        const std::list<SceneTerrain*>& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
+        const auto& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         std::list<const SceneTerrain*> constSceneTerrains;
-        constSceneTerrains.insert(constSceneTerrains.begin(), sceneTerrains.begin(), sceneTerrains.end());
+        for(auto& sceneTerrain : sceneTerrains) {
+            constSceneTerrains.emplace_back(sceneTerrain.get());
+        }
 
         return constSceneTerrains;
     }
 
-    void TerrainController::addSceneTerrain(SceneTerrain* sceneTerrain) {
-        getMapHandler()->getMap()->addSceneTerrain(sceneTerrain);
+    void TerrainController::addSceneTerrain(std::unique_ptr<SceneTerrain> sceneTerrain) {
+        getMapHandler()->getMap()->addSceneTerrain(std::move(sceneTerrain));
 
         markModified();
     }
 
-    void TerrainController::removeSceneTerrain(const SceneTerrain* constSceneTerrain) {
-        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
+    void TerrainController::removeSceneTerrain(const SceneTerrain& constSceneTerrain) {
+        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
         getMapHandler()->getMap()->removeSceneTerrain(sceneTerrain);
 
         markModified();
     }
 
-    const SceneTerrain* TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain* constSceneTerrain,
+    const SceneTerrain& TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain& constSceneTerrain,
                                                                                const Point3<float>& position, float ambient) {
-        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain* terrain = sceneTerrain->getTerrain();
+        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain.getTerrain();
 
         terrain->setPosition(position);
-        if (sceneTerrain->getRigidBody()) {
-            sceneTerrain->getRigidBody()->setTransform(PhysicsTransform(position));
+        if (sceneTerrain.getRigidBody()) {
+            sceneTerrain.getRigidBody()->setTransform(PhysicsTransform(position));
         }
 
         terrain->setAmbient(ambient);
@@ -45,9 +47,9 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    const SceneTerrain* TerrainController::updateSceneTerrainMesh(const SceneTerrain* constSceneTerrain, float xzScale, float yScale) {
-        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain* terrain = sceneTerrain->getTerrain();
+    const SceneTerrain& TerrainController::updateSceneTerrainMesh(const SceneTerrain& constSceneTerrain, float xzScale, float yScale) {
+        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain.getTerrain();
 
         auto terrainMesh = std::make_unique<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale);
         terrain->setMesh(std::move(terrainMesh));
@@ -56,10 +58,10 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    const SceneTerrain* TerrainController::updateSceneTerrainMaterial(const SceneTerrain* constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
+    const SceneTerrain& TerrainController::updateSceneTerrainMaterial(const SceneTerrain& constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
                                                                       const std::vector<std::string>& materialFilenames) {
-        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain* terrain = sceneTerrain->getTerrain();
+        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain.getTerrain();
 
         auto terrainMaterials = std::make_unique<TerrainMaterials>(maskMapFilename, materialFilenames, sRepeat, tRepeat);
         terrain->setMaterials(std::move(terrainMaterials));
@@ -68,11 +70,11 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    const SceneTerrain* TerrainController::updateSceneTerrainGrass(const SceneTerrain* constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
+    const SceneTerrain& TerrainController::updateSceneTerrainGrass(const SceneTerrain& constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
                                                                    unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                    const Vector3<float>& windDirection, float windStrength) {
-        SceneTerrain* sceneTerrain = findSceneTerrain(constSceneTerrain);
-        Terrain* terrain = sceneTerrain->getTerrain();
+        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain* terrain = sceneTerrain.getTerrain();
         TerrainGrass* terrainGrass = terrain->getGrass();
 
         terrainGrass->setGrassTexture(grassTextureFilename);
@@ -90,14 +92,14 @@ namespace urchin {
         return sceneTerrain;
     }
 
-    SceneTerrain* TerrainController::findSceneTerrain(const SceneTerrain* constSceneTerrain) {
-        const std::list<SceneTerrain*>& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
-        auto it = std::find(sceneTerrains.begin(), sceneTerrains.end(), constSceneTerrain);
+    SceneTerrain& TerrainController::findSceneTerrain(const SceneTerrain& constSceneTerrain) {
+        const auto& sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
+        auto it = std::find_if(sceneTerrains.begin(), sceneTerrains.end(), [&constSceneTerrain](const auto& o){return o.get() == &constSceneTerrain;});
 
         if (it != sceneTerrains.end()) {
-            return *it;
+            return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find scene terrain: " + constSceneTerrain->getName());
+        throw std::invalid_argument("Impossible to find scene terrain: " + constSceneTerrain.getName());
     }
 }

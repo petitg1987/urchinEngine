@@ -24,7 +24,7 @@ namespace urchin {
             bool hasSceneLightSelected() const;
             const SceneLight* getSelectedSceneLight() const;
 
-            void addLight(const SceneLight*);
+            void addLight(const SceneLight&);
             bool removeSelectedLight();
             void removeAllLights();
 

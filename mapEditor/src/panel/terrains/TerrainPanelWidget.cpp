@@ -328,7 +328,7 @@ namespace urchin {
 
         std::list<const SceneTerrain*> sceneTerrains = this->terrainController->getSceneTerrains();
         for (auto& sceneTerrain : sceneTerrains) {
-            terrainTableView->addTerrain(sceneTerrain);
+            terrainTableView->addTerrain(*sceneTerrain);
         }
     }
 
@@ -410,16 +410,17 @@ namespace urchin {
         newSceneTerrainDialog.exec();
 
         if (newSceneTerrainDialog.result() == QDialog::Accepted) {
-            SceneTerrain* sceneTerrain = newSceneTerrainDialog.getSceneTerrain();
-            terrainController->addSceneTerrain(sceneTerrain);
+            std::unique_ptr<SceneTerrain> sceneTerrain = newSceneTerrainDialog.moveSceneTerrain();
+            SceneTerrain* sceneTerrainPtr = sceneTerrain.get();
+            terrainController->addSceneTerrain(std::move(sceneTerrain));
 
-            terrainTableView->addTerrain(sceneTerrain);
+            terrainTableView->addTerrain(*sceneTerrainPtr);
         }
     }
 
     void TerrainPanelWidget::removeSelectedTerrain() {
         if (terrainTableView->hasSceneTerrainSelected()) {
-            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
             terrainController->removeSceneTerrain(sceneTerrain);
 
             terrainTableView->removeSelectedTerrain();
@@ -428,7 +429,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainGeneralProperties() {
         if (!disableTerrainEvent) {
-            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
 
             Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
             terrainController->updateSceneTerrainGeneralProperties(sceneTerrain, position, (float)ambient->value());
@@ -437,7 +438,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainMesh() {
         if (!disableTerrainEvent) {
-            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
 
             terrainController->updateSceneTerrainMesh(sceneTerrain, (float)xzScale->value(), (float)yScale->value());
         }
@@ -445,7 +446,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainMaterial() {
         if (!disableTerrainEvent) {
-            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
 
             std::string maskMapFilename = maskMapFilenameText->text().toStdString();
             std::vector<std::string> materialFilenames;
@@ -458,7 +459,7 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainGrass() {
         if (!disableTerrainEvent) {
-            const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
 
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();

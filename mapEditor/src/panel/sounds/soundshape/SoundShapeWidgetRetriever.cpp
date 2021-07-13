@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    SoundShapeWidgetRetriever::SoundShapeWidgetRetriever(const SceneSound* sceneSound) :
+    SoundShapeWidgetRetriever::SoundShapeWidgetRetriever(const SceneSound& sceneSound) :
             sceneSound(sceneSound) {
 
     }

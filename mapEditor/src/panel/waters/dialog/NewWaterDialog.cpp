@@ -49,7 +49,7 @@ namespace urchin {
 
     int NewWaterDialog::buildSceneWater(int result) {
         try {
-            sceneWater = new SceneWater();
+            sceneWater = std::make_unique<SceneWater>();
             sceneWater->setName(waterName);
             
             auto* water = new Water();
@@ -57,8 +57,6 @@ namespace urchin {
             sceneWater->setWater(water);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            delete sceneWater;
-
             return QDialog::Rejected;
         }
 
@@ -66,8 +64,8 @@ namespace urchin {
     }
 
 
-    SceneWater* NewWaterDialog::getSceneWater() const {
-        return sceneWater;
+    std::unique_ptr<SceneWater> NewWaterDialog::moveSceneWater() {
+        return std::move(sceneWater);
     }
 
     void NewWaterDialog::done(int r) {

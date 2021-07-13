@@ -14,15 +14,15 @@ namespace urchin {
             LightController();
 
             std::list<const SceneLight*> getSceneLights() const;
-            void addSceneLight(SceneLight*);
-            void removeSceneLight(const SceneLight*);
+            void addSceneLight(std::unique_ptr<SceneLight>);
+            void removeSceneLight(const SceneLight&);
 
-            const SceneLight* updateSceneLightGeneralProperties(const SceneLight*, const Point3<float>&, bool);
-            const SceneLight* updateSceneOmnidirectionalLightProperties(const SceneLight*, float, const Point3<float>&);
-            const SceneLight* updateSceneSunLightProperties(const SceneLight*, const Vector3<float>&);
+            const SceneLight& updateSceneLightGeneralProperties(const SceneLight&, const Point3<float>&, bool);
+            const SceneLight& updateSceneOmnidirectionalLightProperties(const SceneLight&, float, const Point3<float>&);
+            const SceneLight& updateSceneSunLightProperties(const SceneLight&, const Vector3<float>&);
 
         private:
-            SceneLight* findSceneLight(const SceneLight*);
+            SceneLight& findSceneLight(const SceneLight&);
     };
 
 }

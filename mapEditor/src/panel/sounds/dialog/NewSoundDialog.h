@@ -22,7 +22,7 @@ namespace urchin {
 
             NewSoundDialog(QWidget*, const SoundController*);
 
-            SceneSound* getSceneSound() const;
+            std::unique_ptr<SceneSound> moveSceneSound();
 
         private:
             void setupNameFields(QGridLayout*);
@@ -49,7 +49,7 @@ namespace urchin {
 
             std::string soundName;
             std::string soundFilename;
-            SceneSound* sceneSound;
+            std::unique_ptr<SceneSound> sceneSound;
             static QString preferredSoundPath;
 
         private slots:

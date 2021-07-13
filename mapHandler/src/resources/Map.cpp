@@ -15,24 +15,6 @@ namespace urchin {
 
     }
 
-    Map::~Map() {
-        for (SceneLight* sceneLight : sceneLights) {
-            delete sceneLight;
-        }
-
-        for (SceneTerrain* sceneTerrain : sceneTerrains) {
-            delete sceneTerrain;
-        }
-
-        for (SceneWater* sceneWater : sceneWaters) {
-            delete sceneWater;
-        }
-
-        for (SceneSound* sceneSound : sceneSounds) {
-            delete sceneSound;
-        }
-    }
-
     void Map::loadFrom(const UdaChunk* rootChunk, const UdaParser& udaParser, LoadCallback& loadCallback) {
         if (renderer3d && !renderer3d->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
@@ -81,10 +63,10 @@ namespace urchin {
         auto lightsChunk = udaParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
 
         for (const auto& lightChunk : lightsChunk) {
-            auto* sceneLight = new SceneLight();
+            auto sceneLight = std::make_unique<SceneLight>();
             sceneLight->loadFrom(lightChunk, udaParser);
 
-            addSceneLight(sceneLight);
+            addSceneLight(std::move(sceneLight));
         }
     }
 
@@ -93,10 +75,10 @@ namespace urchin {
         auto terrainsChunk = udaParser.getChunks(TERRAIN_TAG, UdaAttribute(), terrainsListChunk);
 
         for (const auto& terrainChunk : terrainsChunk) {
-            auto* sceneTerrain = new SceneTerrain();
+            auto sceneTerrain = std::make_unique<SceneTerrain>();
             sceneTerrain->loadFrom(terrainChunk, udaParser);
 
-            addSceneTerrain(sceneTerrain);
+            addSceneTerrain(std::move(sceneTerrain));
         }
     }
 
@@ -105,10 +87,10 @@ namespace urchin {
         auto watersChunk = udaParser.getChunks(WATER_TAG, UdaAttribute(), watersListChunk);
 
         for (const auto& waterChunk : watersChunk) {
-            auto* sceneWater = new SceneWater();
+            auto sceneWater = std::make_unique<SceneWater>();
             sceneWater->loadFrom(waterChunk, udaParser);
 
-            addSceneWater(sceneWater);
+            addSceneWater(std::move(sceneWater));
         }
     }
 
@@ -123,10 +105,10 @@ namespace urchin {
         auto soundElementsChunk = udaParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
 
         for (const auto& soundElementChunk : soundElementsChunk) {
-            auto* sceneSound = new SceneSound();
+            auto sceneSound = std::make_unique<SceneSound>();
             sceneSound->loadFrom(soundElementChunk, udaParser);
 
-            addSceneSound(sceneSound);
+            addSceneSound(std::move(sceneSound));
         }
     }
 
@@ -158,7 +140,7 @@ namespace urchin {
     void Map::writeSceneLightsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         auto& lightsListChunk = udaWriter.createChunk(LIGHTS_TAG, UdaAttribute(), &chunk);
 
-        for (auto sceneLight : sceneLights) {
+        for (auto& sceneLight : sceneLights) {
             auto& lightsChunk = udaWriter.createChunk(LIGHT_TAG, UdaAttribute(), &lightsListChunk);
             sceneLight->writeOn(lightsChunk, udaWriter);
         }
@@ -167,7 +149,7 @@ namespace urchin {
     void Map::writeSceneTerrainsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         auto& terrainsListChunk = udaWriter.createChunk(TERRAINS_TAG, UdaAttribute(), &chunk);
 
-        for (auto sceneTerrain : sceneTerrains) {
+        for (auto& sceneTerrain : sceneTerrains) {
             auto& terrainsChunk = udaWriter.createChunk(TERRAIN_TAG, UdaAttribute(), &terrainsListChunk);
             sceneTerrain->writeOn(terrainsChunk, udaWriter);
         }
@@ -176,7 +158,7 @@ namespace urchin {
     void Map::writeSceneWatersOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         auto& watersListChunk = udaWriter.createChunk(WATERS_TAG, UdaAttribute(), &chunk);
 
-        for (auto sceneWater : sceneWaters) {
+        for (auto& sceneWater : sceneWaters) {
             auto& watersChunk = udaWriter.createChunk(WATER_TAG, UdaAttribute(), &watersListChunk);
             sceneWater->writeOn(watersChunk, udaWriter);
         }
@@ -191,7 +173,7 @@ namespace urchin {
     void Map::writeSceneSoundsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         auto& soundElementsListChunk = udaWriter.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &chunk);
 
-        for (auto sceneSound : sceneSounds) {
+        for (auto& sceneSound : sceneSounds) {
             auto& soundElementsChunk = udaWriter.createChunk(SOUND_ELEMENT_TAG, UdaAttribute(), &soundElementsListChunk);
             sceneSound->writeOn(soundElementsChunk, udaWriter);
         }
@@ -213,7 +195,6 @@ namespace urchin {
                 return *sceneObject;
             }
         }
-
         throw std::invalid_argument("Impossible to find a scene object having name: " + name);
     }
 
@@ -226,76 +207,70 @@ namespace urchin {
         sceneObjects.remove_if([&sceneObject](const auto& o){return o.get()==&sceneObject;});
     }
 
-    const std::list<SceneLight*>& Map::getSceneLights() const {
+    const std::list<std::unique_ptr<SceneLight>>& Map::getSceneLights() const {
         return sceneLights;
     }
 
-    SceneLight* Map::getSceneLight(const std::string& name) const {
-        for (auto sceneLight : sceneLights) {
+    SceneLight& Map::getSceneLight(const std::string& name) const {
+        for (auto& sceneLight : sceneLights) {
             if (sceneLight->getName() == name) {
-                return sceneLight;
+                return *sceneLight;
             }
         }
-
         throw std::invalid_argument("Impossible to find a scene light having name: " + name);
     }
 
-    void Map::addSceneLight(SceneLight* sceneLight) {
+    void Map::addSceneLight(std::unique_ptr<SceneLight> sceneLight) {
         sceneLight->setLightManager(renderer3d->getLightManager());
-        sceneLights.push_back(sceneLight);
+        sceneLights.push_back(std::move(sceneLight));
     }
 
-    void Map::removeSceneLight(SceneLight* sceneLight) {
-        sceneLights.remove(sceneLight);
-        delete sceneLight;
+    void Map::removeSceneLight(SceneLight& sceneLight) {
+        sceneLights.remove_if([&sceneLight](const auto& o){return o.get()==&sceneLight;});
     }
 
-    const std::list<SceneTerrain*>& Map::getSceneTerrains() const {
+    const std::list<std::unique_ptr<SceneTerrain>>& Map::getSceneTerrains() const {
         return sceneTerrains;
     }
 
-    SceneTerrain* Map::getSceneTerrain(const std::string& name) const {
-        for (auto sceneTerrain : sceneTerrains) {
+    SceneTerrain& Map::getSceneTerrain(const std::string& name) const {
+        for (auto& sceneTerrain : sceneTerrains) {
             if (sceneTerrain->getName() == name) {
-                return sceneTerrain;
+                return *sceneTerrain;
             }
         }
-
         throw std::invalid_argument("Impossible to find a scene terrain having name: " + name);
     }
 
-    void Map::addSceneTerrain(SceneTerrain* sceneTerrain) {
+    void Map::addSceneTerrain(std::unique_ptr<SceneTerrain> sceneTerrain) {
         sceneTerrain->setTerrainManagers(renderer3d, physicsWorld, aiManager);
-        sceneTerrains.push_back(sceneTerrain);
+        sceneTerrains.push_back(std::move(sceneTerrain));
     }
 
-    void Map::removeSceneTerrain(SceneTerrain* sceneTerrain) {
-        sceneTerrains.remove(sceneTerrain);
-        delete sceneTerrain;
+    void Map::removeSceneTerrain(SceneTerrain& sceneTerrain) {
+        sceneTerrains.remove_if([&sceneTerrain](const auto& o){return o.get()==&sceneTerrain;});
     }
 
-    const std::list<SceneWater*>& Map::getSceneWaters() const {
+    const std::list<std::unique_ptr<SceneWater>>& Map::getSceneWaters() const {
         return sceneWaters;
     }
 
-    SceneWater* Map::getSceneWater(const std::string& name) const {
-        for (auto sceneWater : sceneWaters) {
+    SceneWater& Map::getSceneWater(const std::string& name) const {
+        for (auto& sceneWater : sceneWaters) {
             if (sceneWater->getName() == name) {
-                return sceneWater;
+                return *sceneWater;
             }
         }
-
         throw std::invalid_argument("Impossible to find a scene water having name: " + name);
     }
 
-    void Map::addSceneWater(SceneWater* sceneWater) {
+    void Map::addSceneWater(std::unique_ptr<SceneWater> sceneWater) {
         sceneWater->setWaterManagers(renderer3d);
-        sceneWaters.push_back(sceneWater);
+        sceneWaters.push_back(std::move(sceneWater));
     }
 
-    void Map::removeSceneWater(SceneWater* sceneWater) {
-        sceneWaters.remove(sceneWater);
-        delete sceneWater;
+    void Map::removeSceneWater(SceneWater& sceneWater) {
+        sceneWaters.remove_if([&sceneWater](const auto& o){return o.get()==&sceneWater;});
     }
 
     const SceneSky& Map::getSceneSky() const {
@@ -306,28 +281,26 @@ namespace urchin {
         sceneSky->changeSkybox(std::move(skybox));
     }
 
-    const std::list<SceneSound*>& Map::getSceneSounds() const {
+    const std::list<std::unique_ptr<SceneSound>>& Map::getSceneSounds() const {
         return sceneSounds;
     }
 
-    SceneSound* Map::getSceneSound(const std::string& name) const {
-        for (auto sceneSound : sceneSounds) {
+    SceneSound& Map::getSceneSound(const std::string& name) const {
+        for (auto& sceneSound : sceneSounds) {
             if (sceneSound->getName() == name) {
-                return sceneSound;
+                return *sceneSound;
             }
         }
-
         throw std::invalid_argument("Impossible to find a scene sound having name: " + name);
     }
 
-    void Map::addSceneSound(SceneSound* sceneSound) {
+    void Map::addSceneSound(std::unique_ptr<SceneSound> sceneSound) {
         sceneSound->setSoundManager(soundManager);
-        sceneSounds.push_back(sceneSound);
+        sceneSounds.push_back(std::move(sceneSound));
     }
 
-    void Map::removeSceneSound(SceneSound* sceneSound) {
-        sceneSounds.remove(sceneSound);
-        delete sceneSound;
+    void Map::removeSceneSound(SceneSound& sceneSound) {
+        sceneSounds.remove_if([&sceneSound](const auto& o){return o.get()==&sceneSound;});
     }
 
     const SceneAI& Map::getSceneAI() const {
@@ -388,7 +361,7 @@ namespace urchin {
             sceneObject->refresh();
         }
 
-        for (SceneTerrain* sceneTerrain : sceneTerrains) {
+        for (auto& sceneTerrain : sceneTerrains) {
             sceneTerrain->refresh();
         }
     }

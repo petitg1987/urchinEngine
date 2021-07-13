@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    SoundShapeWidget::SoundShapeWidget(const SceneSound* sceneSound) :
+    SoundShapeWidget::SoundShapeWidget(const SceneSound& sceneSound) :
             disableShapeEvent(false),
             sceneSound(sceneSound),
             shape(nullptr) {
@@ -26,7 +26,7 @@ namespace urchin {
         connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
-    const SceneSound* SoundShapeWidget::getSceneSound() const {
+    const SceneSound& SoundShapeWidget::getSceneSound() const {
         return sceneSound;
     }
 

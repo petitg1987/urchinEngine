@@ -102,7 +102,7 @@ namespace urchin {
 
     int NewSoundDialog::buildSceneSound(int result) {
         try {
-            sceneSound = new SceneSound();
+            sceneSound = std::make_unique<SceneSound>();
 
             sceneSound->setName(soundName);
 
@@ -129,8 +129,6 @@ namespace urchin {
             sceneSound->setSoundElements(sound, soundTrigger);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
-            delete sceneSound;
-
             return QDialog::Rejected;
         }
 
@@ -138,8 +136,8 @@ namespace urchin {
     }
 
 
-    SceneSound* NewSoundDialog::getSceneSound() const {
-        return sceneSound;
+    std::unique_ptr<SceneSound> NewSoundDialog::moveSceneSound() {
+        return std::move(sceneSound);
     }
 
     void NewSoundDialog::showSoundFilenameDialog() {

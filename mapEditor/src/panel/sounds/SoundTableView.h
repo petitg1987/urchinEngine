@@ -24,7 +24,7 @@ namespace urchin {
             bool hasSceneSoundSelected() const;
             const SceneSound* getSelectedSceneSound() const;
 
-            void addSound(const SceneSound*);
+            void addSound(const SceneSound&);
             bool removeSelectedSound();
             void removeAllSounds();
 
