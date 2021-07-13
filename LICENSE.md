@@ -32,4 +32,3 @@ SOFTWARE.
 - Clipper (http://www.angusj.com/delphi/clipper.php): Boost Software License => https://www.boost.org/LICENSE_1_0.txt
 - Earcut (https://github.com/mapbox/earcut.hpp): ISC License
 - LodePNG (https://github.com/lvandeve/lodepng): Zlib License
-- TinyXML (https://sourceforge.net/projects/tinyxml): Zlib License
