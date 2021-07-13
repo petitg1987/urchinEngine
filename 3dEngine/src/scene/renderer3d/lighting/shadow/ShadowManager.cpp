@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    ShadowManager::ShadowManager(LightManager& lightManager, OctreeManager<Model>* modelOctreeManager) :
+    ShadowManager::ShadowManager(LightManager& lightManager, OctreeManager<Model>& modelOctreeManager) :
             shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
             percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
             config({}),

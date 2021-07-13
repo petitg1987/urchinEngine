@@ -20,7 +20,7 @@ namespace urchin {
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
         obboxModels.clear();
-        lightShadowMap->getModelOctreeManager()->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
+        lightShadowMap->getModelOctreeManager().getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
         updateModels(obboxModels);
         buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, bForceUpdateAllShadowMaps);
     }

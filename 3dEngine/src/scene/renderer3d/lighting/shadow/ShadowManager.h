@@ -38,7 +38,7 @@ namespace urchin {
                 BlurShadow blurShadow = BlurShadow::MEDIUM;
             };
 
-            ShadowManager(LightManager&, OctreeManager<Model>*);
+            ShadowManager(LightManager&, OctreeManager<Model>&);
             ~ShadowManager() override = default;
 
             void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
@@ -81,7 +81,7 @@ namespace urchin {
 
             //scene information
             LightManager& lightManager;
-            OctreeManager<Model>* modelOctreeManager;
+            OctreeManager<Model>& modelOctreeManager;
             Matrix4<float> projectionMatrix;
             std::vector<Model*> visibleModels;
 

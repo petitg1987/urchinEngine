@@ -38,7 +38,7 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             //managers
-            OctreeManager<Model>* getModelOctreeManager() const;
+            OctreeManager<Model>& getModelOctreeManager() const;
 
             FogManager& getFogManager() const;
 
@@ -116,7 +116,7 @@ namespace urchin {
             //deferred rendering
             std::unique_ptr<OffscreenRender> deferredRenderTarget;
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
-            OctreeManager<Model>* modelOctreeManager;
+            std::unique_ptr<OctreeManager<Model>> modelOctreeManager;
             std::unique_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 

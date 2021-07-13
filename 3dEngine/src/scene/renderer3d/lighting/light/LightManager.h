@@ -22,7 +22,7 @@ namespace urchin {
             };
 
             void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
-            OctreeManager<Light>* getLightOctreeManager() const;
+            OctreeManager<Light>& getLightOctreeManager() const;
             Light* getLastUpdatedLight();
 
             unsigned int getMaxLights() const;
@@ -51,7 +51,7 @@ namespace urchin {
 
             //lights container
             std::vector<Light*> sunLights;
-            OctreeManager<Light>* lightOctreeManager; //all lights except sun lights
+            std::unique_ptr<OctreeManager<Light>> lightOctreeManager; //all lights except sun lights
             std::unique_ptr<AABBoxModel> debugLightOctree;
             std::vector<Light*> lightsInFrustum;
             std::vector<Light*> visibleLights;

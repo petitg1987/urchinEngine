@@ -30,7 +30,7 @@ namespace urchin {
             //deferred rendering
             deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
-            modelOctreeManager(new OctreeManager<Model>(20.0f)),
+            modelOctreeManager(std::make_unique<OctreeManager<Model>>(20.0f)),
             fogManager(std::make_unique<FogManager>()),
             terrainManager(std::make_unique<TerrainManager>(*deferredRenderTarget)),
             waterManager(std::make_unique<WaterManager>(*deferredRenderTarget)),
@@ -38,7 +38,7 @@ namespace urchin {
             geometryManager(std::make_unique<GeometryManager>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
             ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
-            shadowManager(std::make_unique<ShadowManager>(*lightManager, modelOctreeManager)),
+            shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
 
             //lighting pass rendering
             offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
@@ -66,7 +66,6 @@ namespace urchin {
 
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
-        delete modelOctreeManager;
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -91,8 +90,8 @@ namespace urchin {
         }
     }
 
-    OctreeManager<Model>* Renderer3d::getModelOctreeManager() const {
-        return modelOctreeManager;
+    OctreeManager<Model>& Renderer3d::getModelOctreeManager() const {
+        return *modelOctreeManager;
     }
 
     FogManager& Renderer3d::getFogManager() const {
@@ -466,7 +465,7 @@ namespace urchin {
 
     void Renderer3d::renderDebugSceneData() {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager, *deferredRenderTarget, camera->getProjectionMatrix());
+            debugModelOctree = OctreeRenderer::createOctreeModel(*modelOctreeManager, *deferredRenderTarget, camera->getProjectionMatrix());
             debugModelOctree->prepareRendering(camera->getViewMatrix());
         }
 

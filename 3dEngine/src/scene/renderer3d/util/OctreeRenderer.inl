@@ -1,6 +1,6 @@
-template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel(const OctreeManager<T>* octreeManager, RenderTarget& renderTarget,
+template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel(const OctreeManager<T>& octreeManager, RenderTarget& renderTarget,
         const Matrix4<float>& projectionMatrix) {
-    auto leafOctrees = octreeManager->getAllLeafOctrees();
+    auto leafOctrees = octreeManager.getAllLeafOctrees();
 
     std::vector<AABBox<float>> aabboxes;
     aabboxes.reserve(leafOctrees.size());

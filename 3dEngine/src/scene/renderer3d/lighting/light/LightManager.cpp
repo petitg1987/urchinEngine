@@ -13,7 +13,7 @@ namespace urchin {
     LightManager::LightManager(RenderTarget& renderTarget) :
             maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
             renderTarget(renderTarget),
-            lightOctreeManager(new OctreeManager<Light>(50.0f)),
+            lightOctreeManager(std::make_unique<OctreeManager<Light>>(50.0f)),
             lastUpdatedLight(nullptr),
             globalAmbientColor(Point4<float>(0.0f, 0.0f, 0.0f, 0.0f)) {
         if (maxLights > LIGHTS_SHADER_LIMIT) {
@@ -29,8 +29,6 @@ namespace urchin {
         for (auto& sunLight : sunLights) {
             delete sunLight;
         }
-
-        delete lightOctreeManager;
     }
 
     void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
@@ -44,8 +42,8 @@ namespace urchin {
                 ->addUniformData(sizeof(globalAmbientColor), &globalAmbientColor); //binding 3
     }
 
-    OctreeManager<Light>* LightManager::getLightOctreeManager() const {
-        return lightOctreeManager;
+    OctreeManager<Light>& LightManager::getLightOctreeManager() const {
+        return *lightOctreeManager;
     }
 
     void LightManager::onLightEvent(Light* light, NotificationType notificationType) {
@@ -176,7 +174,7 @@ namespace urchin {
     }
 
     void LightManager::drawLightOctree(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
-        debugLightOctree = OctreeRenderer::createOctreeModel(lightOctreeManager, renderTarget, projectionMatrix);
+        debugLightOctree = OctreeRenderer::createOctreeModel(*lightOctreeManager, renderTarget, projectionMatrix);
         debugLightOctree->prepareRendering(viewMatrix);
     }
 
