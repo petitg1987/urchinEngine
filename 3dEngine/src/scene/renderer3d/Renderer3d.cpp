@@ -189,12 +189,13 @@ namespace urchin {
         }
     }
 
-    void Renderer3d::removeModel(Model* model) { //TODO return ref...
+    std::shared_ptr<Model> Renderer3d::removeModel(Model* model) {
         if (model) {
             shadowManager->removeModel(model);
             modelSetDisplayer->removeModel(model);
-            modelOctreeManager->removeOctreeable(model);
+            return modelOctreeManager->removeOctreeable(model);
         }
+        return std::shared_ptr<Model>(nullptr);
     }
 
     void Renderer3d::pause() {

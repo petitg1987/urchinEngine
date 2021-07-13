@@ -83,7 +83,7 @@ namespace urchin {
             if (!meshFilename.empty()) {
                 relativeMeshFilename = FileUtil::getRelativePath(resourcesDirectory, meshFilename);
             }
-            auto* model = new Model(relativeMeshFilename);
+            auto model = std::make_shared<Model>(relativeMeshFilename);
             sceneObject->setModel(model);
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());

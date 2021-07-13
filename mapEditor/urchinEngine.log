@@ -1,0 +1,69 @@
+[2021-07-13 18:02:51] (II) Create render target: screen
+[2021-07-13 18:02:51] (II) Create Vulkan instance
+[2021-07-13 18:02:51] (II) Find Vulkan physical device
+[2021-07-13 18:02:51] (II) Create Vulkan logical device
+[2021-07-13 18:02:52] (II) Resize scene to 1534x989
+[2021-07-13 18:02:55] (II) Create render target: screen
+[2021-07-13 18:02:55] (II) Find Vulkan physical device
+[2021-07-13 18:02:55] (II) Create Vulkan logical device
+[2021-07-13 18:02:55] (II) Create render target: deferred rendering - first pass
+[2021-07-13 18:02:55] (II) Create render target: deferred rendering - second pass
+[2021-07-13 18:02:55] (II) Create render target: ambient occlusion
+[2021-07-13 18:02:55] (II) Create render target: ambient occlusion - vertical bilateral blur filter
+[2021-07-13 18:02:55] (II) Create render target: ambient occlusion - horizontal bilateral blur filter
+[2021-07-13 18:02:55] (II) Create render target: ambient occlusion - vertical bilateral blur filter
+[2021-07-13 18:02:55] (II) Create render target: ambient occlusion - horizontal bilateral blur filter
+[2021-07-13 18:02:55] (II) Load map: map.uda
+[2021-07-13 18:02:55] (II) Add 3D model: models/ground.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #ground
+[2021-07-13 18:02:55] (II) Add 3D model: models/table.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #table
+[2021-07-13 18:02:55] (II) Add 3D model: models/bench.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #bench
+[2021-07-13 18:02:55] (II) Add 3D model: models/book.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #book
+[2021-07-13 18:02:55] (II) Add 3D model: models/wineBottle.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #wine
+[2021-07-13 18:02:55] (II) Add 3D model: models/sphere.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #sphere1
+[2021-07-13 18:02:55] (II) Add 3D model: models/sphere.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #sphere2
+[2021-07-13 18:02:55] (II) Add 3D model: models/sphere.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #sphere3
+[2021-07-13 18:02:55] (II) Add 3D model: models/cube.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #cube1
+[2021-07-13 18:02:55] (II) Add 3D model: models/cube.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #cube2
+[2021-07-13 18:02:55] (II) Add 3D model: models/cylinder.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #cylinder
+[2021-07-13 18:02:55] (II) Add 3D model: models/capsule.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #capsule
+[2021-07-13 18:02:55] (II) Add 3D model: models/sphereBox.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #sphereBox
+[2021-07-13 18:02:55] (II) Add 3D model: models/cone.urchinMesh
+[2021-07-13 18:02:55] (II) Add new AI entity: #cone
+[2021-07-13 18:02:55] (II) Add 3D model: models/character.urchinMesh
+[2021-07-13 18:02:56] (II) Add 3D model: models/characterAnimate.urchinMesh
+[2021-07-13 18:02:56] (II) Add new AI entity: #characterAnimate
+[2021-07-13 18:02:56] (II) Create render target: shadow map
+[2021-07-13 18:02:56] (II) Create render target: shadow map - vertical gaussian blur filter
+[2021-07-13 18:02:56] (II) Create render target: shadow map - horizontal gaussian blur filter
+[2021-07-13 18:02:56] (II) Add new AI entity: @terrain
+[2021-07-13 18:02:56] (II) Add sound: sound/ambient.ogg
+[2021-07-13 18:02:56] (II) Add sound: sound/positionTrigger.ogg
+[2021-07-13 18:02:56] (II) Add physical body: ground
+[2021-07-13 18:02:56] (II) Add physical body: table
+[2021-07-13 18:02:56] (II) Add physical body: bench
+[2021-07-13 18:02:56] (II) Add physical body: book
+[2021-07-13 18:02:56] (II) Add physical body: wine
+[2021-07-13 18:02:56] (II) Add physical body: sphere1
+[2021-07-13 18:02:56] (II) Add physical body: sphere2
+[2021-07-13 18:02:56] (II) Add physical body: sphere3
+[2021-07-13 18:02:56] (II) Add physical body: cube1
+[2021-07-13 18:02:56] (II) Add physical body: cube2
+[2021-07-13 18:02:56] (II) Add physical body: cylinder
+[2021-07-13 18:02:56] (II) Add physical body: capsule
+[2021-07-13 18:02:56] (II) Add physical body: sphereBox
+[2021-07-13 18:02:56] (II) Add physical body: cone
+[2021-07-13 18:02:56] (II) Add physical body: characterAnimate
+[2021-07-13 18:02:56] (II) Add physical body: terrain

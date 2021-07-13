@@ -73,16 +73,23 @@ namespace urchin {
         }
     }
 
-    void LightManager::removeLight(Light* light) { //TODO return ptr
+    std::shared_ptr<Light> LightManager::removeLight(Light* light) {
+        std::shared_ptr<Light> removedLight;
         if (light) {
             if (light->hasParallelBeams()) {
-                auto it = std::find_if(sunLights.begin(), sunLights.end(), [&light](const auto& o){return o.get() == light;});
-                sunLights.erase(it);
+                for (auto it = sunLights.begin(); it != sunLights.end(); ++it) {
+                    if (it->get() == light) {
+                        removedLight = std::move(*it);
+                        sunLights.erase(it);
+                        break;
+                    }
+                }
             } else {
-                lightOctreeManager->removeOctreeable(light);
+                removedLight = lightOctreeManager->removeOctreeable(light);
             }
-            onLightEvent(light, LightManager::REMOVE_LIGHT); //TODO shared_ptr could be destroyed !
+            onLightEvent(removedLight.get(), LightManager::REMOVE_LIGHT);
         }
+        return removedLight;
     }
 
     void LightManager::setGlobalAmbientColor(const Point4<float>& globalAmbientColor) {

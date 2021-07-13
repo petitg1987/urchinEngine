@@ -28,7 +28,7 @@ namespace urchin {
             const std::vector<std::shared_ptr<Light>>& getSunLights() const;
             const std::vector<Light*>& getVisibleLights() const;
             void addLight(std::shared_ptr<Light>);
-            void removeLight(Light*);
+            std::shared_ptr<Light> removeLight(Light*);
 
             void setGlobalAmbientColor(const Point4<float>&);
             const Point4<float>& getGlobalAmbientColor() const;

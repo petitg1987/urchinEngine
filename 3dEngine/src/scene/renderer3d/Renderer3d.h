@@ -58,7 +58,7 @@ namespace urchin {
 
             //models
             void addModel(std::shared_ptr<Model>);
-            void removeModel(Model*);
+            std::shared_ptr<Model> removeModel(Model*);
 
             //events
             bool isPaused() const;

@@ -46,7 +46,7 @@ namespace urchin {
 
     void ObjectController::cloneSceneObject(std::unique_ptr<SceneObject> newSceneObject, const SceneObject& toCloneSceneObject) {
         Model* toCloneModel = toCloneSceneObject.getModel();
-        auto* model = new Model(*toCloneModel);
+        auto model = std::make_shared<Model>(*toCloneModel);
         Point3<float> shiftPosition(0.5f, 0.0f, 0.0f);
         model->setPosition(model->getTransform().getPosition() + shiftPosition);
         newSceneObject->setModel(model);

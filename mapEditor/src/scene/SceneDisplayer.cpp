@@ -16,12 +16,6 @@ namespace urchin {
         sceneController(sceneController),
         mouseController(mouseController),
         statusBarController(statusBarController),
-        camera(nullptr),
-        physicsWorld(nullptr),
-        aiManager(nullptr),
-        navMeshDisplayer(nullptr),
-        soundManager(nullptr),
-        mapHandler(nullptr),
         viewProperties(),
         highlightSceneObject(nullptr),
         highlightSceneLight(nullptr),
@@ -39,7 +33,6 @@ namespace urchin {
         objectMoveController.reset(nullptr);
         lightScopeDisplayer.reset(nullptr);
         soundTriggerDisplayer.reset(nullptr);
-        delete camera;
         sceneManager.reset(nullptr);
 
         SingletonManager::destroyAllSingletons();
@@ -96,7 +89,7 @@ namespace urchin {
 
         //3d
         sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
-        camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, mouseController);
+        camera = std::make_shared<SceneFreeCamera>(50.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(45.0f, 2.0f);
         camera->loadCameraState(mapFilename);
         sceneManager->newRenderer3d(true);
@@ -222,7 +215,7 @@ namespace urchin {
     }
 
     SceneFreeCamera* SceneDisplayer::getCamera() const {
-        return camera;
+        return camera.get();
     }
 
     PhysicsWorld& SceneDisplayer::getPhysicsWorld() const {

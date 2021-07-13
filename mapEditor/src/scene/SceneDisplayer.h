@@ -72,7 +72,7 @@ namespace urchin {
 
             //3d
             std::unique_ptr<SceneManager> sceneManager;
-            SceneFreeCamera* camera;
+            std::shared_ptr<SceneFreeCamera> camera;
             std::unique_ptr<BodyShapeDisplayer> bodyShapeDisplayer;
             std::unique_ptr<ObjectMoveController> objectMoveController;
             std::unique_ptr<LightScopeDisplayer> lightScopeDisplayer;
