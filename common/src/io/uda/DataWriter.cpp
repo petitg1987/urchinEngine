@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <stack>
 
-#include <io/data/DataWriter.h>
+#include <io/uda/DataWriter.h>
 #include <config/FileSystem.h>
 
 namespace urchin {

@@ -7,7 +7,7 @@ namespace urchin {
     class DataAttribute {
         public:
             DataAttribute() = default;
-            DataAttribute(std::string , std::string );
+            DataAttribute(std::string, std::string);
 
             const std::string& getAttributeName() const;
             const std::string& getAttributeValue() const;

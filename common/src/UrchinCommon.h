@@ -15,10 +15,10 @@
 #include <io/svg/shape/SVGLine.h>
 #include <io/svg/shape/SVGCircle.h>
 #include <io/map/MapSerializer.h>
-#include <io/data/DataParser.h>
-#include <io/data/DataWriter.h>
-#include <io/data/DataAttribute.h>
-#include <io/data/DataChunk.h>
+#include <io/uda/DataParser.h>
+#include <io/uda/DataWriter.h>
+#include <io/uda/DataAttribute.h>
+#include <io/uda/DataChunk.h>
 
 #include <logger/Logger.h>
 #include <logger/FileLogger.h>

@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <regex>
 
-#include <io/data/DataParser.h>
+#include <io/uda/DataParser.h>
 #include <io/file/FileReader.h>
 #include <config/FileSystem.h>
 #include <util/StringUtil.h>

@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <io/data/DataChunk.h>
+#include <io/uda/DataChunk.h>
 #include <util/TypeConverter.h>
 
 namespace urchin {

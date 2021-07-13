@@ -4,8 +4,8 @@
 #include <memory>
 #include <fstream>
 
-#include <io/data/DataAttribute.h>
-#include <io/data/DataChunk.h>
+#include <io/uda/DataAttribute.h>
+#include <io/uda/DataChunk.h>
 
 namespace urchin {
 
