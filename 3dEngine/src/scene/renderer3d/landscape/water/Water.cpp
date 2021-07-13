@@ -240,9 +240,9 @@ namespace urchin {
         return gradient;
     }
 
-    void Water::prepareRendering(const Camera* camera, FogManager* fogManager, float dt) {
+    void Water::prepareRendering(const Camera& camera, FogManager* fogManager, float dt) {
         assert(isInitialized);
-        if (camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z))) {
+        if (camera.getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera.getPosition().X, camera.getPosition().Z))) {
             if (fogManager->getActiveFog() != underwaterFog.get()) {
                 fogManager->pushFog(underwaterFog.get());
                 notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
@@ -253,7 +253,7 @@ namespace urchin {
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }
 
-            positioningData.viewMatrix = camera->getViewMatrix();
+            positioningData.viewMatrix = camera.getViewMatrix();
             positioningData.sumTimeStep += dt;
 
             waterRenderer->updateUniformData(0, &positioningData);

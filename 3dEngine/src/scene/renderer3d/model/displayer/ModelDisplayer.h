@@ -14,7 +14,7 @@ namespace urchin {
             ~ModelDisplayer() override;
 
             void notify(Observable*, int) override;
-            void onCameraProjectionUpdate(const Camera*);
+            void onCameraProjectionUpdate(const Camera&);
 
             void prepareRendering(const Matrix4<float>&) const;
 

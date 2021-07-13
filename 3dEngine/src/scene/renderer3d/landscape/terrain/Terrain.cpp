@@ -170,10 +170,10 @@ namespace urchin {
         return mesh->findHeightAt(localCoordinate) + positioningData.position.Y;
     }
 
-    void Terrain::prepareRendering(const Camera* camera, float dt) const {
+    void Terrain::prepareRendering(const Camera& camera, float dt) const {
         assert(isInitialized);
 
-        terrainRenderer->updateUniformData(0, &camera->getViewMatrix());
+        terrainRenderer->updateUniformData(0, &camera.getViewMatrix());
         terrainRenderer->enableRenderer();
 
         if (grass) {

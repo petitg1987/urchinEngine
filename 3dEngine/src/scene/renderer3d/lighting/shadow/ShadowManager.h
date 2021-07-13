@@ -42,7 +42,7 @@ namespace urchin {
             ~ShadowManager() override = default;
 
             void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
-            void onCameraProjectionUpdate(const Camera*);
+            void onCameraProjectionUpdate(const Camera&);
             void notify(Observable*, int) override;
 
             unsigned int getMaxShadowLights() const;

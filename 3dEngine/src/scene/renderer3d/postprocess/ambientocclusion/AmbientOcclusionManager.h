@@ -35,14 +35,14 @@ namespace urchin {
 
             void onTexturesUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
-            void onCameraProjectionUpdate(const Camera*);
+            void onCameraProjectionUpdate(const Camera&);
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
 
-            void updateAOTexture(const Camera*);
+            void updateAOTexture(const Camera&);
             void loadAOTexture(GenericRenderer&, std::size_t) const;
 
         private:

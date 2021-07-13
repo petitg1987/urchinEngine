@@ -11,8 +11,8 @@ namespace urchin {
 
     }
 
-    void TerrainManager::onCameraProjectionUpdate(const Camera* camera) {
-        this->projectionMatrix = camera->getProjectionMatrix();
+    void TerrainManager::onCameraProjectionUpdate(const Camera& camera) {
+        this->projectionMatrix = camera.getProjectionMatrix();
         for (const auto terrain : terrains) {
             terrain->onCameraProjectionUpdate(projectionMatrix);
         }
@@ -57,7 +57,7 @@ namespace urchin {
         terrain->getGrass()->setGrassDisplayDistance(config.grassDisplayDistance);
     }
 
-    void TerrainManager::prepareRendering(const Camera* camera, float dt) const {
+    void TerrainManager::prepareRendering(const Camera& camera, float dt) const {
         ScopeProfiler sp(Profiler::graphic(), "terPreRender");
 
         for (const auto terrain : terrains) {

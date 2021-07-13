@@ -48,9 +48,9 @@ namespace urchin {
         model->removeObserver(this, Model::MESH_UPDATED);
     }
 
-    void ModelDisplayer::onCameraProjectionUpdate(const Camera* camera) {
+    void ModelDisplayer::onCameraProjectionUpdate(const Camera& camera) {
         for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateUniformData(0, &camera->getProjectionMatrix());
+            meshRenderer->updateUniformData(0, &camera.getProjectionMatrix());
         }
     }
 

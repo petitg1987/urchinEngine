@@ -24,7 +24,7 @@ namespace urchin {
             ~ModelSetDisplayer();
 
             void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Camera*);
+            void onCameraProjectionUpdate(const Camera&);
 
             void setCustomShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
             void setCustomModelShaderVariable(std::unique_ptr<CustomModelShaderVariable>);

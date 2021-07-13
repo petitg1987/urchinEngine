@@ -27,8 +27,8 @@ namespace urchin {
         }
     }
 
-    void GeometryManager::onCameraProjectionUpdate(const Camera* camera) {
-        this->projectionMatrix = camera->getProjectionMatrix();
+    void GeometryManager::onCameraProjectionUpdate(const Camera& camera) {
+        this->projectionMatrix = camera.getProjectionMatrix();
 
         for (auto& geometryModel : geometryModels) {
             geometryModel->onCameraProjectionUpdate(projectionMatrix);

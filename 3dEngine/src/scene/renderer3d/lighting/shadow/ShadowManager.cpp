@@ -32,10 +32,10 @@ namespace urchin {
                 ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
     }
 
-    void ShadowManager::onCameraProjectionUpdate(const Camera* camera) {
-        this->projectionMatrix = camera->getProjectionMatrix();
+    void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
+        this->projectionMatrix = camera.getProjectionMatrix();
 
-        splitFrustum(camera->getFrustum());
+        splitFrustum(camera.getFrustum());
         updateShadowLights();
     }
 

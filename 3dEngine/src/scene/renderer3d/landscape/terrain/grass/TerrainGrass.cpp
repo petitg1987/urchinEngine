@@ -355,14 +355,14 @@ namespace urchin {
         }
     }
 
-    void TerrainGrass::prepareRendering(const Camera* camera, float dt) {
+    void TerrainGrass::prepareRendering(const Camera& camera, float dt) {
         assert(bIsInitialized);
 
         if (grassTexture) {
             ScopeProfiler sp(Profiler::graphic(), "grassPreRender");
 
-            positioningData.viewMatrix = camera->getViewMatrix();
-            positioningData.cameraPosition = camera->getPosition();
+            positioningData.viewMatrix = camera.getViewMatrix();
+            positioningData.cameraPosition = camera.getPosition();
             positioningData.sumTimeStep += dt;
 
             grassQuadtrees.clear();
@@ -372,7 +372,7 @@ namespace urchin {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
                 const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();
 
-                if (grassQuadtreeBox && camera->getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
+                if (grassQuadtreeBox && camera.getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         grassQuadtree->getRenderer()->updateUniformData(0, &positioningData);
                         grassQuadtree->getRenderer()->enableRenderer();

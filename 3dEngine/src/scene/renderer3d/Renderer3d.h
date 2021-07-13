@@ -62,7 +62,7 @@ namespace urchin {
             void activateAntiAliasing(bool);
 
             //camera
-            void setCamera(Camera*);
+            void setCamera(std::shared_ptr<Camera>);
             Camera* getCamera() const;
 
             //models
@@ -111,7 +111,7 @@ namespace urchin {
             RenderTarget& finalRenderTarget;
             unsigned int sceneWidth, sceneHeight;
             bool paused;
-            Camera* camera;
+            std::shared_ptr<Camera> camera;
 
             //deferred rendering
             std::unique_ptr<OffscreenRender> deferredRenderTarget;

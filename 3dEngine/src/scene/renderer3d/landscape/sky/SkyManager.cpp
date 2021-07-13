@@ -7,8 +7,8 @@ namespace urchin {
 
     }
 
-    void SkyManager::onCameraProjectionUpdate(const Camera* camera) {
-        projectionMatrix = camera->getProjectionMatrix();
+    void SkyManager::onCameraProjectionUpdate(const Camera& camera) {
+        projectionMatrix = camera.getProjectionMatrix();
 
         if (skybox != nullptr) {
             skybox->onCameraProjectionUpdate(projectionMatrix);

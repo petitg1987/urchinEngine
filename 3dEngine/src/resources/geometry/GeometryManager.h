@@ -16,7 +16,7 @@ namespace urchin {
             void addGeometry(GeometryModel*);
             void removeGeometry(GeometryModel*);
 
-            void onCameraProjectionUpdate(const Camera*);
+            void onCameraProjectionUpdate(const Camera&);
 
             void prepareRendering(const Matrix4<float>&) const;
 

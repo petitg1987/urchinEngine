@@ -194,9 +194,9 @@ namespace urchin {
         svgExporter.generateSVG(100);
     }
 
-    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera* camera) {
-        nearPlane = camera->getNearPlane();
-        farPlane = camera->getFarPlane();
+    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera& camera) {
+        nearPlane = camera.getNearPlane();
+        farPlane = camera.getFarPlane();
 
         createOrUpdateAO();
     }
@@ -249,12 +249,12 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::updateAOTexture(const Camera* camera) {
+    void AmbientOcclusionManager::updateAOTexture(const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
-        positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
-        positioningData.projectionMatrix = camera->getProjectionMatrix();
-        positioningData.viewMatrix = camera->getViewMatrix();
+        positioningData.inverseProjectionViewMatrix = (camera.getProjectionMatrix() * camera.getViewMatrix()).inverse();
+        positioningData.projectionMatrix = camera.getProjectionMatrix();
+        positioningData.viewMatrix = camera.getViewMatrix();
         renderer->updateUniformData(0, &positioningData);
 
         offscreenRenderTarget->render();

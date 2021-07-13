@@ -45,8 +45,8 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelSetDisplayer::onCameraProjectionUpdate(const Camera* camera) {
-        this->projectionMatrix = camera->getProjectionMatrix();
+    void ModelSetDisplayer::onCameraProjectionUpdate(const Camera& camera) {
+        this->projectionMatrix = camera.getProjectionMatrix();
 
         for (auto& modelDisplayer : modelsDisplayer) {
             modelDisplayer.second->onCameraProjectionUpdate(camera);

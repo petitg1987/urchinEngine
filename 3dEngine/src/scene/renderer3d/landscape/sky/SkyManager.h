@@ -10,7 +10,7 @@ namespace urchin {
         public:
             explicit SkyManager(RenderTarget&);
 
-            void onCameraProjectionUpdate(const Camera*);
+            void onCameraProjectionUpdate(const Camera&);
 
             void setSkybox(std::unique_ptr<Skybox>);
             const std::unique_ptr<Skybox>& getSkybox() const;

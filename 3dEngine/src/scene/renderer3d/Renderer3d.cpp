@@ -25,7 +25,6 @@ namespace urchin {
             sceneWidth(finalRenderTarget.getWidth()),
             sceneHeight(finalRenderTarget.getHeight()),
             paused(true),
-            camera(nullptr),
 
             //deferred rendering
             deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
@@ -154,26 +153,26 @@ namespace urchin {
         }
     }
 
-    void Renderer3d::setCamera(Camera* camera) {
+    void Renderer3d::setCamera(std::shared_ptr<Camera> camera) {
         if (this->camera != nullptr) {
            throw std::runtime_error("Redefine a camera is currently not supported");
         }
 
-        this->camera = camera;
-        if (camera) {
-            camera->initialize(sceneWidth, sceneHeight);
+        this->camera = std::move(camera);
+        if (this->camera) {
+            this->camera->initialize(sceneWidth, sceneHeight);
             onCameraProjectionUpdate();
         }
     }
 
     void Renderer3d::onCameraProjectionUpdate() {
-        modelSetDisplayer->onCameraProjectionUpdate(camera);
-        terrainManager->onCameraProjectionUpdate(camera);
-        waterManager->onCameraProjectionUpdate(camera);
-        skyManager->onCameraProjectionUpdate(camera);
-        geometryManager->onCameraProjectionUpdate(camera);
-        shadowManager->onCameraProjectionUpdate(camera);
-        ambientOcclusionManager->onCameraProjectionUpdate(camera);
+        modelSetDisplayer->onCameraProjectionUpdate(*camera);
+        terrainManager->onCameraProjectionUpdate(*camera);
+        waterManager->onCameraProjectionUpdate(*camera);
+        skyManager->onCameraProjectionUpdate(*camera);
+        geometryManager->onCameraProjectionUpdate(*camera);
+        shadowManager->onCameraProjectionUpdate(*camera);
+        ambientOcclusionManager->onCameraProjectionUpdate(*camera);
     }
 
     void Renderer3d::updateModelsInFrustum() {
@@ -182,7 +181,7 @@ namespace urchin {
     }
 
     Camera* Renderer3d::getCamera() const {
-        return camera;
+        return camera.get();
     }
 
     void Renderer3d::addModel(Model* model) {
@@ -451,15 +450,15 @@ namespace urchin {
         deferredRenderTarget->disableAllRenderers();
         skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
-        terrainManager->prepareRendering(camera, dt);
-        waterManager->prepareRendering(camera, fogManager.get(), dt);
+        terrainManager->prepareRendering(*camera, dt);
+        waterManager->prepareRendering(*camera, fogManager.get(), dt);
         geometryManager->prepareRendering(camera->getViewMatrix());
         renderDebugSceneData();
         deferredRenderTarget->render();
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
-            ambientOcclusionManager->updateAOTexture(camera);
+            ambientOcclusionManager->updateAOTexture(*camera);
         }
     }
 
