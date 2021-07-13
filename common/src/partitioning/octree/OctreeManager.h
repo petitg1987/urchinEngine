@@ -14,7 +14,7 @@
 
 namespace urchin {
 
-    template<class TOctreeable> class OctreeManager : public Observable, public Observer {
+    template<class T> class OctreeManager : public Observable, public Observer {
         public:
             explicit OctreeManager(float);
             ~OctreeManager() override;
@@ -25,30 +25,30 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void addOctreeable(std::shared_ptr<TOctreeable>);
-            std::shared_ptr<TOctreeable> removeOctreeable(TOctreeable*);
+            void addOctreeable(std::shared_ptr<T>);
+            std::shared_ptr<T> removeOctreeable(T*);
 
             void updateMinSize(float);
             void refreshOctreeables();
             void postRefreshOctreeables();
 
-            const Octree<TOctreeable>& getMainOctree() const;
-            std::vector<const Octree<TOctreeable>*> getAllLeafOctrees() const;
+            const Octree<T>& getMainOctree() const;
+            std::vector<const Octree<T>*> getAllLeafOctrees() const;
 
-            std::vector<std::shared_ptr<TOctreeable>> getAllOctreeables() const;
-            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<TOctreeable*>&) const;
-            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<TOctreeable*>&, const OctreeableFilter<TOctreeable>&) const;
+            std::vector<std::shared_ptr<T>> getAllOctreeables() const;
+            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&) const;
+            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&, const OctreeableFilter<T>&) const;
 
         private:
-            void buildOctree(std::vector<std::shared_ptr<TOctreeable>>&);
-            bool resizeOctree(std::shared_ptr<TOctreeable>);
+            void buildOctree(std::vector<std::shared_ptr<T>>&);
+            bool resizeOctree(std::shared_ptr<T>);
 
             float overflowSize;
             float minSize;
-            Octree<TOctreeable>* mainOctree;
+            Octree<T>* mainOctree;
 
-            std::vector<TOctreeable*> movingOctreeables;
-            mutable std::vector<Octree<TOctreeable>*> browseNodes;
+            std::vector<T*> movingOctreeables;
+            mutable std::vector<Octree<T>*> browseNodes;
 
             unsigned int refreshModCount, postRefreshModCount;
     };

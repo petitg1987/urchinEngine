@@ -1,6 +1,6 @@
-template<class TOctreeable> void OctreeableHelper<TOctreeable>::merge(std::vector<TOctreeable*>& targetOctreeables,
-        const std::vector<TOctreeable*>& additionalOctreeables) {
-    std::for_each(targetOctreeables.begin(), targetOctreeables.end(), [](TOctreeable* o){o->setProcessed(true);});
+template<class T> void OctreeableHelper<T>::merge(std::vector<T*>& targetOctreeables,
+        const std::vector<T*>& additionalOctreeables) {
+    std::for_each(targetOctreeables.begin(), targetOctreeables.end(), [](T* o){o->setProcessed(true);});
 
     for (auto& additionalOctreeable : additionalOctreeables) {
         if (!additionalOctreeable->isProcessed()) {
@@ -8,5 +8,5 @@ template<class TOctreeable> void OctreeableHelper<TOctreeable>::merge(std::vecto
         }
     }
 
-    std::for_each(targetOctreeables.begin(), targetOctreeables.end(), [](TOctreeable* o){o->setProcessed(false);});
+    std::for_each(targetOctreeables.begin(), targetOctreeables.end(), [](T* o){o->setProcessed(false);});
 }

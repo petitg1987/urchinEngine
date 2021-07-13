@@ -11,7 +11,7 @@ namespace urchin {
     /**
     * Virtual class that can be inserted into an octree
     */
-    template<class TOctreeable> class Octreeable : public Observable {
+    template<class T> class Octreeable : public Observable {
         public:
             Octreeable();
             Octreeable(const Octreeable&);
@@ -32,15 +32,15 @@ namespace urchin {
             void setProcessed(bool);
             bool isProcessed() const;
 
-            const std::vector<Octree<TOctreeable>*>& getRefOctree() const;
-            void addRefOctree(Octree<TOctreeable>*);
-            void removeRefOctree(Octree<TOctreeable>*);
+            const std::vector<Octree<T>*>& getRefOctree() const;
+            void addRefOctree(Octree<T>*);
+            void removeRefOctree(Octree<T>*);
 
             virtual const AABBox<float>& getAABBox() const = 0;
             virtual const Transform<float>& getTransform() const = 0;
 
         private:
-            std::vector<Octree<TOctreeable>*> refOctree;
+            std::vector<Octree<T>*> refOctree;
 
             bool bIsMovingInOctree;
             bool bIsVisible;

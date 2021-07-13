@@ -4,11 +4,11 @@
 
 namespace urchin {
 
-    template<class TOctreeable> class AcceptAllFilter : public OctreeableFilter<TOctreeable> {
+    template<class T> class AcceptAllFilter : public OctreeableFilter<T> {
         public:
             ~AcceptAllFilter() override = default;
 
-            bool isAccepted(const TOctreeable*, const ConvexObject3D<float>&) const override;
+            bool isAccepted(const T*, const ConvexObject3D<float>&) const override;
     };
 
     #include "AcceptAllFilter.inl"

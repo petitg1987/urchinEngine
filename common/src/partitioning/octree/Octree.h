@@ -14,7 +14,7 @@ namespace urchin {
     /**
     * Represents a node of the octree
     */
-    template<class TOctreeable> class Octree {
+    template<class T> class Octree {
         public:
             Octree(const Point3<float>&, const Vector3<float>&, float);
             ~Octree();
@@ -23,15 +23,15 @@ namespace urchin {
 
             bool isLeaf() const;
 
-            const std::vector<Octree<TOctreeable>*>& getChildren() const;
+            const std::vector<Octree<T>*>& getChildren() const;
 
-            const std::vector<std::shared_ptr<TOctreeable>>& getOctreeables() const;
-            void addOctreeable(std::shared_ptr<TOctreeable>, bool addRef);
-            std::shared_ptr<TOctreeable> removeOctreeable(TOctreeable*, bool removeRef);
+            const std::vector<std::shared_ptr<T>>& getOctreeables() const;
+            void addOctreeable(std::shared_ptr<T>, bool addRef);
+            std::shared_ptr<T> removeOctreeable(T*, bool removeRef);
 
         private:
             std::vector<Octree*> children;
-            std::vector<std::shared_ptr<TOctreeable>> octreeables;
+            std::vector<std::shared_ptr<T>> octreeables;
 
             AABBox<float> bbox;
             bool bIsLeaf;

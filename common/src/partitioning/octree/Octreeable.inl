@@ -1,21 +1,21 @@
-template<class TOctreeable> Octreeable<TOctreeable>::Octreeable() :
+template<class T> Octreeable<T>::Octreeable() :
     bIsMovingInOctree(false),
     bIsVisible(true),
     bIsProcessed(false) {
 
 }
 
-template<class TOctreeable> Octreeable<TOctreeable>::Octreeable(const Octreeable<TOctreeable>& octreeable) :
+template<class T> Octreeable<T>::Octreeable(const Octreeable<T>& octreeable) :
     bIsMovingInOctree(false),
     bIsVisible(octreeable.isVisible()),
     bIsProcessed(octreeable.isProcessed()) {
 
 }
 
-template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable() {
+template<class T> Octreeable<T>::~Octreeable() {
     //remove references to this octreeable
     for (auto it = refOctree.begin(); it != refOctree.end(); ++it) {
-        TOctreeable* toctreeable = static_cast<TOctreeable*>(this);
+        T* toctreeable = static_cast<T*>(this);
         (*it)->removeOctreeable(toctreeable, false);
     }
 }
@@ -23,7 +23,7 @@ template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable() {
 /**
  * Method to be called when octreeable moving
  */
-template<class TOctreeable> void Octreeable<TOctreeable>::notifyOctreeableMove() {
+template<class T> void Octreeable<T>::notifyOctreeableMove() {
     notifyObservers(this, Octreeable::MOVE);
 
     if (refOctree.size() > 0) { //octreeable can move in an octree only if it's attached to an octree
@@ -34,7 +34,7 @@ template<class TOctreeable> void Octreeable<TOctreeable>::notifyOctreeableMove()
 /**
  * Method called at post process when octreeable is moving
  */
-template<class TOctreeable> void Octreeable<TOctreeable>::onMoveDone() {
+template<class T> void Octreeable<T>::onMoveDone() {
     bIsMovingInOctree = false;
 }
 
@@ -42,35 +42,35 @@ template<class TOctreeable> void Octreeable<TOctreeable>::onMoveDone() {
  * Return true when octreeable moves in an octree. True is even returned if octreeable doesn't change of leaf octree.
  * If octreeable is not attached to an octree: false is always returned.
  */
-template<class TOctreeable> bool Octreeable<TOctreeable>::isMovingInOctree() const {
+template<class T> bool Octreeable<T>::isMovingInOctree() const {
     return bIsMovingInOctree;
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::setVisible(bool isVisible) {
+template<class T> void Octreeable<T>::setVisible(bool isVisible) {
     bIsVisible = isVisible;
 }
 
-template<class TOctreeable> bool Octreeable<TOctreeable>::isVisible() const {
+template<class T> bool Octreeable<T>::isVisible() const {
     return bIsVisible;
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::setProcessed(bool isProcessed) {
+template<class T> void Octreeable<T>::setProcessed(bool isProcessed) {
     bIsProcessed = isProcessed;
 }
 
-template<class TOctreeable> bool Octreeable<TOctreeable>::isProcessed() const {
+template<class T> bool Octreeable<T>::isProcessed() const {
     return bIsProcessed;
 }
 
-template<class TOctreeable> const std::vector<Octree<TOctreeable>*> &Octreeable<TOctreeable>::getRefOctree() const {
+template<class T> const std::vector<Octree<T>*> &Octreeable<T>::getRefOctree() const {
     return refOctree;
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::addRefOctree(Octree<TOctreeable>* octree) {
+template<class T> void Octreeable<T>::addRefOctree(Octree<T>* octree) {
     refOctree.push_back(octree);
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree<TOctreeable>* octree) {
+template<class T> void Octreeable<T>::removeRefOctree(Octree<T>* octree) {
     auto it = std::find(refOctree.begin(), refOctree.end(), octree);
     if (it != refOctree.end()) {
         VectorUtil::erase(refOctree, it);

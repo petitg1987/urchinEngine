@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    template<class TOctreeable> class OctreeableFilter {
+    template<class T> class OctreeableFilter {
         public:
             virtual ~OctreeableFilter() = default;
 
-            virtual bool isAccepted(const TOctreeable*, const ConvexObject3D<float>&) const = 0;
+            virtual bool isAccepted(const T*, const ConvexObject3D<float>&) const = 0;
     };
 
 }

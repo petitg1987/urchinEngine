@@ -4,12 +4,12 @@
 
 namespace urchin {
 
-    template<class TOctreeable> class OctreeableHelper {
+    template<class T> class OctreeableHelper {
         public:
             OctreeableHelper() = delete;
             ~OctreeableHelper() = delete;
 
-            static void merge(std::vector<TOctreeable*>&, const std::vector<TOctreeable*>&);
+            static void merge(std::vector<T*>&, const std::vector<T*>&);
     };
 
     #include "OctreeableHelper.inl"
