@@ -26,8 +26,8 @@ namespace urchin {
             void changeSoundTrigger(const std::shared_ptr<SoundTrigger>&);
 
         private:
-            void loadFrom(const DataChunk*, const DataParser&);
-            void writeOn(DataChunk&, UdaWriter&) const;
+            void loadFrom(const UdaChunk*, const DataParser&);
+            void writeOn(UdaChunk&, UdaWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char SOUND_TAG[] = "sound";

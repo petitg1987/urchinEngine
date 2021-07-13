@@ -30,7 +30,7 @@ namespace urchin {
         private:
             Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
-            std::shared_ptr<Texture> loadTexture(const DataChunk*, const std::string&) const;
+            std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void updateSliderValue(int);
             void moveSliderCursor();
 

@@ -4,17 +4,17 @@
 
 namespace urchin {
 
-    std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::loadFrom(const DataChunk* soundTriggerChunk, const DataParser& dataParser) {
+    std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::loadFrom(const UdaChunk* soundTriggerChunk, const DataParser& dataParser) {
         auto soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, dataParser);
 
         return soundTrigger;
     }
 
-    void SoundTriggerReaderWriter::writeOn(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
+    void SoundTriggerReaderWriter::writeOn(UdaChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
         buildChunkFrom(soundTriggerChunk, soundTrigger, udaWriter);
     }
 
-    std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::buildSoundTriggerFrom(const DataChunk* soundTriggerChunk, const DataParser& dataParser) {
+    std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::buildSoundTriggerFrom(const UdaChunk* soundTriggerChunk, const DataParser& dataParser) {
         SoundTrigger::PlayBehavior playBehavior = loadPlayBehaviorFrom(soundTriggerChunk, dataParser);
 
         std::string soundTriggerType = soundTriggerChunk->getAttributeValue(TYPE_ATTR);
@@ -31,7 +31,7 @@ namespace urchin {
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
     }
 
-    void SoundTriggerReaderWriter::buildChunkFrom(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
+    void SoundTriggerReaderWriter::buildChunkFrom(UdaChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
@@ -48,7 +48,7 @@ namespace urchin {
         writePlayBehaviorFrom(soundTriggerChunk, soundTrigger.getPlayBehavior(), udaWriter);
     }
 
-    SoundTrigger::PlayBehavior SoundTriggerReaderWriter::loadPlayBehaviorFrom(const DataChunk* soundTriggerChunk, const DataParser& dataParser) {
+    SoundTrigger::PlayBehavior SoundTriggerReaderWriter::loadPlayBehaviorFrom(const UdaChunk* soundTriggerChunk, const DataParser& dataParser) {
         auto playBehaviorChunk = dataParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, UdaAttribute(), soundTriggerChunk);
         if (playBehaviorChunk->getStringValue() == PLAY_ONCE_VALUE) {
             return SoundTrigger::PLAY_ONCE;
@@ -58,7 +58,7 @@ namespace urchin {
         throw std::invalid_argument("Unknown play behavior read from map: " + playBehaviorChunk->getStringValue());
     }
 
-    void SoundTriggerReaderWriter::writePlayBehaviorFrom(DataChunk& soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, UdaWriter& udaWriter) {
+    void SoundTriggerReaderWriter::writePlayBehaviorFrom(UdaChunk& soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, UdaWriter& udaWriter) {
         auto& playBehaviorChunk = udaWriter.createChunk(PLAY_BEHAVIOR_TAG, UdaAttribute(), &soundTriggerChunk);
         if (playBehavior == SoundTrigger::PLAY_ONCE) {
             playBehaviorChunk.setStringValue(PLAY_ONCE_VALUE);

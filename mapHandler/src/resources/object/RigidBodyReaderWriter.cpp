@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    RigidBody* RigidBodyReaderWriter::loadFrom(const DataChunk* physicsChunk, const std::string& id,
+    RigidBody* RigidBodyReaderWriter::loadFrom(const UdaChunk* physicsChunk, const std::string& id,
             const Transform<float>& modelTransform, const DataParser& dataParser) {
         auto shapeChunk = dataParser.getUniqueChunk(true, SHAPE_TAG, UdaAttribute(), physicsChunk);
         std::unique_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
@@ -16,7 +16,7 @@ namespace urchin {
         return rigidBody;
     }
 
-    void RigidBodyReaderWriter::writeOn(DataChunk& physicsChunk, const RigidBody* rigidBody, UdaWriter& udaWriter) {
+    void RigidBodyReaderWriter::writeOn(UdaChunk& physicsChunk, const RigidBody* rigidBody, UdaWriter& udaWriter) {
         auto& shapeChunk = udaWriter.createChunk(SHAPE_TAG, UdaAttribute(), &physicsChunk);
         std::unique_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody->getShape());
 
@@ -24,7 +24,7 @@ namespace urchin {
         writeBodyPropertiesOn(physicsChunk, rigidBody, udaWriter);
     }
 
-    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody* rigidBody, const DataChunk* physicsChunk, const DataParser& dataParser) {
+    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody* rigidBody, const UdaChunk* physicsChunk, const DataParser& dataParser) {
         auto massChunk = dataParser.getUniqueChunk(true, MASS_TAG, UdaAttribute(), physicsChunk);
         float bodyMass = massChunk->getFloatValue();
         rigidBody->setMass(bodyMass);
@@ -49,7 +49,7 @@ namespace urchin {
         rigidBody->setAngularFactor(angularFactorChunk->getVector3Value());
     }
 
-    void RigidBodyReaderWriter::writeBodyPropertiesOn(DataChunk& physicsChunk, const RigidBody* rigidBody, UdaWriter& udaWriter) {
+    void RigidBodyReaderWriter::writeBodyPropertiesOn(UdaChunk& physicsChunk, const RigidBody* rigidBody, UdaWriter& udaWriter) {
         auto& massChunk = udaWriter.createChunk(MASS_TAG, UdaAttribute(), &physicsChunk);
         massChunk.setFloatValue(rigidBody->getMass());
 

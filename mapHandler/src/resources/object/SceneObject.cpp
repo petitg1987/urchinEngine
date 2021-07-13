@@ -47,7 +47,7 @@ namespace urchin {
         }
     }
 
-    void SceneObject::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
+    void SceneObject::loadFrom(const UdaChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         auto modelChunk = dataParser.getUniqueChunk(true, MODEL_TAG, UdaAttribute(), chunk);
@@ -62,7 +62,7 @@ namespace urchin {
         }
     }
 
-    void SceneObject::writeOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+    void SceneObject::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
         auto& modelChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &chunk);

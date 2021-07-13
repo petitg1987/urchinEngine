@@ -1,7 +1,7 @@
 #include "SkyboxReaderWriter.h"
 
 namespace urchin {
-    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const DataChunk* skyChunk, const DataParser& dataParser) {
+    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const UdaChunk* skyChunk, const DataParser& dataParser) {
         std::unique_ptr<Skybox> skybox(nullptr);
 
         auto skyboxChunk = dataParser.getUniqueChunk(false, SKYBOX_TAG, UdaAttribute(), skyChunk);
@@ -25,7 +25,7 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyboxReaderWriter::writeOn(DataChunk& skyChunk, const std::unique_ptr<Skybox>& skybox, UdaWriter& udaWriter) {
+    void SkyboxReaderWriter::writeOn(UdaChunk& skyChunk, const std::unique_ptr<Skybox>& skybox, UdaWriter& udaWriter) {
         if (skybox != nullptr) {
             auto& skyboxChunk = udaWriter.createChunk(SKYBOX_TAG, UdaAttribute(), &skyChunk);
 

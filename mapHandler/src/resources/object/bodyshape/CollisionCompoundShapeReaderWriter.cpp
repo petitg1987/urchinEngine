@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const DataChunk* mainShapeChunk, const DataParser& dataParser) const {
+    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const UdaChunk* mainShapeChunk, const DataParser& dataParser) const {
         auto localizedShapesListChunk = dataParser.getUniqueChunk(true, LOCALIZED_SHAPES, UdaAttribute(), mainShapeChunk);
         auto localizedShapesChunk = dataParser.getChunks(LOCALIZED_SHAPE, UdaAttribute(), localizedShapesListChunk);
 
@@ -28,7 +28,7 @@ namespace urchin {
         return new CollisionCompoundShape(std::move(compoundShapes));
     }
 
-    void CollisionCompoundShapeReaderWriter::writeOn(DataChunk& mainShapeChunk, const CollisionShape3D& mainCollisionShape, UdaWriter& udaWriter) const {
+    void CollisionCompoundShapeReaderWriter::writeOn(UdaChunk& mainShapeChunk, const CollisionShape3D& mainCollisionShape, UdaWriter& udaWriter) const {
         mainShapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
         const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(mainCollisionShape);
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const DataChunk* localizedShapeChunk, const DataParser& dataParser) {
+    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const UdaChunk* localizedShapeChunk, const DataParser& dataParser) {
         auto transformChunk = dataParser.getUniqueChunk(true, TRANSFORM_TAG, UdaAttribute(), localizedShapeChunk);
 
         auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), transformChunk);
@@ -56,7 +56,7 @@ namespace urchin {
         localizedShape.transform = PhysicsTransform(position, orientation);
     }
 
-    void CollisionCompoundShapeReaderWriter::writeTransformOn(DataChunk& localizedShapeChunk, const LocalizedCollisionShape& localizedShape, UdaWriter& udaWriter) {
+    void CollisionCompoundShapeReaderWriter::writeTransformOn(UdaChunk& localizedShapeChunk, const LocalizedCollisionShape& localizedShape, UdaWriter& udaWriter) {
         auto& transformChunk = udaWriter.createChunk(TRANSFORM_TAG, UdaAttribute(), &localizedShapeChunk);
 
         auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &transformChunk);

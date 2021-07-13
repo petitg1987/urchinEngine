@@ -15,8 +15,8 @@ namespace urchin {
 
             virtual ~SoundShapeReaderWriter() = default;
 
-            virtual std::unique_ptr<SoundShape> loadFrom(const DataChunk*, const DataParser&) const = 0;
-            virtual void writeOn(DataChunk&, const SoundShape&, UdaWriter&) const = 0;
+            virtual std::unique_ptr<SoundShape> loadFrom(const UdaChunk*, const DataParser&) const = 0;
+            virtual void writeOn(UdaChunk&, const SoundShape&, UdaWriter&) const = 0;
     };
 
 }

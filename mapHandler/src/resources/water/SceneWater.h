@@ -23,8 +23,8 @@ namespace urchin {
             void setWater(Water*);
 
         private:
-            void loadFrom(const DataChunk*, const DataParser&);
-            void writeOn(DataChunk&, UdaWriter&) const;
+            void loadFrom(const UdaChunk*, const DataParser&);
+            void writeOn(UdaChunk&, UdaWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";
 

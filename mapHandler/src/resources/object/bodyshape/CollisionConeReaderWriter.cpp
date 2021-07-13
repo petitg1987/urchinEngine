@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionConeReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
+    CollisionShape3D* CollisionConeReaderWriter::loadFrom(const UdaChunk* shapeChunk, const DataParser& dataParser) const {
         auto orientationChunk = dataParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
         std::string orientationValue = orientationChunk->getStringValue();
         ConeShape<float>::ConeOrientation orientation;
@@ -33,7 +33,7 @@ namespace urchin {
         return new CollisionConeShape(radius, height, orientation);
     }
 
-    void CollisionConeReaderWriter::writeOn(DataChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+    void CollisionConeReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CONE_VALUE));
 
         const auto& coneShape = dynamic_cast<const CollisionConeShape&>(collisionShape);

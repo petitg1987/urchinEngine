@@ -1,7 +1,7 @@
 #include "TerrainReaderWriter.h"
 
 namespace urchin {
-    Terrain* TerrainReaderWriter::loadFrom(const DataChunk* terrainChunk, const DataParser& dataParser) const {
+    Terrain* TerrainReaderWriter::loadFrom(const UdaChunk* terrainChunk, const DataParser& dataParser) const {
         Terrain* terrain = buildTerrainFrom(terrainChunk, dataParser);
 
         loadPropertiesOn(terrain, terrainChunk, dataParser);
@@ -10,14 +10,14 @@ namespace urchin {
         return terrain;
     }
 
-    void TerrainReaderWriter::writeOn(DataChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
+    void TerrainReaderWriter::writeOn(UdaChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
         buildChunkFrom(terrainChunk, terrain, udaWriter);
 
         writePropertiesOn(terrainChunk, terrain, udaWriter);
         writeGrassOn(terrainChunk, terrain, udaWriter);
     }
 
-    Terrain* TerrainReaderWriter::buildTerrainFrom(const DataChunk* terrainChunk, const DataParser& dataParser) const {
+    Terrain* TerrainReaderWriter::buildTerrainFrom(const UdaChunk* terrainChunk, const DataParser& dataParser) const {
         auto meshChunk = dataParser.getUniqueChunk(true, MESH_TAG, UdaAttribute(), terrainChunk);
         auto heightFilenameChunk = dataParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, UdaAttribute(), meshChunk);
         auto xzScaleChunk = dataParser.getUniqueChunk(true, XZ_SCALE_TAG, UdaAttribute(), meshChunk);
@@ -45,7 +45,7 @@ namespace urchin {
         return new Terrain(std::move(terrainMesh), std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
 
-    void TerrainReaderWriter::buildChunkFrom(DataChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
+    void TerrainReaderWriter::buildChunkFrom(UdaChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
         auto& meshChunk = udaWriter.createChunk(MESH_TAG, UdaAttribute(), &terrainChunk);
         auto& heightFilenameChunk = udaWriter.createChunk(HEIGHT_FILENAME_TAG, UdaAttribute(), &meshChunk);
         heightFilenameChunk.setStringValue(terrain->getMesh()->getHeightFilename());
@@ -75,17 +75,17 @@ namespace urchin {
         positionChunk.setPoint3Value(terrain->getPosition());
     }
 
-    void TerrainReaderWriter::loadPropertiesOn(Terrain* terrain, const DataChunk* terrainChunk, const DataParser& dataParser) const {
+    void TerrainReaderWriter::loadPropertiesOn(Terrain* terrain, const UdaChunk* terrainChunk, const DataParser& dataParser) const {
         auto ambientChunk = dataParser.getUniqueChunk(true, AMBIENT_TAG, UdaAttribute(), terrainChunk);
         terrain->setAmbient(ambientChunk->getFloatValue());
     }
 
-    void TerrainReaderWriter::writePropertiesOn(DataChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
+    void TerrainReaderWriter::writePropertiesOn(UdaChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
         auto& ambientChunk = udaWriter.createChunk(AMBIENT_TAG, UdaAttribute(), &terrainChunk);
         ambientChunk.setFloatValue(terrain->getAmbient());
     }
 
-    void TerrainReaderWriter::loadGrassOn(Terrain* terrain, const DataChunk* terrainChunk, const DataParser& dataParser) const {
+    void TerrainReaderWriter::loadGrassOn(Terrain* terrain, const UdaChunk* terrainChunk, const DataParser& dataParser) const {
         auto grassChunk = dataParser.getUniqueChunk(false, GRASS_TAG, UdaAttribute(), terrainChunk);
         if (grassChunk) {
             auto grassTextureFilenameChunk = dataParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, UdaAttribute(), grassChunk);
@@ -114,7 +114,7 @@ namespace urchin {
         }
     }
 
-    void TerrainReaderWriter::writeGrassOn(DataChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
+    void TerrainReaderWriter::writeGrassOn(UdaChunk& terrainChunk, const Terrain* terrain, UdaWriter& udaWriter) const {
         if (terrain->getGrass()) {
             auto& grassChunk = udaWriter.createChunk(GRASS_TAG, UdaAttribute(), &terrainChunk);
 

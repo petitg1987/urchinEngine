@@ -17,7 +17,7 @@ namespace urchin {
         skinReader = std::make_unique<DataParser>(skinFilename);
     }
 
-    std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const DataChunk* skinChunk, WidgetOutline* widgetOutline) const {
+    std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const UdaChunk* skinChunk, WidgetOutline* widgetOutline) const {
         //skin information
         auto widgetImageElem = getSkinReader()->getUniqueChunk(true, "image", UdaAttribute(), skinChunk);
         auto* rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
@@ -121,7 +121,7 @@ namespace urchin {
         return widgetTexture;
     }
 
-    Length UISkinService::loadLength(const DataChunk* mainChunk, const std::string& lengthName) const {
+    Length UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName) const {
         auto fontHeightChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
 
         float length = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "value", UdaAttribute(), fontHeightChunk)->getFloatValue();

@@ -12,13 +12,13 @@ namespace urchin {
 
     }
 
-    DataChunk& UdaWriter::createChunk(const std::string& chunkName, const UdaAttribute& attribute, DataChunk* parent) {
+    UdaChunk& UdaWriter::createChunk(const std::string& chunkName, const UdaAttribute& attribute, UdaChunk* parent) {
         std::map<std::string, std::string> attributes;
         if (!attribute.getAttributeName().empty()) {
             attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
-        auto newNode = std::make_unique<DataChunk>(chunkName, "", attributes, parent);
+        auto newNode = std::make_unique<UdaChunk>(chunkName, "", attributes, parent);
         auto newNodePtr = newNode.get();
         if (!parent) {
             root = std::move(newNode);
@@ -36,14 +36,14 @@ namespace urchin {
             throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
 
-        std::stack<DataChunk*> stack;
+        std::stack<UdaChunk*> stack;
         stack.push(root.get());
         while (!stack.empty()) {
-            DataChunk* node = stack.top();
+            UdaChunk* node = stack.top();
             stack.pop();
 
             unsigned int indentLevel = computeIndentLevel(*node);
-            std::string indent(indentLevel * DataChunk::INDENT_SPACES, ' ');
+            std::string indent(indentLevel * UdaChunk::INDENT_SPACES, ' ');
 
             file << indent << buildRawContentLine(*node) << std::endl;
 
@@ -56,9 +56,9 @@ namespace urchin {
         file.close();
     }
 
-    unsigned int UdaWriter::computeIndentLevel(const DataChunk& dataChunk) const {
+    unsigned int UdaWriter::computeIndentLevel(const UdaChunk& udaChunk) const {
         unsigned int indentLevel = 0;
-        auto* parentNode = dataChunk.getParent();
+        auto* parentNode = udaChunk.getParent();
         while (parentNode != nullptr) {
             parentNode = parentNode->getParent();
             indentLevel++;
@@ -66,28 +66,28 @@ namespace urchin {
         return indentLevel;
     }
 
-    std::string UdaWriter::buildRawContentLine(const DataChunk& dataChunk) const {
+    std::string UdaWriter::buildRawContentLine(const UdaChunk& udaChunk) const {
         std::string rawAttributes;
-        if (!dataChunk.getAttributes().empty()) {
+        if (!udaChunk.getAttributes().empty()) {
             rawAttributes.append(" (");
-            auto& attributes = dataChunk.getAttributes();
+            auto& attributes = udaChunk.getAttributes();
             for (auto it = attributes.begin(); it != attributes.end(); ++it) {
                 if (it != attributes.begin()) {
-                    rawAttributes += DataChunk::ATTRIBUTES_SEPARATOR;
+                    rawAttributes += UdaChunk::ATTRIBUTES_SEPARATOR;
                 }
                 rawAttributes.append(it->first);
-                rawAttributes += DataChunk::ATTRIBUTES_ASSIGN;
+                rawAttributes += UdaChunk::ATTRIBUTES_ASSIGN;
                 rawAttributes.append(it->second);
             }
             rawAttributes.append(")");
         }
 
         std::string rawValue;
-        if (!dataChunk.getStringValue().empty()) {
-            rawValue = " \"" + dataChunk.getStringValue() + "\"";
+        if (!udaChunk.getStringValue().empty()) {
+            rawValue = " \"" + udaChunk.getStringValue() + "\"";
         }
 
-        return dataChunk.getName() + rawAttributes + ":" + rawValue;
+        return udaChunk.getName() + rawAttributes + ":" + rawValue;
     }
 
 }

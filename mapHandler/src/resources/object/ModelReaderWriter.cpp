@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    Model* ModelReaderWriter::loadFrom(const DataChunk* modelChunk, const DataParser& dataParser) {
+    Model* ModelReaderWriter::loadFrom(const UdaChunk* modelChunk, const DataParser& dataParser) {
         auto meshChunk = dataParser.getUniqueChunk(true, MESH_TAG, UdaAttribute(), modelChunk);
         auto meshFilenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), meshChunk);
 
@@ -17,7 +17,7 @@ namespace urchin {
         return model;
     }
 
-    void ModelReaderWriter::writeOn(DataChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
+    void ModelReaderWriter::writeOn(UdaChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
         auto& meshChunk = udaWriter.createChunk(MESH_TAG, UdaAttribute(), &modelChunk);
         auto& meshFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &meshChunk);
 
@@ -29,7 +29,7 @@ namespace urchin {
         writeFlagsOn(modelChunk, model, udaWriter);
     }
 
-    void ModelReaderWriter::loadAnimationsOn(Model* model, const DataChunk* modelChunk, const DataParser& dataParser) {
+    void ModelReaderWriter::loadAnimationsOn(Model* model, const UdaChunk* modelChunk, const DataParser& dataParser) {
         auto animationsListChunk = dataParser.getUniqueChunk(false, ANIMATIONS_TAG, UdaAttribute(), modelChunk);
         if (animationsListChunk) {
             auto animationsChunk = dataParser.getChunks(ANIMATION_TAG, UdaAttribute(), animationsListChunk);
@@ -42,7 +42,7 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::writeAnimationsOn(DataChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
+    void ModelReaderWriter::writeAnimationsOn(UdaChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
         std::map<std::string, const ConstAnimation*> animations = model->getAnimations();
         if (!animations.empty()) {
             auto& animationsListChunk = udaWriter.createChunk(ANIMATIONS_TAG, UdaAttribute(), &modelChunk);
@@ -58,7 +58,7 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::loadTransformOn(Model* model, const DataChunk* modelChunk, const DataParser& dataParser) {
+    void ModelReaderWriter::loadTransformOn(Model* model, const UdaChunk* modelChunk, const DataParser& dataParser) {
         auto transformChunk = dataParser.getUniqueChunk(true, TRANSFORM_TAG, UdaAttribute(), modelChunk);
 
         auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), transformChunk);
@@ -75,7 +75,7 @@ namespace urchin {
         model->setTransform(Transform<float>(position, orientation, scale));
     }
 
-    void ModelReaderWriter::writeTransformOn(DataChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
+    void ModelReaderWriter::writeTransformOn(UdaChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
         auto& transformChunk = udaWriter.createChunk(TRANSFORM_TAG, UdaAttribute(), &modelChunk);
 
         auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &transformChunk);
@@ -87,7 +87,7 @@ namespace urchin {
         scaleChunk.setFloatValue(model->getTransform().getScale());
     }
 
-    void ModelReaderWriter::loadFlagsOn(Model* model, const DataChunk* modelChunk, const DataParser& dataParser) {
+    void ModelReaderWriter::loadFlagsOn(Model* model, const UdaChunk* modelChunk, const DataParser& dataParser) {
         auto produceShadowChunk = dataParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, UdaAttribute(), modelChunk);
         if (produceShadowChunk) {
             model->setProduceShadow(produceShadowChunk->getBoolValue());
@@ -96,7 +96,7 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::writeFlagsOn(DataChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
+    void ModelReaderWriter::writeFlagsOn(UdaChunk& modelChunk, const Model* model, UdaWriter& udaWriter) {
         if (!model->isProduceShadow()) {
             auto& produceShadowChunk = udaWriter.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &modelChunk);
             produceShadowChunk.setBoolValue(model->isProduceShadow());

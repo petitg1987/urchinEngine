@@ -14,13 +14,13 @@
 
 namespace urchin {
 
-    class DataChunk {
+    class UdaChunk {
         public:
             static const unsigned int INDENT_SPACES;
             static const char ATTRIBUTES_SEPARATOR;
             static const char ATTRIBUTES_ASSIGN;
 
-            DataChunk(std::string, std::string, std::map<std::string, std::string>, DataChunk*);
+            UdaChunk(std::string, std::string, std::map<std::string, std::string>, UdaChunk*);
 
             const std::string& getName() const;
 
@@ -28,9 +28,9 @@ namespace urchin {
             std::string getAttributeValue(const std::string&) const;
             void addAttribute(const UdaAttribute&);
 
-            DataChunk* getParent() const;
-            DataChunk& addChild(std::unique_ptr<DataChunk>);
-            const std::vector<std::unique_ptr<DataChunk>>& getChildren() const;
+            UdaChunk* getParent() const;
+            UdaChunk& addChild(std::unique_ptr<UdaChunk>);
+            const std::vector<std::unique_ptr<UdaChunk>>& getChildren() const;
 
             std::string getStringValue() const;
             void setStringValue(const std::string&);
@@ -73,8 +73,8 @@ namespace urchin {
             std::string value;
             std::map<std::string, std::string> attributes;
 
-            DataChunk* parent;
-            std::vector<std::unique_ptr<DataChunk>> children;
+            UdaChunk* parent;
+            std::vector<std::unique_ptr<UdaChunk>> children;
     };
 
 }

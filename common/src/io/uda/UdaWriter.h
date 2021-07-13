@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include <io/uda/UdaAttribute.h>
-#include <io/uda/DataChunk.h>
+#include <io/uda/UdaChunk.h>
 
 namespace urchin {
 
@@ -13,15 +13,15 @@ namespace urchin {
         public:
             explicit UdaWriter(const std::string&);
 
-            DataChunk& createChunk(const std::string&, const UdaAttribute& = UdaAttribute(), DataChunk* = nullptr);
+            UdaChunk& createChunk(const std::string&, const UdaAttribute& = UdaAttribute(), UdaChunk* = nullptr);
             void saveInFile();
 
         private:
-            unsigned int computeIndentLevel(const DataChunk&) const;
-            std::string buildRawContentLine(const DataChunk&) const;
+            unsigned int computeIndentLevel(const UdaChunk&) const;
+            std::string buildRawContentLine(const UdaChunk&) const;
 
             std::string filenamePath;
-            std::unique_ptr<DataChunk> root;
+            std::unique_ptr<UdaChunk> root;
     };
 
 }

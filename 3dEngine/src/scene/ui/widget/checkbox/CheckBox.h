@@ -18,7 +18,7 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
-            std::shared_ptr<Texture> loadTexture(const DataChunk*, const std::string&) const;
+            std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void refreshTexture();
             bool onKeyReleaseEvent(unsigned int) override;
             void switchValue();

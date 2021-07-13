@@ -16,8 +16,8 @@ namespace urchin {
             void changeNavMeshAgent(std::unique_ptr<NavMeshAgent>);
 
         private:
-            void loadFrom(const DataChunk*, const DataParser&);
-            void writeOn(DataChunk&, UdaWriter&) const;
+            void loadFrom(const UdaChunk*, const DataParser&);
+            void writeOn(UdaChunk&, UdaWriter&) const;
 
             static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";
 

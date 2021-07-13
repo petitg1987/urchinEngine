@@ -67,23 +67,23 @@ namespace urchin {
             void unpause();
 
         private:
-            void loadFrom(const DataChunk*, const DataParser&, LoadCallback&);
-            void loadSceneObjectsFrom(const DataChunk*, const DataParser&);
-            void loadSceneLightsFrom(const DataChunk*, const DataParser&);
-            void loadSceneTerrainFrom(const DataChunk*, const DataParser&);
-            void loadSceneWaterFrom(const DataChunk*, const DataParser&);
-            void loadSceneSkyFrom(const DataChunk*, const DataParser&);
-            void loadSceneSoundsFrom(const DataChunk*, const DataParser&);
-            void loadSceneAIFrom(const DataChunk*, const DataParser&);
+            void loadFrom(const UdaChunk*, const DataParser&, LoadCallback&);
+            void loadSceneObjectsFrom(const UdaChunk*, const DataParser&);
+            void loadSceneLightsFrom(const UdaChunk*, const DataParser&);
+            void loadSceneTerrainFrom(const UdaChunk*, const DataParser&);
+            void loadSceneWaterFrom(const UdaChunk*, const DataParser&);
+            void loadSceneSkyFrom(const UdaChunk*, const DataParser&);
+            void loadSceneSoundsFrom(const UdaChunk*, const DataParser&);
+            void loadSceneAIFrom(const UdaChunk*, const DataParser&);
 
-            void writeOn(DataChunk&, UdaWriter&) const;
-            void writeSceneObjectsOn(DataChunk&, UdaWriter&) const;
-            void writeSceneLightsOn(DataChunk&, UdaWriter&) const;
-            void writeSceneTerrainsOn(DataChunk&, UdaWriter&) const;
-            void writeSceneWatersOn(DataChunk&, UdaWriter&) const;
-            void writeSceneSkyOn(DataChunk&, UdaWriter&) const;
-            void writeSceneSoundsOn(DataChunk&, UdaWriter&) const;
-            void writeSceneAIOn(DataChunk&, UdaWriter&) const;
+            void writeOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneObjectsOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneLightsOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneTerrainsOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneWatersOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneSkyOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneSoundsOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneAIOn(UdaChunk&, UdaWriter&) const;
 
             void refreshEntities();
             void refreshSound();

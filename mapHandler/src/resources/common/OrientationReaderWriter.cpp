@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Quaternion<float> OrientationReaderWriter::loadOrientation(const DataChunk* parentChunk, const DataParser& dataParser) {
+    Quaternion<float> OrientationReaderWriter::loadOrientation(const UdaChunk* parentChunk, const DataParser& dataParser) {
         auto orientationChunk = dataParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), parentChunk);
 
         auto orientationAxisChunk = dataParser.getUniqueChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
@@ -11,7 +11,7 @@ namespace urchin {
         return {orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue()};
     }
 
-    void OrientationReaderWriter::writeOrientation(DataChunk& parentChunk, const Quaternion<float>& orientation, UdaWriter& udaWriter) {
+    void OrientationReaderWriter::writeOrientation(UdaChunk& parentChunk, const Quaternion<float>& orientation, UdaWriter& udaWriter) {
         auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &parentChunk);
 
         auto& orientationAxisChunk = udaWriter.createChunk(AXIS_TAG, UdaAttribute(), &orientationChunk);

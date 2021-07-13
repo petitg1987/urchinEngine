@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    std::unique_ptr<SoundShape> SoundBoxReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
+    std::unique_ptr<SoundShape> SoundBoxReaderWriter::loadFrom(const UdaChunk* shapeChunk, const DataParser& dataParser) const {
         auto halfSizesChunk = dataParser.getUniqueChunk(true, HALF_SIZES_TAG, UdaAttribute(), shapeChunk);
         Vector3<float> halfSizes = halfSizesChunk->getVector3Value();
 
@@ -20,7 +20,7 @@ namespace urchin {
         return std::make_unique<SoundBox>(halfSizes, position, orientation, margin);
     }
 
-    void SoundBoxReaderWriter::writeOn(DataChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
+    void SoundBoxReaderWriter::writeOn(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto& boxShape = dynamic_cast<const SoundBox&>(soundShape);

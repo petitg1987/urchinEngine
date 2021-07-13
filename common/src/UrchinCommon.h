@@ -18,7 +18,7 @@
 #include <io/uda/DataParser.h>
 #include <io/uda/UdaWriter.h>
 #include <io/uda/UdaAttribute.h>
-#include <io/uda/DataChunk.h>
+#include <io/uda/UdaChunk.h>
 
 #include <logger/Logger.h>
 #include <logger/FileLogger.h>

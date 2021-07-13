@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    std::unique_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const DataChunk* shapeChunk) {
+    std::unique_ptr<CollisionShapeReaderWriter> CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(const UdaChunk* shapeChunk) {
         std::string shapeType = shapeChunk->getAttributeValue(CollisionShapeReaderWriter::TYPE_ATTR);
         if (shapeType == CollisionShapeReaderWriter::SPHERE_VALUE) {
             return std::make_unique<CollisionSphereReaderWriter>();

@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    std::unique_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const DataChunk* shapeChunk) {
+    std::unique_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(const UdaChunk* shapeChunk) {
         std::string shapeType = shapeChunk->getAttributeValue(SoundShapeReaderWriter::TYPE_ATTR);
         if (shapeType == SoundShapeReaderWriter::SPHERE_VALUE) {
             return std::make_unique<SoundSphereReaderWriter>();

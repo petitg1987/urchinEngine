@@ -6,7 +6,7 @@
 #include <fstream>
 
 #include <io/uda/UdaAttribute.h>
-#include <io/uda/DataChunk.h>
+#include <io/uda/UdaChunk.h>
 
 namespace urchin {
 
@@ -15,14 +15,14 @@ namespace urchin {
             explicit DataParser(const std::string&);
             DataParser(const std::string&, const std::string&);
 
-            DataChunk* getRootChunk() const;
-            std::vector<DataChunk*> getChunks(const std::string&, const UdaAttribute& = UdaAttribute(), const DataChunk* parent = nullptr) const;
-            DataChunk* getUniqueChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const DataChunk* parent = nullptr) const;
+            UdaChunk* getRootChunk() const;
+            std::vector<UdaChunk*> getChunks(const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
+            UdaChunk* getUniqueChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
 
         private:
             void loadFile(std::ifstream&);
             unsigned int computeIndentLevel(const std::string&) const;
-            std::unique_ptr<DataChunk> buildChunk(const std::string& rawContentLine, DataChunk* parent) const;
+            std::unique_ptr<UdaChunk> buildChunk(const std::string& rawContentLine, UdaChunk* parent) const;
 
             std::string getChunkDescription(const std::string&, const UdaAttribute&) const;
 
@@ -31,7 +31,7 @@ namespace urchin {
             static constexpr char VALUE_REGEX[] = "\"?(.*?)\"?";
 
             std::string filenamePath;
-            std::unique_ptr<DataChunk> root;
+            std::unique_ptr<UdaChunk> root;
     };
 
 }

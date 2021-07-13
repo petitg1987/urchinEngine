@@ -14,7 +14,7 @@ namespace urchin {
         public:
             SoundShapeReaderWriterRetriever() = delete;
 
-            static std::unique_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const DataChunk*);
+            static std::unique_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const UdaChunk*);
             static std::unique_ptr<SoundShapeReaderWriter> retrieveShapeReaderWriter(const SoundShape&);
     };
 

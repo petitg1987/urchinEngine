@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    std::unique_ptr<Sound> SoundReaderWriter::loadFrom(const DataChunk* soundChunk, const DataParser& dataParser) {
+    std::unique_ptr<Sound> SoundReaderWriter::loadFrom(const UdaChunk* soundChunk, const DataParser& dataParser) {
         auto sound = buildSoundFrom(soundChunk, dataParser);
 
         loadPropertiesOn(*sound, soundChunk, dataParser);
@@ -10,13 +10,13 @@ namespace urchin {
         return sound;
     }
 
-    void SoundReaderWriter::writeOn(DataChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+    void SoundReaderWriter::writeOn(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
         buildChunkFrom(soundChunk, sound, udaWriter);
 
         writePropertiesOn(soundChunk, sound, udaWriter);
     }
 
-    std::unique_ptr<Sound> SoundReaderWriter::buildSoundFrom(const DataChunk* soundChunk, const DataParser& dataParser) {
+    std::unique_ptr<Sound> SoundReaderWriter::buildSoundFrom(const UdaChunk* soundChunk, const DataParser& dataParser) {
         auto filenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
@@ -46,7 +46,7 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::buildChunkFrom(DataChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+    void SoundReaderWriter::buildChunkFrom(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
         auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk);
         filenameChunk.setStringValue(sound.getFilename());
 
@@ -74,12 +74,12 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::loadPropertiesOn(Sound& sound, const DataChunk* soundChunk, const DataParser& dataParser) {
+    void SoundReaderWriter::loadPropertiesOn(Sound& sound, const UdaChunk* soundChunk, const DataParser& dataParser) {
         auto initialVolumeChunk = dataParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk);
         sound.setInitialVolume(initialVolumeChunk->getFloatValue());
     }
 
-    void SoundReaderWriter::writePropertiesOn(DataChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+    void SoundReaderWriter::writePropertiesOn(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
         auto& initialVolumeChunk = udaWriter.createChunk(INITIAL_VOLUME_TAG, UdaAttribute(), &soundChunk);
         initialVolumeChunk.setFloatValue(sound.getInitialVolume());
     }

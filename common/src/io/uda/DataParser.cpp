@@ -27,15 +27,15 @@ namespace urchin {
         loadFile(file);
     }
 
-    DataChunk* DataParser::getRootChunk() const {
+    UdaChunk* DataParser::getRootChunk() const {
         return root.get();
     }
 
-    std::vector<DataChunk*> DataParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const DataChunk* parent) const {
-        std::vector<DataChunk*> chunks;
-        const DataChunk *dataChunk = parent ? parent : root.get();
+    std::vector<UdaChunk*> DataParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
+        std::vector<UdaChunk*> chunks;
+        const UdaChunk *udaChunk = parent ? parent : root.get();
 
-        for (auto& child : dataChunk->getChildren()) {
+        for (auto& child : udaChunk->getChildren()) {
             if (child->getName() == chunkName) {
                 if (!attribute.getAttributeName().empty()) {
                     std::string attributeValue = child->getAttributeValue(attribute.getAttributeName());
@@ -51,7 +51,7 @@ namespace urchin {
         return chunks;
     }
 
-    DataChunk* DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const DataChunk* parent) const {
+    UdaChunk* DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
@@ -74,7 +74,7 @@ namespace urchin {
     }
 
     void DataParser::loadFile(std::ifstream& file) {
-        DataChunk* currentNode = nullptr;
+        UdaChunk* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
         while (true) {
             std::string rawContentLine;
@@ -121,13 +121,13 @@ namespace urchin {
             }
             numberSpaces++;
         }
-        if (numberSpaces % DataChunk::INDENT_SPACES != 0) {
+        if (numberSpaces % UdaChunk::INDENT_SPACES != 0) {
             throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
         }
-        return numberSpaces / DataChunk::INDENT_SPACES;
+        return numberSpaces / UdaChunk::INDENT_SPACES;
     }
 
-    std::unique_ptr<DataChunk> DataParser::buildChunk(const std::string& rawContentLine, DataChunk* parent) const {
+    std::unique_ptr<UdaChunk> DataParser::buildChunk(const std::string& rawContentLine, UdaChunk* parent) const {
         std::string wrongFormatError = "Content line (" + rawContentLine +") has wrong format in file: " + filenamePath;
 
         static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$");
@@ -143,18 +143,18 @@ namespace urchin {
         std::string attributesString = matches[2].str();
         if (!attributesString.empty()) {
             std::vector<std::string> attributesVector;
-            StringUtil::split(attributesString, DataChunk::ATTRIBUTES_SEPARATOR, attributesVector);
+            StringUtil::split(attributesString, UdaChunk::ATTRIBUTES_SEPARATOR, attributesVector);
 
             for (auto &attribute: attributesVector) {
                 std::vector<std::string> attributeComponents;
-                StringUtil::split(attribute, DataChunk::ATTRIBUTES_ASSIGN, attributeComponents);
+                StringUtil::split(attribute, UdaChunk::ATTRIBUTES_ASSIGN, attributeComponents);
                 if (attributeComponents.size() != 2) {
                     throw std::runtime_error(wrongFormatError);
                 }
                 attributes.emplace(attributeComponents[0], attributeComponents[1]);
             }
         }
-        return std::make_unique<DataChunk>(name, value, attributes, parent);
+        return std::make_unique<UdaChunk>(name, value, attributes, parent);
     }
 
 }
