@@ -22,7 +22,6 @@ namespace urchin {
             terrainPositioningData({}),
             ambient(0.5f),
             mesh(nullptr),
-            mainGrassQuadtree(nullptr),
             grassQuantity(0.0f) {
         float grassAlphaTest = ConfigService::instance()->getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
@@ -38,10 +37,6 @@ namespace urchin {
         setGrassQuantity(0.1f);
         setWindDirection(Vector3<float>(1.0f, 0.0f, 0.0f));
         setWindStrength(1.0f);
-    }
-
-    TerrainGrass::~TerrainGrass() {
-        delete mainGrassQuadtree;
     }
 
     void TerrainGrass::initialize(RenderTarget& renderTarget) {
@@ -198,8 +193,7 @@ namespace urchin {
             depth--;
         }
 
-        delete mainGrassQuadtree;
-        mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
+        mainGrassQuadtree = std::make_unique<TerrainGrassQuadtree>(childrenGrassQuadtree);
     }
 
     void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
@@ -229,7 +223,7 @@ namespace urchin {
 
         if (mainGrassQuadtree != nullptr) {
             grassQuadtrees.clear();
-            grassQuadtrees.push_back(mainGrassQuadtree);
+            grassQuadtrees.push_back(mainGrassQuadtree.get());
             for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
                 if (grassQuadtree->isLeaf() && grassQuadtree->getRenderer()) {
@@ -372,7 +366,7 @@ namespace urchin {
             positioningData.sumTimeStep += dt;
 
             grassQuadtrees.clear();
-            grassQuadtrees.push_back(mainGrassQuadtree);
+            grassQuadtrees.push_back(mainGrassQuadtree.get());
 
             for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];

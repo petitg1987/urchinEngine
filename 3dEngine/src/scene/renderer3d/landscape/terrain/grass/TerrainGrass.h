@@ -15,7 +15,6 @@ namespace urchin {
     class TerrainGrass {
         public:
             explicit TerrainGrass(const std::string&);
-            ~TerrainGrass();
 
             void initialize(RenderTarget&);
             bool isInitialized() const;
@@ -93,7 +92,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> grassTexture, grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
-            TerrainGrassQuadtree* mainGrassQuadtree;
+            std::unique_ptr<TerrainGrassQuadtree> mainGrassQuadtree;
             mutable std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
             float grassQuantity;
     };

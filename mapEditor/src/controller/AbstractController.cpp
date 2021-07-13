@@ -2,8 +2,8 @@
 
 namespace urchin {
     AbstractController::AbstractController() :
-        bIsModified(false),
-        mapHandler(nullptr) {
+            bIsModified(false),
+            mapHandler(nullptr) {
 
     }
 
