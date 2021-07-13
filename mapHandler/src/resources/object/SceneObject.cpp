@@ -50,10 +50,10 @@ namespace urchin {
     void SceneObject::loadFrom(const DataChunk* chunk, const DataParser& dataParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        auto modelChunk = dataParser.getUniqueChunk(true, MODEL_TAG, DataAttribute(), chunk);
+        auto modelChunk = dataParser.getUniqueChunk(true, MODEL_TAG, UdaAttribute(), chunk);
         setModel(ModelReaderWriter::loadFrom(modelChunk, dataParser));
 
-        auto physicsChunk = dataParser.getUniqueChunk(false, PHYSICS_TAG, DataAttribute(), chunk);
+        auto physicsChunk = dataParser.getUniqueChunk(false, PHYSICS_TAG, UdaAttribute(), chunk);
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float>& modelTransform = this->model->getTransform();
@@ -62,15 +62,15 @@ namespace urchin {
         }
     }
 
-    void SceneObject::writeOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        chunk.addAttribute(DataAttribute(NAME_ATTR, this->name));
+    void SceneObject::writeOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
-        auto& modelChunk = dataWriter.createChunk(MODEL_TAG, DataAttribute(), &chunk);
-        ModelReaderWriter::writeOn(modelChunk, model, dataWriter);
+        auto& modelChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &chunk);
+        ModelReaderWriter::writeOn(modelChunk, model, udaWriter);
 
         if (rigidBody) {
-            auto& physicsChunk = dataWriter.createChunk(PHYSICS_TAG, DataAttribute(), &chunk);
-            RigidBodyReaderWriter::writeOn(physicsChunk, rigidBody, dataWriter);
+            auto& physicsChunk = udaWriter.createChunk(PHYSICS_TAG, UdaAttribute(), &chunk);
+            RigidBodyReaderWriter::writeOn(physicsChunk, rigidBody, udaWriter);
         }
     }
 

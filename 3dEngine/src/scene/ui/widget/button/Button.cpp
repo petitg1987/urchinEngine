@@ -19,20 +19,20 @@ namespace urchin {
 
     void Button::createOrUpdateWidget() {
         //skin information
-        auto buttonChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "button", DataAttribute("nameSkin", nameSkin));
+        auto buttonChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "button", UdaAttribute("nameSkin", nameSkin));
 
-        auto skinDefaultChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute("type", "default"), buttonChunk);
+        auto skinDefaultChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", UdaAttribute("type", "default"), buttonChunk);
         texInfoDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinDefaultChunk);
         currentTexture = texInfoDefault;
 
-        auto skinFocusChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute("type", "focus"), buttonChunk);
+        auto skinFocusChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", UdaAttribute("type", "focus"), buttonChunk);
         texInfoOnFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinFocusChunk);
 
-        auto skinClickChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", DataAttribute("type", "click"), buttonChunk);
+        auto skinClickChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", UdaAttribute("type", "click"), buttonChunk);
         texInfoOnClick = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinClickChunk);
 
         if (!buttonText.empty()) {
-            auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", DataAttribute(), buttonChunk);
+            auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", UdaAttribute(), buttonChunk);
             delete text;
             text = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
         }

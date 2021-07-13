@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    class DataAttribute {
+    class UdaAttribute {
         public:
-            DataAttribute() = default;
-            DataAttribute(std::string, std::string);
+            UdaAttribute() = default;
+            UdaAttribute(std::string, std::string);
 
             const std::string& getAttributeName() const;
             const std::string& getAttributeValue() const;

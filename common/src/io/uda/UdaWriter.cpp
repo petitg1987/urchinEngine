@@ -2,17 +2,17 @@
 #include <stdexcept>
 #include <stack>
 
-#include <io/uda/DataWriter.h>
+#include <io/uda/UdaWriter.h>
 #include <config/FileSystem.h>
 
 namespace urchin {
 
-    DataWriter::DataWriter(const std::string& filename) :
+    UdaWriter::UdaWriter(const std::string& filename) :
             filenamePath(FileSystem::instance()->getResourcesDirectory() + filename) {
 
     }
 
-    DataChunk& DataWriter::createChunk(const std::string& chunkName, const DataAttribute& attribute, DataChunk* parent) {
+    DataChunk& UdaWriter::createChunk(const std::string& chunkName, const UdaAttribute& attribute, DataChunk* parent) {
         std::map<std::string, std::string> attributes;
         if (!attribute.getAttributeName().empty()) {
             attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
@@ -29,7 +29,7 @@ namespace urchin {
         return *newNodePtr;
     }
 
-    void DataWriter::saveInFile() {
+    void UdaWriter::saveInFile() {
         std::ofstream file;
         file.open (filenamePath);
         if (!file.is_open()) {
@@ -56,7 +56,7 @@ namespace urchin {
         file.close();
     }
 
-    unsigned int DataWriter::computeIndentLevel(const DataChunk& dataChunk) const {
+    unsigned int UdaWriter::computeIndentLevel(const DataChunk& dataChunk) const {
         unsigned int indentLevel = 0;
         auto* parentNode = dataChunk.getParent();
         while (parentNode != nullptr) {
@@ -66,7 +66,7 @@ namespace urchin {
         return indentLevel;
     }
 
-    std::string DataWriter::buildRawContentLine(const DataChunk& dataChunk) const {
+    std::string UdaWriter::buildRawContentLine(const DataChunk& dataChunk) const {
         std::string rawAttributes;
         if (!dataChunk.getAttributes().empty()) {
             rawAttributes.append(" (");

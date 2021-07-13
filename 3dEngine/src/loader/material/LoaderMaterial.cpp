@@ -24,7 +24,7 @@ namespace urchin {
         std::shared_ptr<Texture> diffuseTexture;
         auto diffuse = dataParser.getUniqueChunk(false, "diffuse");
         if (diffuse) {
-            auto diffuseTextureElem = dataParser.getUniqueChunk(true, "texture", DataAttribute(), diffuse);
+            auto diffuseTextureElem = dataParser.getUniqueChunk(true, "texture", UdaAttribute(), diffuse);
             auto* diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
             diffuseImage->release();
@@ -34,7 +34,7 @@ namespace urchin {
         std::shared_ptr<Texture> normalTexture;
         auto normal = dataParser.getUniqueChunk(false, "normal");
         if (normal) {
-            auto normalTextureElem = dataParser.getUniqueChunk(true, "texture", DataAttribute(), normal);
+            auto normalTextureElem = dataParser.getUniqueChunk(true, "texture", UdaAttribute(), normal);
             auto* normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
             normalTexture = normalImage->createTexture(true);
             normalImage->release();
@@ -44,7 +44,7 @@ namespace urchin {
         float fAmbientFactor = 0.0;
         auto ambient = dataParser.getUniqueChunk(false, "ambient");
         if (ambient) {
-            auto ambientFactor = dataParser.getUniqueChunk(true, "factor", DataAttribute(), ambient);
+            auto ambientFactor = dataParser.getUniqueChunk(true, "factor", UdaAttribute(), ambient);
             fAmbientFactor = TypeConverter::toFloat(ambientFactor->getStringValue());
         }
 

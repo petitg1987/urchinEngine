@@ -5,7 +5,7 @@
 #include <vector>
 #include <fstream>
 
-#include <io/uda/DataAttribute.h>
+#include <io/uda/UdaAttribute.h>
 #include <io/uda/DataChunk.h>
 
 namespace urchin {
@@ -16,15 +16,15 @@ namespace urchin {
             DataParser(const std::string&, const std::string&);
 
             DataChunk* getRootChunk() const;
-            std::vector<DataChunk*> getChunks(const std::string&, const DataAttribute& = DataAttribute(), const DataChunk* parent = nullptr) const;
-            DataChunk* getUniqueChunk(bool, const std::string&, const DataAttribute& = DataAttribute(), const DataChunk* parent = nullptr) const;
+            std::vector<DataChunk*> getChunks(const std::string&, const UdaAttribute& = UdaAttribute(), const DataChunk* parent = nullptr) const;
+            DataChunk* getUniqueChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const DataChunk* parent = nullptr) const;
 
         private:
             void loadFile(std::ifstream&);
             unsigned int computeIndentLevel(const std::string&) const;
             std::unique_ptr<DataChunk> buildChunk(const std::string& rawContentLine, DataChunk* parent) const;
 
-            std::string getChunkDescription(const std::string&, const DataAttribute&) const;
+            std::string getChunkDescription(const std::string&, const UdaAttribute&) const;
 
             static constexpr char NAME_REGEX[] = "([a-zA-Z]+)";
             static constexpr char ATTRIBUTES_REGEX[] = "\\(?(.*?)\\)?";

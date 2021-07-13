@@ -34,7 +34,7 @@ namespace urchin {
         return "";
     }
 
-    void DataChunk::addAttribute(const DataAttribute& attribute) {
+    void DataChunk::addAttribute(const UdaAttribute& attribute) {
         attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 

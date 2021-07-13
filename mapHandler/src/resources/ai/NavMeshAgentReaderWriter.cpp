@@ -3,13 +3,13 @@
 namespace urchin {
 
     std::unique_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const DataChunk* navMeshAgentChunk, const DataParser& dataParser) {
-        auto agentHeightChunk = dataParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, DataAttribute(), navMeshAgentChunk);
+        auto agentHeightChunk = dataParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, UdaAttribute(), navMeshAgentChunk);
         float agentHeight = agentHeightChunk->getFloatValue();
-        auto agentRadiusChunk = dataParser.getUniqueChunk(true, AGENT_RADIUS_TAG, DataAttribute(), navMeshAgentChunk);
+        auto agentRadiusChunk = dataParser.getUniqueChunk(true, AGENT_RADIUS_TAG, UdaAttribute(), navMeshAgentChunk);
         float agentRadius = agentRadiusChunk->getFloatValue();
-        auto maxSlopeInRadianChunk = dataParser.getUniqueChunk(true, MAX_SLOPE_IN_RADIAN_TAG, DataAttribute(), navMeshAgentChunk);
+        auto maxSlopeInRadianChunk = dataParser.getUniqueChunk(true, MAX_SLOPE_IN_RADIAN_TAG, UdaAttribute(), navMeshAgentChunk);
         float maxSlopeInRadian = maxSlopeInRadianChunk->getFloatValue();
-        auto jumpDistanceChunk = dataParser.getUniqueChunk(true, JUMP_DISTANCE_TAG, DataAttribute(), navMeshAgentChunk);
+        auto jumpDistanceChunk = dataParser.getUniqueChunk(true, JUMP_DISTANCE_TAG, UdaAttribute(), navMeshAgentChunk);
         float jumpDistance = jumpDistanceChunk->getFloatValue();
 
         std::unique_ptr<NavMeshAgent> navMeshAgent = std::make_unique<NavMeshAgent>(NavMeshAgent(agentHeight, agentRadius));
@@ -19,14 +19,14 @@ namespace urchin {
         return navMeshAgent;
     }
 
-    void NavMeshAgentReaderWriter::writeOn(DataChunk& navMeshAgentChunk, const NavMeshAgent* navMeshAgent, DataWriter& dataWriter) {
-        auto& agentHeightChunk = dataWriter.createChunk(AGENT_HEIGHT_TAG, DataAttribute(), &navMeshAgentChunk);
+    void NavMeshAgentReaderWriter::writeOn(DataChunk& navMeshAgentChunk, const NavMeshAgent* navMeshAgent, UdaWriter& udaWriter) {
+        auto& agentHeightChunk = udaWriter.createChunk(AGENT_HEIGHT_TAG, UdaAttribute(), &navMeshAgentChunk);
         agentHeightChunk.setFloatValue(navMeshAgent->getAgentHeight());
-        auto& agentRadiusChunk = dataWriter.createChunk(AGENT_RADIUS_TAG, DataAttribute(), &navMeshAgentChunk);
+        auto& agentRadiusChunk = udaWriter.createChunk(AGENT_RADIUS_TAG, UdaAttribute(), &navMeshAgentChunk);
         agentRadiusChunk.setFloatValue(navMeshAgent->getAgentRadius());
-        auto& maxSlopeInRadianChunk = dataWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, DataAttribute(), &navMeshAgentChunk);
+        auto& maxSlopeInRadianChunk = udaWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, UdaAttribute(), &navMeshAgentChunk);
         maxSlopeInRadianChunk.setFloatValue(navMeshAgent->getMaxSlope());
-        auto& jumpDistanceChunk = dataWriter.createChunk(JUMP_DISTANCE_TAG, DataAttribute(), &navMeshAgentChunk);
+        auto& jumpDistanceChunk = udaWriter.createChunk(JUMP_DISTANCE_TAG, UdaAttribute(), &navMeshAgentChunk);
         jumpDistanceChunk.setFloatValue(navMeshAgent->getJumpDistance());
     }
 }

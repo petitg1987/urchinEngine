@@ -31,7 +31,7 @@ namespace urchin {
         return root.get();
     }
 
-    std::vector<DataChunk*> DataParser::getChunks(const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
+    std::vector<DataChunk*> DataParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const DataChunk* parent) const {
         std::vector<DataChunk*> chunks;
         const DataChunk *dataChunk = parent ? parent : root.get();
 
@@ -51,7 +51,7 @@ namespace urchin {
         return chunks;
     }
 
-    DataChunk* DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const DataAttribute& attribute, const DataChunk* parent) const {
+    DataChunk* DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const DataChunk* parent) const {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
@@ -65,7 +65,7 @@ namespace urchin {
         return chunks[0];
     }
 
-    std::string DataParser::getChunkDescription(const std::string& chunkName, const DataAttribute& attribute) const {
+    std::string DataParser::getChunkDescription(const std::string& chunkName, const UdaAttribute& attribute) const {
         if (attribute.getAttributeName().empty()) {
             return chunkName;
         } else {

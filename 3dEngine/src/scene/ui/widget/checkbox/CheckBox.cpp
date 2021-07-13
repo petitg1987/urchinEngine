@@ -13,7 +13,7 @@ namespace urchin {
 
     void CheckBox::createOrUpdateWidget() {
         //skin information
-        auto checkBoxChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "checkBox", DataAttribute("nameSkin", nameSkin));
+        auto checkBoxChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "checkBox", UdaAttribute("nameSkin", nameSkin));
         texChecked = loadTexture(checkBoxChunk, "imageChecked");
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
 
@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> CheckBox::loadTexture(const DataChunk* checkBoxChunk, const std::string& chunkName) const {
-        auto imageElem = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, chunkName, DataAttribute(), checkBoxChunk);
+        auto imageElem = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, chunkName, UdaAttribute(), checkBoxChunk);
 
         auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
         auto tex = img->createTexture(false);

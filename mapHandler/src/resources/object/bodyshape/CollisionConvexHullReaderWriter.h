@@ -13,7 +13,7 @@ namespace urchin {
             ~CollisionConvexHullReaderWriter() override = default;
 
             CollisionShape3D* loadFrom(const DataChunk*, const DataParser&) const override;
-            void writeOn(DataChunk&, const CollisionShape3D&, DataWriter&) const override;
+            void writeOn(DataChunk&, const CollisionShape3D&, UdaWriter&) const override;
 
         private:
             static constexpr char POINTS_TAG[] = "points";

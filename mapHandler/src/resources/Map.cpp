@@ -69,8 +69,8 @@ namespace urchin {
     }
 
     void Map::loadSceneObjectsFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto objectsListChunk = dataParser.getUniqueChunk(true, OBJECTS_TAG, DataAttribute(), chunk);
-        auto objectsChunk = dataParser.getChunks(OBJECT_TAG, DataAttribute(), objectsListChunk);
+        auto objectsListChunk = dataParser.getUniqueChunk(true, OBJECTS_TAG, UdaAttribute(), chunk);
+        auto objectsChunk = dataParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
 
         for (const auto& objectChunk : objectsChunk) {
             auto* sceneObject = new SceneObject();
@@ -81,8 +81,8 @@ namespace urchin {
     }
 
     void Map::loadSceneLightsFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto lightsListChunk = dataParser.getUniqueChunk(true, LIGHTS_TAG, DataAttribute(), chunk);
-        auto lightsChunk = dataParser.getChunks(LIGHT_TAG, DataAttribute(), lightsListChunk);
+        auto lightsListChunk = dataParser.getUniqueChunk(true, LIGHTS_TAG, UdaAttribute(), chunk);
+        auto lightsChunk = dataParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
 
         for (const auto& lightChunk : lightsChunk) {
             auto* sceneLight = new SceneLight();
@@ -93,8 +93,8 @@ namespace urchin {
     }
 
     void Map::loadSceneTerrainFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto terrainsListChunk = dataParser.getUniqueChunk(true, TERRAINS_TAG, DataAttribute(), chunk);
-        auto terrainsChunk = dataParser.getChunks(TERRAIN_TAG, DataAttribute(), terrainsListChunk);
+        auto terrainsListChunk = dataParser.getUniqueChunk(true, TERRAINS_TAG, UdaAttribute(), chunk);
+        auto terrainsChunk = dataParser.getChunks(TERRAIN_TAG, UdaAttribute(), terrainsListChunk);
 
         for (const auto& terrainChunk : terrainsChunk) {
             auto* sceneTerrain = new SceneTerrain();
@@ -105,8 +105,8 @@ namespace urchin {
     }
 
     void Map::loadSceneWaterFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto watersListChunk = dataParser.getUniqueChunk(true, WATERS_TAG, DataAttribute(), chunk);
-        auto watersChunk = dataParser.getChunks(WATER_TAG, DataAttribute(), watersListChunk);
+        auto watersListChunk = dataParser.getUniqueChunk(true, WATERS_TAG, UdaAttribute(), chunk);
+        auto watersChunk = dataParser.getChunks(WATER_TAG, UdaAttribute(), watersListChunk);
 
         for (const auto& waterChunk : watersChunk) {
             auto* sceneWater = new SceneWater();
@@ -117,14 +117,14 @@ namespace urchin {
     }
 
     void Map::loadSceneSkyFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto skyChunk = dataParser.getUniqueChunk(true, SKY_TAG, DataAttribute(), chunk);
+        auto skyChunk = dataParser.getUniqueChunk(true, SKY_TAG, UdaAttribute(), chunk);
 
         sceneSky->loadFrom(skyChunk, dataParser);
     }
 
     void Map::loadSceneSoundsFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto soundElementsListChunk = dataParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, DataAttribute(), chunk);
-        auto soundElementsChunk = dataParser.getChunks(SOUND_ELEMENT_TAG, DataAttribute(), soundElementsListChunk);
+        auto soundElementsListChunk = dataParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, UdaAttribute(), chunk);
+        auto soundElementsChunk = dataParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
 
         for (const auto& soundElementChunk : soundElementsChunk) {
             auto* sceneSound = new SceneSound();
@@ -135,76 +135,76 @@ namespace urchin {
     }
 
     void Map::loadSceneAIFrom(const DataChunk* chunk, const DataParser& dataParser) {
-        auto aiElementsListChunk = dataParser.getUniqueChunk(true, AI_ELEMENTS_TAG, DataAttribute(), chunk);
+        auto aiElementsListChunk = dataParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), chunk);
 
         sceneAI->loadFrom(aiElementsListChunk, dataParser);
     }
 
-    void Map::writeOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        writeSceneObjectsOn(chunk, dataWriter);
-        writeSceneLightsOn(chunk, dataWriter);
-        writeSceneTerrainsOn(chunk, dataWriter);
-        writeSceneWatersOn(chunk, dataWriter);
-        writeSceneSkyOn(chunk, dataWriter);
-        writeSceneSoundsOn(chunk, dataWriter);
-        writeSceneAIOn(chunk, dataWriter);
+    void Map::writeOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        writeSceneObjectsOn(chunk, udaWriter);
+        writeSceneLightsOn(chunk, udaWriter);
+        writeSceneTerrainsOn(chunk, udaWriter);
+        writeSceneWatersOn(chunk, udaWriter);
+        writeSceneSkyOn(chunk, udaWriter);
+        writeSceneSoundsOn(chunk, udaWriter);
+        writeSceneAIOn(chunk, udaWriter);
     }
 
-    void Map::writeSceneObjectsOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& objectsListChunk = dataWriter.createChunk(OBJECTS_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneObjectsOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &chunk);
 
         for (auto sceneObject : sceneObjects) {
-            auto& objectsChunk = dataWriter.createChunk(OBJECT_TAG, DataAttribute(), &objectsListChunk);
-            sceneObject->writeOn(objectsChunk, dataWriter);
+            auto& objectsChunk = udaWriter.createChunk(OBJECT_TAG, UdaAttribute(), &objectsListChunk);
+            sceneObject->writeOn(objectsChunk, udaWriter);
         }
     }
 
-    void Map::writeSceneLightsOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& lightsListChunk = dataWriter.createChunk(LIGHTS_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneLightsOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& lightsListChunk = udaWriter.createChunk(LIGHTS_TAG, UdaAttribute(), &chunk);
 
         for (auto sceneLight : sceneLights) {
-            auto& lightsChunk = dataWriter.createChunk(LIGHT_TAG, DataAttribute(), &lightsListChunk);
-            sceneLight->writeOn(lightsChunk, dataWriter);
+            auto& lightsChunk = udaWriter.createChunk(LIGHT_TAG, UdaAttribute(), &lightsListChunk);
+            sceneLight->writeOn(lightsChunk, udaWriter);
         }
     }
 
-    void Map::writeSceneTerrainsOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& terrainsListChunk = dataWriter.createChunk(TERRAINS_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneTerrainsOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& terrainsListChunk = udaWriter.createChunk(TERRAINS_TAG, UdaAttribute(), &chunk);
 
         for (auto sceneTerrain : sceneTerrains) {
-            auto& terrainsChunk = dataWriter.createChunk(TERRAIN_TAG, DataAttribute(), &terrainsListChunk);
-            sceneTerrain->writeOn(terrainsChunk, dataWriter);
+            auto& terrainsChunk = udaWriter.createChunk(TERRAIN_TAG, UdaAttribute(), &terrainsListChunk);
+            sceneTerrain->writeOn(terrainsChunk, udaWriter);
         }
     }
 
-    void Map::writeSceneWatersOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& watersListChunk = dataWriter.createChunk(WATERS_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneWatersOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& watersListChunk = udaWriter.createChunk(WATERS_TAG, UdaAttribute(), &chunk);
 
         for (auto sceneWater : sceneWaters) {
-            auto& watersChunk = dataWriter.createChunk(WATER_TAG, DataAttribute(), &watersListChunk);
-            sceneWater->writeOn(watersChunk, dataWriter);
+            auto& watersChunk = udaWriter.createChunk(WATER_TAG, UdaAttribute(), &watersListChunk);
+            sceneWater->writeOn(watersChunk, udaWriter);
         }
     }
 
-    void Map::writeSceneSkyOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& skyChunk = dataWriter.createChunk(SKY_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneSkyOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& skyChunk = udaWriter.createChunk(SKY_TAG, UdaAttribute(), &chunk);
 
-        sceneSky->writeOn(skyChunk, dataWriter);
+        sceneSky->writeOn(skyChunk, udaWriter);
     }
 
-    void Map::writeSceneSoundsOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& soundElementsListChunk = dataWriter.createChunk(SOUND_ELEMENTS_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneSoundsOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& soundElementsListChunk = udaWriter.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &chunk);
 
         for (auto sceneSound : sceneSounds) {
-            auto& soundElementsChunk = dataWriter.createChunk(SOUND_ELEMENT_TAG, DataAttribute(), &soundElementsListChunk);
-            sceneSound->writeOn(soundElementsChunk, dataWriter);
+            auto& soundElementsChunk = udaWriter.createChunk(SOUND_ELEMENT_TAG, UdaAttribute(), &soundElementsListChunk);
+            sceneSound->writeOn(soundElementsChunk, udaWriter);
         }
     }
 
-    void Map::writeSceneAIOn(DataChunk& chunk, DataWriter& dataWriter) const {
-        auto& aiElementsListChunk = dataWriter.createChunk(AI_ELEMENTS_TAG, DataAttribute(), &chunk);
+    void Map::writeSceneAIOn(DataChunk& chunk, UdaWriter& udaWriter) const {
+        auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &chunk);
 
-        sceneAI->writeOn(aiElementsListChunk, dataWriter);
+        sceneAI->writeOn(aiElementsListChunk, udaWriter);
     }
 
     const std::list<SceneObject*>& Map::getSceneObjects() const {

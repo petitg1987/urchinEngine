@@ -10,8 +10,8 @@ namespace urchin {
         return soundTrigger;
     }
 
-    void SoundTriggerReaderWriter::writeOn(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
-        buildChunkFrom(soundTriggerChunk, soundTrigger, dataWriter);
+    void SoundTriggerReaderWriter::writeOn(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
+        buildChunkFrom(soundTriggerChunk, soundTrigger, udaWriter);
     }
 
     std::unique_ptr<SoundTrigger> SoundTriggerReaderWriter::buildSoundTriggerFrom(const DataChunk* soundTriggerChunk, const DataParser& dataParser) {
@@ -21,7 +21,7 @@ namespace urchin {
         if (soundTriggerType == MANUAL_VALUE) {
             return std::make_unique<ManualTrigger>(playBehavior);
         } else if (soundTriggerType == SHAPE_VALUE) {
-            auto soundShapeChunk = dataParser.getUniqueChunk(true, SOUND_SHAPE_TAG, DataAttribute(), soundTriggerChunk);
+            auto soundShapeChunk = dataParser.getUniqueChunk(true, SOUND_SHAPE_TAG, UdaAttribute(), soundTriggerChunk);
             std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk);
             auto soundShape = soundShapeReaderWriter->loadFrom(soundShapeChunk, dataParser);
 
@@ -31,25 +31,25 @@ namespace urchin {
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
     }
 
-    void SoundTriggerReaderWriter::buildChunkFrom(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, DataWriter& dataWriter) {
+    void SoundTriggerReaderWriter::buildChunkFrom(DataChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
-            soundTriggerChunk.addAttribute(DataAttribute(TYPE_ATTR, MANUAL_VALUE));
+            soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
             const auto& shapeTrigger = dynamic_cast<const ShapeTrigger&>(soundTrigger);
-            soundTriggerChunk.addAttribute(DataAttribute(TYPE_ATTR, SHAPE_VALUE));
+            soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, SHAPE_VALUE));
 
-            auto& soundShapeChunk = dataWriter.createChunk(SOUND_SHAPE_TAG, DataAttribute(), &soundTriggerChunk);
+            auto& soundShapeChunk = udaWriter.createChunk(SOUND_SHAPE_TAG, UdaAttribute(), &soundTriggerChunk);
             std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeTrigger.getSoundShape());
-            soundShapeReaderWriter->writeOn(soundShapeChunk, shapeTrigger.getSoundShape(), dataWriter);
+            soundShapeReaderWriter->writeOn(soundShapeChunk, shapeTrigger.getSoundShape(), udaWriter);
         } else {
             throw std::invalid_argument("Unknown sound trigger type to write in map: " + std::to_string(soundTrigger.getTriggerType()));
         }
 
-        writePlayBehaviorFrom(soundTriggerChunk, soundTrigger.getPlayBehavior(), dataWriter);
+        writePlayBehaviorFrom(soundTriggerChunk, soundTrigger.getPlayBehavior(), udaWriter);
     }
 
     SoundTrigger::PlayBehavior SoundTriggerReaderWriter::loadPlayBehaviorFrom(const DataChunk* soundTriggerChunk, const DataParser& dataParser) {
-        auto playBehaviorChunk = dataParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, DataAttribute(), soundTriggerChunk);
+        auto playBehaviorChunk = dataParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, UdaAttribute(), soundTriggerChunk);
         if (playBehaviorChunk->getStringValue() == PLAY_ONCE_VALUE) {
             return SoundTrigger::PLAY_ONCE;
         } else if (playBehaviorChunk->getStringValue() == PLAY_LOOP_VALUE) {
@@ -58,8 +58,8 @@ namespace urchin {
         throw std::invalid_argument("Unknown play behavior read from map: " + playBehaviorChunk->getStringValue());
     }
 
-    void SoundTriggerReaderWriter::writePlayBehaviorFrom(DataChunk& soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, DataWriter& dataWriter) {
-        auto& playBehaviorChunk = dataWriter.createChunk(PLAY_BEHAVIOR_TAG, DataAttribute(), &soundTriggerChunk);
+    void SoundTriggerReaderWriter::writePlayBehaviorFrom(DataChunk& soundTriggerChunk, SoundTrigger::PlayBehavior playBehavior, UdaWriter& udaWriter) {
+        auto& playBehaviorChunk = udaWriter.createChunk(PLAY_BEHAVIOR_TAG, UdaAttribute(), &soundTriggerChunk);
         if (playBehavior == SoundTrigger::PLAY_ONCE) {
             playBehaviorChunk.setStringValue(PLAY_ONCE_VALUE);
         } else if (playBehavior == SoundTrigger::PLAY_LOOP) {

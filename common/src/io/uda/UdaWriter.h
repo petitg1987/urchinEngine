@@ -4,16 +4,16 @@
 #include <memory>
 #include <fstream>
 
-#include <io/uda/DataAttribute.h>
+#include <io/uda/UdaAttribute.h>
 #include <io/uda/DataChunk.h>
 
 namespace urchin {
 
-    class DataWriter {
+    class UdaWriter {
         public:
-            explicit DataWriter(const std::string&);
+            explicit UdaWriter(const std::string&);
 
-            DataChunk& createChunk(const std::string&, const DataAttribute & = DataAttribute(), DataChunk* parent = nullptr);
+            DataChunk& createChunk(const std::string&, const UdaAttribute& = UdaAttribute(), DataChunk* = nullptr);
             void saveInFile();
 
         private:

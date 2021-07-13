@@ -5,8 +5,8 @@
 namespace urchin {
 
     CollisionShape3D* CollisionConvexHullReaderWriter::loadFrom(const DataChunk* shapeChunk, const DataParser& dataParser) const {
-        auto pointsListChunk = dataParser.getUniqueChunk(true, POINTS_TAG, DataAttribute(), shapeChunk);
-        auto pointsChunk = dataParser.getChunks(POINT_TAG, DataAttribute(), pointsListChunk);
+        auto pointsListChunk = dataParser.getUniqueChunk(true, POINTS_TAG, UdaAttribute(), shapeChunk);
+        auto pointsChunk = dataParser.getChunks(POINT_TAG, UdaAttribute(), pointsListChunk);
 
         std::vector<Point3<float>> points;
         points.reserve(pointsChunk.size());
@@ -17,15 +17,15 @@ namespace urchin {
         return new CollisionConvexHullShape(points);
     }
 
-    void CollisionConvexHullReaderWriter::writeOn(DataChunk& shapeChunk, const CollisionShape3D& collisionShape, DataWriter& dataWriter) const {
-        shapeChunk.addAttribute(DataAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
+    void CollisionConvexHullReaderWriter::writeOn(DataChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+        shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
 
         const auto& convexHullShape = dynamic_cast<const CollisionConvexHullShape&>(collisionShape);
 
-        auto& pointsListChunk = dataWriter.createChunk(POINTS_TAG, DataAttribute(), &shapeChunk);
+        auto& pointsListChunk = udaWriter.createChunk(POINTS_TAG, UdaAttribute(), &shapeChunk);
         const std::vector<Point3<float>>& points = convexHullShape.getPoints();
         for (const auto& point : points) {
-            auto& pointChunk = dataWriter.createChunk(POINT_TAG, DataAttribute(), &pointsListChunk);
+            auto& pointChunk = udaWriter.createChunk(POINT_TAG, UdaAttribute(), &pointsListChunk);
             pointChunk.setPoint3Value(point);
         }
     }

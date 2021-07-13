@@ -10,14 +10,14 @@ namespace urchin {
         return sound;
     }
 
-    void SoundReaderWriter::writeOn(DataChunk& soundChunk, const Sound& sound, DataWriter& dataWriter) {
-        buildChunkFrom(soundChunk, sound, dataWriter);
+    void SoundReaderWriter::writeOn(DataChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+        buildChunkFrom(soundChunk, sound, udaWriter);
 
-        writePropertiesOn(soundChunk, sound, dataWriter);
+        writePropertiesOn(soundChunk, sound, udaWriter);
     }
 
     std::unique_ptr<Sound> SoundReaderWriter::buildSoundFrom(const DataChunk* soundChunk, const DataParser& dataParser) {
-        auto filenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, DataAttribute(), soundChunk);
+        auto filenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
         std::string soundCategory = soundChunk->getAttributeValue(CATEGORY_ATTR);
@@ -32,10 +32,10 @@ namespace urchin {
 
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == SPATIAL_VALUE) {
-            auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, DataAttribute(), soundChunk);
+            auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), soundChunk);
             auto spatialSound = std::make_unique<SpatialSound>(filename, category, positionChunk->getPoint3Value());
 
-            auto inaudibleDistanceChunk = dataParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, DataAttribute(), soundChunk);
+            auto inaudibleDistanceChunk = dataParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, UdaAttribute(), soundChunk);
             spatialSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
             return spatialSound;
@@ -46,41 +46,41 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::buildChunkFrom(DataChunk& soundChunk, const Sound& sound, DataWriter& dataWriter) {
-        auto& filenameChunk = dataWriter.createChunk(FILENAME_TAG, DataAttribute(), &soundChunk);
+    void SoundReaderWriter::buildChunkFrom(DataChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+        auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk);
         filenameChunk.setStringValue(sound.getFilename());
 
         if (sound.getSoundType() == Sound::SPATIAL) {
             const auto& spatialSound = dynamic_cast<const SpatialSound&>(sound);
-            soundChunk.addAttribute(DataAttribute(TYPE_ATTR, SPATIAL_VALUE));
+            soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPATIAL_VALUE));
 
-            auto& positionChunk = dataWriter.createChunk(POSITION_TAG, DataAttribute(), &soundChunk);
+            auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &soundChunk);
             positionChunk.setPoint3Value(spatialSound.getPosition());
 
-            auto& inaudibleDistanceChunk = dataWriter.createChunk(INAUDIBLE_DISTANCE_TAG, DataAttribute(), &soundChunk);
+            auto& inaudibleDistanceChunk = udaWriter.createChunk(INAUDIBLE_DISTANCE_TAG, UdaAttribute(), &soundChunk);
             inaudibleDistanceChunk.setFloatValue(spatialSound.getInaudibleDistance());
         } else if (sound.getSoundType() == Sound::GLOBAL) {
-            soundChunk.addAttribute(DataAttribute(TYPE_ATTR, GLOBAL_VALUE));
+            soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, GLOBAL_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound.getSoundType()));
         }
 
         if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
-            soundChunk.addAttribute(DataAttribute(CATEGORY_ATTR, MUSIC_VALUE));
+            soundChunk.addAttribute(UdaAttribute(CATEGORY_ATTR, MUSIC_VALUE));
         } else if (sound.getSoundCategory() == Sound::SoundCategory::EFFECTS) {
-            soundChunk.addAttribute(DataAttribute(CATEGORY_ATTR, EFFECTS_VALUE));
+            soundChunk.addAttribute(UdaAttribute(CATEGORY_ATTR, EFFECTS_VALUE));
         } else {
             throw std::invalid_argument("Unknown sound category to write in map: " + std::to_string(sound.getSoundCategory()));
         }
     }
 
     void SoundReaderWriter::loadPropertiesOn(Sound& sound, const DataChunk* soundChunk, const DataParser& dataParser) {
-        auto initialVolumeChunk = dataParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, DataAttribute(), soundChunk);
+        auto initialVolumeChunk = dataParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk);
         sound.setInitialVolume(initialVolumeChunk->getFloatValue());
     }
 
-    void SoundReaderWriter::writePropertiesOn(DataChunk& soundChunk, const Sound& sound, DataWriter& dataWriter) {
-        auto& initialVolumeChunk = dataWriter.createChunk(INITIAL_VOLUME_TAG, DataAttribute(), &soundChunk);
+    void SoundReaderWriter::writePropertiesOn(DataChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+        auto& initialVolumeChunk = udaWriter.createChunk(INITIAL_VOLUME_TAG, UdaAttribute(), &soundChunk);
         initialVolumeChunk.setFloatValue(sound.getInitialVolume());
     }
 

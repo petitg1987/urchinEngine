@@ -18,7 +18,7 @@ namespace urchin {
             ~SoundSphereReaderWriter() override = default;
 
             std::unique_ptr<SoundShape> loadFrom(const DataChunk*, const DataParser&) const override;
-            void writeOn(DataChunk&, const SoundShape&, DataWriter&) const override;
+            void writeOn(DataChunk&, const SoundShape&, UdaWriter&) const override;
     };
 
 }

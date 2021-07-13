@@ -25,7 +25,7 @@ namespace urchin {
 
         private:
             void loadFrom(const DataChunk*, const DataParser&);
-            void writeOn(DataChunk&, DataWriter&) const;
+            void writeOn(DataChunk&, UdaWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";
 

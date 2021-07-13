@@ -16,8 +16,8 @@
 #include <io/svg/shape/SVGCircle.h>
 #include <io/map/MapSerializer.h>
 #include <io/uda/DataParser.h>
-#include <io/uda/DataWriter.h>
-#include <io/uda/DataAttribute.h>
+#include <io/uda/UdaWriter.h>
+#include <io/uda/UdaAttribute.h>
 #include <io/uda/DataChunk.h>
 
 #include <logger/Logger.h>

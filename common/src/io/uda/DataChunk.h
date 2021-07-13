@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <io/uda/DataAttribute.h>
+#include <io/uda/UdaAttribute.h>
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/point/Point3.h>
 #include <math/algebra/point/Point4.h>
@@ -26,7 +26,7 @@ namespace urchin {
 
             const std::map<std::string, std::string>& getAttributes() const;
             std::string getAttributeValue(const std::string&) const;
-            void addAttribute(const DataAttribute&);
+            void addAttribute(const UdaAttribute&);
 
             DataChunk* getParent() const;
             DataChunk& addChild(std::unique_ptr<DataChunk>);

@@ -4,12 +4,12 @@ namespace urchin {
     std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const DataChunk* skyChunk, const DataParser& dataParser) {
         std::unique_ptr<Skybox> skybox(nullptr);
 
-        auto skyboxChunk = dataParser.getUniqueChunk(false, SKYBOX_TAG, DataAttribute(), skyChunk);
+        auto skyboxChunk = dataParser.getUniqueChunk(false, SKYBOX_TAG, UdaAttribute(), skyChunk);
         if (skyboxChunk != nullptr) {
             std::vector<std::string> filenames;
             filenames.reserve(6);
-            auto texturesChunk = dataParser.getUniqueChunk(true, TEXTURES_TAG, DataAttribute(), skyboxChunk);
-            auto filenameListChunk = dataParser.getChunks(FILENAME_TAG, DataAttribute(), texturesChunk);
+            auto texturesChunk = dataParser.getUniqueChunk(true, TEXTURES_TAG, UdaAttribute(), skyboxChunk);
+            auto filenameListChunk = dataParser.getChunks(FILENAME_TAG, UdaAttribute(), texturesChunk);
             if (filenameListChunk.size() != 6) {
                 throw std::runtime_error("Invalid number of skybox filenames found: " + std::to_string(filenameListChunk.size()));
             }
@@ -17,7 +17,7 @@ namespace urchin {
                 filenames.emplace_back(filenameChunk->getStringValue());
             }
 
-            auto offsetYChunk = dataParser.getUniqueChunk(true, OFFSET_Y_TAG, DataAttribute(), skyboxChunk);
+            auto offsetYChunk = dataParser.getUniqueChunk(true, OFFSET_Y_TAG, UdaAttribute(), skyboxChunk);
 
             skybox = std::make_unique<Skybox>(filenames);
             skybox->setOffsetY(offsetYChunk->getFloatValue());
@@ -25,17 +25,17 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyboxReaderWriter::writeOn(DataChunk& skyChunk, const std::unique_ptr<Skybox>& skybox, DataWriter& dataWriter) {
+    void SkyboxReaderWriter::writeOn(DataChunk& skyChunk, const std::unique_ptr<Skybox>& skybox, UdaWriter& udaWriter) {
         if (skybox != nullptr) {
-            auto& skyboxChunk = dataWriter.createChunk(SKYBOX_TAG, DataAttribute(), &skyChunk);
+            auto& skyboxChunk = udaWriter.createChunk(SKYBOX_TAG, UdaAttribute(), &skyChunk);
 
-            auto& texturesChunk = dataWriter.createChunk(TEXTURES_TAG, DataAttribute(), &skyboxChunk);
+            auto& texturesChunk = udaWriter.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
             for (const auto& filename : skybox->getFilenames()) {
-                auto& filenameChunk = dataWriter.createChunk(FILENAME_TAG, DataAttribute(), &texturesChunk);
+                auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk);
                 filenameChunk.setStringValue(filename);
             }
 
-            auto& offsetYChunk = dataWriter.createChunk(OFFSET_Y_TAG, DataAttribute(), &skyboxChunk);
+            auto& offsetYChunk = udaWriter.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk);
             offsetYChunk.setFloatValue(skybox->getOffsetY());
         }
     }
