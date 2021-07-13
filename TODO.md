@@ -7,14 +7,14 @@
 * General
   * **NEW FEATURE** (`major`): Replace geometry shader by instantiation
 * Rendering
-  * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredGeometryRendering()
+  * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering()
   * **NEW FEATURE** (`minor`): Alpha management
   * **OPTIMIZATION** (`minor`): Textures compression
   * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo.pSpecializationInfo) instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Use pipeline derivatives (VkGraphicsPipelineCreateInfo.basePipelineHandle)
   * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer.updateDescriptorSets) with updated values only
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
-  * **OPTIMIZATION** (`medium`): Use same pipeline (vkCmdBindPipeline) in models displayer instead of one by model
+  * **OPTIMIZATION** (`medium`): Use same pipeline (vkCmdBindPipeline) in models displayer instead of one by model (A.K.A batching for same shader/material/texture)
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
@@ -25,8 +25,8 @@
   * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
 * Shadow
-  * **OPTIMIZATION** (`medium`): Improve performance ShadowManager::updateVisibleModels
-    * Tips 1: find solution where models to display could be re-used in Renderer3d#deferredGeometryRendering()
+  * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels and Renderer3d::updateModelsInFrustum
+    * Tips 1: find solution where models could be re-used in the second method
     * Tips 2: call octree manager one times for all frustum splits and then split the models
   * **NEW FEATURE** (`minor`): Blur variance shadow map with 'summed area' technique.
     * Note 1: decreased light bleeding to improve quality
