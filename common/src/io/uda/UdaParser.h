@@ -10,10 +10,10 @@
 
 namespace urchin {
 
-    class DataParser {
+    class UdaParser {
         public:
-            explicit DataParser(const std::string&);
-            DataParser(const std::string&, const std::string&);
+            explicit UdaParser(const std::string&);
+            UdaParser(const std::string&, const std::string&);
 
             UdaChunk* getRootChunk() const;
             std::vector<UdaChunk*> getChunks(const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;

@@ -9,7 +9,7 @@ namespace urchin {
 
     class OrientationReaderWriter {
         public:
-            static Quaternion<float> loadOrientation(const UdaChunk*, const DataParser&);
+            static Quaternion<float> loadOrientation(const UdaChunk*, const UdaParser&);
             static void writeOrientation(UdaChunk&, const Quaternion<float>&, UdaWriter&);
 
         private:

@@ -2,10 +2,10 @@
 
 namespace urchin {
 
-    std::unique_ptr<Sound> SoundReaderWriter::loadFrom(const UdaChunk* soundChunk, const DataParser& dataParser) {
-        auto sound = buildSoundFrom(soundChunk, dataParser);
+    std::unique_ptr<Sound> SoundReaderWriter::loadFrom(const UdaChunk* soundChunk, const UdaParser& udaParser) {
+        auto sound = buildSoundFrom(soundChunk, udaParser);
 
-        loadPropertiesOn(*sound, soundChunk, dataParser);
+        loadPropertiesOn(*sound, soundChunk, udaParser);
 
         return sound;
     }
@@ -16,8 +16,8 @@ namespace urchin {
         writePropertiesOn(soundChunk, sound, udaWriter);
     }
 
-    std::unique_ptr<Sound> SoundReaderWriter::buildSoundFrom(const UdaChunk* soundChunk, const DataParser& dataParser) {
-        auto filenameChunk = dataParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
+    std::unique_ptr<Sound> SoundReaderWriter::buildSoundFrom(const UdaChunk* soundChunk, const UdaParser& udaParser) {
+        auto filenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
         std::string soundCategory = soundChunk->getAttributeValue(CATEGORY_ATTR);
@@ -32,10 +32,10 @@ namespace urchin {
 
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == SPATIAL_VALUE) {
-            auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), soundChunk);
+            auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), soundChunk);
             auto spatialSound = std::make_unique<SpatialSound>(filename, category, positionChunk->getPoint3Value());
 
-            auto inaudibleDistanceChunk = dataParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, UdaAttribute(), soundChunk);
+            auto inaudibleDistanceChunk = udaParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, UdaAttribute(), soundChunk);
             spatialSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
             return spatialSound;
@@ -74,8 +74,8 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::loadPropertiesOn(Sound& sound, const UdaChunk* soundChunk, const DataParser& dataParser) {
-        auto initialVolumeChunk = dataParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk);
+    void SoundReaderWriter::loadPropertiesOn(Sound& sound, const UdaChunk* soundChunk, const UdaParser& udaParser) {
+        auto initialVolumeChunk = udaParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk);
         sound.setInitialVolume(initialVolumeChunk->getFloatValue());
     }
 

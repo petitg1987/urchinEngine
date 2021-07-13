@@ -35,17 +35,17 @@ namespace urchin {
         static constexpr char WIND_STRENGTH_TAG[] = "windStrength";
 
         public:
-            Terrain* loadFrom(const UdaChunk*, const DataParser&) const;
+            Terrain* loadFrom(const UdaChunk*, const UdaParser&) const;
             void writeOn(UdaChunk&, const Terrain*, UdaWriter&) const;
 
         private:
-            Terrain* buildTerrainFrom(const UdaChunk*, const DataParser&) const;
+            Terrain* buildTerrainFrom(const UdaChunk*, const UdaParser&) const;
             void buildChunkFrom(UdaChunk&, const Terrain*, UdaWriter&) const;
 
-            void loadPropertiesOn(Terrain*, const UdaChunk*, const DataParser&) const;
+            void loadPropertiesOn(Terrain*, const UdaChunk*, const UdaParser&) const;
             void writePropertiesOn(UdaChunk&, const Terrain*, UdaWriter&) const;
 
-            void loadGrassOn(Terrain*, const UdaChunk*, const DataParser&) const;
+            void loadGrassOn(Terrain*, const UdaChunk*, const UdaParser&) const;
             void writeGrassOn(UdaChunk&, const Terrain*, UdaWriter&) const;
     };
 

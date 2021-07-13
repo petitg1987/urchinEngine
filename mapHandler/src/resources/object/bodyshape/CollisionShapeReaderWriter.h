@@ -19,7 +19,7 @@ namespace urchin {
 
             virtual ~CollisionShapeReaderWriter() = default;
 
-            virtual CollisionShape3D* loadFrom(const UdaChunk*, const DataParser&) const = 0;
+            virtual CollisionShape3D* loadFrom(const UdaChunk*, const UdaParser&) const = 0;
             virtual void writeOn(UdaChunk&, const CollisionShape3D&, UdaWriter&) const = 0;
     };
 

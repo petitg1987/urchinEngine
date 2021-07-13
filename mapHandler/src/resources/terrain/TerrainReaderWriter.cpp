@@ -1,11 +1,11 @@
 #include "TerrainReaderWriter.h"
 
 namespace urchin {
-    Terrain* TerrainReaderWriter::loadFrom(const UdaChunk* terrainChunk, const DataParser& dataParser) const {
-        Terrain* terrain = buildTerrainFrom(terrainChunk, dataParser);
+    Terrain* TerrainReaderWriter::loadFrom(const UdaChunk* terrainChunk, const UdaParser& udaParser) const {
+        Terrain* terrain = buildTerrainFrom(terrainChunk, udaParser);
 
-        loadPropertiesOn(terrain, terrainChunk, dataParser);
-        loadGrassOn(terrain, terrainChunk, dataParser);
+        loadPropertiesOn(terrain, terrainChunk, udaParser);
+        loadGrassOn(terrain, terrainChunk, udaParser);
 
         return terrain;
     }
@@ -17,21 +17,21 @@ namespace urchin {
         writeGrassOn(terrainChunk, terrain, udaWriter);
     }
 
-    Terrain* TerrainReaderWriter::buildTerrainFrom(const UdaChunk* terrainChunk, const DataParser& dataParser) const {
-        auto meshChunk = dataParser.getUniqueChunk(true, MESH_TAG, UdaAttribute(), terrainChunk);
-        auto heightFilenameChunk = dataParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, UdaAttribute(), meshChunk);
-        auto xzScaleChunk = dataParser.getUniqueChunk(true, XZ_SCALE_TAG, UdaAttribute(), meshChunk);
-        auto yScaleChunk = dataParser.getUniqueChunk(true, Y_SCALE_TAG, UdaAttribute(), meshChunk);
+    Terrain* TerrainReaderWriter::buildTerrainFrom(const UdaChunk* terrainChunk, const UdaParser& udaParser) const {
+        auto meshChunk = udaParser.getUniqueChunk(true, MESH_TAG, UdaAttribute(), terrainChunk);
+        auto heightFilenameChunk = udaParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, UdaAttribute(), meshChunk);
+        auto xzScaleChunk = udaParser.getUniqueChunk(true, XZ_SCALE_TAG, UdaAttribute(), meshChunk);
+        auto yScaleChunk = udaParser.getUniqueChunk(true, Y_SCALE_TAG, UdaAttribute(), meshChunk);
         auto terrainMesh = std::make_unique<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue());
 
-        auto materialChunk = dataParser.getUniqueChunk(true, MATERIAL_TAG, UdaAttribute(), terrainChunk);
-        auto maskMapFilenameChunk = dataParser.getUniqueChunk(true, MASK_MAP_FILENAME, UdaAttribute(), materialChunk);
-        auto sRepeatChunk = dataParser.getUniqueChunk(true, S_REPEAT_TAG, UdaAttribute(), materialChunk);
-        auto tRepeatChunk = dataParser.getUniqueChunk(true, T_REPEAT_TAG, UdaAttribute(), materialChunk);
-        auto materialFilenamesChunk = dataParser.getUniqueChunk(true, MATERIAL_FILENAMES, UdaAttribute(), materialChunk);
+        auto materialChunk = udaParser.getUniqueChunk(true, MATERIAL_TAG, UdaAttribute(), terrainChunk);
+        auto maskMapFilenameChunk = udaParser.getUniqueChunk(true, MASK_MAP_FILENAME, UdaAttribute(), materialChunk);
+        auto sRepeatChunk = udaParser.getUniqueChunk(true, S_REPEAT_TAG, UdaAttribute(), materialChunk);
+        auto tRepeatChunk = udaParser.getUniqueChunk(true, T_REPEAT_TAG, UdaAttribute(), materialChunk);
+        auto materialFilenamesChunk = udaParser.getUniqueChunk(true, MATERIAL_FILENAMES, UdaAttribute(), materialChunk);
         std::vector<std::string> materialFilenames;
         for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {
-            auto materialFilenameChunk = dataParser.getUniqueChunk(false, MATERIAL_FILENAME, UdaAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
+            auto materialFilenameChunk = udaParser.getUniqueChunk(false, MATERIAL_FILENAME, UdaAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
             if (materialFilenameChunk) {
                 materialFilenames.emplace_back(materialFilenameChunk->getStringValue());
             } else {
@@ -40,7 +40,7 @@ namespace urchin {
         }
         auto terrainMaterial = std::make_unique<TerrainMaterials>(maskMapFilenameChunk->getStringValue(), materialFilenames, sRepeatChunk->getFloatValue(), tRepeatChunk->getFloatValue());
 
-        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), terrainChunk);
+        auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), terrainChunk);
 
         return new Terrain(std::move(terrainMesh), std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
@@ -75,8 +75,8 @@ namespace urchin {
         positionChunk.setPoint3Value(terrain->getPosition());
     }
 
-    void TerrainReaderWriter::loadPropertiesOn(Terrain* terrain, const UdaChunk* terrainChunk, const DataParser& dataParser) const {
-        auto ambientChunk = dataParser.getUniqueChunk(true, AMBIENT_TAG, UdaAttribute(), terrainChunk);
+    void TerrainReaderWriter::loadPropertiesOn(Terrain* terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) const {
+        auto ambientChunk = udaParser.getUniqueChunk(true, AMBIENT_TAG, UdaAttribute(), terrainChunk);
         terrain->setAmbient(ambientChunk->getFloatValue());
     }
 
@@ -85,31 +85,31 @@ namespace urchin {
         ambientChunk.setFloatValue(terrain->getAmbient());
     }
 
-    void TerrainReaderWriter::loadGrassOn(Terrain* terrain, const UdaChunk* terrainChunk, const DataParser& dataParser) const {
-        auto grassChunk = dataParser.getUniqueChunk(false, GRASS_TAG, UdaAttribute(), terrainChunk);
+    void TerrainReaderWriter::loadGrassOn(Terrain* terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) const {
+        auto grassChunk = udaParser.getUniqueChunk(false, GRASS_TAG, UdaAttribute(), terrainChunk);
         if (grassChunk) {
-            auto grassTextureFilenameChunk = dataParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, UdaAttribute(), grassChunk);
+            auto grassTextureFilenameChunk = udaParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setGrassTexture(grassTextureFilenameChunk->getStringValue());
 
-            auto grassMaskFilenameChunk = dataParser.getUniqueChunk(true, GRASS_MASK_FILENAME_TAG, UdaAttribute(), grassChunk);
+            auto grassMaskFilenameChunk = udaParser.getUniqueChunk(true, GRASS_MASK_FILENAME_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setMaskTexture(grassMaskFilenameChunk->getStringValue());
 
-            auto numGrassInTexChunk = dataParser.getUniqueChunk(true, NUM_GRASS_IN_TEX_TAG, UdaAttribute(), grassChunk);
+            auto numGrassInTexChunk = udaParser.getUniqueChunk(true, NUM_GRASS_IN_TEX_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setNumGrassInTexture(numGrassInTexChunk->getUnsignedIntValue());
 
-            auto grassHeightChunk = dataParser.getUniqueChunk(true, GRASS_HEIGHT_TAG, UdaAttribute(), grassChunk);
+            auto grassHeightChunk = udaParser.getUniqueChunk(true, GRASS_HEIGHT_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setGrassHeight(grassHeightChunk->getFloatValue());
 
-            auto grassLengthChunk = dataParser.getUniqueChunk(true, GRASS_LENGTH_TAG, UdaAttribute(), grassChunk);
+            auto grassLengthChunk = udaParser.getUniqueChunk(true, GRASS_LENGTH_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setGrassLength(grassLengthChunk->getFloatValue());
 
-            auto grassQuantityChunk = dataParser.getUniqueChunk(true, GRASS_QUANTITY_TAG, UdaAttribute(), grassChunk);
+            auto grassQuantityChunk = udaParser.getUniqueChunk(true, GRASS_QUANTITY_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setGrassQuantity(grassQuantityChunk->getFloatValue());
 
-            auto windDirectionChunk = dataParser.getUniqueChunk(true, WIND_DIRECTION_TAG, UdaAttribute(), grassChunk);
+            auto windDirectionChunk = udaParser.getUniqueChunk(true, WIND_DIRECTION_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setWindDirection(windDirectionChunk->getVector3Value());
 
-            auto windStrengthChunk = dataParser.getUniqueChunk(true, WIND_STRENGTH_TAG, UdaAttribute(), grassChunk);
+            auto windStrengthChunk = udaParser.getUniqueChunk(true, WIND_STRENGTH_TAG, UdaAttribute(), grassChunk);
             terrain->getGrass()->setWindStrength(windStrengthChunk->getFloatValue());
         }
     }

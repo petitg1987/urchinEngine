@@ -24,7 +24,7 @@ namespace urchin {
             void setLight(Light*);
 
         private:
-            void loadFrom(const UdaChunk*, const DataParser&);
+            void loadFrom(const UdaChunk*, const UdaParser&);
             void writeOn(UdaChunk&, UdaWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";

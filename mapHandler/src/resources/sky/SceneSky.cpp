@@ -15,8 +15,8 @@ namespace urchin {
         renderer3d->getSkyManager().setSkybox(std::move(skybox));
     }
 
-    void SceneSky::loadFrom(const UdaChunk* chunk, const DataParser& dataParser) {
-        changeSkybox(SkyboxReaderWriter::loadFrom(chunk, dataParser));
+    void SceneSky::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+        changeSkybox(SkyboxReaderWriter::loadFrom(chunk, udaParser));
     }
 
     void SceneSky::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {

@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const UdaChunk* mainShapeChunk, const DataParser& dataParser) const {
-        auto localizedShapesListChunk = dataParser.getUniqueChunk(true, LOCALIZED_SHAPES, UdaAttribute(), mainShapeChunk);
-        auto localizedShapesChunk = dataParser.getChunks(LOCALIZED_SHAPE, UdaAttribute(), localizedShapesListChunk);
+    CollisionShape3D* CollisionCompoundShapeReaderWriter::loadFrom(const UdaChunk* mainShapeChunk, const UdaParser& udaParser) const {
+        auto localizedShapesListChunk = udaParser.getUniqueChunk(true, LOCALIZED_SHAPES, UdaAttribute(), mainShapeChunk);
+        auto localizedShapesChunk = udaParser.getChunks(LOCALIZED_SHAPE, UdaAttribute(), localizedShapesListChunk);
 
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
         for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
@@ -16,10 +16,10 @@ namespace urchin {
 
             localizedShape->position = i;
 
-            loadTransformOn(*localizedShape, localizedShapesChunk[i], dataParser);
+            loadTransformOn(*localizedShape, localizedShapesChunk[i], udaParser);
 
-            auto shapeChunk = dataParser.getUniqueChunk(true, COMPOUND_SHAPE_TAG, UdaAttribute(), localizedShapesChunk[i]);
-            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, dataParser);
+            auto shapeChunk = udaParser.getUniqueChunk(true, COMPOUND_SHAPE_TAG, UdaAttribute(), localizedShapesChunk[i]);
+            CollisionShape3D* embeddedCollisionShape = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk)->loadFrom(shapeChunk, udaParser);
             localizedShape->shape = std::unique_ptr<CollisionShape3D>(embeddedCollisionShape);
 
             compoundShapes.push_back(std::move(localizedShape));
@@ -45,13 +45,13 @@ namespace urchin {
         }
     }
 
-    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const UdaChunk* localizedShapeChunk, const DataParser& dataParser) {
-        auto transformChunk = dataParser.getUniqueChunk(true, TRANSFORM_TAG, UdaAttribute(), localizedShapeChunk);
+    void CollisionCompoundShapeReaderWriter::loadTransformOn(LocalizedCollisionShape& localizedShape, const UdaChunk* localizedShapeChunk, const UdaParser& udaParser) {
+        auto transformChunk = udaParser.getUniqueChunk(true, TRANSFORM_TAG, UdaAttribute(), localizedShapeChunk);
 
-        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), transformChunk);
+        auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), transformChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk, dataParser);
+        Quaternion<float> orientation = OrientationReaderWriter::loadOrientation(transformChunk, udaParser);
 
         localizedShape.transform = PhysicsTransform(position, orientation);
     }

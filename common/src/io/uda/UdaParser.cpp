@@ -2,22 +2,22 @@
 #include <stdexcept>
 #include <regex>
 
-#include <io/uda/DataParser.h>
+#include <io/uda/UdaParser.h>
 #include <io/file/FileReader.h>
 #include <config/FileSystem.h>
 #include <util/StringUtil.h>
 
 namespace urchin {
 
-    DataParser::DataParser(const std::string& filename) :
-            DataParser(filename, FileSystem::instance()->getResourcesDirectory()) {
+    UdaParser::UdaParser(const std::string& filename) :
+            UdaParser(filename, FileSystem::instance()->getResourcesDirectory()) {
 
     }
 
     /**
      * @param workingDirectory Override the default working directory
      */
-    DataParser::DataParser(const std::string& filename, const std::string& workingDirectory) {
+    UdaParser::UdaParser(const std::string& filename, const std::string& workingDirectory) {
         filenamePath = workingDirectory + filename;
 
         std::ifstream file(filenamePath, std::ios::in);
@@ -27,11 +27,11 @@ namespace urchin {
         loadFile(file);
     }
 
-    UdaChunk* DataParser::getRootChunk() const {
+    UdaChunk* UdaParser::getRootChunk() const {
         return root.get();
     }
 
-    std::vector<UdaChunk*> DataParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
+    std::vector<UdaChunk*> UdaParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         std::vector<UdaChunk*> chunks;
         const UdaChunk *udaChunk = parent ? parent : root.get();
 
@@ -51,7 +51,7 @@ namespace urchin {
         return chunks;
     }
 
-    UdaChunk* DataParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
+    UdaChunk* UdaParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         auto chunks = getChunks(chunkName, attribute, parent);
 
         if (chunks.size() > 1) {
@@ -65,7 +65,7 @@ namespace urchin {
         return chunks[0];
     }
 
-    std::string DataParser::getChunkDescription(const std::string& chunkName, const UdaAttribute& attribute) const {
+    std::string UdaParser::getChunkDescription(const std::string& chunkName, const UdaAttribute& attribute) const {
         if (attribute.getAttributeName().empty()) {
             return chunkName;
         } else {
@@ -73,7 +73,7 @@ namespace urchin {
         }
     }
 
-    void DataParser::loadFile(std::ifstream& file) {
+    void UdaParser::loadFile(std::ifstream& file) {
         UdaChunk* currentNode = nullptr;
         unsigned int currentNodeIndentLevel = 0;
         while (true) {
@@ -113,7 +113,7 @@ namespace urchin {
         }
     }
 
-    unsigned int DataParser::computeIndentLevel(const std::string& lineContent) const {
+    unsigned int UdaParser::computeIndentLevel(const std::string& lineContent) const {
         unsigned int numberSpaces = 0;
         for (const char& c : lineContent) {
             if (!std::isspace(c)) {
@@ -127,7 +127,7 @@ namespace urchin {
         return numberSpaces / UdaChunk::INDENT_SPACES;
     }
 
-    std::unique_ptr<UdaChunk> DataParser::buildChunk(const std::string& rawContentLine, UdaChunk* parent) const {
+    std::unique_ptr<UdaChunk> UdaParser::buildChunk(const std::string& rawContentLine, UdaChunk* parent) const {
         std::string wrongFormatError = "Content line (" + rawContentLine +") has wrong format in file: " + filenamePath;
 
         static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$");

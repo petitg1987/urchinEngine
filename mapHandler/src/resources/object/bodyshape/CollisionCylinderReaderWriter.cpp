@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionCylinderReaderWriter::loadFrom(const UdaChunk* shapeChunk, const DataParser& dataParser) const {
-        auto orientationChunk = dataParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
+    CollisionShape3D* CollisionCylinderReaderWriter::loadFrom(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+        auto orientationChunk = udaParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
         std::string orientationValue = orientationChunk->getStringValue();
         CylinderShape<float>::CylinderOrientation orientation;
         if (orientationValue == X_VALUE) {
@@ -18,10 +18,10 @@ namespace urchin {
             throw std::invalid_argument("Cylinder orientation type unknown: " + orientationValue);
         }
 
-        auto radiusChunk = dataParser.getUniqueChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
+        auto radiusChunk = udaParser.getUniqueChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
-        auto heightChunk = dataParser.getUniqueChunk(true, HEIGHT_TAG, UdaAttribute(), shapeChunk);
+        auto heightChunk = udaParser.getUniqueChunk(true, HEIGHT_TAG, UdaAttribute(), shapeChunk);
         float height = heightChunk->getFloatValue();
 
         return new CollisionCylinderShape(radius, height, orientation);

@@ -15,7 +15,7 @@
 #include <io/svg/shape/SVGLine.h>
 #include <io/svg/shape/SVGCircle.h>
 #include <io/map/MapSerializer.h>
-#include <io/uda/DataParser.h>
+#include <io/uda/UdaParser.h>
 #include <io/uda/UdaWriter.h>
 #include <io/uda/UdaAttribute.h>
 #include <io/uda/UdaChunk.h>

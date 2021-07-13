@@ -16,10 +16,10 @@ namespace urchin {
         aiManager->getNavMeshGenerator().setNavMeshAgent(std::move(navMeshAgent));
     }
 
-    void SceneAI::loadFrom(const UdaChunk* chunk, const DataParser& dataParser) {
-        auto navMeshAgentChunk = dataParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, UdaAttribute(), chunk);
+    void SceneAI::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+        auto navMeshAgentChunk = udaParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, UdaAttribute(), chunk);
 
-        changeNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(navMeshAgentChunk, dataParser));
+        changeNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(navMeshAgentChunk, udaParser));
     }
 
     void SceneAI::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {

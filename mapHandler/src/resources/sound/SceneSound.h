@@ -26,7 +26,7 @@ namespace urchin {
             void changeSoundTrigger(const std::shared_ptr<SoundTrigger>&);
 
         private:
-            void loadFrom(const UdaChunk*, const DataParser&);
+            void loadFrom(const UdaChunk*, const UdaParser&);
             void writeOn(UdaChunk&, UdaWriter&) const;
 
             static constexpr char NAME_ATTR[] = "name";

@@ -10,17 +10,17 @@ namespace urchin {
 
     class ModelReaderWriter {
         public:
-            static Model* loadFrom(const UdaChunk*, const DataParser&);
+            static Model* loadFrom(const UdaChunk*, const UdaParser&);
             static void writeOn(UdaChunk&, const Model*, UdaWriter&);
 
         private:
-            static void loadAnimationsOn(Model*, const UdaChunk*, const DataParser&);
+            static void loadAnimationsOn(Model*, const UdaChunk*, const UdaParser&);
             static void writeAnimationsOn(UdaChunk&, const Model*, UdaWriter&);
 
-            static void loadTransformOn(Model*, const UdaChunk*, const DataParser&);
+            static void loadTransformOn(Model*, const UdaChunk*, const UdaParser&);
             static void writeTransformOn(UdaChunk&, const Model*, UdaWriter&);
 
-            static void loadFlagsOn(Model*, const UdaChunk*, const DataParser&);
+            static void loadFlagsOn(Model*, const UdaChunk*, const UdaParser&);
             static void writeFlagsOn(UdaChunk&, const Model*, UdaWriter&);
 
             static constexpr char MESH_TAG[] = "mesh";

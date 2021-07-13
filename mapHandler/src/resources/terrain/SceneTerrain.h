@@ -33,7 +33,7 @@ namespace urchin {
             void moveTo(const Point3<float>&, const Quaternion<float>&) override;
 
         private:
-            void loadFrom(const UdaChunk*, const DataParser&);
+            void loadFrom(const UdaChunk*, const UdaParser&);
             void writeOn(UdaChunk&, UdaWriter&) const;
 
             void setupInteractiveBody(RigidBody*);

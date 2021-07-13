@@ -20,7 +20,7 @@ namespace urchin {
         public:
             ~SoundBoxReaderWriter() override = default;
 
-            std::unique_ptr<SoundShape> loadFrom(const UdaChunk*, const DataParser&) const override;
+            std::unique_ptr<SoundShape> loadFrom(const UdaChunk*, const UdaParser&) const override;
             void writeOn(UdaChunk&, const SoundShape&, UdaWriter&) const override;
     };
 

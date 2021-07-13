@@ -67,14 +67,14 @@ namespace urchin {
             void unpause();
 
         private:
-            void loadFrom(const UdaChunk*, const DataParser&, LoadCallback&);
-            void loadSceneObjectsFrom(const UdaChunk*, const DataParser&);
-            void loadSceneLightsFrom(const UdaChunk*, const DataParser&);
-            void loadSceneTerrainFrom(const UdaChunk*, const DataParser&);
-            void loadSceneWaterFrom(const UdaChunk*, const DataParser&);
-            void loadSceneSkyFrom(const UdaChunk*, const DataParser&);
-            void loadSceneSoundsFrom(const UdaChunk*, const DataParser&);
-            void loadSceneAIFrom(const UdaChunk*, const DataParser&);
+            void loadFrom(const UdaChunk*, const UdaParser&, LoadCallback&);
+            void loadSceneObjectsFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneLightsFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneTerrainFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneWaterFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneSkyFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneSoundsFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneAIFrom(const UdaChunk*, const UdaParser&);
 
             void writeOn(UdaChunk&, UdaWriter&) const;
             void writeSceneObjectsOn(UdaChunk&, UdaWriter&) const;

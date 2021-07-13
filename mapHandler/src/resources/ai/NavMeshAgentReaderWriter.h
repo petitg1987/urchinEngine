@@ -8,7 +8,7 @@ namespace urchin {
 
     class NavMeshAgentReaderWriter {
         public:
-            static std::unique_ptr<NavMeshAgent> loadFrom(const UdaChunk*, const DataParser&);
+            static std::unique_ptr<NavMeshAgent> loadFrom(const UdaChunk*, const UdaParser&);
             static void writeOn(UdaChunk&, const NavMeshAgent*, UdaWriter&);
 
         private:

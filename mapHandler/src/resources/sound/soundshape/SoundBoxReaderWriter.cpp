@@ -2,19 +2,19 @@
 
 namespace urchin {
 
-    std::unique_ptr<SoundShape> SoundBoxReaderWriter::loadFrom(const UdaChunk* shapeChunk, const DataParser& dataParser) const {
-        auto halfSizesChunk = dataParser.getUniqueChunk(true, HALF_SIZES_TAG, UdaAttribute(), shapeChunk);
+    std::unique_ptr<SoundShape> SoundBoxReaderWriter::loadFrom(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+        auto halfSizesChunk = udaParser.getUniqueChunk(true, HALF_SIZES_TAG, UdaAttribute(), shapeChunk);
         Vector3<float> halfSizes = halfSizesChunk->getVector3Value();
 
-        auto positionChunk = dataParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), shapeChunk);
+        auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), shapeChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        auto orientationChunk = dataParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
-        auto orientationAxisChunk = dataParser.getUniqueChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
-        auto orientationAngleChunk = dataParser.getUniqueChunk(true, ANGLE_TAG, UdaAttribute(), orientationChunk);
+        auto orientationChunk = udaParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
+        auto orientationAxisChunk = udaParser.getUniqueChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
+        auto orientationAngleChunk = udaParser.getUniqueChunk(true, ANGLE_TAG, UdaAttribute(), orientationChunk);
         Quaternion<float> orientation(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
 
-        auto marginChunk = dataParser.getUniqueChunk(true, MARGIN_TAG, UdaAttribute(), shapeChunk);
+        auto marginChunk = udaParser.getUniqueChunk(true, MARGIN_TAG, UdaAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();
 
         return std::make_unique<SoundBox>(halfSizes, position, orientation, margin);

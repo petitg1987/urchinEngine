@@ -24,10 +24,10 @@ namespace urchin {
         lightManager.addLight(light);
     }
 
-    void SceneLight::loadFrom(const UdaChunk* chunk, const DataParser& dataParser) {
+    void SceneLight::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
-        setLight(LightReaderWriter::loadFrom(chunk, dataParser));
+        setLight(LightReaderWriter::loadFrom(chunk, udaParser));
     }
 
     void SceneLight::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
