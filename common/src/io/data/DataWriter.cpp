@@ -29,11 +29,40 @@ namespace urchin {
     }
 
     void DataWriter::saveInFile() {
-        //TODO complete..
-        std::cout<<root.get()<<std::endl;
-//        if (!doc->SaveFile(filenamePath)) {
-//            throw std::invalid_argument("Cannot save the file " + filenamePath + ".");
-//        }
+        std::ofstream file;
+        file.open (filenamePath);
+        if (!file.is_open()) {
+            throw std::invalid_argument("Unable to open file: " + filenamePath);
+        }
+
+        std::stack<DataContentLine*> stack;
+        stack.push(root.get());
+        while (!stack.empty()) {
+            DataContentLine* node = stack.top();
+            stack.pop();
+
+            unsigned int indentLevel = computeIndentLevel(*node);
+            std::string indent(indentLevel * DataChunk::INDENT_SPACES, ' ');
+
+            file << indent << DataContentLine::toRawContentLine(*node) << std::endl;
+
+            const auto& children = node->getChildren();
+            for (auto it = children.rbegin(); it != children.rend(); ++it) {
+                stack.push((*it).get());
+            }
+        }
+
+        file.close();
+    }
+
+    unsigned int DataWriter::computeIndentLevel(const DataContentLine& dataContentLine) const {
+        unsigned int indentLevel = 0;
+        auto* parentNode = dataContentLine.getParent();
+        while (parentNode != nullptr) {
+            parentNode = parentNode->getParent();
+            indentLevel++;
+        }
+        return indentLevel;
     }
 
 }

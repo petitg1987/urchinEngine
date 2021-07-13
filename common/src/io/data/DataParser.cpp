@@ -7,9 +7,6 @@
 
 namespace urchin {
 
-    //static
-    const unsigned int DataParser::INDENT_SPACES = 2;
-
     DataParser::DataParser(const std::string& filename) :
             DataParser(filename, FileSystem::instance()->getResourcesDirectory()) {
 
@@ -68,7 +65,7 @@ namespace urchin {
         }
     }
 
-    unsigned int DataParser::computeIndentLevel(const std::string& lineContent) {
+    unsigned int DataParser::computeIndentLevel(const std::string& lineContent) const {
         unsigned int numberSpaces = 0;
         for (const char& c : lineContent) {
             if (!std::isspace(c)) {
@@ -76,10 +73,10 @@ namespace urchin {
             }
             numberSpaces++;
         }
-        if (numberSpaces % INDENT_SPACES != 0) {
+        if (numberSpaces % DataChunk::INDENT_SPACES != 0) {
             throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
         }
-        return numberSpaces / INDENT_SPACES;
+        return numberSpaces / DataChunk::INDENT_SPACES;
     }
 
     std::unique_ptr<DataChunk> DataParser::getRootChunk() const {

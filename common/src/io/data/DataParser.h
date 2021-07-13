@@ -22,14 +22,12 @@ namespace urchin {
 
         private:
             void loadFile(std::ifstream&);
-            unsigned int computeIndentLevel(const std::string&);
+            unsigned int computeIndentLevel(const std::string&) const;
 
             std::string getChunkDescription(const std::string&, const DataAttribute&) const;
 
-            static const unsigned int INDENT_SPACES;
-
-            std::unique_ptr<DataContentLine> root;
             std::string filenamePath;
+            std::unique_ptr<DataContentLine> root;
     };
 
 }

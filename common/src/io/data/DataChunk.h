@@ -19,6 +19,8 @@ namespace urchin {
             friend class DataParser;
             friend class DataWriter;
 
+            static const unsigned int INDENT_SPACES;
+
             std::string getAttributeValue(const std::string&) const;
             void addAttribute(const DataAttribute&);
 

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <fstream>
 
 #include <io/data/DataAttribute.h>
 #include <io/data/DataChunk.h>
@@ -16,8 +17,10 @@ namespace urchin {
             void saveInFile();
 
         private:
-            std::unique_ptr<DataContentLine> root;
+            unsigned int computeIndentLevel(const DataContentLine&) const;
+
             std::string filenamePath;
+            std::unique_ptr<DataContentLine> root;
     };
 
 }

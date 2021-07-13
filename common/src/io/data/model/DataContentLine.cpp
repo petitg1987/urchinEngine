@@ -47,13 +47,14 @@ namespace urchin {
         std::string rawAttributes;
         if (!dataContentLine.getAttributes().empty()) {
             rawAttributes.append(" (");
-            for (const auto& [key, value] : dataContentLine.getAttributes()) {
-                if (!rawAttributes.empty()) {
+            auto& attributes = dataContentLine.getAttributes();
+            for (auto it = attributes.begin(); it != attributes.end(); ++it) {
+                if (it != attributes.begin()) {
                     rawAttributes += ATTRIBUTES_SEPARATOR;
                 }
-                rawAttributes.append(key);
+                rawAttributes.append(it->first);
                 rawAttributes += ATTRIBUTES_ASSIGN;
-                rawAttributes.append(value);
+                rawAttributes.append(it->second);
             }
             rawAttributes.append(")");
         }

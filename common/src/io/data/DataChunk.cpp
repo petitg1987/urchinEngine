@@ -5,6 +5,9 @@
 
 namespace urchin {
 
+    //static
+    const unsigned int DataChunk::INDENT_SPACES = 2;
+
     DataChunk::DataChunk(DataContentLine& chunk) :
             chunk(chunk) {
 
