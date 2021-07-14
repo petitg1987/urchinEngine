@@ -15,24 +15,14 @@ namespace urchin {
         if (maskMapFilename.empty()) {
             maskTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0})).createTexture(false);
         } else {
-            auto* maskImage = MediaManager::instance()->getMedia<Image>(maskMapFilename);
+            auto maskImage = MediaManager::instance()->getMedia<Image>(maskMapFilename);
             if (maskImage->getImageFormat() != Image::IMAGE_RGBA) {
-                maskImage->release();
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskImage->retrieveComponentsCount()));
             }
             maskTexture = maskImage->createTexture(false);
-            maskImage->release();
         }
 
         initializeMaterial(materialFilenames);
-    }
-
-    TerrainMaterials::~TerrainMaterials() {
-        for (auto& material : materials) {
-            if (material != nullptr) {
-                material->release();
-            }
-        }
     }
 
     void TerrainMaterials::initializeMaterial(const std::vector<std::string>& materialFilenames) {
@@ -43,7 +33,7 @@ namespace urchin {
             if (materialFilenames.size() > i && !materialFilenames[i].empty()) {
                 materials[i] = MediaManager::instance()->getMedia<Material>(materialFilenames[i], {}, "material");
             } else {
-                materials[i] = nullptr;
+                materials[i] = std::shared_ptr<Material>(nullptr);
             }
         }
     }
@@ -64,7 +54,7 @@ namespace urchin {
         return Vector2<float>(sRepeat, tRepeat);
     }
 
-    std::vector<Material*> TerrainMaterials::getMaterials() const {
+    const std::vector<std::shared_ptr<Material>>& TerrainMaterials::getMaterials() const {
         return materials;
     }
 

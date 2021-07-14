@@ -10,8 +10,7 @@ namespace urchin {
 
     class Meshes {
         public:
-            explicit Meshes(ConstMeshes*);
-            ~Meshes();
+            explicit Meshes(std::shared_ptr<ConstMeshes>);
 
             unsigned int getNumberMeshes() const;
             Mesh& getMesh(unsigned int) const;
@@ -19,12 +18,12 @@ namespace urchin {
             const std::vector<AABBox<float>>& getGlobalSplitAABBoxes() const;
             const AABBox<float>& getGlobalLocalAABBox() const;
 
-            const ConstMeshes* getConstMeshes() const;
+            const ConstMeshes& getConstMeshes() const;
 
             void onMoving(const Transform<float>&);
 
         private:
-            mutable ConstMeshes* constMeshes;
+            std::shared_ptr<ConstMeshes> constMeshes;
             unsigned int numMeshes;
 
             std::vector<std::unique_ptr<Mesh>> meshes;

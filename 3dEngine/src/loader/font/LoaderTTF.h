@@ -11,7 +11,7 @@ namespace urchin {
         public:
             ~LoaderTTF() override = default;
 
-            Font* loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+            std::shared_ptr<Font> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
     };
 
 }

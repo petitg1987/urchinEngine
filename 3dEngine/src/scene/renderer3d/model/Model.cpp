@@ -33,8 +33,8 @@ namespace urchin {
 
     void Model::initialize(const std::string& meshFilename) {
         if (!meshFilename.empty()) {
-            auto* constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
-            meshes = std::make_unique<Meshes>(constMeshes);
+            auto constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
+            meshes = std::make_unique<Meshes>(std::move(constMeshes));
             meshes->onMoving(transform);
         }
     }
@@ -45,25 +45,25 @@ namespace urchin {
         }
 
         //load and add the anim to the std::map
-        auto* constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
+        auto constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
         animations[name] = std::make_unique<Animation>(constAnimation, *meshes);
         animations[name]->onMoving(transform);
 
         //both files must have the same number of bones
-        if (meshes->getConstMeshes()->getConstMesh(0).getNumberBones() != constAnimation->getNumberBones()) {
-            throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
+        if (meshes->getConstMeshes().getConstMesh(0).getNumberBones() != constAnimation->getNumberBones()) {
+            throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes().getName() + ", Animation filename: " + constAnimation->getName() + ".");
         }
 
         //we just check with mesh[0] && frame[0]
-        for (unsigned int i = 0; i < meshes->getConstMeshes()->getConstMesh(0).getNumberBones(); ++i) {
+        for (unsigned int i = 0; i < meshes->getConstMeshes().getConstMesh(0).getNumberBones(); ++i) {
             //bones must have the same parent index
-            if (meshes->getConstMeshes()->getConstMesh(0).getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
-                throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
+            if (meshes->getConstMeshes().getConstMesh(0).getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
+                throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes().getName() + ", Animation filename: " + constAnimation->getName() + ".");
             }
 
             //bones must have the same name
-            if (meshes->getConstMeshes()->getConstMesh(0).getBaseBone(i).name != constAnimation->getBone(0, i).name) {
-                throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
+            if (meshes->getConstMeshes().getConstMesh(0).getBaseBone(i).name != constAnimation->getBone(0, i).name) {
+                throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes().getName() + ", Animation filename: " + constAnimation->getName() + ".");
             }
         }
     }
@@ -109,7 +109,7 @@ namespace urchin {
 
     const ConstMeshes* Model::getConstMeshes() const {
         if (meshes) {
-            return meshes->getConstMeshes();
+            return &meshes->getConstMeshes();
         }
         return nullptr;
     }
@@ -117,7 +117,7 @@ namespace urchin {
     std::map<std::string, const ConstAnimation*> Model::getAnimations() const {
         std::map<std::string, const ConstAnimation*> constConstAnimations;
         for (const auto& animation : animations) {
-            constConstAnimations.emplace(animation.first, animation.second->getConstAnimation());
+            constConstAnimations.emplace(animation.first, &animation.second->getConstAnimation());
         }
         return constConstAnimations;
     }

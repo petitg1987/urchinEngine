@@ -3,17 +3,6 @@
 
 namespace urchin {
 
-    Resource::Resource() :
-            refCount(1) {
-
-    }
-
-    Resource::~Resource() {
-        if (!id.empty()) { //resource created with ResourceManager
-            ResourceManager::instance()->removeResource(id);
-        }
-    }
-
     const std::string& Resource::getId() const {
         return id;
     }
@@ -28,21 +17,6 @@ namespace urchin {
 
     void Resource::setName(const std::string& name) {
         this->name = name;
-    }
-
-    unsigned int Resource::getRefCount() const {
-        return refCount;
-    }
-
-    void Resource::addRef() {
-        ++refCount;
-    }
-
-    void Resource::release() {
-        assert(!name.empty()); //resource created with ResourceManager
-        if (--refCount == 0) {
-            delete this;
-        }
     }
 
 }

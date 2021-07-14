@@ -249,9 +249,8 @@ namespace urchin {
         if (grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            auto* grassTextureImg = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
+            auto grassTextureImg = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
             grassTexture = grassTextureImg->createTexture(true);
-            grassTextureImg->release();
         }
     }
 
@@ -265,9 +264,8 @@ namespace urchin {
         if (grassMaskFilename.empty()) {
             grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0})).createTexture(false);
         } else {
-            auto* grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
+            auto grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);
-            grassMaskImage->release();
         }
 
     }

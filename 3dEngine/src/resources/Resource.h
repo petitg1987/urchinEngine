@@ -6,8 +6,7 @@ namespace urchin {
 
     class Resource {
         public:
-            Resource();
-            virtual ~Resource();
+            virtual ~Resource() = default;
 
             const std::string& getId() const;
             void setId(const std::string&);
@@ -15,14 +14,9 @@ namespace urchin {
             const std::string& getName() const;
             void setName(const std::string&);
 
-            unsigned int getRefCount() const;
-            void addRef();
-            void release();
-
         private:
             std::string id;
             std::string name;
-            unsigned int refCount;
     };
 
 }

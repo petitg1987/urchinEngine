@@ -23,7 +23,7 @@ namespace urchin {
 
             bool isTranslatableLabel() const;
             const std::string& getText() const;
-            const Font* getFont();
+            const Font& getFont();
 
         protected:
             void createOrUpdateWidget() override;
@@ -42,7 +42,6 @@ namespace urchin {
             void cutText();
             void refreshFont();
             unsigned int retrieveFontHeight(const UdaChunk*) const;
-            void cleanFont();
             void refreshCoordinates();
             void refreshRenderer();
             void refreshRendererData();
@@ -55,7 +54,7 @@ namespace urchin {
 
             //data
             std::vector<std::u32string> cutTextLines;
-            Font* font;
+            std::shared_ptr<Font> font;
 
             //visual
             std::vector<Point2<float>> vertexCoord;

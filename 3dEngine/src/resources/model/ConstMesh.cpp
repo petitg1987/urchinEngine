@@ -29,12 +29,8 @@ namespace urchin {
         material = MediaManager::instance()->getMedia<Material>(materialFilename, {}, "material");
     }
 
-    ConstMesh::~ConstMesh() {
-        material->release();
-    }
-
-    const Material* ConstMesh::getMaterial() const {
-        return material;
+    const Material& ConstMesh::getMaterial() const {
+        return *material;
     }
 
     unsigned int ConstMesh::getNumberVertices() const {

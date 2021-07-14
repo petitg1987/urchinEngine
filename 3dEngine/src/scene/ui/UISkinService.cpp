@@ -20,7 +20,7 @@ namespace urchin {
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const UdaChunk* skinChunk, WidgetOutline* widgetOutline) const {
         //skin information
         auto widgetImageElem = getSkinReader()->getUniqueChunk(true, "image", UdaAttribute(), skinChunk);
-        auto* rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
+        auto rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
 
         auto topElem = getSkinReader()->getUniqueChunk(true, "part", UdaAttribute("zone", "top"), skinChunk);
         unsigned int top = topElem->getUnsignedIntValue();
@@ -115,10 +115,7 @@ namespace urchin {
         }
 
         //create the texture
-        auto widgetTexture = Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels)).createTexture(false);
-
-        rawWidgetImage->release();
-        return widgetTexture;
+        return Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels)).createTexture(false);
     }
 
     Length UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName) const {

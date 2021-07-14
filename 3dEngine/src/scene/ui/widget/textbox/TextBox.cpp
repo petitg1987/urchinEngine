@@ -44,7 +44,7 @@ namespace urchin {
         text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
-        Vector3<float> fontColor = text->getFont()->getFontColor();
+        Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorDiffuse = Image(1, 1, Image::IMAGE_RGBA, std::move(cursorColor)).createTexture(false);
         refreshText(cursorIndex, false);
@@ -159,12 +159,12 @@ namespace urchin {
         computeCursorPosition();
 
         //determine the text to display
-        const Font* font = text->getFont();
+        const auto& font = text->getFont();
         unsigned int widthText = 0;
         unsigned int endTextIndex = startTextIndex;
         for (; endTextIndex < allText.length(); ++endTextIndex) {
             char32_t textLetter = allText[endTextIndex];
-            widthText += font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
+            widthText += font.getGlyph(textLetter).width + font.getSpaceBetweenLetters();
             if (widthText > maxWidthText) {
                 break;
             }
@@ -181,16 +181,16 @@ namespace urchin {
     }
 
     void TextBox::computeCursorPosition() {
-        const Font* font = text->getFont();
+        const auto& font = text->getFont();
         cursorPosition = 0;
 
         for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
             char32_t textLetter = allText[i];
-            cursorPosition += font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
+            cursorPosition += font.getGlyph(textLetter).width + font.getSpaceBetweenLetters();
         }
 
         if (cursorPosition > 0) {
-            cursorPosition -= font->getSpaceBetweenLetters(); //remove last space
+            cursorPosition -= font.getSpaceBetweenLetters(); //remove last space
             cursorPosition += LETTER_AND_CURSOR_SHIFT;
         }
 
@@ -198,17 +198,17 @@ namespace urchin {
     }
 
     void TextBox::computeCursorIndex(int approximateCursorPosition) {
-        const Font* font = text->getFont();
+        const auto& font = text->getFont();
         float widthText = 0.0f;
 
         for (cursorIndex = startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
             char32_t textLetter = allText[cursorIndex];
-            widthText += (float)font->getGlyph(textLetter).width / 2.0f;
+            widthText += (float)font.getGlyph(textLetter).width / 2.0f;
             if (widthText > (float)approximateCursorPosition) {
                 break;
             }
 
-            widthText += (float)font->getGlyph(textLetter).width / 2.0f + (float)font->getSpaceBetweenLetters();
+            widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
         }
 
         //compute the correct cursor position

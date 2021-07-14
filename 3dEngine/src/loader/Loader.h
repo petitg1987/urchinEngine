@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <stdexcept>
 
 namespace urchin {
 
@@ -13,13 +12,9 @@ namespace urchin {
 
     template<class T> class Loader : public LoaderInterface {
         public:
-            Loader() = default;
-            ~Loader() override;
+            ~Loader() override = default;
 
-            virtual T* loadFromFile(const std::string&, const std::map<std::string, std::string>&);
-            virtual void saveToFile(const T*, const std::string&);
+            virtual std::shared_ptr<T> loadFromFile(const std::string&, const std::map<std::string, std::string>&) = 0;
     };
-
-    #include "Loader.inl"
 
 }

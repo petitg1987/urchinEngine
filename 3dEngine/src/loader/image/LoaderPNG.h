@@ -9,10 +9,9 @@ namespace urchin {
 
     class LoaderPNG : public Loader<Image> {
         public:
-            LoaderPNG();
             ~LoaderPNG() override = default;
 
-            Image* loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+            std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
 
         private:
             std::vector<unsigned char> extract8BitsChannels(const std::vector<unsigned char>&, unsigned int, bool) const;

@@ -31,7 +31,7 @@ namespace urchin {
             unsigned int computeNumberIndices() const;
             unsigned int computeNumberNormals() const;
 
-            std::vector<Point3<float>> buildVertices(const Image*);
+            std::vector<Point3<float>> buildVertices(const Image&);
             std::vector<unsigned int> buildIndices();
             std::vector<Vector3<float>> buildNormals();
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;

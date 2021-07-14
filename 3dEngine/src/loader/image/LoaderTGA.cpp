@@ -14,25 +14,25 @@ namespace urchin {
 
     }
 
-    Image* LoaderTGA::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
-        //opens file
+    std::shared_ptr<Image> LoaderTGA::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+        //open file
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         std::ifstream file(filenamePath, std::ios::in | std::ios::binary);
         if (!file.is_open()) {
             throw std::invalid_argument("Unable to open file: " + filenamePath);
         }
 
-        //gets file length
+        //get file length
         file.seekg(0, std::ios::end);
         long length = (long)file.tellg();
         file.seekg(0, std::ios::beg);
 
-        //extracts header
+        //extract header
         TgaHeader header{};
         file.read((char*)&header, sizeof(TgaHeader));
         file.seekg(header.idLength, std::ios::cur);
 
-        //extracts color map (color map is stored in BGR format)
+        //extract color map (color map is stored in BGR format)
         if (header.colormapType) {
             colorMap.resize((std::size_t)header.cmLength * (std::size_t)(header.cmSize >> 3u), 0);
             file.read((char*)colorMap.data(), header.cmLength * (header.cmSize >> 3u));
@@ -47,7 +47,7 @@ namespace urchin {
         getImageInfo(header);
         texels.resize(width * height * componentsCount, 0);
 
-        //reads image data
+        //read image data
         switch(header.imageType) {
             case 1:
                 //uncompressed 8 bits color index
@@ -142,7 +142,7 @@ namespace urchin {
             }
         }
 
-        return new Image(width, height, format, std::move(adjustedTexels));
+        return std::make_shared<Image>(width, height, format, std::move(adjustedTexels));
     }
 
     void LoaderTGA::getImageInfo(const TgaHeader& header) {

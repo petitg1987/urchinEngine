@@ -1,4 +1,3 @@
-#include <sstream>
 #include <UrchinCommon.h>
 
 #include <resources/ResourceManager.h>
@@ -11,26 +10,24 @@ namespace urchin {
     }
 
     ResourceManager::~ResourceManager() {
-        if (!mResources.empty()) {
-            std::stringstream logStream;
-            logStream << "Resources not released:" << std::endl;
-            for (auto& mResource : mResources) {
-                logStream<< " - " << mResource.second->getName() << std::endl;
-            }
-            Logger::instance()->logError(logStream.str());
+        cleanResources();
+        for (auto& resource : resources) {
+            Logger::instance()->logError("Resources not released: " + resource.second.lock()->getName());
         }
     }
 
-    void ResourceManager::addResource(const std::string& resourceId, const std::string& name, Resource* resource) {
-        mResources[resourceId] = resource;
-        resource->setId(resourceId);
-        resource->setName(name);
+    void ResourceManager::addResource(const std::shared_ptr<Resource>& resource) {
+        cleanResources();
+        resources.emplace(resource->getId(), resource);
     }
 
-    void ResourceManager::removeResource(const std::string& resourceId) {
-        auto it = mResources.find(resourceId);
-        if (it != mResources.end()) {
-            mResources.erase(it);
+    void ResourceManager::cleanResources() {
+        for(auto it = resources.begin(); it != resources.end();) {
+            if(it->second.lock() == nullptr) {
+                it = resources.erase(it);
+            } else {
+                ++it;
+            }
         }
     }
 

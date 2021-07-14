@@ -37,10 +37,8 @@ namespace urchin {
     std::shared_ptr<Texture> CheckBox::loadTexture(const UdaChunk* checkBoxChunk, const std::string& chunkName) const {
         auto imageElem = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, chunkName, UdaAttribute(), checkBoxChunk);
 
-        auto* img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
-        auto tex = img->createTexture(false);
-        img->release();
-        return tex;
+        auto img = MediaManager::instance()->getMedia<Image>(imageElem->getStringValue());
+        return img->createTexture(false);
     }
 
     void CheckBox::setChecked(bool isChecked) {

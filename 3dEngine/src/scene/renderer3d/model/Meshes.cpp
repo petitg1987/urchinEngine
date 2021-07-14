@@ -2,17 +2,13 @@
 
 namespace urchin {
 
-    Meshes::Meshes(ConstMeshes* constMeshes) :
-            constMeshes(constMeshes),
-            numMeshes(constMeshes->getNumberConstMeshes()) {
+    Meshes::Meshes(std::shared_ptr<ConstMeshes> constMeshes) :
+            constMeshes(std::move(constMeshes)),
+            numMeshes(this->constMeshes->getNumberConstMeshes()) {
         //create mesh
         for (unsigned int m = 0;  m < numMeshes; m++) {
-            meshes.push_back(std::make_unique<Mesh>(constMeshes->getConstMesh(m)));
+            meshes.push_back(std::make_unique<Mesh>(this->constMeshes->getConstMesh(m)));
         }
-    }
-
-    Meshes::~Meshes() {
-        constMeshes->release();
     }
 
     unsigned int Meshes::getNumberMeshes() const {
@@ -35,8 +31,8 @@ namespace urchin {
         return constMeshes->getOriginalAABBox();
     }
 
-    const ConstMeshes* Meshes::getConstMeshes() const {
-        return constMeshes;
+    const ConstMeshes& Meshes::getConstMeshes() const {
+        return *constMeshes;
     }
 
     void Meshes::onMoving(const Transform<float>& newTransform) {

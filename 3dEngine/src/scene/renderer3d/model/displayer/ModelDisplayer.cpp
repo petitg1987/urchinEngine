@@ -14,7 +14,7 @@ namespace urchin {
             customModelShaderVariable(customModelShaderVariable) {
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            auto meshName = model->getMeshes()->getConstMeshes()->getName();
+            auto meshName = model->getMeshes()->getConstMeshes().getName();
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                 ->enableDepthOperations()
                 ->addData(constMesh->getBaseVertices())
@@ -27,15 +27,15 @@ namespace urchin {
 
             if (displayMode == DEFAULT_MODE) {
                 assert(!customModelShaderVariable); //ensure binding id are correct
-                TextureParam::ReadMode textureReadMode = constMesh->getMaterial()->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+                TextureParam::ReadMode textureReadMode = constMesh->getMaterial().isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                 TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
                 meshRendererBuilder
                     ->addData(constMesh->getTextureCoordinates())
                     ->addData(constMesh->getBaseNormals())
                     ->addData(constMesh->getBaseTangents())
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getDiffuseTexture(), textureParam)) //binding 2
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial()->getNormalTexture(), textureParam)); //binding 3
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), textureParam)) //binding 2
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), textureParam)); //binding 3
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
@@ -78,7 +78,7 @@ namespace urchin {
             meshData.viewMatrix = viewMatrix;
             meshData.modelMatrix = model->getTransform().getTransformMatrix();
             meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().inverse().transpose() : Matrix4<float>();
-            meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex).getMaterial()->getAmbientFactor();
+            meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex).getMaterial().getAmbientFactor();
 
             meshRenderer->updateUniformData(1, &meshData);
 

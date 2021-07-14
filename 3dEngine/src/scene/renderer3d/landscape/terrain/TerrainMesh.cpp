@@ -18,9 +18,8 @@ namespace urchin {
             heightFilename(heightFilename),
             xzScale(xzScale),
             yScale(yScale) {
-        auto* imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
+        auto imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
         if (imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
-            imgTerrain->release();
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }
         
@@ -42,7 +41,7 @@ namespace urchin {
         } else {
             terrainFrlFile.close();
 
-            buildVertices(imgTerrain);
+            buildVertices(*imgTerrain);
             buildIndices();
             buildNormals();
 
@@ -50,8 +49,6 @@ namespace urchin {
         }
 
         heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(vertices, xSize);
-
-        imgTerrain->release();
     }
 
     std::string TerrainMesh::generateTerrainMeshHash(const std::string& terrainFilePath, float xzScale, float yScale) {
@@ -115,7 +112,7 @@ namespace urchin {
         return xSize * zSize;
     }
 
-    std::vector<Point3<float>> TerrainMesh::buildVertices(const Image* imgTerrain) {
+    std::vector<Point3<float>> TerrainMesh::buildVertices(const Image& imgTerrain) {
         vertices.reserve(computeNumberVertices());
 
         float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);
@@ -125,11 +122,11 @@ namespace urchin {
             float zFloat = zStart + (float)z * xzScale;
             for (unsigned int x = 0; x < xSize; ++x) {
                 float elevation = 0.0f;
-                if (imgTerrain->getChannelPrecision() == Image::CHANNEL_8) {
-                    elevation = (float)imgTerrain->getTexels()[x + xSize * z] * yScale;
-                } else if (imgTerrain->getChannelPrecision() == Image::CHANNEL_16) {
+                if (imgTerrain.getChannelPrecision() == Image::CHANNEL_8) {
+                    elevation = (float)imgTerrain.getTexels()[x + xSize * z] * yScale;
+                } else if (imgTerrain.getChannelPrecision() == Image::CHANNEL_16) {
                     constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
-                    elevation = (float)imgTerrain->getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
+                    elevation = (float)imgTerrain.getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
                 }
 
                 float xFloat = xStart + (float)x * xzScale;

@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ConstMeshes* LoaderUrchinMesh::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+    std::shared_ptr<ConstMeshes> LoaderUrchinMesh::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::locale::global(std::locale("C")); //for float
 
         std::istringstream iss;
@@ -106,7 +106,7 @@ namespace urchin {
 
         file.close();
 
-        return new ConstMeshes(filename, std::move(constMeshes));
+        return std::make_shared<ConstMeshes>(filename, std::move(constMeshes));
     }
 
 }

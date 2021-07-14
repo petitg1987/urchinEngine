@@ -4,12 +4,8 @@
 #include <loader/image/LoaderPNG.h>
 
 namespace urchin {
-    LoaderPNG::LoaderPNG() :
-            Loader<Image>() {
 
-    }
-
-    Image* LoaderPNG::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+    std::shared_ptr<Image> LoaderPNG::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         std::vector<unsigned char> png;
         unsigned int errorLoad = lodepng::load_file(png, filenamePath);
@@ -30,21 +26,21 @@ namespace urchin {
         LodePNGColorType colorType = state.info_png.color.colortype;
         if (colorType == LodePNGColorType::LCT_GREY) {
             if (bitDepth == 8) {
-                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1, false));
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1, false));
             } else if (bitDepth == 16) {
-                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1, false));
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1, false));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
         } else if (colorType == LodePNGColorType::LCT_RGB) {
             if (bitDepth == 8) {
-                return new Image(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 7, true));
+                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 7, true));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (RGB): " + std::to_string(bitDepth));
             }
         } else if (colorType == LodePNGColorType::LCT_RGBA) {
             if (bitDepth == 8) {
-                return new Image(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 15, true));
+                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 15, true));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (RGBA): " + std::to_string(bitDepth));
             }

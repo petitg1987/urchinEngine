@@ -14,14 +14,13 @@ namespace urchin {
             static const unsigned int MAX_MATERIAL;
 
             explicit TerrainMaterials(const std::string&, const std::vector<std::string>&, float, float);
-            ~TerrainMaterials();
 
             void refreshWith(unsigned int, unsigned int);
 
             const std::string& getMaskMapFilename() const;
             const std::shared_ptr<Texture>& getMaskTexture() const;
             Vector2<float> getStRepeat() const;
-            std::vector<Material*> getMaterials() const;
+            const std::vector<std::shared_ptr<Material>>& getMaterials() const;
             const std::vector<Point2<float>>& getTexCoordinates() const;
 
         private:
@@ -32,7 +31,7 @@ namespace urchin {
             std::shared_ptr<Texture> maskTexture;
             float sRepeat;
             float tRepeat;
-            std::vector<Material*> materials;
+            std::vector<std::shared_ptr<Material>> materials;
             std::vector<Point2<float>> texCoordinates;
     };
 

@@ -36,9 +36,8 @@ namespace urchin {
         public:
             ConstMesh(const std::string&, const std::vector<Vertex>&, std::vector<Point2<float>>,
                     std::vector<unsigned int>, std::vector<Weight>, const std::vector<Bone>&);
-            ~ConstMesh();
 
-            const Material* getMaterial() const;
+            const Material& getMaterial() const;
 
             unsigned int getNumberVertices() const;
             const Vertex& getStructVertex(unsigned int) const;
@@ -58,7 +57,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getBaseTangents() const;
 
         private:
-            Material* material;
+            std::shared_ptr<Material> material;
 
             std::vector<Vertex> vertices;
             std::vector<Point2<float>> textureCoordinates;

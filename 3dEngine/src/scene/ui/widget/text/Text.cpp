@@ -38,8 +38,6 @@ namespace urchin {
     }
 
     Text::~Text() {
-        cleanFont();
-
         if (isTranslatableLabel()) {
             i18nService->remove(this);
         }
@@ -95,8 +93,8 @@ namespace urchin {
         updateText(label);
     }
 
-    const Font* Text::getFont() {
-        return font;
+    const Font& Text::getFont() {
+        return *font;
     }
 
     void Text::refreshTextAndWidgetSize() {
@@ -172,7 +170,6 @@ namespace urchin {
         std::string fontColor = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "color", UdaAttribute(), textChunk)->getStringValue();
         unsigned int fontHeight = retrieveFontHeight(textChunk);
 
-        cleanFont();
         std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
         font = MediaManager::instance()->getMedia<Font>(ttfFilename, fontParams);
     }
@@ -185,12 +182,6 @@ namespace urchin {
             return (unsigned int)(fontHeight.getValue() / 100.0f * (float)getSceneHeight());
         }
         throw std::runtime_error("Unknown length tpe for font height: " + std::to_string(fontHeight.getType()));
-    }
-
-    void Text::cleanFont() {
-        if (font) {
-            font->release();
-        }
     }
 
     void Text::refreshCoordinates() {

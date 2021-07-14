@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    Font* LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string>& params) {
+    std::shared_ptr<Font> LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string>& params) {
         std::locale::global(std::locale("C")); //for float
 
         assert(params.find("fontSize") != params.end());
@@ -127,7 +127,7 @@ namespace urchin {
             glyph[i].buf.clear();
         }
 
-        return new Font(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenLetters, spaceBetweenLines, height);
+        return std::make_shared<Font>(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenLetters, spaceBetweenLines, height);
     }
 
 }

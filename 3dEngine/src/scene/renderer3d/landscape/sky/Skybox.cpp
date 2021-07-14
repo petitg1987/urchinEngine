@@ -13,7 +13,7 @@ namespace urchin {
     Skybox::Skybox(const std::vector<std::string>& filenames) :
             isInitialized(false),
             filenames(filenames),
-            skyboxImages({nullptr}),
+            skyboxImages({std::shared_ptr<Image>(nullptr)}),
             offsetY(0.0f) {
         if (filenames.size() != 6) {
             throw std::invalid_argument("There is no 6 skybox filenames.");
@@ -38,7 +38,7 @@ namespace urchin {
                     defaultTexPixels.push_back(255); //B
                     defaultTexPixels.push_back(255); //A
                 }
-                skyboxImages[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels));
+                skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels));
             }
         }
 
@@ -51,20 +51,13 @@ namespace urchin {
             TextureFormat nextTextureFormat = skyboxImages[i + 1]->retrieveTextureFormat();
 
             if (skyboxImages[i]->getWidth() != skyboxImages[i]->getHeight()) {
-                clearSkyboxImages();
                 throw std::runtime_error("Skybox image must be a square. Present image size: " + std::to_string(widthSize) + "x" + std::to_string(heightSize));
             } else if (widthSize != nextWidthSize) {
-                clearSkyboxImages();
                 throw std::runtime_error("All skybox images must have the same size: " + std::to_string(widthSize) + " != " + std::to_string(nextWidthSize));
             } else if (textureFormat != nextTextureFormat) {
-                clearSkyboxImages();
                 throw std::runtime_error("All skybox images must have the same texture format: " + std::to_string(textureFormat) + " != " + std::to_string(nextTextureFormat));
             }
         }
-    }
-
-    Skybox::~Skybox() {
-        clearSkyboxImages();
     }
 
     void Skybox::initialize(RenderTarget& renderTarget) {
@@ -72,7 +65,7 @@ namespace urchin {
         std::vector<const void*> cubeDataPtr = {&skyboxImages[0]->getTexels()[0], &skyboxImages[1]->getTexels()[0], &skyboxImages[2]->getTexels()[0],
                                                 &skyboxImages[3]->getTexels()[0], &skyboxImages[4]->getTexels()[0], &skyboxImages[5]->getTexels()[0] };
         auto skyboxTexture = Texture::buildCubeMap(skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr);
-        clearSkyboxImages();
+        std::fill(begin(skyboxImages), end(skyboxImages), std::shared_ptr<Image>(nullptr));
 
         //visual
         skyboxShader = ShaderBuilder::createShader("skybox.vert.spv", "", "skybox.frag.spv", std::unique_ptr<ShaderConstants>());
@@ -130,19 +123,6 @@ namespace urchin {
                 ->build();
 
         this->isInitialized = true;
-    }
-
-    void Skybox::clearSkyboxImages() {
-        for (std::size_t i = 0; i < 6; i++) {
-            if (skyboxImages[i] != nullptr) {
-                if (!skyboxImages[i]->getName().empty()) { //resource created with ResourceManager
-                    skyboxImages[i]->release();
-                } else {
-                    delete skyboxImages[i];
-                }
-            }
-        }
-        skyboxImages = {nullptr};
     }
 
     void Skybox::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) const {

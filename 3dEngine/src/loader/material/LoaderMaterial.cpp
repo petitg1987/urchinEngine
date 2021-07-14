@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    Material* LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+    std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::locale::global(std::locale("C")); //for float
 
         UdaParser udaParser(filename);
@@ -25,9 +25,8 @@ namespace urchin {
         auto diffuse = udaParser.getUniqueChunk(false, "diffuse");
         if (diffuse) {
             auto diffuseTextureElem = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), diffuse);
-            auto* diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
+            auto diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
-            diffuseImage->release();
         }
 
         //normal data
@@ -35,9 +34,8 @@ namespace urchin {
         auto normal = udaParser.getUniqueChunk(false, "normal");
         if (normal) {
             auto normalTextureElem = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), normal);
-            auto* normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
+            auto normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
             normalTexture = normalImage->createTexture(true);
-            normalImage->release();
         }
 
         //ambient data
@@ -48,7 +46,7 @@ namespace urchin {
             fAmbientFactor = TypeConverter::toFloat(ambientFactor->getStringValue());
         }
 
-        return new Material(diffuseTexture, normalTexture, repeatableTextures, fAmbientFactor);
+        return std::make_shared<Material>(diffuseTexture, normalTexture, repeatableTextures, fAmbientFactor);
     }
 
 }

@@ -2,20 +2,16 @@
 
 namespace urchin {
 
-    Animation::Animation(ConstAnimation* constAnimation, Meshes& meshes) :
-            constAnimation(constAnimation),
+    Animation::Animation(std::shared_ptr<ConstAnimation> constAnimation, Meshes& meshes) :
+            constAnimation(std::move(constAnimation)),
             meshes(meshes),
             animationInformation() {
-        skeleton.resize(constAnimation->getNumberBones());
+        skeleton.resize(this->constAnimation->getNumberBones());
 
         animationInformation.currFrame = 0;
         animationInformation.nextFrame = 1;
         animationInformation.lastTime = 0;
-        animationInformation.maxTime = 1.0f / (float)constAnimation->getFrameRate();
-    }
-
-    Animation::~Animation() {
-        constAnimation->release();
+        animationInformation.maxTime = 1.0f / (float)this->constAnimation->getFrameRate();
     }
 
     const std::vector<Bone>& Animation::getSkeleton() const {
@@ -37,8 +33,8 @@ namespace urchin {
         return constAnimation->getOriginalGlobalAABBox();
     }
 
-    const ConstAnimation* Animation::getConstAnimation() const {
-        return constAnimation;
+    const ConstAnimation& Animation::getConstAnimation() const {
+        return *constAnimation;
     }
 
     unsigned int Animation::getCurrFrame() const {

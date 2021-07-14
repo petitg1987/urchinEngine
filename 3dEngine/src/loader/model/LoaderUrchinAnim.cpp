@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    ConstAnimation* LoaderUrchinAnim::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+    std::shared_ptr<ConstAnimation> LoaderUrchinAnim::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::locale::global(std::locale("C")); //for float
 
         std::istringstream iss;
@@ -158,6 +158,6 @@ namespace urchin {
         }
 
         file.close();
-        return (new ConstAnimation(filename, numFrames, numBones, frameRate, skeletonFrames, std::move(bboxes)));
+        return std::make_shared<ConstAnimation>(filename, numFrames, numBones, frameRate, skeletonFrames, std::move(bboxes));
     }
 }

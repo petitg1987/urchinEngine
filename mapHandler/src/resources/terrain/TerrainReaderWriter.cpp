@@ -63,7 +63,7 @@ namespace urchin {
         tRepeatChunk.setFloatValue(terrain->getMaterials()->getStRepeat().Y);
         auto& materialFilenamesChunk = udaWriter.createChunk(MATERIAL_FILENAMES, UdaAttribute(), &materialChunk);
         unsigned int i = 0;
-        for (const Material* material : terrain->getMaterials()->getMaterials()) {
+        for (const auto& material : terrain->getMaterials()->getMaterials()) {
             if (material != nullptr) {
                 auto& materialFilenameChunk = udaWriter.createChunk(MATERIAL_FILENAME, UdaAttribute(INDEX_ATTR, std::to_string(i)), &materialFilenamesChunk);
                 materialFilenameChunk.setStringValue(material->getName());

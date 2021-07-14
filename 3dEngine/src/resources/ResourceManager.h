@@ -14,14 +14,15 @@ namespace urchin {
 
             ~ResourceManager() override;
 
-            template<class T> T* getResource(const std::string&) const;
-            void addResource(const std::string&, const std::string&, Resource*);
-            void removeResource(const std::string&);
+            template<class T> std::shared_ptr<T> getResource(const std::string&) const;
+            void addResource(const std::shared_ptr<Resource>&);
 
         private:
             ResourceManager();
 
-            std::map<std::string, Resource*> mResources;
+            void cleanResources();
+
+            std::map<std::string, std::weak_ptr<Resource>> resources;
     };
 
     #include "ResourceManager.inl"
