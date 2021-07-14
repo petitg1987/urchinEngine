@@ -20,23 +20,21 @@ namespace urchin {
             const Light* light = sceneLight->getLight();
 
             if (const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
-                auto* geometryModel = new SphereModel(omnidirectionalLight->getSphereScope(), 25);
-                lightScopeModels.push_back(geometryModel);
+                auto geometryModel = std::make_unique<SphereModel>(omnidirectionalLight->getSphereScope(), 25);
+                geometryModel->setColor(1.0f, 0.0f, 0.0f);
+                lightScopeModels.push_back(std::move(geometryModel));
             }
 
-            for (auto& lightScopeModel : lightScopeModels) {
-                lightScopeModel->setColor(1.0, 0.0, 0.0);
+            for (const auto& lightScopeModel : lightScopeModels) {
                 sceneManager.getActiveRenderer3d()->getGeometryManager().addGeometry(lightScopeModel);
             }
         }
     }
 
     void LightScopeDisplayer::cleanCurrentDisplay() {
-        for (auto& lightScopeModel : lightScopeModels) {
-            sceneManager.getActiveRenderer3d()->getGeometryManager().removeGeometry(lightScopeModel);
-            delete lightScopeModel;
+        for (const auto& lightScopeModel : lightScopeModels) {
+            sceneManager.getActiveRenderer3d()->getGeometryManager().removeGeometry(*lightScopeModel);
         }
-
         lightScopeModels.clear();
     }
 }

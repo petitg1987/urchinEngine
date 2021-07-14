@@ -63,6 +63,7 @@ namespace urchin {
         //models
         modelSetDisplayer.reset(nullptr);
         modelOctreeManager.reset(nullptr);
+        geometryManager.reset(nullptr);
 
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();

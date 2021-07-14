@@ -17,12 +17,12 @@ namespace urchin {
 
         private:
             std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>>&, float) const;
-            void addNavMeshModel(GeometryModel*, PolygonMode, const Vector3<float>&);
+            void addNavMeshModel(std::shared_ptr<GeometryModel>, PolygonMode, const Vector3<float>&);
 
             AIManager& aiManager;
             Renderer3d& renderer3d;
 
-            std::vector<GeometryModel*> navMeshModels;
+            std::vector<std::shared_ptr<GeometryModel>> navMeshModels;
             unsigned int loadedNavMeshId;
     };
 

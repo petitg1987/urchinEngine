@@ -13,8 +13,8 @@ namespace urchin {
         public:
             explicit GeometryManager(RenderTarget&);
 
-            void addGeometry(GeometryModel*);
-            void removeGeometry(GeometryModel*);
+            void addGeometry(std::shared_ptr<GeometryModel>);
+            void removeGeometry(const GeometryModel&);
 
             void onCameraProjectionUpdate(const Camera&);
 
@@ -23,7 +23,7 @@ namespace urchin {
         private:
             RenderTarget& renderTarget;
 
-            std::vector<GeometryModel*> geometryModels;
+            std::vector<std::shared_ptr<GeometryModel>> geometryModels;
             Matrix4<float> projectionMatrix;
     };
 

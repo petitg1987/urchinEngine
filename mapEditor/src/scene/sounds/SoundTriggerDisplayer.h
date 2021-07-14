@@ -14,15 +14,15 @@ namespace urchin {
             void displaySoundTriggerFor(const SceneSound*);
 
         private:
-            GeometryModel* retrieveGeometry(const SoundShape&);
+            std::unique_ptr<GeometryModel> retrieveGeometry(const SoundShape&);
 
-            GeometryModel* retrieveSphereGeometry(const SoundShape&) const;
-            GeometryModel* retrieveBoxGeometry(const SoundShape&) const;
+            std::unique_ptr<GeometryModel> retrieveSphereGeometry(const SoundShape&) const;
+            std::unique_ptr<GeometryModel> retrieveBoxGeometry(const SoundShape&) const;
 
             void cleanCurrentDisplay();
 
             SceneManager& sceneManager;
-            std::vector<GeometryModel*> soundTriggerModels;
+            std::vector<std::shared_ptr<GeometryModel>> soundTriggerModels;
     };
 
 }

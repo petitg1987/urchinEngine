@@ -47,15 +47,15 @@ namespace urchin {
             }
 
             if (!triangleMeshPoints.empty()) {
-                auto* meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.02f));
+                auto meshModel = std::make_shared<TrianglesModel>(toDisplayPoints(triangleMeshPoints, 0.02f));
                 addNavMeshModel(meshModel, PolygonMode::FILL, Vector3<float>(0.0, 0.0, 1.0));
 
-                auto* meshWireframeModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.025f));
+                auto meshWireframeModel = std::make_shared<TrianglesModel>(toDisplayPoints(triangleMeshPoints, 0.025f));
                 addNavMeshModel(meshWireframeModel, PolygonMode::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
             }
 
             if (!triangleJumpPoints.empty()) {
-                auto* jumpModel = new TrianglesModel(triangleJumpPoints);
+                auto jumpModel = std::make_shared<TrianglesModel>(triangleJumpPoints);
                 addNavMeshModel(jumpModel, PolygonMode::FILL, Vector3<float>(0.5, 0.0, 0.5));
             }
 
@@ -64,9 +64,8 @@ namespace urchin {
     }
 
     void NavMeshDisplayer::clearDisplay() {
-        for (auto navMeshModel : navMeshModels) {
-            renderer3d.getGeometryManager().removeGeometry(navMeshModel);
-            delete navMeshModel;
+        for (const auto& navMeshModel : navMeshModels) {
+            renderer3d.getGeometryManager().removeGeometry(*navMeshModel);
         }
         navMeshModels.clear();
     }
@@ -74,7 +73,6 @@ namespace urchin {
     std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>>& points, float yElevation) const {
         std::vector<Point3<float>> displayPoints;
         displayPoints.reserve(points.size());
-
         for (const auto& point : points) {
             displayPoints.emplace_back(Point3<float>(point.X, point.Y + yElevation, point.Z));
         }
@@ -82,12 +80,12 @@ namespace urchin {
         return displayPoints;
     }
 
-    void NavMeshDisplayer::addNavMeshModel(GeometryModel* model, PolygonMode polygonMode, const Vector3<float>& color) {
+    void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, PolygonMode polygonMode, const Vector3<float>& color) {
         model->setLineWidth(4.0f);
         model->enableTransparency();
         model->setColor(color.X, color.Y, color.Z, 0.5f);
         model->setPolygonMode(polygonMode);
         navMeshModels.push_back(model);
-        renderer3d.getGeometryManager().addGeometry(model);
+        renderer3d.getGeometryManager().addGeometry(std::move(model));
     }
 }

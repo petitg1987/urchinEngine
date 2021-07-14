@@ -9,21 +9,17 @@ namespace urchin {
 
     }
 
-    void GeometryManager::addGeometry(GeometryModel* geometry) {
-        if (geometry) {
-            geometryModels.push_back(geometry);
+    void GeometryManager::addGeometry(std::shared_ptr<GeometryModel> geometry) {
+        geometry->initialize(renderTarget);
+        geometry->onCameraProjectionUpdate(projectionMatrix);
 
-            geometry->initialize(renderTarget);
-            geometry->onCameraProjectionUpdate(projectionMatrix);
-        }
+        geometryModels.push_back(std::move(geometry));
     }
 
-    void GeometryManager::removeGeometry(GeometryModel* geometry) {
-        if (geometry) {
-            auto it = std::find(geometryModels.begin(), geometryModels.end(), geometry);
-            if (it != geometryModels.end()) {
-                geometryModels.erase(it);
-            }
+    void GeometryManager::removeGeometry(const GeometryModel& geometry) {
+        auto it = std::find_if(geometryModels.begin(), geometryModels.end(), [&geometry](const auto& o){return o.get() == &geometry;});
+        if (it != geometryModels.end()) {
+            geometryModels.erase(it);
         }
     }
 
@@ -36,7 +32,7 @@ namespace urchin {
     }
 
     void GeometryManager::prepareRendering(const Matrix4<float>& viewMatrix) const {
-        for (auto* geometryModel : geometryModels) {
+        for (auto& geometryModel : geometryModels) {
             geometryModel->prepareRendering(viewMatrix);
         }
     }

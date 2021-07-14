@@ -33,6 +33,7 @@ namespace urchin {
         objectMoveController.reset(nullptr);
         lightScopeDisplayer.reset(nullptr);
         soundTriggerDisplayer.reset(nullptr);
+        navMeshDisplayer.reset(nullptr);
         sceneManager.reset(nullptr);
 
         SingletonManager::destroyAllSingletons();
