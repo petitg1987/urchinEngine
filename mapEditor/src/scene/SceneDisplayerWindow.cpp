@@ -12,7 +12,6 @@ namespace urchin {
             mapEditorPath(std::move(mapEditorPath)),
             sceneWindowController(std::make_unique<SceneWindowController>(this)),
             mouseController(std::make_unique<MouseController>(this)),
-            sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
             mouseY(0) {
@@ -25,7 +24,6 @@ namespace urchin {
     }
 
     SceneDisplayerWindow::~SceneDisplayerWindow() {
-        delete sceneDisplayer;
         GraphicService::destroySurface();
     }
 
@@ -75,7 +73,7 @@ namespace urchin {
         closeMap();
         statusBarController->applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = new SceneDisplayer(sceneWindowController, &sceneController, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, &sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
         sceneController.setup(&sceneDisplayer->getMapHandler());
@@ -83,7 +81,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::loadEmptyScene() {
-        sceneDisplayer = new SceneDisplayer(sceneWindowController, nullptr, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, nullptr, mouseController, statusBarController);
         sceneDisplayer->loadEmptyScene(mapEditorPath);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
     }
@@ -98,8 +96,7 @@ namespace urchin {
         statusBarController->clearState();
         clearVkInstance();
 
-        delete sceneDisplayer;
-        sceneDisplayer = nullptr;
+        sceneDisplayer.reset(nullptr);
     }
 
     void SceneDisplayerWindow::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
@@ -249,7 +246,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::addObserverObjectMoveController(Observer* observer, int notificationType) {
-        assert(sceneDisplayer != nullptr);
+        assert(sceneDisplayer);
         sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }
 
