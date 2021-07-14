@@ -1,5 +1,6 @@
 template<class OBJ> AABBNode<OBJ>::AABBNode(std::unique_ptr<AABBNodeData<OBJ>> nodeData) :
-        nodeData(std::move(nodeData)) {
+        nodeData(std::move(nodeData)),
+        parentNode(nullptr) {
 
 }
 
@@ -20,18 +21,18 @@ template<class OBJ> bool AABBNode<OBJ>::isRoot() const {
     return parentNode == nullptr;
 }
 
-template<class OBJ> void AABBNode<OBJ>::setParent(std::shared_ptr<AABBNode<OBJ>> parentNode) {
+template<class OBJ> void AABBNode<OBJ>::setParent(AABBNode<OBJ>* parentNode) {
     this->parentNode = parentNode;
 }
 
-template<class OBJ> std::shared_ptr<AABBNode<OBJ>> AABBNode<OBJ>::getParent() const {
+template<class OBJ> AABBNode<OBJ>* AABBNode<OBJ>::getParent() const {
     return parentNode;
 }
 
 template<class OBJ> void AABBNode<OBJ>::setLeftChild(std::shared_ptr<AABBNode<OBJ>> leftChild) {
     children[0] = leftChild;
     if (leftChild) {
-        children[0]->setParent(this->shared_from_this());
+        children[0]->setParent(this);
     }
 }
 
@@ -46,7 +47,7 @@ template<class OBJ> std::shared_ptr<AABBNode<OBJ>> AABBNode<OBJ>::getLeftChildSm
 template<class OBJ> void AABBNode<OBJ>::setRightChild(std::shared_ptr<AABBNode<OBJ>> rightChild) {
     children[1] = rightChild;
     if (rightChild) {
-        children[1]->setParent(this->shared_from_this());
+        children[1]->setParent(this);
     }
 }
 

@@ -39,7 +39,7 @@ namespace urchin {
             std::vector<std::unique_ptr<AABBNodeData<OBJ>>> extractAllNodeData();
             void insertNode(std::shared_ptr<AABBNode<OBJ>>, std::shared_ptr<AABBNode<OBJ>>);
             void replaceNode(const AABBNode<OBJ>&, std::shared_ptr<AABBNode<OBJ>>);
-            void removeNode(AABBNode<OBJ>&);
+            void removeLeafNode(AABBNode<OBJ>&);
 
             float fatMargin;
             std::shared_ptr<AABBNode<OBJ>> rootNode;

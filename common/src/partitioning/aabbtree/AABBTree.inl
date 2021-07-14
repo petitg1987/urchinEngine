@@ -134,7 +134,7 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
         preRemoveObjectCallback(*nodeToRemove);
 
         objectsNode.erase(itFind);
-        removeNode(*nodeToRemove);
+        removeLeafNode(*nodeToRemove);
     }
 }
 
@@ -142,17 +142,15 @@ template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>&) 
     //can be override
 }
 
-template<class OBJ> void AABBTree<OBJ>::removeNode(AABBNode<OBJ>& nodeToRemove) {
-    std::shared_ptr<AABBNode<OBJ>> parentNode = nodeToRemove.getParent();
-
-    if (!parentNode) {
-        rootNode = nullptr;
-    } else {
+template<class OBJ> void AABBTree<OBJ>::removeLeafNode(AABBNode<OBJ>& nodeToRemove) {
+    assert(nodeToRemove.isLeaf());
+    if (nodeToRemove.getParent()) {
         std::shared_ptr<AABBNode<OBJ>> sibling = nodeToRemove.getSibling();
-        replaceNode(*parentNode, sibling);
-
-        parentNode->setLeftChild(nullptr); //avoid child removal
-        parentNode->setRightChild(nullptr); //avoid child removal
+        replaceNode(*nodeToRemove.getParent(), sibling);
+        //at this stage: parentNode and nodeToRemove are not anymore in the tree
+    } else {
+        assert(&nodeToRemove == rootNode.get());
+        rootNode = nullptr;
     }
 }
 

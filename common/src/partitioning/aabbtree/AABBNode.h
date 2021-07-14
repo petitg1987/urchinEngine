@@ -30,8 +30,8 @@ namespace urchin {
 
             std::unique_ptr<AABBNodeData<OBJ>> moveNodeData();
 
-            void setParent(std::shared_ptr<AABBNode<OBJ>>);
-            std::shared_ptr<AABBNode<OBJ>> getParent() const;
+            void setParent(AABBNode<OBJ>*);
+            AABBNode<OBJ>* getParent() const;
 
             void setLeftChild(std::shared_ptr<AABBNode<OBJ>>);
             std::shared_ptr<AABBNode<OBJ>> getLeftChildSmartPtr() const;
@@ -44,7 +44,7 @@ namespace urchin {
             std::unique_ptr<AABBNodeData<OBJ>> nodeData;
             AABBox<float> aabbox;
 
-            std::shared_ptr<AABBNode<OBJ>> parentNode;
+            AABBNode<OBJ>* parentNode;
             std::shared_ptr<AABBNode<OBJ>> children[2];
     };
 
