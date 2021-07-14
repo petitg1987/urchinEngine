@@ -269,9 +269,7 @@ namespace urchin {
             }
         }
 
-        std::sort(renderDependencies.begin(), renderDependencies.end() );
-        renderDependencies.erase(std::unique(renderDependencies.begin(), renderDependencies.end()), renderDependencies.end());
-
+        VectorUtil::removeDuplicates(renderDependencies);
         return renderDependencies;
     }
 
