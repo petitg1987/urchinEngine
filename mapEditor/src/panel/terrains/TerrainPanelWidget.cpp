@@ -378,7 +378,7 @@ namespace urchin {
         this->maskMapFilenameText->setText(QString::fromStdString(terrain->getMaterials()->getMaskMapFilename()));
         this->materialFilenameTexts.resize(TerrainMaterials::MAX_MATERIAL);
         for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {
-            Material* material = terrain->getMaterials()->getMaterials()[i];
+            auto& material = terrain->getMaterials()->getMaterials()[i];
 
             if (material != nullptr) {
                 this->materialFilenameTexts[i]->setText(QString::fromStdString(material->getName()));

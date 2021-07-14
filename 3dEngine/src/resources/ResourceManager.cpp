@@ -23,7 +23,7 @@ namespace urchin {
 
     void ResourceManager::cleanResources() {
         for(auto it = resources.begin(); it != resources.end();) {
-            if(it->second.lock() == nullptr) {
+            if(it->second.expired()) {
                 it = resources.erase(it);
             } else {
                 ++it;
