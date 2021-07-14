@@ -26,7 +26,7 @@ template<class T> Octree<T>::Octree(const Point3<float>& position, const Vector3
             for (float yValue : splitY) {
                 for (float zValue : splitZ) {
                     Point3<float> positionChild(xValue, yValue, zValue);
-                    children.push_back(new Octree(positionChild, sizeChild, minSize));
+                    children.push_back(std::make_unique<Octree>(positionChild, sizeChild, minSize));
                 }
             }
         }
@@ -39,11 +39,6 @@ template<class T> Octree<T>::~Octree() {
         for (auto& octreeable : octreeables) {
             octreeable->removeRefOctree(this);
         }
-    } else {
-        //remove children
-        for (auto& child : children) {
-            delete child;
-        }
     }
 }
 
@@ -55,7 +50,7 @@ template<class T> bool Octree<T>::isLeaf() const {
     return bIsLeaf;
 }
 
-template<class T> const std::vector<Octree<T>*> &Octree<T>::getChildren() const {
+template<class T> const std::vector<std::unique_ptr<Octree<T>>> &Octree<T>::getChildren() const {
     return children;
 }
 

@@ -45,7 +45,7 @@ namespace urchin {
 
             float overflowSize;
             float minSize;
-            Octree<T>* mainOctree;
+            std::unique_ptr<Octree<T>> mainOctree;
 
             std::vector<T*> movingOctreeables;
             mutable std::vector<Octree<T>*> browseNodes;

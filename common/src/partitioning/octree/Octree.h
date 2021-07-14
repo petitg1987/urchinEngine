@@ -23,14 +23,14 @@ namespace urchin {
 
             bool isLeaf() const;
 
-            const std::vector<Octree<T>*>& getChildren() const;
+            const std::vector<std::unique_ptr<Octree<T>>>& getChildren() const;
 
             const std::vector<std::shared_ptr<T>>& getOctreeables() const;
             void addOctreeable(std::shared_ptr<T>, bool addRef);
             std::shared_ptr<T> removeOctreeable(T*, bool removeRef);
 
         private:
-            std::vector<Octree*> children;
+            std::vector<std::unique_ptr<Octree>> children;
             std::vector<std::shared_ptr<T>> octreeables;
 
             AABBox<float> bbox;

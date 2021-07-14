@@ -5,26 +5,21 @@ template<class OBJ> AABBTree<OBJ>::AABBTree(float fatMargin) :
 
 }
 
-template<class OBJ> AABBTree<OBJ>::~AABBTree() {
-    delete rootNode;
-}
-
 template<class OBJ> void AABBTree<OBJ>::updateFatMargin(float fatMargin) {
     this->fatMargin = fatMargin;
 
     std::vector<AABBNodeData<OBJ>*> allNodeData = extractAllNodeData();
-    delete rootNode;
     rootNode = nullptr;
     for (const auto nodeData : allNodeData) {
         addObject(nodeData);
     }
 }
 
-template <class OBJ> AABBNode<OBJ> *AABBTree<OBJ>::getRootNode() const {
-    return rootNode;
+template <class OBJ> AABBNode<OBJ>* AABBTree<OBJ>::getRootNode() const {
+    return rootNode.get();
 }
 
-template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ object) const {
+template <class OBJ> AABBNodeData<OBJ>* AABBTree<OBJ>::getNodeData(OBJ object) const {
     return objectsNode.find(object)->second->getNodeData();
 }
 
@@ -35,7 +30,7 @@ template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ object) c
 template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nodeObjects) const {
     browseNodes.clear();
     if (rootNode != nullptr) {
-        browseNodes.push_back(rootNode);
+        browseNodes.push_back(rootNode.get());
     }
 
     for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
@@ -55,7 +50,7 @@ template <class OBJ> std::vector<AABBNodeData<OBJ>*> AABBTree<OBJ>::extractAllNo
 
     browseNodes.clear();
     if (rootNode != nullptr) {
-        browseNodes.push_back(rootNode);
+        browseNodes.push_back(rootNode.get());
     }
 
     for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
@@ -74,7 +69,7 @@ template <class OBJ> std::vector<AABBNodeData<OBJ>*> AABBTree<OBJ>::extractAllNo
 }
 
 template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ>* nodeData) {
-    auto* nodeToInsert = new AABBNode<OBJ>(nodeData);
+    auto nodeToInsert = std::make_shared<AABBNode<OBJ>>(nodeData);
 
     if (rootNode) {
         nodeToInsert->updateAABBox(fatMargin);
@@ -86,18 +81,18 @@ template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ>* nodeData) 
 
     objectsNode[nodeData->getNodeObject()] = nodeToInsert;
 
-    postAddObjectCallback(nodeToInsert);
+    postAddObjectCallback(*nodeToInsert);
 }
 
-template<class OBJ> void AABBTree<OBJ>::postAddObjectCallback(AABBNode<OBJ>*) {
+template<class OBJ> void AABBTree<OBJ>::postAddObjectCallback(AABBNode<OBJ>&) {
     //can be override
 }
 
-template<class OBJ> void AABBTree<OBJ>::insertNode(AABBNode<OBJ>* nodeToInsert, AABBNode<OBJ>* currentNode) {
+template<class OBJ> void AABBTree<OBJ>::insertNode(std::shared_ptr<AABBNode<OBJ>> nodeToInsert, std::shared_ptr<AABBNode<OBJ>> currentNode) {
     if (currentNode->isLeaf()) {
-        auto* newParent = new AABBNode<OBJ>(nullptr);
-        replaceNode(currentNode, newParent);
-        newParent->setLeftChild(nodeToInsert);
+        auto newParent = std::make_shared<AABBNode<OBJ>>(nullptr);
+        replaceNode(*currentNode, newParent);
+        newParent->setLeftChild(std::move(nodeToInsert));
         newParent->setRightChild(currentNode);
         newParent->updateAABBox(fatMargin);
     } else {
@@ -108,25 +103,25 @@ template<class OBJ> void AABBTree<OBJ>::insertNode(AABBNode<OBJ>* nodeToInsert, 
         float volumeDiffRight = rightAABBox.merge(nodeToInsert->getAABBox()).getVolume() - rightAABBox.getVolume();
 
         if (volumeDiffLeft < volumeDiffRight) {
-            insertNode(nodeToInsert, currentNode->getLeftChild());
+            insertNode(std::move(nodeToInsert), currentNode->getLeftChildSmartPtr());
         } else {
-            insertNode(nodeToInsert, currentNode->getRightChild());
+            insertNode(std::move(nodeToInsert), currentNode->getRightChildSmartPtr());
         }
 
         currentNode->updateAABBox(fatMargin);
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::replaceNode(AABBNode<OBJ>* nodeToReplace, AABBNode<OBJ>* newNode) {
-    if (nodeToReplace->getParent()) {
-        if (nodeToReplace->getParent()->getLeftChild() == nodeToReplace) {
-            nodeToReplace->getParent()->setLeftChild(newNode);
+template<class OBJ> void AABBTree<OBJ>::replaceNode(const AABBNode<OBJ>& nodeToReplace, std::shared_ptr<AABBNode<OBJ>> newNode) {
+    if (nodeToReplace.getParent()) {
+        if (nodeToReplace.getParent()->getLeftChild() == &nodeToReplace) {
+            nodeToReplace.getParent()->setLeftChild(std::move(newNode));
         } else {
-            nodeToReplace->getParent()->setRightChild(newNode);
+            nodeToReplace.getParent()->setRightChild(std::move(newNode));
         }
     } else {
-        rootNode = newNode;
-        newNode->setParent(nullptr);
+        rootNode = std::move(newNode);
+        rootNode->setParent(nullptr);
     }
 }
 
@@ -137,33 +132,30 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(AABBNodeData<OBJ>* nodeData
 template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
     auto itFind = objectsNode.find(object);
     if (itFind != objectsNode.end()) {
-        AABBNode<OBJ>* nodeToRemove = itFind->second;
-        preRemoveObjectCallback(nodeToRemove);
+        AABBNode<OBJ>* nodeToRemove = itFind->second.get();
+        preRemoveObjectCallback(*nodeToRemove);
 
         objectsNode.erase(object);
         removeNode(nodeToRemove);
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>*) {
+template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>&) {
     //can be override
 }
 
 template<class OBJ> void AABBTree<OBJ>::removeNode(AABBNode<OBJ>* nodeToRemove) {
-    AABBNode<OBJ>* parentNode = nodeToRemove->getParent();
+    std::shared_ptr<AABBNode<OBJ>> parentNode = nodeToRemove->getParent();
 
     if (!parentNode) {
         rootNode = nullptr;
     } else {
-        AABBNode<OBJ>* sibling = nodeToRemove->getSibling();
-        replaceNode(parentNode, sibling);
+        std::shared_ptr<AABBNode<OBJ>> sibling = nodeToRemove->getSibling();
+        replaceNode(*parentNode, sibling);
 
         parentNode->setLeftChild(nullptr); //avoid child removal
         parentNode->setRightChild(nullptr); //avoid child removal
-        delete parentNode;
     }
-
-    delete nodeToRemove;
 }
 
 template<class OBJ> void AABBTree<OBJ>::updateObjects() {
@@ -171,9 +163,9 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
         auto it = objectsNode.begin();
         std::advance(it, i);
 
-        AABBNode<OBJ>* leaf = it->second;
-        if (it->second->getNodeData()->isObjectMoving()) {
-            preUpdateObjectCallback(leaf);
+        std::shared_ptr<AABBNode<OBJ>> leaf = it->second;
+        if (leaf->getNodeData()->isObjectMoving()) {
+            preUpdateObjectCallback(*leaf);
 
             const AABBox<float>& leafFatAABBox = leaf->getAABBox();
             const AABBox<float>& objectAABBox = leaf->getNodeData()->retrieveObjectAABBox();
@@ -187,7 +179,7 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>*) {
+template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>&) {
     //can be override
 }
 
@@ -196,8 +188,8 @@ template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>*) 
  */
 template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox, std::vector<OBJ>& objectsAABBoxHit) const {
     browseNodes.clear();
-    if (rootNode != nullptr) {
-        browseNodes.push_back(rootNode);
+    if (rootNode) {
+        browseNodes.push_back(rootNode.get());
     }
 
     for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
@@ -219,8 +211,8 @@ template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox,
  */
 template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vector<OBJ>& objectsAABBoxHitRay) const {
     browseNodes.clear();
-    if (rootNode != nullptr) {
-        browseNodes.push_back(rootNode);
+    if (rootNode) {
+        browseNodes.push_back(rootNode.get());
     }
 
     for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
@@ -246,8 +238,8 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
 template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, const OBJ objectToExclude,
                                std::vector<OBJ>& objectsAABBoxHitEnlargedRay) const {
     browseNodes.clear();
-    if (rootNode != nullptr) {
-        browseNodes.push_back(rootNode);
+    if (rootNode) {
+        browseNodes.push_back(rootNode.get());
     }
 
     for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)

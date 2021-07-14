@@ -19,8 +19,6 @@ template<class T> OctreeManager<T>::~OctreeManager() {
         for (const auto& octreeable : getAllOctreeables()) {
             removeOctreeable(octreeable.get());
         }
-
-        delete mainOctree;
     }
 }
 
@@ -72,15 +70,13 @@ template<class T> void OctreeManager<T>::buildOctree(std::vector<std::shared_ptr
         position.Y -= overflowSize;
         position.Z -= overflowSize;
 
-        delete mainOctree;
-        mainOctree = new Octree<T>(position, size, minSize);
+        mainOctree = std::make_unique<Octree<T>>(position, size, minSize);
 
         for (auto& octreeable : octreeables) {
             addOctreeable(octreeable);
         }
     } else {
-        delete mainOctree;
-        mainOctree = new Octree<T>(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f), minSize);
+        mainOctree = std::make_unique<Octree<T>>(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f), minSize);
     }
 
     notifyObservers(this, OCTREE_BUILT);
@@ -90,7 +86,7 @@ template<class T> void OctreeManager<T>::addOctreeable(std::shared_ptr<T> octree
     bool resized = resizeOctree(octreeable);
     if (!resized) {
         browseNodes.clear();
-        browseNodes.push_back(mainOctree);
+        browseNodes.push_back(mainOctree.get());
         for (std::size_t i = 0; i < browseNodes.size(); ++i) {
             Octree<T>* octree = browseNodes[i];
 
@@ -98,7 +94,9 @@ template<class T> void OctreeManager<T>::addOctreeable(std::shared_ptr<T> octree
                 if (octree->isLeaf()) {
                     octree->addOctreeable(octreeable, true);
                 } else {
-                    browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+                    for (auto& child : octree->getChildren()) {
+                        browseNodes.push_back(child.get());
+                    }
                 }
             }
         }
@@ -166,7 +164,7 @@ template<class T> void OctreeManager<T>::postRefreshOctreeables() {
     postRefreshModCount++;
 }
 
-template<class T> const Octree<T> &OctreeManager<T>::getMainOctree() const {
+template<class T> const Octree<T>& OctreeManager<T>::getMainOctree() const {
     return *mainOctree;
 }
 
@@ -174,14 +172,16 @@ template<class T> std::vector<const Octree<T>*> OctreeManager<T>::getAllLeafOctr
     std::vector<const Octree<T>*> leafOctrees;
 
     browseNodes.clear();
-    browseNodes.push_back(mainOctree);
+    browseNodes.push_back(mainOctree.get());
     for (std::size_t i = 0; i < browseNodes.size(); ++i) {
         const Octree<T>* octree = browseNodes[i];
 
         if (octree->isLeaf()) {
             leafOctrees.push_back(octree);
         } else {
-            browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+            for (auto& child : octree->getChildren()) {
+                browseNodes.push_back(child.get());
+            }
         }
     }
 
@@ -193,7 +193,7 @@ template<class T> std::vector<std::shared_ptr<T>> OctreeManager<T>::getAllOctree
 
     if (mainOctree) {
         browseNodes.clear();
-        browseNodes.push_back(mainOctree);
+        browseNodes.push_back(mainOctree.get());
         for (std::size_t i = 0; i < browseNodes.size(); ++i) {
             const Octree<T>* octree = browseNodes[i];
 
@@ -207,7 +207,9 @@ template<class T> std::vector<std::shared_ptr<T>> OctreeManager<T>::getAllOctree
                     }
                 }
             } else {
-                browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+                for (auto& child : octree->getChildren()) {
+                    browseNodes.push_back(child.get());
+                }
             }
         }
     }
@@ -226,7 +228,7 @@ template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<f
     ScopeProfiler sp(Profiler::graphic(), "getOctreeables");
 
     browseNodes.clear();
-    browseNodes.push_back(mainOctree);
+    browseNodes.push_back(mainOctree.get());
     for (std::size_t i = 0; i < browseNodes.size(); ++i) {
         const Octree<T>* octree = browseNodes[i];
 
@@ -241,7 +243,9 @@ template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<f
                     }
                 }
             } else {
-                browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+                for (auto& child : octree->getChildren()) {
+                    browseNodes.push_back(child.get());
+                }
             }
         }
     }

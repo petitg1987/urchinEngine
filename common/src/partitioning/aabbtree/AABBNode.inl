@@ -6,9 +6,6 @@ template<class OBJ> AABBNode<OBJ>::AABBNode(AABBNodeData<OBJ>* nodeData) :
 }
 
 template<class OBJ> AABBNode<OBJ>::~AABBNode() {
-    delete children[0];
-    delete children[1];
-
     delete nodeData;
 }
 
@@ -24,38 +21,30 @@ template<class OBJ> bool AABBNode<OBJ>::isRoot() const {
     return parentNode == nullptr;
 }
 
-template<class OBJ> void AABBNode<OBJ>::setParent(AABBNode* parentNode) {
+template<class OBJ> void AABBNode<OBJ>::setParent(std::shared_ptr<AABBNode<OBJ>> parentNode) {
     this->parentNode = parentNode;
 }
 
-template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getParent() const {
-    return parentNode;
-}
-
-template<class OBJ> void AABBNode<OBJ>::setLeftChild(AABBNode* leftChild) {
+template<class OBJ> void AABBNode<OBJ>::setLeftChild(std::shared_ptr<AABBNode<OBJ>> leftChild) {
     this->children[0] = leftChild;
     if (leftChild) {
-        this->children[0]->setParent(this);
+        this->children[0]->setParent(this->shared_from_this());
     }
 }
 
-template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getLeftChild() const {
-    return children[0];
+template<class OBJ> AABBNode<OBJ>* AABBNode<OBJ>::getLeftChild() const {
+    return children[0].get();
 }
 
-template<class OBJ> void AABBNode<OBJ>::setRightChild(AABBNode* rightChild) {
+template<class OBJ> void AABBNode<OBJ>::setRightChild(std::shared_ptr<AABBNode<OBJ>> rightChild) {
     this->children[1] = rightChild;
     if (rightChild) {
-        this->children[1]->setParent(this);
+        this->children[1]->setParent(this->shared_from_this());
     }
 }
 
-template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getRightChild() const {
-    return children[1];
-}
-
-template<class OBJ> AABBNode<OBJ> *AABBNode<OBJ>::getSibling() const {
-    return parentNode->getLeftChild() == this ? parentNode->getRightChild() : parentNode->getLeftChild();
+template<class OBJ> AABBNode<OBJ>* AABBNode<OBJ>::getRightChild() const {
+    return children[1].get();
 }
 
 /**
@@ -78,4 +67,20 @@ template<class OBJ> void AABBNode<OBJ>::updateAABBox(float fatMargin) {
 
 template<class OBJ> void AABBNode<OBJ>::clearNodeData() {
     nodeData = nullptr;
+}
+
+template<class OBJ> std::shared_ptr<AABBNode<OBJ>> AABBNode<OBJ>::getParent() const {
+    return parentNode;
+}
+
+template<class OBJ> std::shared_ptr<AABBNode<OBJ>> AABBNode<OBJ>::getLeftChildSmartPtr() const {
+    return children[0];
+}
+
+template<class OBJ> std::shared_ptr<AABBNode<OBJ>> AABBNode<OBJ>::getRightChildSmartPtr() const {
+    return children[1];
+}
+
+template<class OBJ> std::shared_ptr<AABBNode<OBJ>> AABBNode<OBJ>::getSibling() const {
+    return parentNode->getLeftChild() == this ? parentNode->getRightChildSmartPtr() : parentNode->getLeftChildSmartPtr();
 }

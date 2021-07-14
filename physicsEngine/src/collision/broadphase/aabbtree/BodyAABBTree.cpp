@@ -21,7 +21,7 @@ namespace urchin {
         AABBTree::addObject(nodeData);
     }
 
-    void BodyAABBTree::postAddObjectCallback(AABBNode<AbstractBody*>* newNode) {
+    void BodyAABBTree::postAddObjectCallback(AABBNode<AbstractBody*>& newNode) {
         computeOverlappingPairsFor(newNode);
     }
 
@@ -30,8 +30,8 @@ namespace urchin {
         AABBTree::removeObject(nodeData);
     }
 
-    void BodyAABBTree::preRemoveObjectCallback(AABBNode<AbstractBody*>* nodeToDelete) {
-        auto* bodyNodeToDelete = dynamic_cast<BodyAABBNodeData*>(nodeToDelete->getNodeData());
+    void BodyAABBTree::preRemoveObjectCallback(AABBNode<AbstractBody*>& nodeToDelete) {
+        auto* bodyNodeToDelete = dynamic_cast<BodyAABBNodeData*>(nodeToDelete.getNodeData());
         removeOverlappingPairs(bodyNodeToDelete);
     }
 
@@ -44,7 +44,7 @@ namespace urchin {
         AABBTree::updateObjects();
     }
 
-    void BodyAABBTree::preUpdateObjectCallback(AABBNode<AbstractBody*>* nodeToUpdate) {
+    void BodyAABBTree::preUpdateObjectCallback(AABBNode<AbstractBody*>& nodeToUpdate) {
         controlBoundaries(nodeToUpdate);
     }
 
@@ -52,16 +52,16 @@ namespace urchin {
         return defaultPairContainer->getOverlappingPairs();
     }
 
-    void BodyAABBTree::computeOverlappingPairsFor(AABBNode<AbstractBody*>* leafNode) {
+    void BodyAABBTree::computeOverlappingPairsFor(AABBNode<AbstractBody*>& leafNode) {
         browseNodes.clear();
         browseNodes.push_back(AABBTree::getRootNode());
 
         for (std::size_t i = 0; i < browseNodes.size(); ++i) { //tree traversal: pre-order (iterative)
             const AABBNode<AbstractBody*>* currentNode = browseNodes[i];
 
-            if (leafNode != currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox())) {
+            if (&leafNode != currentNode && leafNode.getAABBox().collideWithAABBox(currentNode->getAABBox())) {
                 if (currentNode->isLeaf()) {
-                    createOverlappingPair(dynamic_cast<BodyAABBNodeData*>(leafNode->getNodeData()), dynamic_cast<BodyAABBNodeData*>(currentNode->getNodeData()));
+                    createOverlappingPair(dynamic_cast<BodyAABBNodeData*>(leafNode.getNodeData()), dynamic_cast<BodyAABBNodeData*>(currentNode->getNodeData()));
                 } else {
                     browseNodes.push_back(currentNode->getRightChild());
                     browseNodes.push_back(currentNode->getLeftChild());
@@ -119,11 +119,11 @@ namespace urchin {
         minYBoundary -= worldHeight * BOUNDARIES_MARGIN_PERCENTAGE;
     }
 
-    void BodyAABBTree::controlBoundaries(AABBNode<AbstractBody*>* leafNode) const {
-        const AABBox<float>& bodyAABBox = leafNode->getNodeData()->retrieveObjectAABBox();
+    void BodyAABBTree::controlBoundaries(AABBNode<AbstractBody*>& leafNode) const {
+        const AABBox<float>& bodyAABBox = leafNode.getNodeData()->retrieveObjectAABBox();
 
         if (bodyAABBox.getMax().Y < minYBoundary) {
-            AbstractBody* body = leafNode->getNodeData()->getNodeObject();
+            AbstractBody* body = leafNode.getNodeData()->getNodeObject();
             if (!body->isStatic()) {
                 std::stringstream logStream;
                 logStream << "Body " << body->getId() << " is below the limit of " << std::to_string(minYBoundary) << ": " << body->getTransform().getPosition();

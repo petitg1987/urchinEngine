@@ -16,24 +16,24 @@ namespace urchin {
             ~BodyAABBTree() override = default;
 
             void addBody(AbstractBody*);
-            void postAddObjectCallback(AABBNode<AbstractBody*>*) override;
+            void postAddObjectCallback(AABBNode<AbstractBody*>&) override;
 
             void removeBody(AbstractBody*);
-            void preRemoveObjectCallback(AABBNode<AbstractBody*>*) override;
+            void preRemoveObjectCallback(AABBNode<AbstractBody*>&) override;
 
             void updateBodies();
-            void preUpdateObjectCallback(AABBNode<AbstractBody*>*) override;
+            void preUpdateObjectCallback(AABBNode<AbstractBody*>&) override;
 
             const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const;
 
         private:
-            void computeOverlappingPairsFor(AABBNode<AbstractBody*>*);
+            void computeOverlappingPairsFor(AABBNode<AbstractBody*>&);
             void createOverlappingPair(BodyAABBNodeData*, BodyAABBNodeData*);
             void removeOverlappingPairs(const BodyAABBNodeData*);
             void removeBodyPairContainerReferences(const AbstractBody*, PairContainer*);
 
             void computeWorldBoundary();
-            void controlBoundaries(AABBNode<AbstractBody*>*) const;
+            void controlBoundaries(AABBNode<AbstractBody*>&) const;
 
             static const float BOUNDARIES_MARGIN_PERCENTAGE;
 
