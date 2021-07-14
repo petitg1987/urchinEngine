@@ -12,7 +12,6 @@ namespace urchin {
     class AABBTreeAlgorithm : public BroadPhaseAlgorithm {
         public:
             AABBTreeAlgorithm();
-            ~AABBTreeAlgorithm() override;
 
             void addBody(AbstractBody*) override;
             void removeBody(AbstractBody*) override;
@@ -24,7 +23,7 @@ namespace urchin {
             std::vector<AbstractBody*> bodyTest(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&) const override;
 
         private:
-            BodyAABBTree* tree;
+            std::unique_ptr<BodyAABBTree> tree;
 
     };
 

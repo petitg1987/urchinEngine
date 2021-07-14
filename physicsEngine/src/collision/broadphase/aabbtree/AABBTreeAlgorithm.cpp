@@ -4,12 +4,8 @@
 namespace urchin {
 
     AABBTreeAlgorithm::AABBTreeAlgorithm() :
-            tree(new BodyAABBTree()) {
+            tree(std::make_unique<BodyAABBTree>()) {
 
-    }
-
-    AABBTreeAlgorithm::~AABBTreeAlgorithm() {
-        delete tree;
     }
 
     void AABBTreeAlgorithm::addBody(AbstractBody* body) {
