@@ -11,23 +11,17 @@
 namespace urchin {
 
     CollisionAlgorithmSelector::CollisionAlgorithmSelector() :
-            algorithmPool(std::unique_ptr<SyncFixedSizePool<CollisionAlgorithm>>(nullptr)),
-            collisionAlgorithmBuilderMatrix() {
+            algorithmPool(std::unique_ptr<SyncFixedSizePool<CollisionAlgorithm>>(nullptr)) {
         initializeCollisionAlgorithmBuilderMatrix();
         for (unsigned int i = 0; i < CollisionShape3D::SHAPE_MAX; ++i) {
             for (unsigned int j = 0; j < CollisionShape3D::SHAPE_MAX; ++j) {
                 if (!collisionAlgorithmBuilderMatrix[i][j]) {
-                    deleteCollisionAlgorithmBuilderMatrix();
                     throw std::invalid_argument("Collision algorithm builder not initialized for shape type: " + std::to_string(i) + " and " + std::to_string(j) + ".");
                 }
             }
         }
 
         initializeAlgorithmPool();
-    }
-
-    CollisionAlgorithmSelector::~CollisionAlgorithmSelector() {
-        deleteCollisionAlgorithmBuilderMatrix();
     }
 
     void CollisionAlgorithmSelector::initializeCollisionAlgorithmBuilderMatrix() {
@@ -39,9 +33,9 @@ namespace urchin {
         }
 
         //specific algorithms
-        collisionAlgorithmBuilderMatrix[CollisionShape3D::SPHERE_SHAPE][CollisionShape3D::SPHERE_SHAPE] = new SphereSphereCollisionAlgorithm::Builder();
-        collisionAlgorithmBuilderMatrix[CollisionShape3D::SPHERE_SHAPE][CollisionShape3D::BOX_SHAPE] = new SphereBoxCollisionAlgorithm::Builder();
-        collisionAlgorithmBuilderMatrix[CollisionShape3D::BOX_SHAPE][CollisionShape3D::SPHERE_SHAPE] = new SphereBoxCollisionAlgorithm::Builder();
+        collisionAlgorithmBuilderMatrix[CollisionShape3D::SPHERE_SHAPE][CollisionShape3D::SPHERE_SHAPE] = std::make_unique<SphereSphereCollisionAlgorithm::Builder>();
+        collisionAlgorithmBuilderMatrix[CollisionShape3D::SPHERE_SHAPE][CollisionShape3D::BOX_SHAPE] = std::make_unique<SphereBoxCollisionAlgorithm::Builder>();
+        collisionAlgorithmBuilderMatrix[CollisionShape3D::BOX_SHAPE][CollisionShape3D::SPHERE_SHAPE] = std::make_unique<SphereBoxCollisionAlgorithm::Builder>();
         initializeConcaveAlgorithm();
         initializeCompoundAlgorithm();
 
@@ -49,7 +43,7 @@ namespace urchin {
         for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
             for (auto& builderMatrixColumn : builderMatrixLine) {
                 if (!builderMatrixColumn) {
-                    builderMatrixColumn = new ConvexConvexCollisionAlgorithm::Builder();
+                    builderMatrixColumn = std::make_unique<ConvexConvexCollisionAlgorithm::Builder>();
                 }
             }
         }
@@ -58,10 +52,10 @@ namespace urchin {
     void CollisionAlgorithmSelector::initializeConcaveAlgorithm() {
         //heightfield shape
         for (unsigned int shapeId = 0; shapeId < CollisionShape3D::SHAPE_MAX; ++shapeId) {
-            collisionAlgorithmBuilderMatrix[CollisionShape3D::HEIGHTFIELD_SHAPE][shapeId] = new ConcaveAnyCollisionAlgorithm::Builder();
+            collisionAlgorithmBuilderMatrix[CollisionShape3D::HEIGHTFIELD_SHAPE][shapeId] = std::make_unique<ConcaveAnyCollisionAlgorithm::Builder>();
 
             if (shapeId != CollisionShape3D::HEIGHTFIELD_SHAPE) {
-                collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::HEIGHTFIELD_SHAPE] = new ConcaveAnyCollisionAlgorithm::Builder();
+                collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::HEIGHTFIELD_SHAPE] = std::make_unique<ConcaveAnyCollisionAlgorithm::Builder>();
             }
         }
     }
@@ -69,19 +63,11 @@ namespace urchin {
     void CollisionAlgorithmSelector::initializeCompoundAlgorithm() {
         for (unsigned int shapeId = 0; shapeId < CollisionShape3D::SHAPE_MAX; ++shapeId) {
             if (!collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId]) {
-                collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = new CompoundAnyCollisionAlgorithm::Builder();
+                collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = std::make_unique<CompoundAnyCollisionAlgorithm::Builder>();
             }
 
             if (shapeId != CollisionShape3D::COMPOUND_SHAPE && !collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE]) {
-                collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE] = new CompoundAnyCollisionAlgorithm::Builder();
-            }
-        }
-    }
-
-    void CollisionAlgorithmSelector::deleteCollisionAlgorithmBuilderMatrix() {
-        for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
-            for (auto& builderMatrixColumn : builderMatrixLine) {
-                delete builderMatrixColumn;
+                collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE] = std::make_unique<CompoundAnyCollisionAlgorithm::Builder>();
             }
         }
     }
@@ -105,7 +91,7 @@ namespace urchin {
      */
     std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(AbstractBody* body1, const CollisionShape3D& shape1,
                                                                                              AbstractBody* body2, const CollisionShape3D& shape2) const {
-        CollisionAlgorithmBuilder* collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1.getShapeType()][shape2.getShapeType()];
+        auto& collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1.getShapeType()][shape2.getShapeType()];
         const std::vector<CollisionShape3D::ShapeType>& firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
         CollisionAlgorithm *collisionAlgorithmPtr;

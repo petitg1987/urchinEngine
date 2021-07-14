@@ -133,8 +133,8 @@ namespace urchin {
         //Solution: only allow to slide object based on triangle normal.
 
         bool needSwap;
-        const CollisionTriangleObject *triangleObject;
-        const CollisionConvexObject3D *otherObject;
+        const CollisionTriangleObject* triangleObject;
+        const CollisionConvexObject3D* otherObject;
 
         if (convexObject1.getObjectType() == CollisionConvexObject3D::TRIANGLE_OBJECT) {
             triangleObject = dynamic_cast<const CollisionTriangleObject*>(&convexObject1);

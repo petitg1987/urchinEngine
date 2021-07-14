@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     BodyShapeWidget* BodyShapeWidgetRetriever::createBodyShapeWidget(CollisionShape3D::ShapeType shapeType) {
-        BodyShapeWidget *bodyShapeWidget;
+        BodyShapeWidget* bodyShapeWidget;
 
         if (shapeType == CollisionShape3D::ShapeType::SPHERE_SHAPE) {
             bodyShapeWidget = new BodySphereShapeWidget(sceneObject);

@@ -12,7 +12,6 @@ namespace urchin {
     class CollisionAlgorithmSelector {
         public:
             CollisionAlgorithmSelector();
-            ~CollisionAlgorithmSelector();
 
             std::shared_ptr<CollisionAlgorithm> createCollisionAlgorithm(AbstractBody*, const CollisionShape3D&,
                                                                          AbstractBody*, const CollisionShape3D&) const;
@@ -21,7 +20,6 @@ namespace urchin {
             void initializeCollisionAlgorithmBuilderMatrix();
             void initializeConcaveAlgorithm();
             void initializeCompoundAlgorithm();
-            void deleteCollisionAlgorithmBuilderMatrix();
 
             void initializeAlgorithmPool();
 
@@ -35,7 +33,7 @@ namespace urchin {
             };
 
             std::shared_ptr<SyncFixedSizePool<CollisionAlgorithm>> algorithmPool;
-            CollisionAlgorithmBuilder *collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
+            std::unique_ptr<CollisionAlgorithmBuilder> collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
     };
 
 }
