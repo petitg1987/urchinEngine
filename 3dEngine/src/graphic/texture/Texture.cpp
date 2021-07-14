@@ -88,6 +88,11 @@ namespace urchin {
         this->textureWriter = textureWriter;
     }
 
+    void Texture::removeTextureWriter() {
+        assert(isInitialized);
+        this->textureWriter = nullptr;
+    }
+
     void Texture::initialize() {
         if (!isInitialized) {
             if (clearColorEnabled && !writableTexture) {

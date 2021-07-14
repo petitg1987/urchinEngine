@@ -269,8 +269,8 @@ namespace urchin {
             }
         }
 
-        sort(renderDependencies.begin(), renderDependencies.end() );
-        renderDependencies.erase(unique(renderDependencies.begin(), renderDependencies.end()), renderDependencies.end());
+        std::sort(renderDependencies.begin(), renderDependencies.end() );
+        renderDependencies.erase(std::unique(renderDependencies.begin(), renderDependencies.end()), renderDependencies.end());
 
         return renderDependencies;
     }

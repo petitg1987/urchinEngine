@@ -138,7 +138,7 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
     ScopeProfiler sp(Profiler::graphic(), "refreshOctreeab");
 
     if (mainOctree) {
-        movingOctreeables.erase(std::unique(movingOctreeables.begin(), movingOctreeables.end() ), movingOctreeables.end());
+        movingOctreeables.erase(std::unique(movingOctreeables.begin(), movingOctreeables.end() ), movingOctreeables.end()); //TODO is it working ? (not sorted ?)
 
         std::vector<std::shared_ptr<T>> removedOctreeables;
         removedOctreeables.reserve(movingOctreeables.size());

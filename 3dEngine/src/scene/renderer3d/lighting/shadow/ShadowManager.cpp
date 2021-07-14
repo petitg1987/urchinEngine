@@ -21,6 +21,8 @@ namespace urchin {
             bForceUpdateAllShadowMaps(false) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
+
+        emptyShadowMapTexture = Texture::buildEmptyArrayRg();
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
@@ -103,6 +105,10 @@ namespace urchin {
 
     const std::vector<Frustum<float>>& ShadowManager::getSplitFrustums() const {
         return splitFrustums;
+    }
+
+    const std::shared_ptr<Texture>& ShadowManager::getEmptyShadowMapTexture() const {
+        return emptyShadowMapTexture;
     }
 
     const LightShadowMap& ShadowManager::getLightShadowMap(const Light* light) const {
@@ -282,6 +288,13 @@ namespace urchin {
                 }
 
                 shadowLightIndex++;
+            }
+        }
+
+        for(auto i = (unsigned int)shadowLightIndex; i < getMaxShadowLights(); ++i) {
+            if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, i)->getTexture() != getEmptyShadowMapTexture()) {
+                //when a shadow light is removed or moved of position: reset the texture to an empty one to free the texture memory
+                lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, i, TextureReader::build(getEmptyShadowMapTexture(), TextureParam::buildNearest()));
             }
         }
 

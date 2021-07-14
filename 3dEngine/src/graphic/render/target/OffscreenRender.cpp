@@ -21,6 +21,7 @@ namespace urchin {
             Logger::instance()->logWarning("Offscreen render not cleanup before destruction: " + getName());
             OffscreenRender::cleanup();
         }
+        resetTextures();
     }
 
     void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
@@ -32,7 +33,9 @@ namespace urchin {
     }
 
     void OffscreenRender::resetTextures() {
+        std::for_each(textures.begin(), textures.end(), [](const auto& t){t->removeTextureWriter();});
         textures.clear();
+
         if (isInitialized) {
             cleanup();
         }
@@ -160,7 +163,6 @@ namespace urchin {
 
     void OffscreenRender::destroySyncObjects() {
         vkDestroyFence(GraphicService::instance()->getDevices().getLogicalDevice(), commandBufferFence, nullptr);
-
         vkDestroySemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
     }
 

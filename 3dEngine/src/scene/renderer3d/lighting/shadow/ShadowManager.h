@@ -52,6 +52,7 @@ namespace urchin {
             const Config& getConfig() const;
 
             const std::vector<Frustum<float>>& getSplitFrustums() const;
+            const std::shared_ptr<Texture>& getEmptyShadowMapTexture() const;
             const LightShadowMap& getLightShadowMap(const Light*) const;
 
             void updateVisibleModels(const Frustum<float>&);
@@ -89,6 +90,7 @@ namespace urchin {
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
             std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
+            std::shared_ptr<Texture> emptyShadowMapTexture;
             bool bForceUpdateAllShadowMaps;
             float depthSplitDistance[SHADOW_MAPS_SHADER_LIMIT * 4]{}; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 

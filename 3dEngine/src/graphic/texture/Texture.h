@@ -27,6 +27,7 @@ namespace urchin {
             void enableMipmap();
             void enableClearColor(const Vector4<float>&);
             void enableTextureWriting(OffscreenRender*);
+            void removeTextureWriter();
 
             void initialize();
 

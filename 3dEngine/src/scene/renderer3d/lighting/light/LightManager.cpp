@@ -124,7 +124,7 @@ namespace urchin {
          * By sorting visible lights, we make sure that the lights producing shadow are often in same order.
          * Thus, the shadow textures positions/index in shader don't need to be updated at each frame in ShadowManager#loadShadowMaps().
          */
-        sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
+        std::sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
     }
 
     void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer) {
