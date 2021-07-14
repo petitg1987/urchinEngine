@@ -8,8 +8,8 @@ namespace urchin {
 
     }
 
-    AABBNodeData<AbstractBody*>* BodyAABBNodeData::clone() const {
-        return new BodyAABBNodeData(getNodeObject());
+    std::unique_ptr<AABBNodeData<AbstractBody*>> BodyAABBNodeData::clone() const {
+        return std::make_unique<BodyAABBNodeData>(getNodeObject());
     }
 
     const std::string& BodyAABBNodeData::getObjectId() const {

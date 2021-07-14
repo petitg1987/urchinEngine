@@ -118,7 +118,7 @@ namespace urchin {
             }
         }
 
-        navigationObjects.addObject(new NavObjectAABBNodeData(navObject));
+        navigationObjects.addObject(std::make_unique<NavObjectAABBNodeData>(navObject));
         aiEntity->addNavObject(navObject);
     }
 

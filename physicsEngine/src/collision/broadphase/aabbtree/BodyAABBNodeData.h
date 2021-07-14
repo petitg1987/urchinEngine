@@ -12,7 +12,7 @@ namespace urchin {
         public:
             explicit BodyAABBNodeData(AbstractBody*);
 
-            AABBNodeData<AbstractBody*>* clone() const override;
+            std::unique_ptr<AABBNodeData<AbstractBody*>> clone() const override;
 
             const std::string& getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;

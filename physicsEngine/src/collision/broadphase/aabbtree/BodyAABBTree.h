@@ -28,8 +28,8 @@ namespace urchin {
 
         private:
             void computeOverlappingPairsFor(AABBNode<AbstractBody*>&);
-            void createOverlappingPair(BodyAABBNodeData*, BodyAABBNodeData*);
-            void removeOverlappingPairs(const BodyAABBNodeData*);
+            void createOverlappingPair(BodyAABBNodeData&, BodyAABBNodeData&);
+            void removeOverlappingPairs(const BodyAABBNodeData&);
             void removeBodyPairContainerReferences(const AbstractBody*, PairContainer*);
 
             void computeWorldBoundary();

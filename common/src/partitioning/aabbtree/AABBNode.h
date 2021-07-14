@@ -13,33 +13,35 @@ namespace urchin {
         public:
             friend class AABBTree<OBJ>;
 
-            explicit AABBNode(AABBNodeData<OBJ>*);
-            ~AABBNode();
+            explicit AABBNode(std::unique_ptr<AABBNodeData<OBJ>>);
 
-            AABBNodeData<OBJ>* getNodeData() const;
+            AABBNodeData<OBJ>& getNodeData() const;
 
             bool isLeaf() const;
             bool isRoot() const;
 
-            void setLeftChild(std::shared_ptr<AABBNode<OBJ>>);
             AABBNode<OBJ>* getLeftChild() const;
-            void setRightChild(std::shared_ptr<AABBNode<OBJ>>);
             AABBNode<OBJ>* getRightChild() const;
 
             const AABBox<float>& getAABBox() const;
-            void updateAABBox(float);
 
         protected:
-            void clearNodeData();
+            void updateAABBox(float);
+
+            std::unique_ptr<AABBNodeData<OBJ>> moveNodeData();
+
+            void setParent(std::shared_ptr<AABBNode<OBJ>>);
             std::shared_ptr<AABBNode<OBJ>> getParent() const;
+
+            void setLeftChild(std::shared_ptr<AABBNode<OBJ>>);
             std::shared_ptr<AABBNode<OBJ>> getLeftChildSmartPtr() const;
+            void setRightChild(std::shared_ptr<AABBNode<OBJ>>);
             std::shared_ptr<AABBNode<OBJ>> getRightChildSmartPtr() const;
+
             std::shared_ptr<AABBNode<OBJ>> getSibling() const;
 
         private:
-            void setParent(std::shared_ptr<AABBNode<OBJ>>);
-
-            AABBNodeData<OBJ>* nodeData;
+            std::unique_ptr<AABBNodeData<OBJ>> nodeData;
             AABBox<float> aabbox;
 
             std::shared_ptr<AABBNode<OBJ>> parentNode;

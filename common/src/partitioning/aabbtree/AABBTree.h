@@ -14,13 +14,13 @@ namespace urchin {
             void updateFatMargin(float);
 
             AABBNode<OBJ>* getRootNode() const;
-            AABBNodeData<OBJ>* getNodeData(OBJ) const;
+            AABBNodeData<OBJ>& getNodeData(OBJ) const;
             void getAllNodeObjects(std::vector<OBJ>&) const;
 
-            void addObject(AABBNodeData<OBJ>*);
+            void addObject(std::unique_ptr<AABBNodeData<OBJ>>);
             virtual void postAddObjectCallback(AABBNode<OBJ>&);
 
-            void removeObject(AABBNodeData<OBJ>*);
+            void removeObject(AABBNodeData<OBJ>&);
             void removeObject(OBJ);
             virtual void preRemoveObjectCallback(AABBNode<OBJ>&);
 
@@ -36,7 +36,7 @@ namespace urchin {
             mutable std::vector<AABBNode<OBJ>*> browseNodes;
 
         private:
-            std::vector<AABBNodeData<OBJ>*> extractAllNodeData();
+            std::vector<std::unique_ptr<AABBNodeData<OBJ>>> extractAllNodeData();
             void insertNode(std::shared_ptr<AABBNode<OBJ>>, std::shared_ptr<AABBNode<OBJ>>);
             void replaceNode(const AABBNode<OBJ>&, std::shared_ptr<AABBNode<OBJ>>);
             void removeNode(AABBNode<OBJ>*);
