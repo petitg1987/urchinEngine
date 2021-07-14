@@ -14,13 +14,15 @@ namespace urchin {
 
     class Window : public Widget {
         public:
-            Window(Widget*, Position, Size, std::string, std::string);
+            static std::shared_ptr<Window> newWindow(Widget*, Position, Size, std::string, std::string);
 
         protected:
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
 
         private:
+            Window(Position, Size, std::string, std::string);
+
             bool onKeyPressEvent(unsigned int) override;
             bool onKeyReleaseEvent(unsigned int) override;
             bool onMouseMoveEvent(int, int) override;
@@ -38,7 +40,7 @@ namespace urchin {
             } state;
 
             //visual
-            Text* title;
+            std::shared_ptr<Text> title;
             std::shared_ptr<Texture> texWindow;
             std::unique_ptr<GenericRenderer> windowRenderer;
     };

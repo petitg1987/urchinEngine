@@ -6,16 +6,8 @@
 
 namespace urchin {
 
-    Sequence* Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        return new Sequence(parent, position, size, std::move(nameSkin), texts, false);
-    }
-
-    Sequence* Sequence::newTranslatableSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
-        return new Sequence(parent, position, size, std::move(nameSkin), textKeys, true);
-    }
-
-    Sequence::Sequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
-            Widget(parent, position, size),
+    Sequence::Sequence(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
+            Widget(position, size),
             nameSkin(std::move(nameSkin)),
             values(values),
             translatableValues(translatableValues),
@@ -26,9 +18,22 @@ namespace urchin {
         if (values.empty()) {
             throw std::runtime_error("At least one value/key must be provided to sequence.");
         }
-        if (parent) {
-            Sequence::createOrUpdateWidget();
+    }
+
+    std::shared_ptr<Sequence> Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
+        auto widget = std::shared_ptr<Sequence>(new Sequence(position, size, std::move(nameSkin), texts, false));
+        if(parent) {
+            parent->addChild(widget);
         }
+        return widget;
+    }
+
+    std::shared_ptr<Sequence> Sequence::newTranslatableSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
+        auto widget = std::shared_ptr<Sequence>(new Sequence(position, size, std::move(nameSkin), textKeys, true));
+        if(parent) {
+            parent->addChild(widget);
+        }
+        return widget;
     }
 
     void Sequence::createOrUpdateWidget() {
@@ -48,14 +53,13 @@ namespace urchin {
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
         //clear children
-        for (auto valueText : valuesText) {
-            delete valueText;
+        for(auto& valueText : valuesText) {
+            removeChild(*valueText);
         }
         valuesText.clear();
 
         //buttons
         if (!leftButton || leftButtonEventListener) { //do not re-create button because 'leftButtonEventListener' has been moved
-            delete leftButton;
             leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
             leftButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, true));
             if (leftButtonEventListener) {
@@ -64,7 +68,6 @@ namespace urchin {
         }
 
         if (!rightButton || rightButtonEventListener) { //do not re-create button because 'leftButtonEventListener' has been moved
-            delete rightButton;
             rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
             rightButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, false));
             if (rightButtonEventListener) {
@@ -74,7 +77,7 @@ namespace urchin {
         rightButton->updatePosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
 
         //values
-        valuesText.resize(values.size());
+        valuesText.resize(values.size(), std::shared_ptr<Text>(nullptr));
         for (std::size_t i = 0; i < values.size(); ++i) {
             if (translatableValues) {
                 valuesText[i] = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);

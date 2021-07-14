@@ -5,35 +5,27 @@
 
 namespace urchin {
 
-    Widget::Widget(Widget* parent, Position position, Size size) :
+    Widget::Widget(Position position, Size size) :
             i18nService(nullptr),
             renderTarget(nullptr),
             shader(nullptr),
-            sceneWidth(parent ? parent->getSceneWidth() : 0),
-            sceneHeight(parent ? parent->getSceneHeight() : 0),
-            parent(parent),
+            sceneWidth(0),
+            sceneHeight(0),
+            parent(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
             size(size),
             bIsVisible(true),
             mouseX(0),
             mouseY(0) {
-        if (parent) {
-            assert(parent->renderTarget);
-            parent->children.emplace_back(this);
-            initialize(*parent->renderTarget, *parent->shader, parent->i18nService, false /*cannot call virtual method in constructor*/);
-        }
+
     }
 
     Widget::~Widget() {
-        deleteChildren();
-
         if (parent) {
-            auto it = std::find(parent->children.begin(), parent->children.end(), this);
-            parent->children.erase(it);
+            auto itFind = std::find_if(parent->children.begin(), parent->children.end(), [&](const auto& o){return this == o.get();});
+            parent->children.erase(itFind);
         }
-
-        eventListeners.clear();
     }
 
     void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService* i18nService, bool createWidget) {
@@ -84,7 +76,7 @@ namespace urchin {
         renderer->updateUniformData(1, &translateVector);
     }
 
-    const RenderTarget& Widget::getRenderTarget() const {
+    RenderTarget& Widget::getRenderTarget() const {
         assert(renderTarget);
         return *renderTarget;
     }
@@ -101,14 +93,36 @@ namespace urchin {
         return parent;
     }
 
-    const std::vector<Widget*>& Widget::getChildren() const {
+    void Widget::addChild(const std::shared_ptr<Widget>& childWidget) {
+        if (childWidget->getParent()) {
+            throw std::runtime_error("Cannot add a widget which already have a parent");
+        }
+
+        childWidget->parent = this;
+        children.push_back(childWidget);
+
+        if (renderTarget) {
+            childWidget->initialize(getRenderTarget(), *shader, i18nService, true /*TODO remove flag is always to true*/);
+        }
+    }
+
+    const std::vector<std::shared_ptr<Widget>>& Widget::getChildren() const {
         return children;
     }
 
-    void Widget::deleteChildren() {
-        std::vector<Widget*> childrenCopied(children);
-        for (auto& child : childrenCopied) {
-            delete child;
+    void Widget::removeChild(Widget& childWidget) {
+        auto itFind = std::find_if(children.begin(), children.end(), [&childWidget](const auto& o){return &childWidget == o.get();});
+        if (itFind == children.end()) {
+            throw std::runtime_error("Cannot found child widget on his parent");
+        }
+        children.erase(itFind);
+
+        childWidget.parent = nullptr;
+    }
+
+    void Widget::removeChildren() {
+        for(auto& child : children) {
+            removeChild(*child);
         }
     }
 

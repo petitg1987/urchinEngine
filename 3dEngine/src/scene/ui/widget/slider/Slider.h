@@ -14,7 +14,7 @@ namespace urchin {
 
     class Slider : public Widget {
         public:
-            static Slider* newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Slider> newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
@@ -28,7 +28,7 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
-            Slider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            Slider(Position, Size, std::string, const std::vector<std::string>&);
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void updateSliderValue(int);
@@ -47,8 +47,8 @@ namespace urchin {
             } state;
 
             //visual
-            Text* currentValueText;
-            StaticBitmap *cursorImage;
+            std::shared_ptr<Text> currentValueText;
+            std::shared_ptr<StaticBitmap> cursorImage;
             std::shared_ptr<Texture> texSliderLine;
             std::unique_ptr<GenericRenderer> sliderRenderer;
     };

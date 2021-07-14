@@ -8,7 +8,7 @@ namespace urchin {
 
     class CheckBox : public Widget {
         public:
-            CheckBox(Widget*, Position, Size, std::string);
+            static std::shared_ptr<CheckBox> newCheckBox(Widget*, Position, Size, std::string);
 
             void setChecked(bool);
             bool isChecked() const;
@@ -18,6 +18,8 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
+            CheckBox(Position, Size, std::string);
+
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void refreshTexture();
             bool onKeyReleaseEvent(unsigned int) override;

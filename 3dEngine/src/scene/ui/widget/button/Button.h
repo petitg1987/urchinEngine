@@ -14,14 +14,15 @@ namespace urchin {
 
     class Button : public Widget {
         public:
-            Button(Widget*, Position, Size, std::string, std::string);
-            ~Button() override = default;
+            static std::shared_ptr<Button> newButton(Widget*, Position, Size, std::string, std::string);
 
         protected:
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
 
         private:
+            Button(Position, Size, std::string, std::string);
+
             void refreshTexture();
 
             bool onKeyPressEvent(unsigned int) override;
@@ -32,7 +33,7 @@ namespace urchin {
             const std::string nameSkin;
 
             //display information
-            Text* text;
+            std::shared_ptr<Text> text;
             const std::string buttonText;
 
             //visual

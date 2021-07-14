@@ -5,12 +5,8 @@
 
 namespace urchin {
 
-    Slider* Slider::newSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        return new Slider(parent, position, size, std::move(nameSkin), texts);
-    }
-
-    Slider::Slider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
-            Widget(parent, position, size),
+    Slider::Slider(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
+            Widget(position, size),
             TEXT_SHIFT_LENGTH(10.0f),
             nameSkin(std::move(nameSkin)),
             values(values),
@@ -21,16 +17,17 @@ namespace urchin {
         if (values.size() < 2) {
             throw std::runtime_error("At least two values must be provided to slider.");
         }
-        if (parent) {
-            Slider::createOrUpdateWidget();
+    }
+
+    std::shared_ptr<Slider> Slider::newSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
+        auto widget = std::shared_ptr<Slider>(new Slider(position, size, std::move(nameSkin), texts));
+        if(parent) {
+            parent->addChild(widget);
         }
+        return widget;
     }
 
     void Slider::createOrUpdateWidget() {
-        //clear children
-        delete currentValueText;
-        delete cursorImage;
-
         //skin information
         auto sliderChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "slider", UdaAttribute("nameSkin", nameSkin));
 
@@ -48,7 +45,7 @@ namespace urchin {
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
         imageCursor.reset();
-        cursorImage = new StaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+        cursorImage = StaticBitmap::newStaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
         moveSliderCursor();
 
         //visual

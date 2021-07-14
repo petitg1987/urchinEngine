@@ -13,7 +13,7 @@ namespace urchin {
 
     class TextBox : public Widget {
         public:
-            TextBox(Widget*, Position, Size, std::string);
+            static std::shared_ptr<TextBox> newTextBox(Widget*, Position, Size, std::string);
 
             std::string getText();
 
@@ -22,6 +22,8 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
+            TextBox(Position, Size, std::string);
+
             bool onKeyPressEvent(unsigned int) override;
             bool onCharEvent(char32_t) override;
             void onResetState() override;
@@ -37,7 +39,7 @@ namespace urchin {
             const std::string nameSkin;
 
             //display information
-            Text* text; //text of the text box (widget)
+            std::shared_ptr<Text> text; //text of the text box (widget)
             std::u32string allText; //text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display

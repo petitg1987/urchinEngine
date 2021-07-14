@@ -17,12 +17,6 @@ namespace urchin {
         uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
     }
 
-    UIRenderer::~UIRenderer() {
-        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            delete widgets[(std::size_t)i];
-        }
-    }
-
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -45,9 +39,10 @@ namespace urchin {
     void UIRenderer::notify(Observable* observable, int notificationType) {
         if (auto* widget = dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::SET_IN_FOREGROUND) {
-                auto it = std::find(widgets.begin(), widgets.end(), widget);
-                widgets.erase(it);
-                widgets.push_back(widget);
+                auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return widget == o.get();});
+                std::shared_ptr<Widget> widgetPtr = *itFind;
+                widgets.erase(itFind);
+                widgets.push_back(widgetPtr);
 
                 //reset the others widgets
                 for (long i = (long)widgets.size() - 2; i >= 0; --i) {
@@ -105,7 +100,7 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::addWidget(Widget* widget) {
+    void UIRenderer::addWidget(const std::shared_ptr<Widget>& widget) {
         if (widget->getParent()) {
             throw std::runtime_error("Cannot add a widget having a parent to the UI renderer");
         }
@@ -115,12 +110,9 @@ namespace urchin {
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
-    void UIRenderer::removeWidget(Widget* widget) {
-        if (widget) {
-            auto it = std::find(widgets.begin(), widgets.end(), widget);
-            delete widget;
-            widgets.erase(it);
-        }
+    void UIRenderer::removeWidget(Widget& widget) {
+        auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return &widget == o.get();});
+        widgets.erase(itFind);
     }
 
     void UIRenderer::prepareRendering(float dt) {

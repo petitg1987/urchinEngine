@@ -16,7 +16,7 @@ namespace urchin {
 
     class Widget : public Observable {
         public:
-            Widget(Widget*, Position, Size);
+            Widget(Position, Size);
             ~Widget() override;
 
             enum NotificationType {
@@ -33,8 +33,11 @@ namespace urchin {
             void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
-            const std::vector<Widget*>& getChildren() const;
-            void deleteChildren();
+
+            void addChild(const std::shared_ptr<Widget>&);
+            const std::vector<std::shared_ptr<Widget>>& getChildren() const;
+            void removeChild(Widget&);
+            void removeChildren();
 
             void addEventListener(std::unique_ptr<EventListener>);
             const std::vector<std::unique_ptr<EventListener>>& getEventListeners() const;
@@ -73,7 +76,7 @@ namespace urchin {
         protected:
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
             void updateTranslateVector(GenericRenderer*, const Vector2<int>&) const;
-            const RenderTarget& getRenderTarget() const;
+            RenderTarget& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
             virtual void createOrUpdateWidget() = 0;
@@ -96,7 +99,7 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
 
             Widget* parent;
-            std::vector<Widget*> children;
+            std::vector<std::shared_ptr<Widget>> children;
 
             std::vector<std::unique_ptr<EventListener>> eventListeners;
             WidgetStates widgetState;

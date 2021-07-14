@@ -9,7 +9,7 @@ namespace urchin {
 
     template<class OBJ> class AABBTree;
 
-    template<class OBJ> class AABBNode : public std::enable_shared_from_this<AABBNode<OBJ>> {
+    template<class OBJ> class AABBNode {
         public:
             friend class AABBTree<OBJ>;
 

@@ -14,7 +14,6 @@ namespace urchin {
     class UIRenderer : public Renderer, public Observer {
         public:
             explicit UIRenderer(RenderTarget&, const std::unique_ptr<I18nService>&);
-            ~UIRenderer() override;
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
@@ -25,15 +24,15 @@ namespace urchin {
             bool onMouseMove(double, double) override;
             void onDisable() override;
 
-            void addWidget(Widget*);
-            void removeWidget(Widget*);
+            void addWidget(const std::shared_ptr<Widget>&);
+            void removeWidget(Widget&);
 
             void prepareRendering(float) override;
 
         private:
             RenderTarget& renderTarget;
             I18nService* i18nService;
-            std::vector<Widget*> widgets;
+            std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<Shader> uiShader;
 

@@ -13,8 +13,8 @@ namespace urchin {
     constexpr unsigned int TextBox::LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
     constexpr float TextBox::CURSOR_BLINK_SPEED = 1.75f;
 
-    TextBox::TextBox(Widget* parent, Position position, Size size, std::string nameSkin) :
-            Widget(parent, position, size),
+    TextBox::TextBox(Position position, Size size, std::string nameSkin) :
+            Widget(position, size),
             nameSkin(std::move(nameSkin)),
             text(nullptr),
             maxWidthText(0),
@@ -23,9 +23,15 @@ namespace urchin {
             cursorPosition(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
-        if (parent) {
-            TextBox::createOrUpdateWidget();
+
+    }
+
+    std::shared_ptr<TextBox> TextBox::newTextBox(Widget* parent, Position position, Size size, std::string nameSkin) {
+        auto widget = std::shared_ptr<TextBox>(new TextBox(position, size, std::move(nameSkin)));
+        if(parent) {
+            parent->addChild(widget);
         }
+        return widget;
     }
 
     void TextBox::createOrUpdateWidget() {
@@ -39,7 +45,6 @@ namespace urchin {
         texTextBoxFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
-        delete text;
         text = Text::newText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
         text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));

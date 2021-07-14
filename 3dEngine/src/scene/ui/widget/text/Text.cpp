@@ -10,8 +10,8 @@
 
 namespace urchin {
 
-    Text::Text(Widget* parent, Position position, std::string nameSkin, std::string textOrKey, bool translatable) :
-            Widget(parent, position, Size(0, 0, LengthType::PIXEL)),
+    Text::Text(Position position, std::string nameSkin, std::string textOrKey, bool translatable) :
+            Widget(position, Size(0, 0, LengthType::PIXEL)),
             nameSkin(std::move(nameSkin)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
@@ -24,17 +24,22 @@ namespace urchin {
 
         refreshFont();
         refreshTextAndWidgetSize();
-        if (parent) {
-            Text::createOrUpdateWidget();
+    }
+
+    std::shared_ptr<Text> Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {
+        auto widget = std::shared_ptr<Text>(new Text(position, std::move(nameSkin), std::move(text), false));
+        if(parent) {
+            parent->addChild(widget);
         }
+        return widget;
     }
 
-    Text* Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {
-        return new Text(parent, position, std::move(nameSkin), std::move(text), false);
-    }
-
-    Text* Text::newTranslatableText(Widget* parent, Position position, std::string nameSkin, std::string textKey) {
-        return new Text(parent, position, std::move(nameSkin), std::move(textKey), true);
+    std::shared_ptr<Text> Text::newTranslatableText(Widget* parent, Position position, std::string nameSkin, std::string textKey) {
+        auto widget = std::shared_ptr<Text>(new Text(position, std::move(nameSkin), std::move(textKey), true));
+        if(parent) {
+            parent->addChild(widget);
+        }
+        return widget;
     }
 
     Text::~Text() {
@@ -244,7 +249,8 @@ namespace urchin {
     void Text::refreshRenderer() {
         refreshCoordinates();
 
-        textRenderer = setupUiRenderer("text", ShapeType::TRIANGLE)
+        std::string renderName = labelKey.value_or(text.substr(0, (std::size_t)std::min(15, (int)text.size() - 1)));
+        textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildLinear())) //binding 2

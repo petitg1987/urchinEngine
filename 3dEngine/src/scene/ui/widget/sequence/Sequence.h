@@ -13,8 +13,8 @@ namespace urchin {
 
     class Sequence : public Widget {
         public:
-            static Sequence* newSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
-            static Sequence* newTranslatableSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Sequence> newSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Sequence> newTranslatableSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             void allowLoopOnValues(bool);
             bool isLoopOnValuesAllowed() const;
@@ -30,7 +30,7 @@ namespace urchin {
             void prepareWidgetRendering(float) override;
 
         private:
-            Sequence(Widget*, Position, Size, std::string, const std::vector<std::string>&, bool);
+            Sequence(Position, Size, std::string, const std::vector<std::string>&, bool);
 
             //display information
             const std::string nameSkin;
@@ -52,9 +52,9 @@ namespace urchin {
             };
 
             //visual
-            Text* leftButton;
-            Text* rightButton;
-            std::vector<Text*> valuesText;
+            std::shared_ptr<Text> leftButton;
+            std::shared_ptr<Text> rightButton;
+            std::vector<std::shared_ptr<Text>> valuesText;
     };
 
 }
