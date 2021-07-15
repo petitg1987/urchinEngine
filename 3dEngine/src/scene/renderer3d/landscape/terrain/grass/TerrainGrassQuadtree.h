@@ -17,7 +17,7 @@ namespace urchin {
             GenericRenderer* getRenderer() const;
 
             bool isLeaf() const;
-            const std::unique_ptr<AABBox<float>>& getBox() const;
+            const AABBox<float>* getBox() const;
 
             void addChild(std::unique_ptr<TerrainGrassQuadtree>);
             const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& getChildren() const;

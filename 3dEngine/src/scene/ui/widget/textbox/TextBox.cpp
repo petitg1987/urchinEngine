@@ -35,15 +35,15 @@ namespace urchin {
         detachChild(text.get());
 
         //skin information
-        auto textBoxChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textBox", UdaAttribute("nameSkin", nameSkin));
+        auto textBoxChunk = UISkinService::instance()->getSkinReader().getUniqueChunk(true, "textBox", UdaAttribute("nameSkin", nameSkin));
 
-        auto skinChunkDefault = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
+        auto skinChunkDefault = UISkinService::instance()->getSkinReader().getUniqueChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
         texTextBoxDefault = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkDefault, &widgetOutline);
 
-        auto skinChunkFocus = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "skin", UdaAttribute("type", "focus"), textBoxChunk);
+        auto skinChunkFocus = UISkinService::instance()->getSkinReader().getUniqueChunk(true, "skin", UdaAttribute("type", "focus"), textBoxChunk);
         texTextBoxFocus = UISkinService::instance()->createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
-        auto textSkinChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
+        auto textSkinChunk = UISkinService::instance()->getSkinReader().getUniqueChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::newText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
         text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));

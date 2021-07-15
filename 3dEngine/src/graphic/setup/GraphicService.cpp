@@ -53,8 +53,8 @@ namespace urchin {
         }
     }
 
-    void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, FramebufferSizeRetriever *framebufferSizeRetriever) {
-        this->framebufferSizeRetriever = framebufferSizeRetriever;
+    void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) {
+        this->framebufferSizeRetriever = &framebufferSizeRetriever;
 
         createInstance(windowRequiredExtensions);
         validationLayer.initializeDebugMessenger(vkInstance);

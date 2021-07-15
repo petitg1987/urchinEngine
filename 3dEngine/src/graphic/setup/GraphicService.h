@@ -24,7 +24,7 @@ namespace urchin {
             static void enableUniqueSurface();
             static void destroySurface();
 
-            void initialize(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, FramebufferSizeRetriever*);
+            void initialize(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, FramebufferSizeRetriever&);
 
             const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
             static VkSurfaceKHR getSurface();

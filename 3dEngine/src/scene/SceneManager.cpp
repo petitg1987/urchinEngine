@@ -10,11 +10,11 @@ namespace urchin {
     float SceneManager::FPS_REFRESH_TIME_IN_MS = 4.0f;
     float SceneManager::DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
 
-    SceneManager::SceneManager(const std::vector<std::string>& windowRequiredExtensions, const std::unique_ptr<SurfaceCreator>& surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
+    SceneManager::SceneManager(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
+            i18nService(std::make_unique<I18nService>()),
             sceneWidth(0),
             sceneHeight(0),
-            i18nService(std::make_unique<I18nService>()),
             previousTime(),
             fps(STARTUP_FPS),
             fpsForDisplay((unsigned int)STARTUP_FPS),
@@ -26,7 +26,7 @@ namespace urchin {
 
         //initialize
         SignalHandler::instance()->initialize();
-        GraphicService::instance()->initialize(windowRequiredExtensions, surfaceCreator, this->framebufferSizeRetriever.get());
+        GraphicService::instance()->initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
         screenRenderTarget->initialize();
     }
 

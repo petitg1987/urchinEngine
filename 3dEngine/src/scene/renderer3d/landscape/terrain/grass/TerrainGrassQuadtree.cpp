@@ -21,7 +21,7 @@ namespace urchin {
         return children.empty();
     }
 
-    const std::unique_ptr<AABBox<float>>& TerrainGrassQuadtree::getBox() const {
+    const AABBox<float>* TerrainGrassQuadtree::getBox() const {
         if (!bbox) {
             if (isLeaf()) {
                 if (grassVertices.empty()) {
@@ -30,7 +30,7 @@ namespace urchin {
                     bbox = std::make_unique<AABBox<float>>(grassVertices);
                 }
             } else {
-                const std::unique_ptr<AABBox<float>>& localBboxPtr = children[0]->getBox();
+                const auto* localBboxPtr = children[0]->getBox();
                 if (localBboxPtr) {
                     AABBox<float> localBbox = *localBboxPtr;
                     for (std::size_t i = 1; i < children.size(); ++i) {
@@ -43,7 +43,7 @@ namespace urchin {
             }
         }
 
-        return bbox;
+        return bbox.get();
     }
 
     void TerrainGrassQuadtree::addChild(std::unique_ptr<TerrainGrassQuadtree> grassPatchOctree) {

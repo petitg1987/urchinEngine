@@ -25,7 +25,7 @@ namespace urchin {
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const UdaChunk*, WidgetOutline* widgetOutline = nullptr) const;
             Length loadLength(const UdaChunk*, const std::string&) const;
 
-            const std::unique_ptr<UdaParser>& getSkinReader() const;
+            const UdaParser& getSkinReader() const;
 
         private:
             UISkinService();

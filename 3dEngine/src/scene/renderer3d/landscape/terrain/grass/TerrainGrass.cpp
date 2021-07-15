@@ -369,7 +369,7 @@ namespace urchin {
 
             for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
                 const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
-                const std::unique_ptr<AABBox<float>>& grassQuadtreeBox = grassQuadtree->getBox();
+                const auto* grassQuadtreeBox = grassQuadtree->getBox();
 
                 if (grassQuadtreeBox && camera.getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {

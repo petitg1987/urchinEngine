@@ -14,7 +14,7 @@ namespace urchin {
 
     class SceneManager {
         public:
-            SceneManager(const std::vector<std::string>&, const std::unique_ptr<SurfaceCreator>&, std::unique_ptr<FramebufferSizeRetriever>);
+            SceneManager(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, std::unique_ptr<FramebufferSizeRetriever>);
             ~SceneManager();
 
             //scene properties
@@ -58,8 +58,8 @@ namespace urchin {
 
             //scene properties
             std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
-            unsigned int sceneWidth, sceneHeight;
             std::unique_ptr<I18nService> i18nService;
+            unsigned int sceneWidth, sceneHeight;
 
             //fps
             std::chrono::steady_clock::time_point previousTime;

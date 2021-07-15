@@ -15,7 +15,7 @@ namespace urchin {
 
             void initialize();
 
-            const std::shared_ptr<Texture>& getTexture() const;
+            const Texture* getTexture() const;
             const TextureParam& getParam() const;
 
         private:

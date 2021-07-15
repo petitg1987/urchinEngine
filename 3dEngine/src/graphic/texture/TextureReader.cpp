@@ -35,8 +35,8 @@ namespace urchin {
         }
     }
 
-    const std::shared_ptr<Texture>& TextureReader::getTexture() const {
-        return texture;
+    const Texture* TextureReader::getTexture() const {
+        return texture.get();
     }
 
     const TextureParam& TextureReader::getParam() const {
