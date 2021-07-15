@@ -13,7 +13,7 @@ namespace urchin {
         radius = new QDoubleSpinBox();
         mainLayout->addWidget(radius, 0, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(radius);
-        radius->setMinimum(0.0);
+        radius->setMinimum(0.001);
         connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
         auto* heightLabel = new QLabel("Height:");
@@ -22,7 +22,7 @@ namespace urchin {
         height = new QDoubleSpinBox();
         mainLayout->addWidget(height, 1, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(height);
-        height->setMinimum(0.0);
+        height->setMinimum(0.001);
         connect(height, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
         auto* orientationLabel = new QLabel("Orientation:");
