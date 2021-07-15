@@ -46,7 +46,7 @@ namespace urchin {
             offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
-            antiAliasingManager(new AntiAliasingManager(finalRenderTarget)),
+            antiAliasingManager(std::make_unique<AntiAliasingManager>(finalRenderTarget)),
             isAntiAliasingActivated(true) {
 
         //deferred rendering

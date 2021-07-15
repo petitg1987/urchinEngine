@@ -51,7 +51,7 @@ namespace urchin {
                 if (!neighborNodePath) {
                     float gScore = computeGScore(currentNode, link, startPoint);
                     float hScore = computeHScore(neighborTriangle, endPoint);
-                    neighborNodePath.reset(new PathNode(neighborTriangle, gScore, hScore));
+                    neighborNodePath = std::make_shared<PathNode>(neighborTriangle, gScore, hScore);
                     neighborNodePath->setPreviousNode(currentNode, link);
 
                     if (!endNodePath || neighborNodePath->getFScore() < endNodePath->getFScore()) {

@@ -29,7 +29,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(RenderTarget&, const Shader&, I18nService*);
+            void initialize(RenderTarget&, const Shader&, I18nService&);
             void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;

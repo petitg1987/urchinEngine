@@ -19,14 +19,14 @@ namespace urchin {
             void clearDisplay();
 
         private:
-            std::unique_ptr<GeometryModel> retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            std::unique_ptr<GeometryModel> retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const CollisionConvexObject3D&);
 
-            std::unique_ptr<GeometryModel> retrieveSphereGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
-            std::unique_ptr<GeometryModel> retrieveBoxGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
-            std::unique_ptr<GeometryModel> retrieveCylinderGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
-            std::unique_ptr<GeometryModel> retrieveConeGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
-            std::unique_ptr<GeometryModel> retrieveCapsuleGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
-            std::unique_ptr<GeometryModel> retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            std::unique_ptr<GeometryModel> retrieveSphereGeometry(const CollisionConvexObject3D&);
+            std::unique_ptr<GeometryModel> retrieveBoxGeometry(const CollisionConvexObject3D&);
+            std::unique_ptr<GeometryModel> retrieveCylinderGeometry(const CollisionConvexObject3D&);
+            std::unique_ptr<GeometryModel> retrieveConeGeometry(const CollisionConvexObject3D&);
+            std::unique_ptr<GeometryModel> retrieveCapsuleGeometry(const CollisionConvexObject3D&);
+            std::unique_ptr<GeometryModel> retrieveConvexHullGeometry(const CollisionConvexObject3D&);
 
             SceneManager& sceneManager;
             std::vector<std::shared_ptr<GeometryModel>> bodyShapeModels;

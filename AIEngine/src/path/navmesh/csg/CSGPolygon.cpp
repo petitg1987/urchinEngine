@@ -208,18 +208,6 @@ namespace urchin {
         return true;
     }
 
-    template<class T> SVGPolygon *CSGPolygon<T>::toCsvPolygon(SVGShape::SVGColor color) const {
-        std::vector<Point2<float>> cwPointsFloat;
-        cwPointsFloat.reserve(cwPoints.size());
-        for (const auto& point : cwPoints) {
-            cwPointsFloat.emplace_back(point.template cast<float>());
-        }
-
-        auto* svgPolygon = new SVGPolygon(cwPointsFloat, color, 0.5f);
-        svgPolygon->setStroke(color, 0.01f);
-        return svgPolygon;
-    }
-
     template<class T> void CSGPolygon<T>::logInputData(const std::string& message, Logger::CriticalityLevel logLevel, const CSGPolygon<T>& inputPolygon) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);

@@ -69,8 +69,8 @@ namespace urchin {
         return sceneHeight;
     }
 
-    const std::unique_ptr<I18nService>& SceneManager::getI18nService() const {
-        return i18nService;
+    I18nService& SceneManager::getI18nService() const {
+        return *i18nService;
     }
 
     float SceneManager::getFps() const {
@@ -138,7 +138,7 @@ namespace urchin {
     }
 
     UIRenderer& SceneManager::newUIRenderer(bool enable) {
-        auto uiRenderer = std::make_unique<UIRenderer>(*screenRenderTarget, i18nService);
+        auto uiRenderer = std::make_unique<UIRenderer>(*screenRenderTarget, *i18nService);
         if (enable) {
             enableUIRenderer(uiRenderer.get());
         }

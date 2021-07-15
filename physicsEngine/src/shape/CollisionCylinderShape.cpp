@@ -5,7 +5,7 @@ namespace urchin {
 
     CollisionCylinderShape::CollisionCylinderShape(float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
             CollisionShape3D(),
-            cylinderShape(new CylinderShape<float>(radius, height, cylinderOrientation)) {
+            cylinderShape(std::make_unique<CylinderShape<float>>(radius, height, cylinderOrientation)) {
         computeSafeMargin();
     }
 

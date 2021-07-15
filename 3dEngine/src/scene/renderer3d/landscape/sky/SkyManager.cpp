@@ -24,8 +24,8 @@ namespace urchin {
         }
     }
 
-    const std::unique_ptr<Skybox>& SkyManager::getSkybox() const {
-        return skybox;
+    const Skybox* SkyManager::getSkybox() const {
+        return skybox.get();
     }
 
     void SkyManager::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {

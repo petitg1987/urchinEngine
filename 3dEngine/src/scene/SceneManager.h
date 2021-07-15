@@ -22,7 +22,7 @@ namespace urchin {
             void onResize();
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
-            const std::unique_ptr<I18nService>& getI18nService() const;
+            I18nService& getI18nService() const;
 
             //fps
             float getFps() const;

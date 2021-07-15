@@ -7,9 +7,9 @@ using namespace urchin;
 
 void CharacterControllerIT::fallingCharacterOnObjects() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(physicsWorld);
+    constructGround(*physicsWorld);
     float cubeHeight = 0.5f;
-    auto cubes = constructCubes(physicsWorld, cubeHeight);
+    auto cubes = constructCubes(*physicsWorld, cubeHeight);
     std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
@@ -45,7 +45,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
 
 void CharacterControllerIT::ccdFallingCharacter() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(physicsWorld);
+    constructGround(*physicsWorld);
     std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 50.0f, 0.0f), Quaternion<float>()));
@@ -71,8 +71,8 @@ void CharacterControllerIT::ccdFallingCharacter() {
 
 void CharacterControllerIT::ccdMovingCharacter() {
     auto physicsWorld = std::make_unique<PhysicsWorld>();
-    constructGround(physicsWorld);
-    constructWall(physicsWorld);
+    constructGround(*physicsWorld);
+    constructWall(*physicsWorld);
     std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
@@ -98,23 +98,23 @@ void CharacterControllerIT::ccdMovingCharacter() {
     AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.1f);
 }
 
-void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
+void CharacterControllerIT::constructGround(const PhysicsWorld& physicsWorld) {
     std::vector<Point3<float>> groundPoints = {
             Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
             Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
     };
     std::unique_ptr<CollisionHeightfieldShape> groundShape = std::make_unique<CollisionHeightfieldShape>(groundPoints, 2, 2);
     auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
-    physicsWorld->getBodyManager().addBody(std::move(groundBody));
+    physicsWorld.getBodyManager().addBody(std::move(groundBody));
 }
 
-void CharacterControllerIT::constructWall(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
+void CharacterControllerIT::constructWall(const PhysicsWorld& physicsWorld) {
     std::unique_ptr<CollisionBoxShape> wallShape = std::make_unique<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
     auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
-    physicsWorld->getBodyManager().addBody(std::move(wallBody));
+    physicsWorld.getBodyManager().addBody(std::move(wallBody));
 }
 
-std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
+std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(const PhysicsWorld& physicsWorld, float cubeHeight) {
     std::vector<std::shared_ptr<RigidBody>> cubes;
     for (unsigned int x = 0; x < 5; x++) {
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
@@ -125,7 +125,7 @@ std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(co
             auto cubeBody = std::make_shared<RigidBody>(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
             cubeBody->setMass(10.0f); //non-static
 
-            physicsWorld->getBodyManager().addBody(cubeBody);
+            physicsWorld.getBodyManager().addBody(cubeBody);
             cubes.emplace_back(cubeBody);
         }
     }

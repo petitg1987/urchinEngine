@@ -13,7 +13,7 @@ namespace urchin {
 
     class UIRenderer : public Renderer, public Observer {
         public:
-            explicit UIRenderer(RenderTarget&, const std::unique_ptr<I18nService>&);
+            explicit UIRenderer(RenderTarget&, I18nService&);
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
@@ -31,7 +31,7 @@ namespace urchin {
 
         private:
             RenderTarget& renderTarget;
-            I18nService* i18nService;
+            I18nService& i18nService;
             std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<Shader> uiShader;

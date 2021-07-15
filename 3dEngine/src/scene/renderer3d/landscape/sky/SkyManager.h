@@ -13,7 +13,7 @@ namespace urchin {
             void onCameraProjectionUpdate(const Camera&);
 
             void setSkybox(std::unique_ptr<Skybox>);
-            const std::unique_ptr<Skybox>& getSkybox() const;
+            const Skybox* getSkybox() const;
 
             void prepareRendering(const Matrix4<float>&, const Point3<float>&);
 

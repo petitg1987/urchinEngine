@@ -10,8 +10,8 @@ namespace urchin {
         for (const auto& shaderSource : shaderSources) {
             auto shaderStageData = std::make_unique<ShaderStageData>();
 
-            fillShaderModule(shaderStageData, shaderSource.second);
-            fillPipelineShaderStage(shaderStageData, shaderSource.first);
+            fillShaderModule(*shaderStageData, shaderSource.second);
+            fillPipelineShaderStage(*shaderStageData, shaderSource.first);
 
             shaderStagesData.emplace_back(std::move(shaderStageData));
         }
@@ -35,44 +35,44 @@ namespace urchin {
         return shaderStages;
     }
 
-    void Shader::fillShaderModule(const std::unique_ptr<ShaderStageData>& shaderStageData, const std::vector<char>& shaderCode) const {
+    void Shader::fillShaderModule(ShaderStageData& shaderStageData, const std::vector<char>& shaderCode) const {
         VkShaderModuleCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = shaderCode.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(shaderCode.data());
 
-        VkResult result = vkCreateShaderModule(GraphicService::instance()->getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData->shaderModule);
+        VkResult result = vkCreateShaderModule(GraphicService::instance()->getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData.shaderModule);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create shader module with error code: " + std::to_string(result));
         }
 
-        DebugLabelHelper::nameObject(DebugLabelHelper::SHADER, shaderStageData->shaderModule, shaderName);
+        DebugLabelHelper::nameObject(DebugLabelHelper::SHADER, shaderStageData.shaderModule, shaderName);
     }
 
-    void Shader::fillPipelineShaderStage(const std::unique_ptr<ShaderStageData>& shaderStageData, ShaderType shaderType) const {
-        shaderStageData->shaderStageCreateInfo = {};
-        shaderStageData->shaderStageCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-        shaderStageData->shaderStageCreateInfo.stage = toShaderStageFlag(shaderType);
-        shaderStageData->shaderStageCreateInfo.module = shaderStageData->shaderModule;
-        shaderStageData->shaderStageCreateInfo.pName = "main";
-        shaderStageData->shaderStageCreateInfo.pSpecializationInfo = nullptr;
+    void Shader::fillPipelineShaderStage(ShaderStageData& shaderStageData, ShaderType shaderType) const {
+        shaderStageData.shaderStageCreateInfo = {};
+        shaderStageData.shaderStageCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+        shaderStageData.shaderStageCreateInfo.stage = toShaderStageFlag(shaderType);
+        shaderStageData.shaderStageCreateInfo.module = shaderStageData.shaderModule;
+        shaderStageData.shaderStageCreateInfo.pName = "main";
+        shaderStageData.shaderStageCreateInfo.pSpecializationInfo = nullptr;
 
         if (shaderConstants) {
-            shaderStageData->specializationMapEntries.reserve(shaderConstants->getVariablesSize().size());
+            shaderStageData.specializationMapEntries.reserve(shaderConstants->getVariablesSize().size());
             uint32_t constantId = 0;
             uint32_t variableOffset = 0;
             for (auto& variableSize : shaderConstants->getVariablesSize()) {
-                shaderStageData->specializationMapEntries.emplace_back(createSpecializationMapEntry(constantId++, variableOffset, variableSize));
+                shaderStageData.specializationMapEntries.emplace_back(createSpecializationMapEntry(constantId++, variableOffset, variableSize));
                 variableOffset += (uint32_t)variableSize;
             }
 
-            shaderStageData->specializationInfo = {};
-            shaderStageData->specializationInfo.mapEntryCount = (uint32_t) shaderStageData->specializationMapEntries.size();
-            shaderStageData->specializationInfo.pMapEntries = shaderStageData->specializationMapEntries.data();
-            shaderStageData->specializationInfo.dataSize = shaderConstants->sumVariablesSize();
-            shaderStageData->specializationInfo.pData = shaderConstants->getData();
+            shaderStageData.specializationInfo = {};
+            shaderStageData.specializationInfo.mapEntryCount = (uint32_t) shaderStageData.specializationMapEntries.size();
+            shaderStageData.specializationInfo.pMapEntries = shaderStageData.specializationMapEntries.data();
+            shaderStageData.specializationInfo.dataSize = shaderConstants->sumVariablesSize();
+            shaderStageData.specializationInfo.pData = shaderConstants->getData();
 
-            shaderStageData->shaderStageCreateInfo.pSpecializationInfo = &shaderStageData->specializationInfo;
+            shaderStageData.shaderStageCreateInfo.pSpecializationInfo = &shaderStageData.specializationInfo;
         }
     }
 

@@ -31,8 +31,8 @@ namespace urchin {
             std::vector<VkPipelineShaderStageCreateInfo> getShaderStages() const;
 
         private:
-            void fillShaderModule(const std::unique_ptr<ShaderStageData>&, const std::vector<char>&) const;
-            void fillPipelineShaderStage(const std::unique_ptr<ShaderStageData>&, ShaderType) const;
+            void fillShaderModule(ShaderStageData&, const std::vector<char>&) const;
+            void fillPipelineShaderStage(ShaderStageData&, ShaderType) const;
             static VkSpecializationMapEntry createSpecializationMapEntry(uint32_t, uint32_t, std::size_t);
             static VkShaderStageFlagBits toShaderStageFlag(Shader::ShaderType);
 

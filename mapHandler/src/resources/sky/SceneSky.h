@@ -10,7 +10,7 @@ namespace urchin {
 
             explicit SceneSky(Renderer3d*);
 
-            const std::unique_ptr<Skybox>& getSkybox() const;
+            const Skybox* getSkybox() const;
             void changeSkybox(std::unique_ptr<Skybox>);
 
         private:

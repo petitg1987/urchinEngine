@@ -4,6 +4,7 @@
 #include <path/pathfinding/PathNode.h>
 
 namespace urchin {
+
     PathNode::PathNode(std::shared_ptr<NavTriangle> navTriangle, float gScore, float hScore) :
             navTriangle(std::move(navTriangle)),
             gScore(gScore),
