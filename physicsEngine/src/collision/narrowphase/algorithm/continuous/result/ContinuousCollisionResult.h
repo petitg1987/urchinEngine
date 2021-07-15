@@ -12,17 +12,17 @@ namespace urchin {
 
     template<class T> class ContinuousCollisionResult : public AlgorithmResult {
         public:
-            ContinuousCollisionResult(AbstractBody*, const Vector3<T>&, const Point3<T>&, T);
+            ContinuousCollisionResult(AbstractBody&, const Vector3<T>&, const Point3<T>&, T);
             ContinuousCollisionResult(const ContinuousCollisionResult&);
 
-            AbstractBody* getBody2() const;
+            AbstractBody& getBody2() const;
 
             const Vector3<T>& getNormalFromObject2() const;
             const Point3<T>& getHitPointOnObject2() const;
             T getTimeToHit() const;
 
         private:
-            AbstractBody* body2;
+            AbstractBody& body2;
 
             Vector3<T> normalFromObject2;
             Point3<T> hitPointOnObject2;

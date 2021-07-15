@@ -16,7 +16,6 @@ namespace urchin {
             ~GhostBody() override = default;
 
             static GhostBody* upCast(AbstractBody*);
-            static const GhostBody* upCast(const AbstractBody*);
 
             PairContainer* getPairContainer() const override;
 

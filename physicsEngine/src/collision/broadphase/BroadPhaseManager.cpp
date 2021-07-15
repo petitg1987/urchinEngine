@@ -17,36 +17,36 @@ namespace urchin {
     void BroadPhaseManager::notify(Observable* observable, int notificationType) {
         if (auto* bodyManager = dynamic_cast<BodyManager*>(observable)) {
             if (notificationType == BodyManager::ADD_BODY) {
-                addBody(bodyManager->getLastUpdatedBody());
+                addBody(*bodyManager->getLastUpdatedBody());
             } else if (notificationType == BodyManager::REMOVE_BODY) {
-                removeBody(bodyManager->getLastUpdatedBody());
+                removeBody(*bodyManager->getLastUpdatedBody());
             }
         }
     }
 
     /**
-     * Add body to broad phase. Method can be called from thread different of the physics thread.
+     * Add a body to the broad phase. Method can be called from thread different of the physics thread.
+     * @param body Body to add. Smart pointer is required to force the user to create the body with a smart pointer. See the remove method comment for the reason to use a smart pointer.
      */
-    void BroadPhaseManager::addBodyAsync(AbstractBody* body) {
+    void BroadPhaseManager::addBodyAsync(const std::shared_ptr<AbstractBody>& body) {
         std::lock_guard<std::mutex> lock(mutex);
-
-        bodiesToAdd.push_back(body);
+        bodiesToAdd.push_back(body.get());
     }
 
-    void BroadPhaseManager::addBody(AbstractBody* body) {
+    void BroadPhaseManager::addBody(AbstractBody& body) {
         broadPhaseAlgorithm->addBody(body);
     }
 
     /**
-     * Remove body from broad phase. Method can be called from thread different of the physics thread.
+     * Remove a body from the broad phase. Method can be called from thread different of the physics thread.
+     * @param body Body to remove. Smart pointer is used to ensure that the body is not destroyed before it has been removed from the physics thread.
      */
-    void BroadPhaseManager::removeBodyAsync(AbstractBody* body) {
+    void BroadPhaseManager::removeBodyAsync(const std::shared_ptr<AbstractBody>& body) {
         std::lock_guard<std::mutex> lock(mutex);
-
         bodiesToRemove.push_back(body);
     }
 
-    void BroadPhaseManager::removeBody(AbstractBody* body) {
+    void BroadPhaseManager::removeBody(const AbstractBody& body) {
         broadPhaseAlgorithm->removeBody(body);
     }
 
@@ -54,13 +54,12 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(mutex);
 
         for (auto& bodyToAdd : bodiesToAdd) {
-            addBody(bodyToAdd);
+            addBody(*bodyToAdd);
         }
         bodiesToAdd.clear();
 
         for (auto& bodyToRemove : bodiesToRemove) {
-            removeBody(bodyToRemove);
-            delete bodyToRemove;
+            removeBody(*bodyToRemove);
         }
         bodiesToRemove.clear();
     }
@@ -78,7 +77,7 @@ namespace urchin {
         return broadPhaseAlgorithm->rayTest(ray);
     }
 
-    std::vector<AbstractBody*> BroadPhaseManager::bodyTest(AbstractBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
+    std::vector<AbstractBody*> BroadPhaseManager::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
         return broadPhaseAlgorithm->bodyTest(body, from, to);
     }
 

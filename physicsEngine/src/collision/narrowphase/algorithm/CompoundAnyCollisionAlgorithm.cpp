@@ -15,8 +15,8 @@ namespace urchin {
         const auto& compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
         const CollisionShape3D& otherShape = object2.getShape();
 
-        AbstractBody* body1 = getManifoldResult().getBody1();
-        AbstractBody* body2 = getManifoldResult().getBody2();
+        AbstractBody& body1 = getManifoldResult().getBody1();
+        AbstractBody& body2 = getManifoldResult().getBody2();
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {

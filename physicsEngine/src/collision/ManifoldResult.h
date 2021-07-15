@@ -12,13 +12,13 @@ namespace urchin {
     */
     class ManifoldResult {
         public:
-            ManifoldResult(AbstractBody*, AbstractBody*);
+            ManifoldResult(AbstractBody&, AbstractBody&);
             ManifoldResult(const ManifoldResult&) = default;
             ManifoldResult(ManifoldResult&&) = default;
 
-            AbstractBody* getBody(unsigned int) const;
-            AbstractBody* getBody1() const;
-            AbstractBody* getBody2() const;
+            AbstractBody& getBody(unsigned int) const;
+            AbstractBody& getBody1() const;
+            AbstractBody& getBody2() const;
 
             unsigned int getNumContactPoints() const;
             float getContactBreakingThreshold() const;
@@ -38,8 +38,8 @@ namespace urchin {
 
             static constexpr std::size_t MAX_PERSISTENT_POINTS = 4;
 
-            AbstractBody* body1;
-            AbstractBody* body2;
+            AbstractBody& body1;
+            AbstractBody& body2;
 
             std::array<ManifoldContactPoint, MAX_PERSISTENT_POINTS> contactPoints;
             unsigned int nbContactPoint;

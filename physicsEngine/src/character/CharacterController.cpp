@@ -92,7 +92,7 @@ namespace urchin {
     }
 
     void CharacterController::createBodies() {
-        ghostBody = new GhostBody(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->moveShape());
+        ghostBody = std::make_shared<GhostBody>(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->moveShape());
         ghostBody->setIsActive(true); //always active for get better reactivity
 
         std::unique_ptr<const CollisionShape3D> ccdGhostBodyShape;
@@ -110,7 +110,7 @@ namespace urchin {
         } catch (const std::bad_cast& e) {
             throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(ghostBody->getShape().getShapeType()));
         }
-        ccdGhostBody = new GhostBody(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), std::move(ccdGhostBodyShape));
+        ccdGhostBody = std::make_shared<GhostBody>(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), std::move(ccdGhostBodyShape));
         ccdGhostBody->setIsActive(true);
     }
 
@@ -157,15 +157,15 @@ namespace urchin {
         bool ccdRequired = moveVector.length() > ghostBody->getCcdMotionThreshold();
         if (ccdRequired) {
             manifoldResults.clear();
-            physicsWorld.getCollisionWorld().getNarrowPhaseManager().processGhostBody(ccdGhostBody, manifoldResults);
+            physicsWorld.getCollisionWorld().getNarrowPhaseManager().processGhostBody(*ccdGhostBody, manifoldResults);
 
             for (std::size_t i = 0; i < manifoldResults.size() && ccdRequired; ++i) {
                 const ManifoldResult& manifoldResult = manifoldResults[i];
                 for (unsigned int pointIndex = 0; pointIndex < manifoldResult.getNumContactPoints(); ++pointIndex) {
                     const ManifoldContactPoint& contactPoint = manifoldResult.getManifoldContactPoint(pointIndex);
 
-                    Vector3<float> contactNormal = (manifoldResult.getBody1() == ccdGhostBody) ? -contactPoint.getNormalFromObject2() : contactPoint.getNormalFromObject2();
-                    Point3<float> obstacleContactPoint = (manifoldResult.getBody1() == ccdGhostBody) ? contactPoint.getPointOnObject2() : contactPoint.getPointOnObject1();
+                    Vector3<float> contactNormal = (&manifoldResult.getBody1() == ccdGhostBody.get()) ? -contactPoint.getNormalFromObject2() : contactPoint.getNormalFromObject2();
+                    Point3<float> obstacleContactPoint = (&manifoldResult.getBody1() == ccdGhostBody.get()) ? contactPoint.getPointOnObject2() : contactPoint.getPointOnObject1();
                     float motionAppliedOnObstacle = moveVector.dotProduct(contactNormal);
                     float motionToPassThroughObstacle = previousBodyPosition.vector(obstacleContactPoint).length();
 
@@ -206,10 +206,10 @@ namespace urchin {
         PhysicsTransform characterTransform = ghostBody->getTransform();
         for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTOR.size(); ++subStepIndex) {
             manifoldResults.clear();
-            physicsWorld.getCollisionWorld().getNarrowPhaseManager().processGhostBody(ghostBody, manifoldResults);
+            physicsWorld.getCollisionWorld().getNarrowPhaseManager().processGhostBody(*ghostBody, manifoldResults);
 
             for (const auto& manifoldResult : manifoldResults) {
-                float sign = manifoldResult.getBody1() == ghostBody ? -1.0f : 1.0f;
+                float sign = &manifoldResult.getBody1() == ghostBody.get() ? -1.0f : 1.0f;
                 for (unsigned int i = 0; i < manifoldResult.getNumContactPoints(); ++i) {
                     const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();

@@ -19,9 +19,9 @@ void IslandContainerTest::cascadeMergeIslands() {
 
     IslandContainer islandContainer;
     islandContainer.reset(bodiesPtr);
-    islandContainer.mergeIsland(bodies[0].get(), bodies[1].get()); //body 0 is in contact with body 1
-    islandContainer.mergeIsland(bodies[1].get(), bodies[2].get()); //body 1 is in contact with body 2
-    islandContainer.mergeIsland(bodies[2].get(), bodies[3].get()); //body 2 is in contact with body 3
+    islandContainer.mergeIsland(*bodies[0], *bodies[1]); //body 0 is in contact with body 1
+    islandContainer.mergeIsland(*bodies[1], *bodies[2]); //body 1 is in contact with body 2
+    islandContainer.mergeIsland(*bodies[2], *bodies[3]); //body 2 is in contact with body 3
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
@@ -45,9 +45,9 @@ void IslandContainerTest::mergeAllIslands() {
 
     IslandContainer islandContainer;
     islandContainer.reset(bodiesPtr);
-    islandContainer.mergeIsland(bodies[0].get(), bodies[1].get()); //body 0 is in contact with body 1
-    islandContainer.mergeIsland(bodies[0].get(), bodies[2].get()); //body 0 is in contact with body 2
-    islandContainer.mergeIsland(bodies[1].get(), bodies[2].get()); //body 1 is in contact with body 2
+    islandContainer.mergeIsland(*bodies[0], *bodies[1]); //body 0 is in contact with body 1
+    islandContainer.mergeIsland(*bodies[0], *bodies[2]); //body 0 is in contact with body 2
+    islandContainer.mergeIsland(*bodies[1], *bodies[2]); //body 1 is in contact with body 2
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 3);
@@ -71,8 +71,8 @@ void IslandContainerTest::createTwoSeparateIslands() {
 
     IslandContainer islandContainer;
     islandContainer.reset(bodiesPtr);
-    islandContainer.mergeIsland(bodies[0].get(), bodies[3].get()); //body 0 is in contact with body 3
-    islandContainer.mergeIsland(bodies[2].get(), bodies[1].get()); //body 2 is in contact with body 1
+    islandContainer.mergeIsland(*bodies[0], *bodies[3]); //body 0 is in contact with body 3
+    islandContainer.mergeIsland(*bodies[2], *bodies[1]); //body 2 is in contact with body 1
     const std::vector<IslandElementLink>& islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
     AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);

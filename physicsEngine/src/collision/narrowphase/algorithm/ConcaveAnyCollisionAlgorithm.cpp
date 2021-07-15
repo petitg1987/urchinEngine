@@ -16,8 +16,8 @@ namespace urchin {
 
         const CollisionShape3D& otherShape = object2.getShape();
 
-        AbstractBody* body1 = getManifoldResult().getBody1();
-        AbstractBody* body2 = getManifoldResult().getBody2();
+        AbstractBody& body1 = getManifoldResult().getBody1();
+        AbstractBody& body2 = getManifoldResult().getBody2();
 
         AABBox<float> aabboxLocalToObject1 = object2.getShape().toAABBox(object1.getShapeWorldTransform().inverse() * object2.getShapeWorldTransform());
         const auto& concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());

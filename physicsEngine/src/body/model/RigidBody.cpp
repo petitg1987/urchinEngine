@@ -29,8 +29,8 @@ namespace urchin {
         return dynamic_cast<RigidBody*>(abstractBody);
     }
 
-    const RigidBody* RigidBody::upCast(const AbstractBody* abstractBody) {
-        return dynamic_cast<const RigidBody*>(abstractBody);
+    RigidBody& RigidBody::upCast(AbstractBody& abstractBody) {
+        return dynamic_cast<RigidBody&>(abstractBody);
     }
 
     void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,

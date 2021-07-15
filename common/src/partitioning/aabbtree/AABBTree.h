@@ -29,7 +29,7 @@ namespace urchin {
 
             void aabboxQuery(const AABBox<float>&, std::vector<OBJ>&) const;
             void rayQuery(const Ray<float>&, std::vector<OBJ>&) const;
-            void enlargedRayQuery(const Ray<float>&, float, const OBJ, std::vector<OBJ>&) const;
+            void enlargedRayQuery(const Ray<float>&, float, OBJ, std::vector<OBJ>&) const;
 
         protected:
             std::map<OBJ, std::shared_ptr<AABBNode<OBJ>>> objectsNode;

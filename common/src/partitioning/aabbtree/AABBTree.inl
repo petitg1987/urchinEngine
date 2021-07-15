@@ -231,7 +231,7 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
  * @param objectToExclude Object to exclude from result
  * @param objectsAABBoxHitEnlargedRay [out] Objects AABBox hit by the enlarged ray
  */
-template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, const OBJ objectToExclude,
+template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, OBJ objectToExclude,
                                std::vector<OBJ>& objectsAABBoxHitEnlargedRay) const {
     browseNodes.clear();
     if (rootNode) {

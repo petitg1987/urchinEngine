@@ -47,10 +47,10 @@ namespace urchin {
 
     void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs) {
         for (const auto& overlappingPair : overlappingPairs) {
-            float rollingFriction = std::max(overlappingPair->getBody1()->getRollingFriction(), overlappingPair->getBody2()->getRollingFriction());
+            float rollingFriction = std::max(overlappingPair->getBody1().getRollingFriction(), overlappingPair->getBody2().getRollingFriction());
 
             for (unsigned int bodyIndex = 0; bodyIndex < 2; ++bodyIndex) {
-                RigidBody* body = RigidBody::upCast(overlappingPair->getBody(bodyIndex));
+                RigidBody* body = RigidBody::upCast(&overlappingPair->getBody(bodyIndex));
                 if (body && body->isActive()) {
                     Matrix3<float> inertia = body->getInvWorldInertia().inverse();
                     Vector3<float> currentTorqueForce = (body->getAngularVelocity() * inertia) / dt;

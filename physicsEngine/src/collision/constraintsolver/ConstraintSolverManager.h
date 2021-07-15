@@ -28,10 +28,10 @@ namespace urchin {
             CommonSolvingData fillCommonSolvingData(const ManifoldResult&, const ManifoldContactPoint&);
             ImpulseSolvingData fillImpulseSolvingData(const CommonSolvingData&, float) const;
 
-            void solveNormalConstraint(ConstraintSolving*);
-            void solveTangentConstraint(ConstraintSolving*);
+            void solveNormalConstraint(const ConstraintSolving&);
+            void solveTangentConstraint(const ConstraintSolving&);
 
-            void applyImpulse(RigidBody*, RigidBody*, const CommonSolvingData&, const Vector3<float>&) const;
+            void applyImpulse(RigidBody&, RigidBody&, const CommonSolvingData&, const Vector3<float>&) const;
             Vector3<float> computeRelativeVelocity(const CommonSolvingData&) const;
             Vector3<float> computeTangent(const CommonSolvingData&, const Vector3<float>&) const;
 

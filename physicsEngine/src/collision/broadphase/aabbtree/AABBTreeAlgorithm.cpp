@@ -8,11 +8,11 @@ namespace urchin {
 
     }
 
-    void AABBTreeAlgorithm::addBody(AbstractBody* body) {
+    void AABBTreeAlgorithm::addBody(AbstractBody& body) {
         tree->addBody(body);
     }
 
-    void AABBTreeAlgorithm::removeBody(AbstractBody* body) {
+    void AABBTreeAlgorithm::removeBody(const AbstractBody& body) {
         tree->removeBody(body);
     }
 
@@ -33,14 +33,15 @@ namespace urchin {
         return bodiesAABBoxHitRay;
     }
 
-    std::vector<AbstractBody*> AABBTreeAlgorithm::bodyTest(AbstractBody* body, const PhysicsTransform& from, const PhysicsTransform& to) const {
+    std::vector<AbstractBody*> AABBTreeAlgorithm::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
         std::vector<AbstractBody*> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(15);
 
         Ray<float> ray(from.getPosition(), to.getPosition());
-        float bodyBoundingSphereRadius = body->getShape().getMaxDistanceToCenter();
+        float bodyBoundingSphereRadius = body.getShape().getMaxDistanceToCenter();
 
-        tree->enlargedRayQuery(ray, bodyBoundingSphereRadius, body, bodiesAABBoxHitBody);
+        auto* bodyPtr = const_cast<AbstractBody*>(&body);
+        tree->enlargedRayQuery(ray, bodyBoundingSphereRadius, bodyPtr, bodiesAABBoxHitBody);
 
         return bodiesAABBoxHitBody;
     }

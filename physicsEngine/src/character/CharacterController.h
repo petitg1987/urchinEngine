@@ -65,8 +65,8 @@ namespace urchin {
             CharacterControllerConfig config;
             PhysicsWorld& physicsWorld;
             std::vector<ManifoldResult> manifoldResults;
-            GhostBody* ghostBody;
-            GhostBody* ccdGhostBody;
+            std::shared_ptr<GhostBody> ghostBody;
+            std::shared_ptr<GhostBody> ccdGhostBody;
             float verticalSpeed;
 
             Vector3<float> velocity;

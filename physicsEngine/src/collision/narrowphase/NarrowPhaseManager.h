@@ -24,7 +24,7 @@ namespace urchin {
             NarrowPhaseManager(const BodyManager&, const BroadPhaseManager&);
 
             void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
-            void processGhostBody(GhostBody*, std::vector<ManifoldResult>&);
+            void processGhostBody(const GhostBody&, std::vector<ManifoldResult>&);
 
             ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractBody*>&) const;
             ccd_set rayTest(const Ray<float>&, const std::vector<AbstractBody*>&) const;
@@ -35,9 +35,9 @@ namespace urchin {
             std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair&);
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&);
-            void handleContinuousCollision(AbstractBody*, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
-            void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractBody*, ccd_set&) const;
-            void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractBody*, ccd_set&) const;
+            void handleContinuousCollision(AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
+            void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractBody&, ccd_set&) const;
+            void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractBody&, ccd_set&) const;
 
             const BodyManager& bodyManager;
             const BroadPhaseManager& broadPhaseManager;

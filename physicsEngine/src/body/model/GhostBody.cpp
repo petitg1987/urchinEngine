@@ -14,10 +14,6 @@ namespace urchin {
         return dynamic_cast<GhostBody*>(workBody);
     }
 
-    const GhostBody* GhostBody::upCast(const AbstractBody* workBody) {
-        return dynamic_cast<const GhostBody*>(workBody);
-    }
-
     /**
      * @return Pair container used to collect colliding pairs on ghost body
      */

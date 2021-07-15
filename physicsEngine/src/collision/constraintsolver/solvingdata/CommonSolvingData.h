@@ -10,10 +10,10 @@ namespace urchin {
     * Constraint common data container
     */
     struct CommonSolvingData {
-        CommonSolvingData();
+        CommonSolvingData(const RigidBody&, const RigidBody&);
 
-        const RigidBody* body1;
-        const RigidBody* body2;
+        const RigidBody& body1;
+        const RigidBody& body2;
 
         Vector3<float> contactNormal;
         Vector3<float> contactTangent;

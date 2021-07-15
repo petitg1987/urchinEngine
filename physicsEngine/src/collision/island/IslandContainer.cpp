@@ -28,11 +28,11 @@ namespace urchin {
         }
     }
 
-    void IslandContainer::mergeIsland(IslandElement* element1, IslandElement* element2) {
+    void IslandContainer::mergeIsland(IslandElement& element1, IslandElement& element2) {
         assert(!containerSorted);
 
-        unsigned int islandId1 = findIslandId(element1->getIslandElementId());
-        unsigned int islandId2 = findIslandId(element2->getIslandElementId());
+        unsigned int islandId1 = findIslandId(element1.getIslandElementId());
+        unsigned int islandId2 = findIslandId(element2.getIslandElementId());
 
         if (islandId1 == islandId2) { //elements are already in the same island
             return;
@@ -41,8 +41,8 @@ namespace urchin {
         islandElementsLink[islandId1].islandIdRef = islandId2;
     }
 
-    void IslandContainer::linkToStaticElement(IslandElement* element) {
-        unsigned int islandId = findIslandId(element->getIslandElementId());
+    void IslandContainer::linkToStaticElement(IslandElement& element) {
+        unsigned int islandId = findIslandId(element.getIslandElementId());
         islandElementsLink[islandId].linkedToStaticElement = true;
     }
 

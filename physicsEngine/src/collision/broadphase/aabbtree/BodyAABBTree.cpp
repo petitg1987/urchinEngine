@@ -16,8 +16,8 @@ namespace urchin {
 
     }
 
-    void BodyAABBTree::addBody(AbstractBody* body) {
-        auto nodeData = std::make_unique<BodyAABBNodeData>(body);
+    void BodyAABBTree::addBody(AbstractBody& body) {
+        auto nodeData = std::make_unique<BodyAABBNodeData>(&body);
         AABBTree::addObject(std::move(nodeData));
     }
 
@@ -25,8 +25,8 @@ namespace urchin {
         computeOverlappingPairsFor(newNode);
     }
 
-    void BodyAABBTree::removeBody(AbstractBody* body) {
-        auto& nodeData = AABBTree::getNodeData(body);
+    void BodyAABBTree::removeBody(const AbstractBody& body) {
+        auto& nodeData = AABBTree::getNodeData(const_cast<AbstractBody*>(&body));
         AABBTree::removeObject(nodeData);
     }
 
@@ -72,12 +72,12 @@ namespace urchin {
 
     void BodyAABBTree::createOverlappingPair(BodyAABBNodeData& nodeData1, BodyAABBNodeData& nodeData2) {
         if (!nodeData1.isGhostBody() && !nodeData2.isGhostBody()) {
-            defaultPairContainer->addOverlappingPair(nodeData1.getNodeObject(), nodeData2.getNodeObject());
+            defaultPairContainer->addOverlappingPair(*nodeData1.getNodeObject(), *nodeData2.getNodeObject());
         } else if (nodeData1.isGhostBody() && !nodeData2.isGhostBody()) {
-            nodeData1.getBodyPairContainer()->addOverlappingPair(nodeData1.getNodeObject(), nodeData2.getNodeObject());
+            nodeData1.getBodyPairContainer()->addOverlappingPair(*nodeData1.getNodeObject(), *nodeData2.getNodeObject());
             nodeData2.addOwnerPairContainer(nodeData1.getBodyPairContainer());
         } else if (nodeData2.isGhostBody() && !nodeData1.isGhostBody()) {
-            nodeData2.getBodyPairContainer()->addOverlappingPair(nodeData1.getNodeObject(), nodeData2.getNodeObject());
+            nodeData2.getBodyPairContainer()->addOverlappingPair(*nodeData1.getNodeObject(), *nodeData2.getNodeObject());
             nodeData1.addOwnerPairContainer(nodeData2.getBodyPairContainer());
         } else {
             //ghost bodies cannot see each other
@@ -86,22 +86,22 @@ namespace urchin {
 
     void BodyAABBTree::removeOverlappingPairs(const BodyAABBNodeData& nodeData) {
         if (!nodeData.isGhostBody()) {
-            defaultPairContainer->removeOverlappingPairs(nodeData.getNodeObject());
+            defaultPairContainer->removeOverlappingPairs(*nodeData.getNodeObject());
         } else {
-            removeBodyPairContainerReferences(nodeData.getNodeObject(), nodeData.getBodyPairContainer());
-            nodeData.getBodyPairContainer()->removeOverlappingPairs(nodeData.getNodeObject());
+            removeBodyPairContainerReferences(*nodeData.getNodeObject(), nodeData.getBodyPairContainer());
+            nodeData.getBodyPairContainer()->removeOverlappingPairs(*nodeData.getNodeObject());
         }
 
         for (auto& ownerPairContainer : nodeData.getOwnerPairContainers()) {
-            ownerPairContainer->removeOverlappingPairs(nodeData.getNodeObject());
+            ownerPairContainer->removeOverlappingPairs(*nodeData.getNodeObject());
         }
     }
 
-    void BodyAABBTree::removeBodyPairContainerReferences(const AbstractBody* body, PairContainer* bodyPairContainer) {
+    void BodyAABBTree::removeBodyPairContainerReferences(const AbstractBody& body, PairContainer* bodyPairContainer) {
         std::vector<OverlappingPair> overlappingPairs = bodyPairContainer->retrieveCopyOverlappingPairs();
         for (const auto& overlappingPair : overlappingPairs) {
-            AbstractBody* otherPairBody = overlappingPair.getBody1() == body ? overlappingPair.getBody2() : overlappingPair.getBody1();
-            auto& otherNodeData = dynamic_cast<BodyAABBNodeData&>(BodyAABBTree::getNodeData(otherPairBody));
+            AbstractBody& otherPairBody = &overlappingPair.getBody1() == &body ? overlappingPair.getBody2() : overlappingPair.getBody1();
+            auto& otherNodeData = dynamic_cast<BodyAABBNodeData&>(BodyAABBTree::getNodeData(&otherPairBody));
 
             otherNodeData.removeOwnerPairContainer(bodyPairContainer);
         }

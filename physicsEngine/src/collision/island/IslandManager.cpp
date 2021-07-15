@@ -74,14 +74,14 @@ namespace urchin {
         //2. merge islands for bodies in contact
         for (const auto& manifoldResult : manifoldResults) {
             if (manifoldResult.getNumContactPoints() > 0) {
-                AbstractBody* body1 = manifoldResult.getBody1();
-                AbstractBody* body2 = manifoldResult.getBody2();
+                AbstractBody& body1 = manifoldResult.getBody1();
+                AbstractBody& body2 = manifoldResult.getBody2();
 
-                if (!body1->isStatic() && !body2->isStatic()) {
+                if (!body1.isStatic() && !body2.isStatic()) {
                     islandContainer.mergeIsland(body1, body2);
-                } else if (!body1->isStatic() && body2->isStatic()) {
+                } else if (!body1.isStatic() && body2.isStatic()) {
                     islandContainer.linkToStaticElement(body1);
-                } else if (!body2->isStatic() && body1->isStatic()) {
+                } else if (!body2.isStatic() && body1.isStatic()) {
                     islandContainer.linkToStaticElement(body2);
                 }
             }

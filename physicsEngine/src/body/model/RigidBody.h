@@ -16,7 +16,7 @@ namespace urchin {
             ~RigidBody() override = default;
 
             static RigidBody* upCast(AbstractBody*);
-            static const RigidBody* upCast(const AbstractBody*);
+            static RigidBody& upCast(AbstractBody&);
 
             void setTransform(const PhysicsTransform&) override;
 
