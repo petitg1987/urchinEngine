@@ -36,8 +36,8 @@ namespace urchin {
 
             void addChild(const std::shared_ptr<Widget>&);
             const std::vector<std::shared_ptr<Widget>>& getChildren() const;
-            void removeChild(Widget&);
-            void removeChildren();
+            void detachChild(Widget&);
+            void detachChildren();
 
             void addEventListener(std::unique_ptr<EventListener>);
             const std::vector<std::unique_ptr<EventListener>>& getEventListeners() const;

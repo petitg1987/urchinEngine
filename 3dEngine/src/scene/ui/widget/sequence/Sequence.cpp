@@ -22,7 +22,7 @@ namespace urchin {
 
     std::shared_ptr<Sequence> Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
         auto widget = std::shared_ptr<Sequence>(new Sequence(position, size, std::move(nameSkin), texts, false));
-        if(parent) {
+        if(parent) { //TODO move in common method
             parent->addChild(widget);
         }
         return widget;
@@ -54,7 +54,7 @@ namespace urchin {
 
         //clear children
         for(auto& valueText : valuesText) {
-            removeChild(*valueText);
+            detachChild(*valueText);
         }
         valuesText.clear();
 

@@ -112,6 +112,9 @@ namespace urchin {
 
     void UIRenderer::removeWidget(Widget& widget) {
         auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return &widget == o.get();});
+        if (itFind == widgets.end()) {
+            throw std::runtime_error("The provided widget is not widget of this UI renderer");
+        }
         widgets.erase(itFind);
     }
 

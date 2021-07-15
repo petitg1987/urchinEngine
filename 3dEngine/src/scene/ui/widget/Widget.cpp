@@ -22,10 +22,7 @@ namespace urchin {
     }
 
     Widget::~Widget() {
-        if (parent) {
-            auto itFind = std::find_if(parent->children.begin(), parent->children.end(), [&](const auto& o){return this == o.get();});
-            parent->children.erase(itFind);
-        }
+        detachChildren();
     }
 
     void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService* i18nService, bool createWidget) {
@@ -110,19 +107,20 @@ namespace urchin {
         return children;
     }
 
-    void Widget::removeChild(Widget& childWidget) {
+    void Widget::detachChild(Widget& childWidget) {
         auto itFind = std::find_if(children.begin(), children.end(), [&childWidget](const auto& o){return &childWidget == o.get();});
         if (itFind == children.end()) {
-            throw std::runtime_error("Cannot found child widget on his parent");
+            throw std::runtime_error("The provided child widget is not a child of this widget");
         }
-        children.erase(itFind);
 
         childWidget.parent = nullptr;
+        children.erase(itFind);
     }
 
-    void Widget::removeChildren() {
-        for(auto& child : children) {
-            removeChild(*child);
+    void Widget::detachChildren() {
+        for(auto it = children.begin(); it != children.end();) {
+            (*it)->parent = nullptr;
+            it = children.erase(it);
         }
     }
 
