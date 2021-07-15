@@ -109,7 +109,7 @@ namespace urchin {
                 std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
             }
         } catch (std::exception& e) {
-            Logger::instance()->logError("Error cause sound thread crash: exception reported to main thread");
+            Logger::instance().logError("Error cause sound thread crash: exception reported to main thread");
             soundThreadExceptionPtr = std::current_exception();
         }
     }

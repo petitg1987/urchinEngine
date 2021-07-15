@@ -327,7 +327,7 @@ namespace urchin {
         } else {
             logStream << "Impossible to build a convex hull shape with zero point.";
         }
-        Logger::instance()->logError(logStream.str());
+        Logger::instance().logError(logStream.str());
 
         return std::invalid_argument("Impossible to build the convex hull shape. All points form a " + formName + ".");
     }
@@ -339,7 +339,7 @@ namespace urchin {
         logStream << errorMessage << std::endl;
         logStream << *this;
 
-        Logger::instance()->logError(logStream.str());
+        Logger::instance().logError(logStream.str());
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHullShape3D<T>& ch) {

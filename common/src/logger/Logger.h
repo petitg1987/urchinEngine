@@ -20,7 +20,7 @@ namespace urchin {
             };
 
             static void setupCustomInstance(std::unique_ptr<Logger>);
-            static const std::unique_ptr<Logger>& instance();
+            static Logger& instance();
 
             void logInfo(const std::string&);
             void logWarning(const std::string&);
@@ -35,7 +35,7 @@ namespace urchin {
             bool hasFailure() const;
 
         private:
-            static const std::unique_ptr<Logger>& defaultInstance();
+            static Logger& defaultInstance();
             std::string prefix(CriticalityLevel);
             std::string getCriticalityString(CriticalityLevel);
 

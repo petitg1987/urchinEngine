@@ -70,7 +70,7 @@ namespace urchin {
         logStream << " - Include margin: " << includeMargin << std::endl;
         logStream << " - Convex object 1: " << std::endl << convexObject1.toString() << std::endl;
         logStream << " - Convex object 2: " << std::endl << convexObject2.toString();
-        Logger::instance()->logWarning(logStream.str());
+        Logger::instance().logWarning(logStream.str());
     }
 
     //explicit template

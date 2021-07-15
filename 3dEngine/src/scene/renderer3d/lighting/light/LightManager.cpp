@@ -166,7 +166,7 @@ namespace urchin {
     void LightManager::logMaxLightsReach() {
         static bool maxLightReachLogged = false;
         if (!maxLightReachLogged) {
-            Logger::instance()->logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
+            Logger::instance().logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
             maxLightReachLogged = true;
         }
     }

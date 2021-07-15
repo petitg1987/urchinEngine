@@ -16,7 +16,7 @@ namespace urchin {
 
     TextureParam::~TextureParam() {
         if (isInitialized) {
-            Logger::instance()->logWarning("Texture parameter not cleanup before destruction");
+            Logger::instance().logWarning("Texture parameter not cleanup before destruction");
             cleanup();
         }
     }

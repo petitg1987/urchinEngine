@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
-        Logger::instance()->logInfo("Load map: " + filename);
+        Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(filename);
 
         relativeWorkingDirectory = udaParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);

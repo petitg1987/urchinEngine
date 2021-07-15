@@ -15,7 +15,7 @@ namespace urchin {
 
     AlterableBufferHandler::~AlterableBufferHandler() {
         if (isInitialized) {
-            Logger::instance()->logWarning("Alterable buffer handler not cleanup before destruction");
+            Logger::instance().logWarning("Alterable buffer handler not cleanup before destruction");
             cleanup();
         }
     }

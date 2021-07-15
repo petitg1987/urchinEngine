@@ -65,7 +65,7 @@ namespace urchin {
     }
 
     std::string HttpRequest::executeRequest(const std::string& url, const std::vector<std::string>& headers) const {
-        Logger::instance()->logInfo("Execute request on: " + url);
+        Logger::instance().logInfo("Execute request on: " + url);
 
         struct curl_slist* curlHttpHeaders = {};
         for (auto& header : headers) {

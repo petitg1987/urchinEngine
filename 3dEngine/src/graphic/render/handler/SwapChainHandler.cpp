@@ -19,7 +19,7 @@ namespace urchin {
 
     SwapChainHandler::~SwapChainHandler() {
         if (isInitialized) {
-            Logger::instance()->logWarning("Swap chain handler not cleanup before destruction");
+            Logger::instance().logWarning("Swap chain handler not cleanup before destruction");
             cleanup();
         }
     }

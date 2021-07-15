@@ -215,7 +215,7 @@ namespace urchin {
         logStream << message << std::endl;
         logStream << inputPolygon;
 
-        Logger::instance()->log(logLevel, logStream.str());
+        Logger::instance().log(logLevel, logStream.str());
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const CSGPolygon<T>& polygon) {

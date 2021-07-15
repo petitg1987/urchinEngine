@@ -106,7 +106,7 @@ namespace urchin {
     void SoundFileReader::logReadChunkError(const std::string& errorMessage) const {
         static bool errorLogged = false;
         if (!errorLogged) {
-            Logger::instance()->logError(errorMessage);
+            Logger::instance().logError(errorMessage);
             errorLogged = true;
         }
     }

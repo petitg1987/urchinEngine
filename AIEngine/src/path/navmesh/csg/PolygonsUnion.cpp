@@ -85,7 +85,7 @@ namespace urchin {
 
         }
 
-        Logger::instance()->log(logLevel, logStream.str());
+        Logger::instance().log(logLevel, logStream.str());
     }
 
     //explicit template

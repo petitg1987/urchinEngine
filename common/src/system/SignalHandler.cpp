@@ -160,7 +160,7 @@ namespace urchin {
             free(symbols);
         }
 
-        urchin::Logger::instance()->logError(stacktrace);
+        urchin::Logger::instance().logError(stacktrace);
         if (instance()->signalReceptor) {
             instance()->signalReceptor->onSignalReceived((unsigned long)signalId);
         }

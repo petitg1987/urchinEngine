@@ -25,9 +25,8 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 }
 
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool() {
-    if (freeCount != maxElements) //ensure that 'free' method has been called
-    {
-        Logger::instance()->logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
+    if (freeCount != maxElements) { //ensure that 'free' method has been called
+        Logger::instance().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
     }
 
     free(pool);
@@ -77,7 +76,7 @@ template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull() {
         logStream << " - Pool name: " << poolName << std::endl;
         logStream << " - Element size: " << maxElementSize << std::endl;
         logStream << " - Maximum elements: " << maxElements;
-        Logger::instance()->logWarning(logStream.str());
+        Logger::instance().logWarning(logStream.str());
 
         fullPoolLogged = true;
     }

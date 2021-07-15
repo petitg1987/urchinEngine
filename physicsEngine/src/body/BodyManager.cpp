@@ -41,7 +41,7 @@ namespace urchin {
 
         for (const auto& bodyToRefresh: bodiesToRefresh) {
             if (bodyToRefresh.bodyToAdd) {
-                Logger::instance()->logInfo("Add physical body: " + bodyToRefresh.bodyToAdd->getId());
+                Logger::instance().logInfo("Add physical body: " + bodyToRefresh.bodyToAdd->getId());
 
                 bodies.emplace_back(bodyToRefresh.bodyToAdd);
                 bodyToRefresh.bodyToAdd->setPhysicsThreadId(std::this_thread::get_id());

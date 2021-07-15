@@ -14,18 +14,18 @@ namespace urchin {
 
     }
 
-    const std::unique_ptr<Logger>& Logger::defaultInstance() {
+    Logger& Logger::defaultInstance() {
         static std::unique_ptr<Logger> defaultInstance = std::make_unique<FileLogger>("urchinEngine.log");
-        return defaultInstance;
+        return *defaultInstance;
     }
 
     void Logger::setupCustomInstance(std::unique_ptr<Logger> logger) {
         customInstance = std::move(logger);
     }
 
-    const std::unique_ptr<Logger>& Logger::instance() {
+    Logger& Logger::instance() {
         if (customInstance) {
-            return customInstance;
+            return *customInstance;
         }
         return defaultInstance();
     }

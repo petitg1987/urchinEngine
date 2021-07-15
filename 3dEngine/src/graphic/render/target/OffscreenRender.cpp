@@ -18,7 +18,7 @@ namespace urchin {
 
     OffscreenRender::~OffscreenRender() {
         if (isInitialized) {
-            Logger::instance()->logWarning("Offscreen render not cleanup before destruction: " + getName());
+            Logger::instance().logWarning("Offscreen render not cleanup before destruction: " + getName());
             OffscreenRender::cleanup();
         }
         resetTextures();

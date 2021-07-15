@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void AIManager::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {
-        Logger::instance()->logInfo("Add new AI entity: " + aiEntity->getName());
+        Logger::instance().logInfo("Add new AI entity: " + aiEntity->getName());
         aiWorld.addEntity(aiEntity);
     }
 
@@ -128,7 +128,7 @@ namespace urchin {
 
             Profiler::ai()->log(); //log for AI thread
         } catch (std::exception& e) {
-            Logger::instance()->logError("Error cause AI thread crash: exception reported to main thread");
+            Logger::instance().logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();
         }
     }

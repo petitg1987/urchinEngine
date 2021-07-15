@@ -57,7 +57,7 @@ void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
 }
 
 void CollisionWorldIT::fallForever() {
-    Logger::instance()->purge(); //Log file must be emptied before start this test
+    Logger::instance().purge(); //Log file must be emptied before start this test
     auto bodyManager = buildWorld(Point3<float>(60.0f, 5.0f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
 
@@ -68,9 +68,9 @@ void CollisionWorldIT::fallForever() {
     auto cubeBody = bodyManager->getBodies()[1];
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -4.0f, "Check cube doesn't fall forever");
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
-    std::string logValue = Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max());
+    std::string logValue = Logger::instance().retrieveContent(std::numeric_limits<unsigned long>::max());
     AssertHelper::assertTrue(logValue.find("(WW) Body cube is below the limit of") != std::string::npos);
-    Logger::instance()->purge();
+    Logger::instance().purge();
 }
 
 void CollisionWorldIT::changePositionOnInactiveBody() {

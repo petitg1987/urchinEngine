@@ -21,7 +21,7 @@ namespace urchin {
 
     ScreenRender::~ScreenRender() {
         if (isInitialized) {
-            Logger::instance()->logWarning("Screen render not cleanup before destruction");
+            Logger::instance().logWarning("Screen render not cleanup before destruction");
             ScreenRender::cleanup();
         }
     }

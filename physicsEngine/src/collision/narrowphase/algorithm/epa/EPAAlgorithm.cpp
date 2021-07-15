@@ -394,7 +394,7 @@ namespace urchin {
         logStream << "Convex object 2: " << std::endl << convexObject2.toString() << std::endl;
         logStream << "Simplex: " << std::endl << gjkResult.getSimplex();
 
-        Logger::instance()->logError(logStream.str());
+        Logger::instance().logError(logStream.str());
     }
 
     //explicit template

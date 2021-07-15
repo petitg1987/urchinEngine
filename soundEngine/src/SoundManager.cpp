@@ -27,7 +27,7 @@ namespace urchin {
 
     void SoundManager::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
         if (sound && soundTrigger) {
-            Logger::instance()->logInfo("Add sound: " + sound->getFilename());
+            Logger::instance().logInfo("Add sound: " + sound->getFilename());
             adjustSoundVolume(*sound);
 
             auto audioController = std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), *streamUpdateWorker);
@@ -114,7 +114,7 @@ namespace urchin {
 
         ALenum err;
         while ((err = alGetError()) != AL_NO_ERROR) {
-            Logger::instance()->logError("OpenAL error detected: " + std::to_string(err));
+            Logger::instance().logError("OpenAL error detected: " + std::to_string(err));
         }
     }
 

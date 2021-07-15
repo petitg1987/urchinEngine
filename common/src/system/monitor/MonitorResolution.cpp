@@ -23,7 +23,7 @@ namespace urchin {
         std::vector<std::string> resolutionParts;
         StringUtil::split(id, ID_DELIMITER, resolutionParts);
         if (resolutionParts.size() != 3) {
-            Logger::instance()->logError("Wrongly structured monitor resolution id: " + id);
+            Logger::instance().logError("Wrongly structured monitor resolution id: " + id);
             return MonitorResolution(1920, 1080, 60);
         }
         return MonitorResolution(TypeConverter::toUnsignedInt(resolutionParts[0]),TypeConverter::toUnsignedInt(resolutionParts[1]),TypeConverter::toUnsignedInt(resolutionParts[2]));

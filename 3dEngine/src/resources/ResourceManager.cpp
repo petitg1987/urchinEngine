@@ -12,7 +12,7 @@ namespace urchin {
     ResourceManager::~ResourceManager() {
         cleanResources();
         for (auto& resource : resources) {
-            Logger::instance()->logError("Resources not released: " + resource.second.lock()->getName());
+            Logger::instance().logError("Resources not released: " + resource.second.lock()->getName());
         }
     }
 

@@ -21,7 +21,7 @@ namespace urchin {
 
     BufferHandler::~BufferHandler() {
         if (isInitialized) {
-            Logger::instance()->logWarning("Buffer handler not cleanup before destruction");
+            Logger::instance().logWarning("Buffer handler not cleanup before destruction");
             cleanup();
         }
     }

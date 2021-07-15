@@ -79,7 +79,7 @@ namespace urchin {
     void LabelTranslator::logMissingLanguage(const std::string& language) const {
         static bool missingLanguageLogged = false;
         if (!missingLanguageLogged) {
-            Logger::instance()->logError("Translated labels for language '" + language + "' not found");
+            Logger::instance().logError("Translated labels for language '" + language + "' not found");
             missingLanguageLogged = true;
         }
     }
@@ -87,7 +87,7 @@ namespace urchin {
     void LabelTranslator::logMissingTranslation(const std::string& language, const std::string& labelKey) const {
         static bool missingTranslationLogged = false;
         if (!missingTranslationLogged) {
-            Logger::instance()->logError("Translation in '" + language + "' not found for label key '" + labelKey + "'");
+            Logger::instance().logError("Translation in '" + language + "' not found for label key '" + labelKey + "'");
             missingTranslationLogged = true;
         }
     }
