@@ -17,23 +17,23 @@ namespace urchin {
 
     }
 
-    BodyShapeWidget* BodyShapeWidgetRetriever::createBodyShapeWidget(CollisionShape3D::ShapeType shapeType) {
-        BodyShapeWidget* bodyShapeWidget;
+    std::unique_ptr<BodyShapeWidget> BodyShapeWidgetRetriever::createBodyShapeWidget(CollisionShape3D::ShapeType shapeType) {
+        std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
 
         if (shapeType == CollisionShape3D::ShapeType::SPHERE_SHAPE) {
-            bodyShapeWidget = new BodySphereShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodySphereShapeWidget>(sceneObject);
         } else if (shapeType == CollisionShape3D::ShapeType::BOX_SHAPE) {
-            bodyShapeWidget = new BodyBoxShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodyBoxShapeWidget>(sceneObject);
         } else if (shapeType == CollisionShape3D::ShapeType::CAPSULE_SHAPE) {
-            bodyShapeWidget = new BodyCapsuleShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodyCapsuleShapeWidget>(sceneObject);
         } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) {
-            bodyShapeWidget = new BodyCylinderShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodyCylinderShapeWidget>(sceneObject);
         } else if (shapeType == CollisionShape3D::ShapeType::CONE_SHAPE) {
-            bodyShapeWidget = new BodyConeShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodyConeShapeWidget>(sceneObject);
         } else if (shapeType == CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
-            bodyShapeWidget = new BodyConvexHullShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodyConvexHullShapeWidget>(sceneObject);
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
-            bodyShapeWidget = new BodyCompoundShapeWidget(sceneObject);
+            bodyShapeWidget = std::make_unique<BodyCompoundShapeWidget>(sceneObject);
         } else {
             throw std::invalid_argument("Unknown shape type to retrieve body shape widget: " + std::to_string(shapeType));
         }

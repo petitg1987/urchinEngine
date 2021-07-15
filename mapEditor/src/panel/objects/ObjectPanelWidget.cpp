@@ -96,7 +96,7 @@ namespace urchin {
     }
 
     BodyShapeWidget* ObjectPanelWidget::getBodyShapeWidget() const {
-        return bodyShapeWidget;
+        return bodyShapeWidget.get();
     }
 
     void ObjectPanelWidget::setupTransformBox(QVBoxLayout* generalLayout) {
@@ -444,7 +444,7 @@ namespace urchin {
     void ObjectPanelWidget::setupObjectPhysicsDataFrom(const SceneObject& sceneObject) {
         disableObjectEvent = true;
         const RigidBody* rigidBody = sceneObject.getRigidBody();
-        BodyShapeWidget* bodyShapeWidget;
+
         if (rigidBody) {
             hasRigidBody->setChecked(true);
             tabPhysicsRigidBody->show();
@@ -464,39 +464,37 @@ namespace urchin {
             angularFactorY->setValue(rigidBody->getAngularFactor().Y);
             angularFactorZ->setValue(rigidBody->getAngularFactor().Z);
 
-            bodyShapeWidget = createBodyShapeWidget(rigidBody->getShape(), sceneObject);
-            bodyShapeWidget->setupShapePropertiesFrom(rigidBody->getShape());
+            BodyShapeWidget& bodyShapeWidget = createBodyShapeWidget(rigidBody->getShape(), sceneObject);
+            bodyShapeWidget.setupShapePropertiesFrom(rigidBody->getShape());
+            shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget.getBodyShapeName()));
         } else {
             hasRigidBody->setChecked(false);
             tabPhysicsRigidBody->hide();
 
-            bodyShapeWidget = createNoBodyShapeWidget(sceneObject);
+            BodyShapeWidget& bodyShapeWidget = createNoBodyShapeWidget(sceneObject);
+            shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget.getBodyShapeName()));
         }
 
-
-        shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget->getBodyShapeName()));
         disableObjectEvent = false;
     }
 
-    BodyShapeWidget* ObjectPanelWidget::createBodyShapeWidget(const CollisionShape3D& shape, const SceneObject& sceneObject) {
-        delete bodyShapeWidget;
+    BodyShapeWidget& ObjectPanelWidget::createBodyShapeWidget(const CollisionShape3D& shape, const SceneObject& sceneObject) {
         bodyShapeWidget = BodyShapeWidgetRetriever(&sceneObject).createBodyShapeWidget(shape.getShapeType());
         setupBodyShapeWidget();
-        return bodyShapeWidget;
+        return *bodyShapeWidget;
     }
 
-    BodyShapeWidget* ObjectPanelWidget::createNoBodyShapeWidget(const SceneObject& sceneObject) {
-        delete bodyShapeWidget;
-        bodyShapeWidget = new NoBodyShapeWidget(&sceneObject);
+    BodyShapeWidget& ObjectPanelWidget::createNoBodyShapeWidget(const SceneObject& sceneObject) {
+        bodyShapeWidget = std::make_unique<NoBodyShapeWidget>(&sceneObject);
         setupBodyShapeWidget();
-        return bodyShapeWidget;
+        return *bodyShapeWidget;
     }
 
     void ObjectPanelWidget::setupBodyShapeWidget() {
-        physicsShapeLayout->addWidget(bodyShapeWidget);
+        physicsShapeLayout->addWidget(bodyShapeWidget.get());
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         bodyShapeWidget->show();
-        connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
+        connect(bodyShapeWidget.get(), SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
 
         notifyObservers(this, NotificationType::OBJECT_BODY_SHAPE_WIDGET_CREATED);
     }
@@ -587,8 +585,8 @@ namespace urchin {
             const SceneObject& sceneObject = *objectTableView->getSelectedSceneObject();
             if (sceneObject.getRigidBody()) {
                 const CollisionShape3D& updatedCollisionShape = sceneObject.getRigidBody()->getShape();
-                BodyShapeWidget* bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, sceneObject);
-                bodyShapeWidget->setupShapePropertiesFrom(updatedCollisionShape);
+                auto& bodyShapeWidget = createBodyShapeWidget(updatedCollisionShape, sceneObject);
+                bodyShapeWidget.setupShapePropertiesFrom(updatedCollisionShape);
             }
         }
     }

@@ -12,13 +12,13 @@ namespace urchin {
 
     }
 
-    SoundShapeWidget* SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) {
-        SoundShapeWidget *soundShapeWidget;
+    std::unique_ptr<SoundShapeWidget> SoundShapeWidgetRetriever::retrieveShapeWidget(SoundShape::ShapeType shapeType) {
+        std::unique_ptr<SoundShapeWidget> soundShapeWidget;
 
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {
-            soundShapeWidget = new SoundSphereShapeWidget(sceneSound);
+            soundShapeWidget = std::make_unique<SoundSphereShapeWidget>(sceneSound);
         } else if (shapeType == SoundShape::ShapeType::BOX_SHAPE) {
-            soundShapeWidget = new SoundBoxShapeWidget(sceneSound);
+            soundShapeWidget = std::make_unique<SoundBoxShapeWidget>(sceneSound);
         } else {
             throw std::invalid_argument("Unknown shape type to retrieve sound shape widget: " + std::to_string(shapeType));
         }

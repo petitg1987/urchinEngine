@@ -53,8 +53,8 @@ namespace urchin {
             void setupObjectDataFrom(const SceneObject&);
             void setupObjectPhysicsDataFrom(const SceneObject&);
 
-            BodyShapeWidget* createBodyShapeWidget(const CollisionShape3D&, const SceneObject&);
-            BodyShapeWidget* createNoBodyShapeWidget(const SceneObject&);
+            BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const SceneObject&);
+            BodyShapeWidget& createNoBodyShapeWidget(const SceneObject&);
             void setupBodyShapeWidget();
 
             ObjectController* objectController;
@@ -96,7 +96,7 @@ namespace urchin {
             QDoubleSpinBox* angularFactorZ;
             QLabel* shapeTypeValueLabel;
             QPushButton* changeBodyShapeButton;
-            BodyShapeWidget* bodyShapeWidget;
+            std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
 
         private slots:
             void showAddObjectDialog();

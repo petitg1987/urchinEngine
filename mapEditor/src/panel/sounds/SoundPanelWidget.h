@@ -46,7 +46,7 @@ namespace urchin {
             void setupManualTriggerDataFrom();
             void setupShapeTriggerDataFrom(const SceneSound&);
 
-            SoundShapeWidget* retrieveSoundShapeWidget(const SoundShape&, const SceneSound&);
+            SoundShapeWidget& retrieveSoundShapeWidget(const SoundShape&, const SceneSound&);
 
             SoundController* soundController;
 
@@ -81,7 +81,7 @@ namespace urchin {
             QPushButton* changeSoundTriggerTypeButton;
             QLabel* soundShapeType;
             QPushButton* changeSoundShapeTypeButton;
-            SoundShapeWidget* soundShapeWidget;
+            std::unique_ptr<SoundShapeWidget> soundShapeWidget;
 
         private slots:
             void showAddSoundDialog();

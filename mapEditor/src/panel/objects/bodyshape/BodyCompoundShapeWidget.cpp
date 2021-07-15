@@ -174,7 +174,7 @@ namespace urchin {
         shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* shapeLayout = new QGridLayout(shapeGroupBox);
-        bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).createBodyShapeWidget(localizedShape->shape->getShapeType());
+        bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).createBodyShapeWidget(localizedShape->shape->getShapeType()).release();
         shapeLayout->addWidget(bodyShapeWidget, 0, 0);
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         bodyShapeWidget->setupShapePropertiesFrom(*localizedShape->shape);

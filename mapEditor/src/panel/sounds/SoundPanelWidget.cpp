@@ -316,22 +316,20 @@ namespace urchin {
 
         const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(sceneSound.getSoundTrigger());
         auto& soundShape = shapeTrigger->getSoundShape();
-        SoundShapeWidget* soundShapeWidget = retrieveSoundShapeWidget(soundShape, sceneSound);
-        soundShapeWidget->setupShapePropertiesFrom(soundShape);
+        SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, sceneSound);
+        soundShapeWidget.setupShapePropertiesFrom(soundShape);
 
-        soundShapeType->setText(QString::fromStdString(soundShapeWidget->getSoundShapeName()));
+        soundShapeType->setText(QString::fromStdString(soundShapeWidget.getSoundShapeName()));
     }
 
-    SoundShapeWidget* SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SceneSound& sceneSound) {
-        delete soundShapeWidget;
-
+    SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SceneSound& sceneSound) {
         soundShapeWidget = SoundShapeWidgetRetriever(sceneSound).retrieveShapeWidget(shape.getShapeType());
-        triggerShapeLayout->addWidget(soundShapeWidget);
+        triggerShapeLayout->addWidget(soundShapeWidget.get());
         soundShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundShapeWidget->show();
-        connect(soundShapeWidget, SIGNAL(soundShapeChange(const SoundShape*)), this, SLOT(soundShapeChanged(const SoundShape*)));
+        connect(soundShapeWidget.get(), SIGNAL(soundShapeChange(const SoundShape*)), this, SLOT(soundShapeChanged(const SoundShape*)));
 
-        return soundShapeWidget;
+        return *soundShapeWidget;
     }
 
     void SoundPanelWidget::showAddSoundDialog() {
