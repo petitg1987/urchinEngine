@@ -92,7 +92,7 @@ namespace urchin {
     }
 
     void BufferHandler::recreateBuffer(const void *dataPtr) {
-        auto allocator = GraphicService::instance()->getAllocator();
+        auto allocator = GraphicService::instance().getAllocator();
         auto bufferSize = static_cast<VkDeviceSize>(dataSize);
 
         deleteBuffer();
@@ -133,7 +133,7 @@ namespace urchin {
     }
 
     void BufferHandler::deleteBuffer() {
-        auto allocator = GraphicService::instance()->getAllocator();
+        auto allocator = GraphicService::instance().getAllocator();
 
         if (buffer != nullptr) {
             vmaDestroyBuffer(allocator, buffer, nullptr);
@@ -159,11 +159,11 @@ namespace urchin {
 
     void BufferHandler::updateBuffer(const void *dataPtr) {
         void *dataDestination;
-        vmaMapMemory(GraphicService::instance()->getAllocator(), bufferMemory, &dataDestination);
+        vmaMapMemory(GraphicService::instance().getAllocator(), bufferMemory, &dataDestination);
         {
             memcpy(dataDestination, dataPtr, dataSize);
         }
-        vmaUnmapMemory(GraphicService::instance()->getAllocator(), bufferMemory);
+        vmaUnmapMemory(GraphicService::instance().getAllocator(), bufferMemory);
     }
 
 }

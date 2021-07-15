@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     Shader::~Shader() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         for (auto& shaderStageData : shaderStagesData) {
             vkDestroyShaderModule(logicalDevice, shaderStageData->shaderModule, nullptr);
         }
@@ -41,7 +41,7 @@ namespace urchin {
         createInfo.codeSize = shaderCode.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(shaderCode.data());
 
-        VkResult result = vkCreateShaderModule(GraphicService::instance()->getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData.shaderModule);
+        VkResult result = vkCreateShaderModule(GraphicService::instance().getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData.shaderModule);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create shader module with error code: " + std::to_string(result));
         }

@@ -12,9 +12,9 @@
 namespace urchin {
 
     TerrainGrass::TerrainGrass(const std::string& grassTextureFilename) :
-            grassPositionRandomPercentage(ConfigService::instance()->getFloatValue("terrain.grassPositionRandomPercentage")),
-            grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
-            grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
+            grassPositionRandomPercentage(ConfigService::instance().getFloatValue("terrain.grassPositionRandomPercentage")),
+            grassPatchSize(ConfigService::instance().getFloatValue("terrain.grassPatchSize")),
+            grassQuadtreeDepth(ConfigService::instance().getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             bIsInitialized(false),
             renderTarget(nullptr),
             positioningData({}),
@@ -23,7 +23,7 @@ namespace urchin {
             ambient(0.5f),
             mesh(nullptr),
             grassQuantity(0.0f) {
-        float grassAlphaTest = ConfigService::instance()->getFloatValue("terrain.grassAlphaTest");
+        float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &grassAlphaTest);
         terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "terrainGrass.geom.spv", "terrainGrass.frag.spv", std::move(shaderConstants));
@@ -250,7 +250,7 @@ namespace urchin {
         if (grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            auto grassTextureImg = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
+            auto grassTextureImg = MediaManager::instance().getMedia<Image>(grassTextureFilename);
             grassTexture = grassTextureImg->createTexture(true);
         }
     }
@@ -265,7 +265,7 @@ namespace urchin {
         if (grassMaskFilename.empty()) {
             grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0})).createTexture(false);
         } else {
-            auto grassMaskImage = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
+            auto grassMaskImage = MediaManager::instance().getMedia<Image>(grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);
         }
 

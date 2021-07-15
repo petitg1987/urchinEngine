@@ -19,12 +19,12 @@ namespace urchin {
     bool DEBUG_EXPORT_NAV_MESH = false;
 
     NavMeshGenerator::NavMeshGenerator() :
-            polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
-            polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
+            polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance().getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
+            polygonMergePointsDistanceThreshold(ConfigService::instance().getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
             navMeshAgent(std::make_unique<NavMeshAgent>()),
             navMesh(std::make_shared<NavMesh>()),
             needFullRefresh(false),
-            navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"))) {
+            navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance().getFloatValue("navMesh.polytopeAabbTreeFatMargin"))) {
 
     }
 
@@ -35,7 +35,7 @@ namespace urchin {
         this->needFullRefresh.store(true, std::memory_order_release);
 
         float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
-        float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
+        float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance().getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
         this->navigationObjects.updateFatMargin(navigationObjectsMargin);
     }
 
@@ -88,13 +88,13 @@ namespace urchin {
 
                 if (aiEntity->getType() == AIEntity::OBJECT) {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, *navMeshAgent);
+                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance().buildExpandedPolytopes(aiObject, *navMeshAgent);
                     for (auto& objectExpandedPolytope : objectExpandedPolytopes) {
                         addNavObject(aiObject, std::move(objectExpandedPolytope));
                     }
                 } else if (aiEntity->getType() == AIEntity::TERRAIN) {
                     auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, *navMeshAgent);
+                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance().buildExpandedPolytope(aiTerrain, *navMeshAgent);
                     for (auto& terrainExpandedPolytope : terrainExpandedPolytopes) {
                         addNavObject(aiTerrain, std::move(terrainExpandedPolytope));
                     }
@@ -242,7 +242,7 @@ namespace urchin {
             }
         }
 
-        return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
+        return PolygonsUnion<float>::instance().unionPolygons(holePolygons);
     }
 
     CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::shared_ptr<Polytope>& polytopeObstacle, const std::shared_ptr<PolytopeSurface>& walkableSurface) const {
@@ -290,7 +290,7 @@ namespace urchin {
                     const CSGPolygon<float>& walkablePolygon = walkablePolygons[0];
 
                     bool obstacleInsideWalkable;
-                    const std::vector<CSGPolygon<float>>& subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
+                    const std::vector<CSGPolygon<float>>& subtractedPolygons = PolygonsSubtraction<float>::instance().subtractPolygons(
                             walkablePolygon, obstaclePolygon, obstacleInsideWalkable);
 
                     //replace 'walkablePolygon' by 'subtractedPolygons'

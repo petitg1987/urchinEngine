@@ -26,8 +26,8 @@ namespace urchin {
 
     void SwapChainHandler::initialize(bool verticalSyncEnabled) {
         assert(!isInitialized);
-        auto physicalDevice = GraphicService::instance()->getDevices().getPhysicalDevice();
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto physicalDevice = GraphicService::instance().getDevices().getPhysicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
 
@@ -49,8 +49,8 @@ namespace urchin {
         createInfo.imageArrayLayers = 1;
         createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-        uint32_t queueFamilyIndices[] = {GraphicService::instance()->getQueues().getGraphicsQueueFamily(),
-                                         GraphicService::instance()->getQueues().getPresentationQueueFamily()};
+        uint32_t queueFamilyIndices[] = {GraphicService::instance().getQueues().getGraphicsQueueFamily(),
+                                         GraphicService::instance().getQueues().getPresentationQueueFamily()};
 
         if (queueFamilyIndices[0] != queueFamilyIndices[1]) {
             createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
@@ -85,7 +85,7 @@ namespace urchin {
     void SwapChainHandler::cleanup() {
         assert(isInitialized);
 
-        vkDestroySwapchainKHR(GraphicService::instance()->getDevices().getLogicalDevice(), swapChain, nullptr);
+        vkDestroySwapchainKHR(GraphicService::instance().getDevices().getLogicalDevice(), swapChain, nullptr);
 
         isInitialized = false;
     }
@@ -157,7 +157,7 @@ namespace urchin {
             return capabilities.currentExtent;
         } else {
             unsigned int widthInPixel, heightInPixel;
-            GraphicService::instance()->getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
+            GraphicService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
 
             VkExtent2D actualExtent = {(uint32_t)widthInPixel, (uint32_t)heightInPixel};
             actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);

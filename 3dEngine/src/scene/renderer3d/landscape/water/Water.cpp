@@ -138,7 +138,7 @@ namespace urchin {
         if (normalFilename.empty()) {
             normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255})).createTexture(false);
         } else {
-            auto normalImage = MediaManager::instance()->getMedia<Image>(normalFilename);
+            auto normalImage = MediaManager::instance().getMedia<Image>(normalFilename);
             if (normalImage->getImageFormat() != Image::IMAGE_RGBA) {
                 throw std::runtime_error("Water normal texture must have 4 components (RGBA). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
             }
@@ -158,7 +158,7 @@ namespace urchin {
         if (dudvFilename.empty()) {
             dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 255, 255})).createTexture(false);
         } else {
-            auto dudvImage = MediaManager::instance()->getMedia<Image>(dudvFilename);
+            auto dudvImage = MediaManager::instance().getMedia<Image>(dudvFilename);
             if (dudvImage->getImageFormat() != Image::IMAGE_RGBA) {
                 throw std::runtime_error("Water dudv map must have 4 components (RGBA). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
             }

@@ -5,8 +5,8 @@
 namespace urchin {
     EdgeLinkDetection::EdgeLinkDetection(float jumpMaxLength) :
             jumpMaxLength(jumpMaxLength),
-            edgeLinkMinLength(ConfigService::instance()->getFloatValue("navMesh.edgeLinkMinLength")),
-            equalityDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.edgeLinkEqualityDistanceThreshold")) {
+            edgeLinkMinLength(ConfigService::instance().getFloatValue("navMesh.edgeLinkMinLength")),
+            equalityDistanceThreshold(ConfigService::instance().getFloatValue("navMesh.edgeLinkEqualityDistanceThreshold")) {
 
     }
 

@@ -8,10 +8,10 @@ namespace urchin {
     LabelTranslator::LabelTranslator() :
             FILE_PREFIX("labels_") ,
             FILE_POSTFIX(".properties") {
-        std::string uiLabelsLocation = ConfigService::instance()->getStringValue("ui.labelsLocation");
+        std::string uiLabelsLocation = ConfigService::instance().getStringValue("ui.labelsLocation");
 
         if (!uiLabelsLocation.empty()) {
-            labelsFilesDirectoryName = FileSystem::instance()->getResourcesDirectory() + uiLabelsLocation;
+            labelsFilesDirectoryName = FileSystem::instance().getResourcesDirectory() + uiLabelsLocation;
             loadAvailableLanguages();
         }
     }

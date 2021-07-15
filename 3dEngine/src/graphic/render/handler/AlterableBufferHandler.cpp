@@ -60,7 +60,7 @@ namespace urchin {
         bool newBuffersCreated;
 
         if (isStaticBuffer) {
-            vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
             assert(buffers.size() == 1);
             createFramebufferBuffers(dataSize, dataPtr);

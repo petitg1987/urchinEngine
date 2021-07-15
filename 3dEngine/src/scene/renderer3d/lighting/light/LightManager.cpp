@@ -12,7 +12,7 @@ namespace urchin {
     constexpr float LightManager::LIGHTS_OCTREE_MIN_SIZE = 50.0f;
 
     LightManager::LightManager(RenderTarget& renderTarget) :
-            maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
+            maxLights(ConfigService::instance().getUnsignedIntValue("light.maxLights")),
             renderTarget(renderTarget),
             lightOctreeManager(std::make_unique<OctreeManager<Light>>(LIGHTS_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),

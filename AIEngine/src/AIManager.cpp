@@ -16,7 +16,7 @@ namespace urchin {
             paused(true),
             navMeshGenerator(std::make_unique<NavMeshGenerator>()) {
         NumericalCheck::perform();
-        SignalHandler::instance()->initialize();
+        SignalHandler::instance().initialize();
     }
 
     AIManager::~AIManager() {

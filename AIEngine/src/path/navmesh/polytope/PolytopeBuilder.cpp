@@ -30,8 +30,8 @@ namespace urchin {
     };
 
     PolytopeBuilder::PolytopeBuilder() :
-            planeSurfaceSplitService(std::make_unique<PlaneSurfaceSplitService>(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))),
-            terrainSplitService(std::make_unique<TerrainSplitService>(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))) {
+            planeSurfaceSplitService(std::make_unique<PlaneSurfaceSplitService>(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))),
+            terrainSplitService(std::make_unique<TerrainSplitService>(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))) {
 
     }
 
@@ -76,7 +76,7 @@ namespace urchin {
 
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
-        auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
+        auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance().getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
         auto heightfieldPointHelper = std::make_unique<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
         auto terrainNavTopography = std::make_shared<NavTerrainTopography>(std::move(heightfieldPointHelper), aiTerrain->getTransform().getPosition());
 

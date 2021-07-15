@@ -3,11 +3,11 @@
 namespace urchin {
 
     ConstraintSolverManager::ConstraintSolverManager() :
-            constraintSolverIteration(ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolverIteration")),
-            biasFactor(ConfigService::instance()->getFloatValue("constraintSolver.biasFactor")),
-            useWarmStarting(ConfigService::instance()->getBoolValue("constraintSolver.useWarmStarting")),
-            restitutionVelocityThreshold(ConfigService::instance()->getFloatValue("constraintSolver.restitutionVelocityThreshold")) {
-        unsigned int constraintSolvingPoolSize = ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
+            constraintSolverIteration(ConfigService::instance().getUnsignedIntValue("constraintSolver.constraintSolverIteration")),
+            biasFactor(ConfigService::instance().getFloatValue("constraintSolver.biasFactor")),
+            useWarmStarting(ConfigService::instance().getBoolValue("constraintSolver.useWarmStarting")),
+            restitutionVelocityThreshold(ConfigService::instance().getFloatValue("constraintSolver.restitutionVelocityThreshold")) {
+        unsigned int constraintSolvingPoolSize = ConfigService::instance().getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
         constraintSolvingPool = std::make_unique<FixedSizePool<ConstraintSolving>>("constraintSolvingPool", sizeof(ConstraintSolving), constraintSolvingPoolSize);
     }
 

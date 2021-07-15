@@ -6,7 +6,7 @@
 template<class T> std::shared_ptr<T> MediaManager::getMedia(const std::string& filename, const std::map<std::string, std::string>& params, const std::string& fileContentType) {
     //resource already charged ?
     std::string resourceId = filename + "_" + MapSerializer::serialize(params);
-    std::shared_ptr<T> resource = ResourceManager::instance()->getResource<T>(resourceId);
+    std::shared_ptr<T> resource = ResourceManager::instance().getResource<T>(resourceId);
     if (resource) {
         return resource;
     }
@@ -25,6 +25,6 @@ template<class T> std::shared_ptr<T> MediaManager::getMedia(const std::string& f
     resource->setId(resourceId);
     resource->setName(filename);
 
-    ResourceManager::instance()->addResource(resource);
+    ResourceManager::instance().addResource(resource);
     return resource;
 }

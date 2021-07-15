@@ -18,7 +18,7 @@ namespace urchin {
             bodyManager(std::make_unique<BodyManager>()),
             collisionWorld(std::make_unique<CollisionWorld>(getBodyManager())) {
         NumericalCheck::perform();
-        SignalHandler::instance()->initialize();
+        SignalHandler::instance().initialize();
     }
 
     PhysicsWorld::~PhysicsWorld() {

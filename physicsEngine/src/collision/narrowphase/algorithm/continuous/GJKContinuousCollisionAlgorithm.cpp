@@ -10,8 +10,8 @@ namespace urchin {
 
     template<class T, class U> GJKContinuousCollisionAlgorithm<T, U>::GJKContinuousCollisionAlgorithm() :
         squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
-        maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
-        terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance")) {
+        maxIteration(ConfigService::instance().getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
+        terminationTolerance(ConfigService::instance().getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance")) {
 
     }
 
@@ -75,7 +75,7 @@ namespace urchin {
                         Point3<T> hitPointOnObject1, hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                        return AlgorithmResultAllocator::instance()->newContinuousCollisionResult<U>(body2, Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
+                        return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(body2, Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
                     } else {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR_LVL);
@@ -87,7 +87,7 @@ namespace urchin {
                     Point3<T> hitPointOnObject1, hitPointOnObject2;
                     simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                    return AlgorithmResultAllocator::instance()->newContinuousCollisionResult<U>(body2, normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
+                    return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(body2, normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
                 }
             }
         }

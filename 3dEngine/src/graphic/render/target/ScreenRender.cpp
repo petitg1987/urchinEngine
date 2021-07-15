@@ -46,7 +46,7 @@ namespace urchin {
 
     void ScreenRender::cleanup() {
         if (isInitialized) {
-            vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
             cleanupRenderers();
 
@@ -65,7 +65,7 @@ namespace urchin {
 
     void ScreenRender::onResize() {
         unsigned int sceneWidth, sceneHeight;
-        GraphicService::instance()->getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
+        GraphicService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
         if (sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows
             cleanup();
@@ -125,7 +125,7 @@ namespace urchin {
 
     void ScreenRender::destroyImageViews() {
         for (auto imageView : swapChainImageViews) {
-            vkDestroyImageView(GraphicService::instance()->getDevices().getLogicalDevice(), imageView, nullptr);
+            vkDestroyImageView(GraphicService::instance().getDevices().getLogicalDevice(), imageView, nullptr);
         }
     }
 
@@ -163,7 +163,7 @@ namespace urchin {
     }
 
     void ScreenRender::createSyncObjects() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         imageAvailableSemaphores.resize(MAX_CONCURRENT_FRAMES);
         renderFinishedSemaphores.resize(MAX_CONCURRENT_FRAMES);
@@ -196,7 +196,7 @@ namespace urchin {
     }
 
     void ScreenRender::destroySyncObjects() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         imagesFences.clear();
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
@@ -214,7 +214,7 @@ namespace urchin {
         }
 
         static size_t currentFrameIndex = 0;
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'
         vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
@@ -249,7 +249,7 @@ namespace urchin {
         submitInfo.pSignalSemaphores = queuePresentWaitSemaphores;
 
         vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
-        VkResult result = vkQueueSubmit(GraphicService::instance()->getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
+        VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
@@ -264,7 +264,7 @@ namespace urchin {
         presentInfo.pImageIndices = &vkImageIndex;
         presentInfo.pResults = nullptr;
 
-        VkResult queuePresentResult = vkQueuePresentKHR(GraphicService::instance()->getQueues().getPresentationQueue(), &presentInfo);
+        VkResult queuePresentResult = vkQueuePresentKHR(GraphicService::instance().getQueues().getPresentationQueue(), &presentInfo);
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
@@ -276,7 +276,7 @@ namespace urchin {
 
     void ScreenRender::waitCommandBuffersIdle() const {
         for (unsigned int i = 0; i < MAX_CONCURRENT_FRAMES; ++i) {
-            vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX);
+            vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX);
         }
     }
 

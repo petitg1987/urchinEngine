@@ -14,7 +14,7 @@ namespace urchin {
         assert(this->vertices.size() == xLength * zLength);
         localAABBox = buildLocalAABBox();
 
-        unsigned int trianglesShapePoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTrianglesPoolSize");
+        unsigned int trianglesShapePoolSize = ConfigService::instance().getUnsignedIntValue("collisionShape.heightfieldTrianglesPoolSize");
         triangleShapesPool = std::make_unique<FixedSizePool<TriangleShape3D<float>>>("triangleShapesPool", sizeof(TriangleShape3D<float>), trianglesShapePoolSize);
     }
 

@@ -43,14 +43,14 @@ namespace urchin {
         try {
             initializeEngineResources(mapEditorPath);
             std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(FileUtil::getDirectory(mapFilename) + relativeWorkingDirectory);
-            FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
+            FileSystem::instance().setupResourcesDirectory(mapResourcesDirectory);
 
             initializeScene(mapFilename);
 
             mapHandler = std::make_unique<MapHandler>(sceneManager->getActiveRenderer3d(), physicsWorld.get(), soundManager.get(), aiManager.get());
             mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
-            std::ifstream streamMapFile(FileSystem::instance()->getResourcesDirectory() + relativeMapFilename);
+            std::ifstream streamMapFile(FileSystem::instance().getResourcesDirectory() + relativeMapFilename);
             if (streamMapFile) { //existing map
                 NullLoadCallback nullLoadCallback;
                 mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
@@ -59,7 +59,7 @@ namespace urchin {
 
             isInitialized = true;
         } catch (std::exception& e) {
-            Logger::instance()->logError("Error occurred during map load: " + std::string(e.what()));
+            Logger::instance().logError("Error occurred during map load: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
             _exit(1);
@@ -79,8 +79,8 @@ namespace urchin {
     void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
         std::string mapEditorResourcesDirectory = FileUtil::getDirectory(mapEditorPath) + "resources/";
 
-        ConfigService::instance()->loadProperties("engine.properties", mapEditorResourcesDirectory);
-        ShaderConfig::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
+        ConfigService::instance().loadProperties("engine.properties", mapEditorResourcesDirectory);
+        ShaderConfig::instance().replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
     }
 
     void SceneDisplayer::initializeScene(const std::string& mapFilename) {
@@ -194,7 +194,7 @@ namespace urchin {
                 sceneManager->display();
             }
         } catch (std::exception& e) {
-            Logger::instance()->logError("Error occurred during paint: " + std::string(e.what()));
+            Logger::instance().logError("Error occurred during paint: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
             this->~SceneDisplayer();
             _exit(1);

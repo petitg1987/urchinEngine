@@ -9,7 +9,7 @@ namespace urchin {
      * @param imageMemory [out] Device memory for the image
      */
     VkImage ImageHelper::createImage(uint32_t width, uint32_t height, uint32_t layer, uint32_t mipLevels, bool isCubeMap, VkFormat format, VkImageUsageFlags usage, VmaAllocation& imageMemory) {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL;
         VkFormatFeatureFlags formatFeature = usageFlagToFeatureFlag(usage);
@@ -49,17 +49,17 @@ namespace urchin {
         allocInfo.size = memRequirements.size;
         allocInfo.memoryType = MemoryHelper::findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-        if (vmaAllocateMemoryForImage(GraphicService::instance()->getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo) != VK_SUCCESS) {
+        if (vmaAllocateMemoryForImage(GraphicService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo) != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate image memory for image of size " + std::to_string(width) + "x" + std::to_string(height) + " with format: " + std::to_string(format));
         }
 
-        vmaBindImageMemory(GraphicService::instance()->getAllocator(), imageMemory, image);
+        vmaBindImageMemory(GraphicService::instance().getAllocator(), imageMemory, image);
 
         return image;
     }
 
     VkImageView ImageHelper::createImageView(VkImage image, VkImageViewType type, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t layerCount, uint32_t mipLevels) {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         VkImageViewCreateInfo viewInfo{};
         viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -83,7 +83,7 @@ namespace urchin {
 
     void ImageHelper::checkFormatSupport(VkFormat format, VkImageTiling tiling, VkFormatFeatureFlags features) {
         VkFormatProperties props;
-        vkGetPhysicalDeviceFormatProperties(GraphicService::instance()->getDevices().getPhysicalDevice(), format, &props);
+        vkGetPhysicalDeviceFormatProperties(GraphicService::instance().getDevices().getPhysicalDevice(), format, &props);
 
         if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) != features) {
             throw std::runtime_error("Unsupported format " + std::to_string(format) + " for tiling linear and features " + std::to_string(features));

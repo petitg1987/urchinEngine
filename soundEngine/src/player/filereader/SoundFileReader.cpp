@@ -10,7 +10,7 @@ namespace urchin {
             filename(std::move(filename)),
             vorbisFile({}),
             vorbisInfo(nullptr) {
-        std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + this->filename;
+        std::string filenamePath = FileSystem::instance().getResourcesDirectory() + this->filename;
         stream.open(filenamePath, std::ios::binary);
         if (!stream) {
             throw std::invalid_argument("Impossible to open sound file " + this->filename);

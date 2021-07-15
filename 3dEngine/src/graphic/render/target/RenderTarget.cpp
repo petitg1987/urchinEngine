@@ -174,7 +174,7 @@ namespace urchin {
         renderPassInfo.dependencyCount = 1;
         renderPassInfo.pDependencies = &dependency;
 
-        VkResult result = vkCreateRenderPass(GraphicService::instance()->getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
+        VkResult result = vkCreateRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create render pass with error code: " + std::to_string(result));
         }
@@ -183,7 +183,7 @@ namespace urchin {
     }
 
     void RenderTarget::destroyRenderPass() {
-        vkDestroyRenderPass(GraphicService::instance()->getDevices().getLogicalDevice(), renderPass, nullptr);
+        vkDestroyRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
     }
 
     void RenderTarget::createDepthResources() {
@@ -214,7 +214,7 @@ namespace urchin {
         framebufferInfo.layers = getLayer();
 
         framebuffers.resize(framebuffers.size() + 1, nullptr);
-        VkResult result = vkCreateFramebuffer(GraphicService::instance()->getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);
+        VkResult result = vkCreateFramebuffer(GraphicService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create framebuffer with error code: " + std::to_string(result));
         }
@@ -222,7 +222,7 @@ namespace urchin {
 
     void RenderTarget::destroyFramebuffers() {
         for (auto framebuffer : framebuffers) {
-            vkDestroyFramebuffer(GraphicService::instance()->getDevices().getLogicalDevice(), framebuffer, nullptr);
+            vkDestroyFramebuffer(GraphicService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
         }
         framebuffers.clear();
     }
@@ -238,7 +238,7 @@ namespace urchin {
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
 
-        VkResult resultCommandBuffers = vkAllocateCommandBuffers(GraphicService::instance()->getDevices().getLogicalDevice(), &allocInfo, commandBuffers.data());
+        VkResult resultCommandBuffers = vkAllocateCommandBuffers(GraphicService::instance().getDevices().getLogicalDevice(), &allocInfo, commandBuffers.data());
         if (resultCommandBuffers != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate command buffers with error code: " + std::to_string(resultCommandBuffers));
         }
@@ -247,17 +247,17 @@ namespace urchin {
     void RenderTarget::createCommandPool() {
         VkCommandPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolInfo.queueFamilyIndex = GraphicService::instance()->getQueues().getGraphicsQueueFamily();
+        poolInfo.queueFamilyIndex = GraphicService::instance().getQueues().getGraphicsQueueFamily();
         poolInfo.flags = 0;
 
-        VkResult result = vkCreateCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
+        VkResult result = vkCreateCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create command pool with error code: " + std::to_string(result));
         }
     }
 
     void RenderTarget::destroyCommandBuffersAndPool() {
-        vkDestroyCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), commandPool, nullptr);
+        vkDestroyCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
     const std::vector<OffscreenRender*>& RenderTarget::getRenderDependencies() const {
@@ -328,7 +328,7 @@ namespace urchin {
         beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
 
         waitCommandBuffersIdle();
-        vkResetCommandPool(GraphicService::instance()->getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+        vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
 
         for (std::size_t i = 0; i < commandBuffers.size(); i++) {
             VkResult resultCommandBuffer = vkBeginCommandBuffer(commandBuffers[i], &beginInfo);

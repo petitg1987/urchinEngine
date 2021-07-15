@@ -8,7 +8,7 @@
 namespace urchin {
 
     UdaWriter::UdaWriter(const std::string& filename) :
-            filenamePath(FileSystem::instance()->getResourcesDirectory() + filename) {
+            filenamePath(FileSystem::instance().getResourcesDirectory() + filename) {
 
     }
 

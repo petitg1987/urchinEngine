@@ -42,7 +42,7 @@ namespace urchin {
     }
 
     FixedSizePool<CollisionConvexObject3D>& CollisionShape3D::getObjectsPool() {
-        return CollisionConvexObjectPool::instance()->getObjectsPool();
+        return CollisionConvexObjectPool::instance().getObjectsPool();
     }
 
     void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin) {

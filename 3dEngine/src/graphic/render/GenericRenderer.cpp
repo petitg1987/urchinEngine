@@ -68,7 +68,7 @@ namespace urchin {
 
     void GenericRenderer::cleanup() {
         if (isInitialized) {
-            vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
             destroyDescriptorSetsAndPool();
             destroyUniformBuffers();
@@ -110,7 +110,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorSetLayout() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         uint32_t shaderUniformBinding = 0;
         std::vector<VkDescriptorSetLayoutBinding> bindings;
@@ -148,11 +148,11 @@ namespace urchin {
     }
 
     void GenericRenderer::destroyDescriptorSetLayout() {
-        vkDestroyDescriptorSetLayout(GraphicService::instance()->getDevices().getLogicalDevice(), descriptorSetLayout, nullptr);
+        vkDestroyDescriptorSetLayout(GraphicService::instance().getDevices().getLogicalDevice(), descriptorSetLayout, nullptr);
     }
 
     void GenericRenderer::createGraphicsPipeline() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto shaderStages = shader.getShaderStages();
 
         //vertex input stage
@@ -301,7 +301,7 @@ namespace urchin {
     }
 
     void GenericRenderer::destroyGraphicsPipeline() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
         vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
@@ -364,7 +364,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorPool() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
 
@@ -391,7 +391,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorSets() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), descriptorSetLayout);
         VkDescriptorSetAllocateInfo allocInfo{};
@@ -410,7 +410,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateDescriptorSets() {
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {
             std::vector<VkWriteDescriptorSet> descriptorWrites;
@@ -469,7 +469,7 @@ namespace urchin {
     }
 
     void GenericRenderer::destroyDescriptorSetsAndPool() {
-        vkDestroyDescriptorPool(GraphicService::instance()->getDevices().getLogicalDevice(), descriptorPool, nullptr);
+        vkDestroyDescriptorPool(GraphicService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 
     void GenericRenderer::resetNewDataFlag() {
@@ -527,7 +527,7 @@ namespace urchin {
         assert(uniformTextureReaders.size() > uniformTexPosition);
         assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
 
-        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+        vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
         textureReader->initialize();
         uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;

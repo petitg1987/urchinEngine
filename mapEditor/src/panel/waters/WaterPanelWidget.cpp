@@ -368,7 +368,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::showNormalTextureFilenameDialog() {
-        std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+        std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
         QString directory = preferredNormalTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredNormalTexturePath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
@@ -395,7 +395,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::showDudvMapFilenameDialog() {
-        std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+        std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
         QString directory = preferredDudvMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredDudvMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {

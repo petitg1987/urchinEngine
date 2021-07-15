@@ -8,7 +8,7 @@ namespace urchin {
     * @param angle Angle of the field of view (fovy)
     */
     Camera::Camera(float angle, float nearPlane, float farPlane) :
-            MOUSE_SENSITIVITY_FACTOR(ConfigService::instance()->getFloatValue("camera.mouseSensitivityFactor")),
+            MOUSE_SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.mouseSensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
             angle(angle),

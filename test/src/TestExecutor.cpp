@@ -151,7 +151,7 @@ void addAllMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
 }
 
 int main(int argc, char *argv[]) {
-    urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
+    urchin::ConfigService::instance().loadProperties("resources/engine.properties");
     CppUnit::TextUi::TestRunner runner;
 
     std::string hasUnitTests = "no";

@@ -7,7 +7,7 @@ namespace urchin {
 
     MapHandler::MapHandler(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundManager* soundManager, AIManager* aiManager) :
             map(nullptr) {
-        SignalHandler::instance()->initialize();
+        SignalHandler::instance().initialize();
 
         if (!renderer3d) {
             throw std::invalid_argument("Renderer 3d cannot be null in map handler");

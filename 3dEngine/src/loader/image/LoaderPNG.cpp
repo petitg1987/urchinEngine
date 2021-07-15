@@ -6,7 +6,7 @@
 namespace urchin {
 
     std::shared_ptr<Image> LoaderPNG::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
-        std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
+        std::string filenamePath = FileSystem::instance().getResourcesDirectory() + filename;
         std::vector<unsigned char> png;
         unsigned int errorLoad = lodepng::load_file(png, filenamePath);
         if (errorLoad != 0) {

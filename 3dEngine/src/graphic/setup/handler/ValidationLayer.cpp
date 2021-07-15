@@ -14,7 +14,7 @@ namespace urchin {
 
     ValidationLayer::ValidationLayer() :
             validationLayer({"VK_LAYER_KHRONOS_validation"}),
-            bIsValidationActive(ConfigService::instance()->getBoolValue("graphics.validationLayerEnable")),
+            bIsValidationActive(ConfigService::instance().getBoolValue("graphics.validationLayerEnable")),
             instance(nullptr),
             debugMessenger(nullptr),
             instanceDebugCreateInfo({}),

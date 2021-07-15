@@ -79,7 +79,7 @@ namespace urchin {
                 maxElementSize = std::max(maxElementSize, builderMatrixColumn->getAlgorithmSize());
             }
         }
-        unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
+        unsigned int algorithmPoolSize = ConfigService::instance().getUnsignedIntValue("narrowPhase.algorithmPoolSize");
 
         //pool is synchronized because elements are created in narrow phase (= synchronized phase called by different threads) and deleted by different threads outside the narrow phase
         algorithmPool = std::make_unique<SyncFixedSizePool<CollisionAlgorithm>>("algorithmPool", maxElementSize, algorithmPoolSize);

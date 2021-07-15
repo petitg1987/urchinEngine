@@ -25,7 +25,7 @@ namespace urchin {
         auto diffuse = udaParser.getUniqueChunk(false, "diffuse");
         if (diffuse) {
             auto diffuseTextureElem = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), diffuse);
-            auto diffuseImage = MediaManager::instance()->getMedia<Image>(diffuseTextureElem->getStringValue());
+            auto diffuseImage = MediaManager::instance().getMedia<Image>(diffuseTextureElem->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
         }
 
@@ -34,7 +34,7 @@ namespace urchin {
         auto normal = udaParser.getUniqueChunk(false, "normal");
         if (normal) {
             auto normalTextureElem = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), normal);
-            auto normalImage = MediaManager::instance()->getMedia<Image>(normalTextureElem->getStringValue());
+            auto normalImage = MediaManager::instance().getMedia<Image>(normalTextureElem->getStringValue());
             normalTexture = normalImage->createTexture(true);
         }
 

@@ -25,8 +25,8 @@ namespace urchin {
         this->framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
         //initialize
-        SignalHandler::instance()->initialize();
-        GraphicService::instance()->initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
+        SignalHandler::instance().initialize();
+        GraphicService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
         screenRenderTarget->initialize();
     }
 

@@ -78,7 +78,7 @@ namespace urchin {
 
             sceneObject->setName(objectName);
 
-            std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+            std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
             std::string relativeMeshFilename;
             if (!meshFilename.empty()) {
                 relativeMeshFilename = FileUtil::getRelativePath(resourcesDirectory, meshFilename);
@@ -99,7 +99,7 @@ namespace urchin {
     }
 
     void NewObjectDialog::showMeshFilenameDialog() {
-        QString directory = preferredMeshPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredMeshPath;
+        QString directory = preferredMeshPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredMeshPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.urchinMesh)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             this->meshFilename = filename.toUtf8().constData();

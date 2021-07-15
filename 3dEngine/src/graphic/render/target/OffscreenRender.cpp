@@ -60,7 +60,7 @@ namespace urchin {
 
     void OffscreenRender::cleanup() {
         assert(isInitialized);
-        vkDeviceWaitIdle(GraphicService::instance()->getDevices().getLogicalDevice());
+        vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
         cleanupRenderers();
 
@@ -148,22 +148,22 @@ namespace urchin {
         VkFenceCreateInfo fenceInfo{};
         fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-        VkResult fenceResult = vkCreateFence(GraphicService::instance()->getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
+        VkResult fenceResult = vkCreateFence(GraphicService::instance().getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
         if (fenceResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create fences with error code: " + std::to_string(fenceResult));
         }
 
         VkSemaphoreCreateInfo semaphoreInfo{};
         semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-        VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
+        VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
         if (semaphoreResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create semaphore with error code: " + std::to_string(semaphoreResult));
         }
     }
 
     void OffscreenRender::destroySyncObjects() {
-        vkDestroyFence(GraphicService::instance()->getDevices().getLogicalDevice(), commandBufferFence, nullptr);
-        vkDestroySemaphore(GraphicService::instance()->getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
+        vkDestroyFence(GraphicService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
+        vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
     }
 
     VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() {
@@ -187,7 +187,7 @@ namespace urchin {
             return;
         }
 
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
         vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
@@ -205,7 +205,7 @@ namespace urchin {
         submitInfo.pSignalSemaphores = signalSemaphores;
 
         vkResetFences(logicalDevice, 1, &commandBufferFence);
-        VkResult result = vkQueueSubmit(GraphicService::instance()->getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
+        VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
@@ -214,7 +214,7 @@ namespace urchin {
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
-        vkWaitForFences(GraphicService::instance()->getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
     }
 
 }

@@ -9,7 +9,7 @@ namespace urchin {
     OmnidirectionalLight::OmnidirectionalLight(const Point3<float>& position) :
             Light(),
             position(position),
-            attenuationNoEffect(ConfigService::instance()->getFloatValue("light.attenuationNoEffect")),
+            attenuationNoEffect(ConfigService::instance().getFloatValue("light.attenuationNoEffect")),
             exponentialAttenuation(0.1f),
             sphereScope(nullptr),
             bboxScope(nullptr) {

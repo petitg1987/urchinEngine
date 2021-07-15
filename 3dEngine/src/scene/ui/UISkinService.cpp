@@ -20,7 +20,7 @@ namespace urchin {
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const UdaChunk* skinChunk, WidgetOutline* widgetOutline) const {
         //skin information
         auto widgetImageElem = getSkinReader().getUniqueChunk(true, "image", UdaAttribute(), skinChunk);
-        auto rawWidgetImage = MediaManager::instance()->getMedia<Image>(widgetImageElem->getStringValue());
+        auto rawWidgetImage = MediaManager::instance().getMedia<Image>(widgetImageElem->getStringValue());
 
         auto topElem = getSkinReader().getUniqueChunk(true, "part", UdaAttribute("zone", "top"), skinChunk);
         unsigned int top = topElem->getUnsignedIntValue();
@@ -119,11 +119,11 @@ namespace urchin {
     }
 
     Length UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName) const {
-        auto fontHeightChunk = UISkinService::instance()->getSkinReader().getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
+        auto fontHeightChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
 
-        float length = UISkinService::instance()->getSkinReader().getUniqueChunk(true, "value", UdaAttribute(), fontHeightChunk)->getFloatValue();
+        float length = UISkinService::instance().getSkinReader().getUniqueChunk(true, "value", UdaAttribute(), fontHeightChunk)->getFloatValue();
 
-        const std::string& lengthTypeString = UISkinService::instance()->getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), fontHeightChunk)->getStringValue();
+        const std::string& lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), fontHeightChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             return Length(length, LengthType::PIXEL);
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "percentage")) {

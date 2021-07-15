@@ -121,12 +121,12 @@ namespace urchin {
 
     void Texture::cleanup() {
         if (isInitialized) {
-            auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+            auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
             vkDestroyImageView(logicalDevice, textureImageView, nullptr);
 
             vkDestroyImage(logicalDevice, textureImage, nullptr);
-            vmaFreeMemory(GraphicService::instance()->getAllocator(), textureImageMemory);
+            vmaFreeMemory(GraphicService::instance().getAllocator(), textureImageMemory);
 
             isInitialized = false;
         }
@@ -193,7 +193,7 @@ namespace urchin {
     }
 
     void Texture::createTextureImage() {
-        auto allocator = GraphicService::instance()->getAllocator();
+        auto allocator = GraphicService::instance().getAllocator();
         VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();
 
         VmaAllocation stagingBufferMemory;
@@ -310,7 +310,7 @@ namespace urchin {
 
     void Texture::generateMipmaps(VkImage image, VkFormat imageFormat) const {
         VkFormatProperties formatProperties;
-        vkGetPhysicalDeviceFormatProperties(GraphicService::instance()->getDevices().getPhysicalDevice(), imageFormat, &formatProperties);
+        vkGetPhysicalDeviceFormatProperties(GraphicService::instance().getDevices().getPhysicalDevice(), imageFormat, &formatProperties);
 
         if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
             throw std::runtime_error("Texture image format does not support linear blitting");

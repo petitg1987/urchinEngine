@@ -26,7 +26,7 @@ namespace urchin {
         MeshService::computeNormalsAndTangents(*this, baseVertices, baseNormals, baseTangents);
 
         //load material
-        material = MediaManager::instance()->getMedia<Material>(materialFilename, {}, "material");
+        material = MediaManager::instance().getMedia<Material>(materialFilename, {}, "material");
     }
 
     const Material& ConstMesh::getMaterial() const {

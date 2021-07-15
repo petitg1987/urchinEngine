@@ -4,8 +4,8 @@ namespace urchin {
 
     ShaderConfig::ShaderConfig() :
             Singleton<ShaderConfig>(),
-            shadersDirectoryName(ConfigService::instance()->getStringValue("shaders.shadersLocation")) {
-        this->shadersParentDirectory = FileSystem::instance()->getResourcesDirectory();
+            shadersDirectoryName(ConfigService::instance().getStringValue("shaders.shadersLocation")) {
+        this->shadersParentDirectory = FileSystem::instance().getResourcesDirectory();
     }
 
     void ShaderConfig::replaceShadersParentDirectoryBy(const std::string& shadersParentDirectory) {

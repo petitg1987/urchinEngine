@@ -10,7 +10,7 @@
 namespace urchin {
 
     UdaParser::UdaParser(const std::string& filename) :
-            UdaParser(filename, FileSystem::instance()->getResourcesDirectory()) {
+            UdaParser(filename, FileSystem::instance().getResourcesDirectory()) {
 
     }
 

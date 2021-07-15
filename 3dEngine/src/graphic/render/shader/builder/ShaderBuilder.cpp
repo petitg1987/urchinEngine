@@ -16,15 +16,15 @@ namespace urchin {
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
 
         //vertex shader
-        shaderSources.emplace_back(std::make_pair(Shader::VERTEX, readFile(ShaderConfig::instance()->getShadersDirectory() + vertexShaderFilename)));
+        shaderSources.emplace_back(std::make_pair(Shader::VERTEX, readFile(ShaderConfig::instance().getShadersDirectory() + vertexShaderFilename)));
 
         //geometry shader
         if (!geometryShaderFilename.empty()) {
-            shaderSources.emplace_back(std::make_pair(Shader::GEOMETRY, readFile(ShaderConfig::instance()->getShadersDirectory() + geometryShaderFilename)));
+            shaderSources.emplace_back(std::make_pair(Shader::GEOMETRY, readFile(ShaderConfig::instance().getShadersDirectory() + geometryShaderFilename)));
         }
 
         //fragment shader
-        shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(ShaderConfig::instance()->getShadersDirectory() + fragmentShaderFilename)));
+        shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(ShaderConfig::instance().getShadersDirectory() + fragmentShaderFilename)));
 
         std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(vertexShaderFilename));
         return std::make_unique<Shader>(shaderName, shaderSources, std::move(shaderConstants));

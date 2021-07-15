@@ -93,9 +93,9 @@ namespace urchin {
 
         SymCleanup(process);
 
-        urchin::Logger::instance()->logError(stacktrace);
-        if (instance()->signalReceptor) {
-            instance()->signalReceptor->onSignalReceived(exceptionInfo->ExceptionRecord->ExceptionCode);
+        urchin::Logger::instance().logError(stacktrace);
+        if (instance().signalReceptor) {
+            instance().signalReceptor->onSignalReceived(exceptionInfo->ExceptionRecord->ExceptionCode);
         }
 
         return EXCEPTION_EXECUTE_HANDLER;
@@ -161,8 +161,8 @@ namespace urchin {
         }
 
         urchin::Logger::instance().logError(stacktrace);
-        if (instance()->signalReceptor) {
-            instance()->signalReceptor->onSignalReceived((unsigned long)signalId);
+        if (instance().signalReceptor) {
+            instance().signalReceptor->onSignalReceived((unsigned long)signalId);
         }
 
         //re-send the signal to produce a 'core' file

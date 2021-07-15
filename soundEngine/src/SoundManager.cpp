@@ -9,7 +9,7 @@ namespace urchin {
     SoundManager::SoundManager() :
             streamUpdateWorker(std::make_unique<StreamUpdateWorker>()),
             streamUpdateWorkerThread(std::make_unique<std::thread>(&StreamUpdateWorker::start, streamUpdateWorker.get())) {
-        SignalHandler::instance()->initialize();
+        SignalHandler::instance().initialize();
 
         DeviceManager::instance();
         alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);

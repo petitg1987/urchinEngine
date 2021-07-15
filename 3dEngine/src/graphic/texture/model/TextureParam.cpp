@@ -43,10 +43,10 @@ namespace urchin {
 
     void TextureParam::initialize(uint32_t mipLevels) {
         assert(!isInitialized);
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         VkPhysicalDeviceProperties properties{};
-        vkGetPhysicalDeviceProperties(GraphicService::instance()->getDevices().getPhysicalDevice(), &properties);
+        vkGetPhysicalDeviceProperties(GraphicService::instance().getDevices().getPhysicalDevice(), &properties);
 
         VkSamplerCreateInfo samplerInfo{};
         samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -76,7 +76,7 @@ namespace urchin {
 
     void TextureParam::cleanup() {
         assert(isInitialized);
-        auto logicalDevice = GraphicService::instance()->getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         vkDestroySampler(logicalDevice, textureSampler, nullptr);
 

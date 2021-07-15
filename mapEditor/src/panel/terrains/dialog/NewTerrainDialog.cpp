@@ -77,7 +77,7 @@ namespace urchin {
 
             sceneTerrain->setName(terrainName);
 
-            std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+            std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
             std::string relativeHeightFilename = FileUtil::getRelativePath(resourcesDirectory, heightFilename);
             std::vector<std::string> emptyMaterialFilenames;
 
@@ -99,7 +99,7 @@ namespace urchin {
     }
 
     void NewTerrainDialog::showHeightFilenameDialog() {
-        QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredHeightPath;
+        QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredHeightPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.png *.tga)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             this->heightFilename = filename.toUtf8().constData();

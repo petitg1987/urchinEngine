@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
     int mainResult = QApplication::exec();
     if (mainResult == 0) {
-        Logger::instance()->purge();
+        Logger::instance().purge();
     }
     return mainResult;
 }

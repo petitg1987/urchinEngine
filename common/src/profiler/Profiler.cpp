@@ -10,7 +10,7 @@
 namespace urchin {
 
     Profiler::Profiler(const std::string& instanceName) :
-            isEnable(ConfigService::instance()->getBoolValue("profiler." + instanceName + "Enable")),
+            isEnable(ConfigService::instance().getBoolValue("profiler." + instanceName + "Enable")),
             instanceName(instanceName),
             profilerRoot(std::make_unique<ProfilerNode>("root", nullptr)),
             currentNode(profilerRoot.get()) {

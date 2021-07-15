@@ -7,8 +7,8 @@ namespace urchin {
 
     IslandManager::IslandManager(const BodyManager& bodyManager) :
         bodyManager(bodyManager),
-        squaredLinearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold") * ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
-        squaredAngularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold") * ConfigService::instance()->getFloatValue("island.angularSleepingThreshold")) {
+        squaredLinearSleepingThreshold(ConfigService::instance().getFloatValue("island.linearSleepingThreshold") * ConfigService::instance().getFloatValue("island.linearSleepingThreshold")),
+        squaredAngularSleepingThreshold(ConfigService::instance().getFloatValue("island.angularSleepingThreshold") * ConfigService::instance().getFloatValue("island.angularSleepingThreshold")) {
 
     }
 

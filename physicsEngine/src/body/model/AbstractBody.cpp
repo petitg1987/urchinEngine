@@ -11,7 +11,7 @@ namespace urchin {
     bool AbstractBody::bDisableAllBodies = false;
 
     AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
-            ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+            ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(transform),
             isManuallyMoved(false),
             id(std::move(id)),
@@ -28,7 +28,7 @@ namespace urchin {
 
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             IslandElement(abstractBody),
-            ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+            ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             id(abstractBody.getId()),

@@ -23,7 +23,7 @@ namespace urchin {
         unsigned int skyboxSize = 1;
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             if (!filenames[i].empty()) {
-                skyboxImages[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
+                skyboxImages[i] = MediaManager::instance().getMedia<Image>(filenames[i]);
                 skyboxSize = skyboxImages[i]->getWidth();
             }
         }

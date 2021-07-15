@@ -6,7 +6,7 @@ template<class T> ThreadSafeSingleton<T>::~ThreadSafeSingleton() {
     objectT.store(nullptr, std::memory_order_release);
 }
 
-template<class T> T* ThreadSafeSingleton<T>::instance() {
+template<class T> T& ThreadSafeSingleton<T>::instance() {
     T* singletonInstance = objectT.load(std::memory_order_acquire);
     if (!singletonInstance) {
         std::lock_guard<std::mutex> lock(mutexInstanceCreation);
@@ -19,5 +19,5 @@ template<class T> T* ThreadSafeSingleton<T>::instance() {
         }
     }
 
-    return singletonInstance;
+    return *singletonInstance;
 }

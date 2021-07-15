@@ -15,7 +15,7 @@ namespace urchin {
     */
     template<class T> class ThreadSafeSingleton : public SingletonInterface {
         public:
-            static T* instance();
+            static T& instance();
             ~ThreadSafeSingleton() override;
 
         protected:

@@ -18,7 +18,7 @@ namespace urchin {
             heightFilename(heightFilename),
             xzScale(xzScale),
             yScale(yScale) {
-        auto imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
+        auto imgTerrain = MediaManager::instance().getMedia<Image>(heightFilename);
         if (imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }
@@ -26,10 +26,10 @@ namespace urchin {
         xSize = imgTerrain->getWidth();
         zSize = imgTerrain->getHeight();
 
-        std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
+        std::string terrainFilePath = FileSystem::instance().getResourcesDirectory() + imgTerrain->getName();
         std::string terrainHash = generateTerrainMeshHash(terrainFilePath, xzScale, yScale);
 
-        std::string terrainFrlFilePath = FileSystem::instance()->getEngineUserCacheDirectory()
+        std::string terrainFrlFilePath = FileSystem::instance().getEngineUserCacheDirectory()
                 + FileUtil::getFileNameNoExtension(terrainFilePath)
                 + "_" + std::to_string(std::hash<std::string>{}(terrainFilePath))
                 + ".frl"; //extension for FRL files (Fast Resource Loading)

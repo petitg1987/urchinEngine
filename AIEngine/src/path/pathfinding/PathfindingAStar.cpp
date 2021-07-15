@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     PathfindingAStar::PathfindingAStar(std::shared_ptr<NavMesh> navMesh) :
-            jumpAdditionalCost(ConfigService::instance()->getFloatValue("pathfinding.jumpAdditionalCost")),
+            jumpAdditionalCost(ConfigService::instance().getFloatValue("pathfinding.jumpAdditionalCost")),
             navMesh(std::move(navMesh)) {
 
     }

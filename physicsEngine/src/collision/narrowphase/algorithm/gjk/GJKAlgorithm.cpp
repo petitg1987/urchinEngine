@@ -44,10 +44,10 @@ namespace urchin {
             //check termination conditions: new point is not more extreme that existing ones OR new point already exist in simplex
             if ((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint)) {
                 if (closestPointDotNewPoint <= 0.0) { //collision detected
-                    return AlgorithmResultAllocator::instance()->newGJKResultCollide<T>(simplex);
+                    return AlgorithmResultAllocator::instance().newGJKResultCollide<T>(simplex);
                 }
 
-                return AlgorithmResultAllocator::instance()->newGJKResultNoCollide<T>(std::sqrt(closestPointSquareDistance), simplex);
+                return AlgorithmResultAllocator::instance().newGJKResultNoCollide<T>(std::sqrt(closestPointSquareDistance), simplex);
             }
 
             simplex.addPoint(supportPointA, supportPointB);
@@ -57,7 +57,7 @@ namespace urchin {
 
         logMaximumIterationReach(convexObject1, convexObject2, includeMargin);
 
-        return AlgorithmResultAllocator::instance()->newGJKResultInvalid<T>();
+        return AlgorithmResultAllocator::instance().newGJKResultInvalid<T>();
     }
 
     template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D& convexObject1,

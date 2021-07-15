@@ -17,7 +17,7 @@ namespace urchin {
         Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
 
         //initialize freetype
-        std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + ttfFilename;
+        std::string fileFontPath = FileSystem::instance().getResourcesDirectory() + ttfFilename;
         FT_Library library;
         FT_Face face;
         if (FT_Init_FreeType(&library)) {

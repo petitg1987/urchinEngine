@@ -25,7 +25,7 @@ namespace urchin {
         //1. check collision exist
         const Simplex<T>& simplex = gjkResult.getSimplex();
         if (simplex.getSize() == 1) { //simplex point is the origin
-            return AlgorithmResultAllocator::instance()->newEPAResultNoCollide<T>();
+            return AlgorithmResultAllocator::instance().newEPAResultNoCollide<T>();
         }
 
         //2. initialize global variables
@@ -42,7 +42,7 @@ namespace urchin {
         }
 
         if (indexedTriangles.size() != 4) {//due to numerical imprecision, it's impossible to create indexed triangles correctly
-            return AlgorithmResultAllocator::instance()->newEPAResultInvalid<T>();
+            return AlgorithmResultAllocator::instance().newEPAResultInvalid<T>();
         }
 
         ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
@@ -122,7 +122,7 @@ namespace urchin {
             }
         }
 
-        return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin);
+        return AlgorithmResultAllocator::instance().newEPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin);
     }
 
     template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D& convexObject1,
@@ -157,10 +157,10 @@ namespace urchin {
             Vector3<T> normal = contactPointOther.vector(contactPointTriangle).normalize().template cast<T>();
 
             if (needSwap) {
-                return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
+                return AlgorithmResultAllocator::instance().newEPAResultCollide<T>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
             }
 
-            return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
+            return AlgorithmResultAllocator::instance().newEPAResultCollide<T>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
         }
 
         return std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter>(nullptr);

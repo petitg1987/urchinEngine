@@ -15,9 +15,9 @@ namespace urchin {
     const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
-            ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
-            maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
-            minUpdateFrequency(ConfigService::instance()->getFloatValue("character.minUpdateFrequency")),
+            ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
+            maxDepthToRecover(ConfigService::instance().getFloatValue("character.maxDepthToRecover")),
+            minUpdateFrequency(ConfigService::instance().getFloatValue("character.minUpdateFrequency")),
             physicsCharacter(std::move(physicsCharacter)),
             config(config),
             physicsWorld(physicsWorld),

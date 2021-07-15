@@ -9,7 +9,7 @@ namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
-            updateShadowMapThreshold(ConfigService::instance()->getFloatValue("shadow.updateShadowMapThreshold")),
+            updateShadowMapThreshold(ConfigService::instance().getFloatValue("shadow.updateShadowMapThreshold")),
             shadowCasterReceiverBoxUpdated(false),
             modelsRequireUpdate(false) {
 

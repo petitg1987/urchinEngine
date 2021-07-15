@@ -1,5 +1,5 @@
 template<class T> OctreeManager<T>::OctreeManager(float minSize) :
-        overflowSize(ConfigService::instance()->getFloatValue("octree.overflowSize")),
+        overflowSize(ConfigService::instance().getFloatValue("octree.overflowSize")),
         minSize(minSize),
         mainOctree(nullptr),
         refreshModCount(0),

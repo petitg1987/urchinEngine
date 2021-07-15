@@ -15,7 +15,7 @@ namespace urchin {
         vmaAllocInfo.usage = static_cast<VmaMemoryUsage>(vulkanMemoryPropertyFlagsToVma(properties));
 
         VkBuffer buffer;
-        VkResult result = vmaCreateBuffer(GraphicService::instance()->getAllocator(), &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr);
+        VkResult result = vmaCreateBuffer(GraphicService::instance().getAllocator(), &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create buffer with error code: " + std::to_string(result));
         }
