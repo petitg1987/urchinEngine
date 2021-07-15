@@ -364,7 +364,7 @@ namespace urchin {
             for (const auto& sourceNavPolygon : sourceNavObject->getNavPolygons()) {
                 for (const auto& sourceExternalEdge : sourceNavPolygon->retrieveExternalEdges()) {
                     for (const auto& targetNavObject : sourceNavObject->retrieveNearObjects()) {
-                        createNavLinks(sourceExternalEdge, targetNavObject.lock());
+                        createNavLinks(sourceExternalEdge, *targetNavObject.lock());
                     }
                 }
             }
@@ -373,17 +373,17 @@ namespace urchin {
         for (const auto& navObjectLinksToRefresh : navObjectsLinksToRefresh) {
             for (const auto& sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) {
                 for (const auto& sourceExternalEdge : sourceNavPolygon->retrieveExternalEdges()) {
-                    createNavLinks(sourceExternalEdge, navObjectLinksToRefresh.second);
+                    createNavLinks(sourceExternalEdge, *navObjectLinksToRefresh.second);
                 }
             }
         }
     }
 
-    void NavMeshGenerator::createNavLinks(const NavPolygonEdge& sourceExternalEdge, const std::shared_ptr<NavObject>& targetNavObject) const {
+    void NavMeshGenerator::createNavLinks(const NavPolygonEdge& sourceExternalEdge, const NavObject& targetNavObject) const {
         EdgeLinkDetection edgeLinkDetection(navMeshAgent->getJumpDistance());
         LineSegment3D<float> sourceEdge = sourceExternalEdge.triangle->computeEdge(sourceExternalEdge.edgeIndex);
 
-        for (const auto& targetNavPolygon : targetNavObject->getNavPolygons()) {
+        for (const auto& targetNavPolygon : targetNavObject.getNavPolygons()) {
             for (const auto& targetExternalEdge : targetNavPolygon->retrieveExternalEdges()) {
                 LineSegment3D<float> targetEdge = targetExternalEdge.triangle->computeEdge(targetExternalEdge.edgeIndex);
 

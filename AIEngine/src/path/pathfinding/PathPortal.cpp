@@ -44,11 +44,11 @@ namespace urchin {
         return portal;
     }
 
-    const std::shared_ptr<PathNode>& PathPortal::getPreviousPathNode() const {
+    const std::shared_ptr<PathNode>& PathPortal::getPreviousPathNode() const { //TODO ..
         return previousPathNode;
     }
 
-    const std::shared_ptr<PathNode>& PathPortal::getNextPathNode() const {
+    const std::shared_ptr<PathNode>& PathPortal::getNextPathNode() const { //TODO ...
         return nextPathNode;
     }
 

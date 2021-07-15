@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    const std::shared_ptr<NavTriangle>& PathNode::getNavTriangle() const {
+    const std::shared_ptr<NavTriangle>& PathNode::getNavTriangle() const { //TODO ...
         return navTriangle;
     }
 

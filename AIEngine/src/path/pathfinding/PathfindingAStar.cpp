@@ -25,7 +25,7 @@ namespace urchin {
             return {}; //no path exists
         }
 
-        float startEndHScore = computeHScore(startTriangle, endPoint);
+        float startEndHScore = computeHScore(*startTriangle, endPoint);
 
         std::set<NavTriangle*> closedList;
         std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> openList;
@@ -50,7 +50,7 @@ namespace urchin {
                 std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, *neighborTriangle);
                 if (!neighborNodePath) {
                     float gScore = computeGScore(currentNode, link, startPoint);
-                    float hScore = computeHScore(neighborTriangle, endPoint);
+                    float hScore = computeHScore(*neighborTriangle, endPoint);
                     neighborNodePath = std::make_shared<PathNode>(neighborTriangle, gScore, hScore);
                     neighborNodePath->setPreviousNode(currentNode, link);
 
@@ -88,7 +88,7 @@ namespace urchin {
                 const auto& triangle = polygon->getTriangles()[triIndex];
                 Point2<float> flattenPoint(point.X, point.Z);
 
-                if (isPointInsideTriangle(flattenPoint, polygon, *triangle)) {
+                if (isPointInsideTriangle(flattenPoint, *polygon, *triangle)) {
                     float verticalDistance = point.Y - triangle->getCenterPoint().Y;
                     if (verticalDistance >= 0.0 && verticalDistance < bestVerticalDistance) {
                         bestVerticalDistance = verticalDistance;
@@ -100,10 +100,10 @@ namespace urchin {
         return result;
     }
 
-    bool PathfindingAStar::isPointInsideTriangle(const Point2<float>& point, const std::shared_ptr<NavPolygon>& polygon, const NavTriangle& triangle) const {
-        Point2<float> p0 = polygon->getPoint(triangle.getIndex(0)).toPoint2XZ();
-        Point2<float> p1 = polygon->getPoint(triangle.getIndex(1)).toPoint2XZ();
-        Point2<float> p2 = polygon->getPoint(triangle.getIndex(2)).toPoint2XZ();
+    bool PathfindingAStar::isPointInsideTriangle(const Point2<float>& point, const NavPolygon& polygon, const NavTriangle& triangle) const {
+        Point2<float> p0 = polygon.getPoint(triangle.getIndex(0)).toPoint2XZ();
+        Point2<float> p1 = polygon.getPoint(triangle.getIndex(1)).toPoint2XZ();
+        Point2<float> p2 = polygon.getPoint(triangle.getIndex(2)).toPoint2XZ();
 
         float crossProduct1 = crossProduct(point, p0, p1);
         float crossProduct2 = crossProduct(point, p1, p2);
@@ -152,8 +152,8 @@ namespace urchin {
     /**
      * Compute approximate score from 'current' to 'endPoint'
      */
-    float PathfindingAStar::computeHScore(const std::shared_ptr<NavTriangle>& current, const Point3<float>& endPoint) const {
-        Point3<float> currentPoint = current->getCenterPoint();
+    float PathfindingAStar::computeHScore(const NavTriangle& current, const Point3<float>& endPoint) const {
+        Point3<float> currentPoint = current.getCenterPoint();
         return std::abs(currentPoint.X - endPoint.X) + std::abs(currentPoint.Y - endPoint.Y) + std::abs(currentPoint.Z - endPoint.Z);
     }
 

@@ -47,7 +47,7 @@ namespace urchin {
 
             void deleteNavLinks();
             void createNavLinks();
-            void createNavLinks(const NavPolygonEdge&, const std::shared_ptr<NavObject>&) const;
+            void createNavLinks(const NavPolygonEdge&, const NavObject&) const;
 
             void updateNavMesh();
 

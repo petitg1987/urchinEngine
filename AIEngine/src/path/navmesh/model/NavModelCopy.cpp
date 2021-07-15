@@ -41,7 +41,7 @@ namespace urchin {
                     const auto& linkTargetTrianglePositions = linkTargetPolygonPositions->second.find(originalLink->getTargetTriangle().get());
                     assert(linkTargetTrianglePositions != linkTargetPolygonPositions->second.end());
 
-                    const std::shared_ptr<NavTriangle>& linkTargetTriangle = copiedNavPolygons[linkTargetTrianglePositions->second.first]->getTriangles()[linkTargetTrianglePositions->second.second];
+                    const auto& linkTargetTriangle = copiedNavPolygons[linkTargetTrianglePositions->second.first]->getTriangles()[linkTargetTrianglePositions->second.second];
                     copiedNavPolygons[originalPolygonIndex]->getTriangles()[originalTriangleIndex]->addLink(originalLink->copyLink(linkTargetTriangle));
                 }
             }

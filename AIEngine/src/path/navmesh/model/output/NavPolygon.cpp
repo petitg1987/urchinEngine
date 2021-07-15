@@ -43,11 +43,11 @@ namespace urchin {
         return triangles;
     }
 
-    const std::shared_ptr<NavTriangle>& NavPolygon::getTriangle(std::size_t index) const {
+    const std::shared_ptr<NavTriangle>& NavPolygon::getTriangle(std::size_t index) const { //TODO check..
         return triangles[index];
     }
 
-    const std::shared_ptr<const NavTopography>& NavPolygon::getNavTopography() const {
+    const std::shared_ptr<const NavTopography>& NavPolygon::getNavTopography() const { //TODO check...
         return navTopography;
     }
 
@@ -70,7 +70,7 @@ namespace urchin {
 
     void NavPolygon::removeLinksTo(const std::shared_ptr<NavPolygon>& navPolygon) {
         for (const auto& triangle : triangles) {
-            triangle->removeLinksTo(navPolygon);
+            triangle->removeLinksTo(navPolygon); //TODO ...
         }
     }
 
