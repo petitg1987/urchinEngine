@@ -229,7 +229,7 @@ namespace urchin {
             }
             const ccd_set &pickedObjects = rayTestResult->getResults();
             if (!pickedObjects.empty()) {
-                lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
+                lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2().getId();
                 notifyObservers(this, BODY_PICKED);
                 propagateEvent = false;
             } else {
