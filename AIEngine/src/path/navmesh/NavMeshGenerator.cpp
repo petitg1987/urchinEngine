@@ -111,7 +111,7 @@ namespace urchin {
 
         if (navObject->getExpandedPolytope().isWalkableCandidate()) {
             for (std::size_t surfaceIndex = 0; surfaceIndex < navObject->getExpandedPolytope().getSurfaces().size(); ++surfaceIndex) {
-                const std::shared_ptr<PolytopeSurface>& polytopeSurface = navObject->getExpandedPolytope().getSurface(surfaceIndex);
+                const auto& polytopeSurface = navObject->getExpandedPolytope().getSurfaces()[surfaceIndex];
                 if (polytopeSurface->isWalkable()) {
                     navObject->addWalkableSurface(polytopeSurface);
                 }
@@ -351,7 +351,7 @@ namespace urchin {
         for (const auto& navObjectLinksToRefresh : navObjectsLinksToRefresh) {
             for (const auto& sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) {
                 for (const auto& targetNavPolygon : navObjectLinksToRefresh.second->getNavPolygons()) {
-                    sourceNavPolygon->removeLinksTo(targetNavPolygon);
+                    sourceNavPolygon->removeLinksTo(*targetNavPolygon);
                 }
             }
         }

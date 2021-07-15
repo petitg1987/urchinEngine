@@ -43,7 +43,6 @@ namespace urchin {
 
     const Point3<float>& NavTriangle::getCenterPoint() const {
         assert(getNavPolygon() != nullptr); //center point not computed until triangle is not linked to polygon
-
         return centerPoint;
     }
 
@@ -80,9 +79,10 @@ namespace urchin {
         assertLinksValidity();
     }
 
-    void NavTriangle::removeLinksTo(const std::shared_ptr<NavPolygon>& navPolygon) {
-        links.erase(std::remove_if (links.begin(), links.end(),
-                                    [navPolygon](const auto& link) {return link->getTargetTriangle()->getNavPolygon() == navPolygon;}), links.end());
+    void NavTriangle::removeLinksTo(const NavPolygon& navPolygon) {
+        links.erase(std::remove_if (links.begin(), links.end(),[&navPolygon](const auto& link){
+            return link->getTargetTriangle()->getNavPolygon().get() == &navPolygon;
+        }), links.end());
     }
 
     std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const {

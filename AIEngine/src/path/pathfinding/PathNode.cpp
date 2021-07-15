@@ -12,8 +12,8 @@ namespace urchin {
 
     }
 
-    const std::shared_ptr<NavTriangle>& PathNode::getNavTriangle() const { //TODO ...
-        return navTriangle;
+    const NavTriangle& PathNode::getNavTriangle() const {
+        return *navTriangle;
     }
 
     void PathNode::setGScore(float gScore) {
@@ -54,7 +54,7 @@ namespace urchin {
         PathNodeEdgesLink pathNodeEdgesLink;
 
         if (navLink->getLinkType() == NavLinkType::STANDARD) {
-            LineSegment3D<float> sourceAndTargetEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
+            LineSegment3D<float> sourceAndTargetEdge = previousNode->getNavTriangle().computeEdge(navLink->getSourceEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = sourceAndTargetEdge;
             pathNodeEdgesLink.targetEdge = sourceAndTargetEdge;
@@ -62,7 +62,7 @@ namespace urchin {
 
             return pathNodeEdgesLink;
         } else if (navLink->getLinkType() == NavLinkType::JOIN_POLYGONS) {
-            LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
+            LineSegment3D<float> sourceEdge = previousNode->getNavTriangle().computeEdge(navLink->getSourceEdgeIndex());
             LineSegment3D<float> polygonJoinEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);
 
             pathNodeEdgesLink.sourceEdge = polygonJoinEdge;
@@ -71,10 +71,10 @@ namespace urchin {
 
             return pathNodeEdgesLink;
         } else if (navLink->getLinkType() == NavLinkType::JUMP) {
-            LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
+            LineSegment3D<float> sourceEdge = previousNode->getNavTriangle().computeEdge(navLink->getSourceEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);
-            pathNodeEdgesLink.targetEdge = getNavTriangle()->computeEdge(navLink->getLinkConstraint()->getTargetEdgeIndex());
+            pathNodeEdgesLink.targetEdge = getNavTriangle().computeEdge(navLink->getLinkConstraint()->getTargetEdgeIndex());
             pathNodeEdgesLink.areIdenticalEdges = false;
 
             return pathNodeEdgesLink;

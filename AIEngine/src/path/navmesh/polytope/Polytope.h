@@ -17,7 +17,6 @@ namespace urchin {
             const std::string& getName() const;
 
             const std::vector<std::shared_ptr<PolytopeSurface>>& getSurfaces() const;
-            const std::shared_ptr<PolytopeSurface>& getSurface(std::size_t) const;
 
             const Rectangle<float>& getXZRectangle() const;
             const AABBox<float>& getAABBox() const;

@@ -21,12 +21,11 @@ namespace urchin {
 
             void addTriangles(const std::vector<std::shared_ptr<NavTriangle>>&, const std::shared_ptr<NavPolygon>&);
             const std::vector<std::shared_ptr<NavTriangle>>& getTriangles() const;
-            const std::shared_ptr<NavTriangle>& getTriangle(std::size_t) const;
 
-            const std::shared_ptr<const NavTopography>& getNavTopography() const;
+            const NavTopography* getNavTopography() const;
             const std::vector<NavPolygonEdge>& retrieveExternalEdges() const;
 
-            void removeLinksTo(const std::shared_ptr<NavPolygon>&);
+            void removeLinksTo(const NavPolygon&);
 
         private:
             std::string name;

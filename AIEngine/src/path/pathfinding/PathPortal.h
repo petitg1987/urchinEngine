@@ -17,8 +17,8 @@ namespace urchin {
             bool hasDifferentTopography() const;
 
             const LineSegment3D<float>& getPortal() const;
-            const std::shared_ptr<PathNode>& getPreviousPathNode() const;
-            const std::shared_ptr<PathNode>& getNextPathNode() const;
+            const PathNode* getPreviousPathNode() const;
+            const PathNode* getNextPathNode() const;
 
         private:
             LineSegment3D<float> portal;

@@ -37,19 +37,19 @@ namespace urchin {
     }
 
     bool PathPortal::hasDifferentTopography() const {
-        return previousPathNode->getNavTriangle()->getNavPolygon()->getNavTopography() != nextPathNode->getNavTriangle()->getNavPolygon()->getNavTopography();
+        return previousPathNode->getNavTriangle().getNavPolygon()->getNavTopography() != nextPathNode->getNavTriangle().getNavPolygon()->getNavTopography();
     }
 
     const LineSegment3D<float>& PathPortal::getPortal() const {
         return portal;
     }
 
-    const std::shared_ptr<PathNode>& PathPortal::getPreviousPathNode() const { //TODO ..
-        return previousPathNode;
+    const PathNode* PathPortal::getPreviousPathNode() const {
+        return previousPathNode.get();
     }
 
-    const std::shared_ptr<PathNode>& PathPortal::getNextPathNode() const { //TODO ...
-        return nextPathNode;
+    const PathNode* PathPortal::getNextPathNode() const {
+        return nextPathNode.get();
     }
 
 }

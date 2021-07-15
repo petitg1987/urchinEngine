@@ -27,7 +27,7 @@ namespace urchin {
 
         float startEndHScore = computeHScore(*startTriangle, endPoint);
 
-        std::set<NavTriangle*> closedList;
+        std::set<const NavTriangle*> closedList;
         std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> openList;
         openList.insert(std::make_shared<PathNode>(startTriangle, 0.0, startEndHScore));
 
@@ -36,11 +36,11 @@ namespace urchin {
             auto currentNodeIt = openList.begin(); //node with smallest fScore
             std::shared_ptr<PathNode> currentNode = *currentNodeIt;
 
-            closedList.insert(currentNode->getNavTriangle().get());
+            closedList.insert(&currentNode->getNavTriangle());
             openList.erase(currentNodeIt);
 
             const auto& currTriangle = currentNode->getNavTriangle();
-            for (const auto& link : currTriangle->getLinks()) {
+            for (const auto& link : currTriangle.getLinks()) {
                 auto neighborTriangle = link->getTargetTriangle();
 
                 if (closedList.find(neighborTriangle.get()) != closedList.end()) { //already processed
@@ -122,7 +122,7 @@ namespace urchin {
 
     std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare>& pathNodes, const NavTriangle& navTriangle) const {
         for (const auto& pathNode : pathNodes) {
-            if (pathNode->getNavTriangle().get() == &navTriangle) {
+            if (&pathNode->getNavTriangle() == &navTriangle) {
                 return pathNode;
             }
         }
@@ -212,7 +212,7 @@ namespace urchin {
         for (const auto& pathPortal : pathPortals) {
             if (pathPortal->hasTransitionPoint()) {
                 if (followTopography && !pathPoints.empty()) {
-                    auto navPolygonTopography = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon()->getNavTopography();
+                    auto* navPolygonTopography = pathPortal->getPreviousPathNode()->getNavTriangle().getNavPolygon()->getNavTopography();
                     if (navPolygonTopography) {
                         const Point3<float>& startPoint = pathPoints.back().getPoint();
                         const Point3<float>& endPoint = pathPortal->getTransitionPoint();

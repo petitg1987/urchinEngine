@@ -86,7 +86,7 @@ namespace urchin {
         return pointOnExpandedSurface.translate(normal * reduceDistance);
     }
 
-    const std::shared_ptr<const NavTopography>& PolytopePlaneSurface::getNavTopography() const { //TODO ..
+    const std::shared_ptr<const NavTopography>& PolytopePlaneSurface::getNavTopography() const {
         return nullNavTopography; //no topography for flat surface
     }
 

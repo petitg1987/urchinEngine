@@ -30,10 +30,6 @@ namespace urchin {
         return surfaces;
     }
 
-    const std::shared_ptr<PolytopeSurface>& Polytope::getSurface(std::size_t surfaceIndex) const { //TODO ..
-        return surfaces[surfaceIndex];
-    }
-
     const Rectangle<float>& Polytope::getXZRectangle() const {
         return xzRectangle;
     }
