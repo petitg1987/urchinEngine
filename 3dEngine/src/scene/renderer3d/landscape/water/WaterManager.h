@@ -15,15 +15,15 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera&);
 
-            void addWater(Water*);
-            void removeWater(Water*);
+            void addWater(const std::shared_ptr<Water>&);
+            void removeWater(const Water&);
 
             void prepareRendering(const Camera&, FogManager*, float) const;
 
         private:
             RenderTarget& renderTarget;
 
-            std::vector<Water*> waters;
+            std::vector<std::shared_ptr<Water>> waters;
 
             Matrix4<float> projectionMatrix;
     };

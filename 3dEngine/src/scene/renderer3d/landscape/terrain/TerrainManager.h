@@ -18,8 +18,8 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera&);
 
-            void addTerrain(Terrain*);
-            void removeTerrain(Terrain*);
+            void addTerrain(const std::shared_ptr<Terrain>&);
+            void removeTerrain(const Terrain&);
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -28,11 +28,11 @@ namespace urchin {
 
         private:
             void updateAllTerrainConfig();
-            void updateTerrainConfig(Terrain*) const;
+            void updateTerrainConfig(Terrain&) const;
 
             RenderTarget& renderTarget;
 
-            std::vector<Terrain*> terrains;
+            std::vector<std::shared_ptr<Terrain>> terrains;
 
             Matrix4<float> projectionMatrix;
 

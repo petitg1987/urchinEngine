@@ -75,18 +75,18 @@ namespace urchin {
                                                                    const Vector3<float>& windDirection, float windStrength) {
         SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain.getTerrain();
-        TerrainGrass* terrainGrass = terrain->getGrass();
+        TerrainGrass& terrainGrass = terrain->getGrass();
 
-        terrainGrass->setGrassTexture(grassTextureFilename);
-        terrainGrass->setMaskTexture(grassMaskFilename);
-        terrainGrass->setNumGrassInTexture(numGrassInTex);
-        if (terrainGrass->getGrassQuantity() != grassQuantity) {
-            terrainGrass->setGrassQuantity(grassQuantity);
+        terrainGrass.setGrassTexture(grassTextureFilename);
+        terrainGrass.setMaskTexture(grassMaskFilename);
+        terrainGrass.setNumGrassInTexture(numGrassInTex);
+        if (terrainGrass.getGrassQuantity() != grassQuantity) {
+            terrainGrass.setGrassQuantity(grassQuantity);
         }
-        terrainGrass->setGrassHeight(grassHeight);
-        terrainGrass->setGrassLength(grassLength);
-        terrainGrass->setWindDirection(windDirection);
-        terrainGrass->setWindStrength(windStrength);
+        terrainGrass.setGrassHeight(grassHeight);
+        terrainGrass.setGrassLength(grassLength);
+        terrainGrass.setWindDirection(windDirection);
+        terrainGrass.setWindStrength(windStrength);
 
         markModified();
         return sceneTerrain;

@@ -52,7 +52,7 @@ namespace urchin {
             sceneWater = std::make_unique<SceneWater>();
             sceneWater->setName(waterName);
             
-            auto* water = new Water();
+            auto water = std::make_shared<Water>();
 
             sceneWater->setWater(water);
         } catch (std::exception& e) {

@@ -11,12 +11,12 @@ namespace urchin {
 
     void WaterManager::onCameraProjectionUpdate(const Camera& camera) {
         this->projectionMatrix = camera.getProjectionMatrix();
-        for (const auto water : waters) {
+        for (const auto& water : waters) {
             water->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
-    void WaterManager::addWater(Water* water) {
+    void WaterManager::addWater(const std::shared_ptr<Water>& water) {
         if (water) {
             waters.push_back(water);
 
@@ -25,17 +25,17 @@ namespace urchin {
         }
     }
 
-    void WaterManager::removeWater(Water* water) {
-        if (water) {
-            waters.erase(std::remove(waters.begin(), waters.end(), water), waters.end());
-            delete water;
+    void WaterManager::removeWater(const Water& water) {
+        auto itFind = std::find_if(waters.begin(), waters.end(), [&water](const auto& o){return o.get() == &water;});
+        if (itFind != waters.end()) {
+            waters.erase(itFind);
         }
     }
 
     void WaterManager::prepareRendering(const Camera& camera, FogManager* fogManager, float dt) const {
         ScopeProfiler sp(Profiler::graphic(), "waterPreRender");
 
-        for (const auto water : waters) {
+        for (const auto& water : waters) {
             water->prepareRendering(camera, fogManager, dt);
         }
     }

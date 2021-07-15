@@ -25,7 +25,7 @@ namespace urchin {
             void setName(const std::string&);
 
             Terrain* getTerrain() const;
-            void setTerrain(Terrain*);
+            void setTerrain(std::shared_ptr<Terrain>);
 
             RigidBody* getRigidBody() const override;
 
@@ -48,7 +48,7 @@ namespace urchin {
             AIManager* aiManager;
 
             std::string name;
-            Terrain* terrain;
+            std::shared_ptr<Terrain> terrain;
             RigidBody* rigidBody;
             std::shared_ptr<AITerrain> aiTerrain;
     };

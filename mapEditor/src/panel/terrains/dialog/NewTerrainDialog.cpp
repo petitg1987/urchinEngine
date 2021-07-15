@@ -83,7 +83,7 @@ namespace urchin {
 
             auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
             auto terrainMaterials = std::make_unique<TerrainMaterials>("", emptyMaterialFilenames, 1.0f, 1.0f);
-            auto* terrain = new Terrain(std::move(terrainMesh), std::move(terrainMaterials), Point3<float>(0.0f, 0.0f, 0.0f));
+            auto terrain = std::make_shared<Terrain>(std::move(terrainMesh), std::move(terrainMaterials), Point3<float>(0.0f, 0.0f, 0.0f));
 
             sceneTerrain->setTerrain(terrain);
         } catch (std::exception& e) {

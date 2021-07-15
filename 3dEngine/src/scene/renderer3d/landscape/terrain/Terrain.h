@@ -26,7 +26,7 @@ namespace urchin {
             const TerrainMesh* getMesh() const;
             void setMaterials(std::unique_ptr<TerrainMaterials>);
             const TerrainMaterials* getMaterials() const;
-            TerrainGrass* getGrass() const;
+            TerrainGrass& getGrass() const;
 
             void setPosition(const Point3<float>&);
             const Point3<float>& getPosition() const;

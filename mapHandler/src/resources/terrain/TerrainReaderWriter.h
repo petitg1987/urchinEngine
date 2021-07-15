@@ -35,18 +35,18 @@ namespace urchin {
         static constexpr char WIND_STRENGTH_TAG[] = "windStrength";
 
         public:
-            Terrain* loadFrom(const UdaChunk*, const UdaParser&) const;
-            void writeOn(UdaChunk&, const Terrain*, UdaWriter&) const;
+            std::unique_ptr<Terrain> loadFrom(const UdaChunk*, const UdaParser&) const;
+            void writeOn(UdaChunk&, const Terrain&, UdaWriter&) const;
 
         private:
-            Terrain* buildTerrainFrom(const UdaChunk*, const UdaParser&) const;
-            void buildChunkFrom(UdaChunk&, const Terrain*, UdaWriter&) const;
+            std::unique_ptr<Terrain> buildTerrainFrom(const UdaChunk*, const UdaParser&) const;
+            void buildChunkFrom(UdaChunk&, const Terrain&, UdaWriter&) const;
 
-            void loadPropertiesOn(Terrain*, const UdaChunk*, const UdaParser&) const;
-            void writePropertiesOn(UdaChunk&, const Terrain*, UdaWriter&) const;
+            void loadPropertiesOn(Terrain&, const UdaChunk*, const UdaParser&) const;
+            void writePropertiesOn(UdaChunk&, const Terrain&, UdaWriter&) const;
 
-            void loadGrassOn(Terrain*, const UdaChunk*, const UdaParser&) const;
-            void writeGrassOn(UdaChunk&, const Terrain*, UdaWriter&) const;
+            void loadGrassOn(Terrain&, const UdaChunk*, const UdaParser&) const;
+            void writeGrassOn(UdaChunk&, const Terrain&, UdaWriter&) const;
     };
 
 }

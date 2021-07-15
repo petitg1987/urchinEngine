@@ -11,7 +11,9 @@ namespace urchin {
     }
 
     SceneWater::~SceneWater() {
-        renderer3d->getWaterManager().removeWater(water);
+        if(water) {
+            renderer3d->getWaterManager().removeWater(*water);
+        }
     }
 
     void SceneWater::setWaterManagers(Renderer3d* renderer3d) {
@@ -36,7 +38,7 @@ namespace urchin {
     void SceneWater::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
-        WaterReaderWriter().writeOn(chunk, water, udaWriter);
+        WaterReaderWriter().writeOn(chunk, *water, udaWriter);
     }
 
     std::string SceneWater::getName() const {
@@ -48,22 +50,22 @@ namespace urchin {
     }
 
     Water* SceneWater::getWater() const {
-        return water;
+        return water.get();
     }
 
-    void SceneWater::setWater(Water* water) {
+    void SceneWater::setWater(std::shared_ptr<Water> water) {
         if (!water) {
             throw std::invalid_argument("Cannot set a null water on scene water.");
         }
 
         if (renderer3d) {
-            renderer3d->getWaterManager().removeWater(this->water);
+            if(this->water) {
+                renderer3d->getWaterManager().removeWater(*this->water);
+            }
             renderer3d->getWaterManager().addWater(water);
-        } else {
-            delete this->water;
         }
 
-        this->water = water;
+        this->water = std::move(water);
     }
 
 }

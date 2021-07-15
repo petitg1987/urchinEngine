@@ -20,7 +20,7 @@ namespace urchin {
             void setName(const std::string&);
 
             Water* getWater() const;
-            void setWater(Water*);
+            void setWater(std::shared_ptr<Water>);
 
         private:
             void loadFrom(const UdaChunk*, const UdaParser&);
@@ -31,7 +31,7 @@ namespace urchin {
             Renderer3d* renderer3d;
 
             std::string name;
-            Water* water;
+            std::shared_ptr<Water> water;
     };
 
 }

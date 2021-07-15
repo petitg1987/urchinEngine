@@ -13,25 +13,25 @@ namespace urchin {
 
     void TerrainManager::onCameraProjectionUpdate(const Camera& camera) {
         this->projectionMatrix = camera.getProjectionMatrix();
-        for (const auto terrain : terrains) {
+        for (const auto& terrain : terrains) {
             terrain->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
-    void TerrainManager::addTerrain(Terrain* terrain) {
+    void TerrainManager::addTerrain(const std::shared_ptr<Terrain>& terrain) {
         if (terrain) {
             terrains.push_back(terrain);
 
             terrain->initialize(renderTarget);
             terrain->onCameraProjectionUpdate(projectionMatrix);
-            updateTerrainConfig(terrain);
+            updateTerrainConfig(*terrain);
         }
     }
 
-    void TerrainManager::removeTerrain(Terrain* terrain) {
-        if (terrain) {
-            terrains.erase(std::remove(terrains.begin(), terrains.end(), terrain), terrains.end());
-            delete terrain;
+    void TerrainManager::removeTerrain(const Terrain& terrain) {
+        auto itFind = std::find_if(terrains.begin(), terrains.end(), [&terrain](const auto& o){return o.get() == &terrain;});
+        if (itFind != terrains.end()) {
+            terrains.erase(itFind);
         }
     }
 
@@ -48,19 +48,19 @@ namespace urchin {
     }
 
     void TerrainManager::updateAllTerrainConfig() {
-        for (const auto terrain : terrains) {
-            updateTerrainConfig(terrain);
+        for (const auto& terrain : terrains) {
+            updateTerrainConfig(*terrain);
         }
     }
 
-    void TerrainManager::updateTerrainConfig(Terrain* terrain) const {
-        terrain->getGrass()->setGrassDisplayDistance(config.grassDisplayDistance);
+    void TerrainManager::updateTerrainConfig(Terrain& terrain) const {
+        terrain.getGrass().setGrassDisplayDistance(config.grassDisplayDistance);
     }
 
     void TerrainManager::prepareRendering(const Camera& camera, float dt) const {
         ScopeProfiler sp(Profiler::graphic(), "terPreRender");
 
-        for (const auto terrain : terrains) {
+        for (const auto& terrain : terrains) {
             terrain->prepareRendering(camera, dt);
         }
     }

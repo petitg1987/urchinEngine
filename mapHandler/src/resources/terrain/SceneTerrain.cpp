@@ -15,7 +15,9 @@ namespace urchin {
     }
 
     SceneTerrain::~SceneTerrain() {
-        renderer3d->getTerrainManager().removeTerrain(terrain);
+        if(terrain) {
+            renderer3d->getTerrainManager().removeTerrain(*terrain);
+        }
         deleteRigidBody();
         deleteAIObjects();
     }
@@ -58,7 +60,7 @@ namespace urchin {
     void SceneTerrain::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
-        TerrainReaderWriter().writeOn(chunk, terrain, udaWriter);
+        TerrainReaderWriter().writeOn(chunk, *terrain, udaWriter);
     }
 
     std::string SceneTerrain::getName() const {
@@ -70,22 +72,22 @@ namespace urchin {
     }
 
     Terrain* SceneTerrain::getTerrain() const {
-        return terrain;
+        return terrain.get();
     }
 
-    void SceneTerrain::setTerrain(Terrain* terrain) {
+    void SceneTerrain::setTerrain(std::shared_ptr<Terrain> terrain) {
         if (!terrain) {
             throw std::invalid_argument("Cannot set a null terrain on scene terrain.");
         }
 
         if (renderer3d) {
-            renderer3d->getTerrainManager().removeTerrain(this->terrain);
+            if(this->terrain) {
+                renderer3d->getTerrainManager().removeTerrain(*this->terrain);
+            }
             renderer3d->getTerrainManager().addTerrain(terrain);
-        } else {
-            delete this->terrain;
         }
 
-        this->terrain = terrain;
+        this->terrain = std::move(terrain);
     }
 
     RigidBody* SceneTerrain::getRigidBody() const {
