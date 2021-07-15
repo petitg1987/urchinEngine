@@ -24,8 +24,7 @@ namespace urchin {
             };
 
         private:
-            void processCollisionAlgorithmWithMargin(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&,
-                    const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter>&);
+            void processCollisionAlgorithmWithMargin(const CollisionConvexObject3D&, const CollisionConvexObject3D&);
 
             GJKAlgorithm<double> gjkAlgorithm;
             EPAAlgorithm<double> epaAlgorithm;

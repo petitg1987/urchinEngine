@@ -99,7 +99,7 @@ namespace urchin {
 
     template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject& object, const Vector3<T>& globalDirection, const PhysicsTransform& worldTransform) const {
         Vector3<float> localDirection = worldTransform.retrieveOrientationMatrix().transpose() * globalDirection.template cast<float>();
-        Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
+        Point3<float> localSupportPoint = object.getLocalObject().getSupportPoint(localDirection, true);
 
         return worldTransform.transform(localSupportPoint).template cast<T>();
     }
@@ -120,10 +120,10 @@ namespace urchin {
 
         logStream << message << std::endl;
         logStream << " - Termination tolerance: " << terminationTolerance << std::endl;
-        logStream << " - Object 1: " << std::endl << object1.getLocalObject()->toString() << std::endl;
+        logStream << " - Object 1: " << std::endl << object1.getLocalObject().toString() << std::endl;
         logStream << " - Object 1, from: " << object1.getFrom() << std::endl;
         logStream << " - Object 1, to: " << object1.getTo() << std::endl;
-        logStream << " - Object 2: " << std::endl << object2.getLocalObject()->toString() << std::endl;
+        logStream << " - Object 2: " << std::endl << object2.getLocalObject().toString() << std::endl;
         logStream << " - Object 2, from: " << object2.getFrom() << std::endl;
         logStream << " - Object 2, to: " << object2.getTo();
         Logger::instance().log(logLevel, logStream.str());
