@@ -69,7 +69,7 @@ namespace urchin {
 
         if (rigidBody) {
             auto& physicsChunk = udaWriter.createChunk(PHYSICS_TAG, UdaAttribute(), &chunk);
-            RigidBodyReaderWriter::writeOn(physicsChunk, rigidBody, udaWriter);
+            RigidBodyReaderWriter::writeOn(physicsChunk, *rigidBody, udaWriter);
         }
     }
 
@@ -98,13 +98,13 @@ namespace urchin {
         this->model = model;
     }
 
-    void SceneObject::setupInteractiveBody(RigidBody* rigidBody) {
+    void SceneObject::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject();
     }
 
     RigidBody* SceneObject::getRigidBody() const {
-        return rigidBody;
+        return rigidBody.get();
     }
 
     void SceneObject::moveTo(const Point3<float>& position, const Quaternion<float>& orientation) {
@@ -114,7 +114,7 @@ namespace urchin {
         }
     }
 
-    void SceneObject::setupRigidBody(RigidBody* rigidBody) {
+    void SceneObject::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
@@ -139,11 +139,8 @@ namespace urchin {
 
     void SceneObject::deleteRigidBody() {
         if (physicsWorld && rigidBody) {
-            physicsWorld->removeBody(rigidBody);
-        } else {
-            delete rigidBody;
+            physicsWorld->removeBody(*rigidBody);
         }
-
         rigidBody = nullptr;
     }
 

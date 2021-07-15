@@ -15,7 +15,7 @@ void CollisionWorldIT::fallOnGround() {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 
-    auto* cubeBody = bodyManager->getBodies()[1];
+    auto cubeBody = bodyManager->getBodies()[1];
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
@@ -24,7 +24,7 @@ void CollisionWorldIT::ccdPushOnGround() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
     auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
     collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
-    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
+    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1].get());
     cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -1000.0f, 0.0f)); //apply extreme down force
     cubeBody->setLinearFactor(Vector3<float>(0.0f, 1.0f, 0.0f)); //avoid cube to go on outside world border
     cubeBody->setAngularFactor(Vector3<float>(0.0f, 0.0f, 0.0f)); //avoid cube to go on outside world border
@@ -41,10 +41,10 @@ void CollisionWorldIT::ccdPushOnGround() {
 void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
     auto bodyManager = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
     std::unique_ptr<CollisionBoxShape> roofShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
-    bodyManager->addBody(new RigidBody("roof", PhysicsTransform(Point3<float>(0.0f, 10.0f, 0.0f), Quaternion<float>()), std::move(roofShape)));
+    bodyManager->addBody(std::make_unique<RigidBody>("roof", PhysicsTransform(Point3<float>(0.0f, 10.0f, 0.0f), Quaternion<float>()), std::move(roofShape)));
     auto collisionWorld = std::make_unique<CollisionWorld>(*bodyManager);
     collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
-    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
+    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1].get());
     cubeBody->applyCentralMomentum(Vector3<float>(0.0f, -10000.0f, 0.0f)); //apply extreme down force
     cubeBody->setRestitution(0.9f); //ensure cube bouncing well
 
@@ -65,7 +65,7 @@ void CollisionWorldIT::fallForever() {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
 
-    auto* cubeBody = bodyManager->getBodies()[1];
+    auto cubeBody = bodyManager->getBodies()[1];
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -4.0f, "Check cube doesn't fall forever");
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
     std::string logValue = Logger::instance()->retrieveContent(std::numeric_limits<unsigned long>::max());
@@ -81,7 +81,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
     for (std::size_t i = 0; i < 25; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
-    auto* cubeBody = bodyManager->getBodies()[1];
+    auto cubeBody = bodyManager->getBodies()[1];
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
@@ -106,7 +106,7 @@ void CollisionWorldIT::changeMomentumOnInactiveBody() {
     for (std::size_t i = 0; i < 25; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
-    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
+    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1].get());
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
@@ -128,7 +128,7 @@ void CollisionWorldIT::changeMass() {
     for (std::size_t i = 0; i < 5; ++i) {
         collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
     }
-    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1]);
+    auto* cubeBody = dynamic_cast<RigidBody*>(bodyManager->getBodies()[1].get());
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 9.96f, 0.01f);
 
     //2. change cube mass to 0.0f (static body)
@@ -151,13 +151,13 @@ std::unique_ptr<BodyManager> CollisionWorldIT::buildWorld(const Point3<float>& c
     auto bodyManager = std::make_unique<BodyManager>();
 
     std::unique_ptr<CollisionBoxShape> groundShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
-    auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), std::move(groundShape));
-    bodyManager->addBody(groundBody);
+    auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), std::move(groundShape));
+    bodyManager->addBody(std::move(groundBody));
 
     std::unique_ptr<CollisionBoxShape> cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
-    auto* cubeBody = new RigidBody("cube", PhysicsTransform(cubePosition, Quaternion<float>()), std::move(cubeShape));
+    auto cubeBody = std::make_unique<RigidBody>("cube", PhysicsTransform(cubePosition, Quaternion<float>()), std::move(cubeShape));
     cubeBody->setMass(10.0f);
-    bodyManager->addBody(cubeBody);
+    bodyManager->addBody(std::move(cubeBody));
 
     return bodyManager;
 }

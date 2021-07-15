@@ -53,10 +53,10 @@ namespace urchin {
 
         RigidBody* toCloneRigidBody = toCloneSceneObject.getRigidBody();
         if (toCloneRigidBody) {
-            auto* rigidBody = new RigidBody(*toCloneRigidBody);
+            auto rigidBody = std::make_unique<RigidBody>(*toCloneRigidBody);
             rigidBody->setId(newSceneObject->getName());
             rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
-            newSceneObject->setupInteractiveBody(rigidBody);
+            newSceneObject->setupInteractiveBody(std::move(rigidBody));
         }
 
         addSceneObject(std::move(newSceneObject));
@@ -70,8 +70,8 @@ namespace urchin {
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
         auto bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
 
-        auto* rigidBody = new RigidBody(bodyId, physicsTransform, std::move(bodyShape));
-        sceneObject.setupInteractiveBody(rigidBody);
+        auto rigidBody = std::make_unique<RigidBody>(bodyId, physicsTransform, std::move(bodyShape));
+        sceneObject.setupInteractiveBody(std::move(rigidBody));
 
         markModified();
     }
@@ -145,7 +145,7 @@ namespace urchin {
         Transform<float> modelTransform = constSceneObject.getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
 
-        auto* newRigidBody = new RigidBody(bodyId, physicsTransform, std::move(newCollisionShape));
+        auto newRigidBody = std::make_unique<RigidBody>(bodyId, physicsTransform, std::move(newCollisionShape));
         newRigidBody->setMass(rigidBody->getMass());
         newRigidBody->setRestitution(rigidBody->getRestitution());
         newRigidBody->setFriction(rigidBody->getFriction());
@@ -154,7 +154,7 @@ namespace urchin {
         newRigidBody->setLinearFactor(rigidBody->getLinearFactor());
         newRigidBody->setAngularFactor(rigidBody->getAngularFactor());
 
-        sceneObject.setupInteractiveBody(newRigidBody);
+        sceneObject.setupInteractiveBody(std::move(newRigidBody));
 
         markModified();
         return sceneObject;

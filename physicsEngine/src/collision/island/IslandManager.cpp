@@ -64,9 +64,9 @@ namespace urchin {
     void IslandManager::buildIslands(const std::vector<ManifoldResult>& manifoldResults) {
         //1. create an island for each body
         islandElements.clear();
-        for (auto body : bodyManager.getBodies()) {
+        for (auto& body : bodyManager.getBodies()) {
             if (!body->isStatic()) {
-                islandElements.push_back(body);
+                islandElements.push_back(body.get());
             }
         }
         islandContainer.reset(islandElements);

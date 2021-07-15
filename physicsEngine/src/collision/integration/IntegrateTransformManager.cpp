@@ -19,8 +19,8 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      */
     void IntegrateTransformManager::integrateTransform(float dt) {
-        for (auto abstractBody : bodyManager.getBodies()) {
-            RigidBody* body = RigidBody::upCast(abstractBody);
+        for (const auto& abstractBody : bodyManager.getBodies()) {
+            RigidBody* body = RigidBody::upCast(abstractBody.get());
             if (body && body->isActive()) {
                 PhysicsTransform currentTransform = body->getTransform();
                 PhysicsTransform newTransform = currentTransform.integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);

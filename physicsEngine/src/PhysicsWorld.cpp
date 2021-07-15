@@ -44,16 +44,14 @@ namespace urchin {
         return *collisionWorld;
     }
 
-    void PhysicsWorld::addBody(AbstractBody* body) {
+    void PhysicsWorld::addBody(std::shared_ptr<AbstractBody> body) {
         if (body) {
-            bodyManager->addBody(body);
+            bodyManager->addBody(std::move(body));
         }
     }
 
-    void PhysicsWorld::removeBody(AbstractBody* body) {
-        if (body) {
-            bodyManager->removeBody(body);
-        }
+    void PhysicsWorld::removeBody(const AbstractBody& body) {
+        bodyManager->removeBody(body);
     }
 
     void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {

@@ -36,9 +36,9 @@ namespace urchin {
             void loadFrom(const UdaChunk*, const UdaParser&);
             void writeOn(UdaChunk&, UdaWriter&) const;
 
-            void setupInteractiveBody(RigidBody*);
-            void setupRigidBody(RigidBody*);
-            void setupAIObject(RigidBody*);
+            void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
+            void setupRigidBody(const std::shared_ptr<RigidBody>&);
+            void setupAIObject();
 
             void deleteRigidBody();
             void deleteAIObjects();
@@ -49,7 +49,7 @@ namespace urchin {
 
             std::string name;
             std::shared_ptr<Terrain> terrain;
-            RigidBody* rigidBody;
+            std::shared_ptr<RigidBody> rigidBody;
             std::shared_ptr<AITerrain> aiTerrain;
     };
 

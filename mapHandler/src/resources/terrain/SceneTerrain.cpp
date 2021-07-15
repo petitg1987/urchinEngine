@@ -53,8 +53,8 @@ namespace urchin {
         auto collisionTerrainShape = std::make_unique<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
                                                                                          terrain->getMesh()->getXSize(),
                                                                                          terrain->getMesh()->getZSize());
-        auto* terrainRigidBody = new RigidBody(this->name, PhysicsTransform(terrain->getPosition()), std::move(collisionTerrainShape));
-        setupInteractiveBody(terrainRigidBody);
+        auto terrainRigidBody = std::make_unique<RigidBody>(this->name, PhysicsTransform(terrain->getPosition()), std::move(collisionTerrainShape));
+        setupInteractiveBody(std::move(terrainRigidBody));
     }
 
     void SceneTerrain::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
@@ -91,7 +91,7 @@ namespace urchin {
     }
 
     RigidBody* SceneTerrain::getRigidBody() const {
-        return rigidBody;
+        return rigidBody.get();
     }
 
     void SceneTerrain::moveTo(const Point3<float>& position, const Quaternion<float>& orientation) {
@@ -99,12 +99,12 @@ namespace urchin {
         aiTerrain->updateTransform(position, orientation);
     }
 
-    void SceneTerrain::setupInteractiveBody(RigidBody* rigidBody) {
+    void SceneTerrain::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
         setupRigidBody(rigidBody);
-        setupAIObject(rigidBody);
+        setupAIObject();
     }
 
-    void SceneTerrain::setupRigidBody(RigidBody* rigidBody) {
+    void SceneTerrain::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
@@ -113,7 +113,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::setupAIObject(RigidBody* rigidBody) {
+    void SceneTerrain::setupAIObject() {
         deleteAIObjects();
 
         if (!rigidBody) {
@@ -129,11 +129,8 @@ namespace urchin {
 
     void SceneTerrain::deleteRigidBody() {
         if (physicsWorld && rigidBody) {
-            physicsWorld->removeBody(rigidBody);
-        } else {
-            delete rigidBody;
+            physicsWorld->removeBody(*rigidBody);
         }
-
         rigidBody = nullptr;
     }
 

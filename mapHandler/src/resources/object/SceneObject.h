@@ -27,7 +27,7 @@ namespace urchin {
             Model* getModel() const;
             void setModel(const std::shared_ptr<Model>&);
 
-            void setupInteractiveBody(RigidBody*);
+            void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
 
             RigidBody* getRigidBody() const override;
 
@@ -38,7 +38,7 @@ namespace urchin {
             void loadFrom(const UdaChunk*, const UdaParser&);
             void writeOn(UdaChunk&, UdaWriter&) const;
 
-            void setupRigidBody(RigidBody*);
+            void setupRigidBody(const std::shared_ptr<RigidBody>&);
             void setupAIObject();
 
             void deleteRigidBody();
@@ -54,7 +54,7 @@ namespace urchin {
 
             std::string name;
             std::shared_ptr<Model> model;
-            RigidBody* rigidBody;
+            std::shared_ptr<RigidBody> rigidBody;
             std::shared_ptr<AIObject> aiObject;
     };
 

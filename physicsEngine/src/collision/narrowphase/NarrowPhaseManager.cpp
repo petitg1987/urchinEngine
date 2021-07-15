@@ -86,8 +86,8 @@ namespace urchin {
     void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler sp(Profiler::physics(), "proPrediContact");
 
-        for (auto workBody : bodyManager.getBodies()) {
-            RigidBody* body = RigidBody::upCast(workBody);
+        for (const auto& workBody : bodyManager.getBodies()) {
+            RigidBody* body = RigidBody::upCast(workBody.get());
             if (body && body->isActive()) {
                 ScopeLockById lockBody(bodiesMutex, body->getObjectId());
 

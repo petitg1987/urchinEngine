@@ -16,5 +16,5 @@ class CharacterControllerIT : public CppUnit::TestFixture {
     private:
         void constructGround(const std::unique_ptr<urchin::PhysicsWorld>&);
         void constructWall(const std::unique_ptr<urchin::PhysicsWorld>&);
-        std::vector<urchin::RigidBody*> constructCubes(const std::unique_ptr<urchin::PhysicsWorld>&, float);
+        std::vector<std::shared_ptr<urchin::RigidBody>> constructCubes(const std::unique_ptr<urchin::PhysicsWorld>&, float);
 };

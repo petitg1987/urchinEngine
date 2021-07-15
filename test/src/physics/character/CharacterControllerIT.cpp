@@ -104,25 +104,25 @@ void CharacterControllerIT::constructGround(const std::unique_ptr<PhysicsWorld>&
             Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
     };
     std::unique_ptr<CollisionHeightfieldShape> groundShape = std::make_unique<CollisionHeightfieldShape>(groundPoints, 2, 2);
-    auto* groundBody = new RigidBody("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
-    physicsWorld->getBodyManager().addBody(groundBody);
+    auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
+    physicsWorld->getBodyManager().addBody(std::move(groundBody));
 }
 
 void CharacterControllerIT::constructWall(const std::unique_ptr<PhysicsWorld>& physicsWorld) {
     std::unique_ptr<CollisionBoxShape> wallShape = std::make_unique<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
-    auto* wallBody = new RigidBody("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
-    physicsWorld->getBodyManager().addBody(wallBody);
+    auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
+    physicsWorld->getBodyManager().addBody(std::move(wallBody));
 }
 
-std::vector<RigidBody*> CharacterControllerIT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
-    std::vector<RigidBody*> cubes;
+std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(const std::unique_ptr<PhysicsWorld>& physicsWorld, float cubeHeight) {
+    std::vector<std::shared_ptr<RigidBody>> cubes;
     for (unsigned int x = 0; x < 5; x++) {
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
         for (unsigned int z = 0; z < 5; z++) {
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
             std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
-            auto* cubeBody = new RigidBody(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
+            auto cubeBody = std::make_shared<RigidBody>(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
             cubeBody->setMass(10.0f); //non-static
 
             physicsWorld->getBodyManager().addBody(cubeBody);

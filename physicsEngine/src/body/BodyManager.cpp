@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <utility>
 
 #include <body/BodyManager.h>
 
@@ -9,29 +10,17 @@ namespace urchin {
 
     }
 
-    BodyManager::~BodyManager() {
-        for (auto& body : bodies) {
-            delete body;
-        }
-
-        for (auto& bodyToRefresh : bodiesToRefresh) {
-            if (bodyToRefresh.updateType == BodyRefresh::ADD) {
-                delete bodyToRefresh.body;
-            }
-        }
-    }
-
-    void BodyManager::addBody(AbstractBody* body) {
+    void BodyManager::addBody(std::shared_ptr<AbstractBody> body) {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
-        BodyRefresh bodyUpdate{body, BodyRefresh::ADD};
+        BodyRefresh bodyUpdate{nullptr, std::move(body)};
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
-    void BodyManager::removeBody(AbstractBody* body) {
+    void BodyManager::removeBody(const AbstractBody& body) {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
-        BodyRefresh bodyUpdate{body, BodyRefresh::REMOVE};
+        BodyRefresh bodyUpdate{&body, std::shared_ptr<AbstractBody>(nullptr)};
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
@@ -39,7 +28,7 @@ namespace urchin {
         return lastUpdatedBody;
     }
 
-    const std::vector<AbstractBody*>& BodyManager::getBodies() const {
+    const std::vector<std::shared_ptr<AbstractBody>>& BodyManager::getBodies() const {
         return bodies;
     }
 
@@ -51,23 +40,24 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
         for (const auto& bodyToRefresh: bodiesToRefresh) {
-            if (bodyToRefresh.updateType == BodyRefresh::ADD) {
-                Logger::instance()->logInfo("Add physical body: " + bodyToRefresh.body->getId());
+            if (bodyToRefresh.bodyToAdd) {
+                Logger::instance()->logInfo("Add physical body: " + bodyToRefresh.bodyToAdd->getId());
 
-                bodies.emplace_back(bodyToRefresh.body);
-                bodyToRefresh.body->setPhysicsThreadId(std::this_thread::get_id());
+                bodies.emplace_back(bodyToRefresh.bodyToAdd);
+                bodyToRefresh.bodyToAdd->setPhysicsThreadId(std::this_thread::get_id());
 
-                lastUpdatedBody = bodyToRefresh.body;
+                lastUpdatedBody = bodyToRefresh.bodyToAdd.get();
                 notifyObservers(this, ADD_BODY);
-            } else if (bodyToRefresh.updateType == BodyRefresh::REMOVE) {
-                auto itFind = std::find(bodies.begin(), bodies.end(), bodyToRefresh.body);
+            }
+
+            if (bodyToRefresh.bodyToRemove) {
+                auto itFind = std::find_if(bodies.begin(), bodies.end(), [&bodyToRefresh](const auto& o){return o.get() == bodyToRefresh.bodyToRemove;});
                 if (itFind != bodies.end()) {
+                    std::shared_ptr<AbstractBody> bodyToRemovePtr = *itFind; //keep a smart pointer on body for notify event
                     bodies.erase(itFind);
 
-                    lastUpdatedBody = bodyToRefresh.body;
+                    lastUpdatedBody = bodyToRemovePtr.get();
                     notifyObservers(this, REMOVE_BODY);
-
-                    delete bodyToRefresh.body;
                 }
             }
         }
