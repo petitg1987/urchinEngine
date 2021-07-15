@@ -76,10 +76,12 @@
     * Name: `Debug`
     * Build type: `Debug`
     * Generation path: `.build/debug`
+    * Build options: `-j 10`
   * Profile **Release**:
     * Name: `RelWithDebInfo`
     * Build type: `RelWithDebInfo`
     * Generation path: `.build/release`
+    * Build options: `-j 10`
 * Add CMake applications
   * Application **testExecutor**:
     * Target/executable: `testExecutor`

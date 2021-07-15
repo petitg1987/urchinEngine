@@ -59,13 +59,13 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
     ```
     git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
     cmake -DCMAKE_BUILD_TYPE=Debug -S ./ -B .build/debug/
-    cmake --build .build/debug/ -- -j 12
+    cmake --build .build/debug/ -- -j 10
     ```
   * Release:
     ```
     git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ./ -B .build/release/
-    cmake --build .build/release/ -- -j 12
+    cmake --build .build/release/ -- -j 10
     ```
 * Execute tests:
   ```
