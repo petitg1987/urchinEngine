@@ -70,7 +70,7 @@ namespace urchin {
             void prepareRendering(float);
 
         protected:
-            template<class T> static std::shared_ptr<T> create(T*, Widget*); //TODO check for forward args
+            template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
             void updateTranslateVector(GenericRenderer*, const Vector2<int>&) const;

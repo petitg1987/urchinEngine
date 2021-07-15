@@ -100,10 +100,10 @@ namespace urchin {
             float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / (float)patchQuantityX;
             float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / (float)patchQuantityZ;
 
-            std::vector<TerrainGrassQuadtree*> leafGrassPatches;
+            std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassPatches;
             leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
             for (unsigned int i = 0; i < patchQuantityX * patchQuantityZ; ++i) {
-                leafGrassPatches.push_back(new TerrainGrassQuadtree());
+                leafGrassPatches.push_back(std::make_unique<TerrainGrassQuadtree>());
             }
 
             float startX = mesh->getVertices()[0].X;
@@ -138,8 +138,8 @@ namespace urchin {
             }
             std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
 
-            buildGrassQuadtree(leafGrassPatches, patchQuantityX, patchQuantityZ);
             createRenderers(leafGrassPatches);
+            buildGrassQuadtree(std::move(leafGrassPatches), patchQuantityX, patchQuantityZ);
         }
     }
 
@@ -156,8 +156,8 @@ namespace urchin {
         return xIndex + zIndex * mesh->getXSize();
     }
 
-    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
-        std::vector<TerrainGrassQuadtree*> childrenGrassQuadtree = leafGrassPatches;
+    void TerrainGrass::buildGrassQuadtree(std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
+        std::vector<std::unique_ptr<TerrainGrassQuadtree>> childrenGrassQuadtree = std::move(leafGrassPatches);
         unsigned int childrenNbQuadtreeX = leafQuantityX;
         unsigned int childrenNbQuadtreeZ = leafQuantityZ;
 
@@ -167,10 +167,10 @@ namespace urchin {
             auto depthNbQuadtreeZ = depthNbQuadtreeX;
             unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
             if (std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree) * 2) {
-                std::vector<TerrainGrassQuadtree*> depthGrassQuadtree;
+                std::vector<std::unique_ptr<TerrainGrassQuadtree>> depthGrassQuadtree;
                 depthGrassQuadtree.reserve(depthNbQuadtree);
                 for (unsigned int i = 0; i < depthNbQuadtree; ++i) {
-                    depthGrassQuadtree.push_back(new TerrainGrassQuadtree());
+                    depthGrassQuadtree.push_back(std::make_unique<TerrainGrassQuadtree>());
                 }
 
                 for (unsigned int childZ = 0; childZ < childrenNbQuadtreeZ; ++childZ) {
@@ -181,11 +181,12 @@ namespace urchin {
                         unsigned int quadtreeIndex = (zQuadtreeIndex * depthNbQuadtreeX) + xQuadtreeIndex;
                         unsigned int childQuadtreeIndex = (childZ * childrenNbQuadtreeZ) + childX;
 
-                        depthGrassQuadtree[quadtreeIndex]->addChild(childrenGrassQuadtree[childQuadtreeIndex]);
+                        assert(childrenGrassQuadtree[childQuadtreeIndex]);
+                        depthGrassQuadtree[quadtreeIndex]->addChild(std::move(childrenGrassQuadtree[childQuadtreeIndex]));
                     }
                 }
 
-                childrenGrassQuadtree = depthGrassQuadtree;
+                childrenGrassQuadtree = std::move(depthGrassQuadtree);
                 childrenNbQuadtreeX = depthNbQuadtreeX;
                 childrenNbQuadtreeZ = depthNbQuadtreeZ;
             }
@@ -193,12 +194,12 @@ namespace urchin {
             depth--;
         }
 
-        mainGrassQuadtree = std::make_unique<TerrainGrassQuadtree>(childrenGrassQuadtree);
+        mainGrassQuadtree = std::make_unique<TerrainGrassQuadtree>(std::move(childrenGrassQuadtree));
     }
 
-    void TerrainGrass::createRenderers(const std::vector<TerrainGrassQuadtree*>& leafGrassPatches) {
+    void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassPatches) {
         if (grassTexture && renderTarget) {
-            for (auto* grassQuadtree : leafGrassPatches) {
+            for (auto& grassQuadtree : leafGrassPatches) {
                 auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
                         ->enableDepthOperations()
                         ->disableCullFace()
@@ -229,8 +230,8 @@ namespace urchin {
                 if (grassQuadtree->isLeaf() && grassQuadtree->getRenderer()) {
                     renderers.emplace_back(grassQuadtree->getRenderer());
                 } else {
-                    for (const auto* child : grassQuadtree->getChildren()) {
-                        grassQuadtrees.push_back(child);
+                    for (const auto& child : grassQuadtree->getChildren()) {
+                        grassQuadtrees.push_back(child.get());
                     }
                 }
             }
@@ -375,8 +376,8 @@ namespace urchin {
                         grassQuadtree->getRenderer()->updateUniformData(0, &positioningData);
                         grassQuadtree->getRenderer()->enableRenderer();
                     } else {
-                        for (const auto* child : grassQuadtree->getChildren()) {
-                            grassQuadtrees.push_back(child);
+                        for (const auto& child : grassQuadtree->getChildren()) {
+                            grassQuadtrees.push_back(child.get());
                         }
                     }
                 }

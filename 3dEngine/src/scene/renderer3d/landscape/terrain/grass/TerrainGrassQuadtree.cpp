@@ -4,15 +4,9 @@
 
 namespace urchin {
 
-    TerrainGrassQuadtree::TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree*> children) :
+    TerrainGrassQuadtree::TerrainGrassQuadtree(std::vector<std::unique_ptr<TerrainGrassQuadtree>> children) :
             children(std::move(children)) {
 
-    }
-
-    TerrainGrassQuadtree::~TerrainGrassQuadtree() {
-        for (const auto* child : children) {
-            delete child;
-        }
     }
 
     void TerrainGrassQuadtree::setRenderer(std::unique_ptr<GenericRenderer> renderer) {
@@ -52,12 +46,12 @@ namespace urchin {
         return bbox;
     }
 
-    void TerrainGrassQuadtree::addChild(TerrainGrassQuadtree* grassPatchOctree) {
+    void TerrainGrassQuadtree::addChild(std::unique_ptr<TerrainGrassQuadtree> grassPatchOctree) {
         assert(bbox == nullptr);
-        children.push_back(grassPatchOctree);
+        children.push_back(std::move(grassPatchOctree));
     }
 
-    const std::vector<TerrainGrassQuadtree*>& TerrainGrassQuadtree::getChildren() const {
+    const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& TerrainGrassQuadtree::getChildren() const {
         return children;
     }
 
