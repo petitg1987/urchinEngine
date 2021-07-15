@@ -47,14 +47,12 @@ namespace urchin {
         pathRequests.push_back(pathRequest);
     }
 
-    void AIManager::removePathRequest(const std::shared_ptr<PathRequest>& pathRequest) { //TODO ???
+    void AIManager::removePathRequest(const PathRequest& pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
-        if (pathRequest) {
-            auto itFind = std::find(pathRequests.begin(), pathRequests.end(), pathRequest);
-            if (itFind != pathRequests.end()) {
-                VectorUtil::erase(pathRequests, itFind);
-            }
+        auto itFind = std::find_if(pathRequests.begin(), pathRequests.end(), [&pathRequest](const auto& o){return o.get() == &pathRequest;});
+        if (itFind != pathRequests.end()) {
+            VectorUtil::erase(pathRequests, itFind);
         }
     }
 

@@ -30,8 +30,10 @@ namespace urchin {
 
         nextPathPointIndex = 0;
 
-        aiManager.removePathRequest(pathRequest);
-        pathRequest = std::shared_ptr<PathRequest>(nullptr);
+        if (pathRequest) {
+            aiManager.removePathRequest(*pathRequest);
+            pathRequest = std::shared_ptr<PathRequest>(nullptr);
+        }
         pathPoints.clear();
 
         character->updateVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));

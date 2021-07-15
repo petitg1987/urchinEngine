@@ -59,10 +59,10 @@ namespace urchin {
         processables.push_back(processable);
     }
 
-    void PhysicsWorld::removeProcessable(const std::shared_ptr<Processable>& processable) {
+    void PhysicsWorld::removeProcessable(const Processable& processable) {
         std::lock_guard<std::mutex> lock(mutex);
 
-        auto itFind = std::find(processables.begin(), processables.end(), processable);
+        auto itFind = std::find_if(processables.begin(), processables.end(), [&processable](const auto& o){return o.get() == &processable;});
         if (itFind != processables.end()) {
             processables.erase(itFind);
         }

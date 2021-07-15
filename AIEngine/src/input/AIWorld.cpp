@@ -8,12 +8,20 @@ namespace urchin {
         entities.reserve(50); //estimated memory size
     }
 
+    /**
+     * Add a body to the AI world. Method can be called from thread different of the AI thread.
+     * @param body Body to add. Smart pointer is required to force the user to create the body with a smart pointer. See the remove method comment for the reason to use a smart pointer.
+     */
     void AIWorld::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {
         std::lock_guard<std::mutex> lock(mutex);
         entities.push_back(aiEntity);
     }
 
-    void AIWorld::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) { //TODO ???
+    /**
+     * Remove a body from the AI world. Method can be called from thread different of the AI thread.
+     * @param body Body to remove. Smart pointer is used to ensure that the body is not destroyed before it has been removed from the AI thread.
+     */
+    void AIWorld::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) {
         std::lock_guard<std::mutex> lock(mutex);
         entitiesToRemove.push_back(aiEntity);
     }
