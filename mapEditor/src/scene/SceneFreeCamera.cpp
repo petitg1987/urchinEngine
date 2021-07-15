@@ -8,7 +8,7 @@ namespace urchin {
     //static
     const char SceneFreeCamera::DATA_DELIMITER = '@';
 
-    SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const std::unique_ptr<MouseController>& mouseController) :
+    SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, MouseController& mouseController) :
             FreeCamera(angle, nearPlane, farPlane),
             mouseXBeforeMove(0.0),
             mouseYBeforeMove(0.0),
@@ -45,7 +45,7 @@ namespace urchin {
     bool SceneFreeCamera::onMouseMove(double mouseX, double mouseY) {
         bool propagateEvent = Camera::onMouseMove(mouseX, mouseY);
         if (isUseMouseToMoveCamera()) {
-            mouseController->moveMouse((int)mouseXBeforeMove, (int)mouseYBeforeMove);
+            mouseController.moveMouse((int)mouseXBeforeMove, (int)mouseYBeforeMove);
             resetPreviousMousePosition(mouseXBeforeMove, mouseYBeforeMove);
         } else {
             mouseXBeforeMove = mouseX;

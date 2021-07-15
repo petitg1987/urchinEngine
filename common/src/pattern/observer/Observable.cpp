@@ -20,7 +20,7 @@ namespace urchin {
     void Observable::removeObserver(Observer* observer, int notificationType) const {
         auto it = mapObservers.find(notificationType);
         if (it != mapObservers.end()) {
-            const std::unique_ptr<std::unordered_set<Observer*>>& observers = it->second;
+            const auto& observers = it->second;
             observers->erase(observer);
         }
     }

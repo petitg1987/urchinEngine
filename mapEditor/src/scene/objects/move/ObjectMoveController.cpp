@@ -1,9 +1,8 @@
 #include <scene/objects/move/ObjectMoveController.h>
 
 namespace urchin {
-    ObjectMoveController::ObjectMoveController(SceneManager& sceneManager, SceneController& sceneController,
-                                               const std::unique_ptr<MouseController>& mouseController,
-                                               const std::unique_ptr<StatusBarController>& statusBarController) :
+    ObjectMoveController::ObjectMoveController(SceneManager& sceneManager, SceneController& sceneController, MouseController& mouseController,
+                                               StatusBarController& statusBarController) :
             sceneWidth(0),
             sceneHeight(0),
             objectMoveAxisDisplayer(ObjectMoveAxisDisplayer(sceneManager)),
@@ -29,7 +28,7 @@ namespace urchin {
         }
 
         selectedAxis = (int)axisIndex;
-        statusBarController->applyState(StatusBarState::OBJECT_MOVE);
+        statusBarController.applyState(StatusBarState::OBJECT_MOVE);
     }
 
     bool ObjectMoveController::onMouseMove(int mouseX, int mouseY) {
@@ -72,7 +71,7 @@ namespace urchin {
     }
 
     bool ObjectMoveController::adjustMousePosition() {
-        Point2<int> mousePosition = mouseController->getMousePosition();
+        Point2<int> mousePosition = mouseController.getMousePosition();
         Point2<int> newMousePosition = mousePosition;
 
         if (mousePosition.X >= (int)sceneWidth) {
@@ -91,7 +90,7 @@ namespace urchin {
             oldMouseX = (int)newMousePosition.X;
             oldMouseY = (int)newMousePosition.Y;
 
-            mouseController->moveMouse(newMousePosition.X, newMousePosition.Y);
+            mouseController.moveMouse(newMousePosition.X, newMousePosition.Y);
             return true;
         }
 
@@ -134,7 +133,7 @@ namespace urchin {
         bool propagateEvent = true;
 
         if (selectedAxis != -1) {
-            statusBarController->applyPreviousState();
+            statusBarController.applyPreviousState();
             selectedAxis = -1;
             propagateEvent = false;
         }
@@ -147,7 +146,7 @@ namespace urchin {
         if (selectedAxis != -1) {
             updateObjectPosition(savedPosition);
 
-            statusBarController->applyPreviousState();
+            statusBarController.applyPreviousState();
             selectedAxis = -1;
             propagateEvent = false;
         }
@@ -159,9 +158,9 @@ namespace urchin {
         this->selectedAxis = -1;
 
         if (selectedSceneObject) {
-            statusBarController->applyState(StatusBarState::OBJECT_SELECTED);
+            statusBarController.applyState(StatusBarState::OBJECT_SELECTED);
         } else {
-            statusBarController->applyPreviousState();
+            statusBarController.applyPreviousState();
         }
     }
 

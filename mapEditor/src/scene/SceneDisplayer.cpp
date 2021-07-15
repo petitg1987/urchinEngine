@@ -7,10 +7,8 @@
 
 namespace urchin {
 
-    SceneDisplayer::SceneDisplayer(const std::unique_ptr<SceneWindowController>& windowController,
-                                   SceneController* sceneController,
-                                   const std::unique_ptr<MouseController>& mouseController,
-                                   const std::unique_ptr<StatusBarController>& statusBarController) :
+    SceneDisplayer::SceneDisplayer(SceneWindowController& windowController, SceneController* sceneController, MouseController& mouseController,
+                                   StatusBarController& statusBarController) :
         isInitialized(false),
         windowController(windowController),
         sceneController(sceneController),
@@ -69,7 +67,7 @@ namespace urchin {
     void SceneDisplayer::loadEmptyScene(const std::string& mapEditorPath) {
         initializeEngineResources(mapEditorPath);
 
-        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
+        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
         sceneManager->newUIRenderer(true);
         sceneManager->getActiveUIRenderer()->addWidget(StaticBitmap::newStaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
 
@@ -89,7 +87,7 @@ namespace urchin {
         }
 
         //3d
-        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController->getSurfaceCreator(), windowController->getFramebufferSizeRetriever());
+        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
         camera = std::make_shared<SceneFreeCamera>(50.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(45.0f, 2.0f);
         camera->loadCameraState(mapFilename);

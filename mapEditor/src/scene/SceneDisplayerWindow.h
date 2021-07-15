@@ -16,7 +16,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            SceneDisplayerWindow(QWidget*, const std::unique_ptr<StatusBarController>&, std::string);
+            SceneDisplayerWindow(QWidget*, StatusBarController&, std::string);
             ~SceneDisplayerWindow() override;
 
             enum NotificationType {
@@ -55,7 +55,7 @@ namespace urchin {
             void updateSceneDisplayerViewProperties();
 
             QVulkanInstance vulkanInstance;
-            const std::unique_ptr<StatusBarController>& statusBarController;
+            StatusBarController& statusBarController;
             std::string mapEditorPath;
 
             std::unique_ptr<SceneWindowController> sceneWindowController;

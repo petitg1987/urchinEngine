@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, const std::unique_ptr<StatusBarController>& statusBarController, std::string mapEditorPath) :
+    SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, StatusBarController& statusBarController, std::string mapEditorPath) :
             statusBarController(statusBarController),
             mapEditorPath(std::move(mapEditorPath)),
             sceneWindowController(std::make_unique<SceneWindowController>(this)),
@@ -71,9 +71,9 @@ namespace urchin {
 
     void SceneDisplayerWindow::loadMap(SceneController& sceneController, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         closeMap();
-        statusBarController->applyState(StatusBarState::MAP_LOADED);
+        statusBarController.applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, &sceneController, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, &sceneController, *mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
         sceneController.setup(&sceneDisplayer->getMapHandler());
@@ -81,7 +81,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::loadEmptyScene() {
-        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, nullptr, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, nullptr, *mouseController, statusBarController);
         sceneDisplayer->loadEmptyScene(mapEditorPath);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
     }
@@ -93,7 +93,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::closeMap() {
-        statusBarController->clearState();
+        statusBarController.clearState();
         clearVkInstance();
 
         sceneDisplayer.reset(nullptr);

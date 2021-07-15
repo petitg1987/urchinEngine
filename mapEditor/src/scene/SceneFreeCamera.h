@@ -10,7 +10,7 @@ namespace urchin {
 
     class SceneFreeCamera : public FreeCamera {
         public:
-            SceneFreeCamera(float, float, float, const std::unique_ptr<MouseController>&);
+            SceneFreeCamera(float, float, float, MouseController&);
             ~SceneFreeCamera() override = default;
 
             void loadCameraState(const std::string&);
@@ -22,7 +22,7 @@ namespace urchin {
             static const char DATA_DELIMITER;
 
             double mouseXBeforeMove, mouseYBeforeMove;
-            const std::unique_ptr<MouseController>& mouseController;
+            MouseController& mouseController;
     };
 
 }
