@@ -27,7 +27,7 @@ namespace urchin {
             QPushButton* createSelectFileButton(QHBoxLayout*);
             QPushButton* createClearFileButton(QHBoxLayout*);
 
-            void setupSkyDataFrom(const std::unique_ptr<Skybox>&);
+            void setupSkyDataFrom(const Skybox*);
 
             SkyController* skyController;
 
