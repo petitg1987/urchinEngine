@@ -29,7 +29,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(RenderTarget&, const Shader&, I18nService*, bool createWidget = true);
+            void initialize(RenderTarget&, const Shader&, I18nService*);
             void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
@@ -60,13 +60,9 @@ namespace urchin {
             bool isVisible() const;
 
             bool onKeyPress(unsigned int);
-            virtual bool onKeyPressEvent(unsigned int);
             bool onKeyRelease(unsigned int);
-            virtual bool onKeyReleaseEvent(unsigned int);
             bool onChar(char32_t);
-            virtual bool onCharEvent(char32_t);
             bool onMouseMove(int, int);
-            virtual bool onMouseMoveEvent(int, int);
             int getMouseX() const;
             int getMouseY() const;
             virtual void onResetState();
@@ -74,14 +70,21 @@ namespace urchin {
             void prepareRendering(float);
 
         protected:
+            template<class T> static std::shared_ptr<T> create(T*, Widget*); //TODO check for forward args
+
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
             void updateTranslateVector(GenericRenderer*, const Vector2<int>&) const;
             RenderTarget& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
-            virtual void createOrUpdateWidget() = 0;
 
+            virtual void createOrUpdateWidget() = 0;
             void setSize(Size);
+
+            virtual bool onKeyPressEvent(unsigned int);
+            virtual bool onKeyReleaseEvent(unsigned int);
+            virtual bool onCharEvent(char32_t);
+            virtual bool onMouseMoveEvent(int, int);
 
             virtual void prepareWidgetRendering(float) = 0;
 
@@ -110,5 +113,7 @@ namespace urchin {
 
             int mouseX, mouseY;
     };
+
+    #include "Widget.inl"
 
 }

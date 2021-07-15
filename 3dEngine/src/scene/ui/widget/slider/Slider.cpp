@@ -20,11 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Slider> Slider::newSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        auto widget = std::shared_ptr<Slider>(new Slider(position, size, std::move(nameSkin), texts));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Slider>(new Slider(position, size, std::move(nameSkin), texts), parent);
     }
 
     void Slider::createOrUpdateWidget() {

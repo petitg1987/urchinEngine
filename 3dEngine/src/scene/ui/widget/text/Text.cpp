@@ -27,19 +27,11 @@ namespace urchin {
     }
 
     std::shared_ptr<Text> Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {
-        auto widget = std::shared_ptr<Text>(new Text(position, std::move(nameSkin), std::move(text), false));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Text>(new Text(position, std::move(nameSkin), std::move(text), false), parent);
     }
 
     std::shared_ptr<Text> Text::newTranslatableText(Widget* parent, Position position, std::string nameSkin, std::string textKey) {
-        auto widget = std::shared_ptr<Text>(new Text(position, std::move(nameSkin), std::move(textKey), true));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Text>(new Text(position, std::move(nameSkin), std::move(textKey), true), parent);
     }
 
     Text::~Text() {

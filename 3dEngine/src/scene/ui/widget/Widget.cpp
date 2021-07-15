@@ -25,7 +25,7 @@ namespace urchin {
         detachChildren();
     }
 
-    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService* i18nService, bool createWidget) {
+    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService* i18nService) {
         this->sceneWidth = renderTarget.getWidth();
         this->sceneHeight = renderTarget.getHeight();
 
@@ -33,12 +33,9 @@ namespace urchin {
         this->shader = &shader;
         this->i18nService = i18nService;
 
-        if (createWidget) {
-            createOrUpdateWidget();
-        }
-
+        createOrUpdateWidget();
         for (auto& child : children) {
-            child->initialize(renderTarget, shader, i18nService, createWidget);
+            child->initialize(renderTarget, shader, i18nService);
         }
     }
 
@@ -99,7 +96,7 @@ namespace urchin {
         children.push_back(childWidget);
 
         if (renderTarget) {
-            childWidget->initialize(getRenderTarget(), *shader, i18nService, true /*TODO remove flag is always to true*/);
+            childWidget->initialize(getRenderTarget(), *shader, i18nService);
         }
     }
 

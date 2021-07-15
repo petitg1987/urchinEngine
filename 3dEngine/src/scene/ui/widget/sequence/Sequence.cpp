@@ -21,19 +21,11 @@ namespace urchin {
     }
 
     std::shared_ptr<Sequence> Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        auto widget = std::shared_ptr<Sequence>(new Sequence(position, size, std::move(nameSkin), texts, false));
-        if(parent) { //TODO move in common method
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Sequence>(new Sequence(position, size, std::move(nameSkin), texts, false), parent);
     }
 
     std::shared_ptr<Sequence> Sequence::newTranslatableSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
-        auto widget = std::shared_ptr<Sequence>(new Sequence(position, size, std::move(nameSkin), textKeys, true));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Sequence>(new Sequence(position, size, std::move(nameSkin), textKeys, true), parent);
     }
 
     void Sequence::createOrUpdateWidget() {

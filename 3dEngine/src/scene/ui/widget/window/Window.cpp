@@ -20,11 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Window> Window::newWindow(Widget* parent, Position position, Size size, std::string nameSkin, std::string titleKey) {
-        auto widget = std::shared_ptr<Window>(new Window(position, size, std::move(nameSkin), std::move(titleKey)));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Window>(new Window(position, size, std::move(nameSkin), std::move(titleKey)), parent);
     }
 
     void Window::createOrUpdateWidget() {

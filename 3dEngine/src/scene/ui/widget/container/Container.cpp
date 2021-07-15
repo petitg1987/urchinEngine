@@ -8,11 +8,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position) {
-        auto widget = std::shared_ptr<Container>(new Container(position));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Container>(new Container(position), parent);
     }
 
     void Container::createOrUpdateWidget() {

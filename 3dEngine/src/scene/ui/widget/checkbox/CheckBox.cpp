@@ -2,6 +2,7 @@
 #include <resources/MediaManager.h>
 
 namespace urchin {
+
     CheckBox::CheckBox(Position position, Size size, std::string nameSkin) :
             Widget(position, size),
             nameSkin(std::move(nameSkin)),
@@ -10,11 +11,7 @@ namespace urchin {
     }
 
     std::shared_ptr<CheckBox> CheckBox::newCheckBox(Widget* parent, Position position, Size size, std::string nameSkin) {
-        auto widget = std::shared_ptr<CheckBox>(new CheckBox(position, size, std::move(nameSkin)));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<CheckBox>(new CheckBox(position, size, std::move(nameSkin)), parent);
     }
 
     void CheckBox::createOrUpdateWidget() {

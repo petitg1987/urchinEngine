@@ -27,11 +27,7 @@ namespace urchin {
     }
 
     std::shared_ptr<TextBox> TextBox::newTextBox(Widget* parent, Position position, Size size, std::string nameSkin) {
-        auto widget = std::shared_ptr<TextBox>(new TextBox(position, size, std::move(nameSkin)));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<TextBox>(new TextBox(position, size, std::move(nameSkin)), parent);
     }
 
     void TextBox::createOrUpdateWidget() {

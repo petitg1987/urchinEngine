@@ -16,11 +16,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Button> Button::newButton(Widget* parent, Position position, Size size, std::string nameSkin, std::string buttonText) {
-        auto widget = std::shared_ptr<Button>(new Button(position, size, std::move(nameSkin), std::move(buttonText)));
-        if(parent) {
-            parent->addChild(widget);
-        }
-        return widget;
+        return create<Button>(new Button(position, size, std::move(nameSkin), std::move(buttonText)), parent);
     }
 
     void Button::createOrUpdateWidget() {
