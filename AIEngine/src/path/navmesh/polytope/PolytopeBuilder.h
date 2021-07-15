@@ -18,8 +18,8 @@ namespace urchin {
         public:
             friend class Singleton<PolytopeBuilder>;
 
-            std::vector<std::unique_ptr<Polytope>> buildExpandedPolytopes(const std::shared_ptr<AIObject>&, const NavMeshAgent&);
-            std::vector<std::unique_ptr<Polytope>> buildExpandedPolytope(const std::shared_ptr<AITerrain>&, const NavMeshAgent&);
+            std::vector<std::unique_ptr<Polytope>> buildExpandedPolytopes(const AIObject&, const NavMeshAgent&);
+            std::vector<std::unique_ptr<Polytope>> buildExpandedPolytope(const AITerrain&, const NavMeshAgent&);
 
         private:
             PolytopeBuilder();

@@ -12,11 +12,11 @@ namespace urchin {
     }
 
     const std::string& NavObjectAABBNodeData::getObjectId() const {
-        return getNodeObject()->getExpandedPolytope()->getName();
+        return getNodeObject()->getExpandedPolytope().getName();
     }
 
     AABBox<float> NavObjectAABBNodeData::retrieveObjectAABBox() const {
-        return getNodeObject()->getExpandedPolytope()->getAABBox();
+        return getNodeObject()->getExpandedPolytope().getAABBox();
     }
 
     bool NavObjectAABBNodeData::isObjectMoving() const {

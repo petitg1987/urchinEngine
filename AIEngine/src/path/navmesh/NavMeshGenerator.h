@@ -31,19 +31,19 @@ namespace urchin {
 
         private:
             void updateExpandedPolytopes(AIWorld&);
-            void addNavObject(const std::shared_ptr<AIEntity>&, std::unique_ptr<Polytope>&&);
-            void removeNavObject(const std::shared_ptr<AIEntity>&);
+            void addNavObject(AIEntity&, std::unique_ptr<Polytope>&&);
+            void removeNavObject(const AIEntity&);
 
             void prepareNavObjectsToUpdate();
-            void updateNearObjects(const std::shared_ptr<NavObject>&);
+            void updateNearObjects(NavObject&);
 
             void updateNavPolygons();
-            std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject>&, const std::shared_ptr<PolytopeSurface>&);
-            std::vector<CSGPolygon<float>>& determineObstacles(const std::shared_ptr<NavObject>&, const std::shared_ptr<PolytopeSurface>&) const;
-            CSGPolygon<float> computePolytopeFootprint(const std::shared_ptr<Polytope>&, const std::shared_ptr<PolytopeSurface>&) const;
+            std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(NavObject&, const PolytopeSurface&);
+            std::vector<CSGPolygon<float>>& determineObstacles(NavObject&, const PolytopeSurface&) const;
+            CSGPolygon<float> computePolytopeFootprint(const Polytope&, const PolytopeSurface&) const;
             void applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>>&);
-            std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float>&, const std::shared_ptr<PolytopeSurface>&, bool) const;
-            std::vector<Point3<float>> elevateTriangulatedPoints(const std::vector<std::vector<Point2<float>>>&, const std::shared_ptr<PolytopeSurface>&) const;
+            std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float>&, const PolytopeSurface&, bool) const;
+            std::vector<Point3<float>> elevateTriangulatedPoints(const std::vector<std::vector<Point2<float>>>&, const PolytopeSurface&) const;
 
             void deleteNavLinks();
             void createNavLinks();

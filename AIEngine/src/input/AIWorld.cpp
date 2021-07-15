@@ -13,7 +13,7 @@ namespace urchin {
         entities.push_back(aiEntity);
     }
 
-    void AIWorld::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) {
+    void AIWorld::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) { //TODO ???
         std::lock_guard<std::mutex> lock(mutex);
         entitiesToRemove.push_back(aiEntity);
     }

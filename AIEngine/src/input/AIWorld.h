@@ -11,7 +11,7 @@ namespace urchin {
             AIWorld();
 
             void addEntity(const std::shared_ptr<AIEntity>&);
-            void removeEntity(const std::shared_ptr<AIEntity>&);
+            void removeEntity(const std::shared_ptr<AIEntity>&); //TODO ...
 
             std::vector<std::shared_ptr<AIEntity>> getEntities() const;
             std::vector<std::shared_ptr<AIEntity>> getEntitiesToRemoveAndReset();

@@ -47,7 +47,7 @@ namespace urchin {
         pathRequests.push_back(pathRequest);
     }
 
-    void AIManager::removePathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
+    void AIManager::removePathRequest(const std::shared_ptr<PathRequest>& pathRequest) { //TODO ???
         std::lock_guard<std::mutex> lock(mutex);
 
         if (pathRequest) {

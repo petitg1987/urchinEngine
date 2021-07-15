@@ -24,7 +24,7 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+    void FogManager::setupLightingRenderer(std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         lightingRendererBuilder->addUniformData(sizeof(fogData), &fogData); //binding 6
     }
 

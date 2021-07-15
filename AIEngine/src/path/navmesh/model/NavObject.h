@@ -14,7 +14,7 @@ namespace urchin {
         public:
             explicit NavObject(std::shared_ptr<Polytope>);
 
-            const std::shared_ptr<Polytope>& getExpandedPolytope();
+            const Polytope& getExpandedPolytope() const;
 
             void addWalkableSurface(const std::shared_ptr<PolytopeSurface>&);
             const std::vector<std::shared_ptr<PolytopeSurface>>& getWalkableSurfaces() const;

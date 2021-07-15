@@ -35,13 +35,13 @@ namespace urchin {
 
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject>& aiObject, const NavMeshAgent& navMeshAgent) {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const AIObject& aiObject, const NavMeshAgent& navMeshAgent) {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         unsigned int aiShapeIndex = 0;
-        for (auto& aiShape : aiObject->getShapes()) {
-            std::string shapeName = aiObject->getShapes().size() == 1 ? aiObject->getName() : aiObject->getName() + "[" + std::to_string(aiShapeIndex++) + "]";
-            Transform<float> shapeTransform = aiShape->hasLocalTransform() ? aiObject->getTransform() * aiShape->getLocalTransform() : aiObject->getTransform();
+        for (auto& aiShape : aiObject.getShapes()) {
+            std::string shapeName = aiObject.getShapes().size() == 1 ? aiObject.getName() : aiObject.getName() + "[" + std::to_string(aiShapeIndex++) + "]";
+            Transform<float> shapeTransform = aiShape->hasLocalTransform() ? aiObject.getTransform() * aiShape->getLocalTransform() : aiObject.getTransform();
             std::unique_ptr<ConvexObject3D<float>> object = aiShape->getShape().toConvexObject(shapeTransform);
             std::unique_ptr<Polytope> expandedPolytope;
 
@@ -58,38 +58,38 @@ namespace urchin {
             } else if (auto sphere = dynamic_cast<Sphere<float>*>(object.get())) {
                 expandedPolytope = createExpandedPolytopeFor(shapeName, sphere, navMeshAgent);
             } else {
-                throw std::invalid_argument("Shape type not supported by navigation mesh generator for object: " + aiObject->getName());
+                throw std::invalid_argument("Shape type not supported by navigation mesh generator for object: " + aiObject.getName());
             }
 
-            expandedPolytope->setObstacleCandidate(aiObject->isObstacleCandidate());
+            expandedPolytope->setObstacleCandidate(aiObject.isObstacleCandidate());
             expandedPolytopes.push_back(std::move(expandedPolytope));
         }
 
         return expandedPolytopes;
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain>& aiTerrain, const NavMeshAgent& navMeshAgent) {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const AITerrain& aiTerrain, const NavMeshAgent& navMeshAgent) {
         #ifndef NDEBUG
-            assert(MathFunction::isOne(aiTerrain->getTransform().getScale()));
-            assert(MathFunction::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
+            assert(MathFunction::isOne(aiTerrain.getTransform().getScale()));
+            assert(MathFunction::isOne(aiTerrain.getTransform().getOrientationMatrix().determinant()));
         #endif
 
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance().getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
-        auto heightfieldPointHelper = std::make_unique<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
-        auto terrainNavTopography = std::make_shared<NavTerrainTopography>(std::move(heightfieldPointHelper), aiTerrain->getTransform().getPosition());
+        auto heightfieldPointHelper = std::make_unique<const HeightfieldPointHelper<float>>(aiTerrain.getLocalVertices(), aiTerrain.getXLength());
+        auto terrainNavTopography = std::make_shared<NavTerrainTopography>(std::move(heightfieldPointHelper), aiTerrain.getTransform().getPosition());
 
         Vector3<float> approximateNormal(0.0f, 1.0f, 0.0f); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
         Vector3<float> expandShiftVector = approximateNormal * navMeshAgent.computeExpandDistance(approximateNormal);
         std::vector<Point3<float>> expandedLocalVertices;
-        expandedLocalVertices.reserve(aiTerrain->getLocalVertices().size());
-        for (const auto& localVertex : aiTerrain->getLocalVertices()) {
+        expandedLocalVertices.reserve(aiTerrain.getLocalVertices().size());
+        for (const auto& localVertex : aiTerrain.getLocalVertices()) {
             expandedLocalVertices.emplace_back(localVertex.translate(expandShiftVector));
         }
 
-        std::vector<TerrainSplit> terrainSplits = terrainSplitService->splitTerrain(aiTerrain->getName(), aiTerrain->getTransform().getPosition(),
-                expandedLocalVertices, aiTerrain->getXLength(), aiTerrain->getZLength());
+        std::vector<TerrainSplit> terrainSplits = terrainSplitService->splitTerrain(aiTerrain.getName(), aiTerrain.getTransform().getPosition(),
+                expandedLocalVertices, aiTerrain.getXLength(), aiTerrain.getZLength());
 
         for (const auto& terrainSplit : terrainSplits) {
             TerrainObstacleService terrainObstacleService(terrainSplit.name, terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength);
@@ -103,7 +103,7 @@ namespace urchin {
 
             auto expandedPolytope = std::make_unique<Polytope>(terrainSplit.name, expandedSurfaces);
             expandedPolytope->setWalkableCandidate(true);
-            expandedPolytope->setObstacleCandidate(aiTerrain->isObstacleCandidate());
+            expandedPolytope->setObstacleCandidate(aiTerrain.isObstacleCandidate());
             expandedPolytopes.push_back(std::move(expandedPolytope));
         }
 

@@ -47,7 +47,7 @@ namespace urchin {
                     continue;
                 }
 
-                std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, neighborTriangle);
+                std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, *neighborTriangle);
                 if (!neighborNodePath) {
                     float gScore = computeGScore(currentNode, link, startPoint);
                     float hScore = computeHScore(neighborTriangle, endPoint);
@@ -88,7 +88,7 @@ namespace urchin {
                 const auto& triangle = polygon->getTriangles()[triIndex];
                 Point2<float> flattenPoint(point.X, point.Z);
 
-                if (isPointInsideTriangle(flattenPoint, polygon, triangle)) {
+                if (isPointInsideTriangle(flattenPoint, polygon, *triangle)) {
                     float verticalDistance = point.Y - triangle->getCenterPoint().Y;
                     if (verticalDistance >= 0.0 && verticalDistance < bestVerticalDistance) {
                         bestVerticalDistance = verticalDistance;
@@ -100,10 +100,10 @@ namespace urchin {
         return result;
     }
 
-    bool PathfindingAStar::isPointInsideTriangle(const Point2<float>& point, const std::shared_ptr<NavPolygon>& polygon, const std::shared_ptr<NavTriangle>& triangle) const {
-        Point2<float> p0 = polygon->getPoint(triangle->getIndex(0)).toPoint2XZ();
-        Point2<float> p1 = polygon->getPoint(triangle->getIndex(1)).toPoint2XZ();
-        Point2<float> p2 = polygon->getPoint(triangle->getIndex(2)).toPoint2XZ();
+    bool PathfindingAStar::isPointInsideTriangle(const Point2<float>& point, const std::shared_ptr<NavPolygon>& polygon, const NavTriangle& triangle) const {
+        Point2<float> p0 = polygon->getPoint(triangle.getIndex(0)).toPoint2XZ();
+        Point2<float> p1 = polygon->getPoint(triangle.getIndex(1)).toPoint2XZ();
+        Point2<float> p2 = polygon->getPoint(triangle.getIndex(2)).toPoint2XZ();
 
         float crossProduct1 = crossProduct(point, p0, p1);
         float crossProduct2 = crossProduct(point, p1, p2);
@@ -120,10 +120,9 @@ namespace urchin {
         return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
     }
 
-    std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare>& pathNodes,
-                                                                     const std::shared_ptr<NavTriangle>& navTriangle) const {
+    std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare>& pathNodes, const NavTriangle& navTriangle) const {
         for (const auto& pathNode : pathNodes) {
-            if (pathNode->getNavTriangle().get() == navTriangle.get()) {
+            if (pathNode->getNavTriangle().get() == &navTriangle) {
                 return pathNode;
             }
         }

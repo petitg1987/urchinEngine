@@ -193,7 +193,7 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove() {
     AssertHelper::assertString(cube1MovingPolygon->getName(), "<cube1[2]>");
     AssertHelper::assertString(cube2AffectedByMovePolygon->getName(), "<cube2[2]>");
     AssertHelper::assertString(cube3WitLinkToCube1Polygon->getName(), "<cube3[2]>");
-    AssertHelper::assertUnsignedInt(countPolygonLinks(cube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 1);
+    AssertHelper::assertUnsignedInt(countPolygonLinks(*cube3WitLinkToCube1Polygon, *cube2AffectedByMovePolygon), 1);
 
     cube1Moving->updateTransform(Point3<float>(1.0f, 1.5f, 0.0f), Quaternion<float>());
 
@@ -206,15 +206,15 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove() {
     AssertHelper::assertString(newCube1MovingPolygon->getName(), "<cube1[2]>");
     AssertHelper::assertString(newCube2AffectedByMovePolygon->getName(), "<cube2[2]>");
     AssertHelper::assertString(newCube3WitLinkToCube1Polygon->getName(), "<cube3[2]>");
-    AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, newCube2AffectedByMovePolygon), 1);
-    AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 0);
+    AssertHelper::assertUnsignedInt(countPolygonLinks(*newCube3WitLinkToCube1Polygon, *newCube2AffectedByMovePolygon), 1);
+    AssertHelper::assertUnsignedInt(countPolygonLinks(*newCube3WitLinkToCube1Polygon, *cube2AffectedByMovePolygon), 0);
 }
 
-unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon>& sourcePolygon, const std::shared_ptr<NavPolygon>& targetPolygon) {
+unsigned int NavMeshGeneratorTest::countPolygonLinks(const NavPolygon& sourcePolygon, const NavPolygon& targetPolygon) {
     unsigned int countLinks = 0;
-    for (const auto& triangle : sourcePolygon->getTriangles()) {
+    for (const auto& triangle : sourcePolygon.getTriangles()) {
         for (const auto& link : triangle->getLinks()) {
-            if (link->getTargetTriangle()->getNavPolygon() == targetPolygon) {
+            if (link->getTargetTriangle()->getNavPolygon().get() == &targetPolygon) {
                 countLinks++;
             }
         }

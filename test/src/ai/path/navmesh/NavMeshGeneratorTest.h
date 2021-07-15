@@ -21,6 +21,6 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture {
         void linksRecreatedAfterMove();
 
     private:
-        unsigned int countPolygonLinks(const std::shared_ptr<urchin::NavPolygon>&, const std::shared_ptr<urchin::NavPolygon>&);
+        unsigned int countPolygonLinks(const urchin::NavPolygon&, const urchin::NavPolygon&);
         std::unique_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
 };

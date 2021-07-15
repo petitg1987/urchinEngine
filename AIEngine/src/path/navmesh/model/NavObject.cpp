@@ -9,8 +9,8 @@ namespace urchin {
         navPolygons.reserve(4); //estimated memory size
     }
 
-    const std::shared_ptr<Polytope>& NavObject::getExpandedPolytope() {
-        return expandedPolytope;
+    const Polytope& NavObject::getExpandedPolytope() const {
+        return *expandedPolytope;
     }
 
     void NavObject::addWalkableSurface(const std::shared_ptr<PolytopeSurface>& walkableSurface) {
