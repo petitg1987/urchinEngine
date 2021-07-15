@@ -33,7 +33,7 @@ namespace urchin {
 
         bodyManager.reset(nullptr);
 
-        Profiler::physics()->log(); //log for main (not physics) thread
+        Profiler::physics().log(); //log for main (not physics) thread
     }
 
     BodyManager& PhysicsWorld::getBodyManager() const {
@@ -172,7 +172,7 @@ namespace urchin {
                 }
             }
 
-            Profiler::physics()->log(); //log for physics thread
+            Profiler::physics().log(); //log for physics thread
         } catch (std::exception& e) {
             Logger::instance().logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();

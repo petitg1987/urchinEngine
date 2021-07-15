@@ -9,11 +9,11 @@ namespace urchin {
 
     class ScopeProfiler {
         public:
-            ScopeProfiler(const std::unique_ptr<Profiler>&, const std::string&);
+            ScopeProfiler(Profiler&, const std::string&);
             ~ScopeProfiler();
 
         private:
-            const std::unique_ptr<Profiler>& profiler;
+            Profiler& profiler;
             std::string nodeName;
     };
 

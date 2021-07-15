@@ -32,7 +32,7 @@ namespace urchin {
 
     SceneManager::~SceneManager() {
         screenRenderTarget->cleanup();
-        Profiler::graphic()->log();
+        Profiler::graphic().log();
     }
 
     void SceneManager::updateVerticalSync(bool verticalSyncEnabled) {

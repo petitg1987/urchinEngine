@@ -22,7 +22,7 @@ namespace urchin {
         streamUpdateWorker->interrupt();
         streamUpdateWorkerThread->join();
 
-        Profiler::sound()->log();
+        Profiler::sound().log();
     }
 
     void SoundManager::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {

@@ -126,7 +126,7 @@ namespace urchin {
                 }
             }
 
-            Profiler::ai()->log(); //log for AI thread
+            Profiler::ai().log(); //log for AI thread
         } catch (std::exception& e) {
             Logger::instance().logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();

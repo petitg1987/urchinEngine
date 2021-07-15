@@ -12,10 +12,10 @@ namespace urchin {
         public:
             explicit Profiler(const std::string&);
 
-            static const std::unique_ptr<Profiler>& graphic();
-            static const std::unique_ptr<Profiler>& physics();
-            static const std::unique_ptr<Profiler>& ai();
-            static const std::unique_ptr<Profiler>& sound();
+            static Profiler& graphic();
+            static Profiler& physics();
+            static Profiler& ai();
+            static Profiler& sound();
 
             void startNewProfile(const std::string&);
             void stopProfile(const std::string& nodeName = "");

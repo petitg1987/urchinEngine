@@ -17,24 +17,24 @@ namespace urchin {
 
     }
 
-    const std::unique_ptr<Profiler>& Profiler::graphic() {
+    Profiler& Profiler::graphic() {
         static thread_local auto profiler3d = std::make_unique<Profiler>("3d");
-        return profiler3d;
+        return *profiler3d;
     }
 
-    const std::unique_ptr<Profiler>& Profiler::physics() {
+    Profiler& Profiler::physics() {
         static thread_local auto profilerPhysics = std::make_unique<Profiler>("physics");
-        return profilerPhysics;
+        return *profilerPhysics;
     }
 
-    const std::unique_ptr<Profiler>& Profiler::ai() {
+    Profiler& Profiler::ai() {
         static thread_local auto profilerAi = std::make_unique<Profiler>("ai");
-        return profilerAi;
+        return *profilerAi;
     }
 
-    const std::unique_ptr<Profiler>& Profiler::sound() {
+    Profiler& Profiler::sound() {
         static thread_local auto profilerSound = std::make_unique<Profiler>("sound");
-        return profilerSound;
+        return *profilerSound;
     }
 
     void Profiler::startNewProfile(const std::string& nodeName) {
