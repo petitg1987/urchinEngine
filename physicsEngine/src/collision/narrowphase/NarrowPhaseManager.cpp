@@ -125,14 +125,14 @@ namespace urchin {
             }
 
             if (!ccdResults.empty()) {
-                const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>& firstCCDResult = *ccdResults.begin();
+                const ContinuousCollisionResult<float>& firstCCDResult = *(*ccdResults.begin());
 
-                Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult->getTimeToHit();
-                float depth = distanceVector.dotProduct(-firstCCDResult->getNormalFromObject2());
-                const Point3<float>& hitPointOnObject2 = firstCCDResult->getHitPointOnObject2();
-                const Vector3<float>& normalFromObject2 = firstCCDResult->getNormalFromObject2();
+                Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult.getTimeToHit();
+                float depth = distanceVector.dotProduct(-firstCCDResult.getNormalFromObject2());
+                const Point3<float>& hitPointOnObject2 = firstCCDResult.getHitPointOnObject2();
+                const Vector3<float>& normalFromObject2 = firstCCDResult.getNormalFromObject2();
 
-                ManifoldResult manifoldResult(body, firstCCDResult->getBody2());
+                ManifoldResult manifoldResult(body, firstCCDResult.getBody2());
                 manifoldResult.addContactPoint(normalFromObject2, hitPointOnObject2, depth, true);
 
                 manifoldResults.push_back(manifoldResult);

@@ -33,21 +33,19 @@ namespace urchin {
         return !rayTestResults.empty();
     }
 
-    const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>& RayTestResult::getNearestResult() const {
+    const ContinuousCollisionResult<float>& RayTestResult::getNearestResult() const {
         if (!resultReady.load(std::memory_order_acquire)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
 
         assert(!rayTestResults.empty());
-
-        return *rayTestResults.begin();
+        return *(*rayTestResults.begin());
     }
 
     const ccd_set& RayTestResult::getResults() const {
         if (!resultReady.load(std::memory_order_acquire)) {
             throw std::runtime_error("Ray test callback result is not ready.");
         }
-
         return rayTestResults;
     }
 
