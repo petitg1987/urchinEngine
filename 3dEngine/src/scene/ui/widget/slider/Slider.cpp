@@ -24,6 +24,10 @@ namespace urchin {
     }
 
     void Slider::createOrUpdateWidget() {
+        //detach children
+        detachChild(currentValueText.get());
+        detachChild(cursorImage.get());
+
         //skin information
         auto sliderChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "slider", UdaAttribute("nameSkin", nameSkin));
 

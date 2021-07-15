@@ -22,8 +22,8 @@ namespace urchin {
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
 
-            void setLeftButtonEventListener(std::unique_ptr<EventListener>);
-            void setRightButtonEventListener(std::unique_ptr<EventListener>);
+            void setLeftButtonEventListener(std::shared_ptr<EventListener>);
+            void setRightButtonEventListener(std::shared_ptr<EventListener>);
 
         protected:
             void createOrUpdateWidget() override;
@@ -39,8 +39,8 @@ namespace urchin {
             bool loopOnValuesEnabled;
             unsigned int selectedIndex;
 
-            std::unique_ptr<EventListener> leftButtonEventListener;
-            std::unique_ptr<EventListener> rightButtonEventListener;
+            std::shared_ptr<EventListener> leftButtonEventListener;
+            std::shared_ptr<EventListener> rightButtonEventListener;
             class ButtonSequenceEventListener : public EventListener {
                 public:
                     ButtonSequenceEventListener(Sequence*, bool);

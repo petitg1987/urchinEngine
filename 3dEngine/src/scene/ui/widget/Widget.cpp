@@ -104,14 +104,16 @@ namespace urchin {
         return children;
     }
 
-    void Widget::detachChild(Widget& childWidget) {
-        auto itFind = std::find_if(children.begin(), children.end(), [&childWidget](const auto& o){return &childWidget == o.get();});
-        if (itFind == children.end()) {
-            throw std::runtime_error("The provided child widget is not a child of this widget");
-        }
+    void Widget::detachChild(Widget* childWidget) {
+        if (childWidget) {
+            auto itFind = std::find_if(children.begin(), children.end(), [&childWidget](const auto &o) { return childWidget == o.get(); });
+            if (itFind == children.end()) {
+                throw std::runtime_error("The provided child widget is not a child of this widget");
+            }
 
-        childWidget.parent = nullptr;
-        children.erase(itFind);
+            childWidget->parent = nullptr;
+            children.erase(itFind);
+        }
     }
 
     void Widget::detachChildren() {
@@ -121,11 +123,11 @@ namespace urchin {
         }
     }
 
-    void Widget::addEventListener(std::unique_ptr<EventListener> eventListener) {
+    void Widget::addEventListener(std::shared_ptr<EventListener> eventListener) {
         this->eventListeners.push_back(std::move(eventListener));
     }
 
-    const std::vector<std::unique_ptr<EventListener>>& Widget::getEventListeners() const {
+    const std::vector<std::shared_ptr<EventListener>>& Widget::getEventListeners() const {
         return eventListeners;
     }
 

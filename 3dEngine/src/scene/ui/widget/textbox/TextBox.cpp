@@ -31,6 +31,9 @@ namespace urchin {
     }
 
     void TextBox::createOrUpdateWidget() {
+        //detach children
+        detachChild(text.get());
+
         //skin information
         auto textBoxChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "textBox", UdaAttribute("nameSkin", nameSkin));
 

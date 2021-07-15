@@ -20,6 +20,9 @@ namespace urchin {
     }
 
     void Button::createOrUpdateWidget() {
+        //detach children
+        detachChild(text.get());
+
         //skin information
         auto buttonChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "button", UdaAttribute("nameSkin", nameSkin));
 

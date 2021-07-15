@@ -29,6 +29,13 @@ namespace urchin {
     }
 
     void Sequence::createOrUpdateWidget() {
+        //detach children
+        for(auto &valueText : valuesText) {
+            detachChild(valueText.get());
+        }
+        detachChild(rightButton.get());
+        detachChild(leftButton.get());
+
         //skin information
         auto sequenceChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "sequence", UdaAttribute("nameSkin", nameSkin));
 
@@ -44,27 +51,17 @@ namespace urchin {
         auto rightButtonTextChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "rightButtonText", UdaAttribute(), sequenceChunk);
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
-        //clear children
-        for(auto& valueText : valuesText) {
-            detachChild(*valueText);
-        }
-        valuesText.clear();
-
         //buttons
-        if (!leftButton || leftButtonEventListener) { //do not re-create button because 'leftButtonEventListener' has been moved
-            leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
-            leftButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, true));
-            if (leftButtonEventListener) {
-                this->leftButton->addEventListener(std::move(leftButtonEventListener));
-            }
+        leftButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
+        leftButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, true));
+        if (leftButtonEventListener) {
+            this->leftButton->addEventListener(leftButtonEventListener);
         }
 
-        if (!rightButton || rightButtonEventListener) { //do not re-create button because 'leftButtonEventListener' has been moved
-            rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
-            rightButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, false));
-            if (rightButtonEventListener) {
-                this->rightButton->addEventListener(std::move(rightButtonEventListener));
-            }
+        rightButton = Text::newText(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, false));
+        if (rightButtonEventListener) {
+            this->rightButton->addEventListener(rightButtonEventListener);
         }
         rightButton->updatePosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
 
@@ -106,12 +103,12 @@ namespace urchin {
         this->selectedIndex = index;
     }
 
-    void Sequence::setLeftButtonEventListener(std::unique_ptr<EventListener> leftButtonEventListener) {
+    void Sequence::setLeftButtonEventListener(std::shared_ptr<EventListener> leftButtonEventListener) {
         this->leftButtonEventListener = std::move(leftButtonEventListener);
         createOrUpdateWidget();
     }
 
-    void Sequence::setRightButtonEventListener(std::unique_ptr<EventListener> rightButtonEventListener) {
+    void Sequence::setRightButtonEventListener(std::shared_ptr<EventListener> rightButtonEventListener) {
         this->rightButtonEventListener = std::move(rightButtonEventListener);
         createOrUpdateWidget();
     }

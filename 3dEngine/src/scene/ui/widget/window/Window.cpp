@@ -24,6 +24,9 @@ namespace urchin {
     }
 
     void Window::createOrUpdateWidget() {
+        //detach children
+        detachChild(title.get());
+
         //skin information
         auto windowChunk = UISkinService::instance()->getSkinReader()->getUniqueChunk(true, "window", UdaAttribute("nameSkin", nameSkin));
 
