@@ -4,17 +4,18 @@
   * **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>#getSupportPoint()...)
 
 # 3d Engine
-* General
-  * **NEW FEATURE** (`major`): Replace geometry shader by instantiation
-* Rendering
-  * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering()
-  * **NEW FEATURE** (`minor`): Alpha management
-  * **OPTIMIZATION** (`minor`): Textures compression
+* Graphics API
   * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo.pSpecializationInfo) instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Use pipeline derivatives (VkGraphicsPipelineCreateInfo.basePipelineHandle)
   * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer.updateDescriptorSets) with updated values only
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`medium`): Use same pipeline (vkCmdBindPipeline) in models displayer instead of one by model (A.K.A batching for same shader/material/texture)
+  * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
+* Rendering
+  * **NEW FEATURE** (`major`): Replace geometry shader by instantiation  
+  * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering()
+  * **NEW FEATURE** (`minor`): Alpha management
+  * **OPTIMIZATION** (`minor`): Textures compression
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
@@ -62,7 +63,7 @@
   * **NEW FEATURE** (`major`): Add possibility to exclude dynamic objects from navigation mesh
     * Note: worth it only when steering behaviour will be implemented in pathfinding
   * **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
-  * **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
+  * **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a rough simplification on self obstacles polygons
   * **OPTIMIZATION** (`medium`): Exclude very small objects from navigation mesh
   * **NEW FEATURE** (`minor`): Exclude fast moving objects as walkable face
   * **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
@@ -107,4 +108,4 @@
   * **NEW FEATURE** (`medium`): Make objects without physics selectable with left click
   * **NEW FEATURE** (`medium`): Display box around objects which don't have mesh (allow to select them easily with left click)
 * UI
-  * **NEW FEATURE** (`minor`): Allow undo on actions
+  * **NEW FEATURE** (`minor`): Allow undoing the actions
