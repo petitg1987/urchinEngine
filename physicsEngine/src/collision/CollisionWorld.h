@@ -6,10 +6,10 @@
 #include <collision/ManifoldResult.h>
 #include <collision/broadphase/BroadPhaseManager.h>
 #include <collision/narrowphase/NarrowPhaseManager.h>
-#include <collision/integration/IntegrateVelocityManager.h>
+#include <collision/integration/IntegrateVelocity.h>
 #include <collision/constraintsolver/ConstraintSolverManager.h>
 #include <collision/island/IslandManager.h>
-#include <collision/integration/IntegrateTransformManager.h>
+#include <collision/integration/IntegrateTransform.h>
 
 namespace urchin {
 
@@ -37,10 +37,10 @@ namespace urchin {
 
             std::unique_ptr<BroadPhaseManager> broadPhaseManager;
             std::unique_ptr<NarrowPhaseManager> narrowPhaseManager;
-            std::unique_ptr<IntegrateVelocityManager> integrateVelocityManager;
+            std::unique_ptr<IntegrateVelocity> integrateVelocity;
             std::unique_ptr<ConstraintSolverManager> constraintSolverManager;
             std::unique_ptr<IslandManager> islandManager;
-            std::unique_ptr<IntegrateTransformManager> integrateTransformManager;
+            std::unique_ptr<IntegrateTransform> integrateTransform;
 
             std::vector<ManifoldResult> manifoldResults;
     };

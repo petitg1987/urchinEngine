@@ -9,10 +9,10 @@ namespace urchin {
             bodyManager(bodyManager),
             broadPhaseManager(std::make_unique<BroadPhaseManager>(bodyManager)),
             narrowPhaseManager(std::make_unique<NarrowPhaseManager>(bodyManager, getBroadPhaseManager())),
-            integrateVelocityManager(std::make_unique<IntegrateVelocityManager>(bodyManager)),
+            integrateVelocity(std::make_unique<IntegrateVelocity>(bodyManager)),
             constraintSolverManager(std::make_unique<ConstraintSolverManager>()),
             islandManager(std::make_unique<IslandManager>(bodyManager)),
-            integrateTransformManager(std::make_unique<IntegrateTransformManager>(bodyManager, getBroadPhaseManager(), getNarrowPhaseManager())) {
+            integrateTransform(std::make_unique<IntegrateTransform>(bodyManager, getBroadPhaseManager(), getNarrowPhaseManager())) {
 
     }
 
@@ -39,7 +39,7 @@ namespace urchin {
         auto& overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
         //integrate bodies velocities: gravity, external forces...
-        integrateVelocityManager->integrateVelocity(dt, overlappingPairs, gravity);
+        integrateVelocity->process(dt, overlappingPairs, gravity);
 
         //narrow phase: check if pair of bodies colliding and update collision constraints
         manifoldResults.clear();
@@ -53,7 +53,7 @@ namespace urchin {
         islandManager->refreshBodyActiveState(manifoldResults);
 
         //integrate transformations
-        integrateTransformManager->integrateTransform(dt);
+        integrateTransform->process(dt);
     }
 
     const std::vector<ManifoldResult>& CollisionWorld::getLastUpdatedManifoldResults() {

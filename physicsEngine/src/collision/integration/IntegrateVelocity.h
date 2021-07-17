@@ -11,11 +11,11 @@ namespace urchin {
     /**
     * Manager allowing to perform integration on bodies velocity
     */
-    class IntegrateVelocityManager {
+    class IntegrateVelocity {
         public:
-            explicit IntegrateVelocityManager(const BodyManager&);
+            explicit IntegrateVelocity(const BodyManager&);
 
-            void integrateVelocity(float, const std::vector<std::unique_ptr<OverlappingPair>>&, const Vector3<float>&);
+            void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, const Vector3<float>&);
 
         private:
             void applyGravityForce(const Vector3<float>&, float);

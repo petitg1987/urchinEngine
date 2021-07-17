@@ -10,11 +10,11 @@ namespace urchin {
     /**
     * Manager allowing to perform integration on bodies transformation
     */
-    class IntegrateTransformManager {
+    class IntegrateTransform {
         public:
-            IntegrateTransformManager(const BodyManager&, const BroadPhaseManager&, const NarrowPhaseManager&);
+            IntegrateTransform(const BodyManager&, const BroadPhaseManager&, const NarrowPhaseManager&);
 
-            void integrateTransform(float);
+            void process(float);
 
         private:
             void handleContinuousCollision(RigidBody&, const PhysicsTransform&, const PhysicsTransform&, float);

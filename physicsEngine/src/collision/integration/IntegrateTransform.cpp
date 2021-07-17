@@ -1,13 +1,13 @@
-#include <collision/integration/IntegrateTransformManager.h>
+#include <collision/integration/IntegrateTransform.h>
 #include <shape/CollisionSphereShape.h>
 #include <object/TemporalObject.h>
 
 namespace urchin {
 
     //static
-    const float IntegrateTransformManager::MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
+    const float IntegrateTransform::MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
 
-    IntegrateTransformManager::IntegrateTransformManager(const BodyManager& bodyManager, const BroadPhaseManager& broadPhaseManager,
+    IntegrateTransform::IntegrateTransform(const BodyManager& bodyManager, const BroadPhaseManager& broadPhaseManager,
                                                          const NarrowPhaseManager& narrowPhaseManager) :
             bodyManager(bodyManager),
             broadPhaseManager(broadPhaseManager),
@@ -18,7 +18,7 @@ namespace urchin {
     /**
      * @param dt Delta of time between two simulation steps
      */
-    void IntegrateTransformManager::integrateTransform(float dt) {
+    void IntegrateTransform::process(float dt) {
         for (const auto& abstractBody : bodyManager.getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody.get());
             if (body && body->isActive()) {
@@ -37,7 +37,7 @@ namespace urchin {
         }
     }
 
-    void IntegrateTransformManager::handleContinuousCollision(RigidBody& body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
+    void IntegrateTransform::handleContinuousCollision(RigidBody& body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
         PhysicsTransform updatedTargetTransform = to;
 
         std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhaseManager.bodyTest(body, from, to);
