@@ -1,13 +1,13 @@
-#include <scene/renderer3d/landscape/sky/SkyManager.h>
+#include <scene/renderer3d/landscape/sky/SkyContainer.h>
 
 namespace urchin {
-    SkyManager::SkyManager(RenderTarget& renderTarget) :
+    SkyContainer::SkyContainer(RenderTarget& renderTarget) :
             renderTarget(renderTarget),
             skybox(nullptr) {
 
     }
 
-    void SkyManager::onCameraProjectionUpdate(const Camera& camera) {
+    void SkyContainer::onCameraProjectionUpdate(const Camera& camera) {
         projectionMatrix = camera.getProjectionMatrix();
 
         if (skybox != nullptr) {
@@ -15,7 +15,7 @@ namespace urchin {
         }
     }
 
-    void SkyManager::setSkybox(std::unique_ptr<Skybox> skybox) {
+    void SkyContainer::setSkybox(std::unique_ptr<Skybox> skybox) {
         this->skybox = std::move(skybox);
 
         if (this->skybox != nullptr) {
@@ -24,11 +24,11 @@ namespace urchin {
         }
     }
 
-    const Skybox* SkyManager::getSkybox() const {
+    const Skybox* SkyContainer::getSkybox() const {
         return skybox.get();
     }
 
-    void SkyManager::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void SkyContainer::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         if (skybox != nullptr) {
             skybox->prepareRendering(viewMatrix, cameraPosition);
         }

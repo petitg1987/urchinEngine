@@ -37,7 +37,7 @@ namespace urchin {
             terrainContainer(std::make_unique<TerrainContainer>(*deferredRenderTarget)),
             waterContainer(std::make_unique<WaterContainer>(*deferredRenderTarget)),
             geometryContainer(std::make_unique<GeometryContainer>(*deferredRenderTarget)),
-            skyManager(std::make_unique<SkyManager>(*deferredRenderTarget)),
+            skyContainer(std::make_unique<SkyContainer>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
             ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
             shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
@@ -111,8 +111,8 @@ namespace urchin {
         return *geometryContainer;
     }
 
-    SkyManager& Renderer3d::getSkyManager() const {
-        return *skyManager;
+    SkyContainer& Renderer3d::getSkyContainer() const {
+        return *skyContainer;
     }
 
     LightManager& Renderer3d::getLightManager() const {
@@ -172,7 +172,7 @@ namespace urchin {
         terrainContainer->onCameraProjectionUpdate(*camera);
         waterContainer->onCameraProjectionUpdate(*camera);
         geometryContainer->onCameraProjectionUpdate(*camera);
-        skyManager->onCameraProjectionUpdate(*camera);
+        skyContainer->onCameraProjectionUpdate(*camera);
         shadowManager->onCameraProjectionUpdate(*camera);
         ambientOcclusionManager->onCameraProjectionUpdate(*camera);
     }
@@ -444,7 +444,7 @@ namespace urchin {
 
         //deferred scene (depth, color, normal, ambient)
         deferredRenderTarget->disableAllRenderers();
-        skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
+        skyContainer->prepareRendering(camera->getViewMatrix(), camera->getPosition());
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
         terrainContainer->prepareRendering(*camera, dt);
         waterContainer->prepareRendering(*camera, fogContainer.get(), dt);

@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    class SkyManager {
+    class SkyContainer {
         public:
-            explicit SkyManager(RenderTarget&);
+            explicit SkyContainer(RenderTarget&);
 
             void onCameraProjectionUpdate(const Camera&);
 
