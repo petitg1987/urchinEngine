@@ -80,9 +80,7 @@ namespace urchin {
     }
 
     void UdaChunk::setFloatValue(float value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value));
+        setStringValue(TypeConverter::toString(value));
     }
 
     bool UdaChunk::getBoolValue() const {
@@ -117,9 +115,9 @@ namespace urchin {
     }
 
     void UdaChunk::setPoint2Value(const Point2<float>& value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y));
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y));
     }
 
     Point3<float> UdaChunk::getPoint3Value() const {
@@ -127,9 +125,10 @@ namespace urchin {
     }
 
     void UdaChunk::setPoint3Value(const Point3<float>& value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z));
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Z));
     }
 
     Point4<float> UdaChunk::getPoint4Value() const {
@@ -137,10 +136,11 @@ namespace urchin {
     }
 
     void UdaChunk::setPoint4Value(const Point4<float>& value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z)
-            + TypeConverter::FLOAT_DELIMITER + std::to_string(value.W));
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.W));
     }
 
     Vector2<float> UdaChunk::getVector2Value() const {
@@ -148,9 +148,9 @@ namespace urchin {
     }
 
     void UdaChunk::setVector2Value(const Vector2<float>& value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y));
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y));
     }
 
     Vector3<float> UdaChunk::getVector3Value() const {
@@ -158,9 +158,10 @@ namespace urchin {
     }
 
     void UdaChunk::setVector3Value(const Vector3<float>& value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z));
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Z));
     }
 
     Vector4<float> UdaChunk::getVector4Value() const {
@@ -168,9 +169,10 @@ namespace urchin {
     }
 
     void UdaChunk::setVector4Value(const Vector4<float>& value) {
-        std::locale::global(std::locale("C")); //for float
-
-        setStringValue(std::to_string(value.X) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Y) + TypeConverter::FLOAT_DELIMITER + std::to_string(value.Z)
-            + TypeConverter::FLOAT_DELIMITER + std::to_string(value.W));
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.W));
     }
 }

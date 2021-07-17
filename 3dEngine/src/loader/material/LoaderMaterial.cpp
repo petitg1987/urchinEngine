@@ -9,8 +9,6 @@
 namespace urchin {
 
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
-        std::locale::global(std::locale("C")); //for float
-
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
         //textures data

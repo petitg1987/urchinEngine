@@ -7,9 +7,8 @@
 namespace urchin {
 
     std::shared_ptr<ConstMeshes> LoaderUrchinMesh::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
-        std::locale::global(std::locale("C")); //for float
-
         std::istringstream iss;
+        iss.imbue(std::locale::classic());
         std::string buffer;
         std::string sdata;
         int idata = 0;

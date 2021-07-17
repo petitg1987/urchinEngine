@@ -25,20 +25,24 @@ namespace urchin {
             static unsigned int toUnsignedInt(const std::string&);
             static bool isFloat(const std::string&);
             static float toFloat(const std::string&);
+            static bool isDouble(const std::string&);
+            static double toDouble(const std::string&);
             static bool isChar(const std::string&);
             static char toChar(const std::string&);
             static bool isBool(const std::string&);
             static bool toBool(const std::string&);
-
-            static long long toLongLong(float, float scale = FLOAT_INT_SCALE);
-            static float toFloat(long long, float scale = FLOAT_INT_SCALE);
-
             static Point2<float> toPoint2(const std::string&);
             static Point3<float> toPoint3(const std::string&);
             static Point4<float> toPoint4(const std::string&);
             static Vector2<float> toVector2(const std::string&);
             static Vector3<float> toVector3(const std::string&);
             static Vector4<float> toVector4(const std::string&);
+
+            static long long toLongLong(float, float scale = FLOAT_INT_SCALE);
+            static float toFloat(long long, float scale = FLOAT_INT_SCALE);
+
+            static std::string toString(float);
+            static std::string toString(double);
 
         private:
             static std::vector<float> floatSplit(const std::string&, unsigned int);

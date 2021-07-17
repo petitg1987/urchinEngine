@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #include <cmath>
+#include <iomanip>
 
 #include <util/TypeConverter.h>
 #include <util/StringUtil.h>
@@ -41,19 +42,33 @@ namespace urchin {
     }
 
     bool TypeConverter::isFloat(const std::string& str) {
-        std::locale::global(std::locale("C")); //for float
-
         std::istringstream iss(str);
+        iss.imbue(std::locale::classic());
         float value = 0.0f;
         iss >> std::noskipws >> value;
         return iss.eof() && !iss.fail();
     }
 
     float TypeConverter::toFloat(const std::string& str) {
-        std::locale::global(std::locale("C")); //for float
-
         std::istringstream iss(str);
+        iss.imbue(std::locale::classic());
         float value = 0.0f;
+        iss >> value;
+        return value;
+    }
+
+    bool TypeConverter::isDouble(const std::string& str) {
+        std::istringstream iss(str);
+        iss.imbue(std::locale::classic());
+        double value = 0.0;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
+    double TypeConverter::toDouble(const std::string& str) {
+        std::istringstream iss(str);
+        iss.imbue(std::locale::classic());
+        double value = 0.0;
         iss >> value;
         return value;
     }
@@ -72,28 +87,6 @@ namespace urchin {
 
     bool TypeConverter::toBool(const std::string& str) {
         return str[0] != '0';
-    }
-
-    long long TypeConverter::toLongLong(float value, float scale) {
-        const float minValue = (float)std::numeric_limits<long long>::min() / scale;
-        const float maxValue = (float)std::numeric_limits<long long>::max() / scale;
-
-        if (value < 0.0) {
-            if (value < minValue) {
-                Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
-            }
-            return std::llround(value * scale - 0.5);
-        }
-        else {
-            if (value > maxValue) {
-                Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
-            }
-            return std::llround(value * scale + 0.5);
-        }
-    }
-
-    float TypeConverter::toFloat(long long value, float scale) {
-        return (float)value / scale;
     }
 
     Point2<float> TypeConverter::toPoint2(const std::string& str) {
@@ -124,6 +117,48 @@ namespace urchin {
     Vector4<float> TypeConverter::toVector4(const std::string& str) {
         std::vector<float> floatValues = floatSplit(str, 4);
         return Vector4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+    }
+
+    long long TypeConverter::toLongLong(float value, float scale) {
+        const float minValue = (float)std::numeric_limits<long long>::min() / scale;
+        const float maxValue = (float)std::numeric_limits<long long>::max() / scale;
+
+        if (value < 0.0) {
+            if (value < minValue) {
+                Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
+            }
+            return std::llround(value * scale - 0.5);
+        }
+        else {
+            if (value > maxValue) {
+                Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
+            }
+            return std::llround(value * scale + 0.5);
+        }
+    }
+
+    float TypeConverter::toFloat(long long value, float scale) {
+        return (float)value / scale;
+    }
+
+    /**
+     * Convert float to string. Unlike std::to_string(), this method is independent of the locale.
+     */
+    std::string TypeConverter::toString(float value) {
+        std::ostringstream ss;
+        ss.imbue(std::locale::classic());
+        ss << std::setprecision(std::numeric_limits<float>::digits10) << std::fixed << value;
+        return std::string(ss.str());
+    }
+
+    /**
+     * Convert double to string. Unlike std::to_string(), this method is independent of the locale.
+     */
+    std::string TypeConverter::toString(double value) {
+        std::ostringstream ss;
+        ss.imbue(std::locale::classic());
+        ss << std::setprecision(std::numeric_limits<double>::digits10) << std::fixed << value;
+        return std::string(ss.str());
     }
 
     /**
