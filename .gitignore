@@ -4,9 +4,11 @@
 #Target build
 .build/
 
-
-mapEditor/save/*.frl
-mapEditor/save/states.properties
+#Binary
 mapEditor/urchinMapEditor
 mapEditor/core
 test/testExecutor
+test/core
+
+#Others
+mapEditor/save/states.properties
