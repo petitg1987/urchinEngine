@@ -8,9 +8,9 @@
 
 namespace urchin {
 
-    Window::Window(Position position, Size size, std::string nameSkin, std::string titleKey) :
+    Window::Window(Position position, Size size, std::string skinName, std::string titleKey) :
             Widget(position, size),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             titleKey(std::move(titleKey)),
             mousePositionX(0),
             mousePositionY(0),
@@ -19,8 +19,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<Window> Window::newWindow(Widget* parent, Position position, Size size, std::string nameSkin, std::string titleKey) {
-        return create<Window>(new Window(position, size, std::move(nameSkin), std::move(titleKey)), parent);
+    std::shared_ptr<Window> Window::newWindow(Widget* parent, Position position, Size size, std::string skinName, std::string titleKey) {
+        return create<Window>(new Window(position, size, std::move(skinName), std::move(titleKey)), parent);
     }
 
     void Window::createOrUpdateWidget() {
@@ -28,7 +28,7 @@ namespace urchin {
         detachChild(title.get());
 
         //skin information
-        auto windowChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "window", UdaAttribute("nameSkin", nameSkin));
+        auto windowChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "window", UdaAttribute("skin", skinName));
 
         auto skinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "skin", UdaAttribute(), windowChunk);
         texWindow = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinChunk, &widgetOutline);

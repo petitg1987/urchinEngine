@@ -26,7 +26,7 @@ namespace urchin {
             void switchValue();
 
             //properties
-            const std::string nameSkin;
+            const std::string skinName;
 
             //state
             bool bIsChecked;

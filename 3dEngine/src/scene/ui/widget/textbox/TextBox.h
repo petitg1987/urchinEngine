@@ -36,7 +36,7 @@ namespace urchin {
             static const unsigned int LETTER_SHIFT;
             static const unsigned int LETTER_AND_CURSOR_SHIFT;
             static const float CURSOR_BLINK_SPEED;
-            const std::string nameSkin;
+            const std::string skinName;
 
             //display information
             std::shared_ptr<Text> text; //text of the text box (widget)

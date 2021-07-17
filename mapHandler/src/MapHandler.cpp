@@ -28,15 +28,23 @@ namespace urchin {
         Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
-        relativeWorkingDirectory = udaParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
-        map->loadFrom(udaParser.getRootChunk(), udaParser, loadCallback);
+        UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
+        UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
+        relativeWorkingDirectory = workingDirChunk->getStringValue();
+
+        UdaChunk* sceneChunk = udaParser.getUniqueChunk(true, SCENE_TAG);
+        map->loadFrom(sceneChunk, udaParser, loadCallback);
     }
 
     void MapHandler::writeMapOnFile(const std::string& filename) const {
         UdaWriter udaWriter(FileSystem::instance().getResourcesDirectory() + filename);
 
-        auto& rootChunk = udaWriter.createChunk(SCENE_TAG, UdaAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
-        map->writeOn(rootChunk, udaWriter);
+        auto& configChunk = udaWriter.createChunk(CONFIG_TAG);
+        auto& workingDirChunk = udaWriter.createChunk(WORKING_DIR_TAG, UdaAttribute(), &configChunk);
+        workingDirChunk.setStringValue(relativeWorkingDirectory);
+
+        auto& sceneChunk = udaWriter.createChunk(SCENE_TAG);
+        map->writeOn(sceneChunk, udaWriter);
 
         udaWriter.saveInFile();
     }
@@ -46,7 +54,11 @@ namespace urchin {
      * @return Working directory relative to the map file
      */
     std::string MapHandler::getRelativeWorkingDirectory(const std::string& filename) {
-        return UdaParser(filename).getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
+        UdaParser udaParser(filename);
+        UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
+        UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
+
+        return workingDirChunk->getStringValue();
     }
 
     /**

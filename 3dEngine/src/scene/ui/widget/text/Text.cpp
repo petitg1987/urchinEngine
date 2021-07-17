@@ -10,9 +10,9 @@
 
 namespace urchin {
 
-    Text::Text(Position position, std::string nameSkin, std::string textOrKey, bool translatable) :
+    Text::Text(Position position, std::string skinName, std::string textOrKey, bool translatable) :
             Widget(position, Size(0, 0, LengthType::PIXEL)),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             maxWidth(100.0f, LengthType::PERCENTAGE),
             font(nullptr) {
         if (translatable) {
@@ -26,12 +26,12 @@ namespace urchin {
         refreshTextAndWidgetSize();
     }
 
-    std::shared_ptr<Text> Text::newText(Widget* parent, Position position, std::string nameSkin, std::string text) {
-        return create<Text>(new Text(position, std::move(nameSkin), std::move(text), false), parent);
+    std::shared_ptr<Text> Text::newText(Widget* parent, Position position, std::string skinName, std::string text) {
+        return create<Text>(new Text(position, std::move(skinName), std::move(text), false), parent);
     }
 
-    std::shared_ptr<Text> Text::newTranslatableText(Widget* parent, Position position, std::string nameSkin, std::string textKey) {
-        return create<Text>(new Text(position, std::move(nameSkin), std::move(textKey), true), parent);
+    std::shared_ptr<Text> Text::newTranslatableText(Widget* parent, Position position, std::string skinName, std::string textKey) {
+        return create<Text>(new Text(position, std::move(skinName), std::move(textKey), true), parent);
     }
 
     Text::~Text() {
@@ -162,7 +162,7 @@ namespace urchin {
     }
 
     void Text::refreshFont() {
-        auto textChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "text", UdaAttribute("nameSkin", nameSkin));
+        auto textChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "text", UdaAttribute("skin", skinName));
         std::string ttfFilename = UISkinService::instance().getSkinReader().getUniqueChunk(true, "font", UdaAttribute(), textChunk)->getStringValue();
         std::string fontColor = UISkinService::instance().getSkinReader().getUniqueChunk(true, "color", UdaAttribute(), textChunk)->getStringValue();
         unsigned int fontHeight = retrieveFontHeight(textChunk);

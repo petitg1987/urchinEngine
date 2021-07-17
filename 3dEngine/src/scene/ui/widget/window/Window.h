@@ -28,7 +28,7 @@ namespace urchin {
             bool onMouseMoveEvent(int, int) override;
 
             //properties
-            const std::string nameSkin;
+            const std::string skinName;
             const std::string titleKey;
 
             //state

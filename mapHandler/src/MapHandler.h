@@ -35,8 +35,9 @@ namespace urchin {
             void unpause();
 
         private:
+            static constexpr char CONFIG_TAG[] = "config";
+            static constexpr char WORKING_DIR_TAG[] = "relativeWorkingDirectory";
             static constexpr char SCENE_TAG[] = "scene";
-            static constexpr char WORKING_DIR_ATTR[] = "relativeWorkingDirectory";
 
             std::string relativeWorkingDirectory;
             std::unique_ptr<Map> map;

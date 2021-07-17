@@ -33,7 +33,7 @@ namespace urchin {
             Sequence(Position, Size, std::string, const std::vector<std::string>&, bool);
 
             //display information
-            const std::string nameSkin;
+            const std::string skinName;
             const std::vector<std::string> values;
             bool translatableValues;
             bool loopOnValuesEnabled;

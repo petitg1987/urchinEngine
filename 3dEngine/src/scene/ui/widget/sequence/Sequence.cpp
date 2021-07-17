@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    Sequence::Sequence(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values, bool translatableValues) :
+    Sequence::Sequence(Position position, Size size, std::string skinName, const std::vector<std::string>& values, bool translatableValues) :
             Widget(position, size),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             values(values),
             translatableValues(translatableValues),
             loopOnValuesEnabled(true),
@@ -20,12 +20,12 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<Sequence> Sequence::newSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        return create<Sequence>(new Sequence(position, size, std::move(nameSkin), texts, false), parent);
+    std::shared_ptr<Sequence> Sequence::newSequence(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
+        return create<Sequence>(new Sequence(position, size, std::move(skinName), texts, false), parent);
     }
 
-    std::shared_ptr<Sequence> Sequence::newTranslatableSequence(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& textKeys) {
-        return create<Sequence>(new Sequence(position, size, std::move(nameSkin), textKeys, true), parent);
+    std::shared_ptr<Sequence> Sequence::newTranslatableSequence(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& textKeys) {
+        return create<Sequence>(new Sequence(position, size, std::move(skinName), textKeys, true), parent);
     }
 
     void Sequence::createOrUpdateWidget() {
@@ -37,7 +37,7 @@ namespace urchin {
         detachChild(leftButton.get());
 
         //skin information
-        auto sequenceChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "sequence", UdaAttribute("nameSkin", nameSkin));
+        auto sequenceChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "sequence", UdaAttribute("skin", skinName));
 
         auto buttonsTextSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "buttonsTextSkin", UdaAttribute(), sequenceChunk);
         std::string buttonsTextSkin = buttonsTextSkinChunk->getStringValue();

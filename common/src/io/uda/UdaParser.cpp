@@ -19,23 +19,19 @@ namespace urchin {
         loadFile(file);
     }
 
-    UdaChunk* UdaParser::getRootChunk() const {
-        return root.get();
-    }
-
     std::vector<UdaChunk*> UdaParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         std::vector<UdaChunk*> chunks;
-        const UdaChunk *udaChunk = parent ? parent : root.get();
 
-        for (auto& child : udaChunk->getChildren()) {
-            if (child->getName() == chunkName) {
+        const auto& nodes = parent ? parent->getChildren() : rootNodes;
+        for (auto& node : nodes) {
+            if (node->getName() == chunkName) {
                 if (!attribute.getAttributeName().empty()) {
-                    std::string attributeValue = child->getAttributeValue(attribute.getAttributeName());
+                    std::string attributeValue = node->getAttributeValue(attribute.getAttributeName());
                     if (attributeValue == attribute.getAttributeValue()) {
-                        chunks.push_back(child.get());
+                        chunks.push_back(node.get());
                     }
                 } else {
-                    chunks.push_back(child.get());
+                    chunks.push_back(node.get());
                 }
             }
         }
@@ -84,11 +80,8 @@ namespace urchin {
             }
 
             if (indentLevel == 0) {
-                if (root) {
-                    throw std::runtime_error("Content line (" + rawContentLine +") has wrong indentation in the file: " + filenamePath);
-                }
-                root = buildChunk(rawContentLine, nullptr);
-                currentNode = root.get();
+                rootNodes.push_back(buildChunk(rawContentLine, nullptr));
+                currentNode = rootNodes.back().get();
                 currentNodeIndentLevel = 0;
             } else {
                 if (indentLevel - 1 == currentNodeIndentLevel) {

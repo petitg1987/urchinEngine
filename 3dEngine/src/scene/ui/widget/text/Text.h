@@ -47,7 +47,7 @@ namespace urchin {
             void refreshRendererData();
 
             //properties
-            std::string nameSkin;
+            std::string skinName;
             std::string text;
             std::optional<std::string> labelKey;
             Length maxWidth;

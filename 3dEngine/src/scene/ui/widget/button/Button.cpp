@@ -7,16 +7,16 @@
 
 namespace urchin {
 
-    Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText) :
+    Button::Button(Position position, Size size, std::string skinName, std::string buttonText) :
             Widget(position, size),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             text(nullptr),
             buttonText(std::move(buttonText)) {
 
     }
 
-    std::shared_ptr<Button> Button::newButton(Widget* parent, Position position, Size size, std::string nameSkin, std::string buttonText) {
-        return create<Button>(new Button(position, size, std::move(nameSkin), std::move(buttonText)), parent);
+    std::shared_ptr<Button> Button::newButton(Widget* parent, Position position, Size size, std::string skinName, std::string buttonText) {
+        return create<Button>(new Button(position, size, std::move(skinName), std::move(buttonText)), parent);
     }
 
     void Button::createOrUpdateWidget() {
@@ -24,7 +24,7 @@ namespace urchin {
         detachChild(text.get());
 
         //skin information
-        auto buttonChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "button", UdaAttribute("nameSkin", nameSkin));
+        auto buttonChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "button", UdaAttribute("skin", skinName));
 
         auto skinDefaultChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "skin", UdaAttribute("type", "default"), buttonChunk);
         texInfoDefault = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinDefaultChunk);

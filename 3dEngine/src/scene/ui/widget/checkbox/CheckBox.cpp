@@ -3,20 +3,20 @@
 
 namespace urchin {
 
-    CheckBox::CheckBox(Position position, Size size, std::string nameSkin) :
+    CheckBox::CheckBox(Position position, Size size, std::string skinName) :
             Widget(position, size),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             bIsChecked(false) {
 
     }
 
-    std::shared_ptr<CheckBox> CheckBox::newCheckBox(Widget* parent, Position position, Size size, std::string nameSkin) {
-        return create<CheckBox>(new CheckBox(position, size, std::move(nameSkin)), parent);
+    std::shared_ptr<CheckBox> CheckBox::newCheckBox(Widget* parent, Position position, Size size, std::string skinName) {
+        return create<CheckBox>(new CheckBox(position, size, std::move(skinName)), parent);
     }
 
     void CheckBox::createOrUpdateWidget() {
         //skin information
-        auto checkBoxChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "checkBox", UdaAttribute("nameSkin", nameSkin));
+        auto checkBoxChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "checkBox", UdaAttribute("skin", skinName));
         texChecked = loadTexture(checkBoxChunk, "imageChecked");
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
 

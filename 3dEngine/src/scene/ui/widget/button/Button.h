@@ -30,7 +30,7 @@ namespace urchin {
             bool onMouseMoveEvent(int, int) override;
 
             //properties
-            const std::string nameSkin;
+            const std::string skinName;
 
             //display information
             std::shared_ptr<Text> text;

@@ -14,7 +14,6 @@ namespace urchin {
         public:
             explicit UdaParser(std::string);
 
-            UdaChunk* getRootChunk() const;
             std::vector<UdaChunk*> getChunks(const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
             UdaChunk* getUniqueChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
 
@@ -30,7 +29,7 @@ namespace urchin {
             static constexpr char VALUE_REGEX[] = "\"?(.*?)\"?";
 
             std::string filenamePath;
-            std::unique_ptr<UdaChunk> root;
+            std::vector<std::unique_ptr<UdaChunk>> rootNodes;
     };
 
 }

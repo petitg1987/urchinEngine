@@ -13,9 +13,9 @@ namespace urchin {
     constexpr unsigned int TextBox::LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
     constexpr float TextBox::CURSOR_BLINK_SPEED = 1.75f;
 
-    TextBox::TextBox(Position position, Size size, std::string nameSkin) :
+    TextBox::TextBox(Position position, Size size, std::string skinName) :
             Widget(position, size),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             text(nullptr),
             maxWidthText(0),
             startTextIndex(0),
@@ -26,8 +26,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<TextBox> TextBox::newTextBox(Widget* parent, Position position, Size size, std::string nameSkin) {
-        return create<TextBox>(new TextBox(position, size, std::move(nameSkin)), parent);
+    std::shared_ptr<TextBox> TextBox::newTextBox(Widget* parent, Position position, Size size, std::string skinName) {
+        return create<TextBox>(new TextBox(position, size, std::move(skinName)), parent);
     }
 
     void TextBox::createOrUpdateWidget() {
@@ -35,7 +35,7 @@ namespace urchin {
         detachChild(text.get());
 
         //skin information
-        auto textBoxChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textBox", UdaAttribute("nameSkin", nameSkin));
+        auto textBoxChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textBox", UdaAttribute("skin", skinName));
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getUniqueChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
         texTextBoxDefault = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinChunkDefault, &widgetOutline);

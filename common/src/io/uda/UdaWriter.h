@@ -21,7 +21,7 @@ namespace urchin {
             std::string buildRawContentLine(const UdaChunk&) const;
 
             std::string filenamePath;
-            std::unique_ptr<UdaChunk> root;
+            std::vector<std::unique_ptr<UdaChunk>> rootNodes;
     };
 
 }

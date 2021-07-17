@@ -22,7 +22,7 @@ namespace urchin {
         auto newNode = std::make_unique<UdaChunk>(chunkName, "", attributes, parent);
         auto newNodePtr = newNode.get();
         if (!parent) {
-            root = std::move(newNode);
+            rootNodes.push_back(std::move(newNode));
         } else {
             parent->addChild(std::move(newNode));
         }
@@ -38,7 +38,9 @@ namespace urchin {
         }
 
         std::stack<UdaChunk*> stack;
-        stack.push(root.get());
+        for (auto it = rootNodes.rbegin(); it != rootNodes.rend(); ++it) {
+            stack.push((*it).get());
+        }
         while (!stack.empty()) {
             UdaChunk* node = stack.top();
             stack.pop();

@@ -36,7 +36,7 @@ namespace urchin {
 
             //display information
             const float TEXT_SHIFT_LENGTH;
-            const std::string nameSkin;
+            const std::string skinName;
             const std::vector<std::string> values;
             unsigned int selectedIndex;
 

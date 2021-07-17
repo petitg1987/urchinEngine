@@ -15,7 +15,7 @@ namespace urchin {
 
     }
 
-    void Map::loadFrom(const UdaChunk* rootChunk, const UdaParser& udaParser, LoadCallback& loadCallback) {
+    void Map::loadFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadCallback& loadCallback) {
         if (renderer3d && !renderer3d->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
@@ -28,26 +28,26 @@ namespace urchin {
             throw std::runtime_error("AI manager should be paused while loading map.");
         }
 
-        loadSceneObjectsFrom(rootChunk, udaParser);
+        loadSceneObjectsFrom(sceneChunk, udaParser);
         loadCallback.execute(LoadCallback::OBJECTS);
 
-        loadSceneLightsFrom(rootChunk, udaParser);
+        loadSceneLightsFrom(sceneChunk, udaParser);
         loadCallback.execute(LoadCallback::LIGHTS);
 
-        loadSceneTerrainFrom(rootChunk, udaParser);
-        loadSceneWaterFrom(rootChunk, udaParser);
-        loadSceneSkyFrom(rootChunk, udaParser);
+        loadSceneTerrainFrom(sceneChunk, udaParser);
+        loadSceneWaterFrom(sceneChunk, udaParser);
+        loadSceneSkyFrom(sceneChunk, udaParser);
         loadCallback.execute(LoadCallback::LANDSCAPE);
 
-        loadSceneSoundsFrom(rootChunk, udaParser);
+        loadSceneSoundsFrom(sceneChunk, udaParser);
         loadCallback.execute(LoadCallback::SOUNDS);
 
-        loadSceneAIFrom(rootChunk, udaParser);
+        loadSceneAIFrom(sceneChunk, udaParser);
         loadCallback.execute(LoadCallback::AI);
     }
 
-    void Map::loadSceneObjectsFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto objectsListChunk = udaParser.getUniqueChunk(true, OBJECTS_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneObjectsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto objectsListChunk = udaParser.getUniqueChunk(true, OBJECTS_TAG, UdaAttribute(), sceneChunk);
         auto objectsChunk = udaParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
 
         for (const auto& objectChunk : objectsChunk) {
@@ -58,8 +58,8 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneLightsFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto lightsListChunk = udaParser.getUniqueChunk(true, LIGHTS_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneLightsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto lightsListChunk = udaParser.getUniqueChunk(true, LIGHTS_TAG, UdaAttribute(), sceneChunk);
         auto lightsChunk = udaParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
 
         for (const auto& lightChunk : lightsChunk) {
@@ -70,8 +70,8 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneTerrainFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto terrainsListChunk = udaParser.getUniqueChunk(true, TERRAINS_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneTerrainFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto terrainsListChunk = udaParser.getUniqueChunk(true, TERRAINS_TAG, UdaAttribute(), sceneChunk);
         auto terrainsChunk = udaParser.getChunks(TERRAIN_TAG, UdaAttribute(), terrainsListChunk);
 
         for (const auto& terrainChunk : terrainsChunk) {
@@ -82,8 +82,8 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneWaterFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto watersListChunk = udaParser.getUniqueChunk(true, WATERS_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneWaterFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto watersListChunk = udaParser.getUniqueChunk(true, WATERS_TAG, UdaAttribute(), sceneChunk);
         auto watersChunk = udaParser.getChunks(WATER_TAG, UdaAttribute(), watersListChunk);
 
         for (const auto& waterChunk : watersChunk) {
@@ -94,14 +94,14 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneSkyFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto skyChunk = udaParser.getUniqueChunk(true, SKY_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneSkyFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto skyChunk = udaParser.getUniqueChunk(true, SKY_TAG, UdaAttribute(), sceneChunk);
 
         sceneSky->loadFrom(skyChunk, udaParser);
     }
 
-    void Map::loadSceneSoundsFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto soundElementsListChunk = udaParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneSoundsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto soundElementsListChunk = udaParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
         auto soundElementsChunk = udaParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
 
         for (const auto& soundElementChunk : soundElementsChunk) {
@@ -112,24 +112,24 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneAIFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        auto aiElementsListChunk = udaParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), chunk);
+    void Map::loadSceneAIFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto aiElementsListChunk = udaParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
 
         sceneAI->loadFrom(aiElementsListChunk, udaParser);
     }
 
-    void Map::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        writeSceneObjectsOn(chunk, udaWriter);
-        writeSceneLightsOn(chunk, udaWriter);
-        writeSceneTerrainsOn(chunk, udaWriter);
-        writeSceneWatersOn(chunk, udaWriter);
-        writeSceneSkyOn(chunk, udaWriter);
-        writeSceneSoundsOn(chunk, udaWriter);
-        writeSceneAIOn(chunk, udaWriter);
+    void Map::writeOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        writeSceneObjectsOn(sceneChunk, udaWriter);
+        writeSceneLightsOn(sceneChunk, udaWriter);
+        writeSceneTerrainsOn(sceneChunk, udaWriter);
+        writeSceneWatersOn(sceneChunk, udaWriter);
+        writeSceneSkyOn(sceneChunk, udaWriter);
+        writeSceneSoundsOn(sceneChunk, udaWriter);
+        writeSceneAIOn(sceneChunk, udaWriter);
     }
 
-    void Map::writeSceneObjectsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneObjectsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& sceneObject : sceneObjects) {
             auto& objectsChunk = udaWriter.createChunk(OBJECT_TAG, UdaAttribute(), &objectsListChunk);
@@ -137,8 +137,8 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneLightsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& lightsListChunk = udaWriter.createChunk(LIGHTS_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneLightsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& lightsListChunk = udaWriter.createChunk(LIGHTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& sceneLight : sceneLights) {
             auto& lightsChunk = udaWriter.createChunk(LIGHT_TAG, UdaAttribute(), &lightsListChunk);
@@ -146,8 +146,8 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneTerrainsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& terrainsListChunk = udaWriter.createChunk(TERRAINS_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneTerrainsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& terrainsListChunk = udaWriter.createChunk(TERRAINS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& sceneTerrain : sceneTerrains) {
             auto& terrainsChunk = udaWriter.createChunk(TERRAIN_TAG, UdaAttribute(), &terrainsListChunk);
@@ -155,8 +155,8 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneWatersOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& watersListChunk = udaWriter.createChunk(WATERS_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneWatersOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& watersListChunk = udaWriter.createChunk(WATERS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& sceneWater : sceneWaters) {
             auto& watersChunk = udaWriter.createChunk(WATER_TAG, UdaAttribute(), &watersListChunk);
@@ -164,14 +164,14 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneSkyOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& skyChunk = udaWriter.createChunk(SKY_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneSkyOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& skyChunk = udaWriter.createChunk(SKY_TAG, UdaAttribute(), &sceneChunk);
 
         sceneSky->writeOn(skyChunk, udaWriter);
     }
 
-    void Map::writeSceneSoundsOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& soundElementsListChunk = udaWriter.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneSoundsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& soundElementsListChunk = udaWriter.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& sceneSound : sceneSounds) {
             auto& soundElementsChunk = udaWriter.createChunk(SOUND_ELEMENT_TAG, UdaAttribute(), &soundElementsListChunk);
@@ -179,8 +179,8 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneAIOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &chunk);
+    void Map::writeSceneAIOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
 
         sceneAI->writeOn(aiElementsListChunk, udaWriter);
     }

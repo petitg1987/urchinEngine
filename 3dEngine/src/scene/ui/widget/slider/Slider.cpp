@@ -5,10 +5,10 @@
 
 namespace urchin {
 
-    Slider::Slider(Position position, Size size, std::string nameSkin, const std::vector<std::string>& values) :
+    Slider::Slider(Position position, Size size, std::string skinName, const std::vector<std::string>& values) :
             Widget(position, size),
             TEXT_SHIFT_LENGTH(10.0f),
-            nameSkin(std::move(nameSkin)),
+            skinName(std::move(skinName)),
             values(values),
             selectedIndex(0),
             state(DEFAULT),
@@ -19,8 +19,8 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<Slider> Slider::newSlider(Widget* parent, Position position, Size size, std::string nameSkin, const std::vector<std::string>& texts) {
-        return create<Slider>(new Slider(position, size, std::move(nameSkin), texts), parent);
+    std::shared_ptr<Slider> Slider::newSlider(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
+        return create<Slider>(new Slider(position, size, std::move(skinName), texts), parent);
     }
 
     void Slider::createOrUpdateWidget() {
@@ -29,7 +29,7 @@ namespace urchin {
         detachChild(cursorImage.get());
 
         //skin information
-        auto sliderChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "slider", UdaAttribute("nameSkin", nameSkin));
+        auto sliderChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "slider", UdaAttribute("skin", skinName));
 
         auto valuesTextSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "valuesTextSkin", UdaAttribute(), sliderChunk);
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
