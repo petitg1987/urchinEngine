@@ -7,11 +7,10 @@ namespace urchin {
     //static
     const float IntegrateTransform::MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
 
-    IntegrateTransform::IntegrateTransform(const BodyManager& bodyManager, const BroadPhaseManager& broadPhaseManager,
-                                                         const NarrowPhaseManager& narrowPhaseManager) :
+    IntegrateTransform::IntegrateTransform(const BodyManager& bodyManager, const BroadPhase& broadPhase, const NarrowPhase& narrowPhase) :
             bodyManager(bodyManager),
-            broadPhaseManager(broadPhaseManager),
-            narrowPhaseManager(narrowPhaseManager) {
+            broadPhase(broadPhase),
+            narrowPhase(narrowPhase) {
 
     }
 
@@ -40,11 +39,11 @@ namespace urchin {
     void IntegrateTransform::handleContinuousCollision(RigidBody& body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
         PhysicsTransform updatedTargetTransform = to;
 
-        std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhaseManager.bodyTest(body, from, to);
+        std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             CollisionSphereShape bodyEncompassedSphereShape(body.getShape().getMinDistanceToCenter());
             TemporalObject temporalObject(bodyEncompassedSphereShape, from, to);
-            ccd_set ccdResults = narrowPhaseManager.continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
+            ccd_set ccdResults = narrowPhase.continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 
             if (!ccdResults.empty()) {
                 //determine new body transform to avoid collision

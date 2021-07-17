@@ -11,7 +11,7 @@
 #include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
 #include <collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h>
 #include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
-#include <collision/broadphase/BroadPhaseManager.h>
+#include <collision/broadphase/BroadPhase.h>
 #include <body/BodyManager.h>
 #include <body/model/AbstractBody.h>
 #include <body/model/GhostBody.h>
@@ -19,9 +19,9 @@
 #include <shape/CollisionTriangleShape.h>
 
 namespace urchin {
-    class NarrowPhaseManager {
+    class NarrowPhase {
         public:
-            NarrowPhaseManager(const BodyManager&, const BroadPhaseManager&);
+            NarrowPhase(const BodyManager&, const BroadPhase&);
 
             void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
             void processGhostBody(const GhostBody&, std::vector<ManifoldResult>&);
@@ -40,7 +40,7 @@ namespace urchin {
             void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractBody&, ccd_set&) const;
 
             const BodyManager& bodyManager;
-            const BroadPhaseManager& broadPhaseManager;
+            const BroadPhase& broadPhase;
 
             std::unique_ptr<CollisionAlgorithmSelector> collisionAlgorithmSelector;
             const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;

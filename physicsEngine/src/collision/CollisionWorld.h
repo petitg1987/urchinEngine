@@ -4,8 +4,8 @@
 
 #include <body/BodyManager.h>
 #include <collision/ManifoldResult.h>
-#include <collision/broadphase/BroadPhaseManager.h>
-#include <collision/narrowphase/NarrowPhaseManager.h>
+#include <collision/broadphase/BroadPhase.h>
+#include <collision/narrowphase/NarrowPhase.h>
 #include <collision/integration/IntegrateVelocity.h>
 #include <collision/constraintsolver/ConstraintSolverManager.h>
 #include <collision/island/IslandManager.h>
@@ -25,8 +25,8 @@ namespace urchin {
                 COLLISION_RESULT_UPDATED
             };
 
-            BroadPhaseManager& getBroadPhaseManager() const;
-            NarrowPhaseManager& getNarrowPhaseManager() const;
+            BroadPhase& getBroadPhase() const;
+            NarrowPhase& getNarrowPhase() const;
 
             void process(float, const Vector3<float>&);
 
@@ -35,8 +35,8 @@ namespace urchin {
         private:
             BodyManager& bodyManager;
 
-            std::unique_ptr<BroadPhaseManager> broadPhaseManager;
-            std::unique_ptr<NarrowPhaseManager> narrowPhaseManager;
+            std::unique_ptr<BroadPhase> broadPhase;
+            std::unique_ptr<NarrowPhase> narrowPhase;
             std::unique_ptr<IntegrateVelocity> integrateVelocity;
             std::unique_ptr<ConstraintSolverManager> constraintSolverManager;
             std::unique_ptr<IslandManager> islandManager;

@@ -2,8 +2,8 @@
 
 #include <body/BodyManager.h>
 #include <body/model/RigidBody.h>
-#include <collision/broadphase/BroadPhaseManager.h>
-#include <collision/narrowphase/NarrowPhaseManager.h>
+#include <collision/broadphase/BroadPhase.h>
+#include <collision/narrowphase/NarrowPhase.h>
 
 namespace urchin {
 
@@ -12,7 +12,7 @@ namespace urchin {
     */
     class IntegrateTransform {
         public:
-            IntegrateTransform(const BodyManager&, const BroadPhaseManager&, const NarrowPhaseManager&);
+            IntegrateTransform(const BodyManager&, const BroadPhase&, const NarrowPhase&);
 
             void process(float);
 
@@ -22,8 +22,8 @@ namespace urchin {
             static const float MAX_LINEAR_VELOCITY_FACTOR;
 
             const BodyManager& bodyManager;
-            const BroadPhaseManager& broadPhaseManager;
-            const NarrowPhaseManager& narrowPhaseManager;
+            const BroadPhase& broadPhase;
+            const NarrowPhase& narrowPhase;
     };
 
 }

@@ -7,21 +7,21 @@ namespace urchin {
 
     CollisionWorld::CollisionWorld(BodyManager& bodyManager) :
             bodyManager(bodyManager),
-            broadPhaseManager(std::make_unique<BroadPhaseManager>(bodyManager)),
-            narrowPhaseManager(std::make_unique<NarrowPhaseManager>(bodyManager, getBroadPhaseManager())),
+            broadPhase(std::make_unique<BroadPhase>(bodyManager)),
+            narrowPhase(std::make_unique<NarrowPhase>(bodyManager, getBroadPhase())),
             integrateVelocity(std::make_unique<IntegrateVelocity>(bodyManager)),
             constraintSolverManager(std::make_unique<ConstraintSolverManager>()),
             islandManager(std::make_unique<IslandManager>(bodyManager)),
-            integrateTransform(std::make_unique<IntegrateTransform>(bodyManager, getBroadPhaseManager(), getNarrowPhaseManager())) {
+            integrateTransform(std::make_unique<IntegrateTransform>(bodyManager, getBroadPhase(), getNarrowPhase())) {
 
     }
 
-    BroadPhaseManager& CollisionWorld::getBroadPhaseManager() const {
-        return *broadPhaseManager;
+    BroadPhase& CollisionWorld::getBroadPhase() const {
+        return *broadPhase;
     }
 
-    NarrowPhaseManager& CollisionWorld::getNarrowPhaseManager() const {
-        return *narrowPhaseManager;
+    NarrowPhase& CollisionWorld::getNarrowPhase() const {
+        return *narrowPhase;
     }
 
     /**
@@ -36,14 +36,14 @@ namespace urchin {
         bodyManager.refreshBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox
-        auto& overlappingPairs = broadPhaseManager->computeOverlappingPairs();
+        auto& overlappingPairs = broadPhase->computeOverlappingPairs();
 
         //integrate bodies velocities: gravity, external forces...
         integrateVelocity->process(dt, overlappingPairs, gravity);
 
         //narrow phase: check if pair of bodies colliding and update collision constraints
         manifoldResults.clear();
-        narrowPhaseManager->process(dt, overlappingPairs, manifoldResults);
+        narrowPhase->process(dt, overlappingPairs, manifoldResults);
         notifyObservers(this, COLLISION_RESULT_UPDATED);
 
         //constraints solver: solve collision constraints
