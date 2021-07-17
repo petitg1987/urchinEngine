@@ -9,7 +9,7 @@ namespace urchin {
 
     class BodyShapeDisplayer {
         public:
-            explicit BodyShapeDisplayer(SceneManager&);
+            explicit BodyShapeDisplayer(Scene&);
             ~BodyShapeDisplayer();
 
             void setSelectedSceneObject(const SceneObject*);
@@ -28,7 +28,7 @@ namespace urchin {
             std::unique_ptr<GeometryModel> retrieveCapsuleGeometry(const CollisionConvexObject3D&);
             std::unique_ptr<GeometryModel> retrieveConvexHullGeometry(const CollisionConvexObject3D&);
 
-            SceneManager& sceneManager;
+            Scene& scene;
             std::vector<std::shared_ptr<GeometryModel>> bodyShapeModels;
 
             const SceneObject* selectedSceneObject;

@@ -7,7 +7,7 @@ namespace urchin {
 
     class LightScopeDisplayer {
         public:
-            explicit LightScopeDisplayer(SceneManager&);
+            explicit LightScopeDisplayer(Scene&);
             ~LightScopeDisplayer();
 
             void displayLightScopeFor(const SceneLight*);
@@ -15,7 +15,7 @@ namespace urchin {
         private:
             void cleanCurrentDisplay();
 
-            SceneManager& sceneManager;
+            Scene& scene;
             std::vector<std::shared_ptr<GeometryModel>> lightScopeModels;
     };
 

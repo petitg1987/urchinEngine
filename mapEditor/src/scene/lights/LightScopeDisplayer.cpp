@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    LightScopeDisplayer::LightScopeDisplayer(SceneManager& sceneManager) :
-            sceneManager(sceneManager) {
+    LightScopeDisplayer::LightScopeDisplayer(Scene& scene) :
+            scene(scene) {
 
     }
 
@@ -26,14 +26,14 @@ namespace urchin {
             }
 
             for (const auto& lightScopeModel : lightScopeModels) {
-                sceneManager.getActiveRenderer3d()->getGeometryManager().addGeometry(lightScopeModel);
+                scene.getActiveRenderer3d()->getGeometryManager().addGeometry(lightScopeModel);
             }
         }
     }
 
     void LightScopeDisplayer::cleanCurrentDisplay() {
         for (const auto& lightScopeModel : lightScopeModels) {
-            sceneManager.getActiveRenderer3d()->getGeometryManager().removeGeometry(*lightScopeModel);
+            scene.getActiveRenderer3d()->getGeometryManager().removeGeometry(*lightScopeModel);
         }
         lightScopeModels.clear();
     }

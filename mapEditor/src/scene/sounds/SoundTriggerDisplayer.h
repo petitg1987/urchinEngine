@@ -8,7 +8,7 @@ namespace urchin {
 
     class SoundTriggerDisplayer {
         public:
-            explicit SoundTriggerDisplayer(SceneManager&);
+            explicit SoundTriggerDisplayer(Scene&);
             ~SoundTriggerDisplayer();
 
             void displaySoundTriggerFor(const SceneSound*);
@@ -21,7 +21,7 @@ namespace urchin {
 
             void cleanCurrentDisplay();
 
-            SceneManager& sceneManager;
+            Scene& scene;
             std::vector<std::shared_ptr<GeometryModel>> soundTriggerModels;
     };
 

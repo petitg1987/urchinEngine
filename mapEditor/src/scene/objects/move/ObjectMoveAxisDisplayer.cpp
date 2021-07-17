@@ -1,8 +1,8 @@
 #include <scene/objects/move/ObjectMoveAxisDisplayer.h>
 
 namespace urchin {
-    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager& sceneManager) :
-            sceneManager(sceneManager) {
+    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(Scene& scene) :
+            scene(scene) {
 
     }
 
@@ -23,13 +23,13 @@ namespace urchin {
         zLine.setColor(0.0f, 0.0f, 1.0f);
 
         for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
-            sceneManager.getActiveRenderer3d()->getGeometryManager().addGeometry(objectMoveAxisModel);
+            scene.getActiveRenderer3d()->getGeometryManager().addGeometry(objectMoveAxisModel);
         }
     }
 
     void ObjectMoveAxisDisplayer::cleanCurrentDisplay() {
         for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
-            sceneManager.getActiveRenderer3d()->getGeometryManager().removeGeometry(*objectMoveAxisModel);
+            scene.getActiveRenderer3d()->getGeometryManager().removeGeometry(*objectMoveAxisModel);
         }
         objectMoveAxisModels.clear();
     }

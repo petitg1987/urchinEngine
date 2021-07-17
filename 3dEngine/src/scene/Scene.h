@@ -12,10 +12,10 @@
 
 namespace urchin {
 
-    class SceneManager {
+    class Scene {
         public:
-            SceneManager(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, std::unique_ptr<FramebufferSizeRetriever>);
-            ~SceneManager();
+            Scene(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, std::unique_ptr<FramebufferSizeRetriever>);
+            ~Scene();
 
             //scene properties
             void updateVerticalSync(bool);
@@ -46,7 +46,7 @@ namespace urchin {
             bool onChar(char32_t);
             bool onMouseMove(double, double);
 
-            //scene
+            //render
             void display();
 
         private:

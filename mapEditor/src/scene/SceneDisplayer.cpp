@@ -32,7 +32,7 @@ namespace urchin {
         lightScopeDisplayer.reset(nullptr);
         soundTriggerDisplayer.reset(nullptr);
         navMeshDisplayer.reset(nullptr);
-        sceneManager.reset(nullptr);
+        scene.reset(nullptr);
 
         SingletonManager::destroyAllSingletons();
     }
@@ -45,7 +45,7 @@ namespace urchin {
 
             initializeScene(mapFilename);
 
-            mapHandler = std::make_unique<MapHandler>(sceneManager->getActiveRenderer3d(), physicsWorld.get(), soundManager.get(), aiManager.get());
+            mapHandler = std::make_unique<MapHandler>(scene->getActiveRenderer3d(), physicsWorld.get(), soundManager.get(), aiManager.get());
             mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance().getResourcesDirectory() + relativeMapFilename);
@@ -67,9 +67,9 @@ namespace urchin {
     void SceneDisplayer::loadEmptyScene(const std::string& mapEditorPath) {
         initializeEngineResources(mapEditorPath);
 
-        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
-        sceneManager->newUIRenderer(true);
-        sceneManager->getActiveUIRenderer()->addWidget(StaticBitmap::newStaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
+        scene = std::make_unique<Scene>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
+        scene->newUIRenderer(true);
+        scene->getActiveUIRenderer()->addWidget(StaticBitmap::newStaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
 
         isInitialized = true;
     }
@@ -87,18 +87,18 @@ namespace urchin {
         }
 
         //3d
-        sceneManager = std::make_unique<SceneManager>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
+        scene = std::make_unique<Scene>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
         camera = std::make_shared<SceneFreeCamera>(50.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(45.0f, 2.0f);
         camera->loadCameraState(mapFilename);
-        sceneManager->newRenderer3d(true);
-        sceneManager->getActiveRenderer3d()->setCamera(camera);
-        sceneManager->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point4<float>(0.05f, 0.05f, 0.05f, 0.0f));
+        scene->newRenderer3d(true);
+        scene->getActiveRenderer3d()->setCamera(camera);
+        scene->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point4<float>(0.05f, 0.05f, 0.05f, 0.0f));
 
-        bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*sceneManager);
-        objectMoveController = std::make_unique<ObjectMoveController>(*sceneManager, *sceneController, mouseController, statusBarController);
-        lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(*sceneManager);
-        soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(*sceneManager);
+        bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*scene);
+        objectMoveController = std::make_unique<ObjectMoveController>(*scene, *sceneController, mouseController, statusBarController);
+        lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(*scene);
+        soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(*scene);
 
         //physics
         physicsWorld = std::make_unique<PhysicsWorld>();
@@ -108,7 +108,7 @@ namespace urchin {
         //AI
         aiManager = std::make_unique<AIManager>();
         aiManager->setUp(1.0f / 4.0f);
-        navMeshDisplayer = std::make_unique<NavMeshDisplayer>(*aiManager, *sceneManager->getActiveRenderer3d());
+        navMeshDisplayer = std::make_unique<NavMeshDisplayer>(*aiManager, *scene->getActiveRenderer3d());
 
         //sound
         soundManager = std::make_unique<SoundManager>();
@@ -189,7 +189,7 @@ namespace urchin {
                 refreshSoundTriggerModel();
                 refreshNavMeshModel();
 
-                sceneManager->display();
+                scene->display();
             }
         } catch (std::exception& e) {
             Logger::instance().logError("Error occurred during paint: " + std::string(e.what()));
@@ -201,16 +201,16 @@ namespace urchin {
 
     void SceneDisplayer::resize(unsigned int width, unsigned int height) {
         if (isInitialized) {
-            sceneManager->onResize();
+            scene->onResize();
             if (objectMoveController) {
                 objectMoveController->onResize(width, height);
             }
         }
     }
 
-    SceneManager& SceneDisplayer::getSceneManager() const {
-        assert(sceneManager);
-        return *sceneManager;
+    Scene& SceneDisplayer::getScene() const {
+        assert(scene);
+        return *scene;
     }
 
     SceneFreeCamera* SceneDisplayer::getCamera() const {
