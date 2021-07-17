@@ -10,12 +10,9 @@
 
 namespace urchin {
 
-    /**
-    * Constraint data container
-    */
-    class ConstraintSolving {
+    class ConstraintSolvingData {
         public:
-            ConstraintSolving(RigidBody&, RigidBody&, ManifoldContactPoint&, const CommonSolvingData&, const ImpulseSolvingData&);
+            ConstraintSolvingData(RigidBody&, RigidBody&, ManifoldContactPoint&, const CommonSolvingData&, const ImpulseSolvingData&);
 
             RigidBody& getBody1() const;
             RigidBody& getBody2() const;

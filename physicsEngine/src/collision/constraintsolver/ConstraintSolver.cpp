@@ -1,19 +1,19 @@
-#include <collision/constraintsolver/ConstraintSolverManager.h>
+#include <collision/constraintsolver/ConstraintSolver.h>
 
 namespace urchin {
 
-    ConstraintSolverManager::ConstraintSolverManager() :
+    ConstraintSolver::ConstraintSolver() :
             constraintSolverIteration(ConfigService::instance().getUnsignedIntValue("constraintSolver.constraintSolverIteration")),
             biasFactor(ConfigService::instance().getFloatValue("constraintSolver.biasFactor")),
             useWarmStarting(ConfigService::instance().getBoolValue("constraintSolver.useWarmStarting")),
             restitutionVelocityThreshold(ConfigService::instance().getFloatValue("constraintSolver.restitutionVelocityThreshold")) {
-        unsigned int constraintSolvingPoolSize = ConfigService::instance().getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
-        constraintSolvingPool = std::make_unique<FixedSizePool<ConstraintSolving>>("constraintSolvingPool", sizeof(ConstraintSolving), constraintSolvingPoolSize);
+        unsigned int constraintSolvingDataPoolSize = ConfigService::instance().getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
+        constraintSolvingDataPool = std::make_unique<FixedSizePool<ConstraintSolvingData>>("constraintSolvingPool", sizeof(ConstraintSolvingData), constraintSolvingDataPoolSize);
     }
 
-    ConstraintSolverManager::~ConstraintSolverManager() {
-        for (auto& constraintSolving : constraintsSolving) {
-            constraintSolvingPool->deallocate(constraintSolving);
+    ConstraintSolver::~ConstraintSolver() {
+        for (auto& constraintSolvingData : constraintsSolvingData) {
+            constraintSolvingDataPool->deallocate(constraintSolvingData);
         }
     }
 
@@ -22,7 +22,7 @@ namespace urchin {
      * @param dt Delta of time (sec.) between two simulation steps
      * @param manifoldResults Constraints to solve
      */
-    void ConstraintSolverManager::solveConstraints(float dt, std::vector<ManifoldResult>& manifoldResults) {
+    void ConstraintSolver::process(float dt, std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler sp(Profiler::physics(), "solveConstraint");
 
         //setup step to solve constraints
@@ -34,13 +34,13 @@ namespace urchin {
         }
     }
 
-    void ConstraintSolverManager::setupConstraints(std::vector<ManifoldResult>& manifoldResults, float dt) { //See http://en.wikipedia.org/wiki/Collision_response for formulas
+    void ConstraintSolver::setupConstraints(std::vector<ManifoldResult>& manifoldResults, float dt) { //See http://en.wikipedia.org/wiki/Collision_response for formulas
 
         //clear constraints solving
-        for (auto& constraintSolving : constraintsSolving) {
-            constraintSolvingPool->deallocate(constraintSolving);
+        for (auto& constraintSolvingData : constraintsSolvingData) {
+            constraintSolvingDataPool->deallocate(constraintSolvingData);
         }
-        constraintsSolving.clear();
+        constraintsSolvingData.clear();
 
         //setup constraints solving
         for (auto& manifoldResult : manifoldResults) {
@@ -56,8 +56,8 @@ namespace urchin {
                 const CommonSolvingData& commonSolvingData = fillCommonSolvingData(manifoldResult, contact);
                 const ImpulseSolvingData& impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
 
-                void* memPtr = constraintSolvingPool->allocate(sizeof(ConstraintSolving));
-                auto* constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact, commonSolvingData, impulseSolvingData);
+                void* memPtr = constraintSolvingDataPool->allocate(sizeof(ConstraintSolvingData));
+                auto* constraintSolving = new(memPtr) ConstraintSolvingData(body1, body2, contact, commonSolvingData, impulseSolvingData);
 
                 if (useWarmStarting) {
                     const Vector3<float> normalImpulseVector = contact.getAccumulatedSolvingData().accNormalImpulse * commonSolvingData.contactNormal;
@@ -67,24 +67,24 @@ namespace urchin {
                     applyImpulse(constraintSolving->getBody1(), constraintSolving->getBody2(), commonSolvingData, tangentImpulseVector);
                 }
 
-                constraintsSolving.push_back(constraintSolving);
+                constraintsSolvingData.push_back(constraintSolving);
             }
         }
     }
 
-    void ConstraintSolverManager::solveConstraints() {
+    void ConstraintSolver::solveConstraints() {
         //solve tangent constraint first because non-penetration is more important than friction
-        for (auto& constraintSolving : constraintsSolving) {
-            solveTangentConstraint(*constraintSolving);
+        for (auto& constraintSolvingData : constraintsSolvingData) {
+            solveTangentConstraint(*constraintSolvingData);
         }
 
         //solve normal constraint
-        for (auto& constraintSolving : constraintsSolving) {
-            solveNormalConstraint(*constraintSolving);
+        for (auto& constraintSolvingData : constraintsSolvingData) {
+            solveNormalConstraint(*constraintSolvingData);
         }
     }
 
-    CommonSolvingData ConstraintSolverManager::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
+    CommonSolvingData ConstraintSolver::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
         RigidBody& body1 = RigidBody::upCast(manifoldResult.getBody1());
         RigidBody& body2 = RigidBody::upCast(manifoldResult.getBody2());
 
@@ -102,7 +102,7 @@ namespace urchin {
         return commonSolvingData;
     }
 
-    ImpulseSolvingData ConstraintSolverManager::fillImpulseSolvingData(const CommonSolvingData& commonData, float dt) const {
+    ImpulseSolvingData ConstraintSolver::fillImpulseSolvingData(const CommonSolvingData& commonData, float dt) const {
         ImpulseSolvingData impulseSolvingData;
 
         //friction
@@ -145,10 +145,10 @@ namespace urchin {
     /**
      * Solve normal constraint. Normal constraint is related to non-penetration
      */
-    void ConstraintSolverManager::solveNormalConstraint(const ConstraintSolving& constraintSolving) {
-        const CommonSolvingData& commonSolvingData = constraintSolving.getCommonData();
-        const ImpulseSolvingData& impulseSolvingData = constraintSolving.getImpulseData();
-        AccumulatedSolvingData& accumulatedSolvingData = constraintSolving.getAccumulatedData();
+    void ConstraintSolver::solveNormalConstraint(const ConstraintSolvingData& constraintSolvingData) {
+        const CommonSolvingData& commonSolvingData = constraintSolvingData.getCommonData();
+        const ImpulseSolvingData& impulseSolvingData = constraintSolvingData.getImpulseData();
+        AccumulatedSolvingData& accumulatedSolvingData = constraintSolvingData.getAccumulatedData();
 
         float normalRelativeVelocity = computeRelativeVelocity(commonSolvingData).dotProduct(commonSolvingData.contactNormal);
 
@@ -160,16 +160,16 @@ namespace urchin {
         normalImpulse = accumulatedSolvingData.accNormalImpulse - oldAccNormalImpulse;
 
         const Vector3<float> normalImpulseVector = normalImpulse * commonSolvingData.contactNormal;
-        applyImpulse(constraintSolving.getBody1(), constraintSolving.getBody2(), commonSolvingData, normalImpulseVector);
+        applyImpulse(constraintSolvingData.getBody1(), constraintSolvingData.getBody2(), commonSolvingData, normalImpulseVector);
     }
 
     /**
      * Solve tangent constraint. Tangent constraint is related to friction
      */
-    void ConstraintSolverManager::solveTangentConstraint(const ConstraintSolving& constraintSolving) {
-        const CommonSolvingData& commonSolvingData = constraintSolving.getCommonData();
-        const ImpulseSolvingData& impulseSolvingData = constraintSolving.getImpulseData();
-        AccumulatedSolvingData& accumulatedSolvingData = constraintSolving.getAccumulatedData();
+    void ConstraintSolver::solveTangentConstraint(const ConstraintSolvingData& constraintSolvingData) {
+        const CommonSolvingData& commonSolvingData = constraintSolvingData.getCommonData();
+        const ImpulseSolvingData& impulseSolvingData = constraintSolvingData.getImpulseData();
+        AccumulatedSolvingData& accumulatedSolvingData = constraintSolvingData.getAccumulatedData();
 
         float tangentRelativeVelocity = computeRelativeVelocity(commonSolvingData).dotProduct(commonSolvingData.contactTangent);
 
@@ -182,10 +182,10 @@ namespace urchin {
         tangentImpulse = accumulatedSolvingData.accTangentImpulse - oldAccTangentImpulse;
 
         const Vector3<float> tangentImpulseVector = tangentImpulse * commonSolvingData.contactTangent;
-        applyImpulse(constraintSolving.getBody1(), constraintSolving.getBody2(), commonSolvingData, tangentImpulseVector);
+        applyImpulse(constraintSolvingData.getBody1(), constraintSolvingData.getBody2(), commonSolvingData, tangentImpulseVector);
     }
 
-    void ConstraintSolverManager::applyImpulse(RigidBody& body1, RigidBody& body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) const {
+    void ConstraintSolver::applyImpulse(RigidBody& body1, RigidBody& body2, const CommonSolvingData& commonData, const Vector3<float>& impulseVector) const {
         body1.setVelocity(body1.getLinearVelocity() - (impulseVector * body1.getInvMass() * body1.getLinearFactor()),
                           body1.getAngularVelocity() - (commonData.invInertia1 * commonData.r1.crossProduct(impulseVector * body1.getLinearFactor()) * body1.getAngularFactor()));
 
@@ -196,7 +196,7 @@ namespace urchin {
     /**
      * @return Relative velocity at the contact point
      */
-    Vector3<float> ConstraintSolverManager::computeRelativeVelocity(const CommonSolvingData& commonData) const {
+    Vector3<float> ConstraintSolver::computeRelativeVelocity(const CommonSolvingData& commonData) const {
         const Vector3<float> vp1 = commonData.body1.getLinearVelocity() + commonData.body1.getAngularVelocity().crossProduct(commonData.r1);
         const Vector3<float> vp2 = commonData.body2.getLinearVelocity() + commonData.body2.getAngularVelocity().crossProduct(commonData.r2);
 
@@ -206,7 +206,7 @@ namespace urchin {
     /**
      * @return Tangent vector in direction of sliding
      */
-    Vector3<float> ConstraintSolverManager::computeTangent(const CommonSolvingData& commonData, const Vector3<float>& normal) const {
+    Vector3<float> ConstraintSolver::computeTangent(const CommonSolvingData& commonData, const Vector3<float>& normal) const {
         Vector3<float> relativeVelocity = computeRelativeVelocity(commonData);
         Vector3<float> tangentVelocity = relativeVelocity - (relativeVelocity.dotProduct(normal)) * normal;
 
@@ -218,7 +218,7 @@ namespace urchin {
         return tangentVelocity / tangentVelocityLength;
     }
 
-    void ConstraintSolverManager::logCommonData(const std::string& message, const CommonSolvingData& commonData) const {
+    void ConstraintSolver::logCommonData(const std::string& message, const CommonSolvingData& commonData) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

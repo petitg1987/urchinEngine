@@ -4,7 +4,7 @@
 #include <map>
 #include <UrchinCommon.h>
 
-#include <collision/constraintsolver/ConstraintSolving.h>
+#include <collision/constraintsolver/ConstraintSolvingData.h>
 #include <collision/constraintsolver/solvingdata/CommonSolvingData.h>
 #include <collision/constraintsolver/solvingdata/ImpulseSolvingData.h>
 #include <body/BodyManager.h>
@@ -14,12 +14,12 @@
 
 namespace urchin {
 
-    class ConstraintSolverManager {
+    class ConstraintSolver {
         public:
-            ConstraintSolverManager();
-            ~ConstraintSolverManager();
+            ConstraintSolver();
+            ~ConstraintSolver();
 
-            void solveConstraints(float, std::vector<ManifoldResult>&);
+            void process(float, std::vector<ManifoldResult>&);
 
         private:
             void setupConstraints(std::vector<ManifoldResult>&, float);
@@ -28,8 +28,8 @@ namespace urchin {
             CommonSolvingData fillCommonSolvingData(const ManifoldResult&, const ManifoldContactPoint&);
             ImpulseSolvingData fillImpulseSolvingData(const CommonSolvingData&, float) const;
 
-            void solveNormalConstraint(const ConstraintSolving&);
-            void solveTangentConstraint(const ConstraintSolving&);
+            void solveNormalConstraint(const ConstraintSolvingData&);
+            void solveTangentConstraint(const ConstraintSolvingData&);
 
             void applyImpulse(RigidBody&, RigidBody&, const CommonSolvingData&, const Vector3<float>&) const;
             Vector3<float> computeRelativeVelocity(const CommonSolvingData&) const;
@@ -37,8 +37,8 @@ namespace urchin {
 
             void logCommonData(const std::string&, const CommonSolvingData&) const;
 
-            std::vector<ConstraintSolving*> constraintsSolving;
-            std::unique_ptr<FixedSizePool<ConstraintSolving>> constraintSolvingPool;
+            std::vector<ConstraintSolvingData*> constraintsSolvingData;
+            std::unique_ptr<FixedSizePool<ConstraintSolvingData>> constraintSolvingDataPool;
 
             const unsigned int constraintSolverIteration;
             const float biasFactor;

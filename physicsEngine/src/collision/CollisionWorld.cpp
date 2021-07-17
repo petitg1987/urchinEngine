@@ -10,7 +10,7 @@ namespace urchin {
             broadPhase(std::make_unique<BroadPhase>(bodyManager)),
             narrowPhase(std::make_unique<NarrowPhase>(bodyManager, getBroadPhase())),
             integrateVelocity(std::make_unique<IntegrateVelocity>(bodyManager)),
-            constraintSolverManager(std::make_unique<ConstraintSolverManager>()),
+            constraintSolver(std::make_unique<ConstraintSolver>()),
             islandManager(std::make_unique<IslandManager>(bodyManager)),
             integrateTransform(std::make_unique<IntegrateTransform>(bodyManager, getBroadPhase(), getNarrowPhase())) {
 
@@ -47,7 +47,7 @@ namespace urchin {
         notifyObservers(this, COLLISION_RESULT_UPDATED);
 
         //constraints solver: solve collision constraints
-        constraintSolverManager->solveConstraints(dt, manifoldResults);
+        constraintSolver->process(dt, manifoldResults);
 
         //update bodies state
         islandManager->refreshBodyActiveState(manifoldResults);

@@ -7,7 +7,7 @@
 #include <collision/broadphase/BroadPhase.h>
 #include <collision/narrowphase/NarrowPhase.h>
 #include <collision/integration/IntegrateVelocity.h>
-#include <collision/constraintsolver/ConstraintSolverManager.h>
+#include <collision/constraintsolver/ConstraintSolver.h>
 #include <collision/island/IslandManager.h>
 #include <collision/integration/IntegrateTransform.h>
 
@@ -38,7 +38,7 @@ namespace urchin {
             std::unique_ptr<BroadPhase> broadPhase;
             std::unique_ptr<NarrowPhase> narrowPhase;
             std::unique_ptr<IntegrateVelocity> integrateVelocity;
-            std::unique_ptr<ConstraintSolverManager> constraintSolverManager;
+            std::unique_ptr<ConstraintSolver> constraintSolver;
             std::unique_ptr<IslandManager> islandManager;
             std::unique_ptr<IntegrateTransform> integrateTransform;
 
