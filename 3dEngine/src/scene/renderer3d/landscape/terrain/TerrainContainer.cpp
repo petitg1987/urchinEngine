@@ -2,9 +2,8 @@
 
 #include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
 
-
-
 namespace urchin {
+
     TerrainContainer::TerrainContainer(RenderTarget& renderTarget) :
             renderTarget(renderTarget),
             config({}) {

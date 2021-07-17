@@ -27,7 +27,7 @@ namespace urchin {
 
             for (const auto& soundTriggerModel : soundTriggerModels) {
                 soundTriggerModel->setColor(0.0f, 1.0f, 1.0f);
-                scene.getActiveRenderer3d()->getGeometryManager().addGeometry(soundTriggerModel);
+                scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(soundTriggerModel);
             }
         }
     }
@@ -55,7 +55,7 @@ namespace urchin {
 
     void SoundTriggerDisplayer::cleanCurrentDisplay() {
         for (const auto& soundTriggerModel : soundTriggerModels) {
-            scene.getActiveRenderer3d()->getGeometryManager().removeGeometry(*soundTriggerModel);
+            scene.getActiveRenderer3d()->getGeometryContainer().removeGeometry(*soundTriggerModel);
         }
         soundTriggerModels.clear();
     }

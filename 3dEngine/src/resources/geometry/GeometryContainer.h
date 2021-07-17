@@ -9,9 +9,9 @@
 
 namespace urchin {
 
-    class GeometryManager {
+    class GeometryContainer {
         public:
-            explicit GeometryManager(RenderTarget&);
+            explicit GeometryContainer(RenderTarget&);
 
             void addGeometry(std::shared_ptr<GeometryModel>);
             void removeGeometry(const GeometryModel&);

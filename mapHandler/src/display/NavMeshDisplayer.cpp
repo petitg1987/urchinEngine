@@ -65,7 +65,7 @@ namespace urchin {
 
     void NavMeshDisplayer::clearDisplay() {
         for (const auto& navMeshModel : navMeshModels) {
-            renderer3d.getGeometryManager().removeGeometry(*navMeshModel);
+            renderer3d.getGeometryContainer().removeGeometry(*navMeshModel);
         }
         navMeshModels.clear();
     }
@@ -86,6 +86,6 @@ namespace urchin {
         model->setColor(color.X, color.Y, color.Z, 0.5f);
         model->setPolygonMode(polygonMode);
         navMeshModels.push_back(model);
-        renderer3d.getGeometryManager().addGeometry(std::move(model));
+        renderer3d.getGeometryContainer().addGeometry(std::move(model));
     }
 }

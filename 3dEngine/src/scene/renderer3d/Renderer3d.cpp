@@ -36,8 +36,8 @@ namespace urchin {
             fogContainer(std::make_unique<FogContainer>()),
             terrainContainer(std::make_unique<TerrainContainer>(*deferredRenderTarget)),
             waterContainer(std::make_unique<WaterContainer>(*deferredRenderTarget)),
+            geometryContainer(std::make_unique<GeometryContainer>(*deferredRenderTarget)),
             skyManager(std::make_unique<SkyManager>(*deferredRenderTarget)),
-            geometryManager(std::make_unique<GeometryManager>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
             ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
             shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
@@ -63,7 +63,7 @@ namespace urchin {
         //models
         modelSetDisplayer.reset(nullptr);
         modelOctreeManager.reset(nullptr);
-        geometryManager.reset(nullptr);
+        geometryContainer.reset(nullptr);
 
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
@@ -107,12 +107,12 @@ namespace urchin {
         return *waterContainer;
     }
 
-    SkyManager& Renderer3d::getSkyManager() const {
-        return *skyManager;
+    GeometryContainer& Renderer3d::getGeometryContainer() const {
+        return *geometryContainer;
     }
 
-    GeometryManager& Renderer3d::getGeometryManager() const {
-        return *geometryManager;
+    SkyManager& Renderer3d::getSkyManager() const {
+        return *skyManager;
     }
 
     LightManager& Renderer3d::getLightManager() const {
@@ -171,8 +171,8 @@ namespace urchin {
         modelSetDisplayer->onCameraProjectionUpdate(*camera);
         terrainContainer->onCameraProjectionUpdate(*camera);
         waterContainer->onCameraProjectionUpdate(*camera);
+        geometryContainer->onCameraProjectionUpdate(*camera);
         skyManager->onCameraProjectionUpdate(*camera);
-        geometryManager->onCameraProjectionUpdate(*camera);
         shadowManager->onCameraProjectionUpdate(*camera);
         ambientOcclusionManager->onCameraProjectionUpdate(*camera);
     }
@@ -448,7 +448,7 @@ namespace urchin {
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
         terrainContainer->prepareRendering(*camera, dt);
         waterContainer->prepareRendering(*camera, fogContainer.get(), dt);
-        geometryManager->prepareRendering(camera->getViewMatrix());
+        geometryContainer->prepareRendering(camera->getViewMatrix());
         renderDebugSceneData();
         deferredRenderTarget->render();
 

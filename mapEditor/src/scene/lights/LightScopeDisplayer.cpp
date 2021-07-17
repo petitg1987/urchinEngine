@@ -26,14 +26,14 @@ namespace urchin {
             }
 
             for (const auto& lightScopeModel : lightScopeModels) {
-                scene.getActiveRenderer3d()->getGeometryManager().addGeometry(lightScopeModel);
+                scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(lightScopeModel);
             }
         }
     }
 
     void LightScopeDisplayer::cleanCurrentDisplay() {
         for (const auto& lightScopeModel : lightScopeModels) {
-            scene.getActiveRenderer3d()->getGeometryManager().removeGeometry(*lightScopeModel);
+            scene.getActiveRenderer3d()->getGeometryContainer().removeGeometry(*lightScopeModel);
         }
         lightScopeModels.clear();
     }

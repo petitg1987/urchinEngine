@@ -23,13 +23,13 @@ namespace urchin {
         zLine.setColor(0.0f, 0.0f, 1.0f);
 
         for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
-            scene.getActiveRenderer3d()->getGeometryManager().addGeometry(objectMoveAxisModel);
+            scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(objectMoveAxisModel);
         }
     }
 
     void ObjectMoveAxisDisplayer::cleanCurrentDisplay() {
         for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
-            scene.getActiveRenderer3d()->getGeometryManager().removeGeometry(*objectMoveAxisModel);
+            scene.getActiveRenderer3d()->getGeometryContainer().removeGeometry(*objectMoveAxisModel);
         }
         objectMoveAxisModels.clear();
     }

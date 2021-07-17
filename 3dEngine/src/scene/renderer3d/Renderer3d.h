@@ -17,7 +17,7 @@
 #include <scene/renderer3d/landscape/fog/FogContainer.h>
 #include <scene/renderer3d/landscape/water/WaterContainer.h>
 #include <scene/renderer3d/landscape/sky/SkyManager.h>
-#include <resources/geometry/GeometryManager.h>
+#include <resources/geometry/GeometryContainer.h>
 #include <resources/geometry/GeometryModel.h>
 #include <graphic/render/shader/model/Shader.h>
 #include <graphic/render/GenericRenderer.h>
@@ -42,8 +42,8 @@ namespace urchin {
             FogContainer& getFogContainer() const;
             TerrainContainer& getTerrainContainer() const;
             WaterContainer& getWaterContainer() const;
+            GeometryContainer& getGeometryContainer() const;
             SkyManager& getSkyManager() const;
-            GeometryManager& getGeometryManager() const;
             LightManager& getLightManager() const;
             ShadowManager& getShadowManager() const;
             void activateShadow(bool);
@@ -115,8 +115,8 @@ namespace urchin {
             std::unique_ptr<FogContainer> fogContainer;
             std::unique_ptr<TerrainContainer> terrainContainer;
             std::unique_ptr<WaterContainer> waterContainer;
+            std::unique_ptr<GeometryContainer> geometryContainer;
             std::unique_ptr<SkyManager> skyManager;
-            std::unique_ptr<GeometryManager> geometryManager;
             std::unique_ptr<LightManager> lightManager;
             std::unique_ptr<AmbientOcclusionManager> ambientOcclusionManager;
             std::unique_ptr<ShadowManager> shadowManager;
