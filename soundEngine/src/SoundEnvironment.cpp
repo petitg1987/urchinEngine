@@ -2,11 +2,11 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include <SoundManager.h>
+#include <SoundEnvironment.h>
 
 namespace urchin {
 
-    SoundManager::SoundManager() :
+    SoundEnvironment::SoundEnvironment() :
             streamUpdateWorker(std::make_unique<StreamUpdateWorker>()),
             streamUpdateWorkerThread(std::make_unique<std::thread>(&StreamUpdateWorker::start, streamUpdateWorker.get())) {
         SignalHandler::instance().initialize();
@@ -16,7 +16,7 @@ namespace urchin {
         alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
     }
 
-    SoundManager::~SoundManager() {
+    SoundEnvironment::~SoundEnvironment() {
         audioControllers.clear();
 
         streamUpdateWorker->interrupt();
@@ -25,7 +25,7 @@ namespace urchin {
         Profiler::sound().log();
     }
 
-    void SoundManager::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
+    void SoundEnvironment::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
         if (sound && soundTrigger) {
             Logger::instance().logInfo("Add sound: " + sound->getFilename());
             adjustSoundVolume(*sound);
@@ -35,7 +35,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::removeSound(const Sound& sound) {
+    void SoundEnvironment::removeSound(const Sound& sound) {
         for (auto it = audioControllers.begin(); it != audioControllers.end(); ++it) {
             if (&(*it)->getSound() == &sound) {
                 audioControllers.erase(it);
@@ -44,7 +44,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::changeSoundTrigger(const Sound& sound, std::shared_ptr<SoundTrigger> newSoundTrigger) {
+    void SoundEnvironment::changeSoundTrigger(const Sound& sound, std::shared_ptr<SoundTrigger> newSoundTrigger) {
         for (auto& audioController : audioControllers) {
             if (&audioController->getSound() == &sound) {
                 audioController->changeSoundTrigger(std::move(newSoundTrigger));
@@ -53,7 +53,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::setupSoundsVolume(Sound::SoundCategory soundCategory, float volumePercentageChange) {
+    void SoundEnvironment::setupSoundsVolume(Sound::SoundCategory soundCategory, float volumePercentageChange) {
         soundVolumes[soundCategory] = volumePercentageChange;
 
         //apply volume on existing sounds:
@@ -64,7 +64,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::adjustSoundVolume(Sound& sound) {
+    void SoundEnvironment::adjustSoundVolume(Sound& sound) {
         auto itVolume = soundVolumes.find(sound.getSoundCategory());
         if (itVolume != soundVolumes.end()) {
             sound.changeVolume(itVolume->second);
@@ -74,23 +74,23 @@ namespace urchin {
     /**
      * @param masterVolume to set (0.0 for minimum volume, 1.0 for original volume). Note that volume can be higher to 1.0.
      */
-    void SoundManager::setMasterVolume(float masterVolume) {
+    void SoundEnvironment::setMasterVolume(float masterVolume) {
         alListenerf(AL_GAIN, masterVolume);
     }
 
-    float SoundManager::getMasterVolume() const {
+    float SoundEnvironment::getMasterVolume() const {
         float masterVolume = 0.0f;
         alGetListenerf(AL_GAIN, &masterVolume);
         return masterVolume;
     }
 
-    void SoundManager::pause() {
+    void SoundEnvironment::pause() {
         for (auto& audioController : audioControllers) {
             audioController->pause();
         }
     }
 
-    void SoundManager::unpause() {
+    void SoundEnvironment::unpause() {
         for (auto& audioController : audioControllers) {
             audioController->unpause();
         }
@@ -99,11 +99,11 @@ namespace urchin {
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void SoundManager::checkNoExceptionRaised() {
+    void SoundEnvironment::checkNoExceptionRaised() {
         streamUpdateWorker->checkNoExceptionRaised();
     }
 
-    void SoundManager::process(const Point3<float>& listenerPosition) {
+    void SoundEnvironment::process(const Point3<float>& listenerPosition) {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
@@ -118,7 +118,7 @@ namespace urchin {
         }
     }
 
-    void SoundManager::process() {
+    void SoundEnvironment::process() {
         process(Point3<float>(0.0f, 0.0f, 0.0f));
     }
 

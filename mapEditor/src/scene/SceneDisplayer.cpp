@@ -23,7 +23,7 @@ namespace urchin {
 
     SceneDisplayer::~SceneDisplayer() {
         mapHandler.reset(nullptr);
-        soundManager.reset(nullptr);
+        soundEnvironment.reset(nullptr);
         aiEnvironment.reset(nullptr);
         physicsWorld.reset(nullptr);
 
@@ -45,7 +45,7 @@ namespace urchin {
 
             initializeScene(mapFilename);
 
-            mapHandler = std::make_unique<MapHandler>(scene->getActiveRenderer3d(), physicsWorld.get(), soundManager.get(), aiEnvironment.get());
+            mapHandler = std::make_unique<MapHandler>(scene->getActiveRenderer3d(), physicsWorld.get(), soundEnvironment.get(), aiEnvironment.get());
             mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance().getResourcesDirectory() + relativeMapFilename);
@@ -111,7 +111,7 @@ namespace urchin {
         navMeshDisplayer = std::make_unique<NavMeshDisplayer>(*aiEnvironment, *scene->getActiveRenderer3d());
 
         //sound
-        soundManager = std::make_unique<SoundManager>();
+        soundManager = std::make_unique<SoundEnvironment>();
     }
 
     void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {

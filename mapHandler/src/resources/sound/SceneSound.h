@@ -15,7 +15,7 @@ namespace urchin {
             SceneSound();
             ~SceneSound();
 
-            void setSoundManager(SoundManager*);
+            void setSoundEnvironment(SoundEnvironment*);
 
             std::string getName() const;
             void setName(const std::string&);
@@ -33,7 +33,7 @@ namespace urchin {
             static constexpr char SOUND_TAG[] = "sound";
             static constexpr char SOUND_TRIGGER_TAG[] = "soundTrigger";
 
-            SoundManager* soundManager;
+            SoundEnvironment* soundEnvironment;
 
             std::string name;
             std::shared_ptr<Sound> sound;

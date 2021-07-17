@@ -13,10 +13,10 @@
 
 namespace urchin {
 
-    class SoundManager {
+    class SoundEnvironment {
         public:
-            SoundManager();
-            ~SoundManager();
+            SoundEnvironment();
+            ~SoundEnvironment();
 
             void addSound(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
             void removeSound(const Sound&);

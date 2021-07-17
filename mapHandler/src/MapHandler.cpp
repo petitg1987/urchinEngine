@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    MapHandler::MapHandler(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundManager* soundManager, AIEnvironment* aiEnvironment) :
+    MapHandler::MapHandler(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment* aiEnvironment) :
             map(nullptr) {
         SignalHandler::instance().initialize();
 
@@ -13,15 +13,15 @@ namespace urchin {
             throw std::invalid_argument("Renderer 3d cannot be null in map handler");
         }
 
-        if (!soundManager) {
-            throw std::invalid_argument("Sound manager cannot be null in map handler");
+        if (!soundEnvironment) {
+            throw std::invalid_argument("Sound environment cannot be null in map handler");
         }
 
         if (!aiEnvironment) {
             throw std::invalid_argument("AI environment cannot be null in map handler");
         }
 
-        map = std::make_unique<Map>(renderer3d, physicsWorld, soundManager, aiEnvironment);
+        map = std::make_unique<Map>(renderer3d, physicsWorld, soundEnvironment, aiEnvironment);
     }
 
     void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {

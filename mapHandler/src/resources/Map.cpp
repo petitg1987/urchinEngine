@@ -5,10 +5,10 @@
 
 namespace urchin {
 
-    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundManager* soundManager, AIEnvironment* aiEnvironment) :
+    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment* aiEnvironment) :
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
-            soundManager(soundManager),
+            soundEnvironment(soundEnvironment),
             aiEnvironment(aiEnvironment),
             sceneSky(std::make_unique<SceneSky>(renderer3d)),
             sceneAI(std::make_unique<SceneAI>(aiEnvironment)) {
@@ -295,7 +295,7 @@ namespace urchin {
     }
 
     void Map::addSceneSound(std::unique_ptr<SceneSound> sceneSound) {
-        sceneSound->setSoundManager(soundManager);
+        sceneSound->setSoundEnvironment(soundEnvironment);
         sceneSounds.push_back(std::move(sceneSound));
     }
 
@@ -324,8 +324,8 @@ namespace urchin {
             aiEnvironment->pause();
         }
 
-        if (soundManager) {
-            soundManager->pause();
+        if (soundEnvironment) {
+            soundEnvironment->pause();
         }
     }
 
@@ -342,15 +342,15 @@ namespace urchin {
             aiEnvironment->unpause();
         }
 
-        if (soundManager) {
-            soundManager->unpause();
+        if (soundEnvironment) {
+            soundEnvironment->unpause();
         }
     }
 
     void Map::refreshMap() {
         physicsWorld->checkNoExceptionRaised();
         aiEnvironment->checkNoExceptionRaised();
-        soundManager->checkNoExceptionRaised();
+        soundEnvironment->checkNoExceptionRaised();
 
         refreshEntities();
         refreshSound();
@@ -369,9 +369,9 @@ namespace urchin {
     void Map::refreshSound() {
         //update sound event
         if (renderer3d && renderer3d->getCamera()) {
-            soundManager->process(renderer3d->getCamera()->getPosition());
+            soundEnvironment->process(renderer3d->getCamera()->getPosition());
         } else {
-            soundManager->process();
+            soundEnvironment->process();
         }
     }
 }

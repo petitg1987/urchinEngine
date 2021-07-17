@@ -19,7 +19,7 @@ namespace urchin {
     */
     class MapHandler {
         public:
-            MapHandler(Renderer3d*, PhysicsWorld*, SoundManager*, AIEnvironment*);
+            MapHandler(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
 
             void loadMapFromFile(const std::string&, LoadCallback&);
             void writeMapOnFile(const std::string&) const;

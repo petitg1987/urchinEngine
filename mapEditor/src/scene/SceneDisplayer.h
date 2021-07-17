@@ -86,7 +86,7 @@ namespace urchin {
             std::unique_ptr<NavMeshDisplayer> navMeshDisplayer;
 
             //sound
-            std::unique_ptr<SoundManager> soundManager;
+            std::unique_ptr<SoundEnvironment> soundEnvironment;
 
             //map handler
             std::unique_ptr<MapHandler> mapHandler;

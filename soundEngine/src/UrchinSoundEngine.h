@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SoundManager.h>
+#include <SoundEnvironment.h>
 
 #include <sound/Sound.h>
 #include <sound/global/GlobalSound.h>

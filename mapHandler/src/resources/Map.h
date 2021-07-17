@@ -27,7 +27,7 @@ namespace urchin {
         public:
             friend class MapHandler;
 
-            Map(Renderer3d*, PhysicsWorld*, SoundManager*, AIEnvironment*);
+            Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
 
             const std::list<std::unique_ptr<SceneObject>>& getSceneObjects() const;
             SceneObject& getSceneObject(const std::string&) const;
@@ -102,7 +102,7 @@ namespace urchin {
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;
-            SoundManager* soundManager;
+            SoundEnvironment* soundEnvironment;
             AIEnvironment* aiEnvironment;
 
             std::list<std::unique_ptr<SceneObject>> sceneObjects;
