@@ -12,11 +12,11 @@ namespace urchin {
 
     SceneWater::~SceneWater() {
         if(water) {
-            renderer3d->getWaterManager().removeWater(*water);
+            renderer3d->getWaterContainer().removeWater(*water);
         }
     }
 
-    void SceneWater::setWaterManagers(Renderer3d* renderer3d) {
+    void SceneWater::setup(Renderer3d* renderer3d) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene water on two different renderer.");
         }
@@ -26,7 +26,7 @@ namespace urchin {
 
         this->renderer3d = renderer3d;
 
-        renderer3d->getWaterManager().addWater(water);
+        renderer3d->getWaterContainer().addWater(water);
     }
 
     void SceneWater::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
@@ -60,9 +60,9 @@ namespace urchin {
 
         if (renderer3d) {
             if(this->water) {
-                renderer3d->getWaterManager().removeWater(*this->water);
+                renderer3d->getWaterContainer().removeWater(*this->water);
             }
-            renderer3d->getWaterManager().addWater(water);
+            renderer3d->getWaterContainer().addWater(water);
         }
 
         this->water = std::move(water);

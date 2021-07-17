@@ -17,7 +17,7 @@ namespace urchin {
         }
     }
 
-    void SceneSound::setSoundEnvironment(SoundEnvironment* soundEnvironment) {
+    void SceneSound::setup(SoundEnvironment* soundEnvironment) {
         this->soundEnvironment = soundEnvironment;
 
         if (soundEnvironment) {

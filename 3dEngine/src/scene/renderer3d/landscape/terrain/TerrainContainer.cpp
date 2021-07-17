@@ -1,24 +1,24 @@
 #include <algorithm>
 
-#include <scene/renderer3d/landscape/terrain/TerrainManager.h>
+#include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
 
 
 
 namespace urchin {
-    TerrainManager::TerrainManager(RenderTarget& renderTarget) :
+    TerrainContainer::TerrainContainer(RenderTarget& renderTarget) :
             renderTarget(renderTarget),
             config({}) {
 
     }
 
-    void TerrainManager::onCameraProjectionUpdate(const Camera& camera) {
+    void TerrainContainer::onCameraProjectionUpdate(const Camera& camera) {
         this->projectionMatrix = camera.getProjectionMatrix();
         for (const auto& terrain : terrains) {
             terrain->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
-    void TerrainManager::addTerrain(const std::shared_ptr<Terrain>& terrain) {
+    void TerrainContainer::addTerrain(const std::shared_ptr<Terrain>& terrain) {
         if (terrain) {
             terrains.push_back(terrain);
 
@@ -28,14 +28,14 @@ namespace urchin {
         }
     }
 
-    void TerrainManager::removeTerrain(const Terrain& terrain) {
+    void TerrainContainer::removeTerrain(const Terrain& terrain) {
         auto itFind = std::find_if(terrains.begin(), terrains.end(), [&terrain](const auto& o){return o.get() == &terrain;});
         if (itFind != terrains.end()) {
             terrains.erase(itFind);
         }
     }
 
-    void TerrainManager::updateConfig(const Config& config) {
+    void TerrainContainer::updateConfig(const Config& config) {
         if (this->config.grassDisplayDistance != config.grassDisplayDistance) {
             this->config = config;
 
@@ -43,21 +43,21 @@ namespace urchin {
         }
     }
 
-    const TerrainManager::Config& TerrainManager::getConfig() const {
+    const TerrainContainer::Config& TerrainContainer::getConfig() const {
         return config;
     }
 
-    void TerrainManager::updateAllTerrainConfig() {
+    void TerrainContainer::updateAllTerrainConfig() {
         for (const auto& terrain : terrains) {
             updateTerrainConfig(*terrain);
         }
     }
 
-    void TerrainManager::updateTerrainConfig(Terrain& terrain) const {
+    void TerrainContainer::updateTerrainConfig(Terrain& terrain) const {
         terrain.getGrass().setGrassDisplayDistance(config.grassDisplayDistance);
     }
 
-    void TerrainManager::prepareRendering(const Camera& camera, float dt) const {
+    void TerrainContainer::prepareRendering(const Camera& camera, float dt) const {
         ScopeProfiler sp(Profiler::graphic(), "terPreRender");
 
         for (const auto& terrain : terrains) {

@@ -23,7 +23,7 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void SceneObject::setObjectManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
+    void SceneObject::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene object on two different object managers.");
         }

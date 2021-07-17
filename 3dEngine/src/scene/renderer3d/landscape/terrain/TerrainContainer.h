@@ -8,13 +8,13 @@
 
 namespace urchin {
 
-    class TerrainManager {
+    class TerrainContainer {
         public:
             struct Config {
                 float grassDisplayDistance = 100;
             };
 
-            explicit TerrainManager(RenderTarget&);
+            explicit TerrainContainer(RenderTarget&);
 
             void onCameraProjectionUpdate(const Camera&);
 

@@ -15,7 +15,7 @@ namespace urchin {
             SceneLight();
             ~SceneLight();
 
-            void setLightManager(LightManager&);
+            void setup(LightManager&);
 
             std::string getName() const;
             void setName(const std::string&);

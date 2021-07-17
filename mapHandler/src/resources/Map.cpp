@@ -199,7 +199,7 @@ namespace urchin {
     }
 
     void Map::addSceneObject(std::unique_ptr<SceneObject> sceneObject) {
-        sceneObject->setObjectManagers(renderer3d, physicsWorld, aiEnvironment);
+        sceneObject->setup(renderer3d, physicsWorld, aiEnvironment);
         sceneObjects.push_back(std::move(sceneObject));
     }
 
@@ -221,7 +221,7 @@ namespace urchin {
     }
 
     void Map::addSceneLight(std::unique_ptr<SceneLight> sceneLight) {
-        sceneLight->setLightManager(renderer3d->getLightManager());
+        sceneLight->setup(renderer3d->getLightManager());
         sceneLights.push_back(std::move(sceneLight));
     }
 
@@ -243,7 +243,7 @@ namespace urchin {
     }
 
     void Map::addSceneTerrain(std::unique_ptr<SceneTerrain> sceneTerrain) {
-        sceneTerrain->setTerrainManagers(renderer3d, physicsWorld, aiEnvironment);
+        sceneTerrain->setup(renderer3d, physicsWorld, aiEnvironment);
         sceneTerrains.push_back(std::move(sceneTerrain));
     }
 
@@ -265,7 +265,7 @@ namespace urchin {
     }
 
     void Map::addSceneWater(std::unique_ptr<SceneWater> sceneWater) {
-        sceneWater->setWaterManagers(renderer3d);
+        sceneWater->setup(renderer3d);
         sceneWaters.push_back(std::move(sceneWater));
     }
 
@@ -295,7 +295,7 @@ namespace urchin {
     }
 
     void Map::addSceneSound(std::unique_ptr<SceneSound> sceneSound) {
-        sceneSound->setSoundEnvironment(soundEnvironment);
+        sceneSound->setup(soundEnvironment);
         sceneSounds.push_back(std::move(sceneSound));
     }
 

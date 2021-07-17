@@ -5,20 +5,20 @@
 #include <graphic/render/target/RenderTarget.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/landscape/water/Water.h>
-#include <scene/renderer3d/landscape/fog/FogManager.h>
+#include <scene/renderer3d/landscape/fog/FogContainer.h>
 
 namespace urchin {
 
-    class WaterManager {
+    class WaterContainer {
         public:
-            explicit WaterManager(RenderTarget&);
+            explicit WaterContainer(RenderTarget&);
 
             void onCameraProjectionUpdate(const Camera&);
 
             void addWater(const std::shared_ptr<Water>&);
             void removeWater(const Water&);
 
-            void prepareRendering(const Camera&, FogManager*, float) const;
+            void prepareRendering(const Camera&, FogContainer*, float) const;
 
         private:
             RenderTarget& renderTarget;

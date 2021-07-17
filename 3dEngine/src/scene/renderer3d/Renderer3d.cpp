@@ -33,9 +33,9 @@ namespace urchin {
             deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(std::make_unique<OctreeManager<Model>>(MODELS_OCTREE_MIN_SIZE)),
-            fogManager(std::make_unique<FogManager>()),
-            terrainManager(std::make_unique<TerrainManager>(*deferredRenderTarget)),
-            waterManager(std::make_unique<WaterManager>(*deferredRenderTarget)),
+            fogContainer(std::make_unique<FogContainer>()),
+            terrainContainer(std::make_unique<TerrainContainer>(*deferredRenderTarget)),
+            waterContainer(std::make_unique<WaterContainer>(*deferredRenderTarget)),
             skyManager(std::make_unique<SkyManager>(*deferredRenderTarget)),
             geometryManager(std::make_unique<GeometryManager>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
@@ -95,16 +95,16 @@ namespace urchin {
         return *modelOctreeManager;
     }
 
-    FogManager& Renderer3d::getFogManager() const {
-        return *fogManager;
+    FogContainer& Renderer3d::getFogContainer() const {
+        return *fogContainer;
     }
 
-    TerrainManager& Renderer3d::getTerrainManager() const {
-        return *terrainManager;
+    TerrainContainer& Renderer3d::getTerrainContainer() const {
+        return *terrainContainer;
     }
 
-    WaterManager& Renderer3d::getWaterManager() const {
-        return *waterManager;
+    WaterContainer& Renderer3d::getWaterContainer() const {
+        return *waterContainer;
     }
 
     SkyManager& Renderer3d::getSkyManager() const {
@@ -169,8 +169,8 @@ namespace urchin {
 
     void Renderer3d::onCameraProjectionUpdate() {
         modelSetDisplayer->onCameraProjectionUpdate(*camera);
-        terrainManager->onCameraProjectionUpdate(*camera);
-        waterManager->onCameraProjectionUpdate(*camera);
+        terrainContainer->onCameraProjectionUpdate(*camera);
+        waterContainer->onCameraProjectionUpdate(*camera);
         skyManager->onCameraProjectionUpdate(*camera);
         geometryManager->onCameraProjectionUpdate(*camera);
         shadowManager->onCameraProjectionUpdate(*camera);
@@ -304,7 +304,7 @@ namespace urchin {
                 ->addUniformData(sizeof(visualOption), &visualOption); //binding 1
         lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2 & 3
         shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 4 & 5
-        fogManager->setupLightingRenderer(lightingRendererBuilder); //binding 6
+        fogContainer->setupLightingRenderer(lightingRendererBuilder); //binding 6
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
         for (unsigned int i = 0; i < shadowManager->getMaxShadowLights(); ++i) {
@@ -446,8 +446,8 @@ namespace urchin {
         deferredRenderTarget->disableAllRenderers();
         skyManager->prepareRendering(camera->getViewMatrix(), camera->getPosition());
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
-        terrainManager->prepareRendering(*camera, dt);
-        waterManager->prepareRendering(*camera, fogManager.get(), dt);
+        terrainContainer->prepareRendering(*camera, dt);
+        waterContainer->prepareRendering(*camera, fogContainer.get(), dt);
         geometryManager->prepareRendering(camera->getViewMatrix());
         renderDebugSceneData();
         deferredRenderTarget->render();
@@ -490,7 +490,7 @@ namespace urchin {
 
         lightManager->loadVisibleLights(*lightingRenderer);
 
-        fogManager->loadFog(*lightingRenderer);
+        fogContainer->loadFog(*lightingRenderer);
 
         if (visualOption.isAmbientOcclusionActivated) {
             std::size_t ambientOcclusionTexUnit = 3;

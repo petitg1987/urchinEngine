@@ -14,9 +14,9 @@ namespace urchin {
         lightManager->removeLight(light.get());
     }
 
-    void SceneLight::setLightManager(LightManager& lightManager) {
+    void SceneLight::setup(LightManager& lightManager) {
         if (this->lightManager) {
-            throw std::invalid_argument("Cannot add the scene light on two different light managers.");
+            throw std::invalid_argument("Cannot add the scene light on two different light containers.");
         }
 
         this->lightManager = &lightManager;

@@ -14,7 +14,7 @@ namespace urchin {
             SceneWater();
             ~SceneWater();
 
-            void setWaterManagers(Renderer3d*);
+            void setup(Renderer3d*);
 
             std::string getName() const;
             void setName(const std::string&);

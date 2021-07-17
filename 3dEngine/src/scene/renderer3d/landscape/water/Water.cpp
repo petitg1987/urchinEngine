@@ -236,16 +236,16 @@ namespace urchin {
         return gradient;
     }
 
-    void Water::prepareRendering(const Camera& camera, FogManager* fogManager, float dt) {
+    void Water::prepareRendering(const Camera& camera, FogContainer* fogContainer, float dt) {
         assert(isInitialized);
         if (camera.getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera.getPosition().X, camera.getPosition().Z))) {
-            if (fogManager->getActiveFog() != underwaterFog.get()) {
-                fogManager->pushFog(underwaterFog.get());
+            if (fogContainer->getActiveFog() != underwaterFog.get()) {
+                fogContainer->pushFog(underwaterFog.get());
                 notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
             }
         } else {
-            if (fogManager->getActiveFog() == underwaterFog.get()) {
-                fogManager->popFog();
+            if (fogContainer->getActiveFog() == underwaterFog.get()) {
+                fogContainer->popFog();
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }
 

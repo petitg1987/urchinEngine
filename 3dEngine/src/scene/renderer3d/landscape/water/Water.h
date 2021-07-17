@@ -8,7 +8,7 @@
 #include <graphic/render/GenericRenderer.h>
 #include <resources/image/Image.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/landscape/fog/FogManager.h>
+#include <scene/renderer3d/landscape/fog/FogContainer.h>
 #include <scene/renderer3d/landscape/fog/Fog.h>
 
 namespace urchin {
@@ -62,7 +62,7 @@ namespace urchin {
             void setGradient(float);
             float getGradient() const;
 
-            void prepareRendering(const Camera&, FogManager*, float invFrameRate);
+            void prepareRendering(const Camera&, FogContainer*, float invFrameRate);
 
         private:
             void updateRenderer();

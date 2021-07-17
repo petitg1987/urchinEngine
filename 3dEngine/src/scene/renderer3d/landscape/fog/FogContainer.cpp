@@ -1,34 +1,34 @@
-#include <scene/renderer3d/landscape/fog/FogManager.h>
+#include <scene/renderer3d/landscape/fog/FogContainer.h>
 
 namespace urchin {
 
-    FogManager::FogManager() :
+    FogContainer::FogContainer() :
             fogData({}) {
 
     }
 
-    void FogManager::pushFog(const Fog* fog) {
+    void FogContainer::pushFog(const Fog* fog) {
         fogs.push(fog);
     }
 
-    void FogManager::popFog() {
+    void FogContainer::popFog() {
         if (!fogs.empty()) {
             fogs.pop();
         }
     }
 
-    const Fog* FogManager::getActiveFog() const {
+    const Fog* FogContainer::getActiveFog() const {
         if (fogs.empty()) {
             return nullptr;
         }
         return fogs.top();
     }
 
-    void FogManager::setupLightingRenderer(std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+    void FogContainer::setupLightingRenderer(std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
         lightingRendererBuilder->addUniformData(sizeof(fogData), &fogData); //binding 6
     }
 
-    void FogManager::loadFog(GenericRenderer& lightingRenderer) {
+    void FogContainer::loadFog(GenericRenderer& lightingRenderer) {
         fogData = {};
         fogData.hasFog = !fogs.empty();
         if (!fogs.empty()) {

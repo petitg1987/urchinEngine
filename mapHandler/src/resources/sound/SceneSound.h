@@ -15,7 +15,7 @@ namespace urchin {
             SceneSound();
             ~SceneSound();
 
-            void setSoundEnvironment(SoundEnvironment*);
+            void setup(SoundEnvironment*);
 
             std::string getName() const;
             void setName(const std::string&);

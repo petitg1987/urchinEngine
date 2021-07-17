@@ -10,9 +10,9 @@
 
 namespace urchin {
 
-    class FogManager {
+    class FogContainer {
         public:
-            FogManager();
+            FogContainer();
 
             void pushFog(const Fog*);
             void popFog();

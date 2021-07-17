@@ -16,13 +16,13 @@ namespace urchin {
 
     SceneTerrain::~SceneTerrain() {
         if(terrain) {
-            renderer3d->getTerrainManager().removeTerrain(*terrain);
+            renderer3d->getTerrainContainer().removeTerrain(*terrain);
         }
         deleteRigidBody();
         deleteAIObjects();
     }
 
-    void SceneTerrain::setTerrainManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
+    void SceneTerrain::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
         }
@@ -34,7 +34,7 @@ namespace urchin {
         this->physicsWorld = physicsWorld;
         this->aiEnvironment = aiEnvironment;
 
-        renderer3d->getTerrainManager().addTerrain(terrain);
+        renderer3d->getTerrainContainer().addTerrain(terrain);
 
         if (physicsWorld) {
             physicsWorld->addBody(rigidBody);
@@ -82,9 +82,9 @@ namespace urchin {
 
         if (renderer3d) {
             if(this->terrain) {
-                renderer3d->getTerrainManager().removeTerrain(*this->terrain);
+                renderer3d->getTerrainContainer().removeTerrain(*this->terrain);
             }
-            renderer3d->getTerrainManager().addTerrain(terrain);
+            renderer3d->getTerrainContainer().addTerrain(terrain);
         }
 
         this->terrain = std::move(terrain);

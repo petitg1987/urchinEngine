@@ -19,7 +19,7 @@ namespace urchin {
             SceneObject();
             ~SceneObject() override;
 
-            void setObjectManagers(Renderer3d*, PhysicsWorld*, AIEnvironment*);
+            void setup(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 
             const std::string& getName() const;
             void setName(const std::string&);

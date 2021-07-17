@@ -13,9 +13,9 @@
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <scene/renderer3d/landscape/terrain/TerrainManager.h>
-#include <scene/renderer3d/landscape/fog/FogManager.h>
-#include <scene/renderer3d/landscape/water/WaterManager.h>
+#include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
+#include <scene/renderer3d/landscape/fog/FogContainer.h>
+#include <scene/renderer3d/landscape/water/WaterContainer.h>
 #include <scene/renderer3d/landscape/sky/SkyManager.h>
 #include <resources/geometry/GeometryManager.h>
 #include <resources/geometry/GeometryModel.h>
@@ -37,11 +37,11 @@ namespace urchin {
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
 
-            //managers
+            //graphics
             OctreeManager<Model>& getModelOctreeManager() const;
-            FogManager& getFogManager() const;
-            TerrainManager& getTerrainManager() const;
-            WaterManager& getWaterManager() const;
+            FogContainer& getFogContainer() const;
+            TerrainContainer& getTerrainContainer() const;
+            WaterContainer& getWaterContainer() const;
             SkyManager& getSkyManager() const;
             GeometryManager& getGeometryManager() const;
             LightManager& getLightManager() const;
@@ -112,9 +112,9 @@ namespace urchin {
             std::unique_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 
-            std::unique_ptr<FogManager> fogManager;
-            std::unique_ptr<TerrainManager> terrainManager;
-            std::unique_ptr<WaterManager> waterManager;
+            std::unique_ptr<FogContainer> fogContainer;
+            std::unique_ptr<TerrainContainer> terrainContainer;
+            std::unique_ptr<WaterContainer> waterContainer;
             std::unique_ptr<SkyManager> skyManager;
             std::unique_ptr<GeometryManager> geometryManager;
             std::unique_ptr<LightManager> lightManager;
