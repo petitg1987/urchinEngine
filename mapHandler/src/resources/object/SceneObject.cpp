@@ -1,5 +1,5 @@
 #include <stdexcept>
-#include <AIManager.h>
+#include <AIEnvironment.h>
 
 #include "SceneObject.h"
 #include <resources/object/ModelReaderWriter.h>
@@ -11,7 +11,7 @@ namespace urchin {
     SceneObject::SceneObject() :
             renderer3d(nullptr),
             physicsWorld(nullptr),
-            aiManager(nullptr),
+            aiEnvironment(nullptr),
             rigidBody(nullptr),
             aiObject(nullptr) {
 
@@ -23,7 +23,7 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void SceneObject::setObjectManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIManager* aiManager) {
+    void SceneObject::setObjectManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene object on two different object managers.");
         }
@@ -33,7 +33,7 @@ namespace urchin {
 
         this->renderer3d = renderer3d;
         this->physicsWorld = physicsWorld;
-        this->aiManager = aiManager;
+        this->aiEnvironment = aiEnvironment;
 
         renderer3d->addModel(model);
 
@@ -41,8 +41,8 @@ namespace urchin {
             physicsWorld->addBody(rigidBody);
         }
 
-        if (aiManager && aiObject) {
-            aiManager->addEntity(aiObject);
+        if (aiEnvironment && aiObject) {
+            aiEnvironment->addEntity(aiObject);
         }
     }
 
@@ -131,8 +131,8 @@ namespace urchin {
         } else {
             std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
             this->aiObject = AIEntityBuilder::buildAIObject(aiObjectName, rigidBody->getShape(), rigidBody->getTransform().toTransform());
-            if (aiManager) {
-                aiManager->addEntity(aiObject);
+            if (aiEnvironment) {
+                aiEnvironment->addEntity(aiObject);
             }
         }
     }
@@ -145,8 +145,8 @@ namespace urchin {
     }
 
     void SceneObject::deleteAIObjects() {
-        if (aiManager && aiObject) {
-            aiManager->removeEntity(aiObject);
+        if (aiEnvironment && aiObject) {
+            aiEnvironment->removeEntity(aiObject);
         }
     }
 

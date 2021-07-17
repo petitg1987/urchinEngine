@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    NavMeshDisplayer::NavMeshDisplayer(AIManager& aiManager, Renderer3d& renderer3d) :
-        aiManager(aiManager),
+    NavMeshDisplayer::NavMeshDisplayer(AIEnvironment& aiEnvironment, Renderer3d& renderer3d) :
+        aiEnvironment(aiEnvironment),
         renderer3d(renderer3d),
         loadedNavMeshId(std::numeric_limits<unsigned int>::max()) {
             
@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void NavMeshDisplayer::display() {
-        NavMesh navMesh = aiManager.getNavMeshGenerator().copyLastGeneratedNavMesh();
+        NavMesh navMesh = aiEnvironment.getNavMeshGenerator().copyLastGeneratedNavMesh();
 
         if (loadedNavMeshId != navMesh.getUpdateId()) {
             clearDisplay();

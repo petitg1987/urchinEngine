@@ -1,15 +1,15 @@
 #include <algorithm>
 #include <UrchinCommon.h>
 
-#include <AIManager.h>
+#include <AIEnvironment.h>
 #include <path/pathfinding/PathfindingAStar.h>
 
 namespace urchin {
 
     //static
-    std::exception_ptr AIManager::aiThreadExceptionPtr = nullptr;
+    std::exception_ptr AIEnvironment::aiThreadExceptionPtr = nullptr;
 
-    AIManager::AIManager() :
+    AIEnvironment::AIEnvironment() :
             aiSimulationThread(nullptr),
             aiSimulationStopper(false),
             timeStep(0),
@@ -19,7 +19,7 @@ namespace urchin {
         SignalHandler::instance().initialize();
     }
 
-    AIManager::~AIManager() {
+    AIEnvironment::~AIEnvironment() {
         if (aiSimulationThread) {
             interrupt();
             aiSimulationThread->join();
@@ -29,25 +29,25 @@ namespace urchin {
         pathRequests.clear();
     }
 
-    NavMeshGenerator& AIManager::getNavMeshGenerator() const {
+    NavMeshGenerator& AIEnvironment::getNavMeshGenerator() const {
         return *navMeshGenerator;
     }
 
-    void AIManager::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {
+    void AIEnvironment::addEntity(const std::shared_ptr<AIEntity>& aiEntity) {
         Logger::instance().logInfo("Add new AI entity: " + aiEntity->getName());
         aiWorld.addEntity(aiEntity);
     }
 
-    void AIManager::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) {
+    void AIEnvironment::removeEntity(const std::shared_ptr<AIEntity>& aiEntity) {
         aiWorld.removeEntity(aiEntity);
     }
 
-    void AIManager::addPathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
+    void AIEnvironment::addPathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
         pathRequests.push_back(pathRequest);
     }
 
-    void AIManager::removePathRequest(const PathRequest& pathRequest) {
+    void AIEnvironment::removePathRequest(const PathRequest& pathRequest) {
         std::lock_guard<std::mutex> lock(mutex);
 
         auto itFind = std::find_if(pathRequests.begin(), pathRequests.end(), [&pathRequest](const auto& o){return o.get() == &pathRequest;});
@@ -60,26 +60,26 @@ namespace urchin {
      * Set up the AI simulation in new thread
      * @param timeStep Frequency updates expressed in second
      */
-    void AIManager::setUp(float timeStep) {
+    void AIEnvironment::setUp(float timeStep) {
         if (aiSimulationThread) {
             throw std::runtime_error("AI thread is already started");
         }
 
         this->timeStep = timeStep;
-        aiSimulationThread = std::make_unique<std::thread>(&AIManager::startAIUpdate, this);
+        aiSimulationThread = std::make_unique<std::thread>(&AIEnvironment::startAIUpdate, this);
     }
 
-    void AIManager::pause() {
+    void AIEnvironment::pause() {
         std::lock_guard<std::mutex> lock(mutex);
         paused = true;
     }
 
-    void AIManager::unpause() {
+    void AIEnvironment::unpause() {
         std::lock_guard<std::mutex> lock(mutex);
         paused = false;
     }
 
-    bool AIManager::isPaused() const {
+    bool AIEnvironment::isPaused() const {
         std::lock_guard<std::mutex> lock(mutex);
         return paused;
     }
@@ -87,20 +87,20 @@ namespace urchin {
     /**
      * Interrupt the thread
      */
-    void AIManager::interrupt() {
+    void AIEnvironment::interrupt() {
         aiSimulationStopper.store(true, std::memory_order_release);
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void AIManager::checkNoExceptionRaised() {
+    void AIEnvironment::checkNoExceptionRaised() {
         if (aiThreadExceptionPtr) {
             std::rethrow_exception(aiThreadExceptionPtr);
         }
     }
 
-    void AIManager::startAIUpdate() {
+    void AIEnvironment::startAIUpdate() {
         try {
             auto frameStartTime = std::chrono::steady_clock::now();
 
@@ -134,11 +134,11 @@ namespace urchin {
     /**
      * @return True if thread execution is not interrupted
     */
-    bool AIManager::continueExecution() {
+    bool AIEnvironment::continueExecution() {
         return !aiSimulationStopper.load(std::memory_order_acquire);
     }
 
-    void AIManager::processAIUpdate() {
+    void AIEnvironment::processAIUpdate() {
         ScopeProfiler sp(Profiler::ai(), "procAIUpdate");
 
         //copy for local thread

@@ -19,7 +19,7 @@ namespace urchin {
             SceneObject();
             ~SceneObject() override;
 
-            void setObjectManagers(Renderer3d*, PhysicsWorld*, AIManager*);
+            void setObjectManagers(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 
             const std::string& getName() const;
             void setName(const std::string&);
@@ -50,7 +50,7 @@ namespace urchin {
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;
-            AIManager* aiManager;
+            AIEnvironment* aiEnvironment;
 
             std::string name;
             std::shared_ptr<Model> model;

@@ -5,9 +5,9 @@ namespace urchin {
     //static
     constexpr float AICharacterController::CHANGE_PATH_POINT_DISTANCE = 0.4f;
 
-    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager& aiManager) :
+    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIEnvironment& aiEnvironment) :
             character(std::move(character)),
-            aiManager(aiManager),
+            aiEnvironment(aiEnvironment),
             eventHandler(nullptr),
             nextPathPointIndex(0) { //see https://gamedevelopment.tutsplus.com/series/understanding-steering-behaviors--gamedev-12732
 
@@ -20,7 +20,7 @@ namespace urchin {
     void AICharacterController::moveTo(const Point3<float>& seekTarget) {
         stopMoving();
         pathRequest = std::make_shared<PathRequest>(character->getPosition(), seekTarget);
-        aiManager.addPathRequest(pathRequest);
+        aiEnvironment.addPathRequest(pathRequest);
     }
 
     void AICharacterController::stopMoving() {
@@ -31,7 +31,7 @@ namespace urchin {
         nextPathPointIndex = 0;
 
         if (pathRequest) {
-            aiManager.removePathRequest(*pathRequest);
+            aiEnvironment.removePathRequest(*pathRequest);
             pathRequest = std::shared_ptr<PathRequest>(nullptr);
         }
         pathPoints.clear();

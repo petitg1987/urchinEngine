@@ -14,10 +14,10 @@
 
 namespace urchin {
 
-    class AIManager {
+    class AIEnvironment {
         public:
-            AIManager();
-            ~AIManager();
+            AIEnvironment();
+            ~AIEnvironment();
 
             NavMeshGenerator& getNavMeshGenerator() const;
 

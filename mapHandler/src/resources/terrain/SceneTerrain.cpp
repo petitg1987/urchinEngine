@@ -8,7 +8,7 @@ namespace urchin {
     SceneTerrain::SceneTerrain() :
             renderer3d(nullptr),
             physicsWorld(nullptr),
-            aiManager(nullptr),
+            aiEnvironment(nullptr),
             terrain(nullptr),
             rigidBody(nullptr) {
 
@@ -22,7 +22,7 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void SceneTerrain::setTerrainManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIManager* aiManager) {
+    void SceneTerrain::setTerrainManagers(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
         }
@@ -32,7 +32,7 @@ namespace urchin {
 
         this->renderer3d = renderer3d;
         this->physicsWorld = physicsWorld;
-        this->aiManager = aiManager;
+        this->aiEnvironment = aiEnvironment;
 
         renderer3d->getTerrainManager().addTerrain(terrain);
 
@@ -40,8 +40,8 @@ namespace urchin {
             physicsWorld->addBody(rigidBody);
         }
 
-        if (aiManager && aiTerrain) {
-            aiManager->addEntity(aiTerrain);
+        if (aiEnvironment && aiTerrain) {
+            aiEnvironment->addEntity(aiTerrain);
         }
     }
 
@@ -121,8 +121,8 @@ namespace urchin {
         } else {
             std::string aiObjectName = "@" + rigidBody->getId(); //prefix to avoid collision name with objects
             this->aiTerrain = AIEntityBuilder::buildAITerrain(aiObjectName, rigidBody->getShape(), rigidBody->getTransform().toTransform());
-            if (aiManager) {
-                aiManager->addEntity(aiTerrain);
+            if (aiEnvironment) {
+                aiEnvironment->addEntity(aiTerrain);
             }
         }
     }
@@ -135,8 +135,8 @@ namespace urchin {
     }
 
     void SceneTerrain::deleteAIObjects() {
-        if (aiManager && aiTerrain) {
-            aiManager->removeEntity(aiTerrain);
+        if (aiEnvironment && aiTerrain) {
+            aiEnvironment->removeEntity(aiTerrain);
         }
     }
 }

@@ -5,13 +5,13 @@
 
 namespace urchin {
 
-    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundManager* soundManager, AIManager* aiManager) :
+    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundManager* soundManager, AIEnvironment* aiEnvironment) :
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
             soundManager(soundManager),
-            aiManager(aiManager),
+            aiEnvironment(aiEnvironment),
             sceneSky(std::make_unique<SceneSky>(renderer3d)),
-            sceneAI(std::make_unique<SceneAI>(aiManager)) {
+            sceneAI(std::make_unique<SceneAI>(aiEnvironment)) {
 
     }
 
@@ -24,8 +24,8 @@ namespace urchin {
             throw std::runtime_error("Physics world should be paused while loading map.");
         }
 
-        if (aiManager && !aiManager->isPaused()) { //to avoid compute path based on a world with missing objects
-            throw std::runtime_error("AI manager should be paused while loading map.");
+        if (aiEnvironment && !aiEnvironment->isPaused()) { //to avoid compute path based on a world with missing objects
+            throw std::runtime_error("AI environment should be paused while loading map.");
         }
 
         loadSceneObjectsFrom(sceneChunk, udaParser);
@@ -199,7 +199,7 @@ namespace urchin {
     }
 
     void Map::addSceneObject(std::unique_ptr<SceneObject> sceneObject) {
-        sceneObject->setObjectManagers(renderer3d, physicsWorld, aiManager);
+        sceneObject->setObjectManagers(renderer3d, physicsWorld, aiEnvironment);
         sceneObjects.push_back(std::move(sceneObject));
     }
 
@@ -243,7 +243,7 @@ namespace urchin {
     }
 
     void Map::addSceneTerrain(std::unique_ptr<SceneTerrain> sceneTerrain) {
-        sceneTerrain->setTerrainManagers(renderer3d, physicsWorld, aiManager);
+        sceneTerrain->setTerrainManagers(renderer3d, physicsWorld, aiEnvironment);
         sceneTerrains.push_back(std::move(sceneTerrain));
     }
 
@@ -320,8 +320,8 @@ namespace urchin {
             physicsWorld->pause();
         }
 
-        if (aiManager) {
-            aiManager->pause();
+        if (aiEnvironment) {
+            aiEnvironment->pause();
         }
 
         if (soundManager) {
@@ -338,8 +338,8 @@ namespace urchin {
             physicsWorld->unpause();
         }
 
-        if (aiManager) {
-            aiManager->unpause();
+        if (aiEnvironment) {
+            aiEnvironment->unpause();
         }
 
         if (soundManager) {
@@ -349,7 +349,7 @@ namespace urchin {
 
     void Map::refreshMap() {
         physicsWorld->checkNoExceptionRaised();
-        aiManager->checkNoExceptionRaised();
+        aiEnvironment->checkNoExceptionRaised();
         soundManager->checkNoExceptionRaised();
 
         refreshEntities();

@@ -19,7 +19,7 @@ namespace urchin {
             SceneTerrain();
             ~SceneTerrain() override;
 
-            void setTerrainManagers(Renderer3d*, PhysicsWorld*, AIManager*);
+            void setTerrainManagers(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 
             std::string getName() const;
             void setName(const std::string&);
@@ -45,7 +45,7 @@ namespace urchin {
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;
-            AIManager* aiManager;
+            AIEnvironment* aiEnvironment;
 
             std::string name;
             std::shared_ptr<Terrain> terrain;

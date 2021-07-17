@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <AIManager.h>
+#include <AIEnvironment.h>
 #include <character/AICharacter.h>
 #include <character/AICharacterEventHandler.h>
 #include <path/PathRequest.h>
@@ -11,7 +11,7 @@ namespace urchin {
 
     class AICharacterController {
         public:
-            AICharacterController(std::shared_ptr<AICharacter>, AIManager&);
+            AICharacterController(std::shared_ptr<AICharacter>, AIEnvironment&);
 
             void setupEventHandler(const std::shared_ptr<AICharacterEventHandler>&);
 
@@ -34,7 +34,7 @@ namespace urchin {
             static const float CHANGE_PATH_POINT_DISTANCE;
 
             std::shared_ptr<AICharacter> character;
-            AIManager& aiManager;
+            AIEnvironment& aiEnvironment;
             std::shared_ptr<AICharacterEventHandler> eventHandler;
 
             Vector2<float> steeringVelocity;

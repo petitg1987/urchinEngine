@@ -3,17 +3,17 @@
 
 namespace urchin {
 
-    SceneAI::SceneAI(AIManager* aiManager) :
-            aiManager(aiManager) {
+    SceneAI::SceneAI(AIEnvironment* aiEnvironment) :
+            aiEnvironment(aiEnvironment) {
 
     }
 
     const NavMeshAgent* SceneAI::getNavMeshAgent() const {
-        return aiManager->getNavMeshGenerator().getNavMeshAgent();
+        return aiEnvironment->getNavMeshGenerator().getNavMeshAgent();
     }
 
     void SceneAI::changeNavMeshAgent(std::unique_ptr<NavMeshAgent> navMeshAgent) {
-        aiManager->getNavMeshGenerator().setNavMeshAgent(std::move(navMeshAgent));
+        aiEnvironment->getNavMeshGenerator().setNavMeshAgent(std::move(navMeshAgent));
     }
 
     void SceneAI::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {

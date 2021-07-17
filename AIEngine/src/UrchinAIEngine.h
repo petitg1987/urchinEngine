@@ -1,6 +1,6 @@
 #pragma once
 
-#include <AIManager.h>
+#include <AIEnvironment.h>
 
 #include <input/AIWorld.h>
 #include <input/AIObject.h>

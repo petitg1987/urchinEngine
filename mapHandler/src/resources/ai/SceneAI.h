@@ -10,7 +10,7 @@ namespace urchin {
         public:
             friend class Map;
 
-            explicit SceneAI(AIManager*);
+            explicit SceneAI(AIEnvironment*);
 
             const NavMeshAgent* getNavMeshAgent() const;
             void changeNavMeshAgent(std::unique_ptr<NavMeshAgent>);
@@ -21,7 +21,7 @@ namespace urchin {
 
             static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";
 
-            AIManager* aiManager;
+            AIEnvironment* aiEnvironment;
     };
 
 }

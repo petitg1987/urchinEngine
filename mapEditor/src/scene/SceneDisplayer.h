@@ -82,7 +82,7 @@ namespace urchin {
             std::unique_ptr<PhysicsWorld> physicsWorld;
 
             //AI
-            std::unique_ptr<AIManager> aiManager;
+            std::unique_ptr<AIEnvironment> aiEnvironment;
             std::unique_ptr<NavMeshDisplayer> navMeshDisplayer;
 
             //sound
