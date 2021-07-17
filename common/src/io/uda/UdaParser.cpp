@@ -77,6 +77,12 @@ namespace urchin {
             }
 
             unsigned int indentLevel = computeIndentLevel(rawContentLine);
+            StringUtil::ltrim(rawContentLine);
+
+            if(rawContentLine.empty() || rawContentLine[0] == '#') {
+                continue; //ignore comment line
+            }
+
             if (indentLevel == 0) {
                 if (root) {
                     throw std::runtime_error("Content line (" + rawContentLine +") has wrong indentation in the file: " + filenamePath);
@@ -85,7 +91,6 @@ namespace urchin {
                 currentNode = root.get();
                 currentNodeIndentLevel = 0;
             } else {
-                StringUtil::ltrim(rawContentLine);
                 if (indentLevel - 1 == currentNodeIndentLevel) {
                     auto newNode = buildChunk(rawContentLine, currentNode);
                     currentNode = &currentNode->addChild(std::move(newNode));
