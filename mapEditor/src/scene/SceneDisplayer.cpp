@@ -34,7 +34,7 @@ namespace urchin {
         navMeshDisplayer.reset(nullptr);
         scene.reset(nullptr);
 
-        SingletonManager::destroyAllSingletons();
+        SingletonContainer::destroyAllSingletons();
     }
 
     void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {

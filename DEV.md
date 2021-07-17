@@ -84,10 +84,10 @@
     * Generation path: `.build/release`
     * Build options: `-j 10`
 * Add CMake applications
-  * Application **testExecutor**:
+  * Application **testExecutor (monkey)**:
     * Target/executable: `testExecutor`
     * Program arguments: `unit integration monkey`
-  * Application **testExecutor (no monkey)**:
+  * Application **testExecutor**:
     * Target/executable: `testExecutor`
     * Program arguments: `unit integration`    
   * Application **urchinMapEditor**:

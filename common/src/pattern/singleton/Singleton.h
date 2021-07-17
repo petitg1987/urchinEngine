@@ -5,7 +5,7 @@
 #include <thread>
 #include <map>
 
-#include <pattern/singleton/SingletonManager.h>
+#include <pattern/singleton/SingletonContainer.h>
 #include <pattern/singleton/SingletonInterface.h>
 
 namespace urchin {

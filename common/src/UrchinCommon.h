@@ -89,7 +89,7 @@
 #include <pattern/observer/Observer.h>
 #include <pattern/singleton/Singleton.h>
 #include <pattern/singleton/ThreadSafeSingleton.h>
-#include <pattern/singleton/SingletonManager.h>
+#include <pattern/singleton/SingletonContainer.h>
 #include <pattern/singleton/SingletonInterface.h>
 
 #include <profiler/Profiler.h>

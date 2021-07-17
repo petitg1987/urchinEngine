@@ -14,7 +14,7 @@ template<class T> T& ThreadSafeSingleton<T>::instance() {
         if (!singletonInstance) {
             auto newObjectT = std::unique_ptr<T>(new T);
             singletonInstance = newObjectT.get();
-            SingletonManager::registerSingleton(typeid(T).name(), std::move(newObjectT));
+            SingletonContainer::registerSingleton(typeid(T).name(), std::move(newObjectT));
             objectT.store(singletonInstance, std::memory_order_release);
         }
     }

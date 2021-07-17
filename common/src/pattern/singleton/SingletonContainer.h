@@ -24,15 +24,15 @@ namespace urchin {
     /**
      * Map with the singletons
      */
-    class DLL_EXPORT SingletonManager {
+    class DLL_EXPORT SingletonContainer {
         public:
             static void registerSingleton(const std::string&, std::unique_ptr<SingletonInterface>);
 
             static void destroyAllSingletons();
 
         private:
-            SingletonManager() = default;
-            ~SingletonManager() = default;
+            SingletonContainer() = default;
+            ~SingletonContainer() = default;
 
             static std::map<std::string, std::unique_ptr<SingletonInterface>> singletons;
     };

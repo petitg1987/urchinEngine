@@ -177,6 +177,6 @@ int main(int argc, char *argv[]) {
     runner.run();
 
     urchin::Logger::instance().purge();
-    urchin::SingletonManager::destroyAllSingletons();
+    urchin::SingletonContainer::destroyAllSingletons();
     return 0;
 }
