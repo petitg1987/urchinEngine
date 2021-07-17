@@ -26,14 +26,14 @@ namespace urchin {
 
     void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
         Logger::instance().logInfo("Load map: " + filename);
-        UdaParser udaParser(filename);
+        UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
         relativeWorkingDirectory = udaParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
         map->loadFrom(udaParser.getRootChunk(), udaParser, loadCallback);
     }
 
     void MapHandler::writeMapOnFile(const std::string& filename) const {
-        UdaWriter udaWriter(filename);
+        UdaWriter udaWriter(FileSystem::instance().getResourcesDirectory() + filename);
 
         auto& rootChunk = udaWriter.createChunk(SCENE_TAG, UdaAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
         map->writeOn(rootChunk, udaWriter);
@@ -46,8 +46,7 @@ namespace urchin {
      * @return Working directory relative to the map file
      */
     std::string MapHandler::getRelativeWorkingDirectory(const std::string& filename) {
-        UdaParser udaParser(filename, "");
-        return udaParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
+        return UdaParser(filename).getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
     }
 
     /**

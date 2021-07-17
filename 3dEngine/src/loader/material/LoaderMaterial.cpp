@@ -11,7 +11,7 @@ namespace urchin {
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         std::locale::global(std::locale("C")); //for float
 
-        UdaParser udaParser(filename);
+        UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
         //textures data
         bool repeatableTextures = false;
@@ -39,7 +39,7 @@ namespace urchin {
         }
 
         //ambient data
-        float fAmbientFactor = 0.0;
+        float fAmbientFactor = 0.0f;
         auto ambient = udaParser.getUniqueChunk(false, "ambient");
         if (ambient) {
             auto ambientFactor = udaParser.getUniqueChunk(true, "factor", UdaAttribute(), ambient);

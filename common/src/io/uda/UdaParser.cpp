@@ -1,6 +1,7 @@
 #include <memory>
 #include <stdexcept>
 #include <regex>
+#include <utility>
 
 #include <io/uda/UdaParser.h>
 #include <io/file/FileReader.h>
@@ -9,20 +10,11 @@
 
 namespace urchin {
 
-    UdaParser::UdaParser(const std::string& filename) :
-            UdaParser(filename, FileSystem::instance().getResourcesDirectory()) {
-
-    }
-
-    /**
-     * @param workingDirectory Override the default working directory
-     */
-    UdaParser::UdaParser(const std::string& filename, const std::string& workingDirectory) {
-        filenamePath = workingDirectory + filename;
-
-        std::ifstream file(filenamePath, std::ios::in);
+    UdaParser::UdaParser(std::string filenamePath) :
+            filenamePath(std::move(filenamePath)) {
+        std::ifstream file(this->filenamePath, std::ios::in);
         if (!file.is_open()) {
-            throw std::invalid_argument("Unable to open file: " + filenamePath);
+            throw std::invalid_argument("Unable to open file: " + this->filenamePath);
         }
         loadFile(file);
     }

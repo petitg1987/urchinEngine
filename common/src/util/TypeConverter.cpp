@@ -10,7 +10,7 @@ namespace urchin {
 
     //static
     const char TypeConverter::FLOAT_DELIMITER = ' ';
-    const float TypeConverter::FLOAT_INT_SCALE = 8192.0;
+    const float TypeConverter::FLOAT_INT_SCALE = 8192.0f;
 
     bool TypeConverter::isInt(const std::string& str) {
         std::istringstream iss(str);

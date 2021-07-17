@@ -1,22 +1,16 @@
 #include <memory>
 #include <stdexcept>
 #include <stack>
+#include <utility>
 
 #include <io/uda/UdaWriter.h>
 #include <config/FileSystem.h>
 
 namespace urchin {
 
-    UdaWriter::UdaWriter(const std::string& filename) :
-            UdaWriter(filename, FileSystem::instance().getResourcesDirectory()) {
+    UdaWriter::UdaWriter(std::string filenamePath) :
+            filenamePath(std::move(filenamePath)) {
 
-    }
-
-    /**
-     * @param workingDirectory Override the default working directory
-     */
-    UdaWriter::UdaWriter(const std::string& filename, const std::string& workingDirectory) {
-        filenamePath = workingDirectory + filename;
     }
 
     UdaChunk& UdaWriter::createChunk(const std::string& chunkName, const UdaAttribute& attribute, UdaChunk* parent) {
