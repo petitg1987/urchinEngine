@@ -32,7 +32,7 @@
 #include <physics/collision/narrowphase/algorithm/epa/EPASphereTest.h>
 #include <physics/collision/narrowphase/algorithm/epa/EPAConvexHullTest.h>
 #include <physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h>
-#include <physics/collision/island/IslandContainerTest.h>
+#include <physics/collision/bodystate/IslandContainerTest.h>
 #include <physics/collision/CollisionWorldIT.h>
 #include <physics/character/CharacterControllerIT.h>
 #include <physics/character/CharacterControllerMT.h>

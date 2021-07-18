@@ -7,7 +7,7 @@
 #include <thread>
 #include <UrchinCommon.h>
 
-#include <collision/island/IslandElement.h>
+#include <collision/bodystate/IslandElement.h>
 #include <shape/CollisionShape3D.h>
 
 namespace urchin {

@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 
 #include <AssertHelper.h>
-#include <physics/collision/island/IslandContainerTest.h>
+#include <physics/collision/bodystate/IslandContainerTest.h>
 using namespace urchin;
 
 /**

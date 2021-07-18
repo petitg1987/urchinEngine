@@ -1,11 +1,11 @@
-#include <collision/island/IslandManager.h>
+#include <collision/bodystate/BodyActiveStateUpdater.h>
 
 namespace urchin {
 
     //debug parameters
     bool DEBUG_PRINT_ISLANDS = false;
 
-    IslandManager::IslandManager(const BodyManager& bodyManager) :
+    BodyActiveStateUpdater::BodyActiveStateUpdater(const BodyManager& bodyManager) :
         bodyManager(bodyManager),
         squaredLinearSleepingThreshold(ConfigService::instance().getFloatValue("island.linearSleepingThreshold") * ConfigService::instance().getFloatValue("island.linearSleepingThreshold")),
         squaredAngularSleepingThreshold(ConfigService::instance().getFloatValue("island.angularSleepingThreshold") * ConfigService::instance().getFloatValue("island.angularSleepingThreshold")) {
@@ -17,7 +17,7 @@ namespace urchin {
      * If one body of the island cannot sleep, we set their status to active.
      * @param overlappingPairs Overlapping pairs of broad phase used to determine the islands
      */
-    void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult>& manifoldResults) {
+    void BodyActiveStateUpdater::update(const std::vector<ManifoldResult>& manifoldResults) {
         ScopeProfiler sp(Profiler::physics(), "refreshBodyStat");
 
         buildIslands(manifoldResults);
@@ -61,7 +61,7 @@ namespace urchin {
         }
     }
 
-    void IslandManager::buildIslands(const std::vector<ManifoldResult>& manifoldResults) {
+    void BodyActiveStateUpdater::buildIslands(const std::vector<ManifoldResult>& manifoldResults) {
         //1. create an island for each body
         islandElements.clear();
         for (auto& body : bodyManager.getBodies()) {
@@ -91,7 +91,7 @@ namespace urchin {
     /**
      * @return Number of element for island starting at 'startElementIndex'
      */
-    unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink>& islandElementsLink, unsigned int startElementIndex) const {
+    unsigned int BodyActiveStateUpdater::computeNumberElements(const std::vector<IslandElementLink>& islandElementsLink, unsigned int startElementIndex) const {
         unsigned int islandId = islandElementsLink[startElementIndex].islandIdRef;
         unsigned int endElementIndex;
 
@@ -101,12 +101,12 @@ namespace urchin {
         return endElementIndex - startElementIndex;
     }
 
-    bool IslandManager::isBodyMoving(const RigidBody* body) const {
+    bool BodyActiveStateUpdater::isBodyMoving(const RigidBody* body) const {
         return !(body->getLinearVelocity().squareLength() < squaredLinearSleepingThreshold
                  && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
     }
 
-    void IslandManager::printIslands(const std::vector<IslandElementLink>& islandElementsLink) {
+    void BodyActiveStateUpdater::printIslands(const std::vector<IslandElementLink>& islandElementsLink) {
         unsigned int islandId = 0;
         unsigned int i = 0;
         while (islandElementsLink.size()>i) { //loop on islands

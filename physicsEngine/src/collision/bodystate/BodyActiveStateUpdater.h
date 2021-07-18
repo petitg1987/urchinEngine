@@ -2,18 +2,18 @@
 
 #include <vector>
 
-#include <collision/island/IslandContainer.h>
+#include <collision/bodystate/IslandContainer.h>
 #include <collision/ManifoldResult.h>
 #include <body/BodyManager.h>
 #include <body/model/RigidBody.h>
 
 namespace urchin {
 
-    class IslandManager {
+    class BodyActiveStateUpdater {
         public:
-            explicit IslandManager(const BodyManager&);
+            explicit BodyActiveStateUpdater(const BodyManager&);
 
-            void refreshBodyActiveState(const std::vector<ManifoldResult>&);
+            void update(const std::vector<ManifoldResult>&);
 
         private:
             void buildIslands(const std::vector<ManifoldResult>&);

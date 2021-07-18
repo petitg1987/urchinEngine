@@ -11,7 +11,7 @@ namespace urchin {
             narrowPhase(std::make_unique<NarrowPhase>(bodyManager, getBroadPhase())),
             integrateVelocity(std::make_unique<IntegrateVelocity>(bodyManager)),
             constraintSolver(std::make_unique<ConstraintSolver>()),
-            islandManager(std::make_unique<IslandManager>(bodyManager)),
+            bodyActiveStateUpdater(std::make_unique<BodyActiveStateUpdater>(bodyManager)),
             integrateTransform(std::make_unique<IntegrateTransform>(bodyManager, getBroadPhase(), getNarrowPhase())) {
 
     }
@@ -50,7 +50,7 @@ namespace urchin {
         constraintSolver->process(dt, manifoldResults);
 
         //update bodies state
-        islandManager->refreshBodyActiveState(manifoldResults);
+        bodyActiveStateUpdater->update(manifoldResults);
 
         //integrate transformations
         integrateTransform->process(dt);

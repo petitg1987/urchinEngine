@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <collision/island/IslandElementLink.h>
+#include <collision/bodystate/IslandElementLink.h>
 
 namespace urchin {
 

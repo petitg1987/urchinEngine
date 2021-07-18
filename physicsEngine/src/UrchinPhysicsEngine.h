@@ -34,8 +34,8 @@
 #include <collision/narrowphase/algorithm/gjk/GJKAlgorithm.h>
 #include <collision/narrowphase/algorithm/gjk/result/GJKResult.h>
 #include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
-#include <collision/island/IslandContainer.h>
-#include <collision/island/IslandElement.h>
+#include <collision/bodystate/IslandContainer.h>
+#include <collision/bodystate/IslandElement.h>
 
 #include <processable/Processable.h>
 #include <processable/raytest/RayTestResult.h>
