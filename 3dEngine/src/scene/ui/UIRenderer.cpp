@@ -2,7 +2,7 @@
 #include <utility>
 
 #include <scene/ui/UIRenderer.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 #include <resources/font/Font.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 
@@ -25,7 +25,7 @@ namespace urchin {
 
         //debug
         if (DEBUG_DISPLAY_FONT_TEXTURE) {
-            auto font = MediaManager::instance().getMedia<Font>("UI/fontText.ttf", {{"fontSize", "16"}, {"fontColor", "1.0 1.0 1.0"}});
+            auto font = ResourceRetriever::instance().getResource<Font>("UI/fontText.ttf", {{"fontSize", "16"}, {"fontColor", "1.0 1.0 1.0"}});
 
             auto textureDisplayer = std::make_unique<TextureRenderer>(font->getTexture(), TextureRenderer::DEFAULT_VALUE);
             textureDisplayer->setPosition(TextureRenderer::USER_DEFINED_X, TextureRenderer::USER_DEFINED_Y);

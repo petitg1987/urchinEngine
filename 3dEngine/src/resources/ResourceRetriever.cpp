@@ -1,4 +1,4 @@
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 #include <loader/image/LoaderTGA.h>
 #include <loader/image/LoaderPNG.h>
 #include <loader/model/LoaderUrchinMesh.h>
@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    MediaManager::MediaManager() {
+    ResourceRetriever::ResourceRetriever() {
         loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
         loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
         loadersRegistry.emplace("png", std::make_unique<LoaderPNG>());

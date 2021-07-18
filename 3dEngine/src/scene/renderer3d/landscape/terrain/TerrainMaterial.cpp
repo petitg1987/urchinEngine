@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <scene/renderer3d/landscape/terrain/TerrainMaterial.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -15,7 +15,7 @@ namespace urchin {
         if (maskMapFilename.empty()) {
             maskTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0})).createTexture(false);
         } else {
-            auto maskImage = MediaManager::instance().getMedia<Image>(maskMapFilename);
+            auto maskImage = ResourceRetriever::instance().getResource<Image>(maskMapFilename);
             if (maskImage->getImageFormat() != Image::IMAGE_RGBA) {
                 throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskImage->retrieveComponentsCount()));
             }
@@ -31,7 +31,7 @@ namespace urchin {
         materials.resize(MAX_MATERIAL);
         for (std::size_t i = 0; i < MAX_MATERIAL; ++i) {
             if (materialFilenames.size() > i && !materialFilenames[i].empty()) {
-                materials[i] = MediaManager::instance().getMedia<Material>(materialFilenames[i], {}, "material");
+                materials[i] = ResourceRetriever::instance().getResource<Material>(materialFilenames[i], {}, "material");
             } else {
                 materials[i] = std::shared_ptr<Material>(nullptr);
             }

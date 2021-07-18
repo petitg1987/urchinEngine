@@ -1,7 +1,7 @@
 #include <scene/ui/widget/slider/Slider.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
 #include <scene/InputDeviceKey.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -68,7 +68,7 @@ namespace urchin {
     std::shared_ptr<Texture> Slider::loadTexture(const UdaChunk* sliderChunk, const std::string& chunkName) const {
         auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), sliderChunk);
 
-        auto img = MediaManager::instance().getMedia<Image>(imageElem->getStringValue());
+        auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
         return img->createTexture(false);
     }
 

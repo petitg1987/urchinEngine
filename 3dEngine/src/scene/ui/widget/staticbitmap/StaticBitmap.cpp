@@ -1,7 +1,7 @@
 #include <utility>
 
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
@@ -19,7 +19,7 @@ namespace urchin {
 
     void StaticBitmap::createOrUpdateWidget() {
         //loads the texture
-        auto img = MediaManager::instance().getMedia<Image>(filename);
+        auto img = ResourceRetriever::instance().getResource<Image>(filename);
         tex = img->createTexture(false);
 
         //visual

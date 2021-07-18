@@ -5,7 +5,7 @@
 #include <scene/ui/widget/text/Text.h>
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/UISkinService.h>
-#include <resources//MediaManager.h>
+#include <resources//ResourceRetriever.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
@@ -168,7 +168,7 @@ namespace urchin {
         unsigned int fontHeight = retrieveFontHeight(textChunk);
 
         std::map<std::string, std::string> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
-        font = MediaManager::instance().getMedia<Font>(ttfFilename, fontParams);
+        font = ResourceRetriever::instance().getResource<Font>(ttfFilename, fontParams);
     }
 
     unsigned int Text::retrieveFontHeight(const UdaChunk* textChunk) const {

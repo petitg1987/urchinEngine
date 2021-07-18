@@ -8,23 +8,23 @@
 
 namespace urchin {
 
-    class ResourceManager : public Singleton<ResourceManager> {
+    class ResourceContainer : public Singleton<ResourceContainer> {
         public:
-            friend class Singleton<ResourceManager>;
+            friend class Singleton<ResourceContainer>;
 
-            ~ResourceManager() override;
+            ~ResourceContainer() override;
 
             template<class T> std::shared_ptr<T> getResource(const std::string&) const;
             void addResource(const std::shared_ptr<Resource>&);
 
         private:
-            ResourceManager();
+            ResourceContainer();
 
             void cleanResources();
 
             std::map<std::string, std::weak_ptr<Resource>> resources;
     };
 
-    #include "ResourceManager.inl"
+    #include "ResourceContainer.inl"
 
 }

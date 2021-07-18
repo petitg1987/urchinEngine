@@ -3,7 +3,7 @@
 #include <fstream>
 
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 #include <graphic/render/GenericRenderer.h>
 
 
@@ -18,7 +18,7 @@ namespace urchin {
             heightFilename(heightFilename),
             xzScale(xzScale),
             yScale(yScale) {
-        auto imgTerrain = MediaManager::instance().getMedia<Image>(heightFilename);
+        auto imgTerrain = ResourceRetriever::instance().getResource<Image>(heightFilename);
         if (imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }

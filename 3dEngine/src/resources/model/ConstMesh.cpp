@@ -4,7 +4,7 @@
 
 #include <resources/model/ConstMesh.h>
 #include <resources/model/MeshService.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -26,7 +26,7 @@ namespace urchin {
         MeshService::computeNormalsAndTangents(*this, baseVertices, baseNormals, baseTangents);
 
         //load material
-        material = MediaManager::instance().getMedia<Material>(materialFilename, {}, "material");
+        material = ResourceRetriever::instance().getResource<Material>(materialFilename, {}, "material");
     }
 
     const Material& ConstMesh::getMaterial() const {

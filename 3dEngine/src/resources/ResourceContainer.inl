@@ -1,4 +1,4 @@
-template<class T> std::shared_ptr<T> ResourceManager::getResource(const std::string& resourceId) const {
+template<class T> std::shared_ptr<T> ResourceContainer::getResource(const std::string& resourceId) const {
     auto itFind = resources.find(resourceId);
     if (itFind != resources.end() && !itFind->second.expired()) {
         std::shared_ptr<Resource> resource = itFind->second.lock();

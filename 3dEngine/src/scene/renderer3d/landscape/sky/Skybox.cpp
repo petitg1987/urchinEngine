@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <scene/renderer3d/landscape/sky/Skybox.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/texture/Texture.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
@@ -23,7 +23,7 @@ namespace urchin {
         unsigned int skyboxSize = 1;
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             if (!filenames[i].empty()) {
-                skyboxImages[i] = MediaManager::instance().getMedia<Image>(filenames[i]);
+                skyboxImages[i] = ResourceRetriever::instance().getResource<Image>(filenames[i]);
                 skyboxSize = skyboxImages[i]->getWidth();
             }
         }

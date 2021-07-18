@@ -5,7 +5,7 @@
 #include <functional>
 
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
@@ -250,7 +250,7 @@ namespace urchin {
         if (grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            auto grassTextureImg = MediaManager::instance().getMedia<Image>(grassTextureFilename);
+            auto grassTextureImg = ResourceRetriever::instance().getResource<Image>(grassTextureFilename);
             grassTexture = grassTextureImg->createTexture(true);
         }
     }
@@ -265,7 +265,7 @@ namespace urchin {
         if (grassMaskFilename.empty()) {
             grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0})).createTexture(false);
         } else {
-            auto grassMaskImage = MediaManager::instance().getMedia<Image>(grassMaskFilename);
+            auto grassMaskImage = ResourceRetriever::instance().getResource<Image>(grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);
         }
 

@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <scene/renderer3d/model/Model.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -33,7 +33,7 @@ namespace urchin {
 
     void Model::initialize(const std::string& meshFilename) {
         if (!meshFilename.empty()) {
-            auto constMeshes = MediaManager::instance().getMedia<ConstMeshes>(meshFilename);
+            auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshFilename);
             meshes = std::make_unique<Meshes>(std::move(constMeshes));
             meshes->onMoving(transform);
         }
@@ -45,7 +45,7 @@ namespace urchin {
         }
 
         //load and add the anim to the std::map
-        auto constAnimation = MediaManager::instance().getMedia<ConstAnimation>(filename);
+        auto constAnimation = ResourceRetriever::instance().getResource<ConstAnimation>(filename);
         animations[name] = std::make_unique<Animation>(constAnimation, *meshes);
         animations[name]->onMoving(transform);
 

@@ -3,7 +3,7 @@
 
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/widget/LengthType.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -20,7 +20,7 @@ namespace urchin {
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const UdaChunk* skinChunk, WidgetOutline* widgetOutline) const {
         //skin information
         auto widgetImageElem = getSkinReader().getUniqueChunk(true, "image", UdaAttribute(), skinChunk);
-        auto rawWidgetImage = MediaManager::instance().getMedia<Image>(widgetImageElem->getStringValue());
+        auto rawWidgetImage = ResourceRetriever::instance().getResource<Image>(widgetImageElem->getStringValue());
 
         auto topElem = getSkinReader().getUniqueChunk(true, "part", UdaAttribute("zone", "top"), skinChunk);
         unsigned int top = topElem->getUnsignedIntValue();

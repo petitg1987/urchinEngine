@@ -1,5 +1,5 @@
 #include <scene/ui/widget/checkbox/CheckBox.h>
-#include <resources/MediaManager.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -40,7 +40,7 @@ namespace urchin {
     std::shared_ptr<Texture> CheckBox::loadTexture(const UdaChunk* checkBoxChunk, const std::string& chunkName) const {
         auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), checkBoxChunk);
 
-        auto img = MediaManager::instance().getMedia<Image>(imageElem->getStringValue());
+        auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
         return img->createTexture(false);
     }
 
