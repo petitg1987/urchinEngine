@@ -8,7 +8,7 @@
 #include <UrchinCommon.h>
 
 #include <body/model/AbstractBody.h>
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 #include <collision/CollisionWorld.h>
 #include <processable/Processable.h>
 #include <processable/raytest/RayTestResult.h>
@@ -21,7 +21,7 @@ namespace urchin {
             PhysicsWorld();
             ~PhysicsWorld();
 
-            BodyManager& getBodyManager() const;
+            BodyContainer& getBodyContainer() const;
             CollisionWorld& getCollisionWorld() const;
 
             void addBody(std::shared_ptr<AbstractBody>);
@@ -62,7 +62,7 @@ namespace urchin {
             float timeStep;
             bool paused;
 
-            std::unique_ptr<BodyManager> bodyManager;
+            std::unique_ptr<BodyContainer> bodyContainer;
             std::unique_ptr<CollisionWorld> collisionWorld;
 
             std::vector<std::shared_ptr<Processable>> processables;

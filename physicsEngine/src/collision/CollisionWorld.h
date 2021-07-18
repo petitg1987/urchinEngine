@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 #include <collision/ManifoldResult.h>
 #include <collision/broadphase/BroadPhase.h>
 #include <collision/narrowphase/NarrowPhase.h>
@@ -18,7 +18,7 @@ namespace urchin {
     */
     class CollisionWorld : public Observable {
         public:
-            explicit CollisionWorld(BodyManager&);
+            explicit CollisionWorld(BodyContainer&);
             ~CollisionWorld() override = default;
 
             enum NotificationType {
@@ -33,7 +33,7 @@ namespace urchin {
             const std::vector<ManifoldResult>& getLastUpdatedManifoldResults();
 
         private:
-            BodyManager& bodyManager;
+            BodyContainer& bodyContainer;
 
             std::unique_ptr<BroadPhase> broadPhase;
             std::unique_ptr<NarrowPhase> narrowPhase;

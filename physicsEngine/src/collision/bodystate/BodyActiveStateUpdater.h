@@ -4,14 +4,14 @@
 
 #include <collision/bodystate/IslandContainer.h>
 #include <collision/ManifoldResult.h>
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 #include <body/model/RigidBody.h>
 
 namespace urchin {
 
     class BodyActiveStateUpdater {
         public:
-            explicit BodyActiveStateUpdater(const BodyManager&);
+            explicit BodyActiveStateUpdater(const BodyContainer&);
 
             void update(const std::vector<ManifoldResult>&);
 
@@ -22,7 +22,7 @@ namespace urchin {
 
             void printIslands(const std::vector<IslandElementLink>&);
 
-            const BodyManager& bodyManager;
+            const BodyContainer& bodyContainer;
             std::vector<IslandElement*> islandElements;
             IslandContainer islandContainer;
 

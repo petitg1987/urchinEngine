@@ -7,7 +7,7 @@
 #include <collision/broadphase/PairContainer.h>
 #include <collision/OverlappingPair.h>
 #include <body/model/AbstractBody.h>
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 
 namespace urchin {
 
@@ -16,7 +16,7 @@ namespace urchin {
     */
     class BroadPhase : public Observer {
         public:
-            explicit BroadPhase(BodyManager&);
+            explicit BroadPhase(BodyContainer&);
             ~BroadPhase() override;
 
             void notify(Observable*, int) override;

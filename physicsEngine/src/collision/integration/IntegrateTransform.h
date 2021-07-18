@@ -1,6 +1,6 @@
 #pragma once
 
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 #include <body/model/RigidBody.h>
 #include <collision/broadphase/BroadPhase.h>
 #include <collision/narrowphase/NarrowPhase.h>
@@ -12,7 +12,7 @@ namespace urchin {
     */
     class IntegrateTransform {
         public:
-            IntegrateTransform(const BodyManager&, const BroadPhase&, const NarrowPhase&);
+            IntegrateTransform(const BodyContainer&, const BroadPhase&, const NarrowPhase&);
 
             void process(float);
 
@@ -21,7 +21,7 @@ namespace urchin {
 
             static const float MAX_LINEAR_VELOCITY_FACTOR;
 
-            const BodyManager& bodyManager;
+            const BodyContainer& bodyContainer;
             const BroadPhase& broadPhase;
             const NarrowPhase& narrowPhase;
     };

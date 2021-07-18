@@ -105,13 +105,13 @@ void CharacterControllerIT::constructGround(const PhysicsWorld& physicsWorld) {
     };
     std::unique_ptr<CollisionHeightfieldShape> groundShape = std::make_unique<CollisionHeightfieldShape>(groundPoints, 2, 2);
     auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>()), std::move(groundShape));
-    physicsWorld.getBodyManager().addBody(std::move(groundBody));
+    physicsWorld.getBodyContainer().addBody(std::move(groundBody));
 }
 
 void CharacterControllerIT::constructWall(const PhysicsWorld& physicsWorld) {
     std::unique_ptr<CollisionBoxShape> wallShape = std::make_unique<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
     auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
-    physicsWorld.getBodyManager().addBody(std::move(wallBody));
+    physicsWorld.getBodyContainer().addBody(std::move(wallBody));
 }
 
 std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(const PhysicsWorld& physicsWorld, float cubeHeight) {
@@ -125,7 +125,7 @@ std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(co
             auto cubeBody = std::make_shared<RigidBody>(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
             cubeBody->setMass(10.0f); //non-static
 
-            physicsWorld.getBodyManager().addBody(cubeBody);
+            physicsWorld.getBodyContainer().addBody(cubeBody);
             cubes.emplace_back(cubeBody);
         }
     }

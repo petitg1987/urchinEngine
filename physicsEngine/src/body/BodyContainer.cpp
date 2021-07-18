@@ -1,41 +1,41 @@
 #include <algorithm>
 #include <utility>
 
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 
 namespace urchin {
 
-    BodyManager::BodyManager() :
+    BodyContainer::BodyContainer() :
             lastUpdatedBody(nullptr) {
 
     }
 
-    void BodyManager::addBody(std::shared_ptr<AbstractBody> body) {
+    void BodyContainer::addBody(std::shared_ptr<AbstractBody> body) {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
         BodyRefresh bodyUpdate{nullptr, std::move(body)};
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
-    void BodyManager::removeBody(const AbstractBody& body) {
+    void BodyContainer::removeBody(const AbstractBody& body) {
         std::lock_guard<std::mutex> lock(bodiesMutex);
 
         BodyRefresh bodyUpdate{&body, std::shared_ptr<AbstractBody>(nullptr)};
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
-    AbstractBody* BodyManager::getLastUpdatedBody() const {
+    AbstractBody* BodyContainer::getLastUpdatedBody() const {
         return lastUpdatedBody;
     }
 
-    const std::vector<std::shared_ptr<AbstractBody>>& BodyManager::getBodies() const {
+    const std::vector<std::shared_ptr<AbstractBody>>& BodyContainer::getBodies() const {
         return bodies;
     }
 
     /**
      * Refresh bodies list
      */
-    void BodyManager::refreshBodies() {
+    void BodyContainer::refreshBodies() {
         ScopeProfiler sp(Profiler::physics(), "setupWorkBodies");
         std::lock_guard<std::mutex> lock(bodiesMutex);
 

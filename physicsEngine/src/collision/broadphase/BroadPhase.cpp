@@ -3,11 +3,11 @@
 
 namespace urchin {
 
-    BroadPhase::BroadPhase(BodyManager& bodyManager) :
+    BroadPhase::BroadPhase(BodyContainer& bodyContainer) :
             broadPhaseAlgorithm(std::make_unique<AABBTreeAlgorithm>()) {
 
-        bodyManager.addObserver(this, BodyManager::ADD_BODY);
-        bodyManager.addObserver(this, BodyManager::REMOVE_BODY);
+        bodyContainer.addObserver(this, BodyContainer::ADD_BODY);
+        bodyContainer.addObserver(this, BodyContainer::REMOVE_BODY);
     }
 
     BroadPhase::~BroadPhase() {
@@ -15,11 +15,11 @@ namespace urchin {
     }
 
     void BroadPhase::notify(Observable* observable, int notificationType) {
-        if (auto* bodyManager = dynamic_cast<BodyManager*>(observable)) {
-            if (notificationType == BodyManager::ADD_BODY) {
-                addBody(*bodyManager->getLastUpdatedBody());
-            } else if (notificationType == BodyManager::REMOVE_BODY) {
-                removeBody(*bodyManager->getLastUpdatedBody());
+        if (auto* bodyContainer = dynamic_cast<BodyContainer*>(observable)) {
+            if (notificationType == BodyContainer::ADD_BODY) {
+                addBody(*bodyContainer->getLastUpdatedBody());
+            } else if (notificationType == BodyContainer::REMOVE_BODY) {
+                removeBody(*bodyContainer->getLastUpdatedBody());
             }
         }
     }

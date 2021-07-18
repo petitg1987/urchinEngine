@@ -16,9 +16,9 @@ namespace urchin {
     * A bodies manager allowing to manage bodies modifications coming from two different thread. Indeed, the user
     * can add/remove/update bodies from thread 1 while physics engine update the same bodies on thread 2.
     */
-    class BodyManager : public Observable {
+    class BodyContainer : public Observable {
         public:
-            BodyManager();
+            BodyContainer();
 
             enum NotificationType {
                 ADD_BODY, //A body has been added to the world

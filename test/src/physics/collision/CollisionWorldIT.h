@@ -19,5 +19,5 @@ class CollisionWorldIT : public CppUnit::TestFixture {
         void changeMass();
 
     private:
-        std::unique_ptr<urchin::BodyManager> buildWorld(const urchin::Point3<float>&) const;
+        std::unique_ptr<urchin::BodyContainer> buildWorld(const urchin::Point3<float>&) const;
 };

@@ -5,14 +5,14 @@
 
 namespace urchin {
 
-    CollisionWorld::CollisionWorld(BodyManager& bodyManager) :
-            bodyManager(bodyManager),
-            broadPhase(std::make_unique<BroadPhase>(bodyManager)),
-            narrowPhase(std::make_unique<NarrowPhase>(bodyManager, getBroadPhase())),
-            integrateVelocity(std::make_unique<IntegrateVelocity>(bodyManager)),
+    CollisionWorld::CollisionWorld(BodyContainer& bodyContainer) :
+            bodyContainer(bodyContainer),
+            broadPhase(std::make_unique<BroadPhase>(bodyContainer)),
+            narrowPhase(std::make_unique<NarrowPhase>(bodyContainer, getBroadPhase())),
+            integrateVelocity(std::make_unique<IntegrateVelocity>(bodyContainer)),
             constraintSolver(std::make_unique<ConstraintSolver>()),
-            bodyActiveStateUpdater(std::make_unique<BodyActiveStateUpdater>(bodyManager)),
-            integrateTransform(std::make_unique<IntegrateTransform>(bodyManager, getBroadPhase(), getNarrowPhase())) {
+            bodyActiveStateUpdater(std::make_unique<BodyActiveStateUpdater>(bodyContainer)),
+            integrateTransform(std::make_unique<IntegrateTransform>(bodyContainer, getBroadPhase(), getNarrowPhase())) {
 
     }
 
@@ -33,7 +33,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::physics(), "colWorldProc");
 
         //refresh bodies: add new bodies, remove bodies...
-        bodyManager.refreshBodies();
+        bodyContainer.refreshBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox
         auto& overlappingPairs = broadPhase->computeOverlappingPairs();

@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 #include <vector>
 
-#include <body/BodyManager.h>
+#include <body/BodyContainer.h>
 #include <collision/OverlappingPair.h>
 
 namespace urchin {
@@ -13,7 +13,7 @@ namespace urchin {
     */
     class IntegrateVelocity {
         public:
-            explicit IntegrateVelocity(const BodyManager&);
+            explicit IntegrateVelocity(const BodyContainer&);
 
             void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, const Vector3<float>&);
 
@@ -21,7 +21,7 @@ namespace urchin {
             void applyGravityForce(const Vector3<float>&, float);
             void applyRollingFrictionResistanceForce(float , const std::vector<std::unique_ptr<OverlappingPair>>&);
 
-            const BodyManager& bodyManager;
+            const BodyContainer& bodyContainer;
     };
 
 }

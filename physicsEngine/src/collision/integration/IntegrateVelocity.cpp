@@ -3,8 +3,8 @@
 
 namespace urchin {
 
-    IntegrateVelocity::IntegrateVelocity(const BodyManager& bodyManager) :
-        bodyManager(bodyManager) {
+    IntegrateVelocity::IntegrateVelocity(const BodyContainer& bodyContainer) :
+            bodyContainer(bodyContainer) {
 
     }
 
@@ -19,7 +19,7 @@ namespace urchin {
         applyRollingFrictionResistanceForce(dt, overlappingPairs);
 
         //integrate velocities and apply damping
-        for (const auto& abstractBody : bodyManager.getBodies()) {
+        for (const auto& abstractBody : bodyContainer.getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody.get());
             if (body && body->isActive()) {
                 float dampingLinearFactor = powf(1.0f - body->getLinearDamping(), dt);
@@ -37,7 +37,7 @@ namespace urchin {
      * @param gravity Gravity expressed in units/s^2
      */
     void IntegrateVelocity::applyGravityForce(const Vector3<float>& gravity, float dt) {
-        for (const auto& abstractBody : bodyManager.getBodies()) {
+        for (const auto& abstractBody : bodyContainer.getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody.get());
             if (body && body->isActive()) {
                 body->applyCentralMomentum(gravity * body->getMass() * dt);

@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class BodyManagerTest : public CppUnit::TestFixture {
+class BodyContainerTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
