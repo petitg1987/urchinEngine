@@ -11,7 +11,7 @@ namespace urchin {
             streamUpdateWorkerThread(std::make_unique<std::thread>(&StreamUpdateWorker::start, streamUpdateWorker.get())) {
         SignalHandler::instance().initialize();
 
-        DeviceManager::instance();
+        AudioDevice::instance().enable(true);
         alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
         alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
     }

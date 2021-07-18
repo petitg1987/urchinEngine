@@ -9,7 +9,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit NotSavedDialog(QWidget *parent = nullptr);
+            explicit NotSavedDialog(QWidget* = nullptr);
 
             bool needSave() const;
 

@@ -203,7 +203,7 @@ namespace urchin {
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
         {
             for (unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
-                void *dataDestinationI = static_cast<uint8_t *>(dataDestination) + (imageIndex * getImageSize());
+                void* dataDestinationI = static_cast<uint8_t *>(dataDestination) + (imageIndex * getImageSize());
                 memcpy(dataDestinationI, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
         }

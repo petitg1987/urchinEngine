@@ -18,7 +18,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit LocalizedShapeTableView(QWidget *parent = nullptr);
+            explicit LocalizedShapeTableView(QWidget* = nullptr);
 
             enum NotificationType {
                 OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED

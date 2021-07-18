@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit ObjectTableView(QWidget *parent = nullptr);
+            explicit ObjectTableView(QWidget* = nullptr);
 
             enum NotificationType {
                 OBJECT_SELECTION_CHANGED

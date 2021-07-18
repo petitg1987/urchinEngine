@@ -220,7 +220,7 @@ namespace urchin {
 
         if (sceneDisplayer->getScene().getActiveRenderer3d()) {
             constexpr float PICKING_RAY_LENGTH = 100.0f;
-            Camera *camera = sceneDisplayer->getScene().getActiveRenderer3d()->getCamera();
+            Camera* camera = sceneDisplayer->getScene().getActiveRenderer3d()->getCamera();
             Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
             std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld().rayTest(pickingRay);
 

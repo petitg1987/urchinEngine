@@ -529,7 +529,7 @@ namespace urchin {
 
         if (cloneSceneObjectDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneObject> newSceneObject = cloneSceneObjectDialog.moveSceneObject();
-            SceneObject *newSceneObjectPtr = newSceneObject.get();
+            SceneObject* newSceneObjectPtr = newSceneObject.get();
             const SceneObject& toCloneSceneObject = *objectTableView->getSelectedSceneObject();
             objectController->cloneSceneObject(std::move(newSceneObject), toCloneSceneObject);
 

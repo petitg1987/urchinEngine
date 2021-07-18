@@ -226,7 +226,7 @@ namespace urchin {
             grassQuadtrees.clear();
             grassQuadtrees.push_back(mainGrassQuadtree.get());
             for (std::size_t i = 0; i < grassQuadtrees.size(); ++i) {
-                const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
+                const TerrainGrassQuadtree* grassQuadtree = grassQuadtrees[i];
                 if (grassQuadtree->isLeaf() && grassQuadtree->getRenderer()) {
                     renderers.emplace_back(grassQuadtree->getRenderer());
                 } else {

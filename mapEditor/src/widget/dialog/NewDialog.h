@@ -11,7 +11,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit NewDialog(QWidget *parent = nullptr);
+            explicit NewDialog(QWidget* = nullptr);
 
             std::string getFilename() const;
             std::string getRelativeWorkingDirectory() const;

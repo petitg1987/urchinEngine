@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            explicit WaterTableView(QWidget *parent = nullptr);
+            explicit WaterTableView(QWidget* = nullptr);
 
             enum NotificationType {
                 SELECTION_CHANGED
