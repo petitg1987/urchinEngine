@@ -111,7 +111,7 @@ namespace urchin {
         navMeshDisplayer = std::make_unique<NavMeshDisplayer>(*aiEnvironment, *scene->getActiveRenderer3d());
 
         //sound
-        soundManager = std::make_unique<SoundEnvironment>();
+        soundEnvironment = std::make_unique<SoundEnvironment>();
     }
 
     void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value) {
