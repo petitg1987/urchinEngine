@@ -14,6 +14,7 @@ namespace urchin {
             explicit UdaWriter(std::string);
 
             UdaChunk& createChunk(const std::string&, const UdaAttribute& = UdaAttribute(), UdaChunk* = nullptr);
+
             void saveInFile();
 
         private:

@@ -14,7 +14,7 @@ namespace urchin {
         public:
             explicit UdaParser(std::string);
 
-            std::vector<UdaChunk*> getChunks(const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
+            std::vector<UdaChunk*> getChunks(const std::string& = "", const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
             UdaChunk* getUniqueChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
 
         private:

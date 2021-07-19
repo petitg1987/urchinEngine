@@ -24,7 +24,7 @@ namespace urchin {
 
         const auto& nodes = parent ? parent->getChildren() : rootNodes;
         for (auto& node : nodes) {
-            if (node->getName() == chunkName) {
+            if (chunkName.empty() || chunkName == node->getName()) {
                 if (!attribute.getAttributeName().empty()) {
                     std::string attributeValue = node->getAttributeValue(attribute.getAttributeName());
                     if (attributeValue == attribute.getAttributeValue()) {
