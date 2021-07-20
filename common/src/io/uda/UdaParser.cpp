@@ -75,7 +75,7 @@ namespace urchin {
             unsigned int indentLevel = computeIndentLevel(rawContentLine);
             StringUtil::ltrim(rawContentLine);
 
-            if(rawContentLine.empty() || rawContentLine[0] == '#') {
+            if (rawContentLine.empty() || rawContentLine[0] == '#') {
                 continue; //ignore comment line
             }
 

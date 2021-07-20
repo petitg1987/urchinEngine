@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     SceneTerrain::~SceneTerrain() {
-        if(terrain) {
+        if (terrain) {
             renderer3d->getTerrainContainer().removeTerrain(*terrain);
         }
         deleteRigidBody();
@@ -81,7 +81,7 @@ namespace urchin {
         }
 
         if (renderer3d) {
-            if(this->terrain) {
+            if (this->terrain) {
                 renderer3d->getTerrainContainer().removeTerrain(*this->terrain);
             }
             renderer3d->getTerrainContainer().addTerrain(terrain);

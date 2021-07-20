@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     SceneWater::~SceneWater() {
-        if(water) {
+        if (water) {
             renderer3d->getWaterContainer().removeWater(*water);
         }
     }
@@ -59,7 +59,7 @@ namespace urchin {
         }
 
         if (renderer3d) {
-            if(this->water) {
+            if (this->water) {
                 renderer3d->getWaterContainer().removeWater(*this->water);
             }
             renderer3d->getWaterContainer().addWater(water);

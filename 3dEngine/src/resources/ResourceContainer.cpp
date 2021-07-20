@@ -22,8 +22,8 @@ namespace urchin {
     }
 
     void ResourceContainer::cleanResources() {
-        for(auto it = resources.begin(); it != resources.end();) {
-            if(it->second.expired()) {
+        for (auto it = resources.begin(); it != resources.end();) {
+            if (it->second.expired()) {
                 it = resources.erase(it);
             } else {
                 ++it;

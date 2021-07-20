@@ -74,7 +74,7 @@ namespace urchin {
         std::sort(resolutions.begin(), resolutions.end(), [](const auto& lhs, const auto& rhs) {
             if (lhs.getWidth() == rhs.getWidth()) {
                 if (lhs.getHeight() == rhs.getHeight()) {
-                    if(lhs.getFrequency() == rhs.getFrequency()) {
+                    if (lhs.getFrequency() == rhs.getFrequency()) {
                         return &lhs < &rhs;
                     }
                     return lhs.getFrequency() < rhs.getFrequency();
