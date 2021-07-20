@@ -105,7 +105,7 @@ namespace urchin {
                 positionY = (positionY / (float)getSceneHeight()) * 100.0f;
             }
 
-            updatePosition(Position(positionX, getPosition().getPositionTypeX(), positionY, getPosition().getPositionTypeY()));
+            updatePosition(Position(positionX, getPosition().getPositionTypeX(), positionY, getPosition().getPositionTypeY(), getPosition().getRelativeTo()));
         }
 
         return true;

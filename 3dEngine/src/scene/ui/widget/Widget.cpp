@@ -144,7 +144,7 @@ namespace urchin {
     }
 
     /**
-    * @return Position X of the widget relative to his parent
+    * @return Relative position X of the widget
     */
     int Widget::getPositionX() const {
         if (position.getPositionTypeX() == LengthType::PERCENTAGE) {
@@ -155,7 +155,7 @@ namespace urchin {
     }
 
     /**
-    * @return Position Y of the widget relative to his parent
+    * @return Relative position Y of the widget
     */
     int Widget::getPositionY() const {
         if (position.getPositionTypeY() == LengthType::PERCENTAGE) {
@@ -174,7 +174,14 @@ namespace urchin {
             return getPositionX();
         }
 
-        return parent->getGlobalPositionX() + parent->getOutline().leftWidth + getPositionX();
+        int startPosition = 0;
+        if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT) {
+            startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
+        } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
+            startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
+        }
+
+        return startPosition + getPositionX();
     }
 
     int Widget::getGlobalPositionY() const {
@@ -182,7 +189,14 @@ namespace urchin {
             return getPositionY();
         }
 
-        return parent->getGlobalPositionY() + parent->getOutline().topWidth + getPositionY();
+        int startPosition = 0;
+        if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT) {
+            startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
+        } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
+            startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
+        }
+
+        return startPosition + getPositionY();
     }
 
     void Widget::updateSize(Size size) {

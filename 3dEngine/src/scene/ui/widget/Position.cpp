@@ -4,16 +4,17 @@
 
 namespace urchin {
 
-    Position::Position(float positionX, LengthType positionTypeX, float positionY, LengthType positionTypeY) :
+    Position::Position(float positionX, LengthType positionTypeX, float positionY, LengthType positionTypeY, RelativeTo relativeTo) :
             positionX(Length(positionX, positionTypeX)),
-            positionY(Length(positionY, positionTypeY)) {
+            positionY(Length(positionY, positionTypeY)),
+            relativeTo(relativeTo) {
         if (positionTypeX == LengthType::RELATIVE_LENGTH || positionTypeY == LengthType::RELATIVE_LENGTH) {
             throw std::invalid_argument("Relative lengths for position are not implemented");
         }
     }
 
-    Position::Position(float positionX, float positionY, LengthType positionType) :
-        Position(positionX, positionType, positionY, positionType) {
+    Position::Position(float positionX, float positionY, LengthType positionType, RelativeTo relativeTo) :
+            Position(positionX, positionType, positionY, positionType, relativeTo) {
 
     }
 
@@ -31,6 +32,10 @@ namespace urchin {
 
     LengthType Position::getPositionTypeY() const {
         return positionY.getType();
+    }
+
+    RelativeTo Position::getRelativeTo() const {
+        return relativeTo;
     }
 
 }
