@@ -6,6 +6,7 @@
 #include <math/algebra/vector/Vector2.h>
 #include <math/algebra/vector/Vector3.h>
 #include <math/algebra/vector/Vector4.h>
+#include <math/algebra/Quaternion.h>
 
 #include <string>
 #include <vector>
@@ -39,6 +40,7 @@ namespace urchin {
             static Vector2<float> toVector2(const std::string&);
             static Vector3<float> toVector3(const std::string&);
             static Vector4<float> toVector4(const std::string&);
+            static Quaternion<float> toQuaternion(const std::string&);
 
             static long long toLongLong(float, float scale = FLOAT_INT_SCALE);
             static float toFloat(long long, float scale = FLOAT_INT_SCALE);

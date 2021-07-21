@@ -11,6 +11,7 @@
 #include <math/algebra/vector/Vector2.h>
 #include <math/algebra/vector/Vector3.h>
 #include <math/algebra/vector/Vector4.h>
+#include <math/algebra/Quaternion.h>
 
 namespace urchin {
 
@@ -70,6 +71,9 @@ namespace urchin {
 
             Vector4<float> getVector4Value() const;
             void setVector4Value(const Vector4<float>&);
+
+            Quaternion<float> getQuaternionValue() const;
+            void setQuaternionValue(const Quaternion<float>&);
 
         private:
             std::string name;

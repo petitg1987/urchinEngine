@@ -133,6 +133,11 @@ namespace urchin {
         return Vector4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
     }
 
+    Quaternion<float> TypeConverter::toQuaternion(const std::string& str) {
+        std::vector<float> floatValues = floatSplit(str, 4);
+        return Quaternion<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+    }
+
     long long TypeConverter::toLongLong(float value, float scale) {
         const float minValue = (float)std::numeric_limits<long long>::min() / scale;
         const float maxValue = (float)std::numeric_limits<long long>::max() / scale;

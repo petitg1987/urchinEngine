@@ -183,4 +183,16 @@ namespace urchin {
                 TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
                 TypeConverter::toString(value.W));
     }
+
+    Quaternion<float> UdaChunk::getQuaternionValue() const {
+        return TypeConverter::toQuaternion(getStringValue());
+    }
+
+    void UdaChunk::setQuaternionValue(const Quaternion<float>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.W));
+    }
 }
