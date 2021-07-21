@@ -21,6 +21,8 @@ namespace urchin {
 
             static bool isInt(const std::string&);
             static int toInt(const std::string&);
+            static bool isLong(const std::string&);
+            static long toLong(const std::string&);
             static bool isUnsignedInt(const std::string&);
             static unsigned int toUnsignedInt(const std::string&);
             static bool isFloat(const std::string&);

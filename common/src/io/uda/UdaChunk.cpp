@@ -67,6 +67,14 @@ namespace urchin {
         setStringValue(std::to_string(value));
     }
 
+    long UdaChunk::getLongValue() const {
+        return TypeConverter::toLong(getStringValue());
+    }
+
+    void UdaChunk::setLongValue(long value) {
+        setStringValue(std::to_string(value));
+    }
+
     unsigned int UdaChunk::getUnsignedIntValue() const {
         return TypeConverter::toUnsignedInt(getStringValue());
     }

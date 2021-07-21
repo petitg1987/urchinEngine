@@ -38,6 +38,9 @@ namespace urchin {
             int getIntValue() const;
             void setIntValue(int);
 
+            long getLongValue() const;
+            void setLongValue(long);
+
             unsigned int getUnsignedIntValue() const;
             void setUnsignedIntValue(unsigned int);
 

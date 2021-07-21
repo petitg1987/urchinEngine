@@ -27,6 +27,20 @@ namespace urchin {
         return value;
     }
 
+    bool TypeConverter::isLong(const std::string& str) {
+        std::istringstream iss(str);
+        long value = 0;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
+    long TypeConverter::toLong(const std::string& str) {
+        std::istringstream iss(str);
+        long value = 0;
+        iss >> value;
+        return value;
+    }
+
     bool TypeConverter::isUnsignedInt(const std::string& str) {
         std::istringstream iss(str);
         unsigned int value = 0;
