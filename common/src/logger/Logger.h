@@ -4,7 +4,6 @@
 #include <sstream>
 #include <memory>
 #include <iostream>
-#include <mutex>
 
 namespace urchin {
 
@@ -43,7 +42,6 @@ namespace urchin {
 
             bool bHasFailure;
             static std::unique_ptr<Logger> customInstance;
-            std::mutex localtimeMutex;
     };
 
 }

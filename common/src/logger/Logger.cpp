@@ -3,6 +3,7 @@
 
 #include <logger/Logger.h>
 #include <logger/FileLogger.h>
+#include <util/DateTimeUtil.h>
 
 namespace urchin {
 
@@ -58,15 +59,8 @@ namespace urchin {
      * @return Prefix composed of date/time and criticality
      */
     std::string Logger::prefix(CriticalityLevel criticalityLevel) {
-        char timeBuffer[64];
         time_t now = time(nullptr);
-        {
-            std::lock_guard<std::mutex> lock(localtimeMutex); //mutex for not thread safe localtime function
-            tm timeStruct = *localtime(&now);
-            strftime(timeBuffer, sizeof(timeBuffer), "[%Y-%m-%d %X]", &timeStruct);
-        }
-
-        std::string result(timeBuffer);
+        std::string result = "[" + DateTimeUtil::epochToDateTime(now) + "]";
         result += " (" + getCriticalityString(criticalityLevel) + ") ";
         return result;
     }

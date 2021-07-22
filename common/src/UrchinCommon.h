@@ -103,6 +103,7 @@
 #include <system/monitor/MonitorResolutionService.h>
 #include <system/control/Control.h>
 
+#include <util/DateTimeUtil.h>
 #include <util/FileUtil.h>
 #include <util/StringUtil.h>
 #include <util/MapUtil.h>
