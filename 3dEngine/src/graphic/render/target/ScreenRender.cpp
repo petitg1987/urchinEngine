@@ -15,7 +15,8 @@ namespace urchin {
     ScreenRender::ScreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
             isInitialized(false),
-            verticalSyncEnabled(true) {
+            verticalSyncEnabled(true),
+            vkImageIndex(std::numeric_limits<uint32_t>::max()) {
 
     }
 
@@ -100,6 +101,11 @@ namespace urchin {
 
     std::size_t ScreenRender::getNumColorAttachment() const {
         return 1;
+    }
+
+    VkImage ScreenRender::getCurrentImage() const {
+        assert(vkImageIndex != std::numeric_limits<uint32_t>::max());
+        return swapChainHandler.getSwapChainImages()[vkImageIndex];
     }
 
     void ScreenRender::initializeClearValues() {
@@ -219,7 +225,6 @@ namespace urchin {
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'
         vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
 
-        uint32_t vkImageIndex;
         VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) {
             onResize();

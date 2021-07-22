@@ -25,6 +25,8 @@ namespace urchin {
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
 
+            VkImage getCurrentImage() const;
+
             void render() override;
 
         private:
@@ -43,6 +45,7 @@ namespace urchin {
 
             std::vector<VkClearValue> clearValues;
             SwapChainHandler swapChainHandler;
+            uint32_t vkImageIndex;
             std::vector<VkImageView> swapChainImageViews;
 
             static const std::size_t MAX_CONCURRENT_FRAMES;
