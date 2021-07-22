@@ -28,22 +28,27 @@ namespace urchin {
             throw std::runtime_error("AI environment should be paused while loading map.");
         }
 
+        loadMapCallback.notify(LoadMapCallback::OBJECTS, LoadMapCallback::START_LOADING);
         loadSceneObjectsFrom(sceneChunk, udaParser);
-        loadMapCallback.execute(LoadMapCallback::OBJECTS);
+        loadMapCallback.notify(LoadMapCallback::OBJECTS, LoadMapCallback::LOADED);
 
+        loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::START_LOADING);
         loadSceneLightsFrom(sceneChunk, udaParser);
-        loadMapCallback.execute(LoadMapCallback::LIGHTS);
+        loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::LOADED);
 
+        loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::START_LOADING);
         loadSceneTerrainFrom(sceneChunk, udaParser);
         loadSceneWaterFrom(sceneChunk, udaParser);
         loadSceneSkyFrom(sceneChunk, udaParser);
-        loadMapCallback.execute(LoadMapCallback::LANDSCAPE);
+        loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::LOADED);
 
+        loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::START_LOADING);
         loadSceneSoundsFrom(sceneChunk, udaParser);
-        loadMapCallback.execute(LoadMapCallback::SOUNDS);
+        loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::LOADED);
 
+        loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::START_LOADING);
         loadSceneAIFrom(sceneChunk, udaParser);
-        loadMapCallback.execute(LoadMapCallback::AI);
+        loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::LOADED);
     }
 
     void Map::loadSceneObjectsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {

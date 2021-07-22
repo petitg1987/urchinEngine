@@ -1,7 +1,7 @@
 #include "NullLoadMapCallback.h"
 
 namespace urchin {
-    void NullLoadMapCallback::execute(LoadMapCallback::LoadedStage) {
+    void NullLoadMapCallback::notify(LoadMapCallback::Stage, LoadMapCallback::State) {
         //do nothing
     }
 }

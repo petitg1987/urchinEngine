@@ -4,7 +4,7 @@ namespace urchin {
 
     class LoadMapCallback {
         public:
-            enum LoadedStage {
+            enum Stage {
                 OBJECTS,
                 LIGHTS,
                 LANDSCAPE,
@@ -12,9 +12,14 @@ namespace urchin {
                 AI
             };
 
+            enum State {
+                START_LOADING,
+                LOADED
+            };
+
             virtual ~LoadMapCallback() = default;
 
-            virtual void execute(LoadedStage) = 0;
+            virtual void notify(Stage, State) = 0;
     };
 
 }

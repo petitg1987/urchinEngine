@@ -6,7 +6,7 @@ namespace urchin {
 
     class NullLoadMapCallback : public LoadMapCallback {
         public:
-            void execute(LoadedStage) override;
+            void notify(LoadMapCallback::Stage, LoadMapCallback::State) override;
     };
 
 }
