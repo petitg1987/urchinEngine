@@ -15,7 +15,7 @@ namespace urchin {
 
     }
 
-    void Map::loadFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadCallback& loadCallback) {
+    void Map::loadFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) {
         if (renderer3d && !renderer3d->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
@@ -29,21 +29,21 @@ namespace urchin {
         }
 
         loadSceneObjectsFrom(sceneChunk, udaParser);
-        loadCallback.execute(LoadCallback::OBJECTS);
+        loadMapCallback.execute(LoadMapCallback::OBJECTS);
 
         loadSceneLightsFrom(sceneChunk, udaParser);
-        loadCallback.execute(LoadCallback::LIGHTS);
+        loadMapCallback.execute(LoadMapCallback::LIGHTS);
 
         loadSceneTerrainFrom(sceneChunk, udaParser);
         loadSceneWaterFrom(sceneChunk, udaParser);
         loadSceneSkyFrom(sceneChunk, udaParser);
-        loadCallback.execute(LoadCallback::LANDSCAPE);
+        loadMapCallback.execute(LoadMapCallback::LANDSCAPE);
 
         loadSceneSoundsFrom(sceneChunk, udaParser);
-        loadCallback.execute(LoadCallback::SOUNDS);
+        loadMapCallback.execute(LoadMapCallback::SOUNDS);
 
         loadSceneAIFrom(sceneChunk, udaParser);
-        loadCallback.execute(LoadCallback::AI);
+        loadMapCallback.execute(LoadMapCallback::AI);
     }
 
     void Map::loadSceneObjectsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {

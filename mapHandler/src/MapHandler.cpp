@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "MapHandler.h"
-#include <load/NullLoadCallback.h>
+#include <load/NullLoadMapCallback.h>
 
 namespace urchin {
 
@@ -24,7 +24,7 @@ namespace urchin {
         map = std::make_unique<Map>(renderer3d, physicsWorld, soundEnvironment, aiEnvironment);
     }
 
-    void MapHandler::loadMapFromFile(const std::string& filename, LoadCallback& loadCallback) {
+    void MapHandler::loadMapFromFile(const std::string& filename, LoadMapCallback& loadMapCallback) {
         Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
@@ -33,7 +33,7 @@ namespace urchin {
         relativeWorkingDirectory = workingDirChunk->getStringValue();
 
         UdaChunk* sceneChunk = udaParser.getUniqueChunk(true, SCENE_TAG);
-        map->loadFrom(sceneChunk, udaParser, loadCallback);
+        map->loadFrom(sceneChunk, udaParser, loadMapCallback);
     }
 
     void MapHandler::writeMapOnFile(const std::string& filename) const {

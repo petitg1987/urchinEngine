@@ -1,10 +1,10 @@
 #pragma once
 
-#include "LoadCallback.h"
+#include "LoadMapCallback.h"
 
 namespace urchin {
 
-    class NullLoadCallback : public LoadCallback {
+    class NullLoadMapCallback : public LoadMapCallback {
         public:
             void execute(LoadedStage) override;
     };

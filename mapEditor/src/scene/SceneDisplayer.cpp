@@ -50,7 +50,7 @@ namespace urchin {
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance().getResourcesDirectory() + relativeMapFilename);
             if (streamMapFile) { //existing map
-                NullLoadCallback nullLoadCallback;
+                NullLoadMapCallback nullLoadCallback;
                 mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
             }
             mapHandler->unpause();

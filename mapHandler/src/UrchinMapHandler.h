@@ -7,8 +7,8 @@
 #include <resources/light/SceneLight.h>
 #include <resources/terrain/SceneTerrain.h>
 
-#include <load/LoadCallback.h>
-#include <load/NullLoadCallback.h>
+#include <load/LoadMapCallback.h>
+#include <load/NullLoadMapCallback.h>
 
 #include <display/NavMeshDisplayer.h>
 #include <display/CollisionPointDisplayer.h>

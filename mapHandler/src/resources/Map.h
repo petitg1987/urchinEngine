@@ -8,7 +8,7 @@
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
-#include <load/LoadCallback.h>
+#include <load/LoadMapCallback.h>
 #include <resources/object/SceneObject.h>
 #include <resources/light/SceneLight.h>
 #include <resources/terrain/SceneTerrain.h>
@@ -66,7 +66,7 @@ namespace urchin {
             void unpause();
 
         private:
-            void loadFrom(const UdaChunk*, const UdaParser&, LoadCallback&);
+            void loadFrom(const UdaChunk*, const UdaParser&, LoadMapCallback&);
             void loadSceneObjectsFrom(const UdaChunk*, const UdaParser&);
             void loadSceneLightsFrom(const UdaChunk*, const UdaParser&);
             void loadSceneTerrainFrom(const UdaChunk*, const UdaParser&);

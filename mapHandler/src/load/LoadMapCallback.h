@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    class LoadCallback {
+    class LoadMapCallback {
         public:
             enum LoadedStage {
                 OBJECTS,
@@ -12,7 +12,7 @@ namespace urchin {
                 AI
             };
 
-            virtual ~LoadCallback() = default;
+            virtual ~LoadMapCallback() = default;
 
             virtual void execute(LoadedStage) = 0;
     };
