@@ -19,7 +19,7 @@ namespace urchin {
 
             virtual ~LoadMapCallback() = default;
 
-            virtual void notify(Stage, State) = 0;
+            virtual void notify(Stage, State);
     };
 
 }

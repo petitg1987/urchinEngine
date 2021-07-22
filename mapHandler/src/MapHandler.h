@@ -10,7 +10,6 @@
 #include <UrchinAIEngine.h>
 #include <resources/Map.h>
 #include <load/LoadMapCallback.h>
-#include <load/NullLoadMapCallback.h>
 
 namespace urchin {
 

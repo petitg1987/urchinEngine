@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include "MapHandler.h"
-#include <load/NullLoadMapCallback.h>
 
 namespace urchin {
 
