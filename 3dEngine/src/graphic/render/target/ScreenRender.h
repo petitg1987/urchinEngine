@@ -26,6 +26,7 @@ namespace urchin {
             std::size_t getNumColorAttachment() const override;
 
             VkImage getCurrentImage() const;
+            VkFormat getImageFormat() const;
 
             void render() override;
 

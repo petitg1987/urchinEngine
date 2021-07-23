@@ -132,16 +132,25 @@ namespace urchin {
         vkMapMemory(logicalDevice, dstImageMemory, 0, VK_WHOLE_SIZE, 0, (void**)&data);
         data += subResourceLayout.offset;
 
-        std::ofstream file("/tmp/lol/ppm", std::ios::out | std::ios::binary);
+        std::ofstream file("/tmp/screenshot", std::ios::out | std::ios::binary);
+
+        std::array<VkFormat, 3> formatsBGR = { VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM };
+        bool colorSwizzle = (std::find(formatsBGR.begin(), formatsBGR.end(), screenRender.getImageFormat()) != formatsBGR.end());
 
         // ppm header
         file << "P6\n" << screenRender.getWidth() << "\n" << screenRender.getHeight() << "\n" << 255 << "\n";
 
         // ppm binary pixel data
         for (uint32_t y = 0; y < screenRender.getHeight(); y++) {
-            unsigned int *row = (unsigned int*)data;
+            auto* row = (unsigned int*)data;
             for (uint32_t x = 0; x < screenRender.getWidth(); x++) {
-                file.write((char*)row, 3);
+                if (colorSwizzle) {
+                    file.write((char*)row + 2, 1);
+                    file.write((char*)row + 1, 1);
+                    file.write((char*)row, 1);
+                } else {
+                    file.write((char*)row, 3);
+                }
                 row++;
             }
             data += subResourceLayout.rowPitch;

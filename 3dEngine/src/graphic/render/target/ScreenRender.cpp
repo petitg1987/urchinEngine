@@ -108,6 +108,10 @@ namespace urchin {
         return swapChainHandler.getSwapChainImages()[vkImageIndex];
     }
 
+    VkFormat ScreenRender::getImageFormat() const {
+        return swapChainHandler.getImageFormat();
+    }
+
     void ScreenRender::initializeClearValues() {
         if (hasDepthAttachment()) {
             VkClearValue clearDepth{};

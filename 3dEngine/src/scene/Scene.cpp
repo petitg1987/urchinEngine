@@ -2,6 +2,7 @@
 
 #include <scene/Scene.h>
 #include <graphic/render/target/RenderTarget.h>
+#include <graphic/render/target/screenshot/ScreenshotService.h>
 
 namespace urchin {
 
@@ -163,6 +164,10 @@ namespace urchin {
 
     UIRenderer* Scene::getActiveUIRenderer() const {
         return activeUiRenderers;
+    }
+
+    void Scene::takeScreenShot() const {
+        ScreenshotService::instance().takeScreenshot(*screenRenderTarget);
     }
 
     bool Scene::onKeyPress(unsigned int key) {
