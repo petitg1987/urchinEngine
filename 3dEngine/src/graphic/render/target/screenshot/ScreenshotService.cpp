@@ -62,14 +62,14 @@ namespace urchin {
             dataDestination += subResourceLayout.offset;
 
             std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
-            bool colorSwizzle = std::find(formatsBGRA.begin(), formatsBGRA.end(), screenRender.getImageFormat()) != formatsBGRA.end();
+            bool bgraToRgba = std::find(formatsBGRA.begin(), formatsBGRA.end(), screenRender.getImageFormat()) != formatsBGRA.end();
 
             for (unsigned int y = 0; y < screenRender.getHeight(); y++) {
                 auto* row = (unsigned int*)dataDestination;
                 for (unsigned int x = 0; x < screenRender.getWidth(); x++) {
                     std::size_t index = 4 * screenRender.getWidth() * y + 4 * x;
 
-                    if (colorSwizzle) {
+                    if (bgraToRgba) {
                         imageData[index] = ((unsigned char*)row)[2];
                         imageData[index + 1] = ((unsigned char*)row)[1];
                         imageData[index + 2] = ((unsigned char*)row)[0];
