@@ -191,7 +191,12 @@ namespace urchin {
     }
 
     void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
-        CaptureService::instance().takeCapture(filename, textureImage, getVkFormat(), getWidth(), getHeight(), dstWidth, dstHeight);
+        if (hasMipmap()) {
+            throw std::runtime_error("Capture texture having mipmap is not implemented");
+        } else if (layer != 1) {
+            throw std::runtime_error("Capture texture having several layers is not implemented");
+        }
+        CaptureService::instance().takeCapture(filename, textureImage, getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, getWidth(), getHeight(), dstWidth, dstHeight);
     }
 
     bool Texture::isDepthFormat() const {

@@ -8,7 +8,8 @@
 
 namespace urchin {
 
-    void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
+    void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, VkImageLayout imageLayout,
+                                     unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto allocator =  GraphicService::instance().getAllocator();
 
@@ -22,14 +23,14 @@ namespace urchin {
         VkImage dstImage = ImageHelper::createImage(srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR,
                                                     VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
 
-        //do the actual blit from the swap chain image to our host visible destination image
+        //do the actual blit from the image to our host visible destination image
         VkCommandBuffer copyCmd = CommandBufferHelper::beginSingleTimeCommands();
         {
             //transition destination image to transfer destination layout
             cmdPipelineBarrier(dstImage, copyCmd, 0, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
-            //transition swap chain image from present to transfer source layout
-            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+            //transition image to transfer source layout
+            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, imageLayout, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
 
             VkImageCopy imageCopyRegion{};
             imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -46,8 +47,8 @@ namespace urchin {
             //transition destination image to general layout, which is the required layout for mapping the image memory later on
             cmdPipelineBarrier(dstImage, copyCmd, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
 
-            //transition back the swap chain image after the blit is done
-            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+            //transition back the image after the blit is done
+            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, imageLayout);
         }
         CommandBufferHelper::endSingleTimeCommands(copyCmd);
 
@@ -93,14 +94,13 @@ namespace urchin {
             }
         }
         vmaUnmapMemory(allocator, imageMemory);
+        vmaFreeMemory(allocator, imageMemory);
+        vkDestroyImage(logicalDevice, dstImage, nullptr);
 
         unsigned createPngStatus = lodepng::encode(filename, imageData.data(), dstWidth, dstHeight);
         if (createPngStatus) {
-            throw std::runtime_error("Impossible to encode image in png with status " + std::to_string(createPngStatus) + ": " + lodepng_error_text(createPngStatus));
+            throw std::runtime_error("Impossible to encode capture in PNG format (status: " + std::to_string(createPngStatus) + ", message: " + lodepng_error_text(createPngStatus) + ", filename: " + filename + ")");
         }
-
-        vmaFreeMemory(allocator, imageMemory);
-        vkDestroyImage(logicalDevice, dstImage, nullptr);
     }
 
     void CaptureService::cmdPipelineBarrier(VkImage image, VkCommandBuffer copyCmd, VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask, VkImageLayout oldLayout, VkImageLayout newLayout) const {
