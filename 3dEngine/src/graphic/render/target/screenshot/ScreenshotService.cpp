@@ -56,7 +56,7 @@ namespace urchin {
         //map image memory so we can start copying from it
         std::vector<unsigned char> imageData;
         imageData.resize(width * height * 4, 255);
-        const char* dataDestination;
+        const unsigned char* dataDestination;
         vmaMapMemory(allocator, imageMemory, (void**)&dataDestination);
         {
             dataDestination += subResourceLayout.offset;
@@ -80,13 +80,13 @@ namespace urchin {
                     std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
 
                     if (bgraToRgba) {
-                        imageData[dstIndex + 0] = ((unsigned char*)dataDestination)[srcIndex + 2];
-                        imageData[dstIndex + 1] = ((unsigned char*)dataDestination)[srcIndex + 1];
-                        imageData[dstIndex + 2] = ((unsigned char*)dataDestination)[srcIndex + 0];
+                        imageData[dstIndex + 0] = dataDestination[srcIndex + 2];
+                        imageData[dstIndex + 1] = dataDestination[srcIndex + 1];
+                        imageData[dstIndex + 2] = dataDestination[srcIndex + 0];
                     } else {
-                        imageData[dstIndex + 0] = ((unsigned char*)dataDestination)[srcIndex + 0];
-                        imageData[dstIndex + 1] = ((unsigned char*)dataDestination)[srcIndex + 1];
-                        imageData[dstIndex + 2] = ((unsigned char*)dataDestination)[srcIndex + 2];
+                        imageData[dstIndex + 0] = dataDestination[srcIndex + 0];
+                        imageData[dstIndex + 1] = dataDestination[srcIndex + 1];
+                        imageData[dstIndex + 2] = dataDestination[srcIndex + 2];
                     }
                 }
             }
