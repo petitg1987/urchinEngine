@@ -8,12 +8,10 @@ namespace urchin {
     /**
      * @param imageMemory [out] Device memory for the image
      */
-    VkImage ImageHelper::createImage(uint32_t width, uint32_t height, uint32_t layer, uint32_t mipLevels, bool isCubeMap, VkFormat format, VkImageUsageFlags usage, VmaAllocation& imageMemory) {
+    VkImage ImageHelper::createImage(uint32_t width, uint32_t height, uint32_t layer, uint32_t mipLevels, bool isCubeMap, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VmaAllocation& imageMemory) {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
-        VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL;
-        VkFormatFeatureFlags formatFeature = usageFlagToFeatureFlag(usage);
-        checkFormatSupport(format, tiling, formatFeature);
+        checkFormatSupport(format, tiling, usage);
 
         VkImageCreateInfo imageInfo{};
         imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -42,18 +40,22 @@ namespace urchin {
         vkGetImageMemoryRequirements(logicalDevice, image, &memRequirements);
 
         VmaAllocationCreateInfo allocCreateInfo{};
-        allocCreateInfo.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+        allocCreateInfo.usage = (tiling == VK_IMAGE_TILING_OPTIMAL) ? VMA_MEMORY_USAGE_GPU_ONLY : VMA_MEMORY_USAGE_GPU_TO_CPU; //assume that tiling no optimal is only used for GPU to CPU transfers
         allocCreateInfo.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
 
         VmaAllocationInfo allocInfo{};
         allocInfo.size = memRequirements.size;
         allocInfo.memoryType = MemoryHelper::findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-        if (vmaAllocateMemoryForImage(GraphicService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo) != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate image memory for image of size " + std::to_string(width) + "x" + std::to_string(height) + " with format: " + std::to_string(format));
+        result = vmaAllocateMemoryForImage(GraphicService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to allocate image memory for image of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
         }
 
-        vmaBindImageMemory(GraphicService::instance().getAllocator(), imageMemory, image);
+        result = vmaBindImageMemory(GraphicService::instance().getAllocator(), imageMemory, image);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to bind image memory for image of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
+        }
 
         return image;
     }
@@ -81,7 +83,9 @@ namespace urchin {
         return imageView;
     }
 
-    void ImageHelper::checkFormatSupport(VkFormat format, VkImageTiling tiling, VkFormatFeatureFlags features) {
+    void ImageHelper::checkFormatSupport(VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage) {
+        VkFormatFeatureFlags features = usageFlagToFeatureFlag(usage);
+
         VkFormatProperties props;
         vkGetPhysicalDeviceFormatProperties(GraphicService::instance().getDevices().getPhysicalDevice(), format, &props);
 
@@ -93,8 +97,10 @@ namespace urchin {
     }
 
     VkFormatFeatureFlags ImageHelper::usageFlagToFeatureFlag(VkImageUsageFlags usage) {
-        if (usage & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+        if (usage & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) { //contain depth stencil attachment
             return VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT;
+        } else if (usage == VK_IMAGE_USAGE_TRANSFER_DST_BIT) { //only for transfer destination
+            return VK_FORMAT_FEATURE_TRANSFER_DST_BIT;
         }
         return VK_FORMAT_FEATURE_COLOR_ATTACHMENT_BIT | VK_FORMAT_FEATURE_TRANSFER_DST_BIT;
     }

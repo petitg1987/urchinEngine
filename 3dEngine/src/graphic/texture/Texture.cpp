@@ -210,7 +210,7 @@ namespace urchin {
         vmaUnmapMemory(allocator, stagingBufferMemory);
 
         bool isCubeMap = textureType == TextureType::CUBE_MAP;
-        textureImage = ImageHelper::createImage(width, height, layer, mipLevels, isCubeMap, getVkFormat(), getImageUsage(), textureImageMemory);
+        textureImage = ImageHelper::createImage(width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
 
         if (!isDepthFormat()) { //depth image layout transition is automatically done in render pass (see 'layout' and 'finalLayout' properties)
             transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);

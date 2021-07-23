@@ -1,56 +1,22 @@
+#include <libs/vma/vk_mem_alloc.h>
+
 #include <graphic/render/target/screenshot/ScreenshotService.h>
-#include <graphic/helper/MemoryHelper.h>
 #include <graphic/helper/CommandBufferHelper.h>
+#include <graphic/helper/ImageHelper.h>
 #include <graphic/setup/GraphicService.h>
 
 namespace urchin {
 
-    void ScreenshotService::takeScreenshot(const ScreenRender& screenRender) const { //TODO: use vma: vmaBindImageMemory, etc...
+    void ScreenshotService::takeScreenshot(const ScreenRender& screenRender) const {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
-        vkDeviceWaitIdle(logicalDevice);
+        auto allocator =  GraphicService::instance().getAllocator();
+
         VkImage srcImage = screenRender.getCurrentImage();
 
         //create the linear tiled destination image to copy to and to read the memory from
-        VkImageCreateInfo imageCreateCI = {};
-        imageCreateCI.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-        imageCreateCI.imageType = VK_IMAGE_TYPE_2D;
-        imageCreateCI.format = VK_FORMAT_R8G8B8A8_UNORM;
-        imageCreateCI.extent.width = screenRender.getWidth();
-        imageCreateCI.extent.height = screenRender.getHeight();
-        imageCreateCI.extent.depth = 1;
-        imageCreateCI.arrayLayers = 1;
-        imageCreateCI.mipLevels = 1;
-        imageCreateCI.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        imageCreateCI.samples = VK_SAMPLE_COUNT_1_BIT;
-        imageCreateCI.tiling = VK_IMAGE_TILING_LINEAR;
-        imageCreateCI.usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-
-        //create the image
-        VkImage dstImage;
-        VkResult result = vkCreateImage(logicalDevice, &imageCreateCI, nullptr, &dstImage);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create destination image for screenshot with error code: " + std::to_string(result));
-        }
-
-        //create memory to back up the image
-        VkMemoryRequirements memRequirements;
-
-        VkMemoryAllocateInfo memAllocInfo {};
-        memAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-        VkDeviceMemory dstImageMemory;
-        vkGetImageMemoryRequirements(logicalDevice, dstImage, &memRequirements);
-        memAllocInfo.allocationSize = memRequirements.size;
-
-        //memory must be host visible to copy from
-        memAllocInfo.memoryTypeIndex = MemoryHelper::findMemoryType(memRequirements.memoryTypeBits,  VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-        result = vkAllocateMemory(logicalDevice, &memAllocInfo, nullptr, &dstImageMemory);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to ... with error code:" + std::to_string(result)); //TODO continue...
-        }
-        result = vkBindImageMemory(logicalDevice, dstImage, dstImageMemory, 0);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to ... with error code: " + std::to_string(result)); //TODO continue...
-        }
+        VmaAllocation imageMemory;
+        VkImage dstImage = ImageHelper::createImage(screenRender.getWidth(), screenRender.getHeight(), 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR,
+                                                    VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
 
         //do the actual blit from the swap chain image to our host visible destination image
         VkCommandBuffer copyCmd = CommandBufferHelper::beginSingleTimeCommands();
@@ -92,7 +58,6 @@ namespace urchin {
 
         //issue the copy command
         vkCmdCopyImage(copyCmd, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,1,&imageCopyRegion);
-        //TODO check result ?
 
         //transition destination image to general layout, which is the required layout for mapping the image memory later on
         VkImageMemoryBarrier dstImageMemoryBarrier2 {};
@@ -129,39 +94,40 @@ namespace urchin {
 
         //map image memory so we can start copying from it
         const char* data;
-        vkMapMemory(logicalDevice, dstImageMemory, 0, VK_WHOLE_SIZE, 0, (void**)&data);
-        data += subResourceLayout.offset;
+        vmaMapMemory(allocator, imageMemory, (void**)&data);
+        {
+            data += subResourceLayout.offset;
 
-        std::ofstream file("/tmp/screenshot", std::ios::out | std::ios::binary);
+            std::ofstream file("/tmp/screenshot", std::ios::out | std::ios::binary);
 
-        std::array<VkFormat, 3> formatsBGR = { VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM };
-        bool colorSwizzle = (std::find(formatsBGR.begin(), formatsBGR.end(), screenRender.getImageFormat()) != formatsBGR.end());
+            std::array<VkFormat, 3> formatsBGR = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
+            bool colorSwizzle = (std::find(formatsBGR.begin(), formatsBGR.end(), screenRender.getImageFormat()) != formatsBGR.end());
 
-        // ppm header
-        file << "P6\n" << screenRender.getWidth() << "\n" << screenRender.getHeight() << "\n" << 255 << "\n";
+            // ppm header
+            file << "P6\n" << screenRender.getWidth() << "\n" << screenRender.getHeight() << "\n" << 255 << "\n";
 
-        // ppm binary pixel data
-        for (uint32_t y = 0; y < screenRender.getHeight(); y++) {
-            auto* row = (unsigned int*)data;
-            for (uint32_t x = 0; x < screenRender.getWidth(); x++) {
-                if (colorSwizzle) {
-                    file.write((char*)row + 2, 1);
-                    file.write((char*)row + 1, 1);
-                    file.write((char*)row, 1);
-                } else {
-                    file.write((char*)row, 3);
+            // ppm binary pixel data
+            for (uint32_t y = 0; y < screenRender.getHeight(); y++) {
+                auto *row = (unsigned int *) data;
+                for (uint32_t x = 0; x < screenRender.getWidth(); x++) {
+                    if (colorSwizzle) {
+                        file.write((char *) row + 2, 1);
+                        file.write((char *) row + 1, 1);
+                        file.write((char *) row, 1);
+                    } else {
+                        file.write((char *) row, 3);
+                    }
+                    row++;
                 }
-                row++;
+                data += subResourceLayout.rowPitch;
             }
-            data += subResourceLayout.rowPitch;
+            file.close();
+
+            std::cout << "Screenshot saved to disk" << std::endl;
         }
-        file.close();
+        vmaUnmapMemory(allocator, imageMemory);
 
-        std::cout << "Screenshot saved to disk" << std::endl;
-
-        //clean up resources
-        vkUnmapMemory(logicalDevice, dstImageMemory);
-        vkFreeMemory(logicalDevice, dstImageMemory, nullptr);
+        vmaFreeMemory(allocator, imageMemory);
         vkDestroyImage(logicalDevice, dstImage, nullptr);
     }
 
