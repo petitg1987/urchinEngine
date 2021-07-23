@@ -278,7 +278,7 @@ namespace urchin {
                 throw std::invalid_argument("Unsupported layout transition from " + std::to_string(oldLayout) + " to " + std::to_string(newLayout));
             }
 
-            vkCmdPipelineBarrier(commandBuffer, sourceStage, destinationStage,0,0, nullptr,0,
+            vkCmdPipelineBarrier(commandBuffer, sourceStage, destinationStage, 0, 0,  nullptr, 0,
                                  nullptr,1, &barrier);
         }
         CommandBufferHelper::endSingleTimeCommands(commandBuffer);

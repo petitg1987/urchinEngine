@@ -14,6 +14,8 @@ namespace urchin {
 
         private:
             ScreenshotService() = default;
+
+            void cmdPipelineBarrier(VkImage, VkCommandBuffer, VkAccessFlags, VkAccessFlags, VkImageLayout, VkImageLayout) const;
     };
 
 }
