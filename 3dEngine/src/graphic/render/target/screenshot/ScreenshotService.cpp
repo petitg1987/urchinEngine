@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    void ScreenshotService::takeScreenshot(const ScreenRender& screenRender) const {
+    void ScreenshotService::takeScreenshot(const ScreenRender& screenRender, unsigned int width, unsigned int height) const {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto allocator =  GraphicService::instance().getAllocator();
 
@@ -55,7 +55,7 @@ namespace urchin {
 
         //map image memory so we can start copying from it
         std::vector<unsigned char> imageData;
-        imageData.resize(screenRender.getWidth() * screenRender.getHeight() * 4, 255);
+        imageData.resize(width * height * 4, 255);
         const char* dataDestination;
         vmaMapMemory(allocator, imageMemory, (void**)&dataDestination);
         {
@@ -64,28 +64,36 @@ namespace urchin {
             std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
             bool bgraToRgba = std::find(formatsBGRA.begin(), formatsBGRA.end(), screenRender.getImageFormat()) != formatsBGRA.end();
 
-            for (unsigned int y = 0; y < screenRender.getHeight(); y++) {
-                auto* row = (unsigned int*)dataDestination;
-                for (unsigned int x = 0; x < screenRender.getWidth(); x++) {
-                    std::size_t index = 4 * screenRender.getWidth() * y + 4 * x;
+            float scaleX = (float)screenRender.getWidth() / (float)width;
+            float scaleY = (float)screenRender.getHeight() / (float)height;
+
+            for (unsigned int y = 0; y < height; ++y) {
+                for (unsigned int x = 0; x < width; ++x) {
+                    std::size_t dstIndexX = 4 * x;
+                    std::size_t dstIndexY = y;
+                    std::size_t dstIndex = (dstIndexY * width * 4) + dstIndexX;
+
+                    std::size_t srcIndexX = (unsigned int)(scaleX * ((float)dstIndexX + 4.0f)) - 4;
+                    srcIndexX = (std::size_t)MathFunction::clamp(srcIndexX, 0uL, (std::size_t)screenRender.getWidth() * 4uL - 1uL);
+                    std::size_t srcIndexY = (unsigned int)(scaleY * ((float)dstIndexY + 1.0f)) - 1;
+                    srcIndexY = (std::size_t)MathFunction::clamp(srcIndexY, 0uL, (std::size_t)screenRender.getHeight() - 1uL);
+                    std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
 
                     if (bgraToRgba) {
-                        imageData[index] = ((unsigned char*)row)[2];
-                        imageData[index + 1] = ((unsigned char*)row)[1];
-                        imageData[index + 2] = ((unsigned char*)row)[0];
+                        imageData[dstIndex + 0] = ((unsigned char*)dataDestination)[srcIndex + 2];
+                        imageData[dstIndex + 1] = ((unsigned char*)dataDestination)[srcIndex + 1];
+                        imageData[dstIndex + 2] = ((unsigned char*)dataDestination)[srcIndex + 0];
                     } else {
-                        imageData[index] = ((unsigned char*)row)[0];
-                        imageData[index + 1] = ((unsigned char*)row)[1];
-                        imageData[index + 2] = ((unsigned char*)row)[2];
+                        imageData[dstIndex + 0] = ((unsigned char*)dataDestination)[srcIndex + 0];
+                        imageData[dstIndex + 1] = ((unsigned char*)dataDestination)[srcIndex + 1];
+                        imageData[dstIndex + 2] = ((unsigned char*)dataDestination)[srcIndex + 2];
                     }
-                    row++;
                 }
-                dataDestination += subResourceLayout.rowPitch;
             }
         }
         vmaUnmapMemory(allocator, imageMemory);
 
-        unsigned createPngStatus = lodepng::encode("/tmp/screenshot.png", imageData.data(), screenRender.getWidth(), screenRender.getHeight());
+        unsigned createPngStatus = lodepng::encode("/tmp/screenshot.png", imageData.data(), width, height);
         if (createPngStatus) {
             throw std::runtime_error("Impossible to encode image in png with status " + std::to_string(createPngStatus) + ": " + lodepng_error_text(createPngStatus));
         }

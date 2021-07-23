@@ -166,8 +166,8 @@ namespace urchin {
         return activeUiRenderers;
     }
 
-    void Scene::takeScreenShot() const {
-        ScreenshotService::instance().takeScreenshot(*screenRenderTarget);
+    void Scene::takeScreenShot(unsigned int width, unsigned int height) const {
+        ScreenshotService::instance().takeScreenshot(*screenRenderTarget, width, height);
     }
 
     bool Scene::onKeyPress(unsigned int key) {

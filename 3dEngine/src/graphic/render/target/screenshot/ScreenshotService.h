@@ -10,7 +10,7 @@ namespace urchin {
         public:
             friend class Singleton<ScreenshotService>;
 
-            void takeScreenshot(const ScreenRender&) const;
+            void takeScreenshot(const ScreenRender&, unsigned int, unsigned int) const;
 
         private:
             ScreenshotService() = default;

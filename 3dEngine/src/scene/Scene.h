@@ -40,7 +40,7 @@ namespace urchin {
             void removeUIRenderer(UIRenderer*);
             UIRenderer* getActiveUIRenderer() const;
 
-            void takeScreenShot() const;
+            void takeScreenShot(unsigned int, unsigned int) const;
 
             //events
             bool onKeyPress(unsigned int);

@@ -105,6 +105,14 @@ namespace urchin {
     template unsigned int MathFunction::lerp<unsigned int>(unsigned int, unsigned int, unsigned int);
     template unsigned int MathFunction::roundDivision<unsigned int>(unsigned int, unsigned int);
 
+    template long MathFunction::clamp<long>(long, long, long);
+    template long MathFunction::sign<long>(long);
+    template long MathFunction::roundDivision<long>(long, long);
+
+    template unsigned long MathFunction::clamp<unsigned long>(unsigned long, unsigned long, unsigned long);
+    template unsigned long MathFunction::sign<unsigned long>(unsigned long);
+    template unsigned long MathFunction::roundDivision<unsigned long>(unsigned long, unsigned long);
+
     template long long MathFunction::clamp<long long>(long long, long long, long long);
     template long long MathFunction::sign<long long>(long long);
     template long long MathFunction::roundDivision<long long>(long long, long long);
