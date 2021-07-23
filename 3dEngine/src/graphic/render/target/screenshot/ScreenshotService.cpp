@@ -1,4 +1,5 @@
 #include <libs/vma/vk_mem_alloc.h>
+#include <UrchinCommon.h>
 
 #include <graphic/render/target/screenshot/ScreenshotService.h>
 #include <graphic/helper/CommandBufferHelper.h>
@@ -53,39 +54,41 @@ namespace urchin {
         vkGetImageSubresourceLayout(logicalDevice, dstImage, &subResource, &subResourceLayout);
 
         //map image memory so we can start copying from it
-        const char* data;
-        vmaMapMemory(allocator, imageMemory, (void**)&data);
+        std::vector<unsigned char> imageData;
+        imageData.resize(screenRender.getWidth() * screenRender.getHeight() * 4, 255);
+        const char* dataDestination;
+        vmaMapMemory(allocator, imageMemory, (void**)&dataDestination);
         {
-            data += subResourceLayout.offset;
+            dataDestination += subResourceLayout.offset;
 
-            std::ofstream file("/tmp/screenshot", std::ios::out | std::ios::binary);
+            std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
+            bool colorSwizzle = std::find(formatsBGRA.begin(), formatsBGRA.end(), screenRender.getImageFormat()) != formatsBGRA.end();
 
-            std::array<VkFormat, 3> formatsBGR = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
-            bool colorSwizzle = (std::find(formatsBGR.begin(), formatsBGR.end(), screenRender.getImageFormat()) != formatsBGR.end());
+            for (unsigned int y = 0; y < screenRender.getHeight(); y++) {
+                auto* row = (unsigned int*)dataDestination;
+                for (unsigned int x = 0; x < screenRender.getWidth(); x++) {
+                    std::size_t index = 4 * screenRender.getWidth() * y + 4 * x;
 
-            // ppm header
-            file << "P6\n" << screenRender.getWidth() << "\n" << screenRender.getHeight() << "\n" << 255 << "\n";
-
-            // ppm binary pixel data
-            for (uint32_t y = 0; y < screenRender.getHeight(); y++) {
-                auto *row = (unsigned int *) data;
-                for (uint32_t x = 0; x < screenRender.getWidth(); x++) {
                     if (colorSwizzle) {
-                        file.write((char *) row + 2, 1);
-                        file.write((char *) row + 1, 1);
-                        file.write((char *) row, 1);
+                        imageData[index] = ((unsigned char*)row)[2];
+                        imageData[index + 1] = ((unsigned char*)row)[1];
+                        imageData[index + 2] = ((unsigned char*)row)[0];
                     } else {
-                        file.write((char *) row, 3);
+                        imageData[index] = ((unsigned char*)row)[0];
+                        imageData[index + 1] = ((unsigned char*)row)[1];
+                        imageData[index + 2] = ((unsigned char*)row)[2];
                     }
                     row++;
                 }
-                data += subResourceLayout.rowPitch;
+                dataDestination += subResourceLayout.rowPitch;
             }
-            file.close();
-
-            std::cout << "Screenshot saved to disk" << std::endl;
         }
         vmaUnmapMemory(allocator, imageMemory);
+
+        unsigned createPngStatus = lodepng::encode("/tmp/screenshot.png", imageData.data(), screenRender.getWidth(), screenRender.getHeight());
+        if (createPngStatus) {
+            throw std::runtime_error("Impossible to encode image in png with status " + std::to_string(createPngStatus) + ": " + lodepng_error_text(createPngStatus));
+        }
 
         vmaFreeMemory(allocator, imageMemory);
         vkDestroyImage(logicalDevice, dstImage, nullptr);
