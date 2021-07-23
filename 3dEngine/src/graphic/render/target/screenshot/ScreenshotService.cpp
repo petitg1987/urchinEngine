@@ -13,6 +13,10 @@ namespace urchin {
         auto allocator =  GraphicService::instance().getAllocator();
 
         VkImage srcImage = screenRender.getCurrentImage();
+        std::vector<unsigned char> imageData;
+        unsigned int dstWidth = (width == 0) ? screenRender.getWidth() : width;
+        unsigned int dstHeight = (height == 0) ? screenRender.getHeight() : height;
+        imageData.resize(dstWidth * dstHeight * 4, 255);
 
         //create the linear tiled destination image to copy to and to read the memory from
         VmaAllocation imageMemory;
@@ -54,8 +58,6 @@ namespace urchin {
         vkGetImageSubresourceLayout(logicalDevice, dstImage, &subResource, &subResourceLayout);
 
         //map image memory so we can start copying from it
-        std::vector<unsigned char> imageData;
-        imageData.resize(width * height * 4, 255);
         const unsigned char* dataDestination;
         vmaMapMemory(allocator, imageMemory, (void**)&dataDestination);
         {
@@ -64,14 +66,14 @@ namespace urchin {
             std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
             bool bgraToRgba = std::find(formatsBGRA.begin(), formatsBGRA.end(), screenRender.getImageFormat()) != formatsBGRA.end();
 
-            float scaleX = (float)screenRender.getWidth() / (float)width;
-            float scaleY = (float)screenRender.getHeight() / (float)height;
+            float scaleX = (float)screenRender.getWidth() / (float)dstWidth;
+            float scaleY = (float)screenRender.getHeight() / (float)dstHeight;
 
-            for (unsigned int y = 0; y < height; ++y) {
-                for (unsigned int x = 0; x < width; ++x) {
+            for (unsigned int y = 0; y < dstHeight; ++y) {
+                for (unsigned int x = 0; x < dstWidth; ++x) {
                     std::size_t dstIndexX = 4 * x;
                     std::size_t dstIndexY = y;
-                    std::size_t dstIndex = (dstIndexY * width * 4) + dstIndexX;
+                    std::size_t dstIndex = (dstIndexY * dstWidth * 4) + dstIndexX;
 
                     std::size_t srcIndexX = (unsigned int)(scaleX * ((float)dstIndexX + 4.0f)) - 4;
                     srcIndexX = (std::size_t)MathFunction::clamp(srcIndexX, 0uL, (std::size_t)screenRender.getWidth() * 4uL - 1uL);
@@ -93,7 +95,7 @@ namespace urchin {
         }
         vmaUnmapMemory(allocator, imageMemory);
 
-        unsigned createPngStatus = lodepng::encode("/tmp/screenshot.png", imageData.data(), width, height);
+        unsigned createPngStatus = lodepng::encode("/tmp/screenshot.png", imageData.data(), dstWidth, dstHeight);
         if (createPngStatus) {
             throw std::runtime_error("Impossible to encode image in png with status " + std::to_string(createPngStatus) + ": " + lodepng_error_text(createPngStatus));
         }
