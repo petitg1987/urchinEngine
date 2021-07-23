@@ -6,6 +6,7 @@
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/ImageHelper.h>
 #include <graphic/render/GenericRenderer.h>
+#include <graphic/capture/CaptureService.h>
 
 namespace urchin {
 
@@ -103,13 +104,10 @@ namespace urchin {
         return 1;
     }
 
-    VkImage ScreenRender::getCurrentImage() const {
+    void ScreenRender::takeScreenshot(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         assert(vkImageIndex != std::numeric_limits<uint32_t>::max());
-        return swapChainHandler.getSwapChainImages()[vkImageIndex];
-    }
-
-    VkFormat ScreenRender::getImageFormat() const {
-        return swapChainHandler.getImageFormat();
+        VkImage srcImage = swapChainHandler.getSwapChainImages()[vkImageIndex];
+        CaptureService::instance().takeCapture(filename, srcImage, swapChainHandler.getImageFormat(), getWidth(), getHeight(), dstWidth, dstHeight);
     }
 
     void ScreenRender::initializeClearValues() {

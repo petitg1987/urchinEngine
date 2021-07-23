@@ -2,7 +2,6 @@
 
 #include <scene/Scene.h>
 #include <graphic/render/target/RenderTarget.h>
-#include <graphic/render/target/screenshot/ScreenshotService.h>
 
 namespace urchin {
 
@@ -166,8 +165,8 @@ namespace urchin {
         return activeUiRenderers;
     }
 
-    void Scene::takeScreenShot(unsigned int width, unsigned int height) const {
-        ScreenshotService::instance().takeScreenshot(*screenRenderTarget, width, height);
+    void Scene::takeScreenShot(const std::string& filename, unsigned int width, unsigned int height) const {
+        screenRenderTarget->takeScreenshot(filename, width, height);
     }
 
     bool Scene::onKeyPress(unsigned int key) {

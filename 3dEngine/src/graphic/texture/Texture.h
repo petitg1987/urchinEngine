@@ -44,6 +44,8 @@ namespace urchin {
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
 
+            void takeCapture(const std::string&, unsigned int = 0, unsigned int = 0) const;
+
         private:
             Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
 

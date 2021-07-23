@@ -1,11 +1,13 @@
 #include <cassert>
 
-#include <graphic/texture/Texture.h>
 #include <libs/vma/vk_mem_alloc.h>
+#include <graphic/texture/Texture.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/BufferHelper.h>
 #include <graphic/helper/CommandBufferHelper.h>
 #include <graphic/helper/ImageHelper.h>
+#include <graphic/capture/CaptureService.h>
+#include <pattern/singleton/Singleton.h>
 
 namespace urchin {
 
@@ -188,6 +190,10 @@ namespace urchin {
         throw std::runtime_error("Unknown texture format: " + std::to_string(format));
     }
 
+    void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
+        CaptureService::instance().takeCapture(filename, textureImage, getVkFormat(), getWidth(), getHeight(), dstWidth, dstHeight);
+    }
+
     bool Texture::isDepthFormat() const {
         return format == TextureFormat::DEPTH_32_FLOAT;
     }
@@ -232,9 +238,8 @@ namespace urchin {
 
     VkImageUsageFlags Texture::getImageUsage() const {
         VkImageUsageFlags usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-        if (hasMipmap()) {
-            usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
-        }
+        usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT; //for mipmap (if exist) and capture)
+
         if (isDepthFormat()) {
             usage |= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
         } else if (writableTexture) {

@@ -1,55 +1,54 @@
 #include <libs/vma/vk_mem_alloc.h>
 #include <UrchinCommon.h>
 
-#include <graphic/render/target/screenshot/ScreenshotService.h>
+#include <graphic/capture/CaptureService.h>
 #include <graphic/helper/CommandBufferHelper.h>
 #include <graphic/helper/ImageHelper.h>
 #include <graphic/setup/GraphicService.h>
 
 namespace urchin {
 
-    void ScreenshotService::takeScreenshot(const ScreenRender& screenRender, unsigned int width, unsigned int height) const {
+    void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto allocator =  GraphicService::instance().getAllocator();
 
-        VkImage srcImage = screenRender.getCurrentImage();
         std::vector<unsigned char> imageData;
-        unsigned int dstWidth = (width == 0) ? screenRender.getWidth() : width;
-        unsigned int dstHeight = (height == 0) ? screenRender.getHeight() : height;
+        unsigned int dstWidth = (width == 0) ? srcWidth : width;
+        unsigned int dstHeight = (height == 0) ? srcHeight : height;
         imageData.resize(dstWidth * dstHeight * 4, 255);
 
         //create the linear tiled destination image to copy to and to read the memory from
         VmaAllocation imageMemory;
-        VkImage dstImage = ImageHelper::createImage(screenRender.getWidth(), screenRender.getHeight(), 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR,
+        VkImage dstImage = ImageHelper::createImage(srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR,
                                                     VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
 
         //do the actual blit from the swap chain image to our host visible destination image
         VkCommandBuffer copyCmd = CommandBufferHelper::beginSingleTimeCommands();
+        {
+            //transition destination image to transfer destination layout
+            cmdPipelineBarrier(dstImage, copyCmd, 0, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
-        //transition destination image to transfer destination layout
-        cmdPipelineBarrier(dstImage, copyCmd, 0, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+            //transition swap chain image from present to transfer source layout
+            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
 
-        //transition swap chain image from present to transfer source layout
-        cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+            VkImageCopy imageCopyRegion{};
+            imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            imageCopyRegion.srcSubresource.layerCount = 1;
+            imageCopyRegion.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            imageCopyRegion.dstSubresource.layerCount = 1;
+            imageCopyRegion.extent.width = srcWidth;
+            imageCopyRegion.extent.height = srcHeight;
+            imageCopyRegion.extent.depth = 1;
 
-        VkImageCopy imageCopyRegion{};
-        imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        imageCopyRegion.srcSubresource.layerCount = 1;
-        imageCopyRegion.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        imageCopyRegion.dstSubresource.layerCount = 1;
-        imageCopyRegion.extent.width = screenRender.getWidth();
-        imageCopyRegion.extent.height = screenRender.getHeight();
-        imageCopyRegion.extent.depth = 1;
+            //issue the copy command
+            vkCmdCopyImage(copyCmd, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
 
-        //issue the copy command
-        vkCmdCopyImage(copyCmd, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,1,&imageCopyRegion);
+            //transition destination image to general layout, which is the required layout for mapping the image memory later on
+            cmdPipelineBarrier(dstImage, copyCmd, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
 
-        //transition destination image to general layout, which is the required layout for mapping the image memory later on
-        cmdPipelineBarrier(dstImage, copyCmd, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
-
-        //transition back the swap chain image after the blit is done
-        cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-
+            //transition back the swap chain image after the blit is done
+            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+        }
         CommandBufferHelper::endSingleTimeCommands(copyCmd);
 
         //get layout of the image (including row pitch)
@@ -64,10 +63,10 @@ namespace urchin {
             dataDestination += subResourceLayout.offset;
 
             std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
-            bool bgraToRgba = std::find(formatsBGRA.begin(), formatsBGRA.end(), screenRender.getImageFormat()) != formatsBGRA.end();
+            bool bgraToRgba = std::find(formatsBGRA.begin(), formatsBGRA.end(), imageFormat) != formatsBGRA.end();
 
-            float scaleX = (float)screenRender.getWidth() / (float)dstWidth;
-            float scaleY = (float)screenRender.getHeight() / (float)dstHeight;
+            float scaleX = (float)srcWidth / (float)dstWidth;
+            float scaleY = (float)srcHeight / (float)dstHeight;
 
             for (unsigned int y = 0; y < dstHeight; ++y) {
                 for (unsigned int x = 0; x < dstWidth; ++x) {
@@ -76,9 +75,9 @@ namespace urchin {
                     std::size_t dstIndex = (dstIndexY * dstWidth * 4) + dstIndexX;
 
                     std::size_t srcIndexX = (unsigned int)(scaleX * ((float)dstIndexX + 4.0f)) - 4;
-                    srcIndexX = (std::size_t)MathFunction::clamp(srcIndexX, 0uL, (std::size_t)screenRender.getWidth() * 4uL - 1uL);
+                    srcIndexX = (std::size_t)MathFunction::clamp(srcIndexX, 0uL, (std::size_t)srcWidth * 4uL - 1uL);
                     std::size_t srcIndexY = (unsigned int)(scaleY * ((float)dstIndexY + 1.0f)) - 1;
-                    srcIndexY = (std::size_t)MathFunction::clamp(srcIndexY, 0uL, (std::size_t)screenRender.getHeight() - 1uL);
+                    srcIndexY = (std::size_t)MathFunction::clamp(srcIndexY, 0uL, (std::size_t)srcHeight - 1uL);
                     std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
 
                     if (bgraToRgba) {
@@ -95,7 +94,7 @@ namespace urchin {
         }
         vmaUnmapMemory(allocator, imageMemory);
 
-        unsigned createPngStatus = lodepng::encode("/tmp/screenshot.png", imageData.data(), dstWidth, dstHeight);
+        unsigned createPngStatus = lodepng::encode(filename, imageData.data(), dstWidth, dstHeight);
         if (createPngStatus) {
             throw std::runtime_error("Impossible to encode image in png with status " + std::to_string(createPngStatus) + ": " + lodepng_error_text(createPngStatus));
         }
@@ -104,7 +103,7 @@ namespace urchin {
         vkDestroyImage(logicalDevice, dstImage, nullptr);
     }
 
-    void ScreenshotService::cmdPipelineBarrier(VkImage image, VkCommandBuffer copyCmd, VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask, VkImageLayout oldLayout, VkImageLayout newLayout) const {
+    void CaptureService::cmdPipelineBarrier(VkImage image, VkCommandBuffer copyCmd, VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask, VkImageLayout oldLayout, VkImageLayout newLayout) const {
         VkImageMemoryBarrier imageMemoryBarrier {};
         imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
         imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
