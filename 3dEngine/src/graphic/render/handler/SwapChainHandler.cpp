@@ -48,6 +48,10 @@ namespace urchin {
         createInfo.imageExtent = extent;
         createInfo.imageArrayLayers = 1;
         createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        //enable transfer source on swap chain images: required for screenshots
+        if (swapChainSupport.capabilities.supportedUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT) {
+            createInfo.imageUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+        }
 
         uint32_t queueFamilyIndices[] = {GraphicService::instance().getQueues().getGraphicsQueueFamily(),
                                          GraphicService::instance().getQueues().getPresentationQueueFamily()};

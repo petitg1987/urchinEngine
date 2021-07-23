@@ -14,7 +14,7 @@ namespace urchin {
         VkImageCreateInfo imageCreateCI = {};
         imageCreateCI.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
         imageCreateCI.imageType = VK_IMAGE_TYPE_2D;
-        imageCreateCI.format = VK_FORMAT_R8G8B8A8_UNORM; //vkCmdBlitImage (if supported) will also do format conversions if the swap chain color format would differ
+        imageCreateCI.format = VK_FORMAT_R8G8B8A8_UNORM;
         imageCreateCI.extent.width = screenRender.getWidth();
         imageCreateCI.extent.height = screenRender.getHeight();
         imageCreateCI.extent.depth = 1;
