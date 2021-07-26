@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    Container::Container(Position position, Size size) :
+    Container::Container(Position position, Size size) : //TODO disable event outside the container ("> Load" button is clickable even when not visible)
             Widget(position, size),
             scissorEnabled(true),
             scrollbarEnabled(false) {
@@ -42,7 +42,8 @@ namespace urchin {
     void Container::createOrUpdateWidget() {
         if (scrollbarEnabled) {
             //detach children
-            //TODO ...
+            detachChild(scrollbarCursor.get());
+            detachChild(scrollbarLine.get());
 
             //skin information
             auto scrollbarChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "scrollbar", UdaAttribute("skin", scrollbarSkinName));
@@ -57,8 +58,7 @@ namespace urchin {
             auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
             std::string lineImageFilename = lineImageChunk->getStringValue();
 
-            //TODO review Size X, Y + Position X
-            scrollbarLine = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel / 2.0f, 0.0f, LengthType::PIXEL), Size(5.0f, LengthType::PIXEL, 100.0f, LengthType::SCREEN_PERCENT), lineImageFilename);
+            scrollbarLine = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), 100.0f, LengthType::CONTAINER_PERCENT), lineImageFilename);
             scrollbarCursor = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
         }
     }
