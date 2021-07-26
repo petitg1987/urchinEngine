@@ -13,7 +13,7 @@ namespace urchin {
     Text::Text(Position position, std::string skinName, std::string textOrKey, bool translatable) :
             Widget(position, Size(0, 0, LengthType::PIXEL)),
             skinName(std::move(skinName)),
-            maxWidth(100.0f, LengthType::PERCENTAGE),
+            maxWidth(100.0f, LengthType::SCREEN_PERCENT),
             font(nullptr) {
         if (translatable) {
             labelKey = std::move(textOrKey);
@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     unsigned int Text::getMaxWidth() {
-        if (maxWidth.getType() == LengthType::PERCENTAGE) {
+        if (maxWidth.getType() == LengthType::SCREEN_PERCENT) {
             return (unsigned int)(maxWidth.getValue() / 100.0f * (float)getSceneWidth());
         }
         return (unsigned int)maxWidth.getValue();
@@ -175,10 +175,10 @@ namespace urchin {
         Length fontHeight = UISkinService::instance().loadLength(textChunk, "height");
         if (fontHeight.getType() == LengthType::PIXEL) {
             return (unsigned int)fontHeight.getValue();
-        } else if (fontHeight.getType() == LengthType::PERCENTAGE) {
+        } else if (fontHeight.getType() == LengthType::SCREEN_PERCENT) {
             return (unsigned int)(fontHeight.getValue() / 100.0f * (float)getSceneHeight());
         }
-        throw std::runtime_error("Unknown length tpe for font height: " + std::to_string(fontHeight.getType()));
+        throw std::runtime_error("Unimplemented length type for font height: " + std::to_string(fontHeight.getType()));
     }
 
     void Text::refreshCoordinates() {

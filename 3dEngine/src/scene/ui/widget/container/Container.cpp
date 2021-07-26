@@ -8,7 +8,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position) {
-        return create<Container>(new Container(position, Size(100.0f, 100.0f, LengthType::PERCENTAGE)), parent);
+        return create<Container>(new Container(position, Size(100.0f, 100.0f, LengthType::SCREEN_PERCENT)), parent);
     }
 
     std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size) {

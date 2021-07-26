@@ -4,7 +4,8 @@ namespace urchin {
 
     enum LengthType {
         PIXEL,
-        PERCENTAGE,
+        SCREEN_PERCENT,
+        CONTAINER_PERCENT,
         RELATIVE_LENGTH
     };
 

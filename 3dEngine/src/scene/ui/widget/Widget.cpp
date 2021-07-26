@@ -66,7 +66,7 @@ namespace urchin {
         Vector2<int> translateVector(0, 0);
         rendererBuilder->addUniformData(sizeof(translateVector), &translateVector); //binding 1
 
-        Container* parentContainer = retrieveParentContainer();
+        Container* parentContainer = getParentContainer();
         if (parentContainer) {
             Vector2<int> scissorOffset = Vector2<int>(parentContainer->getPositionX(), parentContainer->getPositionY());
             Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
@@ -157,12 +157,11 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     int Widget::getPositionX() const {
-        if (position.getPositionTypeX() == LengthType::PERCENTAGE) {
-            Container* parentContainer = retrieveParentContainer();
-            int referenceWidth = parentContainer ? ((int)parentContainer->getWidth() - (parentContainer->getOutline().leftWidth + parentContainer->getOutline().rightWidth)) : (int)sceneWidth;
-            return (int)(position.getPositionX() / 100.0f * (float)referenceWidth);
+        if (position.getPositionTypeX() == LengthType::SCREEN_PERCENT) {
+            return (int)(position.getPositionX() / 100.0f * (float)getSceneWidth());
+        } else if (position.getPositionTypeX() == LengthType::CONTAINER_PERCENT) {
+            return (int)(position.getPositionX() / 100.0f * (float)getParentContainerWidth());
         }
-
         return (int)position.getPositionX();
     }
 
@@ -170,12 +169,11 @@ namespace urchin {
     * @return Relative position Y of the widget
     */
     int Widget::getPositionY() const {
-        if (position.getPositionTypeY() == LengthType::PERCENTAGE) {
-            Container* parentContainer = retrieveParentContainer();
-            int referenceHeight = parentContainer ? ((int)parentContainer->getHeight() - (parentContainer->getOutline().topWidth + parentContainer->getOutline().bottomWidth)) : (int)sceneHeight;
-            return (int)(position.getPositionY() / 100.0f * (float)referenceHeight);
+        if (position.getPositionTypeY() == LengthType::SCREEN_PERCENT) {
+            return (int)(position.getPositionY() / 100.0f * (float)getSceneHeight());
+        } else if (position.getPositionTypeY() == LengthType::CONTAINER_PERCENT) {
+            return (int)(position.getPositionY() / 100.0f * (float)getParentContainerHeight());
         }
-
         return (int)position.getPositionY();
     }
 
@@ -227,10 +225,10 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        if (size.getWidthSizeType() == LengthType::PERCENTAGE) {
-            Container* parentContainer = retrieveParentContainer();
-            int referenceWidth = parentContainer ? ((int)parentContainer->getWidth() - (parentContainer->getOutline().leftWidth + parentContainer->getOutline().rightWidth)) : (int)sceneWidth;
-            return (unsigned int)(size.getWidth() / 100.0f * (float)referenceWidth);
+        if (size.getWidthSizeType() == LengthType::SCREEN_PERCENT) {
+            return (unsigned int)(size.getWidth() / 100.0f * (float)getSceneWidth());
+        } else if (size.getWidthSizeType() == LengthType::CONTAINER_PERCENT)  {
+            return (unsigned int)(size.getWidth() / 100.0f * (float)getParentContainerWidth());
         } else if (size.getWidthSizeType() == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = size.getWidth();
             return (unsigned int)((float)getHeight() * relativeMultiplyFactor);
@@ -239,10 +237,10 @@ namespace urchin {
     }
 
     unsigned int Widget::getHeight() const {
-        if (size.getHeightSizeType() == LengthType::PERCENTAGE) {
-            Container* parentContainer = retrieveParentContainer();
-            int referenceHeight = parentContainer ? ((int)parentContainer->getHeight() - (parentContainer->getOutline().topWidth + parentContainer->getOutline().bottomWidth)) : (int)sceneHeight;
-            return (unsigned int)(size.getHeight() / 100.0f * (float)referenceHeight);
+        if (size.getHeightSizeType() == LengthType::SCREEN_PERCENT) {
+            return (unsigned int)(size.getHeight() / 100.0f * (float)getSceneHeight());
+        } else if (size.getWidthSizeType() == LengthType::CONTAINER_PERCENT)  {
+            return (unsigned int)(size.getHeight() / 100.0f * (float)getParentContainerHeight());
         } else if (size.getHeightSizeType() == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = size.getHeight();
             return (unsigned int)((float)getWidth() * relativeMultiplyFactor);
@@ -261,7 +259,7 @@ namespace urchin {
         return bIsVisible;
     }
 
-    Container* Widget::retrieveParentContainer() const {
+    Container* Widget::getParentContainer() const {
         Widget *parent = getParent();
         while (parent != nullptr) {
             auto* containerParent = dynamic_cast<Container*>(parent);
@@ -271,6 +269,22 @@ namespace urchin {
             parent = parent->getParent();
         }
         return nullptr;
+    }
+
+    unsigned int Widget::getParentContainerWidth() const {
+        Container* parentContainer = getParentContainer();
+        if (parentContainer) {
+            return (unsigned int)((int)parentContainer->getWidth() - (parentContainer->getOutline().leftWidth + parentContainer->getOutline().rightWidth));
+        }
+        return sceneWidth;
+    }
+
+    unsigned int Widget::getParentContainerHeight() const {
+        Container* parentContainer = getParentContainer();
+        if (parentContainer) {
+            return (unsigned int)((int)parentContainer->getHeight() - (parentContainer->getOutline().topWidth + parentContainer->getOutline().bottomWidth));
+        }
+        return sceneHeight;
     }
 
     bool Widget::onKeyPress(unsigned int key) {

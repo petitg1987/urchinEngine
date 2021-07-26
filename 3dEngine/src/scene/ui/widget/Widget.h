@@ -82,7 +82,10 @@ namespace urchin {
 
             virtual void createOrUpdateWidget() = 0;
             void setSize(Size);
-            Container* retrieveParentContainer() const;
+
+            Container* getParentContainer() const;
+            unsigned int getParentContainerWidth() const;
+            unsigned int getParentContainerHeight() const;
 
             virtual bool onKeyPressEvent(unsigned int);
             virtual bool onKeyReleaseEvent(unsigned int);

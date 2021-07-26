@@ -96,13 +96,17 @@ namespace urchin {
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
         if (state == MOVING) {
             auto positionX = (float)(mouseX - mousePositionX);
-            if (getPosition().getPositionTypeX() == LengthType::PERCENTAGE) {
+            if (getPosition().getPositionTypeX() == LengthType::SCREEN_PERCENT) {
                 positionX = (positionX / (float)getSceneWidth()) * 100.0f;
+            } else if (getPosition().getPositionTypeX() == LengthType::CONTAINER_PERCENT) {
+                positionX = (positionX / (float)getParentContainerWidth()) * 100.0f;
             }
 
             auto positionY = (float)(mouseY - mousePositionY);
-            if (getPosition().getPositionTypeY() == LengthType::PERCENTAGE) {
+            if (getPosition().getPositionTypeY() == LengthType::SCREEN_PERCENT) {
                 positionY = (positionY / (float)getSceneHeight()) * 100.0f;
+            } else if (getPosition().getPositionTypeY() == LengthType::SCREEN_PERCENT) {
+                positionY = (positionY / (float)getParentContainerHeight()) * 100.0f;
             }
 
             updatePosition(Position(positionX, getPosition().getPositionTypeX(), positionY, getPosition().getPositionTypeY(), getPosition().getRelativeTo()));

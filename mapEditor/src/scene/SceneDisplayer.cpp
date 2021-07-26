@@ -69,7 +69,7 @@ namespace urchin {
 
         scene = std::make_unique<Scene>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
         scene->newUIRenderer(true);
-        scene->getActiveUIRenderer()->addWidget(StaticBitmap::newStaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PERCENTAGE), "resources/emptyScene.tga"));
+        scene->getActiveUIRenderer()->addWidget(StaticBitmap::newStaticBitmap(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::SCREEN_PERCENT), "resources/emptyScene.tga"));
 
         isInitialized = true;
     }
