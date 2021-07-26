@@ -161,24 +161,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     int Widget::getPositionX() const {
-        if (position.getPositionTypeX() == LengthType::SCREEN_PERCENT) {
-            return (int)(position.getPositionX() / 100.0f * (float)getSceneWidth());
-        } else if (position.getPositionTypeX() == LengthType::CONTAINER_PERCENT) {
-            return (int)(position.getPositionX() / 100.0f * (float)getParentContainerWidth());
-        }
-        return (int)position.getPositionX();
+        return widthInPixel(position.getPositionX(), position.getPositionTypeX(), [&](){return (float)getPositionY();});
     }
 
     /**
     * @return Relative position Y of the widget
     */
     int Widget::getPositionY() const {
-        if (position.getPositionTypeY() == LengthType::SCREEN_PERCENT) {
-            return (int)(position.getPositionY() / 100.0f * (float)getSceneHeight());
-        } else if (position.getPositionTypeY() == LengthType::CONTAINER_PERCENT) {
-            return (int)(position.getPositionY() / 100.0f * (float)getParentContainerHeight());
-        }
-        return (int)position.getPositionY();
+        return heightInPixel(position.getPositionY(), position.getPositionTypeY(), [&](){return (float)getPositionX();});
     }
 
     const WidgetOutline& Widget::getOutline() const {
@@ -229,27 +219,39 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        if (size.getWidthSizeType() == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(size.getWidth() / 100.0f * (float)getSceneWidth());
-        } else if (size.getWidthSizeType() == LengthType::CONTAINER_PERCENT)  {
-            return (unsigned int)(size.getWidth() / 100.0f * (float)getParentContainerWidth());
-        } else if (size.getWidthSizeType() == LengthType::RELATIVE_LENGTH) {
-            float relativeMultiplyFactor = size.getWidth();
-            return (unsigned int)((float)getHeight() * relativeMultiplyFactor);
-        }
-        return (unsigned int)size.getWidth();
+        return (unsigned int)widthInPixel(size.getWidth(), size.getWidthSizeType(), [&](){return (float)getHeight();});
     }
 
     unsigned int Widget::getHeight() const {
-        if (size.getHeightSizeType() == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(size.getHeight() / 100.0f * (float)getSceneHeight());
-        } else if (size.getWidthSizeType() == LengthType::CONTAINER_PERCENT)  {
-            return (unsigned int)(size.getHeight() / 100.0f * (float)getParentContainerHeight());
-        } else if (size.getHeightSizeType() == LengthType::RELATIVE_LENGTH) {
-            float relativeMultiplyFactor = size.getHeight();
-            return (unsigned int)((float)getWidth() * relativeMultiplyFactor);
+        return (unsigned int)heightInPixel(size.getHeight(), size.getHeightSizeType(), [&](){return (float)getWidth();});
+    }
+
+    int Widget::widthInPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
+        if (lengthType == LengthType::SCREEN_PERCENT) {
+            return (int)(widthValue / 100.0f * (float)getSceneWidth());
+        } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
+            return (int)(widthValue / 100.0f * (float)getParentContainerWidth());
+        } else if (lengthType == LengthType::RELATIVE_LENGTH) {
+            float relativeMultiplyFactor = widthValue;
+            return (int)(heightValueInPixel() * relativeMultiplyFactor);
+        } else if (lengthType == LengthType::PIXEL) {
+            return (int)widthValue;
         }
-        return (unsigned int)size.getHeight();
+        throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
+    }
+
+    int Widget::heightInPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
+        if (lengthType == LengthType::SCREEN_PERCENT) {
+            return (int)(heightValue / 100.0f * (float)getSceneHeight());
+        } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
+            return (int)(heightValue / 100.0f * (float)getParentContainerHeight());
+        } else if (lengthType == LengthType::RELATIVE_LENGTH) {
+            float relativeMultiplyFactor = heightValue;
+            return (int)(widthValueInPixel() * relativeMultiplyFactor);
+        } else if (lengthType == LengthType::PIXEL) {
+            return (int)heightValue;
+        }
+        throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
     }
 
     void Widget::setIsVisible(bool isVisible) {

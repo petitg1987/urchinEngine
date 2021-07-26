@@ -80,6 +80,9 @@ namespace urchin {
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
 
+            int widthInPixel(float, LengthType, const std::function<float()>&) const;
+            int heightInPixel(float, LengthType, const std::function<float()>&) const;
+
             virtual void createOrUpdateWidget() = 0;
             void setSize(Size);
 

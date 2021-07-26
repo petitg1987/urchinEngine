@@ -1,10 +1,12 @@
 #include <scene/ui/widget/container/Container.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
     Container::Container(Position position, Size size) :
             Widget(position, size),
-            scissorEnabled(true) {
+            scissorEnabled(true),
+            scrollbarEnabled(false) {
 
     }
 
@@ -16,6 +18,13 @@ namespace urchin {
         return create<Container>(new Container(position, size), parent);
     }
 
+    void Container::resetChildren() {
+        detachChildren();
+        if (scrollbarEnabled) {
+            addChild(cursorImage);
+        }
+    }
+
     void Container::enableScissor(bool scissorEnabled) {
         this->scissorEnabled = scissorEnabled;
     }
@@ -24,12 +33,38 @@ namespace urchin {
         return scissorEnabled;
     }
 
-    void Container::createOrUpdateWidget() {
+    void Container::enableScrollbar(bool scrollbarEnabled, const std::string& scrollbarSkinName) {
+        this->scrollbarEnabled = scrollbarEnabled;
+        this->scrollbarSkinName = scrollbarSkinName;
+    }
 
+    void Container::createOrUpdateWidget() {
+        if (scrollbarEnabled) {
+            //detach children
+            //TODO ...
+
+            //skin information
+            auto scrollbarChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "scrollbar", UdaAttribute("skin", scrollbarSkinName));
+
+            auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), scrollbarChunk);
+            std::string cursorImageFilename = cursorImageChunk->getStringValue();
+
+            Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
+            auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
+            auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
+            auto cursorWidthInPixel = (float)widthInPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
+            cursorImage = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
+        }
     }
 
     void Container::prepareWidgetRendering(float) {
 
+    }
+
+    std::shared_ptr<Texture> Container::loadTexture(const UdaChunk* scrollbarChunk, const std::string& chunkName) const {
+        auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), scrollbarChunk);
+        auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
+        return img->createTexture(false);
     }
 
 }
