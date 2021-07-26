@@ -16,7 +16,7 @@ namespace urchin {
             mousePositionY(0),
             state(DEFAULT),
             title(nullptr) {
-
+        enableScissor(false);
     }
 
     std::shared_ptr<Window> Window::newWindow(Widget* parent, Position position, Size size, std::string skinName, std::string titleKey) {

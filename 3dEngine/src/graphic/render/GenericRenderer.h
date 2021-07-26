@@ -23,8 +23,8 @@ namespace urchin {
 
     class GenericRenderer : public std::enable_shared_from_this<GenericRenderer> {
         public:
-            static const uint32_t PRIMITIVE_RESTART_INDEX_VALUE;
             friend class RenderTarget;
+            static const uint32_t PRIMITIVE_RESTART_INDEX_VALUE;
 
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
@@ -50,9 +50,6 @@ namespace urchin {
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
             const std::vector<OffscreenRender*>& getTexturesWriter() const;
 
-            void updateGraphicData(uint32_t);
-            void updateCommandBuffer(VkCommandBuffer, std::size_t);
-
         private:
             void initialize();
             void cleanup();
@@ -75,6 +72,9 @@ namespace urchin {
             void resetNewDataFlag();
 
             void updateData(std::size_t, DataContainer&&);
+
+            void updateGraphicData(uint32_t);
+            void updateCommandBuffer(VkCommandBuffer, std::size_t);
 
             bool isInitialized;
             bool bIsEnabled;

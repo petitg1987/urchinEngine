@@ -3,7 +3,8 @@
 namespace urchin {
 
     Container::Container(Position position, Size size) :
-            Widget(position, size) {
+            Widget(position, size),
+            scissorEnabled(true) {
 
     }
 
@@ -13,6 +14,14 @@ namespace urchin {
 
     std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size) {
         return create<Container>(new Container(position, size), parent);
+    }
+
+    void Container::enableScissor(bool scissorEnabled) {
+        this->scissorEnabled = scissorEnabled;
+    }
+
+    bool Container::isScissorEnabled() const {
+        return scissorEnabled;
     }
 
     void Container::createOrUpdateWidget() {

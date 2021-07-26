@@ -13,11 +13,17 @@ namespace urchin {
             static std::shared_ptr<Container> newContainer(Widget*, Position);
             static std::shared_ptr<Container> newContainer(Widget*, Position, Size);
 
+            void enableScissor(bool);
+            bool isScissorEnabled() const;
+
         protected:
             Container(Position, Size);
 
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
+
+        private:
+            bool scissorEnabled;
     };
 
 }
