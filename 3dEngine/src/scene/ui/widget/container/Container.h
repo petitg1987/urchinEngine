@@ -34,7 +34,8 @@ namespace urchin {
 
             bool scrollbarEnabled;
             std::string scrollbarSkinName;
-            std::shared_ptr<StaticBitmap> cursorImage;
+            std::shared_ptr<StaticBitmap> scrollbarCursor;
+            std::shared_ptr<StaticBitmap> scrollbarLine;
     };
 
 }

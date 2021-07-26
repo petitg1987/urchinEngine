@@ -21,7 +21,8 @@ namespace urchin {
     void Container::resetChildren() {
         detachChildren();
         if (scrollbarEnabled) {
-            addChild(cursorImage);
+            addChild(scrollbarLine);
+            addChild(scrollbarCursor);
         }
     }
 
@@ -48,12 +49,17 @@ namespace urchin {
 
             auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), scrollbarChunk);
             std::string cursorImageFilename = cursorImageChunk->getStringValue();
-
             Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
             auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
             auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
             auto cursorWidthInPixel = (float)widthInPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
-            cursorImage = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
+
+            auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
+            std::string lineImageFilename = lineImageChunk->getStringValue();
+
+            //TODO review Size X, Y + Position X
+            scrollbarLine = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel / 2.0f, 0.0f, LengthType::PIXEL), Size(5.0f, LengthType::PIXEL, 100.0f, LengthType::SCREEN_PERCENT), lineImageFilename);
+            scrollbarCursor = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
         }
     }
 
