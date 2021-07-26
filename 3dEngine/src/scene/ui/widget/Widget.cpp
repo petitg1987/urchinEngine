@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include <scene/ui/widget/Widget.h>
+#include <scene/ui/widget/container/Container.h>
 #include <scene/InputDeviceKey.h>
 
 namespace urchin {
@@ -64,6 +65,7 @@ namespace urchin {
         return GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType)
                 ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                 ->addUniformData(sizeof(translateVector), &translateVector); //binding 1
+                //TODO add scissor...
     }
 
     void Widget::updateTranslateVector(GenericRenderer* renderer, const Vector2<int>& translateVector) const {
@@ -148,7 +150,9 @@ namespace urchin {
     */
     int Widget::getPositionX() const {
         if (position.getPositionTypeX() == LengthType::PERCENTAGE) {
-            return (int)(position.getPositionX() / 100.0f * (float)sceneWidth);
+            Container* parentContainer = retrieveParentContainer();
+            int referenceWidth = parentContainer ? ((int)parentContainer->getWidth() - (parentContainer->getOutline().leftWidth + parentContainer->getOutline().rightWidth)) : (int)sceneWidth;
+            return (int)(position.getPositionX() / 100.0f * (float)referenceWidth);
         }
 
         return (int)position.getPositionX();
@@ -159,7 +163,9 @@ namespace urchin {
     */
     int Widget::getPositionY() const {
         if (position.getPositionTypeY() == LengthType::PERCENTAGE) {
-            return (int)(position.getPositionY() / 100.0f * (float)sceneHeight);
+            Container* parentContainer = retrieveParentContainer();
+            int referenceHeight = parentContainer ? ((int)parentContainer->getHeight() - (parentContainer->getOutline().topWidth + parentContainer->getOutline().bottomWidth)) : (int)sceneHeight;
+            return (int)(position.getPositionY() / 100.0f * (float)referenceHeight);
         }
 
         return (int)position.getPositionY();
@@ -214,7 +220,9 @@ namespace urchin {
 
     unsigned int Widget::getWidth() const {
         if (size.getWidthSizeType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(size.getWidth() / 100.0f * (float)sceneWidth);
+            Container* parentContainer = retrieveParentContainer();
+            int referenceWidth = parentContainer ? ((int)parentContainer->getWidth() - (parentContainer->getOutline().leftWidth + parentContainer->getOutline().rightWidth)) : (int)sceneWidth;
+            return (unsigned int)(size.getWidth() / 100.0f * (float)referenceWidth);
         } else if (size.getWidthSizeType() == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = size.getWidth();
             return (unsigned int)((float)getHeight() * relativeMultiplyFactor);
@@ -224,7 +232,9 @@ namespace urchin {
 
     unsigned int Widget::getHeight() const {
         if (size.getHeightSizeType() == LengthType::PERCENTAGE) {
-            return (unsigned int)(size.getHeight() / 100.0f * (float)sceneHeight);
+            Container* parentContainer = retrieveParentContainer();
+            int referenceHeight = parentContainer ? ((int)parentContainer->getHeight() - (parentContainer->getOutline().topWidth + parentContainer->getOutline().bottomWidth)) : (int)sceneHeight;
+            return (unsigned int)(size.getHeight() / 100.0f * (float)referenceHeight);
         } else if (size.getHeightSizeType() == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = size.getHeight();
             return (unsigned int)((float)getWidth() * relativeMultiplyFactor);
@@ -241,6 +251,18 @@ namespace urchin {
 
     bool Widget::isVisible() const {
         return bIsVisible;
+    }
+
+    Container* Widget::retrieveParentContainer() const {
+        Widget *parent = getParent();
+        while (parent != nullptr) {
+            auto* containerParent = dynamic_cast<Container*>(parent);
+            if (containerParent) {
+                return containerParent;
+            }
+            parent = parent->getParent();
+        }
+        return nullptr;
     }
 
     bool Widget::onKeyPress(unsigned int key) {

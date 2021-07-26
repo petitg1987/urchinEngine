@@ -14,6 +14,8 @@
 
 namespace urchin {
 
+    class Container;
+
     class Widget : public Observable {
         public:
             Widget(Position, Size);
@@ -80,6 +82,7 @@ namespace urchin {
 
             virtual void createOrUpdateWidget() = 0;
             void setSize(Size);
+            Container* retrieveParentContainer() const;
 
             virtual bool onKeyPressEvent(unsigned int);
             virtual bool onKeyReleaseEvent(unsigned int);

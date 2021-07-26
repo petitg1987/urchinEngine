@@ -2,13 +2,17 @@
 
 namespace urchin {
 
-    Container::Container(Position position) :
-            Widget(position, Size(0, 0, LengthType::PIXEL)) {
+    Container::Container(Position position, Size size) :
+            Widget(position, size) {
 
     }
 
     std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position) {
-        return create<Container>(new Container(position), parent);
+        return create<Container>(new Container(position, Size(100.0f, 100.0f, LengthType::PERCENTAGE)), parent);
+    }
+
+    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size) {
+        return create<Container>(new Container(position, size), parent);
     }
 
     void Container::createOrUpdateWidget() {

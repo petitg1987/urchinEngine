@@ -11,13 +11,13 @@ namespace urchin {
     class Container : public Widget {
         public:
             static std::shared_ptr<Container> newContainer(Widget*, Position);
+            static std::shared_ptr<Container> newContainer(Widget*, Position, Size);
 
         protected:
+            Container(Position, Size);
+
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
-
-        private:
-            explicit Container(Position);
     };
 
 }
