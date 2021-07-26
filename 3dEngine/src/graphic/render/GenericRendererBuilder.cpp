@@ -13,7 +13,8 @@ namespace urchin {
             depthOperationsEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
-            pLineWidth(1.0f) {
+            pLineWidth(1.0f),
+            scissorEnabled(false) {
 
     }
 
@@ -153,6 +154,25 @@ namespace urchin {
 
     float GenericRendererBuilder::getLineWidth() const {
         return pLineWidth;
+    }
+
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableScissor(const Vector2<int>& scissorOffset, const Vector2<unsigned int>& scissorSize) {
+        scissorEnabled = true;
+        this->scissorOffset = scissorOffset;
+        this->scissorSize = scissorSize;
+        return shared_from_this();
+    }
+
+    bool GenericRendererBuilder::isScissorEnabled() const {
+        return scissorEnabled;
+    }
+
+    const Vector2<int>& GenericRendererBuilder::getScissorOffset() const {
+        return scissorOffset;
+    }
+
+    const Vector2<unsigned int>& GenericRendererBuilder::getScissorSize() const {
+        return scissorSize;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {

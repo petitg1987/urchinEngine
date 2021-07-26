@@ -27,6 +27,9 @@ namespace urchin {
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
             lineWidth(rendererBuilder->getLineWidth()),
+            scissorEnabled(rendererBuilder->isScissorEnabled()),
+            scissorOffset(rendererBuilder->getScissorOffset()),
+            scissorSize(rendererBuilder->getScissorSize()),
             descriptorSetLayout(nullptr),
             pipelineLayout(nullptr),
             graphicsPipeline(nullptr),
@@ -194,7 +197,14 @@ namespace urchin {
         viewport.height = (float)renderTarget.getHeight();
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
-        VkRect2D scissor = {{0, 0}, {renderTarget.getWidth(), renderTarget.getHeight()}};
+        VkRect2D scissor = {};
+        if (scissorEnabled) {
+            scissor.offset = {scissorOffset.X, scissorOffset.Y};
+            scissor.extent = {scissorSize.X, scissorSize.Y};
+        } else {
+            scissor.offset = {0, 0};
+            scissor.extent = {renderTarget.getWidth(), renderTarget.getHeight()};
+        }
         VkPipelineViewportStateCreateInfo viewportState{};
         viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
         viewportState.viewportCount = 1;

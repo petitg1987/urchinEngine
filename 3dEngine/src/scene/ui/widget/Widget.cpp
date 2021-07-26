@@ -54,18 +54,26 @@ namespace urchin {
         assert(shader);
         assert(renderTarget);
 
+        auto rendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType);
+
         //orthogonal matrix with origin at top left screen
         Matrix4<float> projectionMatrix(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
                               0.0f, 2.0f / (float)sceneHeight, -1.0f, 0.0f,
                               0.0f, 0.0f, 1.0f, 0.0f,
                               0.0f, 0.0f, 0.0f, 1.0f);
+        rendererBuilder->addUniformData(sizeof(projectionMatrix), &projectionMatrix); //binding 0
 
         Vector2<int> translateVector(0, 0);
+        rendererBuilder->addUniformData(sizeof(translateVector), &translateVector); //binding 1
 
-        return GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType)
-                ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                ->addUniformData(sizeof(translateVector), &translateVector); //binding 1
-                //TODO add scissor...
+        Container* parentContainer = retrieveParentContainer();
+        if (parentContainer) {
+            Vector2<int> scissorOffset = Vector2<int>(parentContainer->getPositionX(), parentContainer->getPositionY());
+            Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
+            rendererBuilder->enableScissor(scissorOffset, scissorSize);
+        }
+
+        return rendererBuilder;
     }
 
     void Widget::updateTranslateVector(GenericRenderer* renderer, const Vector2<int>& translateVector) const {
