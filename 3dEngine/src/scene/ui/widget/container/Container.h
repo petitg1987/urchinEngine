@@ -4,13 +4,14 @@
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
 #include <scene/ui/scrollbar/Scrollbar.h>
+#include <scene/ui/scrollbar/Scrollable.h>
 
 namespace urchin {
 
     /**
      * Container of widgets
      */
-    class Container : public Widget {
+    class Container : public Widget, public Scrollable {
         public:
             static std::shared_ptr<Container> newContainer(Widget*, Position);
             static std::shared_ptr<Container> newContainer(Widget*, Position, Size);
@@ -27,7 +28,7 @@ namespace urchin {
 
             void enableScrollbar(bool, const std::string& = "");
             bool isScrollbarEnabled() const;
-            int getScrollShiftY() const;
+            int getScrollShiftY() const override;
 
         protected:
             Container(Position, Size);

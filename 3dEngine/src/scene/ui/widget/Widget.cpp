@@ -201,9 +201,9 @@ namespace urchin {
             startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
         }
 
-        auto* container = dynamic_cast<Container*>(parent); //TODO change Container in Scrollable interface ?
-        if (container) {
-            startPosition += container->getScrollShiftY();
+        auto* scrollable = dynamic_cast<Scrollable*>(parent);
+        if (scrollable) {
+            startPosition += scrollable->getScrollShiftY();
         }
 
         return startPosition + getPositionY();

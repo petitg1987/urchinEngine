@@ -18,7 +18,6 @@ namespace urchin {
 
     void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         Widget::onResize(sceneWidth, sceneHeight);
-
         if (isScrollbarEnabled()) {
             scrollbar->onScrollableWidgetsUpdated();
         }
@@ -48,8 +47,8 @@ namespace urchin {
     void Container::resetChildren() {
         detachChildren();
 
-        //add scrollbar children
         if (isScrollbarEnabled()) {
+            //re-add scrollbar children
             scrollbar->initializeOrUpdate();
         }
     }
@@ -62,7 +61,7 @@ namespace urchin {
         return scissorEnabled;
     }
 
-    void Container::enableScrollbar(bool scrollbarEnabled, const std::string& scrollbarSkinName) {
+    void Container::enableScrollbar(bool scrollbarEnabled, const std::string& scrollbarSkinName) { //TODO auto detect ?
         if (scrollbarEnabled) {
             scrollbar = std::make_unique<Scrollbar>(*this, scrollbarSkinName);
         } else {
