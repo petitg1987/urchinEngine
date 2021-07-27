@@ -108,18 +108,24 @@ namespace urchin {
     }
 
     bool Scrollbar::onScrollEvent(double offsetY) {
-        if (scrollableWidget.getWidgetState() == Widget::WidgetStates::FOCUS) {
-            if (contentHeight > visibleHeight) {
-                float scrollMoveSpeedFactor = visibleHeight / (contentHeight - visibleHeight);
-                float deltaScroll = (float) offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
-                scrollPercentage -= deltaScroll;
-                scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
+        if (scrollableWidget.getWidgetState() == Widget::WidgetStates::FOCUS && isScrollbarRequired()) {
+            float scrollMoveSpeedFactor = visibleHeight / (contentHeight - visibleHeight);
+            float deltaScroll = (float) offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
+            scrollPercentage -= deltaScroll;
+            scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
 
-                updateScrollingPosition();
-                return false;
-            }
+            updateScrollingPosition();
+            return false;
         }
         return true;
+    }
+
+    bool Scrollbar::isScrollbarRequired() const {
+        return contentHeight > visibleHeight;
+    }
+
+    int Scrollbar::getScrollShiftY() const {
+        return shiftPixelPositionY;
     }
 
     std::shared_ptr<Texture> Scrollbar::loadTexture(const UdaChunk* scrollbarChunk, const std::string& chunkName) const {
@@ -140,14 +146,12 @@ namespace urchin {
     }
 
     void Scrollbar::updateScrollingPosition() {
-        bool scrollbarRequired = contentHeight > visibleHeight;
-
         if(scrollbarLine && scrollbarCursor) {
-            scrollbarLine->setIsVisible(scrollbarRequired);
-            scrollbarCursor->setIsVisible(scrollbarRequired);
+            scrollbarLine->setIsVisible(isScrollbarRequired());
+            scrollbarCursor->setIsVisible(isScrollbarRequired());
         }
 
-        if (scrollbarRequired) {
+        if (isScrollbarRequired()) {
             updateCursorPosition();
             computeShiftPositionY();
         }
@@ -169,10 +173,6 @@ namespace urchin {
         //compensate the shift applied on all children (including scrollbarLine & scrollbarCursor)
         scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getPositionX(), 0.0f - (float)shiftPixelPositionY, LengthType::PIXEL));
         scrollbarCursor->updatePosition(Position(scrollbarCursor->getPosition().getPositionX(), scrollbarCursor->getPosition().getPositionY() - (float)shiftPixelPositionY, LengthType::PIXEL));
-    }
-
-    int Scrollbar::getScrollShiftY() const {
-        return shiftPixelPositionY;
     }
 
     std::vector<Widget*> Scrollbar::getContentChildren() const {
