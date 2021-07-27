@@ -58,8 +58,10 @@ namespace urchin {
             unsigned int getWidth() const;
             unsigned int getHeight() const;
 
-            int widthInPixel(float, LengthType, const std::function<float()>&) const;
-            int heightInPixel(float, LengthType, const std::function<float()>&) const;
+            int widthLengthToPixel(float, LengthType, const std::function<float()>&) const;
+            float widthPixelToLength(float, LengthType) const;
+            int heightLengthToPixel(float, LengthType, const std::function<float()>&) const;
+            float heightPixelToLength(float, LengthType) const;
 
             void setIsVisible(bool);
             bool isVisible() const;

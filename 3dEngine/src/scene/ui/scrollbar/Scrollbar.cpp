@@ -34,7 +34,7 @@ namespace urchin {
         Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
         auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
         auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
-        auto cursorWidthInPixel = (float)scrollableWidget.widthInPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
+        auto cursorWidthInPixel = (float)scrollableWidget.widthLengthToPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
 
         auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
         std::string lineImageFilename = lineImageChunk->getStringValue();
@@ -171,7 +171,7 @@ namespace urchin {
             float originalPositionY = childrenOriginalPositionY.at(contentChild);
             float newPositionY = originalPositionY - shiftPositionY;
             //TODO use original positionTypeY to support resize !
-            contentChild->updatePosition(Position(contentChild->getPosition().getPositionX(), contentChild->getPosition().getPositionTypeX(), newPositionY, LengthType::PIXEL));
+            contentChild->updatePosition(Position(contentChild->getPosition().getPositionX(), contentChild->getPosition().getPositionTypeX(), newPositionY, LengthType::PIXEL, contentChild->getPosition().getRelativeTo()));
         }
     }
 

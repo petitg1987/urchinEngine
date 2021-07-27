@@ -161,14 +161,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     int Widget::getPositionX() const {
-        return widthInPixel(position.getPositionX(), position.getPositionTypeX(), [&](){return (float)getPositionY();});
+        return widthLengthToPixel(position.getPositionX(), position.getPositionTypeX(), [&](){return (float)getPositionY();});
     }
 
     /**
     * @return Relative position Y of the widget
     */
     int Widget::getPositionY() const {
-        return heightInPixel(position.getPositionY(), position.getPositionTypeY(), [&](){return (float)getPositionX();});
+        return heightLengthToPixel(position.getPositionY(), position.getPositionTypeY(), [&](){return (float)getPositionX();});
     }
 
     const WidgetOutline& Widget::getOutline() const {
@@ -217,14 +217,14 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        return (unsigned int)widthInPixel(size.getWidth(), size.getWidthSizeType(), [&](){return (float)getHeight();});
+        return (unsigned int)widthLengthToPixel(size.getWidth(), size.getWidthSizeType(), [&](){return (float)getHeight();});
     }
 
     unsigned int Widget::getHeight() const {
-        return (unsigned int)heightInPixel(size.getHeight(), size.getHeightSizeType(), [&](){return (float)getWidth();});
+        return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightSizeType(), [&](){return (float)getWidth();});
     }
 
-    int Widget::widthInPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
+    int Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (int)(widthValue / 100.0f * (float)getSceneWidth());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
@@ -238,7 +238,18 @@ namespace urchin {
         throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
     }
 
-    int Widget::heightInPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
+    float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {
+        if (lengthType == LengthType::SCREEN_PERCENT) {
+            return (widthPixel / (float)getSceneWidth()) * 100.0f;
+        } else if (lengthType == LengthType::CONTAINER_PERCENT) {
+            return (widthPixel / (float)getParentContainerWidth()) * 100.0f;
+        } else if (lengthType == LengthType::PIXEL) {
+            return widthPixel;
+        }
+        throw std::runtime_error("Unknown/unimplemented length type: " + std::to_string(lengthType));
+    }
+
+    int Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (int)(heightValue / 100.0f * (float)getSceneHeight());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
@@ -250,6 +261,17 @@ namespace urchin {
             return (int)heightValue;
         }
         throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
+    }
+
+    float Widget::heightPixelToLength(float heightPixel, LengthType lengthType) const {
+        if (lengthType == LengthType::SCREEN_PERCENT) {
+            return (heightPixel / (float)getSceneHeight()) * 100.0f;
+        } else if (lengthType == LengthType::CONTAINER_PERCENT) {
+            return (heightPixel / (float)getParentContainerHeight()) * 100.0f;
+        } else if (lengthType == LengthType::PIXEL) {
+            return heightPixel;
+        }
+        throw std::runtime_error("Unknown/unimplemented length type: " + std::to_string(lengthType));
     }
 
     void Widget::setIsVisible(bool isVisible) {

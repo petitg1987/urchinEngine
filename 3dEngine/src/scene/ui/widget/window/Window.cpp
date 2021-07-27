@@ -95,21 +95,13 @@ namespace urchin {
 
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
         if (state == MOVING) {
-            auto positionX = (float)(mouseX - mousePositionX);
-            if (getPosition().getPositionTypeX() == LengthType::SCREEN_PERCENT) { //TODO move in method to use it in scrollbar !
-                positionX = (positionX / (float)getSceneWidth()) * 100.0f;
-            } else if (getPosition().getPositionTypeX() == LengthType::CONTAINER_PERCENT) {
-                positionX = (positionX / (float)getParentContainerWidth()) * 100.0f;
-            }
+            auto positionPixelX = (float)(mouseX - mousePositionX);
+            auto positionLengthX = widthPixelToLength(positionPixelX, getPosition().getPositionTypeX());
 
-            auto positionY = (float)(mouseY - mousePositionY);
-            if (getPosition().getPositionTypeY() == LengthType::SCREEN_PERCENT) {
-                positionY = (positionY / (float)getSceneHeight()) * 100.0f;
-            } else if (getPosition().getPositionTypeY() == LengthType::SCREEN_PERCENT) {
-                positionY = (positionY / (float)getParentContainerHeight()) * 100.0f;
-            }
+            auto positionPixelY = (float)(mouseY - mousePositionY);
+            auto positionLengthY = heightPixelToLength(positionPixelY, getPosition().getPositionTypeY());
 
-            updatePosition(Position(positionX, getPosition().getPositionTypeX(), positionY, getPosition().getPositionTypeY(), getPosition().getRelativeTo()));
+            updatePosition(Position(positionLengthX, getPosition().getPositionTypeX(), positionLengthY, getPosition().getPositionTypeY(), getPosition().getRelativeTo()));
         }
 
         return true;
