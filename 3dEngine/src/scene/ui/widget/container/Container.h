@@ -3,6 +3,7 @@
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
+#include <scene/ui/scrollbar/Scrollbar.h>
 
 namespace urchin {
 
@@ -25,17 +26,17 @@ namespace urchin {
             Container(Position, Size);
 
             void createOrUpdateWidget() override;
+            bool onKeyPressEvent(unsigned int) override;
+            bool onKeyReleaseEvent(unsigned int) override;
+            bool onMouseMoveEvent(int, int) override;
+
             void prepareWidgetRendering(float) override;
 
         private:
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
 
             bool scissorEnabled;
-
-            bool scrollbarEnabled;
-            std::string scrollbarSkinName;
-            std::shared_ptr<StaticBitmap> scrollbarCursor;
-            std::shared_ptr<StaticBitmap> scrollbarLine;
+            std::unique_ptr<Scrollbar> scrollbar;
     };
 
 }

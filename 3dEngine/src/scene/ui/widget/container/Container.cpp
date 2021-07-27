@@ -1,12 +1,10 @@
 #include <scene/ui/widget/container/Container.h>
-#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
     Container::Container(Position position, Size size) : //TODO disable event outside the container ("> Load" button is clickable even when not visible)
             Widget(position, size),
-            scissorEnabled(true),
-            scrollbarEnabled(false) {
+            scissorEnabled(true) {
 
     }
 
@@ -20,9 +18,10 @@ namespace urchin {
 
     void Container::resetChildren() {
         detachChildren();
-        if (scrollbarEnabled) {
-            addChild(scrollbarLine);
-            addChild(scrollbarCursor);
+
+        //add scrollbar children
+        if (scrollbar) {
+            scrollbar->initializeOrUpdate();
         }
     }
 
@@ -35,42 +34,42 @@ namespace urchin {
     }
 
     void Container::enableScrollbar(bool scrollbarEnabled, const std::string& scrollbarSkinName) {
-        this->scrollbarEnabled = scrollbarEnabled;
-        this->scrollbarSkinName = scrollbarSkinName;
+        if (scrollbarEnabled) {
+            scrollbar = std::make_unique<Scrollbar>(*this, scrollbarSkinName);
+        } else {
+            scrollbar.reset();
+        }
     }
 
     void Container::createOrUpdateWidget() {
-        if (scrollbarEnabled) {
-            //detach children
-            detachChild(scrollbarCursor.get());
-            detachChild(scrollbarLine.get());
-
-            //skin information
-            auto scrollbarChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "scrollbar", UdaAttribute("skin", scrollbarSkinName));
-
-            auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), scrollbarChunk);
-            std::string cursorImageFilename = cursorImageChunk->getStringValue();
-            Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
-            auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
-            auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
-            auto cursorWidthInPixel = (float)widthInPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
-
-            auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
-            std::string lineImageFilename = lineImageChunk->getStringValue();
-
-            scrollbarLine = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), 100.0f, LengthType::CONTAINER_PERCENT), lineImageFilename);
-            scrollbarCursor = StaticBitmap::newStaticBitmap(this, Position((float)getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
+        if (scrollbar) {
+            scrollbar->initializeOrUpdate();
         }
+    }
+
+    bool Container::onKeyPressEvent(unsigned int key) {
+        if (scrollbar) {
+            return scrollbar->onKeyPressEvent(key);
+        }
+        return true;
+    }
+
+    bool Container::onKeyReleaseEvent(unsigned int key) {
+        if (scrollbar) {
+            return scrollbar->onKeyReleaseEvent(key);
+        }
+        return true;
+    }
+
+    bool Container::onMouseMoveEvent(int mouseX, int mouseY) {
+        if (scrollbar) {
+            return scrollbar->onMouseMoveEvent(mouseX, mouseY);
+        }
+        return true;
     }
 
     void Container::prepareWidgetRendering(float) {
 
-    }
-
-    std::shared_ptr<Texture> Container::loadTexture(const UdaChunk* scrollbarChunk, const std::string& chunkName) const {
-        auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), scrollbarChunk);
-        auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
-        return img->createTexture(false);
     }
 
 }
