@@ -10,9 +10,12 @@ namespace urchin {
             SCROLL_SPEED(ConfigService::instance().getFloatValue("ui.scrollSpeed")),
             scrollableWidget(scrollableWidget),
             skinName(std::move(skinName)),
+            visibleHeight(0),
+            contentHeight(0),
             mouseX(0),
             mouseY(0),
-            state(DEFAULT) {
+            state(DEFAULT),
+            scrollPercentage(0.0f) {
 
     }
 
@@ -42,8 +45,34 @@ namespace urchin {
 
         scrollbarLine = StaticBitmap::newStaticBitmap(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), 100.0f, LengthType::CONTAINER_PERCENT), lineImageFilename);
         scrollbarCursor = StaticBitmap::newStaticBitmap(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
+
+        //size computation
+        onScrollableWidgetContentUpdated();
     }
 
+    void Scrollbar::onScrollableWidgetContentUpdated() {
+        visibleHeight = (float)scrollableWidget.getHeight();
+
+        float minChildPositionY = std::numeric_limits<float>::max();
+        float maxChildPositionY = 0.0f;
+        for (auto& contentChild : getContentChildren()) {
+            auto childMinPositionY = (float)contentChild->getGlobalPositionY();
+            if (childMinPositionY < minChildPositionY) {
+                minChildPositionY = childMinPositionY;
+            }
+
+            auto childMaxPositionY = (float)contentChild->getGlobalPositionY() + (float)contentChild->getHeight();
+            if (childMaxPositionY > maxChildPositionY) {
+                maxChildPositionY = childMaxPositionY;
+            }
+        }
+        contentHeight = maxChildPositionY - minChildPositionY;
+
+        childrenOriginalPositions.clear();
+        for (auto &contentChild : getContentChildren()) {
+            childrenOriginalPositions.emplace(contentChild, contentChild->getPositionY());
+        }
+    }
     bool Scrollbar::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> cursorRectangle(Point2<int>(scrollbarCursor->getGlobalPositionX(), scrollbarCursor->getGlobalPositionY()),
@@ -82,8 +111,12 @@ namespace urchin {
 
     bool Scrollbar::onScrollEvent(double offsetY) {
         if (scrollableWidget.getWidgetState() == Widget::WidgetStates::FOCUS) {
-            auto positionPercentage = (float)offsetY * SCROLL_SPEED; //TODO compute percentage
-            updateScrollingPercentage(positionPercentage);
+            float scrollMoveSpeedFactor = (contentHeight <= visibleHeight) ? 0.0f : (visibleHeight / contentHeight);
+            float deltaScroll = (float)offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
+            scrollPercentage -= deltaScroll;
+            scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
+
+            updateScrollingPosition();
         }
         return true;
     }
@@ -95,22 +128,57 @@ namespace urchin {
     }
 
     void Scrollbar::updateScrollingPosition(int positionY) {
-        auto positionPercentage = (float)positionY; //TODO compute percentage
-        updateScrollingPercentage(positionPercentage);
+        auto minPositionY = (float)scrollbarLine->getGlobalPositionY();
+        auto maxPositionY = (float)scrollbarLine->getGlobalPositionY() + (float)scrollbarLine->getHeight();
+
+        scrollPercentage = ((float)positionY - minPositionY) / (maxPositionY - minPositionY);
+        scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
+
+        updateScrollingPosition();
     }
 
-    void Scrollbar::updateScrollingPercentage(float /*positionPercentage*/) {
-        //TODO impl
+    void Scrollbar::updateScrollingPosition() {
+        if (contentHeight > visibleHeight) {
+            updateCursorPosition();
+            updateContentPosition();
+        }
+    }
 
-        for (auto &child : scrollableWidget.getChildren()) {
-            if (child == scrollbarCursor || child == scrollbarLine) {
-                continue;
+    void Scrollbar::updateCursorPosition() { //TODO custom adjustment...
+        float cursorPositionX = scrollbarCursor->getPosition().getPositionX();
+        LengthType cursorPositionTypeX = scrollbarCursor->getPosition().getPositionTypeX();
+
+        auto cursorMinPositionY = 0.0f;
+        auto cursorMaxPositionY = (float)scrollableWidget.getHeight();
+
+        float cursorPositionY = cursorMinPositionY + (cursorMaxPositionY - cursorMinPositionY) * scrollPercentage;
+        scrollbarCursor->updatePosition(Position(cursorPositionX, cursorPositionTypeX, cursorPositionY, LengthType::PIXEL));
+    }
+
+    void Scrollbar::updateContentPosition() { //TODO custom adjustment...
+        float shiftPositionY = (contentHeight - visibleHeight) * scrollPercentage;
+
+        for (auto& contentChild : getContentChildren()) {
+            auto itFind = childrenOriginalPositions.find(contentChild);
+            if (itFind == childrenOriginalPositions.end()) {
+                throw std::runtime_error("Unknown children found in a scrollable content");
             }
 
-            int posX = child->getPositionX();
-            int posY = child->getPositionY() - 1;
-            child->updatePosition(Position((float) posX, (float) posY, LengthType::PIXEL));
+            float originalPositionY = itFind->second;
+            float newPositionY = originalPositionY - shiftPositionY;
+            contentChild->updatePosition(Position(contentChild->getPosition().getPositionX(), contentChild->getPosition().getPositionTypeX(), newPositionY, LengthType::PIXEL));
         }
+    }
+
+    std::vector<Widget*> Scrollbar::getContentChildren() const {
+        std::vector<Widget*> contentChildren;
+        contentChildren.reserve(scrollableWidget.getChildren().size());
+        for (auto& child : scrollableWidget.getChildren()) {
+            if (child != scrollbarCursor && child != scrollbarLine) {
+                contentChildren.push_back(child.get());
+            }
+        }
+        return contentChildren;
     }
 
 }

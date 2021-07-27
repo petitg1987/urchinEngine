@@ -15,12 +15,16 @@ namespace urchin {
             static std::shared_ptr<Container> newContainer(Widget*, Position);
             static std::shared_ptr<Container> newContainer(Widget*, Position, Size);
 
+            void addChild(const std::shared_ptr<Widget>&) override;
+            void detachChild(Widget*) override;
+            void detachChildren() override;
             void resetChildren();
 
             void enableScissor(bool);
             bool isScissorEnabled() const;
 
             void enableScrollbar(bool, const std::string& = "");
+            bool isScrollbarEnabled() const;
 
         protected:
             Container(Position, Size);

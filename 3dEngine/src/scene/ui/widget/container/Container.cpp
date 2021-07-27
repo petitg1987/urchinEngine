@@ -16,11 +16,32 @@ namespace urchin {
         return create<Container>(new Container(position, size), parent);
     }
 
+    void Container::addChild(const std::shared_ptr<Widget>& child) {
+        Widget::addChild(child);
+        if (isScrollbarEnabled()) {
+            scrollbar->onScrollableWidgetContentUpdated();
+        }
+    }
+
+    void Container::detachChild(Widget* child){
+        Widget::detachChild(child);
+        if (isScrollbarEnabled()) {
+            scrollbar->onScrollableWidgetContentUpdated();
+        }
+    }
+
+    void Container::detachChildren() {
+        Widget::detachChildren();
+        if (isScrollbarEnabled()) {
+            scrollbar->onScrollableWidgetContentUpdated();
+        }
+    }
+
     void Container::resetChildren() {
         detachChildren();
 
         //add scrollbar children
-        if (scrollbar) {
+        if (isScrollbarEnabled()) {
             scrollbar->initializeOrUpdate();
         }
     }
@@ -41,35 +62,39 @@ namespace urchin {
         }
     }
 
+    bool Container::isScrollbarEnabled() const {
+        return scrollbar != nullptr;
+    }
+
     void Container::createOrUpdateWidget() {
-        if (scrollbar) {
+        if (isScrollbarEnabled()) {
             scrollbar->initializeOrUpdate();
         }
     }
 
     bool Container::onKeyPressEvent(unsigned int key) {
-        if (scrollbar) {
+        if (isScrollbarEnabled()) {
             return scrollbar->onKeyPressEvent(key);
         }
         return true;
     }
 
     bool Container::onKeyReleaseEvent(unsigned int key) {
-        if (scrollbar) {
+        if (isScrollbarEnabled()) {
             return scrollbar->onKeyReleaseEvent(key);
         }
         return true;
     }
 
     bool Container::onMouseMoveEvent(int mouseX, int mouseY) {
-        if (scrollbar) {
+        if (isScrollbarEnabled()) {
             return scrollbar->onMouseMoveEvent(mouseX, mouseY);
         }
         return true;
     }
 
     bool Container::onScrollEvent(double offsetY) {
-        if (scrollbar) {
+        if (isScrollbarEnabled()) {
             return scrollbar->onScrollEvent(offsetY);
         }
         return true;
