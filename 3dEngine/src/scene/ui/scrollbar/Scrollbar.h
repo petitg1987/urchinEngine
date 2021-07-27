@@ -8,7 +8,7 @@ namespace urchin {
 
     class Scrollbar {
         public:
-            Scrollbar(Widget&, const std::string&);
+            Scrollbar(Widget&, std::string);
 
             void initializeOrUpdate();
 
@@ -20,10 +20,16 @@ namespace urchin {
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
 
             Widget& scrollableWidget;
-            const std::string& skinName;
+            std::string skinName;
 
             std::shared_ptr<StaticBitmap> scrollbarCursor;
             std::shared_ptr<StaticBitmap> scrollbarLine;
+
+            int mouseX, mouseY;
+            enum ScrollbarStates {
+                DEFAULT,
+                CURSOR_SELECTED,
+            } state;
     };
 
 }

@@ -1,11 +1,17 @@
+#include <utility>
+
 #include <scene/ui/scrollbar/Scrollbar.h>
 #include <resources/ResourceRetriever.h>
+#include <scene/InputDeviceKey.h>
 
 namespace urchin {
 
-    Scrollbar::Scrollbar(Widget& scrollableWidget, const std::string& skinName) :
+    Scrollbar::Scrollbar(Widget& scrollableWidget, std::string skinName) :
             scrollableWidget(scrollableWidget),
-            skinName(skinName) {
+            skinName(std::move(skinName)),
+            mouseX(0),
+            mouseY(0),
+            state(DEFAULT) {
 
     }
 
@@ -28,21 +34,57 @@ namespace urchin {
 
         auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
         std::string lineImageFilename = lineImageChunk->getStringValue();
+        auto imageLine = loadTexture(scrollbarChunk, "imageLine");
+        if (imageCursor->getWidth() != imageLine->getWidth()) {
+            throw std::runtime_error("Cursor and line images must have the same width");
+        }
 
         scrollbarLine = StaticBitmap::newStaticBitmap(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), 100.0f, LengthType::CONTAINER_PERCENT), lineImageFilename);
         scrollbarCursor = StaticBitmap::newStaticBitmap(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
     }
 
-    bool Scrollbar::onKeyPressEvent(unsigned int) {
-        return false;
+    bool Scrollbar::onKeyPressEvent(unsigned int key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
+            Rectangle<int> cursorRectangle(Point2<int>(scrollbarCursor->getGlobalPositionX(), scrollbarCursor->getGlobalPositionY()),
+                                           Point2<int>(scrollbarCursor->getGlobalPositionX() + (int)scrollbarCursor->getWidth(), scrollbarCursor->getGlobalPositionY() + (int)scrollbarCursor->getHeight()));
+            if (cursorRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+                state = CURSOR_SELECTED;
+            } else {
+                Rectangle<int> scrollbarRectangle(Point2<int>(scrollbarLine->getGlobalPositionX(), scrollbarLine->getGlobalPositionY()),
+                                                  Point2<int>(scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
+                if (scrollbarRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+                    //TODO updateSliderValue(mouseY);
+                    state = CURSOR_SELECTED;
+                }
+            }
+        }
+        return true;
     }
 
-    bool Scrollbar::onKeyReleaseEvent(unsigned int) {
-        return false;
+    bool Scrollbar::onKeyReleaseEvent(unsigned int key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
+            state = DEFAULT;
+        }
+        return true;
     }
 
-    bool Scrollbar::onMouseMoveEvent(int, int) {
-        return false;
+    bool Scrollbar::onMouseMoveEvent(int mouseX, int mouseY) {
+        this->mouseX = mouseX;
+        this->mouseY = mouseY;
+
+        if (state == CURSOR_SELECTED) {
+            for (auto &child : scrollableWidget.getChildren()) {
+                if (child == scrollbarCursor || child == scrollbarLine) {
+                    continue;
+                }
+
+                int posX = child->getPositionX();
+                int posY = child->getPositionY() - 1;
+                child->updatePosition(Position((float) posX, (float) posY, LengthType::PIXEL));
+            }
+            return false;
+        }
+        return true;
     }
 
     std::shared_ptr<Texture> Scrollbar::loadTexture(const UdaChunk* scrollbarChunk, const std::string& chunkName) const {
