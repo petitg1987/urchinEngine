@@ -9,7 +9,7 @@
 namespace urchin {
 
     Window::Window(Position position, Size size, std::string skinName, std::string titleKey) :
-            Container(position, size),
+            Container(position, size, skinName),
             skinName(std::move(skinName)),
             titleKey(std::move(titleKey)),
             mousePositionX(0),

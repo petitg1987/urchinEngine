@@ -13,8 +13,8 @@ namespace urchin {
      */
     class Container : public Widget, public Scrollable {
         public:
-            static std::shared_ptr<Container> newContainer(Widget*, Position);
-            static std::shared_ptr<Container> newContainer(Widget*, Position, Size);
+            static std::shared_ptr<Container> newContainer(Widget*, Position, std::string);
+            static std::shared_ptr<Container> newContainer(Widget*, Position, Size, std::string);
 
             void onResize(unsigned int, unsigned int) override;
 
@@ -26,12 +26,10 @@ namespace urchin {
             void enableScissor(bool);
             bool isScissorEnabled() const;
 
-            void enableScrollbar(bool, const std::string& = "");
-            bool isScrollbarEnabled() const;
             int getScrollShiftY() const override;
 
         protected:
-            Container(Position, Size);
+            Container(Position, Size, std::string);
 
             void createOrUpdateWidget() override;
             bool onKeyPressEvent(unsigned int) override;
@@ -43,6 +41,8 @@ namespace urchin {
 
         private:
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
+
+            const std::string skinName;
 
             bool scissorEnabled;
             std::unique_ptr<Scrollbar> scrollbar;

@@ -2,55 +2,46 @@
 
 namespace urchin {
 
-    Container::Container(Position position, Size size) : //TODO disable event outside the container ("> Load" button is clickable even when not visible)
+    Container::Container(Position position, Size size, std::string skinName) : //TODO disable event outside the container ("> Load" button is clickable even when not visible)
             Widget(position, size),
+            skinName(std::move(skinName)),
             scissorEnabled(true) {
-
+        scrollbar = std::make_unique<Scrollbar>(*this, this->skinName);
     }
 
-    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position) {
-        return create<Container>(new Container(position, Size(100.0f, 100.0f, LengthType::SCREEN_PERCENT)), parent);
+    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, std::string skinName) { //TODO remove this method
+        return create<Container>(new Container(position, Size(100.0f, 100.0f, LengthType::SCREEN_PERCENT), std::move(skinName)), parent);
     }
 
-    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size) {
-        return create<Container>(new Container(position, size), parent);
+    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size, std::string skinName) {
+        return create<Container>(new Container(position, size, std::move(skinName)), parent);
     }
 
     void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         Widget::onResize(sceneWidth, sceneHeight);
-        if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetsUpdated();
-        }
+        scrollbar->onScrollableWidgetsUpdated();
     }
 
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
-        if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetsUpdated();
-        }
+        scrollbar->onScrollableWidgetsUpdated();
     }
 
     void Container::detachChild(Widget* child){
         Widget::detachChild(child);
-        if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetsUpdated();
-        }
+        scrollbar->onScrollableWidgetsUpdated();
     }
 
     void Container::detachChildren() {
         Widget::detachChildren();
-        if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetsUpdated();
-        }
+        scrollbar->onScrollableWidgetsUpdated();
     }
 
     void Container::resetChildren() {
         detachChildren();
 
-        if (isScrollbarEnabled()) {
-            //re-add scrollbar children
-            scrollbar->initializeOrUpdate();
-        }
+        //re-add scrollbar children
+        scrollbar->initializeOrUpdate();
     }
 
     void Container::enableScissor(bool scissorEnabled) {
@@ -61,18 +52,6 @@ namespace urchin {
         return scissorEnabled;
     }
 
-    void Container::enableScrollbar(bool scrollbarEnabled, const std::string& scrollbarSkinName) { //TODO auto detect ?
-        if (scrollbarEnabled) {
-            scrollbar = std::make_unique<Scrollbar>(*this, scrollbarSkinName);
-        } else {
-            scrollbar.reset();
-        }
-    }
-
-    bool Container::isScrollbarEnabled() const {
-        return scrollbar != nullptr;
-    }
-
     int Container::getScrollShiftY() const {
         if (scrollbar) {
             return scrollbar->getScrollShiftY();
@@ -81,37 +60,23 @@ namespace urchin {
     }
 
     void Container::createOrUpdateWidget() {
-        if (isScrollbarEnabled()) {
-            scrollbar->initializeOrUpdate();
-        }
+        scrollbar->initializeOrUpdate();
     }
 
     bool Container::onKeyPressEvent(unsigned int key) {
-        if (isScrollbarEnabled()) {
-            return scrollbar->onKeyPressEvent(key);
-        }
-        return true;
+        return scrollbar->onKeyPressEvent(key);
     }
 
     bool Container::onKeyReleaseEvent(unsigned int key) {
-        if (isScrollbarEnabled()) {
-            return scrollbar->onKeyReleaseEvent(key);
-        }
-        return true;
+        return scrollbar->onKeyReleaseEvent(key);
     }
 
     bool Container::onMouseMoveEvent(int mouseX, int mouseY) {
-        if (isScrollbarEnabled()) {
-            return scrollbar->onMouseMoveEvent(mouseX, mouseY);
-        }
-        return true;
+        return scrollbar->onMouseMoveEvent(mouseX, mouseY);
     }
 
     bool Container::onScrollEvent(double offsetY) {
-        if (isScrollbarEnabled()) {
-            return scrollbar->onScrollEvent(offsetY);
-        }
-        return true;
+        return scrollbar->onScrollEvent(offsetY);
     }
 
     void Container::prepareWidgetRendering(float) {
