@@ -15,9 +15,14 @@ namespace urchin {
             bool onKeyPressEvent(unsigned int);
             bool onKeyReleaseEvent(unsigned int);
             bool onMouseMoveEvent(int, int);
+            bool onScrollEvent(double);
 
         private:
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
+            void updateScrollingPosition(int);
+            void updateScrollingPercentage(float);
+
+            const float SCROLL_SPEED;
 
             Widget& scrollableWidget;
             std::string skinName;

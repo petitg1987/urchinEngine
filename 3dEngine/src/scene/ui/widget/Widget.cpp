@@ -418,7 +418,25 @@ namespace urchin {
         return propagateEvent;
     }
 
+    bool Widget::onScroll(double offsetY) {
+        bool propagateEvent = true;
+        if (isVisible()) {
+            propagateEvent = onScrollEvent(offsetY);
+
+            for (auto& child : children) {
+                if (!child->onScroll(offsetY)) {
+                    return false;
+                }
+            }
+        }
+        return propagateEvent;
+    }
+
     bool Widget::onMouseMoveEvent(int, int) {
+        return true;
+    }
+
+    bool Widget::onScrollEvent(double) {
         return true;
     }
 

@@ -29,6 +29,7 @@ namespace urchin {
             bool onKeyPressEvent(unsigned int) override;
             bool onKeyReleaseEvent(unsigned int) override;
             bool onMouseMoveEvent(int, int) override;
+            bool onScrollEvent(double) override;
 
             void prepareWidgetRendering(float) override;
 

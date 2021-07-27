@@ -68,6 +68,7 @@ namespace urchin {
             bool onKeyRelease(unsigned int);
             bool onChar(char32_t);
             bool onMouseMove(int, int);
+            bool onScroll(double);
             int getMouseX() const;
             int getMouseY() const;
             virtual void onResetState();
@@ -94,6 +95,7 @@ namespace urchin {
             virtual bool onKeyReleaseEvent(unsigned int);
             virtual bool onCharEvent(char32_t);
             virtual bool onMouseMoveEvent(int, int);
+            virtual bool onScrollEvent(double);
 
             virtual void prepareWidgetRendering(float) = 0;
 

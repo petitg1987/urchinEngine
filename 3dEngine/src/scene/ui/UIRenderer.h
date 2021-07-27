@@ -22,6 +22,7 @@ namespace urchin {
             bool onKeyRelease(unsigned int) override;
             bool onChar(char32_t) override;
             bool onMouseMove(double, double) override;
+            bool onScroll(double) override;
             void onDisable() override;
 
             void addWidget(const std::shared_ptr<Widget>&);

@@ -68,6 +68,13 @@ namespace urchin {
         return true;
     }
 
+    bool Container::onScrollEvent(double offsetY) {
+        if (scrollbar) {
+            return scrollbar->onScrollEvent(offsetY);
+        }
+        return true;
+    }
+
     void Container::prepareWidgetRendering(float) {
 
     }

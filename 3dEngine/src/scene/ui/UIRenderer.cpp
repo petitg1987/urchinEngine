@@ -94,6 +94,15 @@ namespace urchin {
         return true;
     }
 
+    bool UIRenderer::onScroll(double offsetY) {
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            if (!widgets[(std::size_t)i]->onScroll(offsetY)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     void UIRenderer::onDisable() {
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onResetState();

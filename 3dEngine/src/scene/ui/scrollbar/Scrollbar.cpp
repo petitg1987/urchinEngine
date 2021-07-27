@@ -7,6 +7,7 @@
 namespace urchin {
 
     Scrollbar::Scrollbar(Widget& scrollableWidget, std::string skinName) :
+            SCROLL_SPEED(ConfigService::instance().getFloatValue("ui.scrollSpeed")),
             scrollableWidget(scrollableWidget),
             skinName(std::move(skinName)),
             mouseX(0),
@@ -53,7 +54,7 @@ namespace urchin {
                 Rectangle<int> scrollbarRectangle(Point2<int>(scrollbarLine->getGlobalPositionX(), scrollbarLine->getGlobalPositionY()),
                                                   Point2<int>(scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
                 if (scrollbarRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-                    //TODO updateSliderValue(mouseY);
+                    updateScrollingPosition(mouseY);
                     state = CURSOR_SELECTED;
                 }
             }
@@ -73,16 +74,16 @@ namespace urchin {
         this->mouseY = mouseY;
 
         if (state == CURSOR_SELECTED) {
-            for (auto &child : scrollableWidget.getChildren()) {
-                if (child == scrollbarCursor || child == scrollbarLine) {
-                    continue;
-                }
-
-                int posX = child->getPositionX();
-                int posY = child->getPositionY() - 1;
-                child->updatePosition(Position((float) posX, (float) posY, LengthType::PIXEL));
-            }
+            updateScrollingPosition(mouseY);
             return false;
+        }
+        return true;
+    }
+
+    bool Scrollbar::onScrollEvent(double offsetY) {
+        if (scrollableWidget.getWidgetState() == Widget::WidgetStates::FOCUS) {
+            auto positionPercentage = (float)offsetY * SCROLL_SPEED; //TODO compute percentage
+            updateScrollingPercentage(positionPercentage);
         }
         return true;
     }
@@ -91,6 +92,25 @@ namespace urchin {
         auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), scrollbarChunk);
         auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
         return img->createTexture(false);
+    }
+
+    void Scrollbar::updateScrollingPosition(int positionY) {
+        auto positionPercentage = (float)positionY; //TODO compute percentage
+        updateScrollingPercentage(positionPercentage);
+    }
+
+    void Scrollbar::updateScrollingPercentage(float /*positionPercentage*/) {
+        //TODO impl
+
+        for (auto &child : scrollableWidget.getChildren()) {
+            if (child == scrollbarCursor || child == scrollbarLine) {
+                continue;
+            }
+
+            int posX = child->getPositionX();
+            int posY = child->getPositionY() - 1;
+            child->updatePosition(Position((float) posX, (float) posY, LengthType::PIXEL));
+        }
     }
 
 }

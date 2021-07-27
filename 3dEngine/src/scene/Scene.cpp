@@ -205,6 +205,15 @@ namespace urchin {
         return true;
     }
 
+    bool Scene::onScroll(double offsetY) {
+        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
+            if (activeRenderer && !activeRenderer->onScroll(offsetY)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     void Scene::display() {
         ScopeProfiler sp(Profiler::graphic(), "sceneMgrDisplay");
 

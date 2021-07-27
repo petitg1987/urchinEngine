@@ -244,6 +244,11 @@ namespace urchin {
         return true;
     }
 
+    bool Renderer3d::onScroll(double) {
+        //nothing to do
+        return true;
+    }
+
     void Renderer3d::onDisable() {
         //nothing to do
     }
