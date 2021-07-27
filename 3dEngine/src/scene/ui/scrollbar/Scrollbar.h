@@ -11,19 +11,21 @@ namespace urchin {
             Scrollbar(Widget&, std::string);
 
             void initializeOrUpdate();
-            void onScrollableWidgetContentUpdated();
+            void onScrollableWidgetsUpdated();
 
             bool onKeyPressEvent(unsigned int);
             bool onKeyReleaseEvent(unsigned int);
             bool onMouseMoveEvent(int, int);
             bool onScrollEvent(double);
 
+            int getScrollShiftY() const;
+
         private:
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void updateScrollingPosition(int);
             void updateScrollingPosition();
             void updateCursorPosition();
-            void updateContentPosition();
+            void computeShiftPositionY();
             std::vector<Widget*> getContentChildren() const;
 
             const float SCROLL_SPEED;
@@ -36,7 +38,6 @@ namespace urchin {
 
             float visibleHeight;
             float contentHeight;
-            std::map<Widget*, float> childrenOriginalPositionY;
 
             int mouseX, mouseY;
             enum ScrollbarStates {
@@ -44,6 +45,7 @@ namespace urchin {
                 CURSOR_SELECTED,
             } state;
             float scrollPercentage;
+            int shiftPixelPositionY;
     };
 
 }

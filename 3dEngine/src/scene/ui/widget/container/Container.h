@@ -15,6 +15,8 @@ namespace urchin {
             static std::shared_ptr<Container> newContainer(Widget*, Position);
             static std::shared_ptr<Container> newContainer(Widget*, Position, Size);
 
+            void onResize(unsigned int, unsigned int) override;
+
             void addChild(const std::shared_ptr<Widget>&) override;
             void detachChild(Widget*) override;
             void detachChildren() override;
@@ -25,6 +27,7 @@ namespace urchin {
 
             void enableScrollbar(bool, const std::string& = "");
             bool isScrollbarEnabled() const;
+            int getScrollShiftY() const;
 
         protected:
             Container(Position, Size);

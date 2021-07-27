@@ -15,7 +15,8 @@ namespace urchin {
             mouseX(0),
             mouseY(0),
             state(DEFAULT),
-            scrollPercentage(0.0f) {
+            scrollPercentage(0.0f),
+            shiftPixelPositionY(0) {
 
     }
 
@@ -47,14 +48,12 @@ namespace urchin {
         scrollbarCursor = StaticBitmap::newStaticBitmap(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
 
         //size computation
-        onScrollableWidgetContentUpdated();
+        onScrollableWidgetsUpdated();
     }
 
-    void Scrollbar::onScrollableWidgetContentUpdated() {
+    void Scrollbar::onScrollableWidgetsUpdated() {
         //compute values
-        visibleHeight = (float)scrollableWidget.getHeight();
-
-        float minChildPositionY = std::numeric_limits<float>::max();
+        float minChildPositionY = 100000.0f;
         float maxChildPositionY = 0.0f;
         for (auto& contentChild : getContentChildren()) {
             auto childMinPositionY = (float)contentChild->getGlobalPositionY();
@@ -68,17 +67,11 @@ namespace urchin {
             }
         }
         contentHeight = maxChildPositionY - minChildPositionY;
+        visibleHeight = (float)scrollableWidget.getHeight();
 
-        //save children original positions
-        childrenOriginalPositionY.clear();
-        for (auto &contentChild : getContentChildren()) {
-            childrenOriginalPositionY.emplace(contentChild, contentChild->getPositionY());
-        }
-
-        //reset scrolling
-        scrollPercentage = 0.0f;
         updateScrollingPosition();
     }
+
     bool Scrollbar::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> cursorRectangle(Point2<int>(scrollbarCursor->getGlobalPositionX(), scrollbarCursor->getGlobalPositionY()),
@@ -150,7 +143,7 @@ namespace urchin {
     void Scrollbar::updateScrollingPosition() {
         if (contentHeight > visibleHeight) {
             updateCursorPosition();
-            updateContentPosition();
+            computeShiftPositionY();
         }
     }
 
@@ -164,15 +157,16 @@ namespace urchin {
         scrollbarCursor->updatePosition(Position(cursorPositionX, cursorPositionTypeX, cursorPositionY, LengthType::PIXEL));
     }
 
-    void Scrollbar::updateContentPosition() {
-        float shiftPositionY = (contentHeight - visibleHeight) * scrollPercentage;
+    void Scrollbar::computeShiftPositionY() {
+        shiftPixelPositionY = -(int)((contentHeight - visibleHeight) * scrollPercentage);
 
-        for (auto& contentChild : getContentChildren()) {
-            float originalPositionY = childrenOriginalPositionY.at(contentChild);
-            float newPositionY = originalPositionY - shiftPositionY;
-            //TODO use original positionTypeY to support resize !
-            contentChild->updatePosition(Position(contentChild->getPosition().getPositionX(), contentChild->getPosition().getPositionTypeX(), newPositionY, LengthType::PIXEL, contentChild->getPosition().getRelativeTo()));
-        }
+        //compensate the shift applied on all children (including scrollbarLine & scrollbarCursor)
+        scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getPositionX(), 0.0f - (float)shiftPixelPositionY, LengthType::PIXEL));
+        scrollbarCursor->updatePosition(Position(scrollbarCursor->getPosition().getPositionX(), scrollbarCursor->getPosition().getPositionY() - (float)shiftPixelPositionY, LengthType::PIXEL));
+    }
+
+    int Scrollbar::getScrollShiftY() const {
+        return shiftPixelPositionY;
     }
 
     std::vector<Widget*> Scrollbar::getContentChildren() const {

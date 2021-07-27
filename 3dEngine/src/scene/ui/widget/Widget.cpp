@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     Widget::~Widget() {
-        detachChildren();
+        Widget::detachChildren();
     }
 
     void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService& i18nService) {
@@ -200,6 +200,12 @@ namespace urchin {
         } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
             startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
         }
+
+        auto* container = dynamic_cast<Container*>(parent); //TODO change Container in Scrollable interface ?
+        if (container) {
+            startPosition += container->getScrollShiftY();
+        }
+
         return startPosition + getPositionY();
     }
 

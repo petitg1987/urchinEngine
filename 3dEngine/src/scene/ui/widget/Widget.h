@@ -32,7 +32,7 @@ namespace urchin {
             };
 
             void initialize(RenderTarget&, const Shader&, I18nService&);
-            void onResize(unsigned int, unsigned int);
+            virtual void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
 

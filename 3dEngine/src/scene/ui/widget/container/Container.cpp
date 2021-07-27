@@ -16,24 +16,32 @@ namespace urchin {
         return create<Container>(new Container(position, size), parent);
     }
 
+    void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        Widget::onResize(sceneWidth, sceneHeight);
+
+        if (isScrollbarEnabled()) {
+            scrollbar->onScrollableWidgetsUpdated();
+        }
+    }
+
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
         if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetContentUpdated();
+            scrollbar->onScrollableWidgetsUpdated();
         }
     }
 
     void Container::detachChild(Widget* child){
         Widget::detachChild(child);
         if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetContentUpdated();
+            scrollbar->onScrollableWidgetsUpdated();
         }
     }
 
     void Container::detachChildren() {
         Widget::detachChildren();
         if (isScrollbarEnabled()) {
-            scrollbar->onScrollableWidgetContentUpdated();
+            scrollbar->onScrollableWidgetsUpdated();
         }
     }
 
@@ -64,6 +72,13 @@ namespace urchin {
 
     bool Container::isScrollbarEnabled() const {
         return scrollbar != nullptr;
+    }
+
+    int Container::getScrollShiftY() const {
+        if (scrollbar) {
+            return scrollbar->getScrollShiftY();
+        }
+        return 0;
     }
 
     void Container::createOrUpdateWidget() {
