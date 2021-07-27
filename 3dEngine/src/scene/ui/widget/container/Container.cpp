@@ -9,10 +9,6 @@ namespace urchin {
         scrollbar = std::make_unique<Scrollbar>(*this, this->skinName);
     }
 
-    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, std::string skinName) { //TODO remove this method
-        return create<Container>(new Container(position, Size(100.0f, 100.0f, LengthType::SCREEN_PERCENT), std::move(skinName)), parent);
-    }
-
     std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size, std::string skinName) {
         return create<Container>(new Container(position, size, std::move(skinName)), parent);
     }

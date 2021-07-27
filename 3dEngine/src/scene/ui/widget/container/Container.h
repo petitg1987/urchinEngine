@@ -13,7 +13,6 @@ namespace urchin {
      */
     class Container : public Widget, public Scrollable {
         public:
-            static std::shared_ptr<Container> newContainer(Widget*, Position, std::string);
             static std::shared_ptr<Container> newContainer(Widget*, Position, Size, std::string);
 
             void onResize(unsigned int, unsigned int) override;
