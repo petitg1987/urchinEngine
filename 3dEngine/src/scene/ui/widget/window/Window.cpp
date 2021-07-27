@@ -96,7 +96,7 @@ namespace urchin {
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
         if (state == MOVING) {
             auto positionX = (float)(mouseX - mousePositionX);
-            if (getPosition().getPositionTypeX() == LengthType::SCREEN_PERCENT) {
+            if (getPosition().getPositionTypeX() == LengthType::SCREEN_PERCENT) { //TODO move in method to use it in scrollbar !
                 positionX = (positionX / (float)getSceneWidth()) * 100.0f;
             } else if (getPosition().getPositionTypeX() == LengthType::CONTAINER_PERCENT) {
                 positionX = (positionX / (float)getParentContainerWidth()) * 100.0f;

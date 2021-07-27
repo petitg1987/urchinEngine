@@ -36,7 +36,7 @@ namespace urchin {
 
             float visibleHeight;
             float contentHeight;
-            std::map<Widget*, float> childrenOriginalPositions;
+            std::map<Widget*, float> childrenOriginalPositionY;
 
             int mouseX, mouseY;
             enum ScrollbarStates {

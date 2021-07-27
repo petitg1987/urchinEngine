@@ -51,6 +51,7 @@ namespace urchin {
     }
 
     void Scrollbar::onScrollableWidgetContentUpdated() {
+        //compute values
         visibleHeight = (float)scrollableWidget.getHeight();
 
         float minChildPositionY = std::numeric_limits<float>::max();
@@ -68,10 +69,15 @@ namespace urchin {
         }
         contentHeight = maxChildPositionY - minChildPositionY;
 
-        childrenOriginalPositions.clear();
+        //save children original positions
+        childrenOriginalPositionY.clear();
         for (auto &contentChild : getContentChildren()) {
-            childrenOriginalPositions.emplace(contentChild, contentChild->getPositionY());
+            childrenOriginalPositionY.emplace(contentChild, contentChild->getPositionY());
         }
+
+        //reset scrolling
+        scrollPercentage = 0.0f;
+        updateScrollingPosition();
     }
     bool Scrollbar::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
@@ -111,12 +117,15 @@ namespace urchin {
 
     bool Scrollbar::onScrollEvent(double offsetY) {
         if (scrollableWidget.getWidgetState() == Widget::WidgetStates::FOCUS) {
-            float scrollMoveSpeedFactor = (contentHeight <= visibleHeight) ? 0.0f : (visibleHeight / contentHeight);
-            float deltaScroll = (float)offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
-            scrollPercentage -= deltaScroll;
-            scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
+            if (contentHeight > visibleHeight) {
+                float scrollMoveSpeedFactor = visibleHeight / (contentHeight - visibleHeight);
+                float deltaScroll = (float) offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
+                scrollPercentage -= deltaScroll;
+                scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
 
-            updateScrollingPosition();
+                updateScrollingPosition();
+                return false;
+            }
         }
         return true;
     }
@@ -128,8 +137,9 @@ namespace urchin {
     }
 
     void Scrollbar::updateScrollingPosition(int positionY) {
-        auto minPositionY = (float)scrollbarLine->getGlobalPositionY();
-        auto maxPositionY = (float)scrollbarLine->getGlobalPositionY() + (float)scrollbarLine->getHeight();
+        auto halfCursorHeight = (float)scrollbarCursor->getHeight() / 2.0f;
+        auto minPositionY = (float)scrollbarLine->getGlobalPositionY() + halfCursorHeight;
+        auto maxPositionY = (float)scrollbarLine->getGlobalPositionY() + (float)scrollbarLine->getHeight() - halfCursorHeight;
 
         scrollPercentage = ((float)positionY - minPositionY) / (maxPositionY - minPositionY);
         scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
@@ -144,28 +154,23 @@ namespace urchin {
         }
     }
 
-    void Scrollbar::updateCursorPosition() { //TODO custom adjustment...
+    void Scrollbar::updateCursorPosition() {
         float cursorPositionX = scrollbarCursor->getPosition().getPositionX();
         LengthType cursorPositionTypeX = scrollbarCursor->getPosition().getPositionTypeX();
 
-        auto cursorMinPositionY = 0.0f;
-        auto cursorMaxPositionY = (float)scrollableWidget.getHeight();
+        auto cursorMaxPositionY = (float)scrollableWidget.getHeight() - (float)scrollbarCursor->getHeight();
+        float cursorPositionY = cursorMaxPositionY * scrollPercentage;
 
-        float cursorPositionY = cursorMinPositionY + (cursorMaxPositionY - cursorMinPositionY) * scrollPercentage;
         scrollbarCursor->updatePosition(Position(cursorPositionX, cursorPositionTypeX, cursorPositionY, LengthType::PIXEL));
     }
 
-    void Scrollbar::updateContentPosition() { //TODO custom adjustment...
+    void Scrollbar::updateContentPosition() {
         float shiftPositionY = (contentHeight - visibleHeight) * scrollPercentage;
 
         for (auto& contentChild : getContentChildren()) {
-            auto itFind = childrenOriginalPositions.find(contentChild);
-            if (itFind == childrenOriginalPositions.end()) {
-                throw std::runtime_error("Unknown children found in a scrollable content");
-            }
-
-            float originalPositionY = itFind->second;
+            float originalPositionY = childrenOriginalPositionY.at(contentChild);
             float newPositionY = originalPositionY - shiftPositionY;
+            //TODO use original positionTypeY to support resize !
             contentChild->updatePosition(Position(contentChild->getPosition().getPositionX(), contentChild->getPosition().getPositionTypeX(), newPositionY, LengthType::PIXEL));
         }
     }
