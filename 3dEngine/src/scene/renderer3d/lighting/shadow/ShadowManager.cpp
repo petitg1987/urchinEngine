@@ -298,7 +298,7 @@ namespace urchin {
             }
         }
 
-        for (unsigned int shadowMapIndex = 0; shadowMapIndex < config.nbShadowMaps; ++shadowMapIndex) {
+        for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
             depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }

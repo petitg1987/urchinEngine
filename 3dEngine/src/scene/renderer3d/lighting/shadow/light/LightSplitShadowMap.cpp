@@ -55,7 +55,7 @@ namespace urchin {
         //determine point belonging to shadow caster/receiver box
         Point3<float> shadowReceiverAndCasterVertex[16];
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
-        for (unsigned int i = 0; i < 8; ++i) {
+        for (std::size_t i = 0; i < 8; ++i) {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
             //add shadow receiver points
@@ -66,7 +66,7 @@ namespace urchin {
         }
 
         //build shadow receiver/caster bounding box from points
-        return AABBox<float>(shadowReceiverAndCasterVertex, 16);
+        return {shadowReceiverAndCasterVertex, 16};
     }
 
     float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
