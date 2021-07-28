@@ -176,36 +176,31 @@ namespace urchin {
     }
 
     int Widget::getGlobalPositionX() const {
-        if (!parent) {
-            return getPositionX();
-        }
-
         int startPosition = 0;
-        if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT) {
-            startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
-        } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
-            startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
+        if (parent) {
+            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT) {
+                startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
+                startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int) parent->getWidth();
+            }
         }
         return startPosition + getPositionX();
     }
 
     int Widget::getGlobalPositionY() const {
-        if (!parent) {
-            return getPositionY();
-        }
-
         int startPosition = 0;
-        if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT) {
-            startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
-        } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
-            startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
-        }
+        if (parent) {
+            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT) {
+                startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
+                startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int) parent->getHeight();
+            }
 
-        auto* scrollable = dynamic_cast<Scrollable*>(parent);
-        if (scrollable) {
-            startPosition += scrollable->getScrollShiftY();
+            auto* scrollable = dynamic_cast<Scrollable*>(parent);
+            if (scrollable) {
+                startPosition += scrollable->getScrollShiftY();
+            }
         }
-
         return startPosition + getPositionY();
     }
 
