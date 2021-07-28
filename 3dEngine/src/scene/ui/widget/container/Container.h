@@ -25,6 +25,9 @@ namespace urchin {
             void enableScissor(bool);
             bool isScissorEnabled() const;
 
+            unsigned int getContentWidth() const;
+            unsigned int getContentHeight() const;
+
             int getScrollShiftY() const override;
 
         protected:

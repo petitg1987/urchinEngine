@@ -90,8 +90,6 @@ namespace urchin {
             void setSize(Size);
 
             Container* getParentContainer() const;
-            unsigned int getParentContainerWidth() const;
-            unsigned int getParentContainerHeight() const;
 
             virtual bool onKeyPressEvent(unsigned int);
             virtual bool onKeyReleaseEvent(unsigned int);

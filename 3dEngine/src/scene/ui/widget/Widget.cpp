@@ -234,7 +234,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (int)(widthValue / 100.0f * (float)getSceneWidth());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            return (int)(widthValue / 100.0f * (float)getParentContainerWidth());
+            return (int)(widthValue / 100.0f * (float)getParentContainer()->getContentWidth());
         } else if (lengthType == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = widthValue;
             return (int)(heightValueInPixel() * relativeMultiplyFactor);
@@ -248,7 +248,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (widthPixel / (float)getSceneWidth()) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            return (widthPixel / (float)getParentContainerWidth()) * 100.0f;
+            return (widthPixel / (float)getParentContainer()->getContentWidth()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
             return widthPixel;
         }
@@ -259,7 +259,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (int)(heightValue / 100.0f * (float)getSceneHeight());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            return (int)(heightValue / 100.0f * (float)getParentContainerHeight());
+            return (int)(heightValue / 100.0f * (float)getParentContainer()->getContentHeight());
         } else if (lengthType == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = heightValue;
             return (int)(widthValueInPixel() * relativeMultiplyFactor);
@@ -273,7 +273,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (heightPixel / (float)getSceneHeight()) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            return (heightPixel / (float)getParentContainerHeight()) * 100.0f;
+            return (heightPixel / (float)getParentContainer()->getContentHeight()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
             return heightPixel;
         }
@@ -301,22 +301,6 @@ namespace urchin {
             parent = parent->getParent();
         }
         return nullptr;
-    }
-
-    unsigned int Widget::getParentContainerWidth() const {
-        Container* parentContainer = getParentContainer();
-        if (parentContainer) {
-            return (unsigned int)((int)parentContainer->getWidth() - (parentContainer->getOutline().leftWidth + parentContainer->getOutline().rightWidth));
-        }
-        return sceneWidth;
-    }
-
-    unsigned int Widget::getParentContainerHeight() const {
-        Container* parentContainer = getParentContainer();
-        if (parentContainer) {
-            return (unsigned int)((int)parentContainer->getHeight() - (parentContainer->getOutline().topWidth + parentContainer->getOutline().bottomWidth));
-        }
-        return sceneHeight;
     }
 
     bool Widget::onKeyPress(unsigned int key) {
@@ -523,18 +507,17 @@ namespace urchin {
             parentContainers.push(getParentContainer());
 
             while (!parentContainers.empty()) {
-                Container* parentContainer = parentContainers.top();
+                Container* container = parentContainers.top();
                 parentContainers.pop();
-                if (parentContainer && parentContainer->isScissorEnabled()) {
-                    //TODO wrong use of getParentContainerWidth(): should be something like: parentContainer->getWidth() - outline
+                if (container && container->isScissorEnabled()) {
                     Rectangle<int> containerZone(
-                            Point2<int>(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY()),
-                            Point2<int>(parentContainer->getGlobalPositionX() + (int)getParentContainerWidth(), parentContainer->getGlobalPositionY() + (int)getParentContainerHeight()));
+                            Point2<int>(container->getGlobalPositionX(), container->getGlobalPositionY()),
+                            Point2<int>(container->getGlobalPositionX() + (int)container->getContentWidth(), container->getGlobalPositionY() + (int)container->getContentHeight()));
 
                     if (!containerZone.collideWithPoint(mouseCoordinate)) {
                         return false;
                     }
-                    parentContainers.push(parentContainer->getParentContainer());
+                    parentContainers.push(container->getParentContainer());
                 }
             }
             return true;

@@ -48,11 +48,16 @@ namespace urchin {
         return scissorEnabled;
     }
 
+    unsigned int Container::getContentWidth() const {
+        return (unsigned int)((int)getWidth() - (getOutline().leftWidth + getOutline().rightWidth));
+    }
+
+    unsigned int Container::getContentHeight() const {
+        return (unsigned int)((int)getHeight() - (getOutline().topWidth + getOutline().bottomWidth));
+    }
+
     int Container::getScrollShiftY() const {
-        if (scrollbar) {
-            return scrollbar->getScrollShiftY();
-        }
-        return 0;
+        return scrollbar->getScrollShiftY();
     }
 
     void Container::createOrUpdateWidget() {
