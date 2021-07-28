@@ -1,6 +1,7 @@
 #include <stdexcept>
 
-#include <graphic/texture/model/TextureParam.h>
+#include <graphic/texture/TextureParam.h>
+#include <graphic/texture/TextureSamplerCache.h>
 #include <graphic/setup/GraphicService.h>
 
 namespace urchin {
@@ -10,7 +11,8 @@ namespace urchin {
             readMode(readMode),
             readQuality(readQuality),
             anisotropy(anisotropy),
-            textureSampler(nullptr) {
+            textureSampler(nullptr),
+            samplerCacheKey(0) {
 
     }
 
@@ -43,32 +45,40 @@ namespace urchin {
 
     void TextureParam::initialize(uint32_t mipLevels) {
         assert(!isInitialized);
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
-        VkPhysicalDeviceProperties properties{};
-        vkGetPhysicalDeviceProperties(GraphicService::instance().getDevices().getPhysicalDevice(), &properties);
+        samplerCacheKey = TextureSamplerCache::instance().computeKey(readMode, readQuality, anisotropy, mipLevels);
+        textureSampler = TextureSamplerCache::instance().retrieveAndMarkUsed(samplerCacheKey);
 
-        VkSamplerCreateInfo samplerInfo{};
-        samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-        samplerInfo.magFilter = getVkReadQuality();
-        samplerInfo.minFilter = getVkReadQuality();
-        samplerInfo.addressModeU = getVkReadMode();
-        samplerInfo.addressModeV = getVkReadMode();
-        samplerInfo.addressModeW = getVkReadMode();
-        samplerInfo.anisotropyEnable = needAnisotropy() ? VK_TRUE : VK_FALSE;
-        samplerInfo.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
-        samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
-        samplerInfo.unnormalizedCoordinates = VK_FALSE;
-        samplerInfo.compareEnable = VK_FALSE; //useful for percentage-closer filtering on shadow maps
-        samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
-        samplerInfo.mipmapMode = getVkMipmapReadQuality();
-        samplerInfo.mipLodBias = 0.0f;
-        samplerInfo.minLod = 0.0f;
-        samplerInfo.maxLod = static_cast<float>(mipLevels);
+        if (textureSampler == VK_NULL_HANDLE) {
+            auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
-        VkResult result = vkCreateSampler(logicalDevice, &samplerInfo, nullptr, &textureSampler); //TODO limited to 4000 => should reduce call by using cache
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create texture sampler with error code: " + std::to_string(result));
+            VkPhysicalDeviceProperties properties{};
+            vkGetPhysicalDeviceProperties(GraphicService::instance().getDevices().getPhysicalDevice(), &properties);
+
+            VkSamplerCreateInfo samplerInfo{};
+            samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+            samplerInfo.magFilter = getVkReadQuality();
+            samplerInfo.minFilter = getVkReadQuality();
+            samplerInfo.addressModeU = getVkReadMode();
+            samplerInfo.addressModeV = getVkReadMode();
+            samplerInfo.addressModeW = getVkReadMode();
+            samplerInfo.anisotropyEnable = needAnisotropy() ? VK_TRUE : VK_FALSE;
+            samplerInfo.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
+            samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+            samplerInfo.unnormalizedCoordinates = VK_FALSE;
+            samplerInfo.compareEnable = VK_FALSE; //useful for percentage-closer filtering on shadow maps
+            samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
+            samplerInfo.mipmapMode = getVkMipmapReadQuality();
+            samplerInfo.mipLodBias = 0.0f;
+            samplerInfo.minLod = 0.0f;
+            samplerInfo.maxLod = static_cast<float>(mipLevels);
+
+            VkResult result = vkCreateSampler(logicalDevice, &samplerInfo, nullptr, &textureSampler);
+            if (result != VK_SUCCESS) {
+                throw std::runtime_error("Failed to create texture sampler with error code: " + std::to_string(result));
+            }
+
+            TextureSamplerCache::instance().registerTextureSampler(samplerCacheKey, textureSampler);
         }
 
         isInitialized = true;
@@ -76,9 +86,12 @@ namespace urchin {
 
     void TextureParam::cleanup() {
         assert(isInitialized);
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
-        vkDestroySampler(logicalDevice, textureSampler, nullptr);
+        bool destroySampler = TextureSamplerCache::instance().markUnused(samplerCacheKey);
+        if (destroySampler) {
+            auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
+            vkDestroySampler(logicalDevice, textureSampler, nullptr);
+        }
 
         isInitialized = false;
     }

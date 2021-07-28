@@ -28,14 +28,15 @@ namespace urchin {
             if (displayMode == DEFAULT_MODE) {
                 assert(!customModelShaderVariable); //ensure binding id are correct
                 TextureParam::ReadMode textureReadMode = constMesh->getMaterial().isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
-                TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
+                TextureParam diffuseTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
+                TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
                 meshRendererBuilder
                     ->addData(constMesh->getTextureCoordinates())
                     ->addData(constMesh->getBaseNormals())
                     ->addData(constMesh->getBaseTangents())
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), textureParam)) //binding 2
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), textureParam)); //binding 3
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))) //binding 2
+                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 3
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());

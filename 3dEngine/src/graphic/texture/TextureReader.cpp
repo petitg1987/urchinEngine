@@ -2,10 +2,10 @@
 
 namespace urchin {
 
-    TextureReader::TextureReader(std::shared_ptr<Texture> texture, const TextureParam& param) :
+    TextureReader::TextureReader(std::shared_ptr<Texture> texture, TextureParam param) :
             isInitialized(false),
             texture(std::move(texture)),
-            param(param) {
+            param(std::move(param)) {
 
     }
 
@@ -13,8 +13,8 @@ namespace urchin {
         cleanup();
     }
 
-    std::shared_ptr<TextureReader> TextureReader::build(std::shared_ptr<Texture> texture, const TextureParam& textureParam) {
-        return std::shared_ptr<TextureReader>(new TextureReader(std::move(texture), textureParam));
+    std::shared_ptr<TextureReader> TextureReader::build(std::shared_ptr<Texture> texture, TextureParam textureParam) {
+        return std::shared_ptr<TextureReader>(new TextureReader(std::move(texture), std::move(textureParam)));
     }
 
     void TextureReader::initialize() {

@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <graphic/texture/Texture.h>
-#include <graphic/texture/model/TextureParam.h>
+#include <graphic/texture/TextureParam.h>
 
 namespace urchin {
 
@@ -11,7 +11,7 @@ namespace urchin {
         public:
             ~TextureReader();
 
-            static std::shared_ptr<TextureReader> build(std::shared_ptr<Texture>, const TextureParam&);
+            static std::shared_ptr<TextureReader> build(std::shared_ptr<Texture>, TextureParam);
 
             void initialize();
 
@@ -19,7 +19,7 @@ namespace urchin {
             const TextureParam& getParam() const;
 
         private:
-            TextureReader(std::shared_ptr<Texture>, const TextureParam&);
+            TextureReader(std::shared_ptr<Texture>, TextureParam);
 
             void cleanup();
 

@@ -22,6 +22,9 @@ namespace urchin {
             };
 
             ~TextureParam();
+            TextureParam(TextureParam&&) = default;
+            TextureParam(const TextureParam&) = delete; //delete copy constructor to avoid to handle TextureSamplerCache#SharedSampler#useCount
+            TextureParam& operator=(const TextureParam&) = delete; //delete assign operator to avoid to handle TextureSamplerCache#SharedSampler#useCount
 
             static TextureParam buildNearest();
             static TextureParam buildLinear();
@@ -49,6 +52,7 @@ namespace urchin {
             Anisotropy anisotropy;
 
             VkSampler textureSampler;
+            uint64_t samplerCacheKey;
     };
 
 }
