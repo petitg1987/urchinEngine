@@ -503,12 +503,12 @@ namespace urchin {
                 Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
 
         if (widgetZone.collideWithPoint(mouseCoordinate)) {
-            std::stack<Container*> parentContainers;
-            parentContainers.push(getParentContainer());
+            std::stack<Container*> containers;
+            containers.push(getParentContainer());
 
-            while (!parentContainers.empty()) {
-                Container* container = parentContainers.top();
-                parentContainers.pop();
+            while (!containers.empty()) {
+                Container* container = containers.top();
+                containers.pop();
                 if (container && container->isScissorEnabled()) {
                     Rectangle<int> containerZone(
                             Point2<int>(container->getGlobalPositionX(), container->getGlobalPositionY()),
@@ -517,7 +517,7 @@ namespace urchin {
                     if (!containerZone.collideWithPoint(mouseCoordinate)) {
                         return false;
                     }
-                    parentContainers.push(container->getParentContainer());
+                    containers.push(container->getParentContainer());
                 }
             }
             return true;
