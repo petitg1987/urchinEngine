@@ -7,13 +7,12 @@
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/widget/text/Text.h>
-#include <scene/ui/widget/container/Container.h>
 #include <resources/image/Image.h>
 #include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 
-    class Window : public Container {
+    class Window : public Widget {
         public:
             static std::shared_ptr<Window> newWindow(Widget*, Position, Size, std::string, std::string);
 

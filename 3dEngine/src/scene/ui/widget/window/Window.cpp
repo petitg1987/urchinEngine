@@ -9,14 +9,14 @@
 namespace urchin {
 
     Window::Window(Position position, Size size, std::string skinName, std::string titleKey) :
-            Container(position, size, skinName),
+            Widget(position, size),
             skinName(std::move(skinName)),
             titleKey(std::move(titleKey)),
             mousePositionX(0),
             mousePositionY(0),
             state(DEFAULT),
             title(nullptr) {
-        enableScissor(false);
+
     }
 
     std::shared_ptr<Window> Window::newWindow(Widget* parent, Position position, Size size, std::string skinName, std::string titleKey) {

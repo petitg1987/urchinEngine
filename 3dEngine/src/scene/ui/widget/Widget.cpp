@@ -67,7 +67,7 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(translateVector), &translateVector); //binding 1
 
         Container* parentContainer = getParentContainer();
-        if (parentContainer && parentContainer->isScissorEnabled()) {
+        if (parentContainer) {
             Vector2<int> scissorOffset = Vector2<int>(parentContainer->getPositionX(), parentContainer->getPositionY());
             Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
@@ -147,8 +147,8 @@ namespace urchin {
 
     void Widget::updatePosition(Position position) {
         auto* thisContainer = dynamic_cast<Container*>(this);
-        if (thisContainer && thisContainer->isScissorEnabled()) {
-            throw std::runtime_error("Can not move a container where scissor is enabled: scissor update is not implemented");
+        if (thisContainer) {
+            throw std::runtime_error("Can not move a container: scissor update is not implemented");
         }
         this->position = position;
     }
@@ -504,7 +504,7 @@ namespace urchin {
             while (!containers.empty()) {
                 Container* container = containers.top();
                 containers.pop();
-                if (container && container->isScissorEnabled()) {
+                if (container) {
                     Rectangle<int> containerZone(
                             Point2<int>(container->getGlobalPositionX(), container->getGlobalPositionY()),
                             Point2<int>(container->getGlobalPositionX() + (int)container->getContentWidth(), container->getGlobalPositionY() + (int)container->getContentHeight()));

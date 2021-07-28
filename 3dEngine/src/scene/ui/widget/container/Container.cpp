@@ -4,8 +4,7 @@ namespace urchin {
 
     Container::Container(Position position, Size size, std::string skinName) :
             Widget(position, size),
-            skinName(std::move(skinName)),
-            scissorEnabled(true) {
+            skinName(std::move(skinName)) {
         scrollbar = std::make_unique<Scrollbar>(*this, this->skinName);
     }
 
@@ -38,14 +37,6 @@ namespace urchin {
 
         //re-add scrollbar children
         scrollbar->initializeOrUpdate();
-    }
-
-    void Container::enableScissor(bool scissorEnabled) {
-        this->scissorEnabled = scissorEnabled;
-    }
-
-    bool Container::isScissorEnabled() const {
-        return scissorEnabled;
     }
 
     unsigned int Container::getContentWidth() const {

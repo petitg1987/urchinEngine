@@ -22,7 +22,7 @@ namespace urchin {
             void detachChildren() override;
             void resetChildren();
 
-            void enableScissor(bool);
+            void enableScissor(bool); //TODO always true ?
             bool isScissorEnabled() const;
 
             unsigned int getContentWidth() const;
@@ -45,8 +45,6 @@ namespace urchin {
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
 
             const std::string skinName;
-
-            bool scissorEnabled;
             std::unique_ptr<Scrollbar> scrollbar;
     };
 
