@@ -34,7 +34,7 @@ namespace urchin {
             bool isCharacterAllowed(char32_t) const;
             bool isMaxLengthReach() const;
 
-            void refreshText(unsigned int, bool);
+            void refreshText(int, bool);
             void computeCursorPosition();
             void computeCursorIndex(int);
 

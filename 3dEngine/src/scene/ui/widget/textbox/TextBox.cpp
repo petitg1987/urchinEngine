@@ -52,7 +52,7 @@ namespace urchin {
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorDiffuse = Image(1, 1, Image::IMAGE_RGBA, std::move(cursorColor)).createTexture(false);
-        refreshText(cursorIndex, false);
+        refreshText((int)cursorIndex, false);
         computeCursorPosition();
 
         //visual
@@ -112,22 +112,22 @@ namespace urchin {
             }
         } else if (state == ACTIVE) {
             if (key == InputDeviceKey::LEFT_ARROW) {
-                refreshText(cursorIndex - 1, false);
+                refreshText((int)cursorIndex - 1, false);
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
-                refreshText(cursorIndex + 1, false);
+                refreshText((int)cursorIndex + 1, false);
             } else if (key == InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
                     std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
                     allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
-                    refreshText(cursorIndex - 1, true);
+                    refreshText((int)cursorIndex - 1, true);
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
                     std::u32string tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
                     allText = allText.substr(0, (unsigned long)cursorIndex);
                     allText.append(tmpRight);
-                    refreshText(cursorIndex, true);
+                    refreshText((int)cursorIndex, true);
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace urchin {
                 allText = allText.substr(0, (unsigned long)cursorIndex);
                 allText.append(1, unicodeCharacter);
                 allText.append(tmpRight);
-                refreshText(cursorIndex + 1, true);
+                refreshText((int)cursorIndex + 1, true);
             }
             return false;
         }
@@ -164,11 +164,11 @@ namespace urchin {
         return maxLength != -1 && (int)allText.size() >= maxLength;
     }
 
-    void TextBox::refreshText(unsigned int newCursorIndex, bool allTextUpdated) {
+    void TextBox::refreshText(int newCursorIndex, bool allTextUpdated) {
         //refresh cursor index
-        if (    (newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
-                (newCursorIndex < cursorIndex && cursorIndex != 0)) {
-            cursorIndex = newCursorIndex;
+        if (    (newCursorIndex > (int)cursorIndex && cursorIndex < allText.length()) ||
+                (newCursorIndex < (int)cursorIndex && cursorIndex != 0)) {
+            cursorIndex = (unsigned int)newCursorIndex;
         }
 
         //refresh start index
