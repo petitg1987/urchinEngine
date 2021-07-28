@@ -21,7 +21,6 @@ namespace urchin {
                 ANISOTROPY
             };
 
-            TextureParam(ReadMode, ReadQuality, Anisotropy);
             ~TextureParam();
 
             static TextureParam buildNearest();
@@ -36,6 +35,8 @@ namespace urchin {
             VkSampler getTextureSampler() const;
 
         private:
+            TextureParam(ReadMode, ReadQuality, Anisotropy);
+
             VkSamplerAddressMode getVkReadMode() const;
             VkFilter getVkReadQuality() const;
             VkSamplerMipmapMode getVkMipmapReadQuality() const;

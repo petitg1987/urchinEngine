@@ -55,7 +55,7 @@ namespace urchin {
         samplerInfo.addressModeU = getVkReadMode();
         samplerInfo.addressModeV = getVkReadMode();
         samplerInfo.addressModeW = getVkReadMode();
-        samplerInfo.anisotropyEnable = VK_TRUE;
+        samplerInfo.anisotropyEnable = needAnisotropy() ? VK_TRUE : VK_FALSE;
         samplerInfo.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
         samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
         samplerInfo.unnormalizedCoordinates = VK_FALSE;
@@ -66,7 +66,7 @@ namespace urchin {
         samplerInfo.minLod = 0.0f;
         samplerInfo.maxLod = static_cast<float>(mipLevels);
 
-        VkResult result = vkCreateSampler(logicalDevice, &samplerInfo, nullptr, &textureSampler);
+        VkResult result = vkCreateSampler(logicalDevice, &samplerInfo, nullptr, &textureSampler); //TODO limited to 4000 => should reduce call by using cache
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create texture sampler with error code: " + std::to_string(result));
         }
