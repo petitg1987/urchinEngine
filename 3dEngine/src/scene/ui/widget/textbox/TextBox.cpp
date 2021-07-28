@@ -11,11 +11,12 @@ namespace urchin {
     //static
     constexpr unsigned int TextBox::LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
     constexpr unsigned int TextBox::LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
-    constexpr float TextBox::CURSOR_BLINK_SPEED = 1.75f;
+    constexpr float TextBox::CURSOR_BLINK_SPEED = 2.25f;
 
     TextBox::TextBox(Position position, Size size, std::string skinName) :
             Widget(position, size),
             skinName(std::move(skinName)),
+            maxLength(-1),
             text(nullptr),
             maxWidthText(0),
             startTextIndex(0),
@@ -88,6 +89,14 @@ namespace urchin {
         return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.to_bytes(allText);
     }
 
+    void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
+        this->allowedCharacters = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(allowedCharacters);
+    }
+
+    void TextBox::setMaxLength(unsigned int maxLength) {
+        this->maxLength = (int)maxLength;
+    }
+
     bool TextBox::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
             Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
@@ -128,12 +137,13 @@ namespace urchin {
 
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
-            allText = allText.substr(0, (unsigned long)cursorIndex);
-            allText.append(1, unicodeCharacter);
-            allText.append(tmpRight);
-            refreshText(cursorIndex + 1, true);
-
+            if(isCharacterAllowed(unicodeCharacter) && !isMaxLengthReach()) {
+                std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
+                allText = allText.substr(0, (unsigned long)cursorIndex);
+                allText.append(1, unicodeCharacter);
+                allText.append(tmpRight);
+                refreshText(cursorIndex + 1, true);
+            }
             return false;
         }
         return true;
@@ -144,6 +154,14 @@ namespace urchin {
         textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildLinear()));
 
         Widget::onResetState();
+    }
+
+    bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {
+        return allowedCharacters.empty() || std::find(allowedCharacters.begin(), allowedCharacters.end(), unicodeCharacter) != allowedCharacters.end();
+    }
+
+    bool TextBox::isMaxLengthReach() const {
+        return maxLength != -1 && (int)allText.size() >= maxLength;
     }
 
     void TextBox::refreshText(unsigned int newCursorIndex, bool allTextUpdated) {

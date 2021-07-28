@@ -17,6 +17,9 @@ namespace urchin {
 
             std::string getText();
 
+            void setAllowedCharacters(const std::string&);
+            void setMaxLength(unsigned int);
+
         protected:
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float) override;
@@ -28,6 +31,9 @@ namespace urchin {
             bool onCharEvent(char32_t) override;
             void onResetState() override;
 
+            bool isCharacterAllowed(char32_t) const;
+            bool isMaxLengthReach() const;
+
             void refreshText(unsigned int, bool);
             void computeCursorPosition();
             void computeCursorIndex(int);
@@ -37,6 +43,8 @@ namespace urchin {
             static const unsigned int LETTER_AND_CURSOR_SHIFT;
             static const float CURSOR_BLINK_SPEED;
             const std::string skinName;
+            std::u32string allowedCharacters;
+            int maxLength;
 
             //display information
             std::shared_ptr<Text> text; //text of the text box (widget)
