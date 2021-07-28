@@ -1,4 +1,4 @@
-#include "TerrainReaderWriter.h"
+#include <resources/terrain/TerrainReaderWriter.h>
 
 namespace urchin {
     std::unique_ptr<Terrain> TerrainReaderWriter::loadFrom(const UdaChunk* terrainChunk, const UdaParser& udaParser) const {

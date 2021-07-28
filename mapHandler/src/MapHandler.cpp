@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "MapHandler.h"
+#include <MapHandler.h>
 
 namespace urchin {
 

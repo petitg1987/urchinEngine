@@ -1,4 +1,4 @@
-#include "SceneAI.h"
+#include <resources/ai/SceneAI.h>
 #include <resources/ai/NavMeshAgentReaderWriter.h>
 
 namespace urchin {

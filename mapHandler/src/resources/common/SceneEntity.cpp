@@ -1,6 +1,7 @@
-#include "SceneEntity.h"
+#include <resources/common/SceneEntity.h>
 
 namespace urchin {
+
     void SceneEntity::refresh() {
         RigidBody* rigidBody = getRigidBody();
         if (rigidBody) {
@@ -10,4 +11,5 @@ namespace urchin {
             }
         }
     }
+
 }

@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "SceneTerrain.h"
+#include <resources/terrain/SceneTerrain.h>
 #include <resources/terrain/TerrainReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
 

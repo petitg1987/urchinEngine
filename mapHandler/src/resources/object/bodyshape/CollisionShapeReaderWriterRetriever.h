@@ -3,7 +3,7 @@
 #include <memory>
 #include <UrchinPhysicsEngine.h>
 
-#include "CollisionShapeReaderWriter.h"
+#include <resources/object/bodyshape/CollisionShapeReaderWriter.h>
 
 namespace urchin {
 

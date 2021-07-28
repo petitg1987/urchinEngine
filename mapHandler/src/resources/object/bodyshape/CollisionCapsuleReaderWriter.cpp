@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "CollisionCapsuleReaderWriter.h"
+#include <resources/object/bodyshape/CollisionCapsuleReaderWriter.h>
 
 namespace urchin {
 

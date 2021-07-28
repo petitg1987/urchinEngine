@@ -1,10 +1,10 @@
 #pragma once
 
 #include <memory>
-
 #include <UrchinCommon.h>
 #include <UrchinSoundEngine.h>
-#include "SoundShapeReaderWriter.h"
+
+#include <resources/sound/soundshape/SoundShapeReaderWriter.h>
 
 namespace urchin {
 

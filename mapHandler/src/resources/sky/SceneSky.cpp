@@ -1,4 +1,4 @@
-#include "SceneSky.h"
+#include <resources/sky/SceneSky.h>
 #include <resources/sky/SkyboxReaderWriter.h>
 
 namespace urchin {

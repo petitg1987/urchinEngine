@@ -1,4 +1,4 @@
-#include "SoundReaderWriter.h"
+#include <resources/sound/SoundReaderWriter.h>
 
 namespace urchin {
 

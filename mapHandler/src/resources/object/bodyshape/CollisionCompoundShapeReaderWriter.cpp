@@ -1,7 +1,7 @@
 #include <vector>
 
-#include "CollisionCompoundShapeReaderWriter.h"
-#include "CollisionShapeReaderWriterRetriever.h"
+#include <resources/object/bodyshape/CollisionCompoundShapeReaderWriter.h>
+#include <resources/object/bodyshape/CollisionShapeReaderWriterRetriever.h>
 #include <resources/common/OrientationReaderWriter.h>
 
 namespace urchin {

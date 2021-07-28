@@ -1,4 +1,4 @@
-#include "NavMeshAgentReaderWriter.h"
+#include <resources/ai/NavMeshAgentReaderWriter.h>
 
 namespace urchin {
 

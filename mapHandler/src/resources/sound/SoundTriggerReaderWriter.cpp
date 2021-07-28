@@ -1,4 +1,4 @@
-#include "SoundTriggerReaderWriter.h"
+#include <resources/sound/SoundTriggerReaderWriter.h>
 #include <resources/sound/soundshape/SoundShapeReaderWriterRetriever.h>
 #include <resources/sound/soundshape/SoundShapeReaderWriter.h>
 

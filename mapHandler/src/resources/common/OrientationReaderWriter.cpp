@@ -1,4 +1,4 @@
-#include "OrientationReaderWriter.h"
+#include <resources/common/OrientationReaderWriter.h>
 
 namespace urchin {
 
@@ -8,7 +8,7 @@ namespace urchin {
         auto orientationAxisChunk = udaParser.getUniqueChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
         auto orientationAngleChunk = udaParser.getUniqueChunk(true, ANGLE_TAG, UdaAttribute(), orientationChunk);
 
-        return Quaternion<float>(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
+        return {orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue()};
     }
 
     void OrientationReaderWriter::writeOrientation(UdaChunk& parentChunk, const Quaternion<float>& orientation, UdaWriter& udaWriter) {

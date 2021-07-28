@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "SceneSound.h"
+#include <resources/sound/SceneSound.h>
 #include <resources/sound/SoundReaderWriter.h>
 #include <resources/sound/SoundTriggerReaderWriter.h>
 

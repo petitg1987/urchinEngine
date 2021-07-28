@@ -1,4 +1,4 @@
-#include "SkyboxReaderWriter.h"
+#include <resources/sky/SkyboxReaderWriter.h>
 
 namespace urchin {
     std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const UdaChunk* skyChunk, const UdaParser& udaParser) {

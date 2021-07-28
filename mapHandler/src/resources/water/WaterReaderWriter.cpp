@@ -1,6 +1,7 @@
-#include "WaterReaderWriter.h"
+#include <resources/water/WaterReaderWriter.h>
 
 namespace urchin {
+
     std::unique_ptr<Water> WaterReaderWriter::loadFrom(const UdaChunk* waterChunk, const UdaParser& udaParser) const {
         auto water = std::make_unique<Water>();
         loadGeneralPropertiesOn(*water, waterChunk, udaParser);

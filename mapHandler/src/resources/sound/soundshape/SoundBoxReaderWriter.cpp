@@ -1,4 +1,4 @@
-#include "SoundBoxReaderWriter.h"
+#include <resources/sound/soundshape/SoundBoxReaderWriter.h>
 
 namespace urchin {
 

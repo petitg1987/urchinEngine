@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <memory>
 
-#include "Map.h"
+#include <resources/Map.h>
 
 namespace urchin {
 

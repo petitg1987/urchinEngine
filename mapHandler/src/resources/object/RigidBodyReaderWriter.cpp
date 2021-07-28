@@ -1,4 +1,4 @@
-#include "RigidBodyReaderWriter.h"
+#include <resources/object/RigidBodyReaderWriter.h>
 #include <resources/object/bodyshape/CollisionShapeReaderWriter.h>
 #include <resources/object/bodyshape/CollisionShapeReaderWriterRetriever.h>
 

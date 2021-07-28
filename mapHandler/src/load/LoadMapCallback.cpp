@@ -1,4 +1,4 @@
-#include "LoadMapCallback.h"
+#include <load/LoadMapCallback.h>
 
 namespace urchin {
     void LoadMapCallback::notify(LoadMapCallback::Stage, LoadMapCallback::State) {

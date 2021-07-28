@@ -1,4 +1,4 @@
-#include "NavMeshDisplayer.h"
+#include <display/NavMeshDisplayer.h>
 
 namespace urchin {
 

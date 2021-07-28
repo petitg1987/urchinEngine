@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "CollisionShapeReaderWriterRetriever.h"
+#include <resources/object/bodyshape/CollisionShapeReaderWriterRetriever.h>
 #include <resources/object/bodyshape/CollisionSphereReaderWriter.h>
 #include <resources/object/bodyshape/CollisionCapsuleReaderWriter.h>
 #include <resources/object/bodyshape/CollisionCylinderReaderWriter.h>

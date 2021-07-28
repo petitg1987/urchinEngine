@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include "SceneWater.h"
+#include <resources/water/SceneWater.h>
 #include <resources/water/WaterReaderWriter.h>
 
 namespace urchin {

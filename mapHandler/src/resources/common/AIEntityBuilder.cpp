@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "AIEntityBuilder.h"
+#include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {
     std::shared_ptr<AIObject> AIEntityBuilder::buildAIObject(const std::string& name, const CollisionShape3D& shape, const Transform<float>& transform) {
