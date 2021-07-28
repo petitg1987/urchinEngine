@@ -22,9 +22,6 @@ namespace urchin {
             void detachChildren() override;
             void resetChildren();
 
-            void enableScissor(bool); //TODO always true ?
-            bool isScissorEnabled() const;
-
             unsigned int getContentWidth() const;
             unsigned int getContentHeight() const;
 

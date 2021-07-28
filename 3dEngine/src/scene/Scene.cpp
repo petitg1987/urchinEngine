@@ -6,23 +6,26 @@
 namespace urchin {
 
     //static
-    float Scene::STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
-    float Scene::FPS_REFRESH_TIME_IN_MS = 4.0f;
-    float Scene::DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
+    constexpr float Scene::STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
+    constexpr float Scene::FPS_REFRESH_TIME_IN_MS = 4.0f;
+    constexpr float Scene::DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
+    constexpr std::chrono::steady_clock::time_point Scene::MIN_TIME_POINT = std::chrono::steady_clock::time_point::min();
 
     Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
             i18nService(std::make_unique<I18nService>()),
             sceneWidth(0),
             sceneHeight(0),
-            previousTime(),
-            fps(STARTUP_FPS),
-            fpsForDisplay((unsigned int)STARTUP_FPS),
+            fps(0),
+            fpsForDisplay(0),
             screenRenderTarget(std::make_unique<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderers(nullptr) {
         //scene properties
         this->framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
+
+        //fps
+        resetFps();
 
         //initialize
         SignalHandler::instance().initialize();
@@ -94,7 +97,7 @@ namespace urchin {
     }
 
     void Scene::computeFps() {
-        if (previousTime.time_since_epoch().count() == 0) {
+        if (previousTime == MIN_TIME_POINT) {
             previousTime = std::chrono::steady_clock::now();
         }
         auto currentTime = std::chrono::steady_clock::now();
@@ -107,6 +110,12 @@ namespace urchin {
             previousTime = currentTime;
             frameCount = 0;
         }
+    }
+
+    void Scene::resetFps() {
+        previousTime = MIN_TIME_POINT;
+        fps = STARTUP_FPS;
+        fpsForDisplay = (unsigned int)STARTUP_FPS;
     }
 
     Renderer3d& Scene::newRenderer3d(bool enable) {
@@ -123,6 +132,7 @@ namespace urchin {
         if (activeRenderer3d && activeRenderer3d != renderer3d) {
             activeRenderer3d->onDisable();
         }
+        resetFps();
         activeRenderer3d = renderer3d;
     }
 
