@@ -68,7 +68,7 @@ namespace urchin {
 
         Container* parentContainer = getParentContainer();
         if (parentContainer) {
-            Vector2<int> scissorOffset = Vector2<int>(parentContainer->getPositionX(), parentContainer->getPositionY());
+            Vector2<int> scissorOffset = Vector2<int>(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
             Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
         }
