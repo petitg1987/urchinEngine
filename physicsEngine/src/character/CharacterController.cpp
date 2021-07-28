@@ -37,7 +37,9 @@ namespace urchin {
         createBodies();
         physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(ghostBody);
         physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(ccdGhostBody);
-        respawnValues.nextRespawnTransform = ghostBody->getTransform();
+
+        respawnValues.respawnTransform = ghostBody->getTransform();
+        respawnValues.nextRespawnTransform = respawnValues.respawnTransform;
     }
 
     CharacterController::~CharacterController() {
