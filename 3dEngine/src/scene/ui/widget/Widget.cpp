@@ -301,7 +301,7 @@ namespace urchin {
     bool Widget::onKeyPress(unsigned int key) {
         bool propagateEvent = true;
         if (isVisible()) {
-            bool widgetStateUpdated = handleWidgetKeyDown(key);
+            bool widgetStateUpdated = handleWidgetKeyPress(key);
             propagateEvent = onKeyPressEvent(key);
 
             if (widgetStateUpdated && widgetState == Widget::CLICKING) {
@@ -323,12 +323,17 @@ namespace urchin {
         return true;
     }
 
-    bool Widget::handleWidgetKeyDown(unsigned int key) {
+    bool Widget::handleWidgetKeyPress(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == InputDeviceKey::MOUSE_LEFT) {
             if (isMouseOnWidget(mouseX, mouseY)) {
-                widgetState = CLICKING;
-                widgetStateUpdated = true;
+                //In some rare cases, the state could be different from FOCUS:
+                // - Widget has just been made visible and mouse has not moved yet
+                // - UIRenderer has just been enable and mouse has not moved yet
+                if (widgetState == FOCUS) {
+                    widgetState = CLICKING;
+                    widgetStateUpdated = true;
+                }
             }
         }
         return widgetStateUpdated;
@@ -337,7 +342,7 @@ namespace urchin {
     bool Widget::onKeyRelease(unsigned int key) {
         bool propagateEvent = true;
         if (isVisible()) {
-            bool widgetStateUpdated = handleWidgetKeyUp(key);
+            bool widgetStateUpdated = handleWidgetKeyRelease(key);
             propagateEvent = onKeyReleaseEvent(key);
 
             if (widgetStateUpdated && widgetState == Widget::FOCUS) {
@@ -359,7 +364,7 @@ namespace urchin {
         return true;
     }
 
-    bool Widget::handleWidgetKeyUp(unsigned int key) {
+    bool Widget::handleWidgetKeyRelease(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == InputDeviceKey::MOUSE_LEFT) {
             if (isMouseOnWidget(mouseX, mouseY)) {
@@ -467,7 +472,7 @@ namespace urchin {
 
     void Widget::onResetState() {
         if (isVisible()) {
-            handleWidgetReset();
+            handleWidgetResetState();
 
             for (auto& child : children) {
                 child->onResetState();
@@ -475,7 +480,7 @@ namespace urchin {
         }
     }
 
-    void Widget::handleWidgetReset() {
+    void Widget::handleWidgetResetState() {
         if (widgetState == CLICKING) {
             widgetState = FOCUS;
             for (auto& eventListener : eventListeners) {

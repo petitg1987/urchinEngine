@@ -103,10 +103,10 @@ namespace urchin {
             I18nService* i18nService;
 
         private:
-            bool handleWidgetKeyDown(unsigned int);
-            bool handleWidgetKeyUp(unsigned int);
+            bool handleWidgetKeyPress(unsigned int);
+            bool handleWidgetKeyRelease(unsigned int);
             bool handleWidgetMouseMove(int, int);
-            void handleWidgetReset();
+            void handleWidgetResetState();
             bool isMouseOnWidget(int, int);
 
             RenderTarget* renderTarget;
