@@ -182,7 +182,7 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge4() { //see polygonsSub
     std::vector<Point2<float>> minuendPoly = {Point2<float>(5.76618004f, -6.51731586f), Point2<float>(-5.76618004f, -6.51731586f),
                                               Point2<float>(-5.76618004f, 1.51731598f), Point2<float>(5.76618004f, 1.51731598f)};
 
-    std::vector<Point2<float>> subtrahendPoly = {Point2<float>(-4.24466991f, -9.21965981f),Point2<float>(6.27905893f, 1.76014054f),
+    std::vector<Point2<float>> subtrahendPoly = {Point2<float>(-4.24466991f, -9.21965981f), Point2<float>(6.27905893f, 1.76014054f),
                                                  Point2<float>(5.76618004f, 0.700549841f), Point2<float>(5.76618004f, -4.86956978f)};
 
     std::vector<CSGPolygon<float>> polygonSubtraction = PolygonsSubtraction<float>::instance().subtractPolygons(

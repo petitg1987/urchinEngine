@@ -107,7 +107,7 @@ namespace urchin {
         for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionLetters) {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {
                 for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {
-                    for (unsigned int xx = 0; xx < glyph[c].width; xx++,m++) {
+                    for (unsigned int xx = 0; xx < glyph[c].width; xx++, m++) {
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 1] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Y * 255) : 0;
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 2] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Z * 255) : 0;

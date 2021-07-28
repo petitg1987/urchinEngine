@@ -61,7 +61,7 @@ namespace urchin {
     }
 
     void RenderTarget::removeRenderer(const GenericRenderer* renderer) {
-        renderers.erase(std::remove(renderers.begin(), renderers.end(), renderer),renderers.end());
+        renderers.erase(std::remove(renderers.begin(), renderers.end(), renderer), renderers.end());
         renderersDirty = true;
     }
 

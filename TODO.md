@@ -48,7 +48,6 @@
   * **NEW FEATURE** (`minor`): Combo list
   * **NEW FEATURE** (`minor`): Drag and drop
   * **NEW FEATURE** (`minor`): Textarea
-  * **NEW FEATURE** (`medium`): Scrollbar
   * **NEW FEATURE** (`medium`): Text selection
 * Graphic effect
   * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)

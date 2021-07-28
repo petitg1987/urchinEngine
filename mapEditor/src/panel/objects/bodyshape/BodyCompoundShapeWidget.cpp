@@ -106,7 +106,7 @@ namespace urchin {
 
         auto* transformLayout = new QGridLayout(transformGroupBox);
         setupPosition(transformLayout, localizedShape->transform.getPosition());
-        setupOrientation(transformLayout,localizedShape->transform.getOrientation());
+        setupOrientation(transformLayout, localizedShape->transform.getOrientation());
     }
 
     void BodyCompoundShapeWidget::setupPosition(QGridLayout* transformLayout, const Point3<float>& position) {

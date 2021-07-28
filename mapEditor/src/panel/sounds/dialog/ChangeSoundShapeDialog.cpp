@@ -14,7 +14,7 @@ namespace urchin {
         shapeType(SoundShape::ShapeType::SPHERE_SHAPE) {
         this->setWindowTitle("Select Sound Trigger Shape");
         this->resize(245, 80);
-        this->setFixedSize(this->width(),this->height());
+        this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);

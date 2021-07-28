@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Container::Container(Position position, Size size, std::string skinName) : //TODO disable event outside the container ("> Load" button is clickable even when not visible)
+    Container::Container(Position position, Size size, std::string skinName) :
             Widget(position, size),
             skinName(std::move(skinName)),
             scissorEnabled(true) {

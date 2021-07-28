@@ -27,7 +27,7 @@ namespace urchin {
             sceneSound(nullptr) {
         this->setWindowTitle("New Sound");
         this->resize(530, 160);
-        this->setFixedSize(this->width(),this->height());
+        this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);

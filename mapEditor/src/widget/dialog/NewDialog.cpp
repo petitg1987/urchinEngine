@@ -20,7 +20,7 @@ namespace urchin {
         mapRelWorkingDirectoryText(nullptr) {
         this->setWindowTitle("New Map File");
         this->resize(530, 195);
-        this->setFixedSize(this->width(),this->height());
+        this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);

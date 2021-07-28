@@ -13,7 +13,7 @@ namespace urchin {
             invMass(0.0f),
             linearDamping(0.0f),
             angularDamping(0.0f) {
-        initializeRigidBody(0.0f, 0.0f, 0.0f,Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
+        initializeRigidBody(0.0f, 0.0f, 0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
     }
 
     RigidBody::RigidBody(const RigidBody& rigidBody) :

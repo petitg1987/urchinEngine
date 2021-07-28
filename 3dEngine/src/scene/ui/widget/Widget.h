@@ -109,6 +109,7 @@ namespace urchin {
             bool handleWidgetKeyUp(unsigned int);
             bool handleWidgetMouseMove(int, int);
             void handleWidgetReset();
+            bool isMouseOnWidget(int, int);
 
             RenderTarget* renderTarget;
             const Shader* shader;

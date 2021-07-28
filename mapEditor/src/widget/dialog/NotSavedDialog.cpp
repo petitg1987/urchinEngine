@@ -11,7 +11,7 @@ namespace urchin {
         bNeedSave(false) {
         this->setWindowTitle("Save Map");
         this->resize(300, 120);
-        this->setFixedSize(this->width(),this->height());
+        this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);

@@ -313,7 +313,7 @@ namespace urchin {
                 regions.emplace_back(region);
             }
 
-            vkCmdCopyBufferToImage(commandBuffer, buffer, image,VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, (uint32_t)regions.size(), regions.data());
+            vkCmdCopyBufferToImage(commandBuffer, buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, (uint32_t)regions.size(), regions.data());
         }
         CommandBufferHelper::endSingleTimeCommands(commandBuffer);
     }

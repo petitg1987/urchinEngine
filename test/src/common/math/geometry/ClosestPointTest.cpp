@@ -22,7 +22,7 @@ void ClosestPointTest::closestPointLineSegment2D() {
     AssertHelper::assertFloatEquals(barycentrics[1], 0.5f);
 
     //point outside segment (left)
-    Point2<float> closestPoint3 = lineSegment.closestPoint(Point2<float>(-3.0f, 2.0f),barycentrics);
+    Point2<float> closestPoint3 = lineSegment.closestPoint(Point2<float>(-3.0f, 2.0f), barycentrics);
     AssertHelper::assertPoint2FloatEquals(closestPoint3, Point2<float>(1.0f, 1.0f));
     AssertHelper::assertFloatEquals(barycentrics[0], 1.0f);
     AssertHelper::assertFloatEquals(barycentrics[1], 0.0f);

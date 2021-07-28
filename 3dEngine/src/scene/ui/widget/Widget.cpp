@@ -347,8 +347,7 @@ namespace urchin {
     bool Widget::handleWidgetKeyDown(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
-            if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            if (isMouseOnWidget(mouseX, mouseY)) {
                 widgetState = CLICKING;
                 widgetStateUpdated = true;
             }
@@ -384,8 +383,7 @@ namespace urchin {
     bool Widget::handleWidgetKeyUp(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
-            if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            if (isMouseOnWidget(mouseX, mouseY)) {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;
                     widgetStateUpdated = true;
@@ -468,8 +466,7 @@ namespace urchin {
 
     bool Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
         bool widgetStateUpdated = false;
-        Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
-        if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+        if (isMouseOnWidget(mouseX, mouseY)) {
             if (widgetState == DEFAULT) {
                 widgetState = FOCUS;
                 widgetStateUpdated = true;
@@ -513,6 +510,36 @@ namespace urchin {
                 eventListener->onFocusLost(this);
             }
         }
+    }
+
+    bool Widget::isMouseOnWidget(int mouseX, int mouseY) {
+        Point2<int> mouseCoordinate(mouseX, mouseY);
+        Rectangle<int> widgetZone(
+                Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+
+        if (widgetZone.collideWithPoint(mouseCoordinate)) {
+            std::stack<Container*> parentContainers;
+            parentContainers.push(getParentContainer());
+
+            while (!parentContainers.empty()) {
+                Container* parentContainer = parentContainers.top();
+                parentContainers.pop();
+                if (parentContainer && parentContainer->isScissorEnabled()) {
+                    //TODO wrong use of getParentContainerWidth(): should be something like: parentContainer->getWidth() - outline
+                    Rectangle<int> containerZone(
+                            Point2<int>(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY()),
+                            Point2<int>(parentContainer->getGlobalPositionX() + (int)getParentContainerWidth(), parentContainer->getGlobalPositionY() + (int)getParentContainerHeight()));
+
+                    if (!containerZone.collideWithPoint(mouseCoordinate)) {
+                        return false;
+                    }
+                    parentContainers.push(parentContainer->getParentContainer());
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     void Widget::prepareRendering(float dt) {

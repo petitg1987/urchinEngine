@@ -15,7 +15,7 @@ namespace urchin {
             sceneObject(nullptr) {
         this->setWindowTitle("Clone Object");
         this->resize(530, 80);
-        this->setFixedSize(this->width(),this->height());
+        this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);

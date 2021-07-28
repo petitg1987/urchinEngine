@@ -15,7 +15,7 @@ namespace urchin {
         shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
         this->setWindowTitle("Select Body Shape");
         this->resize(245, 80);
-        this->setFixedSize(this->width(),this->height());
+        this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
         mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);

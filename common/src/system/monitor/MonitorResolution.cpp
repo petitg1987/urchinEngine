@@ -26,7 +26,7 @@ namespace urchin {
             Logger::instance().logError("Wrongly structured monitor resolution id: " + id);
             return MonitorResolution(1920, 1080, 60);
         }
-        return MonitorResolution(TypeConverter::toUnsignedInt(resolutionParts[0]),TypeConverter::toUnsignedInt(resolutionParts[1]),TypeConverter::toUnsignedInt(resolutionParts[2]));
+        return MonitorResolution(TypeConverter::toUnsignedInt(resolutionParts[0]), TypeConverter::toUnsignedInt(resolutionParts[1]), TypeConverter::toUnsignedInt(resolutionParts[2]));
     }
 
     bool MonitorResolution::operator ==(const MonitorResolution& monitorResolution) const {
