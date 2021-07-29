@@ -63,11 +63,9 @@ namespace urchin {
         dst << src.rdbuf();
     }
 
-    void FileUtil::deleteDirectoryContent(const std::string& directory) {
+    void FileUtil::deleteDirectory(const std::string& directory) {
         checkDirectory(directory);
-
         std::filesystem::remove_all(directory);
-        createDirectory(directory);
     }
 
     /**
