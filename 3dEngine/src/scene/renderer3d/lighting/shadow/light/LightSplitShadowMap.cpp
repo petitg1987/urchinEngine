@@ -66,7 +66,7 @@ namespace urchin {
         }
 
         //build shadow receiver/caster bounding box from points
-        return {shadowReceiverAndCasterVertex, 16};
+        return AABBox<float>(shadowReceiverAndCasterVertex, 16);
     }
 
     float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
