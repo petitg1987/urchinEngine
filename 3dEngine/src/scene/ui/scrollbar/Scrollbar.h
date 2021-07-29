@@ -18,6 +18,8 @@ namespace urchin {
             bool onMouseMoveEvent(int, int);
             bool onScrollEvent(double);
 
+            bool isScrollbarWidget(Widget*) const;
+
             bool isScrollbarRequired() const;
             int getScrollShiftY() const;
 

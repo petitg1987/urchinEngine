@@ -310,7 +310,9 @@ namespace urchin {
                 }
             }
 
-            for (auto& child : children) {
+            //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+            std::vector<std::shared_ptr<Widget>> childrenCopy = children;
+            for (auto& child : childrenCopy) {
                 if (!child->onKeyPress(key)) {
                     return false;
                 }
@@ -351,7 +353,9 @@ namespace urchin {
                 }
             }
 
-            for (auto& child : children) {
+            //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+            std::vector<std::shared_ptr<Widget>> childrenCopy = children;
+            for (auto& child : childrenCopy) {
                 if (!child->onKeyRelease(key)) {
                     return false;
                 }

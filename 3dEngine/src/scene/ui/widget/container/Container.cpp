@@ -33,10 +33,13 @@ namespace urchin {
     }
 
     void Container::resetChildren() {
-        detachChildren();
-
-        //re-add scrollbar children
-        scrollbar->initializeOrUpdate();
+        std::vector<std::shared_ptr<Widget>> copyChildren = getChildren();
+        for(const auto& child : copyChildren) {
+            if (!scrollbar->isScrollbarWidget(child.get())) {
+                Widget::detachChild(child.get());
+            }
+        }
+        scrollbar->onScrollableWidgetsUpdated();
     }
 
     unsigned int Container::getContentWidth() const {

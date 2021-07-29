@@ -53,8 +53,10 @@ namespace urchin {
     }
 
     bool UIRenderer::onKeyPress(unsigned int key) {
-        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (!widgets[(std::size_t)i]->onKeyPress(key)) {
+        //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+        std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
+        for (long i = (long)widgetsCopy.size() - 1; i >= 0; --i) {
+            if (!widgetsCopy[(std::size_t)i]->onKeyPress(key)) {
                 return false;
             }
         }
@@ -62,8 +64,10 @@ namespace urchin {
     }
 
     bool UIRenderer::onKeyRelease(unsigned int key) {
-        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (!widgets[(std::size_t)i]->onKeyRelease(key)) {
+        //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+        std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
+        for (long i = (long)widgetsCopy.size() - 1; i >= 0; --i) {
+            if (!widgetsCopy[(std::size_t)i]->onKeyRelease(key)) {
                 return false;
             }
         }

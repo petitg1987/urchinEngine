@@ -121,6 +121,10 @@ namespace urchin {
         return true;
     }
 
+    bool Scrollbar::isScrollbarWidget(Widget* widget) const {
+        return widget == scrollbarCursor.get() || widget == scrollbarLine.get();
+    }
+
     bool Scrollbar::isScrollbarRequired() const {
         return contentHeight > visibleHeight;
     }
@@ -155,6 +159,9 @@ namespace urchin {
         if (isScrollbarRequired()) {
             updateCursorPosition();
             computeShiftPositionY();
+        } else if (!MathFunction::isZero(scrollPercentage)) {
+            scrollPercentage = 0.0f;
+            computeShiftPositionY();
         }
     }
 
@@ -179,8 +186,9 @@ namespace urchin {
     std::vector<Widget*> Scrollbar::getContentChildren() const {
         std::vector<Widget*> contentChildren;
         contentChildren.reserve(scrollableWidget.getChildren().size());
+
         for (auto& child : scrollableWidget.getChildren()) {
-            if (child != scrollbarCursor && child != scrollbarLine) {
+            if (!isScrollbarWidget(child.get())){
                 contentChildren.push_back(child.get());
             }
         }
