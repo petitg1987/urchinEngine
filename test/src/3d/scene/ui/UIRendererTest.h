@@ -9,7 +9,12 @@ class UIRendererTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void childRemoveItsParent();
+        void focusState();
+        void noFocusStateBecauseOutsideContainer();
+        void clickingState();
+        void noClickingStateBecauseMouseOutside();
+
+        void buttonRemoveParentContainer();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();

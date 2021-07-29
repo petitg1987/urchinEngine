@@ -154,14 +154,14 @@ namespace urchin {
         if(scrollbarLine && scrollbarCursor) {
             scrollbarLine->setIsVisible(isScrollbarRequired());
             scrollbarCursor->setIsVisible(isScrollbarRequired());
-        }
 
-        if (isScrollbarRequired()) {
-            updateCursorPosition();
-            computeShiftPositionY();
-        } else if (!MathFunction::isZero(scrollPercentage)) {
-            scrollPercentage = 0.0f;
-            computeShiftPositionY();
+            if (isScrollbarRequired()) {
+                updateCursorPosition();
+                computeShiftPositionY();
+            } else if (!MathFunction::isZero(scrollPercentage)) {
+                scrollPercentage = 0.0f;
+                computeShiftPositionY();
+            }
         }
     }
 
