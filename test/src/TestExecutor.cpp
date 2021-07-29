@@ -18,6 +18,7 @@
 #include <common/math/geometry/ConvexHullShape2DTest.h>
 #include <common/math/geometry/SortPointsTest.h>
 #include <3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h>
+#include <3d/scene/ui/UIRendererTest.h>
 #include <physics/shape/ShapeToAABBoxTest.h>
 #include <physics/shape/ShapeToConvexObjectTest.h>
 #include <physics/object/SupportPointTest.h>
@@ -76,6 +77,9 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //shadow
     runner.addTest(LightSplitShadowMapTest::suite());
+
+    //ui
+    runner.addTest(UIRendererTest::suite());
 }
 
 void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {

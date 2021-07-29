@@ -36,6 +36,7 @@
 #include <i18n/LabelTranslator.h>
 
 #include <graphic/render/shader/config/ShaderConfig.h>
+#include <graphic/render/target/NullRenderTarget.h>
 
 #include <resources/geometry/GeometryModel.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>

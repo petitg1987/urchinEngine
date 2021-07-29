@@ -29,6 +29,10 @@ namespace urchin {
         return name;
     }
 
+    bool RenderTarget::isValidRenderTarget() const {
+        return true;
+    }
+
     VkRenderPass RenderTarget::getRenderPass() const {
         return renderPass;
     }

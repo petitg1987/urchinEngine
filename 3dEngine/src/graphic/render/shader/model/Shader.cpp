@@ -18,9 +18,8 @@ namespace urchin {
     }
 
     Shader::~Shader() {
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         for (auto& shaderStageData : shaderStagesData) {
-            vkDestroyShaderModule(logicalDevice, shaderStageData->shaderModule, nullptr);
+            vkDestroyShaderModule(GraphicService::instance().getDevices().getLogicalDevice(), shaderStageData->shaderModule, nullptr);
         }
     }
 

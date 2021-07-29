@@ -27,6 +27,7 @@ namespace urchin {
             virtual void cleanup() = 0;
 
             std::string getName() const;
+            virtual bool isValidRenderTarget() const;
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
             virtual unsigned int getLayer() const = 0;

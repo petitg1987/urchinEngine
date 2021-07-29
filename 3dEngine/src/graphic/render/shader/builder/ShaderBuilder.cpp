@@ -30,6 +30,14 @@ namespace urchin {
         return std::make_unique<Shader>(shaderName, shaderSources, std::move(shaderConstants));
     }
 
+    /**
+     * Shader which does nothing (useful for testing)
+     */
+    std::unique_ptr<Shader> ShaderBuilder::createNullShader() {
+        std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
+        return std::make_unique<Shader>("_null_", shaderSources, std::unique_ptr<ShaderConstants>());
+    }
+
     std::vector<char> ShaderBuilder::readFile(const std::string& filename) {
         std::ifstream file(filename, std::ios::ate | std::ios::binary);
         if (!file.is_open()) {

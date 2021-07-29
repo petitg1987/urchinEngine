@@ -14,7 +14,11 @@ namespace urchin {
     UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
             renderTarget(renderTarget),
             i18nService(i18nService) {
-        uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv", std::unique_ptr<ShaderConstants>());
+        if (renderTarget.isValidRenderTarget()) {
+            uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
+        } else {
+            uiShader = ShaderBuilder::createNullShader();
+        }
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
