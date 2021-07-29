@@ -44,19 +44,30 @@ namespace urchin {
                 std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
 
                 if (!isFileExist(dstFile)) {
-                    std::ifstream src(srcFile, std::ios::binary);
-                    if (!src.is_open()) {
-                        throw std::runtime_error("Unable to open file: " + srcFile);
-                    }
-
-                    std::ofstream dst(dstFile, std::ios::binary);
-                    if (!dst.is_open()) {
-                        throw UserAuthorityException("Unable to open file: " + dstFile, "Check that the application has enough right to create the file: " + dstFile);
-                    }
-                    dst << src.rdbuf();
+                    copyFile(srcFile, dstFile);
                 }
             }
         }
+    }
+
+    void FileUtil::copyFile(const std::string& srcFile, const std::string& dstFile) {
+        std::ifstream src(srcFile, std::ios::binary);
+        if (!src.is_open()) {
+            throw std::runtime_error("Unable to open file: " + srcFile);
+        }
+
+        std::ofstream dst(dstFile, std::ios::binary);
+        if (!dst.is_open()) {
+            throw UserAuthorityException("Unable to open file: " + dstFile, "Check that the application has enough right to create the file: " + dstFile);
+        }
+        dst << src.rdbuf();
+    }
+
+    void FileUtil::deleteDirectoryContent(const std::string& directory) {
+        checkDirectory(directory);
+
+        std::filesystem::remove_all(directory);
+        createDirectory(directory);
     }
 
     /**
