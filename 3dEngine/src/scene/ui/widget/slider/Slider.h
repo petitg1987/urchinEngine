@@ -14,7 +14,7 @@ namespace urchin {
 
     class Slider : public Widget {
         public:
-            static std::shared_ptr<Slider> newSlider(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Slider> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);

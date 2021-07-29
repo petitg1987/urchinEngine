@@ -19,8 +19,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<Window> Window::newWindow(Widget* parent, Position position, Size size, std::string skinName, std::string titleKey) {
-        return create<Window>(new Window(position, size, std::move(skinName), std::move(titleKey)), parent);
+    std::shared_ptr<Window> Window::create(Widget* parent, Position position, Size size, std::string skinName, std::string titleKey) {
+        return Widget::create<Window>(new Window(position, size, std::move(skinName), std::move(titleKey)), parent);
     }
 
     void Window::createOrUpdateWidget() {
@@ -35,7 +35,7 @@ namespace urchin {
 
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textSkin", UdaAttribute(), windowChunk);
-            title = Text::newTranslatableText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
+            title = Text::createTranslatable(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
             title->updatePosition(Position(0.0f, -((float)widgetOutline.topWidth + (float)title->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 

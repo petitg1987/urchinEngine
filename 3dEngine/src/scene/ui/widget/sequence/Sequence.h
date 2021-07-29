@@ -13,8 +13,8 @@ namespace urchin {
 
     class Sequence : public Widget {
         public:
-            static std::shared_ptr<Sequence> newSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
-            static std::shared_ptr<Sequence> newTranslatableSequence(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Sequence> createTranslatable(Widget*, Position, Size, std::string, const std::vector<std::string>&);
 
             void allowLoopOnValues(bool);
             bool isLoopOnValuesAllowed() const;

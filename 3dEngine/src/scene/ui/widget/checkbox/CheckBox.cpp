@@ -10,8 +10,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<CheckBox> CheckBox::newCheckBox(Widget* parent, Position position, Size size, std::string skinName) {
-        return create<CheckBox>(new CheckBox(position, size, std::move(skinName)), parent);
+    std::shared_ptr<CheckBox> CheckBox::create(Widget* parent, Position position, Size size, std::string skinName) {
+        return Widget::create<CheckBox>(new CheckBox(position, size, std::move(skinName)), parent);
     }
 
     void CheckBox::createOrUpdateWidget() {

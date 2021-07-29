@@ -13,8 +13,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<StaticBitmap> StaticBitmap::newStaticBitmap(Widget* parent, Position position, Size size, std::string filename) {
-        return create<StaticBitmap>(new StaticBitmap(position, size, std::move(filename)), parent);
+    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, std::string filename) {
+        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(filename)), parent);
     }
 
     void StaticBitmap::createOrUpdateWidget() {

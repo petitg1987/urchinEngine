@@ -8,7 +8,7 @@ namespace urchin {
 
     class CheckBox : public Widget {
         public:
-            static std::shared_ptr<CheckBox> newCheckBox(Widget*, Position, Size, std::string);
+            static std::shared_ptr<CheckBox> create(Widget*, Position, Size, std::string);
 
             void setChecked(bool);
             bool isChecked() const;

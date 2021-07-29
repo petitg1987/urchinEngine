@@ -8,8 +8,8 @@ namespace urchin {
         scrollbar = std::make_unique<Scrollbar>(*this, this->skinName);
     }
 
-    std::shared_ptr<Container> Container::newContainer(Widget* parent, Position position, Size size, std::string skinName) {
-        return create<Container>(new Container(position, size, std::move(skinName)), parent);
+    std::shared_ptr<Container> Container::create(Widget* parent, Position position, Size size, std::string skinName) {
+        return Widget::create<Container>(new Container(position, size, std::move(skinName)), parent);
     }
 
     void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {

@@ -27,8 +27,8 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<TextBox> TextBox::newTextBox(Widget* parent, Position position, Size size, std::string skinName) {
-        return create<TextBox>(new TextBox(position, size, std::move(skinName)), parent);
+    std::shared_ptr<TextBox> TextBox::create(Widget* parent, Position position, Size size, std::string skinName) {
+        return Widget::create<TextBox>(new TextBox(position, size, std::move(skinName)), parent);
     }
 
     void TextBox::createOrUpdateWidget() {
@@ -45,7 +45,7 @@ namespace urchin {
         texTextBoxFocus = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
-        text = Text::newText(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
+        text = Text::create(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
         text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 

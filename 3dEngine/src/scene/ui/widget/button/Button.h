@@ -14,7 +14,7 @@ namespace urchin {
 
     class Button : public Widget {
         public:
-            static std::shared_ptr<Button> newButton(Widget*, Position, Size, std::string, std::string);
+            static std::shared_ptr<Button> create(Widget*, Position, Size, std::string, std::string);
 
         protected:
             void createOrUpdateWidget() override;

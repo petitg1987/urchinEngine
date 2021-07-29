@@ -14,7 +14,7 @@ namespace urchin {
 
     class Window : public Widget {
         public:
-            static std::shared_ptr<Window> newWindow(Widget*, Position, Size, std::string, std::string);
+            static std::shared_ptr<Window> create(Widget*, Position, Size, std::string, std::string);
 
         protected:
             void createOrUpdateWidget() override;

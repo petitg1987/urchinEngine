@@ -19,8 +19,8 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<Slider> Slider::newSlider(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
-        return create<Slider>(new Slider(position, size, std::move(skinName), texts), parent);
+    std::shared_ptr<Slider> Slider::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
+        return Widget::create<Slider>(new Slider(position, size, std::move(skinName), texts), parent);
     }
 
     void Slider::createOrUpdateWidget() {
@@ -37,14 +37,14 @@ namespace urchin {
         auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), sliderChunk);
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
 
-        currentValueText = Text::newText(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
+        currentValueText = Text::create(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
         currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
-        cursorImage = StaticBitmap::newStaticBitmap(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+        cursorImage = StaticBitmap::create(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
         moveSliderCursor();
 
         //visual
