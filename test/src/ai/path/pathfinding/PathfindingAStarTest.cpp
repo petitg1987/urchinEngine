@@ -20,7 +20,7 @@ void PathfindingAStarTest::straightPath() {
 
     std::vector<PathPoint> pathPoints = pathfindingAStar.findPath(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(3.0f, 0.0f, 3.0f));
 
-    AssertHelper::assertUnsignedInt(pathPoints.size(), 2);
+    AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 2);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
     AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(3.0f, 0.0f, 3.0f));
@@ -45,7 +45,7 @@ void PathfindingAStarTest::joinPolygonsPath() {
 
     std::vector<PathPoint> pathPoints = pathfindingAStar.findPath(Point3<float>(3.0f, 0.0f, 0.5f), Point3<float>(0.0f, 0.0f, -2.0f));
 
-    AssertHelper::assertUnsignedInt(pathPoints.size(), 3);
+    AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 3);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(3.0f, 0.0f, 0.5f));
     AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(1.0f, 0.0f, 0.0f));
@@ -57,7 +57,7 @@ void PathfindingAStarTest::joinPolygonsPath() {
 void PathfindingAStarTest::jumpWithSmallConstraint() {
     std::vector<PathPoint> pathPoints = pathWithJump(std::make_unique<NavLinkConstraint>(1.0f, 0.0f, 2));
 
-    AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
+    AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
     AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(2.0f, 0.0f, 2.0f)); //info: not the best point due to simplification in PathfindingAStar::computeTransitionPoint
@@ -71,7 +71,7 @@ void PathfindingAStarTest::jumpWithSmallConstraint() {
 void PathfindingAStarTest::jumpWithBigConstraint() {
     std::vector<PathPoint> pathPoints = pathWithJump(std::make_unique<NavLinkConstraint>(0.01f, 0.0f, 2));
 
-    AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
+    AssertHelper::assertUnsignedIntEquals(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
     AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(3.96f, 0.0f, 0.04f));

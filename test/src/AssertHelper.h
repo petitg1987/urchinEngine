@@ -7,15 +7,15 @@ class AssertHelper {
     public:
         static void assertTrue(bool, const std::string &msg = "");
 
-        static void assertObject(void*, void*);
+        static void assertObjectEquals(void*, void*);
 
-        static void assertString(const std::string&, const std::string&);
-        static void assertInt(int, int);
-        static void assert3Ints(const int*, std::array<int, 3>);
-        static void assertUnsignedInt(unsigned int, unsigned int);
-        static void assertUnsignedInt(std::size_t, std::size_t);
-        static void assert3UnsignedInts(const unsigned int*, std::array<unsigned int, 3>);
-        static void assert3Sizes(const std::size_t*, std::array<std::size_t, 3>);
+        static void assertStringEquals(const std::string&, const std::string&);
+        static void assertIntEquals(int, int);
+        static void assert3IntsEquals(const int*, std::array<int, 3>);
+        static void assertUnsignedIntEquals(unsigned int, unsigned int);
+        static void assertUnsignedIntEquals(std::size_t, std::size_t);
+        static void assert3UnsignedIntsEquals(const unsigned int*, std::array<unsigned int, 3>);
+        static void assert3SizesEquals(const std::size_t*, std::array<std::size_t, 3>);
         static void assertFloatEquals(float, float, float epsilon = 0.001f);
 
         static void assertPoint2FloatEquals(const Point2<float>&, const Point2<float>&, float epsilon = 0.001f);

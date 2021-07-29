@@ -10,10 +10,10 @@ void StringUtilTest::splitString() {
 
     StringUtil::split(str, ',', splitStr);
 
-    AssertHelper::assertUnsignedInt(splitStr.size(), 3);
-    AssertHelper::assertString(splitStr[0], "str1");
-    AssertHelper::assertString(splitStr[1], "str2");
-    AssertHelper::assertString(splitStr[2], "str3");
+    AssertHelper::assertUnsignedIntEquals(splitStr.size(), 3);
+    AssertHelper::assertStringEquals(splitStr[0], "str1");
+    AssertHelper::assertStringEquals(splitStr[1], "str2");
+    AssertHelper::assertStringEquals(splitStr[2], "str3");
 }
 
 void StringUtilTest::splitEmptyString() {
@@ -22,10 +22,10 @@ void StringUtilTest::splitEmptyString() {
 
     StringUtil::split(str, ',', splitStr);
 
-    AssertHelper::assertUnsignedInt(splitStr.size(), 3);
-    AssertHelper::assertString(splitStr[0], "str1");
-    AssertHelper::assertString(splitStr[1], "");
-    AssertHelper::assertString(splitStr[2], "str2");
+    AssertHelper::assertUnsignedIntEquals(splitStr.size(), 3);
+    AssertHelper::assertStringEquals(splitStr[0], "str1");
+    AssertHelper::assertStringEquals(splitStr[1], "");
+    AssertHelper::assertStringEquals(splitStr[2], "str2");
 }
 
 CppUnit::Test* StringUtilTest::suite() {

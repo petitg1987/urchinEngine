@@ -35,7 +35,7 @@ void SystemInfoTest::systemHash() {
     std::string systemHash2 = SystemInfo::systemHash();
 
     AssertHelper::assertTrue(!systemHash1.empty(), "System hash cannot be empty");
-    AssertHelper::assertString(systemHash1, systemHash2);
+    AssertHelper::assertStringEquals(systemHash1, systemHash2);
 }
 
 CppUnit::Test* SystemInfoTest::suite() {

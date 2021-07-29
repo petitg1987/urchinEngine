@@ -14,6 +14,12 @@ class UIRendererTest : public CppUnit::TestFixture {
         void clickingState();
         void noClickingStateBecauseMouseOutside();
 
+        void parentPixelPosition();
+        void relativeParentPixelPosition();
+        void screenPercentagePosition();
+        void containerPercentagePosition();
+        void relativeLengthSize();
+
         void buttonRemoveParentContainer();
 
     private:

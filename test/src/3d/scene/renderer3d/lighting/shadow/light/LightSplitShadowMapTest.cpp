@@ -17,7 +17,7 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
     lightSplitShadowMap.update(frustumSplit, false);
 
-    AssertHelper::assertUnsignedInt(lightSplitShadowMap.getModels().size(), 2);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 2);
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
                                           Point3<float>(-10.5f, 1.5f, -101.0f) - LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
@@ -39,7 +39,7 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
     lightSplitShadowMap.update(frustumSplit, false);
 
-    AssertHelper::assertUnsignedInt(lightSplitShadowMap.getModels().size(), 0);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 0);
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
                                           Point3<float>(0.0f, 0.0f, 0.0f) - LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());
@@ -59,7 +59,7 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
     lightSplitShadowMap.update(frustumSplit, false);
 
-    AssertHelper::assertUnsignedInt(lightSplitShadowMap.getModels().size(), 1);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 1);
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
                                           Point3<float>(-3.5f, 1.5f, -101.0f) - LightSplitShadowMap::LIGHT_BOX_MARGIN,
                                           std::numeric_limits<float>::epsilon());

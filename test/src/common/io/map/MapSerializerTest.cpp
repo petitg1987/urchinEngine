@@ -9,7 +9,7 @@ void MapSerializerTest::emptyMap() {
     auto serializedMap = MapSerializer::serialize(emptyMap);
     auto deserializedMap = MapSerializer::deserialize(serializedMap);
 
-    AssertHelper::assertString(serializedMap, "");
+    AssertHelper::assertStringEquals(serializedMap, "");
     AssertHelper::assertTrue(deserializedMap.empty());
 }
 
@@ -20,9 +20,9 @@ void MapSerializerTest::simpleMap() {
     auto serializedMap = MapSerializer::serialize(map);
     auto deserializedMap = MapSerializer::deserialize(serializedMap);
 
-    AssertHelper::assertString(serializedMap, "key1,value1,key2,value2");
-    AssertHelper::assertString(deserializedMap["key1"], "value1");
-    AssertHelper::assertString(deserializedMap["key2"], "value2");
+    AssertHelper::assertStringEquals(serializedMap, "key1,value1,key2,value2");
+    AssertHelper::assertStringEquals(deserializedMap["key1"], "value1");
+    AssertHelper::assertStringEquals(deserializedMap["key2"], "value2");
 }
 
 void MapSerializerTest::trickyMapValues() {
@@ -32,9 +32,9 @@ void MapSerializerTest::trickyMapValues() {
     auto serializedMap = MapSerializer::serialize(map);
     auto deserializedMap = MapSerializer::deserialize(serializedMap);
 
-    AssertHelper::assertString(serializedMap, R"(k\,ey1,valu\\\,ne1,key2\\\,,valu\,\,e2)");
-    AssertHelper::assertString(deserializedMap["k,ey1"], "valu\\,ne1");
-    AssertHelper::assertString(deserializedMap["key2\\,"], "valu,,e2");
+    AssertHelper::assertStringEquals(serializedMap, R"(k\,ey1,valu\\\,ne1,key2\\\,,valu\,\,e2)");
+    AssertHelper::assertStringEquals(deserializedMap["k,ey1"], "valu\\,ne1");
+    AssertHelper::assertStringEquals(deserializedMap["key2\\,"], "valu,,e2");
 }
 
 CppUnit::Test* MapSerializerTest::suite() {
