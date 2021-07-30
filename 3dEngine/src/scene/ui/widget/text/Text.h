@@ -20,6 +20,7 @@ namespace urchin {
 
             void setMaxWidth(Length);
             void updateText(const std::string&);
+            void updateLabelKey(const std::string&);
 
             bool isTranslatableLabel() const;
             const std::string& getText() const;

@@ -65,7 +65,23 @@ namespace urchin {
     }
 
     void Text::updateText(const std::string& text) {
+        if (isTranslatableLabel()) {
+            throw std::runtime_error("Cannot manually update text on a translatable text");
+        }
+
         this->text = text;
+        refreshTextAndWidgetSize();
+        refreshRendererData();
+    }
+
+    void Text::updateLabelKey(const std::string& labelKey) {
+        if (!isTranslatableLabel()) {
+            throw std::runtime_error("Cannot manually update label key on a non translatable text");
+        }
+
+        this->labelKey = labelKey;
+        i18nService->remove(this);
+        i18nService->add(this);
 
         refreshTextAndWidgetSize();
         refreshRendererData();
@@ -87,7 +103,9 @@ namespace urchin {
     }
 
     void Text::updateLabel(const std::string& label) {
-        updateText(label);
+        this->text = label;
+        refreshTextAndWidgetSize();
+        refreshRendererData();
     }
 
     const Font& Text::getFont() {
