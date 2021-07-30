@@ -51,7 +51,7 @@ namespace urchin {
 
         private:
             void initializeOrUpdate(unsigned int, unsigned int);
-            void updateCameraComponents();
+            void updateComponents();
 
             const float MOUSE_SENSITIVITY_FACTOR;
             Matrix4<float> mView, mProjection;

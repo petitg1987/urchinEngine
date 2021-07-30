@@ -150,27 +150,27 @@ namespace urchin {
     void Camera::moveTo(const Point3<float>& position) {
         this->position = position;
 
-        updateCameraComponents();
+        updateComponents();
     }
 
     void Camera::moveOnLocalXAxis(float distance) {
         Vector3<float> localXAxis = up.crossProduct(view).normalize();
         position = position.translate(localXAxis * distance);
 
-        updateCameraComponents();
+        updateComponents();
     }
 
     void Camera::moveOnLocalZAxis(float distance) {
         Vector3<float> localZAxis = view;
         position = position.translate(localZAxis * distance);
 
-        updateCameraComponents();
+        updateComponents();
     }
 
     void Camera::lookAt(const Vector3<float>& view) {
         this->view = view.normalize();
 
-        updateCameraComponents();
+        updateComponents();
     }
 
     void Camera::rotate(const Quaternion<float>& rotationDelta) {
@@ -192,7 +192,7 @@ namespace urchin {
             position = pivot.translate(rotationDelta.rotateVector(axis));
         }
 
-        updateCameraComponents();
+        updateComponents();
     }
 
     bool Camera::onKeyPress(unsigned int) {
@@ -234,7 +234,7 @@ namespace urchin {
             rotate(Quaternion<float>(up.crossProduct(view), -mouseDirection.Y));
             rotate(Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), mouseDirection.X));
 
-            updateCameraComponents();
+            updateComponents();
 
             previousMouseX = mouseX;
             previousMouseY = mouseY;
@@ -244,21 +244,15 @@ namespace urchin {
         return true;
     }
 
-    void Camera::updateCameraComponents() {
+    void Camera::updateComponents() {
         const Vector3<float>& viewUp = view.crossProduct(up).normalize();
-        Matrix4<float> rotation(
-                viewUp[0], viewUp[1], viewUp[2], 0.0f,
-                up[0], up[1], up[2], 0.0f,
-                -view[0], -view[1], -view[2], 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f);
-        Matrix4<float> translation(
-                1.0f, 0.0f, 0.0f, -position.X,
-                0.0f, 1.0f, 0.0f, -position.Y,
-                0.0f, 0.0f, 1.0f, -position.Z,
-                0.0f, 0.0f, 0.0f, 1.0f);
-        mView = rotation * translation;
+        mView.setValues(
+                viewUp[0],  viewUp[1],  viewUp[2],  viewUp[0] * -position.X + viewUp[1] * -position.Y + viewUp[2] * -position.Z,
+                up[0],      up[1],      up[2],      up[0] * -position.X + up[1] * -position.Y + up[2] * -position.Z,
+                -view[0],   -view[1],   -view[2],   -view[0] * -position.X + -view[1] * -position.Y + -view[2] * -position.Z,
+                0.0f,       0.0f,       0.0f,       1.0f);
 
-        orientation = Quaternion<float>(mView.toMatrix3().inverse());
+        orientation = Quaternion<float>(mView.toMatrix3()).conjugate();
 
         frustum = baseFrustum * mView.inverse();
     }
