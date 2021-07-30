@@ -17,6 +17,7 @@ namespace urchin {
             static void trim(std::string&);
 
             static bool insensitiveEquals(const std::string&, const std::string&);
+            static bool startWith(const std::string&, const std::string&);
             static bool endWith(const std::string&, const std::string&);
 
         private:
