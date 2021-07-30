@@ -20,9 +20,9 @@ namespace urchin {
             boxShape(BoxShape<T>(halfSizes)),
             centerOfMass(centerOfMass),
             orientation(orientation) {
-        axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
-        axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
-        axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
+        axis[0] = orientation.rotateVector(Vector3<T>(1.0, 0.0, 0.0));
+        axis[1] = orientation.rotateVector(Vector3<T>(0.0, 1.0, 0.0));
+        axis[2] = orientation.rotateVector(Vector3<T>(0.0, 0.0, 1.0));
     }
 
     template<class T> OBBox<T>::OBBox(const AABBox<T>& aabb) :

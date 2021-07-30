@@ -11,7 +11,7 @@ namespace urchin {
 
     template<class T> class Quaternion {
         public:
-          enum RotationSequence {
+            enum RotationSequence {
                 XYZ,
                 XZY,
                 YXZ,
@@ -44,6 +44,7 @@ namespace urchin {
             T squareNorm() const;
             T dotProduct(const Quaternion<T>&) const;
             Point3<T> rotatePoint(const Point3<T>&) const;
+            Vector3<T> rotateVector(const Vector3<T>&) const;
             Quaternion<T> slerp(const Quaternion<T>&, T t) const;
             Quaternion<T> lerp(const Quaternion<T>&, T t) const;
             Vector3<T> getForwardDirection() const;
@@ -60,6 +61,7 @@ namespace urchin {
             const Quaternion<T>& operator -=(const Quaternion<T>&);
             const Quaternion<T>& operator *=(const Quaternion<T>&);
             const Quaternion<T>& operator *=(const Point3<T>&);
+            const Quaternion<T>& operator *=(const Vector3<T>&);
             const Quaternion<T>& operator *=(T);
 
             bool operator ==(const Quaternion<T>&) const;
@@ -76,6 +78,7 @@ namespace urchin {
     };
 
     template<class T> Quaternion<T> operator *(const Quaternion<T>&, const Point3<T>&);
+    template<class T> Quaternion<T> operator *(const Quaternion<T>&, const Vector3<T>&);
     template<class T> Quaternion<T> operator *(const Quaternion<T>&, T);
     template<class T> Quaternion<T> operator *(T, const Quaternion<T>&);
 

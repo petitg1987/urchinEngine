@@ -11,6 +11,8 @@ namespace urchin {
 
             void initialize(unsigned int, unsigned int);
             void onResize(unsigned int, unsigned int);
+            unsigned int getSceneWidth() const;
+            unsigned int getSceneHeight() const;
 
             void resetPreviousMousePosition(double previousMouseX = std::numeric_limits<double>::max(), double previousMouseY = std::numeric_limits<double>::max());
             void useMouseToMoveCamera(bool);
@@ -18,21 +20,22 @@ namespace urchin {
             void setMouseSensitivityPercentage(float);
             void setInvertYAxis(bool);
             void setDistance(float);
+            bool isFirstPersonCamera() const;
             void setMaxRotationX(float);
 
             const Matrix4<float>& getViewMatrix() const;
             const Matrix4<float>& getProjectionMatrix() const;
-            const Frustum<float>& getFrustum() const;
 
             const Point3<float>& getPosition() const;
             const Vector3<float>& getView() const;
             const Vector3<float>& getUp() const;
 
-            unsigned int getSceneWidth() const;
-            unsigned int getSceneHeight() const;
+            const Quaternion<float>& getOrientation() const;
+
             float getAngle() const;
             float getNearPlane() const;
             float getFarPlane() const;
+            const Frustum<float>& getFrustum() const;
 
             void moveTo(const Point3<float>&);
             void moveOnLocalXAxis(float);
@@ -48,20 +51,22 @@ namespace urchin {
 
         private:
             void initializeOrUpdate(unsigned int, unsigned int);
-            void updateViewMatrix();
+            void updateCameraComponents();
 
             const float MOUSE_SENSITIVITY_FACTOR;
             Matrix4<float> mView, mProjection;
+
+            Point3<float> position;
+            Vector3<float> view, up;
+
+            Quaternion<float> orientation;
 
             float angle, nearPlane, farPlane;
             Frustum<float> baseFrustum; //base frustum (without any matrix transformation)
             Frustum<float> frustum;
 
-            Point3<float> position;
-            Vector3<float> view, up;
             float maxRotationX;
             float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
-
             bool bUseMouse; //true if the cursor is used to move the camera
             float mouseSensitivityPercentage;
             bool invertYAxis;

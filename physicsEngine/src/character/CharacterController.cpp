@@ -183,7 +183,7 @@ namespace urchin {
         }
 
         //orientation
-        Quaternion<float> newOrientation = initialOrientation;
+        Quaternion<float> newOrientation = ghostBody->getTransform().getOrientation();
         if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
             newOrientation = orientation * initialOrientation;

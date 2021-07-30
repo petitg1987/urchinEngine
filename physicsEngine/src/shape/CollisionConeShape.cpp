@@ -58,9 +58,9 @@ namespace urchin {
         );
 
         const Point3<float>& centerOfMass = physicsTransform.getPosition();
-        Point3<float> localCentralAxis(0.0, 0.0, 0.0);
+        Vector3<float> localCentralAxis(0.0f, 0.0f, 0.0f);
         localCentralAxis[getConeOrientation() / 2] = (getConeOrientation() % 2 == 0) ? 1.0f : -1.0f;
-        Vector3<float> centralAxis = physicsTransform.getOrientation().rotatePoint(localCentralAxis).toVector();
+        Vector3<float> centralAxis = physicsTransform.getOrientation().rotateVector(localCentralAxis);
         Point3<float> centerPosition = centerOfMass.translate(centralAxis * (1.0f / 4.0f) * getHeight());
 
         return AABBox<float>(centerPosition - extend, centerPosition + extend);

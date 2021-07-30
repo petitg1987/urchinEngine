@@ -68,8 +68,7 @@ namespace urchin {
 
             //transform back in world space
             closestPointOnBox = object2.getShapeWorldTransform().transform(closestPointOnBox);
-            Point3<float> tmpNormalFromObject2 = object2.getShapeWorldTransform().getOrientation().rotatePoint(Point3<float>(normalFromObject2.X, normalFromObject2.Y, normalFromObject2.Z));
-            normalFromObject2.setValues(tmpNormalFromObject2.X, tmpNormalFromObject2.Y, tmpNormalFromObject2.Z);
+            normalFromObject2 = object2.getShapeWorldTransform().getOrientation().rotateVector(normalFromObject2);
 
             addNewContactPoint(normalFromObject2, closestPointOnBox, depth);
         }

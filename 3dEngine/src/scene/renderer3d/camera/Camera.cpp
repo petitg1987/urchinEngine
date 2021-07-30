@@ -11,14 +11,14 @@ namespace urchin {
             MOUSE_SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.mouseSensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
+            position(Point3<float>(0.0f, 0.0f, 0.0f)),
+            view(Vector3<float>(0.0f, 0.0f, -1.0f)),
+            up(Vector3<float>(0.0f, 1.0f, 0.0f)),
             angle(angle),
             nearPlane(nearPlane),
             farPlane(farPlane),
             baseFrustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
             frustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
-            position(Point3<float>(0.0f, 0.0f, 0.0f)),
-            view(Vector3<float>(0.0f, 0.0f, -1.0f)),
-            up(Vector3<float>(0.0f, 1.0f, 0.0f)),
             maxRotationX(0.995f),
             distance(0.0f),
             bUseMouse(false),
@@ -37,6 +37,14 @@ namespace urchin {
 
     void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         initializeOrUpdate(sceneWidth, sceneHeight);
+    }
+
+    unsigned int Camera::getSceneWidth() const {
+        return sceneWidth;
+    }
+
+    unsigned int Camera::getSceneHeight() const {
+        return sceneHeight;
     }
 
     void Camera::initializeOrUpdate(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -91,6 +99,10 @@ namespace urchin {
         this->distance = distance;
     }
 
+    bool Camera::isFirstPersonCamera() const {
+        return MathFunction::isZero(distance);
+    }
+
     void Camera::setMaxRotationX(float maxRotationX) {
         this->maxRotationX = maxRotationX;
     }
@@ -101,10 +113,6 @@ namespace urchin {
 
     const Matrix4<float>& Camera::getProjectionMatrix() const {
         return mProjection;
-    }
-
-    const Frustum<float>& Camera::getFrustum() const {
-        return frustum;
     }
 
     const Point3<float>& Camera::getPosition() const {
@@ -119,12 +127,8 @@ namespace urchin {
         return up;
     }
 
-    unsigned int Camera::getSceneWidth() const {
-        return sceneWidth;
-    }
-
-    unsigned int Camera::getSceneHeight() const {
-        return sceneHeight;
+    const Quaternion<float>& Camera::getOrientation() const {
+        return orientation;
     }
 
     float Camera::getAngle() const {
@@ -139,65 +143,56 @@ namespace urchin {
         return farPlane;
     }
 
+    const Frustum<float>& Camera::getFrustum() const {
+        return frustum;
+    }
+
     void Camera::moveTo(const Point3<float>& position) {
         this->position = position;
 
-        updateViewMatrix();
+        updateCameraComponents();
     }
 
     void Camera::moveOnLocalXAxis(float distance) {
         Vector3<float> localXAxis = up.crossProduct(view).normalize();
         position = position.translate(localXAxis * distance);
 
-        updateViewMatrix();
+        updateCameraComponents();
     }
 
     void Camera::moveOnLocalZAxis(float distance) {
         Vector3<float> localZAxis = view;
         position = position.translate(localZAxis * distance);
 
-        updateViewMatrix();
+        updateCameraComponents();
     }
 
     void Camera::lookAt(const Vector3<float>& view) {
         this->view = view.normalize();
 
-        updateViewMatrix();
+        updateCameraComponents();
     }
 
-    void Camera::rotate(const Quaternion<float>& quatRotation) {
-        Point3<float> pivot;
-        if (std::fabs(distance) > std::numeric_limits<float>::epsilon()) {
+    void Camera::rotate(const Quaternion<float>& rotationDelta) {
+        Point3<float> pivot = position;
+        if (!isFirstPersonCamera()) {
             pivot = position.translate(view * distance);
-        } else {
-            pivot = position;
         }
 
         //moves view point
-        Quaternion<float> quatView(view.X, view.Y, view.Z, 0.0f);
-        const Quaternion<float>& resultView = (quatRotation * quatView.normalize()) * quatRotation.conjugate();
-        Point3<float> viewPoint(resultView.X + pivot.X, resultView.Y + pivot.Y, resultView.Z + pivot.Z);
+        Point3<float> viewPoint = pivot.translate(rotationDelta.rotateVector(view));
         view = position.vector(viewPoint).normalize();
 
         //moves up vector
-        Quaternion<float> quatUp(up.X, up.Y, up.Z, 0.0f);
-        const Quaternion<float>& resultUp = (quatRotation * quatUp.normalize()) * quatRotation.conjugate();
-        up.X = resultUp.X;
-        up.Y = resultUp.Y;
-        up.Z = resultUp.Z;
+        up = rotationDelta.rotateVector(up);
 
         //moves position point
-        if (std::fabs(distance) > std::numeric_limits<float>::epsilon()) {
+        if (!isFirstPersonCamera()) {
             Vector3<float> axis = pivot.vector(position);
-            Quaternion<float> quatPosition(axis.X, axis.Y, axis.Z, 0.0f);
-            const Quaternion<float>& resultPosition = (quatRotation * quatPosition.normalize()) * quatRotation.conjugate();
-
-            position.X = resultPosition.X + pivot.X;
-            position.Y = resultPosition.Y + pivot.Y;
-            position.Z = resultPosition.Z + pivot.Z;
+            position = pivot.translate(rotationDelta.rotateVector(axis));
         }
 
-        updateViewMatrix();
+        updateCameraComponents();
     }
 
     bool Camera::onKeyPress(unsigned int) {
@@ -235,12 +230,11 @@ namespace urchin {
                 mouseDirection.Y -= (currentRotationX + maxRotationX);
             }
 
-            //rotate around the y and x axis
-            Vector3<float> localXAxis = up.crossProduct(view).normalize();
-            rotate(Quaternion<float>(localXAxis, -mouseDirection.Y));
+            //rotate around the Y and X axis
+            rotate(Quaternion<float>(up.crossProduct(view), -mouseDirection.Y));
             rotate(Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), mouseDirection.X));
 
-            updateViewMatrix();
+            updateCameraComponents();
 
             previousMouseX = mouseX;
             previousMouseY = mouseY;
@@ -250,21 +244,21 @@ namespace urchin {
         return true;
     }
 
-    void Camera::updateViewMatrix() {
-        //gluLookAt:
-        const Vector3<float>& f = view;
-        const Vector3<float>& s = f.crossProduct(up).normalize();
-        const Vector3<float>& u = s.crossProduct(f).normalize();
+    void Camera::updateCameraComponents() {
+        const Vector3<float>& viewUp = view.crossProduct(up).normalize();
+        Matrix4<float> rotation(
+                viewUp[0], viewUp[1], viewUp[2], 0.0f,
+                up[0], up[1], up[2], 0.0f,
+                -view[0], -view[1], -view[2], 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f);
+        Matrix4<float> translation(
+                1.0f, 0.0f, 0.0f, -position.X,
+                0.0f, 1.0f, 0.0f, -position.Y,
+                0.0f, 0.0f, 1.0f, -position.Z,
+                0.0f, 0.0f, 0.0f, 1.0f);
+        mView = rotation * translation;
 
-        Matrix4<float> M(
-                s[0], s[1], s[2], 0,
-                u[0], u[1], u[2], 0,
-                -f[0], -f[1], -f[2], 0,
-                0, 0, 0, 1);
-
-        Matrix4<float> eye;
-        eye.buildTranslation(-position.X, -position.Y, -position.Z);
-        mView = M * eye;
+        orientation = Quaternion<float>(mView.toMatrix3().inverse());
 
         frustum = baseFrustum * mView.inverse();
     }
