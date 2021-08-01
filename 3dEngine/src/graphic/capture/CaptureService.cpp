@@ -70,18 +70,15 @@ namespace urchin {
             float scaleY = (float)srcHeight / (float)dstHeight;
 
             for (unsigned int y = 0; y < dstHeight; ++y) {
-                std::size_t dstIndexY = y;
-
-                std::size_t srcIndexY = (unsigned int)(scaleY * ((float)dstIndexY + 1.0f)) - 1;
+                std::size_t srcIndexY = (unsigned int)(scaleY * ((float)y + 1.0f)) - 1;
                 srcIndexY = (std::size_t)MathFunction::clamp(srcIndexY, 0uL, (std::size_t)srcHeight - 1uL);
 
                 for (unsigned int x = 0; x < dstWidth; ++x) {
-                    std::size_t dstIndexX = 4 * x;
-                    std::size_t srcIndexX = (unsigned int)(scaleX * ((float)dstIndexX + 4.0f)) - 4;
+                    std::size_t srcIndexX = ((unsigned int)(scaleX * ((float)x + 1.0f)) - 1) * 4;
                     srcIndexX = (std::size_t)MathFunction::clamp(srcIndexX, 0uL, (std::size_t)srcWidth * 4uL - 1uL);
 
-                    std::size_t dstIndex = (dstIndexY * dstWidth * 4) + dstIndexX;
                     std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
+                    std::size_t dstIndex = (y * dstWidth * 4) + x * 4;
 
                     if (bgraToRgba) {
                         imageData[dstIndex + 0] = dataDestination[srcIndex + 2];
