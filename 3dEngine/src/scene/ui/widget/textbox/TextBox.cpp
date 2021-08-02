@@ -45,7 +45,7 @@ namespace urchin {
         texTextBoxFocus = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
-        text = Text::create(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
+        text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
         text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 

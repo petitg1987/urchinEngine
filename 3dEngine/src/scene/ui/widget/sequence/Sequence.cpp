@@ -52,13 +52,13 @@ namespace urchin {
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
         //buttons
-        leftButton = Text::create(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
+        leftButton = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
         leftButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, true));
         if (leftButtonEventListener) {
             this->leftButton->addEventListener(leftButtonEventListener);
         }
 
-        rightButton = Text::create(this, Position(0, 0, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
         rightButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, false));
         if (rightButtonEventListener) {
             this->rightButton->addEventListener(rightButtonEventListener);
@@ -69,9 +69,9 @@ namespace urchin {
         valuesText.resize(values.size(), std::shared_ptr<Text>(nullptr));
         for (std::size_t i = 0; i < values.size(); ++i) {
             if (translatableValues) {
-                valuesText[i] = Text::createTranslatable(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+                valuesText[i] = Text::createTranslatable(this, Position(0.0f, 0.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
             } else {
-                valuesText[i] = Text::create(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[i]);
+                valuesText[i] = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
             }
             valuesText[i]->setIsVisible(false);
         }

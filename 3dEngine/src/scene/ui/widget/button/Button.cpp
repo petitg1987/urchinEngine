@@ -38,7 +38,7 @@ namespace urchin {
 
         if (!buttonText.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textSkin", UdaAttribute(), buttonChunk);
-            text = Text::createTranslatable(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
+            text = Text::createTranslatable(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), buttonText);
         }
 
         //visual

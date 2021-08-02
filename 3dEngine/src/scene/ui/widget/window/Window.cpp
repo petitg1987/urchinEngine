@@ -35,7 +35,7 @@ namespace urchin {
 
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "textSkin", UdaAttribute(), windowChunk);
-            title = Text::createTranslatable(this, Position(0, 0, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
+            title = Text::createTranslatable(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), titleKey);
             title->updatePosition(Position(0.0f, -((float)widgetOutline.topWidth + (float)title->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 

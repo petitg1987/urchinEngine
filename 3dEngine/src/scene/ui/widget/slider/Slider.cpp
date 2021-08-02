@@ -43,9 +43,9 @@ namespace urchin {
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
 
         if (translatableValues) {
-            currentValueText = Text::createTranslatable(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
+            currentValueText = Text::createTranslatable(this, Position(0.0f, 0.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         } else {
-            currentValueText = Text::create(this, Position(0, 0, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
+            currentValueText = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         }
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
         currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
@@ -53,7 +53,7 @@ namespace urchin {
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
-        cursorImage = StaticBitmap::create(this, Position(0, 0, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+        cursorImage = StaticBitmap::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
         moveSliderCursor();
 
         //visual
