@@ -47,20 +47,20 @@ namespace urchin {
 
             void updatePosition(Position);
             Position getPosition() const;
-            int getPositionX() const;
-            int getPositionY() const;
+            float getPositionX() const;
+            float getPositionY() const;
             const WidgetOutline& getOutline() const;
-            int getGlobalPositionX() const;
-            int getGlobalPositionY() const;
+            float getGlobalPositionX() const;
+            float getGlobalPositionY() const;
 
             void updateSize(Size);
             Size getSize() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
 
-            int widthLengthToPixel(float, LengthType, const std::function<float()>&) const;
+            float widthLengthToPixel(float, LengthType, const std::function<float()>&) const;
             float widthPixelToLength(float, LengthType) const;
-            int heightLengthToPixel(float, LengthType, const std::function<float()>&) const;
+            float heightLengthToPixel(float, LengthType, const std::function<float()>&) const;
             float heightPixelToLength(float, LengthType) const;
 
             void setIsVisible(bool);
@@ -81,7 +81,7 @@ namespace urchin {
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
-            void updateTranslateVector(GenericRenderer*, const Vector2<int>&) const;
+            void updateTranslateVector(GenericRenderer*, const Vector2<float>&) const;
             RenderTarget& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;

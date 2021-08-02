@@ -74,13 +74,13 @@ namespace urchin {
 
     bool Scrollbar::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> cursorRectangle(Point2<int>(scrollbarCursor->getGlobalPositionX(), scrollbarCursor->getGlobalPositionY()),
-                                           Point2<int>(scrollbarCursor->getGlobalPositionX() + (int)scrollbarCursor->getWidth(), scrollbarCursor->getGlobalPositionY() + (int)scrollbarCursor->getHeight()));
+            Rectangle<int> cursorRectangle(Point2<int>((int)scrollbarCursor->getGlobalPositionX(), (int)scrollbarCursor->getGlobalPositionY()),
+                                           Point2<int>((int)scrollbarCursor->getGlobalPositionX() + (int)scrollbarCursor->getWidth(), (int)scrollbarCursor->getGlobalPositionY() + (int)scrollbarCursor->getHeight()));
             if (cursorRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
             } else {
-                Rectangle<int> scrollbarRectangle(Point2<int>(scrollbarLine->getGlobalPositionX(), scrollbarLine->getGlobalPositionY()),
-                                                  Point2<int>(scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
+                Rectangle<int> scrollbarRectangle(Point2<int>((int)scrollbarLine->getGlobalPositionX(), (int)scrollbarLine->getGlobalPositionY()),
+                                                  Point2<int>((int)scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), (int)scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
                 if (scrollbarRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                     updateScrollingPosition(mouseY);
                     state = CURSOR_SELECTED;

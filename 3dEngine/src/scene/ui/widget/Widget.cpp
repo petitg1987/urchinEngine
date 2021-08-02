@@ -63,12 +63,12 @@ namespace urchin {
                               0.0f, 0.0f, 0.0f, 1.0f);
         rendererBuilder->addUniformData(sizeof(projectionMatrix), &projectionMatrix); //binding 0
 
-        Vector2<int> translateVector(0, 0);
+        Vector2<float> translateVector(0.0f, 0.0f);
         rendererBuilder->addUniformData(sizeof(translateVector), &translateVector); //binding 1
 
         Container* parentContainer = getParentContainer();
         if (parentContainer) {
-            Vector2<int> scissorOffset = Vector2<int>(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
+            Vector2<int> scissorOffset = Vector2<int>((int)parentContainer->getGlobalPositionX(), (int)parentContainer->getGlobalPositionY());
             Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
         }
@@ -76,7 +76,7 @@ namespace urchin {
         return rendererBuilder;
     }
 
-    void Widget::updateTranslateVector(GenericRenderer* renderer, const Vector2<int>& translateVector) const {
+    void Widget::updateTranslateVector(GenericRenderer* renderer, const Vector2<float>& translateVector) const {
         renderer->updateUniformData(1, &translateVector);
     }
 
@@ -160,14 +160,14 @@ namespace urchin {
     /**
     * @return Relative position X of the widget
     */
-    int Widget::getPositionX() const {
+    float Widget::getPositionX() const {
         return widthLengthToPixel(position.getPositionX(), position.getPositionTypeX(), [&](){return (float)getPositionY();});
     }
 
     /**
     * @return Relative position Y of the widget
     */
-    int Widget::getPositionY() const {
+    float Widget::getPositionY() const {
         return heightLengthToPixel(position.getPositionY(), position.getPositionTypeY(), [&](){return (float)getPositionX();});
     }
 
@@ -175,30 +175,30 @@ namespace urchin {
         return widgetOutline;
     }
 
-    int Widget::getGlobalPositionX() const {
-        int startPosition = 0;
+    float Widget::getGlobalPositionX() const {
+        float startPosition = 0.0f;
         if (parent) {
             if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT) {
-                startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
+                startPosition = parent->getGlobalPositionX() + (float)parent->getOutline().leftWidth;
             } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
-                startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int) parent->getWidth();
+                startPosition = parent->getGlobalPositionX() - (float)parent->getOutline().rightWidth + (float)parent->getWidth();
             }
         }
         return startPosition + getPositionX();
     }
 
-    int Widget::getGlobalPositionY() const {
-        int startPosition = 0;
+    float Widget::getGlobalPositionY() const {
+        float startPosition = 0.0f;
         if (parent) {
             if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT) {
-                startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
+                startPosition = parent->getGlobalPositionY() + (float)parent->getOutline().topWidth;
             } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
-                startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int) parent->getHeight();
+                startPosition = parent->getGlobalPositionY() - (float)parent->getOutline().bottomWidth + (float)parent->getHeight();
             }
 
             auto* scrollable = dynamic_cast<Scrollable*>(parent);
             if (scrollable) {
-                startPosition += scrollable->getScrollShiftY();
+                startPosition += (float)scrollable->getScrollShiftY();
             }
         }
         return startPosition + getPositionY();
@@ -225,16 +225,16 @@ namespace urchin {
         return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightSizeType(), [&](){return (float)getWidth();});
     }
 
-    int Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
+    float Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
-            return (int)(widthValue / 100.0f * (float)getSceneWidth());
+            return widthValue / 100.0f * (float)getSceneWidth();
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            return (int)(widthValue / 100.0f * (float)getParentContainer()->getContentWidth());
+            return widthValue / 100.0f * (float)getParentContainer()->getContentWidth();
         } else if (lengthType == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = widthValue;
-            return (int)(heightValueInPixel() * relativeMultiplyFactor);
+            return heightValueInPixel() * relativeMultiplyFactor;
         } else if (lengthType == LengthType::PIXEL) {
-            return (int)widthValue;
+            return widthValue;
         }
         throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
     }
@@ -250,16 +250,16 @@ namespace urchin {
         throw std::runtime_error("Unknown/unimplemented length type: " + std::to_string(lengthType));
     }
 
-    int Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
+    float Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
-            return (int)(heightValue / 100.0f * (float)getSceneHeight());
+            return heightValue / 100.0f * (float)getSceneHeight();
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            return (int)(heightValue / 100.0f * (float)getParentContainer()->getContentHeight());
+            return heightValue / 100.0f * (float)getParentContainer()->getContentHeight();
         } else if (lengthType == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = heightValue;
-            return (int)(widthValueInPixel() * relativeMultiplyFactor);
+            return widthValueInPixel() * relativeMultiplyFactor;
         } else if (lengthType == LengthType::PIXEL) {
-            return (int)heightValue;
+            return heightValue;
         }
         throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
     }
@@ -503,8 +503,8 @@ namespace urchin {
     bool Widget::isMouseOnWidget(int mouseX, int mouseY) {
         Point2<int> mouseCoordinate(mouseX, mouseY);
         Rectangle<int> widgetZone(
-                Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+                Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
 
         if (widgetZone.collideWithPoint(mouseCoordinate)) {
             std::stack<Container*> containers;
@@ -515,8 +515,8 @@ namespace urchin {
                 containers.pop();
                 if (container) {
                     Rectangle<int> containerZone(
-                            Point2<int>(container->getGlobalPositionX(), container->getGlobalPositionY()),
-                            Point2<int>(container->getGlobalPositionX() + (int)container->getContentWidth(), container->getGlobalPositionY() + (int)container->getContentHeight()));
+                            Point2<int>((int)container->getGlobalPositionX(), (int)container->getGlobalPositionY()),
+                            Point2<int>((int)container->getGlobalPositionX() + (int)container->getContentWidth(), (int)container->getGlobalPositionY() + (int)container->getContentHeight()));
 
                     if (!containerZone.collideWithPoint(mouseCoordinate)) {
                         return false;

@@ -99,12 +99,13 @@ namespace urchin {
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+            Rectangle<int> widgetRectangle(Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                                           Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
             if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::buildLinear()));
 
-                int localMouseX = getMouseX() - text->getGlobalPositionX();
+                int localMouseX = getMouseX() - (int)text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = INACTIVE;
@@ -239,13 +240,13 @@ namespace urchin {
 
     void TextBox::prepareWidgetRendering(float dt) {
         //text box
-        updateTranslateVector(textBoxRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(textBoxRenderer.get(), Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         textBoxRenderer->enableRenderer();
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
-            updateTranslateVector(cursorRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
+            updateTranslateVector(cursorRenderer.get(), Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<float>((float)cursorPosition, 0.0f));
             cursorRenderer->enableRenderer();
         }
     }

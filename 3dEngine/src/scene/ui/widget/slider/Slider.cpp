@@ -102,13 +102,13 @@ namespace urchin {
 
     bool Slider::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> cursorRectangle(Point2<int>(cursorImage->getGlobalPositionX(), cursorImage->getGlobalPositionY()),
-                    Point2<int>(cursorImage->getGlobalPositionX() + (int)cursorImage->getWidth(), cursorImage->getGlobalPositionY() + (int)cursorImage->getHeight()));
+            Rectangle<int> cursorRectangle(Point2<int>((int)cursorImage->getGlobalPositionX(), (int)cursorImage->getGlobalPositionY()),
+                                           Point2<int>((int)cursorImage->getGlobalPositionX() + (int)cursorImage->getWidth(), (int)cursorImage->getGlobalPositionY() + (int)cursorImage->getHeight()));
             if (cursorRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
             } else {
-                Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                                               Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+                Rectangle<int> widgetRectangle(Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                                               Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
                 if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                     updateSliderValue(getMouseX());
                     state = CURSOR_SELECTED;
@@ -140,7 +140,7 @@ namespace urchin {
 
         //compute index
         unsigned int oldSelectedIndex = selectedIndex;
-        float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
+        float relativeMouseX = (float)mouseX - getGlobalPositionX();
         float sliderCursorXPosition = MathFunction::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
         float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
         selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
@@ -175,7 +175,7 @@ namespace urchin {
     }
 
     void Slider::prepareWidgetRendering(float) {
-        updateTranslateVector(sliderRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(sliderRenderer.get(), Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         sliderRenderer->enableRenderer();
     }
 
