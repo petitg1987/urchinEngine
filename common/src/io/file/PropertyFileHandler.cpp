@@ -40,6 +40,7 @@ namespace urchin {
 
             propertyValue = line.substr(equalPosition + 1);
             StringUtil::trim(propertyValue);
+            StringUtil::replaceAll(propertyValue, "\\n", "\n");
             if (propertyValue.size() > 1 && propertyValue[0] == '"' && propertyValue[propertyValue.size() - 1] == '"') { //quoted string value
                 propertyValue = propertyValue.substr(1, propertyValue.size() - 2);
             }
