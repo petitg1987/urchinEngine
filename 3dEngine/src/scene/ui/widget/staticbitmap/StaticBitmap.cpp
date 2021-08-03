@@ -6,21 +6,25 @@
 
 namespace urchin {
 
-    StaticBitmap::StaticBitmap(Position position, Size size, std::string filename) :
+    StaticBitmap::StaticBitmap(Position position, Size size, std::shared_ptr<Image> image) :
             Widget(position, size),
-            filename(std::move(filename)),
+            image(std::move(image)),
             tex(nullptr) {
 
     }
 
-    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, std::string filename) {
-        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(filename)), parent);
+    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, const std::string& filename) {
+        std::shared_ptr<Image> image = ResourceRetriever::instance().getResource<Image>(filename);
+        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(image)), parent);
+    }
+
+    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, std::shared_ptr<Image> image) {
+        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(image)), parent);
     }
 
     void StaticBitmap::createOrUpdateWidget() {
-        //loads the texture
-        auto img = ResourceRetriever::instance().getResource<Image>(filename);
-        tex = img->createTexture(false);
+        //create the texture
+        tex = image->createTexture(false);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
