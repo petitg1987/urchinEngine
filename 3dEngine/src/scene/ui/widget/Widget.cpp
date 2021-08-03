@@ -40,6 +40,10 @@ namespace urchin {
         }
     }
 
+    bool Widget::isInitialized() const {
+        return renderTarget != nullptr;
+    }
+
     void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
@@ -131,6 +135,10 @@ namespace urchin {
             (*it)->parent = nullptr;
             it = children.erase(it);
         }
+    }
+
+    void Widget::clearEventListeners() {
+        eventListeners.clear();
     }
 
     void Widget::addEventListener(std::shared_ptr<EventListener> eventListener) {

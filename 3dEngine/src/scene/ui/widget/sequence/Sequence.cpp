@@ -53,16 +53,10 @@ namespace urchin {
 
         //buttons
         leftButton = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), buttonsTextSkin, leftButtonString);
-        leftButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, true));
-        if (leftButtonEventListener) {
-            this->leftButton->addEventListener(leftButtonEventListener);
-        }
+        setupLeftButtonListeners();
 
         rightButton = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
-        rightButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, false));
-        if (rightButtonEventListener) {
-            this->rightButton->addEventListener(rightButtonEventListener);
-        }
+        setupRightButtonListeners();
         rightButton->updatePosition(Position((float)getWidth() - (float)rightButton->getWidth(), 0.0f, LengthType::PIXEL));
 
         //values
@@ -105,12 +99,32 @@ namespace urchin {
 
     void Sequence::setLeftButtonEventListener(std::shared_ptr<EventListener> leftButtonEventListener) {
         this->leftButtonEventListener = std::move(leftButtonEventListener);
-        createOrUpdateWidget();
+        setupLeftButtonListeners();
     }
 
     void Sequence::setRightButtonEventListener(std::shared_ptr<EventListener> rightButtonEventListener) {
         this->rightButtonEventListener = std::move(rightButtonEventListener);
-        createOrUpdateWidget();
+        setupRightButtonListeners();
+    }
+
+    void Sequence::setupLeftButtonListeners() {
+        if (leftButton) {
+            leftButton->clearEventListeners();
+            leftButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, true));
+            if (this->leftButtonEventListener) {
+                leftButton->addEventListener(this->leftButtonEventListener);
+            }
+        }
+    }
+
+    void Sequence::setupRightButtonListeners() {
+        if (rightButton) {
+            rightButton->clearEventListeners();
+            rightButton->addEventListener(std::make_unique<ButtonSequenceEventListener>(this, false));
+            if (this->rightButtonEventListener) {
+                rightButton->addEventListener(this->rightButtonEventListener);
+            }
+        }
     }
 
     void Sequence::prepareWidgetRendering(float) {

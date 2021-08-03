@@ -32,6 +32,7 @@ namespace urchin {
             };
 
             void initialize(RenderTarget&, const Shader&, I18nService&);
+            bool isInitialized() const;
             virtual void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
@@ -41,6 +42,7 @@ namespace urchin {
             virtual void detachChild(Widget*);
             virtual void detachChildren();
 
+            void clearEventListeners();
             void addEventListener(std::shared_ptr<EventListener>);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetStates getWidgetState() const;

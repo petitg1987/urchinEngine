@@ -32,6 +32,9 @@ namespace urchin {
         private:
             Sequence(Position, Size, std::string, const std::vector<std::string>&, bool);
 
+            void setupLeftButtonListeners();
+            void setupRightButtonListeners();
+
             //display information
             const std::string skinName;
             const std::vector<std::string> values;

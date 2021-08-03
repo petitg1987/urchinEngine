@@ -21,9 +21,6 @@ namespace urchin {
         } else {
             text = std::move(textOrKey);
         }
-
-        refreshFont();
-        refreshTextAndWidgetSize();
     }
 
     std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, std::string text) {
@@ -53,8 +50,10 @@ namespace urchin {
     void Text::setMaxWidth(Length maxWidth) {
         this->maxWidth = maxWidth;
 
-        refreshTextAndWidgetSize();
-        refreshRendererData();
+        if (isInitialized()) {
+            refreshTextAndWidgetSize();
+            refreshRendererData();
+        }
     }
 
     unsigned int Text::getMaxWidth() {
