@@ -93,8 +93,9 @@ namespace urchin {
             }
         }
         vmaUnmapMemory(allocator, imageMemory);
-        vmaFreeMemory(allocator, imageMemory);
+
         vkDestroyImage(logicalDevice, dstImage, nullptr);
+        vmaFreeMemory(allocator, imageMemory);
 
         unsigned createPngStatus = lodepng::encode(filename, imageData.data(), dstWidth, dstHeight);
         if (createPngStatus) {
