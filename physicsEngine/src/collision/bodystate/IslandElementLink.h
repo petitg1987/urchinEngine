@@ -16,8 +16,4 @@ namespace urchin {
         bool linkedToStaticElement; //true if 'element' is linked to a static element.
     };
 
-    struct IslandElementLinkSortPredicate {
-        bool operator() (const IslandElementLink&, const IslandElementLink&) const;
-    };
-
 }

@@ -9,8 +9,4 @@ namespace urchin {
 
     }
 
-    bool IslandElementLinkSortPredicate::operator()(const IslandElementLink& elem1, const IslandElementLink& elem2) const {
-        return elem1.islandIdRef < elem2.islandIdRef;
-    }
-
 }

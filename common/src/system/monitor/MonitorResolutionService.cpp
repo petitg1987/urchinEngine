@@ -74,19 +74,13 @@ namespace urchin {
         std::sort(resolutions.begin(), resolutions.end(), [](const auto& lhs, const auto& rhs) {
             if (lhs.getWidth() == rhs.getWidth()) {
                 if (lhs.getHeight() == rhs.getHeight()) {
-                    if (lhs.getFrequency() == rhs.getFrequency()) {
-                        return &lhs < &rhs;
-                    }
                     return lhs.getFrequency() < rhs.getFrequency();
                 }
                 return lhs.getHeight() < rhs.getHeight();
             }
             return lhs.getWidth() < rhs.getWidth();
         });
-
-        resolutions.erase(std::unique(resolutions.begin(), resolutions.end(), [](const auto& r1, const auto& r2) {
-            return r1.getWidth() == r2.getWidth() && r1.getHeight() == r2.getHeight() && r1.getFrequency() == r2.getFrequency();
-        }), resolutions.end());
+        resolutions.erase(std::unique(resolutions.begin(), resolutions.end()), resolutions.end());
     }
 
     const std::vector<MonitorResolution>& MonitorResolutionService::getSupportedResolutions() const {
