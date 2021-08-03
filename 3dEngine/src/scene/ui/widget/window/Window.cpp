@@ -56,10 +56,10 @@ namespace urchin {
     }
 
     bool Window::onKeyPressEvent(unsigned int key) {
-        Rectangle<int> titleZone(Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                                 Point2<int>((int)getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), (int)getGlobalPositionY() + widgetOutline.topWidth));
-        Rectangle<int> closeZone(Point2<int>((int)getGlobalPositionX()+((int)getWidth() - widgetOutline.rightWidth), (int)getGlobalPositionY()),
-                                 Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + widgetOutline.topWidth));
+        Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                                 Point2<int>(getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY() + widgetOutline.topWidth));
+        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+ ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY()),
+                                 Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
 
         if (key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             mousePositionX = getMouseX() - (int)getPositionX();
@@ -70,8 +70,8 @@ namespace urchin {
             state = CLOSING;
         }
 
-        Rectangle<int> widgetRectangle(Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                                       Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
+        Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                                       Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
         bool propagateEvent = true;
         if (key == InputDeviceKey::MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             notifyObservers(this, SET_IN_FOREGROUND);
@@ -82,8 +82,8 @@ namespace urchin {
     }
 
     bool Window::onKeyReleaseEvent(unsigned int key) {
-        Rectangle<int> closeZone(Point2<int>((int)getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), (int)getGlobalPositionY()),
-                                 Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + widgetOutline.topWidth));
+        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY()),
+                                 Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
         if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
@@ -108,7 +108,7 @@ namespace urchin {
     }
 
     void Window::prepareWidgetRendering(float) {
-        updateTranslateVector(windowRenderer.get(), Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(windowRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         windowRenderer->enableRenderer();
     }
 

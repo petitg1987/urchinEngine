@@ -5,7 +5,7 @@ layout(std140, set = 0, binding = 0) uniform Projection {
     mat4 matrix;
 } projection;
 layout(std140, set = 0, binding = 1) uniform Translate {
-    vec2 distance;
+    ivec2 distance;
 } translate;
 
 layout(location = 0) in vec2 vertexPosition;

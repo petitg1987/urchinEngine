@@ -35,7 +35,7 @@ namespace urchin {
         Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
         auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
         auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
-        auto cursorWidthInPixel = (float)scrollableWidget.widthLengthToPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
+        auto cursorWidthInPixel = scrollableWidget.widthLengthToPixel(scrollbarWidth.getValue(), scrollbarWidth.getType(), [](){return 0.0f;});
 
         auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
         std::string lineImageFilename = lineImageChunk->getStringValue();
@@ -44,8 +44,8 @@ namespace urchin {
             throw std::runtime_error("Cursor and line images must have the same width");
         }
 
-        scrollbarLine = StaticBitmap::create(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), (float)scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
-        scrollbarCursor = StaticBitmap::create(&scrollableWidget, Position((float)scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
+        scrollbarLine = StaticBitmap::create(&scrollableWidget, Position((float)scrollableWidget.getWidth() - (float)cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), (float)scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
+        scrollbarCursor = StaticBitmap::create(&scrollableWidget, Position((float)scrollableWidget.getWidth() - (float)cursorWidthInPixel, 0.0f, LengthType::PIXEL), Size(scrollbarWidth.getValue(), scrollbarWidth.getType(), cursorImageRatio, LengthType::RELATIVE_LENGTH), cursorImageFilename);
 
         //update scrollbar
         onScrollableWidgetsUpdated();
@@ -74,13 +74,13 @@ namespace urchin {
 
     bool Scrollbar::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> cursorRectangle(Point2<int>((int)scrollbarCursor->getGlobalPositionX(), (int)scrollbarCursor->getGlobalPositionY()),
-                                           Point2<int>((int)scrollbarCursor->getGlobalPositionX() + (int)scrollbarCursor->getWidth(), (int)scrollbarCursor->getGlobalPositionY() + (int)scrollbarCursor->getHeight()));
+            Rectangle<int> cursorRectangle(Point2<int>(scrollbarCursor->getGlobalPositionX(), scrollbarCursor->getGlobalPositionY()),
+                                           Point2<int>(scrollbarCursor->getGlobalPositionX() + (int)scrollbarCursor->getWidth(), scrollbarCursor->getGlobalPositionY() + (int)scrollbarCursor->getHeight()));
             if (cursorRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
             } else {
-                Rectangle<int> scrollbarRectangle(Point2<int>((int)scrollbarLine->getGlobalPositionX(), (int)scrollbarLine->getGlobalPositionY()),
-                                                  Point2<int>((int)scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), (int)scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
+                Rectangle<int> scrollbarRectangle(Point2<int>(scrollbarLine->getGlobalPositionX(), scrollbarLine->getGlobalPositionY()),
+                                                  Point2<int>(scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
                 if (scrollbarRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
                     updateScrollingPosition(mouseY);
                     state = CURSOR_SELECTED;

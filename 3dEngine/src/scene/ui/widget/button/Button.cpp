@@ -93,7 +93,7 @@ namespace urchin {
             text->updatePosition(Position(((float)getWidth() - (float)text->getWidth()) / 2.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
-        updateTranslateVector(buttonRenderer.get(), Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        updateTranslateVector(buttonRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         buttonRenderer->enableRenderer();
     }
 
