@@ -15,7 +15,7 @@ namespace urchin {
 
         private:
             std::vector<unsigned char> extract8BitsChannels(const std::vector<unsigned char>&, unsigned int, bool) const;
-            std::vector<uint16_t> extract16BitsChannels(const std::vector<unsigned char>&, unsigned int, bool) const;
+            std::vector<uint16_t> extract16BitsChannels(const std::vector<unsigned char>&, unsigned int) const;
     };
 
 }

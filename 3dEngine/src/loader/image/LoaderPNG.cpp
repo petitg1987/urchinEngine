@@ -28,7 +28,7 @@ namespace urchin {
             if (bitDepth == 8) {
                 return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1, false));
             } else if (bitDepth == 16) {
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1, false));
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
@@ -82,7 +82,7 @@ namespace urchin {
      * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
      * @param addAlphaChannel Add alpha channel if not present
      */
-    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask, bool addAlphaChannel) const {
+    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) const {
         std::vector<uint16_t> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
@@ -99,8 +99,6 @@ namespace urchin {
             }
             if (channelsMask & 8u) { //alpha
                 pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 1] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 0])));
-            } else if (addAlphaChannel) {
-                pixels.push_back(65535); //2^16 - 1
             }
         }
 
