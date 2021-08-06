@@ -544,4 +544,9 @@ namespace urchin {
         }
     }
 
+    void Widget::prepareWidgetRendering(float) {
+        //to override
+    }
+
+
 }

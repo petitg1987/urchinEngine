@@ -34,11 +34,9 @@ namespace urchin {
             bool onMouseMoveEvent(int, int) override;
             bool onScrollEvent(double) override;
 
-            void prepareWidgetRendering(float) override;
+            void updateChildrenVisibility() const;
 
         private:
-            std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
-
             const std::string skinName;
             std::unique_ptr<Scrollbar> scrollbar;
     };

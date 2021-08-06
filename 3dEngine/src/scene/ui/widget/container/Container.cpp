@@ -1,4 +1,5 @@
 #include <scene/ui/widget/container/Container.h>
+#include <scene/ui/widget/container/LazyWidget.h>
 
 namespace urchin {
 
@@ -14,22 +15,31 @@ namespace urchin {
 
     void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         Widget::onResize(sceneWidth, sceneHeight);
+
         scrollbar->onScrollableWidgetsUpdated();
+        updateChildrenVisibility();
     }
 
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
+
         scrollbar->onScrollableWidgetsUpdated();
+        updateChildrenVisibility();
     }
 
     void Container::detachChild(Widget* child){
         Widget::detachChild(child);
+
         scrollbar->onScrollableWidgetsUpdated();
+        updateChildrenVisibility();
     }
 
     void Container::detachChildren() {
         Widget::detachChildren();
+
         scrollbar->onScrollableWidgetsUpdated();
+        updateChildrenVisibility();
+
     }
 
     void Container::resetChildren() {
@@ -46,14 +56,19 @@ namespace urchin {
         return scrollbar->getScrollShiftY();
     }
 
-    void Container::onScrollbarMoved() const {
+    void Container::onScrollbarMoved() const { //TODO rename in scrollbarContentUpdated() and should be the only method calling updateChildrenVisibility
+        updateChildrenVisibility();
+    }
+
+    void Container::updateChildrenVisibility() const { //TODO check number of call to this method. All are necessary ? => se previous comment
         Rectangle<int> containerRectangle = widgetRectangle();
-        for(const auto& child : getChildren()) {
-            if (!scrollbar->isScrollbarWidget(child.get())) {
+        for (const auto& child : getChildren()) {
+            auto* lazyWidget = dynamic_cast<LazyWidget*>(child.get());
+            if (lazyWidget) {
                 if (containerRectangle.collideWithRectangle(child->widgetRectangle())) {
-                    child->setIsVisible(true); //TODO lazy loading
+                    lazyWidget->loadChildren();
                 } else {
-                    child->setIsVisible(false); //TODO lazy unloading
+                    lazyWidget->unloadChildren();
                 }
             }
         }
@@ -77,10 +92,6 @@ namespace urchin {
 
     bool Container::onScrollEvent(double offsetY) {
         return scrollbar->onScrollEvent(offsetY);
-    }
-
-    void Container::prepareWidgetRendering(float) {
-
     }
 
 }

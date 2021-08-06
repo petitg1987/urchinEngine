@@ -100,7 +100,7 @@ namespace urchin {
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
 
-            virtual void prepareWidgetRendering(float) = 0;
+            virtual void prepareWidgetRendering(float);
 
             WidgetOutline widgetOutline;
             I18nService* i18nService;
