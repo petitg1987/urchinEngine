@@ -23,6 +23,7 @@ namespace urchin {
             Rectangle<T> merge(const Rectangle<T>&) const;
 
             bool collideWithPoint(const Point2<T>&) const;
+            bool collideWithRectangle(const Rectangle<T>&) const;
 
         private:
             RectangleShape<T> rectangleShape;

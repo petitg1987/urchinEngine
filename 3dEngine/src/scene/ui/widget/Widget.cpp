@@ -233,11 +233,16 @@ namespace urchin {
         return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightSizeType(), [&](){return (float)getWidth();});
     }
 
+    Rectangle<int> Widget::widgetRectangle() const {
+        return Rectangle<int>(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                              Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+    }
+
     int Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneWidth());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            return MathFunction::roundToInt(widthValue / 100.0f * (float)getParentContainer()->getContentWidth());
+            return MathFunction::roundToInt(widthValue / 100.0f * (float)getParentContainer()->getWidth());
         } else if (lengthType == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = widthValue;
             return MathFunction::roundToInt(heightValueInPixel() * relativeMultiplyFactor);
@@ -251,7 +256,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (widthPixel / (float)getSceneWidth()) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            return (widthPixel / (float)getParentContainer()->getContentWidth()) * 100.0f;
+            return (widthPixel / (float)getParentContainer()->getWidth()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
             return widthPixel;
         }
@@ -262,7 +267,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return MathFunction::roundToInt(heightValue / 100.0f * (float)getSceneHeight());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            return MathFunction::roundToInt(heightValue / 100.0f * (float)getParentContainer()->getContentHeight());
+            return MathFunction::roundToInt(heightValue / 100.0f * (float)getParentContainer()->getHeight());
         } else if (lengthType == LengthType::RELATIVE_LENGTH) {
             float relativeMultiplyFactor = heightValue;
             return MathFunction::roundToInt(widthValueInPixel() * relativeMultiplyFactor);
@@ -276,7 +281,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (heightPixel / (float)getSceneHeight()) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            return (heightPixel / (float)getParentContainer()->getContentHeight()) * 100.0f;
+            return (heightPixel / (float)getParentContainer()->getHeight()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
             return heightPixel;
         }
@@ -510,11 +515,7 @@ namespace urchin {
 
     bool Widget::isMouseOnWidget(int mouseX, int mouseY) {
         Point2<int> mouseCoordinate(mouseX, mouseY);
-        Rectangle<int> widgetZone(
-                Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
-
-        if (widgetZone.collideWithPoint(mouseCoordinate)) {
+        if (widgetRectangle().collideWithPoint(mouseCoordinate)) {
             std::stack<Container*> containers;
             containers.push(getParentContainer());
 
@@ -522,11 +523,7 @@ namespace urchin {
                 Container* container = containers.top();
                 containers.pop();
                 if (container) {
-                    Rectangle<int> containerZone(
-                            Point2<int>(container->getGlobalPositionX(), container->getGlobalPositionY()),
-                            Point2<int>(container->getGlobalPositionX() + (int)container->getContentWidth(), container->getGlobalPositionY() + (int)container->getContentHeight()));
-
-                    if (!containerZone.collideWithPoint(mouseCoordinate)) {
+                    if (!container->widgetRectangle().collideWithPoint(mouseCoordinate)) {
                         return false;
                     }
                     containers.push(container->getParentContainer());

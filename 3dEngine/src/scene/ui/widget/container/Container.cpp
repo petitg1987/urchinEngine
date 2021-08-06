@@ -42,16 +42,21 @@ namespace urchin {
         scrollbar->onScrollableWidgetsUpdated();
     }
 
-    unsigned int Container::getContentWidth() const {
-        return (unsigned int)((int)getWidth() - (getOutline().leftWidth + getOutline().rightWidth));
-    }
-
-    unsigned int Container::getContentHeight() const {
-        return (unsigned int)((int)getHeight() - (getOutline().topWidth + getOutline().bottomWidth));
-    }
-
     int Container::getScrollShiftY() const {
         return scrollbar->getScrollShiftY();
+    }
+
+    void Container::onScrollbarMoved() const {
+        Rectangle<int> containerRectangle = widgetRectangle();
+        for(const auto& child : getChildren()) {
+            if (!scrollbar->isScrollbarWidget(child.get())) {
+                if (containerRectangle.collideWithRectangle(child->widgetRectangle())) {
+                    child->setIsVisible(true); //TODO lazy loading
+                } else {
+                    child->setIsVisible(false); //TODO lazy unloading
+                }
+            }
+        }
     }
 
     void Container::createOrUpdateWidget() {

@@ -1,6 +1,7 @@
 #include <utility>
 
 #include <scene/ui/scrollbar/Scrollbar.h>
+#include <scene/ui/scrollbar/Scrollable.h>
 #include <resources/ResourceRetriever.h>
 #include <scene/InputDeviceKey.h>
 
@@ -74,17 +75,11 @@ namespace urchin {
 
     bool Scrollbar::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> cursorRectangle(Point2<int>(scrollbarCursor->getGlobalPositionX(), scrollbarCursor->getGlobalPositionY()),
-                                           Point2<int>(scrollbarCursor->getGlobalPositionX() + (int)scrollbarCursor->getWidth(), scrollbarCursor->getGlobalPositionY() + (int)scrollbarCursor->getHeight()));
-            if (cursorRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            if (scrollbarCursor->widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
-            } else {
-                Rectangle<int> scrollbarRectangle(Point2<int>(scrollbarLine->getGlobalPositionX(), scrollbarLine->getGlobalPositionY()),
-                                                  Point2<int>(scrollbarLine->getGlobalPositionX() + (int)scrollbarLine->getWidth(), scrollbarLine->getGlobalPositionY() + (int)scrollbarLine->getHeight()));
-                if (scrollbarRectangle.collideWithPoint(Point2<int>(mouseX, mouseY))) {
-                    updateScrollingPosition(mouseY);
-                    state = CURSOR_SELECTED;
-                }
+            } else if (scrollbarLine->widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
+                updateScrollingPosition(mouseY);
+                state = CURSOR_SELECTED;
             }
         }
         return true;
@@ -181,6 +176,8 @@ namespace urchin {
         //compensate the shift applied on all children (including scrollbarLine & scrollbarCursor)
         scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getPositionX(), 0.0f - (float)shiftPixelPositionY, LengthType::PIXEL));
         scrollbarCursor->updatePosition(Position(scrollbarCursor->getPosition().getPositionX(), scrollbarCursor->getPosition().getPositionY() - (float)shiftPixelPositionY, LengthType::PIXEL));
+
+        dynamic_cast<Scrollable&>(this->scrollableWidget).onScrollbarMoved();
     }
 
     std::vector<Widget*> Scrollbar::getContentChildren() const {

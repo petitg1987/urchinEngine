@@ -59,6 +59,7 @@ namespace urchin {
             Size getSize() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
+            Rectangle<int> widgetRectangle() const;
 
             int widthLengthToPixel(float, LengthType, const std::function<float()>&) const;
             float widthPixelToLength(float, LengthType) const;

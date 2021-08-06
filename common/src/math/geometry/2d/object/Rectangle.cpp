@@ -65,6 +65,12 @@ namespace urchin {
         return point.X > origin.X && point.X<maxPoint.X && point.Y > origin.Y && point.Y<maxPoint.Y;
     }
 
+    template<class T> bool Rectangle<T>::collideWithRectangle(const Rectangle<T>& other) const {
+        Point2<T> maxPoint = origin.translate(rectangleShape.getDiagonal());
+        Point2<T> otherMaxPoint = other.getMax();
+        return (origin.X < otherMaxPoint.X && maxPoint.X > other.getMin().X) && (origin.Y < otherMaxPoint.Y && maxPoint.Y > other.getMin().Y);
+    }
+
     //explicit template
     template class Rectangle<int>;
     template class Rectangle<float>;

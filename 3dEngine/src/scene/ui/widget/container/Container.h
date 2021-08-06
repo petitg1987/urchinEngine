@@ -22,10 +22,8 @@ namespace urchin {
             void detachChildren() override;
             void resetChildren();
 
-            unsigned int getContentWidth() const;
-            unsigned int getContentHeight() const;
-
             int getScrollShiftY() const override;
+            void onScrollbarMoved() const override;
 
         protected:
             Container(Position, Size, std::string);

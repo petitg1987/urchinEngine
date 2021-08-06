@@ -99,9 +99,7 @@ namespace urchin {
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                                           Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
-            if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::buildLinear()));
 

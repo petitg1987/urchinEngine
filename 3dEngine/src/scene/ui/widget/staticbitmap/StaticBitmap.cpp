@@ -43,6 +43,10 @@ namespace urchin {
                 ->build();
     }
 
+    const std::string& StaticBitmap::getImageName() const {
+        return image->getName();
+    }
+
     void StaticBitmap::prepareWidgetRendering(float) {
         updateTranslateVector(bitmapRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         bitmapRenderer->enableRenderer();
