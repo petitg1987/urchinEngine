@@ -157,6 +157,7 @@ namespace urchin {
                 scrollPercentage = 0.0f;
                 computeShiftPositionY();
             }
+            dynamic_cast<Scrollable&>(this->scrollableWidget).onScrollableContentUpdated();
         }
     }
 
@@ -176,8 +177,6 @@ namespace urchin {
         //compensate the shift applied on all children (including scrollbarLine & scrollbarCursor)
         scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getPositionX(), 0.0f - (float)shiftPixelPositionY, LengthType::PIXEL));
         scrollbarCursor->updatePosition(Position(scrollbarCursor->getPosition().getPositionX(), scrollbarCursor->getPosition().getPositionY() - (float)shiftPixelPositionY, LengthType::PIXEL));
-
-        dynamic_cast<Scrollable&>(this->scrollableWidget).onScrollbarMoved();
     }
 
     std::vector<Widget*> Scrollbar::getContentChildren() const {

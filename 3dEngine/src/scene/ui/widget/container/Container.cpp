@@ -15,31 +15,23 @@ namespace urchin {
 
     void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         Widget::onResize(sceneWidth, sceneHeight);
-
         scrollbar->onScrollableWidgetsUpdated();
-        updateChildrenVisibility();
     }
 
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
-
         scrollbar->onScrollableWidgetsUpdated();
-        updateChildrenVisibility();
     }
 
     void Container::detachChild(Widget* child){
         Widget::detachChild(child);
-
         scrollbar->onScrollableWidgetsUpdated();
-        updateChildrenVisibility();
     }
 
     void Container::detachChildren() {
         Widget::detachChildren();
 
         scrollbar->onScrollableWidgetsUpdated();
-        updateChildrenVisibility();
-
     }
 
     void Container::resetChildren() {
@@ -56,11 +48,7 @@ namespace urchin {
         return scrollbar->getScrollShiftY();
     }
 
-    void Container::onScrollbarMoved() const { //TODO rename in scrollbarContentUpdated() and should be the only method calling updateChildrenVisibility
-        updateChildrenVisibility();
-    }
-
-    void Container::updateChildrenVisibility() const { //TODO check number of call to this method. All are necessary ? => se previous comment
+    void Container::onScrollableContentUpdated() const {
         Rectangle<int> containerRectangle = widgetRectangle();
         for (const auto& child : getChildren()) {
             auto* lazyWidget = dynamic_cast<LazyWidget*>(child.get());

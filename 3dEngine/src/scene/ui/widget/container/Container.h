@@ -23,7 +23,7 @@ namespace urchin {
             void resetChildren();
 
             int getScrollShiftY() const override;
-            void onScrollbarMoved() const override;
+            void onScrollableContentUpdated() const override;
 
         protected:
             Container(Position, Size, std::string);
@@ -33,8 +33,6 @@ namespace urchin {
             bool onKeyReleaseEvent(unsigned int) override;
             bool onMouseMoveEvent(int, int) override;
             bool onScrollEvent(double) override;
-
-            void updateChildrenVisibility() const;
 
         private:
             const std::string skinName;

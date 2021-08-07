@@ -6,7 +6,10 @@
 
 namespace urchin {
 
-    //TODO add comment here ...
+    /**
+     * Widget which is able to lazy load its children.
+     * Children loading/unloading is dependent of the LazyWidget's parent. Example: Container widget lazy load children only when they are visible on screen.
+     */
     class LazyWidget : public Widget {
         public:
             static std::shared_ptr<LazyWidget> create(Widget*, Position, Size);

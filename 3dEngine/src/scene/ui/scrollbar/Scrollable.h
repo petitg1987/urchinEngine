@@ -6,7 +6,7 @@ namespace urchin {
         public:
             virtual int getScrollShiftY() const = 0;
 
-            virtual void onScrollbarMoved() const = 0;
+            virtual void onScrollableContentUpdated() const = 0;
     };
 
 }
