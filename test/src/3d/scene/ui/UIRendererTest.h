@@ -22,6 +22,8 @@ class UIRendererTest : public CppUnit::TestFixture {
 
         void buttonRemoveParentContainer();
 
+        void containerWithLazyWidgets();
+
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();
 
