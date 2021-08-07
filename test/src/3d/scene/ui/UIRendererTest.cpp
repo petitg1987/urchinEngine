@@ -118,20 +118,31 @@ void UIRendererTest::containerWithLazyWidgets() {
     auto uiRenderer = setupUiRenderer();
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(100.0f, 100.0f, LengthType::PIXEL), "test");
     uiRenderer->addWidget(container);
-    unsigned int loadedChildren = 0;
-    auto loadChildrenFunction = [&loadedChildren](LazyWidget* parent) {
+    auto loadChildrenFunction = [](LazyWidget* parent) {
         StaticBitmap::create(parent, Position(0.0f, 0.0f, LengthType::PIXEL), Size(1.0f, 1.0f, LengthType::PIXEL), "ui/widget/empty.tga");
-        loadedChildren++;
     };
-    LazyWidget::create(container.get(), Position(1.0f, 1.0f, LengthType::PIXEL), Size(1.0f, 50.0f, LengthType::PIXEL), loadChildrenFunction);
-    LazyWidget::create(container.get(), Position(1.0f, 101.0f, LengthType::PIXEL), Size(1.0f, 50.0f, LengthType::PIXEL), loadChildrenFunction);
-
-    AssertHelper::assertUnsignedIntEquals(loadedChildren, 1);
-
+    auto lazyWidget1 = LazyWidget::create(container.get(), Position(1.0f, 1.0f, LengthType::PIXEL), Size(1.0f, 50.0f, LengthType::PIXEL), loadChildrenFunction);
+    auto lazyWidget2 = LazyWidget::create(container.get(), Position(1.0f, 101.0f, LengthType::PIXEL), Size(1.0f, 50.0f, LengthType::PIXEL), loadChildrenFunction);
+    StaticBitmap::create(container.get(), Position(0.0f, 1000.0f, LengthType::PIXEL), Size(1.0f, 1.0f, LengthType::PIXEL), "ui/widget/empty.tga");
     uiRenderer->onMouseMove(50.0, 50.0);
+
+    AssertHelper::assertUnsignedIntEquals(lazyWidget1->getChildren().size(), 1);
+    AssertHelper::assertUnsignedIntEquals(lazyWidget2->getChildren().size(), 0);
+
     uiRenderer->onScroll(-1.0);
 
-    AssertHelper::assertUnsignedIntEquals(loadedChildren, 2);
+    AssertHelper::assertUnsignedIntEquals(lazyWidget1->getChildren().size(), 1);
+    AssertHelper::assertUnsignedIntEquals(lazyWidget2->getChildren().size(), 1);
+
+    uiRenderer->onScroll(-10.0);
+
+    AssertHelper::assertUnsignedIntEquals(lazyWidget1->getChildren().size(), 0);
+    AssertHelper::assertUnsignedIntEquals(lazyWidget2->getChildren().size(), 1);
+
+    uiRenderer->onScroll(-20.0);
+
+    AssertHelper::assertUnsignedIntEquals(lazyWidget1->getChildren().size(), 0);
+    AssertHelper::assertUnsignedIntEquals(lazyWidget2->getChildren().size(), 0);
 }
 
 std::unique_ptr<UIRenderer> UIRendererTest::setupUiRenderer() {

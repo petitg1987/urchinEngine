@@ -95,7 +95,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
     mainThread.join();
 
     AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.1f);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.15f);
 }
 
 void CharacterControllerIT::constructGround(const PhysicsWorld& physicsWorld) {
