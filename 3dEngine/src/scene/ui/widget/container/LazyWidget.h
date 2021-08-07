@@ -11,7 +11,7 @@ namespace urchin {
         public:
             static std::shared_ptr<LazyWidget> create(Widget*, Position, Size);
 
-            void setupLazyChildren(std::function<void()>);
+            void setupLazyChildren(std::function<void(LazyWidget*)>);
 
             void loadChildren();
             void unloadChildren();
@@ -22,7 +22,7 @@ namespace urchin {
         private:
             LazyWidget(Position, Size);
 
-            std::function<void()> loadChildrenFunction;
+            std::function<void(LazyWidget*)> loadChildrenFunction;
             bool isLoaded;
     };
 

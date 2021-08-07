@@ -12,13 +12,16 @@ namespace urchin {
         return Widget::create<LazyWidget>(new LazyWidget(position, size), parent);
     }
 
-    void LazyWidget::setupLazyChildren(std::function<void()> loadChildrenFunction) {
+    void LazyWidget::setupLazyChildren(std::function<void(LazyWidget*)> loadChildrenFunction) {
+        if (this->loadChildrenFunction) {
+            throw std::runtime_error("Load children function is already defined");
+        }
         this->loadChildrenFunction = std::move(loadChildrenFunction);
     }
 
     void LazyWidget::loadChildren() {
         if (!isLoaded && loadChildrenFunction) {
-            loadChildrenFunction();
+            loadChildrenFunction(this);
             isLoaded = true;
         }
     }
