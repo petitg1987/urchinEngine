@@ -12,9 +12,7 @@ namespace urchin {
      */
     class LazyWidget : public Widget {
         public:
-            static std::shared_ptr<LazyWidget> create(Widget*, Position, Size);
-
-            void setupLazyChildren(std::function<void(LazyWidget*)>);
+            static std::shared_ptr<LazyWidget> create(Widget*, Position, Size, std::function<void(LazyWidget*)>);
 
             void loadChildren();
             void unloadChildren();
@@ -23,7 +21,7 @@ namespace urchin {
             void createOrUpdateWidget() override;
 
         private:
-            LazyWidget(Position, Size);
+            LazyWidget(Position, Size, std::function<void(LazyWidget*)>);
 
             std::function<void(LazyWidget*)> loadChildrenFunction;
             bool isLoaded;

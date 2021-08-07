@@ -2,25 +2,19 @@
 
 namespace urchin {
 
-    LazyWidget::LazyWidget(Position position, Size size) :
+    LazyWidget::LazyWidget(Position position, Size size, std::function<void(LazyWidget*)> loadChildrenFunction) :
             Widget(position, size),
+            loadChildrenFunction(std::move(loadChildrenFunction)),
             isLoaded(false) {
 
     }
 
-    std::shared_ptr<LazyWidget> LazyWidget::create(Widget* parent, Position position, Size size) {
-        return Widget::create<LazyWidget>(new LazyWidget(position, size), parent);
-    }
-
-    void LazyWidget::setupLazyChildren(std::function<void(LazyWidget*)> loadChildrenFunction) {
-        if (this->loadChildrenFunction) {
-            throw std::runtime_error("Load children function is already defined");
-        }
-        this->loadChildrenFunction = std::move(loadChildrenFunction);
+    std::shared_ptr<LazyWidget> LazyWidget::create(Widget* parent, Position position, Size size, std::function<void(LazyWidget*)> loadChildrenFunction) {
+        return Widget::create<LazyWidget>(new LazyWidget(position, size, std::move(loadChildrenFunction)), parent);
     }
 
     void LazyWidget::loadChildren() {
-        if (!isLoaded && loadChildrenFunction) {
+        if (!isLoaded) {
             loadChildrenFunction(this);
             isLoaded = true;
         }
