@@ -18,9 +18,9 @@ namespace urchin {
     /**
      * Find the appropriate loader according to the extension of the file and load the resource
      */
-    class ResourceRetriever : public Singleton<ResourceRetriever> {
+    class ResourceRetriever : public ThreadSafeSingleton<ResourceRetriever> {
         public:
-            friend class Singleton<ResourceRetriever>;
+            friend class ThreadSafeSingleton<ResourceRetriever>;
 
             template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string>& = {}, const std::string& = "");
 

@@ -5,7 +5,7 @@
 namespace urchin {
 
     ResourceContainer::ResourceContainer() :
-            Singleton<ResourceContainer>() {
+            ThreadSafeSingleton<ResourceContainer>() {
 
     }
 
@@ -17,6 +17,8 @@ namespace urchin {
     }
 
     void ResourceContainer::addResource(const std::shared_ptr<Resource>& resource) {
+        std::lock_guard<std::mutex> lock(mutex);
+
         cleanResources();
         resources.emplace(resource->getId(), resource);
     }

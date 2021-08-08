@@ -8,9 +8,9 @@
 
 namespace urchin {
 
-    class ResourceContainer : public Singleton<ResourceContainer> {
+    class ResourceContainer : public ThreadSafeSingleton<ResourceContainer> {
         public:
-            friend class Singleton<ResourceContainer>;
+            friend class ThreadSafeSingleton<ResourceContainer>;
 
             ~ResourceContainer() override;
 
@@ -22,6 +22,7 @@ namespace urchin {
 
             void cleanResources();
 
+            mutable std::mutex mutex;
             std::map<std::string, std::weak_ptr<Resource>> resources;
     };
 

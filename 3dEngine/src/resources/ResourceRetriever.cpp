@@ -10,7 +10,6 @@ namespace urchin {
 
     ResourceRetriever::ResourceRetriever() {
         loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
-        loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
         loadersRegistry.emplace("png", std::make_unique<LoaderPNG>());
 
         loadersRegistry.emplace("urchinMesh", std::make_unique<LoaderUrchinMesh>());
