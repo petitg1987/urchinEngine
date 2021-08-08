@@ -16,7 +16,6 @@ namespace urchin {
             static constexpr char SKYBOX_TAG[] = "skybox";
             static constexpr char TEXTURES_TAG[] = "textures";
             static constexpr char FILENAME_TAG[] = "filename";
-            static constexpr char CUBE_MAP_FILENAME_TAG[] = "cubeMapFilename";
             static constexpr char OFFSET_Y_TAG[] = "offsetY";
     };
 
