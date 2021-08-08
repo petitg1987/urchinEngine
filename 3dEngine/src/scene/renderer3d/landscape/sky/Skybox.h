@@ -16,20 +16,24 @@ namespace urchin {
     class Skybox {
         public:
             explicit Skybox(const std::vector<std::string>&);
+            explicit Skybox(const std::string&);
 
             void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Matrix4<float>&) const;
 
+            const std::vector<std::string>& getFilenames() const;
+            const std::string& getCubeMapFilename() const;
+
             float getOffsetY() const;
             void setOffsetY(float);
-            const std::vector<std::string>& getFilenames() const;
 
             void prepareRendering(const Matrix4<float>&, const Point3<float>&);
 
         private:
             bool isInitialized;
-
             std::vector<std::string> filenames;
+            std::string cubeMapFilename;
+
             std::array<std::shared_ptr<Image>, 6> skyboxImages;
 
             float offsetY;

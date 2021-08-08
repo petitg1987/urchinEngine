@@ -10,16 +10,20 @@ namespace urchin {
             filenames.reserve(6);
             auto texturesChunk = udaParser.getUniqueChunk(true, TEXTURES_TAG, UdaAttribute(), skyboxChunk);
             auto filenameListChunk = udaParser.getChunks(FILENAME_TAG, UdaAttribute(), texturesChunk);
-            if (filenameListChunk.size() != 6) {
-                throw std::runtime_error("Invalid number of skybox filenames found: " + std::to_string(filenameListChunk.size()));
-            }
-            for (const auto& filenameChunk : filenameListChunk) {
-                filenames.emplace_back(filenameChunk->getStringValue());
+            if (!filenameListChunk.empty()) {
+                if (filenameListChunk.size() != 6) {
+                    throw std::runtime_error("Invalid number of skybox filenames found: " + std::to_string(filenameListChunk.size()));
+                }
+                for (const auto& filenameChunk : filenameListChunk) {
+                    filenames.emplace_back(filenameChunk->getStringValue());
+                }
+                skybox = std::make_unique<Skybox>(filenames);
+            } else {
+                auto cubeMapChunk = udaParser.getUniqueChunk(true, CUBE_MAP_FILENAME_TAG, UdaAttribute(), texturesChunk);
+                skybox = std::make_unique<Skybox>(cubeMapChunk->getStringValue());
             }
 
             auto offsetYChunk = udaParser.getUniqueChunk(true, OFFSET_Y_TAG, UdaAttribute(), skyboxChunk);
-
-            skybox = std::make_unique<Skybox>(filenames);
             skybox->setOffsetY(offsetYChunk->getFloatValue());
         }
         return skybox;
@@ -30,9 +34,14 @@ namespace urchin {
             auto& skyboxChunk = udaWriter.createChunk(SKYBOX_TAG, UdaAttribute(), &skyChunk);
 
             auto& texturesChunk = udaWriter.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
-            for (const auto& filename : skybox->getFilenames()) {
-                auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk);
-                filenameChunk.setStringValue(filename);
+            if(!skybox->getCubeMapFilename().empty()) {
+                auto& cubeMapFilenameChunk = udaWriter.createChunk(CUBE_MAP_FILENAME_TAG, UdaAttribute(), &texturesChunk);
+                cubeMapFilenameChunk.setStringValue(skybox->getCubeMapFilename());
+            } else {
+                for (const auto& filename : skybox->getFilenames()) {
+                    auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk);
+                    filenameChunk.setStringValue(filename);
+                }
             }
 
             auto& offsetYChunk = udaWriter.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk);

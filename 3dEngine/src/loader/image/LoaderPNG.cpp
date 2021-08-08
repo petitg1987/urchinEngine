@@ -16,7 +16,7 @@ namespace urchin {
         unsigned int width, height;
         lodepng::State state;
         state.info_raw.bitdepth = 16;
-        std::vector<unsigned char> pixelsRGBA16bits;
+        std::vector<unsigned char> pixelsRGBA16bits; //TODO reserve memory ?
         unsigned int errorRead = lodepng::decode(pixelsRGBA16bits, width, height, state, png);
         if (errorRead != 0) {
             throw std::invalid_argument("Cannot read the file " + filenamePath + ": " + lodepng_error_text(errorLoad));
@@ -56,9 +56,9 @@ namespace urchin {
     std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask, bool addAlphaChannel) const {
         std::vector<unsigned char> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
-        pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
+        pixels.reserve((pixelsRGBA16bits.size() / (4 * 2)) * nbChannels);
 
-        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) {
+        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) { //TODO: create method for each channelsMask
             if (channelsMask & 1u) { //red
                 pixels.push_back(pixelsRGBA16bits[i - 6]);
             }
@@ -80,14 +80,13 @@ namespace urchin {
 
     /**
      * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
-     * @param addAlphaChannel Add alpha channel if not present
      */
     std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) const {
         std::vector<uint16_t> pixels;
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
 
-        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) {
+        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) { //TODO: create method for each channelsMask
             if (channelsMask & 1u) { //red
                 pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 7] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 6])));
             }
