@@ -14,8 +14,8 @@ namespace urchin {
             std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
 
         private:
-            std::vector<unsigned char> extract8BitsChannels(const std::vector<unsigned char>&, unsigned int, bool) const;
-            std::vector<uint16_t> extract16BitsChannels(const std::vector<unsigned char>&, unsigned int) const;
+            std::vector<unsigned char> decode(const std::string&, lodepng::State&, const std::vector<unsigned char>&, unsigned int&, unsigned int&) const;
+            std::vector<uint16_t> to16Bits(const std::vector<unsigned char>&) const;
     };
 
 }

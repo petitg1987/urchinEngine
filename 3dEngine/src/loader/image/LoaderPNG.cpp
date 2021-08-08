@@ -13,36 +13,35 @@ namespace urchin {
             throw std::invalid_argument("Cannot load the file " + filenamePath + ": " + lodepng_error_text(errorLoad));
         }
 
-        unsigned int width, height;
-        lodepng::State state;
-        state.info_raw.bitdepth = 16;
-        std::vector<unsigned char> pixelsRGBA16bits; //TODO reserve memory ?
-        unsigned int errorRead = lodepng::decode(pixelsRGBA16bits, width, height, state, png);
-        if (errorRead != 0) {
-            throw std::invalid_argument("Cannot read the file " + filenamePath + ": " + lodepng_error_text(errorLoad));
-        }
+        //see lodepng.cpp#lodepng_inspect:
+        unsigned char bitDepth = png[24];
+        auto colorType = (LodePNGColorType)png[25];
 
-        unsigned int bitDepth = state.info_png.color.bitdepth;
-        LodePNGColorType colorType = state.info_png.color.colortype;
-        if (colorType == LodePNGColorType::LCT_GREY) {
+        unsigned int width, height;
+        lodepng::State state = {};
+
+        if (colorType == LodePNGColorType::LCT_RGB || colorType == LodePNGColorType::LCT_RGBA) {
             if (bitDepth == 8) {
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1, false));
-            } else if (bitDepth == 16) {
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1));
+                state.info_raw.bitdepth = 8;
+                state.info_raw.colortype = LCT_RGBA;
+                std::vector<unsigned char> pixels8Bits = decode(filenamePath, state, png, width, height);
+                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits));
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
-        } else if (colorType == LodePNGColorType::LCT_RGB) {
+        } else if (colorType == LodePNGColorType::LCT_GREY) {
             if (bitDepth == 8) {
-                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 7, true));
+                state.info_raw.bitdepth = 8;
+                state.info_raw.colortype = LCT_GREY;
+                std::vector<unsigned char> pixels8Bits = decode(filenamePath, state, png, width, height);
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels8Bits));
+            } else if (bitDepth == 16) {
+                state.info_raw.bitdepth = 16;
+                state.info_raw.colortype = LCT_GREY;
+                std::vector<uint16_t> pixels16Bits = to16Bits(decode(filenamePath, state, png, width, height));
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels16Bits));
             } else {
-                throw std::invalid_argument("Unsupported number of bits for PNG image (RGB): " + std::to_string(bitDepth));
-            }
-        } else if (colorType == LodePNGColorType::LCT_RGBA) {
-            if (bitDepth == 8) {
-                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 15, true));
-            } else {
-                throw std::invalid_argument("Unsupported number of bits for PNG image (RGBA): " + std::to_string(bitDepth));
+                throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
         } else {
             throw std::invalid_argument("Unsupported color type for PNG image: " + std::to_string(colorType));
@@ -50,57 +49,27 @@ namespace urchin {
     }
 
     /**
-     * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
-     * @param addAlphaChannel Add alpha channel if not present
+     * @param width [out] Image width
+     * @param height [out] Image height
      */
-    std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask, bool addAlphaChannel) const {
+    std::vector<unsigned char> LoaderPNG::decode(const std::string& filenamePath, lodepng::State& state, const std::vector<unsigned char>& png, unsigned int& width, unsigned int& height) const {
         std::vector<unsigned char> pixels;
-        size_t nbChannels = std::bitset<8>(channelsMask).count();
-        pixels.reserve((pixelsRGBA16bits.size() / (4 * 2)) * nbChannels);
-
-        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) { //TODO: create method for each channelsMask
-            if (channelsMask & 1u) { //red
-                pixels.push_back(pixelsRGBA16bits[i - 6]);
-            }
-            if (channelsMask & 2u) { //green
-                pixels.push_back(pixelsRGBA16bits[i - 4]);
-            }
-            if (channelsMask & 4u) { //blue
-                pixels.push_back(pixelsRGBA16bits[i - 2]);
-            }
-            if (channelsMask & 8u) { //alpha
-                pixels.push_back(pixelsRGBA16bits[i - 0]);
-            } else if (addAlphaChannel) {
-                pixels.push_back(255); //2^8 - 1
-            }
+        unsigned int errorRead = lodepng::decode(pixels, width, height, state, png);
+        if (errorRead != 0) {
+            throw std::invalid_argument("Cannot decode the PNG image " + filenamePath + ": " + lodepng_error_text(errorRead));
         }
-
         return pixels;
     }
 
-    /**
-     * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
-     */
-    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char>& pixelsRGBA16bits, unsigned int channelsMask) const {
+    std::vector<uint16_t> LoaderPNG::to16Bits(const std::vector<unsigned char>& pixelsGrey16bits) const {
         std::vector<uint16_t> pixels;
-        size_t nbChannels = std::bitset<8>(channelsMask).count();
-        pixels.reserve((pixelsRGBA16bits.size()/(4 * 2)) * nbChannels);
+        pixels.resize(pixelsGrey16bits.size() / 2);
 
-        for (std::size_t i = 7; i < pixelsRGBA16bits.size(); i += 8) { //TODO: create method for each channelsMask
-            if (channelsMask & 1u) { //red
-                pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 7] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 6])));
-            }
-            if (channelsMask & 2u) { //green
-                pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 5] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 4])));
-            }
-            if (channelsMask & 4u) { //blue
-                pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 3] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 2])));
-            }
-            if (channelsMask & 8u) { //alpha
-                pixels.push_back((uint16_t)((uint16_t)(pixelsRGBA16bits[i - 1] << 8u) | (uint16_t)(pixelsRGBA16bits[i - 0])));
-            }
+        for (std::size_t i = 0; i < pixels.size(); ++i) {
+            pixels[i] = (uint16_t)((uint16_t)(pixelsGrey16bits[i * 2] << 8u) | (uint16_t)(pixelsGrey16bits[i * 2 + 1]));
         }
 
         return pixels;
     }
+
 }
