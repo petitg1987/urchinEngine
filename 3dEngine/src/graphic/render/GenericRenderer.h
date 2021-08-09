@@ -14,6 +14,7 @@
 #include <graphic/render/model/IndexContainer.h>
 #include <graphic/render/shader/model/Shader.h>
 #include <graphic/render/shader/model/ShaderDataContainer.h>
+#include <graphic/render/blend/BlendFunction.h>
 #include <graphic/render/target/RenderTarget.h>
 #include <graphic/texture/TextureReader.h>
 
@@ -90,6 +91,7 @@ namespace urchin {
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             mutable std::vector<OffscreenRender*> texturesWriter;
             bool transparencyEnabled;
+            BlendFunction blendFunction;
             bool depthOperationsEnabled;
             bool cullFaceEnabled;
             PolygonMode polygonMode;

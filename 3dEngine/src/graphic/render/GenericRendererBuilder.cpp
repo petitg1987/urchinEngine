@@ -10,6 +10,7 @@ namespace urchin {
             shader(std::move(shader)),
             shapeType(shapeType),
             transparencyEnabled(false),
+            blendFunction(BlendFunction::buildDefault()),
             depthOperationsEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
@@ -111,13 +112,18 @@ namespace urchin {
         return uniformTextureReaders;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableTransparency() {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableTransparency(BlendFunction blendFunction) {
         this->transparencyEnabled = true;
+        this->blendFunction = blendFunction;
         return shared_from_this();
     }
 
     bool GenericRendererBuilder::isTransparencyEnabled() const {
         return transparencyEnabled;
+    }
+
+    const BlendFunction& GenericRendererBuilder::getBlendFunction() const {
+        return blendFunction;
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableDepthOperations() {

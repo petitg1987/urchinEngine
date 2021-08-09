@@ -48,7 +48,7 @@ namespace urchin {
         }
 
         if (transparencyEnabled) {
-            rendererBuilder->enableTransparency();
+            rendererBuilder->enableTransparency(BlendFunction::buildDefault());
         }
 
         renderer = rendererBuilder->build();

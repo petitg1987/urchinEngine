@@ -10,6 +10,7 @@
 #include <graphic/render/target/RenderTarget.h>
 #include <graphic/render/shader/model/Shader.h>
 #include <graphic/render/shader/model/ShaderDataContainer.h>
+#include <graphic/render/blend/BlendFunction.h>
 #include <graphic/texture/TextureReader.h>
 #include <graphic/render/GenericRenderer.h>
 
@@ -38,8 +39,9 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
             const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
-            std::shared_ptr<GenericRendererBuilder> enableTransparency();
+            std::shared_ptr<GenericRendererBuilder> enableTransparency(BlendFunction);
             bool isTransparencyEnabled() const;
+            const BlendFunction& getBlendFunction() const;
 
             std::shared_ptr<GenericRendererBuilder> enableDepthOperations();
             bool isDepthOperationsEnabled() const;
@@ -72,6 +74,7 @@ namespace urchin {
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             bool transparencyEnabled;
+            BlendFunction blendFunction;
             bool depthOperationsEnabled;
             bool cullFaceEnabled;
             PolygonMode pPolygonMode;
