@@ -17,9 +17,9 @@ namespace urchin {
     }
 
     /**
-     * Default blend function:
-     *   - Color: target.rgb = src.a * src.rgb + (1 - src.a) * target.rgb
-     *   - Alpha: target.a = 1 * src.a + 0 * target.a
+     * Default blend functions:
+     *     - target.rgb = src.a * src.rgb + (1 - src.a) * target.rgb
+     *     - target.a = 1 * src.a + 0 * target.a
      * where "target" is the target buffer to draw on and "src" is the object/model to draw in the target buffer.
      */
     BlendFunction BlendFunction::buildDefault() {
@@ -30,6 +30,7 @@ namespace urchin {
         colorBlendAttachment.srcColorBlendFactor = toVkBlenderFactor(srcColorFactor);
         colorBlendAttachment.dstColorBlendFactor = toVkBlenderFactor(dstColorFactor);
         colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+
         colorBlendAttachment.srcAlphaBlendFactor = toVkBlenderFactor(srcAlphaFactor);
         colorBlendAttachment.dstAlphaBlendFactor = toVkBlenderFactor(dstAlphaFactor);
         colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
