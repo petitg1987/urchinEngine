@@ -201,7 +201,8 @@ namespace urchin {
         if (grassTexture && renderTarget) {
             for (auto& grassQuadtree : leafGrassPatches) {
                 auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
-                        ->enableDepthOperations()
+                        ->enableDepthTest()
+                        ->enableDepthWrite()
                         ->disableCullFace()
                         ->addData(grassQuadtree->getGrassVertices())
                         ->addData(grassQuadtree->getGrassNormals())

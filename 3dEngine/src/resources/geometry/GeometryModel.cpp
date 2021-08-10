@@ -44,11 +44,12 @@ namespace urchin {
                 ->polygonMode(polygonMode);
 
         if (!alwaysVisible) {
-            rendererBuilder->enableDepthOperations();
+            rendererBuilder->enableDepthTest();
+            rendererBuilder->enableDepthWrite();
         }
 
         if (transparencyEnabled) {
-            rendererBuilder->enableTransparency(BlendFunction::buildDefault());
+            rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
         }
 
         renderer = rendererBuilder->build();

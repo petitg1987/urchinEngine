@@ -10,6 +10,8 @@ namespace urchin {
             isInitialized(false),
             displayMode(displayMode),
             customModelShaderVariable(nullptr),
+            depthTestEnabled(true),
+            depthWriteEnabled(true),
             renderTarget(nullptr) {
 
     }
@@ -66,7 +68,17 @@ namespace urchin {
 
     void ModelSetDisplayer::setCustomModelShaderVariable(std::unique_ptr<CustomModelShaderVariable> customModelShaderVariable) {
         this->customModelShaderVariable = std::move(customModelShaderVariable);
+        modelsDisplayer.clear();
+    }
 
+    void ModelSetDisplayer::setCustomDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+        this->depthTestEnabled = depthTestEnabled;
+        this->depthWriteEnabled = depthWriteEnabled;
+        modelsDisplayer.clear();
+    }
+
+    void ModelSetDisplayer::setCustomBlendFunctions(const std::vector<BlendFunction>& customBlendFunctions) {
+        this->customBlendFunctions = customBlendFunctions;
         modelsDisplayer.clear();
     }
 
@@ -75,7 +87,11 @@ namespace urchin {
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
-                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader, customModelShaderVariable.get());
+                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader);
+                modelDisplayer->setCustomModelShaderVariable(customModelShaderVariable.get());
+                modelDisplayer->setCustomDepthOperations(depthTestEnabled, depthWriteEnabled);
+                modelDisplayer->setCustomBlendFunctions(customBlendFunctions);
+                modelDisplayer->initialize();
                 modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
             }
         }

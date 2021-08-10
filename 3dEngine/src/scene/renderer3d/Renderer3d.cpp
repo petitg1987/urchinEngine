@@ -202,6 +202,7 @@ namespace urchin {
     std::shared_ptr<Model> Renderer3d::removeModel(Model* model) {
         if (model) {
             shadowManager->removeModel(model);
+            transparentManager->removeModel(model);
             modelSetDisplayer->removeModel(model);
             return modelOctreeManager->removeOctreeable(model);
         }

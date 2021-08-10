@@ -19,6 +19,8 @@ namespace urchin {
             void onCameraProjectionUpdate(const Camera&);
 
             void updateModels(const std::vector<Model*>&);
+            void removeModel(Model*);
+
             void updateTransparentTextures(const Camera&);
 
         private:

@@ -53,7 +53,8 @@ namespace urchin {
         Vector2<float> materialsStRepeat = materials->getStRepeat();
 
         auto terrainRendererBuilder = GenericRendererBuilder::create("terrain", *renderTarget, *terrainShader, ShapeType::TRIANGLE_STRIP)
-                ->enableDepthOperations()
+                ->enableDepthTest()
+                ->enableDepthWrite()
                 ->addData(this->mesh->getVertices())
                 ->addData(this->mesh->getNormals())
                 ->addData(dummyTextureCoordinates)

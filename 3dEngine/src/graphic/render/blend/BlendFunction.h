@@ -10,13 +10,16 @@ namespace urchin {
         public:
             static BlendFunction build(BlendFactor, BlendFactor, BlendFactor, BlendFactor);
             static BlendFunction buildDefault();
+            static BlendFunction buildBlendDisabled();
 
-            void setupColorBlendAttachment(VkPipelineColorBlendAttachmentState &colorBlendAttachment) const;
+            void setupColorBlend(VkPipelineColorBlendAttachmentState &colorBlendAttachment) const;
 
         private:
-            BlendFunction(BlendFactor, BlendFactor, BlendFactor, BlendFactor);
+            BlendFunction(bool, BlendFactor, BlendFactor, BlendFactor, BlendFactor);
 
             VkBlendFactor toVkBlenderFactor(BlendFactor) const;
+
+            bool bIsBlendEnabled;
 
             BlendFactor srcColorFactor;
             BlendFactor dstColorFactor;

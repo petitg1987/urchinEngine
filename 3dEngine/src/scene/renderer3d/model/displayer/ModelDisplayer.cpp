@@ -5,52 +5,103 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, RenderTarget& renderTarget,
-                                   const Shader& shader, CustomModelShaderVariable* customModelShaderVariable) :
+    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
+            isInitialized(false),
             model(model),
+            projectionMatrix(projectionMatrix),
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
-            customModelShaderVariable(customModelShaderVariable) {
 
-        for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            auto meshName = model->getMeshes()->getConstMeshes().getName();
-            auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
-                ->enableDepthOperations()
-                ->addData(constMesh->getBaseVertices())
-                ->indices(constMesh->getTrianglesIndices())
-                ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                ->addUniformData(sizeof(meshData), &meshData); //binding 1
-            if (customModelShaderVariable) {
-                customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
-            }
+            customModelShaderVariable(nullptr),
+            depthTestEnabled(true),
+            depthWriteEnabled(true) {
 
-            if (displayMode == DEFAULT_MODE || displayMode == DIFFUSE_MODE) {
-                assert(!customModelShaderVariable); //ensure binding id are correct
-                TextureParam::ReadMode textureReadMode = constMesh->getMaterial().isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
-                TextureParam diffuseTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-
-                meshRendererBuilder
-                    ->addData(constMesh->getTextureCoordinates())
-                    ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))); //binding 2
-
-                if (displayMode == DEFAULT_MODE) {
-                    TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-                    meshRendererBuilder
-                        ->addData(constMesh->getBaseNormals())
-                        ->addData(constMesh->getBaseTangents())
-                        ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 3
-                }
-            }
-
-            meshRenderers.push_back(meshRendererBuilder->build());
-        }
-
-        model->addObserver(this, Model::MESH_UPDATED);
     }
 
     ModelDisplayer::~ModelDisplayer() {
         model->removeObserver(this, Model::MESH_UPDATED);
+    }
+
+    void ModelDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {
+        if (customModelShaderVariable) {
+            if (isInitialized) {
+                throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + model->getConstMeshes()->getName());
+            } else if (displayMode == DEFAULT_MODE) {
+                //ensure shader binding id are correct
+                throw std::runtime_error("Define custom model shader variable in default mode is not implemented: " + model->getConstMeshes()->getName());
+            }
+        }
+        this-> customModelShaderVariable = customModelShaderVariable;
+    }
+
+    void ModelDisplayer::setCustomDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+        if (isInitialized) {
+            throw std::runtime_error("Can not define depth operations on an initialized model displayer: " + model->getConstMeshes()->getName());
+        }
+        this->depthTestEnabled = depthTestEnabled;
+        this->depthWriteEnabled = depthWriteEnabled;
+    }
+
+    void ModelDisplayer::setCustomBlendFunctions(const std::vector<BlendFunction>& customBlendFunctions) {
+        if (!customBlendFunctions.empty() && isInitialized) {
+            throw std::runtime_error("Can not define custom blend functions on an initialized model displayer: " + model->getConstMeshes()->getName());
+        }
+        this->customBlendFunctions = customBlendFunctions;
+    }
+
+    void ModelDisplayer::initialize() {
+        if (isInitialized) {
+            throw std::runtime_error("Model displayer is already initialized: " + model->getConstMeshes()->getName());
+        }
+
+        for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
+            auto meshName = model->getMeshes()->getConstMeshes().getName();
+            auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
+                    ->addData(constMesh->getBaseVertices())
+                    ->indices(constMesh->getTrianglesIndices())
+                    ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
+                    ->addUniformData(sizeof(positioningData), &positioningData); //binding 1
+
+                if (displayMode == DEFAULT_MODE) {
+                    meshRendererBuilder->addUniformData(sizeof(meshData), &meshData); //binding 2
+                }
+                if (customModelShaderVariable) {
+                    customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
+                }
+                if (depthTestEnabled) {
+                    meshRendererBuilder->enableDepthTest();
+                }
+                if (depthWriteEnabled) {
+                    meshRendererBuilder->enableDepthWrite();
+                }
+                if (!customBlendFunctions.empty()) {
+                    meshRendererBuilder->enableTransparency(customBlendFunctions);
+                }
+
+                TextureParam::ReadMode textureReadMode = constMesh->getMaterial().isRepeatableTextures() ?
+                        TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+                if (displayMode == DEFAULT_MODE || displayMode == DIFFUSE_MODE) {
+                    TextureParam diffuseTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
+
+                    meshRendererBuilder
+                            ->addData(constMesh->getTextureCoordinates())
+                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))); //binding 3
+                }
+                if (displayMode == DEFAULT_MODE) {
+                    TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
+                    meshRendererBuilder
+                            ->addData(constMesh->getBaseNormals())
+                            ->addData(constMesh->getBaseTangents())
+                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 4
+                }
+
+                meshRenderers.push_back(meshRendererBuilder->build());
+        }
+
+        model->addObserver(this, Model::MESH_UPDATED);
+
+        isInitialized = true;
     }
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera& camera) {
@@ -79,14 +130,16 @@ namespace urchin {
 
     void ModelDisplayer::prepareRendering(const Matrix4<float>& viewMatrix) const {
         unsigned int meshIndex = 0;
-        for (auto& meshRenderer : meshRenderers) { //TODO reduce data send for depth_only and diffuse !
-            meshData.viewMatrix = viewMatrix;
-            meshData.modelMatrix = model->getTransform().getTransformMatrix();
-            meshData.normalMatrix = (displayMode == DEFAULT_MODE) ? model->getTransform().getTransformMatrix().inverse().transpose() : Matrix4<float>();
-            meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex).getMaterial().getAmbientFactor();
+        for (auto& meshRenderer : meshRenderers) {
+            positioningData.viewMatrix = viewMatrix;
+            positioningData.modelMatrix = model->getTransform().getTransformMatrix();
+            meshRenderer->updateUniformData(1, &positioningData);
 
-            meshRenderer->updateUniformData(1, &meshData);
-
+            if (displayMode == DEFAULT_MODE) {
+                meshData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
+                meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex).getMaterial().getAmbientFactor();
+                meshRenderer->updateUniformData(2, &meshData);
+            }
             if (customModelShaderVariable) {
                 customModelShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }

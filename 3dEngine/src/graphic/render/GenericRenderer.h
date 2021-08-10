@@ -90,9 +90,9 @@ namespace urchin {
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             mutable std::vector<OffscreenRender*> texturesWriter;
-            bool transparencyEnabled;
-            BlendFunction blendFunction;
-            bool depthOperationsEnabled;
+            std::vector<BlendFunction> blendFunctions;
+            bool depthTestEnabled;
+            bool depthWriteEnabled;
             bool cullFaceEnabled;
             PolygonMode polygonMode;
             float lineWidth;

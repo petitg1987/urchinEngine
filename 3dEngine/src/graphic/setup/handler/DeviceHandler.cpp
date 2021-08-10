@@ -34,6 +34,7 @@ namespace urchin {
         //List of features and extensions required to run the engine:
         physicalDeviceRequiredFeatures = {
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"),
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"),
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, wideLines), "wide lines"),
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"),
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy")

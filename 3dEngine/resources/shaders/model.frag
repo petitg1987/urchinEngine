@@ -1,14 +1,12 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(std140, set = 0, binding = 1) uniform MeshData {
-    mat4 mView;
-    mat4 mModel;
+layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
     float ambientFactor;
 } meshData;
-layout(binding = 2) uniform sampler2D diffuseTex;
-layout(binding = 3) uniform sampler2D normalTex;
+layout(binding = 3) uniform sampler2D diffuseTex;
+layout(binding = 4) uniform sampler2D normalTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;

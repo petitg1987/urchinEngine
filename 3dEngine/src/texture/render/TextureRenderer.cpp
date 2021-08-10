@@ -168,7 +168,7 @@ namespace urchin {
                 ->addUniformData(sizeof(renderingData), &renderingData) //binding 1
                 ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildNearest())); //binding 2
         if (transparencyEnabled) {
-            rendererBuilder->enableTransparency(BlendFunction::buildDefault());
+            rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
         }
         renderer = rendererBuilder->build();
 

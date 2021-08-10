@@ -39,12 +39,13 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
             const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
-            std::shared_ptr<GenericRendererBuilder> enableTransparency(BlendFunction);
-            bool isTransparencyEnabled() const;
-            const BlendFunction& getBlendFunction() const;
+            std::shared_ptr<GenericRendererBuilder> enableTransparency(const std::vector<BlendFunction>&);
+            const std::vector<BlendFunction>& getBlendFunctions() const;
 
-            std::shared_ptr<GenericRendererBuilder> enableDepthOperations();
-            bool isDepthOperationsEnabled() const;
+            std::shared_ptr<GenericRendererBuilder> enableDepthTest();
+            bool isDepthTestEnabled() const;
+            std::shared_ptr<GenericRendererBuilder> enableDepthWrite();
+            bool isDepthWriteEnabled() const;
 
             std::shared_ptr<GenericRendererBuilder> disableCullFace();
             bool isCullFaceEnabled() const;
@@ -73,9 +74,9 @@ namespace urchin {
             std::shared_ptr<IndexContainer> pIndices;
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
-            bool transparencyEnabled;
-            BlendFunction blendFunction;
-            bool depthOperationsEnabled;
+            std::vector<BlendFunction> blendFunctions;
+            bool depthTestEnabled;
+            bool depthWriteEnabled;
             bool cullFaceEnabled;
             PolygonMode pPolygonMode;
             float pLineWidth;

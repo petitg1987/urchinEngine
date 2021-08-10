@@ -22,9 +22,9 @@ namespace urchin {
             indices(rendererBuilder->getIndices()),
             uniformData(rendererBuilder->getUniformData()),
             uniformTextureReaders(rendererBuilder->getUniformTextureReaders()),
-            transparencyEnabled(rendererBuilder->isTransparencyEnabled()),
-            blendFunction(rendererBuilder->getBlendFunction()),
-            depthOperationsEnabled(rendererBuilder->isDepthOperationsEnabled()),
+            blendFunctions(rendererBuilder->getBlendFunctions()),
+            depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
+            depthWriteEnabled(rendererBuilder->isDepthWriteEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
             lineWidth(rendererBuilder->getLineWidth()),
@@ -36,7 +36,7 @@ namespace urchin {
             graphicsPipeline(nullptr),
             descriptorPool(nullptr),
             drawCommandDirty(false) {
-        if (depthOperationsEnabled && !renderTarget.hasDepthAttachment()) {
+        if ((depthTestEnabled || depthWriteEnabled) && !renderTarget.hasDepthAttachment()) {
             throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
         }
 
@@ -240,8 +240,8 @@ namespace urchin {
         //depth and stencil stage
         VkPipelineDepthStencilStateCreateInfo depthStencil{};
         depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-        depthStencil.depthTestEnable = depthOperationsEnabled ? VK_TRUE : VK_FALSE;
-        depthStencil.depthWriteEnable = depthOperationsEnabled ? VK_TRUE : VK_FALSE;
+        depthStencil.depthTestEnable = depthTestEnabled ? VK_TRUE : VK_FALSE;
+        depthStencil.depthWriteEnable = depthWriteEnabled ? VK_TRUE : VK_FALSE;
         depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
         depthStencil.depthBoundsTestEnable = VK_FALSE;
         depthStencil.minDepthBounds = 0.0f;
@@ -251,12 +251,16 @@ namespace urchin {
         depthStencil.back = {};
 
         //color blending
+        if (!blendFunctions.empty() && blendFunctions.size() != renderTarget.getNumColorAttachment()) {
+            throw std::runtime_error("Number of blend functions (" + std::to_string(blendFunctions.size()) + ") does not match with number of color attachments (" + std::to_string(renderTarget.getNumColorAttachment()) + ")");
+        } else {
+            blendFunctions.resize(renderTarget.getNumColorAttachment(), BlendFunction::buildBlendDisabled());
+        }
         std::vector<VkPipelineColorBlendAttachmentState> colorBlendAttachments;
         for (std::size_t i = 0; i < renderTarget.getNumColorAttachment(); ++i) {
             VkPipelineColorBlendAttachmentState colorBlendAttachment{};
             colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-            colorBlendAttachment.blendEnable = transparencyEnabled ? VK_TRUE : VK_FALSE;
-            blendFunction.setupColorBlendAttachment(colorBlendAttachment);
+            blendFunctions[i].setupColorBlend(colorBlendAttachment);
             colorBlendAttachments.push_back(colorBlendAttachment);
         }
         VkPipelineColorBlendStateCreateInfo colorBlending{};

@@ -33,7 +33,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(isChecked() ? texChecked : texUnchecked, TextureParam::buildLinear())) //binding 3
-                ->enableTransparency(BlendFunction::buildDefault())
+                ->enableTransparency({BlendFunction::buildDefault()})
                 ->build();
     }
 

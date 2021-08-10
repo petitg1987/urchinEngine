@@ -4,9 +4,11 @@
 layout(std140, set = 0, binding = 0) uniform Projection {
     mat4 matrix;
 } projection;
-layout(std140, set = 0, binding = 1) uniform MeshData {
+layout(std140, set = 0, binding = 1) uniform PositioningData {
     mat4 mView;
     mat4 mModel;
+} postioningData;
+layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
     float ambientFactor;
 } meshData;
@@ -29,5 +31,5 @@ void main() {
     n = normalize(mat3(meshData.mNormal) * normal);
     b = normalize(cross(n, t));
 
-    gl_Position = projection.matrix * (meshData.mView * (meshData.mModel * vec4(vertexPosition, 1.0)));
+    gl_Position = projection.matrix * (postioningData.mView * (postioningData.mModel * vec4(vertexPosition, 1.0)));
 }

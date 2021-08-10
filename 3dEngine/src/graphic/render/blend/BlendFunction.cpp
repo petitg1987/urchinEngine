@@ -4,7 +4,8 @@
 
 namespace urchin {
 
-    BlendFunction::BlendFunction(BlendFactor srcColorFactor, BlendFactor dstColorFactor, BlendFactor srcAlphaFactor, BlendFactor dstAlphaFactor) :
+    BlendFunction::BlendFunction(bool isBlendEnabled, BlendFactor srcColorFactor, BlendFactor dstColorFactor, BlendFactor srcAlphaFactor, BlendFactor dstAlphaFactor) :
+            bIsBlendEnabled(isBlendEnabled),
             srcColorFactor(srcColorFactor),
             dstColorFactor(dstColorFactor),
             srcAlphaFactor(srcAlphaFactor),
@@ -13,7 +14,7 @@ namespace urchin {
     }
 
     BlendFunction BlendFunction::build(BlendFactor srcColorFactor, BlendFactor dstColorFactor, BlendFactor srcAlphaFactor, BlendFactor dstAlphaFactor) {
-        return BlendFunction(srcColorFactor, dstColorFactor, srcAlphaFactor, dstAlphaFactor);
+        return BlendFunction(true, srcColorFactor, dstColorFactor, srcAlphaFactor, dstAlphaFactor);
     }
 
     /**
@@ -23,10 +24,16 @@ namespace urchin {
      * where "target" is the target buffer to draw on and "src" is the object/model to draw in the target buffer.
      */
     BlendFunction BlendFunction::buildDefault() {
-        return BlendFunction(SRC_ALPHA, ONE_MINUS_SRC_ALPHA, ONE, ZERO);
+        return BlendFunction(true, SRC_ALPHA, ONE_MINUS_SRC_ALPHA, ONE, ZERO);
     }
 
-    void BlendFunction::setupColorBlendAttachment(VkPipelineColorBlendAttachmentState &colorBlendAttachment) const {
+    BlendFunction BlendFunction::buildBlendDisabled() {
+        return BlendFunction(false, ONE, ONE, ONE, ONE);
+    }
+
+    void BlendFunction::setupColorBlend(VkPipelineColorBlendAttachmentState &colorBlendAttachment) const {
+        colorBlendAttachment.blendEnable = bIsBlendEnabled ? VK_TRUE : VK_FALSE;
+
         colorBlendAttachment.srcColorBlendFactor = toVkBlenderFactor(srcColorFactor);
         colorBlendAttachment.dstColorBlendFactor = toVkBlenderFactor(dstColorFactor);
         colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;

@@ -9,9 +9,8 @@ namespace urchin {
             renderTarget(renderTarget),
             shader(std::move(shader)),
             shapeType(shapeType),
-            transparencyEnabled(false),
-            blendFunction(BlendFunction::buildDefault()),
-            depthOperationsEnabled(false),
+            depthTestEnabled(false),
+            depthWriteEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
             pLineWidth(1.0f),
@@ -112,27 +111,32 @@ namespace urchin {
         return uniformTextureReaders;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableTransparency(BlendFunction blendFunction) {
-        this->transparencyEnabled = true;
-        this->blendFunction = blendFunction;
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableTransparency(const std::vector<BlendFunction>& blendFunctions) {
+        assert(!blendFunctions.empty());
+        this->blendFunctions = blendFunctions;
         return shared_from_this();
     }
 
-    bool GenericRendererBuilder::isTransparencyEnabled() const {
-        return transparencyEnabled;
+    const std::vector<BlendFunction>& GenericRendererBuilder::getBlendFunctions() const {
+        return blendFunctions;
     }
 
-    const BlendFunction& GenericRendererBuilder::getBlendFunction() const {
-        return blendFunction;
-    }
-
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableDepthOperations() {
-        this->depthOperationsEnabled = true;
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableDepthTest() {
+        this->depthTestEnabled = true;
         return shared_from_this();
     }
 
-    bool GenericRendererBuilder::isDepthOperationsEnabled() const {
-        return depthOperationsEnabled;
+    bool GenericRendererBuilder::isDepthTestEnabled() const {
+        return depthTestEnabled;
+    }
+
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableDepthWrite() {
+        this->depthWriteEnabled = true;
+        return shared_from_this();
+    }
+
+    bool GenericRendererBuilder::isDepthWriteEnabled() const {
+        return depthWriteEnabled;
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::disableCullFace() {

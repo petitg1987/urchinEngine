@@ -70,7 +70,8 @@ namespace urchin {
                     Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
             };
             waterRenderer = GenericRendererBuilder::create("water", *renderTarget, *waterShader, ShapeType::TRIANGLE)
-                    ->enableDepthOperations()
+                    ->enableDepthTest()
+                    ->enableDepthWrite()
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
