@@ -40,6 +40,7 @@ namespace urchin {
             skyContainer(std::make_unique<SkyContainer>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
             ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
+            transparentManager(std::make_unique<TransparentManager>()),
             shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
 
             //lighting pass rendering
@@ -144,6 +145,10 @@ namespace urchin {
         }
     }
 
+    TransparentManager& Renderer3d::getTransparentManager() const {
+        return *transparentManager;
+    }
+
     AntiAliasingManager& Renderer3d::getAntiAliasingManager() const {
         return *antiAliasingManager;
     }
@@ -175,6 +180,7 @@ namespace urchin {
         skyContainer->onCameraProjectionUpdate(*camera);
         shadowManager->onCameraProjectionUpdate(*camera);
         ambientOcclusionManager->onCameraProjectionUpdate(*camera);
+        transparentManager->onCameraProjectionUpdate(*camera);
     }
 
     void Renderer3d::updateModelsInFrustum() {
@@ -326,6 +332,8 @@ namespace urchin {
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
         ambientOcclusionManager->onTexturesUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
 
+        transparentManager->onResize(sceneWidth, sceneHeight);
+
         if (isAntiAliasingActivated) {
             antiAliasingManager->onResize(sceneWidth, sceneHeight);
             antiAliasingManager->onTextureUpdate(lightingPassTexture);
@@ -414,7 +422,7 @@ namespace urchin {
 
         //determine model visible on scene
         updateModelsInFrustum();
-        modelSetDisplayer->setModels(modelsInFrustum);
+        modelSetDisplayer->setModels(modelsInFrustum); //TODO filter out transparent models
 
         //determine visible lights on scene
         lightManager->updateVisibleLights(camera->getFrustum());
@@ -433,6 +441,8 @@ namespace urchin {
                 model->updateAnimation(dt);
             }
         }
+
+        transparentManager->updateModels(modelsInFrustum); //TODO filter out opaque models
     }
 
     /**
@@ -461,6 +471,8 @@ namespace urchin {
         if (visualOption.isAmbientOcclusionActivated) {
             ambientOcclusionManager->updateAOTexture(*camera);
         }
+
+        transparentManager->updateTransparentTextures(*camera);
     }
 
     void Renderer3d::renderDebugSceneData() {

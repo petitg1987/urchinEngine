@@ -20,7 +20,7 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse
-    fragColor = texture(diffuseTex, texCoordinates);
+    fragColor = vec4(texture(diffuseTex, texCoordinates).rgb, 1.0);
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));

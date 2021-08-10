@@ -12,9 +12,13 @@ layout(std140, set = 0, binding = 1) uniform MeshData {
 } meshData;
 
 layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec2 texCoord;
 
+layout(location = 0) out vec2 texCoordinates;
 invariant gl_Position;
 
 void main() {
+    texCoordinates = texCoord;
+
     gl_Position = projection.matrix * (meshData.mView * (meshData.mModel * vec4(vertexPosition, 1.0)));
 }

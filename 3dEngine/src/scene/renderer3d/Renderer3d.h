@@ -10,6 +10,7 @@
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h>
 #include <scene/renderer3d/postprocess/ambientocclusion/AmbientOcclusionManager.h>
+#include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
@@ -49,6 +50,7 @@ namespace urchin {
             void activateShadow(bool);
             AmbientOcclusionManager& getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
+            TransparentManager& getTransparentManager() const;
             AntiAliasingManager& getAntiAliasingManager() const;
             void activateAntiAliasing(bool);
 
@@ -120,6 +122,7 @@ namespace urchin {
             std::unique_ptr<SkyContainer> skyContainer;
             std::unique_ptr<LightManager> lightManager;
             std::unique_ptr<AmbientOcclusionManager> ambientOcclusionManager;
+            std::unique_ptr<TransparentManager> transparentManager;
             std::unique_ptr<ShadowManager> shadowManager;
 
             std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;

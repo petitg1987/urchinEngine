@@ -175,7 +175,7 @@ namespace urchin {
         return textureImageView;
     }
 
-    VkFormat Texture::getVkFormat() const { //should only return format with a coverage of 100%: http://vulkan.gpuinfo.org/listformats.php
+    VkFormat Texture::getVkFormat() const { //should only return format with a coverage of > 95%: http://vulkan.gpuinfo.org/listformats.php
         if (format == TextureFormat::DEPTH_32_FLOAT) {
             return VK_FORMAT_D32_SFLOAT;
         } else if (format == TextureFormat::GRAYSCALE_8_INT) {
@@ -186,6 +186,10 @@ namespace urchin {
             return VK_FORMAT_R32G32_SFLOAT;
         } else if (format == TextureFormat::RGBA_8_INT) {
             return VK_FORMAT_R8G8B8A8_UNORM;
+        } else if (format == TextureFormat::RGBA_16_FLOAT) {
+            return VK_FORMAT_R16G16B16A16_SFLOAT;
+        } else if (format == TextureFormat::RGBA_32_FLOAT) {
+            return VK_FORMAT_R32G32B32A32_SFLOAT;
         }
         throw std::runtime_error("Unknown texture format: " + std::to_string(format));
     }
@@ -398,8 +402,10 @@ namespace urchin {
             return 1;
         } else if (format == TextureFormat::GRAYSCALE_16_FLOAT) {
             return 2;
-        } else if (format == TextureFormat::RG_32_FLOAT) {
+        } else if (format == TextureFormat::RG_32_FLOAT || format == TextureFormat::RGBA_16_FLOAT) {
             return 8;
+        } else if (format == TextureFormat::RGBA_32_FLOAT) {
+            return 16;
         }
         throw std::runtime_error("Unknown texture format: " + std::to_string(format));
     }

@@ -25,19 +25,20 @@ namespace urchin {
         this->renderTarget = &renderTarget;
 
         if (displayMode == DEFAULT_MODE) {
-            //shader creation
-            std::string vertexShaderName = "model.vert.spv";
             if (fragmentShaderName.empty()) { //use default fragment shader
                 fragmentShaderName = "model.frag.spv";
             }
-            modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
+            modelShader = ShaderBuilder::createShader("model.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else if (displayMode == DEPTH_ONLY_MODE) {
-            //shader creation
-            std::string vertexShaderName = "modelDepthOnly.vert.spv";
             if (fragmentShaderName.empty()) { //use default fragment shader
                 fragmentShaderName = "modelDepthOnly.frag.spv";
             }
-            modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
+            modelShader = ShaderBuilder::createShader("modelDepthOnly.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
+        } else if (displayMode == DIFFUSE_MODE) {
+            if (fragmentShaderName.empty()) { //use default fragment shader
+                fragmentShaderName = "modelDiffuse.frag.spv";
+            }
+            modelShader = ShaderBuilder::createShader("modelDiffuse.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }
