@@ -13,7 +13,7 @@ namespace urchin {
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
         if (maskMapFilename.empty()) {
-            maskTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0})).createTexture(false);
+            maskTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0}), true).createTexture(false);
         } else {
             auto maskImage = ResourceRetriever::instance().getResource<Image>(maskMapFilename);
             if (maskImage->getImageFormat() != Image::IMAGE_RGBA) {

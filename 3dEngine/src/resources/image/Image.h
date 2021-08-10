@@ -19,8 +19,8 @@ namespace urchin {
                 CHANNEL_16
             };
 
-            Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char>&&);
-            Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t>&&);
+            Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char>&&, bool);
+            Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t>&&, bool);
             ~Image() override = default;
 
             unsigned int getWidth() const;
@@ -29,6 +29,7 @@ namespace urchin {
             ChannelPrecision getChannelPrecision() const;
             const std::vector<unsigned char>& getTexels() const;
             const std::vector<uint16_t>& getTexels16Bits() const;
+            bool hasTransparency() const;
 
             unsigned int retrieveComponentsCount() const;
             TextureFormat retrieveTextureFormat() const;
@@ -42,6 +43,7 @@ namespace urchin {
             ChannelPrecision channelPrecision;
             std::vector<unsigned char> texels8; //8 bits
             std::vector<uint16_t> texels16; //16 bits
+            bool bHasTransparency;
     };
 
 }

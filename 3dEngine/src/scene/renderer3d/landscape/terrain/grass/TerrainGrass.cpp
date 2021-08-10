@@ -264,7 +264,7 @@ namespace urchin {
         this->grassMaskFilename = grassMaskFilename;
 
         if (grassMaskFilename.empty()) {
-            grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0})).createTexture(false);
+            grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}), false).createTexture(false);
         } else {
             auto grassMaskImage = ResourceRetriever::instance().getResource<Image>(grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);

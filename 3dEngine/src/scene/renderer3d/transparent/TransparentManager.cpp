@@ -61,9 +61,9 @@ namespace urchin {
 
         modelSetDisplayer->setCustomDepthOperations(true, false /* disable depth write */);
 
-        BlendFunction accumBlendFunction = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
-        BlendFunction revealBlendFunction = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
-        modelSetDisplayer->setCustomBlendFunctions({accumBlendFunction, revealBlendFunction});
+        BlendFunction accumBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
+        BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
+        modelSetDisplayer->setCustomBlendFunctions({accumBlend, revealBlend});
 
         modelSetDisplayer->initialize(*offscreenRenderTarget);
         modelSetDisplayer->onCameraProjectionUpdate(*camera);

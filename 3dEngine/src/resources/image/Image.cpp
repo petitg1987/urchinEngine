@@ -4,21 +4,23 @@
 
 namespace urchin {
 
-    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char>&& texels8) :
+    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char>&& texels8, bool hasTransparency) :
             width(width),
             height(height),
             format(format),
             channelPrecision(ChannelPrecision::CHANNEL_8),
-            texels8(texels8) {
+            texels8(texels8),
+            bHasTransparency(hasTransparency) {
 
     }
 
-    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t>&& texels16) :
+    Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t>&& texels16, bool hasTransparency) :
             width(width),
             height(height),
             format(format),
             channelPrecision(ChannelPrecision::CHANNEL_16),
-            texels16(texels16) {
+            texels16(texels16),
+            bHasTransparency(hasTransparency) {
 
     }
 
@@ -42,7 +44,6 @@ namespace urchin {
         if (channelPrecision != ChannelPrecision::CHANNEL_8) {
             throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
         }
-
         return texels8;
     }
 
@@ -50,8 +51,11 @@ namespace urchin {
         if (channelPrecision != ChannelPrecision::CHANNEL_16) {
             throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
         }
-
         return texels16;
+    }
+
+    bool Image::hasTransparency() const {
+        return bHasTransparency;
     }
 
     unsigned int Image::retrieveComponentsCount() const {

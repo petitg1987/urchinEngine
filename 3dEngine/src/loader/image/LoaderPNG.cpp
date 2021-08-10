@@ -25,7 +25,11 @@ namespace urchin {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_RGBA;
                 std::vector<unsigned char> pixels8Bits = decode(filenamePath, state, png, width, height);
-                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits));
+                bool hasTransparency = false;
+                if (colorType == LodePNGColorType::LCT_RGBA) {
+                    hasTransparency = isPixelsHaveTransparency(pixels8Bits);
+                }
+                return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits), hasTransparency);
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
@@ -34,12 +38,12 @@ namespace urchin {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_GREY;
                 std::vector<unsigned char> pixels8Bits = decode(filenamePath, state, png, width, height);
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels8Bits));
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels8Bits), false);
             } else if (bitDepth == 16) {
                 state.info_raw.bitdepth = 16;
                 state.info_raw.colortype = LCT_GREY;
                 std::vector<uint16_t> pixels16Bits = to16Bits(decode(filenamePath, state, png, width, height));
-                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels16Bits));
+                return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels16Bits), false);
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
             }
@@ -59,6 +63,16 @@ namespace urchin {
             throw std::invalid_argument("Cannot decode the PNG image " + filenamePath + ": " + lodepng_error_text(errorRead));
         }
         return pixels;
+    }
+
+    bool LoaderPNG::isPixelsHaveTransparency(const std::vector<unsigned char>& pixelsRgba8Bits) const {
+        assert(pixelsRgba8Bits.size() % 4 == 0);
+        for(std::size_t i = 0; i < pixelsRgba8Bits.size(); i += 4) {
+            if (pixelsRgba8Bits[i] < 255) {
+                return true;
+            }
+        }
+        return false;
     }
 
     std::vector<uint16_t> LoaderPNG::to16Bits(const std::vector<unsigned char>& pixelsGrey16bits) const {

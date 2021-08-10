@@ -49,7 +49,7 @@ namespace urchin {
                     defaultTexPixels.push_back(255); //B
                     defaultTexPixels.push_back(255); //A
                 }
-                skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels));
+                skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels), false);
             }
         }
 

@@ -190,7 +190,7 @@ namespace urchin {
         vkDestroyRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
     }
 
-    void RenderTarget::createDepthResources() {
+    void RenderTarget::createDepthResources() { //TODO adapt tu use one from previous rendering
         if (hasDepthAttachment()) {
             if (getLayer() == 1) {
                 depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);

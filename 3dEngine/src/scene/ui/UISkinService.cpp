@@ -115,7 +115,7 @@ namespace urchin {
         }
 
         //create the texture
-        return Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels)).createTexture(false);
+        return Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels), rawWidgetImage->hasTransparency()).createTexture(false);
     }
 
     Length UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName) const {

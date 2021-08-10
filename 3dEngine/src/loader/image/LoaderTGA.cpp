@@ -122,26 +122,26 @@ namespace urchin {
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0: origin bottom, 1: origin top
         bool addAlphaChannel = componentsCount == 3 && format == Image::IMAGE_RGBA;
         unsigned int expectedComponentsCount = addAlphaChannel ? 4 : componentsCount;
+        bool hasTransparency = false;
 
-        std::vector<unsigned char> adjustedTexels(width * height * expectedComponentsCount, 0);
+        std::vector<unsigned char> adjustedTexels(width * height * expectedComponentsCount, 255 /* 255 for alpha channel */);
         for (unsigned int heightIndex = 0, heightInverseIndex = height - 1; heightIndex < height; heightIndex++, heightInverseIndex--) {
             unsigned int srcHeightIndex = (origin == 0) ? heightInverseIndex : heightIndex;
-            for (unsigned int widthIndex = 0; widthIndex < width; widthIndex++) {
 
+            for (unsigned int widthIndex = 0; widthIndex < width; widthIndex++) {
                 for (unsigned int componentIndex = 0; componentIndex < componentsCount; ++componentIndex) {
                     unsigned int dstIndex = heightIndex * (width * expectedComponentsCount) + widthIndex * expectedComponentsCount + componentIndex;
                     unsigned int srcIndex = srcHeightIndex * (width * componentsCount) + widthIndex * componentsCount + componentIndex;
                     adjustedTexels[dstIndex] = texels[srcIndex];
-                }
 
-                if (addAlphaChannel) {
-                    unsigned int dstAlphaIndex = heightIndex * (width * expectedComponentsCount) + widthIndex * expectedComponentsCount + 3;
-                    adjustedTexels[dstAlphaIndex] = 255;
+                    if (!hasTransparency && componentIndex == 3 && adjustedTexels[dstIndex] < 255) {
+                        hasTransparency = true;
+                    }
                 }
             }
         }
 
-        return std::make_shared<Image>(width, height, format, std::move(adjustedTexels));
+        return std::make_shared<Image>(width, height, format, std::move(adjustedTexels), hasTransparency);
     }
 
     /**
