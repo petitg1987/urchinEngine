@@ -11,6 +11,7 @@
 namespace urchin {
 
     RenderTarget::RenderTarget(std::string name, DepthAttachmentType depthAttachmentType) :
+            isInitialized(false),
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
@@ -41,15 +42,28 @@ namespace urchin {
         return depthAttachmentType != NO_DEPTH_ATTACHMENT;
     }
 
-    bool RenderTarget::isReadableDepthAttachment() const {
-        return depthAttachmentType == READ_WRITE_DEPTH_ATTACHMENT;
+    /**
+     * Provide a depth texture created in another render target
+     */
+    void RenderTarget::setExternalDepthTexture(const std::shared_ptr<Texture>& externalDepthTexture) { //TODO check dependency on this texture. Are we sure the texture is completed ?
+        assert(!isInitialized);
+        if (depthAttachmentType != EXTERNAL_DEPTH_ATTACHMENT) {
+            throw std::runtime_error("Can not define an external depth texture. Wrong type of depth attachment: " + std::to_string(depthAttachmentType));
+        }
+        this->externalDepthTexture = externalDepthTexture;
     }
 
     const std::shared_ptr<Texture>& RenderTarget::getDepthTexture() const {
-        if (!isReadableDepthAttachment()) {
-            throw std::runtime_error("Cannot retrieve depth texture on a render target created without a readable depth attachment");
+        if (depthAttachmentType == NO_DEPTH_ATTACHMENT) {
+            throw std::runtime_error("Cannot retrieve depth texture on a render target created without a depth attachment");
+        } else if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT) {
+            throw std::runtime_error("Cannot retrieve depth texture on a render target created with a local depth attachment");
+        } else if (depthAttachmentType == OVERALL_DEPTH_ATTACHMENT) {
+            return depthTexture;
+        } else if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
+            return externalDepthTexture;
         }
-        return depthTexture;
+        throw std::runtime_error("Unknown depth attachment type: " + std::to_string(depthAttachmentType));
     }
 
     void RenderTarget::addRenderer(GenericRenderer* renderer) {
@@ -130,12 +144,27 @@ namespace urchin {
         VkAttachmentDescription depthAttachment{};
         depthAttachment.format = VK_FORMAT_D32_SFLOAT;
         depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-        depthAttachment.storeOp = isReadableDepthAttachment() ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;
+
+        if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
+            depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
+            depthAttachment.initialLayout = finalLayout;
+        } else if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT || depthAttachmentType == OVERALL_DEPTH_ATTACHMENT) {
+            depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+            depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        }
+        depthAttachment.finalLayout = finalLayout;
+
+        if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT) {
+            depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        } else if (depthAttachmentType == OVERALL_DEPTH_ATTACHMENT || depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
+            depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        } else {
+            throw std::runtime_error("Unknown depth attachment type: " + std::to_string(depthAttachmentType));
+        }
+
         depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         depthAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        depthAttachment.finalLayout = finalLayout;
+
         return depthAttachment;
     }
 
@@ -190,14 +219,23 @@ namespace urchin {
         vkDestroyRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
     }
 
-    void RenderTarget::createDepthResources() { //TODO adapt tu use one from previous rendering
+    void RenderTarget::createDepthResources() {
         if (hasDepthAttachment()) {
-            if (getLayer() == 1) {
-                depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+            if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
+                if (!externalDepthTexture) {
+                    throw std::runtime_error("An external depth texture is required on render target " + getName());
+                } else if (getLayer() != externalDepthTexture->getLayer()) {
+                    throw std::runtime_error("The external depth texture has " + std::to_string(externalDepthTexture->getLayer()) + " layer but " + std::to_string(getLayer()) + " are required on render target " + getName());
+                }
+                depthTexture = externalDepthTexture;
             } else {
-                depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+                if (getLayer() == 1) {
+                    depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+                } else {
+                    depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+                }
+                depthTexture->initialize();
             }
-            depthTexture->initialize();
         }
     }
 

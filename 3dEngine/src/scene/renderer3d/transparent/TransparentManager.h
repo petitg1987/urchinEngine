@@ -15,6 +15,7 @@ namespace urchin {
             TransparentManager();
             ~TransparentManager();
 
+            void onTexturesUpdate(const std::shared_ptr<Texture>&);
             void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera&);
 
@@ -32,6 +33,7 @@ namespace urchin {
             unsigned int sceneHeight;
             const Camera* camera;
 
+            std::shared_ptr<Texture> depthTexture;
             std::unique_ptr<OffscreenRender> offscreenRenderTarget;
             std::shared_ptr<Texture> accumTexture;
             std::shared_ptr<Texture> revealTexture;

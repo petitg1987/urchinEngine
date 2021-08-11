@@ -16,8 +16,9 @@ namespace urchin {
         public:
             enum DepthAttachmentType {
                 NO_DEPTH_ATTACHMENT, //no depth attachment
-                WRITE_ONLY_DEPTH_ATTACHMENT, //depth attachment not readable outside the render target
-                READ_WRITE_DEPTH_ATTACHMENT //depth attachment readable outside the render target
+                LOCAL_DEPTH_ATTACHMENT, //depth attachment which cannot be used outside this render target
+                OVERALL_DEPTH_ATTACHMENT, //depth attachment which can be read and write outside this render target
+                EXTERNAL_DEPTH_ATTACHMENT //depth attachment coming from another render target
             };
 
             explicit RenderTarget(std::string, DepthAttachmentType);
@@ -36,7 +37,7 @@ namespace urchin {
             VkRenderPass getRenderPass() const;
 
             bool hasDepthAttachment() const;
-            bool isReadableDepthAttachment() const;
+            void setExternalDepthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
             void addRenderer(GenericRenderer*);
@@ -71,6 +72,8 @@ namespace urchin {
             void updateGraphicData(uint32_t);
             void updateCommandBuffers(const std::vector<VkClearValue>&);
 
+            bool isInitialized;
+
             std::shared_ptr<Texture> depthTexture;
             std::vector<VkCommandBuffer> commandBuffers;
 
@@ -79,6 +82,7 @@ namespace urchin {
 
             std::string name;
             DepthAttachmentType depthAttachmentType;
+            std::shared_ptr<Texture> externalDepthTexture;
             VkRenderPass renderPass;
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;

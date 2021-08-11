@@ -37,8 +37,6 @@ namespace urchin {
 
             void waitCommandBuffersIdle() const override;
 
-            bool isInitialized;
-
             std::vector<VkClearValue> clearValues;
             std::vector<std::shared_ptr<Texture>> textures;
 

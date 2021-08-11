@@ -156,7 +156,7 @@ namespace urchin {
         //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
         shadowMapTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, -1.0f, -1.0f));
 
-        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::WRITE_ONLY_DEPTH_ATTACHMENT);
+        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
         shadowMapRenderTarget->addTexture(shadowMapTexture);
 
         auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOctreeManager, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));

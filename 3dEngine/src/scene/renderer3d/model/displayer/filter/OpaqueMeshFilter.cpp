@@ -3,7 +3,7 @@
 namespace urchin {
 
     bool OpaqueMeshFilter::isAccepted(const ConstMesh& constMesh) const {
-        return !constMesh.getMaterial().hasTransparency();;
+        return !constMesh.getMaterial().hasTransparency();
     }
 
 }

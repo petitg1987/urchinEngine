@@ -40,7 +40,6 @@ namespace urchin {
 
             void waitCommandBuffersIdle() const override;
 
-            bool isInitialized;
             bool verticalSyncEnabled;
 
             std::vector<VkClearValue> clearValues;

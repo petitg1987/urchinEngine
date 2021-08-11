@@ -9,7 +9,6 @@ namespace urchin {
 
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
-            isInitialized(false),
             queueSubmitSemaphore(nullptr),
             queueSubmitSemaphoreUsable(false),
             commandBufferFence(nullptr) {

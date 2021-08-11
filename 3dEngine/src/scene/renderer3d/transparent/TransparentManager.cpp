@@ -19,6 +19,12 @@ namespace urchin {
         }
     }
 
+    void TransparentManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture) {
+        this->depthTexture = depthTexture;
+
+        createOrUpdateRendering();
+    }
+
     void TransparentManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->sceneWidth = sceneWidth;
         this->sceneHeight = sceneHeight;
@@ -48,8 +54,9 @@ namespace urchin {
         if (offscreenRenderTarget) {
             offscreenRenderTarget->resetTextures();
         } else {
-            offscreenRenderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::READ_WRITE_DEPTH_ATTACHMENT); //TODO review depth: should provide depth of previous pass !
+            offscreenRenderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
         }
+        offscreenRenderTarget->setExternalDepthTexture(depthTexture);
         offscreenRenderTarget->addTexture(accumTexture);
         offscreenRenderTarget->addTexture(revealTexture);
         offscreenRenderTarget->initialize();
