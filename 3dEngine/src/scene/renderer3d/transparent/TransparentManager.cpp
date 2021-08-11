@@ -49,7 +49,7 @@ namespace urchin {
         accumTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_32_FLOAT, nullptr); //TODO: update to RGBA_16_FLOAT
         accumTexture->enableClearColor(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f));
         revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_16_FLOAT, nullptr); //TODO: check if we can use 8 bit textures
-        accumTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f));
+        revealTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f));
 
         if (offscreenRenderTarget) {
             offscreenRenderTarget->resetTextures();

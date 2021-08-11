@@ -45,7 +45,7 @@ namespace urchin {
     /**
      * Provide a depth texture created in another render target
      */
-    void RenderTarget::setExternalDepthTexture(const std::shared_ptr<Texture>& externalDepthTexture) { //TODO check dependency on this texture. Are we sure the texture is completed ?
+    void RenderTarget::setExternalDepthTexture(const std::shared_ptr<Texture>& externalDepthTexture) {
         assert(!isInitialized);
         if (depthAttachmentType != EXTERNAL_DEPTH_ATTACHMENT) {
             throw std::runtime_error("Can not define an external depth texture. Wrong type of depth attachment: " + std::to_string(depthAttachmentType));
@@ -234,6 +234,7 @@ namespace urchin {
                 } else {
                     depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
                 }
+                depthTexture->enableTextureWriting(dynamic_cast<OffscreenRender*>(this));
                 depthTexture->initialize();
             }
         }
@@ -309,6 +310,10 @@ namespace urchin {
                 const auto& renderTextureWriter = renderer->getTexturesWriter();
                 renderDependencies.insert(renderDependencies.end(), renderTextureWriter.begin(), renderTextureWriter.end());
             }
+        }
+        if (externalDepthTexture) {
+            assert(externalDepthTexture->getTextureWriter());
+            renderDependencies.push_back(externalDepthTexture->getTextureWriter());
         }
 
         VectorUtil::removeDuplicates(renderDependencies);
