@@ -146,21 +146,20 @@ vec4 addFog(vec4 baseColor, vec4 position) {
 
 vec4 addTransparentDiffuse(vec4 opaqueDiffuse) {
     float reveal = texture(transparencyRevealTex, texCoordinates).r; //(1 - obj1.material.alpha) * (1 - obj2.material.alpha) * ...
-    if (reveal > 0.99999) { //no transparency
+    if (reveal > 0.99999) {
+        //fully transparent case: object fully transparent or no object
         return opaqueDiffuse;
     }
 
     vec4 accumulation = texture(transparencyAccumulationTex, texCoordinates); //(obj1.material.rgb * obj1.material.a, obj1.material.a) * weight1 + ...
-
-    //suppress overflow
-    if (isinf(maxComponent(abs(accumulation.rgb)))) {
+    if (isinf(maxComponent(abs(accumulation.rgb)))) { //suppress overflow
         accumulation.rgb = vec3(accumulation.a);
     }
 
     vec4 averageColor = vec4(vec3(accumulation.rgb / max(accumulation.a, 0.00001)), 1.0 - reveal);
 
     //apply blending manually (equivalent to: srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
-    return averageColor.a * averageColor.rgba + (1 - averageColor.a) * opaqueDiffuse.rgba;
+    return vec4(vec3(averageColor.a * averageColor.rgb + (1 - averageColor.a) * opaqueDiffuse.rgb), 1.0);
 }
 
 void main() {
