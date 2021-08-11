@@ -9,12 +9,13 @@ namespace urchin {
 
     class Material : public Resource {
         public:
-            Material(std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, float);
+            Material(std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, bool, float);
             ~Material() override = default;
 
             const std::shared_ptr<Texture>& getDiffuseTexture() const;
             const std::shared_ptr<Texture>& getNormalTexture() const;
 
+            bool hasTransparency() const;
             bool isRepeatableTextures() const;
 
             float getAmbientFactor() const;
@@ -25,6 +26,7 @@ namespace urchin {
             std::shared_ptr<Texture> diffuseTexture;
             std::shared_ptr<Texture> normalTexture;
 
+            bool bHasTransparency;
             bool repeatableTextures;
 
             float ambientFactor;

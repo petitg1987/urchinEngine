@@ -4,6 +4,7 @@
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
+#include <scene/renderer3d/model/displayer/filter/MeshFilter.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 
 namespace urchin {
@@ -21,10 +22,10 @@ namespace urchin {
             void notify(Observable*, int) override;
             void onCameraProjectionUpdate(const Camera&);
 
-            void prepareRendering(const Matrix4<float>&) const;
+            void prepareRendering(const Matrix4<float>&, const MeshFilter*) const;
 
             void drawBBox(const Matrix4<float>&, const Matrix4<float>&);
-            void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const;
+            void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const;
 
         private:
             bool isInitialized;

@@ -82,6 +82,10 @@ namespace urchin {
         modelsDisplayer.clear();
     }
 
+    void ModelSetDisplayer::setCustomMeshFilter(std::unique_ptr<MeshFilter> meshFilter) {
+        this->meshFilter = std::move(meshFilter);
+    }
+
     void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
         assert(renderTarget);
         for (auto model : models) {
@@ -113,7 +117,7 @@ namespace urchin {
         }
 
         for (auto model : models) {
-            modelsDisplayer.at(model)->prepareRendering(viewMatrix);
+            modelsDisplayer.at(model)->prepareRendering(viewMatrix, meshFilter.get());
         }
     }
 
@@ -126,7 +130,7 @@ namespace urchin {
     void ModelSetDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string& meshFilename) const {
         for (const auto& model : models) {
             if (model->getConstMeshes() && model->getConstMeshes()->getMeshFilename() == meshFilename) {
-                modelsDisplayer.at(model)->drawBaseBones(projectionMatrix, viewMatrix);
+                modelsDisplayer.at(model)->drawBaseBones(projectionMatrix, viewMatrix, meshFilter.get());
             }
         }
     }

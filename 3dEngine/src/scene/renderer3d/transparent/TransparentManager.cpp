@@ -2,6 +2,7 @@
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/texture/Texture.h>
+#include <scene/renderer3d/model/displayer/filter/TransparentMeshFilter.h>
 
 namespace urchin {
 
@@ -64,6 +65,8 @@ namespace urchin {
         BlendFunction accumBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
         BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
         modelSetDisplayer->setCustomBlendFunctions({accumBlend, revealBlend});
+
+        modelSetDisplayer->setCustomMeshFilter(std::make_unique<TransparentMeshFilter>());
 
         modelSetDisplayer->initialize(*offscreenRenderTarget);
         modelSetDisplayer->onCameraProjectionUpdate(*camera);

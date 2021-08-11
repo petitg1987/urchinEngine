@@ -128,16 +128,21 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::prepareRendering(const Matrix4<float>& viewMatrix) const {
+    void ModelDisplayer::prepareRendering(const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
+            const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex++);
+            if (meshFilter && !meshFilter->isAccepted(constMesh)) {
+                continue;
+            }
+
             positioningData.viewMatrix = viewMatrix;
             positioningData.modelMatrix = model->getTransform().getTransformMatrix();
             meshRenderer->updateUniformData(1, &positioningData);
 
             if (displayMode == DEFAULT_MODE) {
                 meshData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
-                meshData.ambientFactor = model->getConstMeshes()->getConstMesh(meshIndex).getMaterial().getAmbientFactor();
+                meshData.ambientFactor = constMesh.getMaterial().getAmbientFactor();
                 meshRenderer->updateUniformData(2, &meshData);
             }
             if (customModelShaderVariable) {
@@ -145,7 +150,6 @@ namespace urchin {
             }
 
             meshRenderer->enableRenderer();
-            meshIndex++;
         }
     }
 
@@ -156,11 +160,14 @@ namespace urchin {
         aabboxModel->prepareRendering(viewMatrix);
     }
 
-    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
         if (model->getMeshes()) {
             for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
-                Matrix4<float> modelViewMatrix = viewMatrix * model->getTransform().getTransformMatrix();
-                model->getMeshes()->getMesh(m).drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
+                const ConstMesh& constMesh = model->getMeshes()->getConstMeshes().getConstMesh(m);
+                if (!meshFilter || meshFilter->isAccepted(constMesh)) {
+                    Matrix4<float> modelViewMatrix = viewMatrix * model->getTransform().getTransformMatrix();
+                    model->getMeshes()->getMesh(m).drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
+                }
             }
         }
     }

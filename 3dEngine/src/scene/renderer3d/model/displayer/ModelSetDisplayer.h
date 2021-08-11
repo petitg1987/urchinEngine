@@ -30,6 +30,7 @@ namespace urchin {
             void setCustomModelShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
             void setCustomDepthOperations(bool, bool);
             void setCustomBlendFunctions(const std::vector<BlendFunction>&);
+            void setCustomMeshFilter(std::unique_ptr<MeshFilter>);
 
             void setModels(const std::vector<Model*>&);
             void removeModel(Model*);
@@ -50,9 +51,9 @@ namespace urchin {
             Matrix4<float> projectionMatrix;
 
             std::unique_ptr<CustomModelShaderVariable> customModelShaderVariable;
-            bool depthTestEnabled;
-            bool depthWriteEnabled;
+            bool depthTestEnabled, depthWriteEnabled;
             std::vector<BlendFunction> customBlendFunctions;
+            std::unique_ptr<MeshFilter> meshFilter;
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;

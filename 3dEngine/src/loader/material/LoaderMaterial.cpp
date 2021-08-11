@@ -19,12 +19,14 @@ namespace urchin {
         }
 
         //diffuse data
+        bool hasTransparency = false;
         std::shared_ptr<Texture> diffuseTexture;
         auto diffuse = udaParser.getUniqueChunk(false, "diffuse");
         if (diffuse) {
             auto diffuseTextureElem = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), diffuse);
             auto diffuseImage = ResourceRetriever::instance().getResource<Image>(diffuseTextureElem->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
+            hasTransparency = diffuseImage->hasTransparency();
         }
 
         //normal data
@@ -44,7 +46,7 @@ namespace urchin {
             fAmbientFactor = TypeConverter::toFloat(ambientFactor->getStringValue());
         }
 
-        return std::make_shared<Material>(diffuseTexture, normalTexture, repeatableTextures, fAmbientFactor);
+        return std::make_shared<Material>(diffuseTexture, normalTexture, hasTransparency, repeatableTextures, fAmbientFactor);
     }
 
 }

@@ -2,9 +2,10 @@
 #include <locale>
 
 #include <scene/renderer3d/Renderer3d.h>
+#include <scene/renderer3d/util/OctreeRenderer.h>
+#include <scene/renderer3d/model/displayer/filter/OpaqueMeshFilter.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
-#include <scene/renderer3d/util/OctreeRenderer.h>
 
 namespace urchin {
 
@@ -51,6 +52,7 @@ namespace urchin {
             isAntiAliasingActivated(true) {
 
         //deferred rendering
+        modelSetDisplayer->setCustomMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer->initialize(*deferredRenderTarget);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
@@ -423,7 +425,7 @@ namespace urchin {
 
         //determine model visible on scene
         updateModelsInFrustum();
-        modelSetDisplayer->setModels(modelsInFrustum); //TODO filter out transparent models
+        modelSetDisplayer->setModels(modelsInFrustum);
 
         //determine visible lights on scene
         lightManager->updateVisibleLights(camera->getFrustum());
@@ -443,7 +445,7 @@ namespace urchin {
             }
         }
 
-        transparentManager->updateModels(modelsInFrustum); //TODO filter out opaque models
+        transparentManager->updateModels(modelsInFrustum);
     }
 
     /**
