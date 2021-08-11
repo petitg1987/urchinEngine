@@ -169,49 +169,48 @@ void main() {
     float depthValue = texture(depthTex, texCoordinates).r;
     vec4 position = fetchPosition(texCoordinates, depthValue);
 
-    if (modelAmbientFactor >= 0.99999f) { //no lighting
-        fragColor = addFog(diffuse, position);
-        return;
-    }
+    if (modelAmbientFactor < 0.99999f) { //has lighting
+        vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
+        vec4 modelAmbient = diffuse * modelAmbientFactor;
+        fragColor = lighting.globalAmbient;
 
-    vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
-    vec4 modelAmbient = diffuse * modelAmbientFactor;
-    fragColor = lighting.globalAmbient;
-
-    if (visualOption.hasAmbientOcclusion) {
-        float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
-        fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
-    }
-
-    for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-        if (lights.lightsInfo[lightIndex].isExist) {
-            vec3 vertexToLightNormalized;
-            float lightAttenuation;
-
-            if (lights.lightsInfo[lightIndex].hasParallelBeams) { //sun light
-                vec3 vertexToLight = -lights.lightsInfo[lightIndex].positionOrDirection;
-                vertexToLightNormalized = normalize(vertexToLight);
-                lightAttenuation = 1.0f;
-            } else { //omnidirectional light
-                vec3 vertexToLight = lights.lightsInfo[lightIndex].positionOrDirection - vec3(position);
-                float dist = length(vertexToLight);
-                vertexToLightNormalized = normalize(vertexToLight);
-                lightAttenuation = exp(-dist * lights.lightsInfo[lightIndex].exponentialAttenuation);
-            }
-
-            float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-            vec4 ambient = vec4(lights.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
-
-            float brightnessPercentage = 1.0f; //1.0 = no shadow
-            if (visualOption.hasShadow && lights.lightsInfo[lightIndex].produceShadow) {
-                brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, position, NdotL);
-                shadowLightIndex++;
-            }
-
-            fragColor += lightAttenuation * (brightnessPercentage * (diffuse * NdotL) + ambient);
-        } else {
-            break; //no more light
+        if (visualOption.hasAmbientOcclusion) {
+            float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
+            fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
         }
+
+        for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
+            if (lights.lightsInfo[lightIndex].isExist) {
+                vec3 vertexToLightNormalized;
+                float lightAttenuation;
+
+                if (lights.lightsInfo[lightIndex].hasParallelBeams) { //sun light
+                    vec3 vertexToLight = -lights.lightsInfo[lightIndex].positionOrDirection;
+                    vertexToLightNormalized = normalize(vertexToLight);
+                    lightAttenuation = 1.0f;
+                } else { //omnidirectional light
+                    vec3 vertexToLight = lights.lightsInfo[lightIndex].positionOrDirection - vec3(position);
+                    float dist = length(vertexToLight);
+                    vertexToLightNormalized = normalize(vertexToLight);
+                    lightAttenuation = exp(-dist * lights.lightsInfo[lightIndex].exponentialAttenuation);
+                }
+
+                float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
+                vec4 ambient = vec4(lights.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
+
+                float brightnessPercentage = 1.0f; //1.0 = no shadow
+                if (visualOption.hasShadow && lights.lightsInfo[lightIndex].produceShadow) {
+                    brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, position, NdotL);
+                    shadowLightIndex++;
+                }
+
+                fragColor += lightAttenuation * (brightnessPercentage * (diffuse * NdotL) + ambient);
+            } else {
+                break; //no more light
+            }
+        }
+    } else { //no lighting
+        fragColor = diffuse;
     }
 
     fragColor = addTransparentModels(fragColor);
