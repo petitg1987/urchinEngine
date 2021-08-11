@@ -9,9 +9,10 @@ namespace urchin {
     ModelSetDisplayer::ModelSetDisplayer(DisplayMode displayMode) :
             isInitialized(false),
             displayMode(displayMode),
-            customModelShaderVariable(nullptr),
+            customShaderVariable(nullptr),
             depthTestEnabled(true),
             depthWriteEnabled(true),
+            enableFaceCull(true),
             renderTarget(nullptr) {
 
     }
@@ -32,14 +33,10 @@ namespace urchin {
             }
             modelShader = ShaderBuilder::createShader("model.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else if (displayMode == DEPTH_ONLY_MODE) {
-            if (fragmentShaderName.empty()) { //use default fragment shader
-                fragmentShaderName = "modelDepthOnly.frag.spv";
-            }
+            assert(!fragmentShaderName.empty());
             modelShader = ShaderBuilder::createShader("modelDepthOnly.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else if (displayMode == DIFFUSE_MODE) {
-            if (fragmentShaderName.empty()) { //use default fragment shader
-                fragmentShaderName = "modelDiffuse.frag.spv";
-            }
+            assert(!fragmentShaderName.empty());
             modelShader = ShaderBuilder::createShader("modelDiffuse.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
@@ -56,7 +53,7 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::setCustomShader(const std::string& geometryShaderName, const std::string& fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
+    void ModelSetDisplayer::setupShader(const std::string& geometryShaderName, const std::string& fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
         }
@@ -66,23 +63,28 @@ namespace urchin {
         this->shaderConstants = std::move(shaderConstants);
     }
 
-    void ModelSetDisplayer::setCustomModelShaderVariable(std::unique_ptr<CustomModelShaderVariable> customModelShaderVariable) {
-        this->customModelShaderVariable = std::move(customModelShaderVariable);
+    void ModelSetDisplayer::setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable> customShaderVariable) {
+        this->customShaderVariable = std::move(customShaderVariable);
         modelsDisplayer.clear();
     }
 
-    void ModelSetDisplayer::setCustomDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+    void ModelSetDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
         modelsDisplayer.clear();
     }
 
-    void ModelSetDisplayer::setCustomBlendFunctions(const std::vector<BlendFunction>& customBlendFunctions) {
-        this->customBlendFunctions = customBlendFunctions;
+    void ModelSetDisplayer::setupFaceCull(bool enableFaceCull) {
+        this->enableFaceCull = enableFaceCull;
         modelsDisplayer.clear();
     }
 
-    void ModelSetDisplayer::setCustomMeshFilter(std::unique_ptr<MeshFilter> meshFilter) {
+    void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
+        this->blendFunctions = blendFunctions;
+        modelsDisplayer.clear();
+    }
+
+    void ModelSetDisplayer::setupMeshFilter(std::unique_ptr<MeshFilter> meshFilter) {
         this->meshFilter = std::move(meshFilter);
     }
 
@@ -92,9 +94,10 @@ namespace urchin {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
                 auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader);
-                modelDisplayer->setCustomModelShaderVariable(customModelShaderVariable.get());
-                modelDisplayer->setCustomDepthOperations(depthTestEnabled, depthWriteEnabled);
-                modelDisplayer->setCustomBlendFunctions(customBlendFunctions);
+                modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
+                modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
+                modelDisplayer->setupBlendFunctions(blendFunctions);
+                modelDisplayer->setupFaceCull(enableFaceCull);
                 modelDisplayer->initialize();
                 modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
             }

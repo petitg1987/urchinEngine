@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    TransparentManager::TransparentManager() : //TODO: disableCullFace ?
+    TransparentManager::TransparentManager() :
             sceneWidth(0),
             sceneHeight(0),
             camera(nullptr) {
@@ -46,9 +46,10 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_32_FLOAT, nullptr); //TODO: update to RGBA_16_FLOAT
+        //TODO reduce texture size (RGBA_16_FLOAT + R_8_INT)
+        accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_32_FLOAT, nullptr);
         accumulationTexture->enableClearColor(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f));
-        revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_16_FLOAT, nullptr); //TODO: check if we can use 8 bit textures
+        revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
         revealTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f));
 
         if (offscreenRenderTarget) {
@@ -68,10 +69,11 @@ namespace urchin {
         BlendFunction accumulationBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
         BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
 
-        modelSetDisplayer->setCustomShader("", "modelTransparent.frag.spv", std::unique_ptr<ShaderConstants>());
-        modelSetDisplayer->setCustomDepthOperations(true, false /* disable depth write */);
-        modelSetDisplayer->setCustomBlendFunctions({accumulationBlend, revealBlend});
-        modelSetDisplayer->setCustomMeshFilter(std::make_unique<TransparentMeshFilter>());
+        modelSetDisplayer->setupShader("", "modelTransparent.frag.spv", std::unique_ptr<ShaderConstants>());
+        modelSetDisplayer->setupDepthOperations(true, false /* disable depth write */);
+        modelSetDisplayer->setupBlendFunctions({accumulationBlend, revealBlend});
+        modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
+        modelSetDisplayer->setupFaceCull(false);
 
         modelSetDisplayer->initialize(*offscreenRenderTarget);
         modelSetDisplayer->onCameraProjectionUpdate(*camera);

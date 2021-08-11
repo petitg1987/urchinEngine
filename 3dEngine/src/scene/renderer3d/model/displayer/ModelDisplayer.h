@@ -14,9 +14,10 @@ namespace urchin {
             ModelDisplayer(Model *, const Matrix4<float>&, DisplayMode, RenderTarget&, const Shader&);
             ~ModelDisplayer() override;
 
-            void setCustomModelShaderVariable(CustomModelShaderVariable*);
-            void setCustomDepthOperations(bool, bool);
-            void setCustomBlendFunctions(const std::vector<BlendFunction>&);
+            void setupCustomShaderVariable(CustomModelShaderVariable*);
+            void setupDepthOperations(bool, bool);
+            void setupFaceCull(bool);
+            void setupBlendFunctions(const std::vector<BlendFunction>&);
 
             void initialize();
             void notify(Observable*, int) override;
@@ -44,10 +45,10 @@ namespace urchin {
                 alignas(4) float ambientFactor;
             } meshData;
 
-            CustomModelShaderVariable* customModelShaderVariable;
-            bool depthTestEnabled;
-            bool depthWriteEnabled;
-            std::vector<BlendFunction> customBlendFunctions;
+            CustomModelShaderVariable* customShaderVariable;
+            bool depthTestEnabled, depthWriteEnabled;
+            bool enableFaceCull;
+            std::vector<BlendFunction> blendFunctions;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::unique_ptr<AABBoxModel> aabboxModel;

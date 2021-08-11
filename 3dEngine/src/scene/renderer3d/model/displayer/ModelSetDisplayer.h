@@ -26,11 +26,12 @@ namespace urchin {
             void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Camera&);
 
-            void setCustomShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
-            void setCustomModelShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
-            void setCustomDepthOperations(bool, bool);
-            void setCustomBlendFunctions(const std::vector<BlendFunction>&);
-            void setCustomMeshFilter(std::unique_ptr<MeshFilter>);
+            void setupShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
+            void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
+            void setupDepthOperations(bool, bool);
+            void setupFaceCull(bool);
+            void setupBlendFunctions(const std::vector<BlendFunction>&);
+            void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
             void setModels(const std::vector<Model*>&);
             void removeModel(Model*);
@@ -50,9 +51,10 @@ namespace urchin {
             std::unique_ptr<Shader> modelShader;
             Matrix4<float> projectionMatrix;
 
-            std::unique_ptr<CustomModelShaderVariable> customModelShaderVariable;
+            std::unique_ptr<CustomModelShaderVariable> customShaderVariable;
             bool depthTestEnabled, depthWriteEnabled;
-            std::vector<BlendFunction> customBlendFunctions;
+            bool enableFaceCull;
+            std::vector<BlendFunction> blendFunctions;
             std::unique_ptr<MeshFilter> meshFilter;
 
             RenderTarget* renderTarget;

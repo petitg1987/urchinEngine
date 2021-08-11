@@ -12,10 +12,10 @@ namespace urchin {
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
-
-            customModelShaderVariable(nullptr),
+            customShaderVariable(nullptr),
             depthTestEnabled(true),
-            depthWriteEnabled(true) {
+            depthWriteEnabled(true),
+            enableFaceCull(true) {
 
     }
 
@@ -23,8 +23,8 @@ namespace urchin {
         model->removeObserver(this, Model::MESH_UPDATED);
     }
 
-    void ModelDisplayer::setCustomModelShaderVariable(CustomModelShaderVariable* customModelShaderVariable) {
-        if (customModelShaderVariable) {
+    void ModelDisplayer::setupCustomShaderVariable(CustomModelShaderVariable* customShaderVariable) {
+        if (customShaderVariable) {
             if (isInitialized) {
                 throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + model->getConstMeshes()->getName());
             } else if (displayMode == DEFAULT_MODE) {
@@ -32,10 +32,10 @@ namespace urchin {
                 throw std::runtime_error("Define custom model shader variable in default mode is not implemented: " + model->getConstMeshes()->getName());
             }
         }
-        this-> customModelShaderVariable = customModelShaderVariable;
+        this->customShaderVariable = customShaderVariable;
     }
 
-    void ModelDisplayer::setCustomDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+    void ModelDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         if (isInitialized) {
             throw std::runtime_error("Can not define depth operations on an initialized model displayer: " + model->getConstMeshes()->getName());
         }
@@ -43,11 +43,18 @@ namespace urchin {
         this->depthWriteEnabled = depthWriteEnabled;
     }
 
-    void ModelDisplayer::setCustomBlendFunctions(const std::vector<BlendFunction>& customBlendFunctions) {
-        if (!customBlendFunctions.empty() && isInitialized) {
-            throw std::runtime_error("Can not define custom blend functions on an initialized model displayer: " + model->getConstMeshes()->getName());
+    void ModelDisplayer::setupFaceCull(bool enableFaceCull) {
+        if (isInitialized) {
+            throw std::runtime_error("Can not define face cull flag on an initialized model displayer: " + model->getConstMeshes()->getName());
         }
-        this->customBlendFunctions = customBlendFunctions;
+        this->enableFaceCull = enableFaceCull;
+    }
+
+    void ModelDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
+        if (!blendFunctions.empty() && isInitialized) {
+            throw std::runtime_error("Can not define blend functions on an initialized model displayer: " + model->getConstMeshes()->getName());
+        }
+        this->blendFunctions = blendFunctions;
     }
 
     void ModelDisplayer::initialize() {
@@ -66,8 +73,8 @@ namespace urchin {
                 if (displayMode == DEFAULT_MODE) {
                     meshRendererBuilder->addUniformData(sizeof(meshData), &meshData); //binding 2
                 }
-                if (customModelShaderVariable) {
-                    customModelShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
+                if (customShaderVariable) {
+                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
                 }
                 if (depthTestEnabled) {
                     meshRendererBuilder->enableDepthTest();
@@ -75,8 +82,11 @@ namespace urchin {
                 if (depthWriteEnabled) {
                     meshRendererBuilder->enableDepthWrite();
                 }
-                if (!customBlendFunctions.empty()) {
-                    meshRendererBuilder->enableTransparency(customBlendFunctions);
+                if(!enableFaceCull) {
+                    meshRendererBuilder->disableCullFace();
+                }
+                if (!blendFunctions.empty()) {
+                    meshRendererBuilder->enableTransparency(blendFunctions);
                 }
 
                 TextureParam::ReadMode textureReadMode = constMesh->getMaterial().isRepeatableTextures() ?
@@ -145,8 +155,8 @@ namespace urchin {
                 meshData.ambientFactor = constMesh.getMaterial().getAmbientFactor();
                 meshRenderer->updateUniformData(2, &meshData);
             }
-            if (customModelShaderVariable) {
-                customModelShaderVariable->loadCustomShaderVariables(*meshRenderer);
+            if (customShaderVariable) {
+                customShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }
 
             meshRenderer->enableRenderer();
