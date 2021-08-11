@@ -144,11 +144,11 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     return mix(fog.color, baseColor, visibility);
 }
 
-vec4 addTransparentDiffuse(vec4 opaqueDiffuse) {
+vec4 addTransparentModels(vec4 srcDiffuse) {
     float reveal = texture(transparencyRevealTex, texCoordinates).r; //(1 - obj1.material.alpha) * (1 - obj2.material.alpha) * ...
     if (reveal > 0.99999) {
         //fully transparent case: object fully transparent or no object
-        return opaqueDiffuse;
+        return srcDiffuse;
     }
 
     vec4 accumulation = texture(transparencyAccumulationTex, texCoordinates); //(obj1.material.rgb * obj1.material.a, obj1.material.a) * weight1 + ...
@@ -159,12 +159,11 @@ vec4 addTransparentDiffuse(vec4 opaqueDiffuse) {
     vec4 averageColor = vec4(vec3(accumulation.rgb / max(accumulation.a, 0.00001)), 1.0 - reveal);
 
     //apply blending manually (equivalent to: srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
-    return vec4(vec3(averageColor.a * averageColor.rgb + (1 - averageColor.a) * opaqueDiffuse.rgb), 1.0);
+    return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcDiffuse.rgba;
 }
 
 void main() {
-    vec4 opaqueDiffuse = texture(colorTex, texCoordinates);
-    vec4 diffuse = addTransparentDiffuse(opaqueDiffuse);
+    vec4 diffuse = texture(colorTex, texCoordinates);
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     float modelAmbientFactor = normalAndAmbient.a;
     float depthValue = texture(depthTex, texCoordinates).r;
@@ -215,6 +214,7 @@ void main() {
         }
     }
 
+    fragColor = addTransparentModels(fragColor);
     fragColor = addFog(fragColor, position);
 
     //DEBUG: add color to shadow map splits
