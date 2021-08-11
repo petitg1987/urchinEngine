@@ -17,8 +17,8 @@ namespace urchin {
             enum DepthAttachmentType {
                 NO_DEPTH_ATTACHMENT, //no depth attachment
                 LOCAL_DEPTH_ATTACHMENT, //depth attachment which cannot be used outside this render target
-                OVERALL_DEPTH_ATTACHMENT, //depth attachment which can be read and write outside this render target
-                EXTERNAL_DEPTH_ATTACHMENT //depth attachment coming from another render target
+                SHARED_DEPTH_ATTACHMENT, //depth attachment which can be read and write outside this render target
+                EXTERNAL_DEPTH_ATTACHMENT //existing depth attachment from another render target (must be provided via 'setExternalDepthTexture')
             };
 
             explicit RenderTarget(std::string, DepthAttachmentType);

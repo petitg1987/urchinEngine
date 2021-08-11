@@ -58,7 +58,7 @@ namespace urchin {
             throw std::runtime_error("Cannot retrieve depth texture on a render target created without a depth attachment");
         } else if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT) {
             throw std::runtime_error("Cannot retrieve depth texture on a render target created with a local depth attachment");
-        } else if (depthAttachmentType == OVERALL_DEPTH_ATTACHMENT) {
+        } else if (depthAttachmentType == SHARED_DEPTH_ATTACHMENT) {
             return depthTexture;
         } else if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
             return externalDepthTexture;
@@ -148,7 +148,7 @@ namespace urchin {
         if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
             depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
             depthAttachment.initialLayout = finalLayout;
-        } else if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT || depthAttachmentType == OVERALL_DEPTH_ATTACHMENT) {
+        } else if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT || depthAttachmentType == SHARED_DEPTH_ATTACHMENT) {
             depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
             depthAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         }
@@ -156,7 +156,7 @@ namespace urchin {
 
         if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT) {
             depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        } else if (depthAttachmentType == OVERALL_DEPTH_ATTACHMENT || depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
+        } else if (depthAttachmentType == SHARED_DEPTH_ATTACHMENT || depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
             depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         } else {
             throw std::runtime_error("Unknown depth attachment type: " + std::to_string(depthAttachmentType));

@@ -31,7 +31,7 @@ namespace urchin {
             paused(true),
 
             //deferred rendering
-            deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::OVERALL_DEPTH_ATTACHMENT)),
+            deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(std::make_unique<OctreeManager<Model>>(MODELS_OCTREE_MIN_SIZE)),
             fogContainer(std::make_unique<FogContainer>()),
