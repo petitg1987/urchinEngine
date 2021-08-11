@@ -11,9 +11,8 @@ layout(location = 1) out float revealTexture;
 void main() {
     vec4 color = texture(diffuseTex, texCoordinates);
 
-    float alpha = color.a;
     float weight = 1.0f; //TODO add weight formula
 
-    accumulationTexture = vec4(color.rgb * alpha, alpha) * weight;
-    revealTexture = alpha;
+    accumulationTexture = vec4(color.rgb * color.a, color.a) * weight;
+    revealTexture = color.a;
 }

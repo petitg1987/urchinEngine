@@ -79,6 +79,10 @@ float linearStep(float min, float max, float v) {
       return clamp((v - min) / (max - min), 0.0f, 1.0f);
 }
 
+float maxComponent(vec3 components) {
+    return max(max(components.x, components.y), components.z);
+}
+
 float computeBrightnessPercentage(float shadowMapZ, vec2 moments, float NdotL) {
     float tanAcosNdotL = sqrt(1.0f - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
     float bias = max(SHADOW_MAP_BIAS * tanAcosNdotL, 0.00001);
@@ -141,14 +145,22 @@ vec4 addFog(vec4 baseColor, vec4 position) {
 }
 
 vec4 addTransparentDiffuse(vec4 opaqueDiffuse) {
-    vec4 accum = texture(transparencyAccumulationTex, texCoordinates);
-    float reveal = texture(transparencyRevealTex, texCoordinates).r;
-    vec4 compositionValue = vec4(vec3(accum.rgb / max(accum.a, 0.00001)), 1 - reveal);
+    float reveal = texture(transparencyRevealTex, texCoordinates).r; //(1 - obj1.material.alpha) * (1 - obj2.material.alpha) * ...
+    if (reveal > 0.99999) { //no transparency
+        return opaqueDiffuse;
+    }
 
-    //TODO check http://casual-effects.blogspot.com/2015/03/implemented-weighted-blended-order.html for missing source code
+    vec4 accumulation = texture(transparencyAccumulationTex, texCoordinates); //(obj1.material.rgb * obj1.material.a, obj1.material.a) * weight1 + ...
 
-    //apply blending manually (srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
-    return compositionValue.a * compositionValue.rgba + (1 - compositionValue.a) * opaqueDiffuse.rgba;
+    //suppress overflow
+    if (isinf(maxComponent(abs(accumulation.rgb)))) {
+        accumulation.rgb = vec3(accumulation.a);
+    }
+
+    vec4 averageColor = vec4(vec3(accumulation.rgb / max(accumulation.a, 0.00001)), 1.0 - reveal);
+
+    //apply blending manually (equivalent to: srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
+    return averageColor.a * averageColor.rgba + (1 - averageColor.a) * opaqueDiffuse.rgba;
 }
 
 void main() {

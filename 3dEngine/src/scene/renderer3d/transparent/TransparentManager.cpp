@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    TransparentManager::TransparentManager() :
+    TransparentManager::TransparentManager() : //TODO: disableCullFace ?
             sceneWidth(0),
             sceneHeight(0),
             camera(nullptr) {
@@ -65,14 +65,12 @@ namespace urchin {
     void TransparentManager::createOrUpdateModelSetDisplayer() {
         modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DIFFUSE_MODE);
 
-        modelSetDisplayer->setCustomShader("", "modelTransparent.frag.spv", std::unique_ptr<ShaderConstants>());
-
-        modelSetDisplayer->setCustomDepthOperations(true, false /* disable depth write */);
-
-        BlendFunction accumBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
+        BlendFunction accumulationBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
         BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
-        modelSetDisplayer->setCustomBlendFunctions({accumBlend, revealBlend});
 
+        modelSetDisplayer->setCustomShader("", "modelTransparent.frag.spv", std::unique_ptr<ShaderConstants>());
+        modelSetDisplayer->setCustomDepthOperations(true, false /* disable depth write */);
+        modelSetDisplayer->setCustomBlendFunctions({accumulationBlend, revealBlend});
         modelSetDisplayer->setCustomMeshFilter(std::make_unique<TransparentMeshFilter>());
 
         modelSetDisplayer->initialize(*offscreenRenderTarget);
