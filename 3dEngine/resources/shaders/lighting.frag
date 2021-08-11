@@ -55,7 +55,9 @@ layout(binding = 7) uniform sampler2D depthTex; //depth (32 bits)
 layout(binding = 8) uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + 8 bits unused
 layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
 layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
-layout(binding = 11) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
+layout(binding = 11) uniform sampler2D transparencyAccumulationTex; //transparency accumulation texture (4*32bits) //TODO update nb bits
+layout(binding = 12) uniform sampler2D transparencyRevealTex; //transparency reveal texture (1*16bits) //TODO update nb bits
+layout(binding = 13) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -138,8 +140,20 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     return mix(fog.color, baseColor, visibility);
 }
 
+vec4 addTransparentDiffuse(vec4 opaqueDiffuse) {
+    vec4 accum = texture(transparencyAccumulationTex, texCoordinates);
+    float reveal = texture(transparencyRevealTex, texCoordinates).r;
+    vec4 compositionValue = vec4(vec3(accum.rgb / max(accum.a, 0.00001)), 1 - reveal);
+
+    //TODO check http://casual-effects.blogspot.com/2015/03/implemented-weighted-blended-order.html for missing source code
+
+    //apply blending manually (srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
+    return compositionValue.a * compositionValue.rgba + (1 - compositionValue.a) * opaqueDiffuse.rgba;
+}
+
 void main() {
-    vec4 diffuse = texture(colorTex, texCoordinates);
+    vec4 opaqueDiffuse = texture(colorTex, texCoordinates);
+    vec4 diffuse = addTransparentDiffuse(opaqueDiffuse);
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     float modelAmbientFactor = normalAndAmbient.a;
     float depthValue = texture(depthTex, texCoordinates).r;

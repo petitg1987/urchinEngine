@@ -23,6 +23,7 @@ namespace urchin {
             void removeModel(Model*);
 
             void updateTransparentTextures(const Camera&);
+            void loadTransparentTextures(GenericRenderer&, std::size_t, std::size_t) const;
 
         private:
             void createOrUpdateRendering();
@@ -35,7 +36,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> depthTexture;
             std::unique_ptr<OffscreenRender> offscreenRenderTarget;
-            std::shared_ptr<Texture> accumTexture;
+            std::shared_ptr<Texture> accumulationTexture;
             std::shared_ptr<Texture> revealTexture;
 
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;

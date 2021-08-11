@@ -328,8 +328,10 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 7
                 ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 8
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 9
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())) //binding 10 - ambient occlusion
-                ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 11
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba8Int(), TextureParam::buildNearest())) //binding 10 - ambient occlusion
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba32Float(), TextureParam::buildNearest())) //binding 11 - transparency: accumulation //TODO update types
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale16Float(), TextureParam::buildNearest())) //binding 12 - transparency: reveal
+                ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 13
                 ->build();
 
         ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
@@ -518,8 +520,12 @@ namespace urchin {
             ambientOcclusionManager->loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
         }
 
+        std::size_t transparentAccumulationTexUnit = 4;
+        std::size_t transparentRevealTexUnit = 5;
+        transparentManager->loadTransparentTextures(*lightingRenderer, transparentAccumulationTexUnit, transparentRevealTexUnit);
+
         if (visualOption.isShadowActivated) {
-            std::size_t shadowMapTexUnit = 4;
+            std::size_t shadowMapTexUnit = 6;
             shadowManager->loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 

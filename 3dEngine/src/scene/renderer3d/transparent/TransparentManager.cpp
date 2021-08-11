@@ -46,8 +46,8 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        accumTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_32_FLOAT, nullptr); //TODO: update to RGBA_16_FLOAT
-        accumTexture->enableClearColor(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f));
+        accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_32_FLOAT, nullptr); //TODO: update to RGBA_16_FLOAT
+        accumulationTexture->enableClearColor(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f));
         revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_16_FLOAT, nullptr); //TODO: check if we can use 8 bit textures
         revealTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f));
 
@@ -57,7 +57,7 @@ namespace urchin {
             offscreenRenderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
         }
         offscreenRenderTarget->setExternalDepthTexture(depthTexture);
-        offscreenRenderTarget->addTexture(accumTexture);
+        offscreenRenderTarget->addTexture(accumulationTexture);
         offscreenRenderTarget->addTexture(revealTexture);
         offscreenRenderTarget->initialize();
     }
@@ -88,9 +88,18 @@ namespace urchin {
     }
 
     void TransparentManager::updateTransparentTextures(const Camera& camera) {
+        ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
+
         offscreenRenderTarget->disableAllRenderers();
         modelSetDisplayer->prepareRendering(camera.getViewMatrix());
         offscreenRenderTarget->render();
+    }
+
+    void TransparentManager::loadTransparentTextures(GenericRenderer& lightingRenderer, std::size_t accumulationTextureUnit, std::size_t revealTextureUnit) const {
+        if (lightingRenderer.getUniformTextureReader(accumulationTextureUnit)->getTexture() != accumulationTexture.get()) {
+            lightingRenderer.updateUniformTextureReader(accumulationTextureUnit, TextureReader::build(accumulationTexture, TextureParam::buildLinear()));
+            lightingRenderer.updateUniformTextureReader(revealTextureUnit, TextureReader::build(revealTexture, TextureParam::buildLinear()));
+        }
     }
 
 }

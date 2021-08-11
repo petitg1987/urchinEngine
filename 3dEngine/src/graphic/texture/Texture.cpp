@@ -58,10 +58,28 @@ namespace urchin {
         return std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyRgba() {
+    std::shared_ptr<Texture> Texture::buildEmptyRgba8Int() {
         std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 0}; //pink
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
         return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
+    }
+
+    std::shared_ptr<Texture> Texture::buildEmptyRgba16Float() {
+        std::array<uint16_t, 4> textureArrayData = {255, 20, 147, 0}; //pink
+        std::vector<const void*> allDataPtr(1, textureArrayData.data());
+        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_16_FLOAT, allDataPtr));
+    }
+
+    std::shared_ptr<Texture> Texture::buildEmptyRgba32Float() {
+        std::array<uint32_t, 4> textureArrayData = {255, 20, 147, 0}; //pink
+        std::vector<const void*> allDataPtr(1, textureArrayData.data());
+        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_32_FLOAT, allDataPtr));
+    }
+
+    std::shared_ptr<Texture> Texture::buildEmptyGreyscale16Float() {
+        std::array<uint16_t, 1> textureData = {0};
+        std::vector<const void*> allDataPtr(1, textureData.data());
+        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_16_FLOAT, allDataPtr));
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyArrayRg() {
