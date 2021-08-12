@@ -15,8 +15,7 @@ namespace urchin {
             TransparentManager();
             ~TransparentManager();
 
-            void onTexturesUpdate(const std::shared_ptr<Texture>&);
-            void onResize(unsigned int, unsigned int);
+            void onSizeUpdate(const std::shared_ptr<Texture>&);
             void onCameraProjectionUpdate(const Camera&);
 
             void updateModels(const std::vector<Model*>&);

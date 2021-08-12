@@ -20,15 +20,10 @@ namespace urchin {
         }
     }
 
-    void TransparentManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture) {
+    void TransparentManager::onSizeUpdate(const std::shared_ptr<Texture>& depthTexture) {
+        this->sceneWidth = depthTexture->getWidth();
+        this->sceneHeight = depthTexture->getHeight();
         this->depthTexture = depthTexture;
-
-        createOrUpdateRendering();
-    }
-
-    void TransparentManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneWidth = sceneWidth;
-        this->sceneHeight = sceneHeight;
 
         createOrUpdateRendering();
     }

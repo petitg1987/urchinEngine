@@ -334,11 +334,8 @@ namespace urchin {
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 13
                 ->build();
 
-        ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
-        ambientOcclusionManager->onTexturesUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
-
-        transparentManager->onResize(sceneWidth, sceneHeight);
-        transparentManager->onTexturesUpdate(deferredRenderTarget->getDepthTexture());
+        ambientOcclusionManager->onSizeUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
+        transparentManager->onSizeUpdate(deferredRenderTarget->getDepthTexture());
 
         if (isAntiAliasingActivated) {
             antiAliasingManager->onResize(sceneWidth, sceneHeight);

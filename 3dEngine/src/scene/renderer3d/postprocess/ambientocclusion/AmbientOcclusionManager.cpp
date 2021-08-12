@@ -37,15 +37,10 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::onTexturesUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
+    void AmbientOcclusionManager::onSizeUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
+        this->resolution = Vector2<float>((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
         this->depthTexture = depthTexture;
         this->normalAndAmbientTexture = normalAndAmbientTexture;
-
-        createOrUpdateAO();
-    }
-
-    void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->resolution = Vector2<float>((float)sceneWidth, (float)sceneHeight);
 
         createOrUpdateAO();
     }
