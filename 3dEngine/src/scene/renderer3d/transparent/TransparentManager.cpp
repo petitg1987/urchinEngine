@@ -42,10 +42,9 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        //TODO reduce texture size (RGBA_16_FLOAT + R_8_INT)
-        accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_32_FLOAT, nullptr);
+        accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT, nullptr);
         accumulationTexture->enableClearColor(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f));
-        revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
+        revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_8_INT, nullptr);
         revealTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f));
 
         if (offscreenRenderTarget) {
