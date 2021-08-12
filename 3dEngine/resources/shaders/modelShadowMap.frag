@@ -4,7 +4,7 @@
 layout(location = 0) out vec2 fragColor;
 
 void main() {
-    float depth = gl_FragCoord.z / gl_FragCoord.w;
+    float depth = gl_FragCoord.z; //from 0.0 (near plane) to 1.0 (far plane)
     fragColor.x = depth;
 
     float dx = dFdx(depth);
