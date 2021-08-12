@@ -1,4 +1,4 @@
-#include <scene/renderer3d/model/displayer/filter/OpaqueMeshFilter.h>
+#include <scene/renderer3d/util/OpaqueMeshFilter.h>
 
 namespace urchin {
 

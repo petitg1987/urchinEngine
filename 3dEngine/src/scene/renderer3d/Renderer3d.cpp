@@ -2,8 +2,8 @@
 #include <locale>
 
 #include <scene/renderer3d/Renderer3d.h>
+#include <scene/renderer3d/util/OpaqueMeshFilter.h>
 #include <scene/renderer3d/util/OctreeRenderer.h>
-#include <scene/renderer3d/model/displayer/filter/OpaqueMeshFilter.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 

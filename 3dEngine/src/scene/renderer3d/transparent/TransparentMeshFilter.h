@@ -1,10 +1,10 @@
 #pragma once
 
-#include <scene/renderer3d/model/displayer/filter/MeshFilter.h>
+#include <scene/renderer3d/model/displayer/MeshFilter.h>
 
 namespace urchin {
 
-    class OpaqueMeshFilter : public MeshFilter {
+    class TransparentMeshFilter : public MeshFilter {
         public:
             bool isAccepted(const ConstMesh&) const override;
     };

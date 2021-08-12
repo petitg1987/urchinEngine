@@ -2,19 +2,19 @@
 
 namespace urchin {
 
-    void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
-        cameraPlanes.nearPlane = 0.1f;
-        cameraPlanes.farPlane = 100.0f;
+    TransparentModelShaderVariable::TransparentModelShaderVariable(float nearPlane, float fatPlane) :
+            cameraPlanes({}) {
+        cameraPlanes.nearPlane = nearPlane;
+        cameraPlanes.farPlane = fatPlane;
+    }
 
+    void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
         meshRendererBuilder
                 ->addUniformData(sizeof(cameraPlanes), &cameraPlanes); //binding 3
     }
 
-    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
-        cameraPlanes.nearPlane = 0.1f;
-        cameraPlanes.farPlane = 2000.0f; //TODO udpate dynamic
-
-        meshRenderer.updateUniformData(3, &cameraPlanes);
+    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer&) {
+        //nothing to update
     }
 
 }

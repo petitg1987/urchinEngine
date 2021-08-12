@@ -6,6 +6,8 @@ namespace urchin {
 
     class TransparentModelShaderVariable : public CustomModelShaderVariable {
         public:
+            TransparentModelShaderVariable(float, float);
+
             void setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>&) override;
             void loadCustomShaderVariables(GenericRenderer&) override;
 

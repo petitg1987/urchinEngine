@@ -1,4 +1,4 @@
-#include <scene/renderer3d/model/displayer/filter/TransparentMeshFilter.h>
+#include <scene/renderer3d/transparent/TransparentMeshFilter.h>
 
 namespace urchin {
 
