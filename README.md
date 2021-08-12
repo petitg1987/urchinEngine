@@ -7,7 +7,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 * 3D Engine:
   * Graphic API: Vulkan
   * 3D models with skeleton animation & Blender exporter
-  * Materials: diffuse, normal mapping, ambient color, anisotropy, mip-maps
+  * Materials: diffuse, normal mapping, ambient factor, transparency, anisotropy, mip-maps
   * Dynamic shadow: cached parallel split shadow maps, variance shadow map, blur
   * Dynamic lighting with deferred shading: omni-directional, directional
   * Terrain multi-layered and grass

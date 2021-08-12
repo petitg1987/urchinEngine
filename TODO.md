@@ -38,7 +38,7 @@
   * **NEW FEATURE** (`minor`): Implement PCSS
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-    **OPTIMIZATION** (`medium`): Check if the fields of VkPipelineRasterizationStateCreateInfo can be used to improve the performances.  
+  * **OPTIMIZATION** (`medium`): Check if the fields of VkPipelineRasterizationStateCreateInfo can be used to improve the performances.  
 * Terrain
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain
