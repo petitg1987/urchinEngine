@@ -12,6 +12,8 @@ namespace urchin {
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
+            positioningData({}),
+            meshData({}),
             customShaderVariable(nullptr),
             depthTestEnabled(true),
             depthWriteEnabled(true),
@@ -24,13 +26,8 @@ namespace urchin {
     }
 
     void ModelDisplayer::setupCustomShaderVariable(CustomModelShaderVariable* customShaderVariable) {
-        if (customShaderVariable) {
-            if (isInitialized) {
-                throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + model->getConstMeshes()->getName());
-            } else if (displayMode == DEFAULT_MODE) {
-                //ensure shader binding id are correct
-                throw std::runtime_error("Define custom model shader variable in default mode is not implemented: " + model->getConstMeshes()->getName());
-            }
+        if (customShaderVariable && isInitialized) {
+            throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + model->getConstMeshes()->getName());
         }
         this->customShaderVariable = customShaderVariable;
     }
@@ -68,14 +65,17 @@ namespace urchin {
                     ->addData(constMesh->getBaseVertices())
                     ->indices(constMesh->getTrianglesIndices())
                     ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                    ->addUniformData(sizeof(positioningData), &positioningData); //binding 1
+                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+                    ->addUniformData(sizeof(meshData), &meshData); //binding 2 (only useful/updated for DEFAULT_MODE)
 
-                if (displayMode == DEFAULT_MODE) {
-                    meshRendererBuilder->addUniformData(sizeof(meshData), &meshData); //binding 2
-                }
                 if (customShaderVariable) {
-                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3
+                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 3
+                    assert(meshRendererBuilder->getUniformData().size() == 4);
+                } else {
+                    int customDummyValue = 0;
+                    meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 3
                 }
+
                 if (depthTestEnabled) {
                     meshRendererBuilder->enableDepthTest();
                 }
@@ -96,14 +96,14 @@ namespace urchin {
 
                     meshRendererBuilder
                             ->addData(constMesh->getTextureCoordinates())
-                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))); //binding 3
+                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))); //binding 4
                 }
                 if (displayMode == DEFAULT_MODE) {
                     TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
                     meshRendererBuilder
                             ->addData(constMesh->getBaseNormals())
                             ->addData(constMesh->getBaseTangents())
-                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 4
+                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 5
                 }
 
                 meshRenderers.push_back(meshRendererBuilder->build());

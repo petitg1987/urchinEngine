@@ -100,6 +100,7 @@ namespace urchin {
      */
     LightSplitShadowMap& LightShadowMap::addLightSplitShadowMap() {
         lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
+        assert(lightSplitShadowMaps.size() <= nbShadowMaps);
         return *lightSplitShadowMaps.back();
     }
 

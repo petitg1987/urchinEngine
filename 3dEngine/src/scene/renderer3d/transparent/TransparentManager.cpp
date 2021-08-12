@@ -1,8 +1,9 @@
 #include <scene/renderer3d/transparent/TransparentManager.h>
+#include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
+#include <scene/renderer3d/model/displayer/filter/TransparentMeshFilter.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/texture/Texture.h>
-#include <scene/renderer3d/model/displayer/filter/TransparentMeshFilter.h>
 
 namespace urchin {
 
@@ -74,6 +75,7 @@ namespace urchin {
         modelSetDisplayer->setupBlendFunctions({accumulationBlend, revealBlend});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
+        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>());
 
         modelSetDisplayer->initialize(*offscreenRenderTarget);
         modelSetDisplayer->onCameraProjectionUpdate(*camera);
