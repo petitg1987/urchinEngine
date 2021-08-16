@@ -28,7 +28,7 @@ struct LightInfo {
 };
 layout(std140, set = 0, binding = 2) uniform LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
-    vec4 globalAmbient;
+    vec3 globalAmbient;
 } lightsData;
 
 //shadow
@@ -169,12 +169,12 @@ void main() {
 
     if (modelAmbientFactor < 0.99999f) { //has lighting
         vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
-        vec4 modelAmbient = diffuse * modelAmbientFactor;
-        fragColor = lightsData.globalAmbient;
+        vec3 modelAmbient = vec3(diffuse) * modelAmbientFactor;
+        fragColor = vec4(lightsData.globalAmbient, 1.0f);
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
-            fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
+            fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 1.0f);
         }
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
@@ -194,7 +194,7 @@ void main() {
                 }
 
                 float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-                vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
+                vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient, 1.0);
 
                 float brightnessPercentage = 1.0f; //1.0 = no shadow
                 if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {

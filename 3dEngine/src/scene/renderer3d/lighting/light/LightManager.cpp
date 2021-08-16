@@ -17,7 +17,7 @@ namespace urchin {
             throw std::invalid_argument("Maximum lights value is limited to " + std::to_string(LIGHTS_SHADER_LIMIT));
         }
 
-        lightsData.globalAmbientColor = Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
+        lightsData.globalAmbientColor = Point3<float>(0.0f, 0.0f, 0.0f);
         LightInfo emptyLightData{};
         for (auto& light : lightsData.lightsInfo) {
             light = emptyLightData;
@@ -89,11 +89,11 @@ namespace urchin {
         return removedLight;
     }
 
-    void LightManager::setGlobalAmbientColor(const Point4<float>& globalAmbientColor) {
+    void LightManager::setGlobalAmbientColor(const Point3<float>& globalAmbientColor) {
         this->lightsData.globalAmbientColor = globalAmbientColor;
     }
 
-    const Point4<float>& LightManager::getGlobalAmbientColor() const {
+    const Point3<float>& LightManager::getGlobalAmbientColor() const {
         return lightsData.globalAmbientColor;
     }
 

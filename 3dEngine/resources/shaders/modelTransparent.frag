@@ -24,7 +24,7 @@ struct LightInfo {
 };
 layout(std140, set = 0, binding = 4) uniform LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
-    vec4 globalAmbient;
+    vec3 globalAmbient;
 } lightsData;
 
 //texture
@@ -61,8 +61,8 @@ void main() {
     vec3 normal = tbnMatrix * texNormal;
 
     //lighting
-    vec4 modelAmbient = diffuse * meshData.ambientFactor;
-    vec4 fragColor = lightsData.globalAmbient;
+    vec3 modelAmbient = vec3(diffuse) * meshData.ambientFactor;
+    vec4 fragColor = vec4(lightsData.globalAmbient, 1.0f);
 
     for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
         if (lightsData.lightsInfo[lightIndex].isExist) {
@@ -81,7 +81,7 @@ void main() {
             }
 
             float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-            vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
+            vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient, 1.0);
 
             fragColor += lightAttenuation * ((diffuse * NdotL) + ambient);
         } else {

@@ -30,8 +30,8 @@ namespace urchin {
             void addLight(std::shared_ptr<Light>);
             std::shared_ptr<Light> removeLight(Light*);
 
-            void setGlobalAmbientColor(const Point4<float>&);
-            const Point4<float>& getGlobalAmbientColor() const;
+            void setGlobalAmbientColor(const Point3<float>&);
+            const Point3<float>& getGlobalAmbientColor() const;
 
             void updateVisibleLights(const Frustum<float>&);
             void loadVisibleLights(GenericRenderer&, std::size_t);
@@ -69,7 +69,7 @@ namespace urchin {
 
             struct LightsData {
                 alignas(16) std::array<LightInfo, LIGHTS_SHADER_LIMIT> lightsInfo;
-                alignas(16) Point4<float> globalAmbientColor;
+                alignas(16) Point3<float> globalAmbientColor;
             } lightsData;
     };
 
