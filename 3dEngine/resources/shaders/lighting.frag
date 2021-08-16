@@ -161,7 +161,7 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
 }
 
 void main() {
-    vec4 diffuse = texture(colorTex, texCoordinates);
+    vec3 diffuse = texture(colorTex, texCoordinates).rgb;
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     float modelAmbientFactor = normalAndAmbient.a;
     float depthValue = texture(depthTex, texCoordinates).r;
@@ -169,12 +169,12 @@ void main() {
 
     if (modelAmbientFactor < 0.99999f) { //has lighting
         vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
-        vec3 modelAmbient = vec3(diffuse) * modelAmbientFactor;
+        vec3 modelAmbient = diffuse * modelAmbientFactor;
         fragColor = vec4(lightsData.globalAmbient, 1.0f);
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
-            fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 1.0f);
+            fragColor.rgb -= ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor;
         }
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
@@ -194,7 +194,7 @@ void main() {
                 }
 
                 float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-                vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient, 1.0);
+                vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
                 float brightnessPercentage = 1.0f; //1.0 = no shadow
                 if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
@@ -202,13 +202,13 @@ void main() {
                     shadowLightIndex++;
                 }
 
-                fragColor += lightAttenuation * (brightnessPercentage * (diffuse * NdotL) + ambient);
+                fragColor.rgb += lightAttenuation * (brightnessPercentage * (diffuse * NdotL) + ambient);
             } else {
                 break; //no more light
             }
         }
     } else { //no lighting
-        fragColor = diffuse;
+        fragColor.rgb = diffuse;
     }
 
     fragColor = addTransparentModels(fragColor);
