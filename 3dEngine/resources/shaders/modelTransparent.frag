@@ -22,7 +22,7 @@ struct LightInfo {
     float exponentialAttenuation;
     vec3 lightAmbient;
 };
-layout(std140, set = 0, binding = 2) uniform LightsData {
+layout(std140, set = 0, binding = 4) uniform LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
     vec4 globalAmbient;
 } lightsData;
@@ -35,6 +35,7 @@ layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;
 layout(location = 2) in vec3 n;
 layout(location = 3) in vec2 texCoordinates;
+layout(location = 4) in vec4 position; //TODO check it is correct. Is position vary ?
 
 layout(location = 0) out vec4 accumulationTexture;
 layout(location = 1) out float revealTexture;
@@ -42,7 +43,7 @@ layout(location = 1) out float revealTexture;
 void fillTransparentTextures(vec4 fragColor) {
     float depth = gl_FragCoord.z; //from 0.0 (near plane) to 1.0 (far plane)
     float linearizedDepth = (cameraPlanes.nearPlane * cameraPlanes.farPlane) /
-    (depth * (cameraPlanes.nearPlane - cameraPlanes.farPlane) + cameraPlanes.farPlane); //linearized depth from near plane value to far plane value
+            (depth * (cameraPlanes.nearPlane - cameraPlanes.farPlane) + cameraPlanes.farPlane); //linearized depth from near plane value to far plane value
 
     //Weight formulas from paper: http://jcgt.org/published/0002/02/09/
     //Info: formula (10) not work so well when the camera is close to the transparent models {weight = max(0.01, 3000.0 * pow(1.0 - depth, 3.0))}
@@ -53,13 +54,40 @@ void fillTransparentTextures(vec4 fragColor) {
 }
 
 void main() {
-    vec4 fragColor = texture(diffuseTex, texCoordinates);
+    vec4 diffuse = texture(diffuseTex, texCoordinates);
 
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
 
-    //TODO fragColor *= meshData.ambientFactor;
+    //lighting
+    vec4 modelAmbient = diffuse * meshData.ambientFactor;
+    vec4 fragColor = lightsData.globalAmbient;
+
+    for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
+        if (lightsData.lightsInfo[lightIndex].isExist) {
+            vec3 vertexToLightNormalized;
+            float lightAttenuation;
+
+            if (lightsData.lightsInfo[lightIndex].hasParallelBeams) { //sun light
+                vec3 vertexToLight = -lightsData.lightsInfo[lightIndex].positionOrDirection;
+                vertexToLightNormalized = normalize(vertexToLight);
+                lightAttenuation = 1.0f;
+            } else { //omnidirectional light
+                vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(position);
+                float dist = length(vertexToLight);
+                vertexToLightNormalized = normalize(vertexToLight);
+                lightAttenuation = exp(-dist * lightsData.lightsInfo[lightIndex].exponentialAttenuation);
+            }
+
+            float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
+            vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
+
+            fragColor += lightAttenuation * ((diffuse * NdotL) + ambient);
+        } else {
+            break; //no more light
+        }
+    }
 
     fillTransparentTextures(fragColor);
 }

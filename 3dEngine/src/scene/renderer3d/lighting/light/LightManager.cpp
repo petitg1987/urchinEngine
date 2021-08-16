@@ -17,7 +17,7 @@ namespace urchin {
             throw std::invalid_argument("Maximum lights value is limited to " + std::to_string(LIGHTS_SHADER_LIMIT));
         }
 
-        lightsData.globalAmbientColor = Point4<float>(0.0f, 0.0f, 0.0f, 0.0f);
+        lightsData.globalAmbientColor = Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
         LightInfo emptyLightData{};
         for (auto& light : lightsData.lightsInfo) {
             light = emptyLightData;
