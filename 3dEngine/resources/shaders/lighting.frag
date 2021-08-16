@@ -61,16 +61,16 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
-vec4 fetchPosition(vec2 texCoord, float depthValue) {
+vec4 fetchWorldPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
         texCoord.s * 2.0f - 1.0f,
         texCoord.t * 2.0f - 1.0f,
         depthValue,
         1.0f
     );
-    vec4 position = positioningData.mInverseViewProjection * texPosition;
-    position /= position.w;
-    return position;
+    vec4 worldPosition = positioningData.mInverseViewProjection * texPosition;
+    worldPosition /= worldPosition.w;
+    return worldPosition;
 }
 
 float linearStep(float min, float max, float v) {
@@ -165,7 +165,7 @@ void main() {
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     float modelAmbientFactor = normalAndAmbient.a;
     float depthValue = texture(depthTex, texCoordinates).r;
-    vec4 position = fetchPosition(texCoordinates, depthValue);
+    vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
 
     if (modelAmbientFactor < 0.99999f) { //has lighting
         vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
@@ -187,7 +187,7 @@ void main() {
                     vertexToLightNormalized = normalize(vertexToLight);
                     lightAttenuation = 1.0f;
                 } else { //omnidirectional light
-                    vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(position);
+                    vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(worldPosition);
                     float dist = length(vertexToLight);
                     vertexToLightNormalized = normalize(vertexToLight);
                     lightAttenuation = exp(-dist * lightsData.lightsInfo[lightIndex].exponentialAttenuation);
@@ -198,7 +198,7 @@ void main() {
 
                 float brightnessPercentage = 1.0f; //1.0 = no shadow
                 if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
-                    brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, position, NdotL);
+                    brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, worldPosition, NdotL);
                     shadowLightIndex++;
                 }
 
@@ -212,7 +212,7 @@ void main() {
     }
 
     fragColor = addTransparentModels(fragColor);
-    fragColor = addFog(fragColor, position);
+    fragColor = addFog(fragColor, worldPosition);
 
     //DEBUG: add color to shadow map splits
     /* const float colorValue = 0.25f;

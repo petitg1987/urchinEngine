@@ -35,7 +35,7 @@ layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;
 layout(location = 2) in vec3 n;
 layout(location = 3) in vec2 texCoordinates;
-layout(location = 4) in vec4 position; //TODO check it is correct. Is position vary ?
+layout(location = 4) in vec4 worldPosition;
 
 layout(location = 0) out vec4 accumulationTexture;
 layout(location = 1) out float revealTexture;
@@ -74,7 +74,7 @@ void main() {
                 vertexToLightNormalized = normalize(vertexToLight);
                 lightAttenuation = 1.0f;
             } else { //omnidirectional light
-                vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(position);
+                vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(worldPosition); //TODO worldPosition seems wrong !
                 float dist = length(vertexToLight);
                 vertexToLightNormalized = normalize(vertexToLight);
                 lightAttenuation = exp(-dist * lightsData.lightsInfo[lightIndex].exponentialAttenuation);
