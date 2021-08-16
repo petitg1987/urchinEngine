@@ -74,7 +74,7 @@ void main() {
                 vertexToLightNormalized = normalize(vertexToLight);
                 lightAttenuation = 1.0f;
             } else { //omnidirectional light
-                vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(worldPosition); //TODO worldPosition seems wrong !
+                vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(worldPosition);
                 float dist = length(vertexToLight);
                 vertexToLightNormalized = normalize(vertexToLight);
                 lightAttenuation = exp(-dist * lightsData.lightsInfo[lightIndex].exponentialAttenuation);
