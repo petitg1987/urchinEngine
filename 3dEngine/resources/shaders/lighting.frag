@@ -18,7 +18,7 @@ layout(std140, set = 0, binding = 1) uniform VisualOption {
 } visualOption;
 
 //lighting
-struct StructLightInfo {
+struct LightInfo {
     bool isExist;
     bool produceShadow;
     bool hasParallelBeams;
@@ -26,23 +26,21 @@ struct StructLightInfo {
     float exponentialAttenuation;
     vec3 lightAmbient;
 };
-layout(std140, set = 0, binding = 2) uniform Lights {
-    StructLightInfo lightsInfo[MAX_LIGHTS];
-} lights;
-layout(std140, set = 0, binding = 3) uniform Lighting {
+layout(std140, set = 0, binding = 2) uniform LightsData {
+    LightInfo lightsInfo[MAX_LIGHTS];
     vec4 globalAmbient;
-} lighting;
+} lightsData;
 
 //shadow
-layout(std140, set = 0, binding = 4) uniform ShadowLight {
+layout(std140, set = 0, binding = 3) uniform ShadowLight {
     mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * NUMBER_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
-layout(std140, set = 0, binding = 5) uniform ShadowMap {
+layout(std140, set = 0, binding = 4) uniform ShadowMap {
     float depthSplitDistance[NUMBER_SHADOW_MAPS];
 } shadowMap;
 
 //fog
-layout(std140, set = 0, binding = 6) uniform Fog {
+layout(std140, set = 0, binding = 5) uniform Fog {
     bool hasFog;
     float density;
     float gradient;
@@ -51,13 +49,13 @@ layout(std140, set = 0, binding = 6) uniform Fog {
 } fog;
 
 //deferred textures
-layout(binding = 7) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 8) uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + 8 bits unused
-layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
-layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
-layout(binding = 11) uniform sampler2D transparencyAccumulationTex; //transparency accumulation texture (rgba)
-layout(binding = 12) uniform sampler2D transparencyRevealTex; //transparency reveal texture (1 component)
-layout(binding = 13) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
+layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
+layout(binding = 7) uniform sampler2D colorTex; //diffuse RGB (3*8 bits) + 8 bits unused
+layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3*8 bits) + ambient factor
+layout(binding = 9) uniform sampler2D ambientOcclusionTex; //ambient occlusion factor (16 bits)
+layout(binding = 10) uniform sampler2D transparencyAccumulationTex; //transparency accumulation texture (rgba)
+layout(binding = 11) uniform sampler2D transparencyRevealTex; //transparency reveal texture (1 component)
+layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -172,7 +170,7 @@ void main() {
     if (modelAmbientFactor < 0.99999f) { //has lighting
         vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
         vec4 modelAmbient = diffuse * modelAmbientFactor;
-        fragColor = lighting.globalAmbient;
+        fragColor = lightsData.globalAmbient;
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
@@ -180,26 +178,26 @@ void main() {
         }
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-            if (lights.lightsInfo[lightIndex].isExist) {
+            if (lightsData.lightsInfo[lightIndex].isExist) {
                 vec3 vertexToLightNormalized;
                 float lightAttenuation;
 
-                if (lights.lightsInfo[lightIndex].hasParallelBeams) { //sun light
-                    vec3 vertexToLight = -lights.lightsInfo[lightIndex].positionOrDirection;
+                if (lightsData.lightsInfo[lightIndex].hasParallelBeams) { //sun light
+                    vec3 vertexToLight = -lightsData.lightsInfo[lightIndex].positionOrDirection;
                     vertexToLightNormalized = normalize(vertexToLight);
                     lightAttenuation = 1.0f;
                 } else { //omnidirectional light
-                    vec3 vertexToLight = lights.lightsInfo[lightIndex].positionOrDirection - vec3(position);
+                    vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(position);
                     float dist = length(vertexToLight);
                     vertexToLightNormalized = normalize(vertexToLight);
-                    lightAttenuation = exp(-dist * lights.lightsInfo[lightIndex].exponentialAttenuation);
+                    lightAttenuation = exp(-dist * lightsData.lightsInfo[lightIndex].exponentialAttenuation);
                 }
 
                 float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-                vec4 ambient = vec4(lights.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
+                vec4 ambient = vec4(lightsData.lightsInfo[lightIndex].lightAmbient, 0.0f) * modelAmbient;
 
                 float brightnessPercentage = 1.0f; //1.0 = no shadow
-                if (visualOption.hasShadow && lights.lightsInfo[lightIndex].produceShadow) {
+                if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
                     brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, position, NdotL);
                     shadowLightIndex++;
                 }

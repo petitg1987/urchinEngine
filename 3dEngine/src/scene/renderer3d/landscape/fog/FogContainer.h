@@ -20,7 +20,7 @@ namespace urchin {
 
             void setupLightingRenderer(std::shared_ptr<GenericRendererBuilder>&);
 
-            void loadFog(GenericRenderer&);
+            void loadFog(GenericRenderer&, std::size_t);
 
         private:
             std::stack<const Fog*> fogs;

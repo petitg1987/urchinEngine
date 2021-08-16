@@ -69,11 +69,13 @@ namespace urchin {
                     ->addUniformData(sizeof(meshData), &meshData); //binding 2 (only useful/updated for DEFAULT_MODE)
 
                 if (customShaderVariable) {
-                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 3
-                    assert(meshRendererBuilder->getUniformData().size() == 4);
-                } else {
+                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 3 & 4 (optional)
+                }
+                int missingUniformData = 5 - (int)meshRendererBuilder->getUniformData().size();
+                assert(missingUniformData >= 0);
+                for (int i = 0; i < missingUniformData; ++i) {
                     int customDummyValue = 0;
-                    meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 3
+                    meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 3 & 4
                 }
 
                 if (depthTestEnabled) {
@@ -89,21 +91,17 @@ namespace urchin {
                     meshRendererBuilder->enableTransparency(blendFunctions);
                 }
 
-                TextureParam::ReadMode textureReadMode = constMesh->getMaterial().isRepeatableTextures() ?
-                        TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
-                if (displayMode == DEFAULT_MODE || displayMode == DIFFUSE_MODE) {
+                auto textureReadMode = constMesh->getMaterial().isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+                if (displayMode == DEFAULT_MODE) {
                     TextureParam diffuseTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
+                    TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
 
                     meshRendererBuilder
                             ->addData(constMesh->getTextureCoordinates())
-                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))); //binding 4
-                }
-                if (displayMode == DEFAULT_MODE) {
-                    TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-                    meshRendererBuilder
                             ->addData(constMesh->getBaseNormals())
                             ->addData(constMesh->getBaseTangents())
-                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 5
+                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))) //binding 5
+                            ->addUniformTextureReader(TextureReader::build(constMesh->getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 6
                 }
 
                 meshRenderers.push_back(meshRendererBuilder->build());

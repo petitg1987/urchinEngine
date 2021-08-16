@@ -28,16 +28,14 @@ namespace urchin {
         this->renderTarget = &renderTarget;
 
         if (displayMode == DEFAULT_MODE) {
-            if (fragmentShaderName.empty()) { //use default fragment shader
+            if (fragmentShaderName.empty()) {
+                //use default fragment shader
                 fragmentShaderName = "model.frag.spv";
             }
             modelShader = ShaderBuilder::createShader("model.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else if (displayMode == DEPTH_ONLY_MODE) {
             assert(!fragmentShaderName.empty());
             modelShader = ShaderBuilder::createShader("modelDepthOnly.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
-        } else if (displayMode == DIFFUSE_MODE) {
-            assert(!fragmentShaderName.empty());
-            modelShader = ShaderBuilder::createShader("modelDiffuse.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
         } else {
             throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
         }

@@ -12,13 +12,7 @@ namespace urchin {
 
         /* DEPTH_ONLY_MODE provide:
             * Depth information */
-        DEPTH_ONLY_MODE,
-
-        /* DIFFUSE_MODE provide:
-            * Texturing
-            * Depth information
-            * Diffuse information (output unit: 0) */
-        DIFFUSE_MODE
+        DEPTH_ONLY_MODE
     };
 
 }

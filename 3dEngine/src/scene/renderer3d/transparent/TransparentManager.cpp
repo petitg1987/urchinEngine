@@ -7,7 +7,8 @@
 
 namespace urchin {
 
-    TransparentManager::TransparentManager() :
+    TransparentManager::TransparentManager(LightManager& lightManager) :
+            lightManager(lightManager),
             sceneWidth(0),
             sceneHeight(0),
             camera(nullptr) {
@@ -59,7 +60,7 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateModelSetDisplayer() {
-        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DIFFUSE_MODE);
+        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
 
         BlendFunction accumulationBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
         BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
@@ -69,7 +70,7 @@ namespace urchin {
         modelSetDisplayer->setupBlendFunctions({accumulationBlend, revealBlend});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
-        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane()));
+        modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
 
         modelSetDisplayer->initialize(*offscreenRenderTarget);
         modelSetDisplayer->onCameraProjectionUpdate(*camera);

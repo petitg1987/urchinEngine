@@ -34,7 +34,7 @@ namespace urchin {
             const Point4<float>& getGlobalAmbientColor() const;
 
             void updateVisibleLights(const Frustum<float>&);
-            void loadVisibleLights(GenericRenderer&);
+            void loadVisibleLights(GenericRenderer&, std::size_t);
             void postUpdateVisibleLights();
 
             void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&);
@@ -43,8 +43,8 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void logMaxLightsReach();
 
-            static const unsigned int LIGHTS_SHADER_LIMIT;
-            static const float LIGHTS_OCTREE_MIN_SIZE;
+            static constexpr unsigned int LIGHTS_SHADER_LIMIT = 15; //must be equals to MAX_LIGHTS/LIGHTS_SHADER_LIMIT/MAX_LIGHTS in lighting/modelShadowMap/modelTransparent shaders
+            static constexpr float LIGHTS_OCTREE_MIN_SIZE = 50.0;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
             RenderTarget& renderTarget;
@@ -58,7 +58,7 @@ namespace urchin {
 
             Light* lastUpdatedLight;
 
-            struct LightsData {
+            struct LightInfo {
                 alignas(4) bool isExist;
                 alignas(4) bool produceShadow;
                 alignas(4) bool hasParallelBeams;
@@ -66,8 +66,11 @@ namespace urchin {
                 alignas(4) float exponentialAttenuation;
                 alignas(16) Point3<float> lightAmbient;
             };
-            std::vector<LightsData> lightsData;
-            Point4<float> globalAmbientColor;
+
+            struct LightsData {
+                alignas(16) std::array<LightInfo, LIGHTS_SHADER_LIMIT> lightsInfo;
+                alignas(16) Point4<float> globalAmbientColor;
+            } lightsData;
     };
 
 }

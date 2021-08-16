@@ -7,30 +7,26 @@
 
 namespace urchin {
 
-    //static
-    constexpr unsigned int LightManager::LIGHTS_SHADER_LIMIT = 15; //must be equals to 'MAX_LIGHTS'/'MAX_VERTICES' in lighting/modelShadowMap shaders
-    constexpr float LightManager::LIGHTS_OCTREE_MIN_SIZE = 50.0f;
-
     LightManager::LightManager(RenderTarget& renderTarget) :
             maxLights(ConfigService::instance().getUnsignedIntValue("light.maxLights")),
             renderTarget(renderTarget),
             lightOctreeManager(std::make_unique<OctreeManager<Light>>(LIGHTS_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
-            globalAmbientColor(Point4<float>(0.0f, 0.0f, 0.0f, 0.0f)) {
+            lightsData({}) {
         if (maxLights > LIGHTS_SHADER_LIMIT) {
             throw std::invalid_argument("Maximum lights value is limited to " + std::to_string(LIGHTS_SHADER_LIMIT));
+        }
+
+        lightsData.globalAmbientColor = Point4<float>(0.0f, 0.0f, 0.0f, 0.0f);
+        LightInfo emptyLightData{};
+        for (auto& light : lightsData.lightsInfo) {
+            light = emptyLightData;
         }
     }
 
     void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        std::size_t lightsDataSize = maxLights;
-
-        LightsData emptyLightData{};
-        lightsData.resize(lightsDataSize, emptyLightData);
-
         lightingRendererBuilder
-                ->addUniformData(lightsDataSize * sizeof(LightsData), lightsData.data()) //binding 2
-                ->addUniformData(sizeof(globalAmbientColor), &globalAmbientColor); //binding 3
+                ->addUniformData(sizeof(LightsData), &lightsData);
     }
 
     OctreeManager<Light>& LightManager::getLightOctreeManager() const {
@@ -94,11 +90,11 @@ namespace urchin {
     }
 
     void LightManager::setGlobalAmbientColor(const Point4<float>& globalAmbientColor) {
-        this->globalAmbientColor = globalAmbientColor;
+        this->lightsData.globalAmbientColor = globalAmbientColor;
     }
 
     const Point4<float>& LightManager::getGlobalAmbientColor() const {
-        return globalAmbientColor;
+        return lightsData.globalAmbientColor;
     }
 
     void LightManager::updateVisibleLights(const Frustum<float>& frustum) {
@@ -127,36 +123,35 @@ namespace urchin {
         std::sort(visibleLights.begin(), visibleLights.end(), std::greater<>());
     }
 
-    void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer) {
+    void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer, std::size_t lightsDataUniformIndex) {
         const std::vector<Light*>& lights = getVisibleLights();
 
         for (unsigned int i = 0; i < maxLights; ++i) {
             if (lights.size() > i) {
                 const Light* light = lights[i];
 
-                lightsData[i].isExist = true;
-                lightsData[i].produceShadow = light->isProduceShadow();
-                lightsData[i].hasParallelBeams = light->hasParallelBeams();
-                lightsData[i].lightAmbient = light->getAmbientColor();
+                lightsData.lightsInfo[i].isExist = true;
+                lightsData.lightsInfo[i].produceShadow = light->isProduceShadow();
+                lightsData.lightsInfo[i].hasParallelBeams = light->hasParallelBeams();
+                lightsData.lightsInfo[i].lightAmbient = light->getAmbientColor();
 
                 if (lights[i]->getLightType() == Light::SUN) {
                     const auto* sunLight = dynamic_cast<const SunLight*>(light);
-                    lightsData[i].positionOrDirection = sunLight->getDirections()[0];
+                    lightsData.lightsInfo[i].positionOrDirection = sunLight->getDirections()[0];
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
                     const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
-                    lightsData[i].positionOrDirection = omnidirectionalLight->getPosition().toVector();
-                    lightsData[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
+                    lightsData.lightsInfo[i].positionOrDirection = omnidirectionalLight->getPosition().toVector();
+                    lightsData.lightsInfo[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
                 } else {
                     throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string(light->getLightType()));
                 }
             } else {
-                lightsData[i].isExist = false;
+                lightsData.lightsInfo[i].isExist = false;
                 break;
             }
         }
 
-        lightingRenderer.updateUniformData(2, lightsData.data());
-        lightingRenderer.updateUniformData(3, &globalAmbientColor);
+        lightingRenderer.updateUniformData(lightsDataUniformIndex, &lightsData);
     }
 
     void LightManager::postUpdateVisibleLights() {

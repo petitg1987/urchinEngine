@@ -2,8 +2,9 @@
 
 namespace urchin {
 
-    TransparentModelShaderVariable::TransparentModelShaderVariable(float nearPlane, float fatPlane) :
-            cameraPlanes({}) {
+    TransparentModelShaderVariable::TransparentModelShaderVariable(float nearPlane, float fatPlane, LightManager& lightManager) :
+            cameraPlanes({}),
+            lightManager(lightManager) {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = fatPlane;
     }
@@ -11,10 +12,11 @@ namespace urchin {
     void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
         meshRendererBuilder
                 ->addUniformData(sizeof(cameraPlanes), &cameraPlanes); //binding 3
+        lightManager.setupLightingRenderer(meshRendererBuilder); //binding 4
     }
 
-    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer&) {
-        //nothing to update
+    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
+        lightManager.loadVisibleLights(meshRenderer, 4);
     }
 
 }

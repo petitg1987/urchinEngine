@@ -30,8 +30,8 @@ namespace urchin {
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         lightingRendererBuilder
-                ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data()) //binding 4
-                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance); //binding 5
+                ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
+                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance);
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
@@ -303,8 +303,8 @@ namespace urchin {
             depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
         }
 
-        lightingRenderer.updateUniformData(4, lightProjectionViewMatrices.data());
-        lightingRenderer.updateUniformData(5, depthSplitDistance);
+        lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());
+        lightingRenderer.updateUniformData(4, depthSplitDistance);
     }
 
 }

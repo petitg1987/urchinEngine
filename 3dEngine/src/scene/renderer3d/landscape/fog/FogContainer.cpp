@@ -25,20 +25,20 @@ namespace urchin {
     }
 
     void FogContainer::setupLightingRenderer(std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        lightingRendererBuilder->addUniformData(sizeof(fogData), &fogData); //binding 6
+        lightingRendererBuilder->addUniformData(sizeof(fogData), &fogData);
     }
 
-    void FogContainer::loadFog(GenericRenderer& lightingRenderer) {
+    void FogContainer::loadFog(GenericRenderer& lightingRenderer, std::size_t fogUniformIndex) {
         fogData = {};
         fogData.hasFog = !fogs.empty();
         if (!fogs.empty()) {
             fogData.density = fogs.top()->getDensity();
             fogData.gradient = fogs.top()->getGradient();
             fogData.maxHeight = fogs.top()->getMaxHeight();
-            fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0);
+            fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0f);
         }
 
-        lightingRenderer.updateUniformData(6, &fogData);
+        lightingRenderer.updateUniformData(fogUniformIndex, &fogData);
     }
 
 }
