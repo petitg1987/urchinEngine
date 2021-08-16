@@ -23,6 +23,7 @@ namespace urchin {
     class DeviceHandler {
         public:
             DeviceHandler();
+            DeviceHandler(const DeviceHandler&) = delete;
 
             void initializeDevices(VkInstance instance, VkSurfaceKHR);
             void cleanup();

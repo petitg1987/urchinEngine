@@ -45,7 +45,7 @@ namespace urchin {
         return boxShape.getHalfSize(index);
     }
 
-    template<class T> const Vector3<T> &OBBox<T>::getHalfSizes() const {
+    template<class T> const Vector3<T>& OBBox<T>::getHalfSizes() const {
         return boxShape.getHalfSizes();
     }
 
@@ -65,7 +65,7 @@ namespace urchin {
         return boxShape.getMinHalfSizeIndex();
     }
 
-    template<class T> const Point3<T> &OBBox<T>::getCenterOfMass() const {
+    template<class T> const Point3<T>& OBBox<T>::getCenterOfMass() const {
         return centerOfMass;
     }
 
@@ -123,14 +123,15 @@ namespace urchin {
     }
 
     template<class T> Point3<T> OBBox<T>::getSupportPoint(const Vector3<T>& direction) const {
-        T maxPointDotDirection = getPoint(0).toVector().dotProduct(direction);
         Point3<T> maxPoint = getPoint(0);
+        T maxPointDotDirection = maxPoint.toVector().dotProduct(direction);
 
-        for (unsigned int i = 1;i < 8; ++i) {
-            T currentPointDotDirection  = getPoint(i).toVector().dotProduct(direction);
+        for (unsigned int i = 1; i < 8; ++i) {
+            Point3<T> currentPoint = getPoint(i);
+            T currentPointDotDirection  = currentPoint.toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
-                maxPoint = getPoint(i);
+                maxPoint = currentPoint;
             }
         }
 
@@ -144,11 +145,11 @@ namespace urchin {
         for (unsigned int i = 0; i < 8; ++i) {
             Point3<T> point = getPoint(i);
             for (unsigned int coordinate = 0; coordinate < 3; ++coordinate) {
-                if (point[coordinate]<min[coordinate]) {
+                if (point[coordinate] < min[coordinate]) {
                     min[coordinate] = point[coordinate];
                 }
 
-                if (point[coordinate]>max[coordinate]) {
+                if (point[coordinate] > max[coordinate]) {
                     max[coordinate] = point[coordinate];
                 }
             }
@@ -160,11 +161,10 @@ namespace urchin {
     /**
     * @return True if the bounding box collides or is inside this bounding box
     */
-    template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T>& bbox) const { //Separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
-
+    template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T>& bbox) const { //separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
         //test spheres collide
-        Sphere<T> thisSphere(getPoint(0).distance(centerOfMass), centerOfMass);
-        Sphere<T> bboxSphere(bbox.getPoint(0).distance(bbox.getCenterOfMass()), bbox.getCenterOfMass());
+        Sphere<T> thisSphere(getHalfSizes().length(), centerOfMass);
+        Sphere<T> bboxSphere(bbox.getHalfSizes().length(), bbox.getCenterOfMass());
         if (!thisSphere.collideWithSphere(bboxSphere)) {
             return false;
         }
@@ -180,10 +180,10 @@ namespace urchin {
         //case 1, 2, 3 (projectionAxis = axis[0] | axis[1] | axis[2])
         for (unsigned int i = 0; i < 3; i++) {
             if (std::abs(distCenterPoint.dotProduct(axis[i]))
-                > this->getHalfSize(i)
-                + std::abs(bbox.getHalfSize(0) * AdotB[i][0])
-                + std::abs(bbox.getHalfSize(1) * AdotB[i][1])
-                + std::abs(bbox.getHalfSize(2) * AdotB[i][2])) {
+                    > this->getHalfSize(i)
+                    + std::abs(bbox.getHalfSize(0) * AdotB[i][0])
+                    + std::abs(bbox.getHalfSize(1) * AdotB[i][1])
+                    + std::abs(bbox.getHalfSize(2) * AdotB[i][2])) {
                 return false;
             }
         }
@@ -191,92 +191,92 @@ namespace urchin {
         //case 4, 5, 6 (projectionAxis = bbox.getAxis(0) | bbox.getAxis(1) | bbox.getAxis(2))
         for (unsigned int i = 0; i < 3; i++) {
             if (std::abs(distCenterPoint.dotProduct(bbox.getAxis(i)))
-                > std::abs(this->getHalfSize(0) * AdotB[0][i])
-                + std::abs(this->getHalfSize(1) * AdotB[1][i])
-                + std::abs(this->getHalfSize(2) * AdotB[2][i])
-                + bbox.getHalfSize(i)) {
+                    > std::abs(this->getHalfSize(0) * AdotB[0][i])
+                    + std::abs(this->getHalfSize(1) * AdotB[1][i])
+                    + std::abs(this->getHalfSize(2) * AdotB[2][i])
+                    + bbox.getHalfSize(i)) {
                 return false;
             }
         }
 
         //case 7 (projectionAxis = axis[0].crossProduct(bbox.getAxis(0)))
         if (std::abs(distCenterPoint.dotProduct(axis[0].crossProduct(bbox.getAxis(0)))) - epsilon
-            > std::abs(this->getHalfSize(1) * AdotB[2][0])
-            + std::abs(this->getHalfSize(2) * AdotB[1][0])
-            + std::abs(bbox.getHalfSize(1) * AdotB[0][2])
-            + std::abs(bbox.getHalfSize(2) * AdotB[0][1])) {
+                > std::abs(this->getHalfSize(1) * AdotB[2][0])
+                + std::abs(this->getHalfSize(2) * AdotB[1][0])
+                + std::abs(bbox.getHalfSize(1) * AdotB[0][2])
+                + std::abs(bbox.getHalfSize(2) * AdotB[0][1])) {
             return false;
         }
 
         //case 8 (projectionAxis = axis[0].crossProduct(bbox.getAxis(1)))
         if (std::abs(distCenterPoint.dotProduct(axis[0].crossProduct(bbox.getAxis(1)))) - epsilon
-        > std::abs(this->getHalfSize(1) * AdotB[2][1])
-        + std::abs(this->getHalfSize(2) * AdotB[1][1])
-        + std::abs(bbox.getHalfSize(0) * AdotB[0][2])
-        + std::abs(bbox.getHalfSize(2) * AdotB[0][0])) {
+                > std::abs(this->getHalfSize(1) * AdotB[2][1])
+                + std::abs(this->getHalfSize(2) * AdotB[1][1])
+                + std::abs(bbox.getHalfSize(0) * AdotB[0][2])
+                + std::abs(bbox.getHalfSize(2) * AdotB[0][0])) {
             return false;
         }
 
         //case 9 (projectionAxis = axis[0].crossProduct(bbox.getAxis(2)))
         if (std::abs(distCenterPoint.dotProduct(axis[0].crossProduct(bbox.getAxis(2)))) - epsilon
-        > std::abs(this->getHalfSize(1) * AdotB[2][2])
-        + std::abs(this->getHalfSize(2) * AdotB[1][2])
-        + std::abs(bbox.getHalfSize(0) * AdotB[0][1])
-        + std::abs(bbox.getHalfSize(1) * AdotB[0][0])) {
+                > std::abs(this->getHalfSize(1) * AdotB[2][2])
+                + std::abs(this->getHalfSize(2) * AdotB[1][2])
+                + std::abs(bbox.getHalfSize(0) * AdotB[0][1])
+                + std::abs(bbox.getHalfSize(1) * AdotB[0][0])) {
             return false;
         }
 
         //case 10 (projectionAxis = axis[1].crossProduct(bbox.getAxis(0)))
         if (std::abs(distCenterPoint.dotProduct(axis[1].crossProduct(bbox.getAxis(0)))) - epsilon
-            > std::abs(this->getHalfSize(0) * AdotB[2][0])
-            + std::abs(this->getHalfSize(2) * AdotB[0][0])
-            + std::abs(bbox.getHalfSize(1) * AdotB[1][2])
-            + std::abs(bbox.getHalfSize(2) * AdotB[1][1])) {
+                > std::abs(this->getHalfSize(0) * AdotB[2][0])
+                + std::abs(this->getHalfSize(2) * AdotB[0][0])
+                + std::abs(bbox.getHalfSize(1) * AdotB[1][2])
+                + std::abs(bbox.getHalfSize(2) * AdotB[1][1])) {
             return false;
         }
 
         //case 11 (projectionAxis = axis[1].crossProduct(bbox.getAxis(1)))
         if (std::abs(distCenterPoint.dotProduct(axis[1].crossProduct(bbox.getAxis(1)))) - epsilon
-            > std::abs(this->getHalfSize(0) * AdotB[2][1])
-            + std::abs(this->getHalfSize(2) * AdotB[0][1])
-            + std::abs(bbox.getHalfSize(0) * AdotB[1][2])
-            + std::abs(bbox.getHalfSize(2) * AdotB[1][0])) {
+                > std::abs(this->getHalfSize(0) * AdotB[2][1])
+                + std::abs(this->getHalfSize(2) * AdotB[0][1])
+                + std::abs(bbox.getHalfSize(0) * AdotB[1][2])
+                + std::abs(bbox.getHalfSize(2) * AdotB[1][0])) {
             return false;
         }
 
         //case 12 (projectionAxis = axis[1].crossProduct(bbox.getAxis(2)))
         if (std::abs(distCenterPoint.dotProduct(axis[1].crossProduct(bbox.getAxis(2)))) - epsilon
-            > std::abs(this->getHalfSize(0) * AdotB[2][2])
-            + std::abs(this->getHalfSize(2) * AdotB[0][2])
-            + std::abs(bbox.getHalfSize(0) * AdotB[1][1])
-            + std::abs(bbox.getHalfSize(1) * AdotB[1][0])) {
+                > std::abs(this->getHalfSize(0) * AdotB[2][2])
+                + std::abs(this->getHalfSize(2) * AdotB[0][2])
+                + std::abs(bbox.getHalfSize(0) * AdotB[1][1])
+                + std::abs(bbox.getHalfSize(1) * AdotB[1][0])) {
             return false;
         }
 
         //case 13 (projectionAxis = axis[2].crossProduct(bbox.getAxis(0)))
         if (std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(0)))) - epsilon
-            > std::abs(this->getHalfSize(0) * AdotB[1][0])
-            + std::abs(this->getHalfSize(1) * AdotB[0][0])
-            + std::abs(bbox.getHalfSize(1) * AdotB[2][2])
-            + std::abs(bbox.getHalfSize(2) * AdotB[2][1])) {
+                > std::abs(this->getHalfSize(0) * AdotB[1][0])
+                + std::abs(this->getHalfSize(1) * AdotB[0][0])
+                + std::abs(bbox.getHalfSize(1) * AdotB[2][2])
+                + std::abs(bbox.getHalfSize(2) * AdotB[2][1])) {
             return false;
         }
 
         //case 14 (projectionAxis = axis[2].crossProduct(bbox.getAxis(1)))
         if (std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(1)))) - epsilon
-            > std::abs(this->getHalfSize(0) * AdotB[1][1])
-            + std::abs(this->getHalfSize(1) * AdotB[0][1])
-            + std::abs(bbox.getHalfSize(0) * AdotB[2][2])
-            + std::abs(bbox.getHalfSize(2) * AdotB[2][0])) {
+                > std::abs(this->getHalfSize(0) * AdotB[1][1])
+                + std::abs(this->getHalfSize(1) * AdotB[0][1])
+                + std::abs(bbox.getHalfSize(0) * AdotB[2][2])
+                + std::abs(bbox.getHalfSize(2) * AdotB[2][0])) {
             return false;
         }
 
         //case 15 (projectionAxis = axis[2].crossProduct(bbox.getAxis(2)))
-        return !(std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(2)))) - epsilon
-                 > std::abs(this->getHalfSize(0) * AdotB[1][2])
-                 + std::abs(this->getHalfSize(1) * AdotB[0][2])
-                 + std::abs(bbox.getHalfSize(0) * AdotB[2][1])
-                 + std::abs(bbox.getHalfSize(1) * AdotB[2][0]));
+        return std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(2)))) - epsilon
+                <= std::abs(this->getHalfSize(0) * AdotB[1][2])
+                + std::abs(this->getHalfSize(1) * AdotB[0][2])
+                + std::abs(bbox.getHalfSize(0) * AdotB[2][1])
+                + std::abs(bbox.getHalfSize(1) * AdotB[2][0]);
     }
 
     /**

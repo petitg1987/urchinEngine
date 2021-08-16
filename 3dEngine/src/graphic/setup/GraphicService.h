@@ -28,8 +28,8 @@ namespace urchin {
 
             const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
             static VkSurfaceKHR getSurface();
-            DeviceHandler getDevices() const;
-            QueueHandler getQueues() const;
+            const DeviceHandler& getDevices() const;
+            const QueueHandler& getQueues() const;
             VkCommandPool getAllocateCommandPool() const;
             VmaAllocator getAllocator() const;
 

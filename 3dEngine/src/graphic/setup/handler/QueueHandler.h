@@ -8,6 +8,7 @@ namespace urchin {
     class QueueHandler {
         public:
             QueueHandler();
+            QueueHandler(const QueueHandler&) = delete;
 
             void initializeQueueFamilies(VkPhysicalDevice, VkSurfaceKHR);
             void initializeQueues(VkDevice);

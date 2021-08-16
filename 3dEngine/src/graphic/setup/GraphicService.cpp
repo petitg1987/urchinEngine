@@ -114,12 +114,12 @@ namespace urchin {
         return surface;
     }
 
-    DeviceHandler GraphicService::getDevices() const {
+    const DeviceHandler& GraphicService::getDevices() const {
         assert(apiGraphicInitialized);
         return deviceHandler;
     }
 
-    QueueHandler GraphicService::getQueues() const {
+    const QueueHandler& GraphicService::getQueues() const {
         assert(apiGraphicInitialized);
         return queueHandler;
     }
