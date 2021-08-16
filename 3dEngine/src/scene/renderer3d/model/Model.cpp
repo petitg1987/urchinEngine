@@ -13,7 +13,8 @@ namespace urchin {
         initialize(meshFilename);
     }
 
-    Model::Model(const Model& model) : Octreeable(model),
+    Model::Model(const Model& model) :
+            Octreeable(model),
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             meshes(std::unique_ptr<Meshes>(nullptr)),
             currAnimation(nullptr),
