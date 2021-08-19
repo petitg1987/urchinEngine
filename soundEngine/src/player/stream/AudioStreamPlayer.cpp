@@ -11,6 +11,10 @@ namespace urchin {
 
     }
 
+    AudioStreamPlayer::~AudioStreamPlayer() {
+        streamUpdateWorker.removeTask(*this);
+    }
+
     void AudioStreamPlayer::play() {
         play(false);
     }
@@ -23,17 +27,17 @@ namespace urchin {
         alSourcePause(getSourceId());
     }
 
+    void AudioStreamPlayer::unpause() {
+        alSourcePlay(getSourceId());
+    }
+
     void AudioStreamPlayer::stop() {
         alSourceStop(getSourceId());
-
         streamUpdateWorker.removeTask(*this);
     }
 
     void AudioStreamPlayer::play(bool playLoop) {
-        if (!streamUpdateWorker.isTaskExist(*this)) {
-            streamUpdateWorker.addTask(*this, playLoop);
-        }
-
+        streamUpdateWorker.addTask(*this, playLoop);
         alSourcePlay(getSourceId());
     }
 

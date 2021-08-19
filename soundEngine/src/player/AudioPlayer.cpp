@@ -30,10 +30,6 @@ namespace urchin {
         return status == AL_PLAYING;
     }
 
-    void AudioPlayer::unpause() {
-        play(); //as it is an unpause action: use 'play' or 'playLoop' method doesn't make any difference
-    }
-
     bool AudioPlayer::isPaused() const {
         ALint state;
         alGetSourcei(sourceId, AL_SOURCE_STATE, &state);
