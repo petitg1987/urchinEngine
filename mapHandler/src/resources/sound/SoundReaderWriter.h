@@ -17,9 +17,6 @@ namespace urchin {
             static std::unique_ptr<Sound> buildSoundFrom(const UdaChunk*, const UdaParser&);
             static void buildChunkFrom(UdaChunk&, const Sound&, UdaWriter&);
 
-            static void loadPropertiesOn(Sound&, const UdaChunk*, const UdaParser&);
-            static void writePropertiesOn(UdaChunk&, const Sound&, UdaWriter&);
-
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char CATEGORY_ATTR[] = "category";
             static constexpr char SPATIAL_VALUE[] = "SPATIAL";

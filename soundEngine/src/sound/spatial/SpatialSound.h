@@ -13,8 +13,10 @@ namespace urchin {
     */
     class SpatialSound : public Sound {
         public:
-            SpatialSound(std::string, SoundCategory, const Point3<float>&, float);
-            SpatialSound(std::string, SoundCategory, const Point3<float>&);
+            SpatialSound(std::string, SoundCategory, float, const Point3<float>&, float);
+
+            void initializeSource(ALuint) const override;
+            void updateSource(ALuint) override;
 
             Sound::SoundType getSoundType() const override;
 
@@ -25,10 +27,11 @@ namespace urchin {
             float getInaudibleDistance() const;
 
         private:
-            void initializeSource();
-
             Point3<float> position;
+            bool positionUpdated;
+
             float inaudibleDistance;
+            bool inaudibleDistanceUpdated;
     };
 
 }

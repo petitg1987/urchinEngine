@@ -11,7 +11,10 @@ namespace urchin {
      */
     class GlobalSound : public Sound {
         public:
-            GlobalSound(std::string, SoundCategory);
+            GlobalSound(std::string, SoundCategory, float);
+
+            void initializeSource(ALuint) const override;
+            void updateSource(ALuint) override;
 
             Sound::SoundType getSoundType() const override;
     };

@@ -8,6 +8,7 @@
 #include <panel/sounds/dialog/NewSoundDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
+#include <widget/style/SpinBoxStyleHelper.h>
 
 namespace urchin {
 
@@ -20,13 +21,12 @@ namespace urchin {
             soundNameText(nullptr),
             soundFilenameLabel(nullptr),
             soundFilenameText(nullptr),
-            soundTypeLabel(nullptr),
             soundTypeComboBox(nullptr),
-            soundCategoryLabel(nullptr),
             soundCategoryComboBox(nullptr),
+            initialVolumeSpinBox(nullptr),
             sceneSound(nullptr) {
         this->setWindowTitle("New Sound");
-        this->resize(530, 160);
+        this->resize(530, 200);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -36,9 +36,10 @@ namespace urchin {
         setupSoundFilenameFields(mainLayout);
         setupSoundTypeFields(mainLayout);
         setupSoundCategoryFields(mainLayout);
+        setupSoundInitialVolume(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
-        mainLayout->addWidget(buttonBox, 4, 0, 1, 3, Qt::AlignRight);
+        mainLayout->addWidget(buttonBox, 5, 0, 1, 3, Qt::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -72,7 +73,7 @@ namespace urchin {
     }
 
     void NewSoundDialog::setupSoundTypeFields(QGridLayout* mainLayout) {
-        soundTypeLabel = new QLabel("Sound Type:");
+        auto* soundTypeLabel = new QLabel("Sound Type:");
         mainLayout->addWidget(soundTypeLabel, 2, 0);
 
         soundTypeComboBox = new QComboBox();
@@ -83,7 +84,7 @@ namespace urchin {
     }
 
     void NewSoundDialog::setupSoundCategoryFields(QGridLayout* mainLayout) {
-        soundCategoryLabel = new QLabel("Sound Category:");
+        auto* soundCategoryLabel = new QLabel("Sound Category:");
         mainLayout->addWidget(soundCategoryLabel, 3, 0);
 
         soundCategoryComboBox = new QComboBox();
@@ -91,6 +92,17 @@ namespace urchin {
         soundCategoryComboBox->setFixedWidth(150);
         soundCategoryComboBox->addItem(MUSIC_SOUND_LABEL, QVariant(Sound::SoundCategory::MUSIC));
         soundCategoryComboBox->addItem(EFFECTS_SOUND_LABEL, QVariant(Sound::SoundCategory::EFFECTS));
+    }
+
+    void NewSoundDialog::setupSoundInitialVolume(QGridLayout* mainLayout) {
+        auto* soundInitialVolumeLabel= new QLabel("Initial volume:");
+        mainLayout->addWidget(soundInitialVolumeLabel, 4, 0);
+
+        initialVolumeSpinBox = new QDoubleSpinBox();
+        mainLayout->addWidget(initialVolumeSpinBox, 4, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(initialVolumeSpinBox);
+        initialVolumeSpinBox->setMinimum(0.0);
+        initialVolumeSpinBox->setValue(1.0);
     }
 
     void NewSoundDialog::updateSoundName() {
@@ -115,11 +127,13 @@ namespace urchin {
             QVariant soundCategoryVariant = soundCategoryComboBox->currentData();
             auto soundCategory = static_cast<Sound::SoundCategory>(soundCategoryVariant.toInt());
 
+            auto initialVolume = (float)initialVolumeSpinBox->value();
+
             std::shared_ptr<Sound> sound;
             if (soundType == Sound::GLOBAL) {
-                sound = std::make_shared<GlobalSound>(relativeSoundFilename, soundCategory);
+                sound = std::make_shared<GlobalSound>(relativeSoundFilename, soundCategory, initialVolume);
             } else if (soundType == Sound::SPATIAL) {
-                sound = std::make_shared<SpatialSound>(relativeSoundFilename, soundCategory, Point3<float>(0.0, 0.0, 0.0));
+                sound = std::make_shared<SpatialSound>(relativeSoundFilename, soundCategory, initialVolume, Point3<float>(0.0f, 0.0f, 0.0f), 10.0f);
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }

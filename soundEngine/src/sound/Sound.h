@@ -17,31 +17,23 @@ namespace urchin {
                 EFFECTS //game effects (wind, explosion, radio playing music...), UI feedbacks
             };
 
-            explicit Sound(std::string, SoundCategory);
-            virtual ~Sound();
+            explicit Sound(std::string, SoundCategory, float);
+            virtual ~Sound() = default;
+
+            virtual void initializeSource(ALuint) const = 0;
+            virtual void updateSource(ALuint) = 0;
 
             virtual SoundType getSoundType() const = 0;
-            ALuint getSourceId() const;
             const std::string& getFilename() const;
             SoundCategory getSoundCategory() const;
 
-            bool isStopped() const;
-            bool isPaused() const;
-            bool isPlaying() const;
-
-            void setInitialVolume(float);
             float getInitialVolume() const;
-            void changeVolume(float);
 
         private:
-            void applyVolume() const;
-
-            ALuint sourceId;
             std::string filename;
             SoundCategory category;
 
             float initialVolume;
-            float volumePercentageChange;
     };
 
 }

@@ -34,7 +34,7 @@ namespace urchin {
             void process();
 
         private:
-            void adjustSoundVolume(Sound&);
+            void adjustSoundVolume(AudioPlayer&);
 
             std::vector<std::unique_ptr<AudioController>> audioControllers;
             std::map<Sound::SoundCategory, float> soundVolumes;

@@ -34,6 +34,10 @@ namespace urchin {
         soundTrigger = std::move(newSoundTrigger);
     }
 
+    AudioPlayer& AudioController::getAudioPlayer() const {
+        return *audioPlayer;
+    }
+
     void AudioController::pause() {
         if (audioPlayer->isPlaying()) {
             audioPlayer->pause();
@@ -44,17 +48,18 @@ namespace urchin {
 
     void AudioController::unpause() {
         if (isPaused) {
-            audioPlayer->play(); //as it's a unpause: use 'play' or 'playLoop' method doesn't make any difference
+            audioPlayer->play(); //as it is an unpause action: use 'play' or 'playLoop' method doesn't make any difference
 
             isPaused = false;
         }
     }
 
     void AudioController::process(const Point3<float>& listenerPosition) {
-        if (triggerValue != SoundTrigger::STOPPED && sound->isStopped()) {
+        sound->updateSource(audioPlayer->getSourceId()); //TODO move in player ?
+
+        if (triggerValue != SoundTrigger::STOPPED && audioPlayer->isStopped()) {
             triggerValue = SoundTrigger::STOPPED;
         }
-
         SoundTrigger::TriggerResultValue oldTriggerValue = triggerValue;
         SoundTrigger::TriggerResultValue newTriggerValue = soundTrigger->evaluateTrigger(listenerPosition);
         if (newTriggerValue != SoundTrigger::NO_TRIGGER) {

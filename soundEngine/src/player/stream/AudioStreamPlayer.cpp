@@ -1,6 +1,7 @@
 #include <AL/al.h>
 
 #include <player/stream/AudioStreamPlayer.h>
+#include <player/stream/StreamUpdateWorker.h>
 
 namespace urchin {
 
@@ -18,32 +19,22 @@ namespace urchin {
         play(true);
     }
 
-    bool AudioStreamPlayer::isPlaying() {
-        return streamUpdateWorker.isTaskExist(getSound());
-    }
-
     void AudioStreamPlayer::pause() {
-        alSourcePause(getSound().getSourceId());
-    }
-
-    bool AudioStreamPlayer::isPaused() {
-        ALint state;
-        alGetSourcei(getSound().getSourceId(), AL_SOURCE_STATE, &state);
-        return state == AL_PAUSED;
+        alSourcePause(getSourceId());
     }
 
     void AudioStreamPlayer::stop() {
-        alSourceStop(getSound().getSourceId());
+        alSourceStop(getSourceId());
 
-        streamUpdateWorker.removeTask(getSound());
+        streamUpdateWorker.removeTask(*this);
     }
 
     void AudioStreamPlayer::play(bool playLoop) {
-        if (!streamUpdateWorker.isTaskExist(getSound())) {
-            streamUpdateWorker.addTask(getSound(), playLoop);
+        if (!streamUpdateWorker.isTaskExist(*this)) {
+            streamUpdateWorker.addTask(*this, playLoop);
         }
 
-        alSourcePlay(getSound().getSourceId());
+        alSourcePlay(getSourceId());
     }
 
 }

@@ -21,6 +21,7 @@ namespace urchin {
             Sound& getSound() const;
             SoundTrigger& getSoundTrigger() const;
             void changeSoundTrigger(std::shared_ptr<SoundTrigger>);
+            AudioPlayer& getAudioPlayer() const;
 
             void pause();
             void unpause();

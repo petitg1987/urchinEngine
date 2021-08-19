@@ -22,9 +22,9 @@ namespace urchin {
             specificTriggerShapeGroupBox(nullptr),
             specificSpatialSoundGroupBox(nullptr),
             disableSoundEvent(false),
-            initialVolume(nullptr),
             soundType(nullptr),
             soundCategory(nullptr),
+            initialVolume(nullptr),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr), inaudibleDistance(nullptr),
             playBehavior(nullptr),
             soundTriggerType(nullptr),
@@ -86,24 +86,21 @@ namespace urchin {
         auto* generalPropertiesLayout = new QGridLayout(generalGroupBox);
         generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto* initialVolumeLabel= new QLabel("Initial volume:");
-        generalPropertiesLayout->addWidget(initialVolumeLabel, 0, 0);
-
-        initialVolume = new QDoubleSpinBox();
-        generalPropertiesLayout->addWidget(initialVolume, 0, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(initialVolume);
-        initialVolume->setMinimum(0.0);
-        connect(initialVolume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
-
         auto* soundTypeLabel= new QLabel("Sound Type:");
-        generalPropertiesLayout->addWidget(soundTypeLabel, 1, 0);
+        generalPropertiesLayout->addWidget(soundTypeLabel, 0, 0);
         soundType = new QLabel();
-        generalPropertiesLayout->addWidget(soundType, 1, 1);
+        generalPropertiesLayout->addWidget(soundType, 0, 1);
 
         auto* soundCategoryLabel= new QLabel("Sound Category:");
-        generalPropertiesLayout->addWidget(soundCategoryLabel, 2, 0);
+        generalPropertiesLayout->addWidget(soundCategoryLabel, 1, 0);
         soundCategory = new QLabel();
-        generalPropertiesLayout->addWidget(soundCategory, 2, 1);
+        generalPropertiesLayout->addWidget(soundCategory, 1, 1);
+
+        auto* initialVolumeLabel= new QLabel("Initial volume:");
+        generalPropertiesLayout->addWidget(initialVolumeLabel, 2, 0);
+        initialVolume = new QLabel();
+        generalPropertiesLayout->addWidget(initialVolume, 2, 1);
+
     }
 
     void SoundPanelWidget::setupSpecificSpatialSoundBox(QVBoxLayout* soundPropertiesLayout) {
@@ -247,8 +244,6 @@ namespace urchin {
         //sound
         const Sound* sound = sceneSound.getSound();
 
-        this->initialVolume->setValue(sound->getInitialVolume());
-
         if (sound->getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
         } else if (sound->getSoundType() == Sound::SoundType::SPATIAL) {
@@ -264,6 +259,8 @@ namespace urchin {
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound->getSoundCategory()));
         }
+
+        initialVolume->setText(std::to_string(sound->getInitialVolume()).c_str());
 
         //sound trigger
         const SoundTrigger* soundTrigger = sceneSound.getSoundTrigger();
@@ -351,16 +348,6 @@ namespace urchin {
             soundController->removeSceneSound(sceneSound);
 
             soundTableView->removeSelectedSound();
-        }
-    }
-
-    void SoundPanelWidget::updateSoundGeneralProperties() {
-        if (!disableSoundEvent) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
-
-            auto initialVolume = (float)this->initialVolume->value();
-
-            soundController->updateSceneSoundGeneralProperties(sceneSound, initialVolume);
         }
     }
 

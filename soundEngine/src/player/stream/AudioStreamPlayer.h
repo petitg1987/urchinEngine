@@ -4,10 +4,11 @@
 #include <iostream>
 
 #include <player/AudioPlayer.h>
-#include <player/stream/StreamUpdateWorker.h>
 #include <sound/Sound.h>
 
 namespace urchin {
+
+    class StreamUpdateWorker;
 
     class AudioStreamPlayer : public AudioPlayer {
         public:
@@ -15,10 +16,8 @@ namespace urchin {
 
             void play() override;
             void playLoop() override;
-            bool isPlaying() override;
 
             void pause() override;
-            bool isPaused() override;
 
             void stop() override;
 

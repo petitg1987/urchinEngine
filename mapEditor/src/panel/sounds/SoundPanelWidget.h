@@ -62,9 +62,9 @@ namespace urchin {
             bool disableSoundEvent;
 
             //sound general properties
-            QDoubleSpinBox* initialVolume;
             QLabel* soundType;
             QLabel* soundCategory;
+            QLabel* initialVolume;
 
             //sound specific properties
             QDoubleSpinBox* positionX;
@@ -87,7 +87,6 @@ namespace urchin {
             void showAddSoundDialog();
             void removeSelectedSound();
 
-            void updateSoundGeneralProperties();
             void updateSoundSpecificProperties();
             void updateSoundTriggerProperties();
 

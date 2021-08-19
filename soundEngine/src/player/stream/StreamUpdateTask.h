@@ -3,7 +3,7 @@
 #include <AL/al.h>
 #include <memory>
 
-#include <sound/Sound.h>
+#include <player/stream/AudioStreamPlayer.h>
 #include <player/filereader/SoundFileReader.h>
 #include <player/stream/StreamChunk.h>
 
@@ -14,7 +14,7 @@ namespace urchin {
     */
     class StreamUpdateTask {
         public:
-            StreamUpdateTask(const Sound&, unsigned int, bool);
+            StreamUpdateTask(const AudioStreamPlayer&, unsigned int, bool);
 
             ALuint getSourceId() const;
             bool isSourceStopped() const;
@@ -26,7 +26,7 @@ namespace urchin {
             StreamChunk& getStreamChunk(unsigned int);
 
         private:
-            const Sound& sound;
+            const AudioStreamPlayer& audioStreamPlayer;
             std::unique_ptr<SoundFileReader> soundFileReader;
             bool playLoop;
 

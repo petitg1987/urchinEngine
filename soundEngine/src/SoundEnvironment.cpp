@@ -28,9 +28,9 @@ namespace urchin {
     void SoundEnvironment::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
         if (sound && soundTrigger) {
             Logger::instance().logInfo("Add sound: " + sound->getFilename());
-            adjustSoundVolume(*sound);
 
             auto audioController = std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), *streamUpdateWorker);
+            adjustSoundVolume(audioController->getAudioPlayer());
             audioControllers.push_back(std::move(audioController));
         }
     }
@@ -59,15 +59,15 @@ namespace urchin {
         //apply volume on existing sounds:
         for (auto& audioController : audioControllers) {
             if (audioController->getSound().getSoundCategory() == soundCategory) {
-                audioController->getSound().changeVolume(volumePercentageChange);
+                audioController->getAudioPlayer().changeVolume(volumePercentageChange);
             }
         }
     }
 
-    void SoundEnvironment::adjustSoundVolume(Sound& sound) {
-        auto itVolume = soundVolumes.find(sound.getSoundCategory());
+    void SoundEnvironment::adjustSoundVolume(AudioPlayer& audioPlayer) {
+        auto itVolume = soundVolumes.find(audioPlayer.getSound().getSoundCategory());
         if (itVolume != soundVolumes.end()) {
-            sound.changeVolume(itVolume->second);
+            audioPlayer.changeVolume(itVolume->second);
         }
     }
 

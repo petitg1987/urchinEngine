@@ -30,10 +30,12 @@ namespace urchin {
     /**
      * Adds a task to the worker. Task is in charge to ensure that queue is filled.
      * Task will be automatically removed when finished.
-     * @param sound Sound used to fill the queue
+     * @param audioStreamPlayer Audio player used to fill the queue
      */
-    void StreamUpdateWorker::addTask(const Sound& sound, bool playLoop) {
-        auto task = std::make_unique<StreamUpdateTask>(sound, nbChunkBuffer, playLoop);
+    void StreamUpdateWorker::addTask(const AudioStreamPlayer& audioStreamPlayer, bool playLoop) {
+        ScopeProfiler sp(Profiler::sound(), "addTask");
+
+        auto task = std::make_unique<StreamUpdateTask>(audioStreamPlayer, nbChunkBuffer, playLoop);
 
         //create buffers/chunks
         std::vector<ALuint> bufferId(nbChunkBuffer);
@@ -48,26 +50,26 @@ namespace urchin {
         }
 
         #ifndef NDEBUG
-            assert(!isTaskExist(sound));
+            assert(!isTaskExist(audioStreamPlayer));
         #endif
 
         std::lock_guard<std::mutex> lock(tasksMutex);
         tasks.push_back(std::move(task));
     }
 
-    bool StreamUpdateWorker::isTaskExist(const Sound& sound) const {
+    bool StreamUpdateWorker::isTaskExist(const AudioStreamPlayer& audioStreamPlayer) const {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
-        return std::any_of(tasks.begin(), tasks.end(), [&sound](const auto& task) {
-            return task->getSourceId() == sound.getSourceId();
+        return std::any_of(tasks.begin(), tasks.end(), [&audioStreamPlayer](const auto& task) {
+            return task->getSourceId() == audioStreamPlayer.getSourceId();
         });
     }
 
-    void StreamUpdateWorker::removeTask(const Sound& sound) {
+    void StreamUpdateWorker::removeTask(const AudioStreamPlayer& audioStreamPlayer) {
         std::lock_guard<std::mutex> lock(tasksMutex);
 
         for (auto it = tasks.begin(); it != tasks.end(); ++it) {
-            if ((*it)->getSourceId() == sound.getSourceId()) {
+            if ((*it)->getSourceId() == audioStreamPlayer.getSourceId()) {
                 deleteTask(*(*it));
                 tasks.erase(it);
 

@@ -3,6 +3,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QComboBox>
 
@@ -29,6 +30,7 @@ namespace urchin {
             void setupSoundFilenameFields(QGridLayout*);
             void setupSoundTypeFields(QGridLayout*);
             void setupSoundCategoryFields(QGridLayout*);
+            void setupSoundInitialVolume(QGridLayout*);
 
             void updateSoundName();
             int buildSceneSound(int);
@@ -42,10 +44,9 @@ namespace urchin {
             QLineEdit* soundNameText;
             QLabel* soundFilenameLabel;
             QLineEdit* soundFilenameText;
-            QLabel* soundTypeLabel;
             QComboBox* soundTypeComboBox;
-            QLabel* soundCategoryLabel;
             QComboBox* soundCategoryComboBox;
+            QDoubleSpinBox* initialVolumeSpinBox;
 
             std::string soundName;
             std::string soundFilename;
