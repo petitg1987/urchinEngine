@@ -16,12 +16,12 @@ namespace urchin {
                 PLAY_LOOP
             };
 
-            enum TriggerResultValue {
-                NO_TRIGGER,
-                PLAYING,
-                PLAYING_LOOP,
-                STOPPED,
-                PAUSED
+            enum TriggerAction {
+                PLAY_NEW,
+                PLAY_NEW_LOOP,
+                STOP_ALL,
+                PAUSE_ALL,
+                UNPAUSE_ALL
             };
 
             SoundTrigger(TriggerType, PlayBehavior);
@@ -30,7 +30,10 @@ namespace urchin {
             TriggerType getTriggerType() const;
             PlayBehavior getPlayBehavior() const;
 
-            virtual TriggerResultValue evaluateTrigger(const Point3<float>&) = 0;
+            virtual const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) = 0;
+
+        protected:
+            std::vector<TriggerAction> triggerActions;
 
         private:
             TriggerType triggerType;

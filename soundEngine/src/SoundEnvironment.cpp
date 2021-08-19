@@ -14,6 +14,9 @@ namespace urchin {
         AudioDevice::instance().enable(true);
         alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
         alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+
+        soundVolumes[Sound::SoundCategory::MUSIC] = 1.0f;
+        soundVolumes[Sound::SoundCategory::EFFECTS] = 1.0f;
     }
 
     SoundEnvironment::~SoundEnvironment() {
@@ -28,10 +31,7 @@ namespace urchin {
     void SoundEnvironment::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
         if (sound && soundTrigger) {
             Logger::instance().logInfo("Add sound: " + sound->getFilename());
-
-            auto audioController = std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), *streamUpdateWorker);
-            adjustSoundVolume(audioController->getAudioPlayer());
-            audioControllers.push_back(std::move(audioController));
+            audioControllers.push_back(std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), *streamUpdateWorker));
         }
     }
 
@@ -55,20 +55,6 @@ namespace urchin {
 
     void SoundEnvironment::setupSoundsVolume(Sound::SoundCategory soundCategory, float volumePercentageChange) {
         soundVolumes[soundCategory] = volumePercentageChange;
-
-        //apply volume on existing sounds:
-        for (auto& audioController : audioControllers) {
-            if (audioController->getSound().getSoundCategory() == soundCategory) {
-                audioController->getAudioPlayer().changeVolume(volumePercentageChange);
-            }
-        }
-    }
-
-    void SoundEnvironment::adjustSoundVolume(AudioPlayer& audioPlayer) {
-        auto itVolume = soundVolumes.find(audioPlayer.getSound().getSoundCategory());
-        if (itVolume != soundVolumes.end()) {
-            audioPlayer.changeVolume(itVolume->second);
-        }
     }
 
     /**
@@ -86,13 +72,13 @@ namespace urchin {
 
     void SoundEnvironment::pause() {
         for (auto& audioController : audioControllers) {
-            audioController->pause();
+            audioController->pauseAll();
         }
     }
 
     void SoundEnvironment::unpause() {
         for (auto& audioController : audioControllers) {
-            audioController->unpause();
+            audioController->unpauseAll();
         }
     }
 
@@ -109,7 +95,7 @@ namespace urchin {
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
 
         for (auto& audioController : audioControllers) {
-            audioController->process(listenerPosition);
+            audioController->process(listenerPosition, soundVolumes);
         }
 
         ALenum err;

@@ -12,20 +12,24 @@ namespace urchin {
 
     }
 
-    SoundTrigger::TriggerResultValue ShapeTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
+    const std::vector<SoundTrigger::TriggerAction>& ShapeTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
+        triggerActions.clear();
+
         if (!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
             isPlaying = true;
             if (getPlayBehavior() == SoundTrigger::PLAY_LOOP) {
-                return SoundTrigger::PLAYING_LOOP;
+                triggerActions.emplace_back(SoundTrigger::PLAY_NEW_LOOP);
+            } else if (getPlayBehavior() == SoundTrigger::PLAY_ONCE) {
+                triggerActions.emplace_back(SoundTrigger::PLAY_NEW);
+            } else {
+                throw std::runtime_error("Unknown play behavior: " + std::to_string(getPlayBehavior()));
             }
-            return SoundTrigger::PLAYING;
-        }
-        if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
+        }else if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
             isPlaying = false;
-            return SoundTrigger::STOPPED;
+            triggerActions.emplace_back(SoundTrigger::STOP_ALL);
         }
 
-        return SoundTrigger::NO_TRIGGER;
+        return triggerActions;
     }
 
     const SoundShape& ShapeTrigger::getSoundShape() const {

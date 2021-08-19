@@ -5,46 +5,45 @@
 namespace urchin {
 
     ManualTrigger::ManualTrigger(PlayBehavior playBehavior) :
-            SoundTrigger(SoundTrigger::MANUAL_TRIGGER, playBehavior),
-            manualTriggerValue(ManualTriggerValue::STOP) {
+            SoundTrigger(SoundTrigger::MANUAL_TRIGGER, playBehavior) {
 
     }
 
-    void ManualTrigger::play() {
+    void ManualTrigger::playNew() {
         if (getPlayBehavior() == SoundTrigger::PLAY_LOOP) {
-            manualTriggerValue = ManualTriggerValue::PLAY_LOOP;
+            manualTriggerActions.emplace_back(ManualTriggerAction::PLAY_NEW_LOOP);
         } else {
-            manualTriggerValue = ManualTriggerValue::PLAY;
+            manualTriggerActions.emplace_back(ManualTriggerAction::PLAY_NEW);
         }
     }
 
-    void ManualTrigger::stop() {
-        manualTriggerValue = ManualTriggerValue::STOP;
+    void ManualTrigger::stopAll() {
+        manualTriggerActions.emplace_back(ManualTriggerAction::STOP_ALL);
     }
 
-    void ManualTrigger::pause() {
-        manualTriggerValue = ManualTriggerValue::PAUSE;
+    void ManualTrigger::pauseAll() {
+        manualTriggerActions.emplace_back(ManualTriggerAction::PAUSE_ALL);
     }
 
-    SoundTrigger::TriggerResultValue ManualTrigger::evaluateTrigger(const Point3<float>&) {
-        SoundTrigger::TriggerResultValue result;
+    const std::vector<SoundTrigger::TriggerAction>& ManualTrigger::evaluateTrigger(const Point3<float>&) {
+        triggerActions.clear();
 
-        if (manualTriggerValue == ManualTriggerValue::PLAY) {
-            result = SoundTrigger::PLAYING;
-        } else if (manualTriggerValue == ManualTriggerValue::PLAY_LOOP) {
-            result = SoundTrigger::PLAYING_LOOP;
-        } else if (manualTriggerValue == ManualTriggerValue::STOP) {
-            result = SoundTrigger::STOPPED;
-        } else if (manualTriggerValue == ManualTriggerValue::PAUSE) {
-            result = SoundTrigger::PAUSED;
-        } else if (manualTriggerValue == ManualTriggerValue::NO_TRIGGER) {
-            result = SoundTrigger::NO_TRIGGER;
-        } else {
-            throw std::invalid_argument("Unknown manual trigger value: " + std::to_string(manualTriggerValue));
+        for (auto manualTriggerAction : manualTriggerActions) {
+            if (manualTriggerAction == ManualTriggerAction::PLAY_NEW) {
+                triggerActions.emplace_back(SoundTrigger::PLAY_NEW);
+            } else if (manualTriggerAction == ManualTriggerAction::PLAY_NEW_LOOP) {
+                triggerActions.emplace_back(SoundTrigger::PLAY_NEW_LOOP);
+            } else if (manualTriggerAction == ManualTriggerAction::STOP_ALL) {
+                triggerActions.emplace_back(SoundTrigger::STOP_ALL);
+            } else if (manualTriggerAction == ManualTriggerAction::PAUSE_ALL) {
+                triggerActions.emplace_back(SoundTrigger::PAUSE_ALL);
+            } else {
+                throw std::invalid_argument("Unknown manual trigger action: " + std::to_string(manualTriggerAction));
+            }
         }
 
-        manualTriggerValue = NO_TRIGGER;
-        return result;
+        manualTriggerActions.clear();
+        return triggerActions;
     }
 
 }

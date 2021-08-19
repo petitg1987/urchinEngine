@@ -9,14 +9,14 @@ namespace urchin {
     AudioController::AudioController(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger, StreamUpdateWorker& streamUpdateWorker) :
             sound(std::move(sound)),
             soundTrigger(std::move(soundTrigger)),
-            triggerValue(SoundTrigger::STOPPED),
-            audioPlayer(std::make_unique<AudioStreamPlayer>(*this->sound, streamUpdateWorker)),
-            isPaused(false) {
+            streamUpdateWorker(streamUpdateWorker) {
 
     }
 
     AudioController::~AudioController() {
-        audioPlayer->stop();
+        for (auto& audioPlayer : audioPlayers) {
+            audioPlayer->stop();
+        }
     }
 
     Sound& AudioController::getSound() const {
@@ -28,57 +28,72 @@ namespace urchin {
     }
 
     void AudioController::changeSoundTrigger(std::shared_ptr<SoundTrigger> newSoundTrigger) {
-        audioPlayer->stop();
-        triggerValue = SoundTrigger::STOPPED;
+        for (auto& audioPlayer : audioPlayers) {
+            audioPlayer->stop();
+        }
+        audioPlayers.clear();
 
         soundTrigger = std::move(newSoundTrigger);
     }
 
-    AudioPlayer& AudioController::getAudioPlayer() const {
-        return *audioPlayer;
-    }
-
-    void AudioController::pause() {
-        if (audioPlayer->isPlaying()) {
-            audioPlayer->pause();
-
-            isPaused = true;
-        }
-    }
-
-    void AudioController::unpause() {
-        if (isPaused) {
-            audioPlayer->play(); //as it is an unpause action: use 'play' or 'playLoop' method doesn't make any difference
-
-            isPaused = false;
-        }
-    }
-
-    void AudioController::process(const Point3<float>& listenerPosition) {
-        sound->updateSource(audioPlayer->getSourceId()); //TODO move in player ?
-
-        if (triggerValue != SoundTrigger::STOPPED && audioPlayer->isStopped()) {
-            triggerValue = SoundTrigger::STOPPED;
-        }
-        SoundTrigger::TriggerResultValue oldTriggerValue = triggerValue;
-        SoundTrigger::TriggerResultValue newTriggerValue = soundTrigger->evaluateTrigger(listenerPosition);
-        if (newTriggerValue != SoundTrigger::NO_TRIGGER) {
-            triggerValue = newTriggerValue;
-        }
-
-        processTriggerValue(oldTriggerValue);
-    }
-
-    void AudioController::processTriggerValue(SoundTrigger::TriggerResultValue oldTriggerValue) {
-        if (triggerValue != oldTriggerValue) {
-            if (triggerValue == SoundTrigger::PLAYING) {
-                audioPlayer->play();
-            } else if (triggerValue == SoundTrigger::PLAYING_LOOP) {
-                audioPlayer->playLoop();
-            } else if (triggerValue == SoundTrigger::STOPPED) {
-                audioPlayer->stop();
-            } else if (triggerValue == SoundTrigger::PAUSED) {
+    void AudioController::pauseAll() {
+        for(auto& audioPlayer : audioPlayers) {
+            if (audioPlayer->isPlaying()) {
                 audioPlayer->pause();
+            }
+        }
+    }
+
+    void AudioController::unpauseAll() {
+        for(auto& audioPlayer : audioPlayers) {
+            if (audioPlayer->isPaused()) {
+                audioPlayer->unpause();
+            }
+        }
+    }
+
+    void AudioController::process(const Point3<float>& listenerPosition, const std::map<Sound::SoundCategory, float>& soundVolumes) {
+        //remove unused players
+        for (auto it = audioPlayers.begin(); it != audioPlayers.end();) {
+            if ((*it)->isStopped()) {
+                it = audioPlayers.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        //trigger actions process
+        const std::vector<SoundTrigger::TriggerAction>& triggerActions = soundTrigger->evaluateTrigger(listenerPosition);
+        for (auto triggerAction : triggerActions) {
+            processTriggerValue(triggerAction);
+        }
+
+        //update audio players (sound position, volume, etc.)
+        for (auto& audioPlayer : audioPlayers) {
+            sound->updateSource(audioPlayer->getSourceId());
+            audioPlayer->changeVolume(soundVolumes.at(audioPlayer->getSound().getSoundCategory()));
+        }
+    }
+
+    void AudioController::processTriggerValue(SoundTrigger::TriggerAction triggerAction) {
+        if (triggerAction == SoundTrigger::PLAY_NEW) {
+            audioPlayers.push_back(std::make_unique<AudioStreamPlayer>(*this->sound, streamUpdateWorker));
+            audioPlayers.back()->play();
+        } else if (triggerAction == SoundTrigger::PLAY_NEW_LOOP) {
+            audioPlayers.push_back(std::make_unique<AudioStreamPlayer>(*this->sound, streamUpdateWorker));
+            audioPlayers.back()->playLoop();
+        } else if (triggerAction == SoundTrigger::STOP_ALL) {
+            for (auto& audioPlayer : audioPlayers) {
+                audioPlayer->stop();
+            }
+            audioPlayers.clear();
+        } else if (triggerAction == SoundTrigger::PAUSE_ALL) {
+            for (auto& audioPlayer : audioPlayers) {
+                audioPlayer->pause();
+            }
+        } else if (triggerAction == SoundTrigger::UNPAUSE_ALL) {
+            for (auto& audioPlayer : audioPlayers) {
+                audioPlayer->unpause();
             }
         }
     }

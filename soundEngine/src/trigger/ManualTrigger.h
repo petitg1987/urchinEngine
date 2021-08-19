@@ -11,23 +11,21 @@ namespace urchin {
         public:
             explicit ManualTrigger(PlayBehavior);
 
-            void play();
-            void stop();
-            void pause();
+            void playNew();
+            void stopAll();
+            void pauseAll();
 
-            SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float>&) override;
+            const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
         private:
-            enum ManualTriggerValue {
-                NO_TRIGGER,
-
-                PLAY,
-                PLAY_LOOP,
-                STOP,
-                PAUSE
+            enum ManualTriggerAction {
+                PLAY_NEW,
+                PLAY_NEW_LOOP,
+                STOP_ALL,
+                PAUSE_ALL
             };
 
-            ManualTriggerValue manualTriggerValue;
+            std::vector<ManualTriggerAction> manualTriggerActions;
     };
 
 }

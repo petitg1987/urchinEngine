@@ -14,6 +14,7 @@ namespace urchin {
             bool isPlaying() const;
 
             virtual void pause() = 0;
+            void unpause();
             bool isPaused() const;
 
             virtual void stop() = 0;

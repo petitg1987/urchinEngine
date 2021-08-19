@@ -11,7 +11,7 @@
 namespace urchin {
 
     /**
-    * Allow to make the link between sound, sound trigger and the player
+    * Allow to make the link between sound, sound trigger and the players
     */
     class AudioController {
         public:
@@ -21,23 +21,20 @@ namespace urchin {
             Sound& getSound() const;
             SoundTrigger& getSoundTrigger() const;
             void changeSoundTrigger(std::shared_ptr<SoundTrigger>);
-            AudioPlayer& getAudioPlayer() const;
 
-            void pause();
-            void unpause();
+            void pauseAll();
+            void unpauseAll();
 
-            void process(const Point3<float>&);
+            void process(const Point3<float>&, const std::map<Sound::SoundCategory, float>&);
 
         private:
-            void processTriggerValue(SoundTrigger::TriggerResultValue);
+            void processTriggerValue(SoundTrigger::TriggerAction);
 
             std::shared_ptr<Sound> sound;
             std::shared_ptr<SoundTrigger> soundTrigger;
+            StreamUpdateWorker& streamUpdateWorker;
 
-            SoundTrigger::TriggerResultValue triggerValue;
-
-            std::unique_ptr<AudioPlayer> audioPlayer;
-            bool isPaused;
+            std::vector<std::unique_ptr<AudioPlayer>> audioPlayers;
     };
 
 }

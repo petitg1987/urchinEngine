@@ -12,7 +12,7 @@ namespace urchin {
         public:
             ShapeTrigger(PlayBehavior, std::unique_ptr<const SoundShape>);
 
-            SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float>&) override;
+            const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
             const SoundShape& getSoundShape() const;
 
