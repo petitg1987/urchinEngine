@@ -90,13 +90,13 @@ namespace urchin {
     }
 
     bool NavTriangle::hasEdgeLinks(std::size_t edgeIndex) const {
-        return std::any_of(links.begin(), links.end(), [&edgeIndex](const auto& link){
+        return std::any_of(links.begin(), links.end(), [&edgeIndex](const auto& link) {
             return link->getSourceEdgeIndex() == edgeIndex;
         });
     }
 
     bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const {
-        return std::all_of(links.begin(), links.end(), [&edgeIndex](const auto& link){
+        return std::all_of(links.begin(), links.end(), [&edgeIndex](const auto& link) {
             return link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::STANDARD;
         });
     }

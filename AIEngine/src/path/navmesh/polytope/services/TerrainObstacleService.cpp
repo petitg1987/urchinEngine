@@ -194,7 +194,7 @@ namespace urchin {
     }
 
     bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int>& squares) const {
-        return std::any_of(squares.begin(), squares.end(), [&](const auto& squareIndex){
+        return std::any_of(squares.begin(), squares.end(), [&](const auto& squareIndex) {
             return ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
                    ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2));
         });
