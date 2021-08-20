@@ -106,6 +106,24 @@
     }
     ```
 
+## Flamegraph
+* Install:
+    ```
+    sudo apt install linux-tools-generic
+    cd ~/various/tools/ && git clone https://github.com/brendangregg/FlameGraph.git
+    ```
+* Launch application in debug
+* Record (replace 'myAppName'):
+    ```
+    sudo perf record -F 5000 --strict-freq -p $(pidof myAppName) -g -- sleep 25
+    ```
+* Convert in SVG:
+    ```
+    sudo perf script > out.perf
+    ~/various/tools/FlameGraph/stackcollapse-perf.pl out.perf > out.folded
+    ~/various/tools/FlameGraph/flamegraph.pl out.folded > app.svg
+    ```
+
 ## Coordinates used
 * 3D (e.g.: *3D models, physics rigid bodies, 3D nav mesh*):
   - X+ (left), X- (right)
