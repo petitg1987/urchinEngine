@@ -19,9 +19,9 @@ void ShapeToConvexObjectTest::boxConversion() {
     AssertHelper::assertFloatEquals(box->getHalfSize(0), 1.0f);
     AssertHelper::assertFloatEquals(box->getHalfSize(1), 2.0f);
     AssertHelper::assertFloatEquals(box->getHalfSize(2), 1.0f);
-    AssertHelper::assertVector3FloatEquals(box->getAxis(0), Vector3<float>(1.0f, 0.0f, 0.0f));
-    AssertHelper::assertVector3FloatEquals(box->getAxis(1), Vector3<float>(0.0f, 0.0f, 1.0f));
-    AssertHelper::assertVector3FloatEquals(box->getAxis(2), Vector3<float>(0.0f, -1.0f, 0.0f));
+    AssertHelper::assertVector3FloatEquals(box->getNormalizedAxis(0), Vector3<float>(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertVector3FloatEquals(box->getNormalizedAxis(1), Vector3<float>(0.0f, 0.0f, 1.0f));
+    AssertHelper::assertVector3FloatEquals(box->getNormalizedAxis(2), Vector3<float>(0.0f, -1.0f, 0.0f));
 }
 
 void ShapeToConvexObjectTest::capsuleConversion() {

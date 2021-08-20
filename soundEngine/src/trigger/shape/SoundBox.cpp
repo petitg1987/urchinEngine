@@ -37,9 +37,9 @@ namespace urchin {
     }
 
     /**
-     * @return Bounding box normalized axis
+     * @return Bounding box axis
      */
-    const Vector3<float>& SoundBox::getAxis(unsigned int index) const {
+    const Vector3<float>& SoundBox::getAxis(unsigned int index) const { //TODO check call
         return playTriggerBox.getAxis(index);
     }
 
@@ -54,9 +54,9 @@ namespace urchin {
     bool SoundBox::pointInsideShape(const Point3<float>& point, const OBBox<float>& box) const {
         Vector3<float> localPointTranslation = box.getCenterOfMass().vector(point);
 
-        return std::fabs(localPointTranslation.dotProduct(box.getAxis(0))) <= box.getHalfSize(0) &&
-                std::fabs(localPointTranslation.dotProduct(box.getAxis(1))) <= box.getHalfSize(1) &&
-                std::fabs(localPointTranslation.dotProduct(box.getAxis(2))) <= box.getHalfSize(2);
+        return std::fabs(localPointTranslation.dotProduct(box.getNormalizedAxis(0))) <= box.getHalfSize(0) &&
+                std::fabs(localPointTranslation.dotProduct(box.getNormalizedAxis(1))) <= box.getHalfSize(1) &&
+                std::fabs(localPointTranslation.dotProduct(box.getNormalizedAxis(2))) <= box.getHalfSize(2);
     }
 
     std::unique_ptr<SoundShape> SoundBox::clone() const {

@@ -26,8 +26,8 @@ namespace urchin {
         return boxObject.getOrientation();
     }
 
-    const Vector3<float>& CollisionBoxObject::getAxis(unsigned int index) const {
-        return boxObject.getAxis(index);
+    const Vector3<float>& CollisionBoxObject::getNormalizedAxis(unsigned int index) const {
+        return boxObject.getNormalizedAxis(index);
     }
 
     CollisionConvexObject3D::ObjectType CollisionBoxObject::getObjectType() const {
@@ -43,7 +43,7 @@ namespace urchin {
             Point3<float> supportPointWithMargin = supportPoint;
 
             for (unsigned int i = 0; i < 3; ++i) { //for each axis
-                const Vector3<float>& axis = boxObject.getAxis(i);
+                const Vector3<float>& axis = boxObject.getNormalizedAxis(i);
                 if (axis.dotProduct(boxObject.getCenterOfMass().vector(supportPoint)) > 0.0f) {
                     supportPointWithMargin = supportPointWithMargin.translate(axis * getOuterMargin());
                 } else {

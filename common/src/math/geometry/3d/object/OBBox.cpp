@@ -9,60 +9,60 @@
 namespace urchin {
 
     template<class T> OBBox<T>::OBBox():
-            boxShape(BoxShape<T>(Vector3<T>(0.0, 0.0, 0.0))),
+            halfSizes(Vector3<T>(0.0, 0.0, 0.0)),
             centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
         axis[1] = Vector3<T>(0.0, 0.0, 0.0);
         axis[2] = Vector3<T>(0.0, 0.0, 0.0);
+
+        normalizedAxis[0] = Vector3<T>(0.0, 0.0, 0.0);
+        normalizedAxis[1] = Vector3<T>(0.0, 0.0, 0.0);
+        normalizedAxis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
     template<class T> OBBox<T>::OBBox(const Vector3<T>& halfSizes, const Point3<T>& centerOfMass, const Quaternion<T>& orientation):
-            boxShape(BoxShape<T>(halfSizes)),
+            halfSizes(halfSizes),
             centerOfMass(centerOfMass),
             orientation(orientation) {
-        axis[0] = orientation.rotateVector(Vector3<T>(1.0, 0.0, 0.0));
-        axis[1] = orientation.rotateVector(Vector3<T>(0.0, 1.0, 0.0));
-        axis[2] = orientation.rotateVector(Vector3<T>(0.0, 0.0, 1.0));
+        axis[0] = orientation.rotateVector(Vector3<T>(halfSizes[0], 0.0, 0.0));
+        axis[1] = orientation.rotateVector(Vector3<T>(0.0, halfSizes[1], 0.0));
+        axis[2] = orientation.rotateVector(Vector3<T>(0.0, 0.0, halfSizes[2]));
+
+        normalizedAxis[0] = axis[0].normalize();
+        normalizedAxis[1] = axis[1].normalize();
+        normalizedAxis[2] = axis[2].normalize();
     }
 
     template<class T> OBBox<T>::OBBox(const AABBox<T>& aabb) :
-            boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / (T)2.0, (aabb.getMax().Y - aabb.getMin().Y) / (T)2.0, (aabb.getMax().Z - aabb.getMin().Z) / (T)2.0))),
+            halfSizes(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / (T)2.0, (aabb.getMax().Y - aabb.getMin().Y) / (T)2.0, (aabb.getMax().Z - aabb.getMin().Z) / (T)2.0)),
             centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0) {
-        axis[0] = Vector3<T>(1.0, 0.0, 0.0);
-        axis[1] = Vector3<T>(0.0, 1.0, 0.0);
-        axis[2] = Vector3<T>(0.0, 0.0, 1.0);
+        axis[0] = Vector3<T>(halfSizes[0], 0.0, 0.0);
+        axis[1] = Vector3<T>(0.0, halfSizes[1], 0.0);
+        axis[2] = Vector3<T>(0.0, 0.0, halfSizes[2]);
+
+        normalizedAxis[0] = Vector3<T>(1.0, 0.0, 0.0);
+        normalizedAxis[1] = Vector3<T>(0.0, 1.0, 0.0);
+        normalizedAxis[2] = Vector3<T>(0.0, 0.0, 1.0);
     }
 
     template<class T> OBBox<T>::OBBox(const Sphere<T>& sphere) :
-            boxShape(BoxShape<T>(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius()))),
+            halfSizes(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius())),
             centerOfMass(sphere.getCenterOfMass()) {
-        axis[0] = Vector3<T>(1.0, 0.0, 0.0);
-        axis[1] = Vector3<T>(0.0, 1.0, 0.0);
-        axis[2] = Vector3<T>(0.0, 0.0, 1.0);
+        axis[0] = Vector3<T>(halfSizes[0], 0.0, 0.0);
+        axis[1] = Vector3<T>(0.0, halfSizes[1], 0.0);
+        axis[2] = Vector3<T>(0.0, 0.0, halfSizes[2]);
+
+        normalizedAxis[0] = Vector3<T>(1.0, 0.0, 0.0);
+        normalizedAxis[1] = Vector3<T>(0.0, 1.0, 0.0);
+        normalizedAxis[2] = Vector3<T>(0.0, 0.0, 1.0);
     }
 
     template<class T> T OBBox<T>::getHalfSize(unsigned int index) const {
-        return boxShape.getHalfSize(index);
+        return halfSizes[index];
     }
 
     template<class T> const Vector3<T>& OBBox<T>::getHalfSizes() const {
-        return boxShape.getHalfSizes();
-    }
-
-    template<class T> T OBBox<T>::getMaxHalfSize() const {
-        return boxShape.getMaxHalfSize();
-    }
-
-    template<class T> unsigned int OBBox<T>::getMaxHalfSizeIndex() const {
-        return boxShape.getMaxHalfSizeIndex();
-    }
-
-    template<class T> T OBBox<T>::getMinHalfSize() const {
-        return boxShape.getMinHalfSize();
-    }
-
-    template<class T> unsigned int OBBox<T>::getMinHalfSizeIndex() const {
-        return boxShape.getMinHalfSizeIndex();
+        return halfSizes;
     }
 
     template<class T> const Point3<T>& OBBox<T>::getCenterOfMass() const {
@@ -73,11 +73,12 @@ namespace urchin {
         return orientation;
     }
 
-    /**
-     * @return Bounding box normalized axis for given index
-     */
-    template<class T> const Vector3<T> &OBBox<T>::getAxis(unsigned int index) const {
+    template<class T> const Vector3<T>& OBBox<T>::getAxis(unsigned int index) const {
         return axis[index];
+    }
+
+    template<class T> const Vector3<T>& OBBox<T>::getNormalizedAxis(unsigned int index) const {
+        return normalizedAxis[index];
     }
 
     /**
@@ -100,21 +101,21 @@ namespace urchin {
     template<class T> Point3<T> OBBox<T>::getPoint(unsigned int index) const {
         switch(index) {
             case 0:
-                return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(axis[0] + axis[1] + axis[2]);
             case 1:
-                return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(axis[0] + axis[1] - axis[2]);
             case 2:
-                return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(axis[0] - axis[1] + axis[2]);
             case 3:
-                return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(axis[0] - axis[1] - axis[2]);
             case 4:
-                return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(-axis[0] + axis[1] + axis[2]);
             case 5:
-                return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(-axis[0] + axis[1] - axis[2]);
             case 6:
-                return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(-axis[0] - axis[1] + axis[2]);
             case 7:
-                return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+                return centerOfMass.translate(-axis[0] - axis[1] - axis[2]);
             default:
                 break;
         }
@@ -161,25 +162,25 @@ namespace urchin {
     /**
     * @return True if the bounding box collides or is inside this bounding box
     */
-    template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T>& bbox) const { //separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
+    template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T>& bbox) const {
         //test spheres collide
-        Sphere<T> thisSphere(getHalfSizes().length(), centerOfMass);
-        Sphere<T> bboxSphere(bbox.getHalfSizes().length(), bbox.getCenterOfMass());
-        if (!thisSphere.collideWithSphere(bboxSphere)) {
+        T sumRadius = getHalfSizes().length() + bbox.getHalfSizes().length();
+        if (centerOfMass.squareDistance(bbox.getCenterOfMass()) > (sumRadius * sumRadius)) {
             return false;
         }
 
+        //separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
         Vector3<T> distCenterPoint = getCenterOfMass().vector(bbox.getCenterOfMass());
         const T AdotB[3][3] = {
-                {axis[0].dotProduct(bbox.getAxis(0)), axis[0].dotProduct(bbox.getAxis(1)), axis[0].dotProduct(bbox.getAxis(2))},
-                {axis[1].dotProduct(bbox.getAxis(0)), axis[1].dotProduct(bbox.getAxis(1)), axis[1].dotProduct(bbox.getAxis(2))},
-                {axis[2].dotProduct(bbox.getAxis(0)), axis[2].dotProduct(bbox.getAxis(1)), axis[2].dotProduct(bbox.getAxis(2))}
+                {normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(2))},
+                {normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(2))},
+                {normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(2))}
         };
-        auto epsilon = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
+        constexpr T EPSILON = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
 
         //case 1, 2, 3 (projectionAxis = axis[0] | axis[1] | axis[2])
         for (unsigned int i = 0; i < 3; i++) {
-            if (std::abs(distCenterPoint.dotProduct(axis[i]))
+            if (std::abs(distCenterPoint.dotProduct(normalizedAxis[i]))
                     > this->getHalfSize(i)
                     + std::abs(bbox.getHalfSize(0) * AdotB[i][0])
                     + std::abs(bbox.getHalfSize(1) * AdotB[i][1])
@@ -190,7 +191,7 @@ namespace urchin {
 
         //case 4, 5, 6 (projectionAxis = bbox.getAxis(0) | bbox.getAxis(1) | bbox.getAxis(2))
         for (unsigned int i = 0; i < 3; i++) {
-            if (std::abs(distCenterPoint.dotProduct(bbox.getAxis(i)))
+            if (std::abs(distCenterPoint.dotProduct(bbox.getNormalizedAxis(i)))
                     > std::abs(this->getHalfSize(0) * AdotB[0][i])
                     + std::abs(this->getHalfSize(1) * AdotB[1][i])
                     + std::abs(this->getHalfSize(2) * AdotB[2][i])
@@ -200,7 +201,7 @@ namespace urchin {
         }
 
         //case 7 (projectionAxis = axis[0].crossProduct(bbox.getAxis(0)))
-        if (std::abs(distCenterPoint.dotProduct(axis[0].crossProduct(bbox.getAxis(0)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[0].crossProduct(bbox.getNormalizedAxis(0)))) - EPSILON
                 > std::abs(this->getHalfSize(1) * AdotB[2][0])
                 + std::abs(this->getHalfSize(2) * AdotB[1][0])
                 + std::abs(bbox.getHalfSize(1) * AdotB[0][2])
@@ -209,7 +210,7 @@ namespace urchin {
         }
 
         //case 8 (projectionAxis = axis[0].crossProduct(bbox.getAxis(1)))
-        if (std::abs(distCenterPoint.dotProduct(axis[0].crossProduct(bbox.getAxis(1)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[0].crossProduct(bbox.getNormalizedAxis(1)))) - EPSILON
                 > std::abs(this->getHalfSize(1) * AdotB[2][1])
                 + std::abs(this->getHalfSize(2) * AdotB[1][1])
                 + std::abs(bbox.getHalfSize(0) * AdotB[0][2])
@@ -218,7 +219,7 @@ namespace urchin {
         }
 
         //case 9 (projectionAxis = axis[0].crossProduct(bbox.getAxis(2)))
-        if (std::abs(distCenterPoint.dotProduct(axis[0].crossProduct(bbox.getAxis(2)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[0].crossProduct(bbox.getNormalizedAxis(2)))) - EPSILON
                 > std::abs(this->getHalfSize(1) * AdotB[2][2])
                 + std::abs(this->getHalfSize(2) * AdotB[1][2])
                 + std::abs(bbox.getHalfSize(0) * AdotB[0][1])
@@ -227,7 +228,7 @@ namespace urchin {
         }
 
         //case 10 (projectionAxis = axis[1].crossProduct(bbox.getAxis(0)))
-        if (std::abs(distCenterPoint.dotProduct(axis[1].crossProduct(bbox.getAxis(0)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[1].crossProduct(bbox.getNormalizedAxis(0)))) - EPSILON
                 > std::abs(this->getHalfSize(0) * AdotB[2][0])
                 + std::abs(this->getHalfSize(2) * AdotB[0][0])
                 + std::abs(bbox.getHalfSize(1) * AdotB[1][2])
@@ -236,7 +237,7 @@ namespace urchin {
         }
 
         //case 11 (projectionAxis = axis[1].crossProduct(bbox.getAxis(1)))
-        if (std::abs(distCenterPoint.dotProduct(axis[1].crossProduct(bbox.getAxis(1)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[1].crossProduct(bbox.getNormalizedAxis(1)))) - EPSILON
                 > std::abs(this->getHalfSize(0) * AdotB[2][1])
                 + std::abs(this->getHalfSize(2) * AdotB[0][1])
                 + std::abs(bbox.getHalfSize(0) * AdotB[1][2])
@@ -245,7 +246,7 @@ namespace urchin {
         }
 
         //case 12 (projectionAxis = axis[1].crossProduct(bbox.getAxis(2)))
-        if (std::abs(distCenterPoint.dotProduct(axis[1].crossProduct(bbox.getAxis(2)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[1].crossProduct(bbox.getNormalizedAxis(2)))) - EPSILON
                 > std::abs(this->getHalfSize(0) * AdotB[2][2])
                 + std::abs(this->getHalfSize(2) * AdotB[0][2])
                 + std::abs(bbox.getHalfSize(0) * AdotB[1][1])
@@ -254,7 +255,7 @@ namespace urchin {
         }
 
         //case 13 (projectionAxis = axis[2].crossProduct(bbox.getAxis(0)))
-        if (std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(0)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[2].crossProduct(bbox.getNormalizedAxis(0)))) - EPSILON
                 > std::abs(this->getHalfSize(0) * AdotB[1][0])
                 + std::abs(this->getHalfSize(1) * AdotB[0][0])
                 + std::abs(bbox.getHalfSize(1) * AdotB[2][2])
@@ -263,7 +264,7 @@ namespace urchin {
         }
 
         //case 14 (projectionAxis = axis[2].crossProduct(bbox.getAxis(1)))
-        if (std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(1)))) - epsilon
+        if (std::abs(distCenterPoint.dotProduct(normalizedAxis[2].crossProduct(bbox.getNormalizedAxis(1)))) - EPSILON
                 > std::abs(this->getHalfSize(0) * AdotB[1][1])
                 + std::abs(this->getHalfSize(1) * AdotB[0][1])
                 + std::abs(bbox.getHalfSize(0) * AdotB[2][2])
@@ -272,7 +273,7 @@ namespace urchin {
         }
 
         //case 15 (projectionAxis = axis[2].crossProduct(bbox.getAxis(2)))
-        return std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(2)))) - epsilon
+        return std::abs(distCenterPoint.dotProduct(normalizedAxis[2].crossProduct(bbox.getNormalizedAxis(2)))) - EPSILON
                 <= std::abs(this->getHalfSize(0) * AdotB[1][2])
                 + std::abs(this->getHalfSize(1) * AdotB[0][2])
                 + std::abs(bbox.getHalfSize(0) * AdotB[2][1])
@@ -287,17 +288,19 @@ namespace urchin {
     }
 
     template<class T> OBBox<T> operator *(const Matrix4<T>& m, const OBBox<T>& obb) {
-        //projection matrix not accepted because result will not an oriented bounding box
-        assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
-        assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
-        assert(fabs(m(3,2)) < std::numeric_limits<T>::epsilon());
+        #ifndef NDEBUG
+            //projection matrix not accepted because result will not an oriented bounding box
+            assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
+            assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
+            assert(fabs(m(3,2)) < std::numeric_limits<T>::epsilon());
+        #endif
 
         //build OBB
         Matrix3<T> m3 = m.toMatrix3();
         Vector3<T> halfSizes(
-                (m3 * obb.getAxis(0) * obb.getHalfSize(0)).length(),
-                (m3 * obb.getAxis(1) * obb.getHalfSize(1)).length(),
-                (m3 * obb.getAxis(2) * obb.getHalfSize(2)).length()
+                (m3 * obb.getAxis(0)).length(),
+                (m3 * obb.getAxis(1)).length(),
+                (m3 * obb.getAxis(2)).length()
         );
         Point3<T> centerOfMass = (m * Point4<T>(obb.getCenterOfMass())).toPoint3();
         Quaternion<T> orientation(m3);

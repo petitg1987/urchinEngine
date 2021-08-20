@@ -26,12 +26,9 @@ namespace urchin {
 
             T getHalfSize(unsigned int) const;
             const Vector3<T>& getHalfSizes() const;
-            T getMaxHalfSize() const;
-            unsigned int getMaxHalfSizeIndex() const;
-            T getMinHalfSize() const;
-            unsigned int getMinHalfSizeIndex() const;
             const Point3<T>& getCenterOfMass() const;
             const Vector3<T>& getAxis(unsigned int) const;
+            const Vector3<T>& getNormalizedAxis(unsigned int) const;
             const Quaternion<T>& getOrientation() const;
             std::vector<Point3<T>> getPoints() const;
             Point3<T> getPoint(unsigned int) const;
@@ -43,11 +40,12 @@ namespace urchin {
             bool collideWithAABBox(const AABBox<T>&) const;
 
         private:
-            BoxShape<T> boxShape;
+            Vector3<T> halfSizes;
             Point3<T> centerOfMass;
             Quaternion<T> orientation;
 
-            Vector3<T> axis[3]; //3 vectors of normalized axis
+            Vector3<T> axis[3];
+            Vector3<T> normalizedAxis[3];
     };
 
     template<class T> OBBox<T> operator *(const Matrix4<T>&, const OBBox<T>&);
