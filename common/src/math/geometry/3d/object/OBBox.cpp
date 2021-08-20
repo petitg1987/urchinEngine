@@ -163,12 +163,31 @@ namespace urchin {
     * @return True if the bounding box collides or is inside this bounding box
     */
     template<class T> bool OBBox<T>::collideWithOBBox(const OBBox<T>& bbox) const {
-        //test spheres collide
-        T sumRadius = getHalfSizes().length() + bbox.getHalfSizes().length();
-        if (centerOfMass.squareDistance(bbox.getCenterOfMass()) > (sumRadius * sumRadius)) {
-            return false;
+        //rough collision test
+        T minHalfSize = std::min(std::min(halfSizes[0], halfSizes[1]), halfSizes[2]);
+        T sumMinRadius = minHalfSize + std::min(std::min(bbox.getHalfSize(0), bbox.getHalfSize(1)), bbox.getHalfSize(2));
+        if (centerOfMass.squareDistance(bbox.getCenterOfMass()) < (sumMinRadius * sumMinRadius)) {
+            return true;
         }
 
+        return separatedAxisTheoremCollision(bbox);
+    }
+
+    /**
+    * @return True if the bounding box collides or is inside this bounding box
+    */
+    template<class T> bool OBBox<T>::collideWithAABBox(const AABBox<T>& bbox) const {
+        //rough collision test
+        T minHalfSize = std::min(std::min(halfSizes[0], halfSizes[1]), halfSizes[2]);
+        T sumMinRadius = minHalfSize + bbox.getMinHalfSize();
+        if (centerOfMass.squareDistance(bbox.getCenterOfMass()) < (sumMinRadius * sumMinRadius)) {
+            return true;
+        }
+
+        return separatedAxisTheoremCollision(OBBox<T>(bbox));
+    }
+
+    template<class T> bool OBBox<T>::separatedAxisTheoremCollision(const OBBox<T>& bbox) const {
         //separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
         Vector3<T> distCenterPoint = getCenterOfMass().vector(bbox.getCenterOfMass());
         const T AdotB[3][3] = {
@@ -278,13 +297,6 @@ namespace urchin {
                 + std::abs(this->getHalfSize(1) * AdotB[0][2])
                 + std::abs(bbox.getHalfSize(0) * AdotB[2][1])
                 + std::abs(bbox.getHalfSize(1) * AdotB[2][0]);
-    }
-
-    /**
-    * @return True if the bounding box collides or is inside this bounding box
-    */
-    template<class T> bool OBBox<T>::collideWithAABBox(const AABBox<T>& bbox) const {
-        return collideWithOBBox(OBBox<T>(bbox));
     }
 
     template<class T> OBBox<T> operator *(const Matrix4<T>& m, const OBBox<T>& obb) {

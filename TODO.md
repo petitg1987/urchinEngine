@@ -12,24 +12,24 @@
   * **OPTIMIZATION** (`medium`): Use same pipeline (vkCmdBindPipeline) in models displayer instead of one by model (A.K.A batching for same shader/material/texture)
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
-  * **NEW FEATURE** (`major`): Replace geometry shader by instantiation  
+  * **NEW FEATURE** (`major`): Replace geometry shaders by instantiation
+  * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering()
-  * **NEW FEATURE** (`minor`): Alpha management
   * **OPTIMIZATION** (`minor`): Textures compression
+  * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
+  * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
+  * **OPTIMIZATION** (`minor`): Software occlusion culling
 * Model
   * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
   * **NEW FEATURE** (`medium`): Animation blending
   * **OPTIMIZATION** (`minor`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
-  * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`medium`): Models LOD
-  * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
-  * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
 * Shadow
-  * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels and Renderer3d::updateModelsInFrustum
+  * **OPTIMIZATION** (`major`): Improve performance of ShadowManager::updateVisibleModels and Renderer3d::updateModelsInFrustum
     * Tips 1: find solution where models could be re-used in the second method
     * Tips 2: call octree manager one times for all frustum splits and then split the models
-  * **NEW FEATURE** (`minor`): Blur variance shadow map with 'summed area' technique.
+  * **NEW FEATURE** (`minor`): Blur variance shadow map with 'summed area' technique
     * Note 1: decreased light bleeding to improve quality
     * Note 2: force usage of 32 bits shadow map
   * **NEW FEATURE** (`medium`): Use mipmap on shadow map (on blurred shadow maps when blur used)
@@ -38,7 +38,7 @@
   * **NEW FEATURE** (`minor`): Implement PCSS
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-  * **OPTIMIZATION** (`medium`): Check if the fields of VkPipelineRasterizationStateCreateInfo can be used to improve the performances.  
+  * **OPTIMIZATION** (`medium`): Check if the fields of VkPipelineRasterizationStateCreateInfo can be used to improve the performances
 * Terrain
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain

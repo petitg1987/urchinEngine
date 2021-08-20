@@ -40,6 +40,8 @@ namespace urchin {
             bool collideWithAABBox(const AABBox<T>&) const;
 
         private:
+            bool separatedAxisTheoremCollision(const OBBox<T>&) const;
+
             Vector3<T> halfSizes;
             Point3<T> centerOfMass;
             Quaternion<T> orientation;
