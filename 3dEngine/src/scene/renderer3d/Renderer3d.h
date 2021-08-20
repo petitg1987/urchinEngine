@@ -110,8 +110,8 @@ namespace urchin {
 
             //deferred rendering
             std::unique_ptr<OffscreenRender> deferredRenderTarget;
-            std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
             std::unique_ptr<OctreeManager<Model>> modelOctreeManager;
+            std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
             std::unique_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 

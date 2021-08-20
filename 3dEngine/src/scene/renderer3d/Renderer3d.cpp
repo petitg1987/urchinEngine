@@ -32,8 +32,8 @@ namespace urchin {
 
             //deferred rendering
             deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)),
-            modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             modelOctreeManager(std::make_unique<OctreeManager<Model>>(MODELS_OCTREE_MIN_SIZE)),
+            modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             fogContainer(std::make_unique<FogContainer>()),
             terrainContainer(std::make_unique<TerrainContainer>(*deferredRenderTarget)),
             waterContainer(std::make_unique<WaterContainer>(*deferredRenderTarget)),
@@ -63,11 +63,6 @@ namespace urchin {
     }
 
     Renderer3d::~Renderer3d() {
-        //models
-        modelSetDisplayer.reset(nullptr);
-        modelOctreeManager.reset(nullptr);
-        geometryContainer.reset(nullptr);
-
         offscreenLightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
     }
