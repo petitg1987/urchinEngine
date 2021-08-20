@@ -63,10 +63,19 @@ namespace urchin {
      * Define the character orientation. This orientation has only effect when the character is not moving.
      * When the character is moving, the orientation is determined in function of velocity direction.
      */
-    void CharacterController::setOrientation(const Quaternion<float>& orientation) {
+    void CharacterController::setOrientation(const Vector3<float>& viewVector) {
+        //Following lines are equivalent to Camera#updateComponents() but with simplification to avoid the rotation on X/Z axis:
+        // - position.Y / viewVector.Y set to 0.0
+        // - up = 0.0, 1.0, 0.0
+        Vector3<float> yViewVector = Vector3<float>(viewVector.X, 0.0f, viewVector.Z).normalize();
+        Matrix3<float> mView(-yViewVector.Z,    0.0f,       yViewVector.X,
+                             0.0f,              1.0f,       0.0f,
+                             -yViewVector[0],   0.0f,       -yViewVector[2]);
+        Quaternion<float> yRotation = Quaternion<float>(mView).conjugate();
+
         Point3<float> position = ghostBody->getTransform().getPosition();
-        ghostBody->setTransform(PhysicsTransform(position, orientation));
-        ccdGhostBody->setTransform(PhysicsTransform(position, orientation));
+        ghostBody->setTransform(PhysicsTransform(position, yRotation));
+        ccdGhostBody->setTransform(PhysicsTransform(position, yRotation));
     }
 
     void CharacterController::jump() {

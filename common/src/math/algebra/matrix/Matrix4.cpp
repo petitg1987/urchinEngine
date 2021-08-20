@@ -94,16 +94,16 @@ namespace urchin {
     }
 
     template<class T> Matrix3<T> Matrix4<T>::toMatrix3() const {
-        return Matrix3<T>(    a11, a12, a13,
-                a21, a22, a23,
-                a31, a32, a33);
+        return Matrix3<T>(a11, a12, a13,
+                          a21, a22, a23,
+                          a31, a32, a33);
     }
 
     template<class T> Matrix4<T> Matrix4<T>::scaled(T scaleFactorColumn0, T scaleFactorColumn1, T scaleFactorColumn2, T scaleFactorColumn3) const {
-        return Matrix4<T>(a11*scaleFactorColumn0, a12*scaleFactorColumn1, a13*scaleFactorColumn2, a14*scaleFactorColumn3,
-                a21*scaleFactorColumn0, a22*scaleFactorColumn1, a23*scaleFactorColumn2, a24*scaleFactorColumn3,
-                a31*scaleFactorColumn0, a32*scaleFactorColumn1, a33*scaleFactorColumn2, a34*scaleFactorColumn3,
-                a41*scaleFactorColumn0, a42*scaleFactorColumn1, a43*scaleFactorColumn2, a44*scaleFactorColumn3);
+        return Matrix4<T>(a11 * scaleFactorColumn0, a12 * scaleFactorColumn1, a13 * scaleFactorColumn2, a14 * scaleFactorColumn3,
+                          a21 * scaleFactorColumn0, a22 * scaleFactorColumn1, a23 * scaleFactorColumn2, a24 * scaleFactorColumn3,
+                          a31 * scaleFactorColumn0, a32 * scaleFactorColumn1, a33 * scaleFactorColumn2, a34 * scaleFactorColumn3,
+                          a41 * scaleFactorColumn0, a42 * scaleFactorColumn1, a43 * scaleFactorColumn2, a44 * scaleFactorColumn3);
     }
 
     template<class T> void Matrix4<T>::buildTranslation(T x, T y, T z) {
