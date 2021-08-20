@@ -39,7 +39,7 @@ namespace urchin {
     /**
      * @return Bounding box axis
      */
-    const Vector3<float>& SoundBox::getAxis(unsigned int index) const { //TODO check call
+    const Vector3<float>& SoundBox::getAxis(unsigned int index) const {
         return playTriggerBox.getAxis(index);
     }
 
