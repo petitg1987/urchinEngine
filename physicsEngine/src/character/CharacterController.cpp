@@ -59,6 +59,16 @@ namespace urchin {
         }
     }
 
+    /**
+     * Define the character orientation. This orientation has only effect when the character is not moving.
+     * When the character is moving, the orientation is determined in function of velocity direction.
+     */
+    void CharacterController::setOrientation(const Quaternion<float>& orientation) {
+        Point3<float> position = ghostBody->getTransform().getPosition();
+        ghostBody->setTransform(PhysicsTransform(position, orientation));
+        ccdGhostBody->setTransform(PhysicsTransform(position, orientation));
+    }
+
     void CharacterController::jump() {
         makeJump = true;
     }
@@ -183,23 +193,23 @@ namespace urchin {
         }
 
         //orientation
-        Quaternion<float> newOrientation = ghostBody->getTransform().getOrientation();
+        Quaternion<float> updatedOrientation = ghostBody->getTransform().getOrientation();
         if (!MathFunction::isZero(velocity.squareLength(), 0.001f)) {
             Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
-            newOrientation = orientation * initialOrientation;
+            updatedOrientation = orientation * initialOrientation;
         }
 
         //save respawn transform
         respawnValues.timeElapse += dt;
         if (respawnValues.timeElapse > SAVE_RESPAWN_TRANSFORM_TIME) {
             respawnValues.respawnTransform = respawnValues.nextRespawnTransform;
-            respawnValues.nextRespawnTransform = PhysicsTransform(targetPosition, newOrientation);
+            respawnValues.nextRespawnTransform = PhysicsTransform(targetPosition, updatedOrientation);
             respawnValues.timeElapse = 0.0f;
         }
 
         //apply transform on bodies
-        ghostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
-        ccdGhostBody->setTransform(PhysicsTransform(targetPosition, newOrientation));
+        ghostBody->setTransform(PhysicsTransform(targetPosition, updatedOrientation));
+        ccdGhostBody->setTransform(PhysicsTransform(targetPosition, updatedOrientation));
     }
 
     void CharacterController::recoverFromPenetration(float dt) {

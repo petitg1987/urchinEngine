@@ -39,6 +39,7 @@ namespace urchin {
             ~CharacterController();
 
             void setVelocity(const Vector3<float>&);
+            void setOrientation(const Quaternion<float>&);
             void jump();
 
             void update(float);
