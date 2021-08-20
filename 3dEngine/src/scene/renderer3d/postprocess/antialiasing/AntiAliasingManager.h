@@ -22,8 +22,7 @@ namespace urchin {
 
             explicit AntiAliasingManager(RenderTarget&);
 
-            void onTextureUpdate(const std::shared_ptr<Texture>&);
-            void onResize(unsigned int, unsigned int);
+            void onSizeUpdate(const std::shared_ptr<Texture>&);
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -47,13 +46,15 @@ namespace urchin {
                 float qualityP11;
             };
 
-            void loadFxaaShader();
+            void createOrUpdateRendering();
+            void createOrUpdateFxaaShader();
 
             //properties
             RenderTarget& renderTarget;
             Config config;
 
             //display
+            std::shared_ptr<Texture> texture;
             std::unique_ptr<Shader> fxaaShader;
             Point2<float> invSceneSize;
             std::unique_ptr<GenericRenderer> renderer;

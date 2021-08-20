@@ -7,7 +7,7 @@ namespace urchin {
     GenericRendererBuilder::GenericRendererBuilder(std::string name, RenderTarget& renderTarget, const Shader& shader, ShapeType shapeType) :
             name(std::move(name)),
             renderTarget(renderTarget),
-            shader(std::move(shader)),
+            shader(shader),
             shapeType(shapeType),
             depthTestEnabled(false),
             depthWriteEnabled(false),

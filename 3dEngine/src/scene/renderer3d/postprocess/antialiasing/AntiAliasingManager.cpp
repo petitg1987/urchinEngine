@@ -9,10 +9,36 @@ namespace urchin {
     AntiAliasingManager::AntiAliasingManager(RenderTarget& renderTarget) :
             renderTarget(renderTarget),
             config({}) {
-        loadFxaaShader();
+
     }
 
-    void AntiAliasingManager::loadFxaaShader() {
+    void AntiAliasingManager::onSizeUpdate(const std::shared_ptr<Texture>& texture) {
+        this->invSceneSize = Point2<float>(1.0f / (float)texture->getWidth(), 1.0f / (float)texture->getHeight());
+        this->texture = texture;
+
+        createOrUpdateRendering();
+    }
+
+    void AntiAliasingManager::createOrUpdateRendering() {
+        createOrUpdateFxaaShader();
+
+        std::vector<Point2<float>> vertexCoord = {
+                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+        };
+        std::vector<Point2<float>> textureCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        };
+        renderer = GenericRendererBuilder::create("anti aliasing", renderTarget, *fxaaShader, ShapeType::TRIANGLE)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0
+                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildLinear())) //binding 1
+                ->build();
+    }
+
+    void AntiAliasingManager::createOrUpdateFxaaShader() {
         AntiAliasingShaderConst antiAliasingShaderConst = {};
         if (config.quality == LOW) {
             antiAliasingShaderConst = {6, 1.0f, 1.5f, 2.0f, 2.0f, 4.0f, 12.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f};
@@ -42,35 +68,11 @@ namespace urchin {
         fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
     }
 
-    void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        renderer = GenericRendererBuilder::create("anti aliasing", renderTarget, *fxaaShader, ShapeType::TRIANGLE)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
-                ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0
-                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildLinear())) //binding 1
-                ->build();
-    }
-
-    void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        invSceneSize = Point2<float>(1.0f / (float)sceneWidth, 1.0f / (float)sceneHeight);
-        if (renderer) {
-            renderer->updateUniformData(0, &invSceneSize);
-        }
-    }
-
     void AntiAliasingManager::updateConfig(const Config& config) {
         if (this->config.quality != config.quality) {
             this->config = config;
 
-            loadFxaaShader();
+            createOrUpdateRendering();
         }
     }
 

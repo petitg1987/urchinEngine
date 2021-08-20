@@ -333,8 +333,7 @@ namespace urchin {
         transparentManager->onSizeUpdate(deferredRenderTarget->getDepthTexture());
 
         if (isAntiAliasingActivated) {
-            antiAliasingManager->onResize(sceneWidth, sceneHeight);
-            antiAliasingManager->onTextureUpdate(lightingPassTexture);
+            antiAliasingManager->onSizeUpdate(lightingPassTexture);
         }
 
         setupDebugFramebuffers();
