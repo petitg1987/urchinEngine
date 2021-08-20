@@ -97,7 +97,7 @@
 ## Check when "new" operator is call
 * Use following source code and add a debug point:
     ```
-    void* operator new(std::size_t sz){
+    void* operator new(std::size_t sz) {
         return std::malloc(sz);
     }
 
@@ -106,13 +106,13 @@
     }
     ```
 
-## Flamegraph
+## Flame graph
 * Install:
     ```
     sudo apt install linux-tools-generic
     cd ~/various/tools/ && git clone https://github.com/brendangregg/FlameGraph.git
     ```
-* Launch application in debug
+* Launch application in debug mode
 * Record (replace 'myAppName'):
     ```
     sudo perf record -F 5000 --strict-freq -p $(pidof myAppName) -g -- sleep 25
