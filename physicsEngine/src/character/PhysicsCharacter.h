@@ -15,7 +15,7 @@ namespace urchin {
 
             float getMass() const;
 
-            std::unique_ptr<const CollisionShape3D> moveShape();
+            const CollisionShape3D& getShape() const;
 
             void updateTransform(const PhysicsTransform&);
             const PhysicsTransform& getTransform() const;

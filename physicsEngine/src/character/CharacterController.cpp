@@ -94,7 +94,7 @@ namespace urchin {
     }
 
     void CharacterController::createBodies() {
-        ghostBody = std::make_shared<GhostBody>(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->moveShape());
+        ghostBody = std::make_shared<GhostBody>(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->getShape().clone());
         ghostBody->setIsActive(true); //always active for get better reactivity
 
         std::unique_ptr<const CollisionShape3D> ccdGhostBodyShape;

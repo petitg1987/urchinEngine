@@ -20,8 +20,8 @@ namespace urchin {
         return mass;
     }
 
-    std::unique_ptr<const CollisionShape3D> PhysicsCharacter::moveShape() {
-        return std::move(shape);
+    const CollisionShape3D& PhysicsCharacter::getShape() const {
+        return *shape;
     }
 
     void PhysicsCharacter::updateTransform(const PhysicsTransform& transform) {
