@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(urchinEngine)
 
-if (CMAKE_BUILD_TYPE MATCHES "Release")
+if (CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
     add_definitions(-DNDEBUG) #disable assert
 endif()
 
