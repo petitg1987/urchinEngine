@@ -8,20 +8,20 @@ namespace urchin {
     }
 
     PhysicsTransform::PhysicsTransform(const PhysicsTransform& physicsTransform) :
-        position(physicsTransform.getPosition()),
-        orientation(physicsTransform.getOrientation()) {
+            position(physicsTransform.getPosition()),
+            orientation(physicsTransform.getOrientation()) {
 
     }
 
     PhysicsTransform::PhysicsTransform(const Point3<float>& position, const Quaternion<float>& orientation) :
-        position(position),
-        orientation(orientation) {
+            position(position),
+            orientation(orientation) {
 
     }
 
     PhysicsTransform::PhysicsTransform(const Transform<float>& transform) :
-        position(transform.getPosition()),
-        orientation(transform.getOrientation()) {
+            position(transform.getPosition()),
+            orientation(transform.getOrientation()) {
         if (!MathFunction::isOne(transform.getScale(), 0.001f)) {
             throw std::runtime_error("Cannot construct physics transform from transform having a scale: " + std::to_string(transform.getScale()));
         }
@@ -94,13 +94,11 @@ namespace urchin {
     }
 
     PhysicsTransform PhysicsTransform::operator *(const PhysicsTransform& transform) const {
-        return PhysicsTransform(position + orientation.rotatePoint(transform.getPosition()),
-                                orientation * transform.getOrientation());
+        return PhysicsTransform(position + orientation.rotatePoint(transform.getPosition()), orientation * transform.getOrientation());
     }
 
     const PhysicsTransform& PhysicsTransform::operator *=(const PhysicsTransform& transform) {
         *this = *this * transform;
-
         return *this;
     }
 
