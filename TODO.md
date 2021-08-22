@@ -39,6 +39,8 @@
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
   * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
+* Ambient occlusion:
+  * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Terrain
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain

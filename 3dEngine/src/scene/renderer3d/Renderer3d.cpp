@@ -359,52 +359,48 @@ namespace urchin {
     void Renderer3d::setupDebugFramebuffers() {
         debugFramebuffers.clear();
 
-        if (camera) {
-            if (DEBUG_DISPLAY_DEPTH_BUFFER) {
-                float depthIntensity = 5.0f;
-                auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::DEPTH_VALUE, depthIntensity);
-                textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
-                textureRenderer->initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
+        if (DEBUG_DISPLAY_DEPTH_BUFFER) {
+            auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::GRAYSCALE_VALUE);
+            textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
+            textureRenderer->initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, 0.95f, 1.0f);
+            debugFramebuffers.emplace_back(std::move(textureRenderer));
+        }
 
-            if (DEBUG_DISPLAY_COLOR_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
-                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
-                textureRenderer->initialize("[DEBUG] diffuse texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
+        if (DEBUG_DISPLAY_COLOR_BUFFER) {
+            auto textureRenderer = std::make_unique<TextureRenderer>(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
+            textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
+            textureRenderer->initialize("[DEBUG] diffuse texture", finalRenderTarget, sceneWidth, sceneHeight);
+            debugFramebuffers.emplace_back(std::move(textureRenderer));
+        }
 
-            if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
-                textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
-                textureRenderer->initialize("[DEBUG] normal/ambient texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
+        if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
+            auto textureRenderer = std::make_unique<TextureRenderer>(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
+            textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
+            textureRenderer->initialize("[DEBUG] normal/ambient texture", finalRenderTarget, sceneWidth, sceneHeight);
+            debugFramebuffers.emplace_back(std::move(textureRenderer));
+        }
 
-            if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
-                textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
+        if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
+            auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
+            textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
+            textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight);
+            debugFramebuffers.emplace_back(std::move(textureRenderer));
+        }
 
-            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
-                const std::shared_ptr<Light> firstLight = lightManager->getSunLights()[0]; //choose light
-                const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
-                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
-                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
+        if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
+            const std::shared_ptr<Light> firstLight = lightManager->getSunLights()[0]; //choose light
+            const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
+            auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+            textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
+            textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight);
+            debugFramebuffers.emplace_back(std::move(textureRenderer));
+        }
 
-            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
-                float ambientOcclusionIntensity = 10.0f;
-                auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
-                textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
+        if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
+            auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
+            textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
+            textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);
+            debugFramebuffers.emplace_back(std::move(textureRenderer));
         }
     }
 

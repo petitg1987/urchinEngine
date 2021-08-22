@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, TextureRenderer::ColorType colorType, float colorIntensity) :
+    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, TextureRenderer::ColorType colorType) :
             isInitialized(false),
             coordinateX(TextureRenderer::LEFT),
             coordinateY(TextureRenderer::BOTTOM),
@@ -20,11 +20,12 @@ namespace urchin {
             texture(std::move(texture)),
             colorType(colorType),
             renderingData({}) {
-        renderingData.colorIntensity = colorIntensity;
+        renderingData.minColorRange = 0.0f;
+        renderingData.maxColorRange = 1.0f;
         renderingData.layer = -1;
     }
 
-    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, unsigned int layer, TextureRenderer::ColorType colorType, float colorIntensity) :
+    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, unsigned int layer, TextureRenderer::ColorType colorType) :
             isInitialized(false),
             coordinateX(TextureRenderer::LEFT),
             coordinateY(TextureRenderer::BOTTOM),
@@ -39,7 +40,8 @@ namespace urchin {
             renderingData({}) {
         assert(this->texture->getTextureType() == TextureType::ARRAY);
 
-        renderingData.colorIntensity = colorIntensity;
+        renderingData.minColorRange = 0.0f;
+        renderingData.maxColorRange = 1.0f;
         renderingData.layer = (int)layer;
     }
 
@@ -86,13 +88,13 @@ namespace urchin {
     }
 
     void TextureRenderer::initialize(const std::string& name, RenderTarget& renderTarget, unsigned int sceneWidth, unsigned int sceneHeight,
-                                     float nearPlane, float farPlane) {
+                                     float minColorRange, float maxColorRange) {
         if (isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
         }
 
-        this->renderingData.cameraNearPlane = nearPlane;
-        this->renderingData.cameraFarPlane = farPlane;
+        this->renderingData.minColorRange = minColorRange;
+        this->renderingData.maxColorRange = maxColorRange;
 
         initializeShader();
 
@@ -178,12 +180,10 @@ namespace urchin {
     void TextureRenderer::initializeShader() {
         TextureRendererShaderConst trConstData{};
         trConstData.isDefaultValue = colorType == ColorType::DEFAULT_VALUE;
-        trConstData.isDepthValue = colorType == ColorType::DEPTH_VALUE;
         trConstData.isGrayscaleValue = colorType == ColorType::GRAYSCALE_VALUE;
         trConstData.isInverseGrayscaleValue = colorType == ColorType::INVERSE_GRAYSCALE_VALUE;
         std::vector<std::size_t> variablesSize = {
                 sizeof(TextureRendererShaderConst::isDefaultValue),
-                sizeof(TextureRendererShaderConst::isDepthValue),
                 sizeof(TextureRendererShaderConst::isGrayscaleValue),
                 sizeof(TextureRendererShaderConst::isInverseGrayscaleValue)
         };

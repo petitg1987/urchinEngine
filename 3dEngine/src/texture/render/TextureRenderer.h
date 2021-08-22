@@ -27,27 +27,25 @@ namespace urchin {
 
             enum ColorType {
                 DEFAULT_VALUE,
-                DEPTH_VALUE,
                 GRAYSCALE_VALUE,
                 INVERSE_GRAYSCALE_VALUE
             };
 
-            TextureRenderer(std::shared_ptr<Texture>, TextureRenderer::ColorType, float colorIntensity = 1.0);
-            TextureRenderer(std::shared_ptr<Texture>, unsigned int, TextureRenderer::ColorType, float colorIntensity = 1.0);
+            TextureRenderer(std::shared_ptr<Texture>, TextureRenderer::ColorType);
+            TextureRenderer(std::shared_ptr<Texture>, unsigned int, TextureRenderer::ColorType);
 
             void setPosition(TextureRenderer::CoordinateX, TextureRenderer::CoordinateY);
             void setSize(float, float, float, float);
             void setFullScreen(bool);
             void enableTransparency();
 
-            void initialize(const std::string&, RenderTarget& renderTarget, unsigned int, unsigned int, float, float);
+            void initialize(const std::string&, RenderTarget& renderTarget, unsigned int, unsigned int, float = 0.0f, float = 1.0f);
 
             void prepareRendering();
 
         private:
             struct TextureRendererShaderConst {
                 uint32_t isDefaultValue;
-                uint32_t isDepthValue;
                 uint32_t isGrayscaleValue;
                 uint32_t isInverseGrayscaleValue;
             };
@@ -69,9 +67,8 @@ namespace urchin {
 
             std::unique_ptr<Shader> displayTextureShader;
             struct {
-                alignas(4) float colorIntensity;
-                alignas(4) float cameraNearPlane;
-                alignas(4) float cameraFarPlane;
+                alignas(4) float minColorRange;
+                alignas(4) float maxColorRange;
                 alignas(4) int layer;
             } renderingData;
             Matrix4<float> mProjection;
