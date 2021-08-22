@@ -439,7 +439,7 @@ namespace urchin {
 
         T sinEuler0 = std::sin(euler[0]);
         T cosEuler0 = std::cos(euler[0]);
-        euler[2] = std::atan2(sinEuler0*m(i, k) - cosEuler0*m(i, j), cosEuler0*m(j, j) - sinEuler0*m(j, k));
+        euler[2] = std::atan2(sinEuler0 * m(i, k) - cosEuler0 * m(i, j), cosEuler0 * m(j, j) - sinEuler0 * m(j, k));
 
         return sequenceAxis ? euler : -euler;
     }
@@ -462,7 +462,7 @@ namespace urchin {
 
         T sinEuler0 = std::sin(euler[0]);
         T cosEuler0 = std::cos(euler[0]);
-        euler[2] = std::atan2(cosEuler0*m(k, j) - sinEuler0*m(k, k), cosEuler0*m(j, j) - sinEuler0*m(j, k));
+        euler[2] = std::atan2(cosEuler0 * m(k, j) - sinEuler0 * m(k, k), cosEuler0 * m(j, j) - sinEuler0 * m(j, k));
 
         return sequenceAxis ? euler : -euler;
     }

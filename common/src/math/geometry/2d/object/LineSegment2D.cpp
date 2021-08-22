@@ -114,7 +114,7 @@ namespace urchin {
                                                                  Point2<T>& farthestIntersection, bool& hasFarthestIntersection) const { //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
         hasFarthestIntersection = false;
 
-        Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
+        Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a + 1.0 * r = b;
         Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
 
         T rCrossS = r.crossProduct(s);

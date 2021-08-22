@@ -61,8 +61,8 @@ namespace urchin {
     }
 
     template<class T> Matrix2<T> Matrix2<T>::scaled(T scaleFactorColumn0, T scaleFactorColumn1) const {
-        return Matrix2<T>(a11*scaleFactorColumn0, a12*scaleFactorColumn1,
-                a21*scaleFactorColumn0, a22*scaleFactorColumn1);
+        return Matrix2<T>(a11 * scaleFactorColumn0, a12 * scaleFactorColumn1,
+                a21 * scaleFactorColumn0, a22 * scaleFactorColumn1);
     }
 
     template<class T> void Matrix2<T>::buildScale(T x, T y) {

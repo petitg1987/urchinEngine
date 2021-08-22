@@ -5,9 +5,9 @@ namespace urchin {
     enum ShapeType {
         TRIANGLE,
         TRIANGLE_STRIP,
-        LINE,
-        LINE_STRIP,
-        POINT
+        LINE, //TODO remove if not used anymore
+        LINE_STRIP, //TODO remove if not used anymore
+        POINT //TODO remove if not used anymore
     };
 
 }

@@ -74,9 +74,9 @@ namespace urchin {
     }
 
     template<class T> Matrix3<T> Matrix3<T>::scaled(T scaleFactorColumn0, T scaleFactorColumn1, T scaleFactorColumn2) const {
-        return Matrix3<T>(a11*scaleFactorColumn0, a12*scaleFactorColumn1, a13*scaleFactorColumn2,
-                a21*scaleFactorColumn0, a22*scaleFactorColumn1, a23*scaleFactorColumn2,
-                a31*scaleFactorColumn0, a32*scaleFactorColumn1, a33*scaleFactorColumn2);
+        return Matrix3<T>(a11 * scaleFactorColumn0, a12 * scaleFactorColumn1, a13 * scaleFactorColumn2,
+                a21 * scaleFactorColumn0, a22 * scaleFactorColumn1, a23 * scaleFactorColumn2,
+                a31 * scaleFactorColumn0, a32 * scaleFactorColumn1, a33 * scaleFactorColumn2);
     }
 
     template<class T> void Matrix3<T>::buildTranslation(T x, T y) {

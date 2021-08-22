@@ -16,7 +16,7 @@ namespace urchin {
         std::size_t nbPoints = points.size();
         unsigned int k = 0; //number of points in convex hull
 
-        convexHullPoints.resize(2*nbPoints);
+        convexHullPoints.resize(2 * nbPoints);
 
         //sort points lexicographically
         std::vector<Point2<T>> sortedPoints;
