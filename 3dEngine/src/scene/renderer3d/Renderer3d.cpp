@@ -59,8 +59,6 @@ namespace urchin {
         modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer->initialize(*deferredRenderTarget);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
-        lightManager->addObserver(this, LightManager::ADD_LIGHT);
-        lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
 
         //lighting pass rendering
         visualOption.isShadowActivated = true;
@@ -91,10 +89,6 @@ namespace urchin {
         if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateLightingPass();
-            }
-        } else if (dynamic_cast<LightManager*>(observable)) {
-            if (notificationType == LightManager::ADD_LIGHT || notificationType == LightManager::REMOVE_LIGHT) {
-                refreshDebugFramebuffers = true;
             }
         }
     }
