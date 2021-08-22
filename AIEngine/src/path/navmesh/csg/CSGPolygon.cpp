@@ -36,7 +36,7 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> const std::string &CSGPolygon<T>::getName() const {
+    template<class T> const std::string& CSGPolygon<T>::getName() const {
         return name;
     }
 

@@ -16,7 +16,7 @@ namespace urchin {
         clearDisplay();
         
         std::vector<ManifoldResult> manifoldResults = physicsWorld.getCollisionVisualizer().getManifoldResults();
-        for (auto manifoldResult : manifoldResults) {
+        for (auto& manifoldResult : manifoldResults) {
             for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint contactPoint = manifoldResult.getManifoldContactPoint(j);
 

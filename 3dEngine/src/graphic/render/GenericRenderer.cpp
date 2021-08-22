@@ -85,7 +85,7 @@ namespace urchin {
         }
     }
 
-    const std::string &GenericRenderer::getName() const {
+    const std::string& GenericRenderer::getName() const {
         return name;
     }
 

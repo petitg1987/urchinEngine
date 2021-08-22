@@ -135,7 +135,7 @@ namespace urchin {
             std::vector<std::string> attributesVector;
             StringUtil::split(attributesString, UdaChunk::ATTRIBUTES_SEPARATOR, attributesVector);
 
-            for (auto &attribute: attributesVector) {
+            for (auto& attribute: attributesVector) {
                 std::vector<std::string> attributeComponents;
                 StringUtil::split(attribute, UdaChunk::ATTRIBUTES_ASSIGN, attributeComponents);
                 if (attributeComponents.size() != 2) {

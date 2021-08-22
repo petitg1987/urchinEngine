@@ -227,7 +227,7 @@ namespace urchin {
             while (!rayTestResult->isResultReady()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
             }
-            const ccd_set &pickedObjects = rayTestResult->getResults();
+            const ccd_set& pickedObjects = rayTestResult->getResults();
             if (!pickedObjects.empty()) {
                 lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2().getId();
                 notifyObservers(this, BODY_PICKED);

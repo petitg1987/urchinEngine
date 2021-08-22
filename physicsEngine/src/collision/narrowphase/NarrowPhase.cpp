@@ -143,7 +143,7 @@ namespace urchin {
     ccd_set NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<AbstractBody*>& bodiesAABBoxHit) const {
         ccd_set continuousCollisionResults;
 
-        for (auto bodyAABBoxHit : bodiesAABBoxHit) {
+        for (auto* bodyAABBoxHit : bodiesAABBoxHit) {
             if (bodyAABBoxHit->isGhostBody()) {
                 //No CCD support for ghost bodies
                 continue;

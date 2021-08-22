@@ -181,7 +181,7 @@ namespace urchin {
         return colorAttachment;
     }
 
-    void RenderTarget::createRenderPass(const VkAttachmentReference &depthAttachmentRef, const std::vector<VkAttachmentReference>& colorAttachmentRefs,
+    void RenderTarget::createRenderPass(const VkAttachmentReference& depthAttachmentRef, const std::vector<VkAttachmentReference>& colorAttachmentRefs,
                                         const std::vector<VkAttachmentDescription>& attachments) {
         VkSubpassDescription subpass{};
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;

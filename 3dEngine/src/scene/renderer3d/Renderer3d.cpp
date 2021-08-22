@@ -25,6 +25,7 @@ namespace urchin {
     constexpr float Renderer3d::MODELS_OCTREE_MIN_SIZE = 20.0f;
 
     Renderer3d::Renderer3d(RenderTarget& finalRenderTarget) :
+            //scene properties
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
             sceneHeight(finalRenderTarget.getHeight()),
@@ -49,12 +50,17 @@ namespace urchin {
             positioningData({}),
             visualOption({}),
             antiAliasingManager(std::make_unique<AntiAliasingManager>(finalRenderTarget)),
-            isAntiAliasingActivated(true) {
+            isAntiAliasingActivated(true),
+
+            //debug
+            refreshDebugFramebuffers(true) {
 
         //deferred rendering
         modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer->initialize(*deferredRenderTarget);
         shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+        lightManager->addObserver(this, LightManager::ADD_LIGHT);
+        lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
 
         //lighting pass rendering
         visualOption.isShadowActivated = true;
@@ -85,6 +91,10 @@ namespace urchin {
         if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateLightingPass();
+            }
+        } else if (dynamic_cast<LightManager*>(observable)) {
+            if (notificationType == LightManager::ADD_LIGHT || notificationType == LightManager::REMOVE_LIGHT) {
+                refreshDebugFramebuffers = true;
             }
         }
     }
@@ -137,7 +147,6 @@ namespace urchin {
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
         if (visualOption.isAmbientOcclusionActivated != isAmbientOcclusionActivated) {
             visualOption.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
-
             createOrUpdateLightingPass();
         }
     }
@@ -178,6 +187,7 @@ namespace urchin {
         shadowManager->onCameraProjectionUpdate(*camera);
         ambientOcclusionManager->onCameraProjectionUpdate(*camera);
         transparentManager->onCameraProjectionUpdate(*camera);
+        refreshDebugFramebuffers = true;
     }
 
     void Renderer3d::updateModelsInFrustum() {
@@ -336,7 +346,7 @@ namespace urchin {
             antiAliasingManager->onSizeUpdate(lightingPassTexture);
         }
 
-        setupDebugFramebuffers();
+        refreshDebugFramebuffers = true;
     }
 
     void Renderer3d::createOrUpdateLightingShader() {
@@ -354,54 +364,6 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
 
         lightingShader = ShaderBuilder::createShader("lighting.vert.spv", "", "lighting.frag.spv", std::move(shaderConstants));
-    }
-
-    void Renderer3d::setupDebugFramebuffers() {
-        debugFramebuffers.clear();
-
-        if (DEBUG_DISPLAY_DEPTH_BUFFER) {
-            auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::GRAYSCALE_VALUE);
-            textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
-            textureRenderer->initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, 0.95f, 1.0f);
-            debugFramebuffers.emplace_back(std::move(textureRenderer));
-        }
-
-        if (DEBUG_DISPLAY_COLOR_BUFFER) {
-            auto textureRenderer = std::make_unique<TextureRenderer>(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
-            textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
-            textureRenderer->initialize("[DEBUG] diffuse texture", finalRenderTarget, sceneWidth, sceneHeight);
-            debugFramebuffers.emplace_back(std::move(textureRenderer));
-        }
-
-        if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
-            auto textureRenderer = std::make_unique<TextureRenderer>(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
-            textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
-            textureRenderer->initialize("[DEBUG] normal/ambient texture", finalRenderTarget, sceneWidth, sceneHeight);
-            debugFramebuffers.emplace_back(std::move(textureRenderer));
-        }
-
-        if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
-            auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
-            textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
-            textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight);
-            debugFramebuffers.emplace_back(std::move(textureRenderer));
-        }
-
-        if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
-            const std::shared_ptr<Light> firstLight = lightManager->getSunLights()[0]; //choose light
-            const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
-            auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
-            textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
-            textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight);
-            debugFramebuffers.emplace_back(std::move(textureRenderer));
-        }
-
-        if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
-            auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
-            textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::BOTTOM);
-            textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);
-            debugFramebuffers.emplace_back(std::move(textureRenderer));
-        }
     }
 
     void Renderer3d::updateScene(float dt) {
@@ -496,26 +458,26 @@ namespace urchin {
 
         positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
         positioningData.viewPosition = camera->getPosition();
-        std::size_t positioningDataUniformIndex = 0;
+        constexpr std::size_t positioningDataUniformIndex = 0;
         lightingRenderer->updateUniformData(positioningDataUniformIndex, &positioningData);
 
-        std::size_t lightsDataUniformIndex = 2;
+        constexpr std::size_t lightsDataUniformIndex = 2;
         lightManager->loadVisibleLights(*lightingRenderer, lightsDataUniformIndex);
 
-        std::size_t fogUniformIndex = 5;
+        constexpr std::size_t fogUniformIndex = 5;
         fogContainer->loadFog(*lightingRenderer, fogUniformIndex);
 
         if (visualOption.isAmbientOcclusionActivated) {
-            std::size_t ambientOcclusionTexUnit = 3;
+            constexpr std::size_t ambientOcclusionTexUnit = 3;
             ambientOcclusionManager->loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
         }
 
-        std::size_t transparentAccumulationTexUnit = 4;
-        std::size_t transparentRevealTexUnit = 5;
+        constexpr std::size_t transparentAccumulationTexUnit = 4;
+        constexpr std::size_t transparentRevealTexUnit = 5;
         transparentManager->loadTransparentTextures(*lightingRenderer, transparentAccumulationTexUnit, transparentRevealTexUnit);
 
         if (visualOption.isShadowActivated) {
-            std::size_t shadowMapTexUnit = 6;
+            constexpr std::size_t shadowMapTexUnit = 6;
             shadowManager->loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
@@ -527,8 +489,57 @@ namespace urchin {
     }
 
     void Renderer3d::renderDebugFramebuffers() {
-        for (auto& debugFramebuffer : debugFramebuffers) {
-            debugFramebuffer->prepareRendering();
+        if(refreshDebugFramebuffers) {
+            debugFramebuffers.clear();
+            refreshDebugFramebuffers = false;
+
+            if (DEBUG_DISPLAY_DEPTH_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::GRAYSCALE_VALUE);
+                textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
+                textureRenderer->initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, 0.95f, 1.0f);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+
+            if (DEBUG_DISPLAY_COLOR_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
+                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
+                textureRenderer->initialize("[DEBUG] diffuse texture", finalRenderTarget, sceneWidth, sceneHeight);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+
+            if (DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(normalAndAmbientTexture, TextureRenderer::DEFAULT_VALUE);
+                textureRenderer->setPosition(TextureRenderer::RIGHT, TextureRenderer::TOP);
+                textureRenderer->initialize("[DEBUG] normal/ambient texture", finalRenderTarget, sceneWidth, sceneHeight);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+
+            if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
+                textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
+                textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+
+            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER && visualOption.isShadowActivated && !lightManager->getSunLights().empty()) {
+                const std::shared_ptr<Light> firstLight = lightManager->getSunLights()[0]; //choose light
+                const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
+                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
+                textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+
+            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && visualOption.isAmbientOcclusionActivated) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
+                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
+                textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+        } else {
+            for (auto& debugFramebuffer : debugFramebuffers) {
+                debugFramebuffer->prepareRendering();
+            }
         }
     }
 

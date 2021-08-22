@@ -203,27 +203,27 @@ namespace urchin {
     template LineSegment2D<double> LineSegment2D<float>::cast() const;
     template LineSegment2D<int> LineSegment2D<float>::cast() const;
     template LineSegment2D<long long> LineSegment2D<float>::cast() const;
-    template std::ostream& operator <<<float>(std::ostream & , const LineSegment2D<float>&);
+    template std::ostream& operator <<<float>(std::ostream&, const LineSegment2D<float>&);
 
     template class LineSegment2D<double>;
     template LineSegment2D<float> LineSegment2D<double>::cast() const;
     template LineSegment2D<double> LineSegment2D<double>::cast() const;
     template LineSegment2D<int> LineSegment2D<double>::cast() const;
     template LineSegment2D<long long> LineSegment2D<double>::cast() const;
-    template std::ostream& operator <<<double>(std::ostream & , const LineSegment2D<double>&);
+    template std::ostream& operator <<<double>(std::ostream&, const LineSegment2D<double>&);
 
     template class LineSegment2D<int>;
     template LineSegment2D<float> LineSegment2D<int>::cast() const;
     template LineSegment2D<double> LineSegment2D<int>::cast() const;
     template LineSegment2D<int> LineSegment2D<int>::cast() const;
     template LineSegment2D<long long> LineSegment2D<int>::cast() const;
-    template std::ostream& operator <<<int>(std::ostream & , const LineSegment2D<int>&);
+    template std::ostream& operator <<<int>(std::ostream&, const LineSegment2D<int>&);
 
     template class LineSegment2D<long long>;
     template LineSegment2D<float> LineSegment2D<long long>::cast() const;
     template LineSegment2D<double> LineSegment2D<long long>::cast() const;
     template LineSegment2D<int> LineSegment2D<long long>::cast() const;
     template LineSegment2D<long long> LineSegment2D<long long>::cast() const;
-    template std::ostream& operator <<<long long>(std::ostream & , const LineSegment2D<long long>&);
+    template std::ostream& operator <<<long long>(std::ostream&, const LineSegment2D<long long>&);
 
 }

@@ -31,7 +31,7 @@ namespace urchin {
         return BlendFunction(false, ONE, ONE, ONE, ONE);
     }
 
-    void BlendFunction::setupColorBlend(VkPipelineColorBlendAttachmentState &colorBlendAttachment) const {
+    void BlendFunction::setupColorBlend(VkPipelineColorBlendAttachmentState& colorBlendAttachment) const {
         colorBlendAttachment.blendEnable = bIsBlendEnabled ? VK_TRUE : VK_FALSE;
 
         colorBlendAttachment.srcColorBlendFactor = toVkBlenderFactor(srcColorFactor);

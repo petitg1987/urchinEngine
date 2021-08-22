@@ -31,7 +31,7 @@ namespace urchin {
     void Observable::notifyObservers(Observable* observable, int notificationType) {
         auto it = mapObservers.find(notificationType);
         if (it != mapObservers.end()) {
-            for (auto observer : *it->second) {
+            for (auto* observer : *it->second) {
                 observer->notify(observable, notificationType);
             }
         }

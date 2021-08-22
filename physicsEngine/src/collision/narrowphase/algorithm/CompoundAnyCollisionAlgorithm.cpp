@@ -12,7 +12,7 @@ namespace urchin {
     void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper& object1, const CollisionObjectWrapper& object2) {
         ScopeProfiler sp(Profiler::physics(), "algCompoundAny");
 
-        const auto& compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
+        const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(object1.getShape());
         const CollisionShape3D& otherShape = object2.getShape();
 
         AbstractBody& body1 = getManifoldResult().getBody1();

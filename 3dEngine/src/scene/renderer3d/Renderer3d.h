@@ -92,7 +92,6 @@ namespace urchin {
             //scene
             void createOrUpdateLightingPass();
             void createOrUpdateLightingShader();
-            void setupDebugFramebuffers();
             void updateScene(float);
             void deferredRendering(float);
             void renderDebugSceneData();
@@ -142,6 +141,8 @@ namespace urchin {
             std::unique_ptr<AntiAliasingManager> antiAliasingManager;
             bool isAntiAliasingActivated;
 
+            //debug
+            bool refreshDebugFramebuffers;
             std::vector<std::unique_ptr<TextureRenderer>> debugFramebuffers;
     };
 

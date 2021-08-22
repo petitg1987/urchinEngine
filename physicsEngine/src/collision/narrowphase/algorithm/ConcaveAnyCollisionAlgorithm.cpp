@@ -20,7 +20,7 @@ namespace urchin {
         AbstractBody& body2 = getManifoldResult().getBody2();
 
         AABBox<float> aabboxLocalToObject1 = object2.getShape().toAABBox(object1.getShapeWorldTransform().inverse() * object2.getShapeWorldTransform());
-        const auto& concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());
+        const auto& concaveShape = dynamic_cast<const CollisionConcaveShape&>(object1.getShape());
 
         const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
         for (const auto& triangle : triangles) {

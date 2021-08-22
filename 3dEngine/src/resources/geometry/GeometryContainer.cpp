@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    GeometryContainer::GeometryContainer(RenderTarget &renderTarget) :
+    GeometryContainer::GeometryContainer(RenderTarget& renderTarget) :
             renderTarget(renderTarget) {
 
     }

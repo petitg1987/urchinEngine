@@ -12,7 +12,7 @@ namespace urchin {
             static BlendFunction buildDefault();
             static BlendFunction buildBlendDisabled();
 
-            void setupColorBlend(VkPipelineColorBlendAttachmentState &colorBlendAttachment) const;
+            void setupColorBlend(VkPipelineColorBlendAttachmentState& colorBlendAttachment) const;
 
         private:
             BlendFunction(bool, BlendFactor, BlendFactor, BlendFactor, BlendFactor);

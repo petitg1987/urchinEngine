@@ -30,7 +30,7 @@ namespace urchin {
 
     void Sequence::createOrUpdateWidget() {
         //detach children
-        for(auto &valueText : valuesText) {
+        for(auto& valueText : valuesText) {
             detachChild(valueText.get());
         }
         detachChild(rightButton.get());

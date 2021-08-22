@@ -5,7 +5,7 @@ using namespace urchin;
 
 class AssertHelper {
     public:
-        static void assertTrue(bool, const std::string &msg = "");
+        static void assertTrue(bool, const std::string& = "");
 
         static void assertObjectEquals(void*, void*);
 

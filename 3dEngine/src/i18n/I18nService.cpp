@@ -14,7 +14,7 @@ namespace urchin {
     void I18nService::changeLanguage(std::string language) {
         this->language = std::move(language);
 
-        for (auto translatableLabel : translatableLabels) {
+        for (auto* translatableLabel : translatableLabels) {
             refreshTranslation(translatableLabel);
         }
     }

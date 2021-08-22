@@ -91,7 +91,7 @@ namespace urchin {
         #endif
 
         std::string graphicsCardNamesList;
-        for (auto graphicsCardName : graphicsCardNames) {
+        for (auto& graphicsCardName : graphicsCardNames) {
             StringUtil::trim(graphicsCardName);
             graphicsCardNamesList += graphicsCardName + ", ";
         }
