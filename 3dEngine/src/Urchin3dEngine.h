@@ -44,7 +44,6 @@
 #include <resources/geometry/capsule/CapsuleModel.h>
 #include <resources/geometry/cylinder/CylinderModel.h>
 #include <resources/geometry/cone/ConeModel.h>
-#include <resources/geometry/frustum/FrustumModel.h>
 #include <resources/geometry/obbox/OBBoxModel.h>
 #include <resources/geometry/points/PointsModel.h>
 #include <resources/geometry/lines/LinesModel.h>
