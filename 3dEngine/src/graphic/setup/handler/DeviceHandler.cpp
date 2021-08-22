@@ -31,13 +31,14 @@ namespace urchin {
             surface(nullptr),
             physicalDevice(nullptr),
             logicalDevice(nullptr) {
-        //List of features and extensions required to run the engine:
+        //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php):
         physicalDeviceRequiredFeatures = {
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"),
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"),
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, wideLines), "wide lines"),
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"),
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy")
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"), //78.7%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"), //99.2%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, wideLines), "wide lines"), //58.1%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, largePoints), "large points"), //96.2%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"), //81.3%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
         };
         physicalDeviceRequiredExtensions = {
                 std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain")
