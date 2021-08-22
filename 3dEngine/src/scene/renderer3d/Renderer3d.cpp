@@ -323,9 +323,9 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 6
                 ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 7
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 8
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba8Int(), TextureParam::buildNearest())) //binding 9 - ambient occlusion
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale8Int(), TextureParam::buildNearest())) //binding 9 - ambient occlusion
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba16Float(), TextureParam::buildNearest())) //binding 10 - transparency: accumulation
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale16Float(), TextureParam::buildNearest())) //binding 11 - transparency: reveal
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale8Int(), TextureParam::buildNearest())) //binding 11 - transparency: reveal
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 12
                 ->build();
 

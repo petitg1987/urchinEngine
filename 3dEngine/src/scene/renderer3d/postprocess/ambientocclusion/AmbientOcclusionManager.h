@@ -15,9 +15,14 @@ namespace urchin {
                 FULL_SIZE = 0,
                 HALF_SIZE = 1
             };
+            enum AOTextureBits {
+                AO_8_BITS,
+                AO_16_BITS
+            };
 
             struct Config {
                 AOTextureSize textureSize = AOTextureSize::HALF_SIZE;
+                AOTextureBits textureBits = AOTextureBits::AO_8_BITS;
                 unsigned int kernelSamples = 32;
                 float radius = 0.35f; //scope radius in units
                 float ambientOcclusionStrength = 0.10f;

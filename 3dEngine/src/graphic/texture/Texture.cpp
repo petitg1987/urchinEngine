@@ -76,6 +76,12 @@ namespace urchin {
         return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_32_FLOAT, allDataPtr));
     }
 
+    std::shared_ptr<Texture> Texture::buildEmptyGreyscale8Int() {
+        std::array<uint8_t, 1> textureData = {0};
+        std::vector<const void*> allDataPtr(1, textureData.data());
+        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr));
+    }
+
     std::shared_ptr<Texture> Texture::buildEmptyGreyscale16Float() {
         std::array<uint16_t, 1> textureData = {0};
         std::vector<const void*> allDataPtr(1, textureData.data());

@@ -56,9 +56,18 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOTexture() {
+        TextureFormat textureFormat;
+        if (config.textureBits == AOTextureBits::AO_8_BITS) {
+            textureFormat = TextureFormat::GRAYSCALE_8_INT;
+        } else if (config.textureBits == AOTextureBits::AO_16_BITS) {
+            textureFormat = TextureFormat::GRAYSCALE_16_FLOAT;
+        } else {
+            throw std::runtime_error("Unknown ambient occlusion texture bits: " + std::to_string(config.textureBits));
+        }
+
         textureSizeX = (unsigned int)(resolution.X / (float)retrieveTextureSizeFactor());
         textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
-        ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, TextureFormat::GRAYSCALE_16_FLOAT, nullptr);
+        ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, textureFormat, nullptr);
 
         if (offscreenRenderTarget) {
             offscreenRenderTarget->resetTextures();
@@ -72,7 +81,7 @@ namespace urchin {
             verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - vertical bilateral blur filter", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
-                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                    ->textureFormat(textureFormat)
                     ->depthTexture(depthTexture)
                     ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
                     ->blurSize(config.blurSize)
@@ -82,7 +91,7 @@ namespace urchin {
             horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - horizontal bilateral blur filter", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
-                    ->textureFormat(TextureFormat::GRAYSCALE_16_FLOAT)
+                    ->textureFormat(textureFormat)
                     ->depthTexture(depthTexture)
                     ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
                     ->blurSize(config.blurSize)
@@ -198,6 +207,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::updateConfig(const Config& config) {
         if (this->config.textureSize != config.textureSize ||
+                this->config.textureBits != config.textureBits ||
                 this->config.kernelSamples != config.kernelSamples ||
                 this->config.radius != config.radius ||
                 this->config.ambientOcclusionStrength != config.ambientOcclusionStrength ||
