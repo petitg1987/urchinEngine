@@ -43,8 +43,14 @@ namespace urchin {
             float x2 = std::cos((float)(i + 1) * angle) * radius;
             float z2 = std::sin((float)(i + 1) * angle) * radius;
 
+            //hull
             vertexArray.push_back(cone.getCenterOfMass() + topPoint);
             vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
+            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
+
+            //base cap
+            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
+            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, -cone.getHeight() * (1.0f / 4.0f), 0.0f)));
             vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
         }
 

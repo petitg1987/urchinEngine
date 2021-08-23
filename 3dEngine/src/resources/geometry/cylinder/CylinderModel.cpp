@@ -36,6 +36,7 @@ namespace urchin {
             float x2 = std::cos((float)(i + 1) * angle) * radius;
             float y2 = std::sin((float)(i + 1) * angle) * radius;
 
+            //cylinder
             vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
             vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
             vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
@@ -43,6 +44,15 @@ namespace urchin {
             vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
             vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
             vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+
+            //caps
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, -halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
         }
 
         return vertexArray;

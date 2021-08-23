@@ -32,8 +32,11 @@ namespace urchin {
                 ->addData(vertexArray)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(color), &color) //binding 1
-                ->disableCullFace()
                 ->polygonMode(polygonMode);
+
+        if (polygonMode == PolygonMode::WIREFRAME) {
+            rendererBuilder->disableCullFace();
+        }
 
         if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();
