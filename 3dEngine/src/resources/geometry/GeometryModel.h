@@ -29,17 +29,15 @@ namespace urchin {
             void setAlwaysVisible(bool);
 
             void setModelMatrix(const Matrix4<float>&);
-
-            void prepareRendering(const Matrix4<float>&) const;
-
         protected:
             void initialize(RenderTarget&);
             void onCameraProjectionUpdate(const Matrix4<float>&);
-
             void refreshRenderer();
 
             virtual std::vector<Point3<float>> retrieveVertexArray() const = 0;
             virtual ShapeType getShapeType() const = 0;
+
+            void prepareRendering(const Matrix4<float>&) const;
 
         private:
             bool isInitialized;

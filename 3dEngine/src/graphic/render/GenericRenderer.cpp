@@ -321,8 +321,6 @@ namespace urchin {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
-        } else if (shapeType == ShapeType::LINE) {
-            return VK_PRIMITIVE_TOPOLOGY_LINE_LIST;
         } else if (shapeType == ShapeType::POINT) {
             return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
         }
