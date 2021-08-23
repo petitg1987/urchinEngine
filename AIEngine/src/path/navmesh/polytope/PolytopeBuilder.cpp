@@ -96,7 +96,7 @@ namespace urchin {
             std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(terrainMaxWalkableSlope);
 
             auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength,
-                    approximateNormal, selfObstacles, std::move(terrainNavTopography));
+                    approximateNormal, selfObstacles, terrainNavTopography);
             terrainSurface->setWalkableCandidate(true);
             std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
             expandedSurfaces.emplace_back(std::move(terrainSurface));

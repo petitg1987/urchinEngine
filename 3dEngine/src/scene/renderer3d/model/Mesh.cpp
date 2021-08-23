@@ -1,6 +1,6 @@
 #include <scene/renderer3d/model/Mesh.h>
-#include <resources/model/MeshService.h>
 #include <graphic/render/GenericRendererBuilder.h>
+#include <resources/model/MeshService.h>
 
 namespace urchin {
 
@@ -28,17 +28,21 @@ namespace urchin {
     }
 
     void Mesh::drawBaseBones(RenderTarget& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
-        std::vector<Point3<float>> bonePositions;
-        for (const auto& bone : constMesh.getBaseSkeleton()) {
-            bonePositions.push_back(bone.pos);
+        if (boneSphereModels.empty()) {
+            for (const auto& bone : constMesh.getBaseSkeleton()) {
+                auto boneSphereModel = std::make_unique<SphereModel>(Sphere<float>(0.05f, bone.pos), 7);
+                boneSphereModel->initialize(renderTarget);
+                boneSphereModel->setAlwaysVisible(true);
+                boneSphereModel->onCameraProjectionUpdate(projectionMatrix);
+                boneSphereModel->setPolygonMode(PolygonMode::FILL);
+                boneSphereModel->prepareRendering(viewMatrix);
+                boneSphereModels.push_back(std::move(boneSphereModel));
+            }
+        } else {
+            for (const auto& boneSphereModel : boneSphereModels) {
+                boneSphereModel->prepareRendering(viewMatrix);
+            }
         }
-
-        pointsModel = std::make_unique<PointsModel>(bonePositions);
-        pointsModel->initialize(renderTarget);
-        pointsModel->setPointSize(5.0f);
-        pointsModel->onCameraProjectionUpdate(projectionMatrix);
-        pointsModel->setAlwaysVisible(true);
-        pointsModel->prepareRendering(viewMatrix);
     }
 
 }

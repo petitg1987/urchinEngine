@@ -15,6 +15,7 @@ namespace urchin {
             approximateNormal(approximateNormal),
             selfObstacles(std::move(selfObstacles)),
             navTopography(std::move(navTopography)) {
+        assert(this->navTopography);
         buildOutlineCwPoints();
         buildAABBox();
 

@@ -19,7 +19,6 @@ namespace urchin {
     void PathRequest::setPath(const std::vector<PathPoint>& path) {
         {
             std::lock_guard<std::mutex> lock(mutex);
-
             this->path = path;
         }
 
@@ -28,7 +27,6 @@ namespace urchin {
 
     std::vector<PathPoint> PathRequest::getPath() const {
         std::lock_guard<std::mutex> lock(mutex);
-
         return path;
     }
 

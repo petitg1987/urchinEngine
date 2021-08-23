@@ -2,10 +2,10 @@
 
 #include <UrchinCommon.h>
 
-#include <resources/model/ConstMesh.h>
-#include <resources/geometry/points/PointsModel.h>
 #include <graphic/render/GenericRenderer.h>
 #include <graphic/render/target/RenderTarget.h>
+#include <resources/model/ConstMesh.h>
+#include <resources/geometry/sphere/SphereModel.h>
 
 namespace urchin {
 
@@ -28,7 +28,7 @@ namespace urchin {
             std::vector<Vector3<float>> normals;
             std::vector<Vector3<float>> tangents;
 
-            std::unique_ptr<PointsModel> pointsModel;
+            std::vector<std::unique_ptr<SphereModel>> boneSphereModels;
     };
 
 }
