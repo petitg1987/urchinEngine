@@ -23,7 +23,6 @@ namespace urchin {
 
             PolygonMode getPolygonMode() const;
             void setPolygonMode(PolygonMode);
-            void setLineWidth(float);
 
             bool isTransparencyEnabled() const;
             void enableTransparency();
@@ -57,7 +56,6 @@ namespace urchin {
 
             Vector4<float> color;
             PolygonMode polygonMode;
-            float lineWidth;
             bool transparencyEnabled;
             bool alwaysVisible;
     };

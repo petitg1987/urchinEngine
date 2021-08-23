@@ -157,15 +157,6 @@ namespace urchin {
         return pPolygonMode;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::lineWidth(float pLineWidth) {
-        this->pLineWidth = pLineWidth;
-        return shared_from_this();
-    }
-
-    float GenericRendererBuilder::getLineWidth() const {
-        return pLineWidth;
-    }
-
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableScissor(const Vector2<int>& scissorOffset, const Vector2<unsigned int>& scissorSize) {
         scissorEnabled = true;
         this->scissorOffset = scissorOffset;

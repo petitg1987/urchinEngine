@@ -35,8 +35,6 @@ namespace urchin {
         physicalDeviceRequiredFeatures = {
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"), //78.7%
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"), //99.2%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, wideLines), "wide lines"), //58.1% //TODO try to remove
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, largePoints), "large points"), //96.2% //TODO try to remove
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"), //81.3%
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
         };

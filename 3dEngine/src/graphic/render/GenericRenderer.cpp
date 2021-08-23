@@ -27,7 +27,6 @@ namespace urchin {
             depthWriteEnabled(rendererBuilder->isDepthWriteEnabled()),
             cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
             polygonMode(rendererBuilder->getPolygonMode()),
-            lineWidth(rendererBuilder->getLineWidth()),
             scissorEnabled(rendererBuilder->isScissorEnabled()),
             scissorOffset(rendererBuilder->getScissorOffset()),
             scissorSize(rendererBuilder->getScissorSize()),
@@ -217,8 +216,8 @@ namespace urchin {
         VkPipelineRasterizationStateCreateInfo rasterization{};
         rasterization.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         rasterization.rasterizerDiscardEnable = VK_FALSE;
-        rasterization.polygonMode = polygonMode == PolygonMode::WIREFRAME ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
-        rasterization.lineWidth = lineWidth;
+        rasterization.polygonMode = (polygonMode == PolygonMode::WIREFRAME) ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
+        rasterization.lineWidth = 1.0f;
         rasterization.cullMode = cullFaceEnabled ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE;
         rasterization.frontFace = VK_FRONT_FACE_CLOCKWISE;
         rasterization.depthClampEnable = VK_FALSE;

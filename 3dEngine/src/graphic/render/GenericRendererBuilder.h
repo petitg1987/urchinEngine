@@ -52,8 +52,6 @@ namespace urchin {
 
             std::shared_ptr<GenericRendererBuilder> polygonMode(PolygonMode);
             PolygonMode getPolygonMode() const;
-            std::shared_ptr<GenericRendererBuilder> lineWidth(float);
-            float getLineWidth() const;
 
             std::shared_ptr<GenericRendererBuilder> enableScissor(const Vector2<int>&, const Vector2<unsigned int>&);
             bool isScissorEnabled() const;

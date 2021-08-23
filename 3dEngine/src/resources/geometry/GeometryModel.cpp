@@ -9,7 +9,6 @@ namespace urchin {
             renderTarget(nullptr),
             color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
             polygonMode(WIREFRAME),
-            lineWidth(2.0f),
             transparencyEnabled(false),
             alwaysVisible(false) {
     }
@@ -36,7 +35,6 @@ namespace urchin {
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(color), &color) //binding 1
                 ->disableCullFace()
-                ->lineWidth(lineWidth)
                 ->polygonMode(polygonMode);
 
         if (!alwaysVisible) {
@@ -75,11 +73,6 @@ namespace urchin {
 
     void GeometryModel::setPolygonMode(PolygonMode polygonMode) {
         this->polygonMode = polygonMode;
-        refreshRenderer();
-    }
-
-    void GeometryModel::setLineWidth(float lineWidth) {  //TODO remvoe this method
-        this->lineWidth = lineWidth;
         refreshRenderer();
     }
 
