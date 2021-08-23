@@ -11,6 +11,7 @@ namespace urchin {
     //static
     constexpr unsigned int TextBox::LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
     constexpr unsigned int TextBox::LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
+    constexpr unsigned int TextBox::CURSOR_WIDTH_PIXEL = 2;
     constexpr float TextBox::CURSOR_BLINK_SPEED = 2.25f;
 
     TextBox::TextBox(Position position, Size size, std::string skinName) :
@@ -70,12 +71,11 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildLinear())) //binding 3
                 ->build();
 
-        float cursorWidthPixel = 2.0f;
         auto cursorStartY = (float)widgetOutline.topWidth;
         auto cursorEndY = (float)((int)getHeight() - widgetOutline.bottomWidth);
         std::vector<Point2<float>> cursorVertexCoord = {
-                Point2<float>(0.0f, cursorStartY), Point2<float>(cursorWidthPixel, cursorStartY), Point2<float>(cursorWidthPixel, cursorEndY),
-                Point2<float>(0.0f, cursorStartY), Point2<float>(cursorWidthPixel, cursorEndY), Point2<float>(0.0f, cursorEndY)
+                Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY),
+                Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)
         };
         std::vector<Point2<float>> cursorTextureCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),

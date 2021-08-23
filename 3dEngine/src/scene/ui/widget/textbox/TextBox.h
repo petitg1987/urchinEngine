@@ -41,6 +41,7 @@ namespace urchin {
             //properties
             static const unsigned int LETTER_SHIFT;
             static const unsigned int LETTER_AND_CURSOR_SHIFT;
+            static const unsigned int CURSOR_WIDTH_PIXEL;
             static const float CURSOR_BLINK_SPEED;
             const std::string skinName;
             std::u32string allowedCharacters;
