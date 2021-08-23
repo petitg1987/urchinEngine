@@ -70,15 +70,18 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildLinear())) //binding 3
                 ->build();
 
+        float cursorWidthPixel = 2.0f;
+        auto cursorStartY = (float)widgetOutline.topWidth;
+        auto cursorEndY = (float)((int)getHeight() - widgetOutline.bottomWidth);
         std::vector<Point2<float>> cursorVertexCoord = {
-                Point2<float>(0.0f, (float)widgetOutline.topWidth),
-                Point2<float>(0.0f, (float)((int)getHeight() - widgetOutline.bottomWidth))
+                Point2<float>(0.0f, cursorStartY), Point2<float>(cursorWidthPixel, cursorStartY), Point2<float>(cursorWidthPixel, cursorEndY),
+                Point2<float>(0.0f, cursorStartY), Point2<float>(cursorWidthPixel, cursorEndY), Point2<float>(0.0f, cursorEndY)
         };
         std::vector<Point2<float>> cursorTextureCoord = {
-                Point2<float>(0.0, 0.0),
-                Point2<float>(1.0, 1.0)
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::LINE)
+        cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::TRIANGLE)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
                 ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest())) //binding 2

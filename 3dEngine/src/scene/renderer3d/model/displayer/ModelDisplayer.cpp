@@ -161,14 +161,14 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
+    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) { //TODO use GeometryContainer ?
         aabboxModel = std::make_unique<AABBoxModel>(model->getAABBox());
         aabboxModel->initialize(renderTarget);
         aabboxModel->onCameraProjectionUpdate(projectionMatrix);
         aabboxModel->prepareRendering(viewMatrix);
     }
 
-    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
+    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const { //TODO use GeometryContainer ?
         if (model->getMeshes()) {
             for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
                 const ConstMesh& constMesh = model->getMeshes()->getConstMeshes().getConstMesh(m);
