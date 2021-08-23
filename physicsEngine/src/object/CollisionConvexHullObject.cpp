@@ -27,12 +27,12 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> CollisionConvexHullObject::getPointsWithoutMargin() const {
-        return convexHullObjectWithoutMargin->getPoints();
+    ConvexHull3D<float>& CollisionConvexHullObject::getConvexHullWithoutMargin() const {
+        return *convexHullObjectWithoutMargin;
     }
 
-    std::vector<Point3<float>> CollisionConvexHullObject::getPointsWithMargin() const {
-        return convexHullObjectWithMargin->getPoints();
+    ConvexHull3D<float>& CollisionConvexHullObject::getConvexHullWithMargin() const {
+        return *convexHullObjectWithMargin;
     }
 
     CollisionConvexObject3D::ObjectType CollisionConvexHullObject::getObjectType() const {

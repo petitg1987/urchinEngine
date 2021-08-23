@@ -45,7 +45,6 @@
 #include <resources/geometry/cylinder/CylinderModel.h>
 #include <resources/geometry/cone/ConeModel.h>
 #include <resources/geometry/obbox/OBBoxModel.h>
-#include <resources/geometry/points/PointsModel.h>
 #include <resources/geometry/lines/LinesModel.h>
 #include <resources/geometry/triangles/TrianglesModel.h>
 #include <resources/geometry/sphere/SphereModel.h>

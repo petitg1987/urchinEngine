@@ -10,7 +10,6 @@ namespace urchin {
             color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
             polygonMode(WIREFRAME),
             lineWidth(2.0f),
-            pointSize(2.0f),
             transparencyEnabled(false),
             alwaysVisible(false) {
     }
@@ -29,12 +28,9 @@ namespace urchin {
             return;
         }
 
+        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv");
+
         std::vector<Point3<float>> vertexArray = retrieveVertexArray();
-
-        std::vector<std::size_t> variablesSize = {sizeof(pointSize)};
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &pointSize);
-        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv", std::move(shaderConstants));
-
         auto rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                 ->addData(vertexArray)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
@@ -84,11 +80,6 @@ namespace urchin {
 
     void GeometryModel::setLineWidth(float lineWidth) {  //TODO remvoe this method
         this->lineWidth = lineWidth;
-        refreshRenderer();
-    }
-
-    void GeometryModel::setPointSize(float pointSize) { //TODO remvoe this method
-        this->pointSize = pointSize;
         refreshRenderer();
     }
 

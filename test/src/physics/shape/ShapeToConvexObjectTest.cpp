@@ -70,8 +70,8 @@ void ShapeToConvexObjectTest::convexHullConversion() {
     auto convexHullObject = collisionConvexHull.toConvexObject(transform);
     auto* convexHull = dynamic_cast<CollisionConvexHullObject*>(convexHullObject.get());
 
-    AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[0], Point3<float>(0.74710678118f, -0.6905382872f, -0.04f));
-    AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[1], Point3<float>(2.08132034356f, -2.0247519016f, -0.04f));
+    AssertHelper::assertPoint3FloatEquals(convexHull->getConvexHullWithoutMargin().getPoints()[0], Point3<float>(0.74710678118f, -0.6905382872f, -0.04f));
+    AssertHelper::assertPoint3FloatEquals(convexHull->getConvexHullWithoutMargin().getPoints()[1], Point3<float>(2.08132034356f, -2.0247519016f, -0.04f));
 }
 
 void ShapeToConvexObjectTest::sphereConversion() {
