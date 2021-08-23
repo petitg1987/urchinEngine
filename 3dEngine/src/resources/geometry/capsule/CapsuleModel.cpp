@@ -42,12 +42,12 @@ namespace urchin {
             float y2 = std::sin((float)(i + 1) * angle) * radius;
 
             vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
-            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, -halfCylinderHeight)));
             vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, -halfCylinderHeight)));
 
             vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
-            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
             vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
         }
 
         //caps
