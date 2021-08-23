@@ -122,16 +122,16 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) const {
+    void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            modelsDisplayer.at(model)->drawBBox(projectionMatrix, viewMatrix);
+            modelsDisplayer.at(model)->drawBBox(geometryContainer);
         }
     }
 
-    void ModelSetDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const std::string& meshFilename) const {
+    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const std::string& meshFilename) const {
         for (const auto& model : models) {
             if (model->getConstMeshes() && model->getConstMeshes()->getMeshFilename() == meshFilename) {
-                modelsDisplayer.at(model)->drawBaseBones(projectionMatrix, viewMatrix, meshFilter.get());
+                modelsDisplayer.at(model)->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }
     }

@@ -7,6 +7,7 @@
 #include <graphic/render/target/RenderTarget.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
+#include <resources/geometry/GeometryContainer.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 
 namespace urchin {
@@ -37,7 +38,7 @@ namespace urchin {
             void loadVisibleLights(GenericRenderer&, std::size_t);
             void postUpdateVisibleLights();
 
-            void drawLightOctree(const Matrix4<float>&, const Matrix4<float>&);
+            void drawLightOctree(GeometryContainer&);
 
         private:
             void onLightEvent(Light*, NotificationType);
@@ -52,7 +53,7 @@ namespace urchin {
             //lights container
             std::vector<std::shared_ptr<Light>> sunLights;
             std::unique_ptr<OctreeManager<Light>> lightOctreeManager; //all lights except sun lights
-            std::unique_ptr<AABBoxModel> debugLightOctree;
+            std::shared_ptr<AABBoxModel> debugLightOctree;
             std::vector<Light*> lightsInFrustum;
             std::vector<Light*> visibleLights;
 

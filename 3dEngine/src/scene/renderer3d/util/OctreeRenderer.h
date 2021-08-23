@@ -9,7 +9,7 @@ namespace urchin {
 
     class OctreeRenderer {
         public:
-            template<class T> static std::unique_ptr<AABBoxModel> createOctreeModel(const OctreeManager<T>&, RenderTarget&, const Matrix4<float>&);
+            template<class T> static std::unique_ptr<AABBoxModel> createOctreeModel(const OctreeManager<T>&);
     };
 
     #include "OctreeRenderer.inl"

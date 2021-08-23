@@ -10,11 +10,9 @@ namespace urchin {
 
     class GeometryModel {
         public:
+            friend class GeometryContainer;
             GeometryModel();
             virtual ~GeometryModel() = default;
-
-            void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             const RenderTarget& getRenderTarget() const;
 
@@ -30,14 +28,17 @@ namespace urchin {
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
 
+            void setModelMatrix(const Matrix4<float>&);
+
             void prepareRendering(const Matrix4<float>&) const;
 
         protected:
+            void initialize(RenderTarget&);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
+
             void refreshRenderer();
 
-            virtual Matrix4<float> retrieveModelMatrix() const = 0;
             virtual std::vector<Point3<float>> retrieveVertexArray() const = 0;
-
             virtual ShapeType getShapeType() const = 0;
 
         private:

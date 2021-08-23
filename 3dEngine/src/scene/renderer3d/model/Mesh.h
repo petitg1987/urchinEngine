@@ -6,6 +6,7 @@
 #include <graphic/render/target/RenderTarget.h>
 #include <resources/model/ConstMesh.h>
 #include <resources/geometry/sphere/SphereModel.h>
+#include <resources/geometry/GeometryContainer.h>
 
 namespace urchin {
 
@@ -19,7 +20,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getNormals() const;
             const std::vector<Vector3<float>>& getTangents() const;
 
-            void drawBaseBones(RenderTarget&, const Matrix4<float>&, const Matrix4<float>&);
+            void drawBaseBones(GeometryContainer&, const Matrix4<float>&);
 
         private:
             const ConstMesh& constMesh;
@@ -28,7 +29,7 @@ namespace urchin {
             std::vector<Vector3<float>> normals;
             std::vector<Vector3<float>> tangents;
 
-            std::unique_ptr<SphereModel> boneSphereModels;
+            std::shared_ptr<SphereModel> boneSphereModels;
     };
 
 }

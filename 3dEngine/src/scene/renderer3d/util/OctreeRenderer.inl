@@ -1,5 +1,4 @@
-template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel(const OctreeManager<T>& octreeManager, RenderTarget& renderTarget,
-        const Matrix4<float>& projectionMatrix) {
+template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel(const OctreeManager<T>& octreeManager) {
     auto leafOctrees = octreeManager.getAllLeafOctrees();
 
     std::vector<AABBox<float>> aabboxes;
@@ -9,9 +8,5 @@ template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel
         aabboxes.push_back(leafOctree->getAABBox());
     }
 
-    auto aabboxModel = std::make_unique<AABBoxModel>(aabboxes);
-    aabboxModel->initialize(renderTarget);
-    aabboxModel->onCameraProjectionUpdate(projectionMatrix);
-
-    return aabboxModel;
+    return std::make_unique<AABBoxModel>(aabboxes);
 }

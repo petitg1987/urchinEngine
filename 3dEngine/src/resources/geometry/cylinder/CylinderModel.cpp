@@ -11,13 +11,6 @@ namespace urchin {
 
     }
 
-    Matrix4<float> CylinderModel::retrieveModelMatrix() const {
-        Matrix4<float> modelMatrix;
-        modelMatrix.buildTranslation(cylinder.getCenterOfMass().X, cylinder.getCenterOfMass().Y, cylinder.getCenterOfMass().Z);
-
-        return modelMatrix;
-    }
-
     std::vector<Point3<float>> CylinderModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(6 * sides);
@@ -43,13 +36,13 @@ namespace urchin {
             float x2 = std::cos((float)(i + 1) * angle) * radius;
             float y2 = std::sin((float)(i + 1) * angle) * radius;
 
-            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
-            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
 
-            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
-            vertexArray.emplace_back(localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
         }
 
         return vertexArray;

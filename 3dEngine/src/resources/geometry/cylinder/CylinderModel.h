@@ -11,9 +11,7 @@ namespace urchin {
             CylinderModel(Cylinder<float>, unsigned int);
 
         protected:
-            Matrix4<float> retrieveModelMatrix() const override;
             std::vector<Point3<float>> retrieveVertexArray() const override;
-
             ShapeType getShapeType() const override;
 
         private:

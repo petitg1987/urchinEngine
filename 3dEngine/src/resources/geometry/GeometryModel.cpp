@@ -15,8 +15,6 @@ namespace urchin {
 
     void GeometryModel::initialize(RenderTarget& renderTarget) {
         this->renderTarget = &renderTarget;
-
-        modelMatrix = retrieveModelMatrix();
         refreshRenderer();
 
         isInitialized = true;
@@ -92,6 +90,10 @@ namespace urchin {
     void GeometryModel::setAlwaysVisible(bool alwaysVisible) {
         this->alwaysVisible = alwaysVisible;
         refreshRenderer();
+    }
+
+    void GeometryModel::setModelMatrix(const Matrix4<float>& modelMatrix) {
+        this->modelMatrix = modelMatrix;
     }
 
     void GeometryModel::prepareRendering(const Matrix4<float>& viewMatrix) const {

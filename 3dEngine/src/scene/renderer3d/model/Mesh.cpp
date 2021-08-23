@@ -27,19 +27,21 @@ namespace urchin {
         return tangents;
     }
 
-    void Mesh::drawBaseBones(RenderTarget& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
+    void Mesh::drawBaseBones(GeometryContainer& geometryContainer, const Matrix4<float>& modelMatrix) {
+        if (boneSphereModels) {
+            geometryContainer.removeGeometry(*boneSphereModels);
+        }
+
         std::vector<Sphere<float>> sphereBonePoints;
         sphereBonePoints.reserve(constMesh.getBaseSkeleton().size());
         for (const auto& bone : constMesh.getBaseSkeleton()) {
             sphereBonePoints.emplace_back(0.05f, bone.pos);
         }
-
-        boneSphereModels = std::make_unique<SphereModel>(sphereBonePoints, 7);
+        boneSphereModels = std::make_shared<SphereModel>(sphereBonePoints, 7);
         boneSphereModels->setAlwaysVisible(true);
         boneSphereModels->setPolygonMode(PolygonMode::FILL);
-        boneSphereModels->onCameraProjectionUpdate(projectionMatrix);
-        boneSphereModels->initialize(renderTarget);
-        boneSphereModels->prepareRendering(viewMatrix);
+        boneSphereModels->setModelMatrix(modelMatrix);
+        geometryContainer.addGeometry(boneSphereModels);
     }
 
 }

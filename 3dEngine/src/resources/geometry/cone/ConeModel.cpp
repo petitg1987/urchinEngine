@@ -11,13 +11,6 @@ namespace urchin {
 
     }
 
-    Matrix4<float> ConeModel::retrieveModelMatrix() const {
-        Matrix4<float> modelMatrix;
-        modelMatrix.buildTranslation(cone.getCenterOfMass().X, cone.getCenterOfMass().Y, cone.getCenterOfMass().Z);
-
-        return modelMatrix;
-    }
-
     std::vector<Point3<float>> ConeModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(1 + (slices + 1));
@@ -50,9 +43,9 @@ namespace urchin {
             float x2 = std::cos((float)i * angle) * radius;
             float z2 = std::sin((float)i * angle) * radius;
 
-            vertexArray.push_back(topPoint);
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
-            vertexArray.push_back(localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
+            vertexArray.push_back(cone.getCenterOfMass() + topPoint);
+            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
+            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
         }
 
         return vertexArray;

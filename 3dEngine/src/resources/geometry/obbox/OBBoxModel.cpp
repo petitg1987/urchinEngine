@@ -9,10 +9,6 @@ namespace urchin {
 
     }
 
-    Matrix4<float> OBBoxModel::retrieveModelMatrix() const {
-        return {};
-    }
-
     std::vector<Point3<float>> OBBoxModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(24);

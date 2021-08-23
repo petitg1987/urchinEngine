@@ -94,7 +94,7 @@ namespace urchin {
             void createOrUpdateLightingShader();
             void updateScene(float);
             void deferredRendering(float);
-            void renderDebugSceneData();
+            void renderDebugSceneData(GeometryContainer&);
             void lightingPassRendering();
             void renderDebugFramebuffers();
             void postUpdateScene();
@@ -111,7 +111,7 @@ namespace urchin {
             std::unique_ptr<OffscreenRender> deferredRenderTarget;
             std::unique_ptr<OctreeManager<Model>> modelOctreeManager;
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
-            std::unique_ptr<AABBoxModel> debugModelOctree;
+            std::shared_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 
             std::unique_ptr<FogContainer> fogContainer;

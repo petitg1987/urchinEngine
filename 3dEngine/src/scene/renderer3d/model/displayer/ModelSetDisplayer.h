@@ -12,6 +12,7 @@
 #include <scene/renderer3d/model/displayer/ModelDisplayer.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 #include <scene/renderer3d/camera/Camera.h>
+#include <resources/geometry/GeometryContainer.h>
 
 namespace urchin {
 
@@ -38,8 +39,8 @@ namespace urchin {
 
             void prepareRendering(const Matrix4<float>&);
 
-            void drawBBox(const Matrix4<float>&, const Matrix4<float>&) const;
-            void drawBaseBones(const Matrix4<float>&, const Matrix4<float>&, const std::string&) const;
+            void drawBBox(GeometryContainer&) const;
+            void drawBaseBones(GeometryContainer&, const std::string&) const;
 
         private:
             bool isInitialized;

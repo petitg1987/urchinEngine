@@ -412,8 +412,8 @@ namespace urchin {
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
         terrainContainer->prepareRendering(*camera, dt);
         waterContainer->prepareRendering(*camera, fogContainer.get(), dt);
+        renderDebugSceneData(*geometryContainer);
         geometryContainer->prepareRendering(camera->getViewMatrix());
-        renderDebugSceneData();
         deferredRenderTarget->render();
 
         //deferred ambient occlusion
@@ -424,22 +424,25 @@ namespace urchin {
         transparentManager->updateTransparentTextures(*camera);
     }
 
-    void Renderer3d::renderDebugSceneData() {
+    void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
         if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            debugModelOctree = OctreeRenderer::createOctreeModel(*modelOctreeManager, *deferredRenderTarget, camera->getProjectionMatrix());
-            debugModelOctree->prepareRendering(camera->getViewMatrix());
+            if (debugModelOctree) {
+                geometryContainer.removeGeometry(*debugModelOctree);
+            }
+            debugModelOctree = OctreeRenderer::createOctreeModel(*modelOctreeManager);
+            geometryContainer.addGeometry(debugModelOctree);
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
-            modelSetDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
+            modelSetDisplayer->drawBBox(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/characterAnimate.urchinMesh");
+            modelSetDisplayer->drawBaseBones(geometryContainer, "models/characterAnimate.urchinMesh");
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {
-            lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+            lightManager->drawLightOctree(geometryContainer);
         }
     }
 

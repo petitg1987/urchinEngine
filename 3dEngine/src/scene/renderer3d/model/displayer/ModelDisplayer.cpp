@@ -161,20 +161,21 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBBox(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) { //TODO use GeometryContainer ?
-        aabboxModel = std::make_unique<AABBoxModel>(model->getAABBox());
-        aabboxModel->initialize(renderTarget);
-        aabboxModel->onCameraProjectionUpdate(projectionMatrix);
-        aabboxModel->prepareRendering(viewMatrix);
+    void ModelDisplayer::drawBBox(GeometryContainer& geometryContainer) {
+        if (aabboxModel) {
+            geometryContainer.removeGeometry(*aabboxModel);
+        }
+
+        aabboxModel = std::make_shared<AABBoxModel>(model->getAABBox());
+        geometryContainer.addGeometry(aabboxModel);
     }
 
-    void ModelDisplayer::drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const { //TODO use GeometryContainer ?
+    void ModelDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
         if (model->getMeshes()) {
             for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
                 const ConstMesh& constMesh = model->getMeshes()->getConstMeshes().getConstMesh(m);
                 if (!meshFilter || meshFilter->isAccepted(constMesh)) {
-                    Matrix4<float> modelViewMatrix = viewMatrix * model->getTransform().getTransformMatrix();
-                    model->getMeshes()->getMesh(m).drawBaseBones(renderTarget, projectionMatrix, modelViewMatrix);
+                    model->getMeshes()->getMesh(m).drawBaseBones(geometryContainer, model->getTransform().getTransformMatrix());
                 }
             }
         }

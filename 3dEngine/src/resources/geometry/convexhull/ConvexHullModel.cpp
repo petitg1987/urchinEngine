@@ -9,10 +9,6 @@ namespace urchin {
 
     }
 
-    Matrix4<float> ConvexHullModel::retrieveModelMatrix() const {
-        return {};
-    }
-
     std::vector<Point3<float>> ConvexHullModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(convexHull.getIndexedTriangles().size() * 3);

@@ -12,13 +12,6 @@ namespace urchin {
 
     }
 
-    Matrix4<float> CapsuleModel::retrieveModelMatrix() const {
-        Matrix4<float> modelMatrix;
-        modelMatrix.buildTranslation(capsule.getCenterOfMass().X, capsule.getCenterOfMass().Y, capsule.getCenterOfMass().Z);
-
-        return modelMatrix;
-    }
-
     std::vector<Point3<float>> CapsuleModel::retrieveVertexArray() const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(6 * sides + 2 * (6 * (slices / 2) * slices));
@@ -48,13 +41,13 @@ namespace urchin {
             float x2 = std::cos((float)(i + 1) * angle) * radius;
             float y2 = std::sin((float)(i + 1) * angle) * radius;
 
-            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
-            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, -halfCylinderHeight)));
-            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, -halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
 
-            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
-            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
-            vertexArray.push_back(localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x1, y1, halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, -halfCylinderHeight)));
+            vertexArray.push_back(capsule.getCenterOfMass() + localCylinderOrientation.rotatePoint(Point3<float>(x2, y2, halfCylinderHeight)));
         }
 
         //caps

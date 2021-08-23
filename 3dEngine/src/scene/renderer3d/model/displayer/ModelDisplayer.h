@@ -3,9 +3,10 @@
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <resources/geometry/aabbox/AABBoxModel.h>
 #include <scene/renderer3d/model/displayer/MeshFilter.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
+#include <resources/geometry/aabbox/AABBoxModel.h>
+#include <resources/geometry/GeometryContainer.h>
 
 namespace urchin {
 
@@ -25,8 +26,8 @@ namespace urchin {
 
             void prepareRendering(const Matrix4<float>&, const MeshFilter*) const;
 
-            void drawBBox(const Matrix4<float>&, const Matrix4<float>&);
-            void drawBaseBones(const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const;
+            void drawBBox(GeometryContainer&);
+            void drawBaseBones(GeometryContainer&, const MeshFilter*) const;
 
         private:
             bool isInitialized;
@@ -51,7 +52,7 @@ namespace urchin {
             std::vector<BlendFunction> blendFunctions;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
-            std::unique_ptr<AABBoxModel> aabboxModel;
+            std::shared_ptr<AABBoxModel> aabboxModel;
     };
 
 }
