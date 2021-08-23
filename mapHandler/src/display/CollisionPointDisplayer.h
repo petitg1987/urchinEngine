@@ -19,7 +19,7 @@ namespace urchin {
             PhysicsWorld& physicsWorld;
             Renderer3d* renderer3d;
 
-            std::vector<std::shared_ptr<GeometryModel>> contactPointModels;
+            std::shared_ptr<GeometryModel> contactSpheresModel;
     };
 
 }

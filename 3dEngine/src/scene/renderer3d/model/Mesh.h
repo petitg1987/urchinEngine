@@ -28,7 +28,7 @@ namespace urchin {
             std::vector<Vector3<float>> normals;
             std::vector<Vector3<float>> tangents;
 
-            std::vector<std::unique_ptr<SphereModel>> boneSphereModels;
+            std::unique_ptr<SphereModel> boneSphereModels;
     };
 
 }

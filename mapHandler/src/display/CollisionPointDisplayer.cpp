@@ -14,24 +14,28 @@ namespace urchin {
 
     void CollisionPointDisplayer::display() {
         clearDisplay();
-        
+
+        std::vector<Sphere<float>> contactSpheres;
         std::vector<ManifoldResult> manifoldResults = physicsWorld.getCollisionVisualizer().getManifoldResults();
         for (auto& manifoldResult : manifoldResults) {
             for (unsigned int j = 0; j < manifoldResult.getNumContactPoints(); ++j) {
                 ManifoldContactPoint contactPoint = manifoldResult.getManifoldContactPoint(j);
-
-                auto sphereModel = std::make_shared<SphereModel>(Sphere<float>(0.05f, contactPoint.getPointOnObject2()), 7);
-                contactPointModels.push_back(sphereModel);
-                renderer3d->getGeometryContainer().addGeometry(sphereModel);
+                contactSpheres.emplace_back(0.05f, contactPoint.getPointOnObject2());
             }
+        }
+
+        if (!contactSpheres.empty()) {
+            contactSpheresModel = std::make_shared<SphereModel>(contactSpheres, 7);
+            contactSpheresModel->setPolygonMode(PolygonMode::FILL);
+            renderer3d->getGeometryContainer().addGeometry(contactSpheresModel);
         }
     }
 
     void CollisionPointDisplayer::clearDisplay() {
-        for (const auto& contactPointModel : contactPointModels) {
-            renderer3d->getGeometryContainer().removeGeometry(*contactPointModel);
+        if (contactSpheresModel) {
+            renderer3d->getGeometryContainer().removeGeometry(*contactSpheresModel);
+            contactSpheresModel.reset();
         }
-        contactPointModels.clear();
     }
-    
+
 }

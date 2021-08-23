@@ -9,6 +9,7 @@ namespace urchin {
     class SphereModel : public GeometryModel {
         public:
             SphereModel(Sphere<float>, unsigned int);
+            SphereModel(std::vector<Sphere<float>>, unsigned int);
 
         protected:
             Matrix4<float> retrieveModelMatrix() const override;
@@ -17,7 +18,7 @@ namespace urchin {
             ShapeType getShapeType() const override;
 
         private:
-            Sphere<float> sphere;
+            std::vector<Sphere<float>> spheres;
             unsigned int slices;
     };
 

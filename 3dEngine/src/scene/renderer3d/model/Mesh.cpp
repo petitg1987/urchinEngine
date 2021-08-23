@@ -28,21 +28,18 @@ namespace urchin {
     }
 
     void Mesh::drawBaseBones(RenderTarget& renderTarget, const Matrix4<float>& projectionMatrix, const Matrix4<float>& viewMatrix) {
-        if (boneSphereModels.empty()) {
-            for (const auto& bone : constMesh.getBaseSkeleton()) {
-                auto boneSphereModel = std::make_unique<SphereModel>(Sphere<float>(0.05f, bone.pos), 7);
-                boneSphereModel->initialize(renderTarget);
-                boneSphereModel->setAlwaysVisible(true);
-                boneSphereModel->onCameraProjectionUpdate(projectionMatrix);
-                boneSphereModel->setPolygonMode(PolygonMode::FILL);
-                boneSphereModel->prepareRendering(viewMatrix);
-                boneSphereModels.push_back(std::move(boneSphereModel));
-            }
-        } else {
-            for (const auto& boneSphereModel : boneSphereModels) {
-                boneSphereModel->prepareRendering(viewMatrix);
-            }
+        std::vector<Sphere<float>> sphereBonePoints;
+        sphereBonePoints.reserve(constMesh.getBaseSkeleton().size());
+        for (const auto& bone : constMesh.getBaseSkeleton()) {
+            sphereBonePoints.emplace_back(0.05f, bone.pos);
         }
+
+        boneSphereModels = std::make_unique<SphereModel>(sphereBonePoints, 7);
+        boneSphereModels->setAlwaysVisible(true);
+        boneSphereModels->setPolygonMode(PolygonMode::FILL);
+        boneSphereModels->onCameraProjectionUpdate(projectionMatrix);
+        boneSphereModels->initialize(renderTarget);
+        boneSphereModels->prepareRendering(viewMatrix);
     }
 
 }

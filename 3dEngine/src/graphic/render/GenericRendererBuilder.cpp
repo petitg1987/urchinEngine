@@ -13,7 +13,6 @@ namespace urchin {
             depthWriteEnabled(false),
             cullFaceEnabled(true),
             pPolygonMode(PolygonMode::FILL),
-            pLineWidth(1.0f),
             scissorEnabled(false) {
 
     }

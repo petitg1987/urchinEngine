@@ -77,7 +77,6 @@ namespace urchin {
             bool depthWriteEnabled;
             bool cullFaceEnabled;
             PolygonMode pPolygonMode;
-            float pLineWidth;
             bool scissorEnabled;
             Vector2<int> scissorOffset;
             Vector2<unsigned int> scissorSize;

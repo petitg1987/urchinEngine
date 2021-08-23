@@ -217,7 +217,7 @@ namespace urchin {
         rasterization.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         rasterization.rasterizerDiscardEnable = VK_FALSE;
         rasterization.polygonMode = (polygonMode == PolygonMode::WIREFRAME) ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
-        rasterization.lineWidth = 1.0f;
+        rasterization.lineWidth = 1.0f; //do not use a value != 1.0f: less than 60% of graphic cards support it
         rasterization.cullMode = cullFaceEnabled ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE;
         rasterization.frontFace = VK_FRONT_FACE_CLOCKWISE;
         rasterization.depthClampEnable = VK_FALSE;
@@ -323,8 +323,6 @@ namespace urchin {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
         } else if (shapeType == ShapeType::LINE) {
             return VK_PRIMITIVE_TOPOLOGY_LINE_LIST;
-        } else if (shapeType == ShapeType::LINE_STRIP) {
-            return VK_PRIMITIVE_TOPOLOGY_LINE_STRIP;
         } else if (shapeType == ShapeType::POINT) {
             return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
         }
