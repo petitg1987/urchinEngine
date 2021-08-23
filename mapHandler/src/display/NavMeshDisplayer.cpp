@@ -3,9 +3,9 @@
 namespace urchin {
 
     NavMeshDisplayer::NavMeshDisplayer(AIEnvironment& aiEnvironment, Renderer3d& renderer3d) :
-        aiEnvironment(aiEnvironment),
-        renderer3d(renderer3d),
-        loadedNavMeshId(std::numeric_limits<unsigned int>::max()) {
+            aiEnvironment(aiEnvironment),
+            renderer3d(renderer3d),
+            loadedNavMeshId(std::numeric_limits<unsigned int>::max()) {
             
     }
     
@@ -81,7 +81,6 @@ namespace urchin {
     }
 
     void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, PolygonMode polygonMode, const Vector3<float>& color) {
-        model->setLineWidth(4.0f);
         model->enableTransparency();
         model->setColor(color.X, color.Y, color.Z, 0.5f);
         model->setPolygonMode(polygonMode);

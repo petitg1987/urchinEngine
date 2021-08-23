@@ -49,7 +49,9 @@ namespace urchin {
         }
 
         if (transparencyEnabled) {
-            rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
+            std::vector<BlendFunction> blendFunctions;
+            blendFunctions.resize(renderTarget->getNumColorAttachment(), BlendFunction::buildDefault());
+            rendererBuilder->enableTransparency(blendFunctions);
         }
 
         renderer = rendererBuilder->build();
@@ -80,12 +82,12 @@ namespace urchin {
         refreshRenderer();
     }
 
-    void GeometryModel::setLineWidth(float lineWidth) {
+    void GeometryModel::setLineWidth(float lineWidth) {  //TODO remvoe this method
         this->lineWidth = lineWidth;
         refreshRenderer();
     }
 
-    void GeometryModel::setPointSize(float pointSize) {
+    void GeometryModel::setPointSize(float pointSize) { //TODO remvoe this method
         this->pointSize = pointSize;
         refreshRenderer();
     }
