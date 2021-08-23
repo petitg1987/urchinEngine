@@ -25,7 +25,7 @@ namespace urchin {
         } else if (coneOrientation == ConeShape<float>::CONE_X_NEGATIVE) {
             qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT / 2.0f);
         } else if (coneOrientation == ConeShape<float>::CONE_Y_POSITIVE) {
-            qConeOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0);
+            qConeOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
         } else if (coneOrientation == ConeShape<float>::CONE_Y_NEGATIVE) {
             qConeOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT);
         } else if (coneOrientation == ConeShape<float>::CONE_Z_POSITIVE) {
@@ -40,8 +40,8 @@ namespace urchin {
         for (unsigned int i = 0; i < slices; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float z1 = std::sin((float)i * angle) * radius;
-            float x2 = std::cos((float)i * angle) * radius;
-            float z2 = std::sin((float)i * angle) * radius;
+            float x2 = std::cos((float)(i + 1) * angle) * radius;
+            float z2 = std::sin((float)(i + 1) * angle) * radius;
 
             vertexArray.push_back(cone.getCenterOfMass() + topPoint);
             vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
