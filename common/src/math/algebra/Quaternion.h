@@ -32,7 +32,8 @@ namespace urchin {
             explicit Quaternion(const Matrix3<T>&);
             Quaternion(const Vector3<T>&, T);
             Quaternion(const Vector3<T>&, RotationSequence);
-            explicit Quaternion(const Vector3<T>&, const Vector3<T> &normalizedUp = Vector3<T>(0.0, 1.0, 0.0));
+            static Quaternion<T> lookUp(const Vector3<T>&, const Vector3<T> &normalizedUp = Vector3<T>(0.0, 1.0, 0.0));
+            static Quaternion<T> rotationFromTo(const Vector3<T>&, const Vector3<T> &);
 
             void computeW();
             void setIdentity();

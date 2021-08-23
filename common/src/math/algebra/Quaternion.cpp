@@ -135,7 +135,7 @@ namespace urchin {
         W = finalQuaternion.W;
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
+    template<class T> Quaternion<T> Quaternion<T>::lookUp(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
         #ifndef NDEBUG
             assert(MathFunction::isOne((float)normalizedLookAt.length(), 0.001f));
             assert(MathFunction::isOne((float)normalizedUp.length(), 0.001f));
@@ -143,36 +143,62 @@ namespace urchin {
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
+        T x, y, z, w;
 
         if (det > 0.0) {
             T sqrtValue = std::sqrt((T)1.0 + det);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            X = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
-            Y = (normalizedLookAt.X - right.Z) * halfOverSqrt;
-            Z = (right.Y - normalizedUp.X) * halfOverSqrt;
-            W = sqrtValue * (T)0.5;
+            x = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
+            y = (normalizedLookAt.X - right.Z) * halfOverSqrt;
+            z = (right.Y - normalizedUp.X) * halfOverSqrt;
+            w = sqrtValue * (T)0.5;
         } else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z)) {
             T sqrtValue = std::sqrt((((T)1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            X = (T)0.5 * sqrtValue;
-            Y = (right.Y + normalizedUp.X) * halfOverSqrt;
-            Z = (right.Z + normalizedLookAt.X) * halfOverSqrt;
-            W = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
+            x = (T)0.5 * sqrtValue;
+            y = (right.Y + normalizedUp.X) * halfOverSqrt;
+            z = (right.Z + normalizedLookAt.X) * halfOverSqrt;
+            w = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
         } else if (normalizedUp.Y > normalizedLookAt.Z) {
             T sqrtValue = std::sqrt((((T)1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            X = (normalizedUp.X + right.Y) * halfOverSqrt;
-            Y = (T)0.5 * sqrtValue;
-            Z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
-            W = (normalizedLookAt.X - right.Z) * halfOverSqrt;
+            x = (normalizedUp.X + right.Y) * halfOverSqrt;
+            y = (T)0.5 * sqrtValue;
+            z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
+            w = (normalizedLookAt.X - right.Z) * halfOverSqrt;
         } else {
             T sqrtValue = std::sqrt((((T)1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            X = (normalizedLookAt.X + right.Z) * halfOverSqrt;
-            Y = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
-            Z = (T)0.5 * sqrtValue;
-            W = (right.Y - normalizedUp.X) * halfOverSqrt;
+            x = (normalizedLookAt.X + right.Z) * halfOverSqrt;
+            y = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
+            z = (T)0.5 * sqrtValue;
+            w = (right.Y - normalizedUp.X) * halfOverSqrt;
         }
+
+        return Quaternion<T>(x, y, z, w);
+    }
+
+    /**
+     * Quaternion representing the shortest rotation from v1 to v2
+     */
+    template<class T> Quaternion<T> Quaternion<T>::rotationFromTo(const Vector3<T>& normalizedFrom, const Vector3<T>& normalizedTo) {
+        #ifndef NDEBUG
+            assert(MathFunction::isOne((float)normalizedFrom.length(), 0.001f));
+            assert(MathFunction::isOne((float)normalizedTo.length(), 0.001f));
+        #endif
+
+        T dotVectors = normalizedFrom.dotProduct(normalizedTo);
+        if (dotVectors > 0.99999) {
+            return Quaternion<T>(0.0, 0.0, 0.0, 1.0);
+        } else if (dotVectors < -0.99999) {
+            return Quaternion<T>(normalizedFrom.perpendicularVector(), (T)MathValue::PI_FLOAT);
+        }
+
+        T v1Length = normalizedFrom.length();
+        T v2Length = normalizedTo.length();
+        Vector3<T> crossVectors = normalizedFrom.crossProduct(normalizedTo);
+
+        return Quaternion<T>(crossVectors.X, crossVectors.Y, crossVectors.Z, v1Length * v2Length + dotVectors);
     }
 
     template<class T> void Quaternion<T>::computeW() {

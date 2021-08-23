@@ -19,42 +19,68 @@ void QuaternionTest::multiplyAxisAngleQuaternions9And45() {
 }
 
 void QuaternionTest::multiplyLookAtQuaternions9And45() {
-    Quaternion<float> lookAt09DegreeQuaternion(Vector3<float>(std::asin(MathValue::PI_FLOAT / 20.0f), 0.0f, 1.0f).normalize(), Vector3<float>(0.0f, 1.0f, 0.0f));
-    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, 1.0f, 0.0f));
-    Quaternion<float> totalRotation = lookAt09DegreeQuaternion * lookAt45DegreeQuaternion;
+    Quaternion<float> lookAt09DegreeQuaternion = Quaternion<float>::lookUp(Vector3<float>(std::asin(MathValue::PI_FLOAT / 20.0f), 0.0f, 1.0f).normalize(), Vector3<float>(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookUp(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, 1.0f, 0.0f));
 
+    Quaternion<float> totalRotation = lookAt09DegreeQuaternion * lookAt45DegreeQuaternion;
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
-
     AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
     AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT / 20.0f + MathValue::PI_FLOAT / 4.0f);
 }
 
 void QuaternionTest::multiplyLookAtQuaternions180And45() {
-    Quaternion<float> lookAt180DegreeQuaternion(Vector3<float>(0.0f, 0.0f, -1.0f).normalize(), Vector3<float>(0.0f, 1.0f, 0.0f));
-    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, 1.0f, 0.0f));
-    Quaternion<float> totalRotation = lookAt180DegreeQuaternion * lookAt45DegreeQuaternion;
+    Quaternion<float> lookAt180DegreeQuaternion = Quaternion<float>::lookUp(Vector3<float>(0.0f, 0.0f, -1.0f).normalize(), Vector3<float>(0.0f, 1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookUp(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, 1.0f, 0.0f));
 
+    Quaternion<float> totalRotation = lookAt180DegreeQuaternion * lookAt45DegreeQuaternion;
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
-
     AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, 1.0f, 0.0f));
     AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT + MathValue::PI_FLOAT / 4.0f);
 }
 
 void QuaternionTest::multiplyLookAtQuaternions180And45UpDown() {
-    Quaternion<float> lookAt0DegreeQuaternion(Vector3<float>(0.0f, 0.0f, -1.0f).normalize(), Vector3<float>(0.0f, -1.0f, 0.0f));
-    Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, -1.0f, 0.0f));
-    Quaternion<float> totalRotation = lookAt0DegreeQuaternion * lookAt45DegreeQuaternion;
+    Quaternion<float> lookAt0DegreeQuaternion = Quaternion<float>::lookUp(Vector3<float>(0.0f, 0.0f, -1.0f).normalize(), Vector3<float>(0.0f, -1.0f, 0.0f));
+    Quaternion<float> lookAt45DegreeQuaternion = Quaternion<float>::lookUp(Vector3<float>(0.70710678118f, 0.0f, 0.70710678118f), Vector3<float>(0.0f, -1.0f, 0.0f));
 
+    Quaternion<float> totalRotation = lookAt0DegreeQuaternion * lookAt45DegreeQuaternion;
     Vector3<float> axis;
     float angle;
     totalRotation.toAxisAngle(axis, angle);
-
     AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0f, -1.0f, 0.0f));
     AssertHelper::assertFloatEquals(angle, MathValue::PI_FLOAT + MathValue::PI_FLOAT / 4.0f);
+}
+
+void QuaternionTest::rotationFrom90AndTo135() {
+    Vector3<float> v90Degree(1.0f, 0.0f, 0.0);
+    Vector3<float> v135Degree(0.70710678118f, 0.0, -0.70710678118f);
+
+    Quaternion<float> rotation = Quaternion<float>::rotationFromTo(v90Degree, v135Degree);
+
+    Vector3<float> result = rotation.normalize().rotateVector(v90Degree);
+    AssertHelper::assertVector3FloatEquals(result, v135Degree);
+}
+
+void QuaternionTest::rotationFrom90AndTo90() {
+    Vector3<float> v90Degree(1.0f, 0.0f, 0.0f);
+
+    Quaternion<float> rotation = Quaternion<float>::rotationFromTo(v90Degree, v90Degree);
+
+    Vector3<float> result = rotation.normalize().rotateVector(v90Degree);
+    AssertHelper::assertVector3FloatEquals(result, v90Degree);
+}
+
+void QuaternionTest::rotationFromMinus90AndTo90() {
+    Vector3<float> vMinus90Degree(-1.0f, 0.0f, 0.0f);
+    Vector3<float> v90Degree(1.0f, 0.0f, 0.0f);
+
+    Quaternion<float> rotation = Quaternion<float>::rotationFromTo(vMinus90Degree, v90Degree);
+
+    Vector3<float> result = rotation.normalize().rotateVector(vMinus90Degree);
+    AssertHelper::assertVector3FloatEquals(result, v90Degree);
 }
 
 void QuaternionTest::eulerXYZ() {
@@ -234,9 +260,14 @@ CppUnit::Test* QuaternionTest::suite() {
     auto* suite = new CppUnit::TestSuite("QuaternionTest");
 
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyAxisAngleQuaternions9And45", &QuaternionTest::multiplyAxisAngleQuaternions9And45));
+
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions9And45", &QuaternionTest::multiplyLookAtQuaternions9And45));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions180And45", &QuaternionTest::multiplyLookAtQuaternions180And45));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions180And45UpDown", &QuaternionTest::multiplyLookAtQuaternions180And45UpDown));
+
+    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFrom90AndTo135", &QuaternionTest::rotationFrom90AndTo135));
+    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFrom90AndTo90", &QuaternionTest::rotationFrom90AndTo90));
+    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFromMinus90AndTo90", &QuaternionTest::rotationFromMinus90AndTo90));
 
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYZ", &QuaternionTest::eulerXYZ));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZY", &QuaternionTest::eulerXZY));

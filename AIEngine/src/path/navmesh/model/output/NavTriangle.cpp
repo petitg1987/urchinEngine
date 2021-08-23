@@ -80,7 +80,7 @@ namespace urchin {
     }
 
     void NavTriangle::removeLinksTo(const NavPolygon& navPolygon) {
-        links.erase(std::remove_if (links.begin(), links.end(),[&navPolygon](const auto& link){
+        links.erase(std::remove_if (links.begin(), links.end(), [&navPolygon](const auto& link){
             return link->getTargetTriangle()->getNavPolygon().get() == &navPolygon;
         }), links.end());
     }

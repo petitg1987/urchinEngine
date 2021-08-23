@@ -54,6 +54,17 @@ namespace urchin {
                           X * v.Y - Y * v.X);
     }
 
+    /**
+     * @return Perpendicular vector. There are an infinite number of possibilities and this method return one of them.
+     */
+    template<class T> Vector3<T> Vector3<T>::perpendicularVector() const {
+        Vector3<T> perpendicularVector = this->crossProduct(Vector3<T>(1.0, 0.0, 0.0));
+        if (perpendicularVector.squareLength() <= std::numeric_limits<T>::epsilon()) {
+            perpendicularVector = this->crossProduct(Vector3<T>(0.0, 1.0, 0.0));
+        }
+        return perpendicularVector;
+    }
+
     template<class T> Vector3<T> Vector3<T>::truncate(T maxLength) const {
         T vLength = length();
         if (vLength < maxLength) {

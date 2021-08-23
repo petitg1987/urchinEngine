@@ -24,6 +24,7 @@ namespace urchin {
             T squareLength() const;
             T dotProduct(const Vector3<T>&) const;
             Vector3<T> crossProduct(const Vector3<T>&) const;
+            Vector3<T> perpendicularVector() const;
             Vector3<T> truncate(T) const;
             Vector2<T> xy() const;
             Vector2<T> xz() const;

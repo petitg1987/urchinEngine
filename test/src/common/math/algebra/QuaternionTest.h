@@ -9,9 +9,14 @@ class QuaternionTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void multiplyAxisAngleQuaternions9And45();
+
         void multiplyLookAtQuaternions9And45();
         void multiplyLookAtQuaternions180And45();
         void multiplyLookAtQuaternions180And45UpDown();
+
+        void rotationFrom90AndTo135();
+        void rotationFrom90AndTo90();
+        void rotationFromMinus90AndTo90();
 
         void eulerXYZ();
         void eulerXZY();

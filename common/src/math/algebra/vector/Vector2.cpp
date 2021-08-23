@@ -47,6 +47,13 @@ namespace urchin {
         return (X * v.Y - Y * v.X);
     }
 
+    /**
+     * @return Perpendicular vector. There are two possibilities and this method return one of them.
+     */
+    template<class T> Vector2<T> Vector2<T>::perpendicularVector() const {
+        return Vector2<T>(-Y, X); //second possibility: Vector2<T>(Y, -X)
+    }
+
     template<class T> Vector2<T> Vector2<T>::truncate(T maxLength) const {
         T vLength = length();
         if (vLength < maxLength) {
