@@ -38,7 +38,7 @@ namespace urchin {
             AmbientOcclusionManager();
             ~AmbientOcclusionManager();
 
-            void onSizeUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
+            void onTextureUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onCameraProjectionUpdate(const Camera&);
 
             void updateConfig(const Config&);

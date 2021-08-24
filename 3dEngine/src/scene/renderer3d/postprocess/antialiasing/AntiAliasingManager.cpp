@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    void AntiAliasingManager::onSizeUpdate(const std::shared_ptr<Texture>& texture) {
+    void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {
         this->invSceneSize = Point2<float>(1.0f / (float)texture->getWidth(), 1.0f / (float)texture->getHeight());
         this->texture = texture;
 

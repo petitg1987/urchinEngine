@@ -22,7 +22,7 @@ namespace urchin {
 
             explicit AntiAliasingManager(RenderTarget&);
 
-            void onSizeUpdate(const std::shared_ptr<Texture>&);
+            void onTextureUpdate(const std::shared_ptr<Texture>&);
 
             void updateConfig(const Config&);
             const Config& getConfig() const;

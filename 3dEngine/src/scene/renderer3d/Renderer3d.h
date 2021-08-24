@@ -9,6 +9,7 @@
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h>
+#include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
 #include <scene/renderer3d/postprocess/ambientocclusion/AmbientOcclusionManager.h>
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
@@ -26,6 +27,7 @@
 #include <graphic/render/target/OffscreenRender.h>
 #include <graphic/texture/Texture.h>
 #include <texture/render/TextureRenderer.h>
+
 
 namespace urchin {
 
@@ -126,7 +128,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
-            //lighting pass rendering
+            //lighting pass rendering + post process
             std::unique_ptr<OffscreenRender> offscreenLightingRenderTarget;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;
@@ -138,6 +140,7 @@ namespace urchin {
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } visualOption;
+            std::unique_ptr<BloomEffectApplier> bloomEffectApplier;
             std::unique_ptr<AntiAliasingManager> antiAliasingManager;
             bool isAntiAliasingActivated;
 

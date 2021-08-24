@@ -49,6 +49,7 @@ namespace urchin {
             offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
+            bloomEffectApplier(std::make_unique<BloomEffectApplier>()),
             antiAliasingManager(std::make_unique<AntiAliasingManager>(finalRenderTarget)),
             isAntiAliasingActivated(true),
 
@@ -271,6 +272,7 @@ namespace urchin {
         updateScene(dt);
         deferredRendering(dt);
         lightingPassRendering();
+        bloomEffectApplier->applyBloom();
         if (isAntiAliasingActivated) {
             antiAliasingManager->applyAntiAliasing();
         }
@@ -289,15 +291,10 @@ namespace urchin {
         deferredRenderTarget->initialize();
 
         //lighting pass rendering
-        RenderTarget* lightingRenderTarget = &finalRenderTarget;
-        if (isAntiAliasingActivated) {
-            lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-            offscreenLightingRenderTarget->resetTextures();
-            offscreenLightingRenderTarget->addTexture(lightingPassTexture);
-            offscreenLightingRenderTarget->initialize();
-
-            lightingRenderTarget = offscreenLightingRenderTarget.get();
-        }
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        offscreenLightingRenderTarget->resetTextures();
+        offscreenLightingRenderTarget->addTexture(lightingPassTexture);
+        offscreenLightingRenderTarget->initialize();
 
         createOrUpdateLightingShader();
 
@@ -310,7 +307,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
-        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *lightingRenderTarget, *lightingShader, ShapeType::TRIANGLE)
+        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *offscreenLightingRenderTarget, *lightingShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
@@ -333,11 +330,11 @@ namespace urchin {
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 12
                 ->build();
 
-        ambientOcclusionManager->onSizeUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
-        transparentManager->onSizeUpdate(deferredRenderTarget->getDepthTexture());
-
+        ambientOcclusionManager->onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
+        transparentManager->onTextureUpdate(deferredRenderTarget->getDepthTexture());
+        bloomEffectApplier->onTextureUpdate(lightingPassTexture, isAntiAliasingActivated ? std::make_optional(&finalRenderTarget) : std::nullopt);
         if (isAntiAliasingActivated) {
-            antiAliasingManager->onSizeUpdate(lightingPassTexture);
+            antiAliasingManager->onTextureUpdate(bloomEffectApplier->getBloomedTexture());
         }
 
         refreshDebugFramebuffers = true;
@@ -406,7 +403,7 @@ namespace urchin {
             shadowManager->updateShadowMaps();
         }
 
-        //deferred scene (depth, color, normal, ambient)
+        //deferred scene (depth, color, normal, ambient...)
         deferredRenderTarget->disableAllRenderers();
         skyContainer->prepareRendering(camera->getViewMatrix(), camera->getPosition());
         modelSetDisplayer->prepareRendering(camera->getViewMatrix());
@@ -478,11 +475,7 @@ namespace urchin {
             shadowManager->loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        if (isAntiAliasingActivated) {
-            offscreenLightingRenderTarget->render();
-        } else {
-            lightingRenderer->enableRenderer();
-        }
+        offscreenLightingRenderTarget->render();
     }
 
     void Renderer3d::renderDebugFramebuffers() {
