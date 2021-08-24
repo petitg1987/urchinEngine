@@ -199,7 +199,11 @@ namespace urchin {
         return textureImageView;
     }
 
-    VkFormat Texture::getVkFormat() const { //should only return format with a coverage of > 95%: http://vulkan.gpuinfo.org/listformats.php
+    VkFormat Texture::getVkFormat() const {
+        //This method should only return format with a good coverage/support:
+        // - For VK_IMAGE_TILING_OPTIMAL (most of the images): http://vulkan.gpuinfo.org/listoptimaltilingformats.php
+        // - For VK_IMAGE_TILING_LINEAR (e.g. screenshot): http://vulkan.gpuinfo.org/listlineartilingformats.php
+        //Note: the columns to look at depends on ImageHelper::usageFlagToFeatureFlag (mainly: COLOR_ATTACHMENT & TRANSFER_DST)
         if (format == TextureFormat::DEPTH_32_FLOAT) {
             return VK_FORMAT_D32_SFLOAT;
         } else if (format == TextureFormat::GRAYSCALE_8_INT) {
@@ -350,7 +354,7 @@ namespace urchin {
         vkGetPhysicalDeviceFormatProperties(GraphicService::instance().getDevices().getPhysicalDevice(), imageFormat, &formatProperties);
 
         if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
-            throw std::runtime_error("Texture image format does not support linear blitting");
+            throw std::runtime_error("Texture image format does not support linear blitting: " + std::to_string(imageFormat));
         }
 
         VkCommandBuffer commandBuffer = CommandBufferHelper::beginSingleTimeCommands();
