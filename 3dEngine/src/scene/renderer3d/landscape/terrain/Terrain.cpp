@@ -99,7 +99,7 @@ namespace urchin {
             terrainRenderer->updateUniformTextureReader(maskMaterialTexUnit, TextureReader::build(materials->getMaskTexture(), TextureParam::buildLinear()));
             for (auto& material : materials->getMaterials()) {
                 if (material) {
-                    TextureParam::ReadMode textureReadMode = material->isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+                    TextureParam::ReadMode textureReadMode = material->isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                     TextureParam textureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
                     terrainRenderer->updateUniformTextureReader(materialTexUnitStart++, TextureReader::build(material->getDiffuseTexture(), std::move(textureParam)));
                 } else {

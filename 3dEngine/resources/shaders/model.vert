@@ -10,6 +10,7 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 } postioningData;
 layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
+    float emissiveFactor;
     float ambientFactor;
 } meshData;
 

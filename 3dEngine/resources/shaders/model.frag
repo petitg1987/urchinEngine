@@ -3,6 +3,7 @@
 
 layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
+    float emissiveFactor;
     float ambientFactor;
 } meshData;
 layout(binding = 5) uniform sampler2D diffuseTex;
@@ -19,7 +20,7 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse
-    fragColor = vec4(texture(diffuseTex, texCoordinates).rgb, 1.0);
+    fragColor = vec4(texture(diffuseTex, texCoordinates).rgb * meshData.emissiveFactor, 1.0);
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));

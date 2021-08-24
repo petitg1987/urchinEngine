@@ -2,8 +2,8 @@
   <dictionary name="greg">
     <words>
       <w>aabbox</w>
-      <w>ambience</w>
       <w>displayer</w>
+      <w>emissive</w>
       <w>grayscale</w>
       <w>heightfield</w>
       <w>lerp</w>

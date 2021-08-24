@@ -91,7 +91,7 @@ namespace urchin {
                     meshRendererBuilder->enableTransparency(blendFunctions);
                 }
 
-                auto textureReadMode = constMesh->getMaterial().isRepeatableTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+                auto textureReadMode = constMesh->getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                 if (displayMode == DEFAULT_MODE) {
                     TextureParam diffuseTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
                     TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
@@ -150,6 +150,7 @@ namespace urchin {
 
             if (displayMode == DEFAULT_MODE) {
                 meshData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
+                meshData.emissiveFactor = constMesh.getMaterial().getEmissiveFactor();
                 meshData.ambientFactor = constMesh.getMaterial().getAmbientFactor();
                 meshRenderer->updateUniformData(2, &meshData);
             }

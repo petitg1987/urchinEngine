@@ -2,26 +2,25 @@
 
 namespace urchin {
 
-    Material::Material(std::shared_ptr<Texture> diffuseTexture, std::shared_ptr<Texture> normalTexture, bool hasTransparency,
-                       bool repeatableTextures, float ambientFactor) :
+    Material::Material(bool repeatTextures, std::shared_ptr<Texture> diffuseTexture, std::shared_ptr<Texture> normalTexture,
+                       bool hasTransparency, float emissiveFactor, float ambientFactor) :
+            repeatTextures(repeatTextures),
             diffuseTexture(std::move(diffuseTexture)),
             normalTexture(std::move(normalTexture)),
             bHasTransparency(hasTransparency),
-            repeatableTextures(repeatableTextures),
+            emissiveFactor(emissiveFactor),
             ambientFactor(ambientFactor) {
-        buildDefaultTextures();
+        if (!this->diffuseTexture) {
+            throw std::runtime_error("Diffuse texture is missing on a material");
+        }
+        if (!this->normalTexture) {
+            Image defaultNormalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({127, 127, 255, 255}), false);
+            this->normalTexture = defaultNormalImage.createTexture(false);
+        }
     }
 
-    void Material::buildDefaultTextures() {
-        if (!diffuseTexture) {
-            Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 20, 147, 255}), false);
-            diffuseTexture = defaultDiffuseImage.createTexture(false);
-        }
-
-        if (!normalTexture) {
-            Image defaultNormalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({127, 127, 255, 255}), false);
-            normalTexture = defaultNormalImage.createTexture(false);
-        }
+    bool Material::isRepeatTextures() const {
+        return repeatTextures;
     }
 
     const std::shared_ptr<Texture>& Material::getDiffuseTexture() const {
@@ -36,8 +35,8 @@ namespace urchin {
         return bHasTransparency;
     }
 
-    bool Material::isRepeatableTextures() const {
-        return repeatableTextures;
+    float Material::getEmissiveFactor() const {
+        return emissiveFactor;
     }
 
     float Material::getAmbientFactor() const {

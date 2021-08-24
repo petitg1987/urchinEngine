@@ -26,7 +26,7 @@ namespace urchin {
             typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
             unsigned long osVersion;
             OSVERSIONINFOEXW osInfo;
-            auto* RtlGetVersion = reinterpret_cast<fRtlGetVersion *>(GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion"));
+            auto* RtlGetVersion = reinterpret_cast<fRtlGetVersion*>(GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion"));
             if (RtlGetVersion != nullptr) {
                 osInfo.dwOSVersionInfoSize = sizeof(osInfo);
                 RtlGetVersion(&osInfo);
