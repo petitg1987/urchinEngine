@@ -10,6 +10,8 @@ namespace urchin {
 
         RG_32_FLOAT,
 
+        B10G11R11_FLOAT,
+
         RGBA_8_INT,
         RGBA_16_FLOAT,
         RGBA_32_FLOAT

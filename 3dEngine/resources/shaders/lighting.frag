@@ -50,7 +50,7 @@ layout(std140, set = 0, binding = 5) uniform Fog {
 
 //deferred textures
 layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 7) uniform sampler2D colorTex; //diffuse RGB (3 * 8 bits) + 8 bits unused
+layout(binding = 7) uniform sampler2D colorTex; //diffuse B10G11R11 (32 bits)
 layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor
 layout(binding = 9) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
 layout(binding = 10) uniform sampler2D transparencyAccumulationTex; //transparency accumulation (4 * 16 bits)
