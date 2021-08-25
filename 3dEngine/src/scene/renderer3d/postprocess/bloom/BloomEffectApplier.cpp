@@ -8,8 +8,9 @@ namespace urchin {
     BloomEffectApplier::BloomEffectApplier() :
             sceneWidth(0),
             sceneHeight(0),
-            finalRenderTarget(nullptr) {
-
+            finalRenderTarget(nullptr),
+            bloomTweak({}) {
+        bloomTweak.threshold = ConfigService::instance().getFloatValue("bloom.threshold");
     }
 
     BloomEffectApplier::~BloomEffectApplier() {
@@ -50,7 +51,8 @@ namespace urchin {
         preFilterRenderer = GenericRendererBuilder::create("bloom - prefilter ", *finalRenderTarget, *bloomPreFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(lightingPassTexture, TextureParam::buildNearest())) //binding 0
+                ->addUniformData(sizeof(bloomTweak), &bloomTweak) //binding 0
+                ->addUniformTextureReader(TextureReader::build(lightingPassTexture, TextureParam::buildNearest())) //binding 1
                 ->build();
 
         //TODO combine: ACES tone mapping ?

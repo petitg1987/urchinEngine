@@ -30,6 +30,9 @@ namespace urchin {
             std::unique_ptr<OffscreenRender> offscreenBloomRenderTarget;
 
             std::unique_ptr<Shader> bloomPreFilterShader;
+            struct {
+                alignas(4) float threshold;
+            } bloomTweak;
             std::unique_ptr<GenericRenderer> preFilterRenderer;
     };
 
