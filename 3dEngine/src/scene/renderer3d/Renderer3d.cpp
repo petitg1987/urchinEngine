@@ -291,7 +291,7 @@ namespace urchin {
         deferredRenderTarget->initialize();
 
         //lighting pass rendering
-        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
         offscreenLightingRenderTarget->resetTextures();
         offscreenLightingRenderTarget->addTexture(lightingPassTexture);
         offscreenLightingRenderTarget->initialize();
@@ -332,7 +332,7 @@ namespace urchin {
 
         ambientOcclusionManager->onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
         transparentManager->onTextureUpdate(deferredRenderTarget->getDepthTexture());
-        bloomEffectApplier->onTextureUpdate(lightingPassTexture, isAntiAliasingActivated ? std::make_optional(&finalRenderTarget) : std::nullopt);
+        bloomEffectApplier->onTextureUpdate(lightingPassTexture, isAntiAliasingActivated ? std::nullopt : std::make_optional(&finalRenderTarget));
         if (isAntiAliasingActivated) {
             antiAliasingManager->onTextureUpdate(bloomEffectApplier->getBloomedTexture());
         }
