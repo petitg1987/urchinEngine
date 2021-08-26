@@ -22,7 +22,7 @@ namespace urchin {
 
     RenderTarget::~RenderTarget() {
         //Renderers must be destroyed before its render target.
-        //Indeed, the renderers destructor will fail to unlink render target and the renderer.
+        //Indeed, the renderers' destructor will fail to unlink render target and the renderer.
         assert(renderers.empty());
     }
 
@@ -172,15 +172,22 @@ namespace urchin {
         return depthAttachment;
     }
 
-    VkAttachmentDescription RenderTarget::buildAttachment(VkFormat format, bool clearColorOnLoad, VkImageLayout finalLayout) {
+    VkAttachmentDescription RenderTarget::buildAttachment(VkFormat format, bool clearOnLoad, bool loadContent, VkImageLayout finalLayout) const {
+        assert(!clearOnLoad || !loadContent);
         VkAttachmentDescription colorAttachment{};
         colorAttachment.format = format;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        colorAttachment.loadOp = clearColorOnLoad ? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        if (clearOnLoad) {
+            colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        } else if (loadContent) {
+            colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
+        } else {
+            colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        }
         colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        colorAttachment.initialLayout = loadContent ? finalLayout : VK_IMAGE_LAYOUT_UNDEFINED;
         colorAttachment.finalLayout = finalLayout;
         return colorAttachment;
     }
@@ -253,7 +260,7 @@ namespace urchin {
     void RenderTarget::addNewFrameBuffer(const std::vector<VkImageView>& attachments) {
         VkFramebufferCreateInfo framebufferInfo{};
         framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-        framebufferInfo.renderPass = renderPass; //render pass must have same number and type of attachments as the framebufferInfo
+        framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo
         framebufferInfo.attachmentCount = (uint32_t)attachments.size();
         framebufferInfo.pAttachments = attachments.data();
         framebufferInfo.width = getWidth();

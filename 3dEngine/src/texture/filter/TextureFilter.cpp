@@ -33,7 +33,7 @@ namespace urchin {
         }
 
         offscreenRenderTarget = std::make_unique<OffscreenRender>(name, RenderTarget::NO_DEPTH_ATTACHMENT);
-        offscreenRenderTarget->addTexture(texture);
+        offscreenRenderTarget->addOutputTexture(texture);
         offscreenRenderTarget->initialize();
     }
 

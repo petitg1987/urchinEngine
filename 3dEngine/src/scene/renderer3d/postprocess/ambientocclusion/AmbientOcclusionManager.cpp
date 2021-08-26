@@ -70,11 +70,11 @@ namespace urchin {
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, textureFormat, nullptr);
 
         if (offscreenRenderTarget) {
-            offscreenRenderTarget->resetTextures();
+            offscreenRenderTarget->resetOutputTextures();
         } else {
             offscreenRenderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
         }
-        offscreenRenderTarget->addTexture(ambientOcclusionTexture);
+        offscreenRenderTarget->addOutputTexture(ambientOcclusionTexture);
         offscreenRenderTarget->initialize();
 
         if (config.isBlurActivated) {

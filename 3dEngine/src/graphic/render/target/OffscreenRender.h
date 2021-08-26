@@ -7,13 +7,25 @@
 
 namespace urchin {
 
+    enum LoadType {
+        NO_LOAD, //texture content is not loaded (default)
+        LOAD_CLEAR, //texture content is cleared at pipeline start
+        LOAD_CONTENT //texture content is loaded at pipeline start. Use case: blending must be applied on an existing texture having content
+    };
+
+    struct OutputTexture {
+        std::shared_ptr<Texture> texture;
+        LoadType loadOperation;
+        std::optional<Vector4<float>> clearColor;
+    };
+
     class OffscreenRender : public RenderTarget {
         public:
             explicit OffscreenRender(std::string, DepthAttachmentType);
             ~OffscreenRender() override;
 
-            void addTexture(const std::shared_ptr<Texture>&);
-            void resetTextures();
+            void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, std::optional<Vector4<float>> = std::nullopt);
+            void resetOutputTextures();
 
             void initialize() override;
             void cleanup() override;
@@ -39,7 +51,7 @@ namespace urchin {
             void waitCommandBuffersIdle() const override;
 
             std::vector<VkClearValue> clearValues;
-            std::vector<std::shared_ptr<Texture>> textures;
+            std::vector<OutputTexture> outputTextures;
 
             VkSemaphore queueSubmitSemaphore;
             bool queueSubmitSemaphoreUsable;

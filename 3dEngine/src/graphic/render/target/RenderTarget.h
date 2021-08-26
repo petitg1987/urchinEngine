@@ -55,7 +55,7 @@ namespace urchin {
             bool hasRenderer();
 
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
-            static VkAttachmentDescription buildAttachment(VkFormat, bool, VkImageLayout);
+            VkAttachmentDescription buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
             void createRenderPass(const VkAttachmentReference&, const std::vector<VkAttachmentReference>&, const std::vector<VkAttachmentDescription>&);
             void destroyRenderPass();
             void createDepthResources();

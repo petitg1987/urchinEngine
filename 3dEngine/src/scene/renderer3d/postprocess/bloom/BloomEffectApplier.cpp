@@ -32,8 +32,8 @@ namespace urchin {
         } else {
             outputLdrTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
             outputOffscreenRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", RenderTarget::NO_DEPTH_ATTACHMENT);
-            outputOffscreenRenderTarget.value()->resetTextures();
-            outputOffscreenRenderTarget.value()->addTexture(outputLdrTexture.value());
+            outputOffscreenRenderTarget.value()->resetOutputTextures();
+            outputOffscreenRenderTarget.value()->addOutputTexture(outputLdrTexture.value());
             outputOffscreenRenderTarget.value()->initialize();
 
             this->outputRenderTarget = outputOffscreenRenderTarget.value().get();
@@ -83,8 +83,8 @@ namespace urchin {
         //pre-filter
         preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv");
         preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
-        preFilterRenderTarget->resetTextures();
-        preFilterRenderTarget->addTexture(bloomStepTextures[0]);
+        preFilterRenderTarget->resetOutputTextures();
+        preFilterRenderTarget->addOutputTexture(bloomStepTextures[0]);
         preFilterRenderTarget->initialize();
 
         preFilterRenderer = GenericRendererBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, ShapeType::TRIANGLE)
@@ -95,11 +95,12 @@ namespace urchin {
                 ->build();
 
         //down sample
+        //TODO down/up sample: change texture read from bilinear to nearest ? (depend of blur method)
         downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv");
         for(std::size_t texIndex = 1, i = 0; texIndex < bloomStepTextures.size(); ++texIndex, ++i) {
             auto downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
-            downSampleRenderTarget->resetTextures();
-            downSampleRenderTarget->addTexture(bloomStepTextures[texIndex]);
+            downSampleRenderTarget->resetOutputTextures();
+            downSampleRenderTarget->addOutputTexture(bloomStepTextures[texIndex]);
             downSampleRenderTarget->initialize();
 
             downSampleRenderers.push_back(GenericRendererBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, ShapeType::TRIANGLE)
@@ -111,23 +112,25 @@ namespace urchin {
         }
 
         //up sample
+        //TODO up sample: possible to avoid to write in the fullscreen tex (bloomStepTextures[0]) ?
         upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
-        for(std::size_t texIndex = bloomStepTextures.size() - 1, i = 0; texIndex > 0; --texIndex, ++i) { //TODO can avoid write in fullscreen tex bloomStepTextures[0] ?
+        for(std::size_t texIndex = bloomStepTextures.size() - 1, i = 0; texIndex > 0; --texIndex, ++i) {
             auto upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
-            upSampleRenderTarget->resetTextures();
-            upSampleRenderTarget->addTexture(bloomStepTextures[texIndex - 1]);
+            upSampleRenderTarget->resetOutputTextures();
+            upSampleRenderTarget->addOutputTexture(bloomStepTextures[texIndex - 1], LoadType::LOAD_CONTENT);
             upSampleRenderTarget->initialize();
 
             upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample " + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
                     ->addUniformTextureReader(TextureReader::build(bloomStepTextures[texIndex], TextureParam::buildLinear())) //binding 0
-                    ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)}) //TODO check if it works
+                    ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)})
                     ->build());
             upSampleRenderTargets.push_back(std::move(upSampleRenderTarget));
         }
 
-        //combine //TODO check ACES tone mapping
+        //combine
+        //TODO combine: check to use ACES tone mapping
         combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
         combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)

@@ -285,15 +285,15 @@ namespace urchin {
         //deferred rendering
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        deferredRenderTarget->resetTextures();
-        deferredRenderTarget->addTexture(diffuseTexture);
-        deferredRenderTarget->addTexture(normalAndAmbientTexture);
+        deferredRenderTarget->resetOutputTextures();
+        deferredRenderTarget->addOutputTexture(diffuseTexture);
+        deferredRenderTarget->addOutputTexture(normalAndAmbientTexture);
         deferredRenderTarget->initialize();
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
-        offscreenLightingRenderTarget->resetTextures();
-        offscreenLightingRenderTarget->addTexture(lightingPassTexture);
+        offscreenLightingRenderTarget->resetOutputTextures();
+        offscreenLightingRenderTarget->addOutputTexture(lightingPassTexture);
         offscreenLightingRenderTarget->initialize();
 
         createOrUpdateLightingShader();

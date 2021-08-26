@@ -27,7 +27,6 @@ namespace urchin {
             static std::shared_ptr<Texture> buildEmptyArrayRg();
 
             void enableMipmap();
-            void enableClearColor(const Vector4<float>&);
             void enableTextureWriting();
 
             void initialize();
@@ -37,10 +36,8 @@ namespace urchin {
             unsigned int getHeight() const;
             unsigned int getLayer() const;
             bool hasMipmap() const;
-            bool hasClearColorEnabled() const;
 
             uint32_t getMipLevels() const;
-            const Vector4<float>& getClearColor() const;
             bool isWritableTexture() const;
             void setLastTextureWriter(OffscreenRender*);
             OffscreenRender* getLastTextureWriter() const;
@@ -67,8 +64,6 @@ namespace urchin {
             bool isInitialized;
 
             uint32_t mipLevels;
-            bool clearColorEnabled;
-            Vector4<float> clearColor;
             bool writableTexture;
             OffscreenRender* lastTextureWriter;
 

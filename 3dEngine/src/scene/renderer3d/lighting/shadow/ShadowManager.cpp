@@ -151,13 +151,12 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light& light) {
+        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
         auto shadowMapTexture = Texture::buildArray(config.shadowMapResolution, config.shadowMapResolution, config.nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
         //The shadow map must be cleared with the farthest depth value (1.0f).
         //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
-        shadowMapTexture->enableClearColor(Vector4<float>(1.0f, 1.0f, -1.0f, -1.0f));
-
-        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
-        shadowMapRenderTarget->addTexture(shadowMapTexture);
+        Vector4<float> clearShadowMapColor(1.0f, 1.0f, -1.0f, -1.0f);
+        shadowMapRenderTarget->addOutputTexture(shadowMapTexture, LoadType::LOAD_CLEAR, std::make_optional(clearShadowMapColor));
 
         auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOctreeManager, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
         for (unsigned int i = 0; i < config.nbShadowMaps; ++i) {

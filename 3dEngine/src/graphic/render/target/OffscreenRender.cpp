@@ -20,24 +20,35 @@ namespace urchin {
             Logger::instance().logWarning("Offscreen render not cleanup before destruction: " + getName());
             OffscreenRender::cleanup();
         }
-        resetTextures();
+        resetOutputTextures();
     }
 
-    void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
+    void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor) {
         assert(!isInitialized);
 
-        texture->enableTextureWriting();
-        texture->initialize();
-        textures.push_back(texture);
+        if (loadType == LoadType::LOAD_CONTENT) {
+            if (!texture->isWritableTexture()) {
+                throw std::runtime_error("Texture content should already been written on the texture to load it");
+            }
+        } else {
+            if (loadType == LoadType::LOAD_CLEAR && !clearColor.has_value()) {
+                throw std::runtime_error("Texture clear color is missing");
+            }
+
+            texture->enableTextureWriting();
+            texture->initialize();
+        }
+
+        outputTextures.emplace_back(OutputTexture{texture, loadType, clearColor});
     }
 
-    void OffscreenRender::resetTextures() {
-        for (auto& texture : textures) {
-            if (texture->getLastTextureWriter() == this) {
-                texture->setLastTextureWriter(nullptr);
+    void OffscreenRender::resetOutputTextures() {
+        for (auto& outputTexture : outputTextures) {
+            if (outputTexture.texture->getLastTextureWriter() == this) {
+                outputTexture.texture->setLastTextureWriter(nullptr);
             }
         }
-        textures.clear();
+        outputTextures.clear();
         if (depthTexture && depthTexture->getLastTextureWriter() == this) {
             depthTexture->setLastTextureWriter(nullptr);
         }
@@ -49,7 +60,7 @@ namespace urchin {
 
     void OffscreenRender::initialize() {
         assert(!isInitialized);
-        assert(!textures.empty());
+        assert(!outputTextures.empty());
 
         initializeClearValues();
         createRenderPass();
@@ -81,19 +92,19 @@ namespace urchin {
     }
 
     unsigned int OffscreenRender::getWidth() const {
-        return textures[0]->getWidth();
+        return outputTextures[0].texture->getWidth();
     }
 
     unsigned int OffscreenRender::getHeight() const {
-        return textures[0]->getHeight();
+        return outputTextures[0].texture->getHeight();
     }
 
     unsigned int OffscreenRender::getLayer() const {
-        return textures[0]->getLayer();
+        return outputTextures[0].texture->getLayer();
     }
 
     std::size_t OffscreenRender::getNumColorAttachment() const {
-        return textures.size();
+        return outputTextures.size();
     }
 
     std::size_t OffscreenRender::getNumFramebuffer() const {
@@ -107,10 +118,11 @@ namespace urchin {
             clearValues.emplace_back(clearDepth);
         }
 
-        for (auto& texture : textures) {
-            Vector4<float> colorValue = texture->getClearColor();
+        for (auto& outputTexture : outputTextures) {
+            Vector4<float> clearColorValue = outputTexture.clearColor.has_value() ?
+                    outputTexture.clearColor.value() : Vector4<float>(1.0f, 0.5f, 0.0f, 1.0) /*orange: should never be used */;
             VkClearValue clearColor{};
-            clearColor.color = {{colorValue[0], colorValue[1], colorValue[2], colorValue[3]}};
+            clearColor.color = {{clearColorValue[0], clearColorValue[1], clearColorValue[2], clearColorValue[3]}};
             clearValues.emplace_back(clearColor);
         }
     }
@@ -127,8 +139,10 @@ namespace urchin {
         }
 
         std::vector<VkAttachmentReference> colorAttachmentRefs;
-        for (const auto& texture : textures) {
-            attachments.emplace_back(buildAttachment(texture->getVkFormat(), texture->hasClearColorEnabled(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+        for (const auto& outputTexture : outputTextures) {
+            bool clearOnLoad = outputTexture.clearColor.has_value();
+            bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
+            attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
             VkAttachmentReference colorAttachmentRef{};
             colorAttachmentRef.attachment = attachmentIndex++;
             colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
@@ -143,8 +157,8 @@ namespace urchin {
         if (hasDepthAttachment()) {
             attachments.emplace_back(depthTexture->getImageView());
         }
-        for (const auto& texture : textures) {
-            attachments.emplace_back(texture->getImageView());
+        for (const auto& outputTexture : outputTextures) {
+            attachments.emplace_back(outputTexture.texture->getImageView());
         }
 
         RenderTarget::addNewFrameBuffer(attachments);
@@ -217,8 +231,8 @@ namespace urchin {
     }
 
     void OffscreenRender::updateTexturesWriter() {
-        for (auto& texture : textures) {
-            texture->setLastTextureWriter(this);
+        for (auto& outputTexture : outputTextures) {
+            outputTexture.texture->setLastTextureWriter(this);
         }
 
         if (depthTexture && depthTexture->isWritableTexture()) {

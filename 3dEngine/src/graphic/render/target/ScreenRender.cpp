@@ -148,7 +148,7 @@ namespace urchin {
         }
 
         std::vector<VkAttachmentReference> colorAttachmentRefs;
-        attachments.emplace_back(buildAttachment(swapChainHandler.getImageFormat(), false, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR));
+        attachments.emplace_back(buildAttachment(swapChainHandler.getImageFormat(), false, false, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR));
         VkAttachmentReference colorAttachmentRef{};
         colorAttachmentRef.attachment = attachmentIndex;
         colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
