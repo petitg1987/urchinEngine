@@ -42,6 +42,10 @@ namespace urchin {
         return depthAttachmentType != NO_DEPTH_ATTACHMENT;
     }
 
+    RenderTarget::DepthAttachmentType RenderTarget::getDepthAttachmentType() const {
+        return depthAttachmentType;
+    }
+
     /**
      * Provide a depth texture created in another render target
      */
@@ -234,7 +238,7 @@ namespace urchin {
                 } else {
                     depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
                 }
-                depthTexture->enableTextureWriting(dynamic_cast<OffscreenRender*>(this));
+                depthTexture->enableTextureWriting();
                 depthTexture->initialize();
             }
         }
@@ -312,8 +316,8 @@ namespace urchin {
             }
         }
         if (externalDepthTexture) {
-            assert(externalDepthTexture->getTextureWriter());
-            renderDependencies.push_back(externalDepthTexture->getTextureWriter());
+            assert(externalDepthTexture->getLastTextureWriter());
+            renderDependencies.push_back(externalDepthTexture->getLastTextureWriter());
         }
 
         VectorUtil::removeDuplicates(renderDependencies);

@@ -35,6 +35,7 @@ namespace urchin {
             void createSyncObjects();
             void destroySyncObjects();
 
+            void updateTexturesWriter();
             void waitCommandBuffersIdle() const override;
 
             std::vector<VkClearValue> clearValues;

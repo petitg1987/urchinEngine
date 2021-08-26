@@ -37,6 +37,7 @@ namespace urchin {
             VkRenderPass getRenderPass() const;
 
             bool hasDepthAttachment() const;
+            DepthAttachmentType getDepthAttachmentType() const;
             void setExternalDepthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getDepthTexture() const;
 

@@ -28,8 +28,7 @@ namespace urchin {
 
             void enableMipmap();
             void enableClearColor(const Vector4<float>&);
-            void enableTextureWriting(OffscreenRender*);
-            void removeTextureWriter();
+            void enableTextureWriting();
 
             void initialize();
 
@@ -42,7 +41,9 @@ namespace urchin {
 
             uint32_t getMipLevels() const;
             const Vector4<float>& getClearColor() const;
-            OffscreenRender* getTextureWriter() const;
+            bool isWritableTexture() const;
+            void setLastTextureWriter(OffscreenRender*);
+            OffscreenRender* getLastTextureWriter() const;
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
 
@@ -69,7 +70,7 @@ namespace urchin {
             bool clearColorEnabled;
             Vector4<float> clearColor;
             bool writableTexture;
-            OffscreenRender* textureWriter;
+            OffscreenRender* lastTextureWriter;
 
             TextureType textureType;
             unsigned int width, height, layer;

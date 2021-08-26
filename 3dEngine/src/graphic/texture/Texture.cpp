@@ -16,7 +16,7 @@ namespace urchin {
             mipLevels(1),
             clearColorEnabled(false),
             writableTexture(false),
-            textureWriter(nullptr),
+            lastTextureWriter(nullptr),
             textureType(textureType),
             width(width),
             height(height),
@@ -90,16 +90,11 @@ namespace urchin {
         this->clearColor = clearColor;
     }
 
-    void Texture::enableTextureWriting(OffscreenRender* textureWriter) {
-        if(isInitialized) return; //TODO remove and fix
-        assert(!isInitialized);
-        this->writableTexture = true;
-        this->textureWriter = textureWriter;
-    }
-
-    void Texture::removeTextureWriter() {
-        assert(isInitialized);
-        this->textureWriter = nullptr;
+    void Texture::enableTextureWriting() {
+        if(!this->writableTexture) {
+            assert(!isInitialized);
+            this->writableTexture = true;
+        }
     }
 
     void Texture::initialize() {
@@ -173,8 +168,17 @@ namespace urchin {
         return clearColor;
     }
 
-    OffscreenRender* Texture::getTextureWriter() const {
-        return textureWriter;
+    bool Texture::isWritableTexture() const {
+        return writableTexture;
+    }
+
+    void Texture::setLastTextureWriter(OffscreenRender* lastTextureWriter) {
+        assert(writableTexture);
+        this->lastTextureWriter = lastTextureWriter;
+    }
+
+    OffscreenRender* Texture::getLastTextureWriter() const {
+        return lastTextureWriter;
     }
 
     VkImageView Texture::getImageView() const {

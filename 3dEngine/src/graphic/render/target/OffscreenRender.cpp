@@ -26,14 +26,21 @@ namespace urchin {
     void OffscreenRender::addTexture(const std::shared_ptr<Texture>& texture) {
         assert(!isInitialized);
 
-        texture->enableTextureWriting(this);
+        texture->enableTextureWriting();
         texture->initialize();
         textures.push_back(texture);
     }
 
     void OffscreenRender::resetTextures() {
-        std::for_each(textures.begin(), textures.end(), [](const auto& t){t->removeTextureWriter();});
+        for (auto& texture : textures) {
+            if (texture->getLastTextureWriter() == this) {
+                texture->setLastTextureWriter(nullptr);
+            }
+        }
         textures.clear();
+        if (depthTexture && depthTexture->getLastTextureWriter() == this) {
+            depthTexture->setLastTextureWriter(nullptr);
+        }
 
         if (isInitialized) {
             cleanup();
@@ -187,6 +194,7 @@ namespace urchin {
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
         vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
 
+        updateTexturesWriter();
         updateGraphicData(0);
         updateCommandBuffers(clearValues);
 
@@ -206,6 +214,18 @@ namespace urchin {
         }
 
         queueSubmitSemaphoreUsable = true;
+    }
+
+    void OffscreenRender::updateTexturesWriter() {
+        for (auto& texture : textures) {
+            texture->setLastTextureWriter(this);
+        }
+
+        if (depthTexture && depthTexture->isWritableTexture()) {
+            if (getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT) { //currently, assume that write is not done in the external depth attachment: could be not true anymore in the future !
+                depthTexture->setLastTextureWriter(this);
+            }
+        }
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
