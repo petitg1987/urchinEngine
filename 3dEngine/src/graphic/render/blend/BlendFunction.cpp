@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     BlendFunction BlendFunction::buildBlendDisabled() {
-        return BlendFunction(false, ONE, ONE, ONE, ONE);
+        return BlendFunction(false, ONE, ZERO, ONE, ZERO);
     }
 
     void BlendFunction::setupColorBlend(VkPipelineColorBlendAttachmentState& colorBlendAttachment) const {

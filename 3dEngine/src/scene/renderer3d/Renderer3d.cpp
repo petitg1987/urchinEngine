@@ -334,7 +334,7 @@ namespace urchin {
         transparentManager->onTextureUpdate(deferredRenderTarget->getDepthTexture());
         bloomEffectApplier->onTextureUpdate(lightingPassTexture, isAntiAliasingActivated ? std::nullopt : std::make_optional(&finalRenderTarget));
         if (isAntiAliasingActivated) {
-            antiAliasingManager->onTextureUpdate(bloomEffectApplier->getBloomedTexture());
+            antiAliasingManager->onTextureUpdate(bloomEffectApplier->getOutputTexture());
         }
 
         refreshDebugFramebuffers = true;

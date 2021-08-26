@@ -24,7 +24,7 @@ namespace urchin {
             ~BloomEffectApplier();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&, std::optional<RenderTarget*>);
-            const std::shared_ptr<Texture>& getBloomedTexture() const;
+            const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -33,38 +33,38 @@ namespace urchin {
 
         private:
             void checkConfig() const;
-            void clearRendering();
-            void refreshRenderer();
+            void clearOutputRenderTarget();
+            void refreshRenderers();
+            void clearRenderers();
 
             Config config;
             unsigned int sceneWidth, sceneHeight;
-            std::shared_ptr<Texture> lightingPassTexture;
+            std::shared_ptr<Texture> inputHdrTexture;
+            std::vector<std::shared_ptr<Texture>> bloomStepTextures;
 
-            RenderTarget* finalRenderTarget;
-            std::vector<std::shared_ptr<Texture>> intermediateTextures;
-            std::shared_ptr<Texture> bloomedTexture;
-            std::unique_ptr<OffscreenRender> offscreenBloomRenderTarget;
-
-            //pre-filter + blur
-            std::unique_ptr<OffscreenRender> bloomFilteredRenderTarget;
-            std::unique_ptr<Shader> bloomPreFilterShader;
+            //pre-filter
+            std::unique_ptr<OffscreenRender> preFilterRenderTarget;
+            std::unique_ptr<Shader> preFilterShader;
+            std::unique_ptr<GenericRenderer> preFilterRenderer;
             struct {
                 alignas(4) float threshold;
-            } bloomTweak;
-            std::unique_ptr<GenericRenderer> preFilterRenderer;
+            } preFilterTweak;
 
             //down sample
-            std::unique_ptr<OffscreenRender> bloomDownSampleRenderTarget;
-            std::unique_ptr<Shader> bloomDownSampleShader;
+            std::unique_ptr<OffscreenRender> downSampleRenderTarget;
+            std::unique_ptr<Shader> downSampleShader;
             std::unique_ptr<GenericRenderer> downSampleRenderer;
 
             //up sample
-            std::unique_ptr<OffscreenRender> bloomUpSampleRenderTarget;
-            std::unique_ptr<Shader> bloomUpSampleShader;
+            std::unique_ptr<OffscreenRender> upSampleRenderTarget;
+            std::unique_ptr<Shader> upSampleShader;
             std::unique_ptr<GenericRenderer> upSampleRenderer;
 
             //combine
-            std::unique_ptr<Shader> bloomCombineShader;
+            std::optional<std::shared_ptr<Texture>> outputLdrTexture;
+            std::optional<std::unique_ptr<OffscreenRender>> outputOffscreenRenderTarget;
+            RenderTarget* outputRenderTarget; //either outputOffscreenRenderTarget or a custom render target
+            std::unique_ptr<Shader> combineShader;
             std::unique_ptr<GenericRenderer> combineRenderer;
     };
 

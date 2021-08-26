@@ -9,43 +9,59 @@ namespace urchin {
             config({}),
             sceneWidth(0),
             sceneHeight(0),
-            finalRenderTarget(nullptr),
-            bloomTweak({}) {
-        bloomTweak.threshold = ConfigService::instance().getFloatValue("bloom.threshold");
+            preFilterTweak({}),
+            outputRenderTarget(nullptr) {
+        preFilterTweak.threshold = ConfigService::instance().getFloatValue("bloom.threshold");
     }
 
     BloomEffectApplier::~BloomEffectApplier() {
-        clearRendering();
+        clearRenderers();
+        clearOutputRenderTarget();
     }
 
-    void BloomEffectApplier::onTextureUpdate(const std::shared_ptr<Texture>& lightingPassTexture, std::optional<RenderTarget*> customRenderTarget) {
-        this->lightingPassTexture = lightingPassTexture;
-        this->sceneWidth = lightingPassTexture->getWidth();
-        this->sceneHeight = lightingPassTexture->getHeight();
+    void BloomEffectApplier::onTextureUpdate(const std::shared_ptr<Texture>& inputHdrTexture, std::optional<RenderTarget*> customRenderTarget) {
+        this->inputHdrTexture = inputHdrTexture;
+        this->sceneWidth = inputHdrTexture->getWidth();
+        this->sceneHeight = inputHdrTexture->getHeight();
 
-        clearRendering();
+        clearRenderers();
+        clearOutputRenderTarget();
+
         if (customRenderTarget.has_value()) {
-            this->finalRenderTarget = customRenderTarget.value();
+            this->outputRenderTarget = customRenderTarget.value();
         } else {
-            bloomedTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-            offscreenBloomRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", RenderTarget::NO_DEPTH_ATTACHMENT);
-            offscreenBloomRenderTarget->resetTextures();
-            offscreenBloomRenderTarget->addTexture(bloomedTexture);
-            offscreenBloomRenderTarget->initialize();
+            outputLdrTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+            outputOffscreenRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", RenderTarget::NO_DEPTH_ATTACHMENT);
+            outputOffscreenRenderTarget.value()->resetTextures();
+            outputOffscreenRenderTarget.value()->addTexture(outputLdrTexture.value());
+            outputOffscreenRenderTarget.value()->initialize();
 
-            this->finalRenderTarget = offscreenBloomRenderTarget.get();
+            this->outputRenderTarget = outputOffscreenRenderTarget.value().get();
+        }
+        refreshRenderers();
+    }
+
+    void BloomEffectApplier::clearOutputRenderTarget() {
+        if (outputOffscreenRenderTarget.has_value()) {
+            outputOffscreenRenderTarget.value()->cleanup();
+            outputOffscreenRenderTarget.value().reset();
         }
 
-        refreshRenderer();
+        if(outputLdrTexture.has_value()) {
+            outputLdrTexture.value().reset();
+        }
     }
 
-    void BloomEffectApplier::refreshRenderer() {
-        //create intermediate textures
+    void BloomEffectApplier::refreshRenderers() {
+        //clear existing
+        clearRenderers();
+
+        //create bloom step textures
         unsigned int textureWidth = sceneWidth;
         unsigned int textureHeight = sceneHeight;
-        intermediateTextures.clear();
+        bloomStepTextures.clear();
         for(unsigned int i = 0; i < config.maximumIterations; ++i) {
-            intermediateTextures.push_back(Texture::build(textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT, nullptr));
+            bloomStepTextures.push_back(Texture::build(textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT, nullptr));
 
             textureWidth = textureWidth / 2;
             textureHeight = textureHeight / 2;
@@ -54,12 +70,7 @@ namespace urchin {
             }
         }
 
-        //pre-filter + blur
-        bloomFilteredRenderTarget = std::make_unique<OffscreenRender>("bloom - filtered", RenderTarget::NO_DEPTH_ATTACHMENT);
-        bloomFilteredRenderTarget->resetTextures();
-        bloomFilteredRenderTarget->addTexture(intermediateTextures[0]);
-        bloomFilteredRenderTarget->initialize();
-
+        //fullscreen vertex/texture coordinate
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
@@ -68,88 +79,89 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        bloomPreFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv");
-        preFilterRenderer = GenericRendererBuilder::create("bloom - prefilter", *bloomFilteredRenderTarget, *bloomPreFilterShader, ShapeType::TRIANGLE)
+
+        //pre-filter
+        preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
+        preFilterRenderTarget->resetTextures();
+        preFilterRenderTarget->addTexture(bloomStepTextures[0]);
+        preFilterRenderTarget->initialize();
+
+        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv");
+        preFilterRenderer = GenericRendererBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(bloomTweak), &bloomTweak) //binding 0
-                ->addUniformTextureReader(TextureReader::build(lightingPassTexture, TextureParam::buildLinear())) //binding 1
+                ->addUniformData(sizeof(preFilterTweak), &preFilterTweak) //binding 0
+                ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 1
                 ->build();
 
         //down sample //TODO iterate !
-        bloomDownSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample", RenderTarget::NO_DEPTH_ATTACHMENT);
-        bloomDownSampleRenderTarget->resetTextures();
-        bloomDownSampleRenderTarget->addTexture(intermediateTextures[1]);
-        bloomDownSampleRenderTarget->initialize();
+        downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample", RenderTarget::NO_DEPTH_ATTACHMENT);
+        downSampleRenderTarget->resetTextures();
+        downSampleRenderTarget->addTexture(bloomStepTextures[1]);
+        downSampleRenderTarget->initialize();
 
-        bloomDownSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv");
-        downSampleRenderer = GenericRendererBuilder::create("bloom - down sample", *bloomDownSampleRenderTarget, *bloomDownSampleShader, ShapeType::TRIANGLE)
+        downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv");
+        downSampleRenderer = GenericRendererBuilder::create("bloom - down sample", *downSampleRenderTarget, *downSampleShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(intermediateTextures[0], TextureParam::buildLinear())) //binding 0
+                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 0
                 ->build();
 
         //up sample //TODO iterate !
-        bloomUpSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample", RenderTarget::NO_DEPTH_ATTACHMENT);
-        bloomUpSampleRenderTarget->resetTextures();
-        bloomUpSampleRenderTarget->addTexture(intermediateTextures[0]);
-        bloomUpSampleRenderTarget->initialize();
+        upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample", RenderTarget::NO_DEPTH_ATTACHMENT);
+        upSampleRenderTarget->resetTextures();
+        upSampleRenderTarget->addTexture(bloomStepTextures[0]); //TODO cannot up sample on this texture because of blend
+        upSampleRenderTarget->initialize();
 
-        bloomUpSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
-        upSampleRenderer = GenericRendererBuilder::create("bloom - up sample", *bloomUpSampleRenderTarget, *bloomUpSampleShader, ShapeType::TRIANGLE)
+        upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
+        upSampleRenderer = GenericRendererBuilder::create("bloom - up sample", *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(intermediateTextures[1], TextureParam::buildLinear())) //binding 0
+                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[1], TextureParam::buildLinear())) //binding 0
+                ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)}) //TODO check if it works
                 ->build();
-        //TODO: not clear target texture and use blend ONE, ONE
 
-        //combine
-        bloomCombineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
-        combineRenderer = GenericRendererBuilder::create("bloom - combine", *finalRenderTarget, *bloomCombineShader, ShapeType::TRIANGLE)
+        //combine //TODO check ACES tone mapping
+        combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
+        combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(lightingPassTexture, TextureParam::buildLinear())) //binding 0
-                ->addUniformTextureReader(TextureReader::build(intermediateTextures[0], TextureParam::buildLinear())) //binding 1
+                ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 0
+                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 1
                 ->build();
-        //TODO check ACES tone mapping
     }
 
-    void BloomEffectApplier::clearRendering() {
+    void BloomEffectApplier::clearRenderers() {
         //combine
         combineRenderer.reset();
-        if(offscreenBloomRenderTarget) {
-            offscreenBloomRenderTarget->cleanup();
-            offscreenBloomRenderTarget.reset();
-        }
-        bloomedTexture.reset();
 
         //up sample
         upSampleRenderer.reset();
-        if(bloomUpSampleRenderTarget) {
-            bloomUpSampleRenderTarget->cleanup();
-            bloomUpSampleRenderTarget.reset();
+        if (upSampleRenderTarget) {
+            upSampleRenderTarget->cleanup();
+            upSampleRenderTarget.reset();
         }
 
         //down sample
         downSampleRenderer.reset();
-        if(bloomDownSampleRenderTarget) {
-            bloomDownSampleRenderTarget->cleanup();
-            bloomDownSampleRenderTarget.reset();
+        if (downSampleRenderTarget) {
+            downSampleRenderTarget->cleanup();
+            downSampleRenderTarget.reset();
         }
 
         //pre filter
         preFilterRenderer.reset();
-        if (bloomFilteredRenderTarget) {
-            bloomFilteredRenderTarget->cleanup();
-            bloomFilteredRenderTarget.reset();
+        if (preFilterRenderTarget) {
+            preFilterRenderTarget->cleanup();
+            preFilterRenderTarget.reset();
         }
     }
 
-    const std::shared_ptr<Texture>& BloomEffectApplier::getBloomedTexture() const {
-        if (!bloomedTexture) {
-            throw std::runtime_error("No bloomed texture available because rendering has been done in a custom render target");
+    const std::shared_ptr<Texture>& BloomEffectApplier::getOutputTexture() const {
+        if (!outputLdrTexture.has_value()) {
+            throw std::runtime_error("No output texture available because rendering has been done in a custom render target");
         }
-        return bloomedTexture;
+        return outputLdrTexture.value();
     }
 
     void BloomEffectApplier::updateConfig(const Config& config) {
@@ -159,7 +171,7 @@ namespace urchin {
             this->config = config;
             checkConfig();
 
-            refreshRenderer();
+            refreshRenderers();
         }
     }
 
@@ -174,12 +186,12 @@ namespace urchin {
     }
 
     void BloomEffectApplier::applyBloom() {
-        bloomFilteredRenderTarget->render();
-        bloomDownSampleRenderTarget->render();
-        bloomUpSampleRenderTarget->render();
+        preFilterRenderTarget->render();
+        downSampleRenderTarget->render();
+        upSampleRenderTarget->render();
 
-        if (bloomedTexture) {
-            finalRenderTarget->render();
+        if (outputOffscreenRenderTarget.has_value()) {
+            outputOffscreenRenderTarget.value()->render();
         } else {
             combineRenderer->enableRenderer();
         }
