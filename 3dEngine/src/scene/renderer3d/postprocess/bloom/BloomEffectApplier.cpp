@@ -81,12 +81,12 @@ namespace urchin {
         };
 
         //pre-filter
+        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv");
         preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
         preFilterRenderTarget->resetTextures();
         preFilterRenderTarget->addTexture(bloomStepTextures[0]);
         preFilterRenderTarget->initialize();
 
-        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv");
         preFilterRenderer = GenericRendererBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
@@ -94,32 +94,38 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 1
                 ->build();
 
-        //down sample //TODO iterate !
-        downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample", RenderTarget::NO_DEPTH_ATTACHMENT);
-        downSampleRenderTarget->resetTextures();
-        downSampleRenderTarget->addTexture(bloomStepTextures[1]);
-        downSampleRenderTarget->initialize();
-
+        //down sample
         downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv");
-        downSampleRenderer = GenericRendererBuilder::create("bloom - down sample", *downSampleRenderTarget, *downSampleShader, ShapeType::TRIANGLE)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 0
-                ->build();
+        for(std::size_t texIndex = 1, i = 0; texIndex < bloomStepTextures.size(); ++texIndex, ++i) {
+            auto downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
+            downSampleRenderTarget->resetTextures();
+            downSampleRenderTarget->addTexture(bloomStepTextures[texIndex]);
+            downSampleRenderTarget->initialize();
 
-        //up sample //TODO iterate !
-        upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample", RenderTarget::NO_DEPTH_ATTACHMENT);
-        upSampleRenderTarget->resetTextures();
-        upSampleRenderTarget->addTexture(bloomStepTextures[0]); //TODO cannot up sample on this texture because of blend
-        upSampleRenderTarget->initialize();
+            downSampleRenderers.push_back(GenericRendererBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, ShapeType::TRIANGLE)
+                    ->addData(vertexCoord)
+                    ->addData(textureCoord)
+                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[texIndex - 1], TextureParam::buildLinear())) //binding 0
+                    ->build());
+            downSampleRenderTargets.push_back(std::move(downSampleRenderTarget));
+        }
 
+        //up sample
         upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
-        upSampleRenderer = GenericRendererBuilder::create("bloom - up sample", *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[1], TextureParam::buildLinear())) //binding 0
-                ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)}) //TODO check if it works
-                ->build();
+        for(std::size_t texIndex = bloomStepTextures.size() - 1, i = 0; texIndex > 0; --texIndex, ++i) { //TODO can avoid write in fullscreen tex bloomStepTextures[0] ?
+            auto upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
+            upSampleRenderTarget->resetTextures();
+            upSampleRenderTarget->addTexture(bloomStepTextures[texIndex - 1]);
+            upSampleRenderTarget->initialize();
+
+            upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample " + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
+                    ->addData(vertexCoord)
+                    ->addData(textureCoord)
+                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[texIndex], TextureParam::buildLinear())) //binding 0
+                    ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)}) //TODO check if it works
+                    ->build());
+            upSampleRenderTargets.push_back(std::move(upSampleRenderTarget));
+        }
 
         //combine //TODO check ACES tone mapping
         combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
@@ -136,18 +142,18 @@ namespace urchin {
         combineRenderer.reset();
 
         //up sample
-        upSampleRenderer.reset();
-        if (upSampleRenderTarget) {
+        upSampleRenderers.clear();
+        for(auto& upSampleRenderTarget : upSampleRenderTargets) {
             upSampleRenderTarget->cleanup();
-            upSampleRenderTarget.reset();
         }
+        upSampleRenderTargets.clear();
 
         //down sample
-        downSampleRenderer.reset();
-        if (downSampleRenderTarget) {
+        downSampleRenderers.clear();
+        for(auto& downSampleRenderTarget : downSampleRenderTargets) {
             downSampleRenderTarget->cleanup();
-            downSampleRenderTarget.reset();
         }
+        downSampleRenderTargets.clear();
 
         //pre filter
         preFilterRenderer.reset();
@@ -187,8 +193,12 @@ namespace urchin {
 
     void BloomEffectApplier::applyBloom() {
         preFilterRenderTarget->render();
-        downSampleRenderTarget->render();
-        upSampleRenderTarget->render();
+        for(auto& downSampleRenderTarget : downSampleRenderTargets) {
+            downSampleRenderTarget->render();
+        }
+        for(auto& upSampleRenderTarget : upSampleRenderTargets) {
+            upSampleRenderTarget->render();
+        }
 
         if (outputOffscreenRenderTarget.has_value()) {
             outputOffscreenRenderTarget.value()->render();
