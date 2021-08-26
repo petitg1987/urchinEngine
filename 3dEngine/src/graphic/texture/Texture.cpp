@@ -91,6 +91,7 @@ namespace urchin {
     }
 
     void Texture::enableTextureWriting(OffscreenRender* textureWriter) {
+        if(isInitialized) return; //TODO remove and fix
         assert(!isInitialized);
         this->writableTexture = true;
         this->textureWriter = textureWriter;
