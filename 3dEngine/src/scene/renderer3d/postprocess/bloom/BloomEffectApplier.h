@@ -63,7 +63,7 @@ namespace urchin {
             //combine
             std::optional<std::shared_ptr<Texture>> outputLdrTexture;
             std::optional<std::unique_ptr<OffscreenRender>> outputOffscreenRenderTarget;
-            RenderTarget* outputRenderTarget; //either outputOffscreenRenderTarget or a custom render target
+            RenderTarget* outputRenderTarget; //either outputOffscreenRenderTarget or the provided custom render target
             std::unique_ptr<Shader> combineShader;
             std::unique_ptr<GenericRenderer> combineRenderer;
     };

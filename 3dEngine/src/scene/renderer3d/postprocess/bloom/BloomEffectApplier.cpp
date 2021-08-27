@@ -95,42 +95,51 @@ namespace urchin {
                 ->build();
 
         //down sample
-        //TODO down/up sample: change texture read from bilinear to nearest ? (depend of blur method)
         downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv");
-        for(std::size_t texIndex = 1, i = 0; texIndex < bloomStepTextures.size(); ++texIndex, ++i) {
+        for(std::size_t outTexIndex = 1, i = 0; outTexIndex < bloomStepTextures.size(); ++outTexIndex, ++i) {
+            std::size_t srcTexIndex = outTexIndex - 1;
+
             auto downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
             downSampleRenderTarget->resetOutputTextures();
-            downSampleRenderTarget->addOutputTexture(bloomStepTextures[texIndex]);
+            downSampleRenderTarget->addOutputTexture(bloomStepTextures[outTexIndex]);
             downSampleRenderTarget->initialize();
 
+            Point2<float> texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
             downSampleRenderers.push_back(GenericRendererBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
-                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[texIndex - 1], TextureParam::buildLinear())) //binding 0
+                    ->addUniformData(sizeof(texelSize), &texelSize)
+                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear())) //binding 1
                     ->build());
             downSampleRenderTargets.push_back(std::move(downSampleRenderTarget));
         }
 
         //up sample
         //TODO up sample: possible to avoid to write in the fullscreen tex (bloomStepTextures[0]) ?
+        //TODO linear fetch required ?
         upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
-        for(std::size_t texIndex = bloomStepTextures.size() - 1, i = 0; texIndex > 0; --texIndex, ++i) {
+        for(std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
+            std::size_t outTexIndex = srcTexIndex - 1;
+
             auto upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
             upSampleRenderTarget->resetOutputTextures();
-            upSampleRenderTarget->addOutputTexture(bloomStepTextures[texIndex - 1], LoadType::LOAD_CONTENT);
+            upSampleRenderTarget->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::LOAD_CONTENT);
             upSampleRenderTarget->initialize();
 
+            Point2<float> texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
             upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample " + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
-                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[texIndex], TextureParam::buildLinear())) //binding 0
+                    ->addUniformData(sizeof(texelSize), &texelSize)
+                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear())) //binding 1
                     ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)})
                     ->build());
             upSampleRenderTargets.push_back(std::move(upSampleRenderTarget));
         }
 
         //combine
-        //TODO combine: check to use ACES tone mapping
+        //TODO combine: check to use ACES tone mapping ?
+        //TODO combine: use nearest instead of linear ?
         combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
         combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
