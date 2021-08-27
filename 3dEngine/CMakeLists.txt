@@ -8,9 +8,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(shadersDir "${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders")
 set(compiledShadersDir "${shadersDir}/spirv")
 file(GLOB shaderFiles "${shadersDir}/*.*")
-foreach(shaderFile ${shaderFiles})
+foreach (shaderFile ${shaderFiles})
     get_filename_component(shaderFilename ${shaderFile} NAME)
     set(compiledShaderName "${shaderFilename}.spv")
+    if ("${shaderFilename}" MATCHES "^_.*")
+        continue()
+    endif()
+
     add_custom_command( OUTPUT ${compiledShadersDir}/${compiledShaderName}
             DEPENDS ${shadersDir}/${shaderFilename}
             COMMAND glslc --target-env=vulkan1.1 -O -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})

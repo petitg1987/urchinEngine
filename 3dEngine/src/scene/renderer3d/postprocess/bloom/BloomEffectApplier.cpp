@@ -117,7 +117,6 @@ namespace urchin {
         }
 
         //up sample
-        //TODO linear fetch required ?
         upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
         for(std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
             std::size_t outTexIndex = srcTexIndex - 1;
@@ -140,7 +139,6 @@ namespace urchin {
 
         //combine
         //TODO combine: check to use ACES tone mapping ?
-        //TODO combine: use nearest instead of linear ?
         combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
         texelSize = Point2<float>(1.0f / (float)bloomStepTextures[0]->getWidth(), 1.0f / (float)bloomStepTextures[0]->getHeight());
         combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
