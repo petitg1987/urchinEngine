@@ -1,4 +1,4 @@
-vec3 downSampleBox13Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize) {
+vec3 downSampleBlur13Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize) {
     //See http://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare
 
     const float CENTER_SQUARE_WEIGHT = (1.0 / 4.0) * 0.5;
@@ -34,18 +34,36 @@ vec3 downSampleBox13Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize) {
     return averageValue;
 }
 
-vec3 upSampleTent9Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize) {
-    vec3 topLeft = texture(inputTex, uv + texelSize * vec2(-1.0, -1.0)).rgb; //TODO add tent radius/scale ?
-    vec3 topMiddle = texture(inputTex, uv + texelSize * vec2(0.0, -1.0)).rgb * 2.0;
+vec3 downSampleBlur4Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize) {
+    vec3 topLeft = texture(inputTex, uv + texelSize * vec2(-1.0, -1.0)).rgb;
     vec3 topRight = texture(inputTex, uv + texelSize * vec2(1.0, -1.0)).rgb;
-
-    vec3 middleLeft = texture(inputTex, uv + texelSize * vec2(-1.0, 0.0)).rgb * 2.0;
-    vec3 center = texture(inputTex, uv + texelSize).rgb * 4.0;
-    vec3 middleRight = texture(inputTex, uv + texelSize * vec2(1.0, 0.0)).rgb * 2.0;
-
     vec3 bottomLeft = texture(inputTex, uv + texelSize * vec2(-1.0, 1.0)).rgb;
-    vec3 bottomMiddle = texture(inputTex, uv + texelSize * vec2(0.0, 1.0)).rgb * 2.0;
     vec3 bottomRight = texture(inputTex, uv + texelSize * vec2(1.0, 1.0)).rgb;
 
+    return (1.0 / 4.0) * (topLeft + topRight + bottomLeft + bottomRight);
+}
+
+vec3 upSample9Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize, float sampleScale) {
+    vec3 topLeft = texture(inputTex, uv + texelSize * vec2(-sampleScale, -sampleScale)).rgb;
+    vec3 topMiddle = texture(inputTex, uv + texelSize * vec2(0.0, -sampleScale)).rgb * 2.0;
+    vec3 topRight = texture(inputTex, uv + texelSize * vec2(sampleScale, -sampleScale)).rgb;
+
+    vec3 middleLeft = texture(inputTex, uv + texelSize * vec2(-sampleScale, 0.0)).rgb * 2.0;
+    vec3 center = texture(inputTex, uv + texelSize).rgb * 4.0;
+    vec3 middleRight = texture(inputTex, uv + texelSize * vec2(sampleScale, 0.0)).rgb * 2.0;
+
+    vec3 bottomLeft = texture(inputTex, uv + texelSize * vec2(-sampleScale, sampleScale)).rgb;
+    vec3 bottomMiddle = texture(inputTex, uv + texelSize * vec2(0.0, sampleScale)).rgb * 2.0;
+    vec3 bottomRight = texture(inputTex, uv + texelSize * vec2(sampleScale, sampleScale)).rgb;
+
     return (1.0 / 16.0) * (topLeft + topMiddle + topRight + middleLeft + center + middleRight + bottomLeft + bottomMiddle + bottomRight);
+}
+
+vec3 upSample4Fetch(sampler2D inputTex, vec2 uv, vec2 texelSize, float sampleScale) {
+    vec3 topLeft = texture(inputTex, uv + texelSize * vec2(-sampleScale, -sampleScale)).rgb;
+    vec3 topRight = texture(inputTex, uv + texelSize * vec2(sampleScale, -sampleScale)).rgb;
+    vec3 bottomLeft = texture(inputTex, uv + texelSize * vec2(-sampleScale, sampleScale)).rgb;
+    vec3 bottomRight = texture(inputTex, uv + texelSize * vec2(sampleScale, sampleScale)).rgb;
+
+    return (1.0 / 4.0) * (topLeft + topRight + bottomLeft + bottomRight);
 }

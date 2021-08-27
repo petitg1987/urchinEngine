@@ -60,7 +60,7 @@ namespace urchin {
         unsigned int textureWidth = sceneWidth / 2;
         unsigned int textureHeight = sceneHeight / 2;
         bloomStepTextures.clear();
-        for(unsigned int i = 0; i < config.maximumIterations; ++i) {
+        for(unsigned int i = 0; i < config.maxIterations; ++i) {
             bloomStepTextures.push_back(Texture::build(textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT, nullptr));
 
             textureWidth = textureWidth / 2;
@@ -80,8 +80,17 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
+        //shader constants
+        struct SamplingTexConst {
+            bool qualityTextureFetch;
+            float upSampleScale;
+        };
+        SamplingTexConst samplingTexConst = {(config.textureFetchQuality == TextureFetchQuality::QUALITY_FETCH), 1.0}; //TODO 1.0: define value in ConfigService ?
+        std::vector<std::size_t> downSampleVarSize = {sizeof(samplingTexConst.qualityTextureFetch)};
+        std::vector<std::size_t> upSampleVarSize = {sizeof(samplingTexConst.qualityTextureFetch), sizeof(samplingTexConst.upSampleScale)};
+
         //pre-filter
-        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv");
+        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &samplingTexConst));
         preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
         preFilterRenderTarget->resetOutputTextures();
         preFilterRenderTarget->addOutputTexture(bloomStepTextures[0]);
@@ -97,7 +106,7 @@ namespace urchin {
                 ->build();
 
         //down sample
-        downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv");
+        downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &samplingTexConst));
         for(std::size_t outTexIndex = 1, i = 0; outTexIndex < bloomStepTextures.size(); ++outTexIndex, ++i) {
             std::size_t srcTexIndex = outTexIndex - 1;
 
@@ -117,7 +126,7 @@ namespace urchin {
         }
 
         //up sample
-        upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv");
+        upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &samplingTexConst));
         for(std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
             std::size_t outTexIndex = srcTexIndex - 1;
 
@@ -138,8 +147,7 @@ namespace urchin {
         }
 
         //combine
-        //TODO combine: check to use ACES tone mapping ?
-        combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv");
+        combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &samplingTexConst));
         texelSize = Point2<float>(1.0f / (float)bloomStepTextures[0]->getWidth(), 1.0f / (float)bloomStepTextures[0]->getHeight());
         combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
@@ -184,8 +192,8 @@ namespace urchin {
     }
 
     void BloomEffectApplier::updateConfig(const Config& config) {
-        if (this->config.maximumIterations != config.maximumIterations ||
-                this->config.fetchTextureQuality != config.fetchTextureQuality) {
+        if (this->config.maxIterations != config.maxIterations ||
+                this->config.textureFetchQuality != config.textureFetchQuality) {
 
             this->config = config;
             checkConfig();
@@ -199,7 +207,7 @@ namespace urchin {
     }
 
     void BloomEffectApplier::checkConfig() const {
-        if (config.maximumIterations < 1) {
+        if (config.maxIterations < 1) {
             throw std::invalid_argument("Bloom maximum iterations must be greater than one");
         }
     }

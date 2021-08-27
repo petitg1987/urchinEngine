@@ -3,6 +3,8 @@
 
 #include "_samplingFunctions.frag"
 
+layout(constant_id = 0) const bool QUALITY_TEXTURE_FETCH = true;
+
 layout(std140, set = 0, binding = 0) uniform PreFilterTweak {
     float threshold;
 } preFilterTweak;
@@ -16,7 +18,12 @@ layout(location = 0) in vec2 texCoordinates;
 layout(location = 0) out vec4 fragColor;
 
 void main() {
-    vec3 hdrColor = downSampleBox13Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
+    vec3 hdrColor;
+    if (QUALITY_TEXTURE_FETCH) {
+        hdrColor = downSampleBlur13Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
+    } else {
+        hdrColor = downSampleBlur4Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
+    }
 
     //See following link for the formula: https://catlikecoding.com/unity/tutorials/advanced-rendering/bloom/
     //Note that more advanced formula to soft edges is also explained under "Soft Threshold" section.
