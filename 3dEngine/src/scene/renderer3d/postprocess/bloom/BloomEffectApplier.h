@@ -11,13 +11,13 @@ namespace urchin {
     class BloomEffectApplier {
         public:
             enum FetchTextureQuality {
-                FETCH_4,
-                FETCH_13
+                LOW,
+                HIGH
             };
 
             struct Config {
                 unsigned int maximumIterations = 15;
-                FetchTextureQuality fetchTextureQuality = FETCH_13;
+                FetchTextureQuality fetchTextureQuality = HIGH;
             };
 
             BloomEffectApplier();

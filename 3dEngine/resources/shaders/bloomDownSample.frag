@@ -10,29 +10,29 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
-vec3 downSampleBox13Fetch() {
+vec3 downSampleBox13Fetch(sampler2D inputTex) {
     //See http://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare
 
     //center square texels
-    vec3 centerA = texture(stepTexture, texCoordinates + tex.texelSize * vec2(-1.0, -1.0)).rgb;
-    vec3 centerB = texture(stepTexture, texCoordinates + tex.texelSize * vec2(1.0, -1.0)).rgb;
-    vec3 centerC = texture(stepTexture, texCoordinates + tex.texelSize * vec2(-1.0, 1.0)).rgb;
-    vec3 centerD = texture(stepTexture, texCoordinates + tex.texelSize * vec2(1.0, 1.0)).rgb;
+    vec3 centerA = texture(inputTex, texCoordinates + tex.texelSize * vec2(-1.0, -1.0)).rgb;
+    vec3 centerB = texture(inputTex, texCoordinates + tex.texelSize * vec2(1.0, -1.0)).rgb;
+    vec3 centerC = texture(inputTex, texCoordinates + tex.texelSize * vec2(-1.0, 1.0)).rgb;
+    vec3 centerD = texture(inputTex, texCoordinates + tex.texelSize * vec2(1.0, 1.0)).rgb;
 
     //top texels
-    vec3 topA = texture(stepTexture, texCoordinates + tex.texelSize * vec2(-2.0, -2.0)).rgb;
-    vec3 topB = texture(stepTexture, texCoordinates + tex.texelSize * vec2(0.0, -2.0)).rgb;
-    vec3 topC = texture(stepTexture, texCoordinates + tex.texelSize * vec2(2.0, -2.0)).rgb;
+    vec3 topA = texture(inputTex, texCoordinates + tex.texelSize * vec2(-2.0, -2.0)).rgb;
+    vec3 topB = texture(inputTex, texCoordinates + tex.texelSize * vec2(0.0, -2.0)).rgb;
+    vec3 topC = texture(inputTex, texCoordinates + tex.texelSize * vec2(2.0, -2.0)).rgb;
 
     //middle texels
-    vec3 middleA = texture(stepTexture, texCoordinates + tex.texelSize * vec2(-2.0, 0.0)).rgb;
-    vec3 middleB = texture(stepTexture, texCoordinates).rgb;
-    vec3 middleC = texture(stepTexture, texCoordinates + tex.texelSize * vec2(-2.0, 0.0)).rgb;
+    vec3 middleA = texture(inputTex, texCoordinates + tex.texelSize * vec2(-2.0, 0.0)).rgb;
+    vec3 middleB = texture(inputTex, texCoordinates).rgb;
+    vec3 middleC = texture(inputTex, texCoordinates + tex.texelSize * vec2(-2.0, 0.0)).rgb;
 
     //bottom texels
-    vec3 bottomA = texture(stepTexture, texCoordinates + tex.texelSize * vec2(-2.0, 2.0)).rgb;
-    vec3 bottomB = texture(stepTexture, texCoordinates + tex.texelSize * vec2(0.0, 2.0)).rgb;
-    vec3 bottomC = texture(stepTexture, texCoordinates + tex.texelSize * vec2(2.0, 2.0)).rgb;
+    vec3 bottomA = texture(inputTex, texCoordinates + tex.texelSize * vec2(-2.0, 2.0)).rgb;
+    vec3 bottomB = texture(inputTex, texCoordinates + tex.texelSize * vec2(0.0, 2.0)).rgb;
+    vec3 bottomC = texture(inputTex, texCoordinates + tex.texelSize * vec2(2.0, 2.0)).rgb;
 
     const float centerSquareWeight = (1.0 / 4.0) * 0.5;
     const float cornerSquaresWeight = (1.0 / 4.0) * 0.125;
@@ -47,6 +47,6 @@ vec3 downSampleBox13Fetch() {
 }
 
 void main() {
-    vec3 texValue = downSampleBox13Fetch();
+    vec3 texValue = downSampleBox13Fetch(stepTexture);
     fragColor = vec4(texValue, 1.0);
 }
