@@ -15,12 +15,12 @@ layout(location = 2) in vec3 n;
 layout(location = 3) in vec2 texCoordinates;
 layout(location = 4) in vec4 worldPosition;
 
-layout(location = 0) out vec4 fragColor;
+layout(location = 0) out vec3 fragColor;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse
-    fragColor = vec4(texture(diffuseTex, texCoordinates).rgb * meshData.emissiveFactor, 1.0);
+    fragColor = texture(diffuseTex, texCoordinates).rgb * meshData.emissiveFactor;
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));

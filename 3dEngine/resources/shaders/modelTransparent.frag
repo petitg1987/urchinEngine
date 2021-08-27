@@ -6,7 +6,7 @@ const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_SHAD
 //global
 layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
-    float emissiveFactor; //currenlty no used in this shader
+    float emissiveFactor;
     float ambientFactor;
 } meshData;
 layout(std140, set = 0, binding = 3) uniform CameraPlanes {
@@ -56,6 +56,7 @@ void fillTransparentTextures(vec4 fragColor) {
 
 void main() {
     vec4 diffuse = texture(diffuseTex, texCoordinates);
+    diffuse.rgb *= meshData.emissiveFactor;
 
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
