@@ -83,7 +83,7 @@ namespace urchin {
         //shader constants
         BloomShadersConst bloomShadersConst{};
         bloomShadersConst.qualityTextureFetch = (config.textureFetchQuality == TextureFetchQuality::QUALITY_FETCH);
-        bloomShadersConst.upSampleScale = 0.95f; //TODO 1.0: define value in ConfigService ? + check is it related to bloom intensity ?
+        bloomShadersConst.upSampleScale = ConfigService::instance().getFloatValue("bloom.upSampleScale");
         std::vector<std::size_t> downSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch)};
         std::vector<std::size_t> upSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch), sizeof(bloomShadersConst.upSampleScale)};
 
