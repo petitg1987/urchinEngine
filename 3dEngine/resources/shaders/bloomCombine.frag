@@ -4,7 +4,7 @@
 #include "_samplingFunctions.frag"
 
 layout(constant_id = 0) const bool QUALITY_TEXTURE_FETCH = true;
-layout(constant_id = 1) const float SAMPLE_SCAPE = 1.0;
+layout(constant_id = 1) const float SAMPLE_SCALE = 1.0;
 
 layout(std140, set = 0, binding = 0) uniform Tex {
     vec2 texelSize;
@@ -19,9 +19,9 @@ layout(location = 0) out vec4 fragColor;
 void main() {
     vec3 bloomValue;
     if (QUALITY_TEXTURE_FETCH) {
-        bloomValue = upSample9Fetch(lastBloomStepTexture, texCoordinates, tex.texelSize, SAMPLE_SCAPE);
+        bloomValue = upSample9Fetch(lastBloomStepTexture, texCoordinates, tex.texelSize, SAMPLE_SCALE);
     } else {
-        bloomValue = upSample4Fetch(lastBloomStepTexture, texCoordinates, tex.texelSize, SAMPLE_SCAPE);
+        bloomValue = upSample4Fetch(lastBloomStepTexture, texCoordinates, tex.texelSize, SAMPLE_SCALE);
     }
     vec3 hdrValue = texture(inputHdrTexture, texCoordinates).rgb;
 

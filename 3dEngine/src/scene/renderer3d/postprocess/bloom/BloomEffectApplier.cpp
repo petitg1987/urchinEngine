@@ -81,16 +81,14 @@ namespace urchin {
         };
 
         //shader constants
-        struct SamplingTexConst {
-            bool qualityTextureFetch;
-            float upSampleScale;
-        };
-        SamplingTexConst samplingTexConst = {(config.textureFetchQuality == TextureFetchQuality::QUALITY_FETCH), 1.0}; //TODO 1.0: define value in ConfigService ?
-        std::vector<std::size_t> downSampleVarSize = {sizeof(samplingTexConst.qualityTextureFetch)};
-        std::vector<std::size_t> upSampleVarSize = {sizeof(samplingTexConst.qualityTextureFetch), sizeof(samplingTexConst.upSampleScale)};
+        BloomShadersConst bloomShadersConst{};
+        bloomShadersConst.qualityTextureFetch = (config.textureFetchQuality == TextureFetchQuality::QUALITY_FETCH);
+        bloomShadersConst.upSampleScale = 0.95f; //TODO 1.0: define value in ConfigService ? + check is it related to bloom intensity ?
+        std::vector<std::size_t> downSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch)};
+        std::vector<std::size_t> upSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch), sizeof(bloomShadersConst.upSampleScale)};
 
         //pre-filter
-        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &samplingTexConst));
+        preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
         preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
         preFilterRenderTarget->resetOutputTextures();
         preFilterRenderTarget->addOutputTexture(bloomStepTextures[0]);
@@ -106,7 +104,7 @@ namespace urchin {
                 ->build();
 
         //down sample
-        downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &samplingTexConst));
+        downSampleShader = ShaderBuilder::createShader("bloomDownSample.vert.spv", "", "bloomDownSample.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
         for(std::size_t outTexIndex = 1, i = 0; outTexIndex < bloomStepTextures.size(); ++outTexIndex, ++i) {
             std::size_t srcTexIndex = outTexIndex - 1;
 
@@ -126,7 +124,7 @@ namespace urchin {
         }
 
         //up sample
-        upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &samplingTexConst));
+        upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "", "bloomUpSample.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst));
         for(std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
             std::size_t outTexIndex = srcTexIndex - 1;
 
@@ -147,7 +145,7 @@ namespace urchin {
         }
 
         //combine
-        combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &samplingTexConst));
+        combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst));
         texelSize = Point2<float>(1.0f / (float)bloomStepTextures[0]->getWidth(), 1.0f / (float)bloomStepTextures[0]->getHeight());
         combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)

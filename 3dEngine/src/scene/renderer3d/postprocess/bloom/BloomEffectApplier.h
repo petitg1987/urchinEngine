@@ -32,6 +32,11 @@ namespace urchin {
             void applyBloom();
 
         private:
+            struct BloomShadersConst {
+                bool qualityTextureFetch;
+                float upSampleScale;
+            };
+
             void checkConfig() const;
             void clearOutputRenderTarget();
             void refreshRenderers();
