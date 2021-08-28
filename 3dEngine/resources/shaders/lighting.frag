@@ -2,6 +2,8 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_nonuniform_qualifier : enable
 
+#include "_lightingFunctions.frag"
+
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
@@ -18,14 +20,6 @@ layout(std140, set = 0, binding = 1) uniform VisualOption {
 } visualOption;
 
 //lighting
-struct LightInfo {
-    bool isExist;
-    bool produceShadow;
-    bool hasParallelBeams;
-    vec3 positionOrDirection;
-    float exponentialAttenuation;
-    vec3 lightAmbient;
-};
 layout(std140, set = 0, binding = 2) uniform LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
     vec3 globalAmbient;
@@ -179,21 +173,8 @@ void main() {
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
-                vec3 vertexToLightNormalized;
-                float lightAttenuation;
-
-                if (lightsData.lightsInfo[lightIndex].hasParallelBeams) { //sun light
-                    vec3 vertexToLight = -lightsData.lightsInfo[lightIndex].positionOrDirection;
-                    vertexToLightNormalized = normalize(vertexToLight);
-                    lightAttenuation = 1.0f;
-                } else { //omnidirectional light
-                    vec3 vertexToLight = lightsData.lightsInfo[lightIndex].positionOrDirection - vec3(worldPosition);
-                    float dist = length(vertexToLight);
-                    vertexToLightNormalized = normalize(vertexToLight);
-                    lightAttenuation = exp(-dist * lightsData.lightsInfo[lightIndex].exponentialAttenuation);
-                }
-
-                float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
+                float NdotL = 0.0;
+                float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
                 float brightnessPercentage = 1.0f; //1.0 = no shadow
