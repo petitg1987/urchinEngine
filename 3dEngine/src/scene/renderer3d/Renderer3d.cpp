@@ -150,6 +150,10 @@ namespace urchin {
         return *transparentManager;
     }
 
+    BloomEffectApplier& Renderer3d::getBloomEffectApplier() const {
+        return *bloomEffectApplier;
+    }
+
     AntiAliasingManager& Renderer3d::getAntiAliasingManager() const {
         return *antiAliasingManager;
     }

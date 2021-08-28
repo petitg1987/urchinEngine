@@ -45,6 +45,7 @@ namespace urchin {
         if (outputOffscreenRenderTarget.has_value()) {
             outputOffscreenRenderTarget.value()->cleanup();
             outputOffscreenRenderTarget.value().reset();
+            outputOffscreenRenderTarget.reset();
         }
 
         if(outputLdrTexture.has_value()) {

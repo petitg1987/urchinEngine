@@ -53,6 +53,7 @@ namespace urchin {
             AmbientOcclusionManager& getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
             TransparentManager& getTransparentManager() const;
+            BloomEffectApplier& getBloomEffectApplier() const;
             AntiAliasingManager& getAntiAliasingManager() const;
             void activateAntiAliasing(bool);
 
