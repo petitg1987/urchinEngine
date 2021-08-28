@@ -4,10 +4,14 @@
 
 namespace urchin {
 
-    class Camera {
+    class Camera : public Observable {
         public:
             Camera(float, float, float);
-            virtual ~Camera() = default;
+            ~Camera() override = default;
+
+            enum NotificationType {
+                PROJECTION_UPDATE
+            };
 
             void initialize(unsigned int, unsigned int);
             void onResize(unsigned int, unsigned int);
@@ -32,7 +36,8 @@ namespace urchin {
 
             const Quaternion<float>& getOrientation() const;
 
-            float getAngle() const;
+            float getHorizontalFovAngle() const;
+            void updateHorizontalFovAngle(float);
             float getNearPlane() const;
             float getFarPlane() const;
             const Frustum<float>& getFrustum() const;
@@ -51,6 +56,7 @@ namespace urchin {
 
         private:
             void initializeOrUpdate(unsigned int, unsigned int);
+            float computeVerticalFovAngle() const;
             void updateComponents();
 
             const float MOUSE_SENSITIVITY_FACTOR;
@@ -61,7 +67,7 @@ namespace urchin {
 
             Quaternion<float> orientation;
 
-            float angle, nearPlane, farPlane;
+            float horizontalFovAngle, nearPlane, farPlane;
             Frustum<float> baseFrustum; //base frustum (without any matrix transformation)
             Frustum<float> frustum;
 

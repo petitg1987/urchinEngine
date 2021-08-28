@@ -2,11 +2,8 @@
 
 namespace urchin {
 
-    /**
-    * @param angle Angle of the field of view (fovy)
-    */
-    FpsCamera::FpsCamera(float angle, float nearPlane, float farPlane) :
-            Camera(angle, nearPlane, farPlane),
+    FpsCamera::FpsCamera(float horizontalFovAngle, float nearPlane, float farPlane) :
+            Camera(horizontalFovAngle, nearPlane, farPlane),
             keyFront('Z'),
             keyBack('S'),
             keyLeft('Q'),

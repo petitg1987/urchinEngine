@@ -8,8 +8,8 @@ namespace urchin {
     //static
     const char SceneFreeCamera::DATA_DELIMITER = '@';
 
-    SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, MouseController& mouseController) :
-            FreeCamera(angle, nearPlane, farPlane),
+    SceneFreeCamera::SceneFreeCamera(float horizontalFovAngle, float nearPlane, float farPlane, MouseController& mouseController) :
+            FreeCamera(horizontalFovAngle, nearPlane, farPlane),
             mouseXBeforeMove(0.0),
             mouseYBeforeMove(0.0),
             mouseController(mouseController) {

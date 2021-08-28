@@ -4,21 +4,16 @@
 
 namespace urchin {
 
-    /**
-    * @param angle Angle of the field of view (fovy)
-    */
-    Camera::Camera(float angle, float nearPlane, float farPlane) :
+    Camera::Camera(float horizontalFovAngle, float nearPlane, float farPlane) :
             MOUSE_SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.mouseSensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
             position(Point3<float>(0.0f, 0.0f, 0.0f)),
             view(Vector3<float>(0.0f, 0.0f, -1.0f)),
             up(Vector3<float>(0.0f, 1.0f, 0.0f)),
-            angle(angle),
+            horizontalFovAngle(horizontalFovAngle),
             nearPlane(nearPlane),
             farPlane(farPlane),
-            baseFrustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
-            frustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
             maxRotationX(0.995f),
             distance(0.0f),
             bUseMouse(false),
@@ -28,6 +23,10 @@ namespace urchin {
             sceneHeight(0),
             previousMouseX(0.0),
             previousMouseY(0.0) {
+        float verticalFovAngle = computeVerticalFovAngle();
+        baseFrustum = Frustum<float>(verticalFovAngle, 1.0f, nearPlane, farPlane);
+        frustum = Frustum<float>(verticalFovAngle, 1.0f, nearPlane, farPlane);
+
         resetPreviousMousePosition();
     }
 
@@ -52,7 +51,8 @@ namespace urchin {
         this->sceneHeight = sceneHeight;
 
         //projection matrix
-        float fov = 1.0f / std::tan((angle * MathValue::PI_FLOAT) / 360.0f);
+        float verticalFovAngle = computeVerticalFovAngle();
+        float fov = 1.0f / std::tan((verticalFovAngle * MathValue::PI_FLOAT) / 360.0f);
         float ratio = (float)sceneWidth / (float)sceneHeight;
         mProjection.setValues(
                 fov/ratio, 0.0f, 0.0f, 0.0f,
@@ -61,8 +61,19 @@ namespace urchin {
                 0.0f, 0.0f, -1.0f, 0.0f);
 
         //frustum
-        baseFrustum.buildFrustum(angle, ratio, nearPlane, farPlane);
+        baseFrustum.buildFrustum(verticalFovAngle, ratio, nearPlane, farPlane);
         frustum = baseFrustum * mView.inverse();
+
+        notifyObservers(this, Camera::PROJECTION_UPDATE);
+    }
+
+    float Camera::computeVerticalFovAngle() const {
+        if (sceneHeight != 0 && sceneWidth != 0) {
+            float horizontalFovRadian = AngleConverter<float>::toRadian(horizontalFovAngle);
+            float verticalFovRadian = 2.0f * std::atan(std::tan(horizontalFovRadian / 2.0f) * (float)sceneHeight / (float)sceneWidth);
+            return AngleConverter<float>::toDegree(verticalFovRadian);
+        }
+        return 1.0f;
     }
 
     void Camera::resetPreviousMousePosition(double previousMouseX, double previousMouseY) {
@@ -131,8 +142,15 @@ namespace urchin {
         return orientation;
     }
 
-    float Camera::getAngle() const {
-        return angle;
+    float Camera::getHorizontalFovAngle() const {
+        return horizontalFovAngle;
+    }
+
+    void Camera::updateHorizontalFovAngle(float horizontalFovAngle) {
+        if (!MathFunction::isEqual(horizontalFovAngle, this->horizontalFovAngle, 0.001f)) {
+            this->horizontalFovAngle = horizontalFovAngle;
+            initializeOrUpdate(sceneWidth, sceneHeight);
+        }
     }
 
     float Camera::getNearPlane() const {

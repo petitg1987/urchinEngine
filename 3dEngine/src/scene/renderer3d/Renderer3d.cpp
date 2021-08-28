@@ -80,7 +80,6 @@ namespace urchin {
         //camera
         if (camera) {
             camera->onResize(sceneWidth, sceneHeight);
-            onCameraProjectionUpdate();
         }
 
         createOrUpdateLightingPass();
@@ -90,6 +89,10 @@ namespace urchin {
         if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateLightingPass();
+            }
+        } else if (dynamic_cast<Camera*>(observable)) {
+            if (notificationType == Camera::PROJECTION_UPDATE) {
+                onCameraProjectionUpdate();
             }
         }
     }
@@ -172,8 +175,8 @@ namespace urchin {
 
         this->camera = std::move(camera);
         if (this->camera) {
+            this->camera->addObserver(this, Camera::PROJECTION_UPDATE);
             this->camera->initialize(sceneWidth, sceneHeight);
-            onCameraProjectionUpdate();
         }
     }
 

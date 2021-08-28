@@ -6,6 +6,7 @@
 #include <math/geometry/3d/Line3D.h>
 #include <math/algebra/point/Point4.h>
 #include <math/algebra/MathValue.h>
+#include <math/trigonometry/AngleConverter.h>
 
 namespace urchin {
 
@@ -19,8 +20,8 @@ namespace urchin {
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
-    template<class T> Frustum<T>::Frustum(T angle, T ratio, T nearDistance, T farDistance) {
-        buildFrustum(angle, ratio, nearDistance, farDistance);
+    template<class T> Frustum<T>::Frustum(T fovYAngle, T ratio, T nearDistance, T farDistance) {
+        buildFrustum(fovYAngle, ratio, nearDistance, farDistance);
     }
 
     /**
@@ -85,10 +86,10 @@ namespace urchin {
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
-    template<class T> void Frustum<T>::buildFrustum(T angle, T ratio, T nearDistance, T farDistance) {
+    template<class T> void Frustum<T>::buildFrustum(T verticalFovAngle, T ratio, T nearDistance, T farDistance) {
         //half distance of near and far planes
-        T halfFovy = (angle / (T)360.0) * (T)MathValue::PI; //half angle in radian
-        auto tang = (T)std::tan(halfFovy);
+        T halfVerticalFov = AngleConverter<T>::toRadian(verticalFovAngle) / 2.0f;
+        auto tang = (T)std::tan(halfVerticalFov);
         T nearHalfHeight = nearDistance * tang;
         T nearHalfWidth = nearHalfHeight * ratio;
         T farHalfHeight = farDistance * tang;
