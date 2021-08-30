@@ -166,9 +166,9 @@ namespace urchin {
 
         return Matrix4<T>(
                 (T)2.0 / (max.X - min.X), 0.0, 0.0, tx,
-            0.0, (T)-2.0 / (max.Y - min.Y), 0.0, ty,
-            0.0, 0.0, (T)-1.0 / (-min.Z + max.Z), tz,
-            0.0, 0.0, 0.0, 1.0);
+                0.0, (T)-2.0 / (max.Y - min.Y), 0.0, ty,
+                0.0, 0.0, (T)-1.0 / (-min.Z + max.Z), tz,
+                0.0, 0.0, 0.0, 1.0);
     }
 
     template<class T> bool AABBox<T>::include(const AABBox<T>& aabb) const {
@@ -203,16 +203,14 @@ namespace urchin {
      */
     template<class T> AABBox<T> AABBox<T>::cutTo(const AABBox<T>& aabbox) const {
         Point3<T> cutMin(
-            min.X < aabbox.getMin().X ? aabbox.getMin().X : min.X,
-            min.Y < aabbox.getMin().Y ? aabbox.getMin().Y : min.Y,
-            min.Z < aabbox.getMin().Z ? aabbox.getMin().Z : min.Z
-        );
+                min.X < aabbox.getMin().X ? aabbox.getMin().X : min.X,
+                min.Y < aabbox.getMin().Y ? aabbox.getMin().Y : min.Y,
+                min.Z < aabbox.getMin().Z ? aabbox.getMin().Z : min.Z);
 
         Point3<T> cutMax(
-            max.X > aabbox.getMax().X ? aabbox.getMax().X : max.X,
-            max.Y > aabbox.getMax().Y ? aabbox.getMax().Y : max.Y,
-            max.Z > aabbox.getMax().Z ? aabbox.getMax().Z : max.Z
-        );
+                max.X > aabbox.getMax().X ? aabbox.getMax().X : max.X,
+                max.Y > aabbox.getMax().Y ? aabbox.getMax().Y : max.Y,
+                max.Z > aabbox.getMax().Z ? aabbox.getMax().Z : max.Z);
 
         return AABBox<T>(cutMin, cutMax);
     }
