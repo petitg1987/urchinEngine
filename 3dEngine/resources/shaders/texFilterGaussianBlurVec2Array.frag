@@ -18,10 +18,10 @@ layout(location = 0) in vec2 texCoordinates;
 layout(location = 0) out vec2 fragColor;
 
 void main() {
-    fragColor = vec2(0.0f, 0.0f);
+    fragColor = vec2(0.0, 0.0);
 
     for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0f, offsetsBlurData.offsets[i]) : vec2(offsetsBlurData.offsets[i], 0.0f);
+        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, offsetsBlurData.offsets[i]) : vec2(offsetsBlurData.offsets[i], 0.0);
         fragColor += weightsBlurData.weights[i] * texture(tex, vec3(texCoordinates + uvOffset, gl_Layer)).rg;
     }
 }

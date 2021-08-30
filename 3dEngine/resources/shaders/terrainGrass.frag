@@ -1,7 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(constant_id = 0) const float GRASS_ALPHA_TEST = 0.0f;
+layout(constant_id = 0) const float GRASS_ALPHA_TEST = 0.0;
 
 layout(std140, set = 0, binding = 4) uniform Lighting {
     float ambient;

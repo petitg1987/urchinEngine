@@ -7,7 +7,7 @@
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
-layout(constant_id = 3) const float SHADOW_MAP_BIAS = 0.0f;
+layout(constant_id = 3) const float SHADOW_MAP_BIAS = 0.0;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
@@ -57,10 +57,10 @@ layout(location = 0) out vec4 fragColor;
 
 vec4 fetchWorldPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
-        texCoord.s * 2.0f - 1.0f,
-        texCoord.t * 2.0f - 1.0f,
+        texCoord.s * 2.0 - 1.0,
+        texCoord.t * 2.0 - 1.0,
         depthValue,
-        1.0f
+        1.0
     );
     vec4 worldPosition = positioningData.mInverseViewProjection * texPosition;
     worldPosition /= worldPosition.w;
@@ -68,7 +68,7 @@ vec4 fetchWorldPosition(vec2 texCoord, float depthValue) {
 }
 
 float linearStep(float min, float max, float v) {
-      return clamp((v - min) / (max - min), 0.0f, 1.0f);
+      return clamp((v - min) / (max - min), 0.0, 1.0);
 }
 
 float maxComponent(vec3 components) {
@@ -76,7 +76,7 @@ float maxComponent(vec3 components) {
 }
 
 float computeBrightnessPercentage(float shadowMapZ, vec2 moments, float NdotL) {
-    float tanAcosNdotL = sqrt(1.0f - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
+    float tanAcosNdotL = sqrt(1.0 - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
     float bias = max(SHADOW_MAP_BIAS * tanAcosNdotL, 0.00001);
     float shadowMapZBias = shadowMapZ - bias;
     float isInHardShadow = float(shadowMapZBias <= moments.x);
@@ -85,30 +85,30 @@ float computeBrightnessPercentage(float shadowMapZ, vec2 moments, float NdotL) {
     float d = moments.x - shadowMapZBias;
     float pMax = variance / (variance + d * d);
 
-    pMax = linearStep(0.75f, 1.0f, pMax); //reduce light bleeding
+    pMax = linearStep(0.75, 1.0, pMax); //reduce light bleeding
 
     return max(isInHardShadow, pMax);
 }
 
 float computeBrightnessPercentage(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
-    float brightnessPercentage = 1.0f; //1.0 = no shadow
+    float brightnessPercentage = 1.0; //1.0 = no shadow
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
             vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position;
-            shadowCoord.s = (shadowCoord.s / 2.0f) + 0.5f;
-            shadowCoord.t = (shadowCoord.t / 2.0f) + 0.5f;
+            shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
+            shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
             //model has produceShadow flag to true ?
-            if (shadowCoord.s <= 1.0f && shadowCoord.s >= 0.0f && shadowCoord.t <= 1.0f && shadowCoord.t >= 0.0f) {
+            if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
                 vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
                 brightnessPercentage = computeBrightnessPercentage(shadowCoord.z, moments, NdotL);
 
                 //DEBUG: shadow without variance shadow map feature:
-                /*brightnessPercentage = 1.0f;
+                /*brightnessPercentage = 1.0;
                 float sDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
-                if (shadowCoord.z - 0.001f > sDepth) {
-                    brightnessPercentage = 0.0f;
+                if (shadowCoord.z - 0.001 > sDepth) {
+                    brightnessPercentage = 0.0;
                 } */
             }
 
@@ -127,7 +127,7 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     vec3 lineVector = position.xyz - positioningData.viewPosition;
     float t = (fog.maxHeight - positioningData.viewPosition.y) / lineVector.y;
     vec3 correctedPosition = position.xyz;
-    if (t > 0.0f && t < 1.0f) {
+    if (t > 0.0 && t < 1.0) {
         correctedPosition = positioningData.viewPosition + (t * lineVector);
     }
 
@@ -155,16 +155,17 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
 }
 
 void main() {
-    vec3 diffuse = texture(colorTex, texCoordinates).rgb;
+    vec3 hdrDiffuse = texture(colorTex, texCoordinates).rgb;
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     float modelAmbientFactor = normalAndAmbient.a;
     float depthValue = texture(depthTex, texCoordinates).r;
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
 
-    if (modelAmbientFactor < 0.99999f) { //has lighting
-        vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
-        vec3 modelAmbient = diffuse * modelAmbientFactor;
-        fragColor = vec4(lightsData.globalAmbient, 1.0f);
+    if (modelAmbientFactor < 0.9999) { //has lighting
+        vec3 ldrDiffuse = clamp(hdrDiffuse, vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0));
+        vec3 normal = vec3(normalAndAmbient) * 2.0 - 1.0;
+        vec3 modelAmbient = ldrDiffuse * modelAmbientFactor;
+        fragColor = vec4(lightsData.globalAmbient, 1.0);
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
@@ -177,26 +178,28 @@ void main() {
                 float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
-                float brightnessPercentage = 1.0f; //1.0 = no shadow
+                float brightnessPercentage = 1.0; //1.0 = no shadow
                 if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
                     brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, worldPosition, NdotL);
                     shadowLightIndex++;
                 }
 
-                fragColor.rgb += lightAttenuation * (brightnessPercentage * (diffuse * NdotL) + ambient);
+                fragColor.rgb += lightAttenuation * (brightnessPercentage * (ldrDiffuse * NdotL) + ambient);
             } else {
                 break; //no more light
             }
         }
+        vec3 hdrExtraDiffuse = max(vec3(0.0, 0.0, 0.0), hdrDiffuse - vec3(1.0, 1.0, 1.0));
+        fragColor.rgb += hdrExtraDiffuse;
     } else { //no lighting
-        fragColor.rgb = diffuse;
+        fragColor.rgb = hdrDiffuse;
     }
 
     fragColor = addTransparentModels(fragColor);
     fragColor = addFog(fragColor, worldPosition);
 
     //DEBUG: add color to shadow map splits
-    /* const float colorValue = 0.25f;
+    /* const float colorValue = 0.25;
     vec4 splitColors[5] = vec4[](
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));

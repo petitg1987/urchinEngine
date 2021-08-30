@@ -16,47 +16,20 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
-vec3 toneMapping(vec3 hdrColor) {
-    float exposure = 1.0; //0.7;
+vec3 toneMapping(vec3 hdrColor) { //TODO check
+    float exposure = 0.7;
     vec3 color = hdrColor * exposure;
 
-
     //no tone mapping
-    return clamp(hdrColor, 0.0, 1.0);
+    //return clamp(hdrColor, 0.0, 1.0);
 
     //ACES tone mapping
-//    float a = 2.51f;
-//    float b = 0.03f;
-//    float c = 2.43f;
-//    float d = 0.59f;
-//    float e = 0.14f;
-//    return clamp((color * ( a * color + b)) / (color * (c * color + d) + e), 0.0, 1.0);
-
-    //Uncharted 2
-//    float gamma = 2.0;
-//    float exposure = 1.5;
-//    float A = 0.15;
-//    float B = 0.50;
-//    float C = 0.10;
-//    float D = 0.20;
-//    float E = 0.02;
-//    float F = 0.30;
-//    float W = 11.2;
-//    vec3 color = hdrColor;
-//    color *= exposure;
-//    color = ((color * (A * color + C * B) + D * E) / (color * (A * color + B) + D * F)) - E / F;
-//    float white = ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F;
-//    color /= white;
-//    color = pow(color, vec3(1. / gamma));
-//    return color;
-
-    //simple reinhard
-//    float gamma = 2.0;
-//    float exposure = 1.0;
-//    vec3 color = hdrColor;
-//    color *= exposure/(1. + color / exposure);
-//    color = pow(color, vec3(1. / gamma));
-//    return color;
+    float a = 2.51;
+    float b = 0.03;
+    float c = 2.43;
+    float d = 0.59;
+    float e = 0.14;
+    return clamp((color * ( a * color + b)) / (color * (c * color + d) + e), 0.0, 1.0);
 }
 
 void main() {

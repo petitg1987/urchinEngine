@@ -14,7 +14,7 @@ float computeLightAttenuation(LightInfo lightInfo, vec3 normal, vec3 worldPositi
     if (lightInfo.hasParallelBeams) { //sun light
         vec3 vertexToLight = -lightInfo.positionOrDirection;
         vertexToLightNormalized = normalize(vertexToLight);
-        lightAttenuation = 1.0f;
+        lightAttenuation = 1.0;
     } else { //omnidirectional light
         vec3 vertexToLight = lightInfo.positionOrDirection - worldPosition;
         float dist = length(vertexToLight);
@@ -22,7 +22,7 @@ float computeLightAttenuation(LightInfo lightInfo, vec3 normal, vec3 worldPositi
         lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
     }
 
-    NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
+    NdotL = max(dot(normal, vertexToLightNormalized), 0.0);
 
     return lightAttenuation;
 }
