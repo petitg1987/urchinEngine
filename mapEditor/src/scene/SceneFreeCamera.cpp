@@ -25,7 +25,7 @@ namespace urchin {
             assert(serializedCameraElements.size() == 2);
 
             moveTo(TypeConverter::toPoint3(serializedCameraElements[0]));
-            lookAt(TypeConverter::toVector3(serializedCameraElements[1]));
+            rotate(TypeConverter::toQuaternion(serializedCameraElements[1]));
         }
     }
 
@@ -34,9 +34,9 @@ namespace urchin {
 
         std::string serializedCameraPosition = std::to_string(getPosition().X) + TypeConverter::FLOAT_DELIMITER + std::to_string(getPosition().Y)
                 + TypeConverter::FLOAT_DELIMITER + std::to_string(getPosition().Z);
-        std::string serializedCameraView = std::to_string(getView().X) + TypeConverter::FLOAT_DELIMITER + std::to_string(getView().Y)
-                + TypeConverter::FLOAT_DELIMITER + std::to_string(getView().Z);
-        std::string serializedCamera = serializedCameraPosition + DATA_DELIMITER + serializedCameraView;
+        std::string serializedCameraOrientation = std::to_string(getOrientation().X) + TypeConverter::FLOAT_DELIMITER + std::to_string(getOrientation().Y)
+                + TypeConverter::FLOAT_DELIMITER + std::to_string(getOrientation().Z) + TypeConverter::FLOAT_DELIMITER + std::to_string(getOrientation().W);
+        std::string serializedCamera = serializedCameraPosition + DATA_DELIMITER + serializedCameraOrientation;
         cameraPositionByMap[mapFilename] = serializedCamera;
 
         StateSaveHelper::instance().saveState("camera.position", MapSerializer::serialize(cameraPositionByMap));
