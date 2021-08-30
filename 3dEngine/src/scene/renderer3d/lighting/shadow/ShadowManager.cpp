@@ -240,16 +240,17 @@ namespace urchin {
         splitDistances.clear();
         splitFrustums.clear();
 
-        float nearDistance = frustum.computeNearDistance();
-        float previousSplitDistance = nearDistance;
-        for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
-            float uniformSplit = nearDistance + (config.viewingShadowDistance - nearDistance) * ((float)i / (float)config.nbShadowMaps);
-            float logarithmicSplit = nearDistance * std::pow(config.viewingShadowDistance / nearDistance, (float)i / (float)config.nbShadowMaps);
+        float uniformSplitLength = config.viewingShadowDistance / (float)config.nbShadowMaps;
+        float uniformSplitDistance = 0.0f;
+        float previousSplitDistance = 0.0f;
 
-            float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
+        for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
+            uniformSplitDistance += uniformSplitLength;
+            float logarithmicSplitDistance = std::pow(config.viewingShadowDistance, (float)i / (float)config.nbShadowMaps);
+            float splitDistance = (percentageUniformSplit * uniformSplitDistance) + ((1.0f - percentageUniformSplit) * logarithmicSplitDistance);
 
             splitDistances.push_back(splitDistance);
-            splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+            splitFrustums.push_back(frustum.splitFrustum(std::max(0.0f, previousSplitDistance), splitDistance));
 
             previousSplitDistance = splitDistance;
         }
@@ -299,7 +300,7 @@ namespace urchin {
 
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
             float currSplitDistance = splitDistances[shadowMapIndex];
-            depthSplitDistance[shadowMapIndex * 4] = ((projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance));
+            depthSplitDistance[shadowMapIndex * 4] = (projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / currSplitDistance;
         }
 
         lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());

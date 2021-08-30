@@ -19,6 +19,7 @@ namespace urchin {
         std::size_t shadowDataSize = sizeof(shadowData.layerToUpdate) + lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
         meshRendererBuilder
                 ->addUniformData(shadowDataSize, &shadowData); //binding 3
+        assert(meshRendererBuilder->getUniformData().size() == 4);
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
