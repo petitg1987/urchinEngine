@@ -45,7 +45,6 @@ namespace urchin {
             void moveTo(const Point3<float>&);
             void moveOnLocalXAxis(float);
             void moveOnLocalZAxis(float);
-            void lookAt(const Vector3<float>&);
             void rotate(const Quaternion<float>&);
 
             virtual bool onKeyPress(unsigned int);

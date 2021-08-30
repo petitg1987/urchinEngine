@@ -250,7 +250,7 @@ namespace urchin {
             float splitDistance = (percentageUniformSplit * uniformSplitDistance) + ((1.0f - percentageUniformSplit) * logarithmicSplitDistance);
 
             splitDistances.push_back(splitDistance);
-            splitFrustums.push_back(frustum.splitFrustum(std::max(0.0f, previousSplitDistance), splitDistance));
+            splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
 
             previousSplitDistance = splitDistance;
         }

@@ -62,7 +62,7 @@ namespace urchin {
 
         //frustum
         baseFrustum.buildFrustum(verticalFovAngle, ratio, nearPlane, farPlane);
-        frustum = baseFrustum * mView.inverse();
+        updateComponents();
 
         notifyObservers(this, Camera::PROJECTION_UPDATE);
     }
@@ -181,12 +181,6 @@ namespace urchin {
     void Camera::moveOnLocalZAxis(float distance) {
         Vector3<float> localZAxis = view;
         position = position.translate(localZAxis * distance);
-
-        updateComponents();
-    }
-
-    void Camera::lookAt(const Vector3<float>& view) {
-        this->view = view.normalize();
 
         updateComponents();
     }
