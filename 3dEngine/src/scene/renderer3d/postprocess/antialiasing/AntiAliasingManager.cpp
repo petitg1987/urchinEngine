@@ -15,6 +15,9 @@ namespace urchin {
         this->invSceneSize = Point2<float>(1.0f / (float)inputTexture->getWidth(), 1.0f / (float)inputTexture->getHeight());
         this->inputTexture = inputTexture;
 
+        if (renderer) {
+            renderer.reset();
+        }
         outputTexture = Texture::build(inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::B10G11R11_FLOAT, nullptr);
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
         renderTarget->addOutputTexture(outputTexture);
