@@ -21,6 +21,7 @@ namespace urchin {
             };
 
             explicit AntiAliasingManager();
+            ~AntiAliasingManager();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
@@ -47,7 +48,8 @@ namespace urchin {
                 float qualityP11;
             };
 
-            void createOrUpdateRendering();
+            void clearRenderer();
+            void createOrUpdateRenderer();
             void createOrUpdateFxaaShader();
 
             //properties

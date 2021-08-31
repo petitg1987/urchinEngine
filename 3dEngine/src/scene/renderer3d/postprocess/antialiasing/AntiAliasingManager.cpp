@@ -11,26 +11,34 @@ namespace urchin {
 
     }
 
+    AntiAliasingManager::~AntiAliasingManager() {
+        clearRenderer();
+    }
+
     void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& inputTexture) {
         this->invSceneSize = Point2<float>(1.0f / (float)inputTexture->getWidth(), 1.0f / (float)inputTexture->getHeight());
         this->inputTexture = inputTexture;
 
-        if (renderer) {
-            renderer.reset();
-        }
+        clearRenderer();
         outputTexture = Texture::build(inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::B10G11R11_FLOAT, nullptr);
         renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
         renderTarget->addOutputTexture(outputTexture);
         renderTarget->initialize();
 
-        createOrUpdateRendering();
+        createOrUpdateRenderer();
     }
 
     const std::shared_ptr<Texture>& AntiAliasingManager::getOutputTexture() const {
         return outputTexture;
     }
 
-    void AntiAliasingManager::createOrUpdateRendering() {
+    void AntiAliasingManager::clearRenderer() {
+        if (renderer) {
+            renderer.reset();
+        }
+    }
+
+    void AntiAliasingManager::createOrUpdateRenderer() {
         createOrUpdateFxaaShader();
 
         std::vector<Point2<float>> vertexCoord = {
@@ -83,7 +91,7 @@ namespace urchin {
         if (this->config.quality != config.quality) {
             this->config = config;
 
-            createOrUpdateRendering();
+            createOrUpdateRenderer();
         }
     }
 
