@@ -189,7 +189,7 @@ void main() {
                 break; //no more light
             }
         }
-        vec3 hdrExtraDiffuse = max(vec3(0.0, 0.0, 0.0), hdrDiffuse - vec3(1.0, 1.0, 1.0));
+        vec3 hdrExtraDiffuse = max(vec3(0.0, 0.0, 0.0), hdrDiffuse - vec3(1.0, 1.0, 1.0)); //TODO improve
         fragColor.rgb += hdrExtraDiffuse;
     } else { //no lighting
         fragColor.rgb = hdrDiffuse;

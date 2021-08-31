@@ -22,13 +22,8 @@ layout(location = 0) out vec4 fragColor;
 vec3 toneMapping(vec3 hdrColor) {
     vec3 color = hdrColor * exposure.factor;
 
-    //ACES tone mapping
-    float a = 2.51;
-    float b = 0.03;
-    float c = 2.43;
-    float d = 0.59;
-    float e = 0.14;
-    return clamp((color * ( a * color + b)) / (color * (c * color + d) + e), 0.0, 1.0);
+    //null tone mapping
+    return clamp(color, vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0));
 }
 
 void main() {
