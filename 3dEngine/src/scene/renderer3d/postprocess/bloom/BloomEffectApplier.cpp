@@ -5,52 +5,27 @@
 
 namespace urchin {
 
-    BloomEffectApplier::BloomEffectApplier() :
+    BloomEffectApplier::BloomEffectApplier(RenderTarget& outputRenderTarget) :
+            outputRenderTarget(outputRenderTarget),
             config({}),
             sceneWidth(0),
             sceneHeight(0),
-            preFilterTweak({}),
-            outputRenderTarget(nullptr) {
+            preFilterTweak({}) {
         preFilterTweak.threshold = ConfigService::instance().getFloatValue("bloom.threshold");
     }
 
     BloomEffectApplier::~BloomEffectApplier() {
         clearRenderers();
-        clearOutputRenderTarget();
     }
 
-    void BloomEffectApplier::onTextureUpdate(const std::shared_ptr<Texture>& inputHdrTexture, std::optional<RenderTarget*> customRenderTarget) {
+    void BloomEffectApplier::onTextureUpdate(const std::shared_ptr<Texture>& inputHdrTexture) {
         this->inputHdrTexture = inputHdrTexture;
         this->sceneWidth = inputHdrTexture->getWidth();
         this->sceneHeight = inputHdrTexture->getHeight();
 
         clearRenderers();
-        clearOutputRenderTarget();
 
-        if (customRenderTarget.has_value()) {
-            this->outputRenderTarget = customRenderTarget.value();
-        } else {
-            outputLdrTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-            outputOffscreenRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", RenderTarget::NO_DEPTH_ATTACHMENT);
-            outputOffscreenRenderTarget.value()->resetOutputTextures();
-            outputOffscreenRenderTarget.value()->addOutputTexture(outputLdrTexture.value());
-            outputOffscreenRenderTarget.value()->initialize();
-
-            this->outputRenderTarget = outputOffscreenRenderTarget.value().get();
-        }
         refreshRenderers();
-    }
-
-    void BloomEffectApplier::clearOutputRenderTarget() {
-        if (outputOffscreenRenderTarget.has_value()) {
-            outputOffscreenRenderTarget.value()->cleanup();
-            outputOffscreenRenderTarget.value().reset();
-            outputOffscreenRenderTarget.reset();
-        }
-
-        if(outputLdrTexture.has_value()) {
-            outputLdrTexture.value().reset();
-        }
     }
 
     void BloomEffectApplier::refreshRenderers() {
@@ -91,7 +66,6 @@ namespace urchin {
         //pre-filter
         preFilterShader = ShaderBuilder::createShader("bloomPreFilter.vert.spv", "", "bloomPreFilter.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
         preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
-        preFilterRenderTarget->resetOutputTextures();
         preFilterRenderTarget->addOutputTexture(bloomStepTextures[0]);
         preFilterRenderTarget->initialize();
 
@@ -110,7 +84,6 @@ namespace urchin {
             std::size_t srcTexIndex = outTexIndex - 1;
 
             auto downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
-            downSampleRenderTarget->resetOutputTextures();
             downSampleRenderTarget->addOutputTexture(bloomStepTextures[outTexIndex]);
             downSampleRenderTarget->initialize();
 
@@ -130,7 +103,6 @@ namespace urchin {
             std::size_t outTexIndex = srcTexIndex - 1;
 
             auto upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
-            upSampleRenderTarget->resetOutputTextures();
             upSampleRenderTarget->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::LOAD_CONTENT);
             upSampleRenderTarget->initialize();
 
@@ -148,7 +120,7 @@ namespace urchin {
         //combine
         combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "", "bloomCombine.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst));
         texelSize = Point2<float>(1.0f / (float)bloomStepTextures[0]->getWidth(), 1.0f / (float)bloomStepTextures[0]->getHeight());
-        combineRenderer = GenericRendererBuilder::create("bloom - combine", *outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
+        combineRenderer = GenericRendererBuilder::create("bloom - combine", outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
@@ -183,13 +155,6 @@ namespace urchin {
         }
     }
 
-    const std::shared_ptr<Texture>& BloomEffectApplier::getOutputTexture() const {
-        if (!outputLdrTexture.has_value()) {
-            throw std::runtime_error("No output texture available because rendering has been done in a custom render target");
-        }
-        return outputLdrTexture.value();
-    }
-
     void BloomEffectApplier::updateConfig(const Config& config) {
         if (this->config.maxIterations != config.maxIterations ||
                 this->config.textureFetchQuality != config.textureFetchQuality) {
@@ -220,11 +185,7 @@ namespace urchin {
             upSampleRenderTarget->render();
         }
 
-        if (outputOffscreenRenderTarget.has_value()) {
-            outputOffscreenRenderTarget.value()->render();
-        } else {
-            combineRenderer->enableRenderer();
-        }
+        combineRenderer->enableRenderer();
     }
 
 }

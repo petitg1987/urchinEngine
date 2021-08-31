@@ -20,11 +20,10 @@ namespace urchin {
                 TextureFetchQuality textureFetchQuality = QUALITY_FETCH;
             };
 
-            BloomEffectApplier();
+            explicit BloomEffectApplier(RenderTarget&);
             ~BloomEffectApplier();
 
-            void onTextureUpdate(const std::shared_ptr<Texture>&, std::optional<RenderTarget*>);
-            const std::shared_ptr<Texture>& getOutputTexture() const;
+            void onTextureUpdate(const std::shared_ptr<Texture>&);
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -38,10 +37,10 @@ namespace urchin {
             };
 
             void checkConfig() const;
-            void clearOutputRenderTarget();
             void refreshRenderers();
             void clearRenderers();
 
+            RenderTarget& outputRenderTarget;
             Config config;
             unsigned int sceneWidth, sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;
@@ -66,9 +65,6 @@ namespace urchin {
             std::vector<std::unique_ptr<GenericRenderer>> upSampleRenderers;
 
             //combine
-            std::optional<std::shared_ptr<Texture>> outputLdrTexture;
-            std::optional<std::unique_ptr<OffscreenRender>> outputOffscreenRenderTarget;
-            RenderTarget* outputRenderTarget; //either outputOffscreenRenderTarget or the provided custom render target
             std::unique_ptr<Shader> combineShader;
             std::unique_ptr<GenericRenderer> combineRenderer;
     };

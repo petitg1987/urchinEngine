@@ -53,8 +53,8 @@ namespace urchin {
             AmbientOcclusionManager& getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
             TransparentManager& getTransparentManager() const;
-            BloomEffectApplier& getBloomEffectApplier() const;
             AntiAliasingManager& getAntiAliasingManager() const;
+            BloomEffectApplier& getBloomEffectApplier() const;
             void activateAntiAliasing(bool);
 
             //camera
@@ -141,9 +141,9 @@ namespace urchin {
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } visualOption;
-            std::unique_ptr<BloomEffectApplier> bloomEffectApplier;
             std::unique_ptr<AntiAliasingManager> antiAliasingManager;
             bool isAntiAliasingActivated;
+            std::unique_ptr<BloomEffectApplier> bloomEffectApplier;
 
             //debug
             bool refreshDebugFramebuffers;

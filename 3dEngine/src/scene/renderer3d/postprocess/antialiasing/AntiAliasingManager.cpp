@@ -6,17 +6,25 @@
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager(RenderTarget& renderTarget) :
-            renderTarget(renderTarget),
+    AntiAliasingManager::AntiAliasingManager() :
             config({}) {
 
     }
 
-    void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& texture) {
-        this->invSceneSize = Point2<float>(1.0f / (float)texture->getWidth(), 1.0f / (float)texture->getHeight());
-        this->texture = texture;
+    void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& inputTexture) {
+        this->invSceneSize = Point2<float>(1.0f / (float)inputTexture->getWidth(), 1.0f / (float)inputTexture->getHeight());
+        this->inputTexture = inputTexture;
+
+        outputTexture = Texture::build(inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::B10G11R11_FLOAT, nullptr);
+        renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
+        renderTarget->addOutputTexture(outputTexture);
+        renderTarget->initialize();
 
         createOrUpdateRendering();
+    }
+
+    const std::shared_ptr<Texture>& AntiAliasingManager::getOutputTexture() const {
+        return outputTexture;
     }
 
     void AntiAliasingManager::createOrUpdateRendering() {
@@ -30,11 +38,11 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        renderer = GenericRendererBuilder::create("anti aliasing", renderTarget, *fxaaShader, ShapeType::TRIANGLE)
+        renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *fxaaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0
-                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::buildLinear())) //binding 1
+                ->addUniformTextureReader(TextureReader::build(inputTexture, TextureParam::buildLinear())) //binding 1
                 ->build();
     }
 
@@ -81,9 +89,7 @@ namespace urchin {
     }
 
     void AntiAliasingManager::applyAntiAliasing() {
-        if (renderer) {
-            renderer->enableRenderer();
-        }
+        renderTarget->render();
     }
 
 }

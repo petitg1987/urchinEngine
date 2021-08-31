@@ -49,9 +49,9 @@ namespace urchin {
             offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
-            bloomEffectApplier(std::make_unique<BloomEffectApplier>()),
-            antiAliasingManager(std::make_unique<AntiAliasingManager>(finalRenderTarget)),
+            antiAliasingManager(std::make_unique<AntiAliasingManager>()),
             isAntiAliasingActivated(true),
+            bloomEffectApplier(std::make_unique<BloomEffectApplier>(finalRenderTarget)),
 
             //debug
             refreshDebugFramebuffers(true) {
@@ -153,12 +153,12 @@ namespace urchin {
         return *transparentManager;
     }
 
-    BloomEffectApplier& Renderer3d::getBloomEffectApplier() const {
-        return *bloomEffectApplier;
-    }
-
     AntiAliasingManager& Renderer3d::getAntiAliasingManager() const {
         return *antiAliasingManager;
+    }
+
+    BloomEffectApplier& Renderer3d::getBloomEffectApplier() const {
+        return *bloomEffectApplier;
     }
 
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
@@ -279,10 +279,10 @@ namespace urchin {
         updateScene(dt);
         deferredRendering(dt);
         lightingPassRendering();
-        bloomEffectApplier->applyBloom();
         if (isAntiAliasingActivated) {
             antiAliasingManager->applyAntiAliasing();
         }
+        bloomEffectApplier->applyBloom();
 
         renderDebugFramebuffers();
         postUpdateScene();
@@ -339,10 +339,10 @@ namespace urchin {
 
         ambientOcclusionManager->onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
         transparentManager->onTextureUpdate(deferredRenderTarget->getDepthTexture());
-        bloomEffectApplier->onTextureUpdate(lightingPassTexture, isAntiAliasingActivated ? std::nullopt : std::make_optional(&finalRenderTarget));
         if (isAntiAliasingActivated) {
-            antiAliasingManager->onTextureUpdate(bloomEffectApplier->getOutputTexture());
+            antiAliasingManager->onTextureUpdate(lightingPassTexture);
         }
+        bloomEffectApplier->onTextureUpdate(isAntiAliasingActivated ? antiAliasingManager->getOutputTexture() : lightingPassTexture);
 
         refreshDebugFramebuffers = true;
     }
