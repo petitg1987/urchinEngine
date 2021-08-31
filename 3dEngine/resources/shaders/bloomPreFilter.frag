@@ -7,6 +7,7 @@ layout(constant_id = 0) const bool QUALITY_TEXTURE_FETCH = true;
 
 layout(std140, set = 0, binding = 0) uniform PreFilterTweak {
     float threshold;
+    vec3 softCurveParams;
 } preFilterTweak;
 layout(std140, set = 0, binding = 1) uniform Tex {
     vec2 texelSize;
@@ -17,6 +18,12 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
+float computeSoftContribution(float brightness) {
+    //See /scene/renderer3d/postprocess/bloom/_doc/bloomPrefilterFormula.ods for formula details
+    float underThresholdContribution = preFilterTweak.softCurveParams.z * pow(clamp(brightness - preFilterTweak.softCurveParams.x, 0.0, preFilterTweak.softCurveParams.y), 2.0);
+    return max(underThresholdContribution, brightness - preFilterTweak.threshold) / max(brightness, 0.0001);
+}
+
 void main() {
     vec3 hdrColor;
     if (QUALITY_TEXTURE_FETCH) {
@@ -25,9 +32,8 @@ void main() {
         hdrColor = downSampleBlur4Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
     }
 
-    //See following link for the formula: https://catlikecoding.com/unity/tutorials/advanced-rendering/bloom/
-    //Note that more advanced formula to soft edges is also explained under "Soft Threshold" section.
     float brightness = max(max(hdrColor.x, hdrColor.y), hdrColor.z);
-    float contribution = max(0.0, brightness - preFilterTweak.threshold) / max(brightness, 0.00001);
+    float contribution = computeSoftContribution(brightness);
+
     fragColor = vec4(hdrColor * contribution, 1.0);
 }

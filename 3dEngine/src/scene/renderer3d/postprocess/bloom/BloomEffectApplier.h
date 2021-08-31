@@ -52,6 +52,7 @@ namespace urchin {
             std::unique_ptr<Shader> preFilterShader;
             struct {
                 alignas(4) float threshold;
+                alignas(16) Vector3<float> softCurveParams;
             } preFilterTweak;
 
             //down sample

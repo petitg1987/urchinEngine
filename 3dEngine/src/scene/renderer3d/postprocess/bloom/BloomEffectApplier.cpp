@@ -11,7 +11,12 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0),
             preFilterTweak({}) {
-        preFilterTweak.threshold = ConfigService::instance().getFloatValue("bloom.threshold");
+        preFilterTweak.threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
+
+        float filterSoftCurve = ConfigService::instance().getFloatValue("bloom.filterSoftCurve");
+        preFilterTweak.softCurveParams.X = preFilterTweak.threshold - filterSoftCurve;
+        preFilterTweak.softCurveParams.Y = 2.0f * filterSoftCurve;
+        preFilterTweak.softCurveParams.Z = 0.25f / std::max(filterSoftCurve, 0.0001f);
     }
 
     BloomEffectApplier::~BloomEffectApplier() {
