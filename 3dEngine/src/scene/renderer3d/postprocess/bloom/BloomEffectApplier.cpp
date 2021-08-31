@@ -11,12 +11,13 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0),
             preFilterTweak({}) {
-        preFilterTweak.threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
-
         float filterSoftCurve = ConfigService::instance().getFloatValue("bloom.filterSoftCurve");
+        preFilterTweak.threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
         preFilterTweak.softCurveParams.X = preFilterTweak.threshold - filterSoftCurve;
         preFilterTweak.softCurveParams.Y = 2.0f * filterSoftCurve;
         preFilterTweak.softCurveParams.Z = 0.25f / std::max(filterSoftCurve, 0.0001f);
+
+        exposureFactor = ConfigService::instance().getFloatValue("bloom.exposureFactor");
     }
 
     BloomEffectApplier::~BloomEffectApplier() {
@@ -129,8 +130,9 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
-                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 1
-                ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 2
+                ->addUniformData(sizeof(exposureFactor), &exposureFactor) //binding 1
+                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 2
+                ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 3
                 ->build();
     }
 

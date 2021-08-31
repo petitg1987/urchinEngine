@@ -9,19 +9,18 @@ layout(constant_id = 1) const float SAMPLE_SCALE = 1.0;
 layout(std140, set = 0, binding = 0) uniform Tex {
     vec2 texelSize;
 } tex;
-layout(binding = 1) uniform sampler2D lastBloomStepTexture;
-layout(binding = 2) uniform sampler2D inputHdrTexture;
+layout(std140, set = 0, binding = 1) uniform Exposure {
+    float factor;
+} exposure;
+layout(binding = 2) uniform sampler2D lastBloomStepTexture;
+layout(binding = 3) uniform sampler2D inputHdrTexture;
 
 layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
-vec3 toneMapping(vec3 hdrColor) { //TODO check
-    float exposure = 0.7;
-    vec3 color = hdrColor * exposure;
-
-    //no tone mapping
-    //return clamp(hdrColor, 0.0, 1.0);
+vec3 toneMapping(vec3 hdrColor) {
+    vec3 color = hdrColor * exposure.factor;
 
     //ACES tone mapping
     float a = 2.51;

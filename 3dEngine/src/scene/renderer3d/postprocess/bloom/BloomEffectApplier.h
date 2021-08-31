@@ -68,6 +68,7 @@ namespace urchin {
             //combine
             std::unique_ptr<Shader> combineShader;
             std::unique_ptr<GenericRenderer> combineRenderer;
+            float exposureFactor;
     };
 
 }
