@@ -27,6 +27,7 @@ namespace urchin {
 
             void addWidget(const std::shared_ptr<Widget>&);
             void removeWidget(Widget&);
+            void removeAllWidgets();
 
             void prepareRendering(float) override;
 

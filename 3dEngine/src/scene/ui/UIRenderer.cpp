@@ -135,6 +135,10 @@ namespace urchin {
         widgets.erase(itFind);
     }
 
+    void UIRenderer::removeAllWidgets() {
+        widgets.clear();
+    }
+
     void UIRenderer::prepareRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
