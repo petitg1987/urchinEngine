@@ -1,5 +1,7 @@
 include(ExternalProject)
 
+SET_DIRECTORY_PROPERTIES(PROPERTIES CLEAN_NO_CUSTOM 1)
+
 set(CURL_ROOT               ${CMAKE_BINARY_DIR}/deps/curl)
 set(CURL_LIB_DIR            ${CURL_ROOT}/lib)
 set(CURL_INCLUDE_DIR        ${CURL_ROOT}/include)
