@@ -36,6 +36,10 @@ namespace urchin {
         if (renderer) {
             renderer.reset();
         }
+        if (renderTarget) {
+            renderTarget->cleanup();
+            renderTarget.reset();
+        }
     }
 
     void AntiAliasingManager::createOrUpdateRenderer() {
