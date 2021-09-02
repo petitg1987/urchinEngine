@@ -3,7 +3,7 @@
 
 #include "_samplingFunctions.frag"
 
-layout(constant_id = 0) const bool QUALITY_TEXTURE_FETCH = true;
+layout(constant_id = 0) const uint QUALITY_TEXTURE_FETCH = 0;
 
 layout(std140, set = 0, binding = 0) uniform PreFilterTweak {
     float threshold;
@@ -26,10 +26,12 @@ float computeSoftContribution(float brightness) {
 
 void main() {
     vec3 hdrColor;
-    if (QUALITY_TEXTURE_FETCH) {
+    if (QUALITY_TEXTURE_FETCH == 0) {
         hdrColor = downSampleBlur13Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
-    } else {
+    } else if (QUALITY_TEXTURE_FETCH == 1) {
         hdrColor = downSampleBlur4Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
+    } else if (QUALITY_TEXTURE_FETCH == 2) {
+        hdrColor = texture(inputHdrTexture, texCoordinates).rgb;
     }
 
     float brightness = max(max(hdrColor.x, hdrColor.y), hdrColor.z);

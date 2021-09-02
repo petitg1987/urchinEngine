@@ -11,13 +11,14 @@ namespace urchin {
     class BloomEffectApplier {
         public:
             enum TextureFetchQuality {
-                QUALITY_FETCH,
-                PERFORMANCE_FETCH
+                BEST_QUALITY = 0,
+                MEDIUM_QUALITY,
+                LOW_QUALITY
             };
 
             struct Config {
                 unsigned int maxIterations = 15;
-                TextureFetchQuality textureFetchQuality = QUALITY_FETCH;
+                TextureFetchQuality textureFetchQuality = BEST_QUALITY;
             };
 
             explicit BloomEffectApplier(RenderTarget&);
@@ -32,7 +33,7 @@ namespace urchin {
 
         private:
             struct BloomShadersConst {
-                bool qualityTextureFetch;
+                uint32_t qualityTextureFetch;
                 float upSampleScale;
             };
 

@@ -64,7 +64,7 @@ namespace urchin {
 
         //shader constants
         BloomShadersConst bloomShadersConst = {};
-        bloomShadersConst.qualityTextureFetch = (config.textureFetchQuality == TextureFetchQuality::QUALITY_FETCH);
+        bloomShadersConst.qualityTextureFetch = (uint32_t)config.textureFetchQuality;
         bloomShadersConst.upSampleScale = ConfigService::instance().getFloatValue("bloom.upSampleScale");
         std::vector<std::size_t> downSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch)};
         std::vector<std::size_t> upSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch), sizeof(bloomShadersConst.upSampleScale)};
@@ -179,7 +179,7 @@ namespace urchin {
 
     void BloomEffectApplier::checkConfig() const {
         if (config.maxIterations < 1) {
-            throw std::invalid_argument("Bloom maximum iterations must be greater than one");
+            throw std::invalid_argument("Bloom maximum iterations must be greater than zero");
         }
     }
 

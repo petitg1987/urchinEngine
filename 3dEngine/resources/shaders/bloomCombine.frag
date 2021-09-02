@@ -3,7 +3,7 @@
 
 #include "_samplingFunctions.frag"
 
-layout(constant_id = 0) const bool QUALITY_TEXTURE_FETCH = true;
+layout(constant_id = 0) const uint QUALITY_TEXTURE_FETCH = 0;
 layout(constant_id = 1) const float SAMPLE_SCALE = 1.0;
 
 layout(std140, set = 0, binding = 0) uniform Tex {
@@ -28,10 +28,12 @@ vec3 toneMapping(vec3 hdrColor) {
 
 void main() {
     vec3 bloomValue;
-    if (QUALITY_TEXTURE_FETCH) {
+    if (QUALITY_TEXTURE_FETCH == 0) {
         bloomValue = upSample9Fetch(lastBloomStepTexture, texCoordinates, tex.texelSize, SAMPLE_SCALE);
-    } else {
+    } else if (QUALITY_TEXTURE_FETCH == 1) {
         bloomValue = upSample4Fetch(lastBloomStepTexture, texCoordinates, tex.texelSize, SAMPLE_SCALE);
+    } else if (QUALITY_TEXTURE_FETCH == 2) {
+        bloomValue = texture(lastBloomStepTexture, texCoordinates).rgb;
     }
     vec3 hdrColor = texture(inputHdrTexture, texCoordinates).rgb;
 
