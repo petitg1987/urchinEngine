@@ -336,9 +336,10 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale(), TextureParam::buildNearest())) //binding 11 - transparency: reveal
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 12
                 ->build();
-
         ambientOcclusionManager->onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
         transparentManager->onTextureUpdate(deferredRenderTarget->getDepthTexture());
+
+        //post process rendering
         if (isAntiAliasingActivated) {
             antiAliasingManager->onTextureUpdate(lightingPassTexture);
         }

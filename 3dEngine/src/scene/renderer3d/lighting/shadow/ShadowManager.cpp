@@ -185,7 +185,7 @@ namespace urchin {
 
             newLightShadowMap->addTextureFilter(std::move(verticalBlurFilter));
             newLightShadowMap->addTextureFilter(std::move(horizontalBlurFilter));
-        } else { //null filter necessary because it allows to store cached shadow map in a texture which is not cleared.
+        } else { //null filter necessary because it allows storing of cached shadow map in a texture which is not cleared.
             std::unique_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>("shadow map - cache null filter", shadowMapTexture)
                     ->textureSize(config.shadowMapResolution, config.shadowMapResolution)
                     ->textureType(TextureType::ARRAY)
