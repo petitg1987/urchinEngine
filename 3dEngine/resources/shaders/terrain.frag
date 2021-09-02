@@ -16,7 +16,7 @@ layout(binding = 8) uniform sampler2D diffuseTex4;
 layout(location = 0) in vec2 texCoordinates;
 layout(location = 1) in vec3 normal;
 
-layout(location = 0) out vec4 fragColor;
+layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
@@ -24,15 +24,17 @@ void main() {
     vec2 maskTexCoordinates = vec2(texCoordinates.x / material.stRepeat.x, texCoordinates.y / material.stRepeat.y);
     vec4 maskValue = texture(maskTex, maskTexCoordinates);
 
-    vec4 diffuseValue1 = texture(diffuseTex1, texCoordinates);
-    vec4 diffuseValue2 = texture(diffuseTex2, texCoordinates);
-    vec4 diffuseValue3 = texture(diffuseTex3, texCoordinates);
-    vec4 diffuseValue4 = texture(diffuseTex4, texCoordinates);
+    vec3 diffuseValue1 = texture(diffuseTex1, texCoordinates).rgb;
+    vec3 diffuseValue2 = texture(diffuseTex2, texCoordinates).rgb;
+    vec3 diffuseValue3 = texture(diffuseTex3, texCoordinates).rgb;
+    vec3 diffuseValue4 = texture(diffuseTex4, texCoordinates).rgb;
 
-    fragColor = maskValue.r * diffuseValue1
-        + maskValue.g * diffuseValue2
-        + maskValue.b * diffuseValue3
-        + maskValue.a * diffuseValue4;
+    fragDiffuseAndEmissive.rgb =
+            maskValue.r * diffuseValue1 +
+            maskValue.g * diffuseValue2 +
+            maskValue.b * diffuseValue3 +
+            maskValue.a * diffuseValue4;
+    fragDiffuseAndEmissive.a = 0.0;
 
     //material
     vec3 texNormal = (normal + 1.0) / 2.0;

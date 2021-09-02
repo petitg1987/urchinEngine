@@ -7,10 +7,10 @@ namespace urchin {
     GeometryModel::GeometryModel() :
             isInitialized(false),
             renderTarget(nullptr),
-            color(Vector4<float>(0.0f, 1.0f, 0.0f, 1.0f)),
+            color(Vector3<float>(0.0f, 1.0f, 0.0f)),
             polygonMode(WIREFRAME),
-            transparencyEnabled(false),
-            alwaysVisible(false) {
+            alwaysVisible(false),
+            cullFaceDisabled(false) {
     }
 
     void GeometryModel::initialize(RenderTarget& renderTarget) {
@@ -43,10 +43,8 @@ namespace urchin {
             rendererBuilder->enableDepthWrite();
         }
 
-        if (transparencyEnabled) {
-            std::vector<BlendFunction> blendFunctions;
-            blendFunctions.resize(renderTarget->getNumColorAttachment(), BlendFunction::buildDefault());
-            rendererBuilder->enableTransparency(blendFunctions);
+        if (cullFaceDisabled) {
+            rendererBuilder->disableCullFace();
         }
 
         renderer = rendererBuilder->build();
@@ -60,12 +58,12 @@ namespace urchin {
         return *renderTarget;
     }
 
-    Vector4<float> GeometryModel::getColor() const {
+    Vector3<float> GeometryModel::getColor() const {
         return color;
     }
 
-    void GeometryModel::setColor(float red, float green, float blue, float alpha) {
-        color = Vector4<float>(red, green, blue, alpha);
+    void GeometryModel::setColor(float red, float green, float blue) {
+        color = Vector3<float>(red, green, blue);
     }
 
     PolygonMode GeometryModel::getPolygonMode() const {
@@ -77,21 +75,21 @@ namespace urchin {
         refreshRenderer();
     }
 
-    bool GeometryModel::isTransparencyEnabled() const {
-        return transparencyEnabled;
-    }
-
-    void GeometryModel::enableTransparency() {
-        transparencyEnabled = true;
-        refreshRenderer();
-    }
-
     bool GeometryModel::isAlwaysVisible() const {
         return alwaysVisible;
     }
 
     void GeometryModel::setAlwaysVisible(bool alwaysVisible) {
         this->alwaysVisible = alwaysVisible;
+        refreshRenderer();
+    }
+
+    bool GeometryModel::isCullFaceDisabled() const {
+        return cullFaceDisabled;
+    }
+
+    void GeometryModel::disableCullFace() {
+        this->cullFaceDisabled = true;
         refreshRenderer();
     }
 

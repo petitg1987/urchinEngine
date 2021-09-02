@@ -2,16 +2,16 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(std140, set = 0, binding = 1) uniform Visual {
-    vec4 color;
+    vec3 color;
 } visual;
 
-layout(location = 0) out vec4 fragColor;
+layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
-    //diffuse
-    fragColor = visual.color;
+    //diffuse and emissive
+    fragDiffuseAndEmissive = vec4(visual.color, 0.0);
 
-    //material
+    //ambient factor
     fragNormalAndAmbient.a = 1.0; //no lighting
 }

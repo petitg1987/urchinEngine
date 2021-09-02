@@ -2,6 +2,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_nonuniform_qualifier : enable
 
+#include "_globalConstants.frag"
 #include "_lightingFunctions.frag"
 
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
@@ -44,7 +45,7 @@ layout(std140, set = 0, binding = 5) uniform Fog {
 
 //deferred textures
 layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 7) uniform sampler2D colorTex; //diffuse B10G11R11 (32 bits)
+layout(binding = 7) uniform sampler2D colorAndEmissiveTex; //diffuse RGB (3 * 8 bits) + emissive factor
 layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor
 layout(binding = 9) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
 layout(binding = 10) uniform sampler2D transparencyAccumulationTex; //transparency accumulation (4 * 16 bits)
@@ -75,7 +76,7 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeBrightnessPercentage(float shadowMapZ, vec2 moments, float NdotL) {
+float computeShadowAttenuation(float shadowMapZ, vec2 moments, float NdotL) {
     float tanAcosNdotL = sqrt(1.0 - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
     float bias = max(SHADOW_MAP_BIAS * tanAcosNdotL, 0.00001);
     float shadowMapZBias = shadowMapZ - bias;
@@ -90,8 +91,8 @@ float computeBrightnessPercentage(float shadowMapZ, vec2 moments, float NdotL) {
     return max(isInHardShadow, pMax);
 }
 
-float computeBrightnessPercentage(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
-    float brightnessPercentage = 1.0; //1.0 = no shadow
+float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
+    float shadowAttenuation = 1.0; //1.0 = no shadow
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
@@ -102,13 +103,13 @@ float computeBrightnessPercentage(int shadowLightIndex, float depthValue, vec4 p
             //model has produceShadow flag to true ?
             if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
                 vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
-                brightnessPercentage = computeBrightnessPercentage(shadowCoord.z, moments, NdotL);
+                shadowAttenuation = computeShadowAttenuation(shadowCoord.z, moments, NdotL);
 
                 //DEBUG: shadow without variance shadow map feature:
-                /*brightnessPercentage = 1.0;
+                /*shadowAttenuation = 1.0;
                 float sDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
                 if (shadowCoord.z - 0.001 > sDepth) {
-                    brightnessPercentage = 0.0;
+                    shadowAttenuation = 0.0;
                 } */
             }
 
@@ -116,7 +117,7 @@ float computeBrightnessPercentage(int shadowLightIndex, float depthValue, vec4 p
         }
     }
 
-    return brightnessPercentage;
+    return shadowAttenuation;
 }
 
 vec4 addFog(vec4 baseColor, vec4 position) {
@@ -155,16 +156,18 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
 }
 
 void main() {
-    vec3 hdrDiffuse = texture(colorTex, texCoordinates).rgb;
-    vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
-    float modelAmbientFactor = normalAndAmbient.a;
     float depthValue = texture(depthTex, texCoordinates).r;
-    vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
+    vec4 diffuseAndEmissive = texture(colorAndEmissiveTex, texCoordinates);
+    vec4 normalAndAmbient = texture(normalAndAmbientTex, texCoordinates);
 
-    if (modelAmbientFactor < 0.9999) { //has lighting
-        vec3 ldrDiffuse = clamp(hdrDiffuse, vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0));
+    vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
+    vec3 diffuse = diffuseAndEmissive.rgb;
+    float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR;
+    float modelAmbientFactor = normalAndAmbient.a;
+
+    if (modelAmbientFactor < 0.9999) { //apply lighting
         vec3 normal = vec3(normalAndAmbient) * 2.0 - 1.0;
-        vec3 modelAmbient = ldrDiffuse * modelAmbientFactor;
+        vec3 modelAmbient = diffuse * modelAmbientFactor;
         fragColor = vec4(lightsData.globalAmbient, 1.0);
 
         if (visualOption.hasAmbientOcclusion) {
@@ -178,21 +181,20 @@ void main() {
                 float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
-                float brightnessPercentage = 1.0; //1.0 = no shadow
+                float shadowAttenuation = 1.0; //1.0 = no shadow
                 if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
-                    brightnessPercentage = computeBrightnessPercentage(shadowLightIndex, depthValue, worldPosition, NdotL);
+                    shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, NdotL);
                     shadowLightIndex++;
                 }
 
-                fragColor.rgb += lightAttenuation * (brightnessPercentage * (ldrDiffuse * NdotL) + ambient);
+                fragColor.rgb += lightAttenuation * (shadowAttenuation * (diffuse * NdotL) + ambient);
             } else {
                 break; //no more light
             }
         }
-        vec3 hdrExtraDiffuse = max(vec3(0.0, 0.0, 0.0), hdrDiffuse - vec3(1.0, 1.0, 1.0)); //TODO improve
-        fragColor.rgb += hdrExtraDiffuse;
-    } else { //no lighting
-        fragColor.rgb = hdrDiffuse;
+        fragColor.rgb += diffuse * emissiveFactor;
+    } else { //do not apply lighting (e.g. skybox, geometry models...)
+        fragColor.rgb = diffuse;
     }
 
     fragColor = addTransparentModels(fragColor);

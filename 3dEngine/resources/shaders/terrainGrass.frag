@@ -11,7 +11,7 @@ layout(binding = 5) uniform sampler2D grassTex;
 layout(location = 0) smooth in vec2 vertexTexCoordinates;
 layout(location = 1) in vec3 grassNormal;
 
-layout(location = 0) out vec4 fragColor;
+layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
@@ -20,6 +20,6 @@ void main() {
     if (color.a < GRASS_ALPHA_TEST)
         discard;
 
-    fragColor = vec4(color.xyz, 1.0);
+    fragDiffuseAndEmissive = vec4(color.rgb, 0.0);
     fragNormalAndAmbient = vec4(grassNormal, lighting.ambient);
 }

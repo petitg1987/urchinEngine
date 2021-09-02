@@ -290,7 +290,7 @@ namespace urchin {
 
     void Renderer3d::createOrUpdateLightingPass() {
         //deferred rendering
-        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
+        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         deferredRenderTarget->resetOutputTextures();
         deferredRenderTarget->addOutputTexture(diffuseTexture);

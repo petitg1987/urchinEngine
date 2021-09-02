@@ -3,6 +3,7 @@
 
 #include "_lightingFunctions.frag"
 
+//TODO use constant as in lighting.frag ?
 const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_SHADER_LIMIT
 
 //global
@@ -49,7 +50,7 @@ void fillTransparentTextures(vec4 fragColor) {
 }
 
 void main() {
-    vec4 ldrDiffuse = texture(diffuseTex, texCoordinates);
+    vec4 ldrDiffuse = texture(diffuseTex, texCoordinates); //TODO review !
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
@@ -69,7 +70,7 @@ void main() {
             break; //no more light
         }
     }
-    vec3 hdrDiffuse = ldrDiffuse.rgb * meshData.emissiveFactor;
+    vec3 hdrDiffuse = ldrDiffuse.rgb * meshData.emissiveFactor; //TODO review !
     vec3 hdrExtraDiffuse = max(vec3(0.0, 0.0, 0.0), hdrDiffuse - vec3(1.0, 1.0, 1.0));
     fragColor.rgb += hdrExtraDiffuse;
 

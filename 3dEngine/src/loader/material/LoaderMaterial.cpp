@@ -60,7 +60,7 @@ namespace urchin {
         }
 
         //emissive factor
-        float emissiveFactor = 1.0f;
+        float emissiveFactor = 0.0f;
         auto emissiveFactorChunk = udaParser.getUniqueChunk(false, "emissiveFactor");
         if (emissiveFactorChunk) {
             emissiveFactor = emissiveFactorChunk->getFloatValue();

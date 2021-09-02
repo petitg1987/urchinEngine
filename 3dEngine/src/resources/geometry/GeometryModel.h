@@ -16,17 +16,17 @@ namespace urchin {
 
             const RenderTarget& getRenderTarget() const;
 
-            Vector4<float> getColor() const;
-            void setColor(float, float, float, float alpha = 1.0f);
+            Vector3<float> getColor() const;
+            void setColor(float, float, float);
 
             PolygonMode getPolygonMode() const;
             void setPolygonMode(PolygonMode);
 
-            bool isTransparencyEnabled() const;
-            void enableTransparency();
-
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
+
+            bool isCullFaceDisabled() const;
+            void disableCullFace();
 
             void setModelMatrix(const Matrix4<float>&);
         protected:
@@ -53,10 +53,10 @@ namespace urchin {
 
             Matrix4<float> modelMatrix;
 
-            Vector4<float> color;
+            Vector3<float> color;
             PolygonMode polygonMode;
-            bool transparencyEnabled;
             bool alwaysVisible;
+            bool cullFaceDisabled;
     };
 
 }
