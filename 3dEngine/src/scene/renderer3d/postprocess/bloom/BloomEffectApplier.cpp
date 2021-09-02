@@ -184,6 +184,8 @@ namespace urchin {
     }
 
     void BloomEffectApplier::applyBloom() {
+        ScopeProfiler sp(Profiler::graphic(), "bloomPreRender");
+
         preFilterRenderTarget->render();
         for(auto& downSampleRenderTarget : downSampleRenderTargets) {
             downSampleRenderTarget->render();
