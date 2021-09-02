@@ -1,21 +1,21 @@
 #include <map>
 
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h>
+#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    AntiAliasingManager::AntiAliasingManager() :
+    AntiAliasingApplier::AntiAliasingApplier() :
             config({}) {
 
     }
 
-    AntiAliasingManager::~AntiAliasingManager() {
+    AntiAliasingApplier::~AntiAliasingApplier() {
         clearRenderer();
     }
 
-    void AntiAliasingManager::onTextureUpdate(const std::shared_ptr<Texture>& inputTexture) {
+    void AntiAliasingApplier::onTextureUpdate(const std::shared_ptr<Texture>& inputTexture) {
         this->invSceneSize = Point2<float>(1.0f / (float)inputTexture->getWidth(), 1.0f / (float)inputTexture->getHeight());
         this->inputTexture = inputTexture;
 
@@ -28,11 +28,11 @@ namespace urchin {
         createOrUpdateRenderer();
     }
 
-    const std::shared_ptr<Texture>& AntiAliasingManager::getOutputTexture() const {
+    const std::shared_ptr<Texture>& AntiAliasingApplier::getOutputTexture() const {
         return outputTexture;
     }
 
-    void AntiAliasingManager::clearRenderer() {
+    void AntiAliasingApplier::clearRenderer() {
         renderer.reset();
 
         if (renderTarget) {
@@ -41,7 +41,7 @@ namespace urchin {
         }
     }
 
-    void AntiAliasingManager::createOrUpdateRenderer() {
+    void AntiAliasingApplier::createOrUpdateRenderer() {
         createOrUpdateFxaaShader();
 
         std::vector<Point2<float>> vertexCoord = {
@@ -60,7 +60,7 @@ namespace urchin {
                 ->build();
     }
 
-    void AntiAliasingManager::createOrUpdateFxaaShader() {
+    void AntiAliasingApplier::createOrUpdateFxaaShader() {
         AntiAliasingShaderConst antiAliasingShaderConst = {};
         if (config.quality == LOW) {
             antiAliasingShaderConst = {6, 1.0f, 1.5f, 2.0f, 2.0f, 4.0f, 12.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f};
@@ -90,7 +90,7 @@ namespace urchin {
         fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
     }
 
-    void AntiAliasingManager::updateConfig(const Config& config) {
+    void AntiAliasingApplier::updateConfig(const Config& config) {
         if (this->config.quality != config.quality) {
             this->config = config;
 
@@ -98,11 +98,11 @@ namespace urchin {
         }
     }
 
-    const AntiAliasingManager::Config& AntiAliasingManager::getConfig() const {
+    const AntiAliasingApplier::Config& AntiAliasingApplier::getConfig() const {
         return config;
     }
 
-    void AntiAliasingManager::applyAntiAliasing() {
+    void AntiAliasingApplier::applyAntiAliasing() {
         renderTarget->render();
     }
 

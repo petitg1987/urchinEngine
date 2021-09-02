@@ -7,11 +7,10 @@
 
 #include <scene/Renderer.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingManager.h>
+#include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <scene/renderer3d/postprocess/ambientocclusion/AmbientOcclusionManager.h>
 #include <scene/renderer3d/transparent/TransparentManager.h>
+#include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
@@ -53,7 +52,7 @@ namespace urchin {
             AmbientOcclusionManager& getAmbientOcclusionManager() const;
             void activateAmbientOcclusion(bool);
             TransparentManager& getTransparentManager() const;
-            AntiAliasingManager& getAntiAliasingManager() const;
+            AntiAliasingApplier& getAntiAliasingApplier() const;
             BloomEffectApplier& getBloomEffectApplier() const;
             void activateAntiAliasing(bool);
 
@@ -142,7 +141,7 @@ namespace urchin {
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } visualOption;
-            std::unique_ptr<AntiAliasingManager> antiAliasingManager;
+            std::unique_ptr<AntiAliasingApplier> antiAliasingApplier;
             bool isAntiAliasingActivated;
             std::unique_ptr<BloomEffectApplier> bloomEffectApplier;
 

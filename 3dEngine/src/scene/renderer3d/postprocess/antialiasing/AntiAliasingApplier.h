@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class AntiAliasingManager {
+    class AntiAliasingApplier {
         public:
             enum Quality {
                 LOW = 0,
@@ -17,11 +17,11 @@ namespace urchin {
             };
 
             struct Config {
-                Quality quality = AntiAliasingManager::Quality::HIGH;
+                Quality quality = AntiAliasingApplier::Quality::HIGH;
             };
 
-            explicit AntiAliasingManager();
-            ~AntiAliasingManager();
+            explicit AntiAliasingApplier();
+            ~AntiAliasingApplier();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;

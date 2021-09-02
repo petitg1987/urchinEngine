@@ -49,7 +49,7 @@ namespace urchin {
             offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             visualOption({}),
-            antiAliasingManager(std::make_unique<AntiAliasingManager>()),
+            antiAliasingApplier(std::make_unique<AntiAliasingApplier>()),
             isAntiAliasingActivated(true),
             bloomEffectApplier(std::make_unique<BloomEffectApplier>(finalRenderTarget)),
 
@@ -153,8 +153,8 @@ namespace urchin {
         return *transparentManager;
     }
 
-    AntiAliasingManager& Renderer3d::getAntiAliasingManager() const {
-        return *antiAliasingManager;
+    AntiAliasingApplier& Renderer3d::getAntiAliasingApplier() const {
+        return *antiAliasingApplier;
     }
 
     BloomEffectApplier& Renderer3d::getBloomEffectApplier() const {
@@ -280,7 +280,7 @@ namespace urchin {
         deferredRendering(dt);
         lightingPassRendering();
         if (isAntiAliasingActivated) {
-            antiAliasingManager->applyAntiAliasing();
+            antiAliasingApplier->applyAntiAliasing();
         }
         bloomEffectApplier->applyBloom();
 
@@ -341,9 +341,9 @@ namespace urchin {
 
         //post process rendering
         if (isAntiAliasingActivated) {
-            antiAliasingManager->onTextureUpdate(lightingPassTexture);
+            antiAliasingApplier->onTextureUpdate(lightingPassTexture);
         }
-        bloomEffectApplier->onTextureUpdate(isAntiAliasingActivated ? antiAliasingManager->getOutputTexture() : lightingPassTexture);
+        bloomEffectApplier->onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier->getOutputTexture() : lightingPassTexture);
 
         refreshDebugFramebuffers = true;
     }
