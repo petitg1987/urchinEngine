@@ -26,6 +26,11 @@ namespace urchin {
             void loadTransparentTextures(GenericRenderer&, std::size_t, std::size_t) const;
 
         private:
+            struct ModelTransparentShaderConst {
+                uint32_t maxLights;
+                float maxEmissiveFactor;
+            };
+
             void createOrUpdateRendering();
             void createOrUpdateTextures();
             void createOrUpdateModelSetDisplayer();

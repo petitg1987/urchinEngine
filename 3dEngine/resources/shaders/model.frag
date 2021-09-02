@@ -1,11 +1,9 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-#include "_globalConstants.frag"
-
 layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
-    float emissiveFactor;
+    float packedEmissiveFactor; //packed between 0.0 and 1.0
     float ambientFactor;
 } meshData;
 layout(binding = 5) uniform sampler2D diffuseTex;
@@ -22,8 +20,7 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 
 void main() {
     //diffuse and emissive
-    float packagedEmissive = meshData.emissiveFactor / MAX_EMISSIVE_FACTOR; //TODO compute this value in c++
-    fragDiffuseAndEmissive = vec4(texture(diffuseTex, texCoordinates).rgb, packagedEmissive);
+    fragDiffuseAndEmissive = vec4(texture(diffuseTex, texCoordinates).rgb, meshData.packedEmissiveFactor);
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));

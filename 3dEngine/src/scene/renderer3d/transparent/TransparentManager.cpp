@@ -58,12 +58,20 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateModelSetDisplayer() {
-        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+        ModelTransparentShaderConst modelTransparentConstData{};
+        modelTransparentConstData.maxLights = lightManager.getMaxLights();
+        modelTransparentConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
+        std::vector<std::size_t> variablesSize = {
+                sizeof(modelTransparentConstData.maxLights),
+                sizeof(modelTransparentConstData.maxEmissiveFactor)
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &modelTransparentConstData);
 
         BlendFunction accumulationBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
         BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
 
-        modelSetDisplayer->setupShader("", "modelTransparent.frag.spv", std::unique_ptr<ShaderConstants>());
+        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+        modelSetDisplayer->setupShader("", "modelTransparent.frag.spv", std::move(shaderConstants));
         modelSetDisplayer->setupDepthOperations(true, false /* disable depth write */);
         modelSetDisplayer->setupBlendFunctions({accumulationBlend, revealBlend});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());

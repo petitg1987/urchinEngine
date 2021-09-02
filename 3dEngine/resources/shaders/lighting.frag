@@ -2,13 +2,13 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_EXT_nonuniform_qualifier : enable
 
-#include "_globalConstants.frag"
 #include "_lightingFunctions.frag"
 
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
 layout(constant_id = 3) const float SHADOW_MAP_BIAS = 0.0;
+layout(constant_id = 4) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
@@ -162,7 +162,7 @@ void main() {
 
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
     vec3 diffuse = diffuseAndEmissive.rgb;
-    float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR;
+    float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
     float modelAmbientFactor = normalAndAmbient.a;
 
     if (modelAmbientFactor < 0.9999) { //apply lighting

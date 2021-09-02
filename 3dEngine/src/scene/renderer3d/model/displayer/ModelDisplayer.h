@@ -43,7 +43,7 @@ namespace urchin {
             } positioningData;
             mutable struct {
                 alignas(16) Matrix4<float> normalMatrix;
-                alignas(4) float emissiveFactor;
+                alignas(4) float packedEmissiveFactor;
                 alignas(4) float ambientFactor;
             } meshData;
 

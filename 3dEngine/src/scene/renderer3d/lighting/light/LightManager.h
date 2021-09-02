@@ -14,7 +14,7 @@ namespace urchin {
 
     class LightManager : public Observable {
         public:
-            explicit LightManager(RenderTarget&);
+            LightManager();
 
             enum NotificationType {
                 ADD_LIGHT, //A light has been added
@@ -48,7 +48,6 @@ namespace urchin {
             static constexpr float LIGHTS_OCTREE_MIN_SIZE = 50.0;
 
             const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
-            RenderTarget& renderTarget;
 
             //lights container
             std::vector<std::shared_ptr<Light>> sunLights;

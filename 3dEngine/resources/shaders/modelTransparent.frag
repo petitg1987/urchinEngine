@@ -3,13 +3,13 @@
 
 #include "_lightingFunctions.frag"
 
-//TODO use constant as in lighting.frag ?
-const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_SHADER_LIMIT
+layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
+layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
 layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
-    float emissiveFactor;
+    float packedEmissiveFactor; //packed between 0.0 and 1.0
     float ambientFactor;
 } meshData;
 layout(std140, set = 0, binding = 3) uniform CameraPlanes {
@@ -50,14 +50,14 @@ void fillTransparentTextures(vec4 fragColor) {
 }
 
 void main() {
-    vec4 ldrDiffuse = texture(diffuseTex, texCoordinates); //TODO review !
+    vec4 diffuse = texture(diffuseTex, texCoordinates);
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
 
     //lighting
-    vec3 modelAmbient = vec3(ldrDiffuse) * meshData.ambientFactor;
-    vec4 fragColor = vec4(lightsData.globalAmbient, ldrDiffuse.a);
+    vec3 modelAmbient = vec3(diffuse) * meshData.ambientFactor;
+    vec4 fragColor = vec4(lightsData.globalAmbient, diffuse.a);
 
     for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
         if (lightsData.lightsInfo[lightIndex].isExist) {
@@ -65,14 +65,13 @@ void main() {
             float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
             vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
-            fragColor.rgb += lightAttenuation * ((vec3(ldrDiffuse) * NdotL) + ambient);
+            fragColor.rgb += lightAttenuation * ((diffuse.rgb * NdotL) + ambient);
         } else {
             break; //no more light
         }
     }
-    vec3 hdrDiffuse = ldrDiffuse.rgb * meshData.emissiveFactor; //TODO review !
-    vec3 hdrExtraDiffuse = max(vec3(0.0, 0.0, 0.0), hdrDiffuse - vec3(1.0, 1.0, 1.0));
-    fragColor.rgb += hdrExtraDiffuse;
+    float emissiveFactor = meshData.packedEmissiveFactor * MAX_EMISSIVE_FACTOR;
+    fragColor.rgb += diffuse.rgb * emissiveFactor;
 
     fillTransparentTextures(fragColor);
 }

@@ -1,1 +1,0 @@
-const float MAX_EMISSIVE_FACTOR = 20.0;

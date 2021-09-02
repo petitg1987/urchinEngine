@@ -40,7 +40,7 @@ namespace urchin {
             waterContainer(std::make_unique<WaterContainer>(*deferredRenderTarget)),
             geometryContainer(std::make_unique<GeometryContainer>(*deferredRenderTarget)),
             skyContainer(std::make_unique<SkyContainer>(*deferredRenderTarget)),
-            lightManager(std::make_unique<LightManager>(*deferredRenderTarget)),
+            lightManager(std::make_unique<LightManager>()),
             ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
             transparentManager(std::make_unique<TransparentManager>(*lightManager)),
             shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
@@ -353,11 +353,13 @@ namespace urchin {
         lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
         lightingConstData.numberShadowMaps = shadowManager->getConfig().nbShadowMaps;
         lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
+        lightingConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
         std::vector<std::size_t> variablesSize = {
                 sizeof(LightingShaderConst::maxLights),
                 sizeof(LightingShaderConst::maxShadowLights),
                 sizeof(LightingShaderConst::numberShadowMaps),
-                sizeof(LightingShaderConst::shadowMapBias)
+                sizeof(LightingShaderConst::shadowMapBias),
+                sizeof(LightingShaderConst::maxEmissiveFactor)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
 
