@@ -150,7 +150,7 @@ namespace urchin {
 
             if (displayMode == DEFAULT_MODE) {
                 meshData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
-                meshData.packedEmissiveFactor = MathFunction::clamp(constMesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
+                meshData.encodedEmissiveFactor = MathFunction::clamp(constMesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
                 meshData.ambientFactor = constMesh.getMaterial().getAmbientFactor();
                 meshRenderer->updateUniformData(2, &meshData);
             }

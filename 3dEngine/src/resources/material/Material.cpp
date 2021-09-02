@@ -13,6 +13,9 @@ namespace urchin {
         if (!this->diffuseTexture) {
             throw std::runtime_error("Diffuse texture is missing on a material");
         }
+        if (emissiveFactor > MAX_EMISSIVE_FACTOR) {
+            throw std::runtime_error("Emissive factor (" + std::to_string(emissiveFactor) + ") is above the maximum (" + std::to_string(MAX_EMISSIVE_FACTOR) + ")");
+        }
         if (!this->normalTexture) {
             Image defaultNormalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({127, 127, 255, 255}), false);
             this->normalTexture = defaultNormalImage.createTexture(false);

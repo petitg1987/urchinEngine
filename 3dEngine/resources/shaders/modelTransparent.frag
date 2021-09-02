@@ -9,7 +9,7 @@ layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 //global
 layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
-    float packedEmissiveFactor; //packed between 0.0 and 1.0
+    float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
 } meshData;
 layout(std140, set = 0, binding = 3) uniform CameraPlanes {
@@ -56,21 +56,22 @@ void main() {
     vec3 normal = tbnMatrix * texNormal;
 
     //lighting
+    float emissiveFactor = meshData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
     vec3 modelAmbient = vec3(diffuse) * meshData.ambientFactor;
     vec4 fragColor = vec4(lightsData.globalAmbient, diffuse.a);
 
+    float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
     for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
         if (lightsData.lightsInfo[lightIndex].isExist) {
             float NdotL = 0.0;
             float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
             vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
-            fragColor.rgb += lightAttenuation * ((diffuse.rgb * NdotL) + ambient);
+            fragColor.rgb += emissiveAttenuation * lightAttenuation * ((diffuse.rgb * NdotL) + ambient);
         } else {
             break; //no more light
         }
     }
-    float emissiveFactor = meshData.packedEmissiveFactor * MAX_EMISSIVE_FACTOR;
     fragColor.rgb += diffuse.rgb * emissiveFactor;
 
     fillTransparentTextures(fragColor);

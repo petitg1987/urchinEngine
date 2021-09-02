@@ -175,6 +175,7 @@ void main() {
             fragColor.rgb -= ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor;
         }
 
+        float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
                 float NdotL = 0.0;
@@ -187,7 +188,7 @@ void main() {
                     shadowLightIndex++;
                 }
 
-                fragColor.rgb += lightAttenuation * (shadowAttenuation * (diffuse * NdotL) + ambient);
+                fragColor.rgb += emissiveAttenuation * lightAttenuation * (shadowAttenuation * (diffuse * NdotL) + ambient);
             } else {
                 break; //no more light
             }
