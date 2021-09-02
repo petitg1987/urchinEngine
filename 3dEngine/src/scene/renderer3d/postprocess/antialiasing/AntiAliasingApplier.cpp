@@ -103,7 +103,7 @@ namespace urchin {
     }
 
     void AntiAliasingApplier::applyAntiAliasing() {
-        ScopeProfiler sp(Profiler::graphic(), "aaPreRender");
+        ScopeProfiler sp(Profiler::graphic(), "applyAA");
 
         renderTarget->render();
     }
