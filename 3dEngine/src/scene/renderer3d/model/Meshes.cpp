@@ -35,6 +35,10 @@ namespace urchin {
         return *constMeshes;
     }
 
+    std::shared_ptr<ConstMeshes> Meshes::getConstMeshesPtr() const {
+        return constMeshes;
+    }
+
     void Meshes::onMoving(const Transform<float>& newTransform) {
         globalBBox = constMeshes->getOriginalAABBox().moveAABBox(newTransform);
 

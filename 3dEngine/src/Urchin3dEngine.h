@@ -8,6 +8,7 @@
 #include <scene/renderer3d/camera/FreeCamera.h>
 #include <scene/renderer3d/camera/CameraSpaceService.h>
 #include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/builder/ModelBuilder.h>
 #include <scene/renderer3d/lighting/light/sun/SunLight.h>
 #include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>

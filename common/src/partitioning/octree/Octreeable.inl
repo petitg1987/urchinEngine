@@ -1,14 +1,14 @@
 template<class T> Octreeable<T>::Octreeable() :
-    bIsMovingInOctree(false),
-    bIsVisible(true),
-    bIsProcessed(false) {
+        bIsMovingInOctree(false),
+        bIsVisible(true),
+        bIsProcessed(false) {
 
 }
 
 template<class T> Octreeable<T>::Octreeable(const Octreeable<T>& octreeable) :
-    bIsMovingInOctree(false),
-    bIsVisible(octreeable.isVisible()),
-    bIsProcessed(octreeable.isProcessed()) {
+        bIsMovingInOctree(false),
+        bIsVisible(octreeable.isVisible()),
+        bIsProcessed(octreeable.isProcessed()) {
 
 }
 

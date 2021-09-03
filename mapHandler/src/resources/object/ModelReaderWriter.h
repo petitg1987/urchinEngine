@@ -23,7 +23,7 @@ namespace urchin {
             static void loadFlagsOn(Model&, const UdaChunk*, const UdaParser&);
             static void writeFlagsOn(UdaChunk&, const Model&, UdaWriter&);
 
-            static constexpr char MESH_TAG[] = "mesh";
+            static constexpr char MESHES_TAG[] = "meshes";
             static constexpr char FILENAME_TAG[] = "filename";
             static constexpr char ANIMATIONS_TAG[] = "animations";
             static constexpr char ANIMATION_TAG[] = "animation";

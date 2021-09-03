@@ -19,6 +19,7 @@ namespace urchin {
             const AABBox<float>& getGlobalLocalAABBox() const;
 
             const ConstMeshes& getConstMeshes() const;
+            std::shared_ptr<ConstMeshes> getConstMeshesPtr() const; //TODO avoid ?
 
             void onMoving(const Transform<float>&);
 

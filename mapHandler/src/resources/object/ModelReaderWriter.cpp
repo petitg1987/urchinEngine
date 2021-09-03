@@ -4,10 +4,10 @@
 namespace urchin {
 
     std::shared_ptr<Model> ModelReaderWriter::loadFrom(const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto meshChunk = udaParser.getUniqueChunk(true, MESH_TAG, UdaAttribute(), modelChunk);
-        auto meshFilenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), meshChunk);
+        auto meshChunk = udaParser.getUniqueChunk(true, MESHES_TAG, UdaAttribute(), modelChunk);
+        auto meshesFilenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), meshChunk);
 
-        auto model = std::make_shared<Model>(meshFilenameChunk->getStringValue());
+        auto model = std::make_shared<Model>(meshesFilenameChunk->getStringValue());
         loadAnimationsOn(*model, modelChunk, udaParser);
         loadTransformOn(*model, modelChunk, udaParser);
         loadFlagsOn(*model, modelChunk, udaParser);
@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     void ModelReaderWriter::writeOn(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        auto& meshChunk = udaWriter.createChunk(MESH_TAG, UdaAttribute(), &modelChunk);
+        auto& meshChunk = udaWriter.createChunk(MESHES_TAG, UdaAttribute(), &modelChunk);
         auto& meshFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &meshChunk);
 
         if (model.getConstMeshes()) {

@@ -5,12 +5,16 @@
 
 namespace urchin {
 
-    Model::Model(const std::string& meshFilename) :
+    Model::Model(const std::string& meshesFilename) :
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
-        initialize(meshFilename); //TODO use second constructor ?
+        if (!meshesFilename.empty()) {
+            auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
+            meshes = std::make_unique<Meshes>(std::move(constMeshes));
+        }
+        initialize();
     }
 
     Model::Model(std::unique_ptr<Meshes> meshes) :
@@ -19,34 +23,31 @@ namespace urchin {
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
-        this->meshes->onMoving(transform);
+        initialize();
     }
 
     Model::Model(const Model& model) :
             Octreeable(model),
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
-            meshes(std::unique_ptr<Meshes>(nullptr)),
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
-            bIsProduceShadow(true) {
-        std::string meshFilename = model.getConstMeshes() != nullptr ? model.getConstMeshes()->getName() : "";
-        initialize(meshFilename);
+            transform(model.getTransform()),
+            bIsProduceShadow(model.isProduceShadow()) {
+        if (model.meshes) {
+            meshes = std::make_unique<Meshes>(model.meshes->getConstMeshesPtr());
+        }
+        initialize();
+    }
 
-        setTransform(model.getTransform());
-        setProduceShadow(model.isProduceShadow());
+    void Model::initialize() {
+        if(meshes) {
+            meshes->onMoving(transform);
+        }
     }
 
     const AABBox<float> &Model::getDefaultModelLocalAABBox() const {
         static AABBox<float> defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
         return defaultModelLocalAABBox;
-    }
-
-    void Model::initialize(const std::string& meshFilename) {
-        if (!meshFilename.empty()) {
-            auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshFilename);
-            meshes = std::make_unique<Meshes>(std::move(constMeshes));
-            meshes->onMoving(transform);
-        }
     }
 
     void Model::loadAnimation(const std::string& name, const std::string& filename) {
