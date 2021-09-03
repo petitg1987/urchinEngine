@@ -10,7 +10,16 @@ namespace urchin {
             currAnimation(nullptr),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
-        initialize(meshFilename);
+        initialize(meshFilename); //TODO use second constructor ?
+    }
+
+    Model::Model(std::unique_ptr<Meshes> meshes) :
+            defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
+            meshes(std::move(meshes)),
+            currAnimation(nullptr),
+            stopAnimationAtLastFrame(false),
+            bIsProduceShadow(true) {
+        this->meshes->onMoving(transform);
     }
 
     Model::Model(const Model& model) :

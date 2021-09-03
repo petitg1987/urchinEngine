@@ -83,6 +83,12 @@ template<class T> void OctreeManager<T>::buildOctree(std::vector<std::shared_ptr
 }
 
 template<class T> void OctreeManager<T>::addOctreeable(std::shared_ptr<T> octreeable) {
+    #ifndef NDEBUG
+        for (std::size_t i = 0; i < 3; ++i) {
+            assert(octreeable->getAABBox().getMin()[i] != octreeable->getAABBox().getMax()[i]);
+        }
+    #endif
+
     bool resized = resizeOctree(octreeable);
     if (!resized) {
         browseNodes.clear();

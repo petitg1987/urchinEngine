@@ -20,6 +20,7 @@ namespace urchin {
             };
 
             explicit Model(const std::string&);
+            explicit Model(std::unique_ptr<Meshes>);
             Model(const Model&);
 
             void loadAnimation(const std::string&, const std::string&);

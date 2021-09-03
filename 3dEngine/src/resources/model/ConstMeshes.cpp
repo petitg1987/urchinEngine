@@ -35,6 +35,14 @@ namespace urchin {
                 }
             }
         }
+
+        for (std::size_t i = 0; i < 3; ++i) {
+            if (min[i] == max[i]) {
+                min[i] = std::nextafter(min[i], -std::numeric_limits<float>::max());
+                max[i] = std::nextafter(max[i], std::numeric_limits<float>::max());
+            }
+        }
+
         originalBBox = std::make_unique<AABBox<float>>(min, max);
         originalSplitBBoxes = SplitBoundingBox().split(*originalBBox);
     }
