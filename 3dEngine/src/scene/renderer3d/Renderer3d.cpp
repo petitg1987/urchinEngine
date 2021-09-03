@@ -445,7 +445,7 @@ namespace urchin {
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer->drawBaseBones(geometryContainer, "models/characterAnimate.urchinMesh");
+            modelSetDisplayer->drawBaseBones(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {

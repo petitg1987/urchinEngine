@@ -35,7 +35,7 @@ namespace urchin {
         return *constMeshes;
     }
 
-    std::shared_ptr<ConstMeshes> Meshes::getConstMeshesPtr() const {
+    std::shared_ptr<ConstMeshes> Meshes::copyConstMeshesRef() const {
         return constMeshes;
     }
 

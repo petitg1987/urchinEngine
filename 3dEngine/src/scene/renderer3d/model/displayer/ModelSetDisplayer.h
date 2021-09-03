@@ -40,7 +40,7 @@ namespace urchin {
             void prepareRendering(const Matrix4<float>&);
 
             void drawBBox(GeometryContainer&) const;
-            void drawBaseBones(GeometryContainer&, const std::string&) const;
+            void drawBaseBones(GeometryContainer&) const;
 
         private:
             bool isInitialized;

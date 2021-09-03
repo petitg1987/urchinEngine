@@ -128,9 +128,9 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const std::string& meshFilename) const {
+    void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            if (model->getConstMeshes() && model->getConstMeshes()->getMeshFilename() == meshFilename) {
+            if (model->getConstMeshes()) {
                 modelsDisplayer.at(model)->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }

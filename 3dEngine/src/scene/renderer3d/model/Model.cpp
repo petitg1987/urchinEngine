@@ -34,7 +34,7 @@ namespace urchin {
             transform(model.getTransform()),
             bIsProduceShadow(model.isProduceShadow()) {
         if (model.meshes) {
-            meshes = std::make_unique<Meshes>(model.meshes->getConstMeshesPtr());
+            meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
         }
         initialize();
     }
