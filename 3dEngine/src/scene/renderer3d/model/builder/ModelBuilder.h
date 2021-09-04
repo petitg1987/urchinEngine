@@ -10,11 +10,15 @@ namespace urchin {
 
     class ModelBuilder {
         public:
+            explicit ModelBuilder(std::string);
+
             std::unique_ptr<Model> buildModel(const std::string&, const std::vector<Point3<float>>&, const std::vector<unsigned int>&, const std::vector<Point2<float>>&) const;
 
         private:
             std::unique_ptr<const ConstMesh> buildConstMesh(const std::string&, const std::vector<Point3<float>>&, const std::vector<unsigned int>&,
                     const std::vector<Point2<float>>&) const;
+
+            std::string materialFilename;
     };
 
 }

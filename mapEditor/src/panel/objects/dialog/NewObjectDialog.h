@@ -33,13 +33,13 @@ namespace urchin {
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;
-            QLabel* meshFilenameLabel;
-            QLineEdit* meshFilenameText;
+            QLabel* meshesFilenameLabel;
+            QLineEdit* meshesFilenameText;
 
             std::string objectName;
-            std::string meshFilename;
+            std::string meshesFilename;
             std::unique_ptr<SceneObject> sceneObject;
-            static QString preferredMeshPath;
+            static QString preferredMeshesPath;
 
         private slots:
             void showMeshFilenameDialog();

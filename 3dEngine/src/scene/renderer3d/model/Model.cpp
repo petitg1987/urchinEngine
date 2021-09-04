@@ -39,6 +39,14 @@ namespace urchin {
         initialize();
     }
 
+    std::unique_ptr<Model> Model::fromMeshesFile(const std::string& meshesFilename) {
+        return std::unique_ptr<Model>(new Model(meshesFilename));
+    }
+
+    std::unique_ptr<Model> Model::fromMemory(std::unique_ptr<Meshes> meshes) {
+        return std::unique_ptr<Model>(new Model(std::move(meshes)));
+    }
+
     void Model::initialize() {
         if(meshes) {
             meshes->onMoving(transform);

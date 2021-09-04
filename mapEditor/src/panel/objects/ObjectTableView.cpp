@@ -9,7 +9,7 @@ namespace urchin {
         QTableView(parent) {
         objectsListModel = new QStandardItemModel(0, 2, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
-        objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Mesh File"));
+        objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Meshes File"));
         QTableView::setModel(objectsListModel);
 
         horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
@@ -58,19 +58,21 @@ namespace urchin {
         itemObjectName->setData(QVariant::fromValue(&sceneObject), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
 
-        std::string pathFileName;
+        std::string meshesName;
+        std::string meshesFilename;
         if (sceneObject.getModel()->getConstMeshes()) {
-            pathFileName = sceneObject.getModel()->getConstMeshes()->getMeshFilename();
+            meshesName = sceneObject.getModel()->getConstMeshes()->getMeshesName();
+            meshesFilename = sceneObject.getModel()->getConstMeshes()->getMeshesFilename();
         }
-        auto* itemMeshFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(pathFileName)));
-        itemMeshFile->setToolTip(QString::fromStdString(pathFileName));
-        itemMeshFile->setData(QVariant::fromValue(&sceneObject), Qt::UserRole + 1);
-        itemMeshFile->setEditable(false);
+        auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
+        itemMeshName->setToolTip(QString::fromStdString(meshesFilename));
+        itemMeshName->setData(QVariant::fromValue(&sceneObject), Qt::UserRole + 1);
+        itemMeshName->setEditable(false);
 
         int nextRow = objectsListModel->rowCount();
         objectsListModel->insertRow(nextRow);
         objectsListModel->setItem(nextRow, 0, itemObjectName);
-        objectsListModel->setItem(nextRow, 1, itemMeshFile);
+        objectsListModel->setItem(nextRow, 1, itemMeshName);
 
         resizeRowsToContents();
 

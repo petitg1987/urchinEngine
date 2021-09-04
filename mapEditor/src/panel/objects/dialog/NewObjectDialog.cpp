@@ -11,15 +11,15 @@
 
 namespace urchin {
 
-    QString NewObjectDialog::preferredMeshPath = QString();
+    QString NewObjectDialog::preferredMeshesPath = QString();
 
     NewObjectDialog::NewObjectDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr),
-            meshFilenameLabel(nullptr),
-            meshFilenameText(nullptr),
+            meshesFilenameLabel(nullptr),
+            meshesFilenameText(nullptr),
             sceneObject(nullptr) {
         this->setWindowTitle("New Object");
         this->resize(530, 130);
@@ -50,13 +50,13 @@ namespace urchin {
     }
 
     void NewObjectDialog::setupMeshFilenameFields(QGridLayout* mainLayout) {
-        meshFilenameLabel = new QLabel("Mesh File:");
-        mainLayout->addWidget(meshFilenameLabel, 1, 0);
+        meshesFilenameLabel = new QLabel("Meshes File:");
+        mainLayout->addWidget(meshesFilenameLabel, 1, 0);
 
-        meshFilenameText = new QLineEdit();
-        mainLayout->addWidget(meshFilenameText, 1, 1);
-        meshFilenameText->setReadOnly(true);
-        meshFilenameText->setFixedWidth(360);
+        meshesFilenameText = new QLineEdit();
+        mainLayout->addWidget(meshesFilenameText, 1, 1);
+        meshesFilenameText->setReadOnly(true);
+        meshesFilenameText->setFixedWidth(360);
 
         auto* selectMeshFileButton = new QPushButton("...");
         mainLayout->addWidget(selectMeshFileButton, 1, 2);
@@ -79,12 +79,12 @@ namespace urchin {
             sceneObject->setName(objectName);
 
             std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
-            std::string relativeMeshFilename;
-            if (!meshFilename.empty()) {
-                relativeMeshFilename = FileUtil::getRelativePath(resourcesDirectory, meshFilename);
+            std::string relativeMeshesFilename;
+            if (!meshesFilename.empty()) {
+                relativeMeshesFilename = FileUtil::getRelativePath(resourcesDirectory, meshesFilename);
             }
-            auto model = std::make_shared<Model>(relativeMeshFilename);
-            sceneObject->setModel(model);
+            auto model = Model::fromMeshesFile(relativeMeshesFilename);
+            sceneObject->setModel(std::move(model));
         } catch (std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
@@ -99,14 +99,14 @@ namespace urchin {
     }
 
     void NewObjectDialog::showMeshFilenameDialog() {
-        QString directory = preferredMeshPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredMeshPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.urchinMesh)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString directory = preferredMeshesPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredMeshesPath;
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open meshes file"), directory, "Meshes file (*.urchinMesh)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            this->meshFilename = filename.toUtf8().constData();
-            this->meshFilenameText->setText(filename);
+            this->meshesFilename = filename.toUtf8().constData();
+            this->meshesFilenameText->setText(filename);
 
-            std::string preferredMeshPathString = FileUtil::getDirectory(meshFilename);
-            preferredMeshPath = QString::fromStdString(preferredMeshPathString);
+            std::string preferredMeshesPathString = FileUtil::getDirectory(meshesFilename);
+            preferredMeshesPath = QString::fromStdString(preferredMeshesPathString);
         }
     }
 
@@ -116,7 +116,7 @@ namespace urchin {
 
             updateObjectName();
             LabelStyleHelper::applyNormalStyle(objectNameLabel);
-            LabelStyleHelper::applyNormalStyle(meshFilenameLabel);
+            LabelStyleHelper::applyNormalStyle(meshesFilenameLabel);
 
             if (objectName.empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");

@@ -19,9 +19,9 @@ namespace urchin {
                 MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE
             };
 
-            explicit Model(const std::string&);
-            explicit Model(std::unique_ptr<Meshes>);
             Model(const Model&);
+            static std::unique_ptr<Model> fromMeshesFile(const std::string&);
+            static std::unique_ptr<Model> fromMemory(std::unique_ptr<Meshes>);
 
             void loadAnimation(const std::string&, const std::string&);
             void animate(const std::string&);
@@ -48,6 +48,9 @@ namespace urchin {
             void updateAnimation(float);
 
         private:
+            explicit Model(const std::string&);
+            explicit Model(std::unique_ptr<Meshes>);
+
             const AABBox<float> &getDefaultModelLocalAABBox() const;
             void initialize();
             void onMoving(const Transform<float>&);

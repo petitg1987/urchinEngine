@@ -6,8 +6,9 @@
 
 namespace urchin {
 
-    ConstMeshes::ConstMeshes(std::string meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) :
-            meshFilename(std::move(meshFilename)),
+    ConstMeshes::ConstMeshes(std::string meshesName, std::optional<std::string> meshesFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) :
+            meshesName(std::move(meshesName)),
+            meshesFilename(std::move(meshesFilename)),
             constMeshes(std::move(constMeshes)) {
         //determines the bounding box
         Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
@@ -47,8 +48,24 @@ namespace urchin {
         originalSplitBBoxes = SplitBoundingBox().split(*originalBBox);
     }
 
-    const std::string& ConstMeshes::getMeshFilename() const {
-        return meshFilename;
+    std::unique_ptr<ConstMeshes> ConstMeshes::fromMeshesFile(std::string meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) {
+        std::string meshName = FileUtil::getFileName(meshFilename);
+        return std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::make_optional(meshFilename), std::move(constMeshes)));
+    }
+
+    std::unique_ptr<ConstMeshes> ConstMeshes::fromMemory(std::string name, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) {
+        return std::unique_ptr<ConstMeshes>(new ConstMeshes(std::move(name), std::nullopt, std::move(constMeshes)));
+    }
+
+    const std::string& ConstMeshes::getMeshesName() const {
+        return meshesName;
+    }
+
+    const std::string& ConstMeshes::getMeshesFilename() const {
+        if (meshesFilename.has_value()) {
+            return meshesFilename.value();
+        }
+        throw std::runtime_error("Meshes " + meshesName + " is not build from a meshes file");
     }
 
     unsigned int ConstMeshes::getNumberConstMeshes() const {

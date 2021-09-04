@@ -20,11 +20,12 @@
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
   * **OPTIMIZATION** (`minor`): Software occlusion culling
 * Model
-  * **OPTIMIZATION** (`major`): Use instantiation mechanism when identical models are displayed several times in the scene
+  * **OPTIMIZATION** (`medium`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
   * **NEW FEATURE** (`medium`): Animation blending
-  * **OPTIMIZATION** (`minor`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
+  * **OPTIMIZATION** (`major`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
   * **OPTIMIZATION** (`medium`): Models LOD
+  * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
   * **OPTIMIZATION** (`major`): Improve performance of ShadowManager::updateVisibleModels and Renderer3d::updateModelsInFrustum
     * Tips 1: find solution where models could be re-used in the second method
@@ -39,7 +40,7 @@
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
   * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
-* Ambient occlusion:
+* Ambient occlusion
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Terrain
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
@@ -48,14 +49,11 @@
   * **OPTIMIZATION** (`medium`): Don't build grass quadtree which are 100% discarded by grass mask
 * UI
   * **NEW FEATURE** (`minor`): Combo list
-  * **NEW FEATURE** (`minor`): Drag and drop
   * **NEW FEATURE** (`minor`): Textarea
   * **NEW FEATURE** (`medium`): Text selection
 * Graphic effect
   * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
-  * **NEW FEATURE** (`minor`): Reflects
   * **NEW FEATURE** (`minor`): Smoke
-  * **NEW FEATURE** (`minor`): Fire & explosion
 
 # AI engine
 * Navigation mesh

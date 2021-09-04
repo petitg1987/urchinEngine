@@ -2,18 +2,23 @@
 
 namespace urchin {
 
-    std::unique_ptr<Model> ModelBuilder::buildModel(const std::string& materialFilename, const std::vector<Point3<float>>& vertices,
-                                                          const std::vector<unsigned int>& indices, const std::vector<Point2<float>>& uv) const {
+    ModelBuilder::ModelBuilder(std::string materialFilename) :
+            materialFilename(std::move(materialFilename)) {
+
+    }
+
+    std::unique_ptr<Model> ModelBuilder::buildModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices,
+                                                    const std::vector<unsigned int>& indices, const std::vector<Point2<float>>& uv) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
         constMeshesVector.push_back(buildConstMesh(materialFilename, vertices, indices, uv));
-        auto constMeshes = std::make_shared<ConstMeshes>("???", std::move(constMeshesVector)); //TODO complete
+        auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
 
-        auto meshes = std::make_unique<Meshes>(constMeshes);
-        return std::make_unique<Model>(std::move(meshes));
+        auto meshes = std::make_unique<Meshes>(std::move(constMeshes));
+        return Model::fromMemory(std::move(meshes));
     }
 
     std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::string& materialFilename, const std::vector<Point3<float>>& vertices,
-                                                                        const std::vector<unsigned int>& indices, const std::vector<Point2<float>>& uv) const {
+                                                                  const std::vector<unsigned int>& indices, const std::vector<Point2<float>>& uv) const {
         if (vertices.size() != uv.size()) {
             throw std::runtime_error("Vertices (" + std::to_string(vertices.size()) + ") must have exactly one UV coordinate (" + std::to_string(uv.size()) + ")");
         } else if (indices.size() % 3 != 0) {

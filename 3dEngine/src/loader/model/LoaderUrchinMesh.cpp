@@ -105,7 +105,7 @@ namespace urchin {
 
         file.close();
 
-        return std::make_shared<ConstMeshes>(filename, std::move(constMeshes));
+        return ConstMeshes::fromMeshesFile(filename, std::move(constMeshes));
     }
 
 }
