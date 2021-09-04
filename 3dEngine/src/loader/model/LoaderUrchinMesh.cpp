@@ -63,11 +63,11 @@ namespace urchin {
 
             //vertices
             std::vector<Vertex> vertices(numVertices);
-            std::vector<Point2<float>> textureCoordinates(numVertices);
+            std::vector<Point2<float>> texCoords(numVertices);
             for (unsigned int i = 0; i < numVertices; i++) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> textureCoordinates[i].X >> textureCoordinates[i].Y
+                iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> texCoords[i].X >> texCoords[i].Y
                         >> sdata >> sdata >> vertices[i].weightStart >> vertices[i].weightCount >> sdata;
             }
 
@@ -100,7 +100,7 @@ namespace urchin {
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
 
-            constMeshes.push_back(std::make_unique<ConstMesh>(materialFilename, vertices, textureCoordinates, trianglesIndices, weights, baseSkeleton));
+            constMeshes.push_back(std::make_unique<ConstMesh>(materialFilename, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
         }
 
         file.close();

@@ -60,7 +60,7 @@ namespace urchin {
             std::shared_ptr<Material> material;
 
             std::vector<Vertex> vertices;
-            std::vector<Point2<float>> textureCoordinates;
+            std::vector<Point2<float>> texCoords;
             std::map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
             std::vector<unsigned int> trianglesIndices;
