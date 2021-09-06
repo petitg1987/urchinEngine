@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #include <cmath>
+#include <cassert>
 #include <iomanip>
 
 #include <util/TypeConverter.h>
@@ -21,6 +22,9 @@ namespace urchin {
     }
 
     int TypeConverter::toInt(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isInt(str));
+        #endif
         std::istringstream iss(str);
         int value = 0;
         iss >> value;
@@ -35,6 +39,9 @@ namespace urchin {
     }
 
     long TypeConverter::toLong(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isLong(str));
+        #endif
         std::istringstream iss(str);
         long value = 0;
         iss >> value;
@@ -49,6 +56,9 @@ namespace urchin {
     }
 
     unsigned int TypeConverter::toUnsignedInt(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isUnsignedInt(str));
+        #endif
         std::istringstream iss(str);
         unsigned int value = 0;
         iss >> value;
@@ -64,6 +74,9 @@ namespace urchin {
     }
 
     float TypeConverter::toFloat(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isFloat(str));
+        #endif
         std::istringstream iss(str);
         iss.imbue(std::locale::classic());
         float value = 0.0f;
@@ -80,6 +93,9 @@ namespace urchin {
     }
 
     double TypeConverter::toDouble(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isDouble(str));
+        #endif
         std::istringstream iss(str);
         iss.imbue(std::locale::classic());
         double value = 0.0;
@@ -92,6 +108,9 @@ namespace urchin {
     }
 
     char TypeConverter::toChar(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isChar(str));
+        #endif
         return str[0];
     }
 
@@ -100,6 +119,9 @@ namespace urchin {
     }
 
     bool TypeConverter::toBool(const std::string& str) {
+        #ifndef NDEBUG
+            assert(isBool(str));
+        #endif
         return str[0] != '0';
     }
 

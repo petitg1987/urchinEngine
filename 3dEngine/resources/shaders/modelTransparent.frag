@@ -55,24 +55,28 @@ void main() {
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
 
-    //lighting
-    float emissiveFactor = meshData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
-    vec3 modelAmbient = vec3(diffuse) * meshData.ambientFactor;
-    vec4 fragColor = vec4(lightsData.globalAmbient, diffuse.a);
+    vec4 fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    if (meshData.ambientFactor < 0.9999) { //apply lighting
+        float emissiveFactor = meshData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
+        vec3 modelAmbient = vec3(diffuse) * meshData.ambientFactor;
+        fragColor = vec4(lightsData.globalAmbient, diffuse.a);
 
-    float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
-    for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-        if (lightsData.lightsInfo[lightIndex].isExist) {
-            float NdotL = 0.0;
-            float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
-            vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
+        float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor);//disable lighting on highly emissive objects (give better results)
+        for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
+            if (lightsData.lightsInfo[lightIndex].isExist) {
+                float NdotL = 0.0;
+                float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
+                vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
-            fragColor.rgb += emissiveAttenuation * lightAttenuation * ((diffuse.rgb * NdotL) + ambient);
-        } else {
-            break; //no more light
+                fragColor.rgb += emissiveAttenuation * lightAttenuation * ((diffuse.rgb * NdotL) + ambient);
+            } else {
+                break;//no more light
+            }
         }
+        fragColor.rgb += diffuse.rgb * emissiveFactor;
+    } else { //do not apply lighting
+        fragColor = diffuse;
     }
-    fragColor.rgb += diffuse.rgb * emissiveFactor;
 
     fillTransparentTextures(fragColor);
 }
