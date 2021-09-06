@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <stdexcept>
+#include <typeinfo>
 #include <UrchinCommon.h>
 
 #include <resources/ResourceContainer.h>
@@ -22,7 +23,7 @@ namespace urchin {
         public:
             friend class ThreadSafeSingleton<ResourceRetriever>;
 
-            template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string>& = {}, const std::string& = "");
+            template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string>& = {});
 
         private:
             ResourceRetriever();

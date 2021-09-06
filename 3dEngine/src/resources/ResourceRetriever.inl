@@ -3,7 +3,7 @@
  * @param params (optional) Parameter to load the resource
  * @param fileContentType (optional) Define the content of the file when extension is not sufficient. Example: a .json file define the format of the file but not its content.
  */
-template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string>& params, const std::string& fileContentType) {
+template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string>& params) {
     //resource already charged ?
     std::string resourceId = filename + "_" + MapSerializer::serialize(params);
     std::shared_ptr<T> resource = ResourceContainer::instance().getResource<T>(resourceId);
@@ -13,11 +13,14 @@ template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::s
 
     //resource not already charged
     std::string fileExtension = filename.substr(filename.find_last_of('.') + 1);
-    std::string loaderType = fileContentType.empty() ? fileExtension : fileContentType;
 
-    auto it = loadersRegistry.find(loaderType);
+    auto it = loadersRegistry.find(fileExtension);
     if (it == loadersRegistry.end()) {
-        throw std::runtime_error("There isn't loader for this type of file. Filename: " + filename + ", file content type: " + fileContentType);
+        std::string resourceType = std::string(typeid(T).name());
+        it = loadersRegistry.find(resourceType);
+        if (it == loadersRegistry.end()) {
+            throw std::runtime_error("There isn't loader for this type of file. Filename: " + filename + ", resource type: " + resourceType);
+        }
     }
 
     auto loader = static_cast<Loader<T>*>(it->second.get());

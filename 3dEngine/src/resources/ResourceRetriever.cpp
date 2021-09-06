@@ -15,7 +15,7 @@ namespace urchin {
         loadersRegistry.emplace("urchinMesh", std::make_unique<LoaderUrchinMesh>());
         loadersRegistry.emplace("urchinAnim", std::make_unique<LoaderUrchinAnim>());
 
-        loadersRegistry.emplace("material", std::make_unique<LoaderMaterial>());
+        loadersRegistry.emplace(typeid(Material).name(), std::make_unique<LoaderMaterial>());
 
         loadersRegistry.emplace("ttf", std::make_unique<LoaderTTF>());
     }

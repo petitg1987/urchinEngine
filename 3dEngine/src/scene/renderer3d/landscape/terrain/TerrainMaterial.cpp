@@ -31,7 +31,7 @@ namespace urchin {
         materials.resize(MAX_MATERIAL);
         for (std::size_t i = 0; i < MAX_MATERIAL; ++i) {
             if (materialFilenames.size() > i && !materialFilenames[i].empty()) {
-                materials[i] = ResourceRetriever::instance().getResource<Material>(materialFilenames[i], {}, "material");
+                materials[i] = ResourceRetriever::instance().getResource<Material>(materialFilenames[i], {});
             } else {
                 materials[i] = std::shared_ptr<Material>(nullptr);
             }
