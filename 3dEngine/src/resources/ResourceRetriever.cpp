@@ -12,12 +12,12 @@ namespace urchin {
         loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
         loadersRegistry.emplace("png", std::make_unique<LoaderPNG>());
 
-        loadersRegistry.emplace("urchinMesh", std::make_unique<LoaderUrchinMesh>());
-        loadersRegistry.emplace("urchinAnim", std::make_unique<LoaderUrchinAnim>());
+        loadersRegistry.emplace(typeid(ConstMeshes).name(), std::make_unique<LoaderUrchinMesh>());
+        loadersRegistry.emplace(typeid(ConstAnimation).name(), std::make_unique<LoaderUrchinAnim>());
 
         loadersRegistry.emplace(typeid(Material).name(), std::make_unique<LoaderMaterial>());
 
-        loadersRegistry.emplace("ttf", std::make_unique<LoaderTTF>());
+        loadersRegistry.emplace(typeid(Font).name(), std::make_unique<LoaderTTF>());
     }
 
 }

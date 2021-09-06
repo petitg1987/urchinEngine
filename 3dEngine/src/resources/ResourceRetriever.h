@@ -16,9 +16,6 @@
 
 namespace urchin {
 
-    /**
-     * Find the appropriate loader according to the extension of the file and load the resource
-     */
     class ResourceRetriever : public ThreadSafeSingleton<ResourceRetriever> {
         public:
             friend class ThreadSafeSingleton<ResourceRetriever>;

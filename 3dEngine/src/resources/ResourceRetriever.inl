@@ -12,18 +12,19 @@ template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::s
     }
 
     //resource not already charged
-    std::string fileExtension = filename.substr(filename.find_last_of('.') + 1);
+    std::string resourceType = std::string(typeid(T).name());
+    auto itFind = loadersRegistry.find(resourceType);
 
-    auto it = loadersRegistry.find(fileExtension);
-    if (it == loadersRegistry.end()) {
-        std::string resourceType = std::string(typeid(T).name());
-        it = loadersRegistry.find(resourceType);
-        if (it == loadersRegistry.end()) {
-            throw std::runtime_error("There isn't loader for this type of file. Filename: " + filename + ", resource type: " + resourceType);
+    if (itFind == loadersRegistry.end()) {
+        std::string fileExtension = filename.substr(filename.find_last_of('.') + 1);
+        itFind = loadersRegistry.find(fileExtension);
+
+        if (itFind == loadersRegistry.end()) {
+            throw std::runtime_error("There isn't loader for this type of file. Resource type: " + resourceType + ", filename: " + filename);
         }
     }
 
-    auto loader = static_cast<Loader<T>*>(it->second.get());
+    auto loader = static_cast<Loader<T>*>(itFind->second.get());
     resource = loader->loadFromFile(filename, params);
     resource->setId(resourceId);
     resource->setName(filename);
