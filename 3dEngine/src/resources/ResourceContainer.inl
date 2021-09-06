@@ -3,7 +3,7 @@ template<class T> std::shared_ptr<T> ResourceContainer::getResource(const std::s
 
     auto itFind = resources.find(resourceId);
     if (itFind != resources.end()) {
-        return std::dynamic_pointer_cast<T>(itFind->second); //TODO shared_ptr increased before leave mutex ?
+        return std::dynamic_pointer_cast<T>(itFind->second);
     }
 
     return std::shared_ptr<T>(nullptr);
