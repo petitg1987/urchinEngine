@@ -3,6 +3,11 @@
 
 namespace urchin {
 
+    Resource::Resource() :
+            deathTime(0.0f) {
+
+    }
+
     const std::string& Resource::getId() const {
         return id;
     }
@@ -17,6 +22,18 @@ namespace urchin {
 
     void Resource::setName(const std::string& name) {
         this->name = name;
+    }
+
+    void Resource::resetDeathTime() {
+        deathTime = 0.0f;
+    }
+
+    void Resource::increaseDeathTime(float dt) {
+        deathTime += dt;
+    }
+
+    float Resource::getDeathTime() const {
+        return deathTime;
     }
 
 }

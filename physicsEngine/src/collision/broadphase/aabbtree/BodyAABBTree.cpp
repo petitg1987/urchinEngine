@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    //static
-    constexpr float BodyAABBTree::BOUNDARIES_MARGIN_PERCENTAGE = 0.3f;
-
     BodyAABBTree::BodyAABBTree() :
             AABBTree<AbstractBody*>(ConfigService::instance().getFloatValue("broadPhase.aabbTreeFatMargin")),
             defaultPairContainer(std::make_unique<VectorPairContainer>()),

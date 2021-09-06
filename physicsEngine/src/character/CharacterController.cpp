@@ -9,11 +9,6 @@
 
 namespace urchin {
 
-    //static
-    const float CharacterController::MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;
-    const float CharacterController::SAVE_RESPAWN_TRANSFORM_TIME = 10.0f; //10 seconds
-    const std::array<float, 4> CharacterController::RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
-
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
             ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
             maxDepthToRecover(ConfigService::instance().getFloatValue("character.maxDepthToRecover")),

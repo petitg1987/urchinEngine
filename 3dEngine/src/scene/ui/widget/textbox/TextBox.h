@@ -39,10 +39,10 @@ namespace urchin {
             void computeCursorIndex(int);
 
             //properties
-            static const unsigned int LETTER_SHIFT;
-            static const unsigned int LETTER_AND_CURSOR_SHIFT;
-            static const unsigned int CURSOR_WIDTH_PIXEL;
-            static const float CURSOR_BLINK_SPEED;
+            static constexpr unsigned int LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
+            static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
+            static constexpr unsigned int CURSOR_WIDTH_PIXEL = 2;
+            static constexpr float CURSOR_BLINK_SPEED = 2.25f;
             const std::string skinName;
             std::u32string allowedCharacters;
             int maxLength;

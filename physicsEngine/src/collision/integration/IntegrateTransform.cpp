@@ -4,9 +4,6 @@
 
 namespace urchin {
 
-    //static
-    const float IntegrateTransform::MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
-
     IntegrateTransform::IntegrateTransform(const BodyContainer& bodyContainer, const BroadPhase& broadPhase, const NarrowPhase& narrowPhase) :
             bodyContainer(bodyContainer),
             broadPhase(broadPhase),

@@ -4,9 +4,6 @@
 
 namespace urchin {
 
-    //static
-    const float LightSplitShadowMap::LIGHT_BOX_MARGIN = 0.001f;
-
     LightSplitShadowMap::LightSplitShadowMap(LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
             updateShadowMapThreshold(ConfigService::instance().getFloatValue("shadow.updateShadowMapThreshold")),

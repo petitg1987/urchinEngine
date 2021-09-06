@@ -15,8 +15,8 @@ namespace urchin {
 
     class TypeConverter {
         public:
-            static const char FLOAT_DELIMITER;
-            static const float FLOAT_INT_SCALE;
+            static constexpr char FLOAT_DELIMITER = ' ';
+            static constexpr float FLOAT_INT_SCALE = 8192.0f;
 
             TypeConverter() = delete;
 

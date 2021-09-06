@@ -19,7 +19,7 @@ namespace urchin {
 
     template<class T> class HeightfieldPointHelper {
         public:
-            static const T PARALLEL_EPSILON;
+            static constexpr T PARALLEL_EPSILON = (T)0.07; //= 4 degrees (asin(4 / 180 * pi))
 
             HeightfieldPointHelper(const std::vector<Point3<T>>&, unsigned int);
 

@@ -2,14 +2,9 @@
 
 #include <scene/Scene.h>
 #include <graphic/render/target/RenderTarget.h>
+#include <resources/ResourceContainer.h>
 
 namespace urchin {
-
-    //static
-    constexpr float Scene::STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
-    constexpr float Scene::FPS_REFRESH_TIME_IN_MS = 4.0f;
-    constexpr float Scene::DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
-    constexpr std::chrono::steady_clock::time_point Scene::MIN_TIME_POINT = std::chrono::steady_clock::time_point::min();
 
     Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
@@ -239,6 +234,9 @@ namespace urchin {
             }
         }
         screenRenderTarget->render();
+
+        //resources
+        ResourceContainer::instance().cleanResources();
     }
 
 }

@@ -72,7 +72,7 @@ namespace urchin {
 
             int retrieveTextureSizeFactor() const;
 
-            static const unsigned int KERNEL_SAMPLES_SHADER_LIMIT;
+            static constexpr unsigned int KERNEL_SAMPLES_SHADER_LIMIT = 64; //must be equals to 'KERNEL_SAMPLES' in AO shader
 
             //scene information
             float nearPlane, farPlane;

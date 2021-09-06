@@ -17,9 +17,9 @@ namespace urchin {
 
     class UdaChunk {
         public:
-            static const unsigned int INDENT_SPACES;
-            static const char ATTRIBUTES_SEPARATOR;
-            static const char ATTRIBUTES_ASSIGN;
+            static constexpr unsigned int INDENT_SPACES = 2;
+            static constexpr char ATTRIBUTES_SEPARATOR = ';';
+            static constexpr char ATTRIBUTES_ASSIGN = '=';
 
             UdaChunk(std::string, std::string, std::map<std::string, std::string>, UdaChunk*);
 

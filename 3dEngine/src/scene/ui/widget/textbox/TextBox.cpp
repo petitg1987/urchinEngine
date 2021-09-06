@@ -8,12 +8,6 @@
 
 namespace urchin {
 
-    //static
-    constexpr unsigned int TextBox::LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
-    constexpr unsigned int TextBox::LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
-    constexpr unsigned int TextBox::CURSOR_WIDTH_PIXEL = 2;
-    constexpr float TextBox::CURSOR_BLINK_SPEED = 2.25f;
-
     TextBox::TextBox(Position position, Size size, std::string skinName) :
             Widget(position, size),
             skinName(std::move(skinName)),

@@ -8,9 +8,6 @@
 
 namespace urchin {
 
-    //static
-    const uint32_t GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
-
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             isInitialized(false),
             bIsEnabled(true),

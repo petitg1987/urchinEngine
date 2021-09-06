@@ -9,9 +9,6 @@
 
 namespace urchin {
 
-    //static
-    constexpr unsigned int GaussianBlurFilter::TEXTURE_FETCH_SHADER_LIMIT = 9; //must be equals to 'KERNEL_RADIUS' in texFilterBilateralBlur shader
-
     GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
         TextureFilter(textureFilterBuilder),
         blurDirection(blurDirection),

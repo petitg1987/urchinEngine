@@ -24,8 +24,8 @@ namespace urchin {
             void destroyDebugUtilsMessengerEXT(VkInstance);
             static bool ignoreValidationMessage(const std::string&);
 
-            static const unsigned int MAX_ERRORS_LOG;
-            static std::vector<std::string> FILTER_OUT_MESSAGES;
+            static constexpr unsigned int MAX_ERRORS_LOG = 50;
+            static std::vector<std::string> filterOutMessages;
             std::vector<const char*> validationLayer;
 
             bool bIsValidationActive;

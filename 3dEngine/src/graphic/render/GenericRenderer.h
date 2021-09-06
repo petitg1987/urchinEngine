@@ -25,7 +25,7 @@ namespace urchin {
     class GenericRenderer : public std::enable_shared_from_this<GenericRenderer> {
         public:
             friend class RenderTarget;
-            static const uint32_t PRIMITIVE_RESTART_INDEX_VALUE;
+            static constexpr uint32_t PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
 
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();

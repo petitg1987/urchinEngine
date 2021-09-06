@@ -13,9 +13,6 @@ namespace urchin {
     //debug parameters
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
-    //static
-    constexpr unsigned int AmbientOcclusionManager::KERNEL_SAMPLES_SHADER_LIMIT = 64; //must be equals to 'KERNEL_SAMPLES' in AO shader
-
     AmbientOcclusionManager::AmbientOcclusionManager() :
             nearPlane(0.0f),
             farPlane(0.0f),

@@ -16,14 +16,13 @@ namespace urchin {
 
             template<class T> std::shared_ptr<T> getResource(const std::string&) const;
             void addResource(const std::shared_ptr<Resource>&);
+            void cleanResources();
 
         private:
             ResourceContainer();
 
-            void cleanResources();
-
             mutable std::mutex mutex;
-            std::map<std::string, std::weak_ptr<Resource>> resources;
+            std::map<std::string, std::shared_ptr<Resource>> resources;
     };
 
     #include "ResourceContainer.inl"

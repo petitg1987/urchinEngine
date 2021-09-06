@@ -9,8 +9,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_VULKAN_INFO = false;
 
     //static
-    constexpr unsigned int ValidationLayer::MAX_ERRORS_LOG = 50;
-    std::vector<std::string> ValidationLayer::FILTER_OUT_MESSAGES;
+    std::vector<std::string> ValidationLayer::filterOutMessages;
 
     ValidationLayer::ValidationLayer() :
             validationLayer({"VK_LAYER_KHRONOS_validation"}),
@@ -21,12 +20,12 @@ namespace urchin {
             features({}),
             featureEnables({}) {
 
-        FILTER_OUT_MESSAGES.clear();
-        FILTER_OUT_MESSAGES.emplace_back("vkQueuePresentKHR(): Returned error VK_ERROR_OUT_OF_DATE_KHR"); //error VK_ERROR_OUT_OF_DATE_KHR is handled by the application
-        FILTER_OUT_MESSAGES.emplace_back("Attempting to enable deprecated extension VK_EXT_debug_report"); //deprecated extension but still used by Renderdoc
+        filterOutMessages.clear();
+        filterOutMessages.emplace_back("vkQueuePresentKHR(): Returned error VK_ERROR_OUT_OF_DATE_KHR"); //error VK_ERROR_OUT_OF_DATE_KHR is handled by the application
+        filterOutMessages.emplace_back("Attempting to enable deprecated extension VK_EXT_debug_report"); //deprecated extension but still used by Renderdoc
         #ifndef NDEBUG
-            FILTER_OUT_MESSAGES.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development
-            FILTER_OUT_MESSAGES.emplace_back("Attempting to enable extension VK_EXT_debug_report"); //same as previous one but deprecated and still used by Renderdoc
+            filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development
+            filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_report"); //same as previous one but deprecated and still used by Renderdoc
         #endif
     }
 
@@ -138,7 +137,7 @@ namespace urchin {
     }
 
     bool ValidationLayer::ignoreValidationMessage(const std::string& validationMessage) {
-        return std::any_of(FILTER_OUT_MESSAGES.begin(), FILTER_OUT_MESSAGES.end(), [&validationMessage](const auto& filterOutMessage){
+        return std::any_of(filterOutMessages.begin(), filterOutMessages.end(), [&validationMessage](const auto& filterOutMessage){
             return validationMessage.find(filterOutMessage) != std::string::npos;
         });
     }

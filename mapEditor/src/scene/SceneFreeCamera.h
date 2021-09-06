@@ -19,7 +19,7 @@ namespace urchin {
             bool onMouseMove(double, double) override;
 
         private:
-            static const char DATA_DELIMITER;
+            static constexpr char DATA_DELIMITER = '@';
 
             double mouseXBeforeMove, mouseYBeforeMove;
             MouseController& mouseController;

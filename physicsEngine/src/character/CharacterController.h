@@ -55,9 +55,9 @@ namespace urchin {
             float computeSlope();
             void respawnBodies();
 
-            static const float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
-            static const float SAVE_RESPAWN_TRANSFORM_TIME;
-            static const std::array<float, 4> RECOVER_FACTOR;
+            static constexpr float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;
+            static constexpr float SAVE_RESPAWN_TRANSFORM_TIME = 10.0f; // 10 seconds
+            static constexpr std::array<float, 4> RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
             const float ccdMotionThresholdFactor;
             const float maxDepthToRecover;
             const float minUpdateFrequency;

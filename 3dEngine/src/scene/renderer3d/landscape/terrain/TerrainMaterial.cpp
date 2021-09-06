@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    //static
-    const unsigned int TerrainMaterials::MAX_MATERIAL = 4u; //maximum 4 materials (RGBA)
-
     TerrainMaterials::TerrainMaterials(const std::string& maskMapFilename, const std::vector<std::string>& materialFilenames, float sRepeat, float tRepeat) :
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),

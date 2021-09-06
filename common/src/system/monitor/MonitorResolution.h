@@ -22,7 +22,7 @@ namespace urchin {
             std::string retrieveAspectRatio() const;
 
         private:
-            static const char ID_DELIMITER;
+            static constexpr char ID_DELIMITER = '_';
 
             unsigned int width;
             unsigned int height;

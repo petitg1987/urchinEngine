@@ -5,11 +5,6 @@
 
 namespace urchin {
 
-    //static
-    const unsigned int UdaChunk::INDENT_SPACES = 2;
-    const char UdaChunk::ATTRIBUTES_SEPARATOR = ';';
-    const char UdaChunk::ATTRIBUTES_ASSIGN = '=';
-
     UdaChunk::UdaChunk(std::string name, std::string value, std::map<std::string, std::string> attributes, UdaChunk* parent):
             name(std::move(name)),
             value(std::move(value)),

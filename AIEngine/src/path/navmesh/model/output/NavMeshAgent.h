@@ -24,10 +24,10 @@ namespace urchin {
             float computeExpandDistance(const Vector3<float>&) const;
 
         private:
-            static const float DEFAULT_AGENT_HEIGHT;
-            static const float DEFAULT_AGENT_RADIUS;
-            static const float DEFAULT_MAX_SLOPE;
-            static const float DEFAULT_JUMP_DISTANCE;
+            static constexpr float DEFAULT_AGENT_HEIGHT = 1.8f;
+            static constexpr float DEFAULT_AGENT_RADIUS = 0.25f;
+            static constexpr float DEFAULT_MAX_SLOPE = (MathValue::PI_FLOAT / 4.0f);
+            static constexpr float DEFAULT_JUMP_DISTANCE = 1.5f;
 
             float agentHeight;
             float agentRadius;

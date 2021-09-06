@@ -21,9 +21,6 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    //static
-    constexpr float Renderer3d::MODELS_OCTREE_MIN_SIZE = 20.0f;
-
     Renderer3d::Renderer3d(RenderTarget& finalRenderTarget) :
             //scene properties
             finalRenderTarget(finalRenderTarget),

@@ -35,7 +35,7 @@ namespace urchin {
             void computeWorldBoundary();
             void controlBoundaries(AABBNode<AbstractBody*>&) const;
 
-            static const float BOUNDARIES_MARGIN_PERCENTAGE;
+            static constexpr float BOUNDARIES_MARGIN_PERCENTAGE = 0.3f;
 
             std::unique_ptr<PairContainer> defaultPairContainer;
 

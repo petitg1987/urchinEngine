@@ -56,10 +56,10 @@ namespace urchin {
             void computeFps();
             void resetFps();
 
-            static const float STARTUP_FPS;
-            static const float FPS_REFRESH_TIME_IN_MS;
-            static const float DISPLAY_FPS_REFRESH_TIME_IN_MS;
-            static const std::chrono::steady_clock::time_point MIN_TIME_POINT;
+            static constexpr float STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
+            static constexpr float FPS_REFRESH_TIME_IN_MS = 4.0f;
+            static constexpr float DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
+            static constexpr std::chrono::steady_clock::time_point MIN_TIME_POINT = std::chrono::steady_clock::time_point::min();
 
             //scene properties
             std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;

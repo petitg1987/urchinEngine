@@ -9,7 +9,7 @@ namespace urchin {
 
     class LightSplitShadowMap {
         public:
-            static const float LIGHT_BOX_MARGIN;
+            static constexpr float LIGHT_BOX_MARGIN = 0.001f;
 
             explicit LightSplitShadowMap(LightShadowMap*);
 

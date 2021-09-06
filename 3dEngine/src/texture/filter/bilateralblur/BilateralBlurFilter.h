@@ -34,7 +34,7 @@ namespace urchin {
 
             std::vector<float> computeOffsets() const;
 
-            static const unsigned int KERNEL_RADIUS_SHADER_LIMIT;
+            static constexpr unsigned int KERNEL_RADIUS_SHADER_LIMIT = 9; //must be equals to 'NB_TEXTURE_FETCH' in texFilterGaussian shader
 
             std::shared_ptr<Texture> depthTexture; //source texture
 

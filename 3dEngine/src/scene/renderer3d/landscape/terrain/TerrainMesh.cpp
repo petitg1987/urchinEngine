@@ -10,10 +10,6 @@
 
 namespace urchin {
 
-    //static
-    constexpr unsigned int TerrainMesh::TERRAIN_HASH_SIZE = 32;
-    constexpr unsigned int TerrainMesh::TERRAIN_FRL_FILE_VERSION = 1;
-
     TerrainMesh::TerrainMesh(const std::string& heightFilename, float xzScale, float yScale) :
             heightFilename(heightFilename),
             xzScale(xzScale),

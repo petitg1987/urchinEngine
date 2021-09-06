@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    //static
-    const char MapSerializer::DELIMITER = ',';
-
     std::string MapSerializer::serialize(const std::map<std::string, std::string>& map) {
         std::string mapString;
         for (const auto& [key, value] : map) {

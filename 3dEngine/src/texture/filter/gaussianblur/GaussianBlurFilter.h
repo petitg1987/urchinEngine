@@ -34,7 +34,7 @@ namespace urchin {
             std::vector<float> computeWeightsLinearSampling(const std::vector<float>&) const;
             std::vector<float> computeOffsetsLinearSampling(const std::vector<float>&, const std::vector<float>&) const;
 
-            static const unsigned int TEXTURE_FETCH_SHADER_LIMIT;
+            static constexpr unsigned int TEXTURE_FETCH_SHADER_LIMIT = 9; //must be equals to 'KERNEL_RADIUS' in texFilterBilateralBlur shader
 
             BlurDirection blurDirection;
             unsigned int blurSize;

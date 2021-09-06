@@ -47,7 +47,7 @@ namespace urchin {
             uint32_t vkImageIndex;
             std::vector<VkImageView> swapChainImageViews;
 
-            static const std::size_t MAX_CONCURRENT_FRAMES;
+            static constexpr std::size_t MAX_CONCURRENT_FRAMES = 2;
             std::vector<VkSemaphore> imageAvailableSemaphores;
             std::vector<VkSemaphore> renderFinishedSemaphores;
             std::vector<VkFence> commandBufferFences;

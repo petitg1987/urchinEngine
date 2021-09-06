@@ -9,9 +9,6 @@
 
 namespace urchin {
 
-    //static
-    const char MonitorResolution::ID_DELIMITER = '_';
-
     MonitorResolution::MonitorResolution(unsigned int width, unsigned int height, unsigned int frequency) :
             width(width),
             height(height),

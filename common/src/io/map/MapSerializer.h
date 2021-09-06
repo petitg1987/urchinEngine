@@ -14,7 +14,7 @@ namespace urchin {
             MapSerializer() = default;
             ~MapSerializer() = default;
 
-            static const char DELIMITER;
+            static constexpr char DELIMITER = ',';
 
             static std::string escape(const std::string&);
             static std::string unescape(const std::string&);

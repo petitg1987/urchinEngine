@@ -12,20 +12,20 @@ namespace urchin {
     ResourceContainer::~ResourceContainer() {
         cleanResources();
         for (auto& resource : resources) {
-            Logger::instance().logError("Resources not released: " + resource.second.lock()->getName());
+            Logger::instance().logError("Resources not released: " + resource.second->getName());
         }
     }
 
     void ResourceContainer::addResource(const std::shared_ptr<Resource>& resource) {
         std::lock_guard<std::mutex> lock(mutex);
-
-        cleanResources();
         resources.emplace(resource->getId(), resource);
     }
 
     void ResourceContainer::cleanResources() {
+        std::lock_guard<std::mutex> lock(mutex);
+
         for (auto it = resources.begin(); it != resources.end();) {
-            if (it->second.expired()) {
+            if (it->second.use_count() <= 1) { //resource not used anymore
                 it = resources.erase(it);
             } else {
                 ++it;
