@@ -34,7 +34,7 @@ namespace urchin {
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
-            void setModels(const std::vector<Model*>&);
+            void updateModels(const std::vector<Model*>&);
             void removeModel(Model*);
 
             void prepareRendering(const Matrix4<float>&);

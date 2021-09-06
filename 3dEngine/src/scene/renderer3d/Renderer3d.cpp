@@ -378,7 +378,7 @@ namespace urchin {
 
         //determine model visible on scene
         updateModelsInFrustum();
-        modelSetDisplayer->setModels(modelsInFrustum);
+        modelSetDisplayer->updateModels(modelsInFrustum);
 
         //determine visible lights on scene
         lightManager->updateVisibleLights(camera->getFrustum());

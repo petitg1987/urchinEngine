@@ -385,8 +385,11 @@ namespace urchin {
         beginInfo.flags = 0;
         beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
 
-        waitCommandBuffersIdle();
-        vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+        {
+            ScopeProfiler sp(Profiler::graphic(), "resetCmdPool");
+            waitCommandBuffersIdle();
+            vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+        }
 
         for (std::size_t i = 0; i < commandBuffers.size(); i++) {
             VkResult resultCommandBuffer = vkBeginCommandBuffer(commandBuffers[i], &beginInfo);

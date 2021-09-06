@@ -113,6 +113,8 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorSetLayout() {
+        ScopeProfiler sp(Profiler::graphic(), "creDescSetLyt");
+
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         uint32_t shaderUniformBinding = 0;
@@ -155,6 +157,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createGraphicsPipeline() {
+        ScopeProfiler sp(Profiler::graphic(), "crePipeline");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto shaderStages = shader.getShaderStages();
 
@@ -328,6 +331,8 @@ namespace urchin {
     }
 
     void GenericRenderer::createVertexBuffers() {
+        ScopeProfiler sp(Profiler::graphic(), "creVertexBuf");
+
         vertexBuffers.resize(data.size());
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             const DataContainer& dataContainer = data[dataIndex];
@@ -343,6 +348,8 @@ namespace urchin {
     }
 
     void GenericRenderer::createIndexBuffer() {
+        ScopeProfiler sp(Profiler::graphic(), "creIndexBuf");
+
         if (indices) {
             indexBuffer.initialize(BufferHandler::INDEX, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
         }
@@ -355,6 +362,8 @@ namespace urchin {
     }
 
     void GenericRenderer::createUniformBuffers() {
+        ScopeProfiler sp(Profiler::graphic(), "creUniformBuf");
+
         uniformsBuffers.resize(uniformData.size());
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
             uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, renderTarget.getNumFramebuffer(), uniformData[dataIndex].getDataSize());
@@ -369,6 +378,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorPool() {
+        ScopeProfiler sp(Profiler::graphic(), "creDescPool");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
@@ -396,6 +406,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorSets() {
+        ScopeProfiler sp(Profiler::graphic(), "creDescSet");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), descriptorSetLayout);
@@ -415,6 +426,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateDescriptorSets() {
+        ScopeProfiler sp(Profiler::graphic(), "updateDescSet");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {
@@ -587,7 +599,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex) {
-        ScopeProfiler sp(Profiler::graphic(), "renderUpCmdBuf");
+        ScopeProfiler sp(Profiler::graphic(), "updateCmdBuf");
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
         std::array<VkDeviceSize, 20> offsets = {0};

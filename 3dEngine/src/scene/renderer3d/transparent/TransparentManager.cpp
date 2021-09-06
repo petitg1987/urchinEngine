@@ -83,7 +83,7 @@ namespace urchin {
     }
 
     void TransparentManager::updateModels(const std::vector<Model*>& models) {
-        modelSetDisplayer->setModels(models);
+        modelSetDisplayer->updateModels(models);
     }
 
     void TransparentManager::removeModel(Model* model) {

@@ -37,6 +37,8 @@
 
 #include <i18n/LabelTranslator.h>
 
+#include <resources/ResourceRetriever.h>
+
 #include <graphic/render/shader/config/ShaderConfig.h>
 #include <graphic/render/target/NullRenderTarget.h>
 

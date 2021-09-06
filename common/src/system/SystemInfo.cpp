@@ -50,6 +50,7 @@ namespace urchin {
             return (unsigned int)sysInfo.dwNumberOfProcessors;
         #else
             std::string numCpuCores = CommandExecutor::execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
+            StringUtil::ltrim(numCpuCores);
             return TypeConverter::toUnsignedInt(numCpuCores);
         #endif
     }

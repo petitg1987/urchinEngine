@@ -164,7 +164,7 @@ namespace urchin {
     }
 
     void LightShadowMap::renderModels() {
-        shadowModelSetDisplayer->setModels(retrieveModels());
+        shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();
         shadowModelSetDisplayer->prepareRendering(lightViewMatrix);

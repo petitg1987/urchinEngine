@@ -86,8 +86,10 @@ namespace urchin {
         this->meshFilter = std::move(meshFilter);
     }
 
-    void ModelSetDisplayer::setModels(const std::vector<Model*>& models) {
+    void ModelSetDisplayer::updateModels(const std::vector<Model*>& models) {
+        ScopeProfiler sp(Profiler::graphic(), "updateModels");
         assert(renderTarget);
+
         for (auto model : models) {
             const auto& itModel = modelsDisplayer.find(model);
             if (itModel == modelsDisplayer.end()) {
