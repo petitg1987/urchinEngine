@@ -7,7 +7,8 @@
 namespace urchin {
 
     template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T>& a, const Point2<T>& b) :
-        a(a), b(b) {
+            a(a),
+            b(b) {
 
     }
 
@@ -50,7 +51,7 @@ namespace urchin {
 
         barycentrics[0] = (T)1.0 - t;
         barycentrics[1] = t;
-        return ((b-a)*t) + a;
+        return ((b - a) * t) + a;
     }
 
     /**

@@ -5,7 +5,8 @@
 namespace urchin {
 
     template<class T> Line3D<T>::Line3D(const Point3<T>& a, const Point3<T>& b) :
-        a(a), b(b) {
+            a(a),
+            b(b) {
         assert(a.X != b.X || a.Y != b.Y || a.Z != b.Z);
     }
 
@@ -22,7 +23,7 @@ namespace urchin {
         Vector3<T> ap = a.vector(p);
 
         const T t = ap.dotProduct(ab) / ab.squareLength();
-        return ((b-a)*t) + a;
+        return ((b - a) * t) + a;
     }
 
     /**
