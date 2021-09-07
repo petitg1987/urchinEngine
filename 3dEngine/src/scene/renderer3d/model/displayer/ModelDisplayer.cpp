@@ -60,7 +60,7 @@ namespace urchin {
         }
 
         for (auto& constMesh : model->getConstMeshes()->getConstMeshes()) {
-            auto meshName = model->getMeshes()->getConstMeshes().getName();
+            auto meshName = model->getMeshes()->getConstMeshes().getMeshesName();
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(constMesh->getBaseVertices())
                     ->indices(constMesh->getTrianglesIndices())

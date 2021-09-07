@@ -48,13 +48,15 @@ namespace urchin {
         originalSplitBBoxes = SplitBoundingBox().split(*originalBBox);
     }
 
-    std::unique_ptr<ConstMeshes> ConstMeshes::fromMeshesFile(std::string meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) {
+    std::unique_ptr<ConstMeshes> ConstMeshes::fromMeshesFile(const std::string& meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
         std::string meshName = FileUtil::getFileName(meshFilename);
-        return std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::make_optional(meshFilename), std::move(constMeshes)));
+        return std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::make_optional(meshFilename), std::move(constMeshesVector)));
     }
 
-    std::unique_ptr<ConstMeshes> ConstMeshes::fromMemory(std::string name, std::vector<std::unique_ptr<const ConstMesh>> constMeshes) {
-        return std::unique_ptr<ConstMeshes>(new ConstMeshes(std::move(name), std::nullopt, std::move(constMeshes)));
+    std::unique_ptr<ConstMeshes> ConstMeshes::fromMemory(const std::string& meshName, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
+        auto constMeshes = std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::nullopt, std::move(constMeshesVector)));
+        constMeshes->setName(meshName);
+        return constMeshes;
     }
 
     const std::string& ConstMeshes::getMeshesName() const {

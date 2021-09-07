@@ -5,7 +5,7 @@ namespace urchin {
     PipelineContainer::~PipelineContainer() {
         cleanPipelines();
         for (auto& pipeline : pipelines) {
-            Logger::instance().logError("Pipeline not released: " + pipeline.second->name);
+            Logger::instance().logError("Pipeline not released: " + pipeline.second->getName());
         }
     }
 

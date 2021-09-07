@@ -23,6 +23,10 @@ namespace urchin {
         }
     }
 
+    const std::string& Shader::getShaderName() const {
+        return shaderName;
+    }
+
     std::vector<VkPipelineShaderStageCreateInfo> Shader::getShaderStages() const {
         std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
         shaderStages.reserve(shaderStagesData.size());

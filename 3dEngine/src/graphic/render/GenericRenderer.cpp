@@ -191,7 +191,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "creDescSet");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->descriptorSetLayout);
+        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->descriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
@@ -382,7 +382,7 @@ namespace urchin {
 
     void GenericRenderer::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex) {
         ScopeProfiler sp(Profiler::graphic(), "updateCmdBuf");
-        vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->graphicsPipeline);
+        vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->graphicsPipeline());
 
         std::array<VkDeviceSize, 20> offsets = {0};
         assert(offsets.size() >= data.size());
@@ -392,7 +392,7 @@ namespace urchin {
             rawVertexBuffers.emplace_back(vertexBuffer.getBuffer(frameIndex));
         }
 
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->pipelineLayout, 0, 1, &descriptorSets[frameIndex], 0, nullptr);
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->pipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());
         if (indices && indexBuffer.getBuffer(frameIndex)) {
             vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(frameIndex), 0, VK_INDEX_TYPE_UINT32);

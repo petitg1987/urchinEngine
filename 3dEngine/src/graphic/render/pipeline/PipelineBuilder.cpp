@@ -11,7 +11,7 @@ namespace urchin {
             name(std::move(name)),
             renderTarget(nullptr),
             shader(nullptr),
-            shapeType(nullptr),
+            shapeType(ShapeType::TRIANGLE),
             data(nullptr),
             uniformData(nullptr),
             uniformTextureReaders(nullptr),
@@ -32,7 +32,7 @@ namespace urchin {
     }
 
     void PipelineBuilder::setupShapeType(const ShapeType& shapeType) {
-        this->shapeType = &shapeType;
+        this->shapeType = shapeType;
     }
 
     void PipelineBuilder::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
@@ -72,7 +72,7 @@ namespace urchin {
         std::size_t pipelineHash = computePipelineHash();
 
         std::shared_ptr<Pipeline> pipeline = PipelineContainer::instance().getPipeline(pipelineHash);
-        if (pipeline) {
+        if (!pipeline) {
             pipeline = std::make_shared<Pipeline>(name);
 
             createDescriptorSetLayout(pipeline);
@@ -89,9 +89,7 @@ namespace urchin {
             throw std::runtime_error("Render target not setup on pipeline");
         } else if (!shader) {
             throw std::runtime_error("Shader not setup on pipeline");
-        } else if (!shapeType) {
-            throw std::runtime_error("Shape type not setup on pipeline");
-        } else if (!data) {
+        } else if (!data || data->empty()) {
             throw std::runtime_error("Data not setup on pipeline");
         } else if (!uniformData) {
             throw std::runtime_error("Uniform data not setup on pipeline");
@@ -105,8 +103,18 @@ namespace urchin {
     }
 
     std::size_t PipelineBuilder::computePipelineHash() const {
-        //TODO ...
-        return 0;
+        std::size_t hash = 0;
+        HashUtil::combine(hash,
+                renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getNumColorAttachment(), renderTarget->getRenderPass(),
+                shader->getShaderName(), shader->getShaderStages().size(),
+                shapeType,
+                //TODO blend fct
+                depthTestEnabled, depthWriteEnabled,
+                cullFaceEnabled,
+                polygonMode,
+                scissorEnabled, scissorOffset.X, scissorOffset.Y, scissorSize.X, scissorSize.Y
+        );
+        return hash;
     }
 
     void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) {
@@ -143,7 +151,7 @@ namespace urchin {
         layoutInfo.bindingCount = (uint32_t)bindings.size();
         layoutInfo.pBindings = bindings.data();
 
-        VkResult result = vkCreateDescriptorSetLayout(logicalDevice, &layoutInfo, nullptr, &pipeline->descriptorSetLayout);
+        VkResult result = vkCreateDescriptorSetLayout(logicalDevice, &layoutInfo, nullptr, &pipeline->descriptorSetLayout());
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create descriptor set layout with error code: " + std::to_string(result));
         }
@@ -271,10 +279,10 @@ namespace urchin {
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         pipelineLayoutInfo.setLayoutCount = 1;
-        pipelineLayoutInfo.pSetLayouts = &pipeline->descriptorSetLayout;
+        pipelineLayoutInfo.pSetLayouts = &pipeline->descriptorSetLayout();
         pipelineLayoutInfo.pushConstantRangeCount = 0;
         pipelineLayoutInfo.pPushConstantRanges = nullptr;
-        VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout);
+        VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout());
         if (pipelineLayoutResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create pipeline layout with error code: " + std::to_string(pipelineLayoutResult));
         }
@@ -291,38 +299,38 @@ namespace urchin {
         pipelineInfo.pDepthStencilState = &depthStencil;
         pipelineInfo.pColorBlendState = &colorBlending;
         pipelineInfo.pDynamicState = nullptr;
-        pipelineInfo.layout = pipeline->pipelineLayout;
+        pipelineInfo.layout = pipeline->pipelineLayout();
         pipelineInfo.renderPass = renderTarget->getRenderPass();
         pipelineInfo.subpass = 0; //index to sub-pass
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; //can be used to switch optimally between similar pipeline
         pipelineInfo.basePipelineIndex = -1;
 
-        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->graphicsPipeline);
+        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->graphicsPipeline());
         if (pipelinesResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::to_string(pipelinesResult));
         }
 
-        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->graphicsPipeline, name);
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->graphicsPipeline(), name);
     }
 
     VkPrimitiveTopology PipelineBuilder::shapeTypeToVulkanTopology() const {
-        if (*shapeType == ShapeType::TRIANGLE) {
+        if (shapeType == ShapeType::TRIANGLE) {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-        } else if (*shapeType == ShapeType::TRIANGLE_STRIP) {
+        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
-        } else if (*shapeType == ShapeType::POINT) {
+        } else if (shapeType == ShapeType::POINT) {
             return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
         }
-        throw std::runtime_error("Unknown shape type: " + std::to_string(*shapeType));
+        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
     bool PipelineBuilder::isShapeTypeListTopology() const {
-        if (*shapeType == ShapeType::TRIANGLE || *shapeType == ShapeType::POINT) {
+        if (shapeType == ShapeType::TRIANGLE || shapeType == ShapeType::POINT) {
             return true;
-        } else if (*shapeType == ShapeType::TRIANGLE_STRIP) {
+        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
             return false;
         }
-        throw std::runtime_error("Unknown shape type: " + std::to_string(*shapeType));
+        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }
 
 }

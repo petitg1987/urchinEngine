@@ -44,7 +44,7 @@ namespace urchin {
             std::string name;
             const RenderTarget* renderTarget;
             const Shader* shader;
-            const ShapeType* shapeType;
+            ShapeType shapeType;
 
             const std::vector<DataContainer>* data;
             const std::vector<ShaderDataContainer>* uniformData;

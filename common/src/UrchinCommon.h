@@ -110,3 +110,4 @@
 #include <util/TypeConverter.h>
 #include <util/UserAuthorityException.h>
 #include <util/VectorUtil.h>
+#include <util/HashUtil.h>

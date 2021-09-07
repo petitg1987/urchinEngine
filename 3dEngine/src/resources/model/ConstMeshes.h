@@ -15,8 +15,8 @@ namespace urchin {
      */
     class ConstMeshes : public Resource {
         public:
-            static std::unique_ptr<ConstMeshes> fromMeshesFile(std::string, std::vector<std::unique_ptr<const ConstMesh>>);
-            static std::unique_ptr<ConstMeshes> fromMemory(std::string, std::vector<std::unique_ptr<const ConstMesh>>);
+            static std::unique_ptr<ConstMeshes> fromMeshesFile(const std::string&, std::vector<std::unique_ptr<const ConstMesh>>);
+            static std::unique_ptr<ConstMeshes> fromMemory(const std::string&, std::vector<std::unique_ptr<const ConstMesh>>);
 
             const std::string& getMeshesName() const;
             const std::string& getMeshesFilename() const;

@@ -5,16 +5,23 @@
 
 namespace urchin {
 
-    class Pipeline { //TODO getter / setter ?
+    class Pipeline {
         public:
             explicit Pipeline(std::string);
             ~Pipeline();
 
+            const std::string& getName() const;
+
+            VkDescriptorSetLayout& descriptorSetLayout();
+            VkPipelineLayout& pipelineLayout();
+            VkPipeline& graphicsPipeline();
+
+        private:
             std::string name;
 
-            VkDescriptorSetLayout descriptorSetLayout;
-            VkPipelineLayout pipelineLayout;
-            VkPipeline graphicsPipeline;
+            VkDescriptorSetLayout mDescriptorSetLayout;
+            VkPipelineLayout mPipelineLayout;
+            VkPipeline mGraphicsPipeline;
     };
 
 }
