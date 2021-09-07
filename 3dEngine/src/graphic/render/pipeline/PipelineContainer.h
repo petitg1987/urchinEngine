@@ -16,7 +16,7 @@ namespace urchin {
 
             std::shared_ptr<Pipeline> getPipeline(std::size_t) const;
             void addPipeline(std::size_t, const std::shared_ptr<Pipeline>&);
-            void cleanPipelines();
+            void cleanPipelines(); //TODO call it
 
         private:
             std::map<std::size_t, std::shared_ptr<Pipeline>> pipelines;

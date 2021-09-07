@@ -12,6 +12,11 @@ namespace urchin {
             static BlendFunction buildDefault();
             static BlendFunction buildBlendDisabled();
 
+            BlendFactor getSrcColorFactor() const;
+            BlendFactor getDstColorFactor() const;
+            BlendFactor getSrcAlphaFactor() const;
+            BlendFactor getDstAlphaFactor() const;
+
             void setupColorBlend(VkPipelineColorBlendAttachmentState& colorBlendAttachment) const;
 
         private:
@@ -23,7 +28,6 @@ namespace urchin {
 
             BlendFactor srcColorFactor;
             BlendFactor dstColorFactor;
-
             BlendFactor srcAlphaFactor;
             BlendFactor dstAlphaFactor;
     };

@@ -103,17 +103,21 @@ namespace urchin {
     }
 
     std::size_t PipelineBuilder::computePipelineHash() const {
+        std::size_t blendFunctionsHash = 0;
+        for(auto& bf : blendFunctions) {
+            HashUtil::combine(blendFunctionsHash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
+        }
+
         std::size_t hash = 0;
         HashUtil::combine(hash,
                 renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getNumColorAttachment(), renderTarget->getRenderPass(),
                 shader->getShaderName(), shader->getShaderStages().size(),
                 shapeType,
-                //TODO blend fct
+                blendFunctionsHash,
                 depthTestEnabled, depthWriteEnabled,
                 cullFaceEnabled,
                 polygonMode,
-                scissorEnabled, scissorOffset.X, scissorOffset.Y, scissorSize.X, scissorSize.Y
-        );
+                scissorEnabled, scissorOffset.X, scissorOffset.Y, scissorSize.X, scissorSize.Y);
         return hash;
     }
 
