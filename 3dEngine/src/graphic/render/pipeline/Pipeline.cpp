@@ -3,7 +3,8 @@
 
 namespace urchin {
 
-    Pipeline::Pipeline(std::string name) :
+    Pipeline::Pipeline(std::size_t id, std::string name) :
+            id(id),
             name(std::move(name)),
             mDescriptorSetLayout(nullptr),
             mPipelineLayout(nullptr),
@@ -17,6 +18,10 @@ namespace urchin {
         vkDestroyDescriptorSetLayout(logicalDevice, mDescriptorSetLayout, nullptr);
         vkDestroyPipeline(logicalDevice, mGraphicsPipeline, nullptr);
         vkDestroyPipelineLayout(logicalDevice, mPipelineLayout, nullptr);
+    }
+
+    std::size_t Pipeline::getId() const {
+        return id;
     }
 
     const std::string& Pipeline::getName() const {

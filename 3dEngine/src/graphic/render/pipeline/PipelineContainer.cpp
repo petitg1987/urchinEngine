@@ -17,11 +17,11 @@ namespace urchin {
         return std::shared_ptr<Pipeline>(nullptr);
     }
 
-    void PipelineContainer::addPipeline(std::size_t pipelineHash, const std::shared_ptr<Pipeline>& pipeline) {
+    void PipelineContainer::addPipeline(const std::shared_ptr<Pipeline>& pipeline) {
         #ifndef NDEBUG
-            assert(pipelines.find(pipelineHash) == pipelines.end());
+            assert(pipelines.find(pipeline->getId()) == pipelines.end());
         #endif
-        pipelines.emplace(pipelineHash, pipeline);
+        pipelines.emplace(pipeline->getId(), pipeline);
     }
 
     void PipelineContainer::cleanPipelines() {

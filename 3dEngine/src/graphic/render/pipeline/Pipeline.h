@@ -7,9 +7,10 @@ namespace urchin {
 
     class Pipeline {
         public:
-            explicit Pipeline(std::string);
+            Pipeline(std::size_t, std::string);
             ~Pipeline();
 
+            std::size_t getId() const;
             const std::string& getName() const;
 
             VkDescriptorSetLayout& descriptorSetLayout();
@@ -17,6 +18,7 @@ namespace urchin {
             VkPipeline& graphicsPipeline();
 
         private:
+            std::size_t id;
             std::string name;
 
             VkDescriptorSetLayout mDescriptorSetLayout;

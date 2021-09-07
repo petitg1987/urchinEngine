@@ -15,7 +15,7 @@ namespace urchin {
             ~PipelineContainer() override;
 
             std::shared_ptr<Pipeline> getPipeline(std::size_t) const;
-            void addPipeline(std::size_t, const std::shared_ptr<Pipeline>&);
+            void addPipeline(const std::shared_ptr<Pipeline>&);
             void cleanPipelines(); //TODO call it
 
         private:
