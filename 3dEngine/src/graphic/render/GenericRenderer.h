@@ -18,6 +18,7 @@
 #include <graphic/render/target/RenderTarget.h>
 #include <graphic/render/pipeline/Pipeline.h>
 #include <graphic/texture/TextureReader.h>
+#include <graphic/render/pipeline/PipelineBuilder.h>
 
 namespace urchin {
 
@@ -81,22 +82,14 @@ namespace urchin {
             std::string name;
             RenderTarget& renderTarget;
             const Shader& shader;
-            ShapeType shapeType;
 
             std::vector<DataContainer> data;
             std::shared_ptr<IndexContainer> indices;
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             mutable std::vector<OffscreenRender*> texturesWriter;
-            std::vector<BlendFunction> blendFunctions;
-            bool depthTestEnabled;
-            bool depthWriteEnabled;
-            bool cullFaceEnabled;
-            PolygonMode polygonMode;
-            bool scissorEnabled;
-            Vector2<int> scissorOffset;
-            Vector2<unsigned int> scissorSize;
 
+            std::unique_ptr<PipelineBuilder> pipelineBuilder;
             std::shared_ptr<Pipeline> pipeline;
             std::vector<AlterableBufferHandler> vertexBuffers;
             AlterableBufferHandler indexBuffer;

@@ -5,7 +5,7 @@ namespace urchin {
     PipelineContainer::~PipelineContainer() {
         cleanPipelines();
         for (auto& pipeline : pipelines) {
-            Logger::instance().logError("One pipeline not released"); //TODO add shader name/hash
+            Logger::instance().logError("Pipeline not released: " + pipeline.second->name);
         }
     }
 

@@ -5,7 +5,7 @@
 #include <graphic/setup/GraphicService.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/model/DataContainer.h>
-#include <graphic/render/pipeline/PipelineRetriever.h>
+#include <graphic/render/pipeline/PipelineBuilder.h>
 
 namespace urchin {
 
@@ -15,24 +15,21 @@ namespace urchin {
             name(rendererBuilder->getName()),
             renderTarget(rendererBuilder->getRenderTarget()),
             shader(rendererBuilder->getShader()),
-            shapeType(rendererBuilder->getShapeType()),
             data(rendererBuilder->getData()),
             indices(rendererBuilder->getIndices()),
             uniformData(rendererBuilder->getUniformData()),
             uniformTextureReaders(rendererBuilder->getUniformTextureReaders()),
-            blendFunctions(rendererBuilder->getBlendFunctions()),
-            depthTestEnabled(rendererBuilder->isDepthTestEnabled()),
-            depthWriteEnabled(rendererBuilder->isDepthWriteEnabled()),
-            cullFaceEnabled(rendererBuilder->isCullFaceEnabled()),
-            polygonMode(rendererBuilder->getPolygonMode()),
-            scissorEnabled(rendererBuilder->isScissorEnabled()),
-            scissorOffset(rendererBuilder->getScissorOffset()),
-            scissorSize(rendererBuilder->getScissorSize()),
             descriptorPool(nullptr),
             drawCommandDirty(false) {
-        if ((depthTestEnabled || depthWriteEnabled) && !renderTarget.hasDepthAttachment()) {
-            throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
-        }
+        pipelineBuilder = std::make_unique<PipelineBuilder>(name);
+        pipelineBuilder->setupRenderTarget(renderTarget);
+        pipelineBuilder->setupShader(shader);
+        pipelineBuilder->setupShapeType(rendererBuilder->getShapeType());
+        pipelineBuilder->setupBlendFunctions(rendererBuilder->getBlendFunctions());
+        pipelineBuilder->setupDepthOperations(rendererBuilder->isDepthTestEnabled(), rendererBuilder->isDepthWriteEnabled());
+        pipelineBuilder->setupCallFaceOperation(rendererBuilder->isCullFaceEnabled());
+        pipelineBuilder->setupPolygonMode(rendererBuilder->getPolygonMode());
+        pipelineBuilder->setupScissor(rendererBuilder->isScissorEnabled(), rendererBuilder->getScissorOffset(), rendererBuilder->getScissorSize());
 
         for (auto& uniformTextureReaderArray : uniformTextureReaders) {
             for (auto& uniformTextureReader : uniformTextureReaderArray) {
@@ -106,13 +103,9 @@ namespace urchin {
     }
 
     void GenericRenderer::createPipeline() {
-        PipelineRetriever pipelineRetriever;
-        pipelineRetriever.setupRenderTarget(renderTarget);
-        pipelineRetriever.setupShader(shader);
-        pipelineRetriever.setupData(data);
-        pipelineRetriever.setupUniform(uniformData, uniformTextureReaders);
-
-        pipeline = pipelineRetriever.getPipeline();
+        pipelineBuilder->setupData(data);
+        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders);
+        pipeline = pipelineBuilder->buildPipeline();
     }
 
     void GenericRenderer::destroyPipeline() {

@@ -3,6 +3,14 @@
 
 namespace urchin {
 
+    Pipeline::Pipeline(std::string name) :
+            name(std::move(name)),
+            descriptorSetLayout(nullptr),
+            pipelineLayout(nullptr),
+            graphicsPipeline(nullptr) {
+
+    }
+
     Pipeline::~Pipeline() {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 

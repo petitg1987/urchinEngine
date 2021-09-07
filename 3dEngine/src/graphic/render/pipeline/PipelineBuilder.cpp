@@ -1,4 +1,4 @@
-#include <graphic/render/pipeline/PipelineRetriever.h>
+#include <graphic/render/pipeline/PipelineBuilder.h>
 #include <graphic/render/pipeline/PipelineContainer.h>
 #include <graphic/render/model/PolygonMode.h>
 #include <graphic/render/blend/BlendFunction.h>
@@ -7,43 +7,73 @@
 
 namespace urchin {
 
-    PipelineRetriever::PipelineRetriever() :
+    PipelineBuilder::PipelineBuilder(std::string name) :
+            name(std::move(name)),
             renderTarget(nullptr),
             shader(nullptr),
             shapeType(nullptr),
             data(nullptr),
             uniformData(nullptr),
-            uniformTextureReaders(nullptr) {
+            uniformTextureReaders(nullptr),
+            depthTestEnabled(false),
+            depthWriteEnabled(false),
+            cullFaceEnabled(true),
+            polygonMode(PolygonMode::FILL),
+            scissorEnabled(false) {
 
     }
 
-    void PipelineRetriever::setupRenderTarget(const RenderTarget& renderTarget) {
+    void PipelineBuilder::setupRenderTarget(const RenderTarget& renderTarget) {
         this->renderTarget = &renderTarget;
     }
 
-    void PipelineRetriever::setupShader(const Shader& shader) {
+    void PipelineBuilder::setupShader(const Shader& shader) {
         this->shader = &shader;
     }
 
-    void PipelineRetriever::setupShapeType(const ShapeType& shapeType) {
+    void PipelineBuilder::setupShapeType(const ShapeType& shapeType) {
         this->shapeType = &shapeType;
     }
 
-    void PipelineRetriever::setupData(const std::vector<DataContainer>& data) {
+    void PipelineBuilder::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
+        this->blendFunctions = blendFunctions;
+    }
+
+    void PipelineBuilder::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+        this->depthTestEnabled = depthTestEnabled;
+        this->depthWriteEnabled = depthWriteEnabled;
+    }
+
+    void PipelineBuilder::setupCallFaceOperation(bool cullFaceEnabled) {
+        this->cullFaceEnabled = cullFaceEnabled;
+    }
+
+    void PipelineBuilder::setupPolygonMode(PolygonMode polygonMode) {
+        this->polygonMode = polygonMode;
+    }
+
+    void PipelineBuilder::setupScissor(bool scissorEnabled, Vector2<int> scissorOffset, Vector2<unsigned int> scissorSize) {
+        this->scissorEnabled = scissorEnabled;
+        this->scissorOffset = scissorOffset;
+        this->scissorSize = scissorSize;
+    }
+
+    void PipelineBuilder::setupData(const std::vector<DataContainer>& data) {
         this->data = &data;
     }
 
-    void PipelineRetriever::setupUniform(const std::vector<ShaderDataContainer>& uniformData, const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders) {
+    void PipelineBuilder::setupUniform(const std::vector<ShaderDataContainer>& uniformData, const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders) {
         this->uniformData = &uniformData;
         this->uniformTextureReaders = &uniformTextureReaders;
     }
 
-    std::shared_ptr<Pipeline> PipelineRetriever::getPipeline() {
+    std::shared_ptr<Pipeline> PipelineBuilder::buildPipeline() {
+        checkSetup();
         std::size_t pipelineHash = computePipelineHash();
 
         std::shared_ptr<Pipeline> pipeline = PipelineContainer::instance().getPipeline(pipelineHash);
         if (pipeline) {
-            pipeline = std::make_shared<Pipeline>();
+            pipeline = std::make_shared<Pipeline>(name);
 
             createDescriptorSetLayout(pipeline);
             createGraphicsPipeline(pipeline);
@@ -54,12 +84,32 @@ namespace urchin {
         return pipeline;
     }
 
-    std::size_t PipelineRetriever::computePipelineHash() const {
+    void PipelineBuilder::checkSetup() {
+        if (!renderTarget) {
+            throw std::runtime_error("Render target not setup on pipeline");
+        } else if (!shader) {
+            throw std::runtime_error("Shader not setup on pipeline");
+        } else if (!shapeType) {
+            throw std::runtime_error("Shape type not setup on pipeline");
+        } else if (!data) {
+            throw std::runtime_error("Data not setup on pipeline");
+        } else if (!uniformData) {
+            throw std::runtime_error("Uniform data not setup on pipeline");
+        } else if (!uniformTextureReaders) {
+            throw std::runtime_error("Uniform texture readers not setup on pipeline");
+        }
+
+        if ((depthTestEnabled || depthWriteEnabled) && !renderTarget->hasDepthAttachment()) {
+            throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
+        }
+    }
+
+    std::size_t PipelineBuilder::computePipelineHash() const {
         //TODO ...
         return 0;
     }
 
-    void PipelineRetriever::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) {
+    void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) {
         ScopeProfiler sp(Profiler::graphic(), "creDescSetLyt");
 
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
@@ -99,7 +149,7 @@ namespace urchin {
         }
     }
 
-    void PipelineRetriever::createGraphicsPipeline(const std::shared_ptr<Pipeline>& pipeline) {
+    void PipelineBuilder::createGraphicsPipeline(const std::shared_ptr<Pipeline>& pipeline) {
         ScopeProfiler sp(Profiler::graphic(), "crePipeline");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto shaderStages = shader->getShaderStages();
@@ -197,7 +247,7 @@ namespace urchin {
 
         //color blending
         if (!blendFunctions.empty() && blendFunctions.size() != renderTarget->getNumColorAttachment()) {
-            throw std::runtime_error("Number of blend functions (" + std::to_string(blendFunctions.size()) + ") does not match with number of color attachments (" + std::to_string(renderTarget.getNumColorAttachment()) + ")");
+            throw std::runtime_error("Number of blend functions (" + std::to_string(blendFunctions.size()) + ") does not match with number of color attachments (" + std::to_string(renderTarget->getNumColorAttachment()) + ")");
         } else {
             blendFunctions.resize(renderTarget->getNumColorAttachment(), BlendFunction::buildBlendDisabled());
         }
@@ -255,7 +305,7 @@ namespace urchin {
         DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->graphicsPipeline, name);
     }
 
-    VkPrimitiveTopology PipelineRetriever::shapeTypeToVulkanTopology() const {
+    VkPrimitiveTopology PipelineBuilder::shapeTypeToVulkanTopology() const {
         if (*shapeType == ShapeType::TRIANGLE) {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         } else if (*shapeType == ShapeType::TRIANGLE_STRIP) {
@@ -266,7 +316,7 @@ namespace urchin {
         throw std::runtime_error("Unknown shape type: " + std::to_string(*shapeType));
     }
 
-    bool PipelineRetriever::isShapeTypeListTopology() const {
+    bool PipelineBuilder::isShapeTypeListTopology() const {
         if (*shapeType == ShapeType::TRIANGLE || *shapeType == ShapeType::POINT) {
             return true;
         } else if (*shapeType == ShapeType::TRIANGLE_STRIP) {
