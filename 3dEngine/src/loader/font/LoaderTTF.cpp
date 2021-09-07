@@ -120,7 +120,7 @@ namespace urchin {
 
         auto alphabetTexture = Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels), true).createTexture(false);
 
-        //clears buffers of letters
+        //clear buffers of letters
         for (std::size_t i = 0; i < Font::NUM_LETTERS; i++) {
             glyph[i].buf.clear();
         }
