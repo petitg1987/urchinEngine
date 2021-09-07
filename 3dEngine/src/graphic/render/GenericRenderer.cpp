@@ -186,8 +186,8 @@ namespace urchin {
         //input assembly stage
         VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
         inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-        inputAssembly.topology = shapeTypeToVulkanType();
-        inputAssembly.primitiveRestartEnable = (indices && indices->hasPrimitiveRestartIndex()) ? VK_TRUE : VK_FALSE;
+        inputAssembly.topology = shapeTypeToVulkanTopology();
+        inputAssembly.primitiveRestartEnable = isShapeTypeListTopology() ? VK_FALSE : VK_TRUE;
 
         //viewports and scissors stage
         VkViewport viewport{};
@@ -316,13 +316,22 @@ namespace urchin {
         vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
     }
 
-    VkPrimitiveTopology GenericRenderer::shapeTypeToVulkanType() const {
+    VkPrimitiveTopology GenericRenderer::shapeTypeToVulkanTopology() const {
         if (shapeType == ShapeType::TRIANGLE) {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
             return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
         } else if (shapeType == ShapeType::POINT) {
             return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
+        }
+        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
+    }
+
+    bool GenericRenderer::isShapeTypeListTopology() const {
+        if (shapeType == ShapeType::TRIANGLE || shapeType == ShapeType::POINT) {
+            return true;
+        } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
+            return false;
         }
         throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
     }

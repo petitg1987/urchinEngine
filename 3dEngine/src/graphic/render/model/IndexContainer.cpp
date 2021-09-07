@@ -5,24 +5,21 @@
 
 namespace urchin {
 
-    IndexContainer::IndexContainer(std::size_t indicesCount, const uint32_t* ptr, bool hasPrimitiveRestartIndex) :
-            indicesCount(indicesCount),
-            bHasPrimitiveRestartIndex(hasPrimitiveRestartIndex) {
+    IndexContainer::IndexContainer(std::size_t indicesCount, const uint32_t* ptr) :
+            indicesCount(indicesCount) {
         this->ptr = (uint32_t*)malloc(getBufferSize());
         std::memcpy(this->ptr, ptr, getBufferSize());
     }
 
     IndexContainer::IndexContainer(const IndexContainer& src) :
-            indicesCount(src.indicesCount),
-            bHasPrimitiveRestartIndex(src.bHasPrimitiveRestartIndex) {
+            indicesCount(src.indicesCount) {
         this->ptr = (uint32_t*)malloc(getBufferSize());
         std::memcpy(this->ptr, src.ptr, getBufferSize());
     }
 
     IndexContainer::IndexContainer(IndexContainer&& src) noexcept :
             indicesCount(src.indicesCount),
-            ptr(src.ptr),
-            bHasPrimitiveRestartIndex(src.bHasPrimitiveRestartIndex) {
+            ptr(src.ptr) {
         src.ptr = nullptr;
     }
 
@@ -53,10 +50,6 @@ namespace urchin {
      */
     std::size_t IndexContainer::getBufferSize() const {
         return getIndicesSize() * indicesCount;
-    }
-
-    bool IndexContainer::hasPrimitiveRestartIndex() const {
-        return bHasPrimitiveRestartIndex;
     }
 
 }

@@ -58,7 +58,8 @@ namespace urchin {
             void createDescriptorSetLayout();
             void destroyDescriptorSetLayout();
             void createGraphicsPipeline();
-            VkPrimitiveTopology shapeTypeToVulkanType() const;
+            VkPrimitiveTopology shapeTypeToVulkanTopology() const;
+            bool isShapeTypeListTopology() const;
             void destroyGraphicsPipeline();
             void createVertexBuffers();
             void destroyVertexBuffers();

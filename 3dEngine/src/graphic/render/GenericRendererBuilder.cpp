@@ -60,15 +60,7 @@ namespace urchin {
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::indices(const std::vector<uint32_t>& indices) {
-        bool hasPrimitiveRestartIndex = false;
-        for (uint32_t index : indices) {
-            if (index == GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
-                hasPrimitiveRestartIndex = true;
-                break;
-            }
-        }
-
-        pIndices = std::make_shared<IndexContainer>(indices.size(), indices.data(), hasPrimitiveRestartIndex);
+        pIndices = std::make_shared<IndexContainer>(indices.size(), indices.data());
         return shared_from_this();
     }
 
