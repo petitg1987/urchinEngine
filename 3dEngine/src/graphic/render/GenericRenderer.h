@@ -16,6 +16,7 @@
 #include <graphic/render/shader/model/ShaderDataContainer.h>
 #include <graphic/render/blend/BlendFunction.h>
 #include <graphic/render/target/RenderTarget.h>
+#include <graphic/render/pipeline/Pipeline.h>
 #include <graphic/texture/TextureReader.h>
 
 namespace urchin {
@@ -55,12 +56,8 @@ namespace urchin {
             void initialize();
             void cleanup();
 
-            void createDescriptorSetLayout();
-            void destroyDescriptorSetLayout();
-            void createGraphicsPipeline();
-            VkPrimitiveTopology shapeTypeToVulkanTopology() const;
-            bool isShapeTypeListTopology() const;
-            void destroyGraphicsPipeline();
+            void createPipeline();
+            void destroyPipeline();
             void createVertexBuffers();
             void destroyVertexBuffers();
             void createIndexBuffer();
@@ -100,9 +97,7 @@ namespace urchin {
             Vector2<int> scissorOffset;
             Vector2<unsigned int> scissorSize;
 
-            VkDescriptorSetLayout descriptorSetLayout;
-            VkPipelineLayout pipelineLayout;
-            VkPipeline graphicsPipeline;
+            std::shared_ptr<Pipeline> pipeline;
             std::vector<AlterableBufferHandler> vertexBuffers;
             AlterableBufferHandler indexBuffer;
             std::vector<AlterableBufferHandler> uniformsBuffers;

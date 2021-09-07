@@ -5,6 +5,5 @@ template<class T> std::shared_ptr<T> ResourceContainer::getResource(const std::s
     if (itFind != resources.end()) {
         return std::dynamic_pointer_cast<T>(itFind->second);
     }
-
     return std::shared_ptr<T>(nullptr);
 }

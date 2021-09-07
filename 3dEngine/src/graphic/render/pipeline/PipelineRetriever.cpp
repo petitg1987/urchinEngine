@@ -1,0 +1,278 @@
+#include <graphic/render/pipeline/PipelineRetriever.h>
+#include <graphic/render/pipeline/PipelineContainer.h>
+#include <graphic/render/model/PolygonMode.h>
+#include <graphic/render/blend/BlendFunction.h>
+#include <graphic/helper/DebugLabelHelper.h>
+#include <graphic/setup/GraphicService.h>
+
+namespace urchin {
+
+    PipelineRetriever::PipelineRetriever() :
+            renderTarget(nullptr),
+            shader(nullptr),
+            shapeType(nullptr),
+            data(nullptr),
+            uniformData(nullptr),
+            uniformTextureReaders(nullptr) {
+
+    }
+
+    void PipelineRetriever::setupRenderTarget(const RenderTarget& renderTarget) {
+        this->renderTarget = &renderTarget;
+    }
+
+    void PipelineRetriever::setupShader(const Shader& shader) {
+        this->shader = &shader;
+    }
+
+    void PipelineRetriever::setupShapeType(const ShapeType& shapeType) {
+        this->shapeType = &shapeType;
+    }
+
+    void PipelineRetriever::setupData(const std::vector<DataContainer>& data) {
+        this->data = &data;
+    }
+
+    void PipelineRetriever::setupUniform(const std::vector<ShaderDataContainer>& uniformData, const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders) {
+        this->uniformData = &uniformData;
+        this->uniformTextureReaders = &uniformTextureReaders;
+    }
+
+    std::shared_ptr<Pipeline> PipelineRetriever::getPipeline() {
+        std::size_t pipelineHash = computePipelineHash();
+
+        std::shared_ptr<Pipeline> pipeline = PipelineContainer::instance().getPipeline(pipelineHash);
+        if (pipeline) {
+            pipeline = std::make_shared<Pipeline>();
+
+            createDescriptorSetLayout(pipeline);
+            createGraphicsPipeline(pipeline);
+
+            PipelineContainer::instance().addPipeline(pipelineHash, pipeline);
+        }
+
+        return pipeline;
+    }
+
+    std::size_t PipelineRetriever::computePipelineHash() const {
+        //TODO ...
+        return 0;
+    }
+
+    void PipelineRetriever::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) {
+        ScopeProfiler sp(Profiler::graphic(), "creDescSetLyt");
+
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
+
+        uint32_t shaderUniformBinding = 0;
+        std::vector<VkDescriptorSetLayoutBinding> bindings;
+
+        for (auto& uniformSingleData : *uniformData) {
+            std::ignore = uniformSingleData;
+            VkDescriptorSetLayoutBinding uboLayoutBinding{};
+            uboLayoutBinding.binding = shaderUniformBinding++;
+            uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            uboLayoutBinding.descriptorCount = 1;
+            uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+            uboLayoutBinding.pImmutableSamplers = nullptr;
+            bindings.emplace_back(uboLayoutBinding);
+        }
+
+        for (auto& uniformTextureReader : *uniformTextureReaders) {
+            VkDescriptorSetLayoutBinding samplerLayoutBinding{};
+            samplerLayoutBinding.binding = shaderUniformBinding++;
+            samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
+            samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            samplerLayoutBinding.pImmutableSamplers = nullptr;
+            samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+            bindings.emplace_back(samplerLayoutBinding);
+        }
+
+        VkDescriptorSetLayoutCreateInfo layoutInfo{};
+        layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+        layoutInfo.bindingCount = (uint32_t)bindings.size();
+        layoutInfo.pBindings = bindings.data();
+
+        VkResult result = vkCreateDescriptorSetLayout(logicalDevice, &layoutInfo, nullptr, &pipeline->descriptorSetLayout);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create descriptor set layout with error code: " + std::to_string(result));
+        }
+    }
+
+    void PipelineRetriever::createGraphicsPipeline(const std::shared_ptr<Pipeline>& pipeline) {
+        ScopeProfiler sp(Profiler::graphic(), "crePipeline");
+        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
+        auto shaderStages = shader->getShaderStages();
+
+        //vertex input stage
+        std::vector<VkVertexInputBindingDescription> bindingDescriptions;
+        std::vector<VkVertexInputAttributeDescription> attributeDescriptions;
+        for (uint32_t i = 0; i < data->size(); ++i) {
+            VkVertexInputBindingDescription bindingDescription{};
+            bindingDescription.binding = i;
+            bindingDescription.stride = (uint32_t)(*data)[i].getDataSize();
+            bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+            bindingDescriptions.emplace_back(bindingDescription);
+
+            VkVertexInputAttributeDescription attributeDescription{};
+            attributeDescription.binding = i;
+            attributeDescription.location = i;
+            attributeDescription.format = (*data)[i].getVulkanFormat();
+            attributeDescription.offset = 0;
+            attributeDescriptions.emplace_back(attributeDescription);
+        }
+
+        VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
+        vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        vertexInputInfo.vertexBindingDescriptionCount = (uint32_t)bindingDescriptions.size();
+        vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
+        vertexInputInfo.vertexAttributeDescriptionCount = (uint32_t)attributeDescriptions.size();
+        vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+
+        //input assembly stage
+        VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
+        inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+        inputAssembly.topology = shapeTypeToVulkanTopology();
+        inputAssembly.primitiveRestartEnable = isShapeTypeListTopology() ? VK_FALSE : VK_TRUE;
+
+        //viewports and scissors stage
+        VkViewport viewport{};
+        viewport.x = 0.0f;
+        viewport.y = 0.0f;
+        viewport.width = (float)renderTarget->getWidth();
+        viewport.height = (float)renderTarget->getHeight();
+        viewport.minDepth = 0.0f;
+        viewport.maxDepth = 1.0f;
+        VkRect2D scissor = {};
+        if (scissorEnabled) {
+            scissor.offset = {scissorOffset.X, scissorOffset.Y};
+            scissor.extent = {scissorSize.X, scissorSize.Y};
+        } else {
+            scissor.offset = {0, 0};
+            scissor.extent = {renderTarget->getWidth(), renderTarget->getHeight()};
+        }
+        VkPipelineViewportStateCreateInfo viewportState{};
+        viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        viewportState.viewportCount = 1;
+        viewportState.pViewports = &viewport;
+        viewportState.scissorCount = 1;
+        viewportState.pScissors = &scissor;
+
+        //rasterization stage (vertices turned into fragments + depth testing + face culling)
+        VkPipelineRasterizationStateCreateInfo rasterization{};
+        rasterization.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+        rasterization.rasterizerDiscardEnable = VK_FALSE;
+        rasterization.polygonMode = (polygonMode == PolygonMode::WIREFRAME) ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
+        rasterization.lineWidth = 1.0f; //do not use a value != 1.0f: less than 60% of graphic cards support it
+        rasterization.cullMode = cullFaceEnabled ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE;
+        rasterization.frontFace = VK_FRONT_FACE_CLOCKWISE;
+        rasterization.depthClampEnable = VK_FALSE;
+        rasterization.depthBiasEnable = VK_FALSE;
+        rasterization.depthBiasConstantFactor = 0.0f;
+        rasterization.depthBiasClamp = 0.0f;
+        rasterization.depthBiasSlopeFactor = 0.0f;
+
+        //multisampling stage (mainly for anti-aliasing)
+        VkPipelineMultisampleStateCreateInfo multisampling{};
+        multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+        multisampling.sampleShadingEnable = VK_FALSE;
+        multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+        multisampling.minSampleShading = 1.0f;
+        multisampling.pSampleMask = nullptr;
+        multisampling.alphaToCoverageEnable = VK_FALSE;
+        multisampling.alphaToOneEnable = VK_FALSE;
+
+        //depth and stencil stage
+        VkPipelineDepthStencilStateCreateInfo depthStencil{};
+        depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        depthStencil.depthTestEnable = depthTestEnabled ? VK_TRUE : VK_FALSE;
+        depthStencil.depthWriteEnable = depthWriteEnabled ? VK_TRUE : VK_FALSE;
+        depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
+        depthStencil.depthBoundsTestEnable = VK_FALSE;
+        depthStencil.minDepthBounds = 0.0f;
+        depthStencil.maxDepthBounds = 1.0f;
+        depthStencil.stencilTestEnable = VK_FALSE;
+        depthStencil.front = {};
+        depthStencil.back = {};
+
+        //color blending
+        if (!blendFunctions.empty() && blendFunctions.size() != renderTarget->getNumColorAttachment()) {
+            throw std::runtime_error("Number of blend functions (" + std::to_string(blendFunctions.size()) + ") does not match with number of color attachments (" + std::to_string(renderTarget.getNumColorAttachment()) + ")");
+        } else {
+            blendFunctions.resize(renderTarget->getNumColorAttachment(), BlendFunction::buildBlendDisabled());
+        }
+        std::vector<VkPipelineColorBlendAttachmentState> colorBlendAttachments;
+        for (std::size_t i = 0; i < renderTarget->getNumColorAttachment(); ++i) {
+            VkPipelineColorBlendAttachmentState colorBlendAttachment{};
+            colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+            blendFunctions[i].setupColorBlend(colorBlendAttachment);
+            colorBlendAttachments.push_back(colorBlendAttachment);
+        }
+        VkPipelineColorBlendStateCreateInfo colorBlending{};
+        colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+        colorBlending.logicOpEnable = VK_FALSE;
+        colorBlending.logicOp = VK_LOGIC_OP_COPY;
+        colorBlending.attachmentCount = (uint32_t)colorBlendAttachments.size();
+        colorBlending.pAttachments = colorBlendAttachments.data();
+        colorBlending.blendConstants[0] = 0.0f; colorBlending.blendConstants[1] = 0.0f;
+        colorBlending.blendConstants[2] = 0.0f; colorBlending.blendConstants[3] = 0.0f;
+
+        //pipeline layout (used to transfer uniform to shaders)
+        VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+        pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+        pipelineLayoutInfo.setLayoutCount = 1;
+        pipelineLayoutInfo.pSetLayouts = &pipeline->descriptorSetLayout;
+        pipelineLayoutInfo.pushConstantRangeCount = 0;
+        pipelineLayoutInfo.pPushConstantRanges = nullptr;
+        VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout);
+        if (pipelineLayoutResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create pipeline layout with error code: " + std::to_string(pipelineLayoutResult));
+        }
+
+        VkGraphicsPipelineCreateInfo pipelineInfo{};
+        pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+        pipelineInfo.stageCount = (uint32_t)shaderStages.size();
+        pipelineInfo.pStages = shaderStages.data();
+        pipelineInfo.pVertexInputState = &vertexInputInfo;
+        pipelineInfo.pInputAssemblyState = &inputAssembly;
+        pipelineInfo.pViewportState = &viewportState;
+        pipelineInfo.pRasterizationState = &rasterization;
+        pipelineInfo.pMultisampleState = &multisampling;
+        pipelineInfo.pDepthStencilState = &depthStencil;
+        pipelineInfo.pColorBlendState = &colorBlending;
+        pipelineInfo.pDynamicState = nullptr;
+        pipelineInfo.layout = pipeline->pipelineLayout;
+        pipelineInfo.renderPass = renderTarget->getRenderPass();
+        pipelineInfo.subpass = 0; //index to sub-pass
+        pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; //can be used to switch optimally between similar pipeline
+        pipelineInfo.basePipelineIndex = -1;
+
+        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->graphicsPipeline);
+        if (pipelinesResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::to_string(pipelinesResult));
+        }
+
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->graphicsPipeline, name);
+    }
+
+    VkPrimitiveTopology PipelineRetriever::shapeTypeToVulkanTopology() const {
+        if (*shapeType == ShapeType::TRIANGLE) {
+            return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        } else if (*shapeType == ShapeType::TRIANGLE_STRIP) {
+            return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
+        } else if (*shapeType == ShapeType::POINT) {
+            return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
+        }
+        throw std::runtime_error("Unknown shape type: " + std::to_string(*shapeType));
+    }
+
+    bool PipelineRetriever::isShapeTypeListTopology() const {
+        if (*shapeType == ShapeType::TRIANGLE || *shapeType == ShapeType::POINT) {
+            return true;
+        } else if (*shapeType == ShapeType::TRIANGLE_STRIP) {
+            return false;
+        }
+        throw std::runtime_error("Unknown shape type: " + std::to_string(*shapeType));
+    }
+
+}
