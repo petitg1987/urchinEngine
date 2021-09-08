@@ -53,7 +53,9 @@ namespace urchin {
         protected:
             void initializeRenderers();
             void cleanupRenderers();
+            const std::vector<GenericRenderer*>& getRenderers() const;
             bool hasRenderer();
+            bool areRenderersDirty() const;
 
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
             VkAttachmentDescription buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
@@ -70,9 +72,10 @@ namespace urchin {
             const std::vector<OffscreenRender*>& getRenderDependencies() const;
             void configureWaitSemaphore(VkSubmitInfo&, VkSemaphore) const;
 
+            virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;
             void updateGraphicData(uint32_t);
-            void updateCommandBuffers(const std::vector<VkClearValue>&);
+            void updateCommandBuffers(uint32_t, const std::vector<VkClearValue>&);
 
             bool isInitialized;
 
@@ -80,8 +83,6 @@ namespace urchin {
             std::vector<VkCommandBuffer> commandBuffers;
 
         private:
-            bool needCommandBuffersRefresh();
-
             std::string name;
             DepthAttachmentType depthAttachmentType;
             std::shared_ptr<Texture> externalDepthTexture;

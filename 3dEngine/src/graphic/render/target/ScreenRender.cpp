@@ -13,7 +13,8 @@ namespace urchin {
     ScreenRender::ScreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
             verticalSyncEnabled(true),
-            vkImageIndex(std::numeric_limits<uint32_t>::max()) {
+            vkImageIndex(std::numeric_limits<uint32_t>::max()),
+            currentFrameIndex(0) {
 
     }
 
@@ -217,7 +218,6 @@ namespace urchin {
             return;
         }
 
-        static size_t currentFrameIndex = 0;
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'
@@ -232,7 +232,7 @@ namespace urchin {
         }
 
         updateGraphicData(vkImageIndex);
-        updateCommandBuffers(clearValues);
+        updateCommandBuffers(vkImageIndex, clearValues);
 
         if (imagesFences[vkImageIndex] != VK_NULL_HANDLE) {
             //Fence (CPU-GPU sync) to wait if a previous frame is using this image. Useful in 2 cases:
@@ -277,9 +277,17 @@ namespace urchin {
         currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;
     }
 
+    bool ScreenRender::needCommandBufferRefresh(std::size_t /*cmdBufferIndex*/) const {
+        //Always return true for the following reasons:
+        // 1) Command buffer refresh is almost always required due to renders make dirty by the UIRenderer
+        // 2) Determine when a refresh is required for a specific command buffer is not easy. Indeed, a dirty render would require a refresh of the current command
+        //    buffer but also a refresh of the others command buffers in the next frames.
+        return true;
+    }
+
     void ScreenRender::waitCommandBuffersIdle() const {
         for (unsigned int i = 0; i < MAX_CONCURRENT_FRAMES; ++i) {
-            vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX);
+            vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX); //TODO already partially done in line 224
         }
     }
 

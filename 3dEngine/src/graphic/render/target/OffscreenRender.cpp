@@ -210,7 +210,7 @@ namespace urchin {
 
         updateTexturesWriter();
         updateGraphicData(0);
-        updateCommandBuffers(clearValues);
+        updateCommandBuffers(0, clearValues);
 
         VkSemaphore signalSemaphores[] = {queueSubmitSemaphore};
         VkSubmitInfo submitInfo{};
@@ -242,8 +242,18 @@ namespace urchin {
         }
     }
 
+    bool OffscreenRender::needCommandBufferRefresh(std::size_t cmdBufferIndex) const {
+        if (cmdBufferIndex != 0) {
+            assert(false);
+        }
+
+        return areRenderersDirty() || std::any_of(getRenderers().begin(), getRenderers().end(), [](const auto* renderer) {
+            return renderer->isEnabled() && renderer->isDrawCommandDirty();
+        });
+    }
+
     void OffscreenRender::waitCommandBuffersIdle() const {
-        vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX); //TODO already done in line 206
     }
 
 }

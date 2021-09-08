@@ -38,6 +38,7 @@ namespace urchin {
             void createSyncObjects();
             void destroySyncObjects();
 
+            bool needCommandBufferRefresh(std::size_t) const override;
             void waitCommandBuffersIdle() const override;
 
             bool verticalSyncEnabled;
@@ -48,6 +49,8 @@ namespace urchin {
             std::vector<VkImageView> swapChainImageViews;
 
             static constexpr std::size_t MAX_CONCURRENT_FRAMES = 2;
+            std::size_t currentFrameIndex;
+
             std::vector<VkSemaphore> imageAvailableSemaphores;
             std::vector<VkSemaphore> renderFinishedSemaphores;
             std::vector<VkFence> commandBufferFences;

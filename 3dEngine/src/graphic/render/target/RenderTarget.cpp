@@ -111,13 +111,6 @@ namespace urchin {
         }
     }
 
-    bool RenderTarget::needCommandBuffersRefresh() {
-        const auto& rendererHasDrawCmdDirty = [](const auto* renderer){
-            return renderer->isEnabled() && renderer->isDrawCommandDirty();
-        };
-        return renderersDirty || std::any_of(renderers.begin(), renderers.end(), rendererHasDrawCmdDirty);
-    }
-
     void RenderTarget::initializeRenderers() {
         for (auto& renderer: renderers) {
             renderer->initialize();
@@ -130,9 +123,17 @@ namespace urchin {
         }
     }
 
+    const std::vector<GenericRenderer*>& RenderTarget::getRenderers() const {
+        return renderers;
+    }
+
     bool RenderTarget::hasRenderer() {
         const auto& rendererIsEnabled = [](const auto* renderer){return renderer->isEnabled();};
         return std::any_of(renderers.begin(), renderers.end(), rendererIsEnabled);
+    }
+
+    bool RenderTarget::areRenderersDirty() const {
+        return renderersDirty;
     }
 
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
@@ -369,10 +370,10 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::updateCommandBuffers(const std::vector<VkClearValue>& clearValues) {
+    void RenderTarget::updateCommandBuffers(uint32_t frameIndex, const std::vector<VkClearValue>& clearValues) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
-        if (needCommandBuffersRefresh()) {
+        if (needCommandBufferRefresh(frameIndex)) {
             std::sort(renderers.begin(), renderers.end(), GenericRenderer::RendererComp());
 
             VkRenderPassBeginInfo renderPassInfo{};
@@ -392,35 +393,36 @@ namespace urchin {
             {
                 ScopeProfiler sp(Profiler::graphic(), "resetCmdPool");
                 waitCommandBuffersIdle();
-                vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+                VkResult resultResetCmdPool = vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+                if (resultResetCmdPool != VK_SUCCESS) {
+                    throw std::runtime_error("Failed to reset command pool with error code: " + std::to_string(resultResetCmdPool));
+                }
             }
 
-            for (std::size_t i = 0; i < commandBuffers.size(); i++) {
-                VkResult resultCommandBuffer = vkBeginCommandBuffer(commandBuffers[i], &beginInfo);
+            VkResult resultCmdBuffer = vkBeginCommandBuffer(commandBuffers[frameIndex], &beginInfo);
+            {
+                if (resultCmdBuffer != VK_SUCCESS) {
+                    throw std::runtime_error("Failed to begin recording command buffer with error code: " + std::to_string(resultCmdBuffer));
+                }
+
+                renderPassInfo.framebuffer = framebuffers[frameIndex];
+
+                DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
+                vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 {
-                    if (resultCommandBuffer != VK_SUCCESS) {
-                        throw std::runtime_error("Failed to begin recording command buffer with error code: " + std::to_string(resultCommandBuffer));
-                    }
-
-                    renderPassInfo.framebuffer = framebuffers[i];
-
-                    DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-                    vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-                    {
-                        std::size_t boundPipelineId = 0;
-                        for (auto& renderer: renderers) {
-                            if (renderer->isEnabled()) {
-                                boundPipelineId = renderer->updateCommandBuffer(commandBuffers[i], i, boundPipelineId);
-                            }
+                    std::size_t boundPipelineId = 0;
+                    for (auto& renderer: renderers) {
+                        if (renderer->isEnabled()) {
+                            boundPipelineId = renderer->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
                         }
                     }
-                    vkCmdEndRenderPass(commandBuffers[i]);
-                    DebugLabelHelper::endDebugRegion(commandBuffers[i]);
                 }
-                VkResult resultEndCommandBuffer = vkEndCommandBuffer(commandBuffers[i]);
-                if (resultEndCommandBuffer != VK_SUCCESS) {
-                    throw std::runtime_error("Failed to record command buffer with error code: " + std::to_string(resultEndCommandBuffer));
-                }
+                vkCmdEndRenderPass(commandBuffers[frameIndex]);
+                DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);
+            }
+            VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBuffers[frameIndex]);
+            if (resultEndCmdBuffer != VK_SUCCESS) {
+                throw std::runtime_error("Failed to record command buffer with error code: " + std::to_string(resultEndCmdBuffer));
             }
 
             renderersDirty = false;
