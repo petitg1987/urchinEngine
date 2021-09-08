@@ -74,7 +74,7 @@ namespace urchin {
             void updateData(std::size_t, DataContainer&&);
 
             void updateGraphicData(uint32_t);
-            void updateCommandBuffer(VkCommandBuffer, std::size_t);
+            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
 
             bool isInitialized;
             bool bIsEnabled;

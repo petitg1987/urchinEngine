@@ -401,11 +401,12 @@ namespace urchin {
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
             vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-            for (auto& renderer : renderers) {
-                if (renderer->isEnabled()) {
-                    renderer->updateCommandBuffer(commandBuffers[i], i);
+                std::size_t boundPipelineId = 0;
+                for (auto& renderer : renderers) {
+                    if (renderer->isEnabled()) {
+                        boundPipelineId = renderer->updateCommandBuffer(commandBuffers[i], i, boundPipelineId);
+                    }
                 }
-            }
             vkCmdEndRenderPass(commandBuffers[i]);
             DebugLabelHelper::endDebugRegion(commandBuffers[i]);
 

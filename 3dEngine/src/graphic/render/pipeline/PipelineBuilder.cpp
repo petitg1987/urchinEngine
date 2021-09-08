@@ -283,7 +283,7 @@ namespace urchin {
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         pipelineLayoutInfo.setLayoutCount = 1;
-        pipelineLayoutInfo.pSetLayouts = &pipeline->descriptorSetLayout();
+        pipelineLayoutInfo.pSetLayouts = &pipeline->getDescriptorSetLayout();
         pipelineLayoutInfo.pushConstantRangeCount = 0;
         pipelineLayoutInfo.pPushConstantRanges = nullptr;
         VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout());
@@ -303,7 +303,7 @@ namespace urchin {
         pipelineInfo.pDepthStencilState = &depthStencil;
         pipelineInfo.pColorBlendState = &colorBlending;
         pipelineInfo.pDynamicState = nullptr;
-        pipelineInfo.layout = pipeline->pipelineLayout();
+        pipelineInfo.layout = pipeline->getPipelineLayout();
         pipelineInfo.renderPass = renderTarget->getRenderPass();
         pipelineInfo.subpass = 0; //index to sub-pass
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; //can be used to switch optimally between similar pipeline

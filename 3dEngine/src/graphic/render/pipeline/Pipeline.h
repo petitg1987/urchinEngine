@@ -14,8 +14,13 @@ namespace urchin {
             const std::string& getName() const;
 
             VkDescriptorSetLayout& descriptorSetLayout();
+            const VkDescriptorSetLayout& getDescriptorSetLayout() const;
+
             VkPipelineLayout& pipelineLayout();
+            const VkPipelineLayout& getPipelineLayout() const;
+
             VkPipeline& graphicsPipeline();
+            const VkPipeline& getGraphicsPipeline() const;
 
         private:
             std::size_t id;

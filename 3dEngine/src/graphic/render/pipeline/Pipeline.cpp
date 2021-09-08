@@ -32,11 +32,23 @@ namespace urchin {
         return mDescriptorSetLayout;
     }
 
+    const VkDescriptorSetLayout& Pipeline::getDescriptorSetLayout() const {
+        return mDescriptorSetLayout;
+    }
+
     VkPipelineLayout& Pipeline::pipelineLayout() {
         return mPipelineLayout;
     }
 
+    const VkPipelineLayout& Pipeline::getPipelineLayout() const {
+        return mPipelineLayout;
+    }
+
     VkPipeline& Pipeline::graphicsPipeline() {
+        return mGraphicsPipeline;
+    }
+
+    const VkPipeline& Pipeline::getGraphicsPipeline() const {
         return mGraphicsPipeline;
     }
 
