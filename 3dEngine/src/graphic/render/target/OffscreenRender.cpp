@@ -253,7 +253,7 @@ namespace urchin {
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
-        //unique command buffer already idle due to wait for fences in 'render' method: nothing to wait
+        //unique command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
     }
 
 }

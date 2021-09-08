@@ -287,7 +287,7 @@ namespace urchin {
 
     void ScreenRender::waitCommandBuffersIdle() const {
         for (unsigned int i = 0; i < MAX_CONCURRENT_FRAMES; ++i) {
-            if (i != currentFrameIndex) { //current command buffer already idle due to wait for fences in 'render' method
+            if (i != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
                 vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX);
             }
         }
