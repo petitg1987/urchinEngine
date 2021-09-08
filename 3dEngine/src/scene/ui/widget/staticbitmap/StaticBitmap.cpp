@@ -47,9 +47,9 @@ namespace urchin {
         return image->getName();
     }
 
-    void StaticBitmap::prepareWidgetRendering(float) {
+    void StaticBitmap::prepareWidgetRendering(float, unsigned int& renderingOrder) {
         updateTranslateVector(bitmapRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        bitmapRenderer->enableRenderer();
+        bitmapRenderer->enableRenderer(renderingOrder);
     }
 
 }

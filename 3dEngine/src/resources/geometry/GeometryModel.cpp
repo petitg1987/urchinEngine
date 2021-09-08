@@ -48,6 +48,7 @@ namespace urchin {
         }
 
         renderer = rendererBuilder->build();
+        renderer->disableRenderer(); //in case this method is called after 'renderTarget->disableAllRenderers()'
     }
 
     void GeometryModel::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
@@ -97,7 +98,7 @@ namespace urchin {
         this->modelMatrix = modelMatrix;
     }
 
-    void GeometryModel::prepareRendering(const Matrix4<float>& viewMatrix) const {
+    void GeometryModel::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) const {
         if (!isInitialized) {
             throw std::runtime_error("Geometry model must be initialized before call prepare rendering");
         }
@@ -105,9 +106,7 @@ namespace urchin {
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
         renderer->updateUniformData(0, &positioningData);
         renderer->updateUniformData(1, &color);
-        if (!renderer->isEnabled()) { //renderer could be already enabled if 'initialize' method is called after 'renderTarget->disableAllRenderers()'
-            renderer->enableRenderer();
-        }
+        renderer->enableRenderer(renderingOrder);
     }
 
 }

@@ -92,9 +92,10 @@ namespace urchin {
 
     void TransparentManager::updateTransparentTextures(const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
+        unsigned int renderingOrder = 0;
 
         offscreenRenderTarget->disableAllRenderers();
-        modelSetDisplayer->prepareRendering(camera.getViewMatrix());
+        modelSetDisplayer->prepareRendering(renderingOrder, camera.getViewMatrix());
         offscreenRenderTarget->render();
     }
 

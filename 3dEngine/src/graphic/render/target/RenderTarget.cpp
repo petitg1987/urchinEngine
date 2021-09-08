@@ -89,24 +89,11 @@ namespace urchin {
 
     void RenderTarget::notifyRendererEnabled(GenericRenderer* genericRenderer) {
         assert(genericRenderer->isEnabled());
-
-        //move generic renderer at the end of the renderers list
-        for (auto it = renderers.begin(); it != renderers.end(); ++it) {
-            if (*it == genericRenderer) {
-                renderers.push_back(*it);
-                renderers.erase(it);
-                break;
-            }
-        }
-
         renderersDirty = true;
     }
 
     void RenderTarget::notifyRendererDisabled(GenericRenderer* genericRenderer) {
-        if (genericRenderer->isEnabled()) {
-            assert(false);
-        }
-
+        assert(!genericRenderer->isEnabled());
         renderersDirty = true;
     }
 
@@ -367,6 +354,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
         if (needCommandBuffersRefresh()) {
+            std::sort(renderers.begin(), renderers.end(), GenericRenderer::RendererComp());
+
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
             renderPassInfo.renderPass = renderPass;
@@ -400,7 +389,7 @@ namespace urchin {
                     vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                     {
                         std::size_t boundPipelineId = 0;
-                        for (auto &renderer: renderers) {
+                        for (auto& renderer: renderers) {
                             if (renderer->isEnabled()) {
                                 boundPipelineId = renderer->updateCommandBuffer(commandBuffers[i], i, boundPipelineId);
                             }

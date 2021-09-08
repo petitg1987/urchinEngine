@@ -153,13 +153,13 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void Skybox::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         assert(isInitialized);
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;
         skyboxRenderer->updateUniformData(1, &skyboxViewMatrix);
 
-        skyboxRenderer->enableRenderer();
+        skyboxRenderer->enableRenderer(renderingOrder);
     }
 
 }

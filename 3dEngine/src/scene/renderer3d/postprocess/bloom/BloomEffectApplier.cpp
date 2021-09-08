@@ -183,7 +183,7 @@ namespace urchin {
         }
     }
 
-    void BloomEffectApplier::applyBloom() {
+    void BloomEffectApplier::applyBloom(unsigned int& renderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
         preFilterRenderTarget->render();
@@ -194,7 +194,7 @@ namespace urchin {
             upSampleRenderTarget->render();
         }
 
-        combineRenderer->enableRenderer();
+        combineRenderer->enableRenderer(renderingOrder);
     }
 
 }

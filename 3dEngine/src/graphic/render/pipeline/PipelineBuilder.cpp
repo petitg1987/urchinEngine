@@ -102,7 +102,7 @@ namespace urchin {
         }
     }
 
-    std::size_t PipelineBuilder::computePipelineHash() const {
+    std::size_t PipelineBuilder::computePipelineHash() const { //TODO review...
         std::size_t blendFunctionsHash = 0;
         for(auto& bf : blendFunctions) {
             HashUtil::combine(blendFunctionsHash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());

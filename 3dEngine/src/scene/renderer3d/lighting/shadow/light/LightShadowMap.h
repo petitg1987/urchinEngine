@@ -40,7 +40,7 @@ namespace urchin {
             unsigned int retrieveLayersToUpdate() const;
             void removeModel(Model* model);
 
-            void renderModels();
+            void renderModels(unsigned int&);
 
         private:
             void createOrUpdateShadowModelSetDisplayer(unsigned int);

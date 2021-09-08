@@ -41,7 +41,7 @@ namespace urchin {
 
             void initialize(const std::string&, RenderTarget& renderTarget, unsigned int, unsigned int, float = 0.0f, float = 1.0f);
 
-            void prepareRendering();
+            void prepareRendering(unsigned int&);
 
         private:
             struct TextureRendererShaderConst {

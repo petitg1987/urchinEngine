@@ -48,7 +48,7 @@ namespace urchin {
     }
 
     void Model::initialize() {
-        if(meshes) {
+        if (meshes) {
             meshes->onMoving(transform);
         }
     }

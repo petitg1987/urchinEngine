@@ -9,9 +9,17 @@
 
 namespace urchin {
 
+    bool GenericRenderer::RendererComp::operator()(const GenericRenderer* lhs, const GenericRenderer* rhs) const {
+        if (lhs->renderingOrder == rhs->renderingOrder) {
+            return lhs->pipeline->getId() < rhs->pipeline->getId();
+        }
+        return lhs->renderingOrder < rhs->renderingOrder;
+    }
+
     GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
             isInitialized(false),
             bIsEnabled(true),
+            renderingOrder(0),
             name(rendererBuilder->getName()),
             renderTarget(rendererBuilder->getRenderTarget()),
             shader(rendererBuilder->getShader()),
@@ -90,9 +98,10 @@ namespace urchin {
         return bIsEnabled;
     }
 
-    void GenericRenderer::enableRenderer() {
+    void GenericRenderer::enableRenderer(unsigned int renderingOrder) {
         assert(!bIsEnabled);
-        bIsEnabled = true;
+        this->bIsEnabled = true;
+        this->renderingOrder = renderingOrder;
         renderTarget.notifyRendererEnabled(this);
     }
 
@@ -100,6 +109,14 @@ namespace urchin {
         assert(bIsEnabled);
         bIsEnabled = false;
         renderTarget.notifyRendererDisabled(this);
+    }
+
+    unsigned int GenericRenderer::getRenderingOrder() const {
+        return renderingOrder;
+    }
+
+    std::size_t GenericRenderer::getPipelineId() const {
+        return pipeline->getId();
     }
 
     void GenericRenderer::createPipeline() {

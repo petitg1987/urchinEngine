@@ -29,6 +29,10 @@ namespace urchin {
             friend class RenderTarget;
             static constexpr uint32_t PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
 
+            struct RendererComp {
+                bool operator()(const GenericRenderer*, const GenericRenderer*) const;
+            };
+
             explicit GenericRenderer(const GenericRendererBuilder*);
             ~GenericRenderer();
 
@@ -37,8 +41,11 @@ namespace urchin {
             bool isDrawCommandDirty() const;
 
             bool isEnabled() const;
-            void enableRenderer();
+            void enableRenderer(unsigned int);
             void disableRenderer();
+
+            unsigned int getRenderingOrder() const;
+            std::size_t getPipelineId() const;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);
@@ -78,6 +85,7 @@ namespace urchin {
 
             bool isInitialized;
             bool bIsEnabled;
+            unsigned int renderingOrder;
 
             std::string name;
             RenderTarget& renderTarget;

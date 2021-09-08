@@ -534,17 +534,18 @@ namespace urchin {
         return false;
     }
 
-    void Widget::prepareRendering(float dt) {
+    void Widget::prepareRendering(float dt, unsigned int& renderingOrder) {
         if (isVisible()) {
-            prepareWidgetRendering(dt);
+            prepareWidgetRendering(dt, renderingOrder);
 
-            for (auto& child : children) {
-                child->prepareRendering(dt);
+            for (auto& child: children) {
+                renderingOrder++;
+                child->prepareRendering(dt, renderingOrder);
             }
         }
     }
 
-    void Widget::prepareWidgetRendering(float) {
+    void Widget::prepareWidgetRendering(float, unsigned int&) {
         //to override
     }
 

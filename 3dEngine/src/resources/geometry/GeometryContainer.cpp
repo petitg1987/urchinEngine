@@ -31,9 +31,9 @@ namespace urchin {
         }
     }
 
-    void GeometryContainer::prepareRendering(const Matrix4<float>& viewMatrix) const {
+    void GeometryContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) const {
         for (auto& geometryModel : geometryModels) {
-            geometryModel->prepareRendering(viewMatrix);
+            geometryModel->prepareRendering(renderingOrder, viewMatrix);
         }
     }
 

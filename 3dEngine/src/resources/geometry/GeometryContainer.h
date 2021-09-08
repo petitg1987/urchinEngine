@@ -18,7 +18,7 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera&);
 
-            void prepareRendering(const Matrix4<float>&) const;
+            void prepareRendering(unsigned int&, const Matrix4<float>&) const;
 
         private:
             RenderTarget& renderTarget;

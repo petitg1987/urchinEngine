@@ -133,7 +133,7 @@ namespace urchin {
 
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if(isCharacterAllowed(unicodeCharacter) && !isMaxLengthReach()) {
+            if (isCharacterAllowed(unicodeCharacter) && !isMaxLengthReach()) {
                 std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
                 allText = allText.substr(0, (unsigned long)cursorIndex);
                 allText.append(1, unicodeCharacter);
@@ -233,16 +233,17 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::prepareWidgetRendering(float dt) {
+    void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder) {
         //text box
         updateTranslateVector(textBoxRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        textBoxRenderer->enableRenderer();
+        textBoxRenderer->enableRenderer(renderingOrder);
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
+            renderingOrder++;
             updateTranslateVector(cursorRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
-            cursorRenderer->enableRenderer();
+            cursorRenderer->enableRenderer(renderingOrder);
         }
     }
 

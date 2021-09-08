@@ -28,9 +28,9 @@ namespace urchin {
         return skybox.get();
     }
 
-    void SkyContainer::prepareRendering(const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void SkyContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
         if (skybox != nullptr) {
-            skybox->prepareRendering(viewMatrix, cameraPosition);
+            skybox->prepareRendering(renderingOrder, viewMatrix, cameraPosition);
         }
     }
 }

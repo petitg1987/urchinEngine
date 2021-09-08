@@ -15,7 +15,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void prepareWidgetRendering(float) override;
+            void prepareWidgetRendering(float, unsigned int&) override;
 
         private:
             CheckBox(Position, Size, std::string);

@@ -56,11 +56,11 @@ namespace urchin {
         terrain.getGrass().setGrassDisplayDistance(config.grassDisplayDistance);
     }
 
-    void TerrainContainer::prepareRendering(const Camera& camera, float dt) const {
+    void TerrainContainer::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) const {
         ScopeProfiler sp(Profiler::graphic(), "terPreRender");
 
         for (const auto& terrain : terrains) {
-            terrain->prepareRendering(camera, dt);
+            terrain->prepareRendering(renderingOrder, camera, dt);
         }
     }
 }

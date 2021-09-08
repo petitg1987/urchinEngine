@@ -29,7 +29,7 @@ namespace urchin {
             void removeWidget(Widget&);
             void removeAllWidgets();
 
-            void prepareRendering(float) override;
+            void prepareRendering(float, unsigned int&) override;
 
         private:
             RenderTarget& renderTarget;

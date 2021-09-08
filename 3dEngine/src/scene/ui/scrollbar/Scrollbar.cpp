@@ -146,7 +146,7 @@ namespace urchin {
     }
 
     void Scrollbar::updateScrollingPosition() {
-        if(scrollbarLine && scrollbarCursor) {
+        if (scrollbarLine && scrollbarCursor) {
             scrollbarLine->setIsVisible(isScrollbarRequired());
             scrollbarCursor->setIsVisible(isScrollbarRequired());
 

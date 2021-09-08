@@ -262,9 +262,10 @@ namespace urchin {
 
     void ShadowManager::updateShadowMaps() {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
+        unsigned int renderingOrder = 0;
 
         for (auto& lightShadowMap : lightShadowMaps) {
-            lightShadowMap.second->renderModels();
+            lightShadowMap.second->renderModels(renderingOrder);
             lightShadowMap.second->applyTextureFilters();
         }
     }

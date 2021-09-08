@@ -25,7 +25,7 @@ namespace urchin {
             float getOffsetY() const;
             void setOffsetY(float);
 
-            void prepareRendering(const Matrix4<float>&, const Point3<float>&);
+            void prepareRendering(unsigned int&, const Matrix4<float>&, const Point3<float>&);
 
         private:
             bool isInitialized;

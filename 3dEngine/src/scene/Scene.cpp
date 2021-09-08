@@ -227,10 +227,12 @@ namespace urchin {
         float dt = getDeltaTime();
 
         //renderer
+        unsigned int screenRenderingOrder = 0;
         screenRenderTarget->disableAllRenderers();
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
             if (activeRenderer) {
-                activeRenderer->prepareRendering(dt);
+                screenRenderingOrder++;
+                activeRenderer->prepareRendering(dt, screenRenderingOrder);
             }
         }
         screenRenderTarget->render();

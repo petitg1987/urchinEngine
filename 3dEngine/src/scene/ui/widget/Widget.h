@@ -78,7 +78,7 @@ namespace urchin {
             int getMouseY() const;
             virtual void onResetState();
 
-            void prepareRendering(float);
+            void prepareRendering(float, unsigned int&);
 
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
@@ -100,7 +100,7 @@ namespace urchin {
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
 
-            virtual void prepareWidgetRendering(float);
+            virtual void prepareWidgetRendering(float, unsigned int&);
 
             WidgetOutline widgetOutline;
             I18nService* i18nService;

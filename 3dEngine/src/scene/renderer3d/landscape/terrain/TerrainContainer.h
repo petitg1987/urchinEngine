@@ -24,7 +24,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void prepareRendering(const Camera&, float) const;
+            void prepareRendering(unsigned int&, const Camera&, float) const;
 
         private:
             void updateAllTerrainConfig();

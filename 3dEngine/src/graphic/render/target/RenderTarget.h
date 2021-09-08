@@ -92,7 +92,7 @@ namespace urchin {
             mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
             mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 
-            std::list<GenericRenderer*> renderers;
+            std::vector<GenericRenderer*> renderers;
             bool renderersDirty;
     };
 

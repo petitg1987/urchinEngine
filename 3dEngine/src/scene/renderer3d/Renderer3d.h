@@ -76,7 +76,7 @@ namespace urchin {
             //scene
             void pause();
             void unpause();
-            void prepareRendering(float) override;
+            void prepareRendering(float, unsigned int&) override;
 
         private:
             struct LightingShaderConst {
@@ -99,7 +99,7 @@ namespace urchin {
             void deferredRendering(float);
             void renderDebugSceneData(GeometryContainer&);
             void lightingPassRendering();
-            void renderDebugFramebuffers();
+            void renderDebugFramebuffers(unsigned int&);
             void postUpdateScene();
 
             static constexpr float MODELS_OCTREE_MIN_SIZE = 20.0f;

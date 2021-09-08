@@ -276,9 +276,9 @@ namespace urchin {
         }
     }
 
-    void Text::prepareWidgetRendering(float) {
+    void Text::prepareWidgetRendering(float, unsigned int& renderingOrder) {
         updateTranslateVector(textRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
-        textRenderer->enableRenderer();
+        textRenderer->enableRenderer(renderingOrder);
     }
 
 }

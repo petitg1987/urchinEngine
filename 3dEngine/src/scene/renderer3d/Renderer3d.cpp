@@ -266,7 +266,7 @@ namespace urchin {
         //nothing to do
     }
 
-    void Renderer3d::prepareRendering(float dt) {
+    void Renderer3d::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
         if (!camera) { //nothing to display if camera doesn't exist
@@ -279,9 +279,11 @@ namespace urchin {
         if (isAntiAliasingActivated) {
             antiAliasingApplier->applyAntiAliasing();
         }
-        bloomEffectApplier->applyBloom();
+        bloomEffectApplier->applyBloom(screenRenderingOrder);
 
-        renderDebugFramebuffers();
+        screenRenderingOrder++;
+        renderDebugFramebuffers(screenRenderingOrder);
+
         postUpdateScene();
     }
 
@@ -412,12 +414,24 @@ namespace urchin {
 
         //deferred scene (depth, color, normal, ambient...)
         deferredRenderTarget->disableAllRenderers();
-        skyContainer->prepareRendering(camera->getViewMatrix(), camera->getPosition());
-        modelSetDisplayer->prepareRendering(camera->getViewMatrix());
-        terrainContainer->prepareRendering(*camera, dt);
-        waterContainer->prepareRendering(*camera, fogContainer.get(), dt);
+
+        unsigned int deferredRenderingOrder = 0;
+        skyContainer->prepareRendering(deferredRenderingOrder, camera->getViewMatrix(), camera->getPosition());
+
+        deferredRenderingOrder++;
+        modelSetDisplayer->prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
+
+        deferredRenderingOrder++;
+        terrainContainer->prepareRendering(deferredRenderingOrder, *camera, dt);
+
+        deferredRenderingOrder++;
+        waterContainer->prepareRendering(deferredRenderingOrder, *camera, fogContainer.get(), dt);
+
         renderDebugSceneData(*geometryContainer);
-        geometryContainer->prepareRendering(camera->getViewMatrix());
+
+        deferredRenderingOrder++;
+        geometryContainer->prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
+
         deferredRenderTarget->render();
 
         //deferred ambient occlusion
@@ -485,8 +499,8 @@ namespace urchin {
         offscreenLightingRenderTarget->render();
     }
 
-    void Renderer3d::renderDebugFramebuffers() {
-        if(refreshDebugFramebuffers) {
+    void Renderer3d::renderDebugFramebuffers(unsigned int& renderingOrder) {
+        if (refreshDebugFramebuffers) {
             debugFramebuffers.clear();
             refreshDebugFramebuffers = false;
 
@@ -535,7 +549,7 @@ namespace urchin {
             }
         } else {
             for (auto& debugFramebuffer : debugFramebuffers) {
-                debugFramebuffer->prepareRendering();
+                debugFramebuffer->prepareRendering(renderingOrder);
             }
         }
     }

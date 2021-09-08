@@ -127,7 +127,7 @@ namespace urchin {
         }
     }
 
-    void Sequence::prepareWidgetRendering(float) {
+    void Sequence::prepareWidgetRendering(float, unsigned int&) {
         //update the text position because the text size is updated when the UI language is changed
         valuesText[selectedIndex]->updatePosition(Position(((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f, 0.0f, LengthType::PIXEL));
     }

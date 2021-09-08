@@ -37,7 +37,7 @@ namespace urchin {
             Point3<float> findPointAt(const Point2<float>&) const;
             float findHeightAt(const Point2<float>&) const;
 
-            void prepareRendering(const Camera&, float invFrameRate) const;
+            void prepareRendering(unsigned int& renderingOrder, const Camera&, float invFrameRate) const;
 
         private:
             void refreshMaterials();

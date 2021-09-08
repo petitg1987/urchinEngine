@@ -139,16 +139,18 @@ namespace urchin {
         widgets.clear();
     }
 
-    void UIRenderer::prepareRendering(float dt) {
+    void UIRenderer::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         for (auto& widget : widgets) {
-            widget->prepareRendering(dt);
+            screenRenderingOrder++;
+            widget->prepareRendering(dt, screenRenderingOrder);
         }
 
         //debug
         if (debugFont) {
-            debugFont->prepareRendering();
+            screenRenderingOrder++;
+            debugFont->prepareRendering(screenRenderingOrder);
         }
     }
 

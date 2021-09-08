@@ -29,7 +29,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyBloom();
+            void applyBloom(unsigned int&);
 
         private:
             struct BloomShadersConst {

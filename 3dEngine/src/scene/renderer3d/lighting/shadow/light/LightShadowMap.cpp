@@ -163,11 +163,11 @@ namespace urchin {
         return models;
     }
 
-    void LightShadowMap::renderModels() {
+    void LightShadowMap::renderModels(unsigned int& renderingOrder) {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();
-        shadowModelSetDisplayer->prepareRendering(lightViewMatrix);
+        shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
         renderTarget->render();
     }
 }

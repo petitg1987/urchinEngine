@@ -355,7 +355,7 @@ namespace urchin {
         }
     }
 
-    void TerrainGrass::prepareRendering(const Camera& camera, float dt) {
+    void TerrainGrass::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
         assert(bIsInitialized);
 
         if (grassTexture) {
@@ -375,7 +375,7 @@ namespace urchin {
                 if (grassQuadtreeBox && camera.getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
                         grassQuadtree->getRenderer()->updateUniformData(0, &positioningData);
-                        grassQuadtree->getRenderer()->enableRenderer();
+                        grassQuadtree->getRenderer()->enableRenderer(renderingOrder);
                     } else {
                         for (const auto& child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child.get());

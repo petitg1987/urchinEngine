@@ -37,7 +37,7 @@ namespace urchin {
             virtual std::vector<Point3<float>> retrieveVertexArray() const = 0;
             virtual ShapeType getShapeType() const = 0;
 
-            void prepareRendering(const Matrix4<float>&) const;
+            void prepareRendering(unsigned int&, const Matrix4<float>&) const;
 
         private:
             bool isInitialized;

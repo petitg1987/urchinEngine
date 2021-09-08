@@ -84,7 +84,7 @@ namespace urchin {
                 if (depthWriteEnabled) {
                     meshRendererBuilder->enableDepthWrite();
                 }
-                if(!enableFaceCull) {
+                if (!enableFaceCull) {
                     meshRendererBuilder->disableCullFace();
                 }
                 if (!blendFunctions.empty()) {
@@ -136,7 +136,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::prepareRendering(const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
+    void ModelDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
             const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex++);
@@ -158,7 +158,7 @@ namespace urchin {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }
 
-            meshRenderer->enableRenderer();
+            meshRenderer->enableRenderer(renderingOrder);
         }
     }
 
