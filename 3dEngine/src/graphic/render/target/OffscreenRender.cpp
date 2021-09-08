@@ -253,7 +253,7 @@ namespace urchin {
     }
 
     void OffscreenRender::waitCommandBuffersIdle() const {
-        vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFence, VK_TRUE, UINT64_MAX); //TODO already done in line 206
+        //unique command buffer already idle due to wait for fences in 'render' method: nothing to wait
     }
 
 }
