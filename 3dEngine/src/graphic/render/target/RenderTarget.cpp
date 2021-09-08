@@ -88,9 +88,7 @@ namespace urchin {
     }
 
     void RenderTarget::notifyRendererEnabled(GenericRenderer* genericRenderer) {
-        if (!genericRenderer->isEnabled()) {
-            assert(false);
-        }
+        assert(genericRenderer->isEnabled());
 
         //move generic renderer at the end of the renderers list
         for (auto it = renderers.begin(); it != renderers.end(); ++it) {
