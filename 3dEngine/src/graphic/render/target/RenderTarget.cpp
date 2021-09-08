@@ -364,57 +364,59 @@ namespace urchin {
     }
 
     void RenderTarget::updateCommandBuffers(const std::vector<VkClearValue>& clearValues) {
-        ScopeProfiler sp(Profiler::graphic(), "upCmdBuffers");
-        if (!needCommandBuffersRefresh()) {
-            return;
-        }
+        ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
-        VkRenderPassBeginInfo renderPassInfo{};
-        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        renderPassInfo.renderPass = renderPass;
-        renderPassInfo.framebuffer = nullptr;
-        renderPassInfo.renderArea.offset = {0, 0};
-        renderPassInfo.renderArea.extent = {getWidth(), getHeight()};
-        renderPassInfo.clearValueCount = (uint32_t)clearValues.size();
-        renderPassInfo.pClearValues = clearValues.data();
+        if (needCommandBuffersRefresh()) {
+            VkRenderPassBeginInfo renderPassInfo{};
+            renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+            renderPassInfo.renderPass = renderPass;
+            renderPassInfo.framebuffer = nullptr;
+            renderPassInfo.renderArea.offset = {0, 0};
+            renderPassInfo.renderArea.extent = {getWidth(), getHeight()};
+            renderPassInfo.clearValueCount = (uint32_t) clearValues.size();
+            renderPassInfo.pClearValues = clearValues.data();
 
-        VkCommandBufferBeginInfo beginInfo{};
-        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        beginInfo.flags = 0;
-        beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
+            VkCommandBufferBeginInfo beginInfo{};
+            beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+            beginInfo.flags = 0;
+            beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
 
-        {
-            ScopeProfiler sp(Profiler::graphic(), "resetCmdPool");
-            waitCommandBuffersIdle();
-            vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
-        }
-
-        for (std::size_t i = 0; i < commandBuffers.size(); i++) {
-            VkResult resultCommandBuffer = vkBeginCommandBuffer(commandBuffers[i], &beginInfo);
-            if (resultCommandBuffer != VK_SUCCESS) {
-                throw std::runtime_error("Failed to begin recording command buffer with error code: " + std::to_string(resultCommandBuffer));
+            {
+                ScopeProfiler sp(Profiler::graphic(), "resetCmdPool");
+                waitCommandBuffersIdle();
+                vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
             }
 
-            renderPassInfo.framebuffer = framebuffers[i];
-
-            DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-            vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-                std::size_t boundPipelineId = 0;
-                for (auto& renderer : renderers) {
-                    if (renderer->isEnabled()) {
-                        boundPipelineId = renderer->updateCommandBuffer(commandBuffers[i], i, boundPipelineId);
+            for (std::size_t i = 0; i < commandBuffers.size(); i++) {
+                VkResult resultCommandBuffer = vkBeginCommandBuffer(commandBuffers[i], &beginInfo);
+                {
+                    if (resultCommandBuffer != VK_SUCCESS) {
+                        throw std::runtime_error("Failed to begin recording command buffer with error code: " + std::to_string(resultCommandBuffer));
                     }
+
+                    renderPassInfo.framebuffer = framebuffers[i];
+
+                    DebugLabelHelper::beginDebugRegion(commandBuffers[i], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
+                    vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+                    {
+                        std::size_t boundPipelineId = 0;
+                        for (auto &renderer: renderers) {
+                            if (renderer->isEnabled()) {
+                                boundPipelineId = renderer->updateCommandBuffer(commandBuffers[i], i, boundPipelineId);
+                            }
+                        }
+                    }
+                    vkCmdEndRenderPass(commandBuffers[i]);
+                    DebugLabelHelper::endDebugRegion(commandBuffers[i]);
                 }
-            vkCmdEndRenderPass(commandBuffers[i]);
-            DebugLabelHelper::endDebugRegion(commandBuffers[i]);
-
-            VkResult resultEndCommandBuffer = vkEndCommandBuffer(commandBuffers[i]);
-            if (resultEndCommandBuffer != VK_SUCCESS) {
-                throw std::runtime_error("Failed to record command buffer with error code: " + std::to_string(resultEndCommandBuffer));
+                VkResult resultEndCommandBuffer = vkEndCommandBuffer(commandBuffers[i]);
+                if (resultEndCommandBuffer != VK_SUCCESS) {
+                    throw std::runtime_error("Failed to record command buffer with error code: " + std::to_string(resultEndCommandBuffer));
+                }
             }
-        }
 
-        renderersDirty = false;
+            renderersDirty = false;
+        }
     }
 
 }

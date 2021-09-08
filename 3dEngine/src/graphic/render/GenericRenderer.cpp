@@ -381,7 +381,7 @@ namespace urchin {
     }
 
     std::size_t GenericRenderer::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {
-        ScopeProfiler sp(Profiler::graphic(), "updateCmdBuf");
+        ScopeProfiler sp(Profiler::graphic(), "upCmdBufRender");
 
         if (boundPipelineId != pipeline->getId()) {
             vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getGraphicsPipeline());
