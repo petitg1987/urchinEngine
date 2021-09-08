@@ -102,22 +102,24 @@ namespace urchin {
         }
     }
 
-    std::size_t PipelineBuilder::computePipelineHash() const { //TODO review...
-        std::size_t blendFunctionsHash = 0;
+    std::size_t PipelineBuilder::computePipelineHash() const {
+        std::size_t hash = 0;
         for(auto& bf : blendFunctions) {
-            HashUtil::combine(blendFunctionsHash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
+            HashUtil::combine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
         }
 
-        std::size_t hash = 0;
+        if (scissorEnabled) {
+            HashUtil::combine(hash, scissorOffset.X, scissorOffset.Y, scissorSize.X, scissorSize.Y);
+        }
+
         HashUtil::combine(hash,
+                //TODO check: https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/vkspec.html#renderpass-compatibility
                 renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getNumColorAttachment(), renderTarget->getRenderPass(),
-                shader->getShaderName(), shader->getShaderStages().size(),
+                shader,
                 shapeType,
-                blendFunctionsHash,
                 depthTestEnabled, depthWriteEnabled,
                 cullFaceEnabled,
-                polygonMode,
-                scissorEnabled, scissorOffset.X, scissorOffset.Y, scissorSize.X, scissorSize.Y);
+                polygonMode);
         return hash;
     }
 

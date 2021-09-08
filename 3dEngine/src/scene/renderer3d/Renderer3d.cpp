@@ -6,6 +6,7 @@
 #include <scene/renderer3d/util/OctreeRenderer.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/pipeline/PipelineContainer.h>
 
 namespace urchin {
 
@@ -285,6 +286,7 @@ namespace urchin {
         renderDebugFramebuffers(screenRenderingOrder);
 
         postUpdateScene();
+        PipelineContainer::instance().cleanPipelines();
     }
 
     void Renderer3d::createOrUpdateLightingPass() {
