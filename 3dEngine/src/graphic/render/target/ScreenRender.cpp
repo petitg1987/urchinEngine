@@ -279,16 +279,17 @@ namespace urchin {
 
     bool ScreenRender::needCommandBufferRefresh(std::size_t /*cmdBufferIndex*/) const {
         //Always return true for the following reasons:
-        // 1) Command buffer refresh is almost always required due to renders make dirty by the UIRenderer
-        // 2) Determine when a refresh is required for a specific command buffer is not easy. Indeed, a dirty render would require a refresh of the current command
-        //    buffer but also a refresh of the others command buffers in the next frames.
+        // - Command buffer refresh is almost always required due to renders make dirty by the UIRenderer
+        // - Determine when a refresh is required for a specific command buffer is not easy. Indeed, a dirty render would require a refresh of the current command
+        //   buffer but also a refresh of the others command buffers in the next frames.
         return true;
     }
 
     void ScreenRender::waitCommandBuffersIdle() const {
-        for (unsigned int i = 0; i < MAX_CONCURRENT_FRAMES; ++i) {
-            if (i != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
-                vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[i], VK_TRUE, UINT64_MAX);
+        for (unsigned int frameIndex = 0; frameIndex < MAX_CONCURRENT_FRAMES; ++frameIndex) {
+            if (frameIndex != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
+                //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'frameIndex'
+                vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
             }
         }
     }
