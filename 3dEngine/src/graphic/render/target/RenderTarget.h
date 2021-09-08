@@ -35,6 +35,7 @@ namespace urchin {
             virtual std::size_t getNumFramebuffer() const = 0;
             virtual std::size_t getNumColorAttachment() const = 0;
             VkRenderPass getRenderPass() const;
+            std::size_t getRenderPassCompatibilityId() const;
 
             bool hasDepthAttachment() const;
             DepthAttachmentType getDepthAttachmentType() const;
@@ -85,6 +86,7 @@ namespace urchin {
             DepthAttachmentType depthAttachmentType;
             std::shared_ptr<Texture> externalDepthTexture;
             VkRenderPass renderPass;
+            std::size_t renderPassCompatibilityId;
             std::vector<VkFramebuffer> framebuffers;
             VkCommandPool commandPool;
 

@@ -15,6 +15,7 @@ namespace urchin {
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
+            renderPassCompatibilityId(0),
             commandPool(nullptr),
             renderersDirty(false) {
         Logger::instance().logInfo("Create render target: " + this->name);
@@ -36,6 +37,11 @@ namespace urchin {
 
     VkRenderPass RenderTarget::getRenderPass() const {
         return renderPass;
+    }
+
+    std::size_t RenderTarget::getRenderPassCompatibilityId() const {
+        assert(renderPassCompatibilityId != 0);
+        return renderPassCompatibilityId;
     }
 
     bool RenderTarget::hasDepthAttachment() const {
@@ -179,6 +185,19 @@ namespace urchin {
 
     void RenderTarget::createRenderPass(const VkAttachmentReference& depthAttachmentRef, const std::vector<VkAttachmentReference>& colorAttachmentRefs,
                                         const std::vector<VkAttachmentDescription>& attachments) {
+
+        //See https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/vkspec.html#renderpass-compatibility for details
+        renderPassCompatibilityId = 0;
+        if (hasDepthAttachment()) {
+            HashUtil::combine(renderPassCompatibilityId, depthAttachmentRef.attachment);
+        }
+        for (auto& colorAttachmentRef : colorAttachmentRefs) {
+            HashUtil::combine(renderPassCompatibilityId, colorAttachmentRef.attachment);
+        }
+        for (auto& attachment : attachments) {
+            HashUtil::combine(renderPassCompatibilityId, attachment.format, attachment.samples, attachment.flags);
+        }
+
         VkSubpassDescription subpass{};
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         subpass.colorAttachmentCount = (uint32_t)colorAttachmentRefs.size();

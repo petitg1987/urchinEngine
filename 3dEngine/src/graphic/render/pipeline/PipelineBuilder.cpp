@@ -104,6 +104,7 @@ namespace urchin {
 
     std::size_t PipelineBuilder::computePipelineHash() const {
         std::size_t hash = 0;
+
         for(auto& bf : blendFunctions) {
             HashUtil::combine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
         }
@@ -113,13 +114,11 @@ namespace urchin {
         }
 
         HashUtil::combine(hash,
-                //TODO check: https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/vkspec.html#renderpass-compatibility
-                renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getNumColorAttachment(), renderTarget->getRenderPass(),
+                renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getRenderPassCompatibilityId(),
                 shader,
                 shapeType,
-                depthTestEnabled, depthWriteEnabled,
-                cullFaceEnabled,
-                polygonMode);
+                depthTestEnabled, depthWriteEnabled, cullFaceEnabled, polygonMode);
+
         return hash;
     }
 
