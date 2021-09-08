@@ -25,10 +25,10 @@ namespace urchin {
                 FRAGMENT
             };
 
-            Shader(std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&, std::unique_ptr<ShaderConstants>);
+            Shader(std::size_t, std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&, std::unique_ptr<ShaderConstants>);
             ~Shader();
 
-            const std::string& getShaderName() const;
+            std::size_t getShaderId() const;
             std::vector<VkPipelineShaderStageCreateInfo> getShaderStages() const;
 
         private:
@@ -37,6 +37,7 @@ namespace urchin {
             static VkSpecializationMapEntry createSpecializationMapEntry(uint32_t, uint32_t, std::size_t);
             static VkShaderStageFlagBits toShaderStageFlag(Shader::ShaderType);
 
+            std::size_t shaderId;
             std::string shaderName;
             std::unique_ptr<ShaderConstants> shaderConstants;
 

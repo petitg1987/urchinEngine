@@ -18,6 +18,7 @@ namespace urchin {
 
         private:
             static std::vector<char> readFile(const std::string&);
+            static std::size_t computeShaderId(const std::string&, const std::string&, const std::string&, const ShaderConstants*);
     };
 
 }

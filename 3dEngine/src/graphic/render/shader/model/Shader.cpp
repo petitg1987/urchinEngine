@@ -4,7 +4,9 @@
 
 namespace urchin {
 
-    Shader::Shader(std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
+    Shader::Shader(std::size_t shaderId, std::string shaderName, const std::vector<std::pair<Shader::ShaderType,
+                   std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
+            shaderId(shaderId),
             shaderName(std::move(shaderName)),
             shaderConstants(std::move(shaderConstants)) {
         for (const auto& shaderSource : shaderSources) {
@@ -23,8 +25,8 @@ namespace urchin {
         }
     }
 
-    const std::string& Shader::getShaderName() const {
-        return shaderName;
+    std::size_t Shader::getShaderId() const {
+        return shaderId;
     }
 
     std::vector<VkPipelineShaderStageCreateInfo> Shader::getShaderStages() const {

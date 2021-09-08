@@ -115,7 +115,7 @@ namespace urchin {
 
         HashUtil::combine(hash,
                 renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getRenderPassCompatibilityId(),
-                shader,
+                shader->getShaderId(),
                 shapeType,
                 depthTestEnabled, depthWriteEnabled, cullFaceEnabled, polygonMode);
 

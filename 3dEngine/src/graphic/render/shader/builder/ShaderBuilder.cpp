@@ -14,20 +14,17 @@ namespace urchin {
     std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
                                                         const std::string& fragmentShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
+        std::string shadersDirectory = ShaderConfig::instance().getShadersDirectory();
 
-        //vertex shader
-        shaderSources.emplace_back(std::make_pair(Shader::VERTEX, readFile(ShaderConfig::instance().getShadersDirectory() + vertexShaderFilename)));
-
-        //geometry shader
+        shaderSources.emplace_back(std::make_pair(Shader::VERTEX, readFile(shadersDirectory + vertexShaderFilename)));
         if (!geometryShaderFilename.empty()) {
-            shaderSources.emplace_back(std::make_pair(Shader::GEOMETRY, readFile(ShaderConfig::instance().getShadersDirectory() + geometryShaderFilename)));
+            shaderSources.emplace_back(std::make_pair(Shader::GEOMETRY, readFile(shadersDirectory + geometryShaderFilename)));
         }
+        shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(shadersDirectory + fragmentShaderFilename)));
 
-        //fragment shader
-        shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(ShaderConfig::instance().getShadersDirectory() + fragmentShaderFilename)));
-
+        std::size_t shaderId = computeShaderId(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename, shaderConstants.get());
         std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(vertexShaderFilename));
-        return std::make_unique<Shader>(shaderName, shaderSources, std::move(shaderConstants));
+        return std::make_unique<Shader>(shaderId, shaderName, shaderSources, std::move(shaderConstants));
     }
 
     /**
@@ -35,7 +32,7 @@ namespace urchin {
      */
     std::unique_ptr<Shader> ShaderBuilder::createNullShader() {
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
-        return std::make_unique<Shader>("_null_", shaderSources, std::unique_ptr<ShaderConstants>());
+        return std::make_unique<Shader>(0, "_null_", shaderSources, std::unique_ptr<ShaderConstants>());
     }
 
     std::vector<char> ShaderBuilder::readFile(const std::string& filename) {
@@ -52,6 +49,29 @@ namespace urchin {
         file.close();
 
         return buffer;
+    }
+
+    std::size_t ShaderBuilder::computeShaderId(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
+                                               const std::string& fragmentShaderFilename, const ShaderConstants* shaderConstants) {
+        std::size_t shaderId = 0;
+
+        HashUtil::combine(shaderId, vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);
+
+        if (shaderConstants) {
+            std::size_t variablesSize = shaderConstants->sumVariablesSize();
+            auto* variablesData = (std::size_t*)shaderConstants->getData();
+            for (std::size_t i = 0; i < variablesSize;) {
+                std::size_t retrieveSize = std::min(variablesSize - i, sizeof(std::size_t));
+                std::size_t variablesValuePart = 0;
+
+                std::memcpy(&variablesValuePart, &variablesData[i], retrieveSize);
+                HashUtil::combine(shaderId, variablesValuePart);
+
+                i += retrieveSize;
+            }
+        }
+
+        return shaderId;
     }
 
 }
