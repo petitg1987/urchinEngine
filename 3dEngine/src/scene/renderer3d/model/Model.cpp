@@ -235,7 +235,8 @@ namespace urchin {
     }
 
     void Model::updateMesh(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {
-        meshes->getMesh(meshIndex).updateVertices(vertices);
+        meshes->updateMesh(meshIndex, vertices);
+        onMoving(transform);
         notifyObservers(this, Model::MESH_UPDATED);
     }
 

@@ -21,13 +21,21 @@ namespace urchin {
             const ConstMeshes& getConstMeshes() const;
             std::shared_ptr<ConstMeshes> copyConstMeshesRef() const;
 
+            void updateMesh(unsigned int, const std::vector<Point3<float>>&);
+
             void onMoving(const Transform<float>&);
 
         private:
+            void computeLocalAABBox(bool);
+
+            static constexpr float MIN_BBOX_SIZE = 0.01f;
+
             std::shared_ptr<ConstMeshes> constMeshes;
             unsigned int numMeshes;
 
             std::vector<std::unique_ptr<Mesh>> meshes;
+            std::unique_ptr<AABBox<float>> localBBox; //bounding box (not transformed)
+            std::vector<AABBox<float>> localSplitBBoxes;
             AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
             std::vector<AABBox<float>> globalSplitBBoxes;
     };

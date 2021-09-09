@@ -24,19 +24,12 @@ namespace urchin {
             const ConstMesh& getConstMesh(unsigned int) const;
             const std::vector<std::unique_ptr<const ConstMesh>>& getConstMeshes() const;
 
-            const AABBox<float>& getOriginalAABBox() const;
-            const std::vector<AABBox<float>>& getOriginalSplitAABBoxes() const;
-
         private:
             ConstMeshes(std::string, std::optional<std::string>, std::vector<std::unique_ptr<const ConstMesh>>);
 
             std::string meshesName;
             std::optional<std::string> meshesFilename;
             std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
-
-            static constexpr float MIN_BBOX_SIZE = 0.01f; //TODO config
-            std::unique_ptr<AABBox<float>> originalBBox; //bounding box (not transformed)
-            std::vector<AABBox<float>> originalSplitBBoxes;
     };
 
 }

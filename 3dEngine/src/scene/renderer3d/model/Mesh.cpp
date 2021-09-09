@@ -17,9 +17,8 @@ namespace urchin {
 
     void Mesh::updateVertices(const std::vector<Point3<float>>& vertices) {
         if (vertices.size() != constMesh.getNumberVertices()) {
-            throw std::runtime_error(""); //TODO
+            throw std::runtime_error("New vertices quantity (" + std::to_string(vertices.size()) + ") must be equals to original vertices quantity (" + std::to_string(constMesh.getNumberVertices()) + ")");
         }
-        //TODO only one bones ?
 
         this->vertices = vertices;
         MeshService::computeNormalsAndTangents(constMesh, vertices, normals, tangents);
