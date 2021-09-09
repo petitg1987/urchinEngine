@@ -59,12 +59,12 @@ namespace urchin {
 
         if (shaderConstants) {
             std::size_t variablesSize = shaderConstants->sumVariablesSize();
-            auto* variablesData = (std::size_t*)shaderConstants->getData();
+            auto* variablesData = static_cast<std::size_t*>(shaderConstants->getData());
             for (std::size_t i = 0; i < variablesSize;) {
                 std::size_t retrieveSize = std::min(variablesSize - i, sizeof(std::size_t));
                 std::size_t variablesValuePart = 0;
 
-                std::memcpy(&variablesValuePart, &variablesData[i], retrieveSize);
+                std::memcpy(&variablesValuePart, variablesData + i, retrieveSize);
                 HashUtil::combine(shaderId, variablesValuePart);
 
                 i += retrieveSize;

@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <cstring>
+#include <cassert>
 
 #include <graphic/render/shader/model/ShaderConstants.h>
 
@@ -10,6 +11,10 @@ namespace urchin {
      */
     ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, void* data) :
             variablesSize(std::move(variablesSize)) {
+        for (std::size_t variableSize : this->variablesSize) {
+            assert(variableSize % 4 == 0); //others sizes are probably not handled due to paddings added on struct by the compiler
+        }
+
         this->data = malloc(sumVariablesSize());
         std::memcpy(this->data, data, sumVariablesSize());
     }
