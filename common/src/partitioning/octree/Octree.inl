@@ -50,11 +50,11 @@ template<class T> bool Octree<T>::isLeaf() const {
     return bIsLeaf;
 }
 
-template<class T> const std::vector<std::unique_ptr<Octree<T>>> &Octree<T>::getChildren() const {
+template<class T> const std::vector<std::unique_ptr<Octree<T>>>& Octree<T>::getChildren() const {
     return children;
 }
 
-template<class T> const std::vector<std::shared_ptr<T>> &Octree<T>::getOctreeables() const {
+template<class T> const std::vector<std::shared_ptr<T>>& Octree<T>::getOctreeables() const {
     return octreeables;
 }
 

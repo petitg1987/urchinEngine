@@ -241,7 +241,7 @@ template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<f
         if (convexObject.collideWithAABBox(octree->getAABBox())) {
             if (octree->isLeaf()) {
                 for (std::size_t octreeableI = 0; octreeableI < octree->getOctreeables().size(); octreeableI++) {
-                    std::shared_ptr<T> octreeable = octree->getOctreeables()[octreeableI];
+                    const std::shared_ptr<T>& octreeable = octree->getOctreeables()[octreeableI];
 
                     if (octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable.get(), convexObject)) {
                         octreeable->setProcessed(true);
