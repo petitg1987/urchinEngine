@@ -13,7 +13,9 @@ namespace urchin {
             variablesSize(std::move(variablesSize)) {
         #ifndef NDEBUG
             for (std::size_t variableSize : this->variablesSize) {
-                assert(variableSize % 4 == 0); //others sizes are probably not handled due to paddings added on struct by the compiler (solution should be reviewed)
+                //Others sizes are not handled due to paddings added by the compiler on the structs.
+                //Moreover, Vulkan spec states that bool constant should use VkBool32.
+                assert(variableSize % 4 == 0);
             }
         #endif
 
