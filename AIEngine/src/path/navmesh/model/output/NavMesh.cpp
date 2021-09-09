@@ -9,12 +9,12 @@ namespace urchin {
     unsigned int NavMesh::nextUpdateId = 0;
 
     NavMesh::NavMesh() :
-        updateId(0) {
+            updateId(0) {
 
     }
 
     NavMesh::NavMesh(const NavMesh& navMesh) :
-        updateId(navMesh.getUpdateId()) {
+            updateId(navMesh.getUpdateId()) {
         NavModelCopy::copyNavPolygons(navMesh.getPolygons(), polygons);
     }
 

@@ -6,7 +6,7 @@
 namespace urchin {
 
     SoundTableView::SoundTableView(QWidget* parent) :
-        QTableView(parent) {
+            QTableView(parent) {
         soundsListModel = new QStandardItemModel(0, 2, this);
         soundsListModel->setHorizontalHeaderItem(0, new QStandardItem("Sound Name"));
         soundsListModel->setHorizontalHeaderItem(1, new QStandardItem("Sound File"));

@@ -46,6 +46,7 @@ namespace urchin {
             bool isProduceShadow() const;
 
             void updateAnimation(float);
+            void updateMesh(unsigned int, const std::vector<Point3<float>>&);
 
         private:
             explicit Model(const std::string&);

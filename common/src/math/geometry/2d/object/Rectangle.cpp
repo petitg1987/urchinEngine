@@ -12,8 +12,8 @@ namespace urchin {
      * @param origin Origin of the rectangle (minimum point on X and Y axis)
      */
     template<class T> Rectangle<T>::Rectangle(const Point2<T>& origin, const Vector2<T>& diagonal) :
-        rectangleShape(RectangleShape<T>(diagonal)),
-        origin(origin) {
+            rectangleShape(RectangleShape<T>(diagonal)),
+            origin(origin) {
 
     }
 
@@ -22,8 +22,8 @@ namespace urchin {
     * @param maxPoint Upper point of rectangle
     */
     template<class T> Rectangle<T>::Rectangle(const Point2<T>& minPoint, const Point2<T>& maxPoint) :
-        rectangleShape(RectangleShape<T>(minPoint.vector(maxPoint))),
-        origin(minPoint) {
+            rectangleShape(RectangleShape<T>(minPoint.vector(maxPoint))),
+            origin(minPoint) {
 
     }
 

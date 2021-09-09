@@ -6,7 +6,7 @@
 namespace urchin {
 
     IslandContainer::IslandContainer() :
-        containerSorted(false) {
+            containerSorted(false) {
 
     }
 

@@ -18,12 +18,12 @@ namespace urchin {
     }
 
     template<class T> Point3<T>::Point3(const Vector2<T>& vector, T Zu) :
-        X(vector.X), Y(vector.Y), Z(Zu) {
+            X(vector.X), Y(vector.Y), Z(Zu) {
 
     }
 
     template<class T> Point3<T>::Point3(const Vector3<T>& vector) :
-        X(vector.X), Y(vector.Y), Z(vector.Z) {
+            X(vector.X), Y(vector.Y), Z(vector.Z) {
 
     }
 

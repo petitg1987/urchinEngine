@@ -3,9 +3,9 @@
 namespace urchin {
 
     IslandElementLink::IslandElementLink() :
-        element(nullptr),
-        islandIdRef(0),
-        linkedToStaticElement(false) {
+            element(nullptr),
+            islandIdRef(0),
+            linkedToStaticElement(false) {
 
     }
 

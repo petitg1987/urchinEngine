@@ -5,13 +5,13 @@
 namespace urchin {
 
     CSGPolygonPath::CSGPolygonPath(ClipperLib::Path path, std::string name) :
-        path(std::move(path)),
-        name(std::move(name)) {
+            path(std::move(path)),
+            name(std::move(name)) {
 
     }
 
     template<class T> CSGPolygonPath::CSGPolygonPath(const CSGPolygon<T>& polygon) :
-        name(polygon.getName()) {
+            name(polygon.getName()) {
         path.reserve(polygon.getCwPoints().size());
 
         for (const auto& point : polygon.getCwPoints()) {

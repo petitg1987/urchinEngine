@@ -10,13 +10,13 @@
 
 namespace urchin {
     NewLightDialog::NewLightDialog(QWidget* parent, const LightController* lightController) :
-        QDialog(parent),
-        lightController(lightController),
-        lightNameLabel(nullptr),
-        lightNameText(nullptr),
-        lightTypeLabel(nullptr),
-        lightTypeComboBox(nullptr),
-        sceneLight(nullptr) {
+            QDialog(parent),
+            lightController(lightController),
+            lightNameLabel(nullptr),
+            lightNameText(nullptr),
+            lightTypeLabel(nullptr),
+            lightTypeComboBox(nullptr),
+            sceneLight(nullptr) {
         this->setWindowTitle("New Light");
         this->resize(530, 130);
         this->setFixedSize(this->width(), this->height());

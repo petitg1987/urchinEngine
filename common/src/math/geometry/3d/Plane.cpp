@@ -11,8 +11,8 @@ namespace urchin {
      * @param distanceToOrigin Distance to the origin. Positive if dot product between a vector from plane to origin and the normal is positive.
      */
     template<class T> Plane<T>::Plane(const Vector3<T>& normalizedNormal, T distanceToOrigin) :
-        normal(normalizedNormal),
-        d(distanceToOrigin) {
+            normal(normalizedNormal),
+            d(distanceToOrigin) {
         #ifndef NDEBUG
             T normalSquareLength = normal.squareLength();
             assert(normalSquareLength > (T)0.9996 && normalSquareLength < (T)1.0004);

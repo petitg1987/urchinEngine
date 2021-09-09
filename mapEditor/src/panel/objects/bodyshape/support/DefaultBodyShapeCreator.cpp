@@ -3,7 +3,7 @@
 namespace urchin {
 
     DefaultBodyShapeCreator::DefaultBodyShapeCreator(const SceneObject& sceneObject) :
-        sceneObject(sceneObject) {
+            sceneObject(sceneObject) {
 
     }
 

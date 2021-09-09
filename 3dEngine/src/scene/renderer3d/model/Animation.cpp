@@ -85,8 +85,8 @@ namespace urchin {
         }
 
         //update the vertex and normals
-        for (unsigned m = 0; m < meshes.getNumberMeshes(); ++m) {
-            meshes.getMesh(m).update(skeleton);
+        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
+            meshes.getMesh(meshIndex).update(skeleton);
         }
     }
 

@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     Size::Size(float width, float height, LengthType sizeType) :
-        Size(width, sizeType, height, sizeType) {
+            Size(width, sizeType, height, sizeType) {
 
     }
 

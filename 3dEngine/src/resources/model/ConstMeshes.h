@@ -34,6 +34,7 @@ namespace urchin {
             std::optional<std::string> meshesFilename;
             std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
 
+            static constexpr float MIN_BBOX_SIZE = 0.01f; //TODO config
             std::unique_ptr<AABBox<float>> originalBBox; //bounding box (not transformed)
             std::vector<AABBox<float>> originalSplitBBoxes;
     };

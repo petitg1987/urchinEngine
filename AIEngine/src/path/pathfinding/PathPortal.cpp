@@ -6,11 +6,11 @@
 namespace urchin {
 
     PathPortal::PathPortal(LineSegment3D<float> portal, std::shared_ptr<PathNode> previousPathNode, std::shared_ptr<PathNode> nextPathNode, bool bIsJumpOriginPortal) :
-        portal(std::move(portal)),
-        previousPathNode(std::move(previousPathNode)),
-        nextPathNode(std::move(nextPathNode)),
-        bIsJumpOriginPortal(bIsJumpOriginPortal),
-        bHasTransitionPoint(false) {
+            portal(std::move(portal)),
+            previousPathNode(std::move(previousPathNode)),
+            nextPathNode(std::move(nextPathNode)),
+            bIsJumpOriginPortal(bIsJumpOriginPortal),
+            bHasTransitionPoint(false) {
 
     }
 

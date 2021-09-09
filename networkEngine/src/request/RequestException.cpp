@@ -4,7 +4,7 @@
 
 namespace urchin {
     RequestException::RequestException(std::string message) :
-        message(std::move(message)) {
+            message(std::move(message)) {
 
     }
 

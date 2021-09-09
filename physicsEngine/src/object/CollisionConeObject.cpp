@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    CollisionConeObject::CollisionConeObject(float outerMargin, float radius, float height,
-            typename ConeShape<float>::ConeOrientation coneOrientation,    const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
-        CollisionConvexObject3D(outerMargin),
-        coneObject(Cone<float>(radius, height, coneOrientation, centerOfMass, orientation)) {
+    CollisionConeObject::CollisionConeObject(float outerMargin, float radius, float height, typename ConeShape<float>::ConeOrientation coneOrientation,
+                                             const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
+            CollisionConvexObject3D(outerMargin),
+            coneObject(Cone<float>(radius, height, coneOrientation, centerOfMass, orientation)) {
 
     }
 

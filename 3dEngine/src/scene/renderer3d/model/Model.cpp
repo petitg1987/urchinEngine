@@ -232,7 +232,11 @@ namespace urchin {
                 notifyObservers(this, Model::MESH_UPDATED);
             }
         }
+    }
 
+    void Model::updateMesh(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {
+        meshes->getMesh(meshIndex).updateVertices(vertices);
+        notifyObservers(this, Model::MESH_UPDATED);
     }
 
 }

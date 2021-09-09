@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    CollisionCylinderObject::CollisionCylinderObject(float outerMargin, float radius, float height,
-            typename CylinderShape<float>::CylinderOrientation cylinderOrientation,    const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
-        CollisionConvexObject3D(outerMargin),
-        cylinderObject(Cylinder<float>(radius, height, cylinderOrientation, centerOfMass, orientation)) {
+    CollisionCylinderObject::CollisionCylinderObject(float outerMargin, float radius, float height, typename CylinderShape<float>::CylinderOrientation cylinderOrientation,
+                                                     const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
+            CollisionConvexObject3D(outerMargin),
+            cylinderObject(Cylinder<float>(radius, height, cylinderOrientation, centerOfMass, orientation)) {
 
     }
 

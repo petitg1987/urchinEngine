@@ -29,10 +29,10 @@ namespace urchin {
      * @param indexedTriangles Triangles of the convex hull shape (the triangles must form a convex)
      */
     template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<std::size_t, ConvexHullPoint<T>>& points, const std::map<std::size_t, IndexedTriangle3D<T>>& indexedTriangles) :
-        nextPointIndex(points.rbegin()->first + 1),
-        nextTriangleIndex(indexedTriangles.rbegin()->first + 1),
-        points(points),
-        indexedTriangles(indexedTriangles) {
+            nextPointIndex(points.rbegin()->first + 1),
+            nextTriangleIndex(indexedTriangles.rbegin()->first + 1),
+            points(points),
+            indexedTriangles(indexedTriangles) {
 
     }
 

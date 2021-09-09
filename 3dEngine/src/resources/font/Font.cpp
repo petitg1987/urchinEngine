@@ -6,13 +6,13 @@ namespace urchin {
 
     Font::Font(unsigned int fontSize, const Vector3<float>& fontColor, std::shared_ptr<Texture> alphabetTexture, std::array<Glyph, NUM_LETTERS> glyph,
                unsigned int spaceBetweenLetters, unsigned int spaceBetweenLines, unsigned int height) :
-        fontSize(fontSize),
-        fontColor(fontColor),
-        alphabetTexture(std::move(alphabetTexture)),
-        glyph(std::move(glyph)),
-        spaceBetweenLetters(spaceBetweenLetters),
-        spaceBetweenLines(spaceBetweenLines),
-        height(height) {
+            fontSize(fontSize),
+            fontColor(fontColor),
+            alphabetTexture(std::move(alphabetTexture)),
+            glyph(std::move(glyph)),
+            spaceBetweenLetters(spaceBetweenLetters),
+            spaceBetweenLines(spaceBetweenLines),
+            height(height) {
 
     }
 

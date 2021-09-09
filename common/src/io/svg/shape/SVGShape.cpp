@@ -3,10 +3,10 @@
 namespace urchin {
 
     SVGShape::SVGShape(SVGColor color, float opacity) :
-        color(color),
-        opacity(opacity),
-        strokeColor(SVGShape::BLACK),
-        strokeSize(0) {
+            color(color),
+            opacity(opacity),
+            strokeColor(SVGShape::BLACK),
+            strokeSize(0) {
 
     }
 

@@ -8,11 +8,11 @@
 namespace urchin {
 
     ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget* parent, bool excludeCompoundShape) :
-        QDialog(parent),
-        excludeCompoundShape(excludeCompoundShape),
-        bodyShapeTypeLabel(nullptr),
-        bodyShapeTypeComboBox(nullptr),
-        shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
+            QDialog(parent),
+            excludeCompoundShape(excludeCompoundShape),
+            bodyShapeTypeLabel(nullptr),
+            bodyShapeTypeComboBox(nullptr),
+            shapeType(CollisionShape3D::ShapeType::SHAPE_MAX) {
         this->setWindowTitle("Select Body Shape");
         this->resize(245, 80);
         this->setFixedSize(this->width(), this->height());

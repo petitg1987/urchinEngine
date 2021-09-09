@@ -8,7 +8,7 @@
 namespace urchin {
 
     template<class T> Simplex<T>::Simplex() :
-        simplexPointsSize(0) {
+            simplexPointsSize(0) {
     }
 
     /**

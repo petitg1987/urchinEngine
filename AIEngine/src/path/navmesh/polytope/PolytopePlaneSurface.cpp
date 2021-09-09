@@ -8,8 +8,8 @@ namespace urchin {
      * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
      */
     PolytopePlaneSurface::PolytopePlaneSurface(std::vector<Point3<float>> ccwPoints, bool isSlopeWalkable) :
-        ccwPoints(std::move(ccwPoints)),
-        isSlopeWalkable(isSlopeWalkable) {
+            ccwPoints(std::move(ccwPoints)),
+            isSlopeWalkable(isSlopeWalkable) {
         Vector3<float> v1 = this->ccwPoints[0].vector(this->ccwPoints[2]);
         Vector3<float> v2 = this->ccwPoints[1].vector(this->ccwPoints[0]);
         normal = v1.crossProduct(v2).normalize();

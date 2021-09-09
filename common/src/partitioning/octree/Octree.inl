@@ -1,5 +1,5 @@
 template<class T> Octree<T>::Octree(const Point3<float>& position, const Vector3<float>& size, float minSize) :
-    bbox(AABBox<float>(position, size)) {
+        bbox(AABBox<float>(position, size)) {
     Vector3<float> sizeChild = size;
     std::vector<float> splitX = {position.X};
     std::vector<float> splitY = {position.Y};

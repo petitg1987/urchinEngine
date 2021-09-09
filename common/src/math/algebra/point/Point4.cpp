@@ -23,12 +23,12 @@ namespace urchin {
     }
 
     template<class T> Point4<T>::Point4(const Vector3<T>& vector, T Wu) :
-        X(vector.X), Y(vector.Y), Z(vector.Z), W(Wu) {
+            X(vector.X), Y(vector.Y), Z(vector.Z), W(Wu) {
 
     }
 
     template<class T> Point4<T>::Point4(const Vector4<T>& vector) :
-        X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W) {
+            X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W) {
 
     }
 

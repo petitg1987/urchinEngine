@@ -3,7 +3,7 @@
 namespace urchin {
 
     SplitBoundingBox::SplitBoundingBox() :
-        limitSize(ConfigService::instance().getFloatValue("model.boxLimitSize")) {
+            limitSize(ConfigService::instance().getFloatValue("model.boxLimitSize")) {
 
     }
 

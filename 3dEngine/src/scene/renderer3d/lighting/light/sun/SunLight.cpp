@@ -5,7 +5,7 @@
 namespace urchin {
 
     SunLight::SunLight(const Vector3<float>& direction) :
-        Light() {
+            Light() {
         this->directions.emplace_back(direction);
     }
 

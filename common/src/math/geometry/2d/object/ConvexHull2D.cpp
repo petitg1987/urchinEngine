@@ -4,7 +4,7 @@
 namespace urchin {
 
     template<class T> ConvexHull2D<T>::ConvexHull2D() :
-        localizedConvexHullShape(ConvexHullShape2D<T>()) {
+            localizedConvexHullShape(ConvexHullShape2D<T>()) {
 
     }
 
@@ -13,7 +13,7 @@ namespace urchin {
      * Duplicate points are supported.
      */
     template<class T> ConvexHull2D<T>::ConvexHull2D(const std::vector<Point2<T>>& points) :
-        localizedConvexHullShape(ConvexHullShape2D<T>(points)) {
+            localizedConvexHullShape(ConvexHullShape2D<T>(points)) {
 
     }
 

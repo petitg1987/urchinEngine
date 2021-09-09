@@ -3,15 +3,15 @@
 namespace urchin {
 
     AIShape::AIShape(std::unique_ptr<ConvexShape3D<float>> shape) :
-        shape(std::move(shape)),
-        bHasLocalTransform(false) {
+            shape(std::move(shape)),
+            bHasLocalTransform(false) {
 
     }
 
     AIShape::AIShape(std::unique_ptr<ConvexShape3D<float>> shape, const Transform<float>& localTransform) :
-        shape(std::move(shape)),
-        bHasLocalTransform(true),
-        localTransform(localTransform) {
+            shape(std::move(shape)),
+            bHasLocalTransform(true),
+            localTransform(localTransform) {
 
     }
 

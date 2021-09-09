@@ -10,14 +10,14 @@
 namespace urchin {
 
     NewDialog::NewDialog(QWidget* parent) :
-        QDialog(parent),
-        mapNameLabel(nullptr),
-        mapNameText(nullptr),
-        mapDirectoryLabel(nullptr),
-        mapDirectoryText(nullptr),
-        mapWorkingDirectoryLabel(nullptr),
-        mapWorkingDirectoryText(nullptr),
-        mapRelWorkingDirectoryText(nullptr) {
+            QDialog(parent),
+            mapNameLabel(nullptr),
+            mapNameText(nullptr),
+            mapDirectoryLabel(nullptr),
+            mapDirectoryText(nullptr),
+            mapWorkingDirectoryLabel(nullptr),
+            mapWorkingDirectoryText(nullptr),
+            mapRelWorkingDirectoryText(nullptr) {
         this->setWindowTitle("New Map File");
         this->resize(530, 195);
         this->setFixedSize(this->width(), this->height());

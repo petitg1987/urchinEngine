@@ -19,14 +19,14 @@ namespace urchin {
     }
 
     template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon& polygon) :
-        name(polygon.name),
-        cwPoints(polygon.cwPoints) {
+            name(polygon.name),
+            cwPoints(polygon.cwPoints) {
 
     }
 
     template<class T> CSGPolygon<T>::CSGPolygon(CSGPolygon&& polygon) noexcept :
-        name(std::move(polygon.name)),
-        cwPoints(std::move(polygon.cwPoints)) {
+            name(std::move(polygon.name)),
+            cwPoints(std::move(polygon.cwPoints)) {
 
     }
 

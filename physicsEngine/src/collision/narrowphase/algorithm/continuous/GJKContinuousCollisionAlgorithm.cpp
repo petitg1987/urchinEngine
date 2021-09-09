@@ -9,9 +9,9 @@
 namespace urchin {
 
     template<class T, class U> GJKContinuousCollisionAlgorithm<T, U>::GJKContinuousCollisionAlgorithm() :
-        squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
-        maxIteration(ConfigService::instance().getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
-        terminationTolerance(ConfigService::instance().getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance")) {
+            squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
+            maxIteration(ConfigService::instance().getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
+            terminationTolerance(ConfigService::instance().getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance")) {
 
     }
 

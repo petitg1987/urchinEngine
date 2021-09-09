@@ -5,7 +5,7 @@
 namespace urchin {
 
     template<class T> IndexedTriangle2D<T>::IndexedTriangle2D(const std::size_t* indices) :
-        indices() {
+            indices() {
         assert(indices[0] != indices[1] && indices[0] != indices[2] && indices[1] != indices[2]);
 
         this->indices[0] = indices[0];
@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     template<class T> IndexedTriangle2D<T>::IndexedTriangle2D(std::size_t index1, std::size_t index2, std::size_t index3) :
-        indices() {
+            indices() {
         assert(index1 != index2 && index1 != index3 && index2 != index3);
 
         this->indices[0] = index1;

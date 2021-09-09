@@ -6,7 +6,7 @@
 namespace urchin {
 
     ObjectTableView::ObjectTableView(QWidget* parent) :
-        QTableView(parent) {
+            QTableView(parent) {
         objectsListModel = new QStandardItemModel(0, 2, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
         objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Meshes File"));

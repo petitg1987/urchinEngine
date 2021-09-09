@@ -8,7 +8,7 @@
 namespace urchin {
 
     LocalizedShapeTableView::LocalizedShapeTableView(QWidget* parent) :
-        QTableView(parent) {
+            QTableView(parent) {
         localizedShapesTableModel = new QStandardItemModel(0, 1, this);
         localizedShapesTableModel->setHorizontalHeaderItem(0, new QStandardItem("Shape Type"));
 

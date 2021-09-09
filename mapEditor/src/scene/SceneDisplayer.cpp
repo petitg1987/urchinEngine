@@ -9,15 +9,15 @@ namespace urchin {
 
     SceneDisplayer::SceneDisplayer(SceneWindowController& windowController, SceneController* sceneController, MouseController& mouseController,
                                    StatusBarController& statusBarController) :
-        isInitialized(false),
-        windowController(windowController),
-        sceneController(sceneController),
-        mouseController(mouseController),
-        statusBarController(statusBarController),
-        viewProperties(),
-        highlightSceneObject(nullptr),
-        highlightSceneLight(nullptr),
-        highlightSceneSound(nullptr) {
+            isInitialized(false),
+            windowController(windowController),
+            sceneController(sceneController),
+            mouseController(mouseController),
+            statusBarController(statusBarController),
+            viewProperties(),
+            highlightSceneObject(nullptr),
+            highlightSceneLight(nullptr),
+            highlightSceneSound(nullptr) {
 
     }
 

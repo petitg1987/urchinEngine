@@ -38,9 +38,11 @@ namespace urchin {
         }
 
         for (std::size_t i = 0; i < 3; ++i) {
-            if (min[i] == max[i]) {
-                min[i] = std::nextafter(min[i], -std::numeric_limits<float>::max());
-                max[i] = std::nextafter(max[i], std::numeric_limits<float>::max());
+            float diff = max[i] - min[i];
+            if (diff < MIN_BBOX_SIZE) {
+                float halfMove = (MIN_BBOX_SIZE - diff) / 2.0f;
+                min[i] -= halfMove;
+                max[i] += halfMove;
             }
         }
 

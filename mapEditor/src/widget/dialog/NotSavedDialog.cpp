@@ -7,8 +7,8 @@
 namespace urchin {
 
     NotSavedDialog::NotSavedDialog(QWidget* parent) :
-        QDialog(parent),
-        bNeedSave(false) {
+            QDialog(parent),
+            bNeedSave(false) {
         this->setWindowTitle("Save Map");
         this->resize(300, 120);
         this->setFixedSize(this->width(), this->height());

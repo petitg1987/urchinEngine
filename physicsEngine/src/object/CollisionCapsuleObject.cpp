@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    CollisionCapsuleObject::CollisionCapsuleObject(float outerMargin, float radius, float cylinderHeight,
-            typename CapsuleShape<float>::CapsuleOrientation capsuleOrientation, const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
-        CollisionConvexObject3D(outerMargin),
-        capsuleObject(Capsule<float>(radius, cylinderHeight, capsuleOrientation, centerOfMass, orientation)) {
+    CollisionCapsuleObject::CollisionCapsuleObject(float outerMargin, float radius, float cylinderHeight, typename CapsuleShape<float>::CapsuleOrientation capsuleOrientation,
+                                                   const Point3<float>& centerOfMass, const Quaternion<float>& orientation) :
+            CollisionConvexObject3D(outerMargin),
+            capsuleObject(Capsule<float>(radius, cylinderHeight, capsuleOrientation, centerOfMass, orientation)) {
 
     }
 
