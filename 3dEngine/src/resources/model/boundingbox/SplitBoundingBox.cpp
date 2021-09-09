@@ -17,33 +17,25 @@ namespace urchin {
 
         std::vector<float> axisSplits[3];
         for (std::size_t axis = 0; axis < 3; ++axis) {
+            axisSplits[axis].push_back(aabbox.getMin()[axis]);
+
             float size = aabbox.getHalfSize((unsigned int)axis) * 2.0f;
             auto nbSplits = MathFunction::ceilToInt(size / limitSize);
 
-            if(nbSplits != 0) {
-                axisSplits[axis].push_back(aabbox.getMin()[axis]);
-                float maxValue = aabbox.getMax()[axis];
-
-                for (int split = 0; split < nbSplits; ++split) {
-                    float splitValue = std::min(aabbox.getMin()[axis] + limitSize * ((float) split + 1.0f), maxValue);
-                    axisSplits[axis].push_back(splitValue);
-                }
+            float maxValue = aabbox.getMax()[axis];
+            for (int split = 0; split < nbSplits; ++split) {
+                float splitValue = std::min(aabbox.getMin()[axis] + limitSize * ((float) split + 1.0f), maxValue);
+                axisSplits[axis].push_back(splitValue);
             }
         }
 
-        std::size_t nbSplit = axisSplits[0].size() * axisSplits[1].size() * axisSplits[2].size();
-        if (nbSplit == 0) {
-            splitBoundingBox.push_back(aabbox);
-        } else {
-            std::vector<AABBox<float>> splitBoundingBox;
-            for (std::size_t x = 1; x < axisSplits[0].size(); ++x) {
-                for (std::size_t y = 1; y < axisSplits[1].size(); ++y) {
-                    for (std::size_t z = 1; z < axisSplits[2].size(); ++z) {
-                        Point3<float> minPoint(axisSplits[0][x - 1], axisSplits[1][y - 1], axisSplits[2][z - 1]);
-                        Point3<float> maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
+        for (std::size_t x = 1; x < axisSplits[0].size(); ++x) {
+            for (std::size_t y = 1; y < axisSplits[1].size(); ++y) {
+                for (std::size_t z = 1; z < axisSplits[2].size(); ++z) {
+                    Point3<float> minPoint(axisSplits[0][x - 1], axisSplits[1][y - 1], axisSplits[2][z - 1]);
+                    Point3<float> maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
 
-                        splitBoundingBox.emplace_back(AABBox<float>(minPoint, maxPoint));
-                    }
+                    splitBoundingBox.emplace_back(AABBox<float>(minPoint, maxPoint));
                 }
             }
         }
