@@ -286,6 +286,8 @@ namespace urchin {
     }
 
     void ScreenRender::waitCommandBuffersIdle() const {
+        ScopeProfiler sp(Profiler::graphic(), "waitCmdBufIdle");
+
         for (unsigned int frameIndex = 0; frameIndex < MAX_CONCURRENT_FRAMES; ++frameIndex) {
             if (frameIndex != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
                 //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'frameIndex'

@@ -21,9 +21,10 @@ namespace urchin {
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
 
-            void render();
+            void render() override;
 
         private:
+            bool needCommandBufferRefresh(std::size_t) const override;
             void waitCommandBuffersIdle() const override;
 
             unsigned int width;

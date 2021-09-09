@@ -41,6 +41,10 @@ namespace urchin {
         return 0;
     }
 
+    bool NullRenderTarget::needCommandBufferRefresh(std::size_t) const {
+        return true;
+    }
+
     void NullRenderTarget::waitCommandBuffersIdle() const {
         //nothing to do
     }

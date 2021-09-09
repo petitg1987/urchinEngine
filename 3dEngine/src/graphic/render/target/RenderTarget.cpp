@@ -390,13 +390,10 @@ namespace urchin {
             beginInfo.flags = 0;
             beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
 
-            {
-                ScopeProfiler sp(Profiler::graphic(), "resetCmdPool");
-                waitCommandBuffersIdle();
-                VkResult resultResetCmdPool = vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
-                if (resultResetCmdPool != VK_SUCCESS) {
-                    throw std::runtime_error("Failed to reset command pool with error code: " + std::to_string(resultResetCmdPool));
-                }
+            waitCommandBuffersIdle();
+            VkResult resultResetCmdPool = vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+            if (resultResetCmdPool != VK_SUCCESS) {
+                throw std::runtime_error("Failed to reset command pool with error code: " + std::to_string(resultResetCmdPool));
             }
 
             VkResult resultCmdBuffer = vkBeginCommandBuffer(commandBuffers[frameIndex], &beginInfo);

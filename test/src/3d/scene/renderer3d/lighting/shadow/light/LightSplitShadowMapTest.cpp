@@ -72,9 +72,9 @@ std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeM
     auto modelOctreeManager = std::make_unique<OctreeManager<Model>>(10.0f);
 
     for (const auto& modelPosition : modelPositions) {
-        auto model = std::make_shared<Model>(""); //default model size: 1.0 x 1.0 x 1.0
+        auto model = Model::fromMeshesFile(""); //default model size: 1.0 x 1.0 x 1.0
         model->setPosition(modelPosition);
-        modelOctreeManager->addOctreeable(model);
+        modelOctreeManager->addOctreeable(std::move(model));
     }
 
     return modelOctreeManager;
