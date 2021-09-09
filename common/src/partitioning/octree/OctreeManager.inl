@@ -204,9 +204,7 @@ template<class T> std::vector<std::shared_ptr<T>> OctreeManager<T>::getAllOctree
             const Octree<T>* octree = browseNodes[i];
 
             if (octree->isLeaf()) {
-                for (std::size_t octreeableI = 0; octreeableI < octree->getOctreeables().size(); octreeableI++) {
-                    std::shared_ptr<T> octreeable = octree->getOctreeables()[octreeableI];
-
+                for (auto& octreeable : octree->getOctreeables()) {
                     if (!octreeable->isProcessed()) {
                         octreeable->setProcessed(true);
                         allOctreeables.emplace_back(std::move(octreeable));
@@ -240,9 +238,7 @@ template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<f
 
         if (convexObject.collideWithAABBox(octree->getAABBox())) {
             if (octree->isLeaf()) {
-                for (std::size_t octreeableI = 0; octreeableI < octree->getOctreeables().size(); octreeableI++) {
-                    const std::shared_ptr<T>& octreeable = octree->getOctreeables()[octreeableI];
-
+                for (auto& octreeable : octree->getOctreeables()) {
                     if (octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable.get(), convexObject)) {
                         octreeable->setProcessed(true);
                         visibleOctreeables.push_back(octreeable.get());
