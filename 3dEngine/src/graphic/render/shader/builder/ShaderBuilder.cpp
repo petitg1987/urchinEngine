@@ -58,16 +58,15 @@ namespace urchin {
         HashUtil::combine(shaderId, vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);
 
         if (shaderConstants) {
-            std::size_t variablesSize = shaderConstants->sumVariablesSize();
             auto* variablesData = static_cast<std::size_t*>(shaderConstants->getData());
-            for (std::size_t i = 0; i < variablesSize;) {
-                std::size_t retrieveSize = std::min(variablesSize - i, sizeof(std::size_t));
-                std::size_t variablesValuePart = 0;
+            std::size_t variablesSize = shaderConstants->sumVariablesSize();
+            unsigned int numRead = MathFunction::ceilToUInt((float)variablesSize / (float)sizeof(std::size_t));
+            for (std::size_t i = 0; i < numRead; ++i) {
+                std::size_t readSize = std::min(variablesSize - i * sizeof(std::size_t), sizeof(std::size_t));
+                std::size_t readValue = 0;
 
-                std::memcpy(&variablesValuePart, variablesData + i, retrieveSize);
-                HashUtil::combine(shaderId, variablesValuePart);
-
-                i += retrieveSize;
+                std::memcpy(&readValue, variablesData + i, readSize);
+                HashUtil::combine(shaderId, readValue);
             }
         }
 
