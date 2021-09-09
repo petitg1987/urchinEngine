@@ -9,6 +9,7 @@
   * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer.updateDescriptorSets) with updated values only
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
+  * **BUG** (`medium`): Shader constants sent to the GPU does not support padding added by the compiler on some data (short, bool...)
 * Rendering
   * **NEW FEATURE** (`major`): Replace geometry shaders by instantiation
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)

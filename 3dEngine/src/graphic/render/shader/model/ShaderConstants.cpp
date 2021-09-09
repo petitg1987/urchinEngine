@@ -11,9 +11,11 @@ namespace urchin {
      */
     ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, void* data) :
             variablesSize(std::move(variablesSize)) {
-        for (std::size_t variableSize : this->variablesSize) {
-            assert(variableSize % 4 == 0); //others sizes are probably not handled due to paddings added on struct by the compiler (solution should be reviewed)
-        }
+        #ifndef NDEBUG
+            for (std::size_t variableSize : this->variablesSize) {
+                assert(variableSize % 4 == 0); //others sizes are probably not handled due to paddings added on struct by the compiler (solution should be reviewed)
+            }
+        #endif
 
         this->data = malloc(sumVariablesSize());
         std::memcpy(this->data, data, sumVariablesSize());

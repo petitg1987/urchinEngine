@@ -93,13 +93,17 @@ namespace urchin {
         renderersDirty = true;
     }
 
-    void RenderTarget::notifyRendererEnabled(GenericRenderer* genericRenderer) {
-        assert(genericRenderer->isEnabled());
+    void RenderTarget::notifyRendererEnabled(GenericRenderer* renderer) {
+        if (!renderer->isEnabled()) {
+            assert(false);
+        }
         renderersDirty = true;
     }
 
-    void RenderTarget::notifyRendererDisabled(GenericRenderer* genericRenderer) {
-        assert(!genericRenderer->isEnabled());
+    void RenderTarget::notifyRendererDisabled(GenericRenderer* renderer) {
+        if (renderer->isEnabled()) {
+            assert(false);
+        }
         renderersDirty = true;
     }
 
