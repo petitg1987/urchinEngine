@@ -96,7 +96,7 @@ namespace urchin {
         }
 
         localBBox = std::make_unique<AABBox<float>>(min, max);
-        localSplitBBoxes = SplitBoundingBox().split(*localBBox);
+        SplitBoundingBox().split(*localBBox, localSplitBBoxes);
     }
 
 }

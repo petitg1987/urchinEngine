@@ -16,7 +16,7 @@ namespace urchin {
         for (unsigned int i = 0; i < numFrames; ++i) {
             originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
         }
-        originalGlobalSplitBBoxes = SplitBoundingBox().split(originalGlobalBBox);
+        SplitBoundingBox().split(originalGlobalBBox, originalGlobalSplitBBoxes);
     }
 
     const std::string& ConstAnimation::getAnimationFilename() const {

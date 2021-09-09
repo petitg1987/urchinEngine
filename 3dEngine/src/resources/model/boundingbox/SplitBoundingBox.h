@@ -9,7 +9,7 @@ namespace urchin {
         public:
             SplitBoundingBox();
 
-            std::vector<AABBox<float>> split(const AABBox<float>&) const;
+            void split(const AABBox<float>&, std::vector<AABBox<float>>&) const;
 
         private:
             const float limitSize;
