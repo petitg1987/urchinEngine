@@ -77,8 +77,15 @@ namespace urchin {
 
     template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T>& transform) {
         *this = *this * transform;
-
         return *this;
+    }
+
+    template<class T> bool Transform<T>::operator ==(const Transform<T>& t) const {
+        return pPosition == t.getPosition() && qOrientation == t.getOrientation() && fScale == t.getScale();
+    }
+
+    template<class T> bool Transform<T>::operator !=(const Transform<T>& t) const {
+        return !(this->operator == (t));
     }
 
     //explicit template

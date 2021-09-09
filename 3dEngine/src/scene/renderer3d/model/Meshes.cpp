@@ -48,9 +48,13 @@ namespace urchin {
     void Meshes::onMoving(const Transform<float>& newTransform) {
         globalBBox = localBBox->moveAABBox(newTransform);
 
-        globalSplitBBoxes.clear();
-        for (const auto& localSplitAABBox : localSplitBBoxes) {
-            globalSplitBBoxes.push_back(localSplitAABBox.moveAABBox(newTransform));
+        if (globalSplitBBoxes.size() == 1) {
+            globalSplitBBoxes[0] = globalBBox;
+        } else {
+            globalSplitBBoxes.clear();
+            for (const auto &localSplitAABBox: localSplitBBoxes) {
+                globalSplitBBoxes.push_back(localSplitAABBox.moveAABBox(newTransform));
+            }
         }
     }
 

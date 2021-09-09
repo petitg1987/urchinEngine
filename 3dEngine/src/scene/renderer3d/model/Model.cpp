@@ -202,8 +202,10 @@ namespace urchin {
     }
 
     void Model::setTransform(const Transform<float>& transform) {
-        this->transform = transform;
-        onMoving(transform);
+        if (transform != this->transform) {
+            this->transform = transform;
+            onMoving(transform);
+        }
     }
 
     const Transform<float>& Model::getTransform() const {
