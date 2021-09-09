@@ -194,11 +194,8 @@ namespace urchin {
             return Quaternion<T>(normalizedFrom.perpendicularVector(), (T)MathValue::PI_FLOAT);
         }
 
-        T v1Length = normalizedFrom.length();
-        T v2Length = normalizedTo.length();
         Vector3<T> crossVectors = normalizedFrom.crossProduct(normalizedTo);
-
-        return Quaternion<T>(crossVectors.X, crossVectors.Y, crossVectors.Z, v1Length * v2Length + dotVectors);
+        return Quaternion<T>(crossVectors.X, crossVectors.Y, crossVectors.Z, (T)1.0 + dotVectors);
     }
 
     template<class T> void Quaternion<T>::computeW() {

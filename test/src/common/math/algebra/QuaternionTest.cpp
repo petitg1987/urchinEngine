@@ -83,19 +83,6 @@ void QuaternionTest::rotationFromMinus90AndTo90() {
     AssertHelper::assertVector3FloatEquals(result, v90Degree);
 }
 
-void QuaternionTest::rotationOfAlmost180() { //TODO update to crash !
-//    Vector3<float> v1(-0.34033152f, 0.36565238f, 0.86629832f);
-//    Vector3<float> v2(0.34079069f, -0.36243653f, -0.86746842f);
-
-    Vector3<float> v1(-0.34033152f, 0.36565238f, 0.86629832f);
-    Vector3<float> v2(0.34079105f, -0.36243391f, -0.86746937f);
-
-    Quaternion<float> rotation = Quaternion<float>::rotationFromTo(v1, v2);
-
-    Vector3<float> result = rotation.normalize().rotateVector(v1);
-    AssertHelper::assertVector3FloatEquals(result, v2);
-}
-
 void QuaternionTest::eulerXYZ() {
     Quaternion<float> quaternion(Vector3<float>(1.0f, MathValue::PI_FLOAT / 4.0f, 10.0f), Quaternion<float>::RotationSequence::XYZ);
     Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
@@ -281,7 +268,6 @@ CppUnit::Test* QuaternionTest::suite() {
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFrom90AndTo135", &QuaternionTest::rotationFrom90AndTo135));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFrom90AndTo90", &QuaternionTest::rotationFrom90AndTo90));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFromMinus90AndTo90", &QuaternionTest::rotationFromMinus90AndTo90));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationOfAlmost180", &QuaternionTest::rotationOfAlmost180));
 
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYZ", &QuaternionTest::eulerXYZ));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZY", &QuaternionTest::eulerXZY));

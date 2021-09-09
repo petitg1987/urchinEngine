@@ -17,7 +17,6 @@ class QuaternionTest : public CppUnit::TestFixture {
         void rotationFrom90AndTo135();
         void rotationFrom90AndTo90();
         void rotationFromMinus90AndTo90();
-        void rotationOfAlmost180();
 
         void eulerXYZ();
         void eulerXZY();
