@@ -88,7 +88,7 @@ namespace urchin {
         do {
             float stepDt;
             if (stepLoopCounter < MAX_UPDATE_LOOP_BY_FRAME) {
-                stepDt = std::min(dt, 1.0f / minUpdateFrequency);
+                stepDt = std::min(remainingDt, 1.0f / minUpdateFrequency);
                 remainingDt -= stepDt;
             } else {
                 static unsigned int numErrorsLogged = 0;
