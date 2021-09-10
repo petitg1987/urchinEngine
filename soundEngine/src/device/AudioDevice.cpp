@@ -8,6 +8,8 @@ namespace urchin {
     AudioDevice::AudioDevice() :
             device(nullptr),
             context(nullptr) {
+        Logger::instance().logInfo("Create audio device");
+
         device = alcOpenDevice(nullptr);
         if (!device) {
             throw std::runtime_error("Impossible to find the sound device");
@@ -20,6 +22,8 @@ namespace urchin {
                 throw std::runtime_error("Impossible to create the sound context");
             }
         }
+
+        Logger::instance().logInfo("Audio device created");
     }
 
     AudioDevice::~AudioDevice() {
