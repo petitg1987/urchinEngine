@@ -3,8 +3,8 @@
 * Install libraries from Ubuntu package: `sudo apt install qt5-default qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev`
 * Install Vulkan library:
   ```
-  wget -qO - http://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
-  sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-bionic.list http://packages.lunarg.com/vulkan/lunarg-vulkan-bionic.list
+  wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
+  sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-bionic.list https://packages.lunarg.com/vulkan/lunarg-vulkan-bionic.list
   sudo apt update
   sudo apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools vulkan-sdk
   ```
@@ -122,6 +122,15 @@
     sudo perf script > out.perf
     ~/various/tools/FlameGraph/stackcollapse-perf.pl out.perf > out.folded
     ~/various/tools/FlameGraph/flamegraph.pl out.folded > app.svg
+    ```
+
+## Nsight
+* Install:
+  * Download Linux 'run' from https://developer.nvidia.com/nsight-graphics
+  * Execute file and install in ~/various/tools/nsight
+* Launch Nsight as root:
+    ```
+    sudo ~/various/tools/nsight/host/linux-desktop-nomad-x64/ngfx-ui
     ```
 
 ## Coordinates used
