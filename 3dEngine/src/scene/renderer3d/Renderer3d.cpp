@@ -201,7 +201,6 @@ namespace urchin {
 
     void Renderer3d::addModel(std::shared_ptr<Model> model) {
         if (model) {
-            Logger::instance().logInfo("Add 3D model: " + model->getConstMeshes()->getName());
             modelOctreeManager->addOctreeable(std::move(model));
         }
     }
