@@ -47,6 +47,7 @@ namespace urchin {
         private:
             void createBodies();
 
+            void updateStep(float);
             void updateBodiesTransform(float);
             void recoverFromPenetration(float);
             void resetSignificantContactValues();
@@ -58,6 +59,8 @@ namespace urchin {
             static constexpr float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;
             static constexpr float SAVE_RESPAWN_TRANSFORM_TIME = 10.0f; // 10 seconds
             static constexpr std::array<float, 4> RECOVER_FACTOR = {0.4f, 0.7f, 0.9f, 1.0f};
+            static constexpr std::size_t MAX_UPDATE_LOOP_BY_FRAME = 25;
+            static constexpr unsigned int MAX_ERRORS_LOG = 10;
             const float ccdMotionThresholdFactor;
             const float maxDepthToRecover;
             const float minUpdateFrequency;

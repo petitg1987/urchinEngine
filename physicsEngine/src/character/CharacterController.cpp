@@ -81,30 +81,28 @@ namespace urchin {
      * @param dt Delta of time between two simulation steps
      */
     void CharacterController::update(float dt) {
-        ScopeProfiler sp(Profiler::physics(), "charactCtrlExec");
+        ScopeProfiler sp(Profiler::physics(), "charactCtrlUp");
 
-        if (ghostBody->isActive() && ccdGhostBody->isActive()) {
-            //update body transform
-            updateBodiesTransform(dt);
-
-            //recover from penetration
-            recoverFromPenetration(dt);
-
-            //compute values
-            slopeInPercentage = 0.0f;
-            if (isOnGround) {
-                verticalSpeed = 0.0f;
-                slopeInPercentage = computeSlope();
+        std::size_t stepLoopCounter = 0;
+        float remainingDt = dt;
+        do {
+            float stepDt;
+            if (stepLoopCounter < MAX_UPDATE_LOOP_BY_FRAME) {
+                stepDt = std::min(dt, 1.0f / minUpdateFrequency);
+                remainingDt -= stepDt;
+            } else {
+                static unsigned int numErrorsLogged = 0;
+                if (numErrorsLogged++ < MAX_ERRORS_LOG) {
+                    Logger::instance().logWarning("Maximum loop reach on character update. Remaining time: " + std::to_string(remainingDt));
+                }
+                stepDt = remainingDt;
+                remainingDt = 0.0f;
             }
-            if (hitRoof) {
-                verticalSpeed = 0.0f;
-            }
-        } else {
-            respawnBodies();
-        }
 
-        //set new transform on character
-        physicsCharacter->updateTransform(ghostBody->getTransform());
+            updateStep(stepDt);
+
+            stepLoopCounter++;
+        } while (remainingDt > 0.001f);
     }
 
     void CharacterController::createBodies() {
@@ -128,6 +126,31 @@ namespace urchin {
         }
         ccdGhostBody = std::make_shared<GhostBody>(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), std::move(ccdGhostBodyShape));
         ccdGhostBody->setIsActive(true);
+    }
+
+    void CharacterController::updateStep(float stepDt) {
+        if (ghostBody->isActive() && ccdGhostBody->isActive()) {
+            //update body transform
+            updateBodiesTransform(stepDt);
+
+            //recover from penetration
+            recoverFromPenetration(stepDt);
+
+            //compute values
+            slopeInPercentage = 0.0f;
+            if (isOnGround) {
+                verticalSpeed = 0.0f;
+                slopeInPercentage = computeSlope();
+            }
+            if (hitRoof) {
+                verticalSpeed = 0.0f;
+            }
+        } else {
+            respawnBodies();
+        }
+
+        //set new transform on character
+        physicsCharacter->updateTransform(ghostBody->getTransform());
     }
 
     void CharacterController::updateBodiesTransform(float dt) {
