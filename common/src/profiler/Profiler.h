@@ -23,6 +23,8 @@ namespace urchin {
             void log();
 
         private:
+            void initializeOrReset();
+
             bool isEnable;
             std::string instanceName;
 

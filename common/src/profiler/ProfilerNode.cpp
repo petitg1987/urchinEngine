@@ -7,6 +7,7 @@
 #include <profiler/ProfilerNode.h>
 
 namespace urchin {
+
     ProfilerNode::ProfilerNode(std::string name, ProfilerNode* parent) :
             name(std::move(name)),
             parent(parent),
@@ -67,12 +68,12 @@ namespace urchin {
         return isStopped;
     }
 
-    double ProfilerNode::computeTotalTimes() const { //remove first element (avoid counting time for potential initialization process)
-        return std::accumulate(times.begin() + 1, times.end(), 0.0);
+    double ProfilerNode::computeTotalTimes() const {
+        return std::accumulate(times.begin(), times.end(), 0.0);
     }
 
-    int ProfilerNode::getNbValidTimes() const { //remove first element (avoid counting time for potential initialization process)
-        return (int)times.size() - 1;
+    int ProfilerNode::getNbValidTimes() const {
+        return (int)times.size();
     }
 
     void ProfilerNode::log(unsigned int level, std::stringstream& logStream, double levelOneTotalTime) {

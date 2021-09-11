@@ -12,9 +12,13 @@ namespace urchin {
     Profiler::Profiler(const std::string& instanceName) :
             isEnable(ConfigService::instance().getBoolValue("profiler." + instanceName + "Enable")),
             instanceName(instanceName),
-            profilerRoot(std::make_unique<ProfilerNode>("root", nullptr)),
-            currentNode(profilerRoot.get()) {
+            currentNode(nullptr) {
+        initializeOrReset();
+    }
 
+    void Profiler::initializeOrReset() {
+        profilerRoot = std::make_unique<ProfilerNode>("root", nullptr);
+        currentNode = profilerRoot.get();
     }
 
     Profiler& Profiler::graphic() {
@@ -88,6 +92,8 @@ namespace urchin {
 
             auto profilerLogger = std::make_unique<FileLogger>("profiler.log");
             profilerLogger->logInfo(logStream.str());
+
+            initializeOrReset();
         }
     }
 

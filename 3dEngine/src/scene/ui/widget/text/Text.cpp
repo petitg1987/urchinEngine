@@ -258,7 +258,7 @@ namespace urchin {
     void Text::refreshRenderer() {
         refreshCoordinates();
 
-        std::string renderName = labelKey.value_or(text.substr(0, (std::size_t)std::min(15, (int)text.size() - 1)));
+        std::string renderName = labelKey.value_or(text.substr(0, std::min(15ul, text.size())));
         textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
