@@ -26,19 +26,15 @@ namespace urchin {
         }
     }
 
-    void BufferHandler::initialize(BufferType bufferType, std::size_t dataSize, const void* dataPtr) {
+    void BufferHandler::initialize(BufferType bufferType, BufferKind initialBufferKind, std::size_t dataSize, const void* dataPtr) {
         assert(!isInitialized);
         assert(dataSize > 0);
 
         this->bufferType = bufferType;
+        this->bufferKind = initialBufferKind; //static buffer are automatically changed to dynamic buffer in case of update
         this->dataSize = dataSize;
-        if (dataPtr != nullptr) {
-            bufferKind = BufferKind::STATIC; //start with static buffer and change to dynamic in case of update
-        } else {
-            bufferKind = BufferKind::DYNAMIC;
-        }
 
-        recreateBuffer(dataPtr);
+        createOrRefreshBuffers(dataPtr);
 
         isInitialized = true;
     }
@@ -77,11 +73,11 @@ namespace urchin {
 
         if (bufferKind == BufferKind::STATIC) {
             bufferKind = BufferKind::DYNAMIC;
-            recreateBuffer(dataPtr);
+            createOrRefreshBuffers(dataPtr);
             newBufferCreated = true;
         } else {
             if (dataSizeAltered) {
-                recreateBuffer(dataPtr);
+                createOrRefreshBuffers(dataPtr);
                 newBufferCreated = true;
             } else {
                 updateBuffer(dataPtr);
@@ -91,7 +87,7 @@ namespace urchin {
         return newBufferCreated;
     }
 
-    void BufferHandler::recreateBuffer(const void *dataPtr) {
+    void BufferHandler::createOrRefreshBuffers(const void* dataPtr) {
         auto allocator = GraphicService::instance().getAllocator();
         auto bufferSize = static_cast<VkDeviceSize>(dataSize);
 
@@ -107,7 +103,9 @@ namespace urchin {
         }
 
         if (bufferKind == BufferKind::STATIC) {
-            assert(dataPtr);
+            if (!dataPtr) {
+                throw std::runtime_error("Data must be provided at initialization to build a static buffer");
+            }
             stagingBuffer = BufferHelper::createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
 
             void *dataDestination;

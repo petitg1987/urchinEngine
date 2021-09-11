@@ -50,6 +50,10 @@ namespace urchin {
         newData[frameIndex] = false;
     }
 
+    void ShaderDataContainer::newDataAck() {
+        std::fill(newData.begin(), newData.end(), false);
+    }
+
     void ShaderDataContainer::resetNewDataFlag() {
         std::fill(newData.begin(), newData.end(), true);
     }

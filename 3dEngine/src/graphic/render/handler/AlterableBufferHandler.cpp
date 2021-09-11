@@ -20,19 +20,23 @@ namespace urchin {
         }
     }
 
-    void AlterableBufferHandler::initialize(BufferHandler::BufferType bufferType, std::size_t numFramebuffer, std::size_t dataSize, const void* dataPtr) {
+    void AlterableBufferHandler::initialize(BufferHandler::BufferType bufferType, BufferHandler::BufferKind initialBufferKind, std::size_t numFramebuffer,
+                                            std::size_t dataSize, const void* dataPtr) {
         assert(!isInitialized);
 
         this->bufferType = bufferType;
         this->numFramebuffer = numFramebuffer;
 
-        if (dataPtr != nullptr) {
-            buffers.resize(1);
-            for (auto& buffer : buffers) {
-                buffer.initialize(bufferType, dataSize, dataPtr);
+        if (initialBufferKind == BufferHandler::BufferKind::STATIC) {
+            if (!dataPtr) {
+                throw std::runtime_error("Data must be provided at initialization to build a static buffer");
             }
+            buffers.resize(1);
+            buffers[0].initialize(bufferType, initialBufferKind, dataSize, dataPtr);
+        } else if (initialBufferKind == BufferHandler::BufferKind::DYNAMIC) {
+            createDynamicBuffers(dataSize, dataPtr);
         } else {
-            createFramebufferBuffers(dataSize, dataPtr);
+            throw std::runtime_error("Unknown buffer kind: " + std::to_string(initialBufferKind));
         }
 
         isInitialized = true;
@@ -55,7 +59,7 @@ namespace urchin {
 
     bool AlterableBufferHandler::updateData(std::size_t framebufferIndex, std::size_t dataSize, const void* dataPtr) {
         assert(isInitialized);
-        assert(dataPtr != nullptr);
+        assert(dataPtr);
 
         bool newBuffersCreated;
 
@@ -63,7 +67,7 @@ namespace urchin {
             vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
             assert(buffers.size() == 1);
-            createFramebufferBuffers(dataSize, dataPtr);
+            createDynamicBuffers(dataSize, dataPtr);
             newBuffersCreated = true;
         } else {
             assert(buffers.size() > framebufferIndex);
@@ -85,18 +89,12 @@ namespace urchin {
         return buffers[framebufferIndex].getBuffer();
     }
 
-    void AlterableBufferHandler::createFramebufferBuffers(std::size_t dataSize, const void* dataPtr) {
+    void AlterableBufferHandler::createDynamicBuffers(std::size_t dataSize, const void* dataPtr) {
         cleanupBuffers();
 
         buffers.resize(numFramebuffer);
         for (auto& buffer : buffers) {
-            buffer.initialize(bufferType, dataSize);
-
-            if (dataPtr != nullptr) {
-                buffer.updateData(dataSize, dataPtr);
-            }
-
-            assert(buffer.getBufferKind() == BufferHandler::DYNAMIC);
+            buffer.initialize(bufferType, BufferHandler::DYNAMIC, dataSize, dataPtr);
         }
 
         isStaticBuffer = false;

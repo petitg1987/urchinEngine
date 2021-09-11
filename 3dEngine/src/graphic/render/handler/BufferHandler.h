@@ -22,7 +22,7 @@ namespace urchin {
             BufferHandler();
             ~BufferHandler();
 
-            void initialize(BufferType, std::size_t, const void* dataPtr = nullptr);
+            void initialize(BufferType, BufferKind, std::size_t, const void* dataPtr);
             void cleanup();
 
             VkBuffer getBuffer() const;
@@ -32,7 +32,7 @@ namespace urchin {
             bool updateData(std::size_t, const void *);
 
         private:
-            void recreateBuffer(const void *);
+            void createOrRefreshBuffers(const void *);
             void deleteBuffer();
             void copyBuffer(VkBuffer, VkBuffer, VkDeviceSize) const;
             void updateBuffer(const void *);

@@ -134,8 +134,9 @@ namespace urchin {
 
         vertexBuffers.resize(data.size());
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
-            const DataContainer& dataContainer = data[dataIndex];
-            vertexBuffers[dataIndex].initialize(BufferHandler::VERTEX, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
+            DataContainer& dataContainer = data[dataIndex];
+            vertexBuffers[dataIndex].initialize(BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
+            dataContainer.newDataAck();
         }
     }
 
@@ -150,7 +151,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "creIndexBuf");
 
         if (indices) {
-            indexBuffer.initialize(BufferHandler::INDEX, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
+            indexBuffer.initialize(BufferHandler::INDEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
         }
     }
 
@@ -165,7 +166,9 @@ namespace urchin {
 
         uniformsBuffers.resize(uniformData.size());
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
-            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, renderTarget.getNumFramebuffer(), uniformData[dataIndex].getDataSize());
+            ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
+            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            shaderDataContainer.newDataAck();
         }
     }
 
@@ -381,9 +384,9 @@ namespace urchin {
         #endif
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             if (data[dataIndex].hasNewData(frameIndex)) {
-                auto& dataContainer = data[dataIndex];
+                DataContainer& dataContainer = data[dataIndex];
                 drawCommandDirty |= vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
-                data[dataIndex].newDataAck(frameIndex);
+                dataContainer.newDataAck(frameIndex);
             }
         }
 

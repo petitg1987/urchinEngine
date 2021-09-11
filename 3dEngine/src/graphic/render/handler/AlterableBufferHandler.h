@@ -17,7 +17,7 @@ namespace urchin {
             AlterableBufferHandler();
             ~AlterableBufferHandler();
 
-            void initialize(BufferHandler::BufferType, std::size_t, std::size_t, const void* dataPtr = nullptr);
+            void initialize(BufferHandler::BufferType, BufferHandler::BufferKind, std::size_t, std::size_t, const void* dataPtr);
             void cleanup();
 
             bool updateData(std::size_t, std::size_t, const void*);
@@ -26,7 +26,7 @@ namespace urchin {
 
         private:
             void cleanupBuffers();
-            void createFramebufferBuffers(std::size_t, const void*);
+            void createDynamicBuffers(std::size_t, const void*);
 
             bool isInitialized;
             bool isStaticBuffer;

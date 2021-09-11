@@ -109,12 +109,15 @@ namespace urchin {
         if (frameIndex >= MAX_FRAMES) {
             throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
         }
-
         return newData[frameIndex];
     }
 
     void DataContainer::newDataAck(uint32_t frameIndex) {
         newData[frameIndex] = false;
+    }
+
+    void DataContainer::newDataAck() {
+        std::fill(newData.begin(), newData.end(), false);
     }
 
     void DataContainer::resetNewDataFlag() {

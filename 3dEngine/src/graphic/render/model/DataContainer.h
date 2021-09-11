@@ -24,8 +24,9 @@ namespace urchin {
 
             VkFormat getVulkanFormat() const;
 
-            bool hasNewData(uint32_t frameIndex) const;
-            void newDataAck(uint32_t frameIndex);
+            bool hasNewData(uint32_t) const; //TODO rename all methods
+            void newDataAck(uint32_t);
+            void newDataAck();
             void resetNewDataFlag();
 
         private:
