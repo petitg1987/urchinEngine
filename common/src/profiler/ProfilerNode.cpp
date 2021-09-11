@@ -11,7 +11,9 @@ namespace urchin {
     ProfilerNode::ProfilerNode(std::string name, ProfilerNode* parent) :
             name(std::move(name)),
             parent(parent),
-            startCount(0) {
+            startCount(0),
+            numberOfCall(0),
+            totalTime(0.0) {
 
     }
 
@@ -59,7 +61,8 @@ namespace urchin {
             auto endTime = std::chrono::steady_clock::now();
             double durationMs = static_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count();
 
-            times.push_back(durationMs);
+            numberOfCall++;
+            totalTime += durationMs;
             isStopped = true;
         }
 
@@ -68,39 +71,30 @@ namespace urchin {
         return isStopped;
     }
 
-    double ProfilerNode::computeTotalTimes() const {
-        return std::accumulate(times.begin(), times.end(), 0.0);
-    }
-
-    int ProfilerNode::getNbValidTimes() const {
-        return (int)times.size();
-    }
-
     void ProfilerNode::log(unsigned int level, std::stringstream& logStream, double levelOneTotalTime) {
         if (startCount != 0) {
             throw std::runtime_error("Impossible to print node " + getName() + " because there is " + std::to_string(startCount) + " missing stop call");
         }
 
         if (level == 1) {
-            levelOneTotalTime = computeTotalTimes();
+            levelOneTotalTime = totalTime;
         }
 
-        if (level > 0 && getNbValidTimes() > 0) {
-            double totalTime = computeTotalTimes();
-            double averageTime = totalTime / getNbValidTimes();
+        if (level > 0 && numberOfCall > 0) {
+            double averageTime = totalTime / numberOfCall;
             double percentageTime = (totalTime / levelOneTotalTime) * 100.0;
 
             logStream << std::setw((int)level * 4) << " - " << name;
             logStream << " (average: " << averageTime <<"ms";
             logStream << ", total: " << totalTime / 1000.0 << "sec/" << percentageTime << "%";
-            logStream << ", call: " << getNbValidTimes();
+            logStream << ", call: " << numberOfCall;
 
             if (!children.empty()) {
                 double childTotalTime = 0.0;
                 for (const auto& child : children) {
-                    childTotalTime += child->computeTotalTimes();
+                    childTotalTime += child->totalTime;
                 }
-                double unTrackedTime = averageTime - (childTotalTime / getNbValidTimes());
+                double unTrackedTime = averageTime - (childTotalTime / numberOfCall);
                 double unTrackedPercentageTime = (unTrackedTime / averageTime) * 100.0;
 
                 logStream << ", un-tracked: " << std::to_string(unTrackedTime) << "ms/" << unTrackedPercentageTime << "%";

@@ -24,16 +24,14 @@ namespace urchin {
             void log(unsigned int, std::stringstream&, double);
 
         private:
-            double computeTotalTimes() const;
-            int getNbValidTimes() const;
-
             std::string name;
             ProfilerNode* parent;
             std::vector<std::unique_ptr<ProfilerNode>> children;
 
             unsigned int startCount;
             std::chrono::steady_clock::time_point startTime;
-            std::vector<double> times; //TODO memory leak + check other leak ?!
+            unsigned int numberOfCall;
+            double totalTime;
     };
 
 }
