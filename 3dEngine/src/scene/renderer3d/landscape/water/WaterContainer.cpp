@@ -18,6 +18,8 @@ namespace urchin {
 
     void WaterContainer::addWater(const std::shared_ptr<Water>& water) {
         if (water) {
+            ScopeProfiler sp(Profiler::graphic(), "addWater");
+
             waters.push_back(water);
 
             water->initialize(renderTarget);

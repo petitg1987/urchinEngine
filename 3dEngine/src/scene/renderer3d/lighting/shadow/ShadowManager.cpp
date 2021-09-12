@@ -151,6 +151,8 @@ namespace urchin {
     }
 
     void ShadowManager::addShadowLight(const Light& light) {
+        ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
+
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
         auto shadowMapTexture = Texture::buildArray(config.shadowMapResolution, config.shadowMapResolution, config.nbShadowMaps, TextureFormat::RG_32_FLOAT, nullptr);
         //The shadow map must be cleared with the farthest depth value (1.0f).

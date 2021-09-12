@@ -123,8 +123,6 @@ namespace urchin {
     }
 
     void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) {
-        ScopeProfiler sp(Profiler::graphic(), "creDescSetLyt");
-
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         uint32_t shaderUniformBinding = 0;
@@ -163,7 +161,6 @@ namespace urchin {
     }
 
     void PipelineBuilder::createGraphicsPipeline(const std::shared_ptr<Pipeline>& pipeline) {
-        ScopeProfiler sp(Profiler::graphic(), "crePipeline");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
         auto shaderStages = shader->getShaderStages();
 

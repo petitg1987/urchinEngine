@@ -6,6 +6,9 @@
 
 namespace urchin {
 
+    //debug parameters
+    bool DEBUG_PROFILE_FRAME_BY_FRAME = false;
+
     Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
             i18nService(std::make_unique<I18nService>()),
@@ -30,7 +33,9 @@ namespace urchin {
 
     Scene::~Scene() {
         screenRenderTarget->cleanup();
-        Profiler::graphic().log();
+        if (!DEBUG_PROFILE_FRAME_BY_FRAME) {
+            Profiler::graphic().log();
+        }
     }
 
     void Scene::updateVerticalSync(bool verticalSyncEnabled) {
@@ -220,25 +225,28 @@ namespace urchin {
     }
 
     void Scene::display() {
-        ScopeProfiler sp(Profiler::graphic(), "sceneMgrDisplay");
+        {
+            ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");
 
-        //fps
-        computeFps();
-        float dt = getDeltaTime();
+            computeFps();
+            float dt = getDeltaTime();
 
-        //renderer
-        unsigned int screenRenderingOrder = 0;
-        screenRenderTarget->disableAllRenderers();
-        for (auto* activeRenderer : std::initializer_list<Renderer*>{activeRenderer3d, activeUiRenderers}) {
-            if (activeRenderer) {
-                screenRenderingOrder++;
-                activeRenderer->prepareRendering(dt, screenRenderingOrder);
+            unsigned int screenRenderingOrder = 0;
+            screenRenderTarget->disableAllRenderers();
+            for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderers}) {
+                if (activeRenderer) {
+                    screenRenderingOrder++;
+                    activeRenderer->prepareRendering(dt, screenRenderingOrder);
+                }
             }
-        }
-        screenRenderTarget->render();
+            screenRenderTarget->render();
 
-        //resources
-        ResourceContainer::instance().cleanResources();
+            ResourceContainer::instance().cleanResources();
+        }
+
+        if (DEBUG_PROFILE_FRAME_BY_FRAME) {
+            Profiler::graphic().log();
+        }
     }
 
 }

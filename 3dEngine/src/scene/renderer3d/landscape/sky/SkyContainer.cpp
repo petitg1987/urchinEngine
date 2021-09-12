@@ -16,6 +16,8 @@ namespace urchin {
     }
 
     void SkyContainer::setSkybox(std::unique_ptr<Skybox> skybox) {
+        ScopeProfiler sp(Profiler::graphic(), "setupSkybox");
+
         this->skybox = std::move(skybox);
 
         if (this->skybox != nullptr) {

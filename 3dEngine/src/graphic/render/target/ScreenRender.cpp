@@ -26,6 +26,7 @@ namespace urchin {
     }
 
     void ScreenRender::initialize() {
+        ScopeProfiler sp(Profiler::graphic(), "scrRenderInit");
         assert(!isInitialized);
 
         initializeClearValues();
@@ -74,6 +75,7 @@ namespace urchin {
 
     void ScreenRender::updateVerticalSync(bool verticalSyncEnabled) {
         if (this->verticalSyncEnabled != verticalSyncEnabled) {
+            ScopeProfiler sp(Profiler::graphic(), "upVertSync");
             this->verticalSyncEnabled = verticalSyncEnabled;
 
             cleanup();

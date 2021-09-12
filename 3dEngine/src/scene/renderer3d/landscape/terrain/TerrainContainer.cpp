@@ -19,6 +19,7 @@ namespace urchin {
 
     void TerrainContainer::addTerrain(const std::shared_ptr<Terrain>& terrain) {
         if (terrain) {
+            ScopeProfiler sp(Profiler::graphic(), "addTerrain");
             terrains.push_back(terrain);
 
             terrain->initialize(renderTarget);

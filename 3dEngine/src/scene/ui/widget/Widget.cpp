@@ -27,6 +27,8 @@ namespace urchin {
     }
 
     void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService& i18nService) {
+        ScopeProfiler sp(Profiler::graphic(), "widgetInit");
+
         this->sceneWidth = renderTarget.getWidth();
         this->sceneHeight = renderTarget.getHeight();
 

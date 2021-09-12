@@ -55,6 +55,7 @@ namespace urchin {
     }
 
     void GenericRenderer::initialize() {
+        ScopeProfiler sp(Profiler::graphic(), "genRenderInit");
         assert(!isInitialized);
 
         resetNewDataFlag();
@@ -130,8 +131,6 @@ namespace urchin {
     }
 
     void GenericRenderer::createVertexBuffers() {
-        ScopeProfiler sp(Profiler::graphic(), "creVertexBuf");
-
         vertexBuffers.resize(data.size());
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             DataContainer& dataContainer = data[dataIndex];
@@ -148,8 +147,6 @@ namespace urchin {
     }
 
     void GenericRenderer::createIndexBuffer() {
-        ScopeProfiler sp(Profiler::graphic(), "creIndexBuf");
-
         if (indices) {
             indexBuffer.initialize(BufferHandler::INDEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
         }
@@ -162,8 +159,6 @@ namespace urchin {
     }
 
     void GenericRenderer::createUniformBuffers() {
-        ScopeProfiler sp(Profiler::graphic(), "creUniformBuf");
-
         uniformsBuffers.resize(uniformData.size());
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
             ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
@@ -180,7 +175,6 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorPool() {
-        ScopeProfiler sp(Profiler::graphic(), "creDescPool");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
@@ -208,7 +202,6 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorSets() {
-        ScopeProfiler sp(Profiler::graphic(), "creDescSet");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->getDescriptorSetLayout());
@@ -228,7 +221,6 @@ namespace urchin {
     }
 
     void GenericRenderer::updateDescriptorSets() {
-        ScopeProfiler sp(Profiler::graphic(), "updateDescSet");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {

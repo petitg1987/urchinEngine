@@ -14,6 +14,10 @@
       <option name="TEMPLATE_DECLARATION_STRUCT_WRAP" value="0" />
       <option name="TEMPLATE_DECLARATION_FUNCTION_WRAP" value="0" />
       <option name="SUPERCLASS_LIST_BEFORE_COLON" value="0" />
+      <option name="SPACE_BEFORE_POINTER_IN_DECLARATION" value="false" />
+      <option name="SPACE_AFTER_POINTER_IN_DECLARATION" value="true" />
+      <option name="SPACE_BEFORE_REFERENCE_IN_DECLARATION" value="false" />
+      <option name="SPACE_AFTER_REFERENCE_IN_DECLARATION" value="true" />
     </Objective-C>
     <Python>
       <option name="SPACE_BEFORE_PY_COLON" value="true" />

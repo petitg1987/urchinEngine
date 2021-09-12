@@ -44,6 +44,8 @@ namespace urchin {
 
     void AmbientOcclusionManager::createOrUpdateAO() {
         if (depthTexture) {
+            ScopeProfiler sp(Profiler::graphic(), "updateAO");
+
             generateKernelSamples();
             generateNoiseTexture();
 

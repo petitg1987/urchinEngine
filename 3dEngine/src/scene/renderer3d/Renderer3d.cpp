@@ -53,6 +53,7 @@ namespace urchin {
 
             //debug
             refreshDebugFramebuffers(true) {
+        ScopeProfiler sp(Profiler::graphic(), "render3dInit");
 
         //deferred rendering
         modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
@@ -179,6 +180,8 @@ namespace urchin {
     }
 
     void Renderer3d::onCameraProjectionUpdate() {
+        ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
+
         modelSetDisplayer->onCameraProjectionUpdate(*camera);
         terrainContainer->onCameraProjectionUpdate(*camera);
         waterContainer->onCameraProjectionUpdate(*camera);
@@ -201,6 +204,8 @@ namespace urchin {
 
     void Renderer3d::addModel(std::shared_ptr<Model> model) {
         if (model) {
+            ScopeProfiler sp(Profiler::graphic(), "addModel");
+
             modelOctreeManager->addOctreeable(std::move(model));
         }
     }

@@ -59,6 +59,7 @@ namespace urchin {
     }
 
     void OffscreenRender::initialize() {
+        ScopeProfiler sp(Profiler::graphic(), "offRenderInit");
         assert(!isInitialized);
         assert(!outputTextures.empty());
 

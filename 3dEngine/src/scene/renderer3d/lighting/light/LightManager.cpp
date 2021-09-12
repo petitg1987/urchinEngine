@@ -58,6 +58,8 @@ namespace urchin {
 
     void LightManager::addLight(std::shared_ptr<Light> light) {
         if (light) {
+            ScopeProfiler sp(Profiler::graphic(), "addLight");
+
             Light* lightPtr = light.get();
             if (light->hasParallelBeams()) {
                 sunLights.push_back(std::move(light));
