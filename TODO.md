@@ -85,12 +85,12 @@
 * Narrow phase
   * **NEW FEATURE** (`medium`): Support joints between shapes
   * **OPTIMIZATION** (`minor`): GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
-  * **OPTIMIZATION** (`minor`): EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
+  * **OPTIMIZATION** (`minor`): EPA, add new point on convex hull to improve thanks to adjacent edges: find faster the triangles visible by the new point (see Reactphysics3d code)
 * Island
-  * **BUG** (`major`): A body balancing from one side to the other side (e.g.: cone on his base) could disabled when velocity reach zero
+  * **BUG** (`major`): A body balancing from one side to the other side (e.g.: cone on his base) could be disabled when velocity reach zero
     * Tips 1: don't disable bodies when there is only one contact point
 * Constraints solver
-  * **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
+  * **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces higher and higher at each collision
 * Character
   * **NEW FEATURE** (`medium`): Handle stair for character controller
   * **NEW FEATURE** (`medium`): Apply impulse on objects hit by character or falling on the character
