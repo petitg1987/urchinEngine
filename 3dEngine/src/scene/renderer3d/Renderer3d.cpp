@@ -207,6 +207,7 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
 
             modelOctreeManager->addOctreeable(std::move(model));
+            //TODO load ModelDisplayer if in Frustum !
         }
     }
 
