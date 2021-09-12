@@ -13,15 +13,16 @@
   * **NEW FEATURE** (`major`): Replace geometry shaders by instantiation
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering()
-  * **OPTIMIZATION** (`minor`): Textures compression
   * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
   * **OPTIMIZATION** (`minor`): Software occlusion culling
 * Model
   * **OPTIMIZATION** (`medium`): Use instantiation mechanism when identical models are displayed several times in the scene
-  * **OPTIMIZATION** (`medium`): Regroup draw calls / shaders when possible
+  * **OPTIMIZATION** (`medium`): Draw calls batching
+    * Tips 1: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
   * **NEW FEATURE** (`medium`): Animation blending
   * **OPTIMIZATION** (`major`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
+  * **OPTIMIZATION** (`major`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
 * Geometry model 
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
@@ -42,11 +43,11 @@
   * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
 * Ambient occlusion
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
-* Terrain
+* Landscape
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
-  * **OPTIMIZATION** (`medium`): Don't build grass quadtree which are 100% discarded by grass mask
+  * **OPTIMIZATION** (`medium`): Do not build grass quadtree which are 100% discarded by grass mask
 * UI
   * **NEW FEATURE** (`minor`): Combo list
   * **NEW FEATURE** (`minor`): Textarea
