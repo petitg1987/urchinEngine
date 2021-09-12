@@ -7,16 +7,16 @@ namespace urchin {
 
     ShaderDataContainer::ShaderDataContainer(std::size_t dataSize, const void* ptr) :
             dataSize(dataSize),
-            newData({}) {
+            bHasNewData({}) {
         this->ptr = malloc(dataSize);
         std::memcpy(this->ptr, ptr, dataSize);
 
-        resetNewDataFlag();
+        markDataAsNew();
     }
 
     ShaderDataContainer::ShaderDataContainer(const ShaderDataContainer& src) :
             dataSize(src.dataSize),
-            newData(src.newData) {
+            bHasNewData(src.bHasNewData) {
         this->ptr = malloc(dataSize);
         std::memcpy(this->ptr, src.ptr, dataSize);
     }
@@ -27,7 +27,7 @@ namespace urchin {
 
     void ShaderDataContainer::updateData(const void* newDataPtr) {
         std::memcpy(this->ptr, newDataPtr, dataSize);
-        resetNewDataFlag();
+        markDataAsNew();
     }
 
     std::size_t ShaderDataContainer::getDataSize() const {
@@ -42,20 +42,19 @@ namespace urchin {
         if (frameIndex >= MAX_FRAMES) {
             throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
         }
-
-        return newData[frameIndex];
+        return bHasNewData[frameIndex];
     }
 
-    void ShaderDataContainer::newDataAck(uint32_t frameIndex) {
-        newData[frameIndex] = false;
+    void ShaderDataContainer::markDataAsProcessed(uint32_t frameIndex) {
+        bHasNewData[frameIndex] = false;
     }
 
-    void ShaderDataContainer::newDataAck() {
-        std::fill(newData.begin(), newData.end(), false);
+    void ShaderDataContainer::markDataAsProcessed() {
+        std::fill(bHasNewData.begin(), bHasNewData.end(), false);
     }
 
-    void ShaderDataContainer::resetNewDataFlag() {
-        std::fill(newData.begin(), newData.end(), true);
+    void ShaderDataContainer::markDataAsNew() {
+        std::fill(bHasNewData.begin(), bHasNewData.end(), true);
     }
 
 }

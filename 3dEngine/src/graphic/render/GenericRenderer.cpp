@@ -136,7 +136,7 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             DataContainer& dataContainer = data[dataIndex];
             vertexBuffers[dataIndex].initialize(BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
-            dataContainer.newDataAck();
+            dataContainer.markDataAsProcessed();
         }
     }
 
@@ -168,7 +168,7 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
             ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
             uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
-            shaderDataContainer.newDataAck();
+            shaderDataContainer.markDataAsProcessed();
         }
     }
 
@@ -293,11 +293,11 @@ namespace urchin {
 
     void GenericRenderer::resetNewDataFlag() {
         for (auto& singleData : data) {
-            singleData.resetNewDataFlag();
+            singleData.markDataAsNew();
         }
 
         for (auto& singleUniformData : uniformData) {
-            singleUniformData.resetNewDataFlag();
+            singleUniformData.markDataAsNew();
         }
     }
 
@@ -386,7 +386,7 @@ namespace urchin {
             if (data[dataIndex].hasNewData(frameIndex)) {
                 DataContainer& dataContainer = data[dataIndex];
                 drawCommandDirty |= vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
-                dataContainer.newDataAck(frameIndex);
+                dataContainer.markDataAsProcessed(frameIndex);
             }
         }
 
@@ -395,7 +395,7 @@ namespace urchin {
             if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
                 auto& dataContainer = uniformData[uniformDataIndex];
                 drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
-                uniformData[uniformDataIndex].newDataAck(frameIndex);
+                uniformData[uniformDataIndex].markDataAsProcessed(frameIndex);
             }
         }
     }

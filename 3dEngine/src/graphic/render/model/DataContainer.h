@@ -24,10 +24,10 @@ namespace urchin {
 
             VkFormat getVulkanFormat() const;
 
-            bool hasNewData(uint32_t) const; //TODO rename all methods
-            void newDataAck(uint32_t);
-            void newDataAck();
-            void resetNewDataFlag();
+            bool hasNewData(uint32_t) const;
+            void markDataAsProcessed(uint32_t);
+            void markDataAsProcessed();
+            void markDataAsNew();
 
         private:
             unsigned int getTypeSize() const;
@@ -39,7 +39,7 @@ namespace urchin {
             void* ptr;
 
             static constexpr uint32_t MAX_FRAMES = 6;
-            std::array<bool, MAX_FRAMES> newData;
+            std::array<bool, MAX_FRAMES> bHasNewData;
     };
 
 }

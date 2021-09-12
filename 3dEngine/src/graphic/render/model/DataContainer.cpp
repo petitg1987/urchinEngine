@@ -9,18 +9,18 @@ namespace urchin {
             dataType(dataType),
             dataDimension(dataDimension),
             dataCount(dataCount),
-            newData({}) {
+            bHasNewData({}) {
         this->ptr = malloc(getBufferSize());
         std::memcpy(this->ptr, ptr, getBufferSize());
 
-        resetNewDataFlag();
+        markDataAsNew();
     }
 
     DataContainer::DataContainer(const DataContainer& src) :
             dataType(src.dataType),
             dataDimension(src.dataDimension),
             dataCount(src.dataCount),
-            newData(src.newData) {
+            bHasNewData(src.bHasNewData) {
         this->ptr = malloc(getBufferSize());
         std::memcpy(this->ptr, src.ptr, getBufferSize());
     }
@@ -30,7 +30,7 @@ namespace urchin {
             dataDimension(src.dataDimension),
             dataCount(src.dataCount),
             ptr(src.ptr),
-            newData(src.newData) {
+            bHasNewData(src.bHasNewData) {
         src.ptr = nullptr;
     }
 
@@ -43,7 +43,7 @@ namespace urchin {
         ptr = src.ptr;
         src.ptr = nullptr;
 
-        newData = src.newData;
+        bHasNewData = src.bHasNewData;
 
         return *this;
     }
@@ -109,18 +109,18 @@ namespace urchin {
         if (frameIndex >= MAX_FRAMES) {
             throw std::runtime_error("Number of frames higher than expected: " + std::to_string(frameIndex));
         }
-        return newData[frameIndex];
+        return bHasNewData[frameIndex];
     }
 
-    void DataContainer::newDataAck(uint32_t frameIndex) {
-        newData[frameIndex] = false;
+    void DataContainer::markDataAsProcessed(uint32_t frameIndex) {
+        bHasNewData[frameIndex] = false;
     }
 
-    void DataContainer::newDataAck() {
-        std::fill(newData.begin(), newData.end(), false);
+    void DataContainer::markDataAsProcessed() {
+        std::fill(bHasNewData.begin(), bHasNewData.end(), false);
     }
 
-    void DataContainer::resetNewDataFlag() {
-        std::fill(newData.begin(), newData.end(), true);
+    void DataContainer::markDataAsNew() {
+        std::fill(bHasNewData.begin(), bHasNewData.end(), true);
     }
 }
