@@ -84,7 +84,7 @@ namespace urchin {
             double averageTime = totalTime / numberOfCall;
             double percentageTime = (totalTime / levelOneTotalTime) * 100.0;
 
-            logStream << std::setw((int)level * 4) << " - " << name;
+            logStream << std::setw((int)level * 4 + 2) << " - " << name;
             logStream << " (average: " << averageTime <<"ms";
             logStream << ", total: " << totalTime / 1000.0 << "sec/" << percentageTime << "%";
             logStream << ", call: " << numberOfCall;
