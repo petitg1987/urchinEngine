@@ -13,7 +13,7 @@
 #include <controller/SceneController.h>
 #include <scene/SceneFreeCamera.h>
 #include <scene/models/BodyShapeDisplayer.h>
-#include <scene/models/move/ObjectMoveController.h>
+#include <scene/models/move/ModelMoveController.h>
 #include <scene/lights/LightScopeDisplayer.h>
 #include <scene/sounds/SoundTriggerDisplayer.h>
 
@@ -53,7 +53,7 @@ namespace urchin {
             MapHandler& getMapHandler() const;
 
             BodyShapeDisplayer* getBodyShapeDisplayer() const;
-            ObjectMoveController* getObjectMoveController() const;
+            ModelMoveController* getModelMoveController() const;
 
         private:
             static void initializeEngineResources(const std::string&);
@@ -74,7 +74,7 @@ namespace urchin {
             std::unique_ptr<Scene> scene;
             std::shared_ptr<SceneFreeCamera> camera;
             std::unique_ptr<BodyShapeDisplayer> bodyShapeDisplayer;
-            std::unique_ptr<ObjectMoveController> objectMoveController;
+            std::unique_ptr<ModelMoveController> modelMoveController;
             std::unique_ptr<LightScopeDisplayer> lightScopeDisplayer;
             std::unique_ptr<SoundTriggerDisplayer> soundTriggerDisplayer;
 

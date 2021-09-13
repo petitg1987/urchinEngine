@@ -9,9 +9,9 @@
 
 namespace urchin {
 
-    class ObjectController : public AbstractController {
+    class ModelController : public AbstractController {
         public:
-            ObjectController();
+            ModelController();
 
             std::list<const SceneModel*> getSceneModels() const;
             const SceneModel* findSceneModelByBodyId(const std::string&) const;

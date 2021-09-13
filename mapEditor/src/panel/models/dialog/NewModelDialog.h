@@ -7,34 +7,42 @@
 #include <QtWidgets/QLabel>
 
 #include <UrchinMapHandler.h>
-#include <controller/objects/ObjectController.h>
+#include <controller/models/ModelController.h>
 
 namespace urchin {
 
-    class CloneObjectDialog : public QDialog {
-            Q_OBJECT
+    class NewModelDialog : public QDialog {
+        Q_OBJECT
 
         public:
-            CloneObjectDialog(QWidget*, const ObjectController*);
+            NewModelDialog(QWidget*, const ModelController*);
 
             std::unique_ptr<SceneModel> moveSceneModel();
 
         private:
             void setupNameFields(QGridLayout*);
+            void setupMeshFilenameFields(QGridLayout*);
 
-            void updateObjectName();
+            void updateModelName();
             int buildSceneModel(int);
 
             void done(int) override;
             bool isSceneModelExist(const std::string&);
 
-            const ObjectController* modelController;
+            const ModelController* modelController;
 
             QLabel* modelNameLabel;
             QLineEdit* modelNameText;
+            QLabel* meshesFilenameLabel;
+            QLineEdit* meshesFilenameText;
 
             std::string modelName;
+            std::string meshesFilename;
             std::unique_ptr<SceneModel> sceneModel;
+            static QString preferredMeshesPath;
+
+        private slots:
+            void showMeshFilenameDialog();
     };
 
 }

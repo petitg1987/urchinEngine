@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        notifyObservers(this, NotificationType::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
+        notifyObservers(this, NotificationType::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
     }
 
     bool LocalizedShapeTableView::hasLocalizedShapeSelected() const {

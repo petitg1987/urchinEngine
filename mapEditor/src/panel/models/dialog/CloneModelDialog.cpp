@@ -3,11 +3,11 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include <panel/models/dialog/CloneObjectDialog.h>
+#include <panel/models/dialog/CloneModelDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
-    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const ObjectController* modelController) :
+    CloneModelDialog::CloneModelDialog(QWidget* parent, const ModelController* modelController) :
             QDialog(parent),
             modelController(modelController),
             modelNameLabel(nullptr),
@@ -31,7 +31,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void CloneObjectDialog::setupNameFields(QGridLayout* mainLayout) {
+    void CloneModelDialog::setupNameFields(QGridLayout* mainLayout) {
         modelNameLabel = new QLabel("Model Name:");
         mainLayout->addWidget(modelNameLabel, 0, 0);
 
@@ -40,14 +40,14 @@ namespace urchin {
         modelNameText->setFixedWidth(360);
     }
 
-    void CloneObjectDialog::updateObjectName() {
+    void CloneModelDialog::updateModelName() {
         QString modelName = modelNameText->text();
         if (!modelName.isEmpty()) {
             this->modelName = modelName.toUtf8().constData();
         }
     }
 
-    int CloneObjectDialog::buildSceneModel(int result) {
+    int CloneModelDialog::buildSceneModel(int result) {
         try {
             sceneModel = std::make_unique<SceneModel>();
             sceneModel->setName(modelName);
@@ -59,15 +59,15 @@ namespace urchin {
         return result;
     }
 
-    std::unique_ptr<SceneModel> CloneObjectDialog::moveSceneModel() {
+    std::unique_ptr<SceneModel> CloneModelDialog::moveSceneModel() {
         return std::move(sceneModel);
     }
 
-    void CloneObjectDialog::done(int r) {
+    void CloneModelDialog::done(int r) {
         if (QDialog::Accepted == r) {
             bool hasError = false;
 
-            updateObjectName();
+            updateModelName();
             LabelStyleHelper::applyNormalStyle(modelNameLabel);
 
             if (modelName.empty()) {
@@ -87,7 +87,7 @@ namespace urchin {
         }
     }
 
-    bool CloneObjectDialog::isSceneModelExist(const std::string& name) {
+    bool CloneModelDialog::isSceneModelExist(const std::string& name) {
         std::list<const SceneModel*> sceneModels = modelController->getSceneModels();
         return std::any_of(sceneModels.begin(), sceneModels.end(), [&name](const auto& so){return so->getName() == name;});
     }

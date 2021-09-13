@@ -11,11 +11,11 @@ Q_DECLARE_METATYPE(const urchin::SceneModel*)
 
 namespace urchin {
 
-    class ObjectTableView : public QTableView, public Observable {
+    class ModelTableView : public QTableView, public Observable {
         Q_OBJECT
 
         public:
-            explicit ObjectTableView(QWidget* = nullptr);
+            explicit ModelTableView(QWidget* = nullptr);
 
             enum NotificationType {
                 MODEL_SELECTION_CHANGED

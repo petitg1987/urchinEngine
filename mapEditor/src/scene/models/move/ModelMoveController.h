@@ -5,15 +5,15 @@
 #include <UrchinMapHandler.h>
 
 #include <controller/SceneController.h>
-#include <scene/models/move/ObjectMoveAxisDisplayer.h>
+#include <scene/models/move/ModelMoveAxisDisplayer.h>
 #include <widget/controller/statusbar/StatusBarController.h>
 #include <widget/controller/mouse/MouseController.h>
 
 namespace urchin {
 
-    class ObjectMoveController : public Observable {
+    class ModelMoveController : public Observable {
         public:
-            ObjectMoveController(Scene&, SceneController&, MouseController&, StatusBarController&);
+            ModelMoveController(Scene&, SceneController&, MouseController&, StatusBarController&);
 
             enum NotificationType {
                 MODEL_MOVED
@@ -35,12 +35,12 @@ namespace urchin {
         private:
             bool isCameraMoved() const;
             bool adjustMousePosition();
-            void moveObject(const Point2<float>&, const Point2<float>&);
-            void updateObjectPosition(const Point3<float>&);
+            void moveModel(const Point2<float>&, const Point2<float>&);
+            void updateModelPosition(const Point3<float>&);
 
             unsigned int sceneWidth, sceneHeight;
 
-            ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
+            ModelMoveAxisDisplayer modelMoveAxisDisplayer;
             Scene& scene;
             SceneController& sceneController;
             MouseController& mouseController;

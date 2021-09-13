@@ -6,7 +6,7 @@
 #include <UrchinCommon.h>
 #include <UrchinMapHandler.h>
 #include <controller/SceneController.h>
-#include <panel/models/ObjectPanelWidget.h>
+#include <panel/models/ModelPanelWidget.h>
 #include <panel/lights/LightPanelWidget.h>
 #include <panel/terrains/TerrainPanelWidget.h>
 #include <panel/waters/WaterPanelWidget.h>
@@ -27,7 +27,7 @@ namespace urchin {
             };
 
             enum TabName {
-                OBJECTS,
+                MODELS,
                 LIGHTS,
                 TERRAINS,
                 WATERS,
@@ -36,7 +36,7 @@ namespace urchin {
                 AI
             };
 
-            ObjectPanelWidget* getModelPanelWidget() const;
+            ModelPanelWidget* getModelPanelWidget() const;
             LightPanelWidget* getLightPanelWidget() const;
             TerrainPanelWidget* getTerrainPanelWidget() const;
             WaterPanelWidget* getWaterPanelWidget() const;
@@ -52,7 +52,7 @@ namespace urchin {
         private:
             SceneController* sceneController;
 
-            ObjectPanelWidget* tabModels;
+            ModelPanelWidget* tabModels;
             LightPanelWidget* tabLights;
             TerrainPanelWidget* tabTerrains;
             WaterPanelWidget* tabWaters;

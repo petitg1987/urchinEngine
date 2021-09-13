@@ -46,8 +46,8 @@ namespace urchin {
                 }
                 break;
             case QEvent::Leave: //mouse leaves widget
-                if (sceneDisplayer && sceneDisplayer->getObjectMoveController() && !geometry().contains(mapFromGlobal(QCursor::pos()))) {
-                    sceneDisplayer->getObjectMoveController()->onMouseOut();
+                if (sceneDisplayer && sceneDisplayer->getModelMoveController() && !geometry().contains(mapFromGlobal(QCursor::pos()))) {
+                    sceneDisplayer->getModelMoveController()->onMouseOut();
                 }
                 break;
             default:
@@ -172,7 +172,7 @@ namespace urchin {
             } else if (event->key() == Qt::Key_Right) {
                 sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::RIGHT_ARROW);
             } else if (event->key() == Qt::Key_Escape) {
-                sceneDisplayer->getObjectMoveController()->onEscapeKey();
+                sceneDisplayer->getModelMoveController()->onEscapeKey();
             }
         }
     }
@@ -190,7 +190,7 @@ namespace urchin {
     void SceneDisplayerWindow::mouseReleaseEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
             if (event->button() == Qt::LeftButton) {
-                bool propagateEvent = sceneDisplayer->getObjectMoveController() == nullptr || sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
+                bool propagateEvent = sceneDisplayer->getModelMoveController() == nullptr || sceneDisplayer->getModelMoveController()->onMouseLeftButton();
                 if (propagateEvent) {
                     propagateEvent = onMouseClickBodyPickup();
                     if (propagateEvent) {
@@ -209,8 +209,8 @@ namespace urchin {
 
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY);
-            if (propagateEvent && sceneDisplayer->getObjectMoveController()) {
-                sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
+            if (propagateEvent && sceneDisplayer->getModelMoveController()) {
+                sceneDisplayer->getModelMoveController()->onMouseMove(mouseX, mouseY);
             }
         }
     }
@@ -227,9 +227,9 @@ namespace urchin {
             while (!rayTestResult->isResultReady()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
             }
-            const ccd_set& pickedObjects = rayTestResult->getResults();
-            if (!pickedObjects.empty()) {
-                lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2().getId();
+            const ccd_set& pickedModels = rayTestResult->getResults();
+            if (!pickedModels.empty()) {
+                lastPickedBodyId = (*pickedModels.begin())->getBody2().getId();
                 notifyObservers(this, BODY_PICKED);
                 propagateEvent = false;
             } else {
@@ -247,24 +247,24 @@ namespace urchin {
 
     void SceneDisplayerWindow::addObserverModelMoveController(Observer* observer, int notificationType) {
         assert(sceneDisplayer);
-        sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
+        sceneDisplayer->getModelMoveController()->addObserver(observer, notificationType);
     }
 
     void SceneDisplayerWindow::onCtrlXPressed() {
-        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
+        if (sceneDisplayer && sceneDisplayer->getModelMoveController()) {
+            sceneDisplayer->getModelMoveController()->onCtrlXYZ(0);
         }
     }
 
     void SceneDisplayerWindow::onCtrlYPressed() {
-        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
+        if (sceneDisplayer && sceneDisplayer->getModelMoveController()) {
+            sceneDisplayer->getModelMoveController()->onCtrlXYZ(1);
         }
     }
 
     void SceneDisplayerWindow::onCtrlZPressed() {
-        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
-            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
+        if (sceneDisplayer && sceneDisplayer->getModelMoveController()) {
+            sceneDisplayer->getModelMoveController()->onCtrlXYZ(2);
         }
     }
 

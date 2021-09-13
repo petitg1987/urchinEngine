@@ -14,27 +14,27 @@
 
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
-#include <controller/objects/ObjectController.h>
-#include <panel/models/ObjectTableView.h>
+#include <controller/models/ModelController.h>
+#include <panel/models/ModelTableView.h>
 #include <panel/models/bodyshape/BodyShapeWidget.h>
 
 namespace urchin {
 
-    class ObjectPanelWidget : public QWidget, public Observer, public Observable {
+    class ModelPanelWidget : public QWidget, public Observer, public Observable {
         Q_OBJECT
 
         public:
-            ObjectPanelWidget();
-            ~ObjectPanelWidget() override = default;
+            ModelPanelWidget();
+            ~ModelPanelWidget() override = default;
 
             enum NotificationType {
-                OBJECT_BODY_SHAPE_WIDGET_CREATED
+                MODEL_BODY_SHAPE_WIDGET_CREATED
             };
 
-            ObjectTableView* getModelTableView() const;
+            ModelTableView* getModelTableView() const;
             BodyShapeWidget* getBodyShapeWidget() const;
 
-            void load(ObjectController&);
+            void load(ModelController&);
             void unload();
 
         private:
@@ -57,9 +57,9 @@ namespace urchin {
             BodyShapeWidget& createNoBodyShapeWidget(const SceneModel&);
             void setupBodyShapeWidget();
 
-            ObjectController* modelController;
+            ModelController* modelController;
 
-            ObjectTableView* modelTableView;
+            ModelTableView* modelTableView;
             QPushButton* addModelButton;
             QPushButton* removeModelButton;
             QPushButton* cloneModelButton;
@@ -99,9 +99,9 @@ namespace urchin {
             std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
 
         private slots:
-            void showAddObjectDialog();
-            void removeSelectedObject();
-            void showCloneObjectDialog();
+            void showAddModelDialog();
+            void removeSelectedModel();
+            void showCloneModelDialog();
 
             void updateModelOrientationType();
             void updateModelTransform();

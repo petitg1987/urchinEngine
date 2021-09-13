@@ -6,7 +6,7 @@ namespace urchin {
 
     SceneController::SceneController() :
             AbstractController() {
-        modelController = std::make_unique<ObjectController>();
+        modelController = std::make_unique<ModelController>();
         subControllers.emplace_back(modelController.get());
 
         lightController = std::make_unique<LightController>();
@@ -77,7 +77,7 @@ namespace urchin {
         resetModified();
     }
 
-    ObjectController& SceneController::getModelController() {
+    ModelController& SceneController::getModelController() {
         return *modelController;
     }
 

@@ -10,7 +10,7 @@
 #include <MapEditorWindow.h>
 #include <widget/dialog/NewDialog.h>
 #include <widget/dialog/NotSavedDialog.h>
-#include <panel/models/ObjectTableView.h>
+#include <panel/models/ModelTableView.h>
 #include <panel/models/bodyshape/BodyCompoundShapeWidget.h>
 #include <panel/models/bodyshape/support/LocalizedShapeTableView.h>
 #include <panel/lights/LightTableView.h>
@@ -162,8 +162,8 @@ namespace urchin {
         sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
-        scenePanelWidget->getModelPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
-        scenePanelWidget->getModelPanelWidget()->getModelTableView()->addObserver(this, ObjectTableView::MODEL_SELECTION_CHANGED);
+        scenePanelWidget->getModelPanelWidget()->addObserver(this, ModelPanelWidget::MODEL_BODY_SHAPE_WIDGET_CREATED);
+        scenePanelWidget->getModelPanelWidget()->getModelTableView()->addObserver(this, ModelTableView::MODEL_SELECTION_CHANGED);
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
         scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
@@ -186,9 +186,9 @@ namespace urchin {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if (auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
-            if (notificationType == ObjectTableView::MODEL_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightSceneModel(objectTableView->getSelectedSceneModel());
+        } else if (auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
+            if (notificationType == ModelTableView::MODEL_SELECTION_CHANGED) {
+                sceneDisplayerWindow->setHighlightSceneModel(modelTableView->getSelectedSceneModel());
             }
         } else if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
@@ -210,15 +210,15 @@ namespace urchin {
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
-        if (auto* objectControllerWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
-            if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
-                BodyShapeWidget* bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
+        if (auto* modelControllerWidget = dynamic_cast<ModelPanelWidget*>(observable)) {
+            if (notificationType == ModelPanelWidget::MODEL_BODY_SHAPE_WIDGET_CREATED) {
+                BodyShapeWidget* bodyShapeWidget = modelControllerWidget->getBodyShapeWidget();
                 if (auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
-                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
+                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
         } else if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
-            if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
+            if (notificationType == LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
         }
@@ -254,7 +254,7 @@ namespace urchin {
         scenePanelWidget->loadMap(*sceneController);
 
         sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
-        sceneDisplayerWindow->addObserverModelMoveController(scenePanelWidget->getModelPanelWidget(), ObjectMoveController::MODEL_MOVED);
+        sceneDisplayerWindow->addObserverModelMoveController(scenePanelWidget->getModelPanelWidget(), ModelMoveController::MODEL_MOVED);
 
         updateMapFilename(mapFilename);
         updateInterfaceState();
@@ -384,7 +384,7 @@ namespace urchin {
 
     ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
         if (SceneDisplayer::MODEL_PHYSICS == viewProperties) {
-            return ScenePanelWidget::OBJECTS;
+            return ScenePanelWidget::MODELS;
         }
         if (SceneDisplayer::LIGHT_SCOPE == viewProperties) {
             return ScenePanelWidget::LIGHTS;

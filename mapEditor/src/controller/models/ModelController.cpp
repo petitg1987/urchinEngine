@@ -1,17 +1,17 @@
 #include <stdexcept>
 #include <memory>
 
-#include <controller/objects/ObjectController.h>
+#include <controller/models/ModelController.h>
 #include <panel/models/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {
 
-    ObjectController::ObjectController() :
+    ModelController::ModelController() :
             AbstractController() {
 
     }
 
-    std::list<const SceneModel*> ObjectController::getSceneModels() const {
+    std::list<const SceneModel*> ModelController::getSceneModels() const {
         const auto& sceneModels = getMapHandler()->getMap().getSceneModels();
         std::list<const SceneModel*> constSceneModels;
         for(auto& sceneModel : sceneModels) {
@@ -21,7 +21,7 @@ namespace urchin {
         return constSceneModels;
     }
 
-    const SceneModel* ObjectController::findSceneModelByBodyId(const std::string& bodyId) const {
+    const SceneModel* ModelController::findSceneModelByBodyId(const std::string& bodyId) const {
         for (const auto* sceneModel : getSceneModels()) {
             if (sceneModel->getRigidBody() && sceneModel->getRigidBody()->getId() == bodyId) {
                 return sceneModel;
@@ -31,20 +31,20 @@ namespace urchin {
         return nullptr;
     }
 
-    void ObjectController::addSceneModel(std::unique_ptr<SceneModel> sceneModel) {
+    void ModelController::addSceneModel(std::unique_ptr<SceneModel> sceneModel) {
         getMapHandler()->getMap().addSceneModel(std::move(sceneModel));
 
         markModified();
     }
 
-    void ObjectController::removeSceneModel(const SceneModel& constSceneModel) {
+    void ModelController::removeSceneModel(const SceneModel& constSceneModel) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
         getMapHandler()->getMap().removeSceneModel(sceneModel);
 
         markModified();
     }
 
-    void ObjectController::cloneSceneModel(std::unique_ptr<SceneModel> newSceneModel, const SceneModel& toCloneSceneModel) {
+    void ModelController::cloneSceneModel(std::unique_ptr<SceneModel> newSceneModel, const SceneModel& toCloneSceneModel) {
         Model* toCloneModel = toCloneSceneModel.getModel();
         auto model = std::make_shared<Model>(*toCloneModel);
         Point3<float> shiftPosition(0.5f, 0.0f, 0.0f);
@@ -62,7 +62,7 @@ namespace urchin {
         addSceneModel(std::move(newSceneModel));
     }
 
-    void ObjectController::createDefaultBody(const SceneModel& constSceneModel) {
+    void ModelController::createDefaultBody(const SceneModel& constSceneModel) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
 
         const std::string& bodyId = constSceneModel.getName();
@@ -76,19 +76,19 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::changeBodyShape(const SceneModel& constSceneModel, CollisionShape3D::ShapeType shapeType) {
+    void ModelController::changeBodyShape(const SceneModel& constSceneModel, CollisionShape3D::ShapeType shapeType) {
         std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneModel).createDefaultBodyShape(shapeType);
         updateSceneModelPhysicsShape(constSceneModel, std::move(newCollisionShape));
     }
 
-    void ObjectController::removeBody(const SceneModel& constSceneModel) {
+    void ModelController::removeBody(const SceneModel& constSceneModel) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
         sceneModel.setupInteractiveBody(nullptr);
 
         markModified();
     }
 
-    const SceneModel& ObjectController::updateSceneModelTransform(const SceneModel& constSceneModel, const Transform<float>& transform) {
+    const SceneModel& ModelController::updateSceneModelTransform(const SceneModel& constSceneModel, const Transform<float>& transform) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
         Model* model = sceneModel.getModel();
 
@@ -107,7 +107,7 @@ namespace urchin {
         return sceneModel;
     }
 
-    const SceneModel& ObjectController::updateSceneModelFlags(const SceneModel& constSceneModel, bool produceShadow) {
+    const SceneModel& ModelController::updateSceneModelFlags(const SceneModel& constSceneModel, bool produceShadow) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
         Model* model = sceneModel.getModel();
 
@@ -117,7 +117,7 @@ namespace urchin {
         return sceneModel;
     }
 
-    const SceneModel& ObjectController::updateSceneModelPhysicsProperties(const SceneModel& constSceneModel, float mass, float restitution,
+    const SceneModel& ModelController::updateSceneModelPhysicsProperties(const SceneModel& constSceneModel, float mass, float restitution,
             float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
             const Vector3<float>& angularFactor) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
@@ -137,7 +137,7 @@ namespace urchin {
         return sceneModel;
     }
 
-    const SceneModel& ObjectController::updateSceneModelPhysicsShape(const SceneModel& constSceneModel, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
+    const SceneModel& ModelController::updateSceneModelPhysicsShape(const SceneModel& constSceneModel, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
         RigidBody* rigidBody = sceneModel.getRigidBody();
 
@@ -160,7 +160,7 @@ namespace urchin {
         return sceneModel;
     }
 
-    SceneModel& ObjectController::findSceneModel(const SceneModel& constSceneModel) {
+    SceneModel& ModelController::findSceneModel(const SceneModel& constSceneModel) {
         const auto& sceneModels = getMapHandler()->getMap().getSceneModels();
         auto it = std::find_if(sceneModels.begin(), sceneModels.end(), [&constSceneModel](const auto& o){return o.get() == &constSceneModel;});
 

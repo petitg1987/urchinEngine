@@ -1,11 +1,11 @@
 #include <QHeaderView>
 #include <QVariant>
 
-#include <panel/models/ObjectTableView.h>
+#include <panel/models/ModelTableView.h>
 
 namespace urchin {
 
-    ObjectTableView::ObjectTableView(QWidget* parent) :
+    ModelTableView::ModelTableView(QWidget* parent) :
             QTableView(parent) {
         modelsListModel = new QStandardItemModel(0, 2, this);
         modelsListModel->setHorizontalHeaderItem(0, new QStandardItem("Model Name"));
@@ -22,7 +22,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void ObjectTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
+    void ModelTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);
@@ -30,11 +30,11 @@ namespace urchin {
         notifyObservers(this, NotificationType::MODEL_SELECTION_CHANGED);
     }
 
-    bool ObjectTableView::hasSceneModelSelected() const {
+    bool ModelTableView::hasSceneModelSelected() const {
         return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
     }
 
-    int ObjectTableView::getSceneModelRow(const SceneModel* expectedSceneModel) const {
+    int ModelTableView::getSceneModelRow(const SceneModel* expectedSceneModel) const {
         for (int rowId = 0; rowId < modelsListModel->rowCount(); ++rowId) {
             QModelIndex index = modelsListModel->index(rowId, 0);
             auto* sceneModel = index.data(Qt::UserRole + 1).value<const SceneModel*>();
@@ -46,14 +46,14 @@ namespace urchin {
         return -1;
     }
 
-    const SceneModel* ObjectTableView::getSelectedSceneModel() const {
+    const SceneModel* ModelTableView::getSelectedSceneModel() const {
         if (hasSceneModelSelected()) {
             return this->currentIndex().data(Qt::UserRole + 1).value<const SceneModel*>();
         }
         return nullptr;
     }
 
-    int ObjectTableView::addModel(const SceneModel& sceneModel) {
+    int ModelTableView::addModel(const SceneModel& sceneModel) {
         auto* itemModelName = new QStandardItem(QString::fromStdString(sceneModel.getName()));
         itemModelName->setData(QVariant::fromValue(&sceneModel), Qt::UserRole + 1);
         itemModelName->setEditable(false);
@@ -79,7 +79,7 @@ namespace urchin {
         return nextRow;
     }
 
-    bool ObjectTableView::removeSelectedModel() {
+    bool ModelTableView::removeSelectedModel() {
         if (hasSceneModelSelected()) {
             modelsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
@@ -90,7 +90,7 @@ namespace urchin {
         return false;
     }
 
-    void ObjectTableView::removeAllModels() {
+    void ModelTableView::removeAllModels() {
         modelsListModel->removeRows(0, modelsListModel->rowCount());
         resizeRowsToContents();
     }
