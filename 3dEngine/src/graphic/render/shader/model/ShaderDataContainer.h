@@ -19,9 +19,10 @@ namespace urchin {
             bool hasNewData(uint32_t) const;
             void markDataAsProcessed(uint32_t);
             void markDataAsProcessed();
-            void markDataAsNew();
 
         private:
+            void markDataAsNew();
+
             std::size_t dataSize;
             void* ptr;
 

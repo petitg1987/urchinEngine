@@ -76,7 +76,6 @@ namespace urchin {
             void createDescriptorSets();
             void updateDescriptorSets();
             void destroyDescriptorSetsAndPool();
-            void resetNewDataFlag();
 
             void updateData(std::size_t, DataContainer&&);
 

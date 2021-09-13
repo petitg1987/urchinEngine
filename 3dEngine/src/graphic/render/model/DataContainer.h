@@ -27,11 +27,11 @@ namespace urchin {
             bool hasNewData(uint32_t) const;
             void markDataAsProcessed(uint32_t);
             void markDataAsProcessed();
-            void markDataAsNew();
 
         private:
             unsigned int getTypeSize() const;
             unsigned int getDimensionSize() const;
+            void markDataAsNew();
 
             DataType dataType;
             DataDimension dataDimension;

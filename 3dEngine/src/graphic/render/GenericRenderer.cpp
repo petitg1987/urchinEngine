@@ -61,7 +61,6 @@ namespace urchin {
         assert(!isInitialized);
 
         if (renderTarget.isValidRenderTarget()) {
-            resetNewDataFlag(); //TODO useless ?
             createPipeline();
             createVertexBuffers();
             createIndexBuffer();
@@ -74,14 +73,16 @@ namespace urchin {
     }
 
     void GenericRenderer::cleanup() {
-        if (isInitialized && renderTarget.isValidRenderTarget()) {
-            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+        if (isInitialized) {
+            if (renderTarget.isValidRenderTarget()) {
+                vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
-            destroyDescriptorSetsAndPool();
-            destroyUniformBuffers();
-            destroyIndexBuffer();
-            destroyVertexBuffers();
-            destroyPipeline();
+                destroyDescriptorSetsAndPool();
+                destroyUniformBuffers();
+                destroyIndexBuffer();
+                destroyVertexBuffers();
+                destroyPipeline();
+            }
 
             isInitialized = false;
         }
@@ -285,16 +286,6 @@ namespace urchin {
 
     void GenericRenderer::destroyDescriptorSetsAndPool() {
         vkDestroyDescriptorPool(GraphicService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
-    }
-
-    void GenericRenderer::resetNewDataFlag() {
-        for (auto& singleData : data) {
-            singleData.markDataAsNew();
-        }
-
-        for (auto& singleUniformData : uniformData) {
-            singleUniformData.markDataAsNew();
-        }
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {
