@@ -221,8 +221,8 @@ namespace urchin {
     }
 
     /**
-     * Pre-warm the scene. Pre-warming avoid low frame rate on the first frame.
-     * This method must be called once all models and camera has been setup.
+     * Pre-warm the models. Pre-warming avoid low frame rate on the first frame.
+     * This method must be called once all the models and the camera have been setup.
      */
     void Renderer3d::preWarmModels() {
         if (!camera) {
