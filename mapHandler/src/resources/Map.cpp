@@ -61,6 +61,7 @@ namespace urchin {
 
             addSceneObject(std::move(sceneObject));
         }
+        renderer3d->preWarmModels();
     }
 
     void Map::loadSceneLightsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {

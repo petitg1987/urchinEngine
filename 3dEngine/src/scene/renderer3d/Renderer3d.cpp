@@ -207,7 +207,6 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
 
             modelOctreeManager->addOctreeable(std::move(model));
-            //TODO load ModelDisplayer if in Frustum !
         }
     }
 
@@ -221,16 +220,16 @@ namespace urchin {
         return std::shared_ptr<Model>(nullptr);
     }
 
-    void Renderer3d::pause() {
-        paused = true;
-    }
-
-    void Renderer3d::unpause() {
-        if (camera) {
-            camera->resetPreviousMousePosition();
+    /**
+     * Pre-warm the scene. Pre-warming avoid low frame rate on the first frame.
+     * This method must be called once all models and camera has been setup.
+     */
+    void Renderer3d::preWarmModels() {
+        if (!camera) {
+            throw std::runtime_error("Camera is required to pre warm the models");
         }
-
-        paused = false;
+        updateScene(0.0f);
+        postUpdateScene();
     }
 
     bool Renderer3d::isPaused() const {
@@ -270,6 +269,18 @@ namespace urchin {
 
     void Renderer3d::onDisable() {
         //nothing to do
+    }
+
+    void Renderer3d::pause() {
+        paused = true;
+    }
+
+    void Renderer3d::unpause() {
+        if (camera) {
+            camera->resetPreviousMousePosition();
+        }
+
+        paused = false;
     }
 
     void Renderer3d::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
