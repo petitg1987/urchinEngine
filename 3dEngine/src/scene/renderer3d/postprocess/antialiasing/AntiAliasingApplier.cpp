@@ -2,11 +2,14 @@
 
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/target/NullRenderTarget.h>
+#include <graphic/render/target/OffscreenRender.h>
 #include <graphic/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    AntiAliasingApplier::AntiAliasingApplier() :
+    AntiAliasingApplier::AntiAliasingApplier(bool useNullRenderTarget) :
+            useNullRenderTarget(useNullRenderTarget),
             config({}) {
 
     }
@@ -21,9 +24,13 @@ namespace urchin {
 
         clearRenderer();
         outputTexture = Texture::build(inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::B10G11R11_FLOAT, nullptr);
-        renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
-        renderTarget->addOutputTexture(outputTexture);
-        renderTarget->initialize();
+        if (useNullRenderTarget) {
+            renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
+        } else {
+            renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
+            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
+            renderTarget->initialize();
+        }
 
         createOrUpdateRenderer();
     }
@@ -87,7 +94,11 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
 
-        fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
+        if (renderTarget->isValidRenderTarget()) {
+            fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "", "fxaa.frag.spv", std::move(shaderConstants));
+        } else {
+            fxaaShader = ShaderBuilder::createNullShader();
+        }
     }
 
     void AntiAliasingApplier::updateConfig(const Config& config) {

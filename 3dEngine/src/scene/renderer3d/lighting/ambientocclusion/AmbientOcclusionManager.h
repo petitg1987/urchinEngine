@@ -35,7 +35,7 @@ namespace urchin {
                 float blurSharpness = 40.0f;
             };
 
-            AmbientOcclusionManager();
+            explicit AmbientOcclusionManager(bool);
             ~AmbientOcclusionManager();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
@@ -75,6 +75,7 @@ namespace urchin {
             static constexpr unsigned int KERNEL_SAMPLES_SHADER_LIMIT = 64; //must be equals to 'KERNEL_SAMPLES' in AO shader
 
             //scene information
+            bool useNullRenderTarget;
             float nearPlane, farPlane;
 
             //config
@@ -82,7 +83,7 @@ namespace urchin {
             unsigned int textureSizeX, textureSizeY;
 
             //frame buffer object
-            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
+            std::unique_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader

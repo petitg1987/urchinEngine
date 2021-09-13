@@ -44,6 +44,7 @@ namespace urchin {
 
             static constexpr unsigned int TEXTURE_LAYER_SHADER_LIMIT = 10; //must be equals to 'TEXTURE_LAYER_SHADER_LIMIT' in texFilter shaders
             bool isInitialized;
+            bool useNullRenderTarget;
             std::string name;
 
             //source texture
@@ -55,7 +56,7 @@ namespace urchin {
             unsigned int textureNumberLayer;
             TextureFormat textureFormat;
 
-            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
+            std::unique_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> texture;
 
             std::unique_ptr<GenericRenderer> textureRenderer;

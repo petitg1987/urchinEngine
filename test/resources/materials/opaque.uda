@@ -1,0 +1,4 @@
+repeatTextures: "false"
+diffuse:
+  color: "1.0 1.0 1.0 1.0"
+ambientFactor: "0.4"

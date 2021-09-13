@@ -11,7 +11,7 @@ namespace urchin {
                 VERTICAL_BLUR
             };
 
-            explicit BilateralBlurFilterBuilder(std::string, const std::shared_ptr<Texture>&);
+            BilateralBlurFilterBuilder(bool, std::string, const std::shared_ptr<Texture>&);
             ~BilateralBlurFilterBuilder() override = default;
 
             BilateralBlurFilterBuilder* blurDirection(BlurDirection);

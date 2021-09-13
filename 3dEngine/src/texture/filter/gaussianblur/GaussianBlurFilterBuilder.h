@@ -11,7 +11,7 @@ namespace urchin {
                 VERTICAL_BLUR
             };
 
-            explicit GaussianBlurFilterBuilder(std::string, const std::shared_ptr<Texture>&);
+            explicit GaussianBlurFilterBuilder(bool, std::string, const std::shared_ptr<Texture>&);
             ~GaussianBlurFilterBuilder() override = default;
 
             GaussianBlurFilterBuilder* blurDirection(BlurDirection);

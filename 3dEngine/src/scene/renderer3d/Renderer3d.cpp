@@ -7,6 +7,7 @@
 #include <graphic/render/GenericRendererBuilder.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/pipeline/PipelineContainer.h>
+#include <graphic/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
@@ -30,7 +31,9 @@ namespace urchin {
             paused(true),
 
             //deferred rendering
-            deferredRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)),
+            deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
+                    std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
+                    std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             modelOctreeManager(std::make_unique<OctreeManager<Model>>(MODELS_OCTREE_MIN_SIZE)),
             modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
             fogContainer(std::make_unique<FogContainer>()),
@@ -39,15 +42,17 @@ namespace urchin {
             geometryContainer(std::make_unique<GeometryContainer>(*deferredRenderTarget)),
             skyContainer(std::make_unique<SkyContainer>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>()),
-            ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>()),
+            ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>(!finalRenderTarget.isValidRenderTarget())),
             transparentManager(std::make_unique<TransparentManager>(*lightManager)),
             shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
 
             //lighting pass rendering
-            offscreenLightingRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)),
+            lightingRenderTarget(finalRenderTarget.isValidRenderTarget() ?
+                    std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)) :
+                    std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             positioningData({}),
             visualOption({}),
-            antiAliasingApplier(std::make_unique<AntiAliasingApplier>()),
+            antiAliasingApplier(std::make_unique<AntiAliasingApplier>(!finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(true),
             bloomEffectApplier(std::make_unique<BloomEffectApplier>(finalRenderTarget)),
 
@@ -67,7 +72,7 @@ namespace urchin {
     }
 
     Renderer3d::~Renderer3d() {
-        offscreenLightingRenderTarget->cleanup();
+        lightingRenderTarget->cleanup();
         deferredRenderTarget->cleanup();
     }
 
@@ -309,16 +314,20 @@ namespace urchin {
         //deferred rendering
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        deferredRenderTarget->resetOutputTextures();
-        deferredRenderTarget->addOutputTexture(diffuseTexture);
-        deferredRenderTarget->addOutputTexture(normalAndAmbientTexture);
-        deferredRenderTarget->initialize();
+        if (auto* deferredOffscreenRenderTarget = dynamic_cast<OffscreenRender*>(deferredRenderTarget.get())) {
+            deferredOffscreenRenderTarget->resetOutputTextures();
+            deferredOffscreenRenderTarget->addOutputTexture(diffuseTexture);
+            deferredOffscreenRenderTarget->addOutputTexture(normalAndAmbientTexture);
+            deferredOffscreenRenderTarget->initialize();
+        }
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
-        offscreenLightingRenderTarget->resetOutputTextures();
-        offscreenLightingRenderTarget->addOutputTexture(lightingPassTexture);
-        offscreenLightingRenderTarget->initialize();
+        if (auto* offscreenLightingRenderTarget = dynamic_cast<OffscreenRender*>(lightingRenderTarget.get())) {
+            offscreenLightingRenderTarget->resetOutputTextures();
+            offscreenLightingRenderTarget->addOutputTexture(lightingPassTexture);
+            offscreenLightingRenderTarget->initialize();
+        }
 
         createOrUpdateLightingShader();
 
@@ -331,7 +340,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
-        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *offscreenLightingRenderTarget, *lightingShader, ShapeType::TRIANGLE)
+        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *lightingRenderTarget, *lightingShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
@@ -381,7 +390,11 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
 
-        lightingShader = ShaderBuilder::createShader("lighting.vert.spv", "", "lighting.frag.spv", std::move(shaderConstants));
+        if (lightingRenderTarget->isValidRenderTarget()) {
+            lightingShader = ShaderBuilder::createShader("lighting.vert.spv", "", "lighting.frag.spv", std::move(shaderConstants));
+        } else {
+            lightingShader = ShaderBuilder::createNullShader();
+        }
     }
 
     void Renderer3d::updateScene(float dt) {
@@ -514,7 +527,7 @@ namespace urchin {
             shadowManager->loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        offscreenLightingRenderTarget->render();
+        lightingRenderTarget->render();
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int& renderingOrder) {

@@ -39,9 +39,11 @@ namespace urchin {
         pipelineBuilder->setupPolygonMode(rendererBuilder->getPolygonMode());
         pipelineBuilder->setupScissor(rendererBuilder->isScissorEnabled(), rendererBuilder->getScissorOffset(), rendererBuilder->getScissorSize());
 
-        for (auto& uniformTextureReaderArray : uniformTextureReaders) {
-            for (auto& uniformTextureReader : uniformTextureReaderArray) {
-                uniformTextureReader->initialize();
+        if (renderTarget.isValidRenderTarget()) {
+            for (auto& uniformTextureReaderArray: uniformTextureReaders) {
+                for (auto& uniformTextureReader: uniformTextureReaderArray) {
+                    uniformTextureReader->initialize();
+                }
             }
         }
 
@@ -58,19 +60,21 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "genRenderInit");
         assert(!isInitialized);
 
-        resetNewDataFlag();
-        createPipeline();
-        createVertexBuffers();
-        createIndexBuffer();
-        createUniformBuffers();
-        createDescriptorPool();
-        createDescriptorSets();
+        if (renderTarget.isValidRenderTarget()) {
+            resetNewDataFlag(); //TODO useless ?
+            createPipeline();
+            createVertexBuffers();
+            createIndexBuffer();
+            createUniformBuffers();
+            createDescriptorPool();
+            createDescriptorSets();
+        }
 
         isInitialized = true;
     }
 
     void GenericRenderer::cleanup() {
-        if (isInitialized) {
+        if (isInitialized && renderTarget.isValidRenderTarget()) {
             vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
             destroyDescriptorSetsAndPool();

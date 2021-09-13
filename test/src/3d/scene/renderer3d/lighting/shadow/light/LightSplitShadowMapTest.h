@@ -3,7 +3,6 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 #include <memory>
-#include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
 class LightSplitShadowMapTest : public CppUnit::TestFixture {

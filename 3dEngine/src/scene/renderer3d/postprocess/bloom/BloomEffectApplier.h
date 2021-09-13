@@ -41,6 +41,8 @@ namespace urchin {
             void refreshRenderers();
             void clearRenderers();
 
+            std::unique_ptr<Shader> createShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
+
             RenderTarget& outputRenderTarget;
             Config config;
             unsigned int sceneWidth, sceneHeight;
@@ -48,7 +50,7 @@ namespace urchin {
             std::vector<std::shared_ptr<Texture>> bloomStepTextures;
 
             //pre-filter
-            std::unique_ptr<OffscreenRender> preFilterRenderTarget;
+            std::unique_ptr<RenderTarget> preFilterRenderTarget;
             std::unique_ptr<GenericRenderer> preFilterRenderer;
             std::unique_ptr<Shader> preFilterShader;
             struct {
@@ -58,12 +60,12 @@ namespace urchin {
 
             //down sample
             std::unique_ptr<Shader> downSampleShader;
-            std::vector<std::unique_ptr<OffscreenRender>> downSampleRenderTargets;
+            std::vector<std::unique_ptr<RenderTarget>> downSampleRenderTargets;
             std::vector<std::unique_ptr<GenericRenderer>> downSampleRenderers;
 
             //up sample
             std::unique_ptr<Shader> upSampleShader;
-            std::vector<std::unique_ptr<OffscreenRender>> upSampleRenderTargets;
+            std::vector<std::unique_ptr<RenderTarget>> upSampleRenderTargets;
             std::vector<std::unique_ptr<GenericRenderer>> upSampleRenderers;
 
             //combine

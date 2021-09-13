@@ -3,18 +3,19 @@
 namespace urchin {
 
     NullRenderTarget::NullRenderTarget(unsigned int width, unsigned int height) :
-            RenderTarget("_null_", RenderTarget::NO_DEPTH_ATTACHMENT),
+            RenderTarget("_null_", RenderTarget::SHARED_DEPTH_ATTACHMENT),
             width(width),
             height(height) {
-
+        initialize();
     }
 
     void NullRenderTarget::initialize() {
-        //nothing to do
+        depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+        depthTexture->enableTextureWriting();
     }
 
     void NullRenderTarget::cleanup() {
-        //nothing to do
+        destroyDepthResources();
     }
 
     bool NullRenderTarget::isValidRenderTarget() const {

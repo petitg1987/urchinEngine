@@ -40,7 +40,6 @@ namespace urchin {
     }
 
     std::size_t RenderTarget::getRenderPassCompatibilityId() const {
-        assert(renderPassCompatibilityId != 0);
         return renderPassCompatibilityId;
     }
 

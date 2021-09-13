@@ -3,12 +3,13 @@
 #include <texture/filter/TextureFilter.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/GenericRendererBuilder.h>
+#include <graphic/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
     TextureFilter::~TextureFilter() {
-        if (offscreenRenderTarget) {
-            offscreenRenderTarget->cleanup();
+        if (renderTarget) {
+            renderTarget->cleanup();
         }
     }
 
@@ -32,21 +33,29 @@ namespace urchin {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
         }
 
-        offscreenRenderTarget = std::make_unique<OffscreenRender>(name, RenderTarget::NO_DEPTH_ATTACHMENT);
-        offscreenRenderTarget->addOutputTexture(texture);
-        offscreenRenderTarget->initialize();
+        if (useNullRenderTarget) {
+            renderTarget = std::make_unique<NullRenderTarget>(texture->getWidth(), texture->getHeight());
+        } else {
+            renderTarget = std::make_unique<OffscreenRender>(name, RenderTarget::NO_DEPTH_ATTACHMENT);
+            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(texture);
+            renderTarget->initialize();
+        }
     }
 
     void TextureFilter::initializeDisplay() {
-        assert(offscreenRenderTarget);
+        assert(renderTarget);
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
 
-        if (textureType == TextureType::ARRAY) {
-            textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "texFilter.geom.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
-        } else if (textureType == TextureType::DEFAULT) {
-            textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
+        if (useNullRenderTarget) {
+            textureFilterShader = ShaderBuilder::createNullShader();
         } else {
-            throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
+            if (textureType == TextureType::ARRAY) {
+                textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "texFilter.geom.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
+            } else if (textureType == TextureType::DEFAULT) {
+                textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
+            } else {
+                throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
+            }
         }
 
         std::vector<Point2<float>> vertexCoord = {
@@ -58,7 +67,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
         int layersToUpdate = 0;
-        auto textureRendererBuilder = GenericRendererBuilder::create(name, *offscreenRenderTarget, *textureFilterShader, ShapeType::TRIANGLE)
+        auto textureRendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(layersToUpdate), &layersToUpdate); //binding 0
@@ -113,10 +122,10 @@ namespace urchin {
         if (textureType == TextureType::ARRAY) {
             if (layersToUpdate != 0) {
                 textureRenderer->updateUniformData(0, &layersToUpdate);
-                offscreenRenderTarget->render();
+                renderTarget->render();
             }
         } else {
-            offscreenRenderTarget->render();
+            renderTarget->render();
         }
     }
 }

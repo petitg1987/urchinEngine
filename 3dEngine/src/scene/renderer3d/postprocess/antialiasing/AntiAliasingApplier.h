@@ -4,7 +4,7 @@
 
 #include <graphic/render/shader/model/Shader.h>
 #include <graphic/render/GenericRenderer.h>
-#include <graphic/render/target/OffscreenRender.h>
+#include <graphic/render/target/RenderTarget.h>
 
 namespace urchin {
 
@@ -20,7 +20,7 @@ namespace urchin {
                 Quality quality = AntiAliasingApplier::Quality::HIGH;
             };
 
-            explicit AntiAliasingApplier();
+            explicit AntiAliasingApplier(bool);
             ~AntiAliasingApplier();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);
@@ -53,10 +53,11 @@ namespace urchin {
             void createOrUpdateFxaaShader();
 
             //properties
+            bool useNullRenderTarget;
             Config config;
 
             //display
-            std::unique_ptr<OffscreenRender> renderTarget;
+            std::unique_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> inputTexture, outputTexture;
             std::unique_ptr<Shader> fxaaShader;
             Point2<float> invSceneSize;

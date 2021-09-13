@@ -112,7 +112,7 @@ namespace urchin {
             std::shared_ptr<Camera> camera;
 
             //deferred rendering
-            std::unique_ptr<OffscreenRender> deferredRenderTarget;
+            std::unique_ptr<RenderTarget> deferredRenderTarget;
             std::unique_ptr<OctreeManager<Model>> modelOctreeManager;
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
             std::shared_ptr<AABBoxModel> debugModelOctree;
@@ -131,7 +131,7 @@ namespace urchin {
             std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
             //lighting pass rendering + post process
-            std::unique_ptr<OffscreenRender> offscreenLightingRenderTarget;
+            std::unique_ptr<RenderTarget> lightingRenderTarget;
             std::unique_ptr<GenericRenderer> lightingRenderer;
             std::unique_ptr<Shader> lightingShader;
             struct {

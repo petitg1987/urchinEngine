@@ -5,6 +5,7 @@
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <graphic/render/target/NullRenderTarget.h>
 #include <graphic/render/GenericRendererBuilder.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 
@@ -13,7 +14,8 @@ namespace urchin {
     //debug parameters
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
-    AmbientOcclusionManager::AmbientOcclusionManager() :
+    AmbientOcclusionManager::AmbientOcclusionManager(bool useNullRenderTarget) :
+            useNullRenderTarget(useNullRenderTarget),
             nearPlane(0.0f),
             farPlane(0.0f),
 
@@ -29,8 +31,8 @@ namespace urchin {
     }
 
     AmbientOcclusionManager::~AmbientOcclusionManager() {
-        if (offscreenRenderTarget) {
-            offscreenRenderTarget->cleanup();
+        if (renderTarget) {
+            renderTarget->cleanup();
         }
     }
 
@@ -68,16 +70,20 @@ namespace urchin {
         textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, textureFormat, nullptr);
 
-        if (offscreenRenderTarget) {
-            offscreenRenderTarget->resetOutputTextures();
+        if (useNullRenderTarget) {
+            renderTarget = std::make_unique<NullRenderTarget>((unsigned int)resolution.X, (unsigned int)resolution.Y);
         } else {
-            offscreenRenderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
+            if (renderTarget) {
+                dynamic_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
+            } else {
+                renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
+            }
+            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(ambientOcclusionTexture);
+            renderTarget->initialize();
         }
-        offscreenRenderTarget->addOutputTexture(ambientOcclusionTexture);
-        offscreenRenderTarget->initialize();
 
         if (config.isBlurActivated) {
-            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - vertical bilateral blur filter", ambientOcclusionTexture)
+            verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - vertical bilateral blur filter", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -87,7 +93,7 @@ namespace urchin {
                     ->blurSharpness(config.blurSharpness)
                     ->buildBilateralBlur();
 
-            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>("ambient occlusion - horizontal bilateral blur filter", verticalBlurFilter->getTexture())
+            horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal bilateral blur filter", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -106,7 +112,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateRenderer() {
-        assert(offscreenRenderTarget);
+        assert(renderTarget);
 
         createOrUpdateAOShader();
 
@@ -118,7 +124,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        renderer = GenericRendererBuilder::create("ambient occlusion", *offscreenRenderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
+        renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
@@ -144,7 +150,11 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
 
-        ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
+        if (renderTarget->isValidRenderTarget()) {
+            ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
+        } else {
+            ambientOcclusionShader = ShaderBuilder::createNullShader();
+        }
     }
 
     void AmbientOcclusionManager::generateKernelSamples() {
@@ -261,7 +271,7 @@ namespace urchin {
         positioningData.viewMatrix = camera.getViewMatrix();
         renderer->updateUniformData(0, &positioningData);
 
-        offscreenRenderTarget->render();
+        renderTarget->render();
 
         if (config.isBlurActivated) {
             verticalBlurFilter->applyFilter();

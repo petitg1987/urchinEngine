@@ -168,11 +168,8 @@ namespace urchin {
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
-        std::unique_ptr<GenericRenderer> renderer;
-        if (renderTarget.isValidRenderTarget()) {
-            renderer = std::make_unique<GenericRenderer>(this);
-            renderTarget.addRenderer(renderer.get());
-        }
+        auto renderer = std::make_unique<GenericRenderer>(this);
+        renderTarget.addRenderer(renderer.get());
         return renderer;
     }
 

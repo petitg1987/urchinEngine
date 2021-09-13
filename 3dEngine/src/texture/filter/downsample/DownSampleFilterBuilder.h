@@ -6,7 +6,7 @@ namespace urchin {
 
     class DownSampleFilterBuilder : public TextureFilterBuilder<DownSampleFilterBuilder> {
         public:
-            explicit DownSampleFilterBuilder(std::string, const std::shared_ptr<Texture>&);
+            explicit DownSampleFilterBuilder(bool, std::string, const std::shared_ptr<Texture>&);
             ~DownSampleFilterBuilder() override = default;
 
             std::unique_ptr<TextureFilter> build() override;
