@@ -10,9 +10,9 @@
 #include <MapEditorWindow.h>
 #include <widget/dialog/NewDialog.h>
 #include <widget/dialog/NotSavedDialog.h>
-#include <panel/objects/ObjectTableView.h>
-#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
-#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
+#include <panel/models/ObjectTableView.h>
+#include <panel/models/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/models/bodyshape/support/LocalizedShapeTableView.h>
 #include <panel/lights/LightTableView.h>
 #include <panel/sounds/SoundTableView.h>
 #include <StateSaveHelper.h>
@@ -91,13 +91,13 @@ namespace urchin {
 
         auto* viewMenu = new QMenu("View");
 
-        auto* viewObjectMenu = new QMenu("Object");
-        viewMenu->addMenu(viewObjectMenu);
+        auto* viewModelMenu = new QMenu("Model");
+        viewMenu->addMenu(viewModelMenu);
         auto* viewPhysicsShapeAction = new QAction("Physics Shape", this);
         viewPhysicsShapeAction->setEnabled(false);
         viewPhysicsShapeAction->setCheckable(true);
         viewPhysicsShapeAction->setChecked(true);
-        viewObjectMenu->addAction(viewPhysicsShapeAction);
+        viewModelMenu->addAction(viewPhysicsShapeAction);
         viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
         connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
@@ -162,14 +162,14 @@ namespace urchin {
         sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
-        scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
-        scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
+        scenePanelWidget->getModelPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+        scenePanelWidget->getModelPanelWidget()->getModelTableView()->addObserver(this, ObjectTableView::MODEL_SELECTION_CHANGED);
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
         scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
         horizontalLayout->addWidget(scenePanelWidget);
 
-        sceneDisplayerWindow->addObserver(scenePanelWidget->getObjectPanelWidget(), SceneDisplayerWindow::BODY_PICKED);
+        sceneDisplayerWindow->addObserver(scenePanelWidget->getModelPanelWidget(), SceneDisplayerWindow::BODY_PICKED);
     }
 
     QString MapEditorWindow::getPreferredMapPath() const {
@@ -187,8 +187,8 @@ namespace urchin {
                 executeViewPropertiesChangeAction();
             }
         } else if (auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
-            if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
+            if (notificationType == ObjectTableView::MODEL_SELECTION_CHANGED) {
+                sceneDisplayerWindow->setHighlightSceneModel(objectTableView->getSelectedSceneModel());
             }
         } else if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
@@ -254,7 +254,7 @@ namespace urchin {
         scenePanelWidget->loadMap(*sceneController);
 
         sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
-        sceneDisplayerWindow->addObserverObjectMoveController(scenePanelWidget->getObjectPanelWidget(), ObjectMoveController::OBJECT_MOVED);
+        sceneDisplayerWindow->addObserverModelMoveController(scenePanelWidget->getModelPanelWidget(), ObjectMoveController::MODEL_MOVED);
 
         updateMapFilename(mapFilename);
         updateInterfaceState();

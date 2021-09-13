@@ -104,9 +104,9 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWindow::setHighlightSceneObject(const SceneObject* highlightSceneObject) {
+    void SceneDisplayerWindow::setHighlightSceneModel(const SceneModel* highlightSceneModel) {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
+            sceneDisplayer->setHighlightSceneModel(highlightSceneModel);
         }
     }
 
@@ -245,7 +245,7 @@ namespace urchin {
         return lastPickedBodyId;
     }
 
-    void SceneDisplayerWindow::addObserverObjectMoveController(Observer* observer, int notificationType) {
+    void SceneDisplayerWindow::addObserverModelMoveController(Observer* observer, int notificationType) {
         assert(sceneDisplayer);
         sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }

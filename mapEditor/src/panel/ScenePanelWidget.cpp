@@ -7,8 +7,8 @@ namespace urchin {
     ScenePanelWidget::ScenePanelWidget(QWidget* parent) :
             QTabWidget(parent),
             sceneController(nullptr) {
-        tabObjects = new ObjectPanelWidget();
-        addTab(tabObjects, "Object");
+        tabModels = new ObjectPanelWidget();
+        addTab(tabModels, "Model");
 
         tabLights = new LightPanelWidget();
         addTab(tabLights, "Light");
@@ -33,8 +33,8 @@ namespace urchin {
         setEnabled(false);
     }
 
-    ObjectPanelWidget* ScenePanelWidget::getObjectPanelWidget() const {
-        return tabObjects;
+    ObjectPanelWidget* ScenePanelWidget::getModelPanelWidget() const {
+        return tabModels;
     }
 
     LightPanelWidget* ScenePanelWidget::getLightPanelWidget() const {
@@ -66,7 +66,7 @@ namespace urchin {
         this->sceneController = &sceneController;
 
         setEnabled(true);
-        tabObjects->load(sceneController.getObjectController());
+        tabModels->load(sceneController.getModelController());
         tabLights->load(sceneController.getLightController());
         tabTerrains->load(sceneController.getTerrainController());
         tabWaters->load(sceneController.getWaterController());
@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     void ScenePanelWidget::closeMap() {
-        tabObjects->unload();
+        tabModels->unload();
         tabLights->unload();
         tabTerrains->unload();
         tabWaters->unload();

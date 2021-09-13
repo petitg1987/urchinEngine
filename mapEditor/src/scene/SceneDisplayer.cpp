@@ -15,7 +15,7 @@ namespace urchin {
             mouseController(mouseController),
             statusBarController(statusBarController),
             viewProperties(),
-            highlightSceneObject(nullptr),
+            highlightSceneModel(nullptr),
             highlightSceneLight(nullptr),
             highlightSceneSound(nullptr) {
 
@@ -118,12 +118,12 @@ namespace urchin {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightSceneObject(const SceneObject* highlightSceneObject) {
-        if (this->highlightSceneObject != highlightSceneObject) {
-            this->highlightSceneObject = highlightSceneObject;
+    void SceneDisplayer::setHighlightSceneModel(const SceneModel* highlightSceneModel) {
+        if (this->highlightSceneModel != highlightSceneModel) {
+            this->highlightSceneModel = highlightSceneModel;
 
-            bodyShapeDisplayer->setSelectedSceneObject(highlightSceneObject);
-            objectMoveController->setSelectedSceneObject(highlightSceneObject);
+            bodyShapeDisplayer->setSelectedSceneModel(highlightSceneModel);
+            objectMoveController->setSelectedSceneModel(highlightSceneModel);
         }
     }
 

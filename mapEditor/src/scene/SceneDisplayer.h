@@ -12,8 +12,8 @@
 #include <widget/controller/statusbar/StatusBarController.h>
 #include <controller/SceneController.h>
 #include <scene/SceneFreeCamera.h>
-#include <scene/objects/BodyShapeDisplayer.h>
-#include <scene/objects/move/ObjectMoveController.h>
+#include <scene/models/BodyShapeDisplayer.h>
+#include <scene/models/move/ObjectMoveController.h>
 #include <scene/lights/LightScopeDisplayer.h>
 #include <scene/sounds/SoundTriggerDisplayer.h>
 
@@ -40,7 +40,7 @@ namespace urchin {
             void loadEmptyScene(const std::string&);
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
-            void setHighlightSceneObject(const SceneObject*);
+            void setHighlightSceneModel(const SceneModel*);
             void setHighlightSceneLight(const SceneLight*);
             void setHighlightSceneSound(const SceneSound*);
 
@@ -93,7 +93,7 @@ namespace urchin {
 
             //scene specifics
             bool viewProperties[LAST_VIEW_PROPERTIES];
-            const SceneObject* highlightSceneObject;
+            const SceneModel* highlightSceneModel;
             const SceneLight* highlightSceneLight;
             const SceneSound* highlightSceneSound;
     };

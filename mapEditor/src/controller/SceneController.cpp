@@ -6,8 +6,8 @@ namespace urchin {
 
     SceneController::SceneController() :
             AbstractController() {
-        objectController = std::make_unique<ObjectController>();
-        subControllers.emplace_back(objectController.get());
+        modelController = std::make_unique<ObjectController>();
+        subControllers.emplace_back(modelController.get());
 
         lightController = std::make_unique<LightController>();
         subControllers.emplace_back(lightController.get());
@@ -31,7 +31,7 @@ namespace urchin {
     void SceneController::setup(MapHandler* mapHandler) {
         AbstractController::setup(mapHandler);
 
-        objectController->setup(mapHandler);
+        modelController->setup(mapHandler);
         lightController->setup(mapHandler);
         terrainController->setup(mapHandler);
         waterController->setup(mapHandler);
@@ -77,8 +77,8 @@ namespace urchin {
         resetModified();
     }
 
-    ObjectController& SceneController::getObjectController() {
-        return *objectController;
+    ObjectController& SceneController::getModelController() {
+        return *modelController;
     }
 
     LightController& SceneController::getLightController() {

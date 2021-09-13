@@ -28,9 +28,9 @@ namespace urchin {
             throw std::runtime_error("AI environment should be paused while loading map.");
         }
 
-        loadMapCallback.notify(LoadMapCallback::OBJECTS, LoadMapCallback::START_LOADING);
-        loadSceneObjectsFrom(sceneChunk, udaParser);
-        loadMapCallback.notify(LoadMapCallback::OBJECTS, LoadMapCallback::LOADED);
+        loadMapCallback.notify(LoadMapCallback::MODELS, LoadMapCallback::START_LOADING);
+        loadSceneModelsFrom(sceneChunk, udaParser);
+        loadMapCallback.notify(LoadMapCallback::MODELS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::START_LOADING);
         loadSceneLightsFrom(sceneChunk, udaParser);
@@ -51,15 +51,15 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::LOADED);
     }
 
-    void Map::loadSceneObjectsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
-        auto objectsListChunk = udaParser.getUniqueChunk(true, OBJECTS_TAG, UdaAttribute(), sceneChunk);
-        auto objectsChunk = udaParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
+    void Map::loadSceneModelsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+        auto modelsListChunk = udaParser.getUniqueChunk(true, MODELS_TAG, UdaAttribute(), sceneChunk);
+        auto modelsChunk = udaParser.getChunks(MODEL_TAG, UdaAttribute(), modelsListChunk);
 
-        for (const auto& objectChunk : objectsChunk) {
-            auto sceneObject = std::make_unique<SceneObject>();
-            sceneObject->loadFrom(objectChunk, udaParser);
+        for (const auto& modelChunk : modelsChunk) {
+            auto sceneModel = std::make_unique<SceneModel>();
+            sceneModel->loadFrom(modelChunk, udaParser);
 
-            addSceneObject(std::move(sceneObject));
+            addSceneModel(std::move(sceneModel));
         }
         renderer3d->preWarmModels();
     }
@@ -125,7 +125,7 @@ namespace urchin {
     }
 
     void Map::writeOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
-        writeSceneObjectsOn(sceneChunk, udaWriter);
+        writeSceneModelsOn(sceneChunk, udaWriter);
         writeSceneLightsOn(sceneChunk, udaWriter);
         writeSceneTerrainsOn(sceneChunk, udaWriter);
         writeSceneWatersOn(sceneChunk, udaWriter);
@@ -134,12 +134,12 @@ namespace urchin {
         writeSceneAIOn(sceneChunk, udaWriter);
     }
 
-    void Map::writeSceneObjectsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
-        auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &sceneChunk);
+    void Map::writeSceneModelsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+        auto& modelsListChunk = udaWriter.createChunk(MODELS_TAG, UdaAttribute(), &sceneChunk);
 
-        for (auto& sceneObject : sceneObjects) {
-            auto& objectsChunk = udaWriter.createChunk(OBJECT_TAG, UdaAttribute(), &objectsListChunk);
-            sceneObject->writeOn(objectsChunk, udaWriter);
+        for (auto& sceneModel : sceneModels) {
+            auto& modelsChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &modelsListChunk);
+            sceneModel->writeOn(modelsChunk, udaWriter);
         }
     }
 
@@ -191,26 +191,26 @@ namespace urchin {
         sceneAI->writeOn(aiElementsListChunk, udaWriter);
     }
 
-    const std::list<std::unique_ptr<SceneObject>>& Map::getSceneObjects() const {
-        return sceneObjects;
+    const std::list<std::unique_ptr<SceneModel>>& Map::getSceneModels() const {
+        return sceneModels;
     }
 
-    SceneObject& Map::getSceneObject(const std::string& name) const {
-        for (auto& sceneObject : sceneObjects) {
-            if (sceneObject->getName() == name) {
-                return *sceneObject;
+    SceneModel& Map::getSceneModel(const std::string& name) const {
+        for (auto& sceneModel : sceneModels) {
+            if (sceneModel->getName() == name) {
+                return *sceneModel;
             }
         }
         throw std::invalid_argument("Impossible to find a scene object having name: " + name);
     }
 
-    void Map::addSceneObject(std::unique_ptr<SceneObject> sceneObject) {
-        sceneObject->setup(renderer3d, physicsWorld, aiEnvironment);
-        sceneObjects.push_back(std::move(sceneObject));
+    void Map::addSceneModel(std::unique_ptr<SceneModel> sceneModel) {
+        sceneModel->setup(renderer3d, physicsWorld, aiEnvironment);
+        sceneModels.push_back(std::move(sceneModel));
     }
 
-    void Map::removeSceneObject(SceneObject& sceneObject) {
-        sceneObjects.remove_if([&sceneObject](const auto& o){return o.get()==&sceneObject;});
+    void Map::removeSceneModel(SceneModel& sceneModel) {
+        sceneModels.remove_if([&sceneModel](const auto& o){return o.get()==&sceneModel;});
     }
 
     const std::list<std::unique_ptr<SceneLight>>& Map::getSceneLights() const {
@@ -363,8 +363,8 @@ namespace urchin {
     }
 
     void Map::refreshEntities() {
-        for (auto& sceneObject : sceneObjects) {
-            sceneObject->refresh();
+        for (auto& sceneModel : sceneModels) {
+            sceneModel->refresh();
         }
 
         for (auto& sceneTerrain : sceneTerrains) {

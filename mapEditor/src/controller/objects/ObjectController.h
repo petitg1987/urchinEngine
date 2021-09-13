@@ -13,24 +13,24 @@ namespace urchin {
         public:
             ObjectController();
 
-            std::list<const SceneObject*> getSceneObjects() const;
-            const SceneObject* findSceneObjectByBodyId(const std::string&) const;
-            void addSceneObject(std::unique_ptr<SceneObject>);
-            void removeSceneObject(const SceneObject&);
-            void cloneSceneObject(std::unique_ptr<SceneObject>, const SceneObject&);
+            std::list<const SceneModel*> getSceneModels() const;
+            const SceneModel* findSceneModelByBodyId(const std::string&) const;
+            void addSceneModel(std::unique_ptr<SceneModel>);
+            void removeSceneModel(const SceneModel&);
+            void cloneSceneModel(std::unique_ptr<SceneModel>, const SceneModel&);
 
-            void createDefaultBody(const SceneObject&);
-            void changeBodyShape(const SceneObject&, CollisionShape3D::ShapeType);
-            void removeBody(const SceneObject&);
+            void createDefaultBody(const SceneModel&);
+            void changeBodyShape(const SceneModel&, CollisionShape3D::ShapeType);
+            void removeBody(const SceneModel&);
 
-            const SceneObject& updateSceneObjectTransform(const SceneObject&, const Transform<float>&);
-            const SceneObject& updateSceneObjectFlags(const SceneObject&, bool);
-            const SceneObject& updateSceneObjectPhysicsProperties(const SceneObject&, float, float, float, float, float, float,
+            const SceneModel& updateSceneModelTransform(const SceneModel&, const Transform<float>&);
+            const SceneModel& updateSceneModelFlags(const SceneModel&, bool);
+            const SceneModel& updateSceneModelPhysicsProperties(const SceneModel&, float, float, float, float, float, float,
                     const Vector3<float>&, const Vector3<float>&);
-            const SceneObject& updateSceneObjectPhysicsShape(const SceneObject&, std::unique_ptr<const CollisionShape3D>);
+            const SceneModel& updateSceneModelPhysicsShape(const SceneModel&, std::unique_ptr<const CollisionShape3D>);
 
         private:
-            SceneObject& findSceneObject(const SceneObject&);
+            SceneModel& findSceneModel(const SceneModel&);
     };
 
 }

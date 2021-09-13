@@ -9,7 +9,7 @@
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
 #include <load/LoadMapCallback.h>
-#include <resources/object/SceneObject.h>
+#include <resources/model/SceneModel.h>
 #include <resources/light/SceneLight.h>
 #include <resources/terrain/SceneTerrain.h>
 #include <resources/water/SceneWater.h>
@@ -29,10 +29,10 @@ namespace urchin {
 
             Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
 
-            const std::list<std::unique_ptr<SceneObject>>& getSceneObjects() const;
-            SceneObject& getSceneObject(const std::string&) const;
-            void addSceneObject(std::unique_ptr<SceneObject>);
-            void removeSceneObject(SceneObject&);
+            const std::list<std::unique_ptr<SceneModel>>& getSceneModels() const;
+            SceneModel& getSceneModel(const std::string&) const;
+            void addSceneModel(std::unique_ptr<SceneModel>);
+            void removeSceneModel(SceneModel&);
 
             const std::list<std::unique_ptr<SceneLight>>& getSceneLights() const;
             SceneLight& getSceneLight(const std::string&) const;
@@ -67,7 +67,7 @@ namespace urchin {
 
         private:
             void loadFrom(const UdaChunk*, const UdaParser&, LoadMapCallback&);
-            void loadSceneObjectsFrom(const UdaChunk*, const UdaParser&);
+            void loadSceneModelsFrom(const UdaChunk*, const UdaParser&);
             void loadSceneLightsFrom(const UdaChunk*, const UdaParser&);
             void loadSceneTerrainFrom(const UdaChunk*, const UdaParser&);
             void loadSceneWaterFrom(const UdaChunk*, const UdaParser&);
@@ -76,7 +76,7 @@ namespace urchin {
             void loadSceneAIFrom(const UdaChunk*, const UdaParser&);
 
             void writeOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneObjectsOn(UdaChunk&, UdaWriter&) const;
+            void writeSceneModelsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneLightsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneTerrainsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneWatersOn(UdaChunk&, UdaWriter&) const;
@@ -87,8 +87,8 @@ namespace urchin {
             void refreshEntities();
             void refreshSound();
 
-            static constexpr char OBJECTS_TAG[] = "objects";
-            static constexpr char OBJECT_TAG[] = "object";
+            static constexpr char MODELS_TAG[] = "models";
+            static constexpr char MODEL_TAG[] = "model";
             static constexpr char LIGHTS_TAG[] = "lights";
             static constexpr char LIGHT_TAG[] = "light";
             static constexpr char TERRAINS_TAG[] = "terrains";
@@ -105,7 +105,7 @@ namespace urchin {
             SoundEnvironment* soundEnvironment;
             AIEnvironment* aiEnvironment;
 
-            std::list<std::unique_ptr<SceneObject>> sceneObjects;
+            std::list<std::unique_ptr<SceneModel>> sceneModels;
             std::list<std::unique_ptr<SceneLight>> sceneLights;
             std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
