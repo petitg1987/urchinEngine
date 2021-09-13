@@ -101,8 +101,12 @@ namespace urchin {
         }
     }
 
-    OctreeManager<Model>& Renderer3d::getModelOctreeManager() const {
+    const OctreeManager<Model>& Renderer3d::getModelOctreeManager() const {
         return *modelOctreeManager;
+    }
+
+    const ModelSetDisplayer& Renderer3d::getModelSetDisplayer() const {
+        return *modelSetDisplayer;
     }
 
     FogContainer& Renderer3d::getFogContainer() const {

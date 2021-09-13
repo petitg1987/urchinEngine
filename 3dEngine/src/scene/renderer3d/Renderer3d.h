@@ -40,7 +40,8 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             //graphics
-            OctreeManager<Model>& getModelOctreeManager() const;
+            const OctreeManager<Model>& getModelOctreeManager() const;
+            const ModelSetDisplayer& getModelSetDisplayer() const;
             FogContainer& getFogContainer() const;
             TerrainContainer& getTerrainContainer() const;
             WaterContainer& getWaterContainer() const;

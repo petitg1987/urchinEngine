@@ -36,6 +36,8 @@ namespace urchin {
 
             void updateModels(const std::vector<Model*>&);
             void removeModel(Model*);
+            const std::vector<Model*>& getModels() const;
+            bool isModelDisplayerExist(const Model&) const;
 
             void prepareRendering(unsigned int&, const Matrix4<float>&);
 
@@ -60,7 +62,7 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;
-            std::unordered_map<Model*, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
+            std::unordered_map<const Model*, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
     };
 
 }

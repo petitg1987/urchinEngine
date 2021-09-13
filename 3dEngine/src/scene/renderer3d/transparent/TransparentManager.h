@@ -18,6 +18,7 @@ namespace urchin {
             void onTextureUpdate(const std::shared_ptr<Texture>&);
             void onCameraProjectionUpdate(const Camera&);
 
+            const ModelSetDisplayer& getModelSetDisplayer() const;
             void updateModels(const std::vector<Model*>&);
             void removeModel(Model*);
 

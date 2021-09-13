@@ -94,24 +94,35 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateModels");
         assert(renderTarget);
 
+        this->models.clear();
         for (auto model : models) {
-            const auto& itModel = modelsDisplayer.find(model);
-            if (itModel == modelsDisplayer.end()) {
-                auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader);
-                modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
-                modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
-                modelDisplayer->setupBlendFunctions(blendFunctions);
-                modelDisplayer->setupFaceCull(enableFaceCull);
-                modelDisplayer->initialize();
-                modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
+            if (!meshFilter || meshFilter->isAccepted(*model)) { //TODO cause black screen on some level
+                this->models.push_back(model);
+
+                const auto& itModel = modelsDisplayer.find(model);
+                if (itModel == modelsDisplayer.end()) {
+                    auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader);
+                    modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
+                    modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
+                    modelDisplayer->setupBlendFunctions(blendFunctions);
+                    modelDisplayer->setupFaceCull(enableFaceCull);
+                    modelDisplayer->initialize();
+                    modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
+                }
             }
         }
-
-        this->models = models;
     }
 
     void ModelSetDisplayer::removeModel(Model* model) {
         modelsDisplayer.erase(model);
+    }
+
+    const std::vector<Model*>& ModelSetDisplayer::getModels() const {
+        return models;
+    }
+
+    bool ModelSetDisplayer::isModelDisplayerExist(const Model& model) const {
+        return modelsDisplayer.find(&model) != modelsDisplayer.end();
     }
 
     void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {

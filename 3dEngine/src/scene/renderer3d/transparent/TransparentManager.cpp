@@ -91,6 +91,10 @@ namespace urchin {
         modelSetDisplayer->onCameraProjectionUpdate(*camera);
     }
 
+    const ModelSetDisplayer& TransparentManager::getModelSetDisplayer() const {
+        return *modelSetDisplayer;
+    }
+
     void TransparentManager::updateModels(const std::vector<Model*>& models) {
         modelSetDisplayer->updateModels(models);
     }
