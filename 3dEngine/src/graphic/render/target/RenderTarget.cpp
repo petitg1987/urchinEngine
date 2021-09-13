@@ -17,7 +17,7 @@ namespace urchin {
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
-            renderersDirty(false) {
+            renderersDirty(true) {
         Logger::instance().logInfo("Create render target: " + this->name);
     }
 
@@ -130,7 +130,7 @@ namespace urchin {
         return renderers;
     }
 
-    bool RenderTarget::hasRenderer() {
+    bool RenderTarget::hasRenderer() const {
         const auto& rendererIsEnabled = [](const auto* renderer){return renderer->isEnabled();};
         return std::any_of(renderers.begin(), renderers.end(), rendererIsEnabled);
     }

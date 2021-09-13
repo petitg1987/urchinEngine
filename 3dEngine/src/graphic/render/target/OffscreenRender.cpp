@@ -188,7 +188,7 @@ namespace urchin {
     }
 
     VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() {
-        if (queueSubmitSemaphoreUsable && hasRenderer()) {
+        if (queueSubmitSemaphoreUsable) {
             //Once the queue submit semaphore has been used as a wait semaphore, it cannot be re-used in the same rendering pass.
             //Examples:
             // 1) The 'deferred - first pass' pass is required for the 'ambient occlusion' pass and for the 'deferred - second pass' pass but the semaphore can be used only once. Therefore, the 'ambient occlusion' pass is the only pass which can wait for the 'deferred - first pass' pass.
@@ -219,7 +219,7 @@ namespace urchin {
         configureWaitSemaphore(submitInfo, nullptr);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
-        submitInfo.signalSemaphoreCount = hasRenderer() ? 1 : 0;
+        submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = signalSemaphores;
 
         vkResetFences(logicalDevice, 1, &commandBufferFence);

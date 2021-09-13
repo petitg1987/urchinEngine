@@ -54,7 +54,7 @@ namespace urchin {
             void initializeRenderers();
             void cleanupRenderers();
             const std::vector<GenericRenderer*>& getRenderers() const;
-            bool hasRenderer();
+            bool hasRenderer() const;
             bool areRenderersDirty() const;
 
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;

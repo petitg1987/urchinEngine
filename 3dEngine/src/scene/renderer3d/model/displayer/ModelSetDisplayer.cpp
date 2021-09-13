@@ -95,10 +95,9 @@ namespace urchin {
         assert(renderTarget);
 
         this->models.clear();
-        for (auto model : models) {
-            if (!meshFilter || meshFilter->isAccepted(*model)) { //TODO cause black screen on some level
-                this->models.push_back(model);
 
+        for (auto model : models) {
+            if (!meshFilter || meshFilter->isAccepted(*model)) {
                 const auto& itModel = modelsDisplayer.find(model);
                 if (itModel == modelsDisplayer.end()) {
                     auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader);
@@ -109,6 +108,8 @@ namespace urchin {
                     modelDisplayer->initialize();
                     modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
                 }
+
+                this->models.push_back(model);
             }
         }
     }

@@ -120,12 +120,8 @@ namespace urchin {
         }
 
         if (textureType == TextureType::ARRAY) {
-            if (layersToUpdate != 0) {
-                textureRenderer->updateUniformData(0, &layersToUpdate);
-                renderTarget->render();
-            }
-        } else {
-            renderTarget->render();
+            textureRenderer->updateUniformData(0, &layersToUpdate);
         }
+        renderTarget->render();
     }
 }
