@@ -2,12 +2,15 @@
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
 #include <graphic/render/GenericRendererBuilder.h>
+#include <graphic/render/target/OffscreenRender.h>
+#include <graphic/render/target/NullRenderTarget.h>
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/texture/Texture.h>
 
 namespace urchin {
 
-    TransparentManager::TransparentManager(LightManager& lightManager) :
+    TransparentManager::TransparentManager(bool useNullRenderTarget, LightManager& lightManager) :
+            useNullRenderTarget(useNullRenderTarget),
             lightManager(lightManager),
             sceneWidth(0),
             sceneHeight(0),
@@ -16,8 +19,8 @@ namespace urchin {
     }
 
     TransparentManager::~TransparentManager() {
-        if (offscreenRenderTarget) {
-            offscreenRenderTarget->cleanup();
+        if (renderTarget) {
+            renderTarget->cleanup();
         }
     }
 
@@ -46,15 +49,21 @@ namespace urchin {
         accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT, nullptr);
         revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_8_INT, nullptr);
 
-        if (offscreenRenderTarget) {
-            offscreenRenderTarget->resetOutputTextures();
+        if (useNullRenderTarget) {
+            if (!renderTarget) {
+                renderTarget = std::make_unique<NullRenderTarget>(accumulationTexture->getWidth(), accumulationTexture->getHeight());
+            }
         } else {
-            offscreenRenderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
+            if (renderTarget) {
+                dynamic_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
+            } else {
+                renderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
+            }
+            renderTarget->setExternalDepthTexture(depthTexture);
+            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(accumulationTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f)));
+            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(revealTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f)));
+            renderTarget->initialize();
         }
-        offscreenRenderTarget->setExternalDepthTexture(depthTexture);
-        offscreenRenderTarget->addOutputTexture(accumulationTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f)));
-        offscreenRenderTarget->addOutputTexture(revealTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f)));
-        offscreenRenderTarget->initialize();
     }
 
     void TransparentManager::createOrUpdateModelSetDisplayer() {
@@ -78,7 +87,7 @@ namespace urchin {
         modelSetDisplayer->setupFaceCull(false);
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
 
-        modelSetDisplayer->initialize(*offscreenRenderTarget);
+        modelSetDisplayer->initialize(*renderTarget);
         modelSetDisplayer->onCameraProjectionUpdate(*camera);
     }
 
@@ -94,9 +103,9 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
-        offscreenRenderTarget->disableAllRenderers();
+        renderTarget->disableAllRenderers();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getViewMatrix());
-        offscreenRenderTarget->render();
+        renderTarget->render();
     }
 
     void TransparentManager::loadTransparentTextures(GenericRenderer& lightingRenderer, std::size_t accumulationTextureUnit, std::size_t revealTextureUnit) const {

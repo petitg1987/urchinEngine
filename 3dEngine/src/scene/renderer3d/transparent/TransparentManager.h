@@ -6,14 +6,13 @@
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <graphic/render/target/RenderTarget.h>
-#include <graphic/render/target/OffscreenRender.h>
 #include <graphic/render/GenericRenderer.h>
 
 namespace urchin {
 
     class TransparentManager {
         public:
-            explicit TransparentManager(LightManager&);
+            TransparentManager(bool, LightManager&);
             ~TransparentManager();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);
@@ -35,13 +34,14 @@ namespace urchin {
             void createOrUpdateTextures();
             void createOrUpdateModelSetDisplayer();
 
+            bool useNullRenderTarget;
             LightManager& lightManager;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
             const Camera* camera;
 
             std::shared_ptr<Texture> depthTexture;
-            std::unique_ptr<OffscreenRender> offscreenRenderTarget;
+            std::unique_ptr<RenderTarget> renderTarget;
             std::shared_ptr<Texture> accumulationTexture;
             std::shared_ptr<Texture> revealTexture;
 

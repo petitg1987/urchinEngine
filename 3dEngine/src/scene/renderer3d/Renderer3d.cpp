@@ -43,7 +43,7 @@ namespace urchin {
             skyContainer(std::make_unique<SkyContainer>(*deferredRenderTarget)),
             lightManager(std::make_unique<LightManager>()),
             ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>(!finalRenderTarget.isValidRenderTarget())),
-            transparentManager(std::make_unique<TransparentManager>(*lightManager)),
+            transparentManager(std::make_unique<TransparentManager>(!finalRenderTarget.isValidRenderTarget(), *lightManager)),
             shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
 
             //lighting pass rendering

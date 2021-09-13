@@ -71,7 +71,9 @@ namespace urchin {
         ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, textureFormat, nullptr);
 
         if (useNullRenderTarget) {
-            renderTarget = std::make_unique<NullRenderTarget>((unsigned int)resolution.X, (unsigned int)resolution.Y);
+            if (!renderTarget) {
+                renderTarget = std::make_unique<NullRenderTarget>((unsigned int)resolution.X, (unsigned int)resolution.Y);
+            }
         } else {
             if (renderTarget) {
                 dynamic_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();

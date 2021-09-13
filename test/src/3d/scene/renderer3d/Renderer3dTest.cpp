@@ -8,10 +8,11 @@ using namespace urchin;
 void Renderer3dTest::modelPreWarm() {
     NullRenderTarget nullRenderTarget(1920, 1080);
     Renderer3d renderer3D(nullRenderTarget);
+    renderer3D.setCamera(std::make_shared<FreeCamera>(90.0f, 0.01f, 1000.0f));
     renderer3D.addModel(buildModel("resources/materials/opaque.uda", "model1", Point3<float>(0.0f, 0.0f, 0.0f)));
     renderer3D.addModel(buildModel("resources/materials/transparent.uda", "model1", Point3<float>(0.0f, 0.0f, 0.0f)));
 
-    //TODO renderer3D.preWarmModels();
+    renderer3D.preWarmModels();
 
     //TODO assert:
     // - transparent manager contain one model
