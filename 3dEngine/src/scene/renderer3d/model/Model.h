@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    class Model : public Octreeable<Model> {
+    class Model : public Octreeable<Model>, public TaggableResource {
         public:
             enum NotificationType {
                 MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE

@@ -211,10 +211,15 @@ namespace urchin {
         return camera.get();
     }
 
+    void Renderer3d::findModelsByTag(const std::string& tag, std::vector<Model*>& models) {
+        modelTagHolder.findByTag<Model*>(tag, models);
+    }
+
     void Renderer3d::addModel(std::shared_ptr<Model> model) {
         if (model) {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
 
+            modelTagHolder.addTaggableResource(model.get());
             modelOctreeManager->addOctreeable(std::move(model));
         }
     }
@@ -224,6 +229,7 @@ namespace urchin {
             shadowManager->removeModel(model);
             transparentManager->removeModel(model);
             modelSetDisplayer->removeModel(model);
+            modelTagHolder.removeTaggableResource(model);
             return modelOctreeManager->removeOctreeable(model);
         }
         return std::shared_ptr<Model>(nullptr);
