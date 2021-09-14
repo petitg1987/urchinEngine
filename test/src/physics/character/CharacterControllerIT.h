@@ -14,7 +14,7 @@ class CharacterControllerIT : public CppUnit::TestFixture {
         void ccdMovingCharacter();
 
     private:
-        void constructGround(const urchin::PhysicsWorld&);
-        void constructWall(const urchin::PhysicsWorld&);
-        std::vector<std::shared_ptr<urchin::RigidBody>> constructCubes(const urchin::PhysicsWorld&, float);
+        void constructGround(urchin::PhysicsWorld&);
+        void constructWall(urchin::PhysicsWorld&);
+        std::vector<std::shared_ptr<urchin::RigidBody>> constructCubes(urchin::PhysicsWorld&, float);
 };

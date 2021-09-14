@@ -107,20 +107,15 @@ namespace urchin {
         auto tagsChunk = udaParser.getUniqueChunk(false, TAGS_TAG, UdaAttribute(), modelChunk);
         if (tagsChunk) {
             std::string tagsValues = tagsChunk->getStringValue();
-            std::vector<std::string> tagsList;
-            StringUtil::split(tagsValues, ',', tagsList);
-            for(std::string tag: tagsList) {
-                StringUtil::trim(tag);
+            std::vector<std::string> tags = StringUtil::split(tagsValues, TAGS_SEPARATOR);
+            for(const std::string& tag: tags) {
                 model.addTag(tag);
             }
         }
     }
 
     void ModelReaderWriter::writeTagsOn(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        std::string tagsValues;
-        for(const std::string& tag : model.getTags()) {
-            tagsValues += "," + tag;
-        }
+        std::string tagsValues = StringUtil::merge(model.getTags(), TAGS_SEPARATOR);
         if (!tagsValues.empty()) {
             auto& tagsChunk = udaWriter.createChunk(TAGS_TAG, UdaAttribute(), &modelChunk);
             tagsChunk.setStringValue(tagsValues);

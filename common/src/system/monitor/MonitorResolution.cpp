@@ -17,8 +17,7 @@ namespace urchin {
     }
 
     MonitorResolution MonitorResolution::buildFromId(const std::string& id) {
-        std::vector<std::string> resolutionParts;
-        StringUtil::split(id, ID_DELIMITER, resolutionParts);
+        std::vector<std::string> resolutionParts = StringUtil::split(id, ID_DELIMITER);
         if (resolutionParts.size() != 3) {
             Logger::instance().logError("Wrongly structured monitor resolution id: " + id);
             return MonitorResolution(1920, 1080, 60);

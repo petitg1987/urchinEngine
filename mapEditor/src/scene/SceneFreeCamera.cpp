@@ -17,8 +17,7 @@ namespace urchin {
         std::map<std::string, std::string> cameraPositionByMap = MapSerializer::deserialize(StateSaveHelper::instance().retrieveState("camera.position", ""));
         auto it = cameraPositionByMap.find(mapFilename);
         if (it != cameraPositionByMap.end()) {
-            std::vector<std::string> serializedCameraElements;
-            StringUtil::split(it->second, DATA_DELIMITER, serializedCameraElements);
+            std::vector<std::string> serializedCameraElements = StringUtil::split(it->second, DATA_DELIMITER);
             assert(serializedCameraElements.size() == 2);
 
             moveTo(TypeConverter::toPoint3(serializedCameraElements[0]));

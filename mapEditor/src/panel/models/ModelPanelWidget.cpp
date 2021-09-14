@@ -1,4 +1,5 @@
 #include <QtWidgets/QHBoxLayout>
+#include <UrchinMapHandler.h>
 
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
@@ -29,6 +30,7 @@ namespace urchin {
             eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
             scale(nullptr),
             produceShadowCheckBox(nullptr),
+            tags(nullptr),
             hasRigidBody(nullptr),
             tabPhysicsRigidBody(nullptr),
             physicsShapeLayout(nullptr),
@@ -80,6 +82,7 @@ namespace urchin {
         generalLayout->setContentsMargins(1, 1, 1, 1);
         setupTransformBox(generalLayout);
         setupFlagsBox(generalLayout);
+        setupTagsBox(generalLayout);
         tabWidget->addTab(tabGeneral, "General");
 
         //physics properties
@@ -183,6 +186,23 @@ namespace urchin {
         produceShadowCheckBox = new QCheckBox("Product Shadow");
         flagsLayout->addWidget(produceShadowCheckBox);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateModelFlags()));
+    }
+
+    void ModelPanelWidget::setupTagsBox(QVBoxLayout* generalLayout) {
+        auto* tagsGroupBox = new QGroupBox("Tags");
+        generalLayout->addWidget(tagsGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(tagsGroupBox);
+        tagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        auto* tagsLayout = new QGridLayout(tagsGroupBox);
+
+        auto* tagsLabel = new QLabel("Tags:");
+        tagsLabel->setToolTip("Comma separated");
+        tagsLayout->addWidget(tagsLabel, 0, 0);
+
+        tags = new QLineEdit();
+        tagsLayout->addWidget(tags, 0, 1);
+        connect(tags, SIGNAL(textChanged(const QString &)), this, SLOT(updateModelTags()));
     }
 
     void ModelPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
@@ -437,6 +457,9 @@ namespace urchin {
 
         this->produceShadowCheckBox->setChecked(model->isProduceShadow());
 
+        std::string tagsValues = StringUtil::merge(model->getTags(), ModelReaderWriter::TAGS_SEPARATOR);
+        this->tags->setText(QString::fromStdString(tagsValues));
+
         setupModelPhysicsDataFrom(sceneModel);
         disableModelEvent = false;
     }
@@ -597,6 +620,15 @@ namespace urchin {
 
             bool produceShadow = produceShadowCheckBox->checkState() == Qt::Checked;
             modelController->updateSceneModelFlags(sceneModel, produceShadow);
+        }
+    }
+
+    void ModelPanelWidget::updateModelTags() {
+        if (!disableModelEvent) {
+            const SceneModel& sceneModel = *modelTableView->getSelectedSceneModel();
+
+            std::string tagsValues = tags->text().toUtf8().constData();
+            modelController->updateSceneModelTags(sceneModel, tagsValues);
         }
     }
 

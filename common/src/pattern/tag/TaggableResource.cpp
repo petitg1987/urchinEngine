@@ -35,19 +35,26 @@ namespace urchin {
     }
 
     void TaggableResource::addTag(const std::string& tag) {
-        tags.push_back(tag);
-
         if (tagHolder) {
             tagHolder->addTag(this, tag);
         }
+        tags.push_back(tag);
     }
 
     void TaggableResource::removeTag(const std::string& tag) {
-        tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
-
         if (tagHolder) {
             tagHolder->removeTag(this, tag);
         }
+        tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
+    }
+
+    void TaggableResource::removeAllTags() {
+        if (tagHolder) {
+            for (const std::string& tag: tags) {
+                tagHolder->removeTag(this, tag);
+            }
+        }
+        tags.clear();
     }
 
 }

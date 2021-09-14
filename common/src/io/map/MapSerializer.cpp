@@ -18,9 +18,8 @@ namespace urchin {
     }
 
     std::map<std::string, std::string> MapSerializer::deserialize(const std::string& mapString) {
-        std::vector<std::string> splitStrings;
         std::vector<std::string> mapListString;
-        StringUtil::split(mapString, DELIMITER, splitStrings);
+        std::vector<std::string> splitStrings = StringUtil::split(mapString, DELIMITER);
 
         bool appendNextElement = false;
         for (const auto& elem : splitStrings) {

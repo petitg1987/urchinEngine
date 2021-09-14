@@ -28,11 +28,20 @@ void StringUtilTest::splitEmptyString() {
     AssertHelper::assertStringEquals(splitStr[2], "str2");
 }
 
+void StringUtilTest::mergeString() {
+    std::vector<std::string> splitStr = {"str1", "", "str2"};
+
+    std::string merged = StringUtil::merge(splitStr, ',');
+
+    AssertHelper::assertStringEquals(merged, "str1,,str2");
+}
+
 CppUnit::Test* StringUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("StringUtilTest");
 
     suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitString", &StringUtilTest::splitString));
     suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitEmptyString", &StringUtilTest::splitEmptyString));
+    suite->addTest(new CppUnit::TestCaller<StringUtilTest>("mergeString", &StringUtilTest::mergeString));
 
     return suite;
 }

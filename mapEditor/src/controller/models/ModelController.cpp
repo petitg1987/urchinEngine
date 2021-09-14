@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <memory>
+#include <UrchinMapHandler.h>
 
 #include <controller/models/ModelController.h>
 #include <panel/models/bodyshape/support/DefaultBodyShapeCreator.h>
@@ -112,6 +113,21 @@ namespace urchin {
         Model* model = sceneModel.getModel();
 
         model->setProduceShadow(produceShadow);
+
+        markModified();
+        return sceneModel;
+    }
+
+    const SceneModel& ModelController::updateSceneModelTags(const SceneModel& constSceneModel, const std::string& tagsValues) {
+        SceneModel& sceneModel = findSceneModel(constSceneModel);
+        Model* model = sceneModel.getModel();
+
+        model->removeAllTags();
+
+        std::vector<std::string> tagsList = StringUtil::split(tagsValues, ModelReaderWriter::TAGS_SEPARATOR);
+        for(const std::string& tag: tagsList) {
+            model->addTag(tag);
+        }
 
         markModified();
         return sceneModel;

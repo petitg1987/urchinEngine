@@ -25,6 +25,7 @@ namespace urchin {
 
             const SceneModel& updateSceneModelTransform(const SceneModel&, const Transform<float>&);
             const SceneModel& updateSceneModelFlags(const SceneModel&, bool);
+            const SceneModel& updateSceneModelTags(const SceneModel&, const std::string&);
             const SceneModel& updateSceneModelPhysicsProperties(const SceneModel&, float, float, float, float, float, float,
                     const Vector3<float>&, const Vector3<float>&);
             const SceneModel& updateSceneModelPhysicsShape(const SceneModel&, std::unique_ptr<const CollisionShape3D>);

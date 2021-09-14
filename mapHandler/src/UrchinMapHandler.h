@@ -4,6 +4,7 @@
 
 #include <resources/Map.h>
 #include <resources/model/SceneModel.h>
+#include <resources/model/ModelReaderWriter.h>
 #include <resources/light/SceneLight.h>
 #include <resources/terrain/SceneTerrain.h>
 

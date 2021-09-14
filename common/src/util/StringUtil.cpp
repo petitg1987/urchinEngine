@@ -39,6 +39,23 @@ namespace urchin {
         }
     }
 
+    std::vector<std::string> StringUtil::split(const std::string& str, const char& delimiter) {
+        std::vector<std::string> tokens;
+        split(str, delimiter, tokens);
+        return tokens;
+    }
+
+    std::string StringUtil::merge(const std::vector<std::string>& values, const char& delimiter) {
+        std::string mergedValues;
+        for(unsigned int i = 0; i < values.size(); ++i) {
+            mergedValues += values[i];
+            if (i + 1 < values.size()) {
+                mergedValues += delimiter;
+            }
+        }
+        return mergedValues;
+    }
+
     void StringUtil::ltrim(std::string& str) {
         str.erase(str.begin(), std::find_if (str.begin(), str.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
     }

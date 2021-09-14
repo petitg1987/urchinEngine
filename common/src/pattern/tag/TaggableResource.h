@@ -17,6 +17,7 @@ namespace urchin {
             const std::vector<std::string>& getTags() const;
             void addTag(const std::string&);
             void removeTag(const std::string&);
+            void removeAllTags();
 
         private:
             TagHolder* tagHolder;

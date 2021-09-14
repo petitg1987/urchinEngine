@@ -98,7 +98,7 @@ void CharacterControllerIT::ccdMovingCharacter() {
     AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.15f);
 }
 
-void CharacterControllerIT::constructGround(const PhysicsWorld& physicsWorld) {
+void CharacterControllerIT::constructGround(PhysicsWorld& physicsWorld) {
     std::vector<Point3<float>> groundPoints = {
             Point3<float>(-100.0f, 0.0f, -100.0f), Point3<float>(100.0f, 0.0f, -100.0f),
             Point3<float>(-100.0f, 0.0f, 100.0f), Point3<float>(100.0f, 0.0f, 100.0f)
@@ -108,13 +108,13 @@ void CharacterControllerIT::constructGround(const PhysicsWorld& physicsWorld) {
     physicsWorld.getBodyContainer().addBody(std::move(groundBody));
 }
 
-void CharacterControllerIT::constructWall(const PhysicsWorld& physicsWorld) {
+void CharacterControllerIT::constructWall(PhysicsWorld& physicsWorld) {
     std::unique_ptr<CollisionBoxShape> wallShape = std::make_unique<CollisionBoxShape>(Vector3<float>(100.0f, 100.0f, 0.15f));
     auto wallBody = std::make_unique<RigidBody>("wall", PhysicsTransform(Point3<float>(0.0f, 0.0f, -10.0f), Quaternion<float>()), std::move(wallShape));
     physicsWorld.getBodyContainer().addBody(std::move(wallBody));
 }
 
-std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(const PhysicsWorld& physicsWorld, float cubeHeight) {
+std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(PhysicsWorld& physicsWorld, float cubeHeight) {
     std::vector<std::shared_ptr<RigidBody>> cubes;
     for (unsigned int x = 0; x < 5; x++) {
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8

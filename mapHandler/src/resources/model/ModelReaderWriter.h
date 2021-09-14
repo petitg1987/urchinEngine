@@ -10,6 +10,8 @@ namespace urchin {
 
     class ModelReaderWriter {
         public:
+            static constexpr char TAGS_SEPARATOR = ',';
+
             static std::shared_ptr<Model> loadFrom(const UdaChunk*, const UdaParser&);
             static void writeOn(UdaChunk&, const Model&, UdaWriter&);
 

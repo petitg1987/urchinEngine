@@ -43,6 +43,7 @@ namespace urchin {
             void setupOrientation(QGridLayout*);
             void setupScale(QGridLayout*);
             void setupFlagsBox(QVBoxLayout*);
+            void setupTagsBox(QVBoxLayout*);
             void setupPhysicsBox(QVBoxLayout*);
             void setupPhysicsGeneralPropertiesBox(QVBoxLayout*);
             void setupPhysicsDampingPropertiesBox(QVBoxLayout*);
@@ -77,6 +78,7 @@ namespace urchin {
             QDoubleSpinBox* eulerAxis2;
             QDoubleSpinBox* scale;
             QCheckBox* produceShadowCheckBox;
+            QLineEdit* tags;
 
             //physics
             QCheckBox* hasRigidBody;
@@ -107,6 +109,7 @@ namespace urchin {
             void updateModelTransform();
             void updateModelScale();
             void updateModelFlags();
+            void updateModelTags();
 
             void showChangeBodyShapeDialog();
             void rigidBodyToggled(int);
