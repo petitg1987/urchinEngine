@@ -11,6 +11,7 @@ namespace urchin {
         loadAnimationsOn(*model, modelChunk, udaParser);
         loadTransformOn(*model, modelChunk, udaParser);
         loadFlagsOn(*model, modelChunk, udaParser);
+        loadTagsOn(*model, modelChunk, udaParser);
 
         return model;
     }
@@ -25,6 +26,7 @@ namespace urchin {
         writeAnimationsOn(modelChunk, model, udaWriter);
         writeTransformOn(modelChunk, model, udaWriter);
         writeFlagsOn(modelChunk, model, udaWriter);
+        writeTagsOn(modelChunk, model, udaWriter);
     }
 
     void ModelReaderWriter::loadAnimationsOn(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
@@ -98,6 +100,30 @@ namespace urchin {
         if (!model.isProduceShadow()) {
             auto& produceShadowChunk = udaWriter.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &modelChunk);
             produceShadowChunk.setBoolValue(model.isProduceShadow());
+        }
+    }
+
+    void ModelReaderWriter::loadTagsOn(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
+        auto tagsChunk = udaParser.getUniqueChunk(false, TAGS_TAG, UdaAttribute(), modelChunk);
+        if (tagsChunk) {
+            std::string tagsValues = tagsChunk->getStringValue();
+            std::vector<std::string> tagsList;
+            StringUtil::split(tagsValues, ',', tagsList);
+            for(std::string tag: tagsList) {
+                StringUtil::trim(tag);
+                model.addTag(tag);
+            }
+        }
+    }
+
+    void ModelReaderWriter::writeTagsOn(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
+        std::string tagsValues;
+        for(const std::string& tag : model.getTags()) {
+            tagsValues += "," + tag;
+        }
+        if (!tagsValues.empty()) {
+            auto& tagsChunk = udaWriter.createChunk(TAGS_TAG, UdaAttribute(), &modelChunk);
+            tagsChunk.setStringValue(tagsValues);
         }
     }
 

@@ -30,7 +30,7 @@ namespace urchin {
         this->tagHolder = tagHolder;
     }
 
-    const std::vector<std::string>& TaggableResource::getTags() {
+    const std::vector<std::string>& TaggableResource::getTags() const {
         return tags;
     }
 
