@@ -11,12 +11,12 @@ namespace urchin {
 
     Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
-            i18nService(std::make_unique<I18nService>()),
+            i18nService(I18nService()),
             sceneWidth(0),
             sceneHeight(0),
             fps(0),
             fpsForDisplay(0),
-            screenRenderTarget(std::make_unique<ScreenRender>("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
+            screenRenderTarget(ScreenRender("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderers(nullptr) {
         //scene properties
@@ -28,18 +28,18 @@ namespace urchin {
         //initialize
         SignalHandler::instance().initialize();
         GraphicService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
-        screenRenderTarget->initialize();
+        screenRenderTarget.initialize();
     }
 
     Scene::~Scene() {
-        screenRenderTarget->cleanup();
+        screenRenderTarget.cleanup();
         if (!DEBUG_PROFILE_FRAME_BY_FRAME) {
             Profiler::graphic().log();
         }
     }
 
     void Scene::updateVerticalSync(bool verticalSyncEnabled) {
-        screenRenderTarget->updateVerticalSync(verticalSyncEnabled);
+        screenRenderTarget.updateVerticalSync(verticalSyncEnabled);
     }
 
     void Scene::onResize() {
@@ -54,7 +54,7 @@ namespace urchin {
             this->sceneHeight = newSceneHeight;
 
             //renderer
-            screenRenderTarget->onResize();
+            screenRenderTarget.onResize();
             for (auto& renderer3d : renderers3d) {
                 renderer3d->onResize(sceneWidth, sceneHeight);
             }
@@ -72,8 +72,8 @@ namespace urchin {
         return sceneHeight;
     }
 
-    I18nService& Scene::getI18nService() const {
-        return *i18nService;
+    I18nService& Scene::getI18nService() {
+        return i18nService;
     }
 
     float Scene::getFps() const {
@@ -119,7 +119,7 @@ namespace urchin {
     }
 
     Renderer3d& Scene::newRenderer3d(bool enable) {
-        auto renderer3d = std::make_unique<Renderer3d>(*screenRenderTarget);
+        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget);
         if (enable) {
             enableRenderer3d(renderer3d.get());
         }
@@ -148,7 +148,7 @@ namespace urchin {
     }
 
     UIRenderer& Scene::newUIRenderer(bool enable) {
-        auto uiRenderer = std::make_unique<UIRenderer>(*screenRenderTarget, *i18nService);
+        auto uiRenderer = std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
         if (enable) {
             enableUIRenderer(uiRenderer.get());
         }
@@ -176,7 +176,7 @@ namespace urchin {
     }
 
     void Scene::takeScreenShot(const std::string& filename, unsigned int width, unsigned int height) const {
-        screenRenderTarget->takeScreenshot(filename, width, height);
+        screenRenderTarget.takeScreenshot(filename, width, height);
     }
 
     bool Scene::onKeyPress(unsigned int key) {
@@ -232,14 +232,14 @@ namespace urchin {
             float dt = getDeltaTime();
 
             unsigned int screenRenderingOrder = 0;
-            screenRenderTarget->disableAllRenderers();
+            screenRenderTarget.disableAllRenderers();
             for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderers}) {
                 if (activeRenderer) {
                     screenRenderingOrder++;
                     activeRenderer->prepareRendering(dt, screenRenderingOrder);
                 }
             }
-            screenRenderTarget->render();
+            screenRenderTarget.render();
 
             ResourceContainer::instance().cleanResources();
         }

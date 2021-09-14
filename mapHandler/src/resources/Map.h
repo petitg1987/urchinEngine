@@ -109,9 +109,9 @@ namespace urchin {
             std::list<std::unique_ptr<SceneLight>> sceneLights;
             std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
-            std::unique_ptr<SceneSky> sceneSky;
+            SceneSky sceneSky;
             std::list<std::unique_ptr<SceneSound>> sceneSounds;
-            std::unique_ptr<SceneAI> sceneAI;
+            SceneAI sceneAI;
     };
 
 }

@@ -12,7 +12,7 @@ namespace urchin {
             renderTarget(nullptr),
             mesh(std::move(mesh)),
             materials(std::move(materials)),
-            grass(std::make_unique<TerrainGrass>("")),
+            grass(TerrainGrass("")),
             ambient(0.0f) {
         terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "", "terrain.frag.spv", std::unique_ptr<ShaderConstants>());
 
@@ -24,7 +24,7 @@ namespace urchin {
         assert(!isInitialized);
         this->renderTarget = &renderTarget;
 
-        grass->initialize(renderTarget);
+        grass.initialize(renderTarget);
 
         setMesh(std::move(mesh));
         setMaterials(std::move(materials));
@@ -39,7 +39,7 @@ namespace urchin {
         positioningData.projectionMatrix = projectionMatrix;
 
         terrainRenderer->updateUniformData(1, &positioningData);
-        grass->onCameraProjectionUpdate(projectionMatrix);
+        grass.onCameraProjectionUpdate(projectionMatrix);
     }
 
     void Terrain::setMesh(std::unique_ptr<TerrainMesh> mesh) {
@@ -114,19 +114,23 @@ namespace urchin {
     }
 
     void Terrain::refreshGrassMesh() {
-        if (grass->isInitialized()) {
-            grass->refreshWith(mesh.get(), positioningData.position);
+        if (grass.isInitialized()) {
+            grass.refreshWith(mesh.get(), positioningData.position);
         }
     }
 
     void Terrain::refreshGrassAmbient() {
-        if (grass->isInitialized()) {
-            grass->refreshWith(ambient);
+        if (grass.isInitialized()) {
+            grass.refreshWith(ambient);
         }
     }
 
-    TerrainGrass& Terrain::getGrass() const {
-        return *grass;
+    TerrainGrass& Terrain::getGrass() {
+        return grass;
+    }
+
+    const TerrainGrass& Terrain::getGrass() const {
+        return grass;
     }
 
     /**
@@ -171,14 +175,12 @@ namespace urchin {
         return mesh->findHeightAt(localCoordinate) + positioningData.position.Y;
     }
 
-    void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) const {
+    void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
         assert(isInitialized);
 
         terrainRenderer->updateUniformData(0, &camera.getViewMatrix());
         terrainRenderer->enableRenderer(renderingOrder);
 
-        if (grass) {
-            grass->prepareRendering(renderingOrder, camera, dt);
-        }
+        grass.prepareRendering(renderingOrder, camera, dt);
     }
 }

@@ -7,8 +7,8 @@
 namespace urchin {
 
     SoundEnvironment::SoundEnvironment() :
-            streamUpdateWorker(std::make_unique<StreamUpdateWorker>()),
-            streamUpdateWorkerThread(std::make_unique<std::thread>(&StreamUpdateWorker::start, streamUpdateWorker.get())) {
+            streamUpdateWorker(StreamUpdateWorker()),
+            streamUpdateWorkerThread(std::thread(&StreamUpdateWorker::start, &streamUpdateWorker)) {
         SignalHandler::instance().initialize();
 
         AudioDevice::instance().enable(true);
@@ -22,8 +22,8 @@ namespace urchin {
     SoundEnvironment::~SoundEnvironment() {
         audioControllers.clear();
 
-        streamUpdateWorker->interrupt();
-        streamUpdateWorkerThread->join();
+        streamUpdateWorker.interrupt();
+        streamUpdateWorkerThread.join();
 
         Profiler::sound().log();
     }
@@ -32,7 +32,7 @@ namespace urchin {
         if (sound && soundTrigger) {
             ScopeProfiler sp(Profiler::graphic(), "addSound");
 
-            audioControllers.push_back(std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), *streamUpdateWorker));
+            audioControllers.push_back(std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), streamUpdateWorker));
         }
     }
 
@@ -87,7 +87,7 @@ namespace urchin {
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
     void SoundEnvironment::checkNoExceptionRaised() {
-        streamUpdateWorker->checkNoExceptionRaised();
+        streamUpdateWorker.checkNoExceptionRaised();
     }
 
     void SoundEnvironment::process(const Point3<float>& listenerPosition) {

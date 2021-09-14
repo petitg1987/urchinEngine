@@ -34,7 +34,7 @@ namespace urchin {
         }
     }
 
-    void WaterContainer::prepareRendering(unsigned int& renderingOrder, const Camera& camera, FogContainer* fogContainer, float dt) const {
+    void WaterContainer::prepareRendering(unsigned int& renderingOrder, const Camera& camera, FogContainer& fogContainer, float dt) const {
         ScopeProfiler sp(Profiler::graphic(), "waterPreRender");
 
         for (const auto& water : waters) {

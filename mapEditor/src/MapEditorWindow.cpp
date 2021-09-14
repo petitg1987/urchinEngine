@@ -20,7 +20,7 @@
 namespace urchin {
 
     MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
-            statusBarController(std::make_unique<StatusBarController>(this)),
+            statusBarController(StatusBarController(this)),
             saveAction(nullptr),
             saveAsAction(nullptr),
             closeAction(nullptr),
@@ -38,7 +38,7 @@ namespace urchin {
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
         setupMenu();
-        statusBarController->clearState();
+        statusBarController.clearState();
 
         setupSceneDisplayerWidget(centralWidget, horizontalLayout);
         setupSceneControllerWidget(centralWidget, horizontalLayout);
@@ -137,7 +137,7 @@ namespace urchin {
     }
 
     void MapEditorWindow::setupSceneDisplayerWidget(QWidget* centralWidget, QHBoxLayout* horizontalLayout) {
-        sceneDisplayerWindow = new SceneDisplayerWindow(centralWidget, *statusBarController, mapEditorPath);
+        sceneDisplayerWindow = new SceneDisplayerWindow(centralWidget, statusBarController, mapEditorPath);
         QWidget* sceneDisplayerWidget = QWidget::createWindowContainer(sceneDisplayerWindow, centralWidget);
 
         sceneDisplayerWidget->setMouseTracking(true);

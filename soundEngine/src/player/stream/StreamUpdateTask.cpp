@@ -9,7 +9,7 @@ namespace urchin {
      */
     StreamUpdateTask::StreamUpdateTask(const AudioStreamPlayer& audioStreamPlayer, unsigned int nbStreamChunks, bool playLoop) :
             audioStreamPlayer(audioStreamPlayer),
-            soundFileReader(std::make_unique<SoundFileReader>(audioStreamPlayer.getSound().getFilename())),
+            soundFileReader(SoundFileReader(audioStreamPlayer.getSound().getFilename())),
             playLoop(playLoop) {
         this->streamChunks.resize(nbStreamChunks, {});
     }
@@ -26,7 +26,7 @@ namespace urchin {
     }
 
     const SoundFileReader& StreamUpdateTask::getSoundFileReader() const {
-        return *soundFileReader;
+        return soundFileReader;
     }
 
     bool StreamUpdateTask::isPlayLoop() const {

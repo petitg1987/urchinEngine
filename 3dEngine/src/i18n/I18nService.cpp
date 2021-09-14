@@ -7,8 +7,8 @@ namespace urchin {
     I18nService::I18nService() :
             DEFAULT_LANGUAGE("en"),
             language(DEFAULT_LANGUAGE),
-            labelTranslator(std::make_unique<LabelTranslator>()) {
-        labelTranslator->checkMissingTranslation();
+            labelTranslator(LabelTranslator()) {
+        labelTranslator.checkMissingTranslation();
     }
 
     void I18nService::changeLanguage(std::string language) {
@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     void I18nService::refreshTranslation(TranslatableLabel* translatableLabel) {
-        std::string translatedLabel = labelTranslator->translate(language, translatableLabel->getLabelKey());
+        std::string translatedLabel = labelTranslator.translate(language, translatableLabel->getLabelKey());
         translatableLabel->updateLabel(translatedLabel);
     }
 

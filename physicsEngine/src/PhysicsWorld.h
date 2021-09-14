@@ -21,8 +21,8 @@ namespace urchin {
             PhysicsWorld();
             ~PhysicsWorld();
 
-            BodyContainer& getBodyContainer() const;
-            CollisionWorld& getCollisionWorld() const;
+            BodyContainer& getBodyContainer();
+            CollisionWorld& getCollisionWorld();
 
             void addBody(std::shared_ptr<AbstractBody>);
             void removeBody(const AbstractBody&);
@@ -62,8 +62,8 @@ namespace urchin {
             float timeStep;
             bool paused;
 
-            std::unique_ptr<BodyContainer> bodyContainer;
-            std::unique_ptr<CollisionWorld> collisionWorld;
+            BodyContainer bodyContainer;
+            CollisionWorld collisionWorld;
 
             std::vector<std::shared_ptr<Processable>> processables;
             std::vector<std::unique_ptr<Processable>> oneShotProcessables;

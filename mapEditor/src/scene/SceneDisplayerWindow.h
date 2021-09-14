@@ -59,7 +59,7 @@ namespace urchin {
             std::string mapEditorPath;
 
             std::unique_ptr<SceneWindowController> sceneWindowController;
-            std::unique_ptr<MouseController> mouseController;
+            MouseController mouseController;
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
             bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 

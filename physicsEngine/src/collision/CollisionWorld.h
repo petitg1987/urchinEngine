@@ -25,8 +25,8 @@ namespace urchin {
                 COLLISION_RESULT_UPDATED
             };
 
-            BroadPhase& getBroadPhase() const;
-            NarrowPhase& getNarrowPhase() const;
+            BroadPhase& getBroadPhase();
+            NarrowPhase& getNarrowPhase();
 
             void process(float, const Vector3<float>&);
 
@@ -35,12 +35,12 @@ namespace urchin {
         private:
             BodyContainer& bodyContainer;
 
-            std::unique_ptr<BroadPhase> broadPhase;
-            std::unique_ptr<NarrowPhase> narrowPhase;
-            std::unique_ptr<IntegrateVelocity> integrateVelocity;
-            std::unique_ptr<ConstraintSolver> constraintSolver;
-            std::unique_ptr<BodyActiveStateUpdater> bodyActiveStateUpdater;
-            std::unique_ptr<IntegrateTransform> integrateTransform;
+            BroadPhase broadPhase;
+            NarrowPhase narrowPhase;
+            IntegrateVelocity integrateVelocity;
+            ConstraintSolver constraintSolver;
+            BodyActiveStateUpdater bodyActiveStateUpdater;
+            IntegrateTransform integrateTransform;
 
             std::vector<ManifoldResult> manifoldResults;
     };

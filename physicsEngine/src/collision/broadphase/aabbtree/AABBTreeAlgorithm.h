@@ -23,8 +23,7 @@ namespace urchin {
             std::vector<AbstractBody*> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const override;
 
         private:
-            std::unique_ptr<BodyAABBTree> tree;
-
+            BodyAABBTree tree;
     };
 
 }

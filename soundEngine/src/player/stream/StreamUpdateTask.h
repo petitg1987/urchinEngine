@@ -27,7 +27,7 @@ namespace urchin {
 
         private:
             const AudioStreamPlayer& audioStreamPlayer;
-            std::unique_ptr<SoundFileReader> soundFileReader;
+            SoundFileReader soundFileReader;
             bool playLoop;
 
             std::vector<StreamChunk> streamChunks;

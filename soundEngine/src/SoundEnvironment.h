@@ -38,8 +38,8 @@ namespace urchin {
             std::map<Sound::SoundCategory, float> soundVolumes;
 
             //stream chunk updater thread
-            std::unique_ptr<StreamUpdateWorker> streamUpdateWorker;
-            std::unique_ptr<std::thread> streamUpdateWorkerThread;
+            StreamUpdateWorker streamUpdateWorker;
+            std::thread streamUpdateWorkerThread;
     };
 
 }

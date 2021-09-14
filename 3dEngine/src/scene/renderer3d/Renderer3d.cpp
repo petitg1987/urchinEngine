@@ -34,17 +34,17 @@ namespace urchin {
             deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
-            modelOctreeManager(std::make_unique<OctreeManager<Model>>(MODELS_OCTREE_MIN_SIZE)),
-            modelSetDisplayer(std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE)),
-            fogContainer(std::make_unique<FogContainer>()),
-            terrainContainer(std::make_unique<TerrainContainer>(*deferredRenderTarget)),
-            waterContainer(std::make_unique<WaterContainer>(*deferredRenderTarget)),
-            geometryContainer(std::make_unique<GeometryContainer>(*deferredRenderTarget)),
-            skyContainer(std::make_unique<SkyContainer>(*deferredRenderTarget)),
-            lightManager(std::make_unique<LightManager>()),
-            ambientOcclusionManager(std::make_unique<AmbientOcclusionManager>(!finalRenderTarget.isValidRenderTarget())),
-            transparentManager(std::make_unique<TransparentManager>(!finalRenderTarget.isValidRenderTarget(), *lightManager)),
-            shadowManager(std::make_unique<ShadowManager>(*lightManager, *modelOctreeManager)),
+            modelOctreeManager(OctreeManager<Model>(MODELS_OCTREE_MIN_SIZE)),
+            modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
+            fogContainer(FogContainer()),
+            terrainContainer(TerrainContainer(*deferredRenderTarget)),
+            waterContainer(WaterContainer(*deferredRenderTarget)),
+            geometryContainer(GeometryContainer(*deferredRenderTarget)),
+            skyContainer(SkyContainer(*deferredRenderTarget)),
+            lightManager(LightManager()),
+            ambientOcclusionManager(AmbientOcclusionManager(!finalRenderTarget.isValidRenderTarget())),
+            transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
+            shadowManager(ShadowManager(lightManager, modelOctreeManager)),
 
             //lighting pass rendering
             lightingRenderTarget(finalRenderTarget.isValidRenderTarget() ?
@@ -52,18 +52,18 @@ namespace urchin {
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             positioningData({}),
             visualOption({}),
-            antiAliasingApplier(std::make_unique<AntiAliasingApplier>(!finalRenderTarget.isValidRenderTarget())),
+            antiAliasingApplier(AntiAliasingApplier(!finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(true),
-            bloomEffectApplier(std::make_unique<BloomEffectApplier>(finalRenderTarget)),
+            bloomEffectApplier(BloomEffectApplier(finalRenderTarget)),
 
             //debug
             refreshDebugFramebuffers(true) {
         ScopeProfiler sp(Profiler::graphic(), "render3dInit");
 
         //deferred rendering
-        modelSetDisplayer->setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
-        modelSetDisplayer->initialize(*deferredRenderTarget);
-        shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+        modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
+        modelSetDisplayer.initialize(*deferredRenderTarget);
+        shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
         visualOption.isShadowActivated = true;
@@ -102,39 +102,39 @@ namespace urchin {
     }
 
     const OctreeManager<Model>& Renderer3d::getModelOctreeManager() const {
-        return *modelOctreeManager;
+        return modelOctreeManager;
     }
 
     const ModelSetDisplayer& Renderer3d::getModelSetDisplayer() const {
-        return *modelSetDisplayer;
+        return modelSetDisplayer;
     }
 
-    FogContainer& Renderer3d::getFogContainer() const {
-        return *fogContainer;
+    FogContainer& Renderer3d::getFogContainer() {
+        return fogContainer;
     }
 
-    TerrainContainer& Renderer3d::getTerrainContainer() const {
-        return *terrainContainer;
+    TerrainContainer& Renderer3d::getTerrainContainer() {
+        return terrainContainer;
     }
 
-    WaterContainer& Renderer3d::getWaterContainer() const {
-        return *waterContainer;
+    WaterContainer& Renderer3d::getWaterContainer() {
+        return waterContainer;
     }
 
-    GeometryContainer& Renderer3d::getGeometryContainer() const {
-        return *geometryContainer;
+    GeometryContainer& Renderer3d::getGeometryContainer() {
+        return geometryContainer;
     }
 
-    SkyContainer& Renderer3d::getSkyContainer() const {
-        return *skyContainer;
+    SkyContainer& Renderer3d::getSkyContainer() {
+        return skyContainer;
     }
 
-    LightManager& Renderer3d::getLightManager() const {
-        return *lightManager;
+    LightManager& Renderer3d::getLightManager() {
+        return lightManager;
     }
 
-    ShadowManager& Renderer3d::getShadowManager() const {
-        return *shadowManager;
+    ShadowManager& Renderer3d::getShadowManager() {
+        return shadowManager;
     }
 
     void Renderer3d::activateShadow(bool isShadowActivated) {
@@ -142,12 +142,12 @@ namespace urchin {
             visualOption.isShadowActivated = isShadowActivated;
 
             createOrUpdateLightingPass();
-            shadowManager->forceUpdateAllShadowMaps();
+            shadowManager.forceUpdateAllShadowMaps();
         }
     }
 
-    AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() const {
-        return *ambientOcclusionManager;
+    AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() {
+        return ambientOcclusionManager;
     }
 
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
@@ -157,16 +157,16 @@ namespace urchin {
         }
     }
 
-    TransparentManager& Renderer3d::getTransparentManager() const {
-        return *transparentManager;
+    TransparentManager& Renderer3d::getTransparentManager() {
+        return transparentManager;
     }
 
-    AntiAliasingApplier& Renderer3d::getAntiAliasingApplier() const {
-        return *antiAliasingApplier;
+    AntiAliasingApplier& Renderer3d::getAntiAliasingApplier() {
+        return antiAliasingApplier;
     }
 
-    BloomEffectApplier& Renderer3d::getBloomEffectApplier() const {
-        return *bloomEffectApplier;
+    BloomEffectApplier& Renderer3d::getBloomEffectApplier() {
+        return bloomEffectApplier;
     }
 
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
@@ -191,20 +191,20 @@ namespace urchin {
     void Renderer3d::onCameraProjectionUpdate() {
         ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
 
-        modelSetDisplayer->onCameraProjectionUpdate(*camera);
-        terrainContainer->onCameraProjectionUpdate(*camera);
-        waterContainer->onCameraProjectionUpdate(*camera);
-        geometryContainer->onCameraProjectionUpdate(*camera);
-        skyContainer->onCameraProjectionUpdate(*camera);
-        shadowManager->onCameraProjectionUpdate(*camera);
-        ambientOcclusionManager->onCameraProjectionUpdate(*camera);
-        transparentManager->onCameraProjectionUpdate(*camera);
+        modelSetDisplayer.onCameraProjectionUpdate(*camera);
+        terrainContainer.onCameraProjectionUpdate(*camera);
+        waterContainer.onCameraProjectionUpdate(*camera);
+        geometryContainer.onCameraProjectionUpdate(*camera);
+        skyContainer.onCameraProjectionUpdate(*camera);
+        shadowManager.onCameraProjectionUpdate(*camera);
+        ambientOcclusionManager.onCameraProjectionUpdate(*camera);
+        transparentManager.onCameraProjectionUpdate(*camera);
         refreshDebugFramebuffers = true;
     }
 
     void Renderer3d::updateModelsInFrustum() {
         modelsInFrustum.clear();
-        modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
+        modelOctreeManager.getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
     }
 
     Camera* Renderer3d::getCamera() const {
@@ -220,17 +220,17 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
 
             modelTagHolder.addTaggableResource(model.get());
-            modelOctreeManager->addOctreeable(std::move(model));
+            modelOctreeManager.addOctreeable(std::move(model));
         }
     }
 
     std::shared_ptr<Model> Renderer3d::removeModel(Model* model) {
         if (model) {
-            shadowManager->removeModel(model);
-            transparentManager->removeModel(model);
-            modelSetDisplayer->removeModel(model);
+            shadowManager.removeModel(model);
+            transparentManager.removeModel(model);
+            modelSetDisplayer.removeModel(model);
             modelTagHolder.removeTaggableResource(model);
-            return modelOctreeManager->removeOctreeable(model);
+            return modelOctreeManager.removeOctreeable(model);
         }
         return std::shared_ptr<Model>(nullptr);
     }
@@ -309,9 +309,9 @@ namespace urchin {
         deferredRendering(dt);
         lightingPassRendering();
         if (isAntiAliasingActivated) {
-            antiAliasingApplier->applyAntiAliasing();
+            antiAliasingApplier.applyAntiAliasing();
         }
-        bloomEffectApplier->applyBloom(screenRenderingOrder);
+        bloomEffectApplier.applyBloom(screenRenderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -355,13 +355,13 @@ namespace urchin {
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(visualOption), &visualOption); //binding 1
-        lightManager->setupLightingRenderer(lightingRendererBuilder); //binding 2
-        shadowManager->setupLightingRenderer(lightingRendererBuilder); //binding 3 & 4
-        fogContainer->setupLightingRenderer(lightingRendererBuilder); //binding 5
+        lightManager.setupLightingRenderer(lightingRendererBuilder); //binding 2
+        shadowManager.setupLightingRenderer(lightingRendererBuilder); //binding 3 & 4
+        fogContainer.setupLightingRenderer(lightingRendererBuilder); //binding 5
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
-        for (unsigned int i = 0; i < shadowManager->getMaxShadowLights(); ++i) {
-            shadowMapTextureReaders.push_back(TextureReader::build(shadowManager->getEmptyShadowMapTexture(), TextureParam::buildNearest()));
+        for (unsigned int i = 0; i < shadowManager.getMaxShadowLights(); ++i) {
+            shadowMapTextureReaders.push_back(TextureReader::build(shadowManager.getEmptyShadowMapTexture(), TextureParam::buildNearest()));
         }
         lightingRenderer = lightingRendererBuilder
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 6
@@ -372,24 +372,24 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale(), TextureParam::buildNearest())) //binding 11 - transparency: reveal
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 12
                 ->build();
-        ambientOcclusionManager->onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
-        transparentManager->onTextureUpdate(deferredRenderTarget->getDepthTexture());
+        ambientOcclusionManager.onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
+        transparentManager.onTextureUpdate(deferredRenderTarget->getDepthTexture());
 
         //post process rendering
         if (isAntiAliasingActivated) {
-            antiAliasingApplier->onTextureUpdate(lightingPassTexture);
+            antiAliasingApplier.onTextureUpdate(lightingPassTexture);
         }
-        bloomEffectApplier->onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier->getOutputTexture() : lightingPassTexture);
+        bloomEffectApplier.onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier.getOutputTexture() : lightingPassTexture);
 
         refreshDebugFramebuffers = true;
     }
 
     void Renderer3d::createOrUpdateLightingShader() {
         LightingShaderConst lightingConstData{};
-        lightingConstData.maxLights = lightManager->getMaxLights();
-        lightingConstData.maxShadowLights = shadowManager->getMaxShadowLights();
-        lightingConstData.numberShadowMaps = shadowManager->getConfig().nbShadowMaps;
-        lightingConstData.shadowMapBias = shadowManager->getShadowMapBias();
+        lightingConstData.maxLights = lightManager.getMaxLights();
+        lightingConstData.maxShadowLights = shadowManager.getMaxShadowLights();
+        lightingConstData.numberShadowMaps = shadowManager.getConfig().nbShadowMaps;
+        lightingConstData.shadowMapBias = shadowManager.getShadowMapBias();
         lightingConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
         std::vector<std::size_t> variablesSize = {
                 sizeof(LightingShaderConst::maxLights),
@@ -414,21 +414,21 @@ namespace urchin {
         camera->updateCameraView(dt);
 
         //refresh models in octree
-        modelOctreeManager->refreshOctreeables();
+        modelOctreeManager.refreshOctreeables();
 
         //determine model visible on scene
         updateModelsInFrustum();
-        modelSetDisplayer->updateModels(modelsInFrustum);
+        modelSetDisplayer.updateModels(modelsInFrustum);
 
         //determine visible lights on scene
-        lightManager->updateVisibleLights(camera->getFrustum());
+        lightManager.updateVisibleLights(camera->getFrustum());
 
         if (visualOption.isShadowActivated) {
             //determine models producing shadow on scene
-            shadowManager->updateVisibleModels(camera->getFrustum());
+            shadowManager.updateVisibleModels(camera->getFrustum());
 
             //animate models
-            for (auto model : shadowManager->getVisibleModels()) {
+            for (auto model : shadowManager.getVisibleModels()) {
                 model->updateAnimation(dt);
             }
         } else {
@@ -438,7 +438,7 @@ namespace urchin {
             }
         }
 
-        transparentManager->updateModels(modelsInFrustum);
+        transparentManager.updateModels(modelsInFrustum);
     }
 
     /**
@@ -450,37 +450,37 @@ namespace urchin {
 
         //deferred shadow map
         if (visualOption.isShadowActivated) {
-            shadowManager->updateShadowMaps();
+            shadowManager.updateShadowMaps();
         }
 
         //deferred scene (depth, color, normal, ambient...)
         deferredRenderTarget->disableAllRenderers();
 
         unsigned int deferredRenderingOrder = 0;
-        skyContainer->prepareRendering(deferredRenderingOrder, camera->getViewMatrix(), camera->getPosition());
+        skyContainer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix(), camera->getPosition());
 
         deferredRenderingOrder++;
-        modelSetDisplayer->prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
+        modelSetDisplayer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
 
         deferredRenderingOrder++;
-        terrainContainer->prepareRendering(deferredRenderingOrder, *camera, dt);
+        terrainContainer.prepareRendering(deferredRenderingOrder, *camera, dt);
 
         deferredRenderingOrder++;
-        waterContainer->prepareRendering(deferredRenderingOrder, *camera, fogContainer.get(), dt);
+        waterContainer.prepareRendering(deferredRenderingOrder, *camera, fogContainer, dt);
 
-        renderDebugSceneData(*geometryContainer);
+        renderDebugSceneData(geometryContainer);
 
         deferredRenderingOrder++;
-        geometryContainer->prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
+        geometryContainer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
 
         deferredRenderTarget->render();
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
-            ambientOcclusionManager->updateAOTexture(*camera);
+            ambientOcclusionManager.updateAOTexture(*camera);
         }
 
-        transparentManager->updateTransparentTextures(*camera);
+        transparentManager.updateTransparentTextures(*camera);
     }
 
     void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
@@ -488,20 +488,20 @@ namespace urchin {
             if (debugModelOctree) {
                 geometryContainer.removeGeometry(*debugModelOctree);
             }
-            debugModelOctree = OctreeRenderer::createOctreeModel(*modelOctreeManager);
+            debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager);
             geometryContainer.addGeometry(debugModelOctree);
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
-            modelSetDisplayer->drawBBox(geometryContainer);
+            modelSetDisplayer.drawBBox(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_MODEL_BASE_BONES) {
-            modelSetDisplayer->drawBaseBones(geometryContainer);
+            modelSetDisplayer.drawBaseBones(geometryContainer);
         }
 
         if (DEBUG_DISPLAY_LIGHTS_OCTREE) {
-            lightManager->drawLightOctree(geometryContainer);
+            lightManager.drawLightOctree(geometryContainer);
         }
     }
 
@@ -518,23 +518,23 @@ namespace urchin {
         lightingRenderer->updateUniformData(positioningDataUniformIndex, &positioningData);
 
         constexpr std::size_t lightsDataUniformIndex = 2;
-        lightManager->loadVisibleLights(*lightingRenderer, lightsDataUniformIndex);
+        lightManager.loadVisibleLights(*lightingRenderer, lightsDataUniformIndex);
 
         constexpr std::size_t fogUniformIndex = 5;
-        fogContainer->loadFog(*lightingRenderer, fogUniformIndex);
+        fogContainer.loadFog(*lightingRenderer, fogUniformIndex);
 
         if (visualOption.isAmbientOcclusionActivated) {
             constexpr std::size_t ambientOcclusionTexUnit = 3;
-            ambientOcclusionManager->loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
+            ambientOcclusionManager.loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
         }
 
         constexpr std::size_t transparentAccumulationTexUnit = 4;
         constexpr std::size_t transparentRevealTexUnit = 5;
-        transparentManager->loadTransparentTextures(*lightingRenderer, transparentAccumulationTexUnit, transparentRevealTexUnit);
+        transparentManager.loadTransparentTextures(*lightingRenderer, transparentAccumulationTexUnit, transparentRevealTexUnit);
 
         if (visualOption.isShadowActivated) {
             constexpr std::size_t shadowMapTexUnit = 6;
-            shadowManager->loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
+            shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
         lightingRenderTarget->render();
@@ -573,17 +573,17 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER && visualOption.isShadowActivated && !lightManager->getSunLights().empty()) {
-                const std::shared_ptr<Light> firstLight = lightManager->getSunLights()[0]; //choose light
+            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER && visualOption.isShadowActivated && !lightManager.getSunLights().empty()) {
+                const std::shared_ptr<Light> firstLight = lightManager.getSunLights()[0]; //choose light
                 const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
-                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager->getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
+                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager.getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
             if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && visualOption.isAmbientOcclusionActivated) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager->getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
+                auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager.getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
@@ -598,8 +598,8 @@ namespace urchin {
     void Renderer3d::postUpdateScene() {
         ScopeProfiler sp(Profiler::graphic(), "postUpdateScene");
 
-        modelOctreeManager->postRefreshOctreeables();
-        lightManager->postUpdateVisibleLights();
+        modelOctreeManager.postRefreshOctreeables();
+        lightManager.postUpdateVisibleLights();
     }
 
 }

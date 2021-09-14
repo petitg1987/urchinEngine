@@ -9,7 +9,7 @@ namespace urchin {
 
     LightManager::LightManager() :
             maxLights(ConfigService::instance().getUnsignedIntValue("light.maxLights")),
-            lightOctreeManager(std::make_unique<OctreeManager<Light>>(LIGHTS_OCTREE_MIN_SIZE)),
+            lightOctreeManager(OctreeManager<Light>(LIGHTS_OCTREE_MIN_SIZE)),
             lastUpdatedLight(nullptr),
             lightsData({}) {
         if (maxLights > LIGHTS_SHADER_LIMIT) {
@@ -28,8 +28,8 @@ namespace urchin {
                 ->addUniformData(sizeof(LightsData), &lightsData);
     }
 
-    OctreeManager<Light>& LightManager::getLightOctreeManager() const {
-        return *lightOctreeManager;
+    OctreeManager<Light>& LightManager::getLightOctreeManager() {
+        return lightOctreeManager;
     }
 
     void LightManager::onLightEvent(Light* light, NotificationType notificationType) {
@@ -64,7 +64,7 @@ namespace urchin {
             if (light->hasParallelBeams()) {
                 sunLights.push_back(std::move(light));
             } else {
-                lightOctreeManager->addOctreeable(std::move(light));
+                lightOctreeManager.addOctreeable(std::move(light));
             }
 
             onLightEvent(lightPtr, LightManager::ADD_LIGHT);
@@ -83,7 +83,7 @@ namespace urchin {
                     }
                 }
             } else {
-                removedLight = lightOctreeManager->removeOctreeable(light);
+                removedLight = lightOctreeManager.removeOctreeable(light);
             }
             onLightEvent(removedLight.get(), LightManager::REMOVE_LIGHT);
         }
@@ -101,9 +101,9 @@ namespace urchin {
     void LightManager::updateVisibleLights(const Frustum<float>& frustum) {
         ScopeProfiler sp(Profiler::graphic(), "updateLights");
 
-        lightOctreeManager->refreshOctreeables();
+        lightOctreeManager.refreshOctreeables();
         lightsInFrustum.clear();
-        lightOctreeManager->getOctreeablesIn(frustum, lightsInFrustum);
+        lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum);
 
         visibleLights.clear();
         for(auto& sunLight : sunLights) {
@@ -156,7 +156,7 @@ namespace urchin {
     }
 
     void LightManager::postUpdateVisibleLights() {
-        lightOctreeManager->postRefreshOctreeables();
+        lightOctreeManager.postRefreshOctreeables();
     }
 
     void LightManager::logMaxLightsReach() {
@@ -171,7 +171,7 @@ namespace urchin {
         if (debugLightOctree) {
             geometryContainer.removeGeometry(*debugLightOctree);
         }
-        debugLightOctree = OctreeRenderer::createOctreeModel(*lightOctreeManager);
+        debugLightOctree = OctreeRenderer::createOctreeModel(lightOctreeManager);
         geometryContainer.addGeometry(debugLightOctree);
     }
 

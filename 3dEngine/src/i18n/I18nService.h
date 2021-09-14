@@ -23,7 +23,7 @@ namespace urchin {
 
             std::string language;
             std::set<TranslatableLabel*> translatableLabels;
-            std::unique_ptr<LabelTranslator> labelTranslator;
+            LabelTranslator labelTranslator;
     };
 
 }

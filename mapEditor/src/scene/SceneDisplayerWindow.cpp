@@ -11,7 +11,7 @@ namespace urchin {
             statusBarController(statusBarController),
             mapEditorPath(std::move(mapEditorPath)),
             sceneWindowController(std::make_unique<SceneWindowController>(this)),
-            mouseController(std::make_unique<MouseController>(this)),
+            mouseController(MouseController(this)),
             viewProperties(),
             mouseX(0),
             mouseY(0) {
@@ -73,7 +73,7 @@ namespace urchin {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, &sceneController, *mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, &sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
         sceneController.setup(&sceneDisplayer->getMapHandler());
@@ -81,7 +81,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::loadEmptyScene() {
-        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, nullptr, *mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, nullptr, mouseController, statusBarController);
         sceneDisplayer->loadEmptyScene(mapEditorPath);
         sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
     }

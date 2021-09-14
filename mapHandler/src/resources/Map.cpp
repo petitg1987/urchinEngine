@@ -10,8 +10,8 @@ namespace urchin {
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
             aiEnvironment(aiEnvironment),
-            sceneSky(std::make_unique<SceneSky>(renderer3d)),
-            sceneAI(std::make_unique<SceneAI>(aiEnvironment)) {
+            sceneSky(SceneSky(renderer3d)),
+            sceneAI(SceneAI(aiEnvironment)) {
 
     }
 
@@ -103,7 +103,7 @@ namespace urchin {
     void Map::loadSceneSkyFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto skyChunk = udaParser.getUniqueChunk(true, SKY_TAG, UdaAttribute(), sceneChunk);
 
-        sceneSky->loadFrom(skyChunk, udaParser);
+        sceneSky.loadFrom(skyChunk, udaParser);
     }
 
     void Map::loadSceneSoundsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
@@ -121,7 +121,7 @@ namespace urchin {
     void Map::loadSceneAIFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto aiElementsListChunk = udaParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
 
-        sceneAI->loadFrom(aiElementsListChunk, udaParser);
+        sceneAI.loadFrom(aiElementsListChunk, udaParser);
     }
 
     void Map::writeOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
@@ -173,7 +173,7 @@ namespace urchin {
     void Map::writeSceneSkyOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& skyChunk = udaWriter.createChunk(SKY_TAG, UdaAttribute(), &sceneChunk);
 
-        sceneSky->writeOn(skyChunk, udaWriter);
+        sceneSky.writeOn(skyChunk, udaWriter);
     }
 
     void Map::writeSceneSoundsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
@@ -188,7 +188,7 @@ namespace urchin {
     void Map::writeSceneAIOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
 
-        sceneAI->writeOn(aiElementsListChunk, udaWriter);
+        sceneAI.writeOn(aiElementsListChunk, udaWriter);
     }
 
     const std::list<std::unique_ptr<SceneModel>>& Map::getSceneModels() const {
@@ -280,11 +280,11 @@ namespace urchin {
     }
 
     const SceneSky& Map::getSceneSky() const {
-        return *sceneSky;
+        return sceneSky;
     }
 
     void Map::updateSceneSky(std::unique_ptr<Skybox> skybox) {
-        sceneSky->changeSkybox(std::move(skybox));
+        sceneSky.changeSkybox(std::move(skybox));
     }
 
     const std::list<std::unique_ptr<SceneSound>>& Map::getSceneSounds() const {
@@ -310,11 +310,11 @@ namespace urchin {
     }
 
     const SceneAI& Map::getSceneAI() const {
-        return *sceneAI;
+        return sceneAI;
     }
 
     void Map::updateSceneAI(std::unique_ptr<NavMeshAgent> navMeshAgent) {
-        sceneAI->changeNavMeshAgent(std::move(navMeshAgent));
+        sceneAI.changeNavMeshAgent(std::move(navMeshAgent));
     }
 
     void Map::pause() {

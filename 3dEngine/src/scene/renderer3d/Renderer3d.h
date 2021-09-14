@@ -42,19 +42,19 @@ namespace urchin {
             //graphics
             const OctreeManager<Model>& getModelOctreeManager() const;
             const ModelSetDisplayer& getModelSetDisplayer() const;
-            FogContainer& getFogContainer() const;
-            TerrainContainer& getTerrainContainer() const;
-            WaterContainer& getWaterContainer() const;
-            GeometryContainer& getGeometryContainer() const;
-            SkyContainer& getSkyContainer() const;
-            LightManager& getLightManager() const;
-            ShadowManager& getShadowManager() const;
+            FogContainer& getFogContainer();
+            TerrainContainer& getTerrainContainer();
+            WaterContainer& getWaterContainer();
+            GeometryContainer& getGeometryContainer();
+            SkyContainer& getSkyContainer();
+            LightManager& getLightManager();
+            ShadowManager& getShadowManager();
             void activateShadow(bool);
-            AmbientOcclusionManager& getAmbientOcclusionManager() const;
+            AmbientOcclusionManager& getAmbientOcclusionManager();
             void activateAmbientOcclusion(bool);
-            TransparentManager& getTransparentManager() const;
-            AntiAliasingApplier& getAntiAliasingApplier() const;
-            BloomEffectApplier& getBloomEffectApplier() const;
+            TransparentManager& getTransparentManager();
+            AntiAliasingApplier& getAntiAliasingApplier();
+            BloomEffectApplier& getBloomEffectApplier();
             void activateAntiAliasing(bool);
 
             //camera
@@ -116,20 +116,20 @@ namespace urchin {
 
             //deferred rendering
             std::unique_ptr<RenderTarget> deferredRenderTarget;
-            std::unique_ptr<OctreeManager<Model>> modelOctreeManager;
-            std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
+            OctreeManager<Model> modelOctreeManager;
+            ModelSetDisplayer modelSetDisplayer;
             std::shared_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 
-            std::unique_ptr<FogContainer> fogContainer;
-            std::unique_ptr<TerrainContainer> terrainContainer;
-            std::unique_ptr<WaterContainer> waterContainer;
-            std::unique_ptr<GeometryContainer> geometryContainer;
-            std::unique_ptr<SkyContainer> skyContainer;
-            std::unique_ptr<LightManager> lightManager;
-            std::unique_ptr<AmbientOcclusionManager> ambientOcclusionManager;
-            std::unique_ptr<TransparentManager> transparentManager;
-            std::unique_ptr<ShadowManager> shadowManager;
+            FogContainer fogContainer;
+            TerrainContainer terrainContainer;
+            WaterContainer waterContainer;
+            GeometryContainer geometryContainer;
+            SkyContainer skyContainer;
+            LightManager lightManager;
+            AmbientOcclusionManager ambientOcclusionManager;
+            TransparentManager transparentManager;
+            ShadowManager shadowManager;
 
             std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
 
@@ -145,9 +145,9 @@ namespace urchin {
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } visualOption;
-            std::unique_ptr<AntiAliasingApplier> antiAliasingApplier;
+            AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
-            std::unique_ptr<BloomEffectApplier> bloomEffectApplier;
+            BloomEffectApplier bloomEffectApplier;
 
             //debug
             bool refreshDebugFramebuffers;

@@ -58,8 +58,8 @@ namespace urchin {
                     {1, 3, 5} //FBL
             };
 
-            std::unique_ptr<PlaneSurfaceSplitService> planeSurfaceSplitService;
-            std::unique_ptr<TerrainSplitService> terrainSplitService;
+            PlaneSurfaceSplitService planeSurfaceSplitService;
+            TerrainSplitService terrainSplitService;
     };
 
 }

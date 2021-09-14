@@ -22,7 +22,7 @@ namespace urchin {
             void onResize();
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
-            I18nService& getI18nService() const;
+            I18nService& getI18nService();
 
             //fps
             float getFps() const;
@@ -63,7 +63,7 @@ namespace urchin {
 
             //scene properties
             std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
-            std::unique_ptr<I18nService> i18nService;
+            I18nService i18nService;
             unsigned int sceneWidth, sceneHeight;
 
             //fps
@@ -72,7 +72,7 @@ namespace urchin {
             unsigned int fpsForDisplay;
 
             //renderer
-            std::unique_ptr<ScreenRender> screenRenderTarget;
+            ScreenRender screenRenderTarget;
             std::vector<std::unique_ptr<Renderer3d>> renderers3d;
             Renderer3d* activeRenderer3d;
             std::vector<std::unique_ptr<UIRenderer>> uiRenderers;

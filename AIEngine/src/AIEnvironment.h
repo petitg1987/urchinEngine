@@ -19,7 +19,7 @@ namespace urchin {
             AIEnvironment();
             ~AIEnvironment();
 
-            NavMeshGenerator& getNavMeshGenerator() const;
+            NavMeshGenerator& getNavMeshGenerator();
 
             void addEntity(const std::shared_ptr<AIEntity>&);
             void removeEntity(const std::shared_ptr<AIEntity>&);
@@ -47,7 +47,7 @@ namespace urchin {
             float timeStep;
             bool paused;
 
-            std::unique_ptr<NavMeshGenerator> navMeshGenerator;
+            NavMeshGenerator navMeshGenerator;
             AIWorld aiWorld;
             std::vector<std::shared_ptr<PathRequest>> pathRequests;
             std::vector<std::shared_ptr<PathRequest>> copiedPathRequests;

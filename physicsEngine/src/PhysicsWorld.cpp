@@ -15,8 +15,8 @@ namespace urchin {
             gravity(Vector3<float>(0.0f, -9.81f, 0.0f)),
             timeStep(0.0f),
             paused(true),
-            bodyContainer(std::make_unique<BodyContainer>()),
-            collisionWorld(std::make_unique<CollisionWorld>(getBodyContainer())) {
+            bodyContainer(BodyContainer()),
+            collisionWorld(CollisionWorld(getBodyContainer())) {
         NumericalCheck::perform();
         SignalHandler::instance().initialize();
     }
@@ -31,27 +31,25 @@ namespace urchin {
         processables.clear();
         oneShotProcessables.clear();
 
-        bodyContainer.reset(nullptr);
-
         Profiler::physics().log(); //log for main (not physics) thread
     }
 
-    BodyContainer& PhysicsWorld::getBodyContainer() const {
-        return *bodyContainer;
+    BodyContainer& PhysicsWorld::getBodyContainer() {
+        return bodyContainer;
     }
 
-    CollisionWorld& PhysicsWorld::getCollisionWorld() const {
-        return *collisionWorld;
+    CollisionWorld& PhysicsWorld::getCollisionWorld() {
+        return collisionWorld;
     }
 
     void PhysicsWorld::addBody(std::shared_ptr<AbstractBody> body) {
         if (body) {
-            bodyContainer->addBody(std::move(body));
+            bodyContainer.addBody(std::move(body));
         }
     }
 
     void PhysicsWorld::removeBody(const AbstractBody& body) {
-        bodyContainer->removeBody(body);
+        bodyContainer.removeBody(body);
     }
 
     void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {
@@ -212,7 +210,7 @@ namespace urchin {
         if (!paused) {
             setupProcessables(copiedProcessables, dt, gravity);
 
-            collisionWorld->process(dt, gravity);
+            collisionWorld.process(dt, gravity);
 
             executeProcessables(copiedProcessables, dt, gravity);
         }

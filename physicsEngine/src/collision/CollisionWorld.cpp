@@ -7,21 +7,21 @@ namespace urchin {
 
     CollisionWorld::CollisionWorld(BodyContainer& bodyContainer) :
             bodyContainer(bodyContainer),
-            broadPhase(std::make_unique<BroadPhase>(bodyContainer)),
-            narrowPhase(std::make_unique<NarrowPhase>(bodyContainer, getBroadPhase())),
-            integrateVelocity(std::make_unique<IntegrateVelocity>(bodyContainer)),
-            constraintSolver(std::make_unique<ConstraintSolver>()),
-            bodyActiveStateUpdater(std::make_unique<BodyActiveStateUpdater>(bodyContainer)),
-            integrateTransform(std::make_unique<IntegrateTransform>(bodyContainer, getBroadPhase(), getNarrowPhase())) {
+            broadPhase(BroadPhase(bodyContainer)),
+            narrowPhase(NarrowPhase(bodyContainer, getBroadPhase())),
+            integrateVelocity(IntegrateVelocity(bodyContainer)),
+            constraintSolver(ConstraintSolver()),
+            bodyActiveStateUpdater(BodyActiveStateUpdater(bodyContainer)),
+            integrateTransform(IntegrateTransform(bodyContainer, getBroadPhase(), getNarrowPhase())) {
 
     }
 
-    BroadPhase& CollisionWorld::getBroadPhase() const {
-        return *broadPhase;
+    BroadPhase& CollisionWorld::getBroadPhase() {
+        return broadPhase;
     }
 
-    NarrowPhase& CollisionWorld::getNarrowPhase() const {
-        return *narrowPhase;
+    NarrowPhase& CollisionWorld::getNarrowPhase() {
+        return narrowPhase;
     }
 
     /**
@@ -36,24 +36,24 @@ namespace urchin {
         bodyContainer.refreshBodies();
 
         //broad phase: determine pairs of bodies potentially colliding based on their AABBox
-        auto& overlappingPairs = broadPhase->computeOverlappingPairs();
+        auto& overlappingPairs = broadPhase.computeOverlappingPairs();
 
         //integrate bodies velocities: gravity, external forces...
-        integrateVelocity->process(dt, overlappingPairs, gravity);
+        integrateVelocity.process(dt, overlappingPairs, gravity);
 
         //narrow phase: check if pair of bodies colliding and update collision constraints
         manifoldResults.clear();
-        narrowPhase->process(dt, overlappingPairs, manifoldResults);
+        narrowPhase.process(dt, overlappingPairs, manifoldResults);
         notifyObservers(this, COLLISION_RESULT_UPDATED);
 
         //constraints solver: solve collision constraints
-        constraintSolver->process(dt, manifoldResults);
+        constraintSolver.process(dt, manifoldResults);
 
         //update bodies state
-        bodyActiveStateUpdater->update(manifoldResults);
+        bodyActiveStateUpdater.update(manifoldResults);
 
         //integrate transformations
-        integrateTransform->process(dt);
+        integrateTransform.process(dt);
     }
 
     const std::vector<ManifoldResult>& CollisionWorld::getLastUpdatedManifoldResults() {

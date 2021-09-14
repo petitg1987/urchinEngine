@@ -26,7 +26,8 @@ namespace urchin {
             const TerrainMesh* getMesh() const;
             void setMaterials(std::unique_ptr<TerrainMaterials>);
             const TerrainMaterials* getMaterials() const;
-            TerrainGrass& getGrass() const;
+            TerrainGrass& getGrass();
+            const TerrainGrass& getGrass() const;
 
             void setPosition(const Point3<float>&);
             const Point3<float>& getPosition() const;
@@ -37,7 +38,7 @@ namespace urchin {
             Point3<float> findPointAt(const Point2<float>&) const;
             float findHeightAt(const Point2<float>&) const;
 
-            void prepareRendering(unsigned int& renderingOrder, const Camera&, float invFrameRate) const;
+            void prepareRendering(unsigned int& renderingOrder, const Camera&, float invFrameRate);
 
         private:
             void refreshMaterials();
@@ -56,7 +57,7 @@ namespace urchin {
 
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;
-            std::unique_ptr<TerrainGrass> grass;
+            TerrainGrass grass;
 
             float ambient;
     };

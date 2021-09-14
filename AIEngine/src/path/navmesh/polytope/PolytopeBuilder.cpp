@@ -10,8 +10,8 @@
 namespace urchin {
 
     PolytopeBuilder::PolytopeBuilder() :
-            planeSurfaceSplitService(std::make_unique<PlaneSurfaceSplitService>(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))),
-            terrainSplitService(std::make_unique<TerrainSplitService>(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))) {
+            planeSurfaceSplitService(PlaneSurfaceSplitService(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))),
+            terrainSplitService(TerrainSplitService(ConfigService::instance().getFloatValue("navMesh.polytopeMaxSize"))) {
 
     }
 
@@ -68,7 +68,7 @@ namespace urchin {
             expandedLocalVertices.emplace_back(localVertex.translate(expandShiftVector));
         }
 
-        std::vector<TerrainSplit> terrainSplits = terrainSplitService->splitTerrain(aiTerrain.getName(), aiTerrain.getTransform().getPosition(),
+        std::vector<TerrainSplit> terrainSplits = terrainSplitService.splitTerrain(aiTerrain.getName(), aiTerrain.getTransform().getPosition(),
                 expandedLocalVertices, aiTerrain.getXLength(), aiTerrain.getZLength());
 
         for (const auto& terrainSplit : terrainSplits) {
@@ -261,7 +261,7 @@ namespace urchin {
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
                 }
 
-                std::vector<PlaneSurfaceSplit> planeSurfaceSplits = planeSurfaceSplitService->splitRectangleSurface(surfacePoints);
+                std::vector<PlaneSurfaceSplit> planeSurfaceSplits = planeSurfaceSplitService.splitRectangleSurface(surfacePoints);
                 for (const auto& planeSurfaceSplit : planeSurfaceSplits) {
                     expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(planeSurfaceSplit.planeSurfacePoints, normal, isSlopeWalkable));
                 }

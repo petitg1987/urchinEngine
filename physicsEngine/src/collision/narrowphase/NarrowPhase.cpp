@@ -11,7 +11,7 @@ namespace urchin {
     NarrowPhase::NarrowPhase(const BodyContainer& bodyContainer, const BroadPhase& broadPhase) :
             bodyContainer(bodyContainer),
             broadPhase(broadPhase),
-            collisionAlgorithmSelector(std::make_unique<CollisionAlgorithmSelector>()),
+            collisionAlgorithmSelector(CollisionAlgorithmSelector()),
             bodiesMutex(LockById::getInstance("narrowPhaseBodyIds")) {
 
     }
@@ -75,7 +75,7 @@ namespace urchin {
             AbstractBody& body1 = overlappingPair.getBody1();
             AbstractBody& body2 = overlappingPair.getBody2();
 
-            collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(body1, body1.getShape(), body2, body2.getShape());
+            collisionAlgorithm = collisionAlgorithmSelector.createCollisionAlgorithm(body1, body1.getShape(), body2, body2.getShape());
 
             overlappingPair.setCollisionAlgorithm(collisionAlgorithm);
         }
