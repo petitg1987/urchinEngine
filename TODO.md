@@ -49,6 +49,8 @@
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
   * **OPTIMIZATION** (`medium`): Do not build grass quadtree which are 100% discarded by grass mask
 * UI
+  * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
+  * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen>)
   * **NEW FEATURE** (`minor`): Combo list
   * **NEW FEATURE** (`minor`): Textarea
   * **NEW FEATURE** (`medium`): Text selection
