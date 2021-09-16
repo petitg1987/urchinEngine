@@ -30,10 +30,10 @@ namespace urchin {
             Quaternion();
             explicit Quaternion(T Xu, T Yu, T Zu, T Wu);
             static Quaternion<T> fromRotationMatrix(const Matrix3<T>&);
-            static Quaternion<T> fromAxisAngle(const Vector3<T>&, T);
             static Quaternion<T> fromEuler(const Vector3<T>&, RotationSequence);
             static Quaternion<T> lookUp(const Vector3<T>&, const Vector3<T> &normalizedUp = Vector3<T>(0.0, 1.0, 0.0));
             static Quaternion<T> rotationFromTo(const Vector3<T>&, const Vector3<T> &);
+            static Quaternion<T> fromAxisAngle(const Vector3<T>&, T);
             static Quaternion<T> rotationX(T);
             static Quaternion<T> rotationY(T);
             static Quaternion<T> rotationZ(T);

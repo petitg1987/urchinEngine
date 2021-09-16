@@ -54,15 +54,6 @@ namespace urchin {
         }
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& normalizedAxis, T angle) {
-        #ifndef NDEBUG
-            assert(MathFunction::isOne((float)normalizedAxis.length(), 0.001f));
-        #endif
-        const T halfAngle = angle * (T)0.5;
-        const T sin = std::sin(halfAngle);
-        return Quaternion<T>(normalizedAxis.X * sin, normalizedAxis.Y * sin, normalizedAxis.Z * sin, std::cos(halfAngle));
-    }
-
     template<class T> Quaternion<T> Quaternion<T>::fromEuler(const Vector3<T>& eulerAngles, RotationSequence rotationSequence) {
         switch(rotationSequence) {
             case RotationSequence::XYZ:
@@ -102,39 +93,40 @@ namespace urchin {
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
-        T x, y, z, w;
 
         if (det > 0.0) {
             T sqrtValue = std::sqrt((T)1.0 + det);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            x = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
-            y = (normalizedLookAt.X - right.Z) * halfOverSqrt;
-            z = (right.Y - normalizedUp.X) * halfOverSqrt;
-            w = sqrtValue * (T)0.5;
+            return Quaternion<T>(
+                    (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt,
+                    (normalizedLookAt.X - right.Z) * halfOverSqrt,
+                    (right.Y - normalizedUp.X) * halfOverSqrt,
+                    sqrtValue * (T)0.5);
         } else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z)) {
             T sqrtValue = std::sqrt((((T)1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            x = (T)0.5 * sqrtValue;
-            y = (right.Y + normalizedUp.X) * halfOverSqrt;
-            z = (right.Z + normalizedLookAt.X) * halfOverSqrt;
-            w = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
+            return Quaternion<T>(
+                    (T)0.5 * sqrtValue,
+                    (right.Y + normalizedUp.X) * halfOverSqrt,
+                    (right.Z + normalizedLookAt.X) * halfOverSqrt,
+                    (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt);
         } else if (normalizedUp.Y > normalizedLookAt.Z) {
             T sqrtValue = std::sqrt((((T)1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
             T halfOverSqrt = (T)0.5 / sqrtValue;
-            x = (normalizedUp.X + right.Y) * halfOverSqrt;
-            y = (T)0.5 * sqrtValue;
-            z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
-            w = (normalizedLookAt.X - right.Z) * halfOverSqrt;
-        } else {
-            T sqrtValue = std::sqrt((((T)1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
-            T halfOverSqrt = (T)0.5 / sqrtValue;
-            x = (normalizedLookAt.X + right.Z) * halfOverSqrt;
-            y = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
-            z = (T)0.5 * sqrtValue;
-            w = (right.Y - normalizedUp.X) * halfOverSqrt;
+            return Quaternion<T>(
+                    (normalizedUp.X + right.Y) * halfOverSqrt,
+                    (T)0.5 * sqrtValue,
+                    (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt,
+                    (normalizedLookAt.X - right.Z) * halfOverSqrt);
         }
 
-        return Quaternion<T>(x, y, z, w);
+        T sqrtValue = std::sqrt((((T)1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
+        T halfOverSqrt = (T)0.5 / sqrtValue;
+        return Quaternion<T>(
+                (normalizedLookAt.X + right.Z) * halfOverSqrt,
+                (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt,
+                (T)0.5 * sqrtValue,
+                (right.Y - normalizedUp.X) * halfOverSqrt);
     }
 
     /**
@@ -155,6 +147,15 @@ namespace urchin {
 
         Vector3<T> crossVectors = normalizedFrom.crossProduct(normalizedTo);
         return Quaternion<T>(crossVectors.X, crossVectors.Y, crossVectors.Z, (T)1.0 + dotVectors);
+    }
+
+    template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& normalizedAxis, T angle) {
+        #ifndef NDEBUG
+            assert(MathFunction::isOne((float)normalizedAxis.length(), 0.001f));
+        #endif
+        const T halfAngle = angle * (T)0.5;
+        const T sin = std::sin(halfAngle);
+        return Quaternion<T>(normalizedAxis.X * sin, normalizedAxis.Y * sin, normalizedAxis.Z * sin, std::cos(halfAngle));
     }
 
     template<class T> Quaternion<T> Quaternion<T>::rotationX(T angle) {
