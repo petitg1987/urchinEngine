@@ -41,10 +41,8 @@ void GJKBoxTest::overlapAABBox() {
 }
 
 void GJKBoxTest::identicalOBBox() {
-    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
-    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
@@ -52,10 +50,8 @@ void GJKBoxTest::identicalOBBox() {
 }
 
 void GJKBoxTest::separateEdgeOBBox() {
-    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
-    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
@@ -68,7 +64,7 @@ void GJKBoxTest::separateEdgeOBBox() {
 
 void GJKBoxTest::separateCornerOBBox() {
     CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.245f, 0.769f, -0.59f), 0.987859f));
+            Quaternion<float>::fromAxisAngle(Vector3<float>(0.245f, 0.769f, -0.59f), 0.987859f));
     CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
@@ -80,10 +76,8 @@ void GJKBoxTest::separateCornerOBBox() {
 }
 
 void GJKBoxTest::overlapOnEdgeOBBox() {
-    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
-    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
+    CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox1, obbox2);
 
@@ -91,8 +85,7 @@ void GJKBoxTest::overlapOnEdgeOBBox() {
 }
 
 void GJKBoxTest::separateOBBoxAABBox() {
-    CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
     CollisionBoxObject aabbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(3.0f, 0.0f, 0.0f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox, aabbox);
@@ -107,8 +100,7 @@ void GJKBoxTest::separateOBBoxAABBox() {
 }
 
 void GJKBoxTest::overlapOBBoxAABBox() {
-    CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
     CollisionBoxObject aabbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Quaternion<float>());
 
     std::shared_ptr<GJKResult<float>> result = GJKTestHelper::executeGJK(obbox, aabbox);

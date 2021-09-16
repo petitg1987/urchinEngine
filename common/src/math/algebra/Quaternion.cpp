@@ -18,87 +18,76 @@ namespace urchin {
 
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Matrix3<T>& matrix) {
+    template<class T> Quaternion<T> Quaternion<T>::fromRotationMatrix(const Matrix3<T>& matrix) {
         const T trace = matrix(0, 0) + matrix(1, 1) + matrix(2, 2);
 
         if (trace > 0.0) {
             const T s = 0.5f / std::sqrt(trace + 1.0f);
-            X = (matrix(2, 1) - matrix(1, 2)) * s;
-            Y = (matrix(0, 2) - matrix(2, 0)) * s;
-            Z = (matrix(1, 0) - matrix(0, 1)) * s;
-            W = 0.25f / s;
+            return Quaternion<T>(
+                    (matrix(2, 1) - matrix(1, 2)) * s,
+                    (matrix(0, 2) - matrix(2, 0)) * s,
+                    (matrix(1, 0) - matrix(0, 1)) * s,
+                    0.25f / s);
         } else {
             if ((matrix(0, 0) > matrix(1, 1)) && (matrix(0, 0) > matrix(2, 2))) {
                 const T s = std::sqrt((T)1.0 + matrix(0, 0) - matrix(1, 1) - matrix(2, 2)) * (T)2.0;
-                X = (T)0.25 * s;
-                Y = (matrix(0, 1) + matrix(1, 0)) / s;
-                Z = (matrix(0, 2) + matrix(2, 0)) / s;
-                W = (matrix(2, 1) - matrix(1, 2)) / s;
+                return Quaternion<T>(
+                        (T)0.25 * s,
+                        (matrix(0, 1) + matrix(1, 0)) / s,
+                        (matrix(0, 2) + matrix(2, 0)) / s,
+                        (matrix(2, 1) - matrix(1, 2)) / s);
             } else if (matrix(1, 1) > matrix(2, 2)) {
                 const T s = std::sqrt((T)1.0 - matrix(0, 0) + matrix(1, 1) - matrix(2, 2)) * (T)2.0;
-                X = (matrix(0, 1) + matrix(1, 0)) / s;
-                Y = (T)0.25 * s;
-                Z = (matrix(1, 2) + matrix(2, 1)) / s;
-                W = (matrix(0, 2) - matrix(2, 0)) / s;
+                return Quaternion<T>(
+                        (matrix(0, 1) + matrix(1, 0)) / s,
+                        (T)0.25 * s,
+                        (matrix(1, 2) + matrix(2, 1)) / s,
+                        (matrix(0, 2) - matrix(2, 0)) / s);
             } else {
                 const T s = std::sqrt((T)1.0 - matrix(0, 0) - matrix(1, 1) + matrix(2, 2)) * (T)2.0;
-                X = (matrix(0, 2) + matrix(2, 0)) / s;
-                Y = (matrix(1, 2) + matrix(2, 1)) / s;
-                Z = (T)0.25 * s;
-                W = (matrix(1, 0) - matrix(0, 1)) / s;
+                return Quaternion<T>(
+                        (matrix(0, 2) + matrix(2, 0)) / s,
+                        (matrix(1, 2) + matrix(2, 1)) / s,
+                        (T)0.25 * s,
+                        (matrix(1, 0) - matrix(0, 1)) / s);
             }
         }
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Vector3<T>& axis, T angle) {
+    template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& axis, T angle) {
         const T halfAngle = angle * (T)0.5;
         const T sin = std::sin(halfAngle);
 
-        Vector3<T> normalizedAxis = axis.normalize();
-        X = normalizedAxis.X * sin;
-        Y = normalizedAxis.Y * sin;
-        Z = normalizedAxis.Z * sin;
-        W = std::cos(halfAngle);
+        Vector3<T> normalizedAxis = axis.normalize(); //TODO move out ?
+        return Quaternion<T>(normalizedAxis.X * sin, normalizedAxis.Y * sin, normalizedAxis.Z * sin, std::cos(halfAngle));
     }
 
-    template<class T> Quaternion<T>::Quaternion(const Vector3<T>& eulerAngles, RotationSequence rotationSequence) {
+    template<class T> Quaternion<T> Quaternion<T>::fromEuler(const Vector3<T>& eulerAngles, RotationSequence rotationSequence) {
         switch(rotationSequence) {
             case RotationSequence::XYZ:
-                *this = rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationX(eulerAngles[0]);
-                break;
+                return rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationX(eulerAngles[0]);
             case RotationSequence::XZY:
-                *this = rotationY(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationX(eulerAngles[0]);
-                break;
+                return rotationY(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationX(eulerAngles[0]);
             case RotationSequence::YXZ:
-                *this = rotationZ(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationY(eulerAngles[0]);
-                break;
+                return rotationZ(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationY(eulerAngles[0]);
             case RotationSequence::YZX:
-                *this = rotationX(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationY(eulerAngles[0]);
-                break;
+                return rotationX(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationY(eulerAngles[0]);
             case RotationSequence::ZXY:
-                *this = rotationY(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationZ(eulerAngles[0]);
-                break;
+                return rotationY(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationZ(eulerAngles[0]);
             case RotationSequence::ZYX:
-                *this = rotationX(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
-                break;
+                return rotationX(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
             case RotationSequence::XYX:
-                *this = rotationX(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationX(eulerAngles[0]);
-                break;
+                return rotationX(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationX(eulerAngles[0]);
             case RotationSequence::XZX:
-                *this = rotationX(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationX(eulerAngles[0]);
-                break;
+                return rotationX(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationX(eulerAngles[0]);
             case RotationSequence::YXY:
-                *this = rotationY(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationY(eulerAngles[0]);
-                break;
+                return rotationY(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationY(eulerAngles[0]);
             case RotationSequence::YZY:
-                *this = rotationY(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationY(eulerAngles[0]);
-                break;
+                return rotationY(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationY(eulerAngles[0]);
             case RotationSequence::ZXZ:
-                *this = rotationZ(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationZ(eulerAngles[0]);
-                break;
+                return rotationZ(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationZ(eulerAngles[0]);
             case RotationSequence::ZYZ:
-                *this = rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
-                break;
+                return rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
             default:
                 throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string(rotationSequence));
         }
@@ -160,7 +149,7 @@ namespace urchin {
         if (dotVectors > 0.99999) {
             return Quaternion<T>(0.0, 0.0, 0.0, 1.0);
         } else if (dotVectors < -0.99999) {
-            return Quaternion<T>(normalizedFrom.perpendicularVector(), (T)MathValue::PI_FLOAT);
+            return Quaternion<T>::fromAxisAngle(normalizedFrom.perpendicularVector(), (T)MathValue::PI_FLOAT);
         }
 
         Vector3<T> crossVectors = normalizedFrom.crossProduct(normalizedTo);

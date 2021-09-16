@@ -21,8 +21,7 @@ namespace urchin {
             return std::make_unique<SoundSphere>(radius, position, 0.0f);
         } else if (shapeType == SoundShape::ShapeType::BOX_SHAPE) {
             Vector3<float> halfSizes(radius, radius, radius);
-            Quaternion<float> orientation(Vector3<float>(0.0f, 1.0f, 0.0f), 0.0f);
-            return std::make_unique<SoundBox>(halfSizes, position, orientation, 0.0f);
+            return std::make_unique<SoundBox>(halfSizes, position, Quaternion<float>::rotationY(0.0f), 0.0f);
         }
 
         throw std::invalid_argument("Unknown shape type to create default sound shape: " + std::to_string(shapeType));

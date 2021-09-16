@@ -80,7 +80,7 @@ namespace urchin {
             if (isUseMouseToMoveCamera()) {
                 moveOnLocalXAxis(dt * speed);
             } else {
-                rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), dt * rotateSpeed));
+                rotate(Quaternion<float>::rotationY(dt * rotateSpeed));
             }
         }
 
@@ -88,7 +88,7 @@ namespace urchin {
             if (isUseMouseToMoveCamera()) {
                 moveOnLocalXAxis(-dt * speed);
             } else {
-                rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), -dt * rotateSpeed));
+                rotate(Quaternion<float>::rotationY(-dt * rotateSpeed));
             }
         }
 

@@ -23,14 +23,14 @@ namespace urchin {
         CapsuleShape<float>::CapsuleOrientation capsuleOrientation = capsule.getCapsuleOrientation();
         Quaternion<float> qCapsuleOrientation, qCapOrientation;
         if (capsuleOrientation == CapsuleShape<float>::CAPSULE_X) {
-            qCapsuleOrientation = Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
-            qCapOrientation = Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), MathValue::PI_FLOAT / 2.0f);
+            qCapsuleOrientation = Quaternion<float>::rotationY(MathValue::PI_FLOAT / 2.0f);
+            qCapOrientation = Quaternion<float>::rotationZ(MathValue::PI_FLOAT / 2.0f);
         } else if (capsuleOrientation == CapsuleShape<float>::CAPSULE_Y) {
-            qCapsuleOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
+            qCapsuleOrientation = Quaternion<float>::rotationX(MathValue::PI_FLOAT / 2.0f);
             qCapOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
         } else if (capsuleOrientation == CapsuleShape<float>::CAPSULE_Z) {
             qCapsuleOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
-            qCapOrientation = Quaternion<float>(Vector3<float>(1.0f, 0.0f, 0.0f), MathValue::PI_FLOAT / 2.0f);
+            qCapOrientation = Quaternion<float>::rotationX(MathValue::PI_FLOAT / 2.0f);
         }
 
         //cylinder

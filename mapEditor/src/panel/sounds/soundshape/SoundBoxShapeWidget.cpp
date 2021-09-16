@@ -121,7 +121,7 @@ namespace urchin {
         );
         QVariant variant = orientationType->currentData();
         auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
-        Quaternion<float> orientation(eulerAngle, rotationSequence);
+        Quaternion<float> orientation = Quaternion<float>::fromEuler(eulerAngle, rotationSequence);
 
         return new SoundBox(halfSizes, position, orientation, getMarginValue());
     }

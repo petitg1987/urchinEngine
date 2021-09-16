@@ -243,8 +243,8 @@ namespace urchin {
             }
 
             //rotate around the Y and X axis
-            rotate(Quaternion<float>(up.crossProduct(view), -mouseDirection.Y));
-            rotate(Quaternion<float>(Vector3<float>(0.0f, 1.0f, 0.0f), mouseDirection.X));
+            rotate(Quaternion<float>::fromAxisAngle(up.crossProduct(view), -mouseDirection.Y));
+            rotate(Quaternion<float>::rotationY(mouseDirection.X));
 
             updateComponents();
 
@@ -264,7 +264,7 @@ namespace urchin {
                 -view[0],   -view[1],   -view[2],   -view[0] * -position.X + -view[1] * -position.Y + -view[2] * -position.Z,
                 0.0f,       0.0f,       0.0f,       1.0f);
 
-        orientation = Quaternion<float>(mView.toMatrix3()).conjugate();
+        orientation = Quaternion<float>::fromRotationMatrix(mView.toMatrix3()).conjugate();
 
         frustum = baseFrustum * mView.inverse();
     }

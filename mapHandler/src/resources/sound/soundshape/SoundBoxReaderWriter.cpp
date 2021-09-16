@@ -12,7 +12,7 @@ namespace urchin {
         auto orientationChunk = udaParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
         auto orientationAxisChunk = udaParser.getUniqueChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
         auto orientationAngleChunk = udaParser.getUniqueChunk(true, ANGLE_TAG, UdaAttribute(), orientationChunk);
-        Quaternion<float> orientation(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
+        Quaternion<float> orientation = Quaternion<float>::fromAxisAngle(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
 
         auto marginChunk = udaParser.getUniqueChunk(true, MARGIN_TAG, UdaAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();

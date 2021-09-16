@@ -66,7 +66,7 @@ namespace urchin {
         Matrix3<float> mView(-yViewVector.Z,    0.0f,       yViewVector.X,
                              0.0f,              1.0f,       0.0f,
                              -yViewVector[0],   0.0f,       -yViewVector[2]);
-        Quaternion<float> yRotation = Quaternion<float>(mView).conjugate();
+        Quaternion<float> yRotation = Quaternion<float>::fromRotationMatrix(mView).conjugate();
 
         Point3<float> position = ghostBody->getTransform().getPosition();
         ghostBody->setTransform(PhysicsTransform(position, yRotation));

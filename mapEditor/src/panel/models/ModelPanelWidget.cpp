@@ -594,7 +594,7 @@ namespace urchin {
 
             Transform<float> newSceneModelTransform(
                     Point3<float>((float)positionX->value(),(float)positionY->value(),(float)positionZ->value()),
-                    Quaternion<float>(eulerAngle, rotationSequence),
+                    Quaternion<float>::fromEuler(eulerAngle, rotationSequence),
                     (float)scale->value());
 
             modelController->updateSceneModelTransform(sceneModel, newSceneModelTransform);

@@ -47,6 +47,7 @@
 #include <ai/path/navmesh/NavMeshGeneratorTest.h>
 #include <ai/path/pathfinding/FunnelAlgorithmTest.h>
 #include <ai/path/pathfinding/PathfindingAStarTest.h>
+using namespace urchin;
 
 void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     //io
@@ -159,7 +160,7 @@ void addAllMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
 }
 
 int main(int argc, char *argv[]) {
-    urchin::ConfigService::instance().loadProperties("resources/engine.properties");
+    ConfigService::instance().loadProperties("resources/engine.properties");
     CppUnit::TextUi::TestRunner runner;
 
     std::string hasUnitTests = "no";
@@ -184,7 +185,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Start running tests (unit: "<< hasUnitTests << ", integration: " << hasIntegrationTests << ", monkey: " << hasMonkeyTests << ")" << std::endl;
     runner.run();
 
-    urchin::Logger::instance().purge();
-    urchin::SingletonContainer::destroyAllSingletons();
+    Logger::instance().purge();
+    SingletonContainer::destroyAllSingletons();
     return 0;
 }

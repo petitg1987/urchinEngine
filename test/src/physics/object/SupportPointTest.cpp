@@ -15,8 +15,7 @@ void SupportPointTest::sphereSupportPoint() {
 }
 
 void SupportPointTest::boxSupportPoint() {
-    CollisionBoxObject boxObject(0.04f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionBoxObject boxObject(0.04f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     AssertHelper::assertPoint3FloatEquals(boxObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, -0.1f), false), Point3<float>(1.41421356237f, 0.0f, -1.0f));
     AssertHelper::assertPoint3FloatEquals(boxObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, 0.1f), false), Point3<float>(1.41421356237f, 0.0f, 1.0f));
@@ -29,8 +28,7 @@ void SupportPointTest::boxSupportPoint() {
 }
 
 void SupportPointTest::capsuleSupportPoint() {
-    CollisionCapsuleObject capsuleObject(0.04f, 0.5f, 5.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(1.0f, 1.0f, 1.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionCapsuleObject capsuleObject(0.04f, 0.5f, 5.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(1.0f, 1.0f, 1.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     AssertHelper::assertPoint3FloatEquals(capsuleObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, 0.0f), false), Point3<float>(3.26776695297f, 2.76776695297f, 1.0f));
     AssertHelper::assertPoint3FloatEquals(capsuleObject.getSupportPoint(Vector3<float>(1.0f, 1.0f, 0.0f), false), Point3<float>(3.12132034356f, 3.12132034356f, 1.0f));
@@ -39,8 +37,7 @@ void SupportPointTest::capsuleSupportPoint() {
 }
 
 void SupportPointTest::cylinderSupportPoint() {
-    CollisionCylinderObject cylinderObject(0.04f, 0.5f, 5.0f, CylinderShape<float>::CYLINDER_Y, Point3<float>(1.0f, 1.0f, 1.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, 1.0f), 2.35619449f));
+    CollisionCylinderObject cylinderObject(0.04f, 0.5f, 5.0f, CylinderShape<float>::CYLINDER_Y, Point3<float>(1.0f, 1.0f, 1.0f), Quaternion<float>::rotationZ(2.35619449f));
 
     AssertHelper::assertPoint3FloatEquals(cylinderObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, 0.0f), false), Point3<float>(3.12132034356f, 2.41421356237f, 1.0f));
     AssertHelper::assertPoint3FloatEquals(cylinderObject.getSupportPoint(Vector3<float>(1.0f, 0.9f, 0.0f), false), Point3<float>(3.12132034356f, 2.41421356237f, 1.0f));
@@ -51,8 +48,7 @@ void SupportPointTest::cylinderSupportPoint() {
 }
 
 void SupportPointTest::coneSupportPoint() {
-    CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y_POSITIVE, Point3<float>(0.25f, 1.0f, 0.0f),
-            Quaternion<float>(Vector3<float>(0.0f, 0.0f, -1.0f), MathValue::PI_FLOAT / 2.0f));
+    CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y_POSITIVE, Point3<float>(0.25f, 1.0f, 0.0f), Quaternion<float>::rotationZ(-MathValue::PI_FLOAT / 2.0f));
 
     AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(1.0f, 0.0f, 0.0f), false), Point3<float>(2.5f, 1.0f, 0.0f));
     AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(2.0f, -1.0f, 0.0f), false), Point3<float>(2.5f, 1.0f, 0.0f));

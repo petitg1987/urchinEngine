@@ -315,9 +315,8 @@ namespace urchin {
                 (m3 * obb.getAxis(2)).length()
         );
         Point3<T> centerOfMass = (m * Point4<T>(obb.getCenterOfMass())).toPoint3();
-        Quaternion<T> orientation(m3);
 
-        return OBBox<T>(halfSizes, centerOfMass, orientation);
+        return OBBox<T>(halfSizes, centerOfMass, Quaternion<T>::fromRotationMatrix(m3));
     }
 
     template<class T> OBBox<T> operator *(const OBBox<T>& obb, const Matrix4<T>& m) {
