@@ -28,7 +28,7 @@ namespace urchin {
             };
 
             Quaternion();
-            explicit Quaternion(T Xu, T Yu, T Zu, T Wu);
+            Quaternion(T Xu, T Yu, T Zu, T Wu);
             static Quaternion<T> fromRotationMatrix(const Matrix3<T>&);
             static Quaternion<T> fromEuler(const Vector3<T>&, RotationSequence);
             static Quaternion<T> lookUp(const Vector3<T>&, const Vector3<T> &normalizedUp = Vector3<T>(0.0, 1.0, 0.0));
