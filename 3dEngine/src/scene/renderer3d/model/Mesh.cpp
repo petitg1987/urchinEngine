@@ -25,14 +25,23 @@ namespace urchin {
     }
 
     const std::vector<Point3<float>>& Mesh::getVertices() const {
+        if (vertices.empty()) {
+            return constMesh.getBaseVertices();
+        }
         return vertices;
     }
 
     const std::vector<Vector3<float>>& Mesh::getNormals() const {
+        if (normals.empty()) {
+            return constMesh.getBaseNormals();
+        }
         return normals;
     }
 
     const std::vector<Vector3<float>>& Mesh::getTangents() const {
+        if (tangents.empty()) {
+            return constMesh.getBaseTangents();
+        }
         return tangents;
     }
 

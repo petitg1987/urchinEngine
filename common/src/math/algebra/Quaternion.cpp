@@ -51,7 +51,7 @@ namespace urchin {
     }
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T>& axis, T angle) {
-        const T halfAngle = angle / (T)2.0;
+        const T halfAngle = angle * (T)0.5;
         const T sin = std::sin(halfAngle);
 
         Vector3<T> normalizedAxis = axis.normalize();
@@ -62,77 +62,46 @@ namespace urchin {
     }
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T>& eulerAngles, RotationSequence rotationSequence) {
-        Quaternion<T> finalQuaternion;
-
         switch(rotationSequence) {
             case RotationSequence::XYZ:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
+                *this = rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationX(eulerAngles[0]);
                 break;
             case RotationSequence::XZY:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
+                *this = rotationY(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationX(eulerAngles[0]);
                 break;
             case RotationSequence::YXZ:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
+                *this = rotationZ(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationY(eulerAngles[0]);
                 break;
             case RotationSequence::YZX:
-                finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
+                *this = rotationX(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationY(eulerAngles[0]);
                 break;
             case RotationSequence::ZXY:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
+                *this = rotationY(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationZ(eulerAngles[0]);
                 break;
             case RotationSequence::ZYX:
-                finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
+                *this = rotationX(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
                 break;
             case RotationSequence::XYX:
-                finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
+                *this = rotationX(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationX(eulerAngles[0]);
                 break;
             case RotationSequence::XZX:
-                finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
+                *this = rotationX(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationX(eulerAngles[0]);
                 break;
             case RotationSequence::YXY:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
+                *this = rotationY(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationY(eulerAngles[0]);
                 break;
             case RotationSequence::YZY:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
+                *this = rotationY(eulerAngles[2]) * rotationZ(eulerAngles[1]) * rotationY(eulerAngles[0]);
                 break;
             case RotationSequence::ZXZ:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
+                *this = rotationZ(eulerAngles[2]) * rotationX(eulerAngles[1]) * rotationZ(eulerAngles[0]);
                 break;
             case RotationSequence::ZYZ:
-                finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
-                        Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
-                        Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
+                *this = rotationZ(eulerAngles[2]) * rotationY(eulerAngles[1]) * rotationZ(eulerAngles[0]);
                 break;
             default:
                 throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string(rotationSequence));
         }
-
-        X = finalQuaternion.X;
-        Y = finalQuaternion.Y;
-        Z = finalQuaternion.Z;
-        W = finalQuaternion.W;
     }
 
     template<class T> Quaternion<T> Quaternion<T>::lookUp(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
@@ -196,6 +165,21 @@ namespace urchin {
 
         Vector3<T> crossVectors = normalizedFrom.crossProduct(normalizedTo);
         return Quaternion<T>(crossVectors.X, crossVectors.Y, crossVectors.Z, (T)1.0 + dotVectors);
+    }
+
+    template<class T> Quaternion<T> Quaternion<T>::rotationX(T angle) {
+        const T halfAngle = angle * (T)0.5;
+        return Quaternion<T>(std::sin(halfAngle), 0.0, 0.0, std::cos(halfAngle));
+    }
+
+    template<class T> Quaternion<T> Quaternion<T>::rotationY(T angle) {
+        const T halfAngle = angle * (T)0.5;
+        return Quaternion<T>(0.0, std::sin(halfAngle), 0.0, std::cos(halfAngle));
+    }
+
+    template<class T> Quaternion<T> Quaternion<T>::rotationZ(T angle) {
+        const T halfAngle = angle * (T)0.5;
+        return Quaternion<T>(0.0, 0.0, std::sin(halfAngle), std::cos(halfAngle));
     }
 
     template<class T> void Quaternion<T>::computeW() {
@@ -393,9 +377,9 @@ namespace urchin {
         const T zz = Z * Z;
         const T zw = Z * W;
 
-        return Matrix3<T>(1 - 2 * (yy + zz),2 * (xy - zw),2 * (xz + yw),
-                          2 * (xy + zw),1 - 2 * (xx + zz),2 * (yz - xw),
-                          2 * (xz - yw),2 * (yz + xw),1 - 2 * (xx + yy));
+        return Matrix3<T>(1 - 2 * (yy + zz), 2 * (xy - zw), 2 * (xz + yw),
+                          2 * (xy + zw), 1 - 2 * (xx + zz), 2 * (yz - xw),
+                          2 * (xz - yw), 2 * (yz + xw), 1 - 2 * (xx + yy));
     }
 
     template<class T> void Quaternion<T>::toAxisAngle(Vector3<T>& axis, T& angle) const {
@@ -450,7 +434,7 @@ namespace urchin {
         bool sequenceAxis = (i + 1) % 3 == j;
         Matrix3<T> m = toMatrix3();
 
-        euler[0] = std::atan2(m(k, j), m(k, k));
+        euler[0] = (T)atan2f((float)m(k, j), (float)m(k, k));
         T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
 
         if ((sequenceAxis && euler[0] < 0.0) || (!sequenceAxis && euler[0] > 0.0)) {
