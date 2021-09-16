@@ -54,11 +54,12 @@ namespace urchin {
         }
     }
 
-    template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& axis, T angle) {
+    template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& normalizedAxis, T angle) {
+        #ifndef NDEBUG
+            assert(MathFunction::isOne((float)normalizedAxis.length(), 0.001f));
+        #endif
         const T halfAngle = angle * (T)0.5;
         const T sin = std::sin(halfAngle);
-
-        Vector3<T> normalizedAxis = axis.normalize(); //TODO move out ?
         return Quaternion<T>(normalizedAxis.X * sin, normalizedAxis.Y * sin, normalizedAxis.Z * sin, std::cos(halfAngle));
     }
 
