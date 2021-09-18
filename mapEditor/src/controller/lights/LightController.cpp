@@ -12,7 +12,7 @@ namespace urchin {
     std::list<const SceneLight*> LightController::getSceneLights() const {
         const auto& sceneLights = getMapHandler()->getMap().getSceneLights();
         std::list<const SceneLight*> constSceneLights;
-        for(auto& sceneLight : sceneLights) {
+        for (auto& sceneLight : sceneLights) {
             constSceneLights.emplace_back(sceneLight.get());
         }
 

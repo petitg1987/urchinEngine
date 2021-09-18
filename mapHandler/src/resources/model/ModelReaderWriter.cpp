@@ -108,7 +108,7 @@ namespace urchin {
         if (tagsChunk) {
             std::string tagsValues = tagsChunk->getStringValue();
             std::vector<std::string> tags = StringUtil::split(tagsValues, TAGS_SEPARATOR);
-            for(const std::string& tag: tags) {
+            for (const std::string& tag: tags) {
                 model.addTag(tag);
             }
         }

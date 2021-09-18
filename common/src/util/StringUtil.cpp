@@ -47,7 +47,7 @@ namespace urchin {
 
     std::string StringUtil::merge(const std::vector<std::string>& values, const char& delimiter) {
         std::string mergedValues;
-        for(unsigned int i = 0; i < values.size(); ++i) {
+        for (unsigned int i = 0; i < values.size(); ++i) {
             mergedValues += values[i];
             if (i + 1 < values.size()) {
                 mergedValues += delimiter;

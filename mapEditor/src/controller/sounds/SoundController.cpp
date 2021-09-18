@@ -13,7 +13,7 @@ namespace urchin {
     std::list<const SceneSound*> SoundController::getSceneSounds() const {
         const auto& sceneSounds = getMapHandler()->getMap().getSceneSounds();
         std::list<const SceneSound*> constSceneSounds;
-        for(auto& sceneSound : sceneSounds) {
+        for (auto& sceneSound : sceneSounds) {
             constSceneSounds.emplace_back(sceneSound.get());
         }
 

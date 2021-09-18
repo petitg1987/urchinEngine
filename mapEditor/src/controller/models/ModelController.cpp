@@ -15,7 +15,7 @@ namespace urchin {
     std::list<const SceneModel*> ModelController::getSceneModels() const {
         const auto& sceneModels = getMapHandler()->getMap().getSceneModels();
         std::list<const SceneModel*> constSceneModels;
-        for(auto& sceneModel : sceneModels) {
+        for (auto& sceneModel : sceneModels) {
             constSceneModels.emplace_back(sceneModel.get());
         }
 
@@ -125,7 +125,7 @@ namespace urchin {
         model->removeAllTags();
 
         std::vector<std::string> tagsList = StringUtil::split(tagsValues, ModelReaderWriter::TAGS_SEPARATOR);
-        for(const std::string& tag: tagsList) {
+        for (const std::string& tag: tagsList) {
             model->addTag(tag);
         }
 
