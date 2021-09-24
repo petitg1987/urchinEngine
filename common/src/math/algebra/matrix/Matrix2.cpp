@@ -191,4 +191,10 @@ namespace urchin {
     template Matrix2<double> operator /<double>(const Matrix2<double>&, double);
     template std::ostream& operator <<<double>(std::ostream&, const Matrix2<double>&);
 
+    template class Matrix2<int>;
+    template Matrix2<int> operator *<int>(const Matrix2<int>&, int);
+    template Matrix2<int> operator *<int>(int, const Matrix2<int>&);
+    template Matrix2<int> operator /<int>(const Matrix2<int>&, int);
+    template std::ostream& operator <<<int>(std::ostream&, const Matrix2<int>&);
+
 }

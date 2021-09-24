@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     template<class T> Vector4<T> Vector4<T>::normalize() const {
-        const T norm = std::sqrt(X * X + Y * Y + Z * Z + W * W);
+        const T norm = (T)std::sqrt(X * X + Y * Y + Z * Z + W * W);
 
         if (norm > 0.0) {
             return Vector4<T>(X / norm, Y / norm, Z / norm, W / norm);
@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     template<class T> T Vector4<T>::length() const {
-        return std::sqrt(X * X + Y * Y + Z * Z + W * W);
+        return (T)std::sqrt(X * X + Y * Y + Z * Z + W * W);
     }
 
     template<class T> T Vector4<T>::squareLength() const {
@@ -195,6 +195,7 @@ namespace urchin {
     template class Vector4<float>;
     template Vector4<float> Vector4<float>::cast() const;
     template Vector4<double> Vector4<float>::cast() const;
+    template Vector4<int> Vector4<float>::cast() const;
     template Vector4<float> operator *<float>(const Vector4<float>&, float);
     template Vector4<float> operator *<float>(float, const Vector4<float>&);
     template Vector4<float> operator /<float>(const Vector4<float>&, float);
@@ -205,11 +206,23 @@ namespace urchin {
     template class Vector4<double>;
     template Vector4<float> Vector4<double>::cast() const;
     template Vector4<double> Vector4<double>::cast() const;
+    template Vector4<int> Vector4<double>::cast() const;
     template Vector4<double> operator *<double>(const Vector4<double>&, double);
     template Vector4<double> operator *<double>(double, const Vector4<double>&);
     template Vector4<double> operator /<double>(const Vector4<double>&, double);
     template Vector4<double> operator *<double>(const Matrix4<double>&, const Vector4<double>&);
     template Vector4<double> operator *<double>(const Vector4<double>&, const Matrix4<double>&);
     template std::ostream& operator <<<double>(std::ostream&, const Vector4<double>&);
+
+    template class Vector4<int>;
+    template Vector4<float> Vector4<int>::cast() const;
+    template Vector4<double> Vector4<int>::cast() const;
+    template Vector4<int> Vector4<int>::cast() const;
+    template Vector4<int> operator *<int>(const Vector4<int>&, int);
+    template Vector4<int> operator *<int>(int, const Vector4<int>&);
+    template Vector4<int> operator /<int>(const Vector4<int>&, int);
+    template Vector4<int> operator *<int>(const Matrix4<int>&, const Vector4<int>&);
+    template Vector4<int> operator *<int>(const Vector4<int>&, const Matrix4<int>&);
+    template std::ostream& operator <<<int>(std::ostream&, const Vector4<int>&);
 
 }

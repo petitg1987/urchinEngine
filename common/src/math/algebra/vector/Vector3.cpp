@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     template<class T> Vector3<T> Vector3<T>::normalize() const {
-        const T norm = std::sqrt(X * X + Y * Y + Z * Z);
+        const T norm = (T)std::sqrt(X * X + Y * Y + Z * Z);
         if (norm > 0.0) {
             return Vector3<T>(X / norm, Y / norm, Z / norm);
         }
@@ -37,7 +37,7 @@ namespace urchin {
     }
 
     template<class T> T Vector3<T>::length() const {
-        return std::sqrt(X * X + Y * Y + Z * Z);
+        return (T)std::sqrt(X * X + Y * Y + Z * Z);
     }
 
     template<class T> T Vector3<T>::squareLength() const {
@@ -215,6 +215,7 @@ namespace urchin {
     template class Vector3<float>;
     template Vector3<float> Vector3<float>::cast() const;
     template Vector3<double> Vector3<float>::cast() const;
+    template Vector3<int> Vector3<float>::cast() const;
     template Vector3<float> operator *<float>(const Vector3<float>&, float);
     template Vector3<float> operator *<float>(float, const Vector3<float>&);
     template Vector3<float> operator /<float>(const Vector3<float>&, float);
@@ -225,11 +226,23 @@ namespace urchin {
     template class Vector3<double>;
     template Vector3<float> Vector3<double>::cast() const;
     template Vector3<double> Vector3<double>::cast() const;
+    template Vector3<int> Vector3<double>::cast() const;
     template Vector3<double> operator *<double>(const Vector3<double>&, double);
     template Vector3<double> operator *<double>(double, const Vector3<double>&);
     template Vector3<double> operator /<double>(const Vector3<double>&, double);
     template Vector3<double> operator *<double>(const Matrix3<double>&, const Vector3<double>&);
     template Vector3<double> operator *<double>(const Vector3<double>&, const Matrix3<double>&);
     template std::ostream& operator <<<double>(std::ostream&, const Vector3<double>&);
+
+    template class Vector3<int>;
+    template Vector3<float> Vector3<int>::cast() const;
+    template Vector3<double> Vector3<int>::cast() const;
+    template Vector3<int> Vector3<int>::cast() const;
+    template Vector3<int> operator *<int>(const Vector3<int>&, int);
+    template Vector3<int> operator *<int>(int, const Vector3<int>&);
+    template Vector3<int> operator /<int>(const Vector3<int>&, int);
+    template Vector3<int> operator *<int>(const Matrix3<int>&, const Vector3<int>&);
+    template Vector3<int> operator *<int>(const Vector3<int>&, const Matrix3<int>&);
+    template std::ostream& operator <<<int>(std::ostream&, const Vector3<int>&);
 
 }

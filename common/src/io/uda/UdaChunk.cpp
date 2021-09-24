@@ -119,7 +119,17 @@ namespace urchin {
 
     void UdaChunk::setPoint2Value(const Point2<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y));
+    }
+
+    Point2<int> UdaChunk::getPoint2IntValue() const {
+        return TypeConverter::toPoint2Int(getStringValue());
+    }
+
+    void UdaChunk::setPoint2IntValue(const Point2<int>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.Y));
     }
 
@@ -129,8 +139,19 @@ namespace urchin {
 
     void UdaChunk::setPoint3Value(const Point3<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z));
+    }
+
+    Point3<int> UdaChunk::getPoint3IntValue() const {
+        return TypeConverter::toPoint3Int(getStringValue());
+    }
+
+    void UdaChunk::setPoint3IntValue(const Point3<int>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.Z));
     }
 
@@ -140,9 +161,21 @@ namespace urchin {
 
     void UdaChunk::setPoint4Value(const Point4<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.W));
+    }
+
+    Point4<int> UdaChunk::getPoint4IntValue() const {
+        return TypeConverter::toPoint4Int(getStringValue());
+    }
+
+    void UdaChunk::setPoint4IntValue(const Point4<int>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.W));
     }
 
@@ -152,7 +185,17 @@ namespace urchin {
 
     void UdaChunk::setVector2Value(const Vector2<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y));
+    }
+
+    Vector2<int> UdaChunk::getVector2IntValue() const {
+        return TypeConverter::toVector2Int(getStringValue());
+    }
+
+    void UdaChunk::setVector2IntValue(const Vector2<int>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.Y));
     }
 
@@ -162,8 +205,19 @@ namespace urchin {
 
     void UdaChunk::setVector3Value(const Vector3<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z));
+    }
+
+    Vector3<int> UdaChunk::getVector3IntValue() const {
+        return TypeConverter::toVector3Int(getStringValue());
+    }
+
+    void UdaChunk::setVector3IntValue(const Vector3<int>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.Z));
     }
 
@@ -173,9 +227,21 @@ namespace urchin {
 
     void UdaChunk::setVector4Value(const Vector4<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.W));
+    }
+
+    Vector4<int> UdaChunk::getVector4IntValue() const {
+        return TypeConverter::toVector4Int(getStringValue());
+    }
+
+    void UdaChunk::setVector4IntValue(const Vector4<int>& value) {
+        setStringValue(
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.W));
     }
 
@@ -185,9 +251,9 @@ namespace urchin {
 
     void UdaChunk::setQuaternionValue(const Quaternion<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::FLOAT_DELIMITER +
-                TypeConverter::toString(value.Z) + TypeConverter::FLOAT_DELIMITER +
+                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
                 TypeConverter::toString(value.W));
     }
 }

@@ -15,7 +15,7 @@ namespace urchin {
 
     class TypeConverter {
         public:
-            static constexpr char FLOAT_DELIMITER = ' ';
+            static constexpr char NUMBER_DELIMITER = ' ';
             static constexpr float FLOAT_INT_SCALE = 8192.0f;
 
             TypeConverter() = delete;
@@ -35,11 +35,17 @@ namespace urchin {
             static bool isBool(const std::string&);
             static bool toBool(const std::string&);
             static Point2<float> toPoint2(const std::string&);
+            static Point2<int> toPoint2Int(const std::string&);
             static Point3<float> toPoint3(const std::string&);
+            static Point3<int> toPoint3Int(const std::string&);
             static Point4<float> toPoint4(const std::string&);
+            static Point4<int> toPoint4Int(const std::string&);
             static Vector2<float> toVector2(const std::string&);
+            static Vector2<int> toVector2Int(const std::string&);
             static Vector3<float> toVector3(const std::string&);
+            static Vector3<int> toVector3Int(const std::string&);
             static Vector4<float> toVector4(const std::string&);
+            static Vector4<int> toVector4Int(const std::string&);
             static Quaternion<float> toQuaternion(const std::string&);
 
             static long long toLongLong(float, float scale = FLOAT_INT_SCALE);
@@ -47,9 +53,11 @@ namespace urchin {
 
             static std::string toString(float);
             static std::string toString(double);
+            static std::string toString(int);
 
         private:
             static std::vector<float> floatSplit(const std::string&, unsigned int);
+            static std::vector<int> intSplit(const std::string&, unsigned int);
     };
 
 }

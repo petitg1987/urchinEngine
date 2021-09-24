@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     template<class T> T Point4<T>::distance(const Point4<T>& p) const {
-        return std::sqrt(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)) + ((Z - p.Z) * (Z - p.Z)) + ((W - p.W) * (W - p.W)));
+        return (T)std::sqrt(((X - p.X) * (X - p.X)) + ((Y - p.Y) * (Y - p.Y)) + ((Z - p.Z) * (Z - p.Z)) + ((W - p.W) * (W - p.W)));
     }
 
     template<class T> T Point4<T>::squareDistance(const Point4<T>& p) const {
@@ -229,6 +229,7 @@ namespace urchin {
     template class Point4<float>;
     template Point4<float> Point4<float>::cast() const;
     template Point4<double> Point4<float>::cast() const;
+    template Point4<int> Point4<float>::cast() const;
     template Point4<float> operator *<float>(const Point4<float>&, float);
     template Point4<float> operator *<float>(float, const Point4<float>&);
     template Point4<float> operator /<float>(const Point4<float>&, float);
@@ -241,6 +242,7 @@ namespace urchin {
     template class Point4<double>;
     template Point4<float> Point4<double>::cast() const;
     template Point4<double> Point4<double>::cast() const;
+    template Point4<int> Point4<double>::cast() const;
     template Point4<double> operator *<double>(const Point4<double>&, double);
     template Point4<double> operator *<double>(double, const Point4<double>&);
     template Point4<double> operator /<double>(const Point4<double>&, double);
@@ -249,5 +251,18 @@ namespace urchin {
     template Point4<double> operator *<double>(const Matrix4<double>&, const Point4<double>&);
     template Point4<double> operator *<double>(const Point4<double>&, const Matrix4<double>&);
     template std::ostream& operator <<<double>(std::ostream&, const Point4<double>&);
+
+    template class Point4<int>;
+    template Point4<float> Point4<int>::cast() const;
+    template Point4<double> Point4<int>::cast() const;
+    template Point4<int> Point4<int>::cast() const;
+    template Point4<int> operator *<int>(const Point4<int>&, int);
+    template Point4<int> operator *<int>(int, const Point4<int>&);
+    template Point4<int> operator /<int>(const Point4<int>&, int);
+    template Point4<int> operator +<int>(const Point4<int>&, int);
+    template Point4<int> operator -<int>(const Point4<int>&, int);
+    template Point4<int> operator *<int>(const Matrix4<int>&, const Point4<int>&);
+    template Point4<int> operator *<int>(const Point4<int>&, const Matrix4<int>&);
+    template std::ostream& operator <<<int>(std::ostream&, const Point4<int>&);
 
 }
