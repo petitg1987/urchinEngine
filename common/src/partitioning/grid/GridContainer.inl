@@ -32,7 +32,7 @@ template<class T> void GridContainer<T>::removeItem(T* item) {
         auto itFind = axisSortedItems[axisIndex].find(key);
         if (itFind != axisSortedItems[axisIndex].end()) {
             itFind->second.erase(item);
-            if(itFind->second.empty()) {
+            if (itFind->second.empty()) {
                 axisSortedItems[axisIndex].erase(itFind);
             }
         }
