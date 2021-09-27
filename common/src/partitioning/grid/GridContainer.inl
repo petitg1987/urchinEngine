@@ -29,7 +29,17 @@ template<class T> std::int64_t GridContainer<T>::buildKey(T* item, std::size_t e
 }
 
 template<class T> void GridContainer<T>::removeItem(T* item) {
-    //TODO impl
+    for (std::size_t axisIndex = 0; axisIndex < 3; ++axisIndex) {
+        std::int64_t key = buildKey(item, axisIndex);
+
+        auto itFind = axisSortedItems[axisIndex].find(key);
+        if (itFind != axisSortedItems[axisIndex].end()) {
+            itFind->second.erase(item);
+            if(itFind->second.empty()) {
+                axisSortedItems[axisIndex].erase(itFind);
+            }
+        }
+    }
 }
 
 template<class T> T* GridContainer<T>::findNeighbor(T* referenceItem, Axis axis, Direction direction) const {
