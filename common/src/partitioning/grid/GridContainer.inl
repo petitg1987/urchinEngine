@@ -11,14 +11,11 @@ template<class T> void GridContainer<T>::addItem(T* item) {
     for (std::size_t axisIndex = 0; axisIndex < 3; ++axisIndex) {
         std::int64_t key = buildKey(item, axisIndex);
 
-        std::set<T*, AxisCompare<T*>> initialItemSet((AxisCompare<T*>(axisIndex)));
-        initialItemSet.insert(item);
+        std::set<T*, AxisCompare<T*>> initialSet((AxisCompare<T*>(axisIndex)));
+        auto insertResult = axisSortedItems[axisIndex].insert(std::make_pair(key, initialSet));
 
-        auto insertResult = axisSortedItems[axisIndex].insert(std::make_pair(key, initialItemSet));
-        if (!insertResult.second) { //not inserted
-            std::set<T*, AxisCompare<T*>>& existingSetContainer = insertResult.first->second;
-            existingSetContainer.insert(item);
-        }
+        std::set<T*, AxisCompare<T*>>& setContainer = insertResult.first->second;
+        setContainer.insert(item);
     }
 }
 
@@ -56,11 +53,13 @@ template<class T> T* GridContainer<T>::findNeighbor(T* referenceItem, Axis axis,
             if (upper != set.end()) {
                 return *upper;
             }
-        } else {
+        } else if (direction == Direction::NEGATIVE) {
             auto lower = set.lower_bound(referenceItem);
             if (lower != set.begin()) {
                 return *(--lower);
             }
+        } else {
+            throw std::runtime_error("Unknown direction: " + std::to_string(direction));
         }
     }
     return nullptr;
