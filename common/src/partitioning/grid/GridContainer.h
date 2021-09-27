@@ -34,10 +34,10 @@ namespace urchin {
             void addItem(T*);
             void removeItem(T*);
 
-            T* findNeighbor(T*, Axis, Direction) const;
+            T* findNeighbor(const Point3<int>&, Axis, Direction) const;
 
         private:
-            std::int64_t buildKey(T*, std::size_t) const;
+            std::int64_t buildKey(const Point3<int>&, std::size_t) const;
 
             std::unordered_map<std::int64_t, std::set<T*, AxisCompare<T*>>> axisSortedItems[3];
     };

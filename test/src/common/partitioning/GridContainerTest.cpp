@@ -10,7 +10,7 @@ MyGridItem::MyGridItem(const urchin::Point3<int>& position) :
         position(position) {
 }
 
-const urchin::Point3<int>& MyGridItem::getPosition() const {
+const urchin::Point3<int>& MyGridItem::getGridPosition() const {
     return position;
 }
 
@@ -25,10 +25,10 @@ void GridContainerTest::findXPositiveNeighbor() {
     gridContainer.addItem(item3.get());
     gridContainer.addItem(item4.get());
 
-    MyGridItem* xPositiveNeighborItem1 = gridContainer.findNeighbor(item1.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
-    MyGridItem* xPositiveNeighborItem2 = gridContainer.findNeighbor(item2.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
-    MyGridItem* xPositiveNeighborItem3 = gridContainer.findNeighbor(item3.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
-    MyGridItem* xPositiveNeighborItem4 = gridContainer.findNeighbor(item4.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    MyGridItem* xPositiveNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    MyGridItem* xPositiveNeighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    MyGridItem* xPositiveNeighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    MyGridItem* xPositiveNeighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
 
     AssertHelper::assertTrue(xPositiveNeighborItem1 == item3.get());
     AssertHelper::assertTrue(xPositiveNeighborItem2 == nullptr);
@@ -47,10 +47,10 @@ void GridContainerTest::findXNegativeNeighbor() {
     gridContainer.addItem(item3.get());
     gridContainer.addItem(item4.get());
 
-    MyGridItem* xNegativeNeighborItem1 = gridContainer.findNeighbor(item1.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
-    MyGridItem* xNegativeNeighborItem2 = gridContainer.findNeighbor(item2.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
-    MyGridItem* xNegativeNeighborItem3 = gridContainer.findNeighbor(item3.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
-    MyGridItem* xNegativeNeighborItem4 = gridContainer.findNeighbor(item4.get(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    MyGridItem* xNegativeNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    MyGridItem* xNegativeNeighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    MyGridItem* xNegativeNeighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    MyGridItem* xNegativeNeighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
 
     AssertHelper::assertTrue(xNegativeNeighborItem1 == nullptr);
     AssertHelper::assertTrue(xNegativeNeighborItem2 == nullptr);
@@ -65,11 +65,11 @@ void GridContainerTest::removeNeighbor() {
     gridContainer.addItem(item1.get());
     gridContainer.addItem(item2.get());
 
-    MyGridItem* yPositiveNeighborItem1 = gridContainer.findNeighbor(item1.get(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
+    MyGridItem* yPositiveNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
     AssertHelper::assertTrue(yPositiveNeighborItem1 == item2.get());
     gridContainer.removeItem(item2.get());
 
-    yPositiveNeighborItem1 = gridContainer.findNeighbor(item1.get(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
+    yPositiveNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
     AssertHelper::assertTrue(yPositiveNeighborItem1 == nullptr);
 }
 

@@ -7,7 +7,7 @@ struct MyGridItem {
     public:
         explicit MyGridItem(const urchin::Point3<int>&);
 
-        const urchin::Point3<int>& getPosition() const;
+        const urchin::Point3<int>& getGridPosition() const;
 
     private:
         urchin::Point3<int> position;
