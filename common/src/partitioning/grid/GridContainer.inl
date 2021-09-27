@@ -1,54 +1,57 @@
+template<class T>  AxisCompare<T>::AxisCompare(std::size_t axisIndex) :
+        axisIndex(axisIndex) {
+
+}
+
+template<class T> bool AxisCompare<T>::operator() (const T& item1, const T& item2) const {
+    return item1->getPosition()[axisIndex] < item2->getPosition()[axisIndex];
+}
+
 template<class T> void GridContainer<T>::addItem(T* item) {
-    //to search on X axis
-    std::int64_t xSortedMapKey = (((std::int64_t) item->getPosition().Y) << 32) + ((std::int64_t)item->getPosition().Z);
-    auto xSortedItemsInsert = xSortedItems.insert(std::pair<std::int64_t, std::vector<T*>>(xSortedMapKey, {item}));
-    if (!xSortedItemsInsert.second) { //not inserted
-        VectorUtil::insertSorted((*xSortedItemsInsert.first).second, item, [](const T* item1, const T* item2) {return item1->getPosition().X < item2->getPosition().X;});
-    }
+    for (std::size_t axisIndex = 0; axisIndex < 3; ++axisIndex) {
+        std::int64_t key = buildKey(item, axisIndex);
 
-    //to search on Y axis
-    std::int64_t ySortedMapKey = (((std::int64_t) item->getPosition().X) << 32) + ((std::int64_t)item->getPosition().Z);
-    auto ySortedItemsInsert = ySortedItems.insert(std::pair<std::int64_t, std::vector<T*>>(ySortedMapKey, {item}));
-    if (!ySortedItemsInsert.second) { //not inserted
-        VectorUtil::insertSorted((*ySortedItemsInsert.first).second, item, [](const T* item1, const T* item2) {return item1->getPosition().Y < item2->getPosition().Y;});
-    }
+        std::set<T*, AxisCompare<T*>> initialItemSet((AxisCompare<T*>(axisIndex)));
+        initialItemSet.insert(item);
 
-    //to search on Z axis
-    std::int64_t zSortedMapKey = (((std::int64_t) item->getPosition().X) << 32) + ((std::int64_t)item->getPosition().Y);
-    auto zSortedItemsInsert = zSortedItems.insert(std::pair<std::int64_t, std::vector<T*>>(zSortedMapKey, {item}));
-    if (!zSortedItemsInsert.second) { //not inserted
-        VectorUtil::insertSorted((*zSortedItemsInsert.first).second, item, [](const T* item1, const T* item2) {return item1->getPosition().Z < item2->getPosition().Z;});
+        auto insertResult = axisSortedItems[axisIndex].insert(std::make_pair(key, initialItemSet));
+        if (!insertResult.second) { //not inserted
+            std::set<T*, AxisCompare<T*>>& existingSetContainer = insertResult.first->second;
+            existingSetContainer.insert(item);
+        }
     }
+}
+
+template<class T> std::int64_t GridContainer<T>::buildKey(T* item, std::size_t excludeIndex) const {
+    std::size_t index1 = (excludeIndex + 1) % 3;
+    std::size_t index2 = (excludeIndex + 2) % 3;
+    return (((std::int64_t) item->getPosition()[index1]) << 32) + ((std::int64_t)item->getPosition()[index2]);
 }
 
 template<class T> void GridContainer<T>::removeItem(T* item) {
     //TODO impl
 }
 
-template<class T> T* GridContainer<T>::findNeighbor(T* referenceItem, NeighborDirection neighborDirection) const {
-    if (neighborDirection == NeighborDirection::X_POSITIVE) {
-        std::int64_t key = (((std::int64_t) referenceItem->getPosition().Y) << 32) + ((std::int64_t) referenceItem->getPosition().Z);
-        auto itFind = xSortedItems.find(key);
-        if (itFind != xSortedItems.end()) {
-            const std::vector<T*>& v = itFind->second;
-            auto upper = std::upper_bound(v.begin(), v.end(), referenceItem->getPosition().X, [](int value, const T* item) { return value < item->getPosition().X; });
-            if (upper != v.end()) {
+template<class T> T* GridContainer<T>::findNeighbor(T* referenceItem, Axis axis, Direction direction) const {
+    std::size_t searchAxisIndex = (std::size_t)axis;
+    const auto& sortedItems = axisSortedItems[searchAxisIndex];
+
+    std::int64_t key = buildKey(referenceItem, searchAxisIndex);
+
+    auto itFind = sortedItems.find(key);
+    if (itFind != sortedItems.end()) {
+        const auto& set = itFind->second;
+        if (direction == Direction::POSITIVE) {
+            auto upper = set.upper_bound(referenceItem);
+            if (upper != set.end()) {
                 return *upper;
             }
-        }
-        return nullptr;
-    } else if (neighborDirection == NeighborDirection::X_NEGATIVE) {
-        std::int64_t key = (((std::int64_t) referenceItem->getPosition().Y) << 32) + ((std::int64_t) referenceItem->getPosition().Z);
-        auto itFind = xSortedItems.find(key);
-        if (itFind != xSortedItems.end()) {
-            const std::vector<T*>& v = itFind->second;
-            auto lower = std::lower_bound(v.begin(), v.end(), referenceItem->getPosition().X, [](const T* item, int value) { return item->getPosition().X < value; });
-            if (lower != v.begin()) {
+        } else {
+            auto lower = set.lower_bound(referenceItem);
+            if (lower != set.begin()) {
                 return *(--lower);
             }
         }
-        return nullptr;
-    } else {
-        throw std::runtime_error("Unknown neighbor direction: " + std::to_string(neighborDirection));
     }
+    return nullptr;
 }

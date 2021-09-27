@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <set>
 #include <unordered_map>
 #include <utility>
 #include <cstdint>
@@ -9,26 +9,37 @@
 
 namespace urchin {
 
+    template<class T> class AxisCompare {
+        public:
+            explicit AxisCompare(std::size_t);
+
+            bool operator() (const T&, const T&) const;
+
+        private:
+            std::size_t axisIndex;
+    };
+
     template<class T> class GridContainer {
         public:
-            enum NeighborDirection {
-                X_POSITIVE,
-                X_NEGATIVE,
-                Y_POSITIVE,
-                Y_NEGATIVE,
-                Z_POSITIVE,
-                Z_NEGATIVE
+            enum Axis {
+                X = 0,
+                Y = 1,
+                Z = 2
+            };
+            enum Direction {
+                POSITIVE,
+                NEGATIVE
             };
 
             void addItem(T*);
             void removeItem(T*);
 
-            T* findNeighbor(T*, NeighborDirection) const;
+            T* findNeighbor(T*, Axis, Direction) const;
 
         private:
-            std::unordered_map<std::int64_t, std::vector<T*>> xSortedItems;
-            std::unordered_map<std::int64_t, std::vector<T*>> ySortedItems;
-            std::unordered_map<std::int64_t, std::vector<T*>> zSortedItems;
+            std::int64_t buildKey(T*, std::size_t) const;
+
+            std::unordered_map<std::int64_t, std::set<T*, AxisCompare<T*>>> axisSortedItems[3];
     };
 
     #include "GridContainer.inl"
