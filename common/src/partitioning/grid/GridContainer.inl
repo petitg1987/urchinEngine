@@ -4,7 +4,7 @@ template<class T>  AxisCompare<T>::AxisCompare(std::size_t axisIndex) :
 }
 
 template<class T> bool AxisCompare<T>::operator() (const T& item1, const T& item2) const {
-    return item1->getPosition()[axisIndex] < item2->getPosition()[axisIndex];
+    return item1->getGridPosition()[axisIndex] < item2->getGridPosition()[axisIndex];
 }
 
 template<class T> void GridContainer<T>::addItem(T* item) {
@@ -22,7 +22,7 @@ template<class T> void GridContainer<T>::addItem(T* item) {
 template<class T> std::int64_t GridContainer<T>::buildKey(T* item, std::size_t excludeIndex) const {
     std::size_t index1 = (excludeIndex + 1) % 3;
     std::size_t index2 = (excludeIndex + 2) % 3;
-    return (((std::int64_t) item->getPosition()[index1]) << 32) + ((std::int64_t)item->getPosition()[index2]);
+    return (((std::int64_t) item->getGridPosition()[index1]) << 32) + ((std::int64_t)item->getGridPosition()[index2]);
 }
 
 template<class T> void GridContainer<T>::removeItem(T* item) {
