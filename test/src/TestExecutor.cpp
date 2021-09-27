@@ -17,6 +17,7 @@
 #include <common/math/geometry/ResizePolygon2DServiceTest.h>
 #include <common/math/geometry/ConvexHullShape2DTest.h>
 #include <common/math/geometry/SortPointsTest.h>
+#include <common/partitioning/GridContainerTest.h>
 #include <3d/scene/renderer3d/Renderer3dTest.h>
 #include <3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h>
 #include <3d/scene/ui/UIRendererTest.h>
@@ -74,6 +75,9 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(ResizePolygon2DServiceTest::suite());
     runner.addTest(ConvexHullShape2DTest::suite());
     runner.addTest(SortPointsTest::suite());
+
+    //partitioning
+    runner.addTest(GridContainerTest::suite());
 }
 
 void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {

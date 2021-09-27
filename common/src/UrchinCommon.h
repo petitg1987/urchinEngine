@@ -84,6 +84,7 @@
 #include <partitioning/octree/filter/OctreeableFilter.h>
 #include <partitioning/octree/filter/AcceptAllFilter.h>
 #include <partitioning/octree/helper/OctreeableHelper.h>
+#include <partitioning/grid/GridContainer.h>
 
 #include <pattern/observer/Observable.h>
 #include <pattern/observer/Observer.h>

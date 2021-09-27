@@ -19,6 +19,10 @@ template<class T> void VectorUtil::removeDuplicates(std::vector<T>& v) {
     v.erase(std::unique(v.begin(), v.end()), v.end());
 }
 
+template<class T, class Compare> void VectorUtil::insertSorted(std::vector<T>& v, T& item, Compare compare) {
+    v.insert(std::upper_bound(v.begin(), v.end(), item, compare), item);
+}
+
 template<class T> std::vector<T> VectorUtil::merge(const std::vector<T>& vectorA, const std::vector<T>& vectorB) {
     std::vector<T> result = vectorA;
     result.insert(result.end(), vectorB.begin(), vectorB.end());
