@@ -18,4 +18,5 @@ class GridContainerTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void findXPositiveNeighbor();
+        void findXNegativeNeighbor();
 };

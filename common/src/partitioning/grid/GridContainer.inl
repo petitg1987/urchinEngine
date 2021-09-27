@@ -27,16 +27,26 @@ template<class T> void GridContainer<T>::removeItem(T* item) {
 
 template<class T> T* GridContainer<T>::findNeighbor(T* referenceItem, NeighborDirection neighborDirection) const {
     if (neighborDirection == NeighborDirection::X_POSITIVE) {
-        std::int64_t key = (((std::int64_t) referenceItem->getPosition().Y) << 32) + ((std::int64_t)referenceItem->getPosition().Z);
+        std::int64_t key = (((std::int64_t) referenceItem->getPosition().Y) << 32) + ((std::int64_t) referenceItem->getPosition().Z);
         auto itFind = xSortedItems.find(key);
         if (itFind != xSortedItems.end()) {
             const std::vector<T*>& v = itFind->second;
-            auto upper = std::upper_bound(v.begin(), v.end(), referenceItem, [](const T* item1, const T* item2) {return item1->getPosition().X < item2->getPosition().X;});
+            auto upper = std::upper_bound(v.begin(), v.end(), referenceItem->getPosition().X, [](int value, const T* item) { return value < item->getPosition().X; });
             if (upper != v.end()) {
                 return *upper;
             }
         }
-
+        return nullptr;
+    } else if (neighborDirection == NeighborDirection::X_NEGATIVE) {
+        std::int64_t key = (((std::int64_t) referenceItem->getPosition().Y) << 32) + ((std::int64_t) referenceItem->getPosition().Z);
+        auto itFind = xSortedItems.find(key);
+        if (itFind != xSortedItems.end()) {
+            const std::vector<T*>& v = itFind->second;
+            auto lower = std::lower_bound(v.begin(), v.end(), referenceItem->getPosition().X, [](const T* item, int value) { return item->getPosition().X < value; });
+            if (lower != v.begin()) {
+                return *(--lower);
+            }
+        }
         return nullptr;
     } else {
         throw std::runtime_error("Unknown neighbor direction: " + std::to_string(neighborDirection));
