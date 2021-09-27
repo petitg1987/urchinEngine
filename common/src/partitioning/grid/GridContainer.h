@@ -31,15 +31,17 @@ namespace urchin {
                 NEGATIVE
             };
 
-            void addItem(T*);
-            void removeItem(T*);
+            void addItem(std::shared_ptr<T>);
+            void removeItem(const Point3<int>&);
 
-            T* findNeighbor(const Point3<int>&, Axis, Direction) const;
+            bool isItemExist(const Point3<int>&) const;
+            void getItems(std::vector<T*>&) const;
+            std::shared_ptr<T> findNeighbor(const Point3<int>&, Axis, Direction) const;
 
         private:
             std::int64_t buildKey(const Point3<int>&, std::size_t) const;
 
-            std::unordered_map<std::int64_t, std::set<T*, AxisCompare<T*>>> axisSortedItems[3];
+            std::unordered_map<std::int64_t, std::set<std::shared_ptr<T>, AxisCompare<std::shared_ptr<T>>>> axisSortedItems[3];
     };
 
     #include "GridContainer.inl"
