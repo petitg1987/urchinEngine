@@ -73,12 +73,27 @@ void GridContainerTest::removeNeighbor() {
     AssertHelper::assertTrue(yPositiveNeighborItem1 == nullptr);
 }
 
+void GridContainerTest::checkItemExist() {
+    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
+    GridContainer<MyGridItem> gridContainer;
+    gridContainer.addItem(item1);
+
+    bool is217Exist = gridContainer.isItemExist(Point3<int>(2, 1, 7));
+    bool is317Exist = gridContainer.isItemExist(Point3<int>(3, 1, 7));
+
+    AssertHelper::assertTrue(is217Exist);
+    AssertHelper::assertTrue(!is317Exist);
+}
+
 CppUnit::Test* GridContainerTest::suite() {
     auto* suite = new CppUnit::TestSuite("GridContainerTest");
 
     suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findXPositiveNeighbor", &GridContainerTest::findXPositiveNeighbor));
     suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findXNegativeNeighbor", &GridContainerTest::findXNegativeNeighbor));
+
     suite->addTest(new CppUnit::TestCaller<GridContainerTest>("removeNeighbor", &GridContainerTest::removeNeighbor));
+
+    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("checkItemExist", &GridContainerTest::checkItemExist));
 
     return suite;
 }

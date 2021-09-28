@@ -19,6 +19,8 @@ namespace urchin {
             std::size_t axisIndex;
     };
 
+    template<class T> using ItemSet = std::set<std::shared_ptr<T>, AxisCompare<std::shared_ptr<T>>>;
+
     template<class T> class GridContainer {
         public:
             enum Axis {
@@ -40,8 +42,9 @@ namespace urchin {
 
         private:
             std::int64_t buildKey(const Point3<int>&, std::size_t) const;
+            typename ItemSet<T>::iterator findInItemSet(const ItemSet<T>&, const Point3<int>&, std::size_t) const;
 
-            std::unordered_map<std::int64_t, std::set<std::shared_ptr<T>, AxisCompare<std::shared_ptr<T>>>> axisSortedItems[3];
+            std::unordered_map<std::int64_t, ItemSet<T>> axisSortedItems[3];
     };
 
     #include "GridContainer.inl"
