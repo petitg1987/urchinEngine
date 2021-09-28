@@ -25,15 +25,17 @@ void GridContainerTest::findXPositiveNeighbor() {
     gridContainer.addItem(item3);
     gridContainer.addItem(item4);
 
-    std::shared_ptr<MyGridItem> xPositiveNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
-    std::shared_ptr<MyGridItem> xPositiveNeighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
-    std::shared_ptr<MyGridItem> xPositiveNeighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
-    std::shared_ptr<MyGridItem> xPositiveNeighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    auto neighbor117 = gridContainer.findNeighbor(Point3<int>(1, 1, 7), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    auto neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    auto neighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    auto neighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
+    auto neighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::POSITIVE);
 
-    AssertHelper::assertTrue(xPositiveNeighborItem1 == item3);
-    AssertHelper::assertTrue(xPositiveNeighborItem2 == nullptr);
-    AssertHelper::assertTrue(xPositiveNeighborItem3 == item4);
-    AssertHelper::assertTrue(xPositiveNeighborItem4 == nullptr);
+    AssertHelper::assertTrue(neighbor117 == item1);
+    AssertHelper::assertTrue(neighborItem1 == item3);
+    AssertHelper::assertTrue(neighborItem2 == nullptr);
+    AssertHelper::assertTrue(neighborItem3 == item4);
+    AssertHelper::assertTrue(neighborItem4 == nullptr);
 }
 
 void GridContainerTest::findXNegativeNeighbor() {
@@ -47,15 +49,17 @@ void GridContainerTest::findXNegativeNeighbor() {
     gridContainer.addItem(item3);
     gridContainer.addItem(item4);
 
-    std::shared_ptr<MyGridItem> xNegativeNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
-    std::shared_ptr<MyGridItem> xNegativeNeighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
-    std::shared_ptr<MyGridItem> xNegativeNeighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
-    std::shared_ptr<MyGridItem> xNegativeNeighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    auto neighbor317 = gridContainer.findNeighbor(Point3<int>(3, 1, 7), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    auto neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    auto neighborItem2 = gridContainer.findNeighbor(item2->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    auto neighborItem3 = gridContainer.findNeighbor(item3->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
+    auto neighborItem4 = gridContainer.findNeighbor(item4->getGridPosition(), GridContainer<MyGridItem>::X, GridContainer<MyGridItem>::NEGATIVE);
 
-    AssertHelper::assertTrue(xNegativeNeighborItem1 == nullptr);
-    AssertHelper::assertTrue(xNegativeNeighborItem2 == nullptr);
-    AssertHelper::assertTrue(xNegativeNeighborItem3 == item1);
-    AssertHelper::assertTrue(xNegativeNeighborItem4 == item3);
+    AssertHelper::assertTrue(neighbor317 == item1);
+    AssertHelper::assertTrue(neighborItem1 == nullptr);
+    AssertHelper::assertTrue(neighborItem2 == nullptr);
+    AssertHelper::assertTrue(neighborItem3 == item1);
+    AssertHelper::assertTrue(neighborItem4 == item3);
 }
 
 void GridContainerTest::removeNeighbor() {
@@ -65,12 +69,12 @@ void GridContainerTest::removeNeighbor() {
     gridContainer.addItem(item1);
     gridContainer.addItem(item2);
 
-    std::shared_ptr<MyGridItem> yPositiveNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
-    AssertHelper::assertTrue(yPositiveNeighborItem1 == item2);
+    auto neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
+    AssertHelper::assertTrue(neighborItem1 == item2);
     gridContainer.removeItem(item2->getGridPosition());
 
-    yPositiveNeighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
-    AssertHelper::assertTrue(yPositiveNeighborItem1 == nullptr);
+    neighborItem1 = gridContainer.findNeighbor(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
+    AssertHelper::assertTrue(neighborItem1 == nullptr);
 }
 
 void GridContainerTest::checkItemExist() {
