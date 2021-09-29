@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum LengthType { //TODO split in PosType & SizeType
+    enum LengthType {
         PIXEL,
         SCREEN_PERCENT,
         CONTAINER_PERCENT,

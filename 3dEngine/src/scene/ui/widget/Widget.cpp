@@ -192,6 +192,8 @@ namespace urchin {
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
             } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
                 startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER) {
+                startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int)((float)parent->getWidth() / 2.0f);
             }
         }
         return startPosition + getPositionX();
@@ -204,6 +206,8 @@ namespace urchin {
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
             } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
                 startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER) {
+                startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int)((float)parent->getHeight() / 2.0f);
             }
 
             auto* scrollable = dynamic_cast<Scrollable*>(parent);
