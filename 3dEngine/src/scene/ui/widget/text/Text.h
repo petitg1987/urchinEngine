@@ -18,7 +18,7 @@ namespace urchin {
             ~Text() override;
 
             void setMaxWidth(float, LengthType);
-            void updateText(const std::string&);
+            void updateText(std::string);
             void updateLabelKey(const std::string&);
 
             bool isTranslatableLabel() const;

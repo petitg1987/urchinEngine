@@ -65,12 +65,12 @@ namespace urchin {
         return (unsigned int)maxWidth;
     }
 
-    void Text::updateText(const std::string& text) {
+    void Text::updateText(std::string text) {
         if (isTranslatableLabel()) {
             throw std::runtime_error("Cannot manually update text on a translatable text");
         }
 
-        this->text = text;
+        this->text = std::move(text);
         refreshTextAndWidgetSize();
         refreshRendererData();
     }
