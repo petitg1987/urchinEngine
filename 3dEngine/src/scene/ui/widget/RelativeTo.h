@@ -7,7 +7,9 @@ namespace urchin {
         PARENT_TOP_RIGHT,
         PARENT_BOTTOM_LEFT,
         PARENT_BOTTOM_RIGHT,
-        PARENT_CENTER
+        PARENT_CENTER_XY,
+        PARENT_CENTER_X_TOP,
+        PARENT_CENTER_Y_LEFT
     };
 
 }

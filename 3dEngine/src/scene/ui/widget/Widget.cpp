@@ -188,18 +188,20 @@ namespace urchin {
     int Widget::getGlobalPositionX() const {
         int startPosition = 0;
         if (parent) {
-            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT) {
+            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT
+                    || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT) { //left
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) { //right
                 startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER) {
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP) { //center X
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int)((float)parent->getWidth() / 2.0f);
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::TOP_RIGHT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) {
+        if (position.getReferencePoint() == RefPoint::TOP_RIGHT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) { //right
             startPosition -= (int)getWidth();
-        } else if (position.getReferencePoint() == RefPoint::CENTER) {
+        } else if (position.getReferencePoint() == RefPoint::CENTER_XY || position.getReferencePoint() == RefPoint::CENTER_X_TOP) { //center X
             startPosition -= (int)((float)getWidth() / 2.0f);
         }
 
@@ -209,11 +211,13 @@ namespace urchin {
     int Widget::getGlobalPositionY() const {
         int startPosition = 0;
         if (parent) {
-            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT) {
+            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT
+                    || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP) { //top
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) {
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) { //bottom
                 startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER) {
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT) { //center Y
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int)((float)parent->getHeight() / 2.0f);
             }
 
@@ -223,9 +227,9 @@ namespace urchin {
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::BOTTOM_LEFT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) {
+        if (position.getReferencePoint() == RefPoint::BOTTOM_LEFT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) { //bottom
             startPosition -= (int)getHeight();
-        } else if (position.getReferencePoint() == RefPoint::CENTER) {
+        } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::CENTER_Y_LEFT) { //center Y
             startPosition -= (int)((float)getHeight() / 2.0f);
         }
 

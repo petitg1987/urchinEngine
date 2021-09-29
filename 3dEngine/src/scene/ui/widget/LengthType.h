@@ -6,7 +6,7 @@ namespace urchin {
         PIXEL,
         SCREEN_PERCENT,
         CONTAINER_PERCENT,
-        RELATIVE_LENGTH
+        RELATIVE_LENGTH //TODO rename in RATIO_TO_X TO_Y ?
     };
 
 }

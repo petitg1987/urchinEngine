@@ -7,7 +7,9 @@ namespace urchin {
         TOP_RIGHT,
         BOTTOM_LEFT,
         BOTTOM_RIGHT,
-        CENTER
+        CENTER_XY,
+        CENTER_X_TOP,
+        CENTER_Y_LEFT
     };
 
 }
