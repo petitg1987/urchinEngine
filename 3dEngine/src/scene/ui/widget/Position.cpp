@@ -11,8 +11,8 @@ namespace urchin {
             yType(yType),
             relativeTo(relativeTo),
             referencePoint(referencePoint) {
-        if (xType == LengthType::RELATIVE_LENGTH || yType == LengthType::RELATIVE_LENGTH) {
-            throw std::invalid_argument("Relative lengths for position are not implemented");
+        if (xType == LengthType::RATIO_TO_HEIGHT || xType == LengthType::RATIO_TO_WIDTH  || yType == LengthType::RATIO_TO_HEIGHT || yType == LengthType::RATIO_TO_WIDTH) {
+            throw std::invalid_argument("Ratio lengths for position are not implemented");
         }
     }
 

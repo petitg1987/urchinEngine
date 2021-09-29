@@ -92,7 +92,7 @@ void UIRendererTest::containerPercentagePosition() {
 
 void UIRendererTest::relativeLengthSize() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(10.0f, LengthType::PIXEL, 2.0f, LengthType::RELATIVE_LENGTH), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, LengthType::PIXEL), Size(10.0f, LengthType::PIXEL, 2.0f, LengthType::RATIO_TO_WIDTH), "ui/widget/empty.tga");
     uiRenderer->addWidget(widget);
 
     AssertHelper::assertUnsignedIntEquals(widget->getWidth(), 10);

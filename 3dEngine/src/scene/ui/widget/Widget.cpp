@@ -267,7 +267,7 @@ namespace urchin {
             return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneWidth());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
             return MathFunction::roundToInt(widthValue / 100.0f * (float)getParentContainer()->getWidth());
-        } else if (lengthType == LengthType::RELATIVE_LENGTH) {
+        } else if (lengthType == LengthType::RATIO_TO_HEIGHT) {
             float relativeMultiplyFactor = widthValue;
             return MathFunction::roundToInt(heightValueInPixel() * relativeMultiplyFactor);
         } else if (lengthType == LengthType::PIXEL) {
@@ -292,7 +292,7 @@ namespace urchin {
             return MathFunction::roundToInt(heightValue / 100.0f * (float)getSceneHeight());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
             return MathFunction::roundToInt(heightValue / 100.0f * (float)getParentContainer()->getHeight());
-        } else if (lengthType == LengthType::RELATIVE_LENGTH) {
+        } else if (lengthType == LengthType::RATIO_TO_WIDTH) {
             float relativeMultiplyFactor = heightValue;
             return MathFunction::roundToInt(widthValueInPixel() * relativeMultiplyFactor);
         } else if (lengthType == LengthType::PIXEL) {
