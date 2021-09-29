@@ -196,6 +196,13 @@ namespace urchin {
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int)((float)parent->getWidth() / 2.0f);
             }
         }
+
+        if (position.getReferencePoint() == RefPoint::TOP_RIGHT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) {
+            startPosition -= (int)getWidth();
+        } else if (position.getReferencePoint() == RefPoint::CENTER) {
+            startPosition -= (int)((float)getWidth() / 2.0f);
+        }
+
         return startPosition + getPositionX();
     }
 
@@ -215,6 +222,13 @@ namespace urchin {
                 startPosition += scrollable->getScrollShiftY();
             }
         }
+
+        if (position.getReferencePoint() == RefPoint::BOTTOM_LEFT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) {
+            startPosition -= (int)getHeight();
+        } else if (position.getReferencePoint() == RefPoint::CENTER) {
+            startPosition -= (int)((float)getHeight() / 2.0f);
+        }
+
         return startPosition + getPositionY();
     }
 

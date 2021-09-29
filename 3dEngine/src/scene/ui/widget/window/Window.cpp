@@ -99,7 +99,9 @@ namespace urchin {
             auto positionPixelY = (float)(mouseY - mousePositionY);
             auto positionLengthY = heightPixelToLength(positionPixelY, getPosition().getYType());
 
-            updatePosition(Position(positionLengthX, getPosition().getXType(), positionLengthY, getPosition().getYType(), getPosition().getRelativeTo()));
+            updatePosition(Position(positionLengthX, getPosition().getXType(),
+                                    positionLengthY, getPosition().getYType(),
+                                    getPosition().getRelativeTo(), getPosition().getReferencePoint()));
         }
 
         return true;
