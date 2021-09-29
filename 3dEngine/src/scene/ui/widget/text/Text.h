@@ -5,7 +5,6 @@
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
-#include <scene/ui/widget/Length.h>
 #include <i18n/TranslatableLabel.h>
 #include <resources/font/Font.h>
 #include <graphic/render/GenericRenderer.h>
@@ -18,7 +17,7 @@ namespace urchin {
             static std::shared_ptr<Text> createTranslatable(Widget*, Position, std::string, std::string);
             ~Text() override;
 
-            void setMaxWidth(Length);
+            void setMaxWidth(float, LengthType);
             void updateText(const std::string&);
             void updateLabelKey(const std::string&);
 
@@ -51,7 +50,8 @@ namespace urchin {
             std::string skinName;
             std::string text;
             std::optional<std::string> labelKey;
-            Length maxWidth;
+            float maxWidth;
+            LengthType maxWidthType;
 
             //data
             std::vector<std::u32string> cutTextLines;

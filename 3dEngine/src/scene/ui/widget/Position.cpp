@@ -4,11 +4,13 @@
 
 namespace urchin {
 
-    Position::Position(float positionX, LengthType positionTypeX, float positionY, LengthType positionTypeY, RelativeTo relativeTo) :
-            positionX(Length(positionX, positionTypeX)),
-            positionY(Length(positionY, positionTypeY)),
+    Position::Position(float x, LengthType xType, float y, LengthType yType, RelativeTo relativeTo) :
+            x(x),
+            xType(xType),
+            y(y),
+            yType(yType),
             relativeTo(relativeTo) {
-        if (positionTypeX == LengthType::RELATIVE_LENGTH || positionTypeY == LengthType::RELATIVE_LENGTH) {
+        if (xType == LengthType::RELATIVE_LENGTH || yType == LengthType::RELATIVE_LENGTH) {
             throw std::invalid_argument("Relative lengths for position are not implemented");
         }
     }
@@ -18,24 +20,26 @@ namespace urchin {
 
     }
 
-    float Position::getPositionX() const {
-        return positionX.getValue();
+    float Position::getX() const {
+        return x;
     }
 
-    LengthType Position::getPositionTypeX() const {
-        return positionX.getType();
+    LengthType Position::getXType() const {
+        return xType;
     }
 
-    float Position::getPositionY() const {
-        return positionY.getValue();
+    float Position::getY() const {
+        return y;
     }
 
-    LengthType Position::getPositionTypeY() const {
-        return positionY.getType();
+    LengthType Position::getYType() const {
+        return yType;
     }
 
     RelativeTo Position::getRelativeTo() const {
         return relativeTo;
     }
+
+    //TODO add reference: TOP_LEFT & CENTER & more ?
 
 }

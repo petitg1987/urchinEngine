@@ -94,12 +94,12 @@ namespace urchin {
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
         if (state == MOVING) {
             auto positionPixelX = (float)(mouseX - mousePositionX);
-            auto positionLengthX = widthPixelToLength(positionPixelX, getPosition().getPositionTypeX());
+            auto positionLengthX = widthPixelToLength(positionPixelX, getPosition().getXType());
 
             auto positionPixelY = (float)(mouseY - mousePositionY);
-            auto positionLengthY = heightPixelToLength(positionPixelY, getPosition().getPositionTypeY());
+            auto positionLengthY = heightPixelToLength(positionPixelY, getPosition().getYType());
 
-            updatePosition(Position(positionLengthX, getPosition().getPositionTypeX(), positionLengthY, getPosition().getPositionTypeY(), getPosition().getRelativeTo()));
+            updatePosition(Position(positionLengthX, getPosition().getXType(), positionLengthY, getPosition().getYType(), getPosition().getRelativeTo()));
         }
 
         return true;

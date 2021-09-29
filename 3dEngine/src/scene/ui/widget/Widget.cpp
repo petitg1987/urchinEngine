@@ -171,14 +171,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     int Widget::getPositionX() const {
-        return widthLengthToPixel(position.getPositionX(), position.getPositionTypeX(), [&](){return (float)getPositionY();});
+        return widthLengthToPixel(position.getX(), position.getXType(), [&](){return (float)getPositionY();});
     }
 
     /**
     * @return Relative position Y of the widget
     */
     int Widget::getPositionY() const {
-        return heightLengthToPixel(position.getPositionY(), position.getPositionTypeY(), [&](){return (float)getPositionX();});
+        return heightLengthToPixel(position.getY(), position.getYType(), [&](){return (float)getPositionX();});
     }
 
     const WidgetOutline& Widget::getOutline() const {
@@ -228,11 +228,11 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        return (unsigned int)widthLengthToPixel(size.getWidth(), size.getWidthSizeType(), [&](){return (float)getHeight();});
+        return (unsigned int)widthLengthToPixel(size.getWidth(), size.getWidthType(), [&](){return (float)getHeight();});
     }
 
     unsigned int Widget::getHeight() const {
-        return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightSizeType(), [&](){return (float)getWidth();});
+        return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightType(), [&](){return (float)getWidth();});
     }
 
     Rectangle<int> Widget::widgetRectangle() const {

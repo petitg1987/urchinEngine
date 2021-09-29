@@ -1,7 +1,6 @@
 #pragma once
 
 #include <scene/ui/widget/LengthType.h>
-#include <scene/ui/widget/Length.h>
 
 namespace urchin {
 
@@ -11,14 +10,17 @@ namespace urchin {
             Size(float, float, LengthType);
 
             float getWidth() const;
-            LengthType getWidthSizeType() const;
+            LengthType getWidthType() const;
 
             float getHeight() const;
-            LengthType getHeightSizeType() const;
+            LengthType getHeightType() const;
 
         private:
-            Length width;
-            Length height;
+            float width;
+            LengthType widthType;
+
+            float height;
+            LengthType heightType;
     };
 
 }

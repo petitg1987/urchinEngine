@@ -5,7 +5,7 @@
 #include <UrchinCommon.h>
 
 #include <resources/image/Image.h>
-#include <scene/ui/widget/Length.h>
+#include <scene/ui/widget/LengthType.h>
 
 namespace urchin {
 
@@ -23,7 +23,7 @@ namespace urchin {
             void setSkin(const std::string&);
 
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const UdaChunk*, WidgetOutline* widgetOutline = nullptr) const;
-            Length loadLength(const UdaChunk*, const std::string&) const;
+            float loadLength(const UdaChunk*, const std::string&, LengthType&) const;
 
             const UdaParser& getSkinReader() const;
 

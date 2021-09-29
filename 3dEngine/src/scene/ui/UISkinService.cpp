@@ -118,20 +118,24 @@ namespace urchin {
         return Image(width, height, rawWidgetImage->getImageFormat(), std::move(texels), rawWidgetImage->hasTransparency()).createTexture(false);
     }
 
-    Length UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName) const {
-        auto fontHeightChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
+    /**
+     * @param lengthType [out] Typ of the length
+     */
+    float UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName, LengthType& lengthType) const {
+        auto lengthChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
 
-        float length = UISkinService::instance().getSkinReader().getUniqueChunk(true, "value", UdaAttribute(), fontHeightChunk)->getFloatValue();
-
-        const std::string& lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), fontHeightChunk)->getStringValue();
+        const std::string& lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
-            return Length(length, LengthType::PIXEL);
+            lengthType = LengthType::PIXEL;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "screenPercent")) {
-            return Length(length, LengthType::SCREEN_PERCENT);
+            lengthType = LengthType::SCREEN_PERCENT;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "containerPercent")) {
-            return Length(length, LengthType::CONTAINER_PERCENT);
+            lengthType = LengthType::CONTAINER_PERCENT;
+        } else {
+            throw std::runtime_error("Unknown length type: " + lengthTypeString);
         }
-        throw std::runtime_error("Unknown length type: " + lengthTypeString);
+
+        return UISkinService::instance().getSkinReader().getUniqueChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
     }
 
     const UdaParser& UISkinService::getSkinReader() const {

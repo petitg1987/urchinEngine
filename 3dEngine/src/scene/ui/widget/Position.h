@@ -1,7 +1,6 @@
 #pragma once
 
 #include <scene/ui/widget/LengthType.h>
-#include <scene/ui/widget/Length.h>
 #include <scene/ui/widget/RelativeTo.h>
 
 namespace urchin {
@@ -11,17 +10,21 @@ namespace urchin {
             Position(float, LengthType, float, LengthType, RelativeTo = RelativeTo::PARENT_TOP_LEFT);
             Position(float, float, LengthType, RelativeTo = RelativeTo::PARENT_TOP_LEFT);
 
-            float getPositionX() const;
-            LengthType getPositionTypeX() const;
+            float getX() const;
+            LengthType getXType() const;
 
-            float getPositionY() const;
-            LengthType getPositionTypeY() const;
+            float getY() const;
+            LengthType getYType() const;
 
             RelativeTo getRelativeTo() const;
 
         private:
-            Length positionX;
-            Length positionY;
+            float x;
+            LengthType xType;
+
+            float y;
+            LengthType yType;
+
             RelativeTo relativeTo;
     };
 

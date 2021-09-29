@@ -4,10 +4,12 @@
 
 namespace urchin {
 
-    Size::Size(float width, LengthType widthSizeType, float height, LengthType heightSizeType) :
-            width(Length(width, widthSizeType)),
-            height(Length(height, heightSizeType)) {
-        if (widthSizeType == LengthType::RELATIVE_LENGTH && heightSizeType == LengthType::RELATIVE_LENGTH) {
+    Size::Size(float width, LengthType widthType, float height, LengthType heightType) :
+            width(width),
+            widthType(widthType),
+            height(height),
+            heightType(heightType) {
+        if (widthType == LengthType::RELATIVE_LENGTH && heightType == LengthType::RELATIVE_LENGTH) {
             throw std::invalid_argument("Both length can not be relative to each other");
         }
     }
@@ -18,19 +20,19 @@ namespace urchin {
     }
 
     float Size::getWidth() const {
-        return width.getValue();
+        return width;
     }
 
-    LengthType Size::getWidthSizeType() const {
-        return width.getType();
+    LengthType Size::getWidthType() const {
+        return widthType;
     }
 
     float Size::getHeight() const {
-        return height.getValue();
+        return height;
     }
 
-    LengthType Size::getHeightSizeType() const {
-        return height.getType();
+    LengthType Size::getHeightType() const {
+        return heightType;
     }
 
 }
