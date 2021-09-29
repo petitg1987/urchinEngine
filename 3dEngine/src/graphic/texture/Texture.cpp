@@ -98,7 +98,7 @@ namespace urchin {
             } else if (textureType == TextureType::CUBE_MAP) {
                 imageViewType = VK_IMAGE_VIEW_TYPE_CUBE;
             } else {
-                throw std::runtime_error("Unknown texture type: " + std::to_string(textureType));
+                throw std::runtime_error("Unknown texture type: " + std::to_string((int)textureType));
             }
 
             createTextureImage();
@@ -187,7 +187,7 @@ namespace urchin {
         } else if (format == TextureFormat::RGBA_32_FLOAT) {
             return VK_FORMAT_R32G32B32A32_SFLOAT;
         }
-        throw std::runtime_error("Unknown texture format: " + std::to_string(format));
+        throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
     }
 
     void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
@@ -403,7 +403,7 @@ namespace urchin {
         } else if (format == TextureFormat::RGBA_32_FLOAT) {
             return 16;
         }
-        throw std::runtime_error("Unknown texture format: " + std::to_string(format));
+        throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum TextureType {
+    enum class TextureType {
         DEFAULT,
         ARRAY,
         CUBE_MAP

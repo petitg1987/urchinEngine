@@ -323,7 +323,7 @@ namespace urchin {
         } else if (shapeType == ShapeType::POINT) {
             return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
         }
-        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
+        throw std::runtime_error("Unknown shape type: " + std::to_string((int)shapeType));
     }
 
     bool PipelineBuilder::isShapeTypeListTopology() const {
@@ -332,7 +332,7 @@ namespace urchin {
         } else if (shapeType == ShapeType::TRIANGLE_STRIP) {
             return false;
         }
-        throw std::runtime_error("Unknown shape type: " + std::to_string(shapeType));
+        throw std::runtime_error("Unknown shape type: " + std::to_string((int)shapeType));
     }
 
 }

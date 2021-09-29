@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum DataDimension {
+    enum class DataDimension {
         TWO_DIMENSION,
         THREE_DIMENSION
     };

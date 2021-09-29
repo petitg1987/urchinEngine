@@ -36,7 +36,7 @@ namespace urchin {
     }
 
     bool FreeCamera::onKeyPress(unsigned int key) {
-        if (key == InputDeviceKey::MOUSE_RIGHT) {
+        if (key == (int)InputDeviceKey::MOUSE_RIGHT) {
             useMouseToMoveCamera(true);
             return false;
         } else if (key == keyFront) {
@@ -56,7 +56,7 @@ namespace urchin {
     }
 
     bool FreeCamera::onKeyRelease(unsigned int key) {
-        if (key == InputDeviceKey::MOUSE_RIGHT) {
+        if (key == (int)InputDeviceKey::MOUSE_RIGHT) {
             useMouseToMoveCamera(false);
             return false;
         } else if (key == keyFront) {

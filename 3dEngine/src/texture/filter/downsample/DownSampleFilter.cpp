@@ -13,7 +13,7 @@ namespace urchin {
         if (getTextureFormat() == TextureFormat::RG_32_FLOAT && getTextureType() == TextureType::ARRAY) {
             return "texFilterDownSampleVec2Array";
         }
-        throw std::runtime_error("Unimplemented down sample filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
+        throw std::runtime_error("Unimplemented down sample filter for: " + std::to_string((int)getTextureFormat()) + " - " + std::to_string((int)getTextureType()));
     }
 
     void DownSampleFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {

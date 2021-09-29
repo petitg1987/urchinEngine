@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum DataType {
+    enum class DataType {
         FLOAT
     };
 

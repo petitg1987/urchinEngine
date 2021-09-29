@@ -84,16 +84,16 @@ namespace urchin {
             } else if (dataDimension == DataDimension::THREE_DIMENSION) {
                 return VK_FORMAT_R32G32B32_SFLOAT;
             }
-            throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
+            throw std::runtime_error("Unknown data dimension: " + std::to_string((int)dataDimension));
         }
-        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
+        throw std::runtime_error("Unknown data type: " + std::to_string((int)dataType));
     }
 
     unsigned int DataContainer::getTypeSize() const {
         if (dataType == DataType::FLOAT) {
             return sizeof(float);
         }
-        throw std::runtime_error("Unknown data type: " + std::to_string(dataType));
+        throw std::runtime_error("Unknown data type: " + std::to_string((int)dataType));
     }
 
     unsigned int DataContainer::getDimensionSize() const {
@@ -102,7 +102,7 @@ namespace urchin {
         } else if (dataDimension == DataDimension::THREE_DIMENSION) {
             return 3;
         }
-        throw std::runtime_error("Unknown data dimension: " + std::to_string(dataDimension));
+        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)dataDimension));
     }
 
     bool DataContainer::hasNewData(uint32_t frameIndex) const {

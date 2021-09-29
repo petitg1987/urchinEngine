@@ -67,7 +67,7 @@ namespace urchin {
             } else if (widthSize != nextWidthSize) {
                 throw std::runtime_error("All skybox images must have the same size: " + std::to_string(widthSize) + " != " + std::to_string(nextWidthSize));
             } else if (textureFormat != nextTextureFormat) {
-                throw std::runtime_error("All skybox images must have the same texture format: " + std::to_string(textureFormat) + " != " + std::to_string(nextTextureFormat));
+                throw std::runtime_error("All skybox images must have the same texture format: " + std::to_string((int)textureFormat) + " != " + std::to_string((int)nextTextureFormat));
             }
         }
     }

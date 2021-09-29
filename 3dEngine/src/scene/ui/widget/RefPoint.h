@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum RefPoint {
+    enum class RefPoint {
         TOP_LEFT,
         TOP_RIGHT,
         BOTTOM_LEFT,

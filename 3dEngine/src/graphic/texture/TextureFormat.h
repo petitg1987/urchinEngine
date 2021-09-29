@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum TextureFormat {
+    enum class TextureFormat {
         DEPTH_32_FLOAT,
 
         GRAYSCALE_8_INT,

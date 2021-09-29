@@ -95,7 +95,7 @@ namespace urchin {
     }
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::buildLinear()));
@@ -107,18 +107,18 @@ namespace urchin {
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildLinear()));
             }
         } else if (state == ACTIVE) {
-            if (key == InputDeviceKey::LEFT_ARROW) {
+            if (key == (int)InputDeviceKey::LEFT_ARROW) {
                 refreshText((int)cursorIndex - 1, false);
-            } else if (key == InputDeviceKey::RIGHT_ARROW) {
+            } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
                 refreshText((int)cursorIndex + 1, false);
-            } else if (key == InputDeviceKey::BACKSPACE) {
+            } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
                     std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
                     allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
                     refreshText((int)cursorIndex - 1, true);
                 }
-            } else if (key == InputDeviceKey::DELETE_KEY) {
+            } else if (key == (int)InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
                     std::u32string tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
                     allText = allText.substr(0, (unsigned long)cursorIndex);

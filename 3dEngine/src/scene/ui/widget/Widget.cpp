@@ -364,7 +364,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyPress(unsigned int key) {
         bool widgetStateUpdated = false;
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
             if (isMouseOnWidget(mouseX, mouseY)) {
                 //In some rare cases, the state could be different from FOCUS:
                 // - Widget has just been made visible and mouse has not moved yet
@@ -407,7 +407,7 @@ namespace urchin {
 
     bool Widget::handleWidgetKeyRelease(unsigned int key) {
         bool widgetStateUpdated = false;
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
             if (isMouseOnWidget(mouseX, mouseY)) {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;

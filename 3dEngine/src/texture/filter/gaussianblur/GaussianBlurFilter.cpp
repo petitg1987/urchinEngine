@@ -35,7 +35,7 @@ namespace urchin {
         if (getTextureFormat() == TextureFormat::RG_32_FLOAT && getTextureType() == TextureType::ARRAY) {
             return "texFilterGaussianBlurVec2Array";
         }
-        throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string(getTextureFormat()) + " - " + std::to_string(getTextureType()));
+        throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string((int)getTextureFormat()) + " - " + std::to_string((int)getTextureType()));
     }
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {

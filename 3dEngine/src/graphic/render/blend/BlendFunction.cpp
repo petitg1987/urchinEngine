@@ -24,11 +24,11 @@ namespace urchin {
      * where "target" is the target buffer to draw on and "src" is the object/model to draw in the target buffer.
      */
     BlendFunction BlendFunction::buildDefault() {
-        return BlendFunction(true, SRC_ALPHA, ONE_MINUS_SRC_ALPHA, ONE, ZERO);
+        return BlendFunction(true, BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ONE, BlendFactor::ZERO);
     }
 
     BlendFunction BlendFunction::buildBlendDisabled() {
-        return BlendFunction(false, ONE, ZERO, ONE, ZERO);
+        return BlendFunction(false, BlendFactor::ONE, BlendFactor::ZERO, BlendFactor::ONE, BlendFactor::ZERO);
     }
 
     BlendFactor BlendFunction::getSrcColorFactor() const {
@@ -71,7 +71,7 @@ namespace urchin {
         } else if (blendFactor == BlendFactor::ZERO) {
             return VK_BLEND_FACTOR_ZERO;
         }
-        throw std::runtime_error("Unknown blend factor: " + std::to_string(blendFactor));
+        throw std::runtime_error("Unknown blend factor: " + std::to_string((int)blendFactor));
     }
 
 }

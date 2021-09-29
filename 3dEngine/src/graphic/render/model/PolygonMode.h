@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum PolygonMode {
+    enum class PolygonMode {
         FILL,
         WIREFRAME
     };

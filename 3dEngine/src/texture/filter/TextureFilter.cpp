@@ -30,7 +30,7 @@ namespace urchin {
         } else if (textureType == TextureType::ARRAY) {
             texture = Texture::buildArray(textureWidth, textureHeight, textureNumberLayer, textureFormat, nullptr);
         } else {
-            throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
+            throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
         }
 
         if (useNullRenderTarget) {
@@ -54,7 +54,7 @@ namespace urchin {
             } else if (textureType == TextureType::DEFAULT) {
                 textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else {
-                throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
+                throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
             }
         }
 

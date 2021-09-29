@@ -61,17 +61,17 @@ namespace urchin {
         Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY()),
                                  Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
 
-        if (key == InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             mousePositionX = getMouseX() - (int)getPositionX();
             mousePositionY = getMouseY() - (int)getPositionY();
 
             state = MOVING;
-        } else if (key == InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        } else if (key == (int)InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             state = CLOSING;
         }
 
         bool propagateEvent = true;
-        if (key == InputDeviceKey::MOUSE_LEFT && widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT && widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             notifyObservers(this, SET_IN_FOREGROUND);
             propagateEvent = false;
         }
@@ -82,7 +82,7 @@ namespace urchin {
     bool Window::onKeyReleaseEvent(unsigned int key) {
         Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY()),
                                  Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
-        if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
 

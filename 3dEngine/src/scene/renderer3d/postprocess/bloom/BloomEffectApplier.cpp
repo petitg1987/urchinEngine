@@ -134,7 +134,7 @@ namespace urchin {
                     ->addData(textureCoord)
                     ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
                     ->addUniformTextureReader(TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear())) //binding 1
-                    ->enableTransparency({BlendFunction::build(ONE, ONE, ONE, ONE)})
+                    ->enableTransparency({BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE)})
                     ->build());
             upSampleRenderTargets.push_back(std::move(upSampleRenderTarget));
         }

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum ShapeType {
+    enum class ShapeType {
         TRIANGLE,
         TRIANGLE_STRIP,
         POINT

@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum BlendFactor {
+    enum class BlendFactor {
         SRC_ALPHA,
         ONE_MINUS_SRC_ALPHA,
         ONE_MINUS_SRC_COLOR,
