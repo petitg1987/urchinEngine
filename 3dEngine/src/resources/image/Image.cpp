@@ -32,6 +32,10 @@ namespace urchin {
         return height;
     }
 
+    float Image::getRatio() const {
+        return (float)width / (float)height;
+    }
+
     Image::ImageFormat Image::getImageFormat() const {
         return format;
     }
