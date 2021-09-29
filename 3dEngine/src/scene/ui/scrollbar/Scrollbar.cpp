@@ -124,7 +124,7 @@ namespace urchin {
     }
 
     bool Scrollbar::isScrollbarRequired() const {
-        return contentHeight > visibleHeight;
+        return contentHeight > visibleHeight + 0.001f;
     }
 
     int Scrollbar::getScrollShiftY() const {
