@@ -95,7 +95,9 @@ namespace urchin {
     }
 
     void BodyAABBTree::removeBodyPairContainerReferences(const AbstractBody& body, PairContainer* bodyPairContainer) {
-        std::vector<OverlappingPair> overlappingPairs = bodyPairContainer->retrieveCopyOverlappingPairs();
+        std::vector<OverlappingPair> overlappingPairs;
+        bodyPairContainer->retrieveCopyOverlappingPairs(overlappingPairs);
+
         for (const auto& overlappingPair : overlappingPairs) {
             AbstractBody& otherPairBody = &overlappingPair.getBody1() == &body ? overlappingPair.getBody2() : overlappingPair.getBody1();
             auto& otherNodeData = dynamic_cast<BodyAABBNodeData&>(BodyAABBTree::getNodeData(&otherPairBody));

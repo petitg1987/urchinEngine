@@ -26,7 +26,7 @@ namespace urchin {
             void process(float, const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
             void processGhostBody(const GhostBody&, std::vector<ManifoldResult>&);
 
-            ccd_set continuousCollisionTest(const TemporalObject&,  const std::vector<AbstractBody*>&) const;
+            ccd_set continuousCollisionTest(const TemporalObject&, const std::vector<AbstractBody*>&) const;
             ccd_set rayTest(const Ray<float>&, const std::vector<AbstractBody*>&) const;
 
         private:
@@ -46,6 +46,8 @@ namespace urchin {
             const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
 
             std::shared_ptr<LockById> bodiesMutex;
+
+            static thread_local std::vector<OverlappingPair> overlappingPairsCache;
     };
 
 }

@@ -104,7 +104,7 @@ namespace urchin {
                                      + " and " + std::to_string(shape2.getShapeType()));
         }
 
-        std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmPtr, AlgorithmDeleter(algorithmPool));
+        auto collisionAlgorithm = std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmPtr, AlgorithmDeleter(algorithmPool)); //TODO avoid call new
         collisionAlgorithm->setupCollisionAlgorithmSelector(this);
         return collisionAlgorithm;
     }

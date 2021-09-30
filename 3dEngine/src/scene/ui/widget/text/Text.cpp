@@ -136,7 +136,7 @@ namespace urchin {
 
     void Text::cutText() {
         cutTextLines.clear();
-        std::u32string u32Text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(text);
+        std::u32string u32Text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t, std::allocator<char32_t>, std::allocator<char>>{}.from_bytes(text); //TODO avoid call new
 
         std::size_t startLineIndex = 0;
         std::size_t lastSpaceIndex = 0;

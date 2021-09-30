@@ -46,7 +46,7 @@ namespace urchin {
         return overlappingPairs;
     }
 
-    std::vector<OverlappingPair> VectorPairContainer::retrieveCopyOverlappingPairs() const {
+    void VectorPairContainer::retrieveCopyOverlappingPairs(std::vector<OverlappingPair>& ) const {
         throw std::runtime_error("Not implemented: use 'getOverlappingPairs' method");
     }
 }
