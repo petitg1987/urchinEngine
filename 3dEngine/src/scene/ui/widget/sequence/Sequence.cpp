@@ -138,7 +138,8 @@ namespace urchin {
 
     }
 
-    void Sequence::ButtonSequenceEventListener::onMouseLeftClickRelease(Widget*) {
+    bool Sequence::ButtonSequenceEventListener::onMouseLeftClickRelease(Widget*) {
+        bool propagateEvent = true;
         unsigned int oldSelectedIndex = sequence->selectedIndex;
 
         if (isLeftButton) {
@@ -150,6 +151,7 @@ namespace urchin {
                     sequence->selectedIndex--;
                 }
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(true);
+                propagateEvent = false;
             }
         } else {
             if (sequence->selectedIndex < (sequence->valuesText.size() - 1) || sequence->isLoopOnValuesAllowed()) {
@@ -160,6 +162,7 @@ namespace urchin {
                     sequence->selectedIndex++;
                 }
                 sequence->valuesText[sequence->selectedIndex]->setIsVisible(true);
+                propagateEvent = false;
             }
         }
 
@@ -168,6 +171,7 @@ namespace urchin {
                 eventListener->onValueChange(sequence);
             }
         }
+        return propagateEvent;
     }
 
 }

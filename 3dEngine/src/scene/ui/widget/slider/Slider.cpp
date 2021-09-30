@@ -104,9 +104,11 @@ namespace urchin {
         if (key == (int)InputDeviceKey::MOUSE_LEFT) {
             if (cursorImage->widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
+                return false;
             } else if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 updateSliderValue(getMouseX());
                 state = CURSOR_SELECTED;
+                return false;
             }
         }
         return true;

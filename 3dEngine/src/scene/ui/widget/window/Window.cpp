@@ -92,6 +92,7 @@ namespace urchin {
     }
 
     bool Window::onMouseMoveEvent(int mouseX, int mouseY) {
+        bool propagateEvent = true;
         if (state == MOVING) {
             auto positionPixelX = (float)(mouseX - mousePositionX);
             auto positionLengthX = widthPixelToLength(positionPixelX, getPosition().getXType());
@@ -102,9 +103,12 @@ namespace urchin {
             updatePosition(Position(positionLengthX, getPosition().getXType(),
                                     positionLengthY, getPosition().getYType(),
                                     getPosition().getRelativeTo(), getPosition().getReferencePoint()));
+            propagateEvent = false;
+        } else if (widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            propagateEvent = false;
         }
 
-        return true;
+        return propagateEvent;
     }
 
     void Window::prepareWidgetRendering(float, unsigned int& renderingOrder) {

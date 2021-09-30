@@ -8,11 +8,11 @@ namespace urchin {
         public:
             virtual ~EventListener() = default;
 
-            virtual void onMouseLeftClick(Widget*);
-            virtual void onMouseLeftClickRelease(Widget*);
+            virtual bool onMouseLeftClick(Widget*);
+            virtual bool onMouseLeftClickRelease(Widget*);
 
-            virtual void onFocus(Widget*);
-            virtual void onFocusLost(Widget*);
+            virtual bool onFocus(Widget*);
+            virtual bool onFocusLost(Widget*);
 
             virtual void onValueChange(Widget*);
     };

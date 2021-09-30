@@ -343,7 +343,7 @@ namespace urchin {
 
             if (widgetStateUpdated && widgetState == Widget::CLICKING) {
                 for (auto& eventListener : eventListeners) {
-                    eventListener->onMouseLeftClick(this);
+                    propagateEvent &= eventListener->onMouseLeftClick(this);
                 }
             }
 
@@ -386,7 +386,7 @@ namespace urchin {
 
             if (widgetStateUpdated && widgetState == Widget::FOCUS) {
                 for (auto& eventListener : eventListeners) {
-                    eventListener->onMouseLeftClickRelease(this);
+                    propagateEvent &= eventListener->onMouseLeftClickRelease(this);
                 }
             }
 
@@ -450,11 +450,11 @@ namespace urchin {
 
             if (widgetStateUpdated && widgetState == Widget::FOCUS) {
                 for (auto& eventListener : eventListeners) {
-                    eventListener->onFocus(this);
+                    propagateEvent &= eventListener->onFocus(this);
                 }
             } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
                 for (auto& eventListener : eventListeners) {
-                    eventListener->onFocusLost(this);
+                    propagateEvent &= eventListener->onFocusLost(this);
                 }
             }
 

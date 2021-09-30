@@ -47,7 +47,7 @@ namespace urchin {
             class ButtonSequenceEventListener : public EventListener {
                 public:
                     ButtonSequenceEventListener(Sequence*, bool);
-                    void onMouseLeftClickRelease(Widget*) override;
+                    bool onMouseLeftClickRelease(Widget*) override;
 
                 private:
                     Sequence* sequence;

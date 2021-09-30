@@ -6,6 +6,7 @@ DetachChildrenEventListener::DetachChildrenEventListener(Widget* widget) :
 
 }
 
-void DetachChildrenEventListener::onMouseLeftClick(Widget*) {
+bool DetachChildrenEventListener::onMouseLeftClick(Widget*) {
     widget->detachChildren();
+    return false;
 }

@@ -3,20 +3,20 @@
 
 namespace urchin {
 
-    void EventListener::onMouseLeftClick(Widget*) {
-
+    bool EventListener::onMouseLeftClick(Widget*) {
+        return true;
     }
 
-    void EventListener::onMouseLeftClickRelease(Widget*) {
-
+    bool EventListener::onMouseLeftClickRelease(Widget*) {
+        return true;
     }
 
-    void EventListener::onFocus(Widget*) {
-
+    bool EventListener::onFocus(Widget*) {
+        return true;
     }
 
-    void EventListener::onFocusLost(Widget*) {
-
+    bool EventListener::onFocusLost(Widget*) {
+        return true;
     }
 
     void EventListener::onValueChange(Widget*) {
