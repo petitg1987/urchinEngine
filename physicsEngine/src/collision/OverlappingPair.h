@@ -4,6 +4,7 @@
 
 #include <body/model/AbstractBody.h>
 #include <collision/narrowphase/algorithm/CollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/CollisionAlgorithmSelector.h>
 
 namespace urchin {
 
@@ -14,7 +15,7 @@ namespace urchin {
         public:
             OverlappingPair(AbstractBody&, AbstractBody&);
             OverlappingPair(AbstractBody&, AbstractBody&, uint_fast64_t);
-            OverlappingPair(const OverlappingPair&) = default;
+            OverlappingPair(const OverlappingPair&);
 
             AbstractBody& getBody(unsigned int) const;
             AbstractBody& getBody1() const;
@@ -23,15 +24,15 @@ namespace urchin {
             static uint_fast64_t computeBodiesId(const AbstractBody&, const AbstractBody&);
             uint_fast64_t getBodiesId() const;
 
-            void setCollisionAlgorithm(std::shared_ptr<CollisionAlgorithm>);
-            std::shared_ptr<CollisionAlgorithm> getCollisionAlgorithm() const;
+            void setCollisionAlgorithm(std::unique_ptr<CollisionAlgorithm, AlgorithmDeleter>);
+            CollisionAlgorithm* getCollisionAlgorithm() const;
 
         private:
             AbstractBody& body1;
             AbstractBody& body2;
             uint_fast64_t bodiesId;
 
-            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm;
+            std::unique_ptr<CollisionAlgorithm, AlgorithmDeleter> collisionAlgorithm;
     };
 
 }

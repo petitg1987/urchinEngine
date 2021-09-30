@@ -20,8 +20,7 @@ namespace urchin {
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
-            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
-                    body1, *localizedShape->shape, body2, otherShape);
+            auto collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(body1, *localizedShape->shape, body2, otherShape);
 
             PhysicsTransform shapeWorldTransform = object1.getShapeWorldTransform() * localizedShape->transform;
             CollisionObjectWrapper subObject1(*localizedShape->shape, shapeWorldTransform);

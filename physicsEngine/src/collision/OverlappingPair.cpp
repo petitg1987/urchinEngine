@@ -23,6 +23,14 @@ namespace urchin {
 
     }
 
+    OverlappingPair::OverlappingPair(const OverlappingPair& src) :
+            body1(src.body1),
+            body2(src.body2),
+            bodiesId(src.bodiesId),
+            collisionAlgorithm(nullptr) {
+
+    }
+
     /**
       * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
       */
@@ -64,12 +72,12 @@ namespace urchin {
         return bodiesId;
     }
 
-    void OverlappingPair::setCollisionAlgorithm(std::shared_ptr<CollisionAlgorithm> collisionAlgorithm) {
+    void OverlappingPair::setCollisionAlgorithm(std::unique_ptr<CollisionAlgorithm, AlgorithmDeleter> collisionAlgorithm) {
         this->collisionAlgorithm = std::move(collisionAlgorithm);
     }
 
-    std::shared_ptr<CollisionAlgorithm> OverlappingPair::getCollisionAlgorithm() const {
-        return collisionAlgorithm;
+    CollisionAlgorithm* OverlappingPair::getCollisionAlgorithm() const {
+        return collisionAlgorithm.get();
     }
 
 }

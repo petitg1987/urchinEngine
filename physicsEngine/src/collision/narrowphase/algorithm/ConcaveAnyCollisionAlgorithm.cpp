@@ -24,8 +24,7 @@ namespace urchin {
 
         const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
         for (const auto& triangle : triangles) {
-            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
-                    body1, triangle, body2, otherShape);
+            auto collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(body1, triangle, body2, otherShape);
 
             CollisionObjectWrapper subObject1(triangle, object1.getShapeWorldTransform());
             CollisionObjectWrapper subObject2(otherShape, object2.getShapeWorldTransform());

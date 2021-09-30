@@ -62,7 +62,7 @@ namespace urchin {
             ScopeLockById lockBody1(bodiesMutex, body1.getObjectId());
             ScopeLockById lockBody2(bodiesMutex, body2.getObjectId());
 
-            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
+            CollisionAlgorithm* collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
 
             CollisionObjectWrapper collisionObject1(body1.getShape(), body1.getTransform());
             CollisionObjectWrapper collisionObject2(body2.getShape(), body2.getTransform());
@@ -74,18 +74,16 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<CollisionAlgorithm> NarrowPhase::retrieveCollisionAlgorithm(OverlappingPair& overlappingPair) {
-        std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = overlappingPair.getCollisionAlgorithm();
-        if (!collisionAlgorithm) {
+    CollisionAlgorithm* NarrowPhase::retrieveCollisionAlgorithm(OverlappingPair& overlappingPair) {
+        if (!overlappingPair.getCollisionAlgorithm()) {
             AbstractBody& body1 = overlappingPair.getBody1();
             AbstractBody& body2 = overlappingPair.getBody2();
 
-            collisionAlgorithm = collisionAlgorithmSelector.createCollisionAlgorithm(body1, body1.getShape(), body2, body2.getShape());
-
-            overlappingPair.setCollisionAlgorithm(collisionAlgorithm);
+            auto collisionAlgorithm = collisionAlgorithmSelector.createCollisionAlgorithm(body1, body1.getShape(), body2, body2.getShape());
+            overlappingPair.setCollisionAlgorithm(std::move(collisionAlgorithm));
         }
 
-        return collisionAlgorithm;
+        return overlappingPair.getCollisionAlgorithm();
     }
 
     void NarrowPhase::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) {

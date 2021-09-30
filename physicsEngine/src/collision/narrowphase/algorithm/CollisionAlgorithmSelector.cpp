@@ -10,6 +10,15 @@
 
 namespace urchin {
 
+    AlgorithmDeleter::AlgorithmDeleter(std::shared_ptr<FixedSizePool<CollisionAlgorithm>> algorithmPool) :
+            algorithmPool(std::move(algorithmPool)) {
+
+    }
+
+    void AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm) {
+        algorithmPool->deallocate(collisionAlgorithm);
+    }
+
     CollisionAlgorithmSelector::CollisionAlgorithmSelector() :
             algorithmPool(std::unique_ptr<SyncFixedSizePool<CollisionAlgorithm>>(nullptr)) {
         initializeCollisionAlgorithmBuilderMatrix();
@@ -89,8 +98,8 @@ namespace urchin {
      * @param shape1 Shape or partial shape composing the body 1
      * @param shape2 Shape or partial shape composing the body 2
      */
-    std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(AbstractBody& body1, const CollisionShape3D& shape1,
-                                                                                             AbstractBody& body2, const CollisionShape3D& shape2) const {
+    std::unique_ptr<CollisionAlgorithm, AlgorithmDeleter> CollisionAlgorithmSelector::createCollisionAlgorithm(
+            AbstractBody& body1, const CollisionShape3D& shape1, AbstractBody& body2, const CollisionShape3D& shape2) const {
         auto& collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1.getShapeType()][shape2.getShapeType()];
         const std::vector<CollisionShape3D::ShapeType>& firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
@@ -104,18 +113,9 @@ namespace urchin {
                                      + " and " + std::to_string(shape2.getShapeType()));
         }
 
-        auto collisionAlgorithm = std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmPtr, AlgorithmDeleter(algorithmPool)); //TODO avoid call new
+        auto collisionAlgorithm = std::unique_ptr<CollisionAlgorithm, AlgorithmDeleter>(collisionAlgorithmPtr, AlgorithmDeleter(algorithmPool));
         collisionAlgorithm->setupCollisionAlgorithmSelector(this);
         return collisionAlgorithm;
-    }
-
-    CollisionAlgorithmSelector::AlgorithmDeleter::AlgorithmDeleter(std::shared_ptr<FixedSizePool<CollisionAlgorithm>> algorithmPool) :
-            algorithmPool(std::move(algorithmPool)) {
-
-    }
-
-    void CollisionAlgorithmSelector::AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm) {
-        algorithmPool->deallocate(collisionAlgorithm);
     }
 
 }
