@@ -83,11 +83,13 @@ namespace urchin {
     }
 
     std::string TextBox::getText() {
-        return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.to_bytes(allText);
+        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> stringConvert;
+        return stringConvert.to_bytes(allText);
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
-        this->allowedCharacters = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(allowedCharacters);
+        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> stringConvert;
+        this->allowedCharacters = stringConvert.from_bytes(allowedCharacters);
     }
 
     void TextBox::setMaxLength(unsigned int maxLength) {
@@ -188,7 +190,8 @@ namespace urchin {
             }
         }
         std::u32string textToDisplay = allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
-        text->updateText(std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.to_bytes(textToDisplay));
+        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> stringConvert;
+        text->updateText(stringConvert.to_bytes(textToDisplay));
 
         //event
         if (allTextUpdated) {
