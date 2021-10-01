@@ -1,6 +1,5 @@
 #include <memory>
 #include <utility>
-#include <codecvt>
 
 #include <scene/ui/widget/text/Text.h>
 #include <scene/ui/widget/Size.h>
@@ -136,47 +135,58 @@ namespace urchin {
 
     void Text::cutText() {
         cutTextLines.clear();
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t, std::allocator<char32_t>, std::allocator<char>> stringConvert;
-        std::u32string u32Text = stringConvert.from_bytes(text); //TODO avoid call new
+        U32StringA u32Text = stringConvert.from_bytes(text.c_str());
 
         std::size_t startLineIndex = 0;
-        std::size_t lastSpaceIndex = 0;
-        unsigned int lineLength = 0;
-        unsigned int lengthFromLastSpace = 0;
 
-        for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
-            char32_t textLetter = u32Text[letterIndex];
+        if (getMaxWidth() != 0) {
+            std::size_t lastSpaceIndex = 0;
+            unsigned int lineLength = 0;
+            unsigned int lengthFromLastSpace = 0;
 
-            if (textLetter == '\n') {
-                cutTextLines.emplace_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
-                startLineIndex = letterIndex + 1;
-                lineLength = 0;
-                lengthFromLastSpace = 0;
-            } else if (textLetter == ' ') {
-                lastSpaceIndex = letterIndex;
-                lengthFromLastSpace = 0;
-            }
+            for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
+                char32_t textLetter = u32Text[letterIndex];
 
-            unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
-
-            if (getMaxWidth() != 0 && lineLength + letterLength >= getMaxWidth()) { //cut too long line
-                if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
-                    cutTextLines.push_back(u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex));
-                    startLineIndex = lastSpaceIndex + 1;
-                    lineLength = lengthFromLastSpace;
-                } else if ((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
-                    cutTextLines.push_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
-                    startLineIndex = letterIndex;
-                    lineLength = letterLength;
-                    lengthFromLastSpace = letterLength;
+                if (textLetter == '\n') {
+                    cutTextLines.emplace_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                    startLineIndex = letterIndex + 1;
+                    lineLength = 0;
+                    lengthFromLastSpace = 0;
+                } else if (textLetter == ' ') {
+                    lastSpaceIndex = letterIndex;
+                    lengthFromLastSpace = 0;
                 }
-            } else {
-                lineLength += letterLength;
-                lengthFromLastSpace += letterLength;
+
+                unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
+
+                if (lineLength + letterLength >= getMaxWidth()) { //cut too long line
+                    if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
+                        cutTextLines.push_back(u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex));
+                        startLineIndex = lastSpaceIndex + 1;
+                        lineLength = lengthFromLastSpace;
+                    } else if ((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
+                        cutTextLines.push_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                        startLineIndex = letterIndex;
+                        lineLength = letterLength;
+                        lengthFromLastSpace = letterLength;
+                    }
+                } else {
+                    lineLength += letterLength;
+                    lengthFromLastSpace += letterLength;
+                }
+            }
+        } else {
+            for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
+                if (u32Text[letterIndex] == '\n') {
+                    cutTextLines.emplace_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                    startLineIndex = letterIndex + 1;
+                }
             }
         }
 
-        if ((int)u32Text.length() - (int)startLineIndex > 0) {
+        if (startLineIndex == 0 && u32Text.length() > 0) {
+            cutTextLines.emplace_back(u32Text);
+        } else if ((int)u32Text.length() - (int)startLineIndex > 0) {
             cutTextLines.emplace_back(u32Text.substr(startLineIndex, u32Text.length() - startLineIndex));
         }
     }

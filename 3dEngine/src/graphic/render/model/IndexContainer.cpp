@@ -1,5 +1,4 @@
 #include <cstring>
-#include <cstdlib>
 
 #include <graphic/render/model/IndexContainer.h>
 
@@ -7,13 +6,13 @@ namespace urchin {
 
     IndexContainer::IndexContainer(std::size_t indicesCount, const uint32_t* ptr) :
             indicesCount(indicesCount) {
-        this->ptr = (uint32_t*)malloc(getBufferSize());
+        this->ptr = (uint32_t*)::operator new(getBufferSize());
         std::memcpy(this->ptr, ptr, getBufferSize());
     }
 
     IndexContainer::IndexContainer(const IndexContainer& src) :
             indicesCount(src.indicesCount) {
-        this->ptr = (uint32_t*)malloc(getBufferSize());
+        this->ptr = (uint32_t*)::operator new(getBufferSize());
         std::memcpy(this->ptr, src.ptr, getBufferSize());
     }
 
@@ -24,7 +23,7 @@ namespace urchin {
     }
 
     IndexContainer::~IndexContainer() {
-        free(ptr);
+        ::operator delete(ptr);
     }
 
     const uint32_t* IndexContainer::getIndices() const {

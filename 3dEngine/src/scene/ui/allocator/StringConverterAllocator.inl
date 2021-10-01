@@ -1,4 +1,4 @@
-template<class T> StringConvAllocator<T>::StringConvAllocator() {
+template<class T> StringConverterAllocator<T>::StringConverterAllocator() {
     for (auto& memorySlot : memorySlots) {
         auto deleter = [](T* ptr){::operator delete(ptr, ALLOCATED_SIZE * sizeof(T));};
         memorySlot.ptr = std::shared_ptr<T>(reinterpret_cast<T*>(::operator new(ALLOCATED_SIZE * sizeof(T))), deleter);
@@ -6,7 +6,7 @@ template<class T> StringConvAllocator<T>::StringConvAllocator() {
     }
 }
 
-template<class T> template<class U> StringConvAllocator<T>::StringConvAllocator(const StringConvAllocator<U>& src) {
+template<class T> template<class U> StringConverterAllocator<T>::StringConverterAllocator(const StringConverterAllocator<U>& src) {
     assert(sizeof(U) == sizeof(T));
     for (std::size_t i = 0; i < memorySlots.size(); ++i) {
         memorySlots[i].ptr = src.memorySlots[i].ptr;
@@ -14,7 +14,7 @@ template<class T> template<class U> StringConvAllocator<T>::StringConvAllocator(
     }
 }
 
-template<class T> T* StringConvAllocator<T>::allocate(std::size_t n) {
+template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {
     if (n <= ALLOCATED_SIZE) {
         for (auto& memorySlot : memorySlots) {
             if (!memorySlot.used) {
@@ -26,7 +26,7 @@ template<class T> T* StringConvAllocator<T>::allocate(std::size_t n) {
     return reinterpret_cast<T*>(::operator new(n * sizeof(T)));
 }
 
-template<class T> void StringConvAllocator<T>::deallocate(T* p, std::size_t n) {
+template<class T> void StringConverterAllocator<T>::deallocate(T* p, std::size_t n) {
     for (auto& memorySlot : memorySlots) {
         if (memorySlot.ptr.get() == p) {
             memorySlot.used = false;
@@ -34,4 +34,17 @@ template<class T> void StringConvAllocator<T>::deallocate(T* p, std::size_t n) {
         }
     }
     return ::operator delete(p, n * sizeof(T));
+}
+
+template<class T> bool operator== (const StringConverterAllocator<T>& a, const StringConverterAllocator<T>& b) {
+    for (std::size_t i = 0; i < a.memorySlots.size(); ++i) {
+        if (a.memorySlots[i].ptr != b.memorySlots[i].ptr) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template<class T> bool operator!= (const StringConverterAllocator<T>& a, const StringConverterAllocator<T>& b) {
+    return !(operator==(a, b));
 }

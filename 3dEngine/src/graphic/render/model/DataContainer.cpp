@@ -10,7 +10,7 @@ namespace urchin {
             dataDimension(dataDimension),
             dataCount(dataCount),
             bHasNewData({}) {
-        this->ptr = malloc(getBufferSize());
+        this->ptr = ::operator new(getBufferSize());
         std::memcpy(this->ptr, ptr, getBufferSize());
 
         markDataAsNew();
@@ -21,7 +21,7 @@ namespace urchin {
             dataDimension(src.dataDimension),
             dataCount(src.dataCount),
             bHasNewData(src.bHasNewData) {
-        this->ptr = malloc(getBufferSize());
+        this->ptr = ::operator new(getBufferSize());
         std::memcpy(this->ptr, src.ptr, getBufferSize());
     }
 
@@ -39,7 +39,7 @@ namespace urchin {
         dataDimension = src.dataDimension;
         dataCount = src.dataCount;
 
-        free(ptr);
+        ::operator delete(ptr);
         ptr = src.ptr;
         src.ptr = nullptr;
 
@@ -49,7 +49,7 @@ namespace urchin {
     }
 
     DataContainer::~DataContainer() {
-        free(ptr);
+        ::operator delete(ptr);
     }
 
     const void* DataContainer::getData() const {

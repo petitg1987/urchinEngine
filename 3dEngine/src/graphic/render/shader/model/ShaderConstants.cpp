@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <cstring>
 #include <cassert>
 
@@ -19,12 +18,12 @@ namespace urchin {
             }
         #endif
 
-        this->data = malloc(sumVariablesSize());
+        this->data = ::operator new(sumVariablesSize());
         std::memcpy(this->data, data, sumVariablesSize());
     }
 
     ShaderConstants::~ShaderConstants() {
-        free(data);
+        ::operator delete(data);
     }
 
     const std::vector<std::size_t>& ShaderConstants::getVariablesSize() const {

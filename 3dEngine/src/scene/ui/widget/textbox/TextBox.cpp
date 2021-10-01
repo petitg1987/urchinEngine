@@ -83,13 +83,11 @@ namespace urchin {
     }
 
     std::string TextBox::getText() {
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> stringConvert;
-        return stringConvert.to_bytes(allText);
+        return std::string(stringConvert.to_bytes(allText));
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> stringConvert;
-        this->allowedCharacters = stringConvert.from_bytes(allowedCharacters);
+        this->allowedCharacters = stringConvert.from_bytes(allowedCharacters.c_str());
     }
 
     void TextBox::setMaxLength(unsigned int maxLength) {
@@ -115,14 +113,14 @@ namespace urchin {
                 refreshText((int)cursorIndex + 1, false);
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
-                    std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
+                    U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
                     allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
                     allText.append(tmpRight);
                     refreshText((int)cursorIndex - 1, true);
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
                 if (allText.length() > 0 && cursorIndex < allText.length()) {
-                    std::u32string tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
+                    U32StringA tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
                     allText = allText.substr(0, (unsigned long)cursorIndex);
                     allText.append(tmpRight);
                     refreshText((int)cursorIndex, true);
@@ -136,7 +134,7 @@ namespace urchin {
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter) && !isMaxLengthReach()) {
-                std::u32string tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
+                U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
                 allText = allText.substr(0, (unsigned long)cursorIndex);
                 allText.append(1, unicodeCharacter);
                 allText.append(tmpRight);
@@ -189,9 +187,8 @@ namespace urchin {
                 break;
             }
         }
-        std::u32string textToDisplay = allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> stringConvert;
-        text->updateText(stringConvert.to_bytes(textToDisplay));
+        U32StringA textToDisplay = allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
+        text->updateText(std::string(stringConvert.to_bytes(textToDisplay)));
 
         //event
         if (allTextUpdated) {

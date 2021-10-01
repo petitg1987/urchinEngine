@@ -43,13 +43,14 @@ namespace urchin {
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
             static constexpr unsigned int CURSOR_WIDTH_PIXEL = 2;
             static constexpr float CURSOR_BLINK_SPEED = 2.25f;
+            WStringConvertA stringConvert;
             const std::string skinName;
-            std::u32string allowedCharacters;
+            U32StringA allowedCharacters;
             int maxLength;
 
             //display information
             std::shared_ptr<Text> text; //text of the text box (widget)
-            std::u32string allText; //text of the text box (string)
+            U32StringA allText; //text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
             unsigned int cursorIndex; //index of the cursor

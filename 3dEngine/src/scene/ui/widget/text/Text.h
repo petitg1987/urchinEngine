@@ -2,9 +2,11 @@
 
 #include <string>
 #include <memory>
+#include <codecvt>
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
+#include <scene/ui/allocator/StringConverterAllocator.h>
 #include <i18n/TranslatableLabel.h>
 #include <resources/font/Font.h>
 #include <graphic/render/GenericRenderer.h>
@@ -54,7 +56,8 @@ namespace urchin {
             LengthType maxWidthType;
 
             //data
-            std::vector<std::u32string> cutTextLines;
+            WStringConvertA stringConvert;
+            std::vector<U32StringA> cutTextLines;
             std::shared_ptr<Font> font;
 
             //visual
