@@ -3,7 +3,7 @@
 namespace urchin {
 
     template<class T> struct MemorySlot {
-        std::shared_ptr<T> ptr;
+        T* ptr;
         bool used;
     };
 
@@ -15,6 +15,7 @@ namespace urchin {
             StringConverterAllocator();
             StringConverterAllocator(const StringConverterAllocator<T>&);
             template<class U> explicit StringConverterAllocator(const StringConverterAllocator<U>&);
+            ~StringConverterAllocator();
 
             T* allocate(std::size_t);
             void deallocate(T*, std::size_t);
@@ -23,8 +24,9 @@ namespace urchin {
             template<class U> friend bool operator!= (const StringConverterAllocator<U>&, const StringConverterAllocator<U>&);
 
         private:
-            static constexpr std::size_t ALLOCATED_SIZE = 350;
+            static constexpr std::size_t ALLOCATED_SIZE = 400;
             std::array<MemorySlot<T>, 2> memorySlots;
+            int* usageCount;
     };
 
     #include "StringConverterAllocator.inl"

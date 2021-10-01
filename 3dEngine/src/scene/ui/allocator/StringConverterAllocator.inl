@@ -1,18 +1,31 @@
-template<class T> StringConverterAllocator<T>::StringConverterAllocator() {
+template<class T> StringConverterAllocator<T>::StringConverterAllocator() :
+        usageCount(new int(1)) {
     for (auto& memorySlot : memorySlots) {
-        auto deleter = [](T* ptr){::operator delete(ptr, ALLOCATED_SIZE * sizeof(T));};
-        memorySlot.ptr = std::shared_ptr<T>(reinterpret_cast<T*>(::operator new(ALLOCATED_SIZE * sizeof(T))), deleter);
+        memorySlot.ptr = reinterpret_cast<T*>(::operator new(ALLOCATED_SIZE * sizeof(T)));
         memorySlot.used = false;
     }
 }
 
 template<class T> StringConverterAllocator<T>::StringConverterAllocator(const StringConverterAllocator<T>& src) {
     memorySlots = src.memorySlots;
+    usageCount = src.usageCount;
+    (*usageCount)++;
+}
+
+template<class T> StringConverterAllocator<T>::~StringConverterAllocator() {
+    if (--(*usageCount) == 0) {
+        for (auto& memorySlot : memorySlots) {
+            ::operator delete(memorySlot.ptr, ALLOCATED_SIZE * sizeof(T));
+        }
+        delete usageCount;
+    }
 }
 
 template<class T> template<class U> StringConverterAllocator<T>::StringConverterAllocator(const StringConverterAllocator<U>& src) {
     static_assert(sizeof(U) == sizeof(T));
     memorySlots = src.memorySlots;
+    usageCount = src.usageCount;
+    (*usageCount)++;
 }
 
 template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {
@@ -20,7 +33,7 @@ template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {
         for (auto& memorySlot : memorySlots) {
             if (!memorySlot.used) {
                 memorySlot.used = true;
-                return memorySlot.ptr.get();
+                return memorySlot.ptr;
             }
         }
     }
@@ -29,7 +42,7 @@ template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {
 
 template<class T> void StringConverterAllocator<T>::deallocate(T* p, std::size_t n) {
     for (auto& memorySlot : memorySlots) {
-        if (memorySlot.ptr.get() == p) {
+        if (memorySlot.ptr == p) {
             memorySlot.used = false;
             return;
         }
