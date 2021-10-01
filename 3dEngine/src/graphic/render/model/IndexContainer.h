@@ -8,7 +8,9 @@ namespace urchin {
         public:
             IndexContainer(std::size_t, const uint32_t*);
             IndexContainer(const IndexContainer&);
+            IndexContainer& operator=(const IndexContainer&) = delete;
             IndexContainer(IndexContainer&&) noexcept;
+            IndexContainer& operator=(IndexContainer&&) noexcept = delete;
             ~IndexContainer();
 
             const uint32_t* getIndices() const;

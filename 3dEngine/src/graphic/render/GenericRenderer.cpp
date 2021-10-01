@@ -289,27 +289,36 @@ namespace urchin {
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {
-        DataContainer dataContainer(DataType::FLOAT, DataDimension::TWO_DIMENSION, dataPtr.size(), dataPtr.data());
-        updateData(dataIndex, std::move(dataContainer));
+        #ifndef NDEBUG
+            assert(data.size() > dataIndex);
+            assert(data[dataIndex].getDataDimension() == DataDimension::TWO_DIMENSION);
+            assert(data[dataIndex].getDataType() == DataType::FLOAT);
+        #endif
+        data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>>& dataPtr) {
-        DataContainer dataContainer(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data());
-        updateData(dataIndex, std::move(dataContainer));
+        #ifndef NDEBUG
+            assert(data.size() > dataIndex);
+            assert(data[dataIndex].getDataDimension() == DataDimension::THREE_DIMENSION);
+            assert(data[dataIndex].getDataType() == DataType::FLOAT);
+        #endif
+        data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Vector3<float>>& dataPtr) {
-        DataContainer dataContainer(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data());
-        updateData(dataIndex, std::move(dataContainer));
-    }
-
-    void GenericRenderer::updateData(std::size_t dataIndex, DataContainer&& dataContainer) {
-        assert(data.size() > dataIndex);
-        data[dataIndex] = std::move(dataContainer);
+        #ifndef NDEBUG
+            assert(data.size() > dataIndex);
+            assert(data[dataIndex].getDataDimension() == DataDimension::THREE_DIMENSION);
+            assert(data[dataIndex].getDataType() == DataType::FLOAT);
+        #endif
+        data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
     }
 
     void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
-        assert(uniformData.size() > uniformDataIndex);
+        #ifndef NDEBUG
+            assert(uniformData.size() > uniformDataIndex);
+        #endif
         uniformData[uniformDataIndex].updateData(dataPtr);
     }
 
@@ -330,9 +339,10 @@ namespace urchin {
     }
 
     void GenericRenderer::updateUniformTextureReaderArray(std::size_t uniformTexPosition, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
-        assert(uniformTextureReaders.size() > uniformTexPosition);
-        assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
-
+        #ifndef NDEBUG
+            assert(uniformTextureReaders.size() > uniformTexPosition);
+            assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+        #endif
         vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
 
         textureReader->initialize();

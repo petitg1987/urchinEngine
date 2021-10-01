@@ -13,11 +13,16 @@ namespace urchin {
         public:
             DataContainer(DataType, DataDimension, std::size_t, const void*);
             DataContainer(const DataContainer&);
+            DataContainer& operator=(const DataContainer&) = delete;
             DataContainer(DataContainer&&) noexcept;
-            DataContainer& operator=(DataContainer&&) noexcept;
+            DataContainer& operator=(DataContainer&&) noexcept = delete;
             ~DataContainer();
 
+            void replaceData(std::size_t, const void*);
+
             const void* getData() const;
+            DataDimension getDataDimension() const;
+            DataType getDataType() const;
             std::size_t getDataCount() const;
             std::size_t getDataSize() const;
             std::size_t getBufferSize() const;

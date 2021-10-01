@@ -77,8 +77,6 @@ namespace urchin {
             void updateDescriptorSets();
             void destroyDescriptorSetsAndPool();
 
-            void updateData(std::size_t, DataContainer&&);
-
             void updateGraphicData(uint32_t);
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
 

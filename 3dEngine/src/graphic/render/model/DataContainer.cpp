@@ -34,26 +34,35 @@ namespace urchin {
         src.ptr = nullptr;
     }
 
-    DataContainer& DataContainer::operator=(DataContainer&& src) noexcept {
-        dataType = src.dataType;
-        dataDimension = src.dataDimension;
-        dataCount = src.dataCount;
-
-        ::operator delete(ptr);
-        ptr = src.ptr;
-        src.ptr = nullptr;
-
-        bHasNewData = src.bHasNewData;
-
-        return *this;
-    }
-
     DataContainer::~DataContainer() {
         ::operator delete(ptr);
     }
 
+    void DataContainer::replaceData(std::size_t dataCount, const void* ptr) {
+        static constexpr std::size_t MAX_MEMORY_RATIO = 5; //to avoid too much memory consumption for nothing
+        if (this->dataCount < dataCount || this->dataCount > dataCount * MAX_MEMORY_RATIO) {
+            ::operator delete(this->ptr);
+
+            this->dataCount = dataCount;
+            this->ptr = ::operator new(getBufferSize());
+        } else {
+            this->dataCount = dataCount;
+        }
+        std::memcpy(this->ptr, ptr, getBufferSize());
+
+        markDataAsNew();
+    }
+
     const void* DataContainer::getData() const {
         return ptr;
+    }
+
+    DataDimension DataContainer::getDataDimension() const {
+        return dataDimension;
+    }
+
+    DataType DataContainer::getDataType() const {
+        return dataType;
     }
 
     /**
