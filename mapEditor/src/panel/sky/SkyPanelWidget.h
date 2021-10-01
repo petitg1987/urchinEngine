@@ -20,8 +20,6 @@ namespace urchin {
             void unload();
 
         private:
-            typedef void (SkyPanelWidget::*SkyControllerWidgetMemFn)();
-
             void setupSkyboxBox(QVBoxLayout*);
             QHBoxLayout* createFilenameInputText(QGridLayout*, int, const QString&, QLineEdit **);
             QPushButton* createSelectFileButton(QHBoxLayout*);

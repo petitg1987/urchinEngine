@@ -13,6 +13,7 @@ namespace urchin {
             using char_type = T;
 
             StringConverterAllocator();
+            StringConverterAllocator(const StringConverterAllocator<T>&);
             template<class U> explicit StringConverterAllocator(const StringConverterAllocator<U>&);
 
             T* allocate(std::size_t);
@@ -28,6 +29,6 @@ namespace urchin {
 
     #include "StringConverterAllocator.inl"
 
-    typedef std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t, StringConverterAllocator<char32_t>, StringConverterAllocator<char>> WStringConvertA;
-    typedef std::basic_string<char32_t, std::char_traits<char32_t>, StringConverterAllocator<char32_t>> U32StringA; //identical to std::u32string but with a custom allocator
+    using WStringConvertA = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t, StringConverterAllocator<char32_t>, StringConverterAllocator<char>>;
+    using U32StringA = std::basic_string<char32_t, std::char_traits<char32_t>, StringConverterAllocator<char32_t>>; //identical to std::u32string but with a custom allocator
 }

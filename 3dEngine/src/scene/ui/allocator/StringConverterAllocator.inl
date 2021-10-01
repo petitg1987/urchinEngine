@@ -6,12 +6,13 @@ template<class T> StringConverterAllocator<T>::StringConverterAllocator() {
     }
 }
 
+template<class T> StringConverterAllocator<T>::StringConverterAllocator(const StringConverterAllocator<T>& src) {
+    memorySlots = src.memorySlots;
+}
+
 template<class T> template<class U> StringConverterAllocator<T>::StringConverterAllocator(const StringConverterAllocator<U>& src) {
-    assert(sizeof(U) == sizeof(T));
-    for (std::size_t i = 0; i < memorySlots.size(); ++i) {
-        memorySlots[i].ptr = src.memorySlots[i].ptr;
-        memorySlots[i].used = src.memorySlots[i].used;
-    }
+    static_assert(sizeof(U) == sizeof(T));
+    memorySlots = src.memorySlots;
 }
 
 template<class T> T* StringConverterAllocator<T>::allocate(std::size_t n) {

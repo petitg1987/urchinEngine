@@ -33,6 +33,6 @@ namespace urchin {
         bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>&, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>&) const;
     };
 
-    typedef std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>> ccd_set;
+    using ccd_set = std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>>;
 
 }
