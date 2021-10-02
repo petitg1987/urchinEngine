@@ -1,5 +1,5 @@
-# UrchinEngine
-## Features
+<h2 align="center">Urchin Engine</h2>
+# Description
 Game engine library in C++17: 3D, Physics, Sound, Network, IA, Map Editor
 
 Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
@@ -52,7 +52,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
     * AI agent
   * Debug visualization: hit box, light range, sound trigger, navigation mesh
 
-## Build
+# Build
 * Environment setup: [here](./DEV.md)
 * Build:
   * Debug:
