@@ -11,36 +11,29 @@
 * Configure system to activate core file:
   * Edit `/etc/security/limits.conf`
   * Add / change to: `*               soft    core            unlimited`
-  * Restart computer
-  * Check with `ulimit -a`: "core file size" must be unlimited
+  * Restart computer and check with `ulimit -a`: "core file size" is unlimited
 
 ## Windows
-* Install msys2 application:
-  * Download: https://sourceforge.net/projects/msys2/
-  * Execute the installer with the default values
+* Install Msys2 application and libraries:
+  * Install with default values: https://sourceforge.net/projects/msys2/
   * Add in PATH variable: "C:\msys64\mingw64\bin"
-  * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc`
-* Install freetype library:
-  * Download: https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz
-  * Copy in: "C:\msys64\home\greg"
+  * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg`
+* Install Freetype library:
+  * Copy https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz in: "C:\msys64\home\greg"
   * Execute: `./configure --with-zlib=no && make && make install`
   * Copy include in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
   * *Info*: libfreetype-6.dll is in "C:\msys64\mingw64\bin"
-* Install openAL library:
-  * Download: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
-  * Execute the installer and at the end, check "Yes, launch the OpenAL redist"
+* Install OpenAL library:
+  * Install with "Yes, launch the OpenAL redist" checked: https://www.openal.org/downloads/OpenAL11CoreSDK.zip
   * Copy lib (Win64) & include from "C:\Program Files (x86)\OpenAL 1.1 SDK" in "C:\msys64\mingw64\lib" & "C:\msys64\mingw64\x86_64-w64-mingw32\include\AL"
   * Rename the copied lib from OpenAL32.lib to libOpenAL32.dll.a
   * *Info*: OpenAL32.dll is in "C:\Windows\System32\OpenAL32.dll" and soft_oal.dll can be downloaded on https://community.pcgamingwiki.com/files/file/7-openal-soft/
   * Uninstall OpenAL and OpenAL SDK applications
 * Install Vulkan library:
-  * Download Vulkan SDK for Windows: https://vulkan.lunarg.com/sdk/home#windows
-  * Install Vulkan SDK in default folder (C:\VulkanSDK)
+  * Install Vulkan SDK in default folder (C:\VulkanSDK): https://vulkan.lunarg.com/sdk/home#windows
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
   * *Info*: vuklan-1.dll can be downloaded on https://fr.dll-files.com/vulkan-1.dll.html
-  * *Info*: Don't uninstall Vulkan SDK application because it is required for validation layer  
-* Install Vorbis library:
-  * Execute: `Pacman -S mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg`
+  * *Info*: Don't uninstall Vulkan SDK application because it is required for validation layer
 * Install curl library (custom static library only for HTTP/HTTPS protocols):
   ```
   Pacman -S unzip openssl-devel
@@ -119,7 +112,7 @@
   - Y+ (far), Y- (near)
 
 # Profiling
-## Flame graph
+## CPU profiler: Flame Graph
 * Install:
     ```
     sudo apt install linux-tools-generic
@@ -137,7 +130,7 @@
     ~/various/tools/FlameGraph/flamegraph.pl out.folded > app.svg
     ```
 
-## Nsight
+## GPU profiler: Nsight
 * Install:
   * Download Linux 'run' from https://developer.nvidia.com/nsight-graphics
   * Execute file and install in ~/various/tools/nsight
@@ -146,12 +139,12 @@
     sudo ~/various/tools/nsight/host/linux-desktop-nomad-x64/ngfx-ui
     ```
 
-## Valgrind - massif
+## Memory profiler: Valgrind - massif
 * Install:
     ```
     sudo apt install valgrind massif-visualizer
     ```
-* Launch Valgrind with massif tool:
+* Launch Valgrind with massif tool (replace 'myAppName'):
   ```
   /usr/bin/valgrind --tool=massif ./myAppName --windowed --debug
   ```
@@ -159,5 +152,3 @@
   ```
   massif-visualizer
   ```
-
-
