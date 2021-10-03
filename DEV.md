@@ -71,7 +71,7 @@
   * Application **urchinMapEditor**:
     * Target/executable: `urchinMapEditor`
 
-## Clang analyzer
+## Clang analyzer configuration
   * In File > Settings > Languages & Frameworks > C/C++ > Clangd > Clang Errors and Warnings: `-Wno-unused-variable,-Wno-infinite-recursion,-Werror=implicit-function-declaration,-Wno-shadow-field-in-constructor-modified,-Wno-shadow-ivar,-Wuninitialized,-Wunused-label,-Wunused-lambda-capture,-Wno-shadow`
 
 # Development tips
@@ -83,12 +83,12 @@
 * Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted
   * *Note:* surround logger call with `if (DebugCheck::additionalChecksEnable()) {`/`}` when condition has bad performance
 
-## Enable core file:
+## Enable core file (Linux only):
 * Edit `/etc/security/limits.conf`
 * Add / change to: `*               soft    core            unlimited`
 * Restart computer and check with `ulimit -a`: "core file size" is unlimited
 
-## Check when "new" operator is call
+## Check when "new" operator is called
 * Use following source code and add a debug point:
     ```
     void* operator new(std::size_t sz) {
@@ -99,18 +99,6 @@
         return std::malloc(sz);
     }
     ```
-
-## Coordinates used
-* 3D (e.g.: *3D models, physics rigid bodies, 3D nav mesh*):
-  - X+ (left), X- (right)
-  - Y+ (top), Y- (bottom)
-  - Z+ (near), Z- (far)
-* NDC / Vulkan:
-  - X = -1 (left), X = 1 (right)
-  - Y = -1 (top), Y = 1 (bottom)
-* 2D top view (e.g.: *2D nav mesh*):
-  - X+ (left), X- (right)
-  - Y+ (far), Y- (near)
 
 # Profiling
 ## CPU profiler: Flame Graph
@@ -153,3 +141,16 @@
   ```
   massif-visualizer
   ```
+
+# Memo
+## Coordinates used
+* 3D (e.g.: *3D models, physics rigid bodies, 3D nav mesh*):
+  - X+ (left), X- (right)
+  - Y+ (top), Y- (bottom)
+  - Z+ (near), Z- (far)
+* NDC / Vulkan:
+  - X = -1 (left), X = 1 (right)
+  - Y = -1 (top), Y = 1 (bottom)
+* 2D top view (e.g.: *2D nav mesh*):
+  - X+ (left), X- (right)
+  - Y+ (far), Y- (near)
