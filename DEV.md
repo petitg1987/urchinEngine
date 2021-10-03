@@ -8,10 +8,6 @@
   sudo apt update
   sudo apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools vulkan-sdk
   ```
-* Configure system to activate core file:
-  * Edit `/etc/security/limits.conf`
-  * Add / change to: `*               soft    core            unlimited`
-  * Restart computer and check with `ulimit -a`: "core file size" is unlimited
 
 ## Windows
 * Install Msys2 application and libraries:
@@ -86,6 +82,11 @@
   * *Note:* surround assert with `#ifndef NDEBUG`/`#endif` when condition has bad performance
 * Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted
   * *Note:* surround logger call with `if (DebugCheck::additionalChecksEnable()) {`/`}` when condition has bad performance
+
+## Enable core file:
+* Edit `/etc/security/limits.conf`
+* Add / change to: `*               soft    core            unlimited`
+* Restart computer and check with `ulimit -a`: "core file size" is unlimited
 
 ## Check when "new" operator is call
 * Use following source code and add a debug point:
