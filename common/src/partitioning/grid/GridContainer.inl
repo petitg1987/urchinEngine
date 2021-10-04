@@ -25,7 +25,8 @@ template<class T> std::int64_t GridContainer<T>::buildKey(const Point3<int>& gri
     return (((std::int64_t)gridPosition[index1]) << 32) + ((std::int64_t)gridPosition[index2]);
 }
 
-template<class T> void GridContainer<T>::removeItem(const Point3<int>& gridPosition) {
+template<class T> std::shared_ptr<T> GridContainer<T>::removeItem(const Point3<int>& gridPosition) {
+    std::shared_ptr<T> removedItem;
     for (std::size_t axisIndex = 0; axisIndex < 3; ++axisIndex) {
         std::int64_t key = buildKey(gridPosition, axisIndex);
 
@@ -34,6 +35,7 @@ template<class T> void GridContainer<T>::removeItem(const Point3<int>& gridPosit
             auto& set = itFindMap->second;
             auto itFindSet = findInItemSet(set, gridPosition, axisIndex);
             if (itFindSet != set.end()) {
+                removedItem = *itFindSet;
                 set.erase(itFindSet);
             }
 
@@ -42,6 +44,7 @@ template<class T> void GridContainer<T>::removeItem(const Point3<int>& gridPosit
             }
         }
     }
+    return removedItem;
 }
 
 template<class T> typename ItemSet<T>::iterator GridContainer<T>::findInItemSet(const ItemSet<T>& set, const Point3<int>& gridPosition, std::size_t axisIndex) const {
@@ -63,9 +66,9 @@ template<class T> T* GridContainer<T>::getItem(const Point3<int>& gridPosition) 
     auto itFindMap = axisSortedItems[0].find(key);
     if (itFindMap != axisSortedItems[0].end()) {
         const auto& set = itFindMap->second;
-        const auto itFind = findInItemSet(set, gridPosition, 0);
-        if (itFind != set.end()) {
-            return (*itFind).get();
+        const auto itFindSet = findInItemSet(set, gridPosition, 0);
+        if (itFindSet != set.end()) {
+            return (*itFindSet).get();
         }
     }
     return nullptr;

@@ -34,7 +34,7 @@ namespace urchin {
             };
 
             void addItem(std::shared_ptr<T>);
-            void removeItem(const Point3<int>&);
+            std::shared_ptr<T> removeItem(const Point3<int>&);
 
             bool isItemExist(const Point3<int>&) const;
             T* getItem(const Point3<int>&) const;
