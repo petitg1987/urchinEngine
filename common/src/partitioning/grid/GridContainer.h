@@ -37,6 +37,7 @@ namespace urchin {
             void removeItem(const Point3<int>&);
 
             bool isItemExist(const Point3<int>&) const;
+            T* getItem(const Point3<int>&) const;
             void getItems(std::vector<T*>&) const;
             std::shared_ptr<T> findNeighbor(const Point3<int>&, Axis, Direction) const;
 

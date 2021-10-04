@@ -55,13 +55,20 @@ template<class T> typename ItemSet<T>::iterator GridContainer<T>::findInItemSet(
 }
 
 template<class T> bool GridContainer<T>::isItemExist(const Point3<int>& gridPosition) const {
+    return getItem(gridPosition) != nullptr;
+}
+
+template<class T> T* GridContainer<T>::getItem(const Point3<int>& gridPosition) const {
     std::int64_t key = buildKey(gridPosition, 0);
     auto itFindMap = axisSortedItems[0].find(key);
     if (itFindMap != axisSortedItems[0].end()) {
         const auto& set = itFindMap->second;
-        return findInItemSet(set, gridPosition, 0) != set.end();
+        const auto itFind = findInItemSet(set, gridPosition, 0);
+        if (itFind != set.end()) {
+            return (*itFind).get();
+        }
     }
-    return false;
+    return nullptr;
 }
 
 /**
