@@ -23,6 +23,7 @@ namespace urchin {
             const std::vector<Vector3<float>>& getTangents() const;
 
             const Material& getMaterial() const;
+            const std::shared_ptr<Material>& getMaterialPtr() const;
 
             void drawBaseBones(GeometryContainer&, const Matrix4<float>&);
 

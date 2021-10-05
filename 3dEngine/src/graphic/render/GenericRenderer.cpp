@@ -327,14 +327,18 @@ namespace urchin {
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {
-        assert(uniformTextureReaders.size() > uniformTexPosition);
-        assert(uniformTextureReaders[uniformTexPosition].size() == 1);
+        #ifndef NDEBUG
+            assert(uniformTextureReaders.size() > uniformTexPosition);
+            assert(uniformTextureReaders[uniformTexPosition].size() == 1);
+        #endif
         return getUniformTextureReaderArray(uniformTexPosition)[0];
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition, std::size_t textureIndex) const {
-        assert(uniformTextureReaders.size() > uniformTexPosition);
-        assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+        #ifndef NDEBUG
+            assert(uniformTextureReaders.size() > uniformTexPosition);
+            assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+        #endif
         return getUniformTextureReaderArray(uniformTexPosition)[textureIndex];
     }
 
@@ -352,7 +356,9 @@ namespace urchin {
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
-        assert(uniformTextureReaders.size() > textureIndex);
+        #ifndef NDEBUG
+            assert(uniformTextureReaders.size() > textureIndex);
+        #endif
         return uniformTextureReaders[textureIndex];
     }
 

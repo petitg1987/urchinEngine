@@ -154,11 +154,11 @@ namespace urchin {
                         fillMaterialData(mesh);
                         meshRenderer->updateUniformData(2, &materialData);
 
-                        if(meshRenderer->getUniformTextureReader(5)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
-                            meshRenderer->updateUniformTextureReader(5, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
+                        if(meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
+                            meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
                         }
-                        if(meshRenderer->getUniformTextureReader(6)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
-                            meshRenderer->updateUniformTextureReader(6, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                        if(meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
+                            meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
                         }
 
                         meshIndex++;

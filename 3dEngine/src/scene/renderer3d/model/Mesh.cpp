@@ -54,6 +54,10 @@ namespace urchin {
         return *material;
     }
 
+    const std::shared_ptr<Material>& Mesh::getMaterialPtr() const {
+        return material;
+    }
+
     void Mesh::drawBaseBones(GeometryContainer& geometryContainer, const Matrix4<float>& modelMatrix) {
         if (boneSphereModels) {
             geometryContainer.removeGeometry(*boneSphereModels);
