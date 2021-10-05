@@ -13,7 +13,7 @@ namespace urchin {
             renderTarget(renderTarget),
             shader(shader),
             positioningData({}),
-            meshData({}),
+            materialData({}),
             customShaderVariable(nullptr),
             depthTestEnabled(true),
             depthWriteEnabled(true),
@@ -22,6 +22,7 @@ namespace urchin {
     }
 
     ModelDisplayer::~ModelDisplayer() {
+        model->removeObserver(this, Model::MATERIAL_UPDATED);
         model->removeObserver(this, Model::MESH_UPDATED);
     }
 
@@ -64,12 +65,14 @@ namespace urchin {
             const Mesh& mesh = model->getMeshes()->getMesh(i);
             auto meshName = model->getMeshes()->getConstMeshes().getMeshesName();
 
+            fillMaterialData(mesh);
+
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->indices(constMesh.getTrianglesIndices())
                     ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
-                    ->addUniformData(sizeof(meshData), &meshData); //binding 2 (only useful/updated for DEFAULT_MODE)
+                    ->addUniformData(sizeof(materialData), &materialData); //binding 2 (only used in DEFAULT_MODE)
 
                 if (customShaderVariable) {
                     customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 3 & 4 (optional)
@@ -94,25 +97,32 @@ namespace urchin {
                     meshRendererBuilder->enableTransparency(blendFunctions);
                 }
 
-                auto textureReadMode = constMesh.getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
                 if (displayMode == DEFAULT_MODE) {
-                    TextureParam diffuseTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-                    TextureParam normalTextureParam = TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-
                     meshRendererBuilder
                             ->addData(constMesh.getTextureCoordinates())
                             ->addData(mesh.getNormals())
                             ->addData(mesh.getTangents())
-                            ->addUniformTextureReader(TextureReader::build(constMesh.getMaterial().getDiffuseTexture(), std::move(diffuseTextureParam))) //binding 5
-                            ->addUniformTextureReader(TextureReader::build(constMesh.getMaterial().getNormalTexture(), std::move(normalTextureParam))); //binding 6
+                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 5
+                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))); //binding 6
                 }
 
                 meshRenderers.push_back(meshRendererBuilder->build());
         }
 
         model->addObserver(this, Model::MESH_UPDATED);
+        model->addObserver(this, Model::MATERIAL_UPDATED);
 
         isInitialized = true;
+    }
+
+    void ModelDisplayer::fillMaterialData(const Mesh& mesh) {
+        materialData.encodedEmissiveFactor = MathFunction::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
+        materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
+    }
+
+    TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
+        auto textureReadMode = mesh.getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+        return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 
     void ModelDisplayer::onCameraProjectionUpdate(const Camera& camera) {
@@ -135,6 +145,25 @@ namespace urchin {
 
                     meshIndex++;
                 }
+            } else if (notificationType == Model::MATERIAL_UPDATED) {
+                if (displayMode == DEFAULT_MODE) {
+                    unsigned int meshIndex = 0;
+                    for (auto& meshRenderer : meshRenderers) {
+                        const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+
+                        fillMaterialData(mesh);
+                        meshRenderer->updateUniformData(2, &materialData);
+
+                        if(meshRenderer->getUniformTextureReader(5)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
+                            meshRenderer->updateUniformTextureReader(5, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
+                        }
+                        if(meshRenderer->getUniformTextureReader(6)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
+                            meshRenderer->updateUniformTextureReader(6, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                        }
+
+                        meshIndex++;
+                    }
+                }
             }
         }
     }
@@ -142,21 +171,16 @@ namespace urchin {
     void ModelDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
-            const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex++);
-            if (meshFilter && !meshFilter->isAccepted(constMesh)) {
+            const Mesh& mesh = model->getMeshes()->getMesh(meshIndex++);
+            if (meshFilter && !meshFilter->isAccepted(mesh)) {
                 continue;
             }
 
             positioningData.viewMatrix = viewMatrix;
             positioningData.modelMatrix = model->getTransform().getTransformMatrix();
+            positioningData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
             meshRenderer->updateUniformData(1, &positioningData);
 
-            if (displayMode == DEFAULT_MODE) {
-                meshData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
-                meshData.encodedEmissiveFactor = MathFunction::clamp(constMesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
-                meshData.ambientFactor = constMesh.getMaterial().getAmbientFactor();
-                meshRenderer->updateUniformData(2, &meshData);
-            }
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }
@@ -177,8 +201,8 @@ namespace urchin {
     void ModelDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
         if (model->getMeshes()) {
             for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
-                const ConstMesh& constMesh = model->getMeshes()->getConstMeshes().getConstMesh(m);
-                if (!meshFilter || meshFilter->isAccepted(constMesh)) {
+                const Mesh& mesh = model->getMeshes()->getMesh(m);
+                if (!meshFilter || meshFilter->isAccepted(mesh)) {
                     model->getMeshes()->getMesh(m).drawBaseBones(geometryContainer, model->getTransform().getTransformMatrix());
                 }
             }

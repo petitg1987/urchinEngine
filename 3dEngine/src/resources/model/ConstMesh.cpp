@@ -26,11 +26,11 @@ namespace urchin {
         MeshService::computeNormalsAndTangents(*this, baseVertices, baseNormals, baseTangents);
 
         //load material
-        material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
+        initialMaterial = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
     }
 
-    const Material& ConstMesh::getMaterial() const {
-        return *material;
+    const Material& ConstMesh::getInitialMaterial() const {
+        return *initialMaterial;
     }
 
     unsigned int ConstMesh::getNumberVertices() const {

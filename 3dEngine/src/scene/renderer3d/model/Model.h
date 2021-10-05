@@ -16,7 +16,8 @@ namespace urchin {
     class Model : public Octreeable<Model>, public TaggableResource {
         public:
             enum NotificationType {
-                MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE
+                MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,
+                MATERIAL_UPDATED
             };
 
             Model(const Model&);
@@ -47,6 +48,7 @@ namespace urchin {
 
             void updateAnimation(float);
             void updateMesh(unsigned int, const std::vector<Point3<float>>&);
+            void updateMaterial(unsigned int, const std::shared_ptr<Material>&);
 
         private:
             explicit Model(const std::string&);

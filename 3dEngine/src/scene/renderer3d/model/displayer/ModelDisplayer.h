@@ -30,6 +30,9 @@ namespace urchin {
             void drawBaseBones(GeometryContainer&, const MeshFilter*) const;
 
         private:
+            void fillMaterialData(const Mesh&);
+            TextureParam buildTextureParam(const Mesh&) const;
+
             bool isInitialized;
 
             Model *model;
@@ -40,12 +43,12 @@ namespace urchin {
             mutable struct {
                 alignas(16) Matrix4<float> viewMatrix;
                 alignas(16) Matrix4<float> modelMatrix;
+                alignas(16) Matrix4<float> normalMatrix;
             } positioningData;
             mutable struct {
-                alignas(16) Matrix4<float> normalMatrix;
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;
-            } meshData;
+            } materialData;
 
             CustomModelShaderVariable* customShaderVariable;
             bool depthTestEnabled, depthWriteEnabled;

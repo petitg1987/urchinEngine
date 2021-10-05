@@ -7,11 +7,10 @@ layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightMan
 layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
-layout(std140, set = 0, binding = 2) uniform MeshData {
-    mat4 mNormal;
+layout(std140, set = 0, binding = 2) uniform MaterialData {
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
-} meshData;
+} materialData;
 layout(std140, set = 0, binding = 3) uniform CameraPlanes {
     float nearPlane;
     float farPlane;
@@ -56,9 +55,9 @@ void main() {
     vec3 normal = tbnMatrix * texNormal;
 
     vec4 fragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    if (meshData.ambientFactor < 0.9999) { //apply lighting
-        float emissiveFactor = meshData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
-        vec3 modelAmbient = vec3(diffuse) * meshData.ambientFactor;
+    if (materialData.ambientFactor < 0.9999) { //apply lighting
+        float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
+        vec3 modelAmbient = vec3(diffuse) * materialData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, diffuse.a);
 
         float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor);//disable lighting on highly emissive objects (give better results)

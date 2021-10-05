@@ -5,7 +5,8 @@
 namespace urchin {
 
     Mesh::Mesh(const ConstMesh& constMesh) :
-            constMesh(constMesh) {
+            constMesh(constMesh),
+            material(std::make_shared<Material>(constMesh.getInitialMaterial())) {
 
     }
 
@@ -22,6 +23,10 @@ namespace urchin {
 
         this->vertices = vertices;
         MeshService::computeNormalsAndTangents(constMesh, vertices, normals, tangents);
+    }
+
+    void Mesh::updateMaterial(const std::shared_ptr<Material>& material) {
+        this->material = material;
     }
 
     const std::vector<Point3<float>>& Mesh::getVertices() const {
@@ -43,6 +48,10 @@ namespace urchin {
             return constMesh.getBaseTangents();
         }
         return tangents;
+    }
+
+    const Material& Mesh::getMaterial() const {
+        return *material;
     }
 
     void Mesh::drawBaseBones(GeometryContainer& geometryContainer, const Matrix4<float>& modelMatrix) {

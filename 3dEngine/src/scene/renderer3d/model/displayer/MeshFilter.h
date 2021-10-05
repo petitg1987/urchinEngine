@@ -1,6 +1,6 @@
 #pragma once
 
-#include <resources/model/ConstMesh.h>
+#include <scene/renderer3d/model/Mesh.h>
 #include <scene/renderer3d/model/Model.h>
 
 namespace urchin {
@@ -10,7 +10,7 @@ namespace urchin {
             virtual ~MeshFilter() = default;
 
             virtual bool isAccepted(const Model&) const = 0;
-            virtual bool isAccepted(const ConstMesh&) const = 0;
+            virtual bool isAccepted(const Mesh&) const = 0;
     };
 
 }

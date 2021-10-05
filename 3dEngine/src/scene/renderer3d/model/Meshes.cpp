@@ -45,6 +45,10 @@ namespace urchin {
         computeLocalAABBox(true);
     }
 
+    void Meshes::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) {
+        meshes[meshIndex]->updateMaterial(material);
+    }
+
     void Meshes::onMoving(const Transform<float>& newTransform) {
         globalBBox = localBBox->moveAABBox(newTransform);
 

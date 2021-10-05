@@ -16,10 +16,13 @@ namespace urchin {
 
             void update(const std::vector<Bone>&);
             void updateVertices(const std::vector<Point3<float>>&);
+            void updateMaterial(const std::shared_ptr<Material>&);
 
             const std::vector<Point3<float>>& getVertices() const;
             const std::vector<Vector3<float>>& getNormals() const;
             const std::vector<Vector3<float>>& getTangents() const;
+
+            const Material& getMaterial() const;
 
             void drawBaseBones(GeometryContainer&, const Matrix4<float>&);
 
@@ -29,6 +32,8 @@ namespace urchin {
             std::vector<Point3<float>> vertices;
             std::vector<Vector3<float>> normals;
             std::vector<Vector3<float>> tangents;
+
+            std::shared_ptr<Material> material;
 
             std::shared_ptr<SphereModel> boneSphereModels;
     };

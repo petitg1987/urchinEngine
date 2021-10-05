@@ -7,6 +7,7 @@ layout(std140, set = 0, binding = 0) uniform Projection {
 layout(std140, set = 0, binding = 1) uniform PositioningData {
     mat4 mView;
     mat4 mModel;
+    mat4 mNormal;
 } postioningData;
 
 layout(location = 0) in vec3 vertexPosition;

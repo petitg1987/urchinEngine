@@ -7,12 +7,8 @@ layout(std140, set = 0, binding = 0) uniform Projection {
 layout(std140, set = 0, binding = 1) uniform PositioningData {
     mat4 mView;
     mat4 mModel;
-} postioningData;
-layout(std140, set = 0, binding = 2) uniform MeshData {
     mat4 mNormal;
-    float emissiveFactor;
-    float ambientFactor;
-} meshData;
+} postioningData;
 
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec2 texCoord;
@@ -29,8 +25,8 @@ invariant gl_Position;
 void main() {
     texCoordinates = texCoord;
 
-    t = normalize(mat3(meshData.mNormal) * tangent);
-    n = normalize(mat3(meshData.mNormal) * normal);
+    t = normalize(mat3(postioningData.mNormal) * tangent);
+    n = normalize(mat3(postioningData.mNormal) * normal);
     b = normalize(cross(n, t));
 
     worldPosition =  postioningData.mModel * vec4(vertexPosition, 1.0);
