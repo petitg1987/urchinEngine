@@ -14,7 +14,7 @@ namespace urchin {
             void updateFatMargin(float);
 
             AABBNode<OBJ>* getRootNode() const;
-            AABBNodeData<OBJ>& getNodeData(OBJ) const;
+            AABBNodeData<OBJ>& getNodeData(void*) const;
             void getAllNodeObjects(std::vector<OBJ>&) const;
 
             void addObject(std::unique_ptr<AABBNodeData<OBJ>>);
@@ -29,10 +29,10 @@ namespace urchin {
 
             void aabboxQuery(const AABBox<float>&, std::vector<OBJ>&) const;
             void rayQuery(const Ray<float>&, std::vector<OBJ>&) const;
-            void enlargedRayQuery(const Ray<float>&, float, OBJ, std::vector<OBJ>&) const;
+            void enlargedRayQuery(const Ray<float>&, float, void*, std::vector<OBJ>&) const;
 
         protected:
-            std::map<OBJ, std::shared_ptr<AABBNode<OBJ>>> objectsNode;
+            std::map<void*, std::shared_ptr<AABBNode<OBJ>>> objectsNode;
             mutable std::vector<AABBNode<OBJ>*> browseNodes;
 
         private:

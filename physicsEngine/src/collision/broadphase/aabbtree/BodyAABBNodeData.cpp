@@ -2,13 +2,13 @@
 
 namespace urchin {
 
-    BodyAABBNodeData::BodyAABBNodeData(AbstractBody* body) :
+    BodyAABBNodeData::BodyAABBNodeData(const std::shared_ptr<AbstractBody>& body) :
             AABBNodeData(body),
             bodyPairContainer(body->getPairContainer()) {
 
     }
 
-    std::unique_ptr<AABBNodeData<AbstractBody*>> BodyAABBNodeData::clone() const {
+    std::unique_ptr<AABBNodeData<std::shared_ptr<AbstractBody>>> BodyAABBNodeData::clone() const {
         return std::make_unique<BodyAABBNodeData>(getNodeObject());
     }
 

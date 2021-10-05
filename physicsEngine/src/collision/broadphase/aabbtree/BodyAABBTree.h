@@ -10,30 +10,30 @@
 
 namespace urchin {
 
-    class BodyAABBTree : public AABBTree<AbstractBody*> {
+    class BodyAABBTree : public AABBTree<std::shared_ptr<AbstractBody>> {
         public:
             BodyAABBTree();
             ~BodyAABBTree() override = default;
 
-            void addBody(AbstractBody&);
-            void postAddObjectCallback(AABBNode<AbstractBody*>&) override;
+            void addBody(const std::shared_ptr<AbstractBody>&);
+            void postAddObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>&) override;
 
             void removeBody(const AbstractBody&);
-            void preRemoveObjectCallback(AABBNode<AbstractBody*>&) override;
+            void preRemoveObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>&) override;
 
             void updateBodies();
-            void preUpdateObjectCallback(AABBNode<AbstractBody*>&) override;
+            void preUpdateObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>&) override;
 
             const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const;
 
         private:
-            void computeOverlappingPairsFor(AABBNode<AbstractBody*>&);
+            void computeOverlappingPairsFor(AABBNode<std::shared_ptr<AbstractBody>>&);
             void createOverlappingPair(BodyAABBNodeData&, BodyAABBNodeData&);
             void removeOverlappingPairs(const BodyAABBNodeData&);
             void removeBodyPairContainerReferences(const AbstractBody&, PairContainer*);
 
             void computeWorldBoundary();
-            void controlBoundaries(AABBNode<AbstractBody*>&) const;
+            void controlBoundaries(AABBNode<std::shared_ptr<AbstractBody>>&) const;
 
             static constexpr float BOUNDARIES_MARGIN_PERCENTAGE = 0.3f;
 

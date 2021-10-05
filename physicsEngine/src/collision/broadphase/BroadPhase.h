@@ -26,18 +26,18 @@ namespace urchin {
 
             const std::vector<std::unique_ptr<OverlappingPair>>& computeOverlappingPairs();
 
-            std::vector<AbstractBody*> rayTest(const Ray<float>&) const;
-            std::vector<AbstractBody*> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const;
+            std::vector<std::shared_ptr<AbstractBody>> rayTest(const Ray<float>&) const;
+            std::vector<std::shared_ptr<AbstractBody>> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const;
 
         private:
-            void addBody(AbstractBody&);
+            void addBody(std::shared_ptr<AbstractBody>);
             void removeBody(const AbstractBody&);
             void synchronizeBodies();
 
             std::unique_ptr<BroadPhaseAlgorithm> broadPhaseAlgorithm;
 
             std::mutex mutex;
-            std::vector<AbstractBody*> bodiesToAdd;
+            std::vector<std::shared_ptr<AbstractBody>> bodiesToAdd;
             std::vector<std::shared_ptr<const AbstractBody>> bodiesToRemove;
     };
 

@@ -108,7 +108,7 @@ namespace urchin {
     }
 
     void NarrowPhase::handleContinuousCollision(AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) {
-        std::vector<AbstractBody*> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);
+        std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;
 
@@ -143,10 +143,10 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<AbstractBody*>& bodiesAABBoxHit) const {
+    ccd_set NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHit) const {
         ccd_set continuousCollisionResults;
 
-        for (auto* bodyAABBoxHit : bodiesAABBoxHit) {
+        for (auto& bodyAABBoxHit : bodiesAABBoxHit) {
             if (bodyAABBoxHit->isGhostBody()) {
                 //No CCD support for ghost bodies
                 continue;
@@ -220,7 +220,7 @@ namespace urchin {
         }
     }
 
-    ccd_set NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<AbstractBody*>& bodiesAABBoxHitRay) const {
+    ccd_set NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay) const {
         CollisionSphereShape pointShape(0.0f);
         PhysicsTransform from = PhysicsTransform(ray.getOrigin());
         PhysicsTransform to = PhysicsTransform(ray.computeTo());

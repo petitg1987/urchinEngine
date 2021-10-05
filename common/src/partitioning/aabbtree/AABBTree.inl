@@ -18,8 +18,8 @@ template <class OBJ> AABBNode<OBJ>* AABBTree<OBJ>::getRootNode() const {
     return rootNode.get();
 }
 
-template <class OBJ> AABBNodeData<OBJ>& AABBTree<OBJ>::getNodeData(OBJ object) const {
-    return objectsNode.at(object)->getNodeData();
+template <class OBJ> AABBNodeData<OBJ>& AABBTree<OBJ>::getNodeData(void* objectPtr) const {
+    return objectsNode.at(objectPtr)->getNodeData();
 }
 
 /**
@@ -77,7 +77,7 @@ template <class OBJ> void AABBTree<OBJ>::addObject(std::unique_ptr<AABBNodeData<
         rootNode->updateAABBox(fatMargin);
     }
 
-    objectsNode[nodeToInsert->getNodeData().getNodeObject()] = nodeToInsert;
+    objectsNode[nodeToInsert->getNodeData().getNodeObject().get()] = nodeToInsert;
 
     postAddObjectCallback(*nodeToInsert);
 }
@@ -128,7 +128,7 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(AABBNodeData<OBJ>& nodeData
 }
 
 template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
-    auto itFind = objectsNode.find(object);
+    auto itFind = objectsNode.find(object.get());
     if (itFind != objectsNode.end()) {
         auto nodeToRemove = itFind->second;
         preRemoveObjectCallback(*nodeToRemove);
@@ -231,8 +231,8 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
  * @param objectToExclude Object to exclude from result
  * @param objectsAABBoxHitEnlargedRay [out] Objects AABBox hit by the enlarged ray
  */
-template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, OBJ objectToExclude,
-                               std::vector<OBJ>& objectsAABBoxHitEnlargedRay) const {
+template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, void* objectPtrToExclude,
+        std::vector<OBJ>& objectsAABBoxHitEnlargedRay) const {
     browseNodes.clear();
     if (rootNode) {
         browseNodes.push_back(rootNode.get());
@@ -245,7 +245,7 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, 
         if (extendedNodeAABBox.collideWithRay(ray)) {
             if (currentNode->isLeaf()) {
                 OBJ object = currentNode->getNodeData().getNodeObject();
-                if (object != objectToExclude) {
+                if (object.get() != objectPtrToExclude) {
                     objectsAABBoxHitEnlargedRay.push_back(object);
                 }
             } else {

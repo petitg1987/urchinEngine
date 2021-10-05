@@ -13,14 +13,14 @@ namespace urchin {
         public:
             AABBTreeAlgorithm();
 
-            void addBody(AbstractBody&) override;
+            void addBody(std::shared_ptr<AbstractBody>) override;
             void removeBody(const AbstractBody&) override;
             void updateBodies() override;
 
             const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const override;
 
-            std::vector<AbstractBody*> rayTest(const Ray<float>&) const override;
-            std::vector<AbstractBody*> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const override;
+            std::vector<std::shared_ptr<AbstractBody>> rayTest(const Ray<float>&) const override;
+            std::vector<std::shared_ptr<AbstractBody>> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const override;
 
         private:
             BodyAABBTree tree;

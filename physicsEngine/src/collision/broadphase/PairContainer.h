@@ -12,7 +12,7 @@ namespace urchin {
         public:
             virtual ~PairContainer() = default;
 
-            virtual void addOverlappingPair(AbstractBody&, AbstractBody&) = 0;
+            virtual void addOverlappingPair(std::shared_ptr<AbstractBody>, std::shared_ptr<AbstractBody>) = 0;
             virtual void removeOverlappingPair(AbstractBody&, AbstractBody&) = 0;
             virtual void removeOverlappingPairs(AbstractBody&) = 0;
 

@@ -13,7 +13,7 @@ namespace urchin {
         public:
             ~SyncVectorPairContainer() override = default;
 
-            void addOverlappingPair(AbstractBody&, AbstractBody&) override;
+            void addOverlappingPair(std::shared_ptr<AbstractBody>, std::shared_ptr<AbstractBody>) override;
             void removeOverlappingPair(AbstractBody&, AbstractBody&) override;
             void removeOverlappingPairs(AbstractBody&) override;
 

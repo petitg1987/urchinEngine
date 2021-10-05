@@ -8,11 +8,11 @@
 
 namespace urchin {
 
-    class BodyAABBNodeData : public AABBNodeData<AbstractBody*> {
+    class BodyAABBNodeData : public AABBNodeData<std::shared_ptr<AbstractBody>> {
         public:
-            explicit BodyAABBNodeData(AbstractBody*);
+            explicit BodyAABBNodeData(const std::shared_ptr<AbstractBody>&);
 
-            std::unique_ptr<AABBNodeData<AbstractBody*>> clone() const override;
+            std::unique_ptr<AABBNodeData<std::shared_ptr<AbstractBody>>> clone() const override;
 
             const std::string& getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;

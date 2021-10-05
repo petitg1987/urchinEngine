@@ -17,7 +17,7 @@ namespace urchin {
     void BroadPhase::notify(Observable* observable, int notificationType) {
         if (auto* bodyContainer = dynamic_cast<BodyContainer*>(observable)) {
             if (notificationType == BodyContainer::ADD_BODY) {
-                addBody(*bodyContainer->getLastUpdatedBody());
+                addBody(bodyContainer->getLastUpdatedBody());
             } else if (notificationType == BodyContainer::REMOVE_BODY) {
                 removeBody(*bodyContainer->getLastUpdatedBody());
             }
@@ -30,11 +30,11 @@ namespace urchin {
      */
     void BroadPhase::addBodyAsync(const std::shared_ptr<AbstractBody>& body) {
         std::lock_guard<std::mutex> lock(mutex);
-        bodiesToAdd.push_back(body.get());
+        bodiesToAdd.push_back(body);
     }
 
-    void BroadPhase::addBody(AbstractBody& body) {
-        broadPhaseAlgorithm->addBody(body);
+    void BroadPhase::addBody(std::shared_ptr<AbstractBody> body) {
+        broadPhaseAlgorithm->addBody(std::move(body));
     }
 
     /**
@@ -54,7 +54,7 @@ namespace urchin {
         std::lock_guard<std::mutex> lock(mutex);
 
         for (auto& bodyToAdd : bodiesToAdd) {
-            addBody(*bodyToAdd);
+            addBody(bodyToAdd);
         }
         bodiesToAdd.clear();
 
@@ -73,11 +73,11 @@ namespace urchin {
         return broadPhaseAlgorithm->getOverlappingPairs();
     }
 
-    std::vector<AbstractBody*> BroadPhase::rayTest(const Ray<float>& ray) const {
+    std::vector<std::shared_ptr<AbstractBody>> BroadPhase::rayTest(const Ray<float>& ray) const {
         return broadPhaseAlgorithm->rayTest(ray);
     }
 
-    std::vector<AbstractBody*> BroadPhase::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
+    std::vector<std::shared_ptr<AbstractBody>> BroadPhase::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
         return broadPhaseAlgorithm->bodyTest(body, from, to);
     }
 

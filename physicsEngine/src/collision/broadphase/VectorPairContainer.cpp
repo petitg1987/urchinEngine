@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    void VectorPairContainer::addOverlappingPair(AbstractBody& body1, AbstractBody& body2) {
-        uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
+    void VectorPairContainer::addOverlappingPair(std::shared_ptr<AbstractBody> body1, std::shared_ptr<AbstractBody> body2) {
+        uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(*body1, *body2);
 
         bool found = false;
         for (auto& overlappingPair : overlappingPairs) {
@@ -16,7 +16,7 @@ namespace urchin {
         }
 
         if (!found) { //pair doesn't exist: we create it
-            overlappingPairs.push_back(std::make_unique<OverlappingPair>(body1, body2, bodiesId));
+            overlappingPairs.push_back(std::make_unique<OverlappingPair>(std::move(body1), std::move(body2), bodiesId));
         }
     }
 

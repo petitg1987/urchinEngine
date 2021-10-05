@@ -24,7 +24,7 @@ namespace urchin {
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
-    AbstractBody* BodyContainer::getLastUpdatedBody() const {
+    std::shared_ptr<AbstractBody> BodyContainer::getLastUpdatedBody() const {
         return lastUpdatedBody;
     }
 
@@ -44,7 +44,7 @@ namespace urchin {
                 bodies.emplace_back(bodyToRefresh.bodyToAdd);
                 bodyToRefresh.bodyToAdd->setPhysicsThreadId(std::this_thread::get_id());
 
-                lastUpdatedBody = bodyToRefresh.bodyToAdd.get();
+                lastUpdatedBody = bodyToRefresh.bodyToAdd;
                 notifyObservers(this, ADD_BODY);
             }
 
@@ -54,7 +54,7 @@ namespace urchin {
                     std::shared_ptr<AbstractBody> bodyToRemovePtr = *itFind; //keep a smart pointer on body for notify event
                     bodies.erase(itFind);
 
-                    lastUpdatedBody = bodyToRemovePtr.get();
+                    lastUpdatedBody = bodyToRemovePtr;
                     notifyObservers(this, REMOVE_BODY);
                 }
             }

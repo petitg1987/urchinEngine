@@ -4,10 +4,10 @@
 
 namespace urchin {
 
-    OverlappingPair::OverlappingPair(AbstractBody& body1, AbstractBody& body2) :
-            body1(body1),
-            body2(body2),
-            bodiesId(computeBodiesId(body1, body2)),
+    OverlappingPair::OverlappingPair(std::shared_ptr<AbstractBody> body1, std::shared_ptr<AbstractBody> body2) :
+            body1(std::move(body1)),
+            body2(std::move(body2)),
+            bodiesId(computeBodiesId(*body1, *body2)),
             collisionAlgorithm(nullptr) {
 
     }
@@ -15,9 +15,9 @@ namespace urchin {
     /**
     * @param bodiesId Unique id representing both bodies
     */
-    OverlappingPair::OverlappingPair(AbstractBody& body1, AbstractBody& body2, uint_fast64_t bodiesId) :
-            body1(body1),
-            body2(body2),
+    OverlappingPair::OverlappingPair(std::shared_ptr<AbstractBody> body1, std::shared_ptr<AbstractBody> body2, uint_fast64_t bodiesId) :
+            body1(std::move(body1)),
+            body2(std::move(body2)),
             bodiesId(bodiesId),
             collisionAlgorithm(nullptr) {
 
@@ -36,14 +36,22 @@ namespace urchin {
       */
     AbstractBody& OverlappingPair::getBody(unsigned int index) const {
         assert(index == 0 || index == 1);
-        return index == 0 ? body1 : body2;
+        return index == 0 ? *body1 : *body2;
     }
 
     AbstractBody& OverlappingPair::getBody1() const {
+        return *body1;
+    }
+
+    const std::shared_ptr<AbstractBody>& OverlappingPair::getBody1Ptr() const {
         return body1;
     }
 
     AbstractBody& OverlappingPair::getBody2() const {
+        return *body2;
+    }
+
+    const std::shared_ptr<AbstractBody>& OverlappingPair::getBody2Ptr() const {
         return body2;
     }
 
