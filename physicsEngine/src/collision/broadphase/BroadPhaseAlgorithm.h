@@ -13,7 +13,7 @@ namespace urchin {
         public:
             virtual ~BroadPhaseAlgorithm() = default;
 
-            virtual void addBody(std::shared_ptr<AbstractBody>) = 0;
+            virtual void addBody(const std::shared_ptr<AbstractBody>&) = 0;
             virtual void removeBody(const AbstractBody&) = 0;
             virtual void updateBodies() = 0;
 

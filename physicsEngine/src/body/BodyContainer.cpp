@@ -24,7 +24,7 @@ namespace urchin {
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
-    std::shared_ptr<AbstractBody> BodyContainer::getLastUpdatedBody() const {
+    const std::shared_ptr<AbstractBody>& BodyContainer::getLastUpdatedBody() const {
         return lastUpdatedBody;
     }
 

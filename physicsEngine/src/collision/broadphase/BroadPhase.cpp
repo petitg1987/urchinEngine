@@ -33,8 +33,8 @@ namespace urchin {
         bodiesToAdd.push_back(body);
     }
 
-    void BroadPhase::addBody(std::shared_ptr<AbstractBody> body) {
-        broadPhaseAlgorithm->addBody(std::move(body));
+    void BroadPhase::addBody(const std::shared_ptr<AbstractBody>& body) {
+        broadPhaseAlgorithm->addBody(body);
     }
 
     /**

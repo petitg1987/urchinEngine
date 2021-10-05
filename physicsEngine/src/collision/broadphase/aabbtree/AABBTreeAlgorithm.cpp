@@ -8,8 +8,8 @@ namespace urchin {
 
     }
 
-    void AABBTreeAlgorithm::addBody(std::shared_ptr<AbstractBody> body) {
-        tree.addBody(std::move(body));
+    void AABBTreeAlgorithm::addBody(const std::shared_ptr<AbstractBody>& body) {
+        tree.addBody(body);
     }
 
     void AABBTreeAlgorithm::removeBody(const AbstractBody& body) {

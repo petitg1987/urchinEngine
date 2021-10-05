@@ -27,7 +27,7 @@ namespace urchin {
 
             void addBody(std::shared_ptr<AbstractBody>);
             void removeBody(const AbstractBody&);
-            std::shared_ptr<AbstractBody> getLastUpdatedBody() const;
+            const std::shared_ptr<AbstractBody>& getLastUpdatedBody() const;
 
             void refreshBodies();
 

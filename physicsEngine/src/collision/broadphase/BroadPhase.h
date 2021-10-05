@@ -30,7 +30,7 @@ namespace urchin {
             std::vector<std::shared_ptr<AbstractBody>> bodyTest(const AbstractBody&, const PhysicsTransform&, const PhysicsTransform&) const;
 
         private:
-            void addBody(std::shared_ptr<AbstractBody>);
+            void addBody(const std::shared_ptr<AbstractBody>&);
             void removeBody(const AbstractBody&);
             void synchronizeBodies();
 

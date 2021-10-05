@@ -13,7 +13,7 @@ namespace urchin {
         public:
             AABBTreeAlgorithm();
 
-            void addBody(std::shared_ptr<AbstractBody>) override;
+            void addBody(const std::shared_ptr<AbstractBody>&) override;
             void removeBody(const AbstractBody&) override;
             void updateBodies() override;
 
