@@ -10,6 +10,8 @@ class CharacterControllerIT : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void fallingCharacterOnObjects();
+        void characterMovingOnRemovedObjects();
+
         void ccdFallingCharacter();
         void ccdMovingCharacter();
 

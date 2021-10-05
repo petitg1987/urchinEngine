@@ -16,13 +16,13 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
 
     std::thread physicsEngineThread = std::thread([&physicsWorld]() {
-        for (std::size_t i = 0; i < 500; ++i) {
+        for (std::size_t i = 0; i < 300; ++i) {
             physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
     });
     std::thread mainThread = std::thread([&characterController]() {
-        for (std::size_t i = 0; i < 500; ++i) {
+        for (std::size_t i = 0; i < 300; ++i) {
             characterController.update(1.0f / 60.0f);
             std::this_thread::sleep_for(std::chrono::microseconds(250));
         }
@@ -41,6 +41,45 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     float minPosY = (characterHeight / 2.0f) - 0.01f;
     float maxPosY = cubeHeight + cubeHeight + (characterHeight / 2.0f) + 0.01f;
     AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
+}
+
+void CharacterControllerIT::characterMovingOnRemovedObjects() {
+    auto physicsWorld = std::make_unique<PhysicsWorld>();
+    constructGround(*physicsWorld);
+
+    std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto cubeBody = std::make_shared<RigidBody>("cube", PhysicsTransform(Point3<float>(0.0f, 0.5f, 0.0f), Quaternion<float>()), std::move(cubeShape));
+    physicsWorld->getBodyContainer().addBody(cubeBody);
+
+    std::unique_ptr<CollisionCapsuleShape> characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
+    float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
+    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
+    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
+    characterController.setVelocity(Vector3<float>(0.0f, 0.0f, -5.0f));
+
+    std::thread physicsEngineThread = std::thread([&physicsWorld]() {
+        for (std::size_t i = 0; i < 300; ++i) {
+            physicsWorld->getCollisionWorld().process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
+        }
+    });
+    std::thread mainThread = std::thread([&]() {
+        for (std::size_t i = 0; i < 300; ++i) {
+            if (i == 50) {
+                physicsWorld->removeBody(*cubeBody);
+                cubeBody = nullptr;
+                //cubeBody could still exist because of asynchronous removed
+            }
+            characterController.update(1.0f / 60.0f);
+            std::this_thread::sleep_for(std::chrono::microseconds(250));
+        }
+    });
+    physicsEngineThread.join();
+    mainThread.join();
+
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().X, 0.0f, 0.1f);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, 1.0f, 0.1f);
+    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -20.0f, 2.0f);
 }
 
 void CharacterControllerIT::ccdFallingCharacter() {
@@ -114,13 +153,13 @@ void CharacterControllerIT::constructWall(PhysicsWorld& physicsWorld) {
     physicsWorld.getBodyContainer().addBody(std::move(wallBody));
 }
 
-std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(PhysicsWorld& physicsWorld, float cubeHeight) {
+std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(PhysicsWorld& physicsWorld, float cubeLength) {
     std::vector<std::shared_ptr<RigidBody>> cubes;
     for (unsigned int x = 0; x < 5; x++) {
         float xValue = (float)x * 1.1f; //min: 0, max: 4.8
         for (unsigned int z = 0; z < 5; z++) {
             float zValue = (float)z * 1.1f; //min: 0, max: 4.8
-            std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(cubeHeight / 2.0f, cubeHeight / 2.0f, cubeHeight / 2.0f));
+            std::unique_ptr<CollisionShape3D>  cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(cubeLength / 2.0f, cubeLength / 2.0f, cubeLength / 2.0f));
             std::string bodyName = "cube_" + std::to_string(x) + "_" + std::to_string(z);
             auto cubeBody = std::make_shared<RigidBody>(bodyName, PhysicsTransform(Point3<float>(xValue, 10.0f, zValue), Quaternion<float>()), std::move(cubeShape));
             cubeBody->setMass(10.0f); //non-static
@@ -136,6 +175,8 @@ CppUnit::Test* CharacterControllerIT::suite() {
     auto* suite = new CppUnit::TestSuite("CharacterControllerIT");
 
     suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("fallingCharacterOnObjects", &CharacterControllerIT::fallingCharacterOnObjects));
+    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("characterMovingOnRemovedObjects", &CharacterControllerIT::characterMovingOnRemovedObjects));
+
     suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
     suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdMovingCharacter", &CharacterControllerIT::ccdMovingCharacter));
 
