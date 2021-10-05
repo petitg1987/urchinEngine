@@ -8,5 +8,5 @@ targetPath="$HOME/.config/blender/$blenderVersion/scripts/addons/"
 
 cp "./io_export_urchin.py" "$targetPath"
 
-echo "Script deploy into: $targetPath"
+echo "Script deployed into: $targetPath"
 echo "Press F3 in Blender, search for 'reload' and select 'Reload Scripts'"
