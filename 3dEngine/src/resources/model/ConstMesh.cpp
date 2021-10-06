@@ -26,7 +26,12 @@ namespace urchin {
         MeshService::computeNormalsAndTangents(*this, baseVertices, baseNormals, baseTangents);
 
         //load material
-        initialMaterial = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
+        if (materialFilename.empty() || materialFilename == "default") {
+            Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({177, 106, 168, 255}), false);
+            initialMaterial = std::make_shared<Material>(false, defaultDiffuseImage.createTexture(false), nullptr, false, 0.0f, 0.5f);
+        } else {
+            initialMaterial = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
+        }
     }
 
     const Material& ConstMesh::getInitialMaterial() const {
