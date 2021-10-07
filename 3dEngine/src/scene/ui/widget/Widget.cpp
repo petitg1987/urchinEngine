@@ -192,9 +192,13 @@ namespace urchin {
                     || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT
                     || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT) { //left
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) { //right
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT
+                    || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_RIGHT) { //right
                 startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP) { //center X
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_BOTTOM) { //center X
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int)((float)parent->getWidth() / 2.0f);
             }
         }
@@ -215,9 +219,13 @@ namespace urchin {
                     || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT
                     || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP) { //top
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT) { //bottom
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT
+                    || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_BOTTOM) { //bottom
                 startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT) { //center Y
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_RIGHT) { //center Y
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int)((float)parent->getHeight() / 2.0f);
             }
 
