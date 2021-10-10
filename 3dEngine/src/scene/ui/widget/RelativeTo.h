@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum class RelativeTo {
+    enum RelativeTo {
         PARENT_TOP_LEFT,
         PARENT_TOP_RIGHT,
         PARENT_BOTTOM_LEFT,
