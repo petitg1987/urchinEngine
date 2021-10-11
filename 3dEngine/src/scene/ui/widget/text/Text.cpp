@@ -2,6 +2,7 @@
 #include <utility>
 
 #include <scene/ui/widget/text/Text.h>
+#include <scene/ui/widget/container/Container.h>
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/UISkinService.h>
 #include <resources//ResourceRetriever.h>
@@ -58,10 +59,17 @@ namespace urchin {
     }
 
     unsigned int Text::getMaxWidth() {
-        if (maxWidthType == LengthType::SCREEN_PERCENT) {
+        if (maxWidthType == LengthType::PIXEL) {
+            return (unsigned int)maxWidth;
+        } else if (maxWidthType == LengthType::SCREEN_PERCENT) {
             return (unsigned int)(maxWidth / 100.0f * (float)getSceneWidth());
+        } else if (maxWidthType == LengthType::CONTAINER_PERCENT) {
+            if (!getParentContainer()) {
+                throw std::runtime_error("Missing parent container on the widget");
+            }
+            return (unsigned int)(maxWidth / 100.0f * (float)getParentContainer()->getWidth());
         }
-        return (unsigned int)maxWidth;
+        throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
 
     void Text::updateText(std::string text) {

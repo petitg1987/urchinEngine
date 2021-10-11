@@ -103,6 +103,18 @@ namespace urchin {
         return parent;
     }
 
+    Container* Widget::getParentContainer() const {
+        Widget *parent = getParent();
+        while (parent != nullptr) {
+            auto* containerParent = dynamic_cast<Container*>(parent);
+            if (containerParent) {
+                return containerParent;
+            }
+            parent = parent->getParent();
+        }
+        return nullptr;
+    }
+
     void Widget::addChild(const std::shared_ptr<Widget>& childWidget) {
         if (childWidget->getParent()) {
             throw std::runtime_error("Cannot add a widget which already have a parent");
@@ -274,6 +286,9 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneWidth());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
+            if (!getParentContainer()) {
+                throw std::runtime_error("Missing parent container on the widget");
+            }
             return MathFunction::roundToInt(widthValue / 100.0f * (float)getParentContainer()->getWidth());
         } else if (lengthType == LengthType::RATIO_TO_HEIGHT) {
             float relativeMultiplyFactor = widthValue;
@@ -299,6 +314,9 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return MathFunction::roundToInt(heightValue / 100.0f * (float)getSceneHeight());
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
+            if (!getParentContainer()) {
+                throw std::runtime_error("Missing parent container on the widget");
+            }
             return MathFunction::roundToInt(heightValue / 100.0f * (float)getParentContainer()->getHeight());
         } else if (lengthType == LengthType::RATIO_TO_WIDTH) {
             float relativeMultiplyFactor = heightValue;
@@ -329,18 +347,6 @@ namespace urchin {
 
     bool Widget::isVisible() const {
         return bIsVisible;
-    }
-
-    Container* Widget::getParentContainer() const {
-        Widget *parent = getParent();
-        while (parent != nullptr) {
-            auto* containerParent = dynamic_cast<Container*>(parent);
-            if (containerParent) {
-                return containerParent;
-            }
-            parent = parent->getParent();
-        }
-        return nullptr;
     }
 
     bool Widget::onKeyPress(unsigned int key) {

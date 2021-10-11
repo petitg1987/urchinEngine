@@ -36,6 +36,7 @@ namespace urchin {
             virtual void onResize(unsigned int, unsigned int);
 
             Widget* getParent() const;
+            Container* getParentContainer() const;
 
             virtual void addChild(const std::shared_ptr<Widget>&);
             const std::vector<std::shared_ptr<Widget>>& getChildren() const;
@@ -91,8 +92,6 @@ namespace urchin {
 
             virtual void createOrUpdateWidget() = 0;
             void setSize(Size);
-
-            Container* getParentContainer() const;
 
             virtual bool onKeyPressEvent(unsigned int);
             virtual bool onKeyReleaseEvent(unsigned int);
