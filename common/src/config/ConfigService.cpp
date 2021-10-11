@@ -17,7 +17,10 @@ namespace urchin {
     void ConfigService::loadProperties(const std::string& propertiesFile, const std::string& workingDirectory) {
         std::string propertiesFilePath = workingDirectory + propertiesFile;
         PropertyFileHandler propertyFileHandler(propertiesFilePath);
-        properties = propertyFileHandler.loadPropertyFile();
+        auto loadedProperties = propertyFileHandler.loadPropertyFile();
+
+        //add loaded properties into properties
+        properties.insert(loadedProperties.begin(), loadedProperties.end());
 
         //build specific maps for performance reason (numeric conversion is slow)
         for (const auto& property : properties) {
