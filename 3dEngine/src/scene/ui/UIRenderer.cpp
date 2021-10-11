@@ -139,6 +139,10 @@ namespace urchin {
         widgets.clear();
     }
 
+    const std::vector<std::shared_ptr<Widget>>& UIRenderer::getWidgets() const {
+        return widgets;
+    }
+
     void UIRenderer::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
