@@ -32,7 +32,7 @@ namespace urchin {
     }
 
     Text::~Text() {
-        if (isTranslatableLabel()) {
+        if (isTranslatableLabel() && i18nService) {
             i18nService->remove(this);
         }
     }

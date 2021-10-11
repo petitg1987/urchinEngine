@@ -51,6 +51,10 @@ namespace urchin {
     std::string LabelTranslator::translate(const std::string& language, const std::string& labelKey) {
         loadLanguageLabels(language);
 
+        if(labelKey.empty()) {
+            return "";
+        }
+
         auto itFind = loadedLanguageLabels.find(labelKey);
         if (itFind != loadedLanguageLabels.end()) {
             return itFind->second;
