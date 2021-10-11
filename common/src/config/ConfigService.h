@@ -14,8 +14,8 @@ namespace urchin {
         public:
             friend class ThreadSafeSingleton<ConfigService>;
 
-            void loadProperties(const std::string&, const std::map<std::string, std::string> &placeholder={});
-            void loadProperties(const std::string&, const std::string&, const std::map<std::string, std::string> &placeholders={});
+            void loadProperties(const std::string&);
+            void loadProperties(const std::string&, const std::string&);
 
             bool isExist(const std::string&) const;
 

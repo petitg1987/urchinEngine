@@ -7,32 +7,20 @@
 
 namespace urchin {
 
-    void ConfigService::loadProperties(const std::string& propertiesFile, const std::map<std::string, std::string>& placeholders) {
-        loadProperties(propertiesFile, FileSystem::instance().getResourcesDirectory(), placeholders);
+    void ConfigService::loadProperties(const std::string& propertiesFile) {
+        loadProperties(propertiesFile, FileSystem::instance().getResourcesDirectory());
     }
 
     /**
      * @param workingDirectory Override the default working directory
      */
-    void ConfigService::loadProperties(const std::string& propertiesFile, const std::string& workingDirectory,
-            const std::map<std::string, std::string>& placeholders) {
+    void ConfigService::loadProperties(const std::string& propertiesFile, const std::string& workingDirectory) {
         std::string propertiesFilePath = workingDirectory + propertiesFile;
         PropertyFileHandler propertyFileHandler(propertiesFilePath);
-        auto loadedProperties = propertyFileHandler.loadPropertyFile();
-
-        //replace placeholders
-        for (auto& property : loadedProperties) {
-            auto itFind = placeholders.find(property.second);
-            if (itFind != placeholders.end()) {
-                property.second = itFind->second;
-            }
-        }
-
-        //copy loaded properties into properties
-        properties.insert(loadedProperties.begin(), loadedProperties.end());
+        properties = propertyFileHandler.loadPropertyFile();
 
         //build specific maps for performance reason (numeric conversion is slow)
-        for (const auto& property : loadedProperties) {
+        for (const auto& property : properties) {
             if (TypeConverter::isUnsignedInt(property.second)) {
                 unsignedIntProperties[property.first] = TypeConverter::toUnsignedInt(property.second);
             }
