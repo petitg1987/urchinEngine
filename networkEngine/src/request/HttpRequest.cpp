@@ -65,8 +65,6 @@ namespace urchin {
     }
 
     std::string HttpRequest::executeRequest(const std::string& url, const std::vector<std::string>& headers) const {
-        Logger::instance().logInfo("Execute request on: " + url);
-
         struct curl_slist* curlHttpHeaders = {};
         for (auto& header : headers) {
             curlHttpHeaders = curl_slist_append(curlHttpHeaders, header.c_str());
@@ -89,12 +87,12 @@ namespace urchin {
             if (httpCode >= 300) {
                 std::string error = "HTTP request fail on \"" + url + "\" with status " + std::to_string(httpCode) + ". Raw response content: " + readBuffer;
                 throw RequestException(error);
-
             }
         }
 
-        curl_slist_free_all(curlHttpHeaders);
+        Logger::instance().logInfo("Request executed on: " + url);
 
+        curl_slist_free_all(curlHttpHeaders);
         return readBuffer;
     }
 }
