@@ -59,6 +59,7 @@
 * Graphic effect
   * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
   * **NEW FEATURE** (`minor`): Smoke
+  * **NEW FEATURE** (`medium`): Decal (bullet impact, blood spread...)
 
 # AI engine
 * Navigation mesh
