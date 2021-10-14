@@ -14,76 +14,78 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> AABBoxModel::retrieveVertexArray(std::vector<uint32_t>&) const {
+    std::vector<Point3<float>> AABBoxModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
+        indices.reserve(6 * 6 * aabboxes.size());
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(6 * 6 * aabboxes.size());
-
+        vertexArray.reserve(8 * aabboxes.size());
+        
         for (const auto& aabbox : aabboxes) {
-            //Points of AABBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis
-            std::array<Point3<float>, 8> aabboxPoints = {
-                    Point3<float>(aabbox.getMax().X, aabbox.getMax().Y, aabbox.getMax().Z),
-                    Point3<float>(aabbox.getMax().X, aabbox.getMax().Y, aabbox.getMin().Z),
-                    Point3<float>(aabbox.getMax().X, aabbox.getMin().Y, aabbox.getMax().Z),
-                    Point3<float>(aabbox.getMax().X, aabbox.getMin().Y, aabbox.getMin().Z),
-                    Point3<float>(aabbox.getMin().X, aabbox.getMax().Y, aabbox.getMax().Z),
-                    Point3<float>(aabbox.getMin().X, aabbox.getMax().Y, aabbox.getMin().Z),
-                    Point3<float>(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMax().Z),
-                    Point3<float>(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMin().Z),
-            };
-
+            vertexArray.emplace_back(aabbox.getMax().X, aabbox.getMax().Y, aabbox.getMax().Z);
+            vertexArray.emplace_back(aabbox.getMax().X, aabbox.getMax().Y, aabbox.getMin().Z);
+            vertexArray.emplace_back(aabbox.getMax().X, aabbox.getMin().Y, aabbox.getMax().Z);
+            vertexArray.emplace_back(aabbox.getMax().X, aabbox.getMin().Y, aabbox.getMin().Z);
+            vertexArray.emplace_back(aabbox.getMin().X, aabbox.getMax().Y, aabbox.getMax().Z);
+            vertexArray.emplace_back(aabbox.getMin().X, aabbox.getMax().Y, aabbox.getMin().Z);
+            vertexArray.emplace_back(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMax().Z);
+            vertexArray.emplace_back(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMin().Z);
+        }
+        
+        for(uint32_t i = 0; i < aabboxes.size(); ++i) {
+            uint32_t startIndex = i * 8;
+            
             //back
-            vertexArray.push_back(aabboxPoints[7]);
-            vertexArray.push_back(aabboxPoints[3]);
-            vertexArray.push_back(aabboxPoints[5]);
+            indices.push_back(startIndex + 7);
+            indices.push_back(startIndex + 3);
+            indices.push_back(startIndex + 5);
 
-            vertexArray.push_back(aabboxPoints[5]);
-            vertexArray.push_back(aabboxPoints[3]);
-            vertexArray.push_back(aabboxPoints[1]);
+            indices.push_back(startIndex + 5);
+            indices.push_back(startIndex + 3);
+            indices.push_back(startIndex + 1);
 
             //front
-            vertexArray.push_back(aabboxPoints[2]);
-            vertexArray.push_back(aabboxPoints[6]);
-            vertexArray.push_back(aabboxPoints[4]);
+            indices.push_back(startIndex + 2);
+            indices.push_back(startIndex + 6);
+            indices.push_back(startIndex + 4);
 
-            vertexArray.push_back(aabboxPoints[4]);
-            vertexArray.push_back(aabboxPoints[0]);
-            vertexArray.push_back(aabboxPoints[2]);
+            indices.push_back(startIndex + 4);
+            indices.push_back(startIndex + 0);
+            indices.push_back(startIndex + 2);
 
             //left
-            vertexArray.push_back(aabboxPoints[4]);
-            vertexArray.push_back(aabboxPoints[6]);
-            vertexArray.push_back(aabboxPoints[7]);
+            indices.push_back(startIndex + 4);
+            indices.push_back(startIndex + 6);
+            indices.push_back(startIndex + 7);
 
-            vertexArray.push_back(aabboxPoints[7]);
-            vertexArray.push_back(aabboxPoints[5]);
-            vertexArray.push_back(aabboxPoints[4]);
+            indices.push_back(startIndex + 7);
+            indices.push_back(startIndex + 5);
+            indices.push_back(startIndex + 4);
 
             //right
-            vertexArray.push_back(aabboxPoints[2]);
-            vertexArray.push_back(aabboxPoints[0]);
-            vertexArray.push_back(aabboxPoints[3]);
+            indices.push_back(startIndex + 2);
+            indices.push_back(startIndex + 0);
+            indices.push_back(startIndex + 3);
 
-            vertexArray.push_back(aabboxPoints[3]);
-            vertexArray.push_back(aabboxPoints[0]);
-            vertexArray.push_back(aabboxPoints[1]);
+            indices.push_back(startIndex + 3);
+            indices.push_back(startIndex + 0);
+            indices.push_back(startIndex + 1);
 
             //bottom
-            vertexArray.push_back(aabboxPoints[7]);
-            vertexArray.push_back(aabboxPoints[6]);
-            vertexArray.push_back(aabboxPoints[2]);
+            indices.push_back(startIndex + 7);
+            indices.push_back(startIndex + 6);
+            indices.push_back(startIndex + 2);
 
-            vertexArray.push_back(aabboxPoints[2]);
-            vertexArray.push_back(aabboxPoints[3]);
-            vertexArray.push_back(aabboxPoints[7]);
+            indices.push_back(startIndex + 2);
+            indices.push_back(startIndex + 3);
+            indices.push_back(startIndex + 7);
 
             //top
-            vertexArray.push_back(aabboxPoints[0]);
-            vertexArray.push_back(aabboxPoints[4]);
-            vertexArray.push_back(aabboxPoints[5]);
+            indices.push_back(startIndex + 0);
+            indices.push_back(startIndex + 4);
+            indices.push_back(startIndex + 5);
 
-            vertexArray.push_back(aabboxPoints[5]);
-            vertexArray.push_back(aabboxPoints[1]);
-            vertexArray.push_back(aabboxPoints[0]);
+            indices.push_back(startIndex + 5);
+            indices.push_back(startIndex + 1);
+            indices.push_back(startIndex + 0);
         }
 
         return vertexArray;

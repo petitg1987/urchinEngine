@@ -40,7 +40,7 @@ namespace urchin {
         vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, halfHeight)));
         vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, -halfHeight)));
 
-        for (unsigned int i = 0; i < sides; i++) {
+        for (uint32_t i = 0; i < sides; i++) {
             uint32_t leftPos = i * 2;
             uint32_t leftNeg = i * 2 + 1;
 
