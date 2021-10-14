@@ -14,7 +14,7 @@ namespace urchin {
     std::vector<Point3<float>> CylinderModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
         indices.reserve(6 * sides);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(2 * sides);
+        vertexArray.reserve((2 * sides) + 2);
 
         float radius = cylinder.getRadius();
         float halfHeight = cylinder.getHeight() / 2.0f;

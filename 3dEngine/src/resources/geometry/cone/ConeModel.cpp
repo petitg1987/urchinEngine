@@ -11,9 +11,10 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> ConeModel::retrieveVertexArray(std::vector<uint32_t>&) const {
+    std::vector<Point3<float>> ConeModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
+        indices.reserve(6 * slices);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(1 + (slices + 1));
+        vertexArray.reserve(slices + 2);
 
         float radius = cone.getRadius();
         float angle = (2.0f * MathValue::PI_FLOAT) / (float)slices;
@@ -40,18 +41,24 @@ namespace urchin {
         for (unsigned int i = 0; i < slices; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float z1 = std::sin((float)i * angle) * radius;
-            float x2 = std::cos((float)(i + 1) * angle) * radius;
-            float z2 = std::sin((float)(i + 1) * angle) * radius;
+            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
+        }
+        vertexArray.push_back(cone.getCenterOfMass() + topPoint);
+        vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, -cone.getHeight() * (1.0f / 4.0f), 0.0f)));
+
+        for (unsigned int i = 0; i < slices; i++) {
+            uint32_t baseIndex = i;
+            uint32_t nextBaseIndex = (i == slices - 1) ? 0 : i + 1;
 
             //hull
-            vertexArray.push_back(cone.getCenterOfMass() + topPoint);
-            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
-            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
+            indices.push_back((uint32_t)vertexArray.size() - 2);
+            indices.push_back(baseIndex);
+            indices.push_back(nextBaseIndex);
 
             //base cap
-            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, -cone.getHeight() * (1.0f / 4.0f), z1)));
-            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, -cone.getHeight() * (1.0f / 4.0f), 0.0f)));
-            vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, -cone.getHeight() * (1.0f / 4.0f), z2)));
+            indices.push_back(baseIndex);
+            indices.push_back((uint32_t)vertexArray.size() - 1);
+            indices.push_back(nextBaseIndex);
         }
 
         return vertexArray;

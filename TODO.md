@@ -28,7 +28,6 @@
   * **OPTIMIZATION** (`medium`): Models LOD
 * Geometry model 
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
-  * **NEW FEATURE** (`medium`): Use indices on geometry models
 * Shadow
   * **OPTIMIZATION** (`major`): Improve performance of ShadowManager::updateVisibleModels and Renderer3d::updateModelsInFrustum
     * Tips 1: find solution where models could be re-used in the second method
