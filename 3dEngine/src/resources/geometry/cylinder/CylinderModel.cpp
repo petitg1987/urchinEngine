@@ -11,9 +11,10 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> CylinderModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> CylinderModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
+        indices.reserve(6 * sides);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(6 * sides);
+        vertexArray.reserve(2 * sides);
 
         float radius = cylinder.getRadius();
         float halfHeight = cylinder.getHeight() / 2.0f;
@@ -33,26 +34,37 @@ namespace urchin {
         for (unsigned int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
-            float x2 = std::cos((float)(i + 1) * angle) * radius;
-            float y2 = std::sin((float)(i + 1) * angle) * radius;
+            vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
+            vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+        }
+        vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, halfHeight)));
+        vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, -halfHeight)));
+
+        for (unsigned int i = 0; i < sides; i++) {
+            uint32_t leftPos = i * 2;
+            uint32_t leftNeg = i * 2 + 1;
+
+            bool isLast = i == sides - 1;
+            uint32_t rightPos = isLast ? 0 : (i + 1) * 2;
+            uint32_t rightNeg = isLast ? 1 : (i + 1) * 2 + 1;
 
             //cylinder
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+            indices.push_back(leftPos);
+            indices.push_back(rightNeg);
+            indices.push_back(leftNeg);
 
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
+            indices.push_back(leftPos);
+            indices.push_back(rightPos);
+            indices.push_back(rightNeg);
 
             //caps
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, -halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, -halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+            indices.push_back(rightNeg);
+            indices.push_back((uint32_t)vertexArray.size() - 1);
+            indices.push_back(leftNeg);
 
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, halfHeight)));
-            vertexArray.emplace_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x2, y2, halfHeight)));
+            indices.push_back(leftPos);
+            indices.push_back((uint32_t)vertexArray.size() - 2);
+            indices.push_back(rightPos);
         }
 
         return vertexArray;

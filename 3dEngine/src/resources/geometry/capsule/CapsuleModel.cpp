@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> CapsuleModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> CapsuleModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(6 * sides + 2 * (6 * (slices / 2) * slices));
 

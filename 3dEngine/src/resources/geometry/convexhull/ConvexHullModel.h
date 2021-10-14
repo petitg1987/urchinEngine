@@ -11,7 +11,7 @@ namespace urchin {
             explicit ConvexHullModel(ConvexHull3D<float> );
 
         protected:
-            std::vector<Point3<float>> retrieveVertexArray() const override;
+            std::vector<Point3<float>> retrieveVertexArray(std::vector<uint32_t>&) const override;
             ShapeType getShapeType() const override;
 
         private:

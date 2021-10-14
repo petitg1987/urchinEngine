@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> ConeModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> ConeModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(1 + (slices + 1));
 

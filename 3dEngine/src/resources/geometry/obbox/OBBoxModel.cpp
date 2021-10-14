@@ -9,7 +9,7 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> OBBoxModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> OBBoxModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(6 * 6);
 

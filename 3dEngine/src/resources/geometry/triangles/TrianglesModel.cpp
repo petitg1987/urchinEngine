@@ -11,7 +11,7 @@ namespace urchin {
         }
     }
 
-    std::vector<Point3<float>> TrianglesModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> TrianglesModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         return trianglesPoints;
     }
 

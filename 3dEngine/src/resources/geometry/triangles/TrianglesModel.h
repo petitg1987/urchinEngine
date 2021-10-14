@@ -12,7 +12,7 @@ namespace urchin {
             explicit TrianglesModel(std::vector<Point3<float>>);
 
         protected:
-            std::vector<Point3<float>> retrieveVertexArray() const override;
+            std::vector<Point3<float>> retrieveVertexArray(std::vector<uint32_t>&) const override;
             ShapeType getShapeType() const override;
 
         private:

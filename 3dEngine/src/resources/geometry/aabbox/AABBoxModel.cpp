@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    std::vector<Point3<float>> AABBoxModel::retrieveVertexArray() const {
+    std::vector<Point3<float>> AABBoxModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(6 * 6 * aabboxes.size());
 

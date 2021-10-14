@@ -27,12 +27,17 @@ namespace urchin {
 
         shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv");
 
-        std::vector<Point3<float>> vertexArray = retrieveVertexArray();
+        std::vector<uint32_t> indices;
+        std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
         auto rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                 ->addData(vertexArray)
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                 ->addUniformData(sizeof(color), &color) //binding 1
                 ->polygonMode(polygonMode);
+
+        if (!indices.empty()) {
+            rendererBuilder->indices(indices);
+        }
 
         if (polygonMode == PolygonMode::WIREFRAME) {
             rendererBuilder->disableCullFace();
@@ -65,6 +70,9 @@ namespace urchin {
 
     void GeometryModel::setColor(float red, float green, float blue) {
         color = Vector3<float>(red, green, blue);
+        if (renderer) {
+            renderer->updateUniformData(1, &color);
+        }
     }
 
     PolygonMode GeometryModel::getPolygonMode() const {
@@ -105,7 +113,6 @@ namespace urchin {
 
         positioningData.viewModelMatrix = viewMatrix * modelMatrix;
         renderer->updateUniformData(0, &positioningData);
-        renderer->updateUniformData(1, &color);
         renderer->enableRenderer(renderingOrder);
     }
 
