@@ -47,7 +47,9 @@ namespace urchin {
 
         curl_easy_reset(curl);
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
+        if (!body.empty()) {
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
+        }
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
 
         executeRequest(url, headers);
