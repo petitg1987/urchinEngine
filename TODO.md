@@ -72,7 +72,7 @@
   * **NEW FEATURE** (`minor`): Exclude fast moving objects as walkable face
   * **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
   * **NEW FEATURE** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
-- Pathfinding
+* Pathfinding
   * **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
   * **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
   * **NEW FEATURE** (`major`): Implement steering behaviour (see <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
