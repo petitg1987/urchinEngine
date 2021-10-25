@@ -33,6 +33,13 @@ namespace urchin {
         }
     }
 
+    void FileUtil::createEmptyFile(const std::string& filename) {
+        std::ofstream output(filename);
+        if (!output.is_open()) {
+            throw std::runtime_error("Unable to create empty file: " + filename);
+        }
+    }
+
     void FileUtil::copyDirectoryContent(const std::string& srcDirectory, const std::string& dstDirectory) {
         //Similar to "std::filesystem::copy(src, dst, std::filesystem::copy_options::skip_existing);" method
         //Unfortunately, the "copy" method doesn't work correctly on MSYS2: https://github.com/msys2/MSYS2-packages/issues/1937

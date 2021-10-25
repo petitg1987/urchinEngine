@@ -6,8 +6,16 @@
 namespace urchin {
 
     StateSaveHelper::StateSaveHelper() {
-        std::string applicationDirPath = QCoreApplication::applicationDirPath().toStdString();
-        std::string propertiesFilePath = applicationDirPath + "/save/states.properties";
+        std::string saveDirPath = QCoreApplication::applicationDirPath().toStdString() + "/save/";
+        if (!FileUtil::isDirectoryExist(saveDirPath)) {
+            FileUtil::createDirectory(saveDirPath);
+        }
+
+        std::string propertiesFilePath = saveDirPath + "states.properties";
+        if (!FileUtil::isFileExist(propertiesFilePath)) {
+            FileUtil::createEmptyFile(propertiesFilePath);
+        }
+
         propertyFileHandler = std::make_unique<PropertyFileHandler>(propertiesFilePath);
     }
 

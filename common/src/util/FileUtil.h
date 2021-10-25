@@ -10,6 +10,7 @@ namespace urchin {
             static bool isFileExist(const std::string&);
 
             static void createDirectory(const std::string&);
+            static void createEmptyFile(const std::string&);
             static void copyDirectoryContent(const std::string&, const std::string&);
             static void copyFile(const std::string&, const std::string&);
             static void deleteDirectory(const std::string&);
