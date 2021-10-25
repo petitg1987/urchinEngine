@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
+#include <optional>
 
 #include <graphic/render/target/RenderTarget.h>
 #include <graphic/texture/Texture.h>

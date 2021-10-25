@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include <codecvt>
+#include <optional>
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>

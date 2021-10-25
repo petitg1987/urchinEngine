@@ -6,7 +6,7 @@
   sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-bionic.list https://packages.lunarg.com/vulkan/lunarg-vulkan-bionic.list
   sudo apt update
   sudo apt install vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools vulkan-sdk
-  sudo apt install qt5-default qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev
+  sudo apt install qtbase5-dev libopenal-dev libogg-dev libvorbis-dev libfreetype6-dev libcppunit-dev libssl-dev libnghttp2-dev libxrandr-dev
   ```
 
 ## Windows
@@ -54,12 +54,12 @@
   * Profile **Debug**:
     * Name: `Debug`
     * Build type: `Debug`
-    * Generation path: `.build/debug`
+    * Build directory: `.build/debug`
     * Build options: `-j 10`
   * Profile **Release**:
     * Name: `RelWithDebInfo`
     * Build type: `RelWithDebInfo`
-    * Generation path: `.build/release`
+    * Build directory: `.build/release`
     * Build options: `-j 10`
 * Add CMake applications
   * Application **testExecutor (monkey)**:

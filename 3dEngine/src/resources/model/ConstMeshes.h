@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 #include <UrchinCommon.h>
 
 #include <resources/model/ConstMesh.h>
