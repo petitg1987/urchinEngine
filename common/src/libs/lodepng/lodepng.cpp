@@ -4478,8 +4478,8 @@ static unsigned readChunk_iTXt(LodePNGInfo* info, const LodePNGDecompressSetting
         {
             if(!ucvector_resize(&decoded, length + 1)) CERROR_BREAK(error, 83 /*alloc fail*/);
 
-            decoded.data[length] = 0;
             for(i = 0; i != length; ++i) decoded.data[i] = data[begin + i];
+            decoded.data[i] = 0;
         }
 
         error = lodepng_add_itext(info, key, langtag, transkey, (char*)decoded.data);
