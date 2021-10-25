@@ -14,13 +14,14 @@ endif()
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 
-find_package(Qt5Widgets)
+#QT
 find_package(Qt5Core)
+find_package(Qt5Widgets)
 find_package(Qt5Gui)
+SET(QT_LIB Qt5::Core Qt5::Widgets Qt5::Gui)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/* ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/)
 add_executable(urchinMapEditor ${SOURCE_FILES})
 add_dependencies(urchinMapEditor copyShaders)
-qt5_use_modules(urchinMapEditor Widgets)
-target_link_libraries(urchinMapEditor ${LINK_OPT} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)
+target_link_libraries(urchinMapEditor ${LINK_OPT} ${QT_LIB} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)
