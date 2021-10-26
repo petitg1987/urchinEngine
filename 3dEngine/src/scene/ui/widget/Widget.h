@@ -114,6 +114,11 @@ namespace urchin {
             RenderTarget* renderTarget;
             const Shader* shader;
             unsigned int sceneWidth, sceneHeight;
+            mutable struct {
+                alignas(16) Matrix4<float> viewMatrix;
+                alignas(16) Matrix4<float> modelMatrix;
+                alignas(8) Vector2<int> translate;
+            } positioningData;
 
             Widget* parent;
             std::vector<std::shared_ptr<Widget>> children;

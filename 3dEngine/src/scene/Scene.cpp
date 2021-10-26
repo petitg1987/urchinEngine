@@ -157,6 +157,10 @@ namespace urchin {
         return *uiRenderers.back();
     }
 
+    std::unique_ptr<UIRenderer> Scene::newUI3dRenderer() { //TODO review
+        return std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
+    }
+
     void Scene::enableUIRenderer(UIRenderer* uiRenderer) {
         if (activeUiRenderers && activeUiRenderers != uiRenderer) {
             activeUiRenderers->onDisable();

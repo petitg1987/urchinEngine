@@ -56,6 +56,10 @@ namespace urchin {
         }
     }
 
+    void UIRenderer::setModelMatrix(const Matrix4<float>&) {
+        //TODO ...
+    }
+
     bool UIRenderer::onKeyPress(unsigned int key) {
         //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
         std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;

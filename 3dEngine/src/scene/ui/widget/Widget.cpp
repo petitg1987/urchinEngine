@@ -69,8 +69,8 @@ namespace urchin {
                               0.0f, 0.0f, 0.0f, 1.0f);
         rendererBuilder->addUniformData(sizeof(projectionMatrix), &projectionMatrix); //binding 0
 
-        Vector2<int> translateVector(0, 0);
-        rendererBuilder->addUniformData(sizeof(translateVector), &translateVector); //binding 1
+        positioningData.translate = Vector2<int>(0, 0);
+        rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
 
         Container* parentContainer = getParentContainer();
         if (parentContainer) {
@@ -83,7 +83,8 @@ namespace urchin {
     }
 
     void Widget::updateTranslateVector(GenericRenderer* renderer, const Vector2<int>& translateVector) const {
-        renderer->updateUniformData(1, &translateVector);
+        positioningData.translate = translateVector;
+        renderer->updateUniformData(1, &positioningData);
     }
 
     RenderTarget& Widget::getRenderTarget() const {

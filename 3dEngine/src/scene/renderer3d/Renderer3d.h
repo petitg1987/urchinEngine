@@ -18,6 +18,7 @@
 #include <scene/renderer3d/landscape/fog/FogContainer.h>
 #include <scene/renderer3d/landscape/water/WaterContainer.h>
 #include <scene/renderer3d/landscape/sky/SkyContainer.h>
+#include <scene/renderer3d/ui/UiContainer.h>
 #include <resources/geometry/GeometryContainer.h>
 #include <resources/geometry/GeometryModel.h>
 #include <api/render/shader/model/Shader.h>
@@ -26,7 +27,6 @@
 #include <api/render/target/OffscreenRender.h>
 #include <api/texture/Texture.h>
 #include <texture/render/TextureRenderer.h>
-
 
 namespace urchin {
 
@@ -56,6 +56,7 @@ namespace urchin {
             AntiAliasingApplier& getAntiAliasingApplier();
             BloomEffectApplier& getBloomEffectApplier();
             void activateAntiAliasing(bool);
+            UiContainer& get3dUiContainer();
 
             //camera
             void setCamera(std::shared_ptr<Camera>);
@@ -148,6 +149,7 @@ namespace urchin {
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
             BloomEffectApplier bloomEffectApplier;
+            UiContainer uiContainer;
 
             //debug
             bool refreshDebugFramebuffers;

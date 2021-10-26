@@ -18,6 +18,8 @@ namespace urchin {
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
 
+            void setModelMatrix(const Matrix4<float>&);
+
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;
             bool onChar(char32_t) override;

@@ -55,6 +55,7 @@ namespace urchin {
             antiAliasingApplier(AntiAliasingApplier(!finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(true),
             bloomEffectApplier(BloomEffectApplier(finalRenderTarget)),
+            uiContainer(UiContainer()),
 
             //debug
             refreshDebugFramebuffers(true) {
@@ -87,6 +88,7 @@ namespace urchin {
         }
 
         createOrUpdateLightingPass();
+        uiContainer.onResize(sceneWidth, sceneHeight);
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
@@ -176,6 +178,10 @@ namespace urchin {
         }
     }
 
+    UiContainer& Renderer3d::get3dUiContainer() {
+        return uiContainer;
+    }
+
     void Renderer3d::setCamera(std::shared_ptr<Camera> camera) {
         if (this->camera != nullptr) {
            throw std::runtime_error("Redefine a camera is currently not supported");
@@ -199,6 +205,7 @@ namespace urchin {
         shadowManager.onCameraProjectionUpdate(*camera);
         ambientOcclusionManager.onCameraProjectionUpdate(*camera);
         transparentManager.onCameraProjectionUpdate(*camera);
+        uiContainer.onCameraProjectionUpdate(*camera);
         refreshDebugFramebuffers = true;
     }
 
@@ -312,6 +319,7 @@ namespace urchin {
             antiAliasingApplier.applyAntiAliasing();
         }
         bloomEffectApplier.applyBloom(screenRenderingOrder);
+        uiContainer.prepareRendering(dt, screenRenderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
