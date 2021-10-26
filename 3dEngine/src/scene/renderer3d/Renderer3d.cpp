@@ -319,7 +319,7 @@ namespace urchin {
             antiAliasingApplier.applyAntiAliasing();
         }
         bloomEffectApplier.applyBloom(screenRenderingOrder);
-        uiContainer.prepareRendering(dt, screenRenderingOrder);
+        uiContainer.prepareRendering(dt, screenRenderingOrder, camera->getViewMatrix());
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);

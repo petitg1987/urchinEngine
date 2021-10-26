@@ -40,6 +40,12 @@ namespace urchin {
         }
     }
 
+    void UIRenderer::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            widgets[(std::size_t)i]->onCameraProjectionUpdate(projectionMatrix);
+        }
+    }
+
     void UIRenderer::notify(Observable* observable, int notificationType) {
         if (auto* widget = dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::SET_IN_FOREGROUND) {
@@ -56,8 +62,8 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::setModelMatrix(const Matrix4<float>&) {
-        //TODO ...
+    void UIRenderer::setTransform(const Transform<float>& transform) {
+        this->transform = transform;
     }
 
     bool UIRenderer::onKeyPress(unsigned int key) {
@@ -148,11 +154,16 @@ namespace urchin {
     }
 
     void UIRenderer::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
+        prepareRendering(dt, screenRenderingOrder, Matrix4<float>());
+    }
+
+    void UIRenderer::prepareRendering(float dt, unsigned int& screenRenderingOrder, const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
+        Matrix4<float> viewModelMatrix = viewMatrix * transform.getTransformMatrix();
         for (auto& widget : widgets) {
             screenRenderingOrder++;
-            widget->prepareRendering(dt, screenRenderingOrder);
+            widget->prepareRendering(dt, screenRenderingOrder, viewModelMatrix);
         }
 
         //debug

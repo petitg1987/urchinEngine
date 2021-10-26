@@ -170,8 +170,8 @@ namespace urchin {
         cursorImage->updatePosition(Position((float)sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
     }
 
-    void Slider::prepareWidgetRendering(float, unsigned int& renderingOrder) {
-        updateTranslateVector(sliderRenderer.get(), Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+    void Slider::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix) {
+        updatePositioning(sliderRenderer.get(), viewModelMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         sliderRenderer->enableRenderer(renderingOrder);
     }
 

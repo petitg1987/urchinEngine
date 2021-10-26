@@ -34,6 +34,7 @@ namespace urchin {
             void initialize(RenderTarget&, const Shader&, I18nService&);
             bool isInitialized() const;
             virtual void onResize(unsigned int, unsigned int);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             Widget* getParent() const;
             Container* getParentContainer() const;
@@ -79,13 +80,13 @@ namespace urchin {
             int getMouseY() const;
             virtual void onResetState();
 
-            void prepareRendering(float, unsigned int&);
+            void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
-            void updateTranslateVector(GenericRenderer*, const Vector2<int>&) const;
+            void updatePositioning(GenericRenderer*, const Matrix4<float>&, const Vector2<int>&) const;
             RenderTarget& getRenderTarget() const;
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
@@ -99,7 +100,7 @@ namespace urchin {
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
 
-            virtual void prepareWidgetRendering(float, unsigned int&);
+            virtual void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&);
 
             WidgetOutline widgetOutline;
             I18nService* i18nService;
@@ -114,9 +115,10 @@ namespace urchin {
             RenderTarget* renderTarget;
             const Shader* shader;
             unsigned int sceneWidth, sceneHeight;
+            Matrix4<float> projectionMatrix;
+            bool is3dUi;
             mutable struct {
-                alignas(16) Matrix4<float> viewMatrix;
-                alignas(16) Matrix4<float> modelMatrix;
+                alignas(16) Matrix4<float> viewModelMatrix;
                 alignas(8) Vector2<int> translate;
             } positioningData;
 

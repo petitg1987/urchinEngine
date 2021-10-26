@@ -15,7 +15,7 @@ namespace urchin {
 
             void addUi(std::unique_ptr<UIRenderer>);
 
-            void prepareRendering(float, unsigned int&);
+            void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 
         private:
             std::vector<std::unique_ptr<UIRenderer>> uis;

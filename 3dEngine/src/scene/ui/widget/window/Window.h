@@ -18,7 +18,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void prepareWidgetRendering(float, unsigned int&) override;
+            void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
             Window(Position, Size, std::string, std::string);

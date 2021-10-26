@@ -12,6 +12,7 @@ namespace urchin {
             shader(nullptr),
             sceneWidth(0),
             sceneHeight(0),
+            is3dUi(false),
             parent(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
@@ -56,18 +57,32 @@ namespace urchin {
         }
     }
 
+    void Widget::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
+        this->is3dUi = true; //TODO [FOR_LATER] do better
+        this->projectionMatrix = projectionMatrix;
+        createOrUpdateWidget();
+
+        for (auto& child : children) {
+            child->onCameraProjectionUpdate(projectionMatrix);
+        }
+    }
+
     std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType) const {
         assert(shader);
         assert(renderTarget);
 
         auto rendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType);
 
-        //orthogonal matrix with origin at top left screen
-        Matrix4<float> projectionMatrix(2.0f / (float)sceneWidth, 0.0f, -1.0f, 0.0f,
-                              0.0f, 2.0f / (float)sceneHeight, -1.0f, 0.0f,
-                              0.0f, 0.0f, 1.0f, 0.0f,
-                              0.0f, 0.0f, 0.0f, 1.0f);
-        rendererBuilder->addUniformData(sizeof(projectionMatrix), &projectionMatrix); //binding 0
+        if (is3dUi) {
+            rendererBuilder->addUniformData(sizeof(projectionMatrix), &projectionMatrix); //binding 0
+        } else {
+            //orthogonal matrix with origin at top left screen
+            Matrix4<float> orthogonalProjMatrix(2.0f / (float) sceneWidth, 0.0f, -1.0f, 0.0f,
+                                                0.0f, 2.0f / (float) sceneHeight, -1.0f, 0.0f,
+                                                0.0f, 0.0f, 1.0f, 0.0f,
+                                                0.0f, 0.0f, 0.0f, 1.0f);
+            rendererBuilder->addUniformData(sizeof(orthogonalProjMatrix), &orthogonalProjMatrix); //binding 0
+        }
 
         positioningData.translate = Vector2<int>(0, 0);
         rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
@@ -82,7 +97,8 @@ namespace urchin {
         return rendererBuilder;
     }
 
-    void Widget::updateTranslateVector(GenericRenderer* renderer, const Vector2<int>& translateVector) const {
+    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewModelMatrix, const Vector2<int>& translateVector) const {
+        positioningData.viewModelMatrix = viewModelMatrix;
         positioningData.translate = translateVector;
         renderer->updateUniformData(1, &positioningData);
     }
@@ -573,20 +589,19 @@ namespace urchin {
         return false;
     }
 
-    void Widget::prepareRendering(float dt, unsigned int& renderingOrder) {
+    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix) {
         if (isVisible()) {
-            prepareWidgetRendering(dt, renderingOrder);
+            prepareWidgetRendering(dt, renderingOrder, viewModelMatrix);
 
             for (auto& child: children) {
                 renderingOrder++;
-                child->prepareRendering(dt, renderingOrder);
+                child->prepareRendering(dt, renderingOrder, viewModelMatrix);
             }
         }
     }
 
-    void Widget::prepareWidgetRendering(float, unsigned int&) {
+    void Widget::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) {
         //to override
     }
-
 
 }

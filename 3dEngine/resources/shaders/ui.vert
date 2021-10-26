@@ -5,8 +5,7 @@ layout(std140, set = 0, binding = 0) uniform Projection {
     mat4 matrix;
 } projection;
 layout(std140, set = 0, binding = 1) uniform PositioningData {
-    mat4 mView;
-    mat4 mModel;
+    mat4 mViewModel;
     ivec2 translate;
 } postioningData;
 
@@ -18,7 +17,7 @@ invariant gl_Position;
 
 void main() {
     texCoordinates = texCoord;
-    vec4 position = projection.matrix * (postioningData.mView * (postioningData.mModel * vec4(vertexPosition + postioningData.translate, 1.0, 1.0)));
+    vec4 position = projection.matrix * (postioningData.mViewModel * vec4(vertexPosition + postioningData.translate, 1.0, 1.0));
 
     gl_Position = vec4(position.x, position.y, 0.0, 1.0);
 }
