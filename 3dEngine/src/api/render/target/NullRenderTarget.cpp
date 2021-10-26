@@ -6,7 +6,7 @@ namespace urchin {
             RenderTarget("_null_", RenderTarget::SHARED_DEPTH_ATTACHMENT),
             width(width),
             height(height) {
-        initialize();
+        NullRenderTarget::initialize();
     }
 
     void NullRenderTarget::initialize() {

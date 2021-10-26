@@ -3,7 +3,6 @@
 #include <libs/vma/vk_mem_alloc.h>
 #include <api/render/handler/BufferHandler.h>
 #include <api/setup/GraphicService.h>
-#include <api/helper/MemoryHelper.h>
 #include <api/helper/BufferHelper.h>
 #include <api/helper/CommandBufferHelper.h>
 

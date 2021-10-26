@@ -20,7 +20,7 @@ namespace urchin {
         std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
 
-        //try to find an unique queue family for graphic and presentation: better for performance
+        //try to find a unique queue family for graphic and presentation: better for performance
         uint32_t i = 0;
         for (const auto& queueFamily : queueFamilies) {
             if (isGraphicsQueueFamily(queueFamily) && isPresentationQueueFamily(i, physicalDevice, surface)) {
