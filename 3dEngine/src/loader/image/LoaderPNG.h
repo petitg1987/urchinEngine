@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <libs/lodepng/lodepng.h>
 #include <resources/image/Image.h>
 #include <loader/Loader.h>
 

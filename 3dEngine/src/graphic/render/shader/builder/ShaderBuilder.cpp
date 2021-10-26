@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <fstream>
+#include <cstring>
 
 #include <graphic/render/shader/builder/ShaderBuilder.h>
 #include <graphic/render/shader/config/ShaderConfig.h>

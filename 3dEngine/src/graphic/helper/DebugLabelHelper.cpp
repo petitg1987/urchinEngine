@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include <graphic/helper/DebugLabelHelper.h>
 #include <graphic/setup/GraphicService.h>
 
@@ -26,7 +28,7 @@ namespace urchin {
 
             VkDebugUtilsLabelEXT markerInfo{};
             markerInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
-            memcpy(markerInfo.color, &color[0], sizeof(Vector4<float>));
+            std::memcpy(markerInfo.color, &color[0], sizeof(Vector4<float>));
             markerInfo.pLabelName = labelName.c_str();
 
             pfnCmdBeginDebugUtilsLabel(commandBuffer, &markerInfo);

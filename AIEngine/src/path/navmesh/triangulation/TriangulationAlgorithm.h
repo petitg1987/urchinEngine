@@ -4,6 +4,7 @@
 #include <map>
 #include <UrchinCommon.h>
 
+#include <libs/earcut/earcut.h>
 #include <path/navmesh/model/output/NavTriangle.h>
 
 namespace mapbox::util {

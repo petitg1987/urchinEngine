@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <cassert>
 
 #include <partitioning/aabbtree/AABBNodeData.h>
 #include <math/geometry/3d/object/AABBox.h>

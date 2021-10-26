@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cstring>
 
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphic/texture/Texture.h>
@@ -215,7 +216,7 @@ namespace urchin {
         {
             for (unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
                 void* dataDestinationI = static_cast<uint8_t*>(dataDestination) + (imageIndex * getImageSize());
-                memcpy(dataDestinationI, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
+                std::memcpy(dataDestinationI, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
         }
         vmaUnmapMemory(allocator, stagingBufferMemory);

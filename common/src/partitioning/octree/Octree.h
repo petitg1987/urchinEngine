@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 #include <algorithm>
+#include <cassert>
 
 #include <util/VectorUtil.h>
 #include <math/geometry/3d/object/AABBox.h>

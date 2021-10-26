@@ -1,3 +1,4 @@
+#include <cstring>
 #include <UrchinCommon.h>
 
 #include <graphic/setup/handler/ValidationLayer.h>
@@ -90,7 +91,7 @@ namespace urchin {
 
         assert(validationLayer.size() == 1);
         for (const auto& layerProperties : availableLayers) {
-            if (strcmp(validationLayer[0], layerProperties.layerName) == 0) {
+            if (std::strcmp(validationLayer[0], layerProperties.layerName) == 0) {
                 return true;
             }
         }

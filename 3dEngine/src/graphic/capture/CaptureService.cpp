@@ -1,6 +1,7 @@
 #include <libs/vma/vk_mem_alloc.h>
 #include <UrchinCommon.h>
 
+#include <libs/lodepng/lodepng.h>
 #include <graphic/capture/CaptureService.h>
 #include <graphic/helper/CommandBufferHelper.h>
 #include <graphic/helper/ImageHelper.h>

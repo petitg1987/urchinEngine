@@ -1,7 +1,7 @@
 #pragma once
 
+#include <libs/clipper/clipper.h>
 #include <path/navmesh/csg/CSGPolygon.h>
-#include <UrchinCommon.h>
 
 namespace urchin {
 

@@ -1,5 +1,7 @@
-#include <graphic/render/handler/BufferHandler.h>
+#include <cstring>
+
 #include <libs/vma/vk_mem_alloc.h>
+#include <graphic/render/handler/BufferHandler.h>
 #include <graphic/setup/GraphicService.h>
 #include <graphic/helper/MemoryHelper.h>
 #include <graphic/helper/BufferHelper.h>
@@ -111,7 +113,7 @@ namespace urchin {
             void *dataDestination;
             vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
             {
-                memcpy(dataDestination, dataPtr, dataSize);
+                std::memcpy(dataDestination, dataPtr, dataSize);
             }
             vmaUnmapMemory(allocator, stagingBufferMemory);
 
@@ -159,7 +161,7 @@ namespace urchin {
         void *dataDestination;
         vmaMapMemory(GraphicService::instance().getAllocator(), bufferMemory, &dataDestination);
         {
-            memcpy(dataDestination, dataPtr, dataSize);
+            std::memcpy(dataDestination, dataPtr, dataSize);
         }
         vmaUnmapMemory(GraphicService::instance().getAllocator(), bufferMemory);
     }

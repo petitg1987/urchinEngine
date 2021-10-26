@@ -1,3 +1,5 @@
+#include <cstring>
+#include <cassert>
 #include <UrchinCommon.h>
 
 #include <graphic/setup/handler/DeviceHandler.h>
@@ -150,7 +152,7 @@ namespace urchin {
         vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
 
         for (const auto& extension : availableExtensions) {
-            if (strcmp(extension.extensionName, extensionName) == 0) {
+            if (std::strcmp(extension.extensionName, extensionName) == 0) {
                 return true;
             }
         }
