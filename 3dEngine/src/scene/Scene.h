@@ -7,8 +7,8 @@
 
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/ui/UIRenderer.h>
-#include <graphic/setup/GraphicService.h>
-#include <graphic/render/target/ScreenRender.h>
+#include <api/setup/GraphicService.h>
+#include <api/render/target/ScreenRender.h>
 
 namespace urchin {
 

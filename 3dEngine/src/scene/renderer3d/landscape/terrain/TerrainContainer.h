@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <graphic/render/target/RenderTarget.h>
+#include <api/render/target/RenderTarget.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/landscape/terrain/Terrain.h>
 

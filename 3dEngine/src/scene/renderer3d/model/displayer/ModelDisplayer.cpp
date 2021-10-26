@@ -1,7 +1,7 @@
 #include <memory>
 
 #include <scene/renderer3d/model/displayer/ModelDisplayer.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

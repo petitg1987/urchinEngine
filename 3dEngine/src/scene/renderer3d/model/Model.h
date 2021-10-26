@@ -9,7 +9,7 @@
 #include <scene/renderer3d/model/Animation.h>
 #include <resources/model/ConstMeshes.h>
 #include <resources/model/ConstAnimation.h>
-#include <graphic/render/target/RenderTarget.h>
+#include <api/render/target/RenderTarget.h>
 
 namespace urchin {
 

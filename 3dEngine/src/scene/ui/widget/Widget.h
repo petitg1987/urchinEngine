@@ -9,8 +9,8 @@
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/EventListener.h>
 #include <i18n/I18nService.h>
-#include <graphic/render/target/RenderTarget.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/target/RenderTarget.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

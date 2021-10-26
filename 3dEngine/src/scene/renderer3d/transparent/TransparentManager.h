@@ -5,8 +5,8 @@
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
-#include <graphic/render/target/RenderTarget.h>
-#include <graphic/render/GenericRenderer.h>
+#include <api/render/target/RenderTarget.h>
+#include <api/render/GenericRenderer.h>
 
 namespace urchin {
 

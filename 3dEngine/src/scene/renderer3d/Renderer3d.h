@@ -20,11 +20,11 @@
 #include <scene/renderer3d/landscape/sky/SkyContainer.h>
 #include <resources/geometry/GeometryContainer.h>
 #include <resources/geometry/GeometryModel.h>
-#include <graphic/render/shader/model/Shader.h>
-#include <graphic/render/GenericRenderer.h>
-#include <graphic/render/target/ScreenRender.h>
-#include <graphic/render/target/OffscreenRender.h>
-#include <graphic/texture/Texture.h>
+#include <api/render/shader/model/Shader.h>
+#include <api/render/GenericRenderer.h>
+#include <api/render/target/ScreenRender.h>
+#include <api/render/target/OffscreenRender.h>
+#include <api/texture/Texture.h>
 #include <texture/render/TextureRenderer.h>
 
 

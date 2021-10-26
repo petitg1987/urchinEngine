@@ -39,8 +39,8 @@
 
 #include <resources/ResourceRetriever.h>
 
-#include <graphic/render/shader/config/ShaderConfig.h>
-#include <graphic/render/target/NullRenderTarget.h>
+#include <api/render/shader/config/ShaderConfig.h>
+#include <api/render/target/NullRenderTarget.h>
 
 #include <resources/geometry/GeometryModel.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>

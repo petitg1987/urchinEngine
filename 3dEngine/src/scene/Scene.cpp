@@ -1,7 +1,7 @@
 #include <string>
 
 #include <scene/Scene.h>
-#include <graphic/render/target/RenderTarget.h>
+#include <api/render/target/RenderTarget.h>
 #include <resources/ResourceContainer.h>
 
 namespace urchin {

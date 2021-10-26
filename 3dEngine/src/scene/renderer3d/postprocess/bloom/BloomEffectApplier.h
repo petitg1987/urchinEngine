@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include <graphic/texture/Texture.h>
-#include <graphic/render/target/RenderTarget.h>
-#include <graphic/render/shader/model/Shader.h>
+#include <api/texture/Texture.h>
+#include <api/render/target/RenderTarget.h>
+#include <api/render/shader/model/Shader.h>
 
 namespace urchin {
 

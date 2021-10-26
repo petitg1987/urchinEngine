@@ -2,9 +2,9 @@
 
 #include <UrchinCommon.h>
 
-#include <graphic/render/shader/model/Shader.h>
+#include <api/render/shader/model/Shader.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <graphic/render/GenericRenderer.h>
+#include <api/render/GenericRenderer.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 
 namespace urchin {

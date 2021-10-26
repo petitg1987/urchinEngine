@@ -11,7 +11,7 @@
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <graphic/render/shader/model/Shader.h>
+#include <api/render/shader/model/Shader.h>
 
 namespace urchin {
 

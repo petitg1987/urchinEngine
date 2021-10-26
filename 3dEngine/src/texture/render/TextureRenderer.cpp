@@ -2,8 +2,8 @@
 #include <utility>
 
 #include <texture/render/TextureRenderer.h>
-#include <graphic/render/shader/builder/ShaderBuilder.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/shader/builder/ShaderBuilder.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

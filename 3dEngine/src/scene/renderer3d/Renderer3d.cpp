@@ -4,10 +4,10 @@
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/renderer3d/util/OpaqueMeshFilter.h>
 #include <scene/renderer3d/util/OctreeRenderer.h>
-#include <graphic/render/GenericRendererBuilder.h>
-#include <graphic/render/shader/builder/ShaderBuilder.h>
-#include <graphic/render/pipeline/PipelineContainer.h>
-#include <graphic/render/target/NullRenderTarget.h>
+#include <api/render/GenericRendererBuilder.h>
+#include <api/render/shader/builder/ShaderBuilder.h>
+#include <api/render/pipeline/PipelineContainer.h>
+#include <api/render/target/NullRenderTarget.h>
 
 namespace urchin {
 

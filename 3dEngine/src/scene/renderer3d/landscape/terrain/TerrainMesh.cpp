@@ -4,7 +4,7 @@
 
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
 #include <resources/ResourceRetriever.h>
-#include <graphic/render/GenericRenderer.h>
+#include <api/render/GenericRenderer.h>
 
 
 

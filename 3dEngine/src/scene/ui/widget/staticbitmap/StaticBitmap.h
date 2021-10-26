@@ -7,7 +7,7 @@
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
 #include <resources/image/Image.h>
-#include <graphic/render/GenericRenderer.h>
+#include <api/render/GenericRenderer.h>
 
 namespace urchin {
 

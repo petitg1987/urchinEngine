@@ -7,8 +7,8 @@
 #include <texture/filter/TextureFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 #include <texture/filter/downsample/DownSampleFilterBuilder.h>
-#include <graphic/render/shader/builder/ShaderBuilder.h>
-#include <graphic/render/target/OffscreenRender.h>
+#include <api/render/shader/builder/ShaderBuilder.h>
+#include <api/render/target/OffscreenRender.h>
 
 namespace urchin {
 

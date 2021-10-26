@@ -4,7 +4,7 @@
 #include <mutex>
 #include <UrchinCommon.h>
 
-#include <graphic/render/GenericRenderer.h>
+#include <api/render/GenericRenderer.h>
 
 namespace urchin {
 

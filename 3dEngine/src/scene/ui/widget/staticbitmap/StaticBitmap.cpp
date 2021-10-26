@@ -2,7 +2,7 @@
 
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
 #include <resources/ResourceRetriever.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

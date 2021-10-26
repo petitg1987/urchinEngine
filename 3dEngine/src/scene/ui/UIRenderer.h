@@ -3,8 +3,8 @@
 #include <set>
 #include <UrchinCommon.h>
 
-#include <graphic/render/shader/model/Shader.h>
-#include <graphic/render/target/RenderTarget.h>
+#include <api/render/shader/model/Shader.h>
+#include <api/render/target/RenderTarget.h>
 #include <scene/Renderer.h>
 #include <scene/ui/widget/Widget.h>
 #include <texture/render/TextureRenderer.h>

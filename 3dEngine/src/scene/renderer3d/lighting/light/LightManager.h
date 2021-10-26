@@ -3,9 +3,9 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <graphic/render/shader/model/Shader.h>
-#include <graphic/render/target/RenderTarget.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/shader/model/Shader.h>
+#include <api/render/target/RenderTarget.h>
+#include <api/render/GenericRendererBuilder.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
 #include <resources/geometry/GeometryContainer.h>
 #include <scene/renderer3d/lighting/light/Light.h>

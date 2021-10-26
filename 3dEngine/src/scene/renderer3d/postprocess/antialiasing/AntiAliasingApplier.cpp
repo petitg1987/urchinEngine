@@ -1,10 +1,10 @@
 #include <map>
 
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
-#include <graphic/render/shader/builder/ShaderBuilder.h>
-#include <graphic/render/target/NullRenderTarget.h>
-#include <graphic/render/target/OffscreenRender.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/shader/builder/ShaderBuilder.h>
+#include <api/render/target/NullRenderTarget.h>
+#include <api/render/target/OffscreenRender.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

@@ -3,9 +3,9 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <graphic/render/shader/model/Shader.h>
-#include <graphic/render/GenericRenderer.h>
-#include <graphic/render/target/RenderTarget.h>
+#include <api/render/shader/model/Shader.h>
+#include <api/render/GenericRenderer.h>
+#include <api/render/target/RenderTarget.h>
 
 namespace urchin {
 

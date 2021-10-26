@@ -10,7 +10,7 @@
 #include <scene/ui/allocator/StringConverterAllocator.h>
 #include <i18n/TranslatableLabel.h>
 #include <resources/font/Font.h>
-#include <graphic/render/GenericRenderer.h>
+#include <api/render/GenericRenderer.h>
 
 namespace urchin {
 

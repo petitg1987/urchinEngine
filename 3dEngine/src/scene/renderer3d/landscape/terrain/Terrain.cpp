@@ -1,6 +1,6 @@
 #include <scene/renderer3d/landscape/terrain/Terrain.h>
-#include <graphic/render/shader/builder/ShaderBuilder.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/shader/builder/ShaderBuilder.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

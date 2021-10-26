@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <graphic/render/shader/builder/ShaderBuilder.h>
+#include <api/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
 

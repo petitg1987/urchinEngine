@@ -1,6 +1,6 @@
 #include <texture/filter/downsample/DownSampleFilter.h>
 #include <texture/filter/downsample/DownSampleFilterBuilder.h>
-#include <graphic/render/GenericRendererBuilder.h>
+#include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
