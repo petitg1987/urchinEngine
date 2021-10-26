@@ -382,7 +382,7 @@ namespace urchin {
             if (isMouseOnWidget(mouseX, mouseY)) {
                 //In some rare cases, the state could be different from FOCUS:
                 // - Widget has just been made visible and mouse has not moved yet
-                // - UIRenderer has just been enable and mouse has not moved yet
+                // - UIRenderer has just been enabled and mouse has not moved yet
                 if (widgetState == FOCUS) {
                     widgetState = CLICKING;
                     widgetStateUpdated = true;
@@ -551,7 +551,7 @@ namespace urchin {
         }
     }
 
-    bool Widget::isMouseOnWidget(int mouseX, int mouseY) {
+    bool Widget::isMouseOnWidget(int mouseX, int mouseY) const {
         Point2<int> mouseCoordinate(mouseX, mouseY);
         if (widgetRectangle().collideWithPoint(mouseCoordinate)) {
             std::stack<Container*> containers;
