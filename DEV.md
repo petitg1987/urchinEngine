@@ -83,11 +83,6 @@
 * Use logger (`Logger::instance()->logError(...)`) when the result of an algorithm is not the one excepted
   * *Note:* surround logger call with `if (DebugCheck::additionalChecksEnable()) {`/`}` when condition has bad performance
 
-## Enable core file (Linux only):
-* Edit `/etc/security/limits.conf`
-* Add / change to: `*               soft    core            unlimited`
-* Restart computer and check with `ulimit -a`: "core file size" is unlimited
-
 ## Check when "new" operator is called
 * Use following source code and add a debug point:
     ```
