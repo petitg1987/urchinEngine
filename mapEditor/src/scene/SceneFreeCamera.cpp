@@ -28,10 +28,10 @@ namespace urchin {
     void SceneFreeCamera::saveCameraState(const std::string& mapFilename) const {
         std::map<std::string, std::string> cameraPositionByMap = MapSerializer::deserialize(StateSaveHelper::instance().retrieveState("camera.position", ""));
 
-        std::string serializedCameraPosition = std::to_string(getPosition().X) + TypeConverter::NUMBER_DELIMITER + std::to_string(getPosition().Y)
-                + TypeConverter::NUMBER_DELIMITER + std::to_string(getPosition().Z);
-        std::string serializedCameraOrientation = std::to_string(getOrientation().X) + TypeConverter::NUMBER_DELIMITER + std::to_string(getOrientation().Y)
-                + TypeConverter::NUMBER_DELIMITER + std::to_string(getOrientation().Z) + TypeConverter::NUMBER_DELIMITER + std::to_string(getOrientation().W);
+        std::string serializedCameraPosition = TypeConverter::toString(getPosition().X) + TypeConverter::NUMBER_DELIMITER + TypeConverter::toString(getPosition().Y)
+                + TypeConverter::NUMBER_DELIMITER + TypeConverter::toString(getPosition().Z);
+        std::string serializedCameraOrientation = TypeConverter::toString(getOrientation().X) + TypeConverter::NUMBER_DELIMITER + TypeConverter::toString(getOrientation().Y)
+                + TypeConverter::NUMBER_DELIMITER + TypeConverter::toString(getOrientation().Z) + TypeConverter::NUMBER_DELIMITER + TypeConverter::toString(getOrientation().W);
         std::string serializedCamera = serializedCameraPosition + DATA_DELIMITER + serializedCameraOrientation;
         cameraPositionByMap[mapFilename] = serializedCamera;
 
