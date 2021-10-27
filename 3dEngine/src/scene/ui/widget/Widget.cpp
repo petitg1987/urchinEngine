@@ -12,7 +12,6 @@ namespace urchin {
             shader(nullptr),
             sceneWidth(0),
             sceneHeight(0),
-            is3dUi(false),
             parent(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
@@ -27,11 +26,12 @@ namespace urchin {
         Widget::detachChildren();
     }
 
-    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService& i18nService) {
+    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService& i18nService, const std::optional<Matrix4<float>>& cameraProjectionMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "widgetInit");
 
         this->sceneWidth = renderTarget.getWidth();
         this->sceneHeight = renderTarget.getHeight();
+        this->cameraProjectionMatrix = cameraProjectionMatrix;
 
         this->renderTarget = &renderTarget;
         this->shader = &shader;
@@ -39,7 +39,7 @@ namespace urchin {
 
         createOrUpdateWidget();
         for (auto& child : children) {
-            child->initialize(renderTarget, shader, i18nService);
+            child->initialize(renderTarget, shader, i18nService, cameraProjectionMatrix);
         }
     }
 
@@ -57,13 +57,12 @@ namespace urchin {
         }
     }
 
-    void Widget::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        this->is3dUi = true; //TODO [FOR_LATER] do better
-        this->projectionMatrix = projectionMatrix;
+    void Widget::onCameraProjectionUpdate(const Matrix4<float>& cameraProjectionMatrix) {
+        this->cameraProjectionMatrix = cameraProjectionMatrix;
         createOrUpdateWidget();
 
         for (auto& child : children) {
-            child->onCameraProjectionUpdate(projectionMatrix);
+            child->onCameraProjectionUpdate(cameraProjectionMatrix);
         }
     }
 
@@ -73,8 +72,9 @@ namespace urchin {
 
         auto rendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType);
 
-        if (is3dUi) {
-            rendererBuilder->addUniformData(sizeof(projectionMatrix), &projectionMatrix); //binding 0
+        if (cameraProjectionMatrix.has_value()) {
+            rendererBuilder->disableCullFace();
+            rendererBuilder->addUniformData(sizeof(cameraProjectionMatrix.value()), &cameraProjectionMatrix.value()); //binding 0
         } else {
             //orthogonal matrix with origin at top left screen
             Matrix4<float> orthogonalProjMatrix(2.0f / (float) sceneWidth, 0.0f, -1.0f, 0.0f,
@@ -141,7 +141,7 @@ namespace urchin {
         children.push_back(childWidget);
 
         if (renderTarget) {
-            childWidget->initialize(getRenderTarget(), *shader, *i18nService);
+            childWidget->initialize(getRenderTarget(), *shader, *i18nService, cameraProjectionMatrix);
         }
     }
 

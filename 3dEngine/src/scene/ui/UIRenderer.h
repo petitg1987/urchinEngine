@@ -15,11 +15,11 @@ namespace urchin {
         public:
             explicit UIRenderer(RenderTarget&, I18nService&);
 
+            void initializeFor3dUi(const Matrix4<float>&, const Transform<float>&);
+
             void onResize(unsigned int, unsigned int) override;
             void onCameraProjectionUpdate(const Matrix4<float>&);
             void notify(Observable*, int) override;
-
-            void setTransform(const Transform<float>&);
 
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;
@@ -39,9 +39,10 @@ namespace urchin {
         private:
             RenderTarget& renderTarget;
             I18nService& i18nService;
-            Transform<float> transform;
             std::vector<std::shared_ptr<Widget>> widgets;
 
+            std::optional<Matrix4<float>> cameraProjectionMatrix;
+            Transform<float> transform;
             std::unique_ptr<Shader> uiShader;
 
             std::unique_ptr<TextureRenderer> debugFont;

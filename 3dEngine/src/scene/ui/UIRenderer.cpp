@@ -21,6 +21,20 @@ namespace urchin {
         }
     }
 
+    void UIRenderer::initializeFor3dUi(const Matrix4<float>& cameraProjectionMatrix, const Transform<float>& transform) {
+        assert(this->widgets.empty());
+        assert(!this->cameraProjectionMatrix.has_value());
+
+        this->cameraProjectionMatrix = cameraProjectionMatrix;
+        this->transform = transform;
+
+        if (renderTarget.isValidRenderTarget()) {
+            uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui.frag.spv");
+        } else {
+            uiShader = ShaderBuilder::createNullShader();
+        }
+    }
+
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -41,6 +55,11 @@ namespace urchin {
     }
 
     void UIRenderer::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
+        if (!cameraProjectionMatrix.has_value()) {
+            throw std::runtime_error("UI renderer has not been initialized for 3d UI");
+        }
+        this->cameraProjectionMatrix = projectionMatrix;
+
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onCameraProjectionUpdate(projectionMatrix);
         }
@@ -60,10 +79,6 @@ namespace urchin {
                 }
             }
         }
-    }
-
-    void UIRenderer::setTransform(const Transform<float>& transform) {
-        this->transform = transform;
     }
 
     bool UIRenderer::onKeyPress(unsigned int key) {
@@ -133,7 +148,7 @@ namespace urchin {
         }
         widgets.push_back(widget);
 
-        widget->initialize(renderTarget, *uiShader, i18nService);
+        widget->initialize(renderTarget, *uiShader, i18nService, cameraProjectionMatrix);
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 

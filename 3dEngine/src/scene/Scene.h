@@ -40,8 +40,6 @@ namespace urchin {
             void removeUIRenderer(UIRenderer*);
             UIRenderer* getActiveUIRenderer() const;
 
-            std::unique_ptr<UIRenderer> newUI3dRenderer();
-
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
             //events

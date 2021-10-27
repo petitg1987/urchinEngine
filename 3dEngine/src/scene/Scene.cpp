@@ -119,7 +119,7 @@ namespace urchin {
     }
 
     Renderer3d& Scene::newRenderer3d(bool enable) {
-        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget);
+        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget, i18nService);
         if (enable) {
             enableRenderer3d(renderer3d.get());
         }
@@ -173,10 +173,6 @@ namespace urchin {
 
     UIRenderer* Scene::getActiveUIRenderer() const {
         return activeUiRenderers;
-    }
-
-    std::unique_ptr<UIRenderer> Scene::newUI3dRenderer() { //TODO [FOR_LATER]: review
-        return std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
     }
 
     void Scene::takeScreenShot(const std::string& filename, unsigned int width, unsigned int height) const {

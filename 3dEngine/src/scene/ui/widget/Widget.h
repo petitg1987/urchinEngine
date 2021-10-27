@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <optional>
 #include <UrchinCommon.h>
 
 #include <scene/ui/widget/Position.h>
@@ -31,7 +32,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(RenderTarget&, const Shader&, I18nService&);
+            void initialize(RenderTarget&, const Shader&, I18nService&, const std::optional<Matrix4<float>>&);
             bool isInitialized() const;
             virtual void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Matrix4<float>&);
@@ -115,8 +116,7 @@ namespace urchin {
             RenderTarget* renderTarget;
             const Shader* shader;
             unsigned int sceneWidth, sceneHeight;
-            Matrix4<float> projectionMatrix;
-            bool is3dUi;
+            std::optional<Matrix4<float>> cameraProjectionMatrix;
             mutable struct {
                 alignas(16) Matrix4<float> viewModelMatrix;
                 alignas(8) Vector2<int> translate;

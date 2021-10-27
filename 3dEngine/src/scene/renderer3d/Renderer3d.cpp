@@ -23,7 +23,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget) :
+    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget, I18nService& i18nService) :
             //scene properties
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
@@ -55,7 +55,7 @@ namespace urchin {
             antiAliasingApplier(AntiAliasingApplier(!finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(true),
             bloomEffectApplier(BloomEffectApplier(finalRenderTarget)),
-            uiContainer(UiContainer()),
+            uiContainer(UiContainer(finalRenderTarget, i18nService)),
 
             //debug
             refreshDebugFramebuffers(true) {
