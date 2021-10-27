@@ -297,8 +297,8 @@ namespace urchin {
         }
     }
 
-    void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix) {
-        updatePositioning(textRenderer.get(), viewModelMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+    void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix) {
+        updatePositioning(textRenderer.get(), viewModelMatrix, normalMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         textRenderer->enableRenderer(renderingOrder);
     }
 

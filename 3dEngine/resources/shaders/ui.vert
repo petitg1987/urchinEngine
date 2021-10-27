@@ -6,6 +6,7 @@ layout(std140, set = 0, binding = 0) uniform Projection {
 } projection;
 layout(std140, set = 0, binding = 1) uniform PositioningData {
     mat4 mViewModel;
+    mat4 mNormal;
     ivec2 translate;
 } postioningData;
 

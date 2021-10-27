@@ -34,7 +34,7 @@ namespace urchin {
             const std::string& getLabelKey() const override;
             void updateLabel(const std::string&) override;
 
-            void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
+            void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&, const Matrix3<float>&) override;
 
         private:
             Text(Position, std::string, std::string, bool);

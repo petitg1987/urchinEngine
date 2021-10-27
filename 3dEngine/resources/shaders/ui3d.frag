@@ -4,6 +4,7 @@
 layout(binding = 2) uniform sampler2D diffuseTexture;
 
 layout(location = 0) in vec2 texCoordinates;
+layout(location = 1) in vec3 normal;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
@@ -11,11 +12,11 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 void main() {
     //diffuse and emissive
     vec4 color = texture(diffuseTexture, texCoordinates);
-    if (color.a < 0.2) { //TODO review..
-        discard;
+    if (color.a < 0.1) { //no transparency for UI 3d
+        discard; //TODO [FOR_LATER] review
     }
     fragDiffuseAndEmissive = vec4(color.rgb, 0.0);
 
     //ambient factor
-    fragNormalAndAmbient.a = 1.0; //no lighting //TODO review...
+    fragNormalAndAmbient = vec4(normalize(normal), 0.4); //TODO [FOR_LATER] parameter
 }

@@ -176,9 +176,10 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         Matrix4<float> viewModelMatrix = viewMatrix * transform.getTransformMatrix();
+        Matrix3<float> normalMatrix = transform.getOrientationMatrix().toMatrix3();
         for (auto& widget : widgets) {
             renderingOrder++;
-            widget->prepareRendering(dt, renderingOrder, viewModelMatrix);
+            widget->prepareRendering(dt, renderingOrder, viewModelMatrix, normalMatrix);
         }
 
         //debug

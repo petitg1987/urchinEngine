@@ -13,6 +13,13 @@ namespace urchin {
 
     }
 
+    template<class T> Matrix4<T>::Matrix4(const Matrix3<T>& mat3) {
+        a11 = mat3.a11; a12 = mat3.a12; a13 = mat3.a13; a14 = 0.0;
+        a21 = mat3.a21; a22 = mat3.a22; a23 = mat3.a23; a24 = 0.0;
+        a31 = mat3.a31; a32 = mat3.a32; a33 = mat3.a33; a34 = 0.0;
+        a41 = 0.0; a42 = 0.0; a43 = 0.0; a44 = 1.0;
+    }
+
     template<class T> Matrix4<T>::Matrix4(T m11, T m12, T m13, T m14,
         T m21, T m22, T m23, T m24,
         T m31, T m32, T m33, T m34,

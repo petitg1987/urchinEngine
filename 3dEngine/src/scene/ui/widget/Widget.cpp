@@ -101,8 +101,9 @@ namespace urchin {
         return rendererBuilder;
     }
 
-    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewModelMatrix, const Vector2<int>& translateVector) const {
+    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix, const Vector2<int>& translateVector) const {
         positioningData.viewModelMatrix = viewModelMatrix;
+        positioningData.normalMatrix = Matrix4<float>(normalMatrix); //TODO move somewhere else (not send to shader everytime)
         positioningData.translate = translateVector;
         renderer->updateUniformData(1, &positioningData);
     }
@@ -593,18 +594,18 @@ namespace urchin {
         return false;
     }
 
-    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix) {
+    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix) {
         if (isVisible()) {
-            prepareWidgetRendering(dt, renderingOrder, viewModelMatrix);
+            prepareWidgetRendering(dt, renderingOrder, viewModelMatrix, normalMatrix);
 
             for (auto& child: children) {
                 renderingOrder++;
-                child->prepareRendering(dt, renderingOrder, viewModelMatrix);
+                child->prepareRendering(dt, renderingOrder, viewModelMatrix, normalMatrix);
             }
         }
     }
 
-    void Widget::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) {
+    void Widget::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&, const Matrix3<float>&) {
         //to override
     }
 
