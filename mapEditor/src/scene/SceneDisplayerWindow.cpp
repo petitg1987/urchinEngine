@@ -35,23 +35,25 @@ namespace urchin {
 
     bool SceneDisplayerWindow::event(QEvent *e) {
         switch (e->type()) {
-            case QEvent::UpdateRequest:
+            case QEvent::UpdateRequest: {
                 render();
                 break;
-            case QEvent::Resize:
+            } case QEvent::Resize: {
                 if (sceneDisplayer) {
                     unsigned int width = 0, height = 0;
                     SceneWindowController(this).getFramebufferSizeRetriever()->getFramebufferSizeInPixel(width, height);
                     sceneDisplayer->resize(width, height);
                 }
                 break;
-            case QEvent::Leave: //mouse leaves widget
-                if (sceneDisplayer && sceneDisplayer->getModelMoveController() && !geometry().contains(mapFromGlobal(QCursor::pos()))) {
+            } case QEvent::Leave: { //mouse leaves widget
+                Point2<int> mousePositionInPixel = mouseController.getMousePosition();
+                if (sceneDisplayer && sceneDisplayer->getModelMoveController() && !geometry().contains(QPoint(mousePositionInPixel.X, mousePositionInPixel.Y))) {
                     sceneDisplayer->getModelMoveController()->onMouseOut();
                 }
                 break;
-            default:
+            } default: {
                 break;
+            }
         }
         return QWindow::event(e);
     }
@@ -75,7 +77,9 @@ namespace urchin {
 
         sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, &sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
-        sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
+        sceneDisplayer->resize( //size is computed in pixel
+                MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),
+                MathFunction::roundToUInt((float)geometry().height() * (float)devicePixelRatio()));
         sceneController.setup(&sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
     }
@@ -83,7 +87,9 @@ namespace urchin {
     void SceneDisplayerWindow::loadEmptyScene() {
         sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, nullptr, mouseController, statusBarController);
         sceneDisplayer->loadEmptyScene(mapEditorPath);
-        sceneDisplayer->resize((unsigned int)geometry().width(), (unsigned int)geometry().height());
+        sceneDisplayer->resize( //size is computed in pixel
+                MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),
+                MathFunction::roundToUInt((float)geometry().height() * (float)devicePixelRatio()));
     }
 
     void SceneDisplayerWindow::saveState(const std::string& mapFilename) const {
@@ -204,8 +210,9 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::mouseMoveEvent(QMouseEvent* event) {
-        this->mouseX = event->x();
-        this->mouseY = event->y();
+        //mouse coordinate computed in pixel
+        this->mouseX = MathFunction::roundToInt((float)event->x() * (float)devicePixelRatio());
+        this->mouseY = MathFunction::roundToInt((float)event->y() * (float)devicePixelRatio());
 
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY);
