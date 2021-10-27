@@ -45,6 +45,7 @@ namespace urchin {
             FogContainer& getFogContainer();
             TerrainContainer& getTerrainContainer();
             WaterContainer& getWaterContainer();
+            UiContainer& get3dUiContainer();
             GeometryContainer& getGeometryContainer();
             SkyContainer& getSkyContainer();
             LightManager& getLightManager();
@@ -56,7 +57,6 @@ namespace urchin {
             AntiAliasingApplier& getAntiAliasingApplier();
             BloomEffectApplier& getBloomEffectApplier();
             void activateAntiAliasing(bool);
-            UiContainer& get3dUiContainer();
 
             //camera
             void setCamera(std::shared_ptr<Camera>);
@@ -125,6 +125,7 @@ namespace urchin {
             FogContainer fogContainer;
             TerrainContainer terrainContainer;
             WaterContainer waterContainer;
+            UiContainer uiContainer;
             GeometryContainer geometryContainer;
             SkyContainer skyContainer;
             LightManager lightManager;
@@ -149,7 +150,6 @@ namespace urchin {
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
             BloomEffectApplier bloomEffectApplier;
-            UiContainer uiContainer;
 
             //debug
             bool refreshDebugFramebuffers;

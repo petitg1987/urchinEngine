@@ -65,11 +65,10 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        sliderRenderer = setupUiRenderer("slider", ShapeType::TRIANGLE)
+        sliderRenderer = setupUiRenderer("slider", ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::buildLinear())) //binding 3
-                ->enableTransparency({BlendFunction::buildDefault()})
                 ->build();
     }
 

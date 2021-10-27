@@ -86,7 +86,7 @@ namespace urchin {
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
-            std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType) const;
+            std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType, bool) const;
             void updatePositioning(GenericRenderer*, const Matrix4<float>&, const Vector2<int>&) const;
             RenderTarget& getRenderTarget() const;
             unsigned int getSceneWidth() const;

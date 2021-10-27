@@ -39,6 +39,7 @@ namespace urchin {
             fogContainer(FogContainer()),
             terrainContainer(TerrainContainer(*deferredRenderTarget)),
             waterContainer(WaterContainer(*deferredRenderTarget)),
+            uiContainer(UiContainer(*deferredRenderTarget, i18nService)),
             geometryContainer(GeometryContainer(*deferredRenderTarget)),
             skyContainer(SkyContainer(*deferredRenderTarget)),
             lightManager(LightManager()),
@@ -55,7 +56,6 @@ namespace urchin {
             antiAliasingApplier(AntiAliasingApplier(!finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(true),
             bloomEffectApplier(BloomEffectApplier(finalRenderTarget)),
-            uiContainer(UiContainer(finalRenderTarget, i18nService)),
 
             //debug
             refreshDebugFramebuffers(true) {
@@ -123,6 +123,10 @@ namespace urchin {
         return waterContainer;
     }
 
+    UiContainer& Renderer3d::get3dUiContainer() {
+        return uiContainer;
+    }
+
     GeometryContainer& Renderer3d::getGeometryContainer() {
         return geometryContainer;
     }
@@ -178,10 +182,6 @@ namespace urchin {
         }
     }
 
-    UiContainer& Renderer3d::get3dUiContainer() {
-        return uiContainer;
-    }
-
     void Renderer3d::setCamera(std::shared_ptr<Camera> camera) {
         if (this->camera != nullptr) {
            throw std::runtime_error("Redefine a camera is currently not supported");
@@ -200,12 +200,12 @@ namespace urchin {
         modelSetDisplayer.onCameraProjectionUpdate(*camera);
         terrainContainer.onCameraProjectionUpdate(*camera);
         waterContainer.onCameraProjectionUpdate(*camera);
+        uiContainer.onCameraProjectionUpdate(*camera);
         geometryContainer.onCameraProjectionUpdate(*camera);
         skyContainer.onCameraProjectionUpdate(*camera);
         shadowManager.onCameraProjectionUpdate(*camera);
         ambientOcclusionManager.onCameraProjectionUpdate(*camera);
         transparentManager.onCameraProjectionUpdate(*camera);
-        uiContainer.onCameraProjectionUpdate(*camera);
         refreshDebugFramebuffers = true;
     }
 
@@ -319,7 +319,6 @@ namespace urchin {
             antiAliasingApplier.applyAntiAliasing();
         }
         bloomEffectApplier.applyBloom(screenRenderingOrder);
-        uiContainer.prepareRendering(dt, screenRenderingOrder, camera->getViewMatrix());
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -476,8 +475,10 @@ namespace urchin {
         deferredRenderingOrder++;
         waterContainer.prepareRendering(deferredRenderingOrder, *camera, fogContainer, dt);
 
-        renderDebugSceneData(geometryContainer);
+        deferredRenderingOrder++;
+        uiContainer.prepareRendering(dt, deferredRenderingOrder, camera->getViewMatrix());
 
+        renderDebugSceneData(geometryContainer);
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
 

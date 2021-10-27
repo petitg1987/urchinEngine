@@ -281,11 +281,10 @@ namespace urchin {
         refreshCoordinates();
 
         std::string renderName = labelKey.value_or(text.substr(0, std::min((std::size_t)15, text.size())));
-        textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE)
+        textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::buildLinear())) //binding 2
-                ->enableTransparency({BlendFunction::buildDefault()})
                 ->build();
     }
 

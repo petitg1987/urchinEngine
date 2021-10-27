@@ -36,11 +36,10 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        bitmapRenderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE)
+        bitmapRenderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(tex, TextureParam::buildLinear())) //binding 2
-                ->enableTransparency({BlendFunction::buildDefault()})
                 ->build();
     }
 

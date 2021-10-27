@@ -29,11 +29,10 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        checkBoxRenderer = setupUiRenderer("check box", ShapeType::TRIANGLE)
+        checkBoxRenderer = setupUiRenderer("check box", ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(isChecked() ? texChecked : texUnchecked, TextureParam::buildLinear())) //binding 3
-                ->enableTransparency({BlendFunction::buildDefault()})
                 ->build();
     }
 

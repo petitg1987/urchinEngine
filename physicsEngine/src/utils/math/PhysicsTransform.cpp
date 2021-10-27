@@ -82,7 +82,7 @@ namespace urchin {
         Quaternion<float> interpolateOrientation = orientation;
 
         float length = angularVelocity.length();
-        if (length > 0.0) {
+        if (length > 0.0001) {
             const Vector3<float> normalizedAxis = angularVelocity / length;
             const float angle = length * timeStep;
 

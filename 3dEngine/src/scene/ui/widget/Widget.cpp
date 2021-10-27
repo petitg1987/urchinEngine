@@ -66,22 +66,26 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType) const {
+    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType, bool enableTransparency) const {
         assert(shader);
         assert(renderTarget);
 
         auto rendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType);
 
-        if (cameraProjectionMatrix.has_value()) {
-            rendererBuilder->disableCullFace();
-            rendererBuilder->addUniformData(sizeof(cameraProjectionMatrix.value()), &cameraProjectionMatrix.value()); //binding 0
-        } else {
+        if (!cameraProjectionMatrix.has_value()) { //UI 2d
             //orthogonal matrix with origin at top left screen
             Matrix4<float> orthogonalProjMatrix(2.0f / (float) sceneWidth, 0.0f, -1.0f, 0.0f,
                                                 0.0f, 2.0f / (float) sceneHeight, -1.0f, 0.0f,
                                                 0.0f, 0.0f, 1.0f, 0.0f,
                                                 0.0f, 0.0f, 0.0f, 1.0f);
             rendererBuilder->addUniformData(sizeof(orthogonalProjMatrix), &orthogonalProjMatrix); //binding 0
+            if (enableTransparency) {
+                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
+            }
+        } else { //UI 3d
+            rendererBuilder->disableCullFace();
+            rendererBuilder->enableDepthTest();
+            rendererBuilder->addUniformData(sizeof(cameraProjectionMatrix.value()), &cameraProjectionMatrix.value()); //binding 0
         }
 
         positioningData.translate = Vector2<int>(0, 0);

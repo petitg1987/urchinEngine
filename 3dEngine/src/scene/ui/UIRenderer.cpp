@@ -29,7 +29,7 @@ namespace urchin {
         this->transform = transform;
 
         if (renderTarget.isValidRenderTarget()) {
-            uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui.frag.spv");
+            uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv");
         } else {
             uiShader = ShaderBuilder::createNullShader();
         }
@@ -172,19 +172,19 @@ namespace urchin {
         prepareRendering(dt, screenRenderingOrder, Matrix4<float>());
     }
 
-    void UIRenderer::prepareRendering(float dt, unsigned int& screenRenderingOrder, const Matrix4<float>& viewMatrix) {
+    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         Matrix4<float> viewModelMatrix = viewMatrix * transform.getTransformMatrix();
         for (auto& widget : widgets) {
-            screenRenderingOrder++;
-            widget->prepareRendering(dt, screenRenderingOrder, viewModelMatrix);
+            renderingOrder++;
+            widget->prepareRendering(dt, renderingOrder, viewModelMatrix);
         }
 
         //debug
         if (debugFont) {
-            screenRenderingOrder++;
-            debugFont->prepareRendering(screenRenderingOrder);
+            renderingOrder++;
+            debugFont->prepareRendering(renderingOrder);
         }
     }
 
