@@ -12,7 +12,6 @@ namespace urchin {
         public:
             UiContainer(RenderTarget&, I18nService&);
 
-            void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Camera&);
 
             UIRenderer& newUI3dRenderer(const Transform<float>&);

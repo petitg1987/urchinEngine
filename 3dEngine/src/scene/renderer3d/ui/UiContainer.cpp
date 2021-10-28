@@ -8,12 +8,6 @@ namespace urchin {
 
     }
 
-    void UiContainer::onResize(unsigned int width, unsigned int height) {
-        for(auto& ui : uis) {
-            ui->onResize(width, height);
-        }
-    }
-
     void UiContainer::onCameraProjectionUpdate(const Camera& camera) {
         this->projectionMatrix = camera.getProjectionMatrix();
 
@@ -24,6 +18,7 @@ namespace urchin {
 
     UIRenderer& UiContainer::newUI3dRenderer(const Transform<float>& transform) {
         auto uiRenderer = std::make_unique<UIRenderer>(renderTarget, i18nService);
+        uiRenderer->onResize(1600, 900); //TODO move in initializeFor3dUi ?
         uiRenderer->initializeFor3dUi(projectionMatrix, transform);
         uis.push_back(std::move(uiRenderer));
         return *uis.back();

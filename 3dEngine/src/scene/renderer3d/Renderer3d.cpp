@@ -88,7 +88,6 @@ namespace urchin {
         }
 
         createOrUpdateLightingPass();
-        uiContainer.onResize(sceneWidth, sceneHeight);
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {

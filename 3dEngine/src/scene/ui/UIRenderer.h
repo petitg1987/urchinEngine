@@ -39,6 +39,7 @@ namespace urchin {
         private:
             RenderTarget& renderTarget;
             I18nService& i18nService;
+            Point2<unsigned int> sceneSize;
             std::vector<std::shared_ptr<Widget>> widgets;
 
             std::optional<Matrix4<float>> cameraProjectionMatrix;

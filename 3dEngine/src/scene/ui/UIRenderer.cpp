@@ -13,7 +13,8 @@ namespace urchin {
 
     UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
             renderTarget(renderTarget),
-            i18nService(i18nService) {
+            i18nService(i18nService),
+            sceneSize(renderTarget.getWidth(), renderTarget.getHeight()) {
         if (renderTarget.isValidRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
         } else {
@@ -36,6 +37,8 @@ namespace urchin {
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
+        this->sceneSize = Point2<unsigned int>(sceneWidth, sceneHeight);
+
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight);
@@ -148,7 +151,11 @@ namespace urchin {
         }
         widgets.push_back(widget);
 
-        widget->initialize(renderTarget, *uiShader, i18nService, cameraProjectionMatrix);
+        if (cameraProjectionMatrix.has_value()) {
+            widget->initialize(renderTarget, *uiShader, sceneSize, i18nService, cameraProjectionMatrix);
+        } else {
+            widget->initialize(renderTarget, *uiShader, Point2<unsigned int>(renderTarget.getWidth(), renderTarget.getHeight()), i18nService, cameraProjectionMatrix);
+        }
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 

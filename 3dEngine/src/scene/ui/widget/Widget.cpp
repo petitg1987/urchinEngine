@@ -10,8 +10,6 @@ namespace urchin {
             i18nService(nullptr),
             renderTarget(nullptr),
             shader(nullptr),
-            sceneWidth(0),
-            sceneHeight(0),
             parent(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
@@ -26,11 +24,10 @@ namespace urchin {
         Widget::detachChildren();
     }
 
-    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, I18nService& i18nService, const std::optional<Matrix4<float>>& cameraProjectionMatrix) {
+    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, const Point2<unsigned int>& sceneSize, I18nService& i18nService, const std::optional<Matrix4<float>>& cameraProjectionMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "widgetInit");
 
-        this->sceneWidth = renderTarget.getWidth();
-        this->sceneHeight = renderTarget.getHeight();
+        this->sceneSize = sceneSize;
         this->cameraProjectionMatrix = cameraProjectionMatrix;
 
         this->renderTarget = &renderTarget;
@@ -39,7 +36,7 @@ namespace urchin {
 
         createOrUpdateWidget();
         for (auto& child : children) {
-            child->initialize(renderTarget, shader, i18nService, cameraProjectionMatrix);
+            child->initialize(renderTarget, shader, sceneSize, i18nService, cameraProjectionMatrix);
         }
     }
 
@@ -48,8 +45,7 @@ namespace urchin {
     }
 
     void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneWidth = sceneWidth;
-        this->sceneHeight = sceneHeight;
+        this->sceneSize = Point2<unsigned int>(sceneWidth, sceneHeight);
         createOrUpdateWidget();
 
         for (auto& child : children) {
@@ -74,8 +70,8 @@ namespace urchin {
 
         if (!cameraProjectionMatrix.has_value()) { //UI 2d
             //orthogonal matrix with origin at top left screen
-            Matrix4<float> orthogonalProjMatrix(2.0f / (float) sceneWidth, 0.0f, -1.0f, 0.0f,
-                                                0.0f, 2.0f / (float) sceneHeight, -1.0f, 0.0f,
+            Matrix4<float> orthogonalProjMatrix(2.0f / (float) sceneSize.X, 0.0f, -1.0f, 0.0f,
+                                                0.0f, 2.0f / (float) sceneSize.Y, -1.0f, 0.0f,
                                                 0.0f, 0.0f, 1.0f, 0.0f,
                                                 0.0f, 0.0f, 0.0f, 1.0f);
             rendererBuilder->addUniformData(sizeof(orthogonalProjMatrix), &orthogonalProjMatrix); //binding 0
@@ -114,11 +110,11 @@ namespace urchin {
     }
 
     unsigned int Widget::getSceneWidth() const {
-        return sceneWidth;
+        return sceneSize.X;
     }
 
     unsigned int Widget::getSceneHeight() const {
-        return sceneHeight;
+        return sceneSize.Y;
     }
 
     Widget* Widget::getParent() const {
@@ -146,7 +142,7 @@ namespace urchin {
         children.push_back(childWidget);
 
         if (renderTarget) {
-            childWidget->initialize(getRenderTarget(), *shader, *i18nService, cameraProjectionMatrix);
+            childWidget->initialize(getRenderTarget(), *shader, sceneSize, *i18nService, cameraProjectionMatrix);
         }
     }
 

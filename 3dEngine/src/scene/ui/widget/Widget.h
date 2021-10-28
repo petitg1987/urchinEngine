@@ -32,7 +32,7 @@ namespace urchin {
                 FOCUS
             };
 
-            void initialize(RenderTarget&, const Shader&, I18nService&, const std::optional<Matrix4<float>>&);
+            void initialize(RenderTarget&, const Shader&, const Point2<unsigned int>&, I18nService&, const std::optional<Matrix4<float>>&);
             bool isInitialized() const;
             virtual void onResize(unsigned int, unsigned int);
             void onCameraProjectionUpdate(const Matrix4<float>&);
@@ -115,7 +115,7 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             const Shader* shader;
-            unsigned int sceneWidth, sceneHeight;
+            Point2<unsigned int> sceneSize;
             std::optional<Matrix4<float>> cameraProjectionMatrix;
             mutable struct {
                 alignas(16) Matrix4<float> viewModelMatrix;
