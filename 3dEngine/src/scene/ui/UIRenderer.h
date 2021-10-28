@@ -11,14 +11,20 @@
 
 namespace urchin {
 
+    struct UI3dData {
+        Matrix4<float> cameraProjectionMatrix;
+        Matrix4<float> modelMatrix;
+        Matrix4<float> normalMatrix;
+    };
+
     class UIRenderer : public Renderer, public Observer {
         public:
             explicit UIRenderer(RenderTarget&, I18nService&);
 
-            void initializeFor3dUi(const Matrix4<float>&, const Transform<float>&);
+            void setupUi3d(const Matrix4<float>&, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&);
+            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void onResize(unsigned int, unsigned int) override;
-            void onCameraProjectionUpdate(const Matrix4<float>&);
             void notify(Observable*, int) override;
 
             bool onKeyPress(unsigned int) override;
@@ -27,6 +33,12 @@ namespace urchin {
             bool onMouseMove(double, double) override;
             bool onScroll(double) override;
             void onDisable() override;
+
+            RenderTarget& getRenderTarget() const;
+            I18nService& getI18nService() const;
+            const Point2<unsigned int>& getSceneSize() const;
+            Shader& getShader() const;
+            UI3dData* getUi3dData() const;
 
             void addWidget(const std::shared_ptr<Widget>&);
             void removeWidget(Widget&);
@@ -40,11 +52,10 @@ namespace urchin {
             RenderTarget& renderTarget;
             I18nService& i18nService;
             Point2<unsigned int> sceneSize;
-            std::vector<std::shared_ptr<Widget>> widgets;
-
-            std::optional<Matrix4<float>> cameraProjectionMatrix;
-            Transform<float> transform;
             std::unique_ptr<Shader> uiShader;
+            std::unique_ptr<UI3dData> ui3dData;
+
+            std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<TextureRenderer> debugFont;
     };

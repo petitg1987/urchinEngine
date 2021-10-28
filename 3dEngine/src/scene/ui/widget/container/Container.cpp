@@ -13,8 +13,8 @@ namespace urchin {
         return Widget::create<Container>(new Container(position, size, std::move(skinName)), parent);
     }
 
-    void Container::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        Widget::onResize(sceneWidth, sceneHeight);
+    void Container::onResize() {
+        Widget::onResize();
         scrollbar->onScrollableWidgetsUpdated();
     }
 

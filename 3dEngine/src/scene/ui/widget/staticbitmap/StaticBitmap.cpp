@@ -47,8 +47,8 @@ namespace urchin {
         return image->getName();
     }
 
-    void StaticBitmap::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix) {
-        updatePositioning(bitmapRenderer.get(), viewModelMatrix, normalMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+    void StaticBitmap::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+        updatePositioning(bitmapRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         bitmapRenderer->enableRenderer(renderingOrder);
     }
 

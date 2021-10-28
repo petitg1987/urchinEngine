@@ -78,8 +78,8 @@ namespace urchin {
         }
     }
 
-    void CheckBox::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix) {
-        updatePositioning(checkBoxRenderer.get(), viewModelMatrix, normalMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+    void CheckBox::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+        updatePositioning(checkBoxRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         checkBoxRenderer->enableRenderer(renderingOrder);
     }
 }

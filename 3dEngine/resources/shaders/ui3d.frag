@@ -18,5 +18,6 @@ void main() {
     fragDiffuseAndEmissive = vec4(color.rgb, 0.0);
 
     //ambient factor
-    fragNormalAndAmbient = vec4(normalize(normal), 0.4); //TODO [FOR_LATER] parameter
+    vec3 encodedNormal = (normalize(normal) + 1.0f) / 2.0;
+    fragNormalAndAmbient = vec4(encodedNormal, 0.4); //TODO [FOR_LATER] parameter
 }

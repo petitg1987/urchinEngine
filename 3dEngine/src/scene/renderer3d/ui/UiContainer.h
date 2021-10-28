@@ -14,7 +14,7 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera&);
 
-            UIRenderer& newUI3dRenderer(const Transform<float>&);
+            UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&);
 
             void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 

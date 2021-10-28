@@ -22,17 +22,36 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::initializeFor3dUi(const Matrix4<float>& cameraProjectionMatrix, const Transform<float>& transform) {
-        assert(this->widgets.empty());
-        assert(!this->cameraProjectionMatrix.has_value());
+    void UIRenderer::setupUi3d(const Matrix4<float>& projectionMatrix, const Transform<float>& transform, const Point2<unsigned int>& sceneResolution, const Point2<float>& uiSize) {
+        assert(widgets.empty());
+        assert(ui3dData == nullptr);
+        assert(MathFunction::isEqual((float)sceneResolution.X / (float)sceneResolution.Y, uiSize.X / uiSize.Y, 0.1f)); //proportion must be equal for a good visual
 
-        this->cameraProjectionMatrix = cameraProjectionMatrix;
-        this->transform = transform;
+        float xScale = uiSize.X / (float)sceneResolution.X;
+        float yScale = uiSize.Y / (float)sceneResolution.Y;
+        Matrix4<float> uiViewMatrix(xScale, 0.0f, 0.0f, 0.0f,
+                0.0f, -yScale /* negate for flip on Y axis */, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f);
+        this->ui3dData = std::make_unique<UI3dData>();
+        this->ui3dData->cameraProjectionMatrix = projectionMatrix;
+        this->ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
+        this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
         if (renderTarget.isValidRenderTarget()) {
-            uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv");
-        } else {
-            uiShader = ShaderBuilder::createNullShader();
+            this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv");
+        }
+        onResize(sceneResolution.X, sceneResolution.Y);
+    }
+
+    void UIRenderer::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
+        if (!ui3dData) {
+            throw std::runtime_error("UI renderer has not been initialized for UI 3d");
+        }
+        this->ui3dData->cameraProjectionMatrix = projectionMatrix;
+
+        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+            widgets[(std::size_t)i]->onCameraProjectionUpdate();
         }
     }
 
@@ -41,7 +60,7 @@ namespace urchin {
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            widgets[(std::size_t)i]->onResize(sceneWidth, sceneHeight);
+            widgets[(std::size_t)i]->onResize();
         }
 
         //debug
@@ -54,17 +73,6 @@ namespace urchin {
             textureDisplayer->enableTransparency();
             textureDisplayer->initialize("[DEBUG] font texture", renderTarget, sceneWidth, sceneHeight, -1.0f, -1.0f);
             debugFont = std::move(textureDisplayer);
-        }
-    }
-
-    void UIRenderer::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        if (!cameraProjectionMatrix.has_value()) {
-            throw std::runtime_error("UI renderer has not been initialized for 3d UI");
-        }
-        this->cameraProjectionMatrix = projectionMatrix;
-
-        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            widgets[(std::size_t)i]->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
@@ -145,17 +153,33 @@ namespace urchin {
         }
     }
 
+    RenderTarget& UIRenderer::getRenderTarget() const {
+        return renderTarget;
+    }
+
+    I18nService& UIRenderer::getI18nService() const {
+        return i18nService;
+    }
+
+    const Point2<unsigned int>& UIRenderer::getSceneSize() const {
+        return sceneSize;
+    }
+
+    Shader& UIRenderer::getShader() const {
+        return *uiShader;
+    }
+
+    UI3dData* UIRenderer::getUi3dData() const {
+        return ui3dData.get();
+    }
+
     void UIRenderer::addWidget(const std::shared_ptr<Widget>& widget) {
         if (widget->getParent()) {
             throw std::runtime_error("Cannot add a widget having a parent to the UI renderer");
         }
         widgets.push_back(widget);
 
-        if (cameraProjectionMatrix.has_value()) {
-            widget->initialize(renderTarget, *uiShader, sceneSize, i18nService, cameraProjectionMatrix);
-        } else {
-            widget->initialize(renderTarget, *uiShader, Point2<unsigned int>(renderTarget.getWidth(), renderTarget.getHeight()), i18nService, cameraProjectionMatrix);
-        }
+        widget->initialize(*this);
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
@@ -182,19 +206,9 @@ namespace urchin {
     void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
-        float xScale = 0.005f; //TODO compute value
-        float yFlipScale = -0.005f;
-        Matrix4<float> uiViewMatrix( //TODO store in class ?
-                xScale, 0.0f, 0.0f, 0.0f,
-                0.0f, yFlipScale, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f);
-
-        Matrix4<float> viewModelMatrix = viewMatrix * uiViewMatrix * transform.getTransformMatrix();
-        Matrix3<float> normalMatrix = transform.getOrientationMatrix().toMatrix3();
         for (auto& widget : widgets) {
             renderingOrder++;
-            widget->prepareRendering(dt, renderingOrder, viewModelMatrix, normalMatrix);
+            widget->prepareRendering(dt, renderingOrder, viewMatrix);
         }
 
         //debug

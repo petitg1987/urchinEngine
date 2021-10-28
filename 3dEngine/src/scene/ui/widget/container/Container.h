@@ -15,7 +15,7 @@ namespace urchin {
         public:
             static std::shared_ptr<Container> create(Widget*, Position, Size, std::string);
 
-            void onResize(unsigned int, unsigned int) override;
+            void onResize() override;
 
             void addChild(const std::shared_ptr<Widget>&) override;
             void detachChild(Widget*) override;

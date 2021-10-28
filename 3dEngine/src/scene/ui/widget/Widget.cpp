@@ -2,14 +2,13 @@
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/container/Container.h>
+#include <scene/ui/UIRenderer.h>
 #include <scene/InputDeviceKey.h>
 
 namespace urchin {
 
     Widget::Widget(Position position, Size size) :
-            i18nService(nullptr),
-            renderTarget(nullptr),
-            shader(nullptr),
+            uiRenderer(nullptr),
             parent(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
@@ -24,54 +23,46 @@ namespace urchin {
         Widget::detachChildren();
     }
 
-    void Widget::initialize(RenderTarget& renderTarget, const Shader& shader, const Point2<unsigned int>& sceneSize, I18nService& i18nService, const std::optional<Matrix4<float>>& cameraProjectionMatrix) {
+    void Widget::initialize(UIRenderer& uiRenderer) {
         ScopeProfiler sp(Profiler::graphic(), "widgetInit");
 
-        this->sceneSize = sceneSize;
-        this->cameraProjectionMatrix = cameraProjectionMatrix;
-
-        this->renderTarget = &renderTarget;
-        this->shader = &shader;
-        this->i18nService = &i18nService;
+        this->uiRenderer = &uiRenderer;
 
         createOrUpdateWidget();
         for (auto& child : children) {
-            child->initialize(renderTarget, shader, sceneSize, i18nService, cameraProjectionMatrix);
+            child->initialize(uiRenderer);
         }
     }
 
     bool Widget::isInitialized() const {
-        return renderTarget != nullptr;
+        return uiRenderer != nullptr;
     }
 
-    void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneSize = Point2<unsigned int>(sceneWidth, sceneHeight);
+    void Widget::onResize() {
         createOrUpdateWidget();
 
         for (auto& child : children) {
-            child->onResize(sceneWidth, sceneHeight);
+            child->onResize();
         }
     }
 
-    void Widget::onCameraProjectionUpdate(const Matrix4<float>& cameraProjectionMatrix) {
-        this->cameraProjectionMatrix = cameraProjectionMatrix;
+    void Widget::onCameraProjectionUpdate() {
         createOrUpdateWidget();
 
         for (auto& child : children) {
-            child->onCameraProjectionUpdate(cameraProjectionMatrix);
+            child->onCameraProjectionUpdate();
         }
     }
 
     std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType, bool enableTransparency) const {
-        assert(shader);
-        assert(renderTarget);
+        assert(isInitialized());
 
-        auto rendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *shader, shapeType);
+        auto rendererBuilder = GenericRendererBuilder::create(name, uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
-        if (!cameraProjectionMatrix.has_value()) { //UI 2d
+        if (!uiRenderer->getUi3dData()) { //UI 2d
             //orthogonal matrix with origin at top left screen
-            Matrix4<float> orthogonalProjMatrix(2.0f / (float) sceneSize.X, 0.0f, -1.0f, 0.0f,
-                                                0.0f, 2.0f / (float) sceneSize.Y, -1.0f, 0.0f,
+            Matrix4<float> orthogonalProjMatrix(2.0f / (float) uiRenderer->getSceneSize().X, 0.0f, -1.0f, 0.0f,
+                                                0.0f, 2.0f / (float) uiRenderer->getSceneSize().Y, -1.0f, 0.0f,
                                                 0.0f, 0.0f, 1.0f, 0.0f,
                                                 0.0f, 0.0f, 0.0f, 1.0f);
             rendererBuilder->addUniformData(sizeof(orthogonalProjMatrix), &orthogonalProjMatrix); //binding 0
@@ -79,13 +70,11 @@ namespace urchin {
                 rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
             }
         } else { //UI 3d
-            rendererBuilder->disableCullFace();
             rendererBuilder->enableDepthTest();
-            //TODO rendererBuilder->enableDepthWrite(); (avoid z-fighting ?)
-            rendererBuilder->addUniformData(sizeof(cameraProjectionMatrix.value()), &cameraProjectionMatrix.value()); //binding 0
+            rendererBuilder->enableDepthWrite(); //TODO how avoid z-fighting ?
+            rendererBuilder->addUniformData(sizeof(uiRenderer->getUi3dData()->cameraProjectionMatrix), &uiRenderer->getUi3dData()->cameraProjectionMatrix); //binding 0
         }
 
-        positioningData.translate = Vector2<int>(0, 0);
         rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
 
         Container* parentContainer = getParentContainer();
@@ -98,24 +87,25 @@ namespace urchin {
         return rendererBuilder;
     }
 
-    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix, const Vector2<int>& translateVector) const {
-        positioningData.viewModelMatrix = viewModelMatrix;
-        positioningData.normalMatrix = Matrix4<float>(normalMatrix); //TODO move somewhere else (not send to shader everytime)
+    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewMatrix, const Vector2<int>& translateVector) const {
+        if (uiRenderer->getUi3dData()) {
+            positioningData.viewModelMatrix = viewMatrix * uiRenderer->getUi3dData()->modelMatrix;
+            positioningData.normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
+        }
         positioningData.translate = translateVector;
         renderer->updateUniformData(1, &positioningData);
     }
 
-    RenderTarget& Widget::getRenderTarget() const {
-        assert(renderTarget);
-        return *renderTarget;
+    const Point2<unsigned int>& Widget::getSceneSize() const {
+        assert(isInitialized());
+        return uiRenderer->getSceneSize();
     }
 
-    unsigned int Widget::getSceneWidth() const {
-        return sceneSize.X;
-    }
-
-    unsigned int Widget::getSceneHeight() const {
-        return sceneSize.Y;
+    I18nService* Widget::getI18nService() const {
+        if (uiRenderer) {
+            return &uiRenderer->getI18nService();
+        }
+        return nullptr;
     }
 
     Widget* Widget::getParent() const {
@@ -142,8 +132,8 @@ namespace urchin {
         childWidget->parent = this;
         children.push_back(childWidget);
 
-        if (renderTarget) {
-            childWidget->initialize(getRenderTarget(), *shader, sceneSize, *i18nService, cameraProjectionMatrix);
+        if (uiRenderer) {
+            childWidget->initialize(*uiRenderer);
         }
     }
 
@@ -303,7 +293,7 @@ namespace urchin {
 
     int Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
-            return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneWidth());
+            return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneSize().X);
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the widget");
@@ -320,7 +310,7 @@ namespace urchin {
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
-            return (widthPixel / (float)getSceneWidth()) * 100.0f;
+            return (widthPixel / (float)getSceneSize().X) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
             return (widthPixel / (float)getParentContainer()->getWidth()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
@@ -331,7 +321,7 @@ namespace urchin {
 
     int Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
-            return MathFunction::roundToInt(heightValue / 100.0f * (float)getSceneHeight());
+            return MathFunction::roundToInt(heightValue / 100.0f * (float)getSceneSize().Y);
         } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the widget");
@@ -348,7 +338,7 @@ namespace urchin {
 
     float Widget::heightPixelToLength(float heightPixel, LengthType lengthType) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
-            return (heightPixel / (float)getSceneHeight()) * 100.0f;
+            return (heightPixel / (float)getSceneSize().Y) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
             return (heightPixel / (float)getParentContainer()->getHeight()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
@@ -591,18 +581,18 @@ namespace urchin {
         return false;
     }
 
-    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix) {
+    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         if (isVisible()) {
-            prepareWidgetRendering(dt, renderingOrder, viewModelMatrix, normalMatrix);
+            prepareWidgetRendering(dt, renderingOrder, viewMatrix);
 
             for (auto& child: children) {
                 renderingOrder++;
-                child->prepareRendering(dt, renderingOrder, viewModelMatrix, normalMatrix);
+                child->prepareRendering(dt, renderingOrder, viewMatrix);
             }
         }
     }
 
-    void Widget::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&, const Matrix3<float>&) {
+    void Widget::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) {
         //to override
     }
 

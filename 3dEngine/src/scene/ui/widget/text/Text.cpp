@@ -33,8 +33,8 @@ namespace urchin {
     }
 
     Text::~Text() {
-        if (isTranslatableLabel() && i18nService) {
-            i18nService->remove(this);
+        if (isTranslatableLabel() && getI18nService()) {
+            getI18nService()->remove(this);
         }
     }
 
@@ -44,7 +44,7 @@ namespace urchin {
         refreshRenderer();
 
         if (isTranslatableLabel()) {
-            i18nService->add(this);
+            getI18nService()->add(this);
         }
     }
 
@@ -62,7 +62,7 @@ namespace urchin {
         if (maxWidthType == LengthType::PIXEL) {
             return (unsigned int)maxWidth;
         } else if (maxWidthType == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(maxWidth / 100.0f * (float)getSceneWidth());
+            return (unsigned int)(maxWidth / 100.0f * (float)getSceneSize().X);
         } else if (maxWidthType == LengthType::CONTAINER_PERCENT) {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the widget");
@@ -88,8 +88,8 @@ namespace urchin {
         }
 
         this->labelKey = labelKey;
-        i18nService->remove(this);
-        i18nService->add(this);
+        getI18nService()->remove(this);
+        getI18nService()->add(this);
 
         refreshTextAndWidgetSize();
         refreshRendererData();
@@ -215,7 +215,7 @@ namespace urchin {
         if (fontHeightType == LengthType::PIXEL) {
             return (unsigned int)fontHeight;
         } else if (fontHeightType == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(fontHeight / 100.0f * (float)getSceneHeight());
+            return (unsigned int)(fontHeight / 100.0f * (float)getSceneSize().Y);
         }
         throw std::runtime_error("Unimplemented length type for font height: " + std::to_string(fontHeightType));
     }
@@ -297,8 +297,8 @@ namespace urchin {
         }
     }
 
-    void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewModelMatrix, const Matrix3<float>& normalMatrix) {
-        updatePositioning(textRenderer.get(), viewModelMatrix, normalMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+    void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+        updatePositioning(textRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         textRenderer->enableRenderer(renderingOrder);
     }
 
