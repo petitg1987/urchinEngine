@@ -182,7 +182,15 @@ namespace urchin {
     void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
-        Matrix4<float> viewModelMatrix = viewMatrix * transform.getTransformMatrix();
+        float xScale = 0.005f; //TODO compute value
+        float yFlipScale = -0.005f;
+        Matrix4<float> uiViewMatrix( //TODO store in class ?
+                xScale, 0.0f, 0.0f, 0.0f,
+                0.0f, yFlipScale, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f);
+
+        Matrix4<float> viewModelMatrix = viewMatrix * uiViewMatrix * transform.getTransformMatrix();
         Matrix3<float> normalMatrix = transform.getOrientationMatrix().toMatrix3();
         for (auto& widget : widgets) {
             renderingOrder++;

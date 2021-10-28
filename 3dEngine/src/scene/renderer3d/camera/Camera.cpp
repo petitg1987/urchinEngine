@@ -52,7 +52,7 @@ namespace urchin {
 
         //projection matrix
         float verticalFovAngle = computeVerticalFovAngle();
-        float fov = 1.0f / std::tan((verticalFovAngle * MathValue::PI_FLOAT) / 360.0f);
+        float fov = computeFov(verticalFovAngle);
         float ratio = (float)sceneWidth / (float)sceneHeight;
         mProjection.setValues(
                 fov / ratio, 0.0f, 0.0f, 0.0f,
@@ -151,6 +151,15 @@ namespace urchin {
             this->horizontalFovAngle = horizontalFovAngle;
             initializeOrUpdate(sceneWidth, sceneHeight);
         }
+    }
+
+    float Camera::computeFov() const {
+        float verticalFovAngle = computeVerticalFovAngle();
+        return computeFov(verticalFovAngle);
+    }
+
+    float Camera::computeFov(float verticalFovAngle) const {
+        return 1.0f / std::tan((verticalFovAngle * MathValue::PI_FLOAT) / 360.0f);
     }
 
     float Camera::getNearPlane() const {

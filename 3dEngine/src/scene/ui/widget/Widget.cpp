@@ -81,6 +81,7 @@ namespace urchin {
         } else { //UI 3d
             rendererBuilder->disableCullFace();
             rendererBuilder->enableDepthTest();
+            //TODO rendererBuilder->enableDepthWrite(); (avoid z-fighting ?)
             rendererBuilder->addUniformData(sizeof(cameraProjectionMatrix.value()), &cameraProjectionMatrix.value()); //binding 0
         }
 

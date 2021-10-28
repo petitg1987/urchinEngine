@@ -38,6 +38,7 @@ namespace urchin {
 
             float getHorizontalFovAngle() const;
             void updateHorizontalFovAngle(float);
+            float computeFov() const;
             float getNearPlane() const;
             float getFarPlane() const;
             const Frustum<float>& getFrustum() const;
@@ -56,6 +57,7 @@ namespace urchin {
         private:
             void initializeOrUpdate(unsigned int, unsigned int);
             float computeVerticalFovAngle() const;
+            float computeFov(float) const;
             void updateComponents();
 
             const float MOUSE_SENSITIVITY_FACTOR;
