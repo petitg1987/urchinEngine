@@ -96,9 +96,11 @@ namespace urchin {
         renderer->updateUniformData(1, &positioningData);
     }
 
-    const Point2<unsigned int>& Widget::getSceneSize() const {
-        assert(isInitialized());
-        return uiRenderer->getSceneSize();
+    Point2<unsigned int> Widget::getSceneSize() const {
+        if (uiRenderer) {
+            return uiRenderer->getSceneSize();
+        }
+        return Point2<unsigned int>(0, 0);
     }
 
     I18nService* Widget::getI18nService() const {
