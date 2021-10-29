@@ -112,6 +112,8 @@ namespace urchin {
             void handleWidgetResetState();
             bool isMouseOnWidget(int, int) const;
 
+            unsigned int computeDepthLevel() const;
+
             UIRenderer* uiRenderer;
             mutable struct {
                 alignas(16) Matrix4<float> projectionMatrix;

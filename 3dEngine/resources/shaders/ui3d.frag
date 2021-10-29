@@ -19,5 +19,5 @@ void main() {
 
     //ambient factor
     vec3 encodedNormal = (normalize(normal) + 1.0) / 2.0;
-    fragNormalAndAmbient = vec4(encodedNormal, 0.4); //TODO use parameter for ambient
+    fragNormalAndAmbient = vec4(encodedNormal, 0.1); //TODO use parameter for ambient + check why ambient behave strangly
 }

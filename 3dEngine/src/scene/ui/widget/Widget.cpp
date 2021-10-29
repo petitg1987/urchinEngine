@@ -60,7 +60,7 @@ namespace urchin {
 
         if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
-            rendererBuilder->enableDepthWrite(); //TODO avoid z-fighting
+            rendererBuilder->enableDepthWrite();
             if (enableTransparency) {
                 //transparency is currently not supported (only discard in fragment shader is supported)
             }
@@ -95,8 +95,9 @@ namespace urchin {
 
     void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewMatrix, const Vector2<int>& translateVector) const {
         if (uiRenderer->getUi3dData()) {
+            float zBias = (float)computeDepthLevel() * 0.0005f;
             Matrix4<float> translateMatrix;
-            translateMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
+            translateMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, zBias);
             positioningData.viewModelMatrix = viewMatrix * uiRenderer->getUi3dData()->modelMatrix * translateMatrix;
         } else {
             positioningData.viewModelMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
@@ -589,6 +590,16 @@ namespace urchin {
             return true;
         }
         return false;
+    }
+
+    unsigned int Widget::computeDepthLevel() const {
+        unsigned int depthLevel = 0;
+        Widget* currentParent = getParent();
+        while (currentParent != nullptr) {
+            depthLevel++;
+            currentParent = currentParent->getParent();
+        }
+        return depthLevel;
     }
 
     void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
