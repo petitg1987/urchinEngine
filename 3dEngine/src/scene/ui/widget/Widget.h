@@ -114,9 +114,11 @@ namespace urchin {
 
             UIRenderer* uiRenderer;
             mutable struct {
-                alignas(16) Matrix4<float> viewModelMatrix;
+                alignas(16) Matrix4<float> projectionMatrix;
                 alignas(16) Matrix4<float> normalMatrix;
-                alignas(8) Vector2<int> translate;
+            } stableMatrices;
+            mutable struct {
+                alignas(16) Matrix4<float> viewModelMatrix;
             } positioningData;
 
             Widget* parent;

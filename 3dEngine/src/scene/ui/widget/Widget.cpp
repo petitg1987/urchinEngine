@@ -56,28 +56,31 @@ namespace urchin {
 
     std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType, bool enableTransparency) const {
         assert(isInitialized());
-
         auto rendererBuilder = GenericRendererBuilder::create(name, uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
-        if (!uiRenderer->getUi3dData()) { //UI 2d
-            //orthogonal matrix with origin at top left screen
-            Matrix4<float> orthogonalProjMatrix(2.0f / (float) uiRenderer->getSceneSize().X, 0.0f, -1.0f, 0.0f,
-                                                0.0f, 2.0f / (float) uiRenderer->getSceneSize().Y, -1.0f, 0.0f,
-                                                0.0f, 0.0f, 1.0f, 0.0f,
-                                                0.0f, 0.0f, 0.0f, 1.0f);
-            rendererBuilder->addUniformData(sizeof(orthogonalProjMatrix), &orthogonalProjMatrix); //binding 0
-            if (enableTransparency) {
-                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
-            }
-        } else { //UI 3d
+        if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite(); //TODO avoid z-fighting
-            rendererBuilder->addUniformData(sizeof(uiRenderer->getUi3dData()->cameraProjectionMatrix), &uiRenderer->getUi3dData()->cameraProjectionMatrix); //binding 0
             if (enableTransparency) {
                 //transparency is currently not supported (only discard in fragment shader is supported)
             }
+
+            stableMatrices.projectionMatrix = uiRenderer->getUi3dData()->cameraProjectionMatrix;
+            stableMatrices.normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
+        } else {
+            if (enableTransparency) {
+                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
+            }
+
+            //orthogonal matrix with origin at top left screen
+            stableMatrices.projectionMatrix.setValues(
+                    2.0f / (float) uiRenderer->getSceneSize().X, 0.0f, -1.0f, 0.0f,
+                    0.0f, 2.0f / (float) uiRenderer->getSceneSize().Y, -1.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
         }
 
+        rendererBuilder->addUniformData(sizeof(stableMatrices), &stableMatrices); //binding 0
         rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
 
         Container* parentContainer = getParentContainer();
@@ -92,10 +95,12 @@ namespace urchin {
 
     void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewMatrix, const Vector2<int>& translateVector) const {
         if (uiRenderer->getUi3dData()) {
-            positioningData.viewModelMatrix = viewMatrix * uiRenderer->getUi3dData()->modelMatrix;
-            positioningData.normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
+            Matrix4<float> translateMatrix;
+            translateMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
+            positioningData.viewModelMatrix = viewMatrix * uiRenderer->getUi3dData()->modelMatrix * translateMatrix;
+        } else {
+            positioningData.viewModelMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
         }
-        positioningData.translate = translateVector;
         renderer->updateUniformData(1, &positioningData);
     }
 
