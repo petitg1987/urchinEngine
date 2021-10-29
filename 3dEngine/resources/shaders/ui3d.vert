@@ -20,7 +20,7 @@ invariant gl_Position;
 void main() {
     texCoordinates = texCoord;
 
-    normal = normalize(mat3(postioningData.mNormal) * vec3(0.0, 0.0, 1.0)); //TODO confirm it works once transform are fixed
+    normal = normalize(mat3(postioningData.mNormal) * vec3(0.0, 0.0, 1.0));
 
     vec4 position = projection.matrix * (postioningData.mViewModel * vec4(vertexPosition + postioningData.translate, 0.0, 1.0));
     gl_Position = position;

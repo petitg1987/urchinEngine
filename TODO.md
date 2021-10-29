@@ -9,6 +9,7 @@
 * Graphics API
   * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo.pSpecializationInfo) instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer.updateDescriptorSets) with updated values only
+  * **OPTIMIZATION** (`major`): Create descriptor sets by binding frequency: one for global (view matrix), one for material and one per-object (model matrix) (see <https://www.youtube.com/watch?v=d5p44idnZLQ>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
@@ -51,6 +52,7 @@
   * **OPTIMIZATION** (`medium`): Do not build grass quadtree which are 100% discarded by grass mask
 * UI
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
+  * **NEW FEATURE** (`medium`): Handle transparency in UI 3d fragment shader to have a text rendering more smooth
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **NEW FEATURE** (`minor`): Combo list
   * **NEW FEATURE** (`minor`): Textarea

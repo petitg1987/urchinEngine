@@ -71,8 +71,11 @@ namespace urchin {
             }
         } else { //UI 3d
             rendererBuilder->enableDepthTest();
-            rendererBuilder->enableDepthWrite(); //TODO how avoid z-fighting ?
+            rendererBuilder->enableDepthWrite(); //TODO avoid z-fighting
             rendererBuilder->addUniformData(sizeof(uiRenderer->getUi3dData()->cameraProjectionMatrix), &uiRenderer->getUi3dData()->cameraProjectionMatrix); //binding 0
+            if (enableTransparency) {
+                //transparency is currently not supported (only discard in fragment shader is supported)
+            }
         }
 
         rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
