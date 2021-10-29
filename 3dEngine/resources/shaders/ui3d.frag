@@ -1,6 +1,8 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
+layout(constant_id = 0) const float AMBIENT = 0.4;
+
 layout(binding = 2) uniform sampler2D diffuseTexture;
 
 layout(location = 0) in vec2 texCoordinates;
@@ -19,5 +21,5 @@ void main() {
 
     //ambient factor
     vec3 encodedNormal = (normalize(normal) + 1.0) / 2.0;
-    fragNormalAndAmbient = vec4(encodedNormal, 0.1); //TODO use parameter for ambient + check why ambient behave strangly
+    fragNormalAndAmbient = vec4(encodedNormal, AMBIENT);
 }

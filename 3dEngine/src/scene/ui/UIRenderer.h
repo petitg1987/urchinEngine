@@ -21,7 +21,8 @@ namespace urchin {
         public:
             explicit UIRenderer(RenderTarget&, I18nService&);
 
-            void setupUi3d(const Matrix4<float>&, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&);
+            //3d specific
+            void setupUi3d(const Matrix4<float>&, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
             void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void onResize(unsigned int, unsigned int) override;

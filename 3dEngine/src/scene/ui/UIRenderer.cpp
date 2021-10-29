@@ -22,7 +22,8 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::setupUi3d(const Matrix4<float>& projectionMatrix, const Transform<float>& transform, const Point2<unsigned int>& sceneResolution, const Point2<float>& uiSize) {
+    void UIRenderer::setupUi3d(const Matrix4<float>& projectionMatrix, const Transform<float>& transform, const Point2<unsigned int>& sceneResolution,
+                               const Point2<float>& uiSize, float ambient) {
         assert(widgets.empty());
         assert(ui3dData == nullptr);
         assert(MathFunction::isEqual((float)sceneResolution.X / (float)sceneResolution.Y, uiSize.X / uiSize.Y, 0.1f)); //proportion must be equal for a good visual
@@ -30,16 +31,18 @@ namespace urchin {
         float xScale = uiSize.X / (float)sceneResolution.X;
         float yScale = uiSize.Y / (float)sceneResolution.Y;
         Matrix4<float> uiViewMatrix(xScale, 0.0f, 0.0f, 0.0f,
-                0.0f, -yScale /* negate for flip on Y axis */, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f);
+                                    0.0f, -yScale /* negate for flip on Y axis */, 0.0f, 0.0f,
+                                    0.0f, 0.0f, 1.0f, 0.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f);
         this->ui3dData = std::make_unique<UI3dData>();
         this->ui3dData->cameraProjectionMatrix = projectionMatrix;
         this->ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
         this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
         if (renderTarget.isValidRenderTarget()) {
-            this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv");
+            std::vector<std::size_t> variablesSize = {sizeof(ambient)};
+            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
+            this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv", std::move(shaderConstants));
         }
         onResize(sceneResolution.X, sceneResolution.Y);
     }

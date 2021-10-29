@@ -16,9 +16,9 @@ namespace urchin {
         }
     }
 
-    UIRenderer& UiContainer::newUI3dRenderer(const Transform<float>& transform, const Point2<unsigned int>& sceneResolution, const Point2<float>& uiSize) {
+    UIRenderer& UiContainer::newUI3dRenderer(const Transform<float>& transform, const Point2<unsigned int>& sceneResolution, const Point2<float>& uiSize, float ambient) {
         auto uiRenderer = std::make_unique<UIRenderer>(renderTarget, i18nService);
-        uiRenderer->setupUi3d(projectionMatrix, transform, sceneResolution, uiSize);
+        uiRenderer->setupUi3d(projectionMatrix, transform, sceneResolution, uiSize, ambient);
         uis.push_back(std::move(uiRenderer));
         return *uis.back();
     }
