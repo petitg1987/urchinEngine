@@ -14,7 +14,7 @@ namespace urchin {
     UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
             renderTarget(renderTarget),
             i18nService(i18nService),
-            sceneSize(renderTarget.getWidth(), renderTarget.getHeight()) {
+            uiResolution(renderTarget.getWidth(), renderTarget.getHeight()) {
         if (renderTarget.isValidRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
         } else {
@@ -22,20 +22,19 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::setupUi3d(const Matrix4<float>& projectionMatrix, const Transform<float>& transform, const Point2<unsigned int>& sceneResolution,
+    void UIRenderer::setupUi3d(const Camera* camera, const Transform<float>& transform, const Point2<unsigned int>& uiResolution,
                                const Point2<float>& uiSize, float ambient) {
         assert(widgets.empty());
         assert(ui3dData == nullptr);
-        assert(MathFunction::isEqual((float)sceneResolution.X / (float)sceneResolution.Y, uiSize.X / uiSize.Y, 0.1f)); //proportion must be equal for a good visual
+        assert(MathFunction::isEqual((float)uiResolution.X / (float)uiResolution.Y, uiSize.X / uiSize.Y, 0.1f)); //proportion must be equal for a good visual
 
-        float xScale = uiSize.X / (float)sceneResolution.X;
-        float yScale = uiSize.Y / (float)sceneResolution.Y;
+        float xScale = uiSize.X / (float)uiResolution.X;
+        float yScale = uiSize.Y / (float)uiResolution.Y;
         Matrix4<float> uiViewMatrix(xScale, 0.0f, 0.0f, 0.0f,
                                     0.0f, -yScale /* negate for flip on Y axis */, 0.0f, 0.0f,
                                     0.0f, 0.0f, 1.0f, 0.0f,
                                     0.0f, 0.0f, 0.0f, 1.0f);
         this->ui3dData = std::make_unique<UI3dData>();
-        this->ui3dData->cameraProjectionMatrix = projectionMatrix;
         this->ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
         this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
@@ -44,14 +43,19 @@ namespace urchin {
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
             this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv", std::move(shaderConstants));
         }
-        onResize(sceneResolution.X, sceneResolution.Y);
+
+        onResize(uiResolution.X, uiResolution.Y);
+        if (camera) {
+            onCameraProjectionUpdate(*camera);
+        }
     }
 
-    void UIRenderer::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
+    void UIRenderer::onCameraProjectionUpdate(const Camera& camera) {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
-        this->ui3dData->cameraProjectionMatrix = projectionMatrix;
+        this->ui3dData->cameraProjectionMatrix = camera.getProjectionMatrix();
+        this->ui3dData->cameraSpaceService = std::make_unique<CameraSpaceService>(camera);
 
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onCameraProjectionUpdate();
@@ -59,7 +63,7 @@ namespace urchin {
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->sceneSize = Point2<unsigned int>(sceneWidth, sceneHeight);
+        this->uiResolution = Point2<unsigned int>(sceneWidth, sceneHeight);
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -133,6 +137,32 @@ namespace urchin {
     }
 
     bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
+        if (ui3dData && ui3dData->cameraSpaceService) { //TODO ...
+//            float clipSpaceX = (2.0f * (float)mouseX) / ((float)renderTarget.getWidth()) - 1.0f;
+//            float clipSpaceY = (2.0f * (float)mouseY) / ((float)renderTarget.getHeight()) - 1.0f;
+//            Point4<float> mousePos(clipSpaceX, clipSpaceY, 0.944f, 1.0f);
+//
+//            Matrix4<float> inverseMatrix = (getUi3dData()->cameraProjectionMatrix * viewMatrix * getUi3dData()->modelMatrix).inverse();
+//            std::cout<<(inverseMatrix * mousePos).divideByW()<<std::endl;
+
+            Ray<float> ray = ui3dData->cameraSpaceService->screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), 20.0f /*TODO review param */); //TOOD return Line3D
+            Line3D<float> line(ray.getOrigin(), ray.computeTo());
+
+            Matrix4<float> matrix = getUi3dData()->cameraProjectionMatrix * viewMatrix * getUi3dData()->modelMatrix;
+            Point4<float> topLeft = (matrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).divideByW();
+            Point4<float> topRight = (matrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f)).divideByW();
+            Point4<float> bottomRight = (matrix * Point4<float>(800.0f, 600.0f, 0.0f, 1.0f)).divideByW();
+            Plane<float> plane(topLeft.toPoint3(), topRight.toPoint3(), bottomRight.toPoint3());
+
+            bool intersection = false;
+            Point3<float> intersectionPoint = plane.intersectPoint(line, intersection);
+            if (intersection) {
+                std::cout<<"Intersection at: "<<intersectionPoint<<std::endl;
+            } else {
+                std::cout<<"No intersection"<<std::endl;
+            }
+        }
+
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             if (!widgets[(std::size_t)i]->onMouseMove((int)mouseX, (int)mouseY)) {
                 return false;
@@ -164,8 +194,8 @@ namespace urchin {
         return i18nService;
     }
 
-    const Point2<unsigned int>& UIRenderer::getSceneSize() const {
-        return sceneSize;
+    const Point2<unsigned int>& UIRenderer::getUiResolution() const {
+        return uiResolution;
     }
 
     Shader& UIRenderer::getShader() const {
@@ -208,6 +238,8 @@ namespace urchin {
 
     void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
+
+        this->viewMatrix = viewMatrix;
 
         for (auto& widget : widgets) {
             renderingOrder++;

@@ -7,12 +7,15 @@
 #include <api/render/target/RenderTarget.h>
 #include <scene/Renderer.h>
 #include <scene/ui/widget/Widget.h>
+#include <scene/renderer3d/camera/CameraSpaceService.h>
 #include <texture/render/TextureRenderer.h>
 
 namespace urchin {
 
     struct UI3dData {
         Matrix4<float> cameraProjectionMatrix;
+        std::unique_ptr<CameraSpaceService> cameraSpaceService;
+
         Matrix4<float> modelMatrix;
         Matrix4<float> normalMatrix;
     };
@@ -22,8 +25,8 @@ namespace urchin {
             explicit UIRenderer(RenderTarget&, I18nService&);
 
             //3d specific
-            void setupUi3d(const Matrix4<float>&, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
-            void onCameraProjectionUpdate(const Matrix4<float>&);
+            void setupUi3d(const Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
+            void onCameraProjectionUpdate(const Camera&);
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
@@ -37,7 +40,7 @@ namespace urchin {
 
             RenderTarget& getRenderTarget() const;
             I18nService& getI18nService() const;
-            const Point2<unsigned int>& getSceneSize() const;
+            const Point2<unsigned int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
 
@@ -52,10 +55,12 @@ namespace urchin {
         private:
             RenderTarget& renderTarget;
             I18nService& i18nService;
-            Point2<unsigned int> sceneSize;
+            Point2<unsigned int> uiResolution;
             std::unique_ptr<Shader> uiShader;
+
             std::unique_ptr<UI3dData> ui3dData;
 
+            Matrix4<float> viewMatrix;
             std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<TextureRenderer> debugFont;

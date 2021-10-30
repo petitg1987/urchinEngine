@@ -277,10 +277,14 @@ namespace urchin {
     }
 
     bool Renderer3d::onMouseMove(double mouseX, double mouseY) {
+        bool propagateEvent = true;
         if (!paused && camera) {
-            return camera->onMouseMove(mouseX, mouseY);
+            propagateEvent =  camera->onMouseMove(mouseX, mouseY);
+            if (propagateEvent) {
+                propagateEvent = uiContainer.onMouseMove(mouseX, mouseY);
+            }
         }
-        return true;
+        return propagateEvent;
     }
 
     bool Renderer3d::onScroll(double) {

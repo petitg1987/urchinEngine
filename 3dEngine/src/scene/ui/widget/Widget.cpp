@@ -74,8 +74,8 @@ namespace urchin {
 
             //orthogonal matrix with origin at top left screen
             stableMatrices.projectionMatrix.setValues(
-                    2.0f / (float) uiRenderer->getSceneSize().X, 0.0f, -1.0f, 0.0f,
-                    0.0f, 2.0f / (float) uiRenderer->getSceneSize().Y, -1.0f, 0.0f,
+                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
+                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f, 0.0f,
                     0.0f, 0.0f, 0.0f, 1.0f);
         }
@@ -107,7 +107,7 @@ namespace urchin {
 
     Point2<unsigned int> Widget::getSceneSize() const {
         if (uiRenderer) {
-            return uiRenderer->getSceneSize();
+            return uiRenderer->getUiResolution();
         }
         return Point2<unsigned int>(0, 0);
     }
