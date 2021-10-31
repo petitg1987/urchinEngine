@@ -258,17 +258,29 @@ namespace urchin {
     }
 
     bool Renderer3d::onKeyPress(unsigned int key) {
-        if (!paused && camera && key < 260) {
-            return camera->onKeyPress(key);
+        bool propagateEvent = true;
+        if (!paused && camera) {
+            if (key < 260) { //TODO why ?
+                propagateEvent = camera->onKeyPress(key);
+            }
+            if (propagateEvent) {
+                propagateEvent = uiContainer.onKeyPress(key);
+            }
         }
-        return true;
+        return propagateEvent;
     }
 
     bool Renderer3d::onKeyRelease(unsigned int key) {
-        if (!paused && camera && key < 260) {
-            return camera->onKeyRelease(key);
+        bool propagateEvent = true;
+        if (!paused && camera) {
+            if (key < 260) { //TODO why ?
+                propagateEvent = camera->onKeyRelease(key);
+            }
+            if (propagateEvent) {
+                propagateEvent = uiContainer.onKeyRelease(key);
+            }
         }
-        return true;
+        return propagateEvent;
     }
 
     bool Renderer3d::onChar(char32_t) {

@@ -14,7 +14,10 @@ namespace urchin {
 
             void onCameraProjectionUpdate(const Camera&);
 
+            bool onKeyPress(unsigned int);
+            bool onKeyRelease(unsigned int);
             bool onMouseMove(double, double);
+            //TODO add all missing event
 
             UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
 

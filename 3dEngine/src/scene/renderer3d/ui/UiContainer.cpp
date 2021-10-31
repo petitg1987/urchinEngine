@@ -17,6 +17,24 @@ namespace urchin {
         }
     }
 
+    bool UiContainer::onKeyPress(unsigned int key) {
+        for (auto& ui : uis) {
+            if (!ui->onKeyPress(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool UiContainer::onKeyRelease(unsigned int key) {
+        for (auto& ui : uis) {
+            if (!ui->onKeyRelease(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool UiContainer::onMouseMove(double mouseX, double mouseY) {
         for (auto& ui : uis) {
             if (!ui->onMouseMove(mouseX, mouseY)) {

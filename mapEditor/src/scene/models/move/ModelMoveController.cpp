@@ -99,7 +99,7 @@ namespace urchin {
 
     void ModelMoveController::moveModel(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
         Point3<float> modelPosition = selectedSceneModel->getModel()->getTransform().getPosition();
-        CameraSpaceService cameraSpaceService(scene.getActiveRenderer3d()->getCamera());
+        CameraSpaceService cameraSpaceService(*scene.getActiveRenderer3d()->getCamera());
 
         Point3<float> startAxisWorldSpacePoint = modelPosition;
         startAxisWorldSpacePoint[(unsigned int)selectedAxis] -= 1.0f;

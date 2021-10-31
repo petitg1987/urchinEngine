@@ -137,29 +137,31 @@ namespace urchin {
     }
 
     bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
-        if (ui3dData && ui3dData->cameraSpaceService) { //TODO ...
-//            float clipSpaceX = (2.0f * (float)mouseX) / ((float)renderTarget.getWidth()) - 1.0f;
-//            float clipSpaceY = (2.0f * (float)mouseY) / ((float)renderTarget.getHeight()) - 1.0f;
-//            Point4<float> mousePos(clipSpaceX, clipSpaceY, 0.944f, 1.0f);
-//
-//            Matrix4<float> inverseMatrix = (getUi3dData()->cameraProjectionMatrix * viewMatrix * getUi3dData()->modelMatrix).inverse();
-//            std::cout<<(inverseMatrix * mousePos).divideByW()<<std::endl;
-
-            Ray<float> ray = ui3dData->cameraSpaceService->screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), 20.0f /*TODO review param */); //TOOD return Line3D
+        if (ui3dData && ui3dData->cameraSpaceService) { //TODO limit action scope & optimize / review
+            Ray<float> ray = ui3dData->cameraSpaceService->screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), 20.0f /*TODO review param */);
             Line3D<float> line(ray.getOrigin(), ray.computeTo());
 
-            Matrix4<float> matrix = getUi3dData()->cameraProjectionMatrix * viewMatrix * getUi3dData()->modelMatrix;
-            Point4<float> topLeft = (matrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).divideByW();
-            Point4<float> topRight = (matrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f)).divideByW();
-            Point4<float> bottomRight = (matrix * Point4<float>(800.0f, 600.0f, 0.0f, 1.0f)).divideByW();
+            Point4<float> topLeft = (getUi3dData()->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).divideByW();
+            Point4<float> topRight = (getUi3dData()->modelMatrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f)).divideByW();
+            Point4<float> bottomRight = (getUi3dData()->modelMatrix * Point4<float>(800.0f, 600.0f, 0.0f, 1.0f)).divideByW();
             Plane<float> plane(topLeft.toPoint3(), topRight.toPoint3(), bottomRight.toPoint3());
 
             bool intersection = false;
             Point3<float> intersectionPoint = plane.intersectPoint(line, intersection);
             if (intersection) {
-                std::cout<<"Intersection at: "<<intersectionPoint<<std::endl;
-            } else {
-                std::cout<<"No intersection"<<std::endl;
+                Point4<float> intersectionPointClipSpace = getUi3dData()->cameraProjectionMatrix * viewMatrix * Point4<float>(intersectionPoint);
+                intersectionPointClipSpace = intersectionPointClipSpace.divideByW();
+
+                float clipSpaceX = (2.0f * (float) mouseX) / ((float) renderTarget.getWidth()) - 1.0f;
+                float clipSpaceY = (2.0f * (float) mouseY) / ((float) renderTarget.getHeight()) - 1.0f;
+                Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
+
+                Matrix4<float> matrix2 = getUi3dData()->cameraProjectionMatrix * viewMatrix * getUi3dData()->modelMatrix;
+                Point4<float> mouseScreen = (matrix2.inverse() * mousePos).divideByW();
+
+                mouseX = (double)mouseScreen.X;
+                mouseY = (double)mouseScreen.Y;
+                //std::cout << (matrix2.inverse() * mousePos).divideByW() << std::endl;
             }
         }
 
