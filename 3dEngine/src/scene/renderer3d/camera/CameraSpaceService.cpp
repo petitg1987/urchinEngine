@@ -23,12 +23,8 @@ namespace urchin {
         float clipSpaceX = (2.0f * screenPoint.X) / ((float)camera.getSceneWidth()) - 1.0f;
         float clipSpaceY = (2.0f * screenPoint.Y) / ((float)camera.getSceneHeight()) - 1.0f;
         Vector4<float> rayDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
-
-        Vector4<float> rayDirectionEyeSpace = camera.getProjectionMatrix().inverse() * rayDirectionClipSpace;
-        rayDirectionEyeSpace.Z = -1.0f;
-        rayDirectionEyeSpace.W = 0.0f;
-
-        Vector3<float> rayDirectionWorldSpace = (camera.getViewMatrix().inverse() * rayDirectionEyeSpace).xyz().normalize();
+        Vector3<float> rayDirectionEyeSpace = (camera.getProjectionInverseMatrix() * rayDirectionClipSpace).xyz();
+        Vector3<float> rayDirectionWorldSpace = (camera.getViewMatrix().toMatrix3().inverse() * rayDirectionEyeSpace).normalize();
 
         const Point3<float>& rayStart = camera.getPosition();
         Point3<float> rayEnd = rayStart.translate(rayDirectionWorldSpace * rayLength);

@@ -133,6 +133,10 @@ namespace urchin {
         return mProjectionViewInverse;
     }
 
+    const Matrix4<float>& Camera::getProjectionInverseMatrix() const {
+        return mProjectionInverse;
+    }
+
     const Quaternion<float>& Camera::getOrientation() const {
         return orientation;
     }
@@ -285,6 +289,7 @@ namespace urchin {
         orientation = Quaternion<float>::fromRotationMatrix(mView.toMatrix3()).conjugate();
         mProjectionView = mProjection * mView;
         mProjectionViewInverse = mProjectionView.inverse();
+        mProjectionInverse = mProjection.inverse();
     }
 
 }

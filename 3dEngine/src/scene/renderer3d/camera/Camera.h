@@ -34,6 +34,7 @@ namespace urchin {
             const Quaternion<float>& getOrientation() const;
             const Matrix4<float>& getProjectionViewMatrix() const;
             const Matrix4<float>& getProjectionViewInverseMatrix() const;
+            const Matrix4<float>& getProjectionInverseMatrix() const;
 
             const Point3<float>& getPosition() const;
             const Vector3<float>& getView() const;
@@ -67,7 +68,7 @@ namespace urchin {
 
             //pre-computed values
             Quaternion<float> orientation;
-            Matrix4<float> mProjectionView, mProjectionViewInverse;
+            Matrix4<float> mProjectionView, mProjectionViewInverse, mProjectionInverse;
 
             Point3<float> position;
             Vector3<float> view, up;
