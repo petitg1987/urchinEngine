@@ -14,7 +14,10 @@ namespace urchin {
     UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
             renderTarget(renderTarget),
             i18nService(i18nService),
-            uiResolution(renderTarget.getWidth(), renderTarget.getHeight()) {
+            uiResolution(renderTarget.getWidth(), renderTarget.getHeight()),
+            rawMouseX(0.0),
+            rawMouseY(0.0),
+            isMouseInsideUi(true) {
         if (renderTarget.isValidRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
         } else {
@@ -63,6 +66,7 @@ namespace urchin {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
         this->ui3dData->camera = &camera;
+        this->ui3dData->camera->addObserver(this, Camera::POSITION_UPDATED);
 
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onCameraProjectionUpdate();
@@ -110,15 +114,23 @@ namespace urchin {
                     widgets[(std::size_t)i]->onResetState();
                 }
             }
+        } else if(dynamic_cast<Camera*>(observable)) {
+            if (notificationType == Camera::POSITION_UPDATED) {
+                if(ui3dData) {
+                    onMouseMove(rawMouseX, rawMouseY);
+                }
+            }
         }
     }
 
     bool UIRenderer::onKeyPress(unsigned int key) {
-        //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
-        std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
-        for (long i = (long)widgetsCopy.size() - 1; i >= 0; --i) {
-            if (!widgetsCopy[(std::size_t)i]->onKeyPress(key)) {
-                return false;
+        if (isMouseInsideUi) {
+            //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+            std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
+            for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
+                if (!widgetsCopy[(std::size_t) i]->onKeyPress(key)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -127,8 +139,8 @@ namespace urchin {
     bool UIRenderer::onKeyRelease(unsigned int key) {
         //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
         std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
-        for (long i = (long)widgetsCopy.size() - 1; i >= 0; --i) {
-            if (!widgetsCopy[(std::size_t)i]->onKeyRelease(key)) {
+        for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
+            if (!widgetsCopy[(std::size_t) i]->onKeyRelease(key)) {
                 return false;
             }
         }
@@ -136,14 +148,16 @@ namespace urchin {
     }
 
     bool UIRenderer::onChar(char32_t unicodeCharacter) {
-        if (unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
+        if (isMouseInsideUi) {
+            if (unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
                 && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
                 && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
                 && unicodeCharacter != 127 //ignore 'Delete' unicode
-        ) {
-            for (long i = (long) widgets.size() - 1; i >= 0; --i) {
-                if (!widgets[(std::size_t) i]->onChar(unicodeCharacter)) {
-                    return false;
+                    ) {
+                for (long i = (long) widgets.size() - 1; i >= 0; --i) {
+                    if (!widgets[(std::size_t) i]->onChar(unicodeCharacter)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -151,15 +165,33 @@ namespace urchin {
     }
 
     bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
-        double adjustedMouseX = mouseX;
-        double adjustedMouseY = mouseY;
+        this->rawMouseX = mouseX;
+        this->rawMouseY = mouseY;
 
-        if (ui3dData) { //TODO add on camera move event
+        Point2<int> adjustedMouseCoordinate;
+        isMouseInsideUi = adjustMouseCoordinates(Point2<double>(mouseX, mouseY), adjustedMouseCoordinate);
+
+        if (isMouseInsideUi) {
+            for (long i = (long)widgets.size() - 1; i >= 0; --i) {
+                if (!widgets[(std::size_t)i]->onMouseMove(adjustedMouseCoordinate.X, adjustedMouseCoordinate.Y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param adjustedMouseCoord [out] Adjusted mouse coordinates
+     * @return True when mouse coordinates are inside the UI
+     */
+    bool UIRenderer::adjustMouseCoordinates(const Point2<double>& mouseCoord, Point2<int>& adjustedMouseCoord) const {
+        if (ui3dData) {
             if (!ui3dData->camera) {
-                return true;
+                return false;
             }
 
-            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseX, (float)mouseY));
+            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y));
 
             Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
             Point4<float> topRight = ui3dData->modelMatrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f);
@@ -169,43 +201,42 @@ namespace urchin {
             bool hasIntersection = false;
             Point3<float> uiHitPoint = uiPlane.intersectPoint(viewLine, hasIntersection);
             if (!hasIntersection) { //camera is parallel to the UI plane
-                return true;
+                return false;
             }
             if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(uiPlane.getNormal()) < 0.0f) { //UI is not in front of the camera
-                return true;
+                return false;
             }
             if (ui3dData->camera->getView().dotProduct(uiPlane.getNormal()) > 0.0f) { //camera is not in front of the UI
-                return true;
+                return false;
             }
             if (uiHitPoint.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) { //camera too far from the UI
-                return true;
+                return false;
             }
 
             Point4<float> intersectionPointClipSpace = ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint);
             intersectionPointClipSpace = intersectionPointClipSpace.divideByW();
 
-            float clipSpaceX = (2.0f * (float) mouseX) / ((float) renderTarget.getWidth()) - 1.0f;
-            float clipSpaceY = (2.0f * (float) mouseY) / ((float) renderTarget.getHeight()) - 1.0f;
+            float clipSpaceX = (2.0f * (float) mouseCoord.X) / ((float) renderTarget.getWidth()) - 1.0f;
+            float clipSpaceY = (2.0f * (float) mouseCoord.Y) / ((float) renderTarget.getHeight()) - 1.0f;
             Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
 
             Matrix4<float> uiInverseMatrix = (ui3dData->camera->getProjectionViewMatrix() * ui3dData->modelMatrix).inverse();
             Point4<float> mouseScreen = (uiInverseMatrix * mousePos).divideByW();
-            adjustedMouseX = (double) mouseScreen.X;
-            adjustedMouseY = (double) mouseScreen.Y;
+
+            adjustedMouseCoord = Point2<int>((int)mouseScreen.X, (int)mouseScreen.Y);
+            return true;
         }
 
-        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (!widgets[(std::size_t)i]->onMouseMove((int)adjustedMouseX, (int)adjustedMouseY)) {
-                return false;
-            }
-        }
+        adjustedMouseCoord = Point2<int>((int)mouseCoord.X, (int)mouseCoord.Y);
         return true;
     }
 
     bool UIRenderer::onScroll(double offsetY) {
-        for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (!widgets[(std::size_t)i]->onScroll(offsetY)) {
-                return false;
+        if (isMouseInsideUi) {
+            for (long i = (long) widgets.size() - 1; i >= 0; --i) {
+                if (!widgets[(std::size_t) i]->onScroll(offsetY)) {
+                    return false;
+                }
             }
         }
         return true;

@@ -189,6 +189,7 @@ namespace urchin {
         this->position = position;
 
         updateComponents();
+        notifyObservers(this, Camera::POSITION_UPDATED);
     }
 
     void Camera::moveOnLocalXAxis(float distance) {
@@ -196,6 +197,7 @@ namespace urchin {
         position = position.translate(localXAxis * distance);
 
         updateComponents();
+        notifyObservers(this, Camera::POSITION_UPDATED);
     }
 
     void Camera::moveOnLocalZAxis(float distance) {
@@ -203,6 +205,7 @@ namespace urchin {
         position = position.translate(localZAxis * distance);
 
         updateComponents();
+        notifyObservers(this, Camera::POSITION_UPDATED);
     }
 
     void Camera::rotate(const Quaternion<float>& rotationDelta) {
@@ -222,9 +225,12 @@ namespace urchin {
         if (!isFirstPersonCamera()) {
             Vector3<float> axis = pivot.vector(position);
             position = pivot.translate(rotationDelta.rotateVector(axis));
-        }
 
-        updateComponents();
+            updateComponents();
+            notifyObservers(this, Camera::POSITION_UPDATED);
+        } else {
+            updateComponents();
+        }
     }
 
     bool Camera::onKeyPress(unsigned int) {

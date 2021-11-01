@@ -54,10 +54,15 @@ namespace urchin {
             void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 
         private:
+            bool adjustMouseCoordinates(const Point2<double>&, Point2<int>&) const;
+
             RenderTarget& renderTarget;
             I18nService& i18nService;
             Point2<unsigned int> uiResolution;
             std::unique_ptr<Shader> uiShader;
+
+            double rawMouseX, rawMouseY;
+            bool isMouseInsideUi;
 
             std::unique_ptr<UI3dData> ui3dData;
             std::vector<std::shared_ptr<Widget>> widgets;

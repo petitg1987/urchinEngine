@@ -84,7 +84,7 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
 
         Container* parentContainer = getParentContainer();
-        if (parentContainer) {
+        if (parentContainer && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
             Vector2<int> scissorOffset = Vector2<int>(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
             Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);

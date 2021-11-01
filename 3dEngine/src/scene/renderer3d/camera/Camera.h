@@ -10,7 +10,8 @@ namespace urchin {
             ~Camera() override = default;
 
             enum NotificationType {
-                PROJECTION_UPDATE
+                PROJECTION_UPDATE,
+                POSITION_UPDATED,
             };
 
             void initialize(unsigned int, unsigned int);
