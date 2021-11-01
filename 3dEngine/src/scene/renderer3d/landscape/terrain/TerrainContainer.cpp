@@ -12,6 +12,7 @@ namespace urchin {
 
     void TerrainContainer::onCameraProjectionUpdate(const Camera& camera) {
         this->projectionMatrix = camera.getProjectionMatrix();
+
         for (const auto& terrain : terrains) {
             terrain->onCameraProjectionUpdate(projectionMatrix);
         }

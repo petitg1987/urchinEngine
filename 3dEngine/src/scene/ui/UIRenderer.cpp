@@ -24,9 +24,17 @@ namespace urchin {
 
     void UIRenderer::setupUi3d(const Camera* camera, const Transform<float>& transform, const Point2<unsigned int>& uiResolution,
                                const Point2<float>& uiSize, float ambient) {
-        assert(widgets.empty());
-        assert(ui3dData == nullptr);
-        assert(MathFunction::isEqual((float)uiResolution.X / (float)uiResolution.Y, uiSize.X / uiSize.Y, 0.1f)); //proportion must be equal for a good visual
+        if (!widgets.empty()) {
+            throw std::runtime_error("UI renderer cannot be initialized for UI 3d because widgets already exist");
+        }
+        if (!MathFunction::isOne(transform.getScale())) {
+            throw std::runtime_error("Transform for UI 3d must have a scale of 1");
+        }
+        if (!MathFunction::isEqual((float)uiResolution.X / (float)uiResolution.Y, uiSize.X / uiSize.Y, 0.01f)) {
+            std::stringstream logStream;
+            logStream << "UI size (" << uiSize << ") and UI resolution (" << uiResolution << ") have not the same proportion";
+            Logger::instance().logWarning(logStream.str());
+        }
 
         float xScale = uiSize.X / (float)uiResolution.X;
         float yScale = uiSize.Y / (float)uiResolution.Y;
@@ -54,12 +62,18 @@ namespace urchin {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
-        this->ui3dData->cameraProjectionMatrix = camera.getProjectionMatrix();
-        this->ui3dData->cameraSpaceService = std::make_unique<CameraSpaceService>(camera);
+        this->ui3dData->camera = &camera;
 
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onCameraProjectionUpdate();
         }
+    }
+
+    void UIRenderer::setMaximumInteractiveDistance(float maxInteractiveDistance) {
+        if (!ui3dData) {
+            throw std::runtime_error("UI renderer has not been initialized for UI 3d");
+        }
+        this->ui3dData->maxInteractiveDistance = maxInteractiveDistance;
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -137,36 +151,48 @@ namespace urchin {
     }
 
     bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
-        if (ui3dData && ui3dData->cameraSpaceService) { //TODO limit action scope & optimize / review
-            Ray<float> ray = ui3dData->cameraSpaceService->screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), 20.0f /*TODO review param */);
+        double adjustedMouseX = mouseX;
+        double adjustedMouseY = mouseY;
+
+        if (ui3dData) { //TODO optimize / review
+            if (!ui3dData->camera) {
+                return true;
+            }
+
+            Ray<float> ray = CameraSpaceService(*ui3dData->camera).screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), 20.0f /*TODO review param */);
             Line3D<float> line(ray.getOrigin(), ray.computeTo());
 
-            Point4<float> topLeft = (getUi3dData()->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).divideByW();
-            Point4<float> topRight = (getUi3dData()->modelMatrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f)).divideByW();
-            Point4<float> bottomRight = (getUi3dData()->modelMatrix * Point4<float>(800.0f, 600.0f, 0.0f, 1.0f)).divideByW();
-            Plane<float> plane(topLeft.toPoint3(), topRight.toPoint3(), bottomRight.toPoint3());
+            Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
+            Point4<float> topRight = ui3dData->modelMatrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f);
+            Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 600.0f, 0.0f, 1.0f);
+            Plane<float> uiPlane(topLeft.toPoint3(), topRight.toPoint3(), bottomLeft.toPoint3());
 
-            bool intersection = false;
-            Point3<float> intersectionPoint = plane.intersectPoint(line, intersection);
-            if (intersection) {
-                Point4<float> intersectionPointClipSpace = getUi3dData()->cameraProjectionMatrix * viewMatrix * Point4<float>(intersectionPoint);
-                intersectionPointClipSpace = intersectionPointClipSpace.divideByW();
-
-                float clipSpaceX = (2.0f * (float) mouseX) / ((float) renderTarget.getWidth()) - 1.0f;
-                float clipSpaceY = (2.0f * (float) mouseY) / ((float) renderTarget.getHeight()) - 1.0f;
-                Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
-
-                Matrix4<float> matrix2 = getUi3dData()->cameraProjectionMatrix * viewMatrix * getUi3dData()->modelMatrix;
-                Point4<float> mouseScreen = (matrix2.inverse() * mousePos).divideByW();
-
-                mouseX = (double)mouseScreen.X;
-                mouseY = (double)mouseScreen.Y;
-                //std::cout << (matrix2.inverse() * mousePos).divideByW() << std::endl;
+            bool hasIntersection = false;
+            Point3<float> intersectionPoint = uiPlane.intersectPoint(line, hasIntersection);
+            if (!hasIntersection) {
+                return true;
             }
+
+            float uiDistance = intersectionPoint.distance(ui3dData->camera->getPosition());
+            if (uiDistance > ui3dData->maxInteractiveDistance) {
+                return true;
+            }
+
+            Point4<float> intersectionPointClipSpace = ui3dData->camera->getProjectionViewMatrix() * Point4<float>(intersectionPoint);
+            intersectionPointClipSpace = intersectionPointClipSpace.divideByW();
+
+            float clipSpaceX = (2.0f * (float) mouseX) / ((float) renderTarget.getWidth()) - 1.0f;
+            float clipSpaceY = (2.0f * (float) mouseY) / ((float) renderTarget.getHeight()) - 1.0f;
+            Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
+
+            Matrix4<float> uiInverseMatrix = (ui3dData->camera->getProjectionViewMatrix() * ui3dData->modelMatrix).inverse();
+            Point4<float> mouseScreen = (uiInverseMatrix * mousePos).divideByW();
+            adjustedMouseX = (double) mouseScreen.X;
+            adjustedMouseY = (double) mouseScreen.Y;
         }
 
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
-            if (!widgets[(std::size_t)i]->onMouseMove((int)mouseX, (int)mouseY)) {
+            if (!widgets[(std::size_t)i]->onMouseMove((int)adjustedMouseX, (int)adjustedMouseY)) {
                 return false;
             }
         }
@@ -240,8 +266,6 @@ namespace urchin {
 
     void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
-
-        this->viewMatrix = viewMatrix;
 
         for (auto& widget : widgets) {
             renderingOrder++;

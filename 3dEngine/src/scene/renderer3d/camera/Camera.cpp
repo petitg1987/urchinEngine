@@ -60,10 +60,9 @@ namespace urchin {
                 0.0f, 0.0f, 0.5f * ((farPlane + nearPlane) / (nearPlane - farPlane)) - 0.5f, (farPlane * nearPlane) / (nearPlane - farPlane),
                 0.0f, 0.0f, -1.0f, 0.0f);
 
-        //frustum
         baseFrustum.buildFrustum(verticalFovAngle, ratio, nearPlane, farPlane);
-        updateComponents();
 
+        updateComponents();
         notifyObservers(this, Camera::PROJECTION_UPDATE);
     }
 
@@ -126,6 +125,18 @@ namespace urchin {
         return mProjection;
     }
 
+    const Matrix4<float>& Camera::getProjectionViewMatrix() const {
+        return mProjectionView;
+    }
+
+    const Matrix4<float>& Camera::getProjectionViewInverseMatrix() const {
+        return mProjectionViewInverse;
+    }
+
+    const Quaternion<float>& Camera::getOrientation() const {
+        return orientation;
+    }
+
     const Point3<float>& Camera::getPosition() const {
         return position;
     }
@@ -136,10 +147,6 @@ namespace urchin {
 
     const Vector3<float>& Camera::getUp() const {
         return up;
-    }
-
-    const Quaternion<float>& Camera::getOrientation() const {
-        return orientation;
     }
 
     float Camera::getHorizontalFovAngle() const {
@@ -272,10 +279,12 @@ namespace urchin {
                 up[0],      up[1],      up[2],      up[0] * -position.X + up[1] * -position.Y + up[2] * -position.Z,
                 -view[0],   -view[1],   -view[2],   -view[0] * -position.X + -view[1] * -position.Y + -view[2] * -position.Z,
                 0.0f,       0.0f,       0.0f,       1.0f);
-
-        orientation = Quaternion<float>::fromRotationMatrix(mView.toMatrix3()).conjugate();
-
         frustum = baseFrustum * mView.inverse();
+
+        //pre-computed values
+        orientation = Quaternion<float>::fromRotationMatrix(mView.toMatrix3()).conjugate();
+        mProjectionView = mProjection * mView;
+        mProjectionViewInverse = mProjectionView.inverse();
     }
 
 }

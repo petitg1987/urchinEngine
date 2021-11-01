@@ -30,11 +30,14 @@ namespace urchin {
             const Matrix4<float>& getViewMatrix() const;
             const Matrix4<float>& getProjectionMatrix() const;
 
+            //pre-computed values
+            const Quaternion<float>& getOrientation() const;
+            const Matrix4<float>& getProjectionViewMatrix() const;
+            const Matrix4<float>& getProjectionViewInverseMatrix() const;
+
             const Point3<float>& getPosition() const;
             const Vector3<float>& getView() const;
             const Vector3<float>& getUp() const;
-
-            const Quaternion<float>& getOrientation() const;
 
             float getHorizontalFovAngle() const;
             void updateHorizontalFovAngle(float);
@@ -51,7 +54,6 @@ namespace urchin {
             virtual bool onKeyPress(unsigned int);
             virtual bool onKeyRelease(unsigned int);
             virtual void updateCameraView(float) = 0;
-
             virtual bool onMouseMove(double, double);
 
         private:
@@ -63,10 +65,12 @@ namespace urchin {
             const float MOUSE_SENSITIVITY_FACTOR;
             Matrix4<float> mView, mProjection;
 
+            //pre-computed values
+            Quaternion<float> orientation;
+            Matrix4<float> mProjectionView, mProjectionViewInverse;
+
             Point3<float> position;
             Vector3<float> view, up;
-
-            Quaternion<float> orientation;
 
             float horizontalFovAngle, nearPlane, farPlane;
             Frustum<float> baseFrustum; //base frustum (without any matrix transformation)

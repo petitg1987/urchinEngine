@@ -11,6 +11,7 @@ namespace urchin {
 
     void WaterContainer::onCameraProjectionUpdate(const Camera& camera) {
         this->projectionMatrix = camera.getProjectionMatrix();
+
         for (const auto& water : waters) {
             water->onCameraProjectionUpdate(projectionMatrix);
         }

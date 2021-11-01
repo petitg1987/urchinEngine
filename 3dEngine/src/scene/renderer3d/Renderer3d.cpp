@@ -536,7 +536,7 @@ namespace urchin {
     void Renderer3d::lightingPassRendering() {
         ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
-        positioningData.inverseProjectionViewMatrix = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse();
+        positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
         positioningData.viewPosition = camera->getPosition();
         constexpr std::size_t positioningDataUniformIndex = 0;
         lightingRenderer->updateUniformData(positioningDataUniformIndex, &positioningData);

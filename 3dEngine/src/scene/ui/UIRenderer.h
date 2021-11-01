@@ -13,11 +13,11 @@
 namespace urchin {
 
     struct UI3dData {
-        Matrix4<float> cameraProjectionMatrix;
-        std::unique_ptr<CameraSpaceService> cameraSpaceService;
-
+        const Camera* camera = nullptr;
         Matrix4<float> modelMatrix;
         Matrix4<float> normalMatrix;
+
+        float maxInteractiveDistance = 4.0f;
     };
 
     class UIRenderer : public Renderer, public Observer {
@@ -27,6 +27,7 @@ namespace urchin {
             //3d specific
             void setupUi3d(const Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
             void onCameraProjectionUpdate(const Camera&);
+            void setMaximumInteractiveDistance(float);
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
@@ -59,8 +60,6 @@ namespace urchin {
             std::unique_ptr<Shader> uiShader;
 
             std::unique_ptr<UI3dData> ui3dData;
-
-            Matrix4<float> viewMatrix;
             std::vector<std::shared_ptr<Widget>> widgets;
 
             std::unique_ptr<TextureRenderer> debugFont;

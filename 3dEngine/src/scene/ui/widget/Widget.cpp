@@ -65,7 +65,7 @@ namespace urchin {
                 //transparency is currently not supported (only discard in fragment shader is supported)
             }
 
-            stableMatrices.projectionMatrix = uiRenderer->getUi3dData()->cameraProjectionMatrix;
+            stableMatrices.projectionMatrix = uiRenderer->getUi3dData()->camera->getProjectionMatrix();
             stableMatrices.normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
         } else {
             if (enableTransparency) {

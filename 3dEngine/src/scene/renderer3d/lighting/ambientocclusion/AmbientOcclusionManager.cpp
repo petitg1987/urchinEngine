@@ -268,7 +268,7 @@ namespace urchin {
     void AmbientOcclusionManager::updateAOTexture(const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
-        positioningData.inverseProjectionViewMatrix = (camera.getProjectionMatrix() * camera.getViewMatrix()).inverse();
+        positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         positioningData.projectionMatrix = camera.getProjectionMatrix();
         positioningData.viewMatrix = camera.getViewMatrix();
         renderer->updateUniformData(0, &positioningData);
