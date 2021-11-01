@@ -392,10 +392,6 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::onKeyPressEvent(unsigned int) {
-        return true;
-    }
-
     bool Widget::handleWidgetKeyPress(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == (int)InputDeviceKey::MOUSE_LEFT) {
@@ -410,6 +406,10 @@ namespace urchin {
             }
         }
         return widgetStateUpdated;
+    }
+
+    bool Widget::onKeyPressEvent(unsigned int) {
+        return true;
     }
 
     bool Widget::onKeyRelease(unsigned int key) {
@@ -435,10 +435,6 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::onKeyReleaseEvent(unsigned int) {
-        return true;
-    }
-
     bool Widget::handleWidgetKeyRelease(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == (int)InputDeviceKey::MOUSE_LEFT) {
@@ -453,6 +449,10 @@ namespace urchin {
             }
         }
         return widgetStateUpdated;
+    }
+
+    bool Widget::onKeyReleaseEvent(unsigned int) {
+        return true;
     }
 
     bool Widget::onChar(char32_t unicodeCharacter) {
@@ -501,28 +501,6 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::onScroll(double offsetY) {
-        bool propagateEvent = true;
-        if (isVisible()) {
-            propagateEvent = onScrollEvent(offsetY);
-
-            for (auto& child : children) {
-                if (!child->onScroll(offsetY)) {
-                    return false;
-                }
-            }
-        }
-        return propagateEvent;
-    }
-
-    bool Widget::onMouseMoveEvent(int, int) {
-        return true;
-    }
-
-    bool Widget::onScrollEvent(double) {
-        return true;
-    }
-
     bool Widget::handleWidgetMouseMove(int mouseX, int mouseY) {
         bool widgetStateUpdated = false;
         if (isMouseOnWidget(mouseX, mouseY)) {
@@ -537,17 +515,32 @@ namespace urchin {
         return widgetStateUpdated;
     }
 
-    int Widget::getMouseX() const {
-        return mouseX;
+    bool Widget::onMouseMoveEvent(int, int) {
+        return true;
     }
 
-    int Widget::getMouseY() const {
-        return mouseY;
+    bool Widget::onScroll(double offsetY) {
+        bool propagateEvent = true;
+        if (isVisible()) {
+            propagateEvent = onScrollEvent(offsetY);
+
+            for (auto& child : children) {
+                if (!child->onScroll(offsetY)) {
+                    return false;
+                }
+            }
+        }
+        return propagateEvent;
+    }
+
+    bool Widget::onScrollEvent(double) {
+        return true;
     }
 
     void Widget::onResetState() {
         if (isVisible()) {
             handleWidgetResetState();
+            onResetStateEvent();
 
             for (auto& child : children) {
                 child->onResetState();
@@ -569,6 +562,18 @@ namespace urchin {
                 eventListener->onFocusLost(this);
             }
         }
+    }
+
+    void Widget::onResetStateEvent() {
+        //to override
+    }
+
+    int Widget::getMouseX() const {
+        return mouseX;
+    }
+
+    int Widget::getMouseY() const {
+        return mouseY;
     }
 
     bool Widget::isMouseOnWidget(int mouseX, int mouseY) const {

@@ -29,7 +29,7 @@ namespace urchin {
 
             bool onKeyPressEvent(unsigned int) override;
             bool onCharEvent(char32_t) override;
-            void onResetState() override;
+            void onResetStateEvent() override;
 
             bool isCharacterAllowed(char32_t) const;
             bool isMaxLengthReach() const;

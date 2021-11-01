@@ -25,6 +25,7 @@ namespace urchin {
             bool onKeyPressEvent(unsigned int) override;
             bool onKeyReleaseEvent(unsigned int) override;
             bool onMouseMoveEvent(int, int) override;
+            void onResetStateEvent() override;
 
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 

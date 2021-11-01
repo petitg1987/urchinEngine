@@ -145,11 +145,9 @@ namespace urchin {
         return true;
     }
 
-    void TextBox::onResetState() {
+    void TextBox::onResetStateEvent() {
         state = INACTIVE;
         textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildLinear()));
-
-        Widget::onResetState();
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {

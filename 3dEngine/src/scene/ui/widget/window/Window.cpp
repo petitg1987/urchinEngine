@@ -111,6 +111,10 @@ namespace urchin {
         return propagateEvent;
     }
 
+    void Window::onResetStateEvent() {
+        state = DEFAULT;
+    }
+
     void Window::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
         updatePositioning(windowRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         windowRenderer->enableRenderer(renderingOrder);

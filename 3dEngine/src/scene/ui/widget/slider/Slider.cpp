@@ -128,6 +128,10 @@ namespace urchin {
         return true;
     }
 
+    void Slider::onResetStateEvent() {
+        state = DEFAULT;
+    }
+
     void Slider::updateSliderValue(int mouseX) {
         float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
         float sliderCursorMinXPosition = sliderCursorHalfSize;

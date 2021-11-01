@@ -39,15 +39,22 @@ namespace urchin {
             Logger::instance().logWarning(logStream.str());
         }
 
+        this->ui3dData = std::make_unique<UI3dData>();
+
         float xScale = uiSize.X / (float)uiResolution.X;
-        float yScale = uiSize.Y / (float)uiResolution.Y;
+        float yScale = -uiSize.Y / (float)uiResolution.Y; //negate for flip on Y axis
         Matrix4<float> uiViewMatrix(xScale, 0.0f, 0.0f, 0.0f,
-                                    0.0f, -yScale /* negate for flip on Y axis */, 0.0f, 0.0f,
+                                    0.0f, yScale, 0.0f, 0.0f,
                                     0.0f, 0.0f, 1.0f, 0.0f,
                                     0.0f, 0.0f, 0.0f, 1.0f);
-        this->ui3dData = std::make_unique<UI3dData>();
         this->ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
+
         this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
+
+        Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
+        Point4<float> topRight = ui3dData->modelMatrix * Point4<float>(100.0f, 0.0f, 0.0f, 1.0f);
+        Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 100.0f, 0.0f, 1.0f);
+        this->ui3dData->uiPlane = std::make_unique<Plane<float>>(topLeft.toPoint3(), bottomLeft.toPoint3(), topRight.toPoint3());
 
         if (renderTarget.isValidRenderTarget()) {
             std::vector<std::size_t> variablesSize = {sizeof(ambient)};
@@ -137,11 +144,13 @@ namespace urchin {
     }
 
     bool UIRenderer::onKeyRelease(unsigned int key) {
-        //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
-        std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
-        for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
-            if (!widgetsCopy[(std::size_t) i]->onKeyRelease(key)) {
-                return false;
+        if (isMouseInsideUi) {
+            //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+            std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
+            for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
+                if (!widgetsCopy[(std::size_t) i]->onKeyRelease(key)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -177,6 +186,8 @@ namespace urchin {
                     return false;
                 }
             }
+        } else {
+            onDisable();
         }
         return true;
     }
@@ -191,22 +202,17 @@ namespace urchin {
                 return false;
             }
 
-            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y));
-
-            Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
-            Point4<float> topRight = ui3dData->modelMatrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f);
-            Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 600.0f, 0.0f, 1.0f);
-            Plane<float> uiPlane(topLeft.toPoint3(), bottomLeft.toPoint3(), topRight.toPoint3());
+            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y)); //TODO use screen center to avoid partial interaction ?
 
             bool hasIntersection = false;
-            Point3<float> uiHitPoint = uiPlane.intersectPoint(viewLine, hasIntersection);
+            Point3<float> uiHitPoint = ui3dData->uiPlane->intersectPoint(viewLine, hasIntersection);
             if (!hasIntersection) { //camera is parallel to the UI plane
                 return false;
             }
-            if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(uiPlane.getNormal()) < 0.0f) { //UI is not in front of the camera
+            if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) { //camera is behind the UI
                 return false;
             }
-            if (ui3dData->camera->getView().dotProduct(uiPlane.getNormal()) > 0.0f) { //camera is not in front of the UI
+            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) { //camera does not face to the UI
                 return false;
             }
             if (uiHitPoint.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) { //camera too far from the UI
