@@ -35,9 +35,27 @@ namespace urchin {
         return true;
     }
 
+    bool UiContainer::onChar(char32_t unicodeCharacter) {
+        for (auto& ui : uis) {
+            if (!ui->onChar(unicodeCharacter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool UiContainer::onMouseMove(double mouseX, double mouseY) {
         for (auto& ui : uis) {
             if (!ui->onMouseMove(mouseX, mouseY)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool UiContainer::onScroll(double offsetY) {
+        for (auto& ui : uis) {
+            if (!ui->onScroll(offsetY)) {
                 return false;
             }
         }

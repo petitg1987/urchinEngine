@@ -6,7 +6,7 @@ namespace urchin {
 
     template<class T> class Line2D {
         public:
-            Line2D(const Point2<T>&,  const Point2<T>&);
+            Line2D(const Point2<T>&, const Point2<T>&);
 
             const Point2<T>& getA() const;
             const Point2<T>& getB() const;

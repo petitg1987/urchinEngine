@@ -11,9 +11,13 @@ namespace urchin {
             explicit CameraSpaceService(const Camera&);
 
             Point2<float> worldSpacePointToScreenSpace(const Point3<float>&) const;
+
             Ray<float> screenPointToRay(const Point2<float>&, float) const;
+            Line3D<float> screenPointToLine(const Point2<float>&) const;
 
         private:
+            Vector3<float> screenPointToDirection(const Point2<float>&) const;
+
             const Camera& camera;
     };
 

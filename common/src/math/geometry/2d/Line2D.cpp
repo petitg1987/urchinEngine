@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    template<class T> Line2D<T>::Line2D(const Point2<T>& a,  const Point2<T>& b) :
+    template<class T> Line2D<T>::Line2D(const Point2<T>& a, const Point2<T>& b) :
             a(a), b(b) {
         assert(a.X != b.X || a.Y != b.Y);
     }

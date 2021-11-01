@@ -16,8 +16,9 @@ namespace urchin {
 
             bool onKeyPress(unsigned int);
             bool onKeyRelease(unsigned int);
+            bool onChar(char32_t);
             bool onMouseMove(double, double);
-            //TODO add all missing event
+            bool onScroll(double);
 
             UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
 

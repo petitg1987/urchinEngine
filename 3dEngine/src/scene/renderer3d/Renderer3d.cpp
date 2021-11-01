@@ -260,9 +260,7 @@ namespace urchin {
     bool Renderer3d::onKeyPress(unsigned int key) {
         bool propagateEvent = true;
         if (!paused && camera) {
-            if (key < 260) { //TODO why ?
-                propagateEvent = camera->onKeyPress(key);
-            }
+            propagateEvent = camera->onKeyPress(key);
             if (propagateEvent) {
                 propagateEvent = uiContainer.onKeyPress(key);
             }
@@ -273,9 +271,7 @@ namespace urchin {
     bool Renderer3d::onKeyRelease(unsigned int key) {
         bool propagateEvent = true;
         if (!paused && camera) {
-            if (key < 260) { //TODO why ?
-                propagateEvent = camera->onKeyRelease(key);
-            }
+            propagateEvent = camera->onKeyRelease(key);
             if (propagateEvent) {
                 propagateEvent = uiContainer.onKeyRelease(key);
             }
@@ -283,9 +279,8 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Renderer3d::onChar(char32_t) {
-        //nothing to do
-        return true;
+    bool Renderer3d::onChar(char32_t unicodeCharacter) {
+        return uiContainer.onChar(unicodeCharacter);
     }
 
     bool Renderer3d::onMouseMove(double mouseX, double mouseY) {
@@ -299,9 +294,8 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Renderer3d::onScroll(double) {
-        //nothing to do
-        return true;
+    bool Renderer3d::onScroll(double offsetY) {
+        return uiContainer.onScroll(offsetY);
     }
 
     void Renderer3d::onDisable() {

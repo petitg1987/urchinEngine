@@ -154,31 +154,34 @@ namespace urchin {
         double adjustedMouseX = mouseX;
         double adjustedMouseY = mouseY;
 
-        if (ui3dData) { //TODO optimize / review
+        if (ui3dData) { //TODO add on camera move event
             if (!ui3dData->camera) {
                 return true;
             }
 
-            Ray<float> ray = CameraSpaceService(*ui3dData->camera).screenPointToRay(Point2<float>((float)mouseX, (float)mouseY), 20.0f /*TODO review param */);
-            Line3D<float> line(ray.getOrigin(), ray.computeTo());
+            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseX, (float)mouseY));
 
             Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
             Point4<float> topRight = ui3dData->modelMatrix * Point4<float>(800.0f, 0.0f, 0.0f, 1.0f);
             Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 600.0f, 0.0f, 1.0f);
-            Plane<float> uiPlane(topLeft.toPoint3(), topRight.toPoint3(), bottomLeft.toPoint3());
+            Plane<float> uiPlane(topLeft.toPoint3(), bottomLeft.toPoint3(), topRight.toPoint3());
 
             bool hasIntersection = false;
-            Point3<float> intersectionPoint = uiPlane.intersectPoint(line, hasIntersection);
-            if (!hasIntersection) {
+            Point3<float> uiHitPoint = uiPlane.intersectPoint(viewLine, hasIntersection);
+            if (!hasIntersection) { //camera is parallel to the UI plane
+                return true;
+            }
+            if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(uiPlane.getNormal()) < 0.0f) { //UI is not in front of the camera
+                return true;
+            }
+            if (ui3dData->camera->getView().dotProduct(uiPlane.getNormal()) > 0.0f) { //camera is not in front of the UI
+                return true;
+            }
+            if (uiHitPoint.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) { //camera too far from the UI
                 return true;
             }
 
-            float uiDistance = intersectionPoint.distance(ui3dData->camera->getPosition());
-            if (uiDistance > ui3dData->maxInteractiveDistance) {
-                return true;
-            }
-
-            Point4<float> intersectionPointClipSpace = ui3dData->camera->getProjectionViewMatrix() * Point4<float>(intersectionPoint);
+            Point4<float> intersectionPointClipSpace = ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint);
             intersectionPointClipSpace = intersectionPointClipSpace.divideByW();
 
             float clipSpaceX = (2.0f * (float) mouseX) / ((float) renderTarget.getWidth()) - 1.0f;
