@@ -11,7 +11,6 @@ namespace urchin {
 
     void GeometryContainer::addGeometry(std::shared_ptr<GeometryModel> geometry) {
         geometry->initialize(renderTarget);
-        geometry->onCameraProjectionUpdate(projectionMatrix);
 
         geometryModels.push_back(std::move(geometry));
     }
@@ -23,17 +22,9 @@ namespace urchin {
         }
     }
 
-    void GeometryContainer::onCameraProjectionUpdate(const Camera& camera) {
-        this->projectionMatrix = camera.getProjectionMatrix();
-
+    void GeometryContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         for (auto& geometryModel : geometryModels) {
-            geometryModel->onCameraProjectionUpdate(projectionMatrix);
-        }
-    }
-
-    void GeometryContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) const {
-        for (auto& geometryModel : geometryModels) {
-            geometryModel->prepareRendering(renderingOrder, viewMatrix);
+            geometryModel->prepareRendering(renderingOrder, projectionViewMatrix);
         }
     }
 

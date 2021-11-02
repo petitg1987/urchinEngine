@@ -197,7 +197,6 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
 
         uiContainer.onCameraProjectionUpdate(*camera);
-        geometryContainer.onCameraProjectionUpdate(*camera);
         shadowManager.onCameraProjectionUpdate(*camera);
         ambientOcclusionManager.onCameraProjectionUpdate(*camera);
         transparentManager.onCameraProjectionUpdate(*camera);
@@ -485,7 +484,7 @@ namespace urchin {
 
         renderDebugSceneData(geometryContainer);
         deferredRenderingOrder++;
-        geometryContainer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
+        geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
         deferredRenderTarget->render();
 

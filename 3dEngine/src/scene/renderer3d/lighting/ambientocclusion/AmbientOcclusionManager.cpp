@@ -129,12 +129,13 @@ namespace urchin {
         renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
-                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 1
-                ->addUniformData(sizeof(resolution), &resolution) //binding 2
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 3
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 4
-                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 5
+                ->addUniformData(sizeof(projection), &projection) //binding 0
+                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
+                ->addUniformData(sizeof(resolution), &resolution) //binding 3
+                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
+                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
                 ->build();
     }
 
@@ -213,6 +214,9 @@ namespace urchin {
         nearPlane = camera.getNearPlane();
         farPlane = camera.getFarPlane();
 
+        projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
+        projection.projectionMatrix = camera.getProjectionMatrix();
+
         createOrUpdateAO();
     }
 
@@ -269,9 +273,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
-        positioningData.projectionMatrix = camera.getProjectionMatrix();
         positioningData.viewMatrix = camera.getViewMatrix();
-        renderer->updateUniformData(0, &positioningData);
+        renderer->updateUniformData(1, &positioningData);
 
         renderTarget->render();
 

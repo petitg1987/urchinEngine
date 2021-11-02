@@ -31,7 +31,6 @@ namespace urchin {
             void setModelMatrix(const Matrix4<float>&);
         protected:
             void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Matrix4<float>&);
             void refreshRenderer();
 
             virtual std::vector<Point3<float>> retrieveVertexArray(std::vector<uint32_t>&) const = 0;
@@ -46,11 +45,6 @@ namespace urchin {
             std::unique_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<Shader> shader;
-            mutable struct {
-                alignas(16) Matrix4<float> projectionMatrix;
-                alignas(16) Matrix4<float> viewModelMatrix;
-            } positioningData;
-
             Matrix4<float> modelMatrix;
 
             Vector3<float> color;

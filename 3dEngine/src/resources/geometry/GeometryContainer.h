@@ -16,15 +16,12 @@ namespace urchin {
             void addGeometry(std::shared_ptr<GeometryModel>);
             void removeGeometry(const GeometryModel&);
 
-            void onCameraProjectionUpdate(const Camera&);
-
             void prepareRendering(unsigned int&, const Matrix4<float>&) const;
 
         private:
             RenderTarget& renderTarget;
 
             std::vector<std::shared_ptr<GeometryModel>> geometryModels;
-            Matrix4<float> projectionMatrix;
     };
 
 }

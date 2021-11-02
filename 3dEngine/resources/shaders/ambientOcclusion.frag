@@ -9,20 +9,23 @@ layout(constant_id = 4) const float DEPTH_END_ATTENUATION = 0.0;
 layout(constant_id = 5) const uint NOISE_TEXTURE_SIZE = 0;
 layout(constant_id = 6) const float BIAS = 0.0;
 
-layout(std140, set = 0, binding = 0) uniform PositioningData {
-    mat4 mInverseViewProjection;
+layout(std140, set = 0, binding = 0) uniform Projection {
+    mat4 mInverseProjection;
     mat4 mProjection;
+} projection;
+layout(std140, set = 0, binding = 1) uniform PositioningData {
+    mat4 mInverseViewProjection;
     mat4 mView;
 } positioningData;
-layout(std140, set = 0, binding = 1) uniform KernelData {
+layout(std140, set = 0, binding = 2) uniform KernelData {
     vec4 samples[KERNEL_SAMPLES];
 } kernelData;
-layout(std140, set = 0, binding = 2) uniform Scene {
+layout(std140, set = 0, binding = 3) uniform Scene {
     vec2 resolution;
 } scene;
-layout(binding = 3) uniform sampler2D depthTex;
-layout(binding = 4) uniform sampler2D normalAndAmbientTex;
-layout(binding = 5) uniform sampler2D noiseTex;
+layout(binding = 4) uniform sampler2D depthTex;
+layout(binding = 5) uniform sampler2D normalAndAmbientTex;
+layout(binding = 6) uniform sampler2D noiseTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -35,7 +38,7 @@ vec3 fetchEyePosition(vec2 texCoord, float depthValue) {
         depthValue,
         1.0
     );
-    vec4 position = inverse(positioningData.mProjection) * texPosition;
+    vec4 position = projection.mInverseProjection * texPosition;
     position /= position.w;
     return vec3(position);
 }
@@ -82,7 +85,7 @@ void main() {
         vec3 sampleVectorWorldSpace = kernelMatrix * kernelData.samples[i].xyz;
         vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
         vec4 samplePointEyeSpace = positioningData.mView * vec4(samplePointWorldSpace, 1.0);
-        vec4 samplePointClipSpace = positioningData.mProjection * samplePointEyeSpace;
+        vec4 samplePointClipSpace = projection.mProjection * samplePointEyeSpace;
         vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
         vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 

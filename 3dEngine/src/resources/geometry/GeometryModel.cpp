@@ -29,9 +29,10 @@ namespace urchin {
 
         std::vector<uint32_t> indices;
         std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
+        Matrix4<float> projectionViewModelMatrix;
         auto rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                 ->addData(vertexArray)
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                ->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix) //binding 0
                 ->addUniformData(sizeof(color), &color) //binding 1
                 ->polygonMode(polygonMode);
 
@@ -54,10 +55,6 @@ namespace urchin {
 
         renderer = rendererBuilder->build();
         renderer->disableRenderer(); //in case this method is called after 'renderTarget->disableAllRenderers()'
-    }
-
-    void GeometryModel::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        positioningData.projectionMatrix = projectionMatrix;
     }
 
     const RenderTarget& GeometryModel::getRenderTarget() const {
@@ -106,13 +103,13 @@ namespace urchin {
         this->modelMatrix = modelMatrix;
     }
 
-    void GeometryModel::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) const {
+    void GeometryModel::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         if (!isInitialized) {
             throw std::runtime_error("Geometry model must be initialized before call prepare rendering");
         }
 
-        positioningData.viewModelMatrix = viewMatrix * modelMatrix;
-        renderer->updateUniformData(0, &positioningData);
+        Matrix4<float> projectionViewModelMatrix = projectionViewMatrix * modelMatrix;
+        renderer->updateUniformData(0, &projectionViewModelMatrix);
         renderer->enableRenderer(renderingOrder);
     }
 

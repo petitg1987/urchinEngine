@@ -90,8 +90,11 @@ namespace urchin {
             std::unique_ptr<Shader> ambientOcclusionShader;
             std::shared_ptr<Texture> noiseTexture;
             struct {
-                alignas(16) Matrix4<float> inverseProjectionViewMatrix;
+                alignas(16) Matrix4<float> inverseProjectionMatrix;
                 alignas(16) Matrix4<float> projectionMatrix;
+            } projection;
+            struct {
+                alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Matrix4<float> viewMatrix;
             } positioningData;
             std::vector<Vector4<float>> ssaoKernel;
