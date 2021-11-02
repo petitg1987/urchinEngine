@@ -206,17 +206,17 @@ namespace urchin {
 
             bool hasIntersection = false;
             Point3<float> uiHitPoint = ui3dData->uiPlane->intersectPoint(viewLine, hasIntersection);
-            if (!hasIntersection) { //camera is parallel to the UI plane
-                return false;
+            if (!hasIntersection) {
+                return false; //camera is parallel to the UI plane
             }
-            if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) { //camera is behind the UI
-                return false;
+            if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
+                return false; //camera is behind the UI
             }
-            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) { //camera does not face to the UI
-                return false;
+            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) {
+                return false; //camera does not face to the UI
             }
-            if (uiHitPoint.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) { //camera too far from the UI
-                return false;
+            if (uiHitPoint.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) {
+                return false; //camera too far from the UI
             }
 
             Point4<float> intersectionPointClipSpace = ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint);

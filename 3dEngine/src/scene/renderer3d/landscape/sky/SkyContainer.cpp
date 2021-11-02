@@ -7,14 +7,6 @@ namespace urchin {
 
     }
 
-    void SkyContainer::onCameraProjectionUpdate(const Camera& camera) {
-        projectionMatrix = camera.getProjectionMatrix();
-
-        if (skybox != nullptr) {
-            skybox->onCameraProjectionUpdate(projectionMatrix);
-        }
-    }
-
     void SkyContainer::setSkybox(std::unique_ptr<Skybox> skybox) {
         ScopeProfiler sp(Profiler::graphic(), "setupSkybox");
 
@@ -22,7 +14,6 @@ namespace urchin {
 
         if (this->skybox != nullptr) {
             this->skybox->initialize(renderTarget);
-            this->skybox->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
@@ -30,9 +21,9 @@ namespace urchin {
         return skybox.get();
     }
 
-    void SkyContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void SkyContainer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Point3<float>& cameraPosition) {
         if (skybox != nullptr) {
-            skybox->prepareRendering(renderingOrder, viewMatrix, cameraPosition);
+            skybox->prepareRendering(renderingOrder, projectionViewMatrix, cameraPosition);
         }
     }
 }

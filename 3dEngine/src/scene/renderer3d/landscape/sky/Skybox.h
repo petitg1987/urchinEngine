@@ -18,7 +18,6 @@ namespace urchin {
             explicit Skybox(const std::vector<std::string>&);
 
             void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Matrix4<float>&) const;
 
             const std::vector<std::string>& getFilenames() const;
 

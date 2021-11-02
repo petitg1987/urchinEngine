@@ -125,20 +125,15 @@ namespace urchin {
             Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE)
         };
 
-        Matrix4<float> projectionMatrix, viewMatrix;
+        Matrix4<float> projectionViewMatrix;
         skyboxRenderer = GenericRendererBuilder::create("skybox", renderTarget, *skyboxShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                ->addUniformData(sizeof(viewMatrix), &viewMatrix) //binding 1
-                ->addUniformTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest())) //binding 2
+                ->addUniformData(sizeof(projectionViewMatrix), &projectionViewMatrix) //binding 0
+                ->addUniformTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest())) //binding 1
                 ->build();
 
         this->isInitialized = true;
-    }
-
-    void Skybox::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) const {
-        skyboxRenderer->updateUniformData(0, &projectionMatrix);
     }
 
     float Skybox::getOffsetY() const {
@@ -153,11 +148,11 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const Point3<float>& cameraPosition) {
+    void Skybox::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Point3<float>& cameraPosition) {
         assert(isInitialized);
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
-        Matrix4<float> skyboxViewMatrix = viewMatrix * translationMatrix;
-        skyboxRenderer->updateUniformData(1, &skyboxViewMatrix);
+        Matrix4<float> skyboxProjectionViewMatrix = projectionViewMatrix * translationMatrix;
+        skyboxRenderer->updateUniformData(0, &skyboxProjectionViewMatrix);
 
         skyboxRenderer->enableRenderer(renderingOrder);
     }

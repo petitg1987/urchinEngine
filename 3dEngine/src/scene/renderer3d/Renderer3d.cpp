@@ -201,7 +201,6 @@ namespace urchin {
         waterContainer.onCameraProjectionUpdate(*camera);
         uiContainer.onCameraProjectionUpdate(*camera);
         geometryContainer.onCameraProjectionUpdate(*camera);
-        skyContainer.onCameraProjectionUpdate(*camera);
         shadowManager.onCameraProjectionUpdate(*camera);
         ambientOcclusionManager.onCameraProjectionUpdate(*camera);
         transparentManager.onCameraProjectionUpdate(*camera);
@@ -473,7 +472,7 @@ namespace urchin {
         deferredRenderTarget->disableAllRenderers();
 
         unsigned int deferredRenderingOrder = 0;
-        skyContainer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix(), camera->getPosition());
+        skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());
 
         deferredRenderingOrder++;
         modelSetDisplayer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix());

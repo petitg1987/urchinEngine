@@ -10,8 +10,6 @@ namespace urchin {
         public:
             explicit SkyContainer(RenderTarget&);
 
-            void onCameraProjectionUpdate(const Camera&);
-
             void setSkybox(std::unique_ptr<Skybox>);
             const Skybox* getSkybox() const;
 
@@ -21,7 +19,6 @@ namespace urchin {
             RenderTarget& renderTarget;
 
             std::unique_ptr<Skybox> skybox;
-            Matrix4<float> projectionMatrix;
     };
 
 }
