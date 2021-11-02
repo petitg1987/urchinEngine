@@ -10,14 +10,14 @@ namespace urchin {
     }
 
     void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
-        assert(meshRendererBuilder->getUniformData().size() == 3);
+        assert(meshRendererBuilder->getUniformData().size() == 2);
         meshRendererBuilder
-                ->addUniformData(sizeof(cameraPlanes), &cameraPlanes); //binding 3
-        lightManager.setupLightingRenderer(meshRendererBuilder); //binding 4
+                ->addUniformData(sizeof(cameraPlanes), &cameraPlanes); //binding 2
+        lightManager.setupLightingRenderer(meshRendererBuilder); //binding 3
     }
 
     void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
-        lightManager.loadVisibleLights(meshRenderer, 4);
+        lightManager.loadVisibleLights(meshRenderer, 3);
     }
 
 }

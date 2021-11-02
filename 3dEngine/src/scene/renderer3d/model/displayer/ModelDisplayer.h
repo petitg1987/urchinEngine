@@ -12,7 +12,7 @@ namespace urchin {
 
     class ModelDisplayer : public Observer {
         public:
-            ModelDisplayer(Model *, const Matrix4<float>&, DisplayMode, RenderTarget&, const Shader&);
+            ModelDisplayer(Model *, DisplayMode, RenderTarget&, const Shader&);
             ~ModelDisplayer() override;
 
             void setupCustomShaderVariable(CustomModelShaderVariable*);
@@ -22,7 +22,6 @@ namespace urchin {
 
             void initialize();
             void notify(Observable*, int) override;
-            void onCameraProjectionUpdate(const Camera&);
 
             void prepareRendering(unsigned int&, const Matrix4<float>&, const MeshFilter*) const;
 
@@ -36,12 +35,11 @@ namespace urchin {
             bool isInitialized;
 
             Model *model;
-            Matrix4<float> projectionMatrix;
             DisplayMode displayMode;
             RenderTarget& renderTarget;
             const Shader& shader;
             mutable struct {
-                alignas(16) Matrix4<float> viewMatrix;
+                alignas(16) Matrix4<float> projectionViewMatrix;
                 alignas(16) Matrix4<float> modelMatrix;
                 alignas(16) Matrix4<float> normalMatrix;
             } positioningData;

@@ -196,7 +196,6 @@ namespace urchin {
     void Renderer3d::onCameraProjectionUpdate() {
         ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
 
-        modelSetDisplayer.onCameraProjectionUpdate(*camera);
         terrainContainer.onCameraProjectionUpdate(*camera);
         waterContainer.onCameraProjectionUpdate(*camera);
         uiContainer.onCameraProjectionUpdate(*camera);
@@ -475,7 +474,7 @@ namespace urchin {
         skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());
 
         deferredRenderingOrder++;
-        modelSetDisplayer.prepareRendering(deferredRenderingOrder, camera->getViewMatrix());
+        modelSetDisplayer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
         deferredRenderingOrder++;
         terrainContainer.prepareRendering(deferredRenderingOrder, *camera, dt);

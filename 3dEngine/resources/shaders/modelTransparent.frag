@@ -7,24 +7,24 @@ layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightMan
 layout(constant_id = 1) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
-layout(std140, set = 0, binding = 2) uniform MaterialData {
+layout(std140, set = 0, binding = 1) uniform MaterialData {
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
 } materialData;
-layout(std140, set = 0, binding = 3) uniform CameraPlanes {
+layout(std140, set = 0, binding = 2) uniform CameraPlanes {
     float nearPlane;
     float farPlane;
 } cameraPlanes;
 
 //lighting
-layout(std140, set = 0, binding = 4) uniform LightsData {
+layout(std140, set = 0, binding = 3) uniform LightsData {
     LightInfo lightsInfo[MAX_LIGHTS];
     vec3 globalAmbient;
 } lightsData;
 
 //texture
-layout(binding = 5) uniform sampler2D diffuseTex;
-layout(binding = 6) uniform sampler2D normalTex;
+layout(binding = 4) uniform sampler2D diffuseTex;
+layout(binding = 5) uniform sampler2D normalTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;

@@ -25,7 +25,6 @@ namespace urchin {
             ~ModelSetDisplayer();
 
             void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Camera&);
 
             void setupShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
             void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
@@ -52,7 +51,6 @@ namespace urchin {
 
             DisplayMode displayMode;
             std::unique_ptr<Shader> modelShader;
-            Matrix4<float> projectionMatrix;
 
             std::unique_ptr<CustomModelShaderVariable> customShaderVariable;
             bool depthTestEnabled, depthWriteEnabled;

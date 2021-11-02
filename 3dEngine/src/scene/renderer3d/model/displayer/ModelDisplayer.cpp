@@ -5,10 +5,9 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, const Matrix4<float>& projectionMatrix, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
+    ModelDisplayer::ModelDisplayer(Model *model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
             model(model),
-            projectionMatrix(projectionMatrix),
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
@@ -70,18 +69,17 @@ namespace urchin {
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->indices(constMesh.getTrianglesIndices())
-                    ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
-                    ->addUniformData(sizeof(materialData), &materialData); //binding 2 (only used in DEFAULT_MODE)
+                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                    ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
 
                 if (customShaderVariable) {
-                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 3 & 4 (optional)
+                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
                 }
-                int missingUniformData = 5 - (int)meshRendererBuilder->getUniformData().size();
+                int missingUniformData = 4 - (int)meshRendererBuilder->getUniformData().size();
                 assert(missingUniformData >= 0);
                 for (int i = 0; i < missingUniformData; ++i) {
                     int customDummyValue = 0;
-                    meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 3 & 4
+                    meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 2 & 3
                 }
 
                 if (depthTestEnabled) {
@@ -102,8 +100,8 @@ namespace urchin {
                             ->addData(constMesh.getTextureCoordinates())
                             ->addData(mesh.getNormals())
                             ->addData(mesh.getTangents())
-                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 5
-                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))); //binding 6
+                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
+                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))); //binding 5
                 }
 
                 meshRenderers.push_back(meshRendererBuilder->build());
@@ -123,12 +121,6 @@ namespace urchin {
     TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
         auto textureReadMode = mesh.getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
-    }
-
-    void ModelDisplayer::onCameraProjectionUpdate(const Camera& camera) {
-        for (auto& meshRenderer : meshRenderers) {
-            meshRenderer->updateUniformData(0, &camera.getProjectionMatrix());
-        }
     }
 
     void ModelDisplayer::notify(Observable* observable, int notificationType) {
@@ -152,7 +144,7 @@ namespace urchin {
                         const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
 
                         fillMaterialData(mesh);
-                        meshRenderer->updateUniformData(2, &materialData);
+                        meshRenderer->updateUniformData(1, &materialData);
 
                         if(meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
                             meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
@@ -168,7 +160,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix, const MeshFilter* meshFilter) const {
+    void ModelDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
             const Mesh& mesh = model->getMeshes()->getMesh(meshIndex++);
@@ -176,10 +168,10 @@ namespace urchin {
                 continue;
             }
 
-            positioningData.viewMatrix = viewMatrix;
+            positioningData.projectionViewMatrix = projectionViewMatrix;
             positioningData.modelMatrix = model->getTransform().getTransformMatrix();
             positioningData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
-            meshRenderer->updateUniformData(1, &positioningData);
+            meshRenderer->updateUniformData(0, &positioningData);
 
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);

@@ -1,11 +1,8 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(std140, set = 0, binding = 0) uniform Projection {
-    mat4 matrix;
-} projection;
-layout(std140, set = 0, binding = 1) uniform PositioningData {
-    mat4 mView;
+layout(std140, set = 0, binding = 0) uniform PositioningData {
+    mat4 mProjectionView;
     mat4 mModel;
     mat4 mNormal;
 } postioningData;
@@ -30,5 +27,5 @@ void main() {
     b = normalize(cross(n, t));
 
     worldPosition =  postioningData.mModel * vec4(vertexPosition, 1.0);
-    gl_Position = projection.matrix * (postioningData.mView * worldPosition);
+    gl_Position = postioningData.mProjectionView * worldPosition;
 }

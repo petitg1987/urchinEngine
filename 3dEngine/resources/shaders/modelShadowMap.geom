@@ -5,7 +5,7 @@ const uint POWER_TWO_TAB[13] = uint[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 102
 const uint LIGHTS_SHADER_LIMIT = 15; //must be equals to LightManager::LIGHTS_SHADER_SHADER_LIMIT
 layout(constant_id = 0) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
 
-layout(std140, set = 0, binding = 3) uniform ShadowData {
+layout(std140, set = 0, binding = 2) uniform ShadowData {
     int layersToUpdate;
     mat4 matrices[NUMBER_SHADOW_MAPS];
 } shadowData;

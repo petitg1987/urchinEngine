@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     void LightShadowMap::updateLightViewMatrix() {
-        if (light.hasParallelBeams()) { //sun light
+        if (light.hasParallelBeams()) { //sunlight
             Vector3<float> lightDirection = light.getDirections()[0];
 
             const Vector3<float>& f = lightDirection.normalize();
@@ -167,7 +167,7 @@ namespace urchin {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();
-        shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
+        shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix); //TODO rename in lightProjectionViewMatrix ?
         renderTarget->render();
     }
 }

@@ -88,7 +88,6 @@ namespace urchin {
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
 
         modelSetDisplayer->initialize(*renderTarget);
-        modelSetDisplayer->onCameraProjectionUpdate(*camera);
     }
 
     const ModelSetDisplayer& TransparentManager::getModelSetDisplayer() const {
@@ -108,7 +107,7 @@ namespace urchin {
         unsigned int renderingOrder = 0;
 
         renderTarget->disableAllRenderers();
-        modelSetDisplayer->prepareRendering(renderingOrder, camera.getViewMatrix());
+        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
         renderTarget->render();
     }
 

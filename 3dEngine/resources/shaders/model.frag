@@ -1,12 +1,12 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(std140, set = 0, binding = 2) uniform MaterialData {
+layout(std140, set = 0, binding = 1) uniform MaterialData {
     float encodedEmissiveFactor; //encoded between 0.0 (no emissive) and 1.0 (max emissive)
     float ambientFactor;
 } materialData;
-layout(binding = 5) uniform sampler2D diffuseTex;
-layout(binding = 6) uniform sampler2D normalTex;
+layout(binding = 4) uniform sampler2D diffuseTex;
+layout(binding = 5) uniform sampler2D normalTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;

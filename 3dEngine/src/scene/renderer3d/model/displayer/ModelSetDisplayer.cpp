@@ -47,14 +47,6 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelSetDisplayer::onCameraProjectionUpdate(const Camera& camera) {
-        this->projectionMatrix = camera.getProjectionMatrix();
-
-        for (auto& modelDisplayer : modelsDisplayer) {
-            modelDisplayer.second->onCameraProjectionUpdate(camera);
-        }
-    }
-
     void ModelSetDisplayer::setupShader(const std::string& geometryShaderName, const std::string& fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
@@ -100,7 +92,7 @@ namespace urchin {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 const auto& itModel = modelsDisplayer.find(model);
                 if (itModel == modelsDisplayer.end()) {
-                    auto modelDisplayer = std::make_unique<ModelDisplayer>(model, projectionMatrix, displayMode, *renderTarget, *modelShader);
+                    auto modelDisplayer = std::make_unique<ModelDisplayer>(model, displayMode, *renderTarget, *modelShader);
                     modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
                     modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
                     modelDisplayer->setupBlendFunctions(blendFunctions);
@@ -126,7 +118,7 @@ namespace urchin {
         return modelsDisplayer.find(&model) != modelsDisplayer.end();
     }
 
-    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
@@ -136,7 +128,7 @@ namespace urchin {
         }
 
         for (auto model : models) {
-            modelsDisplayer.at(model)->prepareRendering(renderingOrder, viewMatrix, meshFilter.get());
+            modelsDisplayer.at(model)->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
