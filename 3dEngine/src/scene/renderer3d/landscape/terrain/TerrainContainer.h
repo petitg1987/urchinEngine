@@ -16,8 +16,6 @@ namespace urchin {
 
             explicit TerrainContainer(RenderTarget&);
 
-            void onCameraProjectionUpdate(const Camera&);
-
             void addTerrain(const std::shared_ptr<Terrain>&);
             void removeTerrain(const Terrain&);
 
@@ -33,8 +31,6 @@ namespace urchin {
             RenderTarget& renderTarget;
 
             std::vector<std::shared_ptr<Terrain>> terrains;
-
-            Matrix4<float> projectionMatrix;
 
             Config config;
     };

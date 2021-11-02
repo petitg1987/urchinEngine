@@ -9,14 +9,6 @@ namespace urchin {
 
     }
 
-    void WaterContainer::onCameraProjectionUpdate(const Camera& camera) {
-        this->projectionMatrix = camera.getProjectionMatrix();
-
-        for (const auto& water : waters) {
-            water->onCameraProjectionUpdate(projectionMatrix);
-        }
-    }
-
     void WaterContainer::addWater(const std::shared_ptr<Water>& water) {
         if (water) {
             ScopeProfiler sp(Profiler::graphic(), "addWater");
@@ -24,7 +16,6 @@ namespace urchin {
             waters.push_back(water);
 
             water->initialize(renderTarget);
-            water->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 

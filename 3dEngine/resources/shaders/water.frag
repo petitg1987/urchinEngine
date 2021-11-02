@@ -10,8 +10,8 @@ layout(std140, set = 0, binding = 1) uniform WaterProperties {
     float waveSpeed;
     float waveStrength;
 } waterProperties;
-layout(binding = 3) uniform sampler2D normalTex;
-layout(binding = 4) uniform sampler2D dudvMap;
+layout(binding = 2) uniform sampler2D normalTex;
+layout(binding = 3) uniform sampler2D dudvMap;
 
 layout(location = 0) in vec2 texCoordinates;
 

@@ -167,7 +167,7 @@ namespace urchin {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();
-        shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix); //TODO rename in lightProjectionViewMatrix ?
+        shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
         renderTarget->render();
     }
 }

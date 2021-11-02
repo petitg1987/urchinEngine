@@ -196,8 +196,6 @@ namespace urchin {
     void Renderer3d::onCameraProjectionUpdate() {
         ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
 
-        terrainContainer.onCameraProjectionUpdate(*camera);
-        waterContainer.onCameraProjectionUpdate(*camera);
         uiContainer.onCameraProjectionUpdate(*camera);
         geometryContainer.onCameraProjectionUpdate(*camera);
         shadowManager.onCameraProjectionUpdate(*camera);

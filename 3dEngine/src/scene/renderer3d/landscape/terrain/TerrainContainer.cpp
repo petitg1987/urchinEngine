@@ -10,21 +10,12 @@ namespace urchin {
 
     }
 
-    void TerrainContainer::onCameraProjectionUpdate(const Camera& camera) {
-        this->projectionMatrix = camera.getProjectionMatrix();
-
-        for (const auto& terrain : terrains) {
-            terrain->onCameraProjectionUpdate(projectionMatrix);
-        }
-    }
-
     void TerrainContainer::addTerrain(const std::shared_ptr<Terrain>& terrain) {
         if (terrain) {
             ScopeProfiler sp(Profiler::graphic(), "addTerrain");
             terrains.push_back(terrain);
 
             terrain->initialize(renderTarget);
-            terrain->onCameraProjectionUpdate(projectionMatrix);
             updateTerrainConfig(*terrain);
         }
     }

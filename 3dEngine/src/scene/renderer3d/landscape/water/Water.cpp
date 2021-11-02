@@ -48,12 +48,6 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void Water::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        this->projectionMatrix = projectionMatrix;
-
-        waterRenderer->updateUniformData(2, &projectionMatrix);
-    }
-
     void Water::updateRenderer() {
         if (renderTarget) {
             float minX = -xSize / 2.0f + centerPosition.X;
@@ -76,9 +70,8 @@ namespace urchin {
                     ->addData(textureCoord)
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                     ->addUniformData(sizeof(waterProperties), &waterProperties) //binding 1
-                    ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 2
-                    ->addUniformTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 3
-                    ->addUniformTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 4
+                    ->addUniformTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 2
+                    ->addUniformTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 3
                     ->build();
         }
 
@@ -250,7 +243,7 @@ namespace urchin {
                 notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
             }
 
-            positioningData.viewMatrix = camera.getViewMatrix();
+            positioningData.projectionViewMatrix = camera.getProjectionViewMatrix();
             positioningData.sumTimeStep += dt;
 
             waterRenderer->updateUniformData(0, &positioningData);

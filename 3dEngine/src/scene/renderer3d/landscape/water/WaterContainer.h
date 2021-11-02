@@ -13,8 +13,6 @@ namespace urchin {
         public:
             explicit WaterContainer(RenderTarget&);
 
-            void onCameraProjectionUpdate(const Camera&);
-
             void addWater(const std::shared_ptr<Water>&);
             void removeWater(const Water&);
 
@@ -24,8 +22,6 @@ namespace urchin {
             RenderTarget& renderTarget;
 
             std::vector<std::shared_ptr<Water>> waters;
-
-            Matrix4<float> projectionMatrix;
     };
 
 }

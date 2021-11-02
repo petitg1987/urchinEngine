@@ -20,7 +20,6 @@ namespace urchin {
             Terrain(std::unique_ptr<TerrainMesh>, std::unique_ptr<TerrainMaterials>, const Point3<float>&);
 
             void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void setMesh(std::unique_ptr<TerrainMesh>);
             const TerrainMesh* getMesh() const;
@@ -50,10 +49,7 @@ namespace urchin {
 
             std::unique_ptr<GenericRenderer> terrainRenderer;
             std::unique_ptr<Shader> terrainShader;
-            struct {
-                alignas(16) Matrix4<float> projectionMatrix;
-                alignas(16) Point3<float> position;
-            } positioningData;
+            Point3<float> position;
 
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterials> materials;

@@ -25,7 +25,7 @@ namespace urchin {
     void ShadowModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
         refreshShaderVariables();
 
-        meshRenderer.updateUniformData(3, &shadowData);
+        meshRenderer.updateUniformData(2, &shadowData);
     }
 
     void ShadowModelShaderVariable::refreshShaderVariables() {

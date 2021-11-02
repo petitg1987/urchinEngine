@@ -24,7 +24,6 @@ namespace urchin {
             };
 
             void initialize(RenderTarget&);
-            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void setCenterPosition(const Point3<float>&);
             const Point3<float>& getCenterPosition() const;
@@ -73,15 +72,14 @@ namespace urchin {
             RenderTarget* renderTarget;
             std::unique_ptr<Shader> waterShader;
             struct {
-                alignas(16) Matrix4<float> viewMatrix;
-                alignas(4) float sumTimeStep;
+                alignas(16) Matrix4<float> projectionViewMatrix;
+                alignas(4) float sumTimeStep = 0.0f;
             } positioningData;
             struct {
                 alignas(16) Vector3<float> color;
                 alignas(4) float waveSpeed;
                 alignas(4) float waveStrength;
             } waterProperties;
-            Matrix4<float> projectionMatrix;
 
             Point3<float> centerPosition;
             float xSize, zSize;

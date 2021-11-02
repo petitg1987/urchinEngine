@@ -51,14 +51,6 @@ namespace urchin {
         return bIsInitialized;
     }
 
-    void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        this->projectionMatrix = projectionMatrix;
-
-        for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(3, &projectionMatrix);
-        }
-    }
-
     void TerrainGrass::refreshWith(const TerrainMesh* mesh, const Point3<float>& terrainPosition) {
         assert(bIsInitialized);
         assert(mesh);
@@ -77,7 +69,7 @@ namespace urchin {
         this->ambient = ambient;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(4, &ambient);
+            renderer->updateUniformData(3, &ambient);
         }
     }
 
@@ -209,10 +201,9 @@ namespace urchin {
                         ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                         ->addUniformData(sizeof(grassProperties), &grassProperties) //binding 1
                         ->addUniformData(sizeof(terrainPositioningData), &terrainPositioningData) //binding 2
-                        ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 3
-                        ->addUniformData(sizeof(ambient), &ambient) //binding 4
-                        ->addUniformTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 5
-                        ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear())) //binding 6
+                        ->addUniformData(sizeof(ambient), &ambient) //binding 3
+                        ->addUniformTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 4
+                        ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear())) //binding 5
                         ->build();
 
                 grassQuadtree->setRenderer(std::move(renderer));
@@ -361,7 +352,7 @@ namespace urchin {
         if (grassTexture) {
             ScopeProfiler sp(Profiler::graphic(), "grassPreRender");
 
-            positioningData.viewMatrix = camera.getViewMatrix();
+            positioningData.projectionViewMatrix = camera.getProjectionViewMatrix();
             positioningData.cameraPosition = camera.getPosition();
             positioningData.sumTimeStep += dt;
 

@@ -35,13 +35,6 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void Terrain::onCameraProjectionUpdate(const Matrix4<float>& projectionMatrix) {
-        positioningData.projectionMatrix = projectionMatrix;
-
-        terrainRenderer->updateUniformData(1, &positioningData);
-        grass.onCameraProjectionUpdate(projectionMatrix);
-    }
-
     void Terrain::setMesh(std::unique_ptr<TerrainMesh> mesh) {
         assert(renderTarget);
         this->mesh = std::move(mesh);
@@ -60,7 +53,7 @@ namespace urchin {
                 ->addData(dummyTextureCoordinates)
                 ->indices(this->mesh->getIndices())
                 ->addUniformData(sizeof(viewMatrix), &viewMatrix) //binding 0
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+                ->addUniformData(sizeof(position), &position) //binding 1
                 ->addUniformData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
                 ->addUniformData(sizeof(ambient), &ambient) //binding 3
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())); //binding 4 - mask texture
@@ -115,7 +108,7 @@ namespace urchin {
 
     void Terrain::refreshGrassMesh() {
         if (grass.isInitialized()) {
-            grass.refreshWith(mesh.get(), positioningData.position);
+            grass.refreshWith(mesh.get(), position);
         }
     }
 
@@ -137,10 +130,10 @@ namespace urchin {
      * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
     void Terrain::setPosition(const Point3<float>& position) {
-        positioningData.position = position;
+        this->position = position;
 
         if (terrainRenderer) {
-            terrainRenderer->updateUniformData(1, &positioningData);
+            terrainRenderer->updateUniformData(1, &position);
         }
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
@@ -149,7 +142,7 @@ namespace urchin {
      * @return Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
      */
     const Point3<float>& Terrain::getPosition() const {
-        return positioningData.position;
+        return position;
     }
 
     float Terrain::getAmbient() const {
@@ -166,19 +159,19 @@ namespace urchin {
     }
 
     Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - positioningData.position.X, globalXzCoordinate.Y - positioningData.position.Z);
-        return mesh->findPointAt(localCoordinate) + positioningData.position;
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
+        return mesh->findPointAt(localCoordinate) + position;
     }
 
     float Terrain::findHeightAt(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - positioningData.position.X, globalXzCoordinate.Y - positioningData.position.Z);
-        return mesh->findHeightAt(localCoordinate) + positioningData.position.Y;
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
+        return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
     void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
         assert(isInitialized);
 
-        terrainRenderer->updateUniformData(0, &camera.getViewMatrix());
+        terrainRenderer->updateUniformData(0, &camera.getProjectionViewMatrix());
         terrainRenderer->enableRenderer(renderingOrder);
 
         grass.prepareRendering(renderingOrder, camera, dt);

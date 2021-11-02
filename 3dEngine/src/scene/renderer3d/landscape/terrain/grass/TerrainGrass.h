@@ -18,7 +18,6 @@ namespace urchin {
 
             void initialize(RenderTarget&);
             bool isInitialized() const;
-            void onCameraProjectionUpdate(const Matrix4<float>&);
 
             void refreshWith(const TerrainMesh*, const Point3<float>&);
             void refreshWith(float);
@@ -68,7 +67,7 @@ namespace urchin {
 
             std::unique_ptr<Shader> terrainGrassShader;
             struct {
-                alignas(16) Matrix4<float> viewMatrix;
+                alignas(16) Matrix4<float> projectionViewMatrix;
                 alignas(16) Point3<float> cameraPosition;
                 alignas(4) float sumTimeStep;
             } positioningData;
