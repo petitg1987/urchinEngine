@@ -231,16 +231,16 @@ namespace urchin {
         computeCursorPosition();
     }
 
-    void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+    void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         //text box
-        updatePositioning(textBoxRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updatePositioning(textBoxRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         textBoxRenderer->enableRenderer(renderingOrder);
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
             renderingOrder++;
-            updatePositioning(cursorRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
+            updatePositioning(cursorRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }

@@ -115,8 +115,8 @@ namespace urchin {
         state = DEFAULT;
     }
 
-    void Window::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
-        updatePositioning(windowRenderer.get(), viewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+    void Window::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+        updatePositioning(windowRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
         windowRenderer->enableRenderer(renderingOrder);
     }
 

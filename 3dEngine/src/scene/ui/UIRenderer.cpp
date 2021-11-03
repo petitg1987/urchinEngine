@@ -304,12 +304,12 @@ namespace urchin {
         prepareRendering(dt, screenRenderingOrder, Matrix4<float>());
     }
 
-    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         for (auto& widget : widgets) {
             renderingOrder++;
-            widget->prepareRendering(dt, renderingOrder, viewMatrix);
+            widget->prepareRendering(dt, renderingOrder, projectionViewMatrix);
         }
 
         //debug

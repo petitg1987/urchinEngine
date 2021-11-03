@@ -2,11 +2,10 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(std140, set = 0, binding = 0) uniform StableMatrices {
-    mat4 mProjection;
     mat4 mNormal;
 } stableMatrices;
 layout(std140, set = 0, binding = 1) uniform PositioningData {
-    mat4 mViewModel;
+    mat4 mProjectionViewModel;
 } postioningData;
 
 layout(location = 0) in vec2 vertexPosition;
@@ -21,6 +20,6 @@ void main() {
 
     normal = normalize(mat3(stableMatrices.mNormal) * vec3(0.0, 0.0, 1.0));
 
-    vec4 position = stableMatrices.mProjection * (postioningData.mViewModel * vec4(vertexPosition, 0.0, 1.0));
+    vec4 position = postioningData.mProjectionViewModel * vec4(vertexPosition, 0.0, 1.0);
     gl_Position = position;
 }

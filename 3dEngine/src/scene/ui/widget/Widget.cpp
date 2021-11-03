@@ -58,30 +58,22 @@ namespace urchin {
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(name, uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
+        Matrix4<float> normalMatrix, projectionViewModelMatrix;
         if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
             if (enableTransparency) {
                 //transparency is currently not supported (only discard in fragment shader is supported)
             }
-
-            stableMatrices.projectionMatrix = uiRenderer->getUi3dData()->camera->getProjectionMatrix();
-            stableMatrices.normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
+            normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
         } else {
             if (enableTransparency) {
                 rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
             }
-
-            //orthogonal matrix with origin at top left screen
-            stableMatrices.projectionMatrix.setValues(
-                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
-                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
-                    0.0f, 0.0f, 1.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
         }
 
-        rendererBuilder->addUniformData(sizeof(stableMatrices), &stableMatrices); //binding 0
-        rendererBuilder->addUniformData(sizeof(positioningData), &positioningData); //binding 1
+        rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
+        rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
 
         Container* parentContainer = getParentContainer();
         if (parentContainer && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
@@ -93,16 +85,27 @@ namespace urchin {
         return rendererBuilder;
     }
 
-    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& viewMatrix, const Vector2<int>& translateVector) const {
+    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<int>& translateVector) const {
+        Matrix4<float> projectionViewModelMatrix;
+
         if (uiRenderer->getUi3dData()) {
             float zBias = (float)computeDepthLevel() * 0.0005f;
             Matrix4<float> translateMatrix;
             translateMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, zBias);
-            positioningData.viewModelMatrix = viewMatrix * uiRenderer->getUi3dData()->modelMatrix * translateMatrix;
+            projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix * translateMatrix;
         } else {
-            positioningData.viewModelMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
+            Matrix4<float> translateMatrix;
+            translateMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
+
+            Matrix4<float> orthogonalMatrix( //orthogonal matrix with origin at top left screen
+                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
+                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
+            projectionViewModelMatrix = orthogonalMatrix * translateMatrix;
         }
-        renderer->updateUniformData(1, &positioningData);
+
+        renderer->updateUniformData(1, &projectionViewModelMatrix);
     }
 
     Point2<unsigned int> Widget::getSceneSize() const {
@@ -607,13 +610,13 @@ namespace urchin {
         return depthLevel;
     }
 
-    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         if (isVisible()) {
-            prepareWidgetRendering(dt, renderingOrder, viewMatrix);
+            prepareWidgetRendering(dt, renderingOrder, projectionViewMatrix);
 
             for (auto& child: children) {
                 renderingOrder++;
-                child->prepareRendering(dt, renderingOrder, viewMatrix);
+                child->prepareRendering(dt, renderingOrder, projectionViewMatrix);
             }
         }
     }

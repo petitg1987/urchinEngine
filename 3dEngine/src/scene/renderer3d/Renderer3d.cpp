@@ -480,7 +480,7 @@ namespace urchin {
         waterContainer.prepareRendering(deferredRenderingOrder, *camera, fogContainer, dt);
 
         deferredRenderingOrder++;
-        uiContainer.prepareRendering(dt, deferredRenderingOrder, camera->getViewMatrix());
+        uiContainer.prepareRendering(dt, deferredRenderingOrder, camera->getProjectionViewMatrix());
 
         renderDebugSceneData(geometryContainer);
         deferredRenderingOrder++;

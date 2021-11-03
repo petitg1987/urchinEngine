@@ -69,9 +69,9 @@ namespace urchin {
         return *uis.back();
     }
 
-    void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& viewMatrix) {
+    void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         for (auto& ui : uis) {
-            ui->prepareRendering(dt, renderingOrder, viewMatrix);
+            ui->prepareRendering(dt, renderingOrder, projectionViewMatrix);
         }
     }
 }
