@@ -16,7 +16,9 @@ namespace urchin {
         const Camera* camera = nullptr;
         Matrix4<float> modelMatrix;
         Matrix4<float> normalMatrix;
+
         std::unique_ptr<Plane<float>> uiPlane;
+        Point3<float> uiPosition;
 
         float maxInteractiveDistance = 4.0f;
     };
@@ -63,7 +65,7 @@ namespace urchin {
             std::unique_ptr<Shader> uiShader;
 
             double rawMouseX, rawMouseY;
-            bool isMouseInsideUi; //TODO rename ??? isUiInteractable ?
+            bool canInteractWithUi;
 
             std::unique_ptr<UI3dData> ui3dData;
             std::vector<std::shared_ptr<Widget>> widgets;

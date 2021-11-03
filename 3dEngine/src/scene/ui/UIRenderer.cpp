@@ -17,7 +17,7 @@ namespace urchin {
             uiResolution(renderTarget.getWidth(), renderTarget.getHeight()),
             rawMouseX(0.0),
             rawMouseY(0.0),
-            isMouseInsideUi(true) {
+            canInteractWithUi(true) {
         if (renderTarget.isValidRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
         } else {
@@ -52,9 +52,10 @@ namespace urchin {
         this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
         Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
-        Point4<float> topRight = ui3dData->modelMatrix * Point4<float>(100.0f, 0.0f, 0.0f, 1.0f);
-        Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 100.0f, 0.0f, 1.0f);
+        Point4<float> topRight = ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, 0.0f, 0.0f, 1.0f);
+        Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, (float)uiResolution.Y, 0.0f, 1.0f);
         this->ui3dData->uiPlane = std::make_unique<Plane<float>>(topLeft.toPoint3(), bottomLeft.toPoint3(), topRight.toPoint3());
+        this->ui3dData->uiPosition = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X / 2.0f, (float)uiResolution.Y / 2.0f, 0.0f, 1.0)).toPoint3();
 
         if (renderTarget.isValidRenderTarget()) {
             std::vector<std::size_t> variablesSize = {sizeof(ambient)};
@@ -131,7 +132,7 @@ namespace urchin {
     }
 
     bool UIRenderer::onKeyPress(unsigned int key) {
-        if (isMouseInsideUi) {
+        if (canInteractWithUi) {
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
             for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
@@ -144,7 +145,7 @@ namespace urchin {
     }
 
     bool UIRenderer::onKeyRelease(unsigned int key) {
-        if (isMouseInsideUi) {
+        if (canInteractWithUi) {
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
             for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
@@ -157,7 +158,7 @@ namespace urchin {
     }
 
     bool UIRenderer::onChar(char32_t unicodeCharacter) {
-        if (isMouseInsideUi) {
+        if (canInteractWithUi) {
             if (unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
                 && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
                 && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
@@ -178,9 +179,9 @@ namespace urchin {
         this->rawMouseY = mouseY;
 
         Point2<int> adjustedMouseCoordinate;
-        isMouseInsideUi = adjustMouseCoordinates(Point2<double>(mouseX, mouseY), adjustedMouseCoordinate);
+        canInteractWithUi = adjustMouseCoordinates(Point2<double>(mouseX, mouseY), adjustedMouseCoordinate);
 
-        if (isMouseInsideUi) {
+        if (canInteractWithUi) {
             for (long i = (long)widgets.size() - 1; i >= 0; --i) {
                 if (!widgets[(std::size_t)i]->onMouseMove(adjustedMouseCoordinate.X, adjustedMouseCoordinate.Y)) {
                     return false;
@@ -194,40 +195,37 @@ namespace urchin {
 
     /**
      * @param adjustedMouseCoord [out] Adjusted mouse coordinates
-     * @return True when mouse coordinates are inside the UI
+     * @return True when camera is near to UI to interact with it
      */
     bool UIRenderer::adjustMouseCoordinates(const Point2<double>& mouseCoord, Point2<int>& adjustedMouseCoord) const {
         if (ui3dData) {
             if (!ui3dData->camera) {
-                return false;
+                return false; //camera not setup yet
             }
-
-            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y)); //TODO use screen center to avoid partial interaction ?
-
-            bool hasIntersection = false;
-            Point3<float> uiHitPoint = ui3dData->uiPlane->intersectPoint(viewLine, hasIntersection);
-            if (!hasIntersection) {
-                return false; //camera is parallel to the UI plane
+            if (ui3dData->uiPosition.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) {
+                return false; //camera too far from the UI
             }
-            if (uiHitPoint.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
+            if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
                 return false; //camera is behind the UI
             }
             if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) {
                 return false; //camera does not face to the UI
             }
-            if (uiHitPoint.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) {
-                return false; //camera too far from the UI
+
+            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y));
+            bool hasIntersection = false;
+            Point3<float> uiHitPoint = ui3dData->uiPlane->intersectPoint(viewLine, hasIntersection);
+            if (!hasIntersection) {
+                return false; //camera is parallel to the UI plane
             }
 
-            Point4<float> intersectionPointClipSpace = ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint);
-            intersectionPointClipSpace = intersectionPointClipSpace.divideByW();
-
+            Point3<float> intersectionPointClipSpace = (ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint)).toPoint3();
             float clipSpaceX = (2.0f * (float) mouseCoord.X) / ((float) renderTarget.getWidth()) - 1.0f;
             float clipSpaceY = (2.0f * (float) mouseCoord.Y) / ((float) renderTarget.getHeight()) - 1.0f;
             Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
 
             Matrix4<float> uiInverseMatrix = (ui3dData->camera->getProjectionViewMatrix() * ui3dData->modelMatrix).inverse();
-            Point4<float> mouseScreen = (uiInverseMatrix * mousePos).divideByW();
+            Point3<float> mouseScreen = (uiInverseMatrix * mousePos).toPoint3();
 
             adjustedMouseCoord = Point2<int>((int)mouseScreen.X, (int)mouseScreen.Y);
             return true;
@@ -238,7 +236,7 @@ namespace urchin {
     }
 
     bool UIRenderer::onScroll(double offsetY) {
-        if (isMouseInsideUi) {
+        if (canInteractWithUi) {
             for (long i = (long) widgets.size() - 1; i >= 0; --i) {
                 if (!widgets[(std::size_t) i]->onScroll(offsetY)) {
                     return false;

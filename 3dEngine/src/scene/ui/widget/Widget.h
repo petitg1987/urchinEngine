@@ -16,7 +16,7 @@
 namespace urchin {
 
     class UIRenderer;
-    class UI3dData;
+    struct UI3dData;
     class Container;
 
     class Widget : public Observable {
