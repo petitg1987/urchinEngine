@@ -56,24 +56,27 @@ namespace urchin {
     }
 
     bool Window::onKeyPressEvent(unsigned int key) {
-        Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                                 Point2<int>(getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY() + widgetOutline.topWidth));
-        Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + ((int)getWidth() - widgetOutline.rightWidth), getGlobalPositionY()),
-                                 Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
-
-        if (key == (int)InputDeviceKey::MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
-            mousePositionX = getMouseX() - (int)getPositionX();
-            mousePositionY = getMouseY() - (int)getPositionY();
-
-            state = MOVING;
-        } else if (key == (int)InputDeviceKey::MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
-            state = CLOSING;
-        }
-
         bool propagateEvent = true;
-        if (key == (int)InputDeviceKey::MOUSE_LEFT && widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
-            notifyObservers(this, SET_IN_FOREGROUND);
-            propagateEvent = false;
+        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+            Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                                     Point2<int>(getGlobalPositionX() + ((int) getWidth() - widgetOutline.rightWidth), getGlobalPositionY() + widgetOutline.topWidth));
+            Rectangle<int> closeZone(Point2<int>(getGlobalPositionX() + ((int) getWidth() - widgetOutline.rightWidth), getGlobalPositionY()),
+                                     Point2<int>(getGlobalPositionX() + (int) getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
+
+            if (!getUi3dData() && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                mousePositionX = getMouseX() - (int) getPositionX();
+                mousePositionY = getMouseY() - (int) getPositionY();
+                state = MOVING;
+            }
+
+            if (closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                state = CLOSING;
+            }
+
+            if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                notifyObservers(this, SET_IN_FOREGROUND);
+                propagateEvent = false;
+            }
         }
 
         return propagateEvent;

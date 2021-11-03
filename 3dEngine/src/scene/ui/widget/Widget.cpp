@@ -122,6 +122,13 @@ namespace urchin {
         return nullptr;
     }
 
+    UI3dData* Widget::getUi3dData() const {
+        if (uiRenderer) {
+            return uiRenderer->getUi3dData();
+        }
+        return nullptr;
+    }
+
     Widget* Widget::getParent() const {
         return parent;
     }
