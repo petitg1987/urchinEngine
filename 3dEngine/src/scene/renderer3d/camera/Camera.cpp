@@ -186,10 +186,12 @@ namespace urchin {
     }
 
     void Camera::moveTo(const Point3<float>& position) {
-        this->position = position;
+        if(this->position != position) {
+            this->position = position;
 
-        updateComponents();
-        notifyObservers(this, Camera::POSITION_UPDATED);
+            updateComponents();
+            notifyObservers(this, Camera::POSITION_UPDATED);
+        }
     }
 
     void Camera::moveOnLocalXAxis(float distance) {
