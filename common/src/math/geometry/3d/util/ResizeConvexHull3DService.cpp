@@ -106,9 +106,8 @@ namespace urchin {
                 Vector3<T> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
                 if (n2CrossN3.squareLength() < 0.0
                         || plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE
-                        || plane1.getNormal().dotProduct(n2CrossN3) == 0.0) //additional check due to float imprecision
-                { //planes are parallel: continue on next plane
-                    continue;
+                        || plane1.getNormal().dotProduct(n2CrossN3) == 0.0) { //additional check due to float imprecision
+                    continue; //planes are parallel: continue on next plane
                 }
 
                 nonParallelPlanes = {plane1, plane2, plane3};

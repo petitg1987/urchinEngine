@@ -70,19 +70,19 @@ namespace urchin {
 
         //both files must have the same number of bones
         if (meshes->getConstMeshes().getConstMesh(0).getNumberBones() != constAnimation->getNumberBones()) {
-            throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes().getName() + ", Animation filename: " + constAnimation->getName() + ".");
+            throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes().getMeshesFilename() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
         }
 
         //we just check with mesh[0] && frame[0]
         for (unsigned int i = 0; i < meshes->getConstMeshes().getConstMesh(0).getNumberBones(); ++i) {
             //bones must have the same parent index
             if (meshes->getConstMeshes().getConstMesh(0).getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
-                throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes().getName() + ", Animation filename: " + constAnimation->getName() + ".");
+                throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes().getMeshesFilename() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
             }
 
             //bones must have the same name
             if (meshes->getConstMeshes().getConstMesh(0).getBaseBone(i).name != constAnimation->getBone(0, i).name) {
-                throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes().getName() + ", Animation filename: " + constAnimation->getName() + ".");
+                throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes().getMeshesFilename() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
             }
         }
     }
