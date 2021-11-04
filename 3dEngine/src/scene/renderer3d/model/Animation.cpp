@@ -89,4 +89,24 @@ namespace urchin {
         }
     }
 
+    void Animation::gotoFrame(unsigned int frame) {
+        if (frame >= constAnimation->getNumberFrames()) {
+            throw std::runtime_error("Frame (" + std::to_string(frame) + ") does not exist in animation " + constAnimation->getName() + ". Total frame: " + std::to_string(constAnimation->getNumberFrames()));
+        }
+
+        //update skeletons
+        for (unsigned int i = 0; i < constAnimation->getNumberBones(); ++i) {
+            const Bone& nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
+
+            skeleton[i].parent = nextFrameBone.parent;
+            skeleton[i].pos = nextFrameBone.pos;
+            skeleton[i].orient = nextFrameBone.orient;
+        }
+
+        //update the vertex and normals
+        for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
+            meshes.getMesh(meshIndex).update(skeleton);
+        }
+    }
+
 }

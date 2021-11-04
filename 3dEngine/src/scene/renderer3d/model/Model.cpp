@@ -7,7 +7,8 @@ namespace urchin {
 
     Model::Model(const std::string& meshesFilename) :
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
-            currAnimation(nullptr),
+            activeAnimation(nullptr),
+            isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         if (!meshesFilename.empty()) {
@@ -20,7 +21,8 @@ namespace urchin {
     Model::Model(std::unique_ptr<Meshes> meshes) :
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             meshes(std::move(meshes)),
-            currAnimation(nullptr),
+            activeAnimation(nullptr),
+            isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         initialize();
@@ -29,7 +31,8 @@ namespace urchin {
     Model::Model(const Model& model) :
             Octreeable(model),
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
-            currAnimation(nullptr),
+            activeAnimation(nullptr),
+            isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
             bIsProduceShadow(model.isProduceShadow()) {
@@ -88,31 +91,45 @@ namespace urchin {
     }
 
     void Model::animate(const std::string& animationName) {
-        currAnimation = animations.at(animationName).get();
+        activeAnimation = animations.at(animationName).get();
+        isModelAnimated = true;
 
         onMoving(transform);
     }
 
     void Model::stopAnimation(bool immediate) {
         if (immediate) {
-            currAnimation = nullptr;
-        } else if (isAnimate()) {
+            activeAnimation = nullptr;
+            isModelAnimated = false;
+        } else if (isAnimated()) {
             stopAnimationAtLastFrame = true;
         }
 
         onMoving(transform);
     }
 
-    bool Model::isAnimate() const {
-        return currAnimation != nullptr;
+    void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
+        Animation* animation = animations.at(animationName).get();
+        animation->gotoFrame(animationFrameIndex);
+        notifyObservers(this, Model::MESH_UPDATED);
+
+        onMoving(transform);
+    }
+
+    bool Model::hasActiveAnimation() const {
+        return activeAnimation != nullptr;
+    }
+
+    bool Model::isAnimated() const {
+        return hasActiveAnimation() && isModelAnimated;
     }
 
     void Model::onMoving(const Transform<float>& newTransform) {
         //update the bounding box
         if (meshes) {
             meshes->onMoving(newTransform);
-            if (currAnimation) {
-                currAnimation->onMoving(newTransform);
+            if (hasActiveAnimation()) {
+                activeAnimation->onMoving(newTransform);
             }
         } else {
             defaultModelAABBoxes[0] = Model::getDefaultModelLocalAABBox().moveAABBox(transform);
@@ -145,8 +162,8 @@ namespace urchin {
     * @return Merged bounding box for all animations. If not animation exist: return meshes bounding box.
     */
     const AABBox<float>& Model::getAABBox() const {
-        if (isAnimate()) {
-            return currAnimation->getGlobalAABBox();
+        if (hasActiveAnimation()) {
+            return activeAnimation->getGlobalAABBox();
         } else if (meshes) {
             return meshes->getGlobalAABBox();
         } else {
@@ -158,8 +175,8 @@ namespace urchin {
      * @return identical to getAABBox() method but the bounding box is split to the limit size configured
      */
     const std::vector<AABBox<float>>& Model::getSplitAABBoxes() const {
-        if (isAnimate()) {
-            return currAnimation->getGlobalSplitAABBoxes();
+        if (hasActiveAnimation()) {
+            return activeAnimation->getGlobalSplitAABBoxes();
         } else if (meshes) {
             return meshes->getGlobalSplitAABBoxes();
         } else {
@@ -171,8 +188,8 @@ namespace urchin {
     * @return Local merged bounding box for all animations. If not animation exist: return local meshes bounding box.
     */
     const AABBox<float>& Model::getLocalAABBox() const {
-        if (isAnimate()) {
-            return currAnimation->getGlobalLocalAABBox();
+        if (hasActiveAnimation()) {
+            return activeAnimation->getGlobalLocalAABBox();
         } else if (meshes) {
             return meshes->getGlobalLocalAABBox();
         } else {
@@ -224,13 +241,12 @@ namespace urchin {
     }
 
     void Model::updateAnimation(float dt) {
-        //animate model
-        if (isAnimate()) {
-            if (stopAnimationAtLastFrame && currAnimation->getCurrFrame() == 0u) {
+        if (isAnimated()) {
+            if (stopAnimationAtLastFrame && activeAnimation->getCurrFrame() == 0u) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
             } else {
-                currAnimation->animate(dt);
+                activeAnimation->animate(dt);
                 notifyObservers(this, Model::MESH_UPDATED);
             }
         }

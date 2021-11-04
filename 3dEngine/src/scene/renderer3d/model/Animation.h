@@ -21,6 +21,7 @@ namespace urchin {
             unsigned int getCurrFrame() const;
 
             void animate(float);
+            void gotoFrame(unsigned int);
 
             void onMoving(const Transform<float>&);
 
@@ -32,6 +33,8 @@ namespace urchin {
             std::vector<Bone> skeleton;
             AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
             std::vector<AABBox<float>> globalSplitBBoxes;
+
+            bool animationOnGoing;
     };
 
 }

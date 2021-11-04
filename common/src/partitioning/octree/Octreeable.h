@@ -14,7 +14,7 @@ namespace urchin {
     template<class T> class Octreeable : public Observable {
         public:
             Octreeable();
-            Octreeable(const Octreeable&);
+            Octreeable(const Octreeable<T>&);
             ~Octreeable() override;
 
             enum NotificationType {
