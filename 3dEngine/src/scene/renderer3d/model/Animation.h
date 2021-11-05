@@ -33,8 +33,6 @@ namespace urchin {
             std::vector<Bone> skeleton;
             AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
             std::vector<AABBox<float>> globalSplitBBoxes;
-
-            bool animationOnGoing;
     };
 
 }

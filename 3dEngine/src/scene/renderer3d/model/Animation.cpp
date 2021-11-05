@@ -83,9 +83,9 @@ namespace urchin {
             skeleton[i].orient = currentFrameBone.orient.slerp(nextFrameBone.orient, interp);
         }
 
-        //update the vertex and normals
+        //update the mesh (vertex, normals...)
         for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
-            meshes.getMesh(meshIndex).update(skeleton);
+            meshes.getMesh(meshIndex).updateSkeleton(skeleton);
         }
     }
 
@@ -103,9 +103,9 @@ namespace urchin {
             skeleton[i].orient = frameBone.orient;
         }
 
-        //update the vertex and normals
+        //update the mesh (vertex, normals...)
         for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
-            meshes.getMesh(meshIndex).update(skeleton);
+            meshes.getMesh(meshIndex).updateSkeleton(skeleton);
         }
     }
 

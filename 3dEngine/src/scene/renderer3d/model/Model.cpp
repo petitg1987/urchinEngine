@@ -113,7 +113,9 @@ namespace urchin {
 
     void Model::disableActiveAnimation(bool immediate) {
         if (immediate) {
-            //TODO reset mesh
+            for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
+                meshes->getMesh(meshIndex).resetSkeleton();
+            }
             stopAnimation(true);
         } else if (isAnimated()) {
             disableAnimationAtLastFrame = true;

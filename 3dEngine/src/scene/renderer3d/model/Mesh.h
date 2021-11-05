@@ -14,7 +14,8 @@ namespace urchin {
         public:
             explicit Mesh(const ConstMesh&);
 
-            void update(const std::vector<Bone>&);
+            void updateSkeleton(const std::vector<Bone>&);
+            void resetSkeleton();
             void updateVertices(const std::vector<Point3<float>>&);
             void updateMaterial(const std::shared_ptr<Material>&);
 

@@ -10,9 +10,13 @@ namespace urchin {
 
     }
 
-    void Mesh::update(const std::vector<Bone>& skeleton) {
-        //recompute the vertices, normals and tangents
+    void Mesh::updateSkeleton(const std::vector<Bone>& skeleton) {
         MeshService::computeVertices(constMesh, skeleton, vertices);
+        MeshService::computeNormalsAndTangents(constMesh, vertices, normals, tangents);
+    }
+
+    void Mesh::resetSkeleton() {
+        MeshService::computeVertices(constMesh, constMesh.getBaseSkeleton(), vertices);
         MeshService::computeNormalsAndTangents(constMesh, vertices, normals, tangents);
     }
 
