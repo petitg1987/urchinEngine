@@ -10,6 +10,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
+            disableAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
@@ -24,6 +25,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
+            disableAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         initialize();
     }
@@ -34,6 +36,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
+            disableAnimationAtLastFrame(false),
             transform(model.getTransform()),
             bIsProduceShadow(model.isProduceShadow()) {
         if (model.meshes) {
@@ -108,9 +111,20 @@ namespace urchin {
         onMoving(transform);
     }
 
+    void Model::disableActiveAnimation(bool immediate) {
+        if (immediate) {
+            //TODO reset mesh
+            stopAnimation(true);
+        } else if (isAnimated()) {
+            disableAnimationAtLastFrame = true;
+        }
+
+        onMoving(transform);
+    }
+
     void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
-        Animation* animation = animations.at(animationName).get();
-        animation->gotoFrame(animationFrameIndex);
+        activeAnimation = animations.at(animationName).get();
+        activeAnimation->gotoFrame(animationFrameIndex);
         notifyObservers(this, Model::MESH_UPDATED);
 
         onMoving(transform);
@@ -245,6 +259,9 @@ namespace urchin {
             if (stopAnimationAtLastFrame && activeAnimation->getCurrFrame() == 0u) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
+            } else if (disableAnimationAtLastFrame && activeAnimation->getCurrFrame() == 0u) {
+                disableActiveAnimation(true);
+                disableAnimationAtLastFrame = false;
             } else {
                 activeAnimation->animate(dt);
                 notifyObservers(this, Model::MESH_UPDATED);
