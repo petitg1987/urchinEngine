@@ -96,11 +96,11 @@ namespace urchin {
 
         //update skeletons
         for (unsigned int i = 0; i < constAnimation->getNumberBones(); ++i) {
-            const Bone& nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
+            const Bone& frameBone = constAnimation->getBone(frame, i);
 
-            skeleton[i].parent = nextFrameBone.parent;
-            skeleton[i].pos = nextFrameBone.pos;
-            skeleton[i].orient = nextFrameBone.orient;
+            skeleton[i].parent = frameBone.parent;
+            skeleton[i].pos = frameBone.pos;
+            skeleton[i].orient = frameBone.orient;
         }
 
         //update the vertex and normals
