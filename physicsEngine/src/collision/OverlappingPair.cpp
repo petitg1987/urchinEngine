@@ -7,7 +7,7 @@ namespace urchin {
     OverlappingPair::OverlappingPair(std::shared_ptr<AbstractBody> body1, std::shared_ptr<AbstractBody> body2) :
             body1(std::move(body1)),
             body2(std::move(body2)),
-            bodiesId(computeBodiesId(*body1, *body2)),
+            bodiesId(computeBodiesId(*this->body1, *this->body2)),
             collisionAlgorithm(nullptr) {
 
     }
