@@ -35,7 +35,7 @@ namespace urchin {
                                   MathFunction::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
             return a.translate(vTranslate);
         }
-        return a.translate((ab * ap.dotProduct(ab)) / ab.squareLength());
+        return a.translate((ab * apDotAb) / ab.squareLength());
     }
 
     /**
