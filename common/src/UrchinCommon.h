@@ -108,5 +108,6 @@
 #include <util/MapUtil.h>
 #include <util/TypeConverter.h>
 #include <util/UserAuthorityException.h>
+#include <util/ArrayUtil.h>
 #include <util/VectorUtil.h>
 #include <util/HashUtil.h>
