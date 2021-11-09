@@ -540,6 +540,12 @@ namespace urchin {
                 }
             }
         }
+
+        if (!propagateEvent) { //TODO review (not 100% working)
+            //when a scroll occur: the mouse is implicitly moving relatively to the moved widgets
+            onMouseMove(this->mouseX, this->mouseY);
+        }
+
         return propagateEvent;
     }
 
