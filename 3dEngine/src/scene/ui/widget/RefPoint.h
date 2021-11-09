@@ -3,13 +3,13 @@
 namespace urchin {
 
     enum class RefPoint {
-        TOP_LEFT,
-        TOP_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_RIGHT,
+        LEFT_TOP,
+        RIGHT_TOP,
+        LEFT_BOTTOM,
+        RIGHT_BOTTOM,
         CENTER_XY,
-        CENTER_X_TOP,
-        CENTER_Y_LEFT
+        CENTERX_TOP,
+        LEFT_CENTERY
     };
 
 }

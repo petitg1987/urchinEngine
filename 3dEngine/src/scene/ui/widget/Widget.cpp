@@ -230,24 +230,24 @@ namespace urchin {
     int Widget::getGlobalPositionX() const {
         int startPosition = 0;
         if (parent) {
-            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT
-                    || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT) { //left
+            if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
+                    || position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
+                    || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY) { //left
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT
-                    || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_RIGHT) { //right
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
+                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
+                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //right
                 startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
             } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_BOTTOM) { //center X
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //center X
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int)((float)parent->getWidth() / 2.0f);
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::TOP_RIGHT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) { //right
+        if (position.getReferencePoint() == RefPoint::RIGHT_TOP || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM) { //right
             startPosition -= (int)getWidth();
-        } else if (position.getReferencePoint() == RefPoint::CENTER_XY || position.getReferencePoint() == RefPoint::CENTER_X_TOP) { //center X
+        } else if (position.getReferencePoint() == RefPoint::CENTER_XY || position.getReferencePoint() == RefPoint::CENTERX_TOP) { //center X
             startPosition -= (int)((float)getWidth() / 2.0f);
         }
 
@@ -257,17 +257,17 @@ namespace urchin {
     int Widget::getGlobalPositionY() const {
         int startPosition = 0;
         if (parent) {
-            if (position.getRelativeTo() == RelativeTo::PARENT_TOP_LEFT
-                    || position.getRelativeTo() == RelativeTo::PARENT_TOP_RIGHT
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_TOP) { //top
+            if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
+                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP) { //top
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_LEFT
-                    || position.getRelativeTo() == RelativeTo::PARENT_BOTTOM_RIGHT
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_X_BOTTOM) { //bottom
+            } else if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
+                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
+                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //bottom
                 startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
             } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_LEFT
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTER_Y_RIGHT) { //center Y
+                    || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY
+                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //center Y
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int)((float)parent->getHeight() / 2.0f);
             }
 
@@ -277,9 +277,9 @@ namespace urchin {
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::BOTTOM_LEFT || position.getReferencePoint() == RefPoint::BOTTOM_RIGHT) { //bottom
+        if (position.getReferencePoint() == RefPoint::LEFT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM) { //bottom
             startPosition -= (int)getHeight();
-        } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::CENTER_Y_LEFT) { //center Y
+        } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::LEFT_CENTERY) { //center Y
             startPosition -= (int)((float)getHeight() / 2.0f);
         }
 
