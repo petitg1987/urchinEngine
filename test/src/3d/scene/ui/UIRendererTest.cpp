@@ -65,7 +65,7 @@ void UIRendererTest::relativeParentPixelPosition() {
     auto uiRenderer = setupUiRenderer();
     auto parentWidget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
     uiRenderer->addWidget(parentWidget);
-    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_TOP_RIGHT), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.tga");
 
     AssertHelper::assertIntEquals(widget->getGlobalPositionX(), 20 + 60 + 10);
     AssertHelper::assertIntEquals(widget->getGlobalPositionY(), 20 + 10);
