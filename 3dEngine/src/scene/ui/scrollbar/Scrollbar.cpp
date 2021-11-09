@@ -56,24 +56,28 @@ namespace urchin {
     }
 
     void Scrollbar::onScrollableWidgetsUpdated() {
-        //compute values
-        float minChildPositionY = 100000.0f;
-        float maxChildPositionY = 0.0f;
-        for (auto& contentChild : getContentChildren()) {
-            auto childMinPositionY = (float)contentChild->getGlobalPositionY();
-            if (childMinPositionY < minChildPositionY) {
-                minChildPositionY = childMinPositionY;
-            }
+        if (scrollableWidget.isInitialized()) {
+            //compute values
+            float minChildPositionY = 100000.0f;
+            float maxChildPositionY = 0.0f;
+            for (auto& contentChild : getContentChildren()) {
+                if (contentChild->isInitialized()) {
+                    auto childMinPositionY = (float) contentChild->getGlobalPositionY();
+                    if (childMinPositionY < minChildPositionY) {
+                        minChildPositionY = childMinPositionY;
+                    }
 
-            auto childMaxPositionY = (float)contentChild->getGlobalPositionY() + (float)contentChild->getHeight();
-            if (childMaxPositionY > maxChildPositionY) {
-                maxChildPositionY = childMaxPositionY;
+                    auto childMaxPositionY = (float) contentChild->getGlobalPositionY() + (float) contentChild->getHeight();
+                    if (childMaxPositionY > maxChildPositionY) {
+                        maxChildPositionY = childMaxPositionY;
+                    }
+                }
             }
+            contentHeight = maxChildPositionY - minChildPositionY;
+            visibleHeight = (float) scrollableWidget.getHeight();
+
+            updateScrollingPosition();
         }
-        contentHeight = maxChildPositionY - minChildPositionY;
-        visibleHeight = (float)scrollableWidget.getHeight();
-
-        updateScrollingPosition();
     }
 
     bool Scrollbar::onKeyPressEvent(unsigned int key) {

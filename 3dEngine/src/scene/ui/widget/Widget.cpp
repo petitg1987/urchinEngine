@@ -108,25 +108,18 @@ namespace urchin {
         renderer->updateUniformData(1, &projectionViewModelMatrix);
     }
 
-    Point2<unsigned int> Widget::getSceneSize() const {
-        if (uiRenderer) {
-            return uiRenderer->getUiResolution();
-        }
-        return Point2<unsigned int>(0, 0);
-    }
-
     I18nService* Widget::getI18nService() const {
-        if (uiRenderer) {
-            return &uiRenderer->getI18nService();
+        if (!uiRenderer) {
+            throw std::runtime_error("Internationalization service not available because the widget is not initialized");
         }
-        return nullptr;
+        return &uiRenderer->getI18nService();
     }
 
     UI3dData* Widget::getUi3dData() const {
-        if (uiRenderer) {
-            return uiRenderer->getUi3dData();
+        if (!uiRenderer) {
+            throw std::runtime_error("UI 3d data not available because the widget is not initialized");
         }
-        return nullptr;
+        return uiRenderer->getUi3dData();
     }
 
     Widget* Widget::getParent() const {
@@ -195,6 +188,13 @@ namespace urchin {
 
     Widget::WidgetStates Widget::getWidgetState() const {
         return widgetState;
+    }
+
+    Point2<unsigned int> Widget::getSceneSize() const {
+        if (!uiRenderer) {
+            throw std::runtime_error("Scene size not available because the widget is not initialized");
+        }
+        return uiRenderer->getUiResolution();
     }
 
     void Widget::updatePosition(Position position) {

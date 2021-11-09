@@ -51,6 +51,7 @@ namespace urchin {
             void addEventListener(std::shared_ptr<EventListener>);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetStates getWidgetState() const;
+            Point2<unsigned int> getSceneSize() const;
 
             void updatePosition(Position);
             Position getPosition() const;
@@ -91,7 +92,6 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(const std::string&, ShapeType, bool) const;
             void updatePositioning(GenericRenderer*, const Matrix4<float>&, const Vector2<int>&) const;
 
-            Point2<unsigned int> getSceneSize() const;
             I18nService* getI18nService() const;
             UI3dData* getUi3dData() const;
 
