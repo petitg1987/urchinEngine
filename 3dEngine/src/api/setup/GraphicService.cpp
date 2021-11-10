@@ -85,7 +85,7 @@ namespace urchin {
         applicationInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
         applicationInfo.apiVersion = vulkanVersion;
 
-        std::vector<std::string> requiredExtensionsString = VectorUtil::merge(windowRequiredExtensions, validationLayer.getRequiredExtensions());
+        std::vector<std::string> requiredExtensionsString = VectorUtil::concatenate(windowRequiredExtensions, validationLayer.getRequiredExtensions());
         std::vector<const char*> requiredExtensions;
         requiredExtensions.reserve(requiredExtensionsString.size());
         for (std::string const& requiredExtensionString : requiredExtensionsString) {

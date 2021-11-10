@@ -14,7 +14,7 @@ namespace urchin {
 
             template<class T, class Compare> static void insertSorted(std::vector<T>&, T&, Compare);
 
-            template<class T> static std::vector<T> merge(const std::vector<T>&, const std::vector<T>&);
+            template<class T, class... A> static std::vector<T> concatenate(const std::vector<T>&, A&&...);
     };
 
     #include "VectorUtil.inl"

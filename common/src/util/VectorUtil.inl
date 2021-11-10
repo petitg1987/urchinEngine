@@ -23,8 +23,10 @@ template<class T, class Compare> void VectorUtil::insertSorted(std::vector<T>& v
     v.insert(std::upper_bound(v.begin(), v.end(), item, compare), item);
 }
 
-template<class T> std::vector<T> VectorUtil::merge(const std::vector<T>& vectorA, const std::vector<T>& vectorB) {
-    std::vector<T> result = vectorA;
-    result.insert(result.end(), vectorB.begin(), vectorB.end());
+template<class T, class... A> std::vector<T> VectorUtil::concatenate(const std::vector<T>& v1, A&&... vr) {
+    std::vector<T> result = v1;
+    result.reserve(v1.size() + (vr.size() + ...));
+
+    (result.insert(result.end(), vr.begin(), vr.end()), ...);
     return result;
 }
