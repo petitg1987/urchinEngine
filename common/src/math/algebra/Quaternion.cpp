@@ -151,7 +151,7 @@ namespace urchin {
 
     template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& normalizedAxis, T angle) {
         #ifndef NDEBUG
-            assert(MathFunction::isOne((float)normalizedAxis.length(), 0.001f));
+            assert(MathFunction::isOne((float)normalizedAxis.length(), 0.005f));
         #endif
         const T halfAngle = angle * (T)0.5;
         const T sin = std::sin(halfAngle);
