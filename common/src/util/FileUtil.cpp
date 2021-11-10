@@ -25,6 +25,17 @@ namespace urchin {
         return info.st_mode & (unsigned int)S_IFREG;
     }
 
+    /**
+     * @return Return size of the file in byte
+     */
+    long FileUtil::getFileSize(const std::string& filePath) {
+        struct stat info{};
+        if (stat(filePath.c_str(), &info) != 0) {
+            return -1;
+        }
+        return info.st_size;
+    }
+
     void FileUtil::createDirectory(const std::string& directory) {
         std::error_code errorCode;
         std::filesystem::create_directories(directory, errorCode);
@@ -53,6 +64,24 @@ namespace urchin {
                 if (!isFileExist(dstFile)) {
                     copyFile(srcFile, dstFile);
                 }
+            }
+        }
+    }
+
+    std::vector<std::string> FileUtil::getFilesRecursive(const std::string& directory) {
+        checkDirectory(directory);
+
+        std::vector<std::string> filenames;
+        getFilesRecursive(directory, filenames);
+        return filenames;
+    }
+
+    void FileUtil::getFilesRecursive(const std::string& directory, std::vector<std::string>& filenames) {
+        for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+            if (entry.is_regular_file()) {
+                filenames.push_back(entry.path().string());
+            } else if (entry.is_directory()) {
+                getFilesRecursive(entry.path().string(), filenames);
             }
         }
     }
