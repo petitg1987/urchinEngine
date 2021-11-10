@@ -11,7 +11,7 @@ void UIRendererTest::focusState() {
     auto uiRenderer = setupUiRenderer();
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(container);
-    auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
     uiRenderer->onMouseMove(50.0, 50.0);
 
@@ -23,7 +23,7 @@ void UIRendererTest::noFocusStateBecauseOutsideContainer() {
     auto uiRenderer = setupUiRenderer();
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 10.0f, PIXEL), "test");
     uiRenderer->addWidget(container);
-    auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
     uiRenderer->onMouseMove(50.0, 50.0);
 
@@ -33,7 +33,7 @@ void UIRendererTest::noFocusStateBecauseOutsideContainer() {
 
 void UIRendererTest::clickingState() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
     uiRenderer->onMouseMove(50.0, 50.0);
@@ -46,7 +46,7 @@ void UIRendererTest::clickingState() {
 
 void UIRendererTest::noClickingStateBecauseMouseOutside() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
     uiRenderer->onMouseMove(10.0, 10.0);
@@ -56,7 +56,7 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
 
 void UIRendererTest::focusLostEvent() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
     bool focused = false, focusLost = false;
     widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
     uiRenderer->addWidget(widget);
@@ -71,7 +71,7 @@ void UIRendererTest::focusLostEvent() {
 
 void UIRendererTest::focusLostEventWithClick() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
     bool focused = false, focusLost = false;
     widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
     uiRenderer->addWidget(widget);
@@ -88,9 +88,9 @@ void UIRendererTest::focusLostEventWithClick() {
 
 void UIRendererTest::parentPixelPosition() {
     auto uiRenderer = setupUiRenderer();
-    auto parentWidget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto parentWidget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(parentWidget);
-    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     AssertHelper::assertIntEquals(widget->getGlobalPositionX(), 20 + 10);
     AssertHelper::assertIntEquals(widget->getGlobalPositionY(), 20 + 10);
@@ -98,9 +98,9 @@ void UIRendererTest::parentPixelPosition() {
 
 void UIRendererTest::relativeParentPixelPosition() {
     auto uiRenderer = setupUiRenderer();
-    auto parentWidget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto parentWidget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(parentWidget);
-    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
     AssertHelper::assertIntEquals(widget->getGlobalPositionX(), 20 + 60 + 10);
     AssertHelper::assertIntEquals(widget->getGlobalPositionY(), 20 + 10);
@@ -108,7 +108,7 @@ void UIRendererTest::relativeParentPixelPosition() {
 
 void UIRendererTest::screenPercentagePosition() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, SCREEN_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, SCREEN_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
     AssertHelper::assertIntEquals(widget->getGlobalPositionX(), (int)(1920.0f * 0.2f));
@@ -119,7 +119,7 @@ void UIRendererTest::containerPercentagePosition() {
     auto uiRenderer = setupUiRenderer();
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(container);
-    auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, CONTAINER_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, CONTAINER_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
     AssertHelper::assertIntEquals(widget->getGlobalPositionX(), (int)(100.0f * 0.2f));
     AssertHelper::assertIntEquals(widget->getGlobalPositionY(), (int)(100.0f * 0.2f));
@@ -127,7 +127,7 @@ void UIRendererTest::containerPercentagePosition() {
 
 void UIRendererTest::relativeLengthSize() {
     auto uiRenderer = setupUiRenderer();
-    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(10.0f, PIXEL, 2.0f, RATIO_TO_WIDTH), "ui/widget/empty.tga");
+    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(10.0f, PIXEL, 2.0f, RATIO_TO_WIDTH), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
     AssertHelper::assertUnsignedIntEquals(widget->getWidth(), 10);
@@ -139,7 +139,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(container);
     std::weak_ptr<Container> childContainer = Container::create(container.get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
-    std::weak_ptr<StaticBitmap> deleteButton = StaticBitmap::create(childContainer.lock().get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.tga");
+    std::weak_ptr<StaticBitmap> deleteButton = StaticBitmap::create(childContainer.lock().get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
     deleteButton.lock()->addEventListener(std::make_unique<DetachChildrenEventListener>(container.get()));
 
     uiRenderer->onMouseMove(50.0, 50.0);
@@ -154,11 +154,11 @@ void UIRendererTest::containerWithLazyWidgets() {
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(container);
     auto loadChildrenFunction = [](LazyWidget* parent) {
-        StaticBitmap::create(parent, Position(0.0f, 0.0f, PIXEL), Size(1.0f, 1.0f, PIXEL), "ui/widget/empty.tga");
+        StaticBitmap::create(parent, Position(0.0f, 0.0f, PIXEL), Size(1.0f, 1.0f, PIXEL), "ui/widget/empty.png");
     };
     auto lazyWidget1 = LazyWidget::create(container.get(), Position(1.0f, 1.0f, PIXEL), Size(1.0f, 50.0f, PIXEL), loadChildrenFunction);
     auto lazyWidget2 = LazyWidget::create(container.get(), Position(1.0f, 101.0f, PIXEL), Size(1.0f, 50.0f, PIXEL), loadChildrenFunction);
-    StaticBitmap::create(container.get(), Position(0.0f, 1000.0f, PIXEL), Size(1.0f, 1.0f, PIXEL), "ui/widget/empty.tga");
+    StaticBitmap::create(container.get(), Position(0.0f, 1000.0f, PIXEL), Size(1.0f, 1.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->onMouseMove(50.0, 50.0);
 
     AssertHelper::assertUnsignedIntEquals(lazyWidget1->getChildren().size(), 1);

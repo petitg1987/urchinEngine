@@ -1,6 +1,6 @@
 scrollbar (skin=test):
-  imageLine: "ui/widget/empty.tga"
-  imageCursor: "ui/widget/empty.tga"
+  imageLine: "ui/widget/empty.png"
+  imageCursor: "ui/widget/empty.png"
   width:
     value: "1.75"
     type: "screenPercent"
