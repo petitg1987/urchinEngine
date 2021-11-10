@@ -90,10 +90,16 @@ namespace urchin {
         streamUpdateWorker.checkNoExceptionRaised();
     }
 
-    void SoundEnvironment::process(const Point3<float>& listenerPosition) {
+    void SoundEnvironment::process(const Point3<float>& listenerPosition, const Vector3<float>& listenerFrontVector, const Vector3<float>& listenerUpVector) {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
+        struct {
+            Vector3<float> frontVector;
+            Vector3<float> upVector;
+        } listenerOrientation = {listenerFrontVector, listenerUpVector};
+        alListenerfv(AL_ORIENTATION, &listenerOrientation.frontVector.X);
+        alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 
         for (auto& audioController : audioControllers) {
             audioController->process(listenerPosition, soundVolumes);
@@ -106,7 +112,7 @@ namespace urchin {
     }
 
     void SoundEnvironment::process() {
-        process(Point3<float>(0.0f, 0.0f, 0.0f));
+        process(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 1.0f, 0.0f));
     }
 
 }

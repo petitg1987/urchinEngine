@@ -107,7 +107,7 @@
   * **NEW FEATURE** (`medium`): Support convex hull sound shape
   * **NEW FEATURE** (`major`): Support portal IN and portal OUT to trigger sound
 * Listener    
-  * **NEW FEATURE** (`major`): Define an orientation and a velocity to the listener
+  * **NEW FEATURE** (`minor`): Define a velocity to the listener
 
 # Map editor
 * Render

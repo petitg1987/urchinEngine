@@ -30,7 +30,7 @@ namespace urchin {
             void unpause();
 
             void checkNoExceptionRaised();
-            void process(const Point3<float>&);
+            void process(const Point3<float>&, const Vector3<float>&, const Vector3<float>&);
             void process();
 
         private:

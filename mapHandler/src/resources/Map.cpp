@@ -375,7 +375,7 @@ namespace urchin {
     void Map::refreshSound() {
         //update sound event
         if (renderer3d && renderer3d->getCamera()) {
-            soundEnvironment->process(renderer3d->getCamera()->getPosition());
+            soundEnvironment->process(renderer3d->getCamera()->getPosition(), renderer3d->getCamera()->getView(), renderer3d->getCamera()->getUp());
         } else {
             soundEnvironment->process();
         }
