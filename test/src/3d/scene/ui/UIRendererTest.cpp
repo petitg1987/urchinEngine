@@ -3,6 +3,7 @@
 
 #include <3d/scene/ui/UIRendererTest.h>
 #include <3d/scene/ui/DetachChildrenEventListener.h>
+#include <3d/scene/ui/FocusEventListener.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
@@ -15,6 +16,7 @@ void UIRendererTest::focusState() {
     uiRenderer->onMouseMove(50.0, 50.0);
 
     AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetStates::FOCUS);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::FOCUS);
 }
 
 void UIRendererTest::noFocusStateBecauseOutsideContainer() {
@@ -25,6 +27,7 @@ void UIRendererTest::noFocusStateBecauseOutsideContainer() {
 
     uiRenderer->onMouseMove(50.0, 50.0);
 
+    AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetStates::DEFAULT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
 }
 
@@ -49,6 +52,38 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
     uiRenderer->onMouseMove(10.0, 10.0);
     uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+}
+
+void UIRendererTest::focusLostEvent() {
+    auto uiRenderer = setupUiRenderer();
+    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.tga");
+    bool focused = false, focusLost = false;
+    widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
+    uiRenderer->addWidget(widget);
+    uiRenderer->onMouseMove(50.0, 50.0);
+    assert(focused);
+
+    uiRenderer->onMouseMove(110.0, 50.0);
+
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+    AssertHelper::assertTrue(focusLost);
+}
+
+void UIRendererTest::focusLostEventWithClick() {
+    auto uiRenderer = setupUiRenderer();
+    auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.tga");
+    bool focused = false, focusLost = false;
+    widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
+    uiRenderer->addWidget(widget);
+    uiRenderer->onMouseMove(50.0, 50.0);
+    assert(focused);
+
+    uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onMouseMove(110.0, 50.0);
+    uiRenderer->onKeyRelease((unsigned int)InputDeviceKey::MOUSE_LEFT);
+
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+    AssertHelper::assertTrue(focusLost);
 }
 
 void UIRendererTest::parentPixelPosition() {
@@ -163,6 +198,8 @@ CppUnit::Test* UIRendererTest::suite() {
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("noFocusStateBecauseOutsideContainer", &UIRendererTest::noFocusStateBecauseOutsideContainer));
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("clickingState", &UIRendererTest::clickingState));
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("noClickingStateBecauseMouseOutside", &UIRendererTest::noClickingStateBecauseMouseOutside));
+    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("focusLostEvent", &UIRendererTest::focusLostEvent));
+    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("focusLostEventWithClick", &UIRendererTest::focusLostEventWithClick));
 
     //positioning
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("parentPixelPosition", &UIRendererTest::parentPixelPosition));

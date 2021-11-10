@@ -13,6 +13,8 @@ class UIRendererTest : public CppUnit::TestFixture {
         void noFocusStateBecauseOutsideContainer();
         void clickingState();
         void noClickingStateBecauseMouseOutside();
+        void focusLostEvent();
+        void focusLostEventWithClick();
 
         void parentPixelPosition();
         void relativeParentPixelPosition();

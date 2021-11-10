@@ -432,6 +432,10 @@ namespace urchin {
                 for (auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onMouseLeftClickRelease(this);
                 }
+            } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
+                for (auto& eventListener : eventListeners) {
+                    propagateEvent &= eventListener->onFocusLost(this);
+                }
             }
 
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
@@ -454,8 +458,10 @@ namespace urchin {
                     widgetStateUpdated = true;
                 }
             } else {
-                widgetState = DEFAULT;
-                widgetStateUpdated = true;
+                if (widgetState == CLICKING) {
+                    widgetState = DEFAULT;
+                    widgetStateUpdated = true;
+                }
             }
         }
         return widgetStateUpdated;
