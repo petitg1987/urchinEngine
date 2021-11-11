@@ -491,6 +491,7 @@ def generate_bounding_box(urchin_animation, frame_range):
                     corners.append(point_by_matrix(v, matrix))
         (min, max) = get_min_max(corners)
         urchin_animation.bounds.append((min[0], min[1], min[2], max[0], max[1], max[2]))
+    scene.frame_set(frame_range[0])
 
 
 def rotate_axis(obj_to_rotate, rotate_angle, rotate_axis):
@@ -725,6 +726,7 @@ def export_all(settings):
 
                     animation.add_key_for_bone(bone.id, loc, rot)
                 current_time += 1
+            bpy.context.scene.frame_set(range_start)
         else:
             reporter.report({'ERROR'}, "Animation data missing.")
 
