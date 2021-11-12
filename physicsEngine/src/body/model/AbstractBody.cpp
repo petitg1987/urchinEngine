@@ -74,11 +74,9 @@ namespace urchin {
     }
 
     bool AbstractBody::getManuallyMovedAndReset() {
-        if (isManuallyMoved) {
-            isManuallyMoved = false;
-            return true;
-        }
-        return false;
+        bool expected = true;
+        isManuallyMoved.compare_exchange_strong(expected, false);
+        return expected;
     }
 
     const CollisionShape3D& AbstractBody::getShape() const {
@@ -175,7 +173,8 @@ namespace urchin {
     }
 
     /**
-     * @return Body active state (active body has velocity and/or one of body in the same island is active)
+     * @return Body active state (active body has velocity and/or one of body in the same island is active).
+     * Note that if body transform is manually updated, the body is not considered as active.
      */
     bool AbstractBody::isActive() const {
         return !bDisableAllBodies && bIsActive.load(std::memory_order_acquire);

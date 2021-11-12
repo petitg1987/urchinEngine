@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     bool BodyAABBNodeData::isObjectMoving() const {
-        return getNodeObject()->isActive();
+        return getNodeObject()->isActive() || getNodeObject()->getManuallyMovedAndReset();
     }
 
     bool BodyAABBNodeData::isGhostBody() const {

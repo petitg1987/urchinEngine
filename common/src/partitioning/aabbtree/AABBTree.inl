@@ -176,7 +176,7 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
 }
 
 template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>&) {
-    //can be override
+    //can be overridden
 }
 
 /**

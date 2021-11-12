@@ -65,7 +65,7 @@ namespace urchin {
 
             //body representation data
             PhysicsTransform transform;
-            bool isManuallyMoved;
+            std::atomic_bool isManuallyMoved;
 
         private:
             //body description data

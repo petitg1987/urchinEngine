@@ -4,11 +4,9 @@ namespace urchin {
 
     void SceneEntity::refresh() {
         RigidBody* rigidBody = getRigidBody();
-        if (rigidBody) {
-            if (rigidBody->isActive() || rigidBody->getManuallyMovedAndReset()) {
-                PhysicsTransform physicsTransform = rigidBody->getTransform();
-                moveTo(physicsTransform.getPosition(), physicsTransform.getOrientation());
-            }
+        if (rigidBody && rigidBody->isActive()) {
+            PhysicsTransform physicsTransform = rigidBody->getTransform();
+            moveTo(physicsTransform.getPosition(), physicsTransform.getOrientation());
         }
     }
 
