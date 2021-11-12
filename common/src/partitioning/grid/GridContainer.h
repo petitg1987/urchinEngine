@@ -35,11 +35,14 @@ namespace urchin {
 
             void addItem(std::shared_ptr<T>);
             std::shared_ptr<T> removeItem(const Point3<int>&);
+            void updateItemPosition(T&, const Point3<int>&);
 
             bool isItemExist(const Point3<int>&) const;
             T* getItem(const Point3<int>&) const;
             void getItems(std::vector<T*>&) const;
+
             std::shared_ptr<T> findNeighbor(const Point3<int>&, Axis, Direction) const;
+            std::vector<std::shared_ptr<T>> findAllDirectNeighbors(const Point3<int>&, Axis, Direction) const;
 
         private:
             std::int64_t buildKey(const Point3<int>&, std::size_t) const;

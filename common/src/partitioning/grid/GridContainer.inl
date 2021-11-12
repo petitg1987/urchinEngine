@@ -15,7 +15,12 @@ template<class T> void GridContainer<T>::addItem(std::shared_ptr<T> item) {
         auto insertResult = axisSortedItems[axisIndex].insert(std::make_pair(key, initialSet));
 
         ItemSet<T>& setContainer = insertResult.first->second;
-        setContainer.insert(item);
+        const auto& insertSetResult = setContainer.insert(item);
+        if (!insertSetResult.second) {
+            std::stringstream errorStream;
+            errorStream << "Item cannot be added because an item already exists at this position: " << item->getGridPosition();
+            throw std::runtime_error(errorStream.str());
+        }
     }
 }
 
@@ -45,6 +50,18 @@ template<class T> std::shared_ptr<T> GridContainer<T>::removeItem(const Point3<i
         }
     }
     return removedItem;
+}
+
+template<class T> void GridContainer<T>::updateItemPosition(T& item, const Point3<int>& newGridPosition) {
+    std::shared_ptr<T> removedItem = removeItem(item.getGridPosition());
+    if (!removedItem) {
+        std::stringstream errorStream;
+        errorStream << "Item position cannot be updated because the item is not found at this position: " << item.getGridPosition();
+        throw std::runtime_error(errorStream.str());
+    }
+
+    removedItem->setGridPosition(newGridPosition);
+    addItem(removedItem);
 }
 
 template<class T> typename ItemSet<T>::iterator GridContainer<T>::findInItemSet(const ItemSet<T>& set, const Point3<int>& gridPosition, std::size_t axisIndex) const {
@@ -113,4 +130,37 @@ template<class T> std::shared_ptr<T> GridContainer<T>::findNeighbor(const Point3
         }
     }
     return nullptr;
+}
+
+template<class T> std::vector<std::shared_ptr<T>> GridContainer<T>::findAllDirectNeighbors(const Point3<int>& gridPosition, Axis axis, Direction direction) const {
+    std::vector<std::shared_ptr<T>> result;
+
+    std::size_t axisIndex = (std::size_t)axis;
+    const auto& sortedItems = axisSortedItems[axisIndex];
+
+    std::int64_t key = buildKey(gridPosition, axisIndex);
+
+    auto itFind = sortedItems.find(key);
+    if (itFind != sortedItems.end()) {
+        const auto& set = itFind->second;
+        if (direction == Direction::POSITIVE) {
+            auto upperBound = std::upper_bound(set.begin(), set.end(), gridPosition, [&axisIndex](const Point3<int>& pos, const std::shared_ptr<T>& item) {
+                return pos[axisIndex] < item->getGridPosition()[axisIndex];
+            });
+            int directNeighborPosition = gridPosition[axisIndex];
+            for (; upperBound != set.end(); ++upperBound) {
+                if ((*upperBound)->getGridPosition()[axisIndex] == ++directNeighborPosition) {
+                    result.push_back(*upperBound);
+                } else {
+                    break;
+                }
+            }
+        } else if (direction == Direction::NEGATIVE) {
+            //TODO impl..
+        } else {
+            throw std::runtime_error("Unknown direction: " + std::to_string(direction));
+        }
+    }
+
+    return result;
 }
