@@ -62,6 +62,41 @@ void GridContainerTest::findXNegativeNeighbor() {
     AssertHelper::assertTrue(neighborItem4 == item3);
 }
 
+void GridContainerTest::findYPositiveAllDirectNeighbors() {
+    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3<int>(2, 2, 7));
+    auto item3 = std::make_shared<MyGridItem>(Point3<int>(2, 3, 7));
+    auto item4 = std::make_shared<MyGridItem>(Point3<int>(2, 5, 7));
+    GridContainer<MyGridItem> gridContainer;
+    gridContainer.addItem(item1);
+    gridContainer.addItem(item2);
+    gridContainer.addItem(item3);
+    gridContainer.addItem(item4);
+
+    auto neighborsItem1 = gridContainer.findAllDirectNeighbors(item1->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::POSITIVE);
+
+    AssertHelper::assertUnsignedIntEquals(neighborsItem1.size(), 2);
+    AssertHelper::assertTrue(neighborsItem1[0] == item2);
+    AssertHelper::assertTrue(neighborsItem1[1] == item3);
+}
+
+void GridContainerTest::findYNegativeAllDirectNeighbors() {
+    auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
+    auto item2 = std::make_shared<MyGridItem>(Point3<int>(2, 2, 7));
+    auto item3 = std::make_shared<MyGridItem>(Point3<int>(2, 3, 7));
+    auto item4 = std::make_shared<MyGridItem>(Point3<int>(2, 5, 7));
+    GridContainer<MyGridItem> gridContainer;
+    gridContainer.addItem(item1);
+    gridContainer.addItem(item2);
+    gridContainer.addItem(item3);
+    gridContainer.addItem(item4);
+
+    auto neighborsItem2 = gridContainer.findAllDirectNeighbors(item2->getGridPosition(), GridContainer<MyGridItem>::Y, GridContainer<MyGridItem>::NEGATIVE);
+
+    AssertHelper::assertUnsignedIntEquals(neighborsItem2.size(), 1);
+    AssertHelper::assertTrue(neighborsItem2[0] == item1);
+}
+
 void GridContainerTest::removeNeighbor() {
     auto item1 = std::make_shared<MyGridItem>(Point3<int>(2, 1, 7));
     auto item2 = std::make_shared<MyGridItem>(Point3<int>(2, 2, 7));
@@ -94,6 +129,8 @@ CppUnit::Test* GridContainerTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findXPositiveNeighbor", &GridContainerTest::findXPositiveNeighbor));
     suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findXNegativeNeighbor", &GridContainerTest::findXNegativeNeighbor));
+    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findYPositiveAllDirectNeighbors", &GridContainerTest::findYPositiveAllDirectNeighbors));
+    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findYNegativeAllDirectNeighbors", &GridContainerTest::findYNegativeAllDirectNeighbors));
 
     suite->addTest(new CppUnit::TestCaller<GridContainerTest>("removeNeighbor", &GridContainerTest::removeNeighbor));
 

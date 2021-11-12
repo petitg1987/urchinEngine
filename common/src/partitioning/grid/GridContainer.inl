@@ -147,16 +147,26 @@ template<class T> std::vector<std::shared_ptr<T>> GridContainer<T>::findAllDirec
             auto upperBound = std::upper_bound(set.begin(), set.end(), gridPosition, [&axisIndex](const Point3<int>& pos, const std::shared_ptr<T>& item) {
                 return pos[axisIndex] < item->getGridPosition()[axisIndex];
             });
-            int directNeighborPosition = gridPosition[axisIndex];
+            int directNeighborPosition = gridPosition[axisIndex] + 1;
             for (; upperBound != set.end(); ++upperBound) {
-                if ((*upperBound)->getGridPosition()[axisIndex] == ++directNeighborPosition) {
+                if ((*upperBound)->getGridPosition()[axisIndex] == directNeighborPosition++) {
                     result.push_back(*upperBound);
                 } else {
                     break;
                 }
             }
         } else if (direction == Direction::NEGATIVE) {
-            //TODO impl..
+            auto lowerBound = std::lower_bound(set.begin(), set.end(), gridPosition, [&axisIndex](const std::shared_ptr<T>& item, const Point3<int>& pos) {
+                return pos[axisIndex] > item->getGridPosition()[axisIndex];
+            });
+            int directNeighborPosition = gridPosition[axisIndex] - 1;
+            while (lowerBound-- != set.begin()) {
+                if ((*lowerBound)->getGridPosition()[axisIndex] == directNeighborPosition--) {
+                    result.push_back(*lowerBound);
+                } else {
+                    break;
+                }
+            }
         } else {
             throw std::runtime_error("Unknown direction: " + std::to_string(direction));
         }

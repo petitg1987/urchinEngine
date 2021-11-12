@@ -19,6 +19,8 @@ class GridContainerTest : public CppUnit::TestFixture {
 
         void findXPositiveNeighbor();
         void findXNegativeNeighbor();
+        void findYPositiveAllDirectNeighbors();
+        void findYNegativeAllDirectNeighbors();
 
         void removeNeighbor();
 
