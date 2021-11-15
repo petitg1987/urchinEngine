@@ -190,7 +190,7 @@ namespace urchin {
     }
 
     /**
-    * @return Bounding box regrouping all animation frames (transformed by the model matrix). If not animation exist: return meshes bounding box (transformed by the model matrix).
+    * @return Bounding box regrouping all animation frames or the bounding box regrouping all meshes (transformed by the model matrix)
     */
     const AABBox<float>& Model::getAABBox() const {
         if (hasActiveAnimation()) {
@@ -203,7 +203,7 @@ namespace urchin {
     }
 
     /**
-    * @return Split bounding box regrouping all animation frames (transformed by the model matrix). If not animation exist: return meshes split bounding box (transformed by the model matrix).
+    * @return Split bounding box regrouping all animation frames or the split bounding box regrouping all meshes (transformed by the model matrix).
     */
     const std::vector<AABBox<float>>& Model::getSplitAABBoxes() const {
         if (hasActiveAnimation()) {
@@ -216,7 +216,7 @@ namespace urchin {
     }
 
     /**
-    * @return Bounding box regrouping all animation frames (not transformed). If not animation exist: return meshes bounding box (not transformed).
+    * @return Bounding box regrouping all animation frames or the bounding box regrouping all meshes (not transformed).
     */
     const AABBox<float>& Model::getLocalAABBox() const {
         if (hasActiveAnimation()) {
