@@ -4,12 +4,12 @@
 
 #include <resources/model/ConstMesh.h>
 #include <resources/model/MeshService.h>
-#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
-    ConstMesh::ConstMesh(const std::string& materialFilename, const std::vector<Vertex>& vertices, std::vector<Point2<float>> texCoords,
+    ConstMesh::ConstMesh(std::shared_ptr<Material> initialMaterial, const std::vector<Vertex>& vertices, std::vector<Point2<float>> texCoords,
             std::vector<unsigned int> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone>& baseSkeleton) :
+            initialMaterial(std::move(initialMaterial)),
             vertices(vertices),
             texCoords(std::move(texCoords)),
             trianglesIndices(std::move(trianglesIndices)),
@@ -24,14 +24,6 @@ namespace urchin {
         //compute vertices and normals based on bind-pose skeleton
         MeshService::computeVertices(*this, baseSkeleton, baseVertices);
         MeshService::computeNormalsAndTangents(*this, baseVertices, baseNormals, baseTangents);
-
-        //load material
-        if (materialFilename.empty() || materialFilename == "default") {
-            Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({177, 106, 168, 255}), false);
-            initialMaterial = std::make_shared<Material>(false, defaultDiffuseImage.createTexture(false), nullptr, false, 0.0f, 0.5f);
-        } else {
-            initialMaterial = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
-        }
     }
 
     const Material& ConstMesh::getInitialMaterial() const {

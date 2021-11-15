@@ -3,6 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <loader/model/LoaderUrchinMesh.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
@@ -48,12 +49,19 @@ namespace urchin {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
         for (unsigned int ii = 0; ii < numMeshes; ii++) {
             //material
+            std::shared_ptr<Material> material;
             std::string materialFilename;
             FileReader::nextLine(file, buffer); //buffer= "mesh {"
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> materialFilename;
             materialFilename = materialFilename.substr(1, materialFilename.length()-2); //remove quote
+            if (materialFilename.empty() || materialFilename == "default") {
+                Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({177, 106, 168, 255}), false);
+                material = std::make_shared<Material>(false, defaultDiffuseImage.createTexture(false), nullptr, false, 0.0f, 0.5f);
+            } else {
+                material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
+            }
 
             //numVertices
             unsigned int numVertices = 0;
@@ -100,7 +108,7 @@ namespace urchin {
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
 
-            constMeshes.push_back(std::make_unique<ConstMesh>(materialFilename, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
+            constMeshes.push_back(std::make_unique<ConstMesh>(material, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
         }
 
         file.close();

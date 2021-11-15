@@ -1,9 +1,15 @@
 #include <scene/renderer3d/model/builder/ModelBuilder.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
-    ModelBuilder::ModelBuilder(std::string materialFilename) :
-            materialFilename(std::move(materialFilename)) {
+    ModelBuilder::ModelBuilder(std::shared_ptr<Material> material) :
+        material(std::move(material)) {
+
+    }
+
+    ModelBuilder::ModelBuilder(const std::string& materialFilename) :
+            material(ResourceRetriever::instance().getResource<Material>(materialFilename, {})) {
 
     }
 
@@ -59,7 +65,7 @@ namespace urchin {
         modelBone.orient = Quaternion<float>();
         modelBaseSkeleton.push_back(modelBone);
 
-        return std::make_unique<ConstMesh>(materialFilename, modelVertices, texCoords, trianglesIndices, modelWeights, modelBaseSkeleton);
+        return std::make_unique<ConstMesh>(material, modelVertices, texCoords, trianglesIndices, modelWeights, modelBaseSkeleton);
     }
     
 }
