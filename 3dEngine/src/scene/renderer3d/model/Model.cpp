@@ -110,23 +110,22 @@ namespace urchin {
         }
     }
 
-    void Model::resetAnimations() {
-        stopAnimation(true);
+    void Model::resetAnimation(const std::string& animationName) {
+        Animation* animation = animations.at(animationName).get();
 
-        bool meshUpdated = false;
-        for(const auto& animation : animations) {
-            if(animation.second->getCurrFrame() != 0) {
-                animation.second->gotoFrame(0);
-                meshUpdated = true;
-            }
+        if (activeAnimation == animation) {
+            stopAnimation(true);
         }
-        if (meshUpdated) {
+
+        if (animation->getCurrFrame() != 0) {
+            animation->gotoFrame(0);
             notifyObservers(this, Model::MESH_UPDATED);
         }
     }
 
     void Model::resetSkeletonToBindPose() {
-        resetAnimations();
+        stopAnimation(true);
+
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
