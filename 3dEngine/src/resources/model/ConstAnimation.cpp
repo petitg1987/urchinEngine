@@ -6,17 +6,17 @@
 namespace urchin {
 
     ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones, unsigned int frameRate,
-                                   std::vector<std::vector<Bone>> skeletonFrames, std::vector<std::unique_ptr<AABBox<float>>> bboxes) :
+                                   std::vector<std::vector<Bone>> skeletonFrames, std::vector<std::unique_ptr<AABBox<float>>> localFrameBBoxes) :
             animationFilename(std::move(animationFilename)),
             numBones(numBones),
             frameRate(frameRate),
-            skeletonFrames(std::move(skeletonFrames)) {
-        //determines the bounding box (bboxes: bounding boxes of each animation frames (not transformed))
-        originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
+            skeletonFrames(std::move(skeletonFrames)),
+            localFrameBBoxes(std::move(localFrameBBoxes)) {
+        localFramesBBox = AABBox<float>(this->localFrameBBoxes[0]->getMin(), this->localFrameBBoxes[0]->getMax());
         for (unsigned int i = 0; i < numFrames; ++i) {
-            originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
+            localFramesBBox = localFramesBBox.merge(*this->localFrameBBoxes[i]);
         }
-        SplitBoundingBox().split(originalGlobalBBox, originalGlobalSplitBBoxes);
+        SplitBoundingBox().split(localFramesBBox, localFramesSplitBBoxes);
     }
 
     const std::string& ConstAnimation::getAnimationFilename() const {
@@ -36,15 +36,30 @@ namespace urchin {
     }
 
     const Bone& ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const {
+        assert(skeletonFrames.size() > frameNumber);
         return skeletonFrames[frameNumber][boneNumber];
     }
 
-    const AABBox<float>& ConstAnimation::getOriginalGlobalAABBox() const {
-        return originalGlobalBBox;
+    /**
+     * @return Bounding box of the specified frame (not transformed)
+     */
+    const AABBox<float>& ConstAnimation::getLocalFrameAABBox(unsigned int frameNumber) const {
+        assert(localFrameBBoxes.size() > frameNumber);
+        return *localFrameBBoxes[frameNumber];
     }
 
-    const std::vector<AABBox<float>>& ConstAnimation::getOriginalGlobalSplitAABBoxes() const {
-        return originalGlobalSplitBBoxes;
+    /**
+     * @return Bounding box regrouping all animation frames (not transformed)
+     */
+    const AABBox<float>& ConstAnimation::getLocalFramesAABBox() const {
+        return localFramesBBox;
+    }
+
+    /**
+     * @return Split bounding box for all animation frames (not transformed)
+     */
+    const std::vector<AABBox<float>>& ConstAnimation::getLocalFramesSplitAABBoxes() const {
+        return localFramesSplitBBoxes;
     }
 
 }

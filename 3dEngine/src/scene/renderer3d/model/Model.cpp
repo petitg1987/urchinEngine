@@ -190,39 +190,39 @@ namespace urchin {
     }
 
     /**
-    * @return Merged bounding box for all animations. If not animation exist: return meshes bounding box.
+    * @return Bounding box regrouping all animation frames (transformed by the model matrix). If not animation exist: return meshes bounding box (transformed by the model matrix).
     */
     const AABBox<float>& Model::getAABBox() const {
         if (hasActiveAnimation()) {
-            return activeAnimation->getGlobalAABBox();
+            return activeAnimation->getFramesAABBox();
         } else if (meshes) {
-            return meshes->getGlobalAABBox();
+            return meshes->getMeshesAABBox();
         } else {
             return defaultModelAABBoxes[0];
         }
     }
 
     /**
-     * @return identical to getAABBox() method but the bounding box is split to the limit size configured
-     */
+    * @return Split bounding box regrouping all animation frames (transformed by the model matrix). If not animation exist: return meshes split bounding box (transformed by the model matrix).
+    */
     const std::vector<AABBox<float>>& Model::getSplitAABBoxes() const {
         if (hasActiveAnimation()) {
-            return activeAnimation->getGlobalSplitAABBoxes();
+            return activeAnimation->getFramesSplitAABBoxes();
         } else if (meshes) {
-            return meshes->getGlobalSplitAABBoxes();
+            return meshes->getMeshesSplitAABBoxes();
         } else {
             return defaultModelAABBoxes;
         }
     }
 
     /**
-    * @return Local merged bounding box for all animations. If not animation exist: return local meshes bounding box.
+    * @return Bounding box regrouping all animation frames (not transformed). If not animation exist: return meshes bounding box (not transformed).
     */
     const AABBox<float>& Model::getLocalAABBox() const {
         if (hasActiveAnimation()) {
-            return activeAnimation->getGlobalLocalAABBox();
+            return activeAnimation->getLocalFramesAABBox();
         } else if (meshes) {
-            return meshes->getGlobalLocalAABBox();
+            return meshes->getLocalMeshesAABBox();
         } else {
             return Model::getDefaultModelLocalAABBox();
         }

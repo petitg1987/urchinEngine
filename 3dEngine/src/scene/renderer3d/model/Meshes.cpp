@@ -20,16 +20,25 @@ namespace urchin {
         return *meshes[meshIndex];
     }
 
-    const AABBox<float>& Meshes::getGlobalAABBox() const {
-        return globalBBox;
+    /**
+    * @return Bounding box regrouping all meshes (transformed by the model matrix)
+    */
+    const AABBox<float>& Meshes::getMeshesAABBox() const {
+        return meshesBBox;
     }
 
-    const std::vector<AABBox<float>>& Meshes::getGlobalSplitAABBoxes() const {
-        return globalSplitBBoxes;
+    /**
+    * @return Split bounding box regrouping all meshes (transformed by the model matrix)
+    */
+    const std::vector<AABBox<float>>& Meshes::getMeshesSplitAABBoxes() const {
+        return meshesSplitBBoxes;
     }
 
-    const AABBox<float>& Meshes::getGlobalLocalAABBox() const {
-        return *localBBox;
+    /**
+    * @return Bounding box regrouping all meshes (not transformed)
+    */
+    const AABBox<float>& Meshes::getLocalMeshesAABBox() const {
+        return *localMeshesBBox;
     }
 
     const ConstMeshes& Meshes::getConstMeshes() const {
@@ -50,14 +59,14 @@ namespace urchin {
     }
 
     void Meshes::onMoving(const Transform<float>& newTransform) {
-        globalBBox = localBBox->moveAABBox(newTransform);
+        meshesBBox = localMeshesBBox->moveAABBox(newTransform);
 
-        if (globalSplitBBoxes.size() == 1) {
-            globalSplitBBoxes[0] = globalBBox;
+        if (meshesSplitBBoxes.size() == 1) {
+            meshesSplitBBoxes[0] = meshesBBox;
         } else {
-            globalSplitBBoxes.clear();
+            meshesSplitBBoxes.clear();
             for (const auto &localSplitAABBox: localSplitBBoxes) {
-                globalSplitBBoxes.push_back(localSplitAABBox.moveAABBox(newTransform));
+                meshesSplitBBoxes.push_back(localSplitAABBox.moveAABBox(newTransform));
             }
         }
     }
@@ -99,8 +108,8 @@ namespace urchin {
             }
         }
 
-        localBBox = std::make_unique<AABBox<float>>(min, max);
-        SplitBoundingBox().split(*localBBox, localSplitBBoxes);
+        localMeshesBBox = std::make_unique<AABBox<float>>(min, max);
+        SplitBoundingBox().split(*localMeshesBBox, localSplitBBoxes);
     }
 
 }

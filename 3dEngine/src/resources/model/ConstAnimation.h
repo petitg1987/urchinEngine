@@ -29,15 +29,18 @@ namespace urchin {
             unsigned int getFrameRate() const;
             const Bone& getBone(unsigned int, unsigned int) const;
 
-            const AABBox<float>& getOriginalGlobalAABBox() const;
-            const std::vector<AABBox<float>>& getOriginalGlobalSplitAABBoxes() const;
+            const AABBox<float>& getLocalFrameAABBox(unsigned int) const;
+            const AABBox<float>& getLocalFramesAABBox() const;
+            const std::vector<AABBox<float>>& getLocalFramesSplitAABBoxes() const;
 
         private:
             std::string animationFilename;
             const unsigned int numBones, frameRate;
             std::vector<std::vector<Bone>> skeletonFrames;
-            AABBox<float> originalGlobalBBox; //original global bounding box (not transformed)
-            std::vector<AABBox<float>> originalGlobalSplitBBoxes;
+
+            std::vector<std::unique_ptr<AABBox<float>>> localFrameBBoxes;
+            AABBox<float> localFramesBBox;
+            std::vector<AABBox<float>> localFramesSplitBBoxes;
     };
 
 }

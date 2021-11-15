@@ -18,19 +18,25 @@ namespace urchin {
         return skeleton;
     }
 
-    const AABBox<float>& Animation::getGlobalAABBox() const {
-        return globalBBox;
-    }
-
-    const std::vector<AABBox<float>>& Animation::getGlobalSplitAABBoxes() const {
-        return globalSplitBBoxes;
+    /**
+     * @return Bounding box regrouping all animation frames (transformed by the model matrix)
+     */
+    const AABBox<float>& Animation::getFramesAABBox() const {
+        return framesBBox;
     }
 
     /**
-     * @return Return global bounding box for all animations but not transformed
+     * @return Split bounding box regrouping all animation frames (transformed by the model matrix)
      */
-    const AABBox<float>& Animation::getGlobalLocalAABBox() const {
-        return constAnimation->getOriginalGlobalAABBox();
+    const std::vector<AABBox<float>>& Animation::getFramesSplitAABBoxes() const {
+        return framesSplitBBoxes;
+    }
+
+    /**
+     * @return Bounding box regrouping all animation frames (not transformed)
+     */
+    const AABBox<float>& Animation::getLocalFramesAABBox() const {
+        return constAnimation->getLocalFramesAABBox();
     }
 
     const ConstAnimation& Animation::getConstAnimation() const {
@@ -42,12 +48,11 @@ namespace urchin {
     }
 
     void Animation::onMoving(const Transform<float>& newTransform) {
-        globalBBox = constAnimation->getOriginalGlobalAABBox().moveAABBox(newTransform);
+        framesBBox = constAnimation->getLocalFramesAABBox().moveAABBox(newTransform);
 
-        globalSplitBBoxes.clear();
-        const std::vector<AABBox<float>>& originalGlobalSplitAABBoxes = constAnimation->getOriginalGlobalSplitAABBoxes();
-        for (const auto& originalGlobalSplitAABBox : originalGlobalSplitAABBoxes) {
-            globalSplitBBoxes.push_back(originalGlobalSplitAABBox.moveAABBox(newTransform));
+        framesSplitBBoxes.clear();
+        for (const auto& localFramesSplitAABBox : constAnimation->getLocalFramesSplitAABBoxes()) {
+            framesSplitBBoxes.push_back(localFramesSplitAABBox.moveAABBox(newTransform));
         }
     }
 

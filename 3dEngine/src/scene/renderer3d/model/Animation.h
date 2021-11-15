@@ -13,9 +13,9 @@ namespace urchin {
             Animation(std::shared_ptr<ConstAnimation>, Meshes&);
 
             const std::vector<Bone>& getSkeleton() const;
-            const AABBox<float>& getGlobalAABBox() const;
-            const std::vector<AABBox<float>>& getGlobalSplitAABBoxes() const;
-            const AABBox<float>& getGlobalLocalAABBox() const;
+            const AABBox<float>& getFramesAABBox() const;
+            const std::vector<AABBox<float>>& getFramesSplitAABBoxes() const;
+            const AABBox<float>& getLocalFramesAABBox() const;
 
             const ConstAnimation& getConstAnimation() const;
             unsigned int getCurrFrame() const;
@@ -33,8 +33,8 @@ namespace urchin {
 
             AnimationInformation animationInformation;
             std::vector<Bone> skeleton;
-            AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
-            std::vector<AABBox<float>> globalSplitBBoxes;
+            AABBox<float> framesBBox;
+            std::vector<AABBox<float>> framesSplitBBoxes;
     };
 
 }
