@@ -26,9 +26,9 @@ namespace urchin {
 
             void loadAnimation(const std::string&, const std::string&);
             void animate(const std::string&, bool);
-            void pauseAnimation(bool);
-            void stopAnimation();
-            void resetAnimationToBindPose();
+            void stopAnimation(bool);
+            void resetAnimations();
+            void resetSkeletonToBindPose();
             void gotoAnimationFrame(const std::string&, unsigned int);
             int getAnimationFrame() const;
             bool hasActiveAnimation() const;
@@ -72,7 +72,7 @@ namespace urchin {
             std::map<std::string, std::unique_ptr<Animation>> animations;
             Animation* activeAnimation;
             bool isModelAnimated;
-            bool pauseAnimationAtLastFrame;
+            bool stopAnimationAtLastFrame;
 
             //transform
             Transform<float> transform;

@@ -9,7 +9,7 @@ namespace urchin {
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             activeAnimation(nullptr),
             isModelAnimated(false),
-            pauseAnimationAtLastFrame(false),
+            stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
@@ -23,7 +23,7 @@ namespace urchin {
             meshes(std::move(meshes)),
             activeAnimation(nullptr),
             isModelAnimated(false),
-            pauseAnimationAtLastFrame(false),
+            stopAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         initialize();
     }
@@ -33,7 +33,7 @@ namespace urchin {
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             activeAnimation(nullptr),
             isModelAnimated(false),
-            pauseAnimationAtLastFrame(false),
+            stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
             bIsProduceShadow(model.isProduceShadow()) {
         if (model.meshes) {
@@ -92,34 +92,41 @@ namespace urchin {
 
     void Model::animate(const std::string& animationName, bool animationLoop) {
         activeAnimation = animations.at(animationName).get();
-        isModelAnimated = true;
-        pauseAnimationAtLastFrame = !animationLoop;
+        isModelAnimated = true; //TODO review flag !
+        stopAnimationAtLastFrame = !animationLoop;
 
         onMoving(transform);
     }
 
-    void Model::pauseAnimation(bool immediate) {
+    void Model::stopAnimation(bool immediate) {
         if (immediate) {
-            activeAnimation = nullptr;
-            onMoving(transform);
-
+            if (activeAnimation) {
+                activeAnimation = nullptr;
+                onMoving(transform);
+            }
             isModelAnimated = false;
         } else if (isAnimated()) {
-            pauseAnimationAtLastFrame = true;
+            stopAnimationAtLastFrame = true;
         }
     }
 
-    void Model::stopAnimation() {
-        if (hasActiveAnimation()) {
-            activeAnimation->gotoFrame(0);
+    void Model::resetAnimations() {
+        stopAnimation(true);
+
+        bool meshUpdated = false;
+        for(const auto& animation : animations) {
+            if(animation.second->getCurrFrame() != 0) {
+                animation.second->gotoFrame(0);
+                meshUpdated = true;
+            }
+        }
+        if (meshUpdated) {
             notifyObservers(this, Model::MESH_UPDATED);
         }
-
-        pauseAnimation(true);
     }
 
-    void Model::resetAnimationToBindPose() {
-        stopAnimation();
+    void Model::resetSkeletonToBindPose() {
+        resetAnimations();
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
@@ -267,9 +274,9 @@ namespace urchin {
 
     void Model::updateAnimation(float dt) {
         if (isAnimated()) {
-            if (pauseAnimationAtLastFrame && activeAnimation->getCurrFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
-                pauseAnimation(true);
-                pauseAnimationAtLastFrame = false;
+            if (stopAnimationAtLastFrame && activeAnimation->getCurrFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
+                stopAnimation(true);
+                stopAnimationAtLastFrame = false;
             } else {
                 activeAnimation->animate(dt);
                 notifyObservers(this, Model::MESH_UPDATED);
