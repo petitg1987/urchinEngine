@@ -92,7 +92,7 @@ namespace urchin {
 
     void Model::animate(const std::string& animationName, bool animationLoop) {
         activeAnimation = animations.at(animationName).get();
-        isModelAnimated = true; //TODO review flag !
+        isModelAnimated = true;
         stopAnimationAtLastFrame = !animationLoop;
 
         onMoving(transform);
