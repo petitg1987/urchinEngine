@@ -481,14 +481,7 @@ def generate_bounding_box(urchin_animation, frame_range):
         for mesh_to_export in get_meshes_to_export():
             if mesh_to_export.data.polygons:
                 bbox = mesh_to_export.bound_box
-
-                matrix = [[1.0, 0.0, 0.0, 0.0],
-                          [0.0, 1.0, 0.0, 0.0],
-                          [0.0, 1.0, 1.0, 0.0],
-                          [0.0, 0.0, 0.0, 1.0],
-                          ]
-                for v in bbox:
-                    corners.append(point_by_matrix(v, matrix))
+                corners += bbox
         (min, max) = get_min_max(corners)
         urchin_animation.bounds.append((min[0], min[1], min[2], max[0], max[1], max[2]))
     scene.frame_set(frame_range[0])
@@ -525,8 +518,8 @@ def export_urchin(settings):
     bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.scene.frame_set(bpy.context.scene.frame_start)
 
+    armature = find_armature(get_meshes_to_export())
     try:
-        armature = find_armature(get_meshes_to_export())
         rotate_axis(armature, -90, 'X')
         export_all(settings)
     finally:
