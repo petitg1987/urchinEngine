@@ -26,6 +26,8 @@ namespace urchin {
             void onMoving(const Transform<float>&);
 
         private:
+            void computeNextFrame();
+
             mutable std::shared_ptr<ConstAnimation> constAnimation;
             Meshes& meshes;
 

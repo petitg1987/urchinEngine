@@ -8,10 +8,10 @@
 namespace urchin {
 
     struct AnimationInformation {
-        unsigned int currFrame;
-        unsigned int nextFrame;
         float lastTime;
         float maxTime;
+        unsigned int currFrame;
+        unsigned int nextFrame;
     };
 
     /**

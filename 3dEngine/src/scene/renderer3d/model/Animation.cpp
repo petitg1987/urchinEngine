@@ -8,10 +8,10 @@ namespace urchin {
             animationInformation() {
         skeleton.resize(this->constAnimation->getNumberBones());
 
-        animationInformation.currFrame = 0;
-        animationInformation.nextFrame = 1;
-        animationInformation.lastTime = 0;
+        animationInformation.lastTime = 0.0f;
         animationInformation.maxTime = 1.0f / (float)this->constAnimation->getFrameRate();
+        animationInformation.currFrame = 0;
+        computeNextFrame();
     }
 
     const std::vector<Bone>& Animation::getSkeleton() const {
@@ -57,11 +57,7 @@ namespace urchin {
         if (animationInformation.lastTime >= animationInformation.maxTime) { //move to next frame
             animationInformation.lastTime = 0.0f;
             animationInformation.currFrame = animationInformation.nextFrame;
-            animationInformation.nextFrame++;
-
-            if (animationInformation.nextFrame >= constAnimation->getNumberFrames()) {
-                animationInformation.nextFrame = 0;
-            }
+            computeNextFrame();
         }
 
         //interpolate skeletons between two frames
@@ -89,10 +85,24 @@ namespace urchin {
         }
     }
 
+    void Animation::computeNextFrame() {
+        animationInformation.nextFrame = animationInformation.currFrame + 1;
+        if (animationInformation.nextFrame >= constAnimation->getNumberFrames()) {
+            animationInformation.nextFrame = 0;
+        }
+    }
+
     void Animation::gotoFrame(unsigned int frame) {
         if (frame >= constAnimation->getNumberFrames()) {
             throw std::runtime_error("Frame (" + std::to_string(frame) + ") does not exist in animation " + constAnimation->getName() + ". Total frame: " + std::to_string(constAnimation->getNumberFrames()));
+        } else if (frame == getCurrFrame()) {
+            return;
         }
+
+        //update animation information
+        animationInformation.lastTime = 0.0f;
+        animationInformation.currFrame = frame;
+        computeNextFrame();
 
         //update skeletons
         for (unsigned int i = 0; i < constAnimation->getNumberBones(); ++i) {

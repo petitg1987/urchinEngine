@@ -9,7 +9,7 @@ namespace urchin {
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             activeAnimation(nullptr),
             isModelAnimated(false),
-            stopAnimationAtLastFrame(false),
+            pauseAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
@@ -23,7 +23,7 @@ namespace urchin {
             meshes(std::move(meshes)),
             activeAnimation(nullptr),
             isModelAnimated(false),
-            stopAnimationAtLastFrame(false),
+            pauseAnimationAtLastFrame(false),
             bIsProduceShadow(true) {
         initialize();
     }
@@ -33,7 +33,7 @@ namespace urchin {
             defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
             activeAnimation(nullptr),
             isModelAnimated(false),
-            stopAnimationAtLastFrame(false),
+            pauseAnimationAtLastFrame(false),
             transform(model.getTransform()),
             bIsProduceShadow(model.isProduceShadow()) {
         if (model.meshes) {
@@ -90,40 +90,55 @@ namespace urchin {
         }
     }
 
-    void Model::animate(const std::string& animationName) {
+    void Model::animate(const std::string& animationName, bool animationLoop) {
         activeAnimation = animations.at(animationName).get();
         isModelAnimated = true;
+        pauseAnimationAtLastFrame = !animationLoop;
 
         onMoving(transform);
     }
 
-    void Model::stopAnimation(bool immediate) {
+    void Model::pauseAnimation(bool immediate) {
         if (immediate) {
             activeAnimation = nullptr;
+            onMoving(transform);
+
             isModelAnimated = false;
         } else if (isAnimated()) {
-            stopAnimationAtLastFrame = true;
+            pauseAnimationAtLastFrame = true;
         }
-
-        onMoving(transform);
     }
 
-    void Model::resetAnimationPose() {
+    void Model::stopAnimation() {
+        if (hasActiveAnimation()) {
+            activeAnimation->gotoFrame(0);
+            notifyObservers(this, Model::MESH_UPDATED);
+        }
+
+        pauseAnimation(true);
+    }
+
+    void Model::resetAnimationToBindPose() {
+        stopAnimation();
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
         notifyObservers(this, Model::MESH_UPDATED);
-        stopAnimation(true);
-
-        onMoving(transform);
     }
 
     void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
         activeAnimation = animations.at(animationName).get();
+        onMoving(transform);
+
         activeAnimation->gotoFrame(animationFrameIndex);
         notifyObservers(this, Model::MESH_UPDATED);
+    }
 
-        onMoving(transform);
+    int Model::getAnimationFrame() const {
+        if (hasActiveAnimation()) {
+            return (int)activeAnimation->getCurrFrame();
+        }
+        return -1;
     }
 
     bool Model::hasActiveAnimation() const {
@@ -252,9 +267,9 @@ namespace urchin {
 
     void Model::updateAnimation(float dt) {
         if (isAnimated()) {
-            if (stopAnimationAtLastFrame && activeAnimation->getCurrFrame() == 0u) {
-                stopAnimation(true);
-                stopAnimationAtLastFrame = false;
+            if (pauseAnimationAtLastFrame && activeAnimation->getCurrFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
+                pauseAnimation(true);
+                pauseAnimationAtLastFrame = false;
             } else {
                 activeAnimation->animate(dt);
                 notifyObservers(this, Model::MESH_UPDATED);
@@ -264,6 +279,7 @@ namespace urchin {
 
     void Model::updateMesh(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {
         meshes->updateMesh(meshIndex, vertices);
+
         onMoving(transform);
         notifyObservers(this, Model::MESH_UPDATED);
     }
