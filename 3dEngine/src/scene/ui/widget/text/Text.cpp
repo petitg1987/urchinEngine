@@ -75,6 +75,8 @@ namespace urchin {
     void Text::updateText(std::string text) {
         if (isTranslatableLabel()) {
             throw std::runtime_error("Cannot manually update text on a translatable text");
+        } else if (this->text == text) {
+            return;
         }
 
         this->text = std::move(text);
@@ -85,6 +87,8 @@ namespace urchin {
     void Text::updateLabelKey(const std::string& labelKey) {
         if (!isTranslatableLabel()) {
             throw std::runtime_error("Cannot manually update label key on a non translatable text");
+        } else if (this->labelKey == labelKey) {
+            return;
         }
 
         this->labelKey = labelKey;
