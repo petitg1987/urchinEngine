@@ -117,7 +117,7 @@ namespace urchin {
             stopAnimation(true);
         }
 
-        if (animation->getCurrFrame() != 0) {
+        if (animation->getCurrentFrame() != 0) {
             animation->gotoFrame(0);
             notifyObservers(this, Model::MESH_UPDATED);
         }
@@ -140,11 +140,8 @@ namespace urchin {
         notifyObservers(this, Model::MESH_UPDATED);
     }
 
-    int Model::getAnimationFrame() const {
-        if (hasActiveAnimation()) {
-            return (int)activeAnimation->getCurrFrame();
-        }
-        return -1;
+    const Animation* Model::getActiveAnimation() const {
+        return activeAnimation;
     }
 
     bool Model::hasActiveAnimation() const {
@@ -273,7 +270,7 @@ namespace urchin {
 
     void Model::updateAnimation(float dt) {
         if (isAnimated()) {
-            if (stopAnimationAtLastFrame && activeAnimation->getCurrFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
+            if (stopAnimationAtLastFrame && activeAnimation->getCurrentFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
             } else {

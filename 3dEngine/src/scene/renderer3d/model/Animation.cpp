@@ -43,8 +43,14 @@ namespace urchin {
         return *constAnimation;
     }
 
-    unsigned int Animation::getCurrFrame() const {
+    unsigned int Animation::getCurrentFrame() const {
         return animationInformation.currFrame;
+    }
+
+    float Animation::getAnimationProgression() const {
+        auto currentFrame = (float)getCurrentFrame();
+        currentFrame += animationInformation.lastTime / animationInformation.maxTime;
+        return currentFrame / ((float)getConstAnimation().getNumberFrames() - 1.0f);
     }
 
     void Animation::onMoving(const Transform<float>& newTransform) {
@@ -100,7 +106,7 @@ namespace urchin {
     void Animation::gotoFrame(unsigned int frame) {
         if (frame >= constAnimation->getNumberFrames()) {
             throw std::runtime_error("Frame (" + std::to_string(frame) + ") does not exist in animation " + constAnimation->getName() + ". Total frame: " + std::to_string(constAnimation->getNumberFrames()));
-        } else if (frame == getCurrFrame()) {
+        } else if (frame == getCurrentFrame()) {
             return;
         }
 

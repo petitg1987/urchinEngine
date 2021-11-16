@@ -18,7 +18,8 @@ namespace urchin {
             const AABBox<float>& getLocalFramesAABBox() const;
 
             const ConstAnimation& getConstAnimation() const;
-            unsigned int getCurrFrame() const;
+            unsigned int getCurrentFrame() const;
+            float getAnimationProgression() const;
 
             void animate(float);
             void gotoFrame(unsigned int);
