@@ -100,32 +100,28 @@ namespace urchin {
 
     void Model::stopAnimation(bool immediate) {
         if (immediate) {
-            if (activeAnimation) {
-                activeAnimation = nullptr;
-                onMoving(transform);
-            }
             isModelAnimated = false;
         } else if (isAnimated()) {
             stopAnimationAtLastFrame = true;
         }
     }
 
-    void Model::resetAnimation(const std::string& animationName) {
-        Animation* animation = animations.at(animationName).get();
-
-        if (activeAnimation == animation) {
-            stopAnimation(true);
-        }
-
-        if (animation->getCurrentFrame() != 0) {
-            animation->gotoFrame(0);
-            notifyObservers(this, Model::MESH_UPDATED);
-        }
-    }
-
-    void Model::resetSkeletonToBindPose() {
+    void Model::resetAnimations() {
+        //disable current animation
         stopAnimation(true);
+        if (activeAnimation) {
+            activeAnimation = nullptr;
+            onMoving(transform);
+        }
 
+        //reset all animations to frame 0
+        for (const auto& itAnimation: animations) {
+            if (itAnimation.second->getCurrentFrame() != 0) {
+                itAnimation.second->gotoFrame(0);
+            }
+        }
+
+        //apply skeleton bind pose
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
@@ -133,11 +129,16 @@ namespace urchin {
     }
 
     void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
+        Animation* previousActiveAnimation = activeAnimation;
         activeAnimation = animations.at(animationName).get();
-        onMoving(transform);
+        if (previousActiveAnimation != activeAnimation) {
+            onMoving(transform);
+        }
 
-        activeAnimation->gotoFrame(animationFrameIndex);
-        notifyObservers(this, Model::MESH_UPDATED);
+        if (activeAnimation->getCurrentFrame() != animationFrameIndex) {
+            activeAnimation->gotoFrame(animationFrameIndex);
+            notifyObservers(this, Model::MESH_UPDATED);
+        }
     }
 
     const Animation* Model::getActiveAnimation() const {

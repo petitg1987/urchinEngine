@@ -27,8 +27,7 @@ namespace urchin {
             void loadAnimation(const std::string&, const std::string&);
             void animate(const std::string&, bool);
             void stopAnimation(bool);
-            void resetAnimation(const std::string&);
-            void resetSkeletonToBindPose();
+            void resetAnimations();
             void gotoAnimationFrame(const std::string&, unsigned int);
             const Animation* getActiveAnimation() const;
             bool hasActiveAnimation() const;
