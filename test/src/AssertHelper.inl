@@ -91,6 +91,12 @@ void AssertHelper::assertPoint3FloatEquals(const urchin::Point3<float>& value, c
     }
 }
 
+void AssertHelper::assertPoint3IntEquals(const urchin::Point3<int>& value, const urchin::Point3<int>& expected) {
+    for (std::size_t i = 0; i < 3; ++i) {
+        CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
+    }
+}
+
 void AssertHelper::assertVector3FloatEquals(const urchin::Vector3<float>& value, const urchin::Vector3<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),

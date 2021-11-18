@@ -27,6 +27,7 @@ class AssertHelper {
         static void assertPoints2LongLongEquals(const std::vector<urchin::Point2<long long>>&, const std::vector<urchin::Point2<long long>>&);
 
         static void assertPoint3FloatEquals(const urchin::Point3<float>&, const urchin::Point3<float>&, float epsilon = 0.001f);
+        static void assertPoint3IntEquals(const urchin::Point3<int>&, const urchin::Point3<int>&);
         static void assertVector3FloatEquals(const urchin::Vector3<float>&, const urchin::Vector3<float>&, float epsilon = 0.001f);
 
         static void assertQuaternionFloatEquals(const urchin::Quaternion<float>&, const urchin::Quaternion<float>&, float epsilon = 0.001f);
