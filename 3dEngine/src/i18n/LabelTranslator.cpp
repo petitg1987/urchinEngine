@@ -17,12 +17,14 @@ namespace urchin {
     }
 
     void LabelTranslator::loadAvailableLanguages() {
-        for (const auto& dir : std::filesystem::directory_iterator(labelsFilesDirectoryName)) {
-            std::string filename = dir.path().filename().u8string();
-            if (dir.is_regular_file() && filename.size() > FILE_PREFIX.size() + FILE_POSTFIX.size()) {
-                std::size_t endLanguagePosition = filename.find(FILE_POSTFIX);
-                std::string language = filename.substr(FILE_PREFIX.size(), endLanguagePosition - FILE_PREFIX.size());
-                availableLanguages.emplace_back(language);
+        if (FileUtil::isDirectoryExist(labelsFilesDirectoryName)) {
+            for (const auto& dir: std::filesystem::directory_iterator(labelsFilesDirectoryName)) {
+                std::string filename = dir.path().filename().u8string();
+                if (dir.is_regular_file() && filename.size() > FILE_PREFIX.size() + FILE_POSTFIX.size()) {
+                    std::size_t endLanguagePosition = filename.find(FILE_POSTFIX);
+                    std::string language = filename.substr(FILE_PREFIX.size(), endLanguagePosition - FILE_PREFIX.size());
+                    availableLanguages.emplace_back(language);
+                }
             }
         }
     }
