@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cassert>
-#include <memory>
 #include <thread>
 
 #include <profiler/Profiler.h>
