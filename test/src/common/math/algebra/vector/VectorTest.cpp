@@ -2,6 +2,7 @@
 
 #include <common/math/algebra/vector/VectorTest.h>
 #include <AssertHelper.h>
+using namespace urchin;
 
 void VectorTest::triviallyCopyable() {
     AssertHelper::assertTrue( std::is_trivially_copyable<Vector2<float>>::value);

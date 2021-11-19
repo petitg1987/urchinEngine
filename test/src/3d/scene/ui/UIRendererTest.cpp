@@ -181,8 +181,6 @@ void UIRendererTest::containerWithLazyWidgets() {
 }
 
 std::unique_ptr<UIRenderer> UIRendererTest::setupUiRenderer() {
-    FileSystem::instance().setupResourcesDirectory("resources/");
-
     renderTarget = std::make_unique<NullRenderTarget>(1920, 1080);
     i18nService = std::make_unique<I18nService>();
     UISkinService::instance().setSkin("ui/skinDefinition.uda");

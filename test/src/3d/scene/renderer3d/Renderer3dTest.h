@@ -11,5 +11,5 @@ class Renderer3dTest : public CppUnit::TestFixture {
         void modelPreWarm();
 
     private:
-        std::unique_ptr<urchin::Model> buildModel(std::string, const std::string&, const urchin::Point3<float>&) const;
+        std::unique_ptr<urchin::Model> buildModel(const std::string&, const std::string&, const urchin::Point3<float>&) const;
 };

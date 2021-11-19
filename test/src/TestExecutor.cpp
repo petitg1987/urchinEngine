@@ -164,7 +164,8 @@ void addAllMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
 }
 
 int main(int argc, char *argv[]) {
-    ConfigService::instance().loadProperties("resources/engine.properties");
+    FileSystem::instance().setupResourcesDirectory("resources/");
+    ConfigService::instance().loadProperties("engine.properties");
     CppUnit::TextUi::TestRunner runner;
 
     std::string hasUnitTests = "no";
