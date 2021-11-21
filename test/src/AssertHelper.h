@@ -13,10 +13,8 @@ class AssertHelper {
 
         inline static void assertStringEquals(const std::string&, const std::string&);
         inline static void assertIntEquals(int, int);
-        inline static void assert3IntsEquals(const int*, std::array<int, 3>);
         inline static void assertUnsignedIntEquals(unsigned int, unsigned int);
         inline static void assertUnsignedIntEquals(std::size_t, std::size_t);
-        inline static void assert3UnsignedIntsEquals(const unsigned int*, std::array<unsigned int, 3>);
         inline static void assert3SizesEquals(const std::size_t*, std::array<std::size_t, 3>);
         inline static void assertFloatEquals(float, float, float epsilon = 0.001f);
 

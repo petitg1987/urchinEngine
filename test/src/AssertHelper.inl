@@ -18,24 +18,12 @@ void AssertHelper::assertIntEquals(int value, int expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
-void AssertHelper::assert3IntsEquals(const int* value, std::array<int, 3> expected) {
-    for (std::size_t i = 0; i < 3; ++i) {
-        CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
-    }
-}
-
 void AssertHelper::assertUnsignedIntEquals(unsigned int value, unsigned int expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
 void AssertHelper::assertUnsignedIntEquals(std::size_t value, std::size_t expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
-}
-
-void AssertHelper::assert3UnsignedIntsEquals(const unsigned int* value, std::array<unsigned int, 3> expected) {
-    for (std::size_t i = 0; i < 3; ++i) {
-        CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
-    }
 }
 
 void AssertHelper::assert3SizesEquals(const std::size_t* value, std::array<std::size_t, 3> expected) {
@@ -106,7 +94,7 @@ void AssertHelper::assertVector3FloatEquals(const urchin::Vector3<float>& value,
 
 void AssertHelper::assertQuaternionFloatEquals(const urchin::Quaternion<float>& value, const urchin::Quaternion<float>& expected, float epsilon) {
     urchin::Quaternion<float> qTest1(value);
-    if ((value.W < 0.0 && expected.W > 0.0) || (value.W > 0.0 && expected.W < 0.0)) {
+    if ((value.W < 0.0f && expected.W > 0.0f) || (value.W > 0.0f && expected.W < 0.0f)) {
         qTest1.X = -qTest1.X;
         qTest1.Y = -qTest1.Y;
         qTest1.Z = -qTest1.Z;
