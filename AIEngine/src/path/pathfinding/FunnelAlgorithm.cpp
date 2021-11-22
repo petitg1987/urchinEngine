@@ -11,7 +11,7 @@ namespace urchin {
      * First point (getA()) of portal segment must be on left of character when it cross a portal.
      */
     void FunnelAlgorithm::computePivotPoints(const std::vector<std::unique_ptr<PathPortal>>& portals) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(portals.size() >= 2);
             assert(portals[0]->getPortal().getA() == portals[0]->getPortal().getB()); //degenerated start portal
             assert(portals.back()->getPortal().getA() == portals.back()->getPortal().getB()); //degenerated end portal

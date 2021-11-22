@@ -300,7 +300,7 @@ namespace urchin {
     }
 
     template<class T> OBBox<T> operator *(const Matrix4<T>& m, const OBBox<T>& obb) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             //projection matrix not accepted because result will not an oriented bounding box
             assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
             assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());

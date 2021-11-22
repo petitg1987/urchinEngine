@@ -49,7 +49,7 @@ namespace urchin {
             fillAndPushChunk(*task, i);
         }
 
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(!isTaskExist(audioStreamPlayer));
         #endif
 

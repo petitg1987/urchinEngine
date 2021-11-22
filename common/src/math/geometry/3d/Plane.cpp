@@ -13,7 +13,7 @@ namespace urchin {
     template<class T> Plane<T>::Plane(const Vector3<T>& normalizedNormal, T distanceToOrigin) :
             normal(normalizedNormal),
             d(distanceToOrigin) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             T normalSquareLength = normal.squareLength();
             assert(normalSquareLength > (T)0.9996 && normalSquareLength < (T)1.0004);
         #endif
@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     template<class T> void Plane<T>::buildFromNormalAndPoint(const Vector3<T>& normalizedNormal, const Point3<T>& point) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             T normalSquareLength = normal.squareLength();
             assert(normalSquareLength > (T)0.9996 || normalSquareLength < (T)1.0004);
         #endif

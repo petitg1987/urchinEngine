@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     void TextureSamplerCache::registerTextureSampler(uint64_t key, VkSampler sampler) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(samplersCache.find(key) == samplersCache.end());
         #endif
 

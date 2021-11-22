@@ -8,7 +8,7 @@ namespace urchin {
     std::map<std::string, std::unique_ptr<SingletonInterface>> SingletonContainer::singletons;
 
     void SingletonContainer::registerSingleton(const std::string& name, std::unique_ptr<SingletonInterface> ptr) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(singletons.find(name) == singletons.end());
         #endif
         singletons.emplace(name, std::move(ptr));

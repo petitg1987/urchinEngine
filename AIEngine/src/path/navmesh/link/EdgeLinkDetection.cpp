@@ -113,7 +113,7 @@ namespace urchin {
             }
         }
 
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(false);
         #endif
         return false;

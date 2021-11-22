@@ -109,7 +109,7 @@ namespace urchin {
     }
 
     void NavTriangle::assertLinksValidity() const {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             for (unsigned int edgeIndex = 0; edgeIndex < 3; ++edgeIndex) {
                 unsigned int countStandardLink = 0;
                 unsigned int countJoinPolygonsLink = 0;

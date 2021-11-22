@@ -10,7 +10,7 @@ namespace urchin {
      */
     ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, void* data) :
             variablesSize(std::move(variablesSize)) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             for (std::size_t variableSize : this->variablesSize) {
                 //Others sizes are not handled due to paddings added by the compiler on the structs.
                 //Moreover, Vulkan spec states that bool constant should use VkBool32.

@@ -126,7 +126,7 @@ namespace urchin {
         for (const auto& navObject : aiEntity.getNavObjects()) {
             const std::vector<std::weak_ptr<NavObject>>& nearObjects = navObject->retrieveNearObjects();
             for (const auto& nearObject : nearObjects) {
-                #ifndef NDEBUG
+                #ifdef URCHIN_DEBUG
                     assert(!nearObject.expired());
                 #endif
                 affectedNavObjectsToRefresh.insert(nearObject.lock());

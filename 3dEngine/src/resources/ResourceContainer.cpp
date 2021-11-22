@@ -18,7 +18,7 @@ namespace urchin {
 
     void ResourceContainer::addResource(const std::shared_ptr<Resource>& resource) {
         std::lock_guard<std::mutex> lock(mutex);
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(resources.find(resource->getId()) == resources.end());
         #endif
         resources.emplace(resource->getId(), resource);

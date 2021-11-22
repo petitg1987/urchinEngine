@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     int TypeConverter::toInt(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isInt(str));
         #endif
         std::istringstream iss(str);
@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     long TypeConverter::toLong(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isLong(str));
         #endif
         std::istringstream iss(str);
@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     unsigned int TypeConverter::toUnsignedInt(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isUnsignedInt(str));
         #endif
         std::istringstream iss(str);
@@ -70,7 +70,7 @@ namespace urchin {
     }
 
     float TypeConverter::toFloat(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isFloat(str));
         #endif
         std::istringstream iss(str);
@@ -89,7 +89,7 @@ namespace urchin {
     }
 
     double TypeConverter::toDouble(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isDouble(str));
         #endif
         std::istringstream iss(str);
@@ -104,7 +104,7 @@ namespace urchin {
     }
 
     char TypeConverter::toChar(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isChar(str));
         #endif
         return str[0];
@@ -115,7 +115,7 @@ namespace urchin {
     }
 
     bool TypeConverter::toBool(const std::string& str) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(isBool(str));
         #endif
         return str[0] != '0';

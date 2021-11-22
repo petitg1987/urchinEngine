@@ -289,7 +289,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
             assert(data[dataIndex].getDataDimension() == DataDimension::TWO_DIMENSION);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
@@ -298,7 +298,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>>& dataPtr) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
             assert(data[dataIndex].getDataDimension() == DataDimension::THREE_DIMENSION);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
@@ -307,7 +307,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Vector3<float>>& dataPtr) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
             assert(data[dataIndex].getDataDimension() == DataDimension::THREE_DIMENSION);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
@@ -316,7 +316,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(uniformData.size() > uniformDataIndex);
         #endif
         uniformData[uniformDataIndex].updateData(dataPtr);
@@ -327,7 +327,7 @@ namespace urchin {
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(uniformTextureReaders.size() > uniformTexPosition);
             assert(uniformTextureReaders[uniformTexPosition].size() == 1);
         #endif
@@ -335,7 +335,7 @@ namespace urchin {
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition, std::size_t textureIndex) const {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(uniformTextureReaders.size() > uniformTexPosition);
             assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
         #endif
@@ -343,7 +343,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateUniformTextureReaderArray(std::size_t uniformTexPosition, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(uniformTextureReaders.size() > uniformTexPosition);
             assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
         #endif
@@ -356,7 +356,7 @@ namespace urchin {
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(uniformTextureReaders.size() > textureIndex);
         #endif
         return uniformTextureReaders[textureIndex];
@@ -379,7 +379,7 @@ namespace urchin {
 
     void GenericRenderer::updateGraphicData(uint32_t frameIndex) {
         //update data (vertex & vertex attributes)
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             std::size_t dataCount = data[0].getDataCount();
             for (std::size_t dataIndex = 1; dataIndex < data.size(); ++dataIndex) {
                 assert(indices || dataCount == data[dataIndex].getDataCount());

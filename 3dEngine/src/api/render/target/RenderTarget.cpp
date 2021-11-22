@@ -76,7 +76,7 @@ namespace urchin {
     }
 
     void RenderTarget::addRenderer(GenericRenderer* renderer) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(&renderer->getRenderTarget() == this);
             for (auto* r : renderers) {
                 assert(r != renderer);

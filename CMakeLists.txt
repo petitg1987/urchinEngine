@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(urchinEngine)
 
-if (CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
-    add_definitions(-DNDEBUG) #disable assert
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_definitions(-DURCHIN_DEBUG)
 endif()
 
 set(URCHIN_BUILD_TOOLS "YES" CACHE STRING "Build the urchin engine tools (map editor, test runner).")

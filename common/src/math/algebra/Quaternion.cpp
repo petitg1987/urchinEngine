@@ -86,7 +86,7 @@ namespace urchin {
     }
 
     template<class T> Quaternion<T> Quaternion<T>::lookUp(const Vector3<T>& normalizedLookAt, const Vector3<T>& normalizedUp) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(MathFunction::isOne((float)normalizedLookAt.length(), 0.001f));
             assert(MathFunction::isOne((float)normalizedUp.length(), 0.001f));
         #endif
@@ -133,7 +133,7 @@ namespace urchin {
      * Quaternion representing the shortest rotation from v1 to v2
      */
     template<class T> Quaternion<T> Quaternion<T>::rotationFromTo(const Vector3<T>& normalizedFrom, const Vector3<T>& normalizedTo) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(MathFunction::isOne((float)normalizedFrom.length(), 0.001f));
             assert(MathFunction::isOne((float)normalizedTo.length(), 0.001f));
         #endif
@@ -150,7 +150,7 @@ namespace urchin {
     }
 
     template<class T> Quaternion<T> Quaternion<T>::fromAxisAngle(const Vector3<T>& normalizedAxis, T angle) {
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             assert(MathFunction::isOne((float)normalizedAxis.length(), 0.005f));
         #endif
         const T halfAngle = angle * (T)0.5;
@@ -228,7 +228,7 @@ namespace urchin {
 
     template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T>& point) const {
         //rotate point only works with normalized quaternion
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             const T normValue = norm();
             assert(normValue >= (T)0.999);
             assert(normValue <= (T)1.001);
@@ -240,7 +240,7 @@ namespace urchin {
 
     template<class T> Vector3<T> Quaternion<T>::rotateVector(const Vector3<T>& vector) const {
         //rotate point only works with normalized quaternion
-        #ifndef NDEBUG
+        #ifdef URCHIN_DEBUG
             const T normValue = norm();
             assert(normValue >= (T)0.999);
             assert(normValue <= (T)1.001);
