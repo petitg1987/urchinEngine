@@ -21,8 +21,8 @@ namespace urchin {
         alSource3f(sourceId, AL_POSITION, position.X, position.Y, position.Z);
 
         alSourcef(sourceId, AL_MAX_DISTANCE, inaudibleDistance);
-        alSourcef(sourceId, AL_REFERENCE_DISTANCE, 0.0);
-        alSourcef(sourceId, AL_ROLLOFF_FACTOR, 1.0);
+        alSourcef(sourceId, AL_REFERENCE_DISTANCE, 0.0f);
+        alSourcef(sourceId, AL_ROLLOFF_FACTOR, 1.0f);
     }
 
     void SpatialSound::updateSource(ALuint sourceId) {

@@ -12,6 +12,10 @@ namespace urchin {
             soundFileReader(SoundFileReader(audioStreamPlayer.getSound().getFilename())),
             playLoop(playLoop) {
         this->streamChunks.resize(nbStreamChunks, {});
+
+        if (soundFileReader.getNumberOfChannels() != 1 && audioStreamPlayer.getSound().getSoundType() == Sound::SoundType::SPATIAL) {
+            throw std::runtime_error("Spatial sound " + audioStreamPlayer.getSound().getFilename() + " must be a mono sound");
+        }
     }
 
     ALuint StreamUpdateTask::getSourceId() const {
