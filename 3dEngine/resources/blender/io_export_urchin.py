@@ -520,10 +520,10 @@ def export_urchin(settings):
 
     armature = find_armature(get_meshes_to_export())
     try:
-        rotate_axis(armature, -90, 'X')
+        rotate_axis(armature, 90, 'X')
         export_all(settings)
     finally:
-        rotate_axis(armature, 90, 'X')
+        rotate_axis(armature, -90, 'X')
 
 
 def export_all(settings):
