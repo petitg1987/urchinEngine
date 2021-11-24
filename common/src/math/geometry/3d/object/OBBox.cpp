@@ -195,7 +195,7 @@ namespace urchin {
                 {normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(2))},
                 {normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(2))}
         };
-        constexpr T EPSILON = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
+        constexpr auto EPSILON = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
 
         //case 1, 2, 3 (projectionAxis = axis[0] | axis[1] | axis[2])
         for (unsigned int i = 0; i < 3; i++) {

@@ -58,8 +58,8 @@ namespace urchin {
             throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
         }
 
-        for (const auto& property : properties) {
-            file << property.first << " = " << property.second <<"\n";
+        for (const auto& [propertyName, propertyValue] : properties) {
+            file << propertyName << " = " << propertyValue <<"\n";
         }
 
         file.close();

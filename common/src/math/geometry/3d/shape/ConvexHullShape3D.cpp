@@ -123,8 +123,8 @@ namespace urchin {
             std::size_t newPointIndex = nextPointIndex++;
             points[newPointIndex].point = newPoint;
 
-            for (const auto& edge : edges) {
-                addTriangle(IndexedTriangle3D<T>(edge.second.first, edge.second.second, newPointIndex));
+            for (const auto& [edgeId, edgeIndices] : edges) {
+                addTriangle(IndexedTriangle3D<T>(edgeIndices.first, edgeIndices.second, newPointIndex));
             }
 
             if (points[newPointIndex].triangleIndices.size() < 3) {

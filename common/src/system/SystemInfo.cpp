@@ -133,7 +133,7 @@ namespace urchin {
             );
 
             unsigned int hash = 0;
-            unsigned int* ptr = &cpuInfo[0];
+            const unsigned int* ptr = &cpuInfo[0];
             for (unsigned int i = 0; i < 4; i++) {
                 hash += (ptr[i] & (unsigned int)0xFFFF) + (ptr[i] >> 16u);
             }

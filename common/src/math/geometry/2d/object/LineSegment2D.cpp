@@ -35,7 +35,7 @@ namespace urchin {
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on segment AB closest to point p
      */
-    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T>& p, T barycentrics[2]) const {
+    template<class T> Point2<T> LineSegment2D<T>::closestPoint(const Point2<T>& p, std::array<T, 2>& barycentrics) const {
         Vector2<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();

@@ -134,12 +134,12 @@ namespace urchin {
         if (!attributesString.empty()) {
             std::vector<std::string> attributesVector = StringUtil::split(attributesString, UdaChunk::ATTRIBUTES_SEPARATOR);
 
-            for (auto& attribute: attributesVector) {
+            for (const auto& attribute: attributesVector) {
                 std::vector<std::string> attributeComponents = StringUtil::split(attribute, UdaChunk::ATTRIBUTES_ASSIGN);
                 if (attributeComponents.size() != 2) {
                     throw std::runtime_error(wrongFormatError);
                 }
-                attributes.emplace(attributeComponents[0], attributeComponents[1]);
+                attributes.try_emplace(attributeComponents[0], attributeComponents[1]);
             }
         }
         return std::make_unique<UdaChunk>(name, value, attributes, parent);

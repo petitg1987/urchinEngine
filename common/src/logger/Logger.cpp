@@ -58,7 +58,7 @@ namespace urchin {
     /**
      * @return Prefix composed of date/time and criticality
      */
-    std::string Logger::prefix(CriticalityLevel criticalityLevel) {
+    std::string Logger::prefix(CriticalityLevel criticalityLevel) const {
         time_t now = time(nullptr);
         std::string result = "[" + DateTimeUtil::epochToDateTime(now) + "]";
         result += " (" + getCriticalityString(criticalityLevel) + ") ";

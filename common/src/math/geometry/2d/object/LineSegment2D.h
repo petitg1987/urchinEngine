@@ -15,7 +15,7 @@ namespace urchin {
             const Point2<T>& getB() const;
 
             Point2<T> getSupportPoint(const Vector2<T>&) const;
-            Point2<T> closestPoint(const Point2<T>&, T[2]) const;
+            Point2<T> closestPoint(const Point2<T>&, std::array<T, 2>&) const;
             T squareDistance(const Point2<T>&) const;
             bool onSegment(const Point2<T>&) const;
 

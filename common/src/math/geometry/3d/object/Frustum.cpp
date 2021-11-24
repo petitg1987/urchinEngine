@@ -1,11 +1,9 @@
 #include <cmath>
 #include <algorithm>
-#include <cassert>
 
 #include <math/geometry/3d/object/Frustum.h>
 #include <math/geometry/3d/Line3D.h>
 #include <math/algebra/point/Point4.h>
-#include <math/algebra/MathValue.h>
 #include <math/trigonometry/AngleConverter.h>
 
 namespace urchin {
@@ -154,7 +152,7 @@ namespace urchin {
         position = middlePlane.intersectPoint(sideLine, hasIntersection);
     }
 
-    template<class T> const Point3<T> *Frustum<T>::getFrustumPoints() const {
+    template<class T> const std::array<Point3<T>, 8>& Frustum<T>::getFrustumPoints() const {
         return frustumPoints;
     }
 
@@ -250,7 +248,7 @@ namespace urchin {
     }
 
     template<class T> bool Frustum<T>::collideWithPoint(const Point3<T>& point) const {
-        return std::all_of(planes, planes + 6, [&point](const auto& plane){return plane.distance(point) <= 0.0;});
+        return std::all_of(planes.begin(), planes.end(), [&point](const auto& plane){return plane.distance(point) <= 0.0;});
     }
 
     /**
@@ -283,7 +281,7 @@ namespace urchin {
     * @return True if the sphere collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
-        return std::all_of(planes, planes + 6, [&sphere](const auto& plane){return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius();});
+        return std::all_of(planes.begin(), planes.end(), [&sphere](const auto& plane){return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius();});
     }
 
     template<class T> Frustum<T> operator *(const Matrix4<T>& m, const Frustum<T>& frustum) {

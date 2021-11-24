@@ -30,7 +30,7 @@ namespace urchin {
 
         while (start != str.end()) {
             auto temp = std::find(start, str.end(), delimiter);
-            tokens.emplace_back(std::string(start, temp));
+            tokens.emplace_back(start, temp);
 
             start = temp;
             if (start != str.end()) {

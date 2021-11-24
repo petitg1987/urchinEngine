@@ -35,7 +35,7 @@ namespace urchin {
 
         private:
             static Logger& defaultInstance();
-            std::string prefix(CriticalityLevel);
+            std::string prefix(CriticalityLevel) const;
             std::string getCriticalityString(CriticalityLevel) const;
 
             virtual void write(const std::string&) = 0;
