@@ -117,9 +117,9 @@ namespace urchin {
         }
 
         //check required extensions
-        for (const auto& requiredExtension : physicalDeviceRequiredExtensions) {
-            if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, requiredExtension.first)) {
-                return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredExtension.second + " support");
+        for (const auto& [extensionName, extensionDescription] : physicalDeviceRequiredExtensions) {
+            if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, extensionName)) {
+                return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + extensionDescription + " support");
             }
         }
 
