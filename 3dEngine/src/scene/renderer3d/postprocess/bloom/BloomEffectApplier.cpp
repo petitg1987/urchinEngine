@@ -158,14 +158,14 @@ namespace urchin {
 
         //up sample
         upSampleRenderers.clear();
-        for(auto& upSampleRenderTarget : upSampleRenderTargets) {
+        for(const auto& upSampleRenderTarget : upSampleRenderTargets) {
             upSampleRenderTarget->cleanup();
         }
         upSampleRenderTargets.clear();
 
         //down sample
         downSampleRenderers.clear();
-        for(auto& downSampleRenderTarget : downSampleRenderTargets) {
+        for(const auto& downSampleRenderTarget : downSampleRenderTargets) {
             downSampleRenderTarget->cleanup();
         }
         downSampleRenderTargets.clear();

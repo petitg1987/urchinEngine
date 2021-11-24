@@ -115,9 +115,9 @@ namespace urchin {
         }
 
         //reset all animations to frame 0
-        for (const auto& itAnimation: animations) {
-            if (itAnimation.second->getCurrentFrame() != 0) {
-                itAnimation.second->gotoFrame(0);
+        for (const auto& [animName, anim] : animations) {
+            if (anim->getCurrentFrame() != 0) {
+                anim->gotoFrame(0);
             }
         }
 
@@ -181,8 +181,8 @@ namespace urchin {
 
     std::map<std::string, const ConstAnimation*> Model::getAnimations() const {
         std::map<std::string, const ConstAnimation*> constConstAnimations;
-        for (const auto& animation : animations) {
-            constConstAnimations.try_emplace(animation.first, &animation.second->getConstAnimation());
+        for (const auto& [animName, anim] : animations) {
+            constConstAnimations.try_emplace(animName, &anim->getConstAnimation());
         }
         return constConstAnimations;
     }

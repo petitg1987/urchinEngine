@@ -90,7 +90,7 @@ namespace urchin {
 
     void BufferHandler::createOrRefreshBuffers(const void* dataPtr) {
         auto allocator = GraphicService::instance().getAllocator();
-        auto bufferSize = static_cast<VkDeviceSize>(dataSize);
+        VkDeviceSize bufferSize = dataSize;
 
         deleteBuffer();
 

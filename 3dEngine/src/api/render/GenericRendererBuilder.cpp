@@ -80,7 +80,7 @@ namespace urchin {
         if (!uniformTextureReaders.empty()) {
             throw std::runtime_error("Adding uniform data after uniform texture is discouraged. Uniform binding ID start first with all data and then with all textures.");
         }
-        uniformData.emplace_back(ShaderDataContainer(dataSize, dataPtr));
+        uniformData.emplace_back(dataSize, dataPtr);
         return shared_from_this();
     }
 

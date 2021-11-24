@@ -147,7 +147,7 @@ namespace urchin {
         return layersToUpdate;
     }
 
-    void LightShadowMap::removeModel(Model* model) {
+    void LightShadowMap::removeModel(const Model* model) {
         shadowModelSetDisplayer->removeModel(model);
     }
 

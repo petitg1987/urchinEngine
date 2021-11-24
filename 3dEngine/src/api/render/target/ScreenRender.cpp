@@ -241,14 +241,14 @@ namespace urchin {
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
 
-        VkSemaphore queuePresentWaitSemaphores[] = {renderFinishedSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait command buffers execution before present the image */};
+        std::array<VkSemaphore, 1> queuePresentWaitSemaphores = {renderFinishedSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait command buffers execution before present the image */};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         configureWaitSemaphore(submitInfo, imageAvailableSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait image available before executing command buffers */);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[vkImageIndex];
         submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores = queuePresentWaitSemaphores;
+        submitInfo.pSignalSemaphores = queuePresentWaitSemaphores.data();
 
         vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
         VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
@@ -256,13 +256,13 @@ namespace urchin {
             throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
         }
 
-        VkSwapchainKHR swapChains[] = {swapChainHandler.getSwapChain()};
+        std::array<VkSwapchainKHR, 1> swapChains = {swapChainHandler.getSwapChain()};
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         presentInfo.waitSemaphoreCount = 1;
-        presentInfo.pWaitSemaphores = queuePresentWaitSemaphores;
+        presentInfo.pWaitSemaphores = queuePresentWaitSemaphores.data();
         presentInfo.swapchainCount = 1;
-        presentInfo.pSwapchains = swapChains;
+        presentInfo.pSwapchains = swapChains.data();
         presentInfo.pImageIndices = &vkImageIndex;
         presentInfo.pResults = nullptr;
 

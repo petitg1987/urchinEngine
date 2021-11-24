@@ -10,12 +10,12 @@ namespace urchin {
             auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
             auto pfnSetDebugUtilsObjectNameEXT = reinterpret_cast<PFN_vkSetDebugUtilsObjectNameEXT>(vkGetDeviceProcAddr(logicalDevice, "vkSetDebugUtilsObjectNameEXT"));
-            auto objectTypeInfo = toVkObjectType(objectType);
-            auto objectFullName = objectTypeInfo.second + objectName;
+            auto [vkObjectType, objectTypeName] = toVkObjectType(objectType);
+            auto objectFullName = objectTypeName + objectName;
 
             VkDebugUtilsObjectNameInfoEXT objectNameInfo{};
             objectNameInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
-            objectNameInfo.objectType = objectTypeInfo.first;
+            objectNameInfo.objectType = vkObjectType;
             objectNameInfo.objectHandle = (uint64_t) object;
             objectNameInfo.pObjectName = objectFullName.c_str();
             pfnSetDebugUtilsObjectNameEXT(GraphicService::instance().getDevices().getLogicalDevice(), &objectNameInfo);

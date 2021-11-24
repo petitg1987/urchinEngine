@@ -53,13 +53,13 @@ namespace urchin {
             createInfo.imageUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         }
 
-        uint32_t queueFamilyIndices[] = {GraphicService::instance().getQueues().getGraphicsQueueFamily(),
-                                         GraphicService::instance().getQueues().getPresentationQueueFamily()};
+        std::array<uint32_t, 2> queueFamilyIndices = {GraphicService::instance().getQueues().getGraphicsQueueFamily(),
+                                                      GraphicService::instance().getQueues().getPresentationQueueFamily()};
 
         if (queueFamilyIndices[0] != queueFamilyIndices[1]) {
             createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
             createInfo.queueFamilyIndexCount = 2;
-            createInfo.pQueueFamilyIndices = queueFamilyIndices;
+            createInfo.pQueueFamilyIndices = queueFamilyIndices.data();
         } else {
             createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
             createInfo.queueFamilyIndexCount = 0;
@@ -163,7 +163,7 @@ namespace urchin {
             unsigned int widthInPixel, heightInPixel;
             GraphicService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
 
-            VkExtent2D actualExtent = {(uint32_t)widthInPixel, (uint32_t)heightInPixel};
+            VkExtent2D actualExtent = {widthInPixel, heightInPixel};
             actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
             actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
 

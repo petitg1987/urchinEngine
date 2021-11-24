@@ -59,7 +59,7 @@ namespace urchin {
         vkGetImageSubresourceLayout(logicalDevice, dstImage, &subResource, &subResourceLayout);
 
         //map image memory so we can start copying from it
-        const unsigned char* dataDestination;
+        unsigned char* dataDestination;
         vmaMapMemory(allocator, imageMemory, (void**)&dataDestination);
         {
             dataDestination += subResourceLayout.offset;
@@ -72,11 +72,11 @@ namespace urchin {
 
             for (unsigned int y = 0; y < dstHeight; ++y) {
                 std::size_t srcIndexY = (unsigned int)(scaleY * ((float)y + 1.0f)) - 1;
-                srcIndexY = (std::size_t)MathFunction::clamp((unsigned long)srcIndexY, 0uL, (unsigned long)srcHeight - 1uL);
+                srcIndexY = MathFunction::clamp((unsigned long)srcIndexY, 0uL, (unsigned long)srcHeight - 1uL);
 
                 for (unsigned int x = 0; x < dstWidth; ++x) {
                     std::size_t srcIndexX = ((unsigned int)(scaleX * ((float)x + 1.0f)) - 1) * 4;
-                    srcIndexX = (std::size_t)MathFunction::clamp((unsigned long)srcIndexX, 0uL, (unsigned long)srcWidth * 4uL - 1uL);
+                    srcIndexX = MathFunction::clamp((unsigned long)srcIndexX, 0uL, (unsigned long)srcWidth * 4uL - 1uL);
 
                     std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
                     std::size_t dstIndex = (y * dstWidth * 4) + x * 4;

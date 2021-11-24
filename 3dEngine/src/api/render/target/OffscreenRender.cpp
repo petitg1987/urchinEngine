@@ -213,14 +213,14 @@ namespace urchin {
         updateGraphicData(0);
         updateCommandBuffers(0, clearValues);
 
-        VkSemaphore signalSemaphores[] = {queueSubmitSemaphore};
+        std::array<VkSemaphore, 1> signalSemaphores = {queueSubmitSemaphore};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         configureWaitSemaphore(submitInfo, nullptr);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
         submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores = signalSemaphores;
+        submitInfo.pSignalSemaphores = signalSemaphores.data();
 
         vkResetFences(logicalDevice, 1, &commandBufferFence);
         VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);

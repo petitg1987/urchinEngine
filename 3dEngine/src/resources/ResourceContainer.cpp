@@ -11,7 +11,7 @@ namespace urchin {
 
     ResourceContainer::~ResourceContainer() {
         cleanResources();
-        for (auto& [resourceId, resource] : resources) {
+        for (const auto& [resourceId, resource] : resources) {
             Logger::instance().logError("Resources not released: " + resource->getName() + ". Usage count: " + std::to_string(resource.use_count()));
         }
     }
