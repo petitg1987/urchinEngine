@@ -113,7 +113,7 @@ namespace urchin {
         //Oblique lines collision
         //Not implemented: no real added value and bad for performance
 
-        std::sort(pathPoints.begin(), pathPoints.end(), distanceToStartPointComp);
+        std::ranges::sort(pathPoints, distanceToStartPointComp);
         pathPoints.push_back(adjustedEndPoint);
         return pathPoints;
     }

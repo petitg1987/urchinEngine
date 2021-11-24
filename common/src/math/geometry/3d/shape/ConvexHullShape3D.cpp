@@ -18,7 +18,7 @@ namespace urchin {
 
         //add each point to the tetrahedron
         for (std::size_t i = 0; i < points.size(); i++) {
-            if (pointsToExclude.find(i) == pointsToExclude.end()) {
+            if (pointsToExclude.contains(i)) {
                 addNewPoint(points[i]);
             }
         }
@@ -239,7 +239,7 @@ namespace urchin {
         //4. build triangles (find a point which doesn't belong to line).
         Vector3<T> lineVector = this->points[0].point.vector(this->points[1].point);
         for (std::size_t i = 1; i < points.size(); i++) {
-            if (pointsUsed.find(i) != pointsUsed.end()) { //point already used to build the tetrahedron
+            if (pointsUsed.contains(i)) { //point already used to build the tetrahedron
                 continue;
             }
 
@@ -272,7 +272,7 @@ namespace urchin {
                 this->points.at(firstIndexedTriangle.getIndex(2)).point);
         const Point3<T>& firstPoint = this->points.at(0).point;
         for (std::size_t i = 1; i < points.size(); i++) {
-            if (pointsUsed.find(i) != pointsUsed.end()) { //point already used to build the tetrahedron
+            if (pointsUsed.contains(i)) { //point already used to build the tetrahedron
                 continue;
             }
 

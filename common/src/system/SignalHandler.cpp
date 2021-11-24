@@ -119,21 +119,21 @@ namespace urchin {
         std::stringstream ss;
         ss << "Signal caught " << signalId << " (code: " << signalInfo->si_code << "):" << std::endl;
 
-        constexpr int maxStackFrames = 256;
-        void *traces[maxStackFrames];
-        int traceSize = backtrace(traces, maxStackFrames);
-        char **symbols = backtrace_symbols(traces, traceSize);
+        constexpr int MAX_STACK_FRAMES = 256;
+        std::array<void*, MAX_STACK_FRAMES> traces;
+        int traceSize = backtrace(traces.data(), MAX_STACK_FRAMES);
+        char **symbols = backtrace_symbols(traces.data(), traceSize);
 
         for (int i = 1; i < traceSize; ++i) {
             Dl_info info;
-            if (dladdr(traces[i], &info) && info.dli_sname) {
+            if (dladdr(traces[(std::size_t)i], &info) && info.dli_sname) {
                 std::string moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
                 int status;
                 const char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
                 std::string methodName = status == 0 ? demangledMethod : symbols[i];
 
                 long methodShift = (char*)info.dli_saddr - (char*)info.dli_fbase;
-                long methodInstructionShift = (char*)traces[i] - (char*)info.dli_saddr;
+                long methodInstructionShift = (char*)traces[(std::size_t)i] - (char*)info.dli_saddr;
                 long instructionShift = methodShift + methodInstructionShift - 1; //see https://stackoverflow.com/a/63841497
                 std::stringstream instructionShiftHex;
                 instructionShiftHex << std::hex << instructionShift;

@@ -71,7 +71,7 @@ template<class T> void Octreeable<T>::addRefOctree(Octree<T>* octree) {
 }
 
 template<class T> void Octreeable<T>::removeRefOctree(Octree<T>* octree) {
-    auto it = std::find(refOctree.begin(), refOctree.end(), octree);
+    auto it = std::ranges::find(refOctree, octree);
     if (it != refOctree.end()) {
         VectorUtil::erase(refOctree, it);
     } else {

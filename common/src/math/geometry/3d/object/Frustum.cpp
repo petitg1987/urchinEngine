@@ -248,7 +248,7 @@ namespace urchin {
     }
 
     template<class T> bool Frustum<T>::collideWithPoint(const Point3<T>& point) const {
-        return std::all_of(planes.begin(), planes.end(), [&point](const auto& plane){return plane.distance(point) <= 0.0;});
+        return std::ranges::all_of(planes, [&point](const auto& plane){return plane.distance(point) <= 0.0;});
     }
 
     /**
@@ -281,7 +281,7 @@ namespace urchin {
     * @return True if the sphere collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
-        return std::all_of(planes.begin(), planes.end(), [&sphere](const auto& plane){return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius();});
+        return std::ranges::all_of(planes, [&sphere](const auto& plane){return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius();});
     }
 
     template<class T> Frustum<T> operator *(const Matrix4<T>& m, const Frustum<T>& frustum) {
