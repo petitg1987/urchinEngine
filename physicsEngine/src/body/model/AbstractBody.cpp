@@ -64,12 +64,12 @@ namespace urchin {
     }
 
     void AbstractBody::setTransform(const PhysicsTransform& transform) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         this->transform = transform;
     }
 
     PhysicsTransform AbstractBody::getTransform() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         return transform;
     }
 
@@ -92,7 +92,7 @@ namespace urchin {
     }
 
     void AbstractBody::setRestitution(float restitution) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         this->restitution = restitution;
     }
 
@@ -100,12 +100,12 @@ namespace urchin {
      * @return Restitution (0=stop, 1=100% elastic)
      */
     float AbstractBody::getRestitution() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         return restitution;
     }
 
     void AbstractBody::setFriction(float friction) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         this->friction = friction;
     }
 
@@ -113,12 +113,12 @@ namespace urchin {
      * @return Friction (0=no friction, 1=total friction)
      */
     float AbstractBody::getFriction() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         return friction;
     }
 
     void AbstractBody::setRollingFriction(float rollingFriction) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         this->rollingFriction = rollingFriction;
     }
 
@@ -126,12 +126,12 @@ namespace urchin {
      * @return Rolling friction (0=no friction, 1=total friction)
      */
     float AbstractBody::getRollingFriction() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         return rollingFriction;
     }
 
     void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold) {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         this->ccdMotionThreshold = ccdMotionThreshold;
     }
 
@@ -140,7 +140,7 @@ namespace urchin {
      * step is more then threshold). A default value is determinate automatically for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
      */
     float AbstractBody::getCcdMotionThreshold() const {
-        std::lock_guard<std::mutex> lock(bodyMutex);
+        std::scoped_lock<std::mutex> lock(bodyMutex);
         return ccdMotionThreshold;
     }
 

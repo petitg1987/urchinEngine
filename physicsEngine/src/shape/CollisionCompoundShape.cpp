@@ -44,7 +44,7 @@ namespace urchin {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> scaledLocalizedShapes;
         scaledLocalizedShapes.reserve(localizedShapes.size());
         for (const auto& localizedShape : localizedShapes) {
-            std::shared_ptr<LocalizedCollisionShape> scaledLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+            auto scaledLocalizedShape = std::make_shared<LocalizedCollisionShape>();
             scaledLocalizedShape->position = localizedShape->position;
             scaledLocalizedShape->shape = localizedShape->shape->scale(scale);
             scaledLocalizedShape->transform = PhysicsTransform(localizedShape->transform.getPosition() * scale, localizedShape->transform.getOrientation());

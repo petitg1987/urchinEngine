@@ -53,12 +53,12 @@ namespace urchin {
     }
 
     void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         processables.push_back(processable);
     }
 
     void PhysicsWorld::removeProcessable(const Processable& processable) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
 
         auto itFind = std::find_if(processables.begin(), processables.end(), [&processable](const auto& o){return o.get() == &processable;});
         if (itFind != processables.end()) {
@@ -67,7 +67,7 @@ namespace urchin {
     }
 
     std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
 
         auto rayTester = std::make_unique<RayTester>(this, ray);
         std::shared_ptr<const RayTestResult> rayTestResult = rayTester->getRayTestResult();
@@ -80,7 +80,7 @@ namespace urchin {
      * @param gravity Gravity expressed in units/s^2
      */
     void PhysicsWorld::setGravity(const Vector3<float>& gravity) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         this->gravity = gravity;
     }
 
@@ -88,7 +88,7 @@ namespace urchin {
      * @return gravity expressed in units/s^2
      */
     Vector3<float> PhysicsWorld::getGravity() const {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         return gravity;
     }
 
@@ -106,17 +106,17 @@ namespace urchin {
     }
 
     void PhysicsWorld::pause() {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         paused = true;
     }
 
     void PhysicsWorld::unpause() {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         paused = false;
     }
 
     bool PhysicsWorld::isPaused() const {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         return paused;
     }
 
@@ -171,7 +171,7 @@ namespace urchin {
             }
 
             Profiler::physics().log(); //log for physics thread
-        } catch (std::exception& e) {
+        } catch (const std::exception&) {
             Logger::instance().logError("Error cause physics thread crash: exception reported to main thread");
             physicsThreadExceptionPtr = std::current_exception();
         }
@@ -193,7 +193,7 @@ namespace urchin {
         copiedProcessables.clear();
 
         {
-            std::lock_guard<std::mutex> lock(mutex);
+            std::scoped_lock<std::mutex> lock(mutex);
             paused = this->paused;
             if (!paused) {
                 gravity = this->gravity;

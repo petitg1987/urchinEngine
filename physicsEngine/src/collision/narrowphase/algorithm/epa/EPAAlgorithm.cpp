@@ -193,7 +193,7 @@ namespace urchin {
             }
 
             //create three vectors around 'lineDirection' separate of 120 degrees
-            const T sin60 = (T)0.86602540378; //sin(pi/3)
+            const auto sin60 = (T)0.86602540378; //sin(pi/3)
             const T cos60 = 0.5; //cos(pi/3)
             const Quaternion<T> rotationQuaternion(lineDirection.X * sin60, lineDirection.Y * sin60, lineDirection.Z * sin60, cos60);
             const Matrix3<T> rotationMatrix = rotationQuaternion.toMatrix3();
@@ -203,11 +203,11 @@ namespace urchin {
             const Vector3<T> v3 = rotationMatrix * Vector3<T>(v2.X, v2.Y, v2.Z);
 
             //retrieve all points forming a hexahedron (two tetrahedron glued together)
-            Point3<T> supportPoints[3] = {
+            std::array<Point3<T>, 3> supportPoints = {
                     convexObject1.getSupportPoint(v1.template cast<float>(), true).template cast<T>(),
                     convexObject1.getSupportPoint(v2.template cast<float>(), true).template cast<T>(),
                     convexObject1.getSupportPoint(v3.template cast<float>(), true).template cast<T>()};
-            Point3<T> supportPointsMinus[3] = {
+            std::array<Point3<T>, 3> supportPointsMinus = {
                     convexObject2.getSupportPoint((-v1).template cast<float>(), true).template cast<T>(),
                     convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>(),
                     convexObject2.getSupportPoint((-v3).template cast<float>(), true).template cast<T>()};
@@ -244,10 +244,10 @@ namespace urchin {
             const Vector3<T> v2 = -v1;
 
             //retrieve all points forming a hexahedron (two tetrahedron glued together)
-            Point3<T> supportPoints[2] = {
+            std::array<Point3<T>, 2> supportPoints = {
                     convexObject1.getSupportPoint(v1.template cast<float>(), true).template cast<T>(),
                     convexObject1.getSupportPoint(v2.template cast<float>(), true).template cast<T>()};
-            Point3<T> supportPointsMinus[2] = {
+            std::array<Point3<T>, 2> supportPointsMinus = {
                     convexObject2.getSupportPoint((-v1).template cast<float>(), true).template cast<T>(),
                     convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>()};
 

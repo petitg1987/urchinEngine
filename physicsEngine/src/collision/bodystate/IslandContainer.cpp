@@ -28,7 +28,7 @@ namespace urchin {
         }
     }
 
-    void IslandContainer::mergeIsland(IslandElement& element1, IslandElement& element2) {
+    void IslandContainer::mergeIsland(const IslandElement& element1, const IslandElement& element2) {
         assert(!containerSorted);
 
         unsigned int islandId1 = findIslandId(element1.getIslandElementId());
@@ -41,7 +41,7 @@ namespace urchin {
         islandElementsLink[islandId1].islandIdRef = islandId2;
     }
 
-    void IslandContainer::linkToStaticElement(IslandElement& element) {
+    void IslandContainer::linkToStaticElement(const IslandElement& element) {
         unsigned int islandId = findIslandId(element.getIslandElementId());
         islandElementsLink[islandId].linkedToStaticElement = true;
     }

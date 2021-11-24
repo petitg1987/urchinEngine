@@ -83,8 +83,8 @@ namespace urchin {
 
     void CollisionAlgorithmSelector::initializeAlgorithmPool() {
         unsigned int maxElementSize = 0;
-        for (auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
-            for (auto& builderMatrixColumn : builderMatrixLine) {
+        for (const auto& builderMatrixLine : collisionAlgorithmBuilderMatrix) {
+            for (const auto& builderMatrixColumn : builderMatrixLine) {
                 maxElementSize = std::max(maxElementSize, builderMatrixColumn->getAlgorithmSize());
             }
         }

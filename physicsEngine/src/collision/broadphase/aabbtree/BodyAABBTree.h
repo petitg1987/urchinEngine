@@ -27,13 +27,13 @@ namespace urchin {
             const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const;
 
         private:
-            void computeOverlappingPairsFor(AABBNode<std::shared_ptr<AbstractBody>>&);
+            void computeOverlappingPairsFor(const AABBNode<std::shared_ptr<AbstractBody>>&);
             void createOverlappingPair(BodyAABBNodeData&, BodyAABBNodeData&);
             void removeOverlappingPairs(const BodyAABBNodeData&);
             void removeBodyPairContainerReferences(const AbstractBody&, PairContainer*);
 
             void computeWorldBoundary();
-            void controlBoundaries(AABBNode<std::shared_ptr<AbstractBody>>&) const;
+            void controlBoundaries(const AABBNode<std::shared_ptr<AbstractBody>>&) const;
 
             static constexpr float BOUNDARIES_MARGIN_PERCENTAGE = 0.3f;
 

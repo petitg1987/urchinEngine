@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    RayTester::RayTester(PhysicsWorld* physicsWorld, Ray<float> ray) :
+    RayTester::RayTester(PhysicsWorld* physicsWorld, const Ray<float>& ray) :
             collisionWorld(physicsWorld->getCollisionWorld()),
             ray(ray),
             rayTestResult(std::make_shared<RayTestResult>()) {

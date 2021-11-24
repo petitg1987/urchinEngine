@@ -55,8 +55,8 @@ namespace urchin {
     }
 
     void NarrowPhase::processOverlappingPair(OverlappingPair& overlappingPair, std::vector<ManifoldResult>& manifoldResults) {
-        AbstractBody& body1 = overlappingPair.getBody1();
-        AbstractBody& body2 = overlappingPair.getBody2();
+        const AbstractBody& body1 = overlappingPair.getBody1();
+        const AbstractBody& body2 = overlappingPair.getBody2();
 
         if (body1.isActive() || body2.isActive()) {
             ScopeLockById lockBody1(bodiesMutex, body1.getObjectId());
@@ -222,8 +222,8 @@ namespace urchin {
 
     ccd_set NarrowPhase::rayTest(const Ray<float>& ray, const std::vector<std::shared_ptr<AbstractBody>>& bodiesAABBoxHitRay) const {
         CollisionSphereShape pointShape(0.0f);
-        PhysicsTransform from = PhysicsTransform(ray.getOrigin());
-        PhysicsTransform to = PhysicsTransform(ray.computeTo());
+        PhysicsTransform from(ray.getOrigin());
+        PhysicsTransform to(ray.computeTo());
         TemporalObject rayCastObject(pointShape, from, to);
 
         return continuousCollisionTest(rayCastObject, bodiesAABBoxHitRay);

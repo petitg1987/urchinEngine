@@ -119,11 +119,11 @@ namespace urchin {
     const std::vector<CollisionTriangleShape>& CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float>& checkAABBox) const {
         trianglesInAABBox.clear();
 
-        auto vertexXRange = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
-        auto vertexZRange = computeStartEndIndices(checkAABBox.getMin().Z, checkAABBox.getMax().Z, Axis::Z);
+        auto [vertexXMin, vertexXMax] = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
+        auto [vertexZMin, vertexZMax] = computeStartEndIndices(checkAABBox.getMin().Z, checkAABBox.getMax().Z, Axis::Z);
 
-        for (unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z) {
-            for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x) {
+        for (unsigned int z = vertexZMin; z < vertexZMax; ++z) {
+            for (unsigned int x = vertexXMin; x < vertexXMax; ++x) {
                 createTrianglesMatchHeight(x, z, checkAABBox.getMin().Y, checkAABBox.getMax().Y);
             }
         }
@@ -147,33 +147,33 @@ namespace urchin {
 
         float rayMinZ = std::min(ray.getA().Z, ray.getB().Z);
         float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
-        auto vertexZRange = computeStartEndIndices(rayMinZ, rayMaxZ, Axis::Z);
+        auto [vertexZMin, vertexZMax] = computeStartEndIndices(rayMinZ, rayMaxZ, Axis::Z);
 
-        for (unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z) {
+        for (unsigned int z = vertexZMin; z < vertexZMax; ++z) {
             float zStartValue = vertices[xLength * z].Z;
             float zEndValue = vertices[xLength * (z + 1)].Z;
             float xFirstValue = raySameZValues ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
             float xSecondValue = raySameZValues ? ray.getB().X : slopeLineZX * zEndValue + interceptLineZX;
-            auto xMinMaxValue = std::minmax(xFirstValue, xSecondValue);
+            auto [xMinValue, xMaxValue] = std::minmax(xFirstValue, xSecondValue);
 
-            auto vertexXRange = computeStartEndIndices(xMinMaxValue.first, xMinMaxValue.second, Axis::X);
+            auto [vertexXMin, vertexXMax] = computeStartEndIndices(xMinValue, xMaxValue, Axis::X);
 
-            for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x) {
+            for (unsigned int x = vertexXMin; x < vertexXMax; ++x) {
                 //compute min and max Y values based on X value (don't give satisfying result when ray is parallel to Z axis)
                 float xCurrentValue = vertices[x].X;
                 float xNextValue = vertices[x + 1].X;
                 float yFirstValue1 = raySameXValues ? ray.getA().Y : slopeLineXY * xCurrentValue + interceptLineXY;
                 float ySecondValue1 = raySameXValues ? ray.getB().Y : slopeLineXY * xNextValue + interceptLineXY;
-                auto yMinMaxValue1 = std::minmax(yFirstValue1, ySecondValue1);
+                auto [yMinValue1, yMaxValue1] = std::minmax(yFirstValue1, ySecondValue1);
 
                 //compute min and max Y values based on Z value (don't give satisfying result when ray is parallel to X axis)
                 float yFirstValue2 = raySameZValues ? ray.getA().Y : slopeLineZY * zStartValue + interceptLineZY;
                 float ySecondValue2 = raySameZValues ? ray.getB().Y : slopeLineZY * zEndValue + interceptLineZY;
-                auto yMinMaxValue2 = std::minmax(yFirstValue2, ySecondValue2);
+                auto [yMinValue2, yMaxValue2] = std::minmax(yFirstValue2, ySecondValue2);
 
                 //combine both results to get a more satisfying result
-                float rayMinY = std::max(yMinMaxValue1.first, yMinMaxValue2.first);
-                float rayMaxY = std::min(yMinMaxValue1.second, yMinMaxValue2.second);
+                float rayMinY = std::max(yMinValue1, yMinValue2);
+                float rayMaxY = std::min(yMaxValue1, yMaxValue2);
 
                 createTrianglesMatchHeight(x, z, rayMinY, rayMaxY);
             }

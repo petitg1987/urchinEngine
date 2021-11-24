@@ -40,7 +40,7 @@ namespace urchin {
         Ray<float> ray(from.getPosition(), to.getPosition());
         float bodyBoundingSphereRadius = body.getShape().getMaxDistanceToCenter();
 
-        auto* bodyPtr = const_cast<AbstractBody*>(&body);
+        const auto* bodyPtr = const_cast<AbstractBody*>(&body);
         tree.enlargedRayQuery(ray, bodyBoundingSphereRadius, bodyPtr, bodiesAABBoxHitBody);
 
         return bodiesAABBoxHitBody;

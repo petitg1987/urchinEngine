@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    BroadPhase::BroadPhase(BodyContainer& bodyContainer) :
+    BroadPhase::BroadPhase(const BodyContainer& bodyContainer) :
             broadPhaseAlgorithm(std::make_unique<AABBTreeAlgorithm>()) {
 
         bodyContainer.addObserver(this, BodyContainer::ADD_BODY);
@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     void BroadPhase::notify(Observable* observable, int notificationType) {
-        if (auto* bodyContainer = dynamic_cast<BodyContainer*>(observable)) {
+        if (const auto* bodyContainer = dynamic_cast<BodyContainer*>(observable)) {
             if (notificationType == BodyContainer::ADD_BODY) {
                 addBody(bodyContainer->getLastUpdatedBody());
             } else if (notificationType == BodyContainer::REMOVE_BODY) {
@@ -29,7 +29,7 @@ namespace urchin {
      * @param body Body to add. Smart pointer is required to force the user to create the body with a smart pointer. See the remove method comment for the reason to use a smart pointer.
      */
     void BroadPhase::addBodyAsync(const std::shared_ptr<AbstractBody>& body) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         bodiesToAdd.push_back(body);
     }
 
@@ -42,7 +42,7 @@ namespace urchin {
      * @param body Body to remove. Smart pointer is used to ensure that the body is not destroyed before it has been removed from the physics thread.
      */
     void BroadPhase::removeBodyAsync(const std::shared_ptr<AbstractBody>& body) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         bodiesToRemove.push_back(body);
     }
 
@@ -51,14 +51,14 @@ namespace urchin {
     }
 
     void BroadPhase::synchronizeBodies() {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
 
-        for (auto& bodyToAdd : bodiesToAdd) {
+        for (const auto& bodyToAdd : bodiesToAdd) {
             addBody(bodyToAdd);
         }
         bodiesToAdd.clear();
 
-        for (auto& bodyToRemove : bodiesToRemove) {
+        for (const auto& bodyToRemove : bodiesToRemove) {
             removeBody(*bodyToRemove);
         }
         bodiesToRemove.clear();

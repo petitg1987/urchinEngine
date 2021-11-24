@@ -16,7 +16,7 @@ namespace urchin {
     */
     class BroadPhase : public Observer {
         public:
-            explicit BroadPhase(BodyContainer&);
+            explicit BroadPhase(const BodyContainer&);
             ~BroadPhase() override;
 
             void notify(Observable*, int) override;

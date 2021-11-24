@@ -16,12 +16,12 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 
     //initialize pool: each element contains address of next element and last one contains 0
     unsigned char* p = pool;
-    int count = (int)this->maxElements;
+    auto count = (int)this->maxElements;
     while (--count) {
         *(void**)p = (p + this->maxElementSize);
         p += this->maxElementSize;
     }
-    *(void**)p = 0;
+    *(void**)p = nullptr;
 }
 
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool() {
@@ -58,7 +58,7 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int si
  * @param ptr Pointer to free
  */
 template<class BaseType> void FixedSizePool<BaseType>::deallocate(BaseType* ptr) {
-    if ((reinterpret_cast<unsigned char*>(ptr) >= pool && reinterpret_cast<unsigned char*>(ptr) < pool + maxElementSize * maxElements)) { //ptr is in the pool
+    if (reinterpret_cast<unsigned char*>(ptr) >= pool && reinterpret_cast<unsigned char*>(ptr) < pool + maxElementSize * maxElements) { //ptr is in the pool
         ptr->~BaseType();
 
         *(void**)ptr = firstFree;

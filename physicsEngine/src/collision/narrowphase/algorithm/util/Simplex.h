@@ -33,7 +33,7 @@ namespace urchin {
             void removePoint(std::size_t);
             void setBarycentric(std::size_t, T);
 
-            SupportMapping<T> simplexPoints[4];
+            std::array<SupportMapping<T>, 4> simplexPoints;
             unsigned int simplexPointsSize;
             Point3<T> closestPointToOrigin;
     };

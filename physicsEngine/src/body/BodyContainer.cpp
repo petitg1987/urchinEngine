@@ -11,14 +11,14 @@ namespace urchin {
     }
 
     void BodyContainer::addBody(std::shared_ptr<AbstractBody> body) {
-        std::lock_guard<std::mutex> lock(bodiesMutex);
+        std::scoped_lock<std::mutex> lock(bodiesMutex);
 
         BodyRefresh bodyUpdate{nullptr, std::move(body)};
         bodiesToRefresh.emplace_back(bodyUpdate);
     }
 
     void BodyContainer::removeBody(const AbstractBody& body) {
-        std::lock_guard<std::mutex> lock(bodiesMutex);
+        std::scoped_lock<std::mutex> lock(bodiesMutex);
 
         BodyRefresh bodyUpdate{&body, std::shared_ptr<AbstractBody>(nullptr)};
         bodiesToRefresh.emplace_back(bodyUpdate);
@@ -37,7 +37,7 @@ namespace urchin {
      */
     void BodyContainer::refreshBodies() {
         ScopeProfiler sp(Profiler::physics(), "setupWorkBodies");
-        std::lock_guard<std::mutex> lock(bodiesMutex);
+        std::scoped_lock<std::mutex> lock(bodiesMutex);
 
         for (const auto& bodyToRefresh: bodiesToRefresh) {
             if (bodyToRefresh.bodyToAdd) {

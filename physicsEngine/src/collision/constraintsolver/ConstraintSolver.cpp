@@ -85,8 +85,8 @@ namespace urchin {
     }
 
     CommonSolvingData ConstraintSolver::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
-        RigidBody& body1 = RigidBody::upCast(manifoldResult.getBody1());
-        RigidBody& body2 = RigidBody::upCast(manifoldResult.getBody2());
+        const RigidBody& body1 = RigidBody::upCast(manifoldResult.getBody1());
+        const RigidBody& body2 = RigidBody::upCast(manifoldResult.getBody2());
 
         CommonSolvingData commonSolvingData(body1, body2);
 

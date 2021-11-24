@@ -36,7 +36,7 @@ namespace urchin {
     */
     class CharacterController {
         public:
-            CharacterController(std::shared_ptr<PhysicsCharacter>, CharacterControllerConfig, PhysicsWorld&);
+            CharacterController(std::shared_ptr<PhysicsCharacter>, const CharacterControllerConfig&, PhysicsWorld&);
             ~CharacterController();
 
             void setVelocity(const Vector3<float>&);

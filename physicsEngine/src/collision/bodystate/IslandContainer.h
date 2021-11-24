@@ -16,8 +16,8 @@ namespace urchin {
             IslandContainer();
 
             void reset(const std::vector<IslandElement*>&);
-            void mergeIsland(IslandElement&, IslandElement&);
-            void linkToStaticElement(IslandElement&);
+            void mergeIsland(const IslandElement&, const IslandElement&);
+            void linkToStaticElement(const IslandElement&);
 
             const std::vector<IslandElementLink>& retrieveSortedIslandElements();
 

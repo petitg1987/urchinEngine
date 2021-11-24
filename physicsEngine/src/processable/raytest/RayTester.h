@@ -11,7 +11,7 @@ namespace urchin {
 
     class RayTester : public Processable {
         public:
-            RayTester(PhysicsWorld*, Ray<float> ray);
+            RayTester(PhysicsWorld*, const Ray<float>& ray);
 
             std::shared_ptr<const RayTestResult> getRayTestResult() const;
 
@@ -20,7 +20,7 @@ namespace urchin {
 
         private:
             CollisionWorld& collisionWorld;
-            const Ray<float> ray;
+            Ray<float> ray;
 
             std::shared_ptr<RayTestResult> rayTestResult;
     };

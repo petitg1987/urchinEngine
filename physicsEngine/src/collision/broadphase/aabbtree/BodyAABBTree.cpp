@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::preRemoveObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>& nodeToDelete) {
-        auto& bodyNodeToDelete = dynamic_cast<BodyAABBNodeData&>(nodeToDelete.getNodeData());
+        const auto& bodyNodeToDelete = dynamic_cast<BodyAABBNodeData&>(nodeToDelete.getNodeData());
         removeOverlappingPairs(bodyNodeToDelete);
     }
 
@@ -50,7 +50,7 @@ namespace urchin {
         return defaultPairContainer->getOverlappingPairs();
     }
 
-    void BodyAABBTree::computeOverlappingPairsFor(AABBNode<std::shared_ptr<AbstractBody>>& leafNode) {
+    void BodyAABBTree::computeOverlappingPairsFor(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) {
         browseNodes.clear();
         browseNodes.push_back(AABBTree::getRootNode());
 
@@ -109,8 +109,8 @@ namespace urchin {
 
     void BodyAABBTree::computeWorldBoundary() {
         float maxYBoundary = -std::numeric_limits<float>::max();
-        for (auto& objectNode : objectsNode) {
-            const AABBox<float>& nodeAABBox = objectNode.second->getAABBox();
+        for (const auto& [objPtr, objNode] : objectsNode) {
+            const AABBox<float>& nodeAABBox = objNode->getAABBox();
             minYBoundary = std::min(nodeAABBox.getMin().Y, minYBoundary);
             maxYBoundary = std::max(nodeAABBox.getMax().Y, maxYBoundary);
         }
@@ -119,7 +119,7 @@ namespace urchin {
         minYBoundary -= worldHeight * BOUNDARIES_MARGIN_PERCENTAGE;
     }
 
-    void BodyAABBTree::controlBoundaries(AABBNode<std::shared_ptr<AbstractBody>>& leafNode) const {
+    void BodyAABBTree::controlBoundaries(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) const {
         const AABBox<float>& bodyAABBox = leafNode.getNodeData().retrieveObjectAABBox();
 
         if (bodyAABBox.getMax().Y < minYBoundary) {

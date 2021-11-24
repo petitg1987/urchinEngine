@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
+    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, const CharacterControllerConfig& config, PhysicsWorld& physicsWorld) :
             ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
             maxDepthToRecover(ConfigService::instance().getFloatValue("character.maxDepthToRecover")),
             minUpdateFrequency(ConfigService::instance().getFloatValue("character.minUpdateFrequency")),
@@ -126,7 +126,7 @@ namespace urchin {
             float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
             float ccdCylinderHeight = std::max(0.01f, ccdHeight - (2.0f * ccdRadius));
             ccdGhostBodyShape = std::make_unique<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule.getCapsuleOrientation());
-        } catch (const std::bad_cast& e) {
+        } catch (const std::bad_cast&) {
             throw std::runtime_error("Unimplemented shape type for character controller: " + std::to_string(ghostBody->getShape().getShapeType()));
         }
         ccdGhostBody = std::make_shared<GhostBody>(this->physicsCharacter->getName() + "_ccd", this->physicsCharacter->getTransform(), std::move(ccdGhostBodyShape));

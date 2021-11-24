@@ -8,7 +8,7 @@ namespace urchin {
         uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(*body1, *body2);
 
         bool found = false;
-        for (auto& overlappingPair : overlappingPairs) {
+        for (const auto& overlappingPair : overlappingPairs) {
             if (overlappingPair->getBodiesId() == bodiesId) {
                 found = true;
                 break;
@@ -33,7 +33,7 @@ namespace urchin {
     void VectorPairContainer::removeOverlappingPairs(AbstractBody& body) {
         auto it = overlappingPairs.begin();
         while (it != overlappingPairs.end()) {
-            auto& pair = *it;
+            const auto& pair = *it;
             if (&pair->getBody1() == &body || &pair->getBody2() == &body) {
                 it = overlappingPairs.erase(it);
             } else {
