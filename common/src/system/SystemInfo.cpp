@@ -219,12 +219,11 @@ namespace urchin {
             if (layoutBeginLocation != std::string::npos) {
                 layoutBeginLocation += LAYOUT_LABEL.size();
                 std::size_t layoutEndLocation = xKeyboardInfo.find('\n', layoutBeginLocation);
-                if (layoutEndLocation != std::string::npos) {
-                    std::string layout = xKeyboardInfo.substr(layoutBeginLocation, layoutEndLocation - layoutBeginLocation);
-                    StringUtil::trim(layout);
-                    if (StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
-                        return KeyboardLayout::AZERTY;
-                    }
+                std::size_t searchLength = layoutEndLocation != std::string::npos ? (layoutEndLocation - layoutBeginLocation) : xKeyboardInfo.size() - layoutBeginLocation;
+                std::string layout = xKeyboardInfo.substr(layoutBeginLocation, searchLength);
+                StringUtil::trim(layout);
+                if (StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
+                    return KeyboardLayout::AZERTY;
                 }
             }
             return KeyboardLayout::DEFAULT;

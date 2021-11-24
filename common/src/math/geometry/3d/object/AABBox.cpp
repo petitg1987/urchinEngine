@@ -46,10 +46,10 @@ namespace urchin {
         boxShape = BoxShape<T>(Vector3<T>((max.X - min.X) / (T)2.0, (max.Y - min.Y) / (T)2.0, (max.Z - min.Z) / (T)2.0));
     }
 
-    template<class T> AABBox<T>::AABBox(const Point3<T>* points, unsigned int size) :
+    template<class T> AABBox<T>::AABBox(std::span<Point3<T>> points) :
             min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
             max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max())) {
-        for (unsigned int i = 0; i < size; ++i) {
+        for (unsigned int i = 0; i < std::size(points); ++i) {
             const Point3<T>& point = points[i];
 
             min.X = std::min(min.X, point.X);

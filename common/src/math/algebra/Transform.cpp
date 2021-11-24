@@ -84,10 +84,6 @@ namespace urchin {
         return pPosition == t.getPosition() && qOrientation == t.getOrientation() && fScale == t.getScale();
     }
 
-    template<class T> bool Transform<T>::operator !=(const Transform<T>& t) const {
-        return !(this->operator == (t));
-    }
-
     //explicit template
     template class Transform<float>;
 

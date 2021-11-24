@@ -21,7 +21,7 @@ namespace urchin {
         //sort points lexicographically
         std::vector<Point2<T>> sortedPoints;
         sortedPoints.resize(nbPoints);
-        std::copy(points.begin(), points.end(), sortedPoints.begin());
+        std::ranges::copy(points, sortedPoints.begin());
         std::sort(sortedPoints.begin(), sortedPoints.end());
 
         //build lower convex hull

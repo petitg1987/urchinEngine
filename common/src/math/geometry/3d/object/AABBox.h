@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <limits>
+#include <span>
 
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/shape/BoxShape.h>
@@ -22,7 +23,7 @@ namespace urchin {
             AABBox(const Point3<T>&, const Point3<T>&);
             AABBox(const Point3<T>&, const Vector3<T>&);
             explicit AABBox(const std::vector<Point3<T>>&);
-            AABBox(const Point3<T>*, unsigned int);
+            explicit AABBox(std::span<Point3<T>>);
             AABBox(const AABBox<T>&);
             AABBox<T>& operator=(const AABBox<T>&);
             AABBox<T>& operator=(AABBox<T>&&) noexcept;

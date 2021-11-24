@@ -31,7 +31,6 @@ namespace urchin {
             Transform<T> operator *(const Transform<T>&) const;
             const Transform<T>& operator *=(const Transform<T>&);
             bool operator ==(const Transform<T>&) const;
-            bool operator !=(const Transform<T>&) const;
 
         private:
             Point3<T> pPosition;

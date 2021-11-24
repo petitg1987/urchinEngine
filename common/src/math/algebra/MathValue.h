@@ -1,10 +1,12 @@
 #pragma once
 
+#include <numbers>
+
 namespace urchin {
 
     class MathValue {
         public:
-            static constexpr double PI = 3.14159265358979323846;
+            static constexpr double PI = std::numbers::pi;
             static constexpr float PI_FLOAT = (float)PI;
     };
 
