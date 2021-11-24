@@ -46,8 +46,8 @@ namespace urchin {
         unsigned int componentsCount = rawWidgetImage->retrieveComponentsCount(); //shortcut
         std::vector<unsigned char> texels(height * width * componentsCount, 0);
 
-        unsigned int widthMinusRight = (unsigned int)std::max(0, (int)width - (int)right);
-        unsigned int heightMinusBottom = (unsigned int)std::max(0, (int)height - (int)bottom);
+        auto widthMinusRight = (unsigned int)std::max(0, (int)width - (int)right);
+        auto heightMinusBottom = (unsigned int)std::max(0, (int)height - (int)bottom);
         unsigned int leftMultiplyInternalFormat = std::min(width, left * componentsCount);
         unsigned int topAdjusted = std::min(height, top);
 

@@ -64,8 +64,8 @@ namespace urchin {
                                      Point2<int>(getGlobalPositionX() + (int) getWidth(), getGlobalPositionY() + widgetOutline.topWidth));
 
             if (!getUi3dData() && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
-                mousePositionX = getMouseX() - (int) getPositionX();
-                mousePositionY = getMouseY() - (int) getPositionY();
+                mousePositionX = getMouseX() - getPositionX();
+                mousePositionY = getMouseY() - getPositionY();
                 state = MOVING;
             }
 

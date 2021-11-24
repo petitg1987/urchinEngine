@@ -16,7 +16,7 @@ namespace urchin {
 
         //get file length
         file.seekg(0, std::ios::end);
-        long length = (long)file.tellg();
+        auto length = (long)file.tellg();
         file.seekg(0, std::ios::beg);
 
         //extract header
@@ -150,7 +150,7 @@ namespace urchin {
      * @param componentsCount [out] Number of components
      * @param format [out] Image format
      */
-    void LoaderTGA::getImageInfo(const TgaHeader& header, unsigned int& width, unsigned int& height, unsigned int& componentsCount, Image::ImageFormat& format) {
+    void LoaderTGA::getImageInfo(const TgaHeader& header, unsigned int& width, unsigned int& height, unsigned int& componentsCount, Image::ImageFormat& format) const {
         width = (unsigned int)header.width;
         height = (unsigned int)header.height;
 
@@ -183,7 +183,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA8bits(const std::vector<unsigned char>& data, unsigned int imageSize, const std::vector<unsigned char>& colorMap, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA8bits(const std::vector<unsigned char>& data, unsigned int imageSize, const std::vector<unsigned char>& colorMap, std::vector<unsigned char>& texels) const {
         unsigned char color;
 
         for (unsigned int i = 0; i < imageSize; ++i) {
@@ -197,7 +197,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA16bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA16bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         unsigned short color;
 
         for (unsigned int i = 0, j = 0;i < imageSize; ++i, j += 2) {
@@ -211,7 +211,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA24bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA24bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         for (unsigned int i = 0, j = 0; i < imageSize; ++i, j += 3) {
             //reads and converts BGR to RGB
             texels[(i * 3) + 2] = data[j + 0];
@@ -220,7 +220,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA32bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA32bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         for (unsigned int i = 0, j = 0; i < imageSize; ++i, j += 4) {
             //reads and converts BGRA to RGBA
             texels[(i * 4) + 2] = data[j + 0];
@@ -230,13 +230,13 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGAGray8bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGAGray8bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         for (unsigned int i = 0; i < imageSize; ++i) {
             texels[i] = data[i];
         }
     }
 
-    void LoaderTGA::readTGA8bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, const std::vector<unsigned char>& colorMap, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA8bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, const std::vector<unsigned char>& colorMap, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
         unsigned char color;
         unsigned char packetHeader;
@@ -269,7 +269,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA16bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA16bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
         unsigned short color;
         unsigned char packetHeader;
@@ -303,7 +303,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA24bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA24bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
         const unsigned char *rgb;
         unsigned char packetHeader;
@@ -335,7 +335,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGA32bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGA32bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
         const unsigned char *rgba;
         unsigned char packetHeader;
@@ -369,7 +369,7 @@ namespace urchin {
         }
     }
 
-    void LoaderTGA::readTGAGray8bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) {
+    void LoaderTGA::readTGAGray8bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         unsigned int j = 0;
         unsigned char color;
         unsigned char packetHeader;

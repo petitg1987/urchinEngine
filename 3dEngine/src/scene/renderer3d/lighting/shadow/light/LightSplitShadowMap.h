@@ -11,7 +11,7 @@ namespace urchin {
         public:
             static constexpr float LIGHT_BOX_MARGIN = 0.001f;
 
-            explicit LightSplitShadowMap(LightShadowMap*);
+            explicit LightSplitShadowMap(const LightShadowMap*);
 
             void update(const Frustum<float>&, bool);
 

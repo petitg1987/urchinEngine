@@ -12,7 +12,7 @@ template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::s
     }
 
     //resource not already charged
-    std::string resourceType = std::string(typeid(T).name());
+    auto resourceType = std::string(typeid(T).name());
     auto itFind = loadersRegistry.find(resourceType);
 
     if (itFind == loadersRegistry.end()) {

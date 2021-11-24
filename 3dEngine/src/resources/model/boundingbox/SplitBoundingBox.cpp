@@ -15,7 +15,7 @@ namespace urchin {
     void SplitBoundingBox::split(const AABBox<float>& aabbox, std::vector<AABBox<float>>& splitBoundingBox) const {
         splitBoundingBox.clear();
 
-        std::vector<float> axisSplits[3];
+        std::array<std::vector<float>, 3> axisSplits;
         for (std::size_t axis = 0; axis < 3; ++axis) {
             axisSplits[axis].push_back(aabbox.getMin()[axis]);
 
@@ -35,7 +35,7 @@ namespace urchin {
                     Point3<float> minPoint(axisSplits[0][x - 1], axisSplits[1][y - 1], axisSplits[2][z - 1]);
                     Point3<float> maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
 
-                    splitBoundingBox.emplace_back(AABBox<float>(minPoint, maxPoint));
+                    splitBoundingBox.emplace_back(minPoint, maxPoint);
                 }
             }
         }

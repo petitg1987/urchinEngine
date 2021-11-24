@@ -32,12 +32,12 @@ namespace urchin {
             //renderer
             Renderer3d& newRenderer3d(bool);
             void enableRenderer3d(Renderer3d*);
-            void removeRenderer3d(Renderer3d*);
+            void removeRenderer3d(const Renderer3d*);
             Renderer3d* getActiveRenderer3d() const;
 
             UIRenderer& newUIRenderer(bool);
             void enableUIRenderer(UIRenderer*);
-            void removeUIRenderer(UIRenderer*);
+            void removeUIRenderer(const UIRenderer*);
             UIRenderer* getActiveUIRenderer() const;
 
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;

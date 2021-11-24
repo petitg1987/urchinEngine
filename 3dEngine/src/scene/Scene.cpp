@@ -55,10 +55,10 @@ namespace urchin {
 
             //renderer
             screenRenderTarget.onResize();
-            for (auto& renderer3d : renderers3d) {
+            for (const auto& renderer3d : renderers3d) {
                 renderer3d->onResize(sceneWidth, sceneHeight);
             }
-            for (auto& uiRenderer : uiRenderers) {
+            for (const auto& uiRenderer : uiRenderers) {
                 uiRenderer->onResize(sceneWidth, sceneHeight);
             }
         }
@@ -136,7 +136,7 @@ namespace urchin {
         activeRenderer3d = renderer3d;
     }
 
-    void Scene::removeRenderer3d(Renderer3d* renderer3d) {
+    void Scene::removeRenderer3d(const Renderer3d* renderer3d) {
         if (activeRenderer3d == renderer3d) {
             activeRenderer3d = nullptr;
         }
@@ -164,7 +164,7 @@ namespace urchin {
         activeUiRenderers = uiRenderer;
     }
 
-    void Scene::removeUIRenderer(UIRenderer* uiRenderer) {
+    void Scene::removeUIRenderer(const UIRenderer* uiRenderer) {
         if (activeUiRenderers == uiRenderer) {
             activeUiRenderers = nullptr;
         }

@@ -17,11 +17,11 @@ namespace urchin {
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
         std::string shadersDirectory = ShaderConfig::instance().getShadersDirectory();
 
-        shaderSources.emplace_back(std::make_pair(Shader::VERTEX, readFile(shadersDirectory + vertexShaderFilename)));
+        shaderSources.emplace_back(Shader::VERTEX, readFile(shadersDirectory + vertexShaderFilename));
         if (!geometryShaderFilename.empty()) {
-            shaderSources.emplace_back(std::make_pair(Shader::GEOMETRY, readFile(shadersDirectory + geometryShaderFilename)));
+            shaderSources.emplace_back(Shader::GEOMETRY, readFile(shadersDirectory + geometryShaderFilename));
         }
-        shaderSources.emplace_back(std::make_pair(Shader::FRAGMENT, readFile(shadersDirectory + fragmentShaderFilename)));
+        shaderSources.emplace_back(Shader::FRAGMENT, readFile(shadersDirectory + fragmentShaderFilename));
 
         std::size_t shaderId = computeShaderId(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename, shaderConstants.get());
         std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(vertexShaderFilename));
@@ -42,7 +42,7 @@ namespace urchin {
             throw std::runtime_error("Unable to open file: " + filename);
         }
 
-        std::size_t fileSize = (std::size_t)file.tellg();
+        auto fileSize = (std::size_t)file.tellg();
         std::vector<char> buffer(fileSize);
 
         file.seekg(0);
@@ -59,7 +59,7 @@ namespace urchin {
         HashUtil::combine(shaderId, vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);
 
         if (shaderConstants) {
-            auto* variablesData = static_cast<std::size_t*>(shaderConstants->getData());
+            const auto* variablesData = static_cast<std::size_t*>(shaderConstants->getData());
             std::size_t variablesSize = shaderConstants->sumVariablesSize();
             unsigned int numRead = MathFunction::ceilToUInt((float)variablesSize / (float)sizeof(std::size_t));
             for (std::size_t i = 0; i < numRead; ++i) {

@@ -6,7 +6,7 @@ namespace urchin {
 
     class ShaderConstants {
         public:
-            ShaderConstants(std::vector<std::size_t>, void*);
+            ShaderConstants(std::vector<std::size_t>, const void*);
             ShaderConstants(const ShaderConstants&) = delete;
             ShaderConstants(ShaderConstants&&) noexcept = delete;
             ~ShaderConstants();

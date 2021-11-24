@@ -140,7 +140,7 @@ namespace urchin {
                     thisBone->pos = animatedPos;
                     thisBone->orient = animatedOrient;
                 } else {
-                    Bone* parentBone = &skeletonFrames[frameIndex][(std::size_t)parent];
+                    const Bone* parentBone = &skeletonFrames[frameIndex][(std::size_t)parent];
 
                     //adds positions
                     Point3<float> rpos = parentBone->orient.rotatePoint(animatedPos); //rotated position

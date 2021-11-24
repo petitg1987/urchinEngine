@@ -35,17 +35,17 @@ namespace urchin {
             std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
 
         private:
-            void getImageInfo(const TgaHeader&, unsigned int&, unsigned int&, unsigned int&, Image::ImageFormat&);
-            void readTGA8bits(const std::vector<unsigned char>&, unsigned int, const std::vector<unsigned char>&, std::vector<unsigned char>&);
-            void readTGA16bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGA24bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGA32bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGAGray8bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGA8bitsRLE(const std::vector<unsigned char>&, unsigned int, const std::vector<unsigned char>&, std::vector<unsigned char>&);
-            void readTGA16bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGA24bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGA32bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
-            void readTGAGray8bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&);
+            void getImageInfo(const TgaHeader&, unsigned int&, unsigned int&, unsigned int&, Image::ImageFormat&) const;
+            void readTGA8bits(const std::vector<unsigned char>&, unsigned int, const std::vector<unsigned char>&, std::vector<unsigned char>&) const;
+            void readTGA16bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGA24bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGA32bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGAGray8bits(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGA8bitsRLE(const std::vector<unsigned char>&, unsigned int, const std::vector<unsigned char>&, std::vector<unsigned char>&) const;
+            void readTGA16bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGA24bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGA32bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
+            void readTGAGray8bitsRLE(const std::vector<unsigned char>&, unsigned int, std::vector<unsigned char>&) const;
     };
 
 }

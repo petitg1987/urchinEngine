@@ -33,7 +33,7 @@ namespace urchin {
 
         //add missing default textures
         unsigned int skyboxSize = 1;
-        for (auto& skyboxImage : skyboxImages) {
+        for (const auto& skyboxImage : skyboxImages) {
             if (skyboxImage) {
                 skyboxSize = skyboxImage->getWidth();
                 break;

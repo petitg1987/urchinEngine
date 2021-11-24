@@ -9,7 +9,7 @@ namespace urchin {
             height(height),
             format(format),
             channelPrecision(ChannelPrecision::CHANNEL_8),
-            texels8(texels8),
+            texels8(std::move(texels8)),
             bHasTransparency(hasTransparency) {
 
     }
@@ -19,7 +19,7 @@ namespace urchin {
             height(height),
             format(format),
             channelPrecision(ChannelPrecision::CHANNEL_16),
-            texels16(texels16),
+            texels16(std::move(texels16)),
             bHasTransparency(hasTransparency) {
 
     }

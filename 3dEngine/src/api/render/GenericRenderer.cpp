@@ -40,8 +40,8 @@ namespace urchin {
         pipelineBuilder->setupScissor(rendererBuilder->isScissorEnabled(), rendererBuilder->getScissorOffset(), rendererBuilder->getScissorSize());
 
         if (renderTarget.isValidRenderTarget()) {
-            for (auto& uniformTextureReaderArray: uniformTextureReaders) {
-                for (auto& uniformTextureReader: uniformTextureReaderArray) {
+            for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
+                for (const auto& uniformTextureReader: uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
                 }
             }
@@ -241,7 +241,7 @@ namespace urchin {
                 bufferInfo.range = VK_WHOLE_SIZE;
                 bufferInfos.emplace_back(bufferInfo);
             }
-            for (auto& bufferInfo : bufferInfos) {
+            for (const auto& bufferInfo : bufferInfos) {
                 VkWriteDescriptorSet uniformDescriptorWrites{};
                 uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
                 uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
@@ -255,9 +255,9 @@ namespace urchin {
 
             //textures
             std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
-            for (auto& uniformTextureReaderArray : uniformTextureReaders) {
+            for (const auto& uniformTextureReaderArray : uniformTextureReaders) {
                 std::vector<VkDescriptorImageInfo> imageInfosArray;
-                for (auto& uniformTextureReader : uniformTextureReaderArray) {
+                for (const auto& uniformTextureReader : uniformTextureReaderArray) {
                     VkDescriptorImageInfo imageInfo{};
                     imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
                     imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
@@ -396,7 +396,7 @@ namespace urchin {
         //update shader uniforms
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
-                auto& dataContainer = uniformData[uniformDataIndex];
+                const auto& dataContainer = uniformData[uniformDataIndex];
                 drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
                 uniformData[uniformDataIndex].markDataAsProcessed(frameIndex);
             }

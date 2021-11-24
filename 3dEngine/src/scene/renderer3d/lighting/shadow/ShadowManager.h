@@ -56,11 +56,11 @@ namespace urchin {
             const LightShadowMap& getLightShadowMap(const Light*) const;
 
             void updateVisibleModels(const Frustum<float>&);
-            const std::vector<Model*>& getVisibleModels();
-            void removeModel(Model*);
+            const std::vector<Model*>& getVisibleModels() const;
+            void removeModel(Model*) const;
 
             void forceUpdateAllShadowMaps();
-            void updateShadowMaps();
+            void updateShadowMaps() const;
             void loadShadowMaps(GenericRenderer&, std::size_t);
 
         private:
@@ -92,7 +92,7 @@ namespace urchin {
             std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
             bool bForceUpdateAllShadowMaps;
-            float depthSplitDistance[SHADOW_MAPS_SHADER_LIMIT * 4]{}; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
+            std::array<float, SHADOW_MAPS_SHADER_LIMIT * 4> depthSplitDistance; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 
             //shadow lights information
             std::vector<Matrix4<float>> lightProjectionViewMatrices;

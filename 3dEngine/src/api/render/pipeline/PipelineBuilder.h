@@ -33,10 +33,10 @@ namespace urchin {
             std::shared_ptr<Pipeline> buildPipeline();
 
         private:
-            void checkSetup();
+            void checkSetup() const;
             std::size_t computePipelineHash() const;
 
-            void createDescriptorSetLayout(const std::shared_ptr<Pipeline>&);
+            void createDescriptorSetLayout(const std::shared_ptr<Pipeline>&) const;
             void createGraphicsPipeline(const std::shared_ptr<Pipeline>&);
             VkPrimitiveTopology shapeTypeToVulkanTopology() const;
             bool isShapeTypeListTopology() const;

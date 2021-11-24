@@ -8,7 +8,7 @@ namespace urchin {
     /**
      * Wrapper for shader constant variables. Variable size and data doesn't requirement memory alignment but 'bool' type must be of 4 bytes (VkBool32).
      */
-    ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, void* data) :
+    ShaderConstants::ShaderConstants(std::vector<std::size_t> variablesSize, const void* data) :
             variablesSize(std::move(variablesSize)) {
         #ifdef URCHIN_DEBUG
             for (std::size_t variableSize : this->variablesSize) {

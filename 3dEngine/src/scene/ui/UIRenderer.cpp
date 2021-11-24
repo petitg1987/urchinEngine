@@ -81,7 +81,7 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::setMaximumInteractiveDistance(float maxInteractiveDistance) {
+    void UIRenderer::setMaximumInteractiveDistance(float maxInteractiveDistance) const {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
@@ -110,7 +110,7 @@ namespace urchin {
     }
 
     void UIRenderer::notify(Observable* observable, int notificationType) {
-        if (auto* widget = dynamic_cast<Widget*>(observable)) {
+        if (const auto* widget = dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::SET_IN_FOREGROUND) {
                 auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return widget == o.get();});
                 std::shared_ptr<Widget> widgetPtr = *itFind;
@@ -282,7 +282,7 @@ namespace urchin {
         widget->addObserver(this, Widget::SET_IN_FOREGROUND);
     }
 
-    void UIRenderer::removeWidget(Widget& widget) {
+    void UIRenderer::removeWidget(const Widget& widget) {
         auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return &widget == o.get();});
         if (itFind == widgets.end()) {
             throw std::runtime_error("The provided widget is not widget of this UI renderer");
@@ -302,10 +302,10 @@ namespace urchin {
         prepareRendering(dt, screenRenderingOrder, Matrix4<float>());
     }
 
-    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
-        for (auto& widget : widgets) {
+        for (const auto& widget : widgets) {
             renderingOrder++;
             widget->prepareRendering(dt, renderingOrder, projectionViewMatrix);
         }

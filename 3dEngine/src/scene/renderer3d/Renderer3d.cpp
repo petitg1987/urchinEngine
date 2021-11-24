@@ -212,7 +212,7 @@ namespace urchin {
         return camera.get();
     }
 
-    void Renderer3d::findModelsByTag(const std::string& tag, std::vector<Model*>& models) {
+    void Renderer3d::findModelsByTag(const std::string& tag, std::vector<Model*>& models) const {
         modelTagHolder.findByTag<Model*>(tag, models);
     }
 
@@ -602,7 +602,7 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
         } else {
-            for (auto& debugFramebuffer : debugFramebuffers) {
+            for (const auto& debugFramebuffer : debugFramebuffers) {
                 debugFramebuffer->prepareRendering(renderingOrder);
             }
         }

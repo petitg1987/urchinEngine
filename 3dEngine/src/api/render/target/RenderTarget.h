@@ -44,15 +44,15 @@ namespace urchin {
 
             void addRenderer(GenericRenderer*);
             void removeRenderer(const GenericRenderer*);
-            void notifyRendererEnabled(GenericRenderer*);
-            void notifyRendererDisabled(GenericRenderer*);
-            void disableAllRenderers();
+            void notifyRendererEnabled(const GenericRenderer*);
+            void notifyRendererDisabled(const GenericRenderer*);
+            void disableAllRenderers() const;
 
             virtual void render() = 0;
 
         protected:
-            void initializeRenderers();
-            void cleanupRenderers();
+            void initializeRenderers() const;
+            void cleanupRenderers() const;
             const std::vector<GenericRenderer*>& getRenderers() const;
             bool hasRenderer() const;
             bool areRenderersDirty() const;
@@ -74,7 +74,7 @@ namespace urchin {
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;
-            void updateGraphicData(uint32_t);
+            void updateGraphicData(uint32_t) const;
             void updateCommandBuffers(uint32_t, const std::vector<VkClearValue>&);
 
             bool isInitialized;

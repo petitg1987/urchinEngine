@@ -151,13 +151,9 @@ namespace urchin {
         std::vector<VkExtensionProperties> availableExtensions(extensionCount);
         vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
 
-        for (const auto& extension : availableExtensions) {
-            if (std::strcmp(extension.extensionName, extensionName) == 0) {
-                return true;
-            }
-        }
-
-        return false;
+        return std::any_of(availableExtensions.begin(), availableExtensions.end(), [&extensionName](const auto& extension) {
+            return std::strcmp(extension.extensionName, extensionName) == 0;
+        });
     }
 
     VkDevice DeviceHandler::createLogicalDevice() {

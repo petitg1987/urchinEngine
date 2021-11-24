@@ -21,7 +21,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
+            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&) const;
             OctreeManager<Light>& getLightOctreeManager();
             Light* getLastUpdatedLight();
 
@@ -42,7 +42,7 @@ namespace urchin {
 
         private:
             void onLightEvent(Light*, NotificationType);
-            void logMaxLightsReach();
+            void logMaxLightsReach() const;
 
             static constexpr unsigned int LIGHTS_SHADER_LIMIT = 15; //must be equals to MAX_LIGHTS/LIGHTS_SHADER_LIMIT/MAX_LIGHTS in lighting/modelShadowMap/modelTransparent shaders
             static constexpr float LIGHTS_OCTREE_MIN_SIZE = 50.0;

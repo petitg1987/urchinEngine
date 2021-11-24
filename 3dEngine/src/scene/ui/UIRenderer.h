@@ -30,7 +30,7 @@ namespace urchin {
             //3d specific
             void setupUi3d(const Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
             void onCameraProjectionUpdate(const Camera&);
-            void setMaximumInteractiveDistance(float);
+            void setMaximumInteractiveDistance(float) const;
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
@@ -49,12 +49,12 @@ namespace urchin {
             UI3dData* getUi3dData() const;
 
             void addWidget(const std::shared_ptr<Widget>&);
-            void removeWidget(Widget&);
+            void removeWidget(const Widget&);
             void removeAllWidgets();
             const std::vector<std::shared_ptr<Widget>>& getWidgets() const;
 
             void prepareRendering(float, unsigned int&) override;
-            void prepareRendering(float, unsigned int&, const Matrix4<float>&);
+            void prepareRendering(float, unsigned int&, const Matrix4<float>&) const;
 
         private:
             bool adjustMouseCoordinates(const Point2<double>&, Point2<int>&) const;

@@ -94,15 +94,15 @@ namespace urchin {
         return *modelSetDisplayer;
     }
 
-    void TransparentManager::updateModels(const std::vector<Model*>& models) {
+    void TransparentManager::updateModels(const std::vector<Model*>& models) const {
         modelSetDisplayer->updateModels(models);
     }
 
-    void TransparentManager::removeModel(Model* model) {
+    void TransparentManager::removeModel(const Model* model) const {
         modelSetDisplayer->removeModel(model);
     }
 
-    void TransparentManager::updateTransparentTextures(const Camera& camera) {
+    void TransparentManager::updateTransparentTextures(const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 

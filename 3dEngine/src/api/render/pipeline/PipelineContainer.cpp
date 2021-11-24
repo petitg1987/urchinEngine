@@ -4,8 +4,8 @@ namespace urchin {
 
     PipelineContainer::~PipelineContainer() {
         cleanPipelines();
-        for (auto& pipeline : pipelines) {
-            Logger::instance().logError("Pipeline not released: " + pipeline.second->getName());
+        for (const auto& [pipelineId, pipeline] : pipelines) {
+            Logger::instance().logError("Pipeline not released: " + pipeline->getName());
         }
     }
 
@@ -21,7 +21,7 @@ namespace urchin {
         #ifdef URCHIN_DEBUG
             assert(pipelines.find(pipeline->getId()) == pipelines.end());
         #endif
-        pipelines.emplace(pipeline->getId(), pipeline);
+        pipelines.try_emplace(pipeline->getId(), pipeline);
     }
 
     void PipelineContainer::cleanPipelines() {

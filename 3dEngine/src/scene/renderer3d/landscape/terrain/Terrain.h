@@ -40,7 +40,7 @@ namespace urchin {
             void prepareRendering(unsigned int& renderingOrder, const Camera&, float invFrameRate);
 
         private:
-            void refreshMaterials();
+            void refreshMaterials() const;
             void refreshGrassMesh();
             void refreshGrassAmbient();
 

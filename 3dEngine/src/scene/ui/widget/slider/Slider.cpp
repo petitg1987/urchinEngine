@@ -53,7 +53,7 @@ namespace urchin {
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
         float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
-        cursorImage = StaticBitmap::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), Size((float)cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+        cursorImage = StaticBitmap::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), Size(cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
         moveSliderCursor();
 
         //visual
@@ -163,14 +163,14 @@ namespace urchin {
         }
     }
 
-    void Slider::moveSliderCursor() {
+    void Slider::moveSliderCursor() const {
         float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
         float sliderCursorMinXPosition = sliderCursorHalfSize;
-        float sliderCursorMaxXPosition = ((float)getWidth() - (float)sliderCursorHalfSize);
+        float sliderCursorMaxXPosition = ((float)getWidth() - sliderCursorHalfSize);
 
         float sliderCursorPositionPercentage = (float)selectedIndex / ((float)values.size() - 1.0f);
         float sliderCursorXPosition = sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition);
-        cursorImage->updatePosition(Position((float)sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+        cursorImage->updatePosition(Position(sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
     }
 
     void Slider::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

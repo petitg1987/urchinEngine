@@ -124,10 +124,10 @@ namespace urchin {
     }
 
     void ModelDisplayer::notify(Observable* observable, int notificationType) {
-        if (auto* model = dynamic_cast<Model*>(observable)) {
+        if (const auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_UPDATED) {
                 unsigned int meshIndex = 0;
-                for (auto& meshRenderer : meshRenderers) {
+                for (const auto& meshRenderer : meshRenderers) {
                     const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, mesh.getVertices());
                     if (displayMode == DEFAULT_MODE) {
@@ -140,7 +140,7 @@ namespace urchin {
             } else if (notificationType == Model::MATERIAL_UPDATED) {
                 if (displayMode == DEFAULT_MODE) {
                     unsigned int meshIndex = 0;
-                    for (auto& meshRenderer : meshRenderers) {
+                    for (const auto& meshRenderer : meshRenderers) {
                         const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
 
                         fillMaterialData(mesh);

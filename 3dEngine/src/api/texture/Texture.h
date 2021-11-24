@@ -56,7 +56,7 @@ namespace urchin {
             std::size_t getImageSize() const;
             VkImageUsageFlags getImageUsage() const;
             void transitionImageLayout(VkImage, VkImageLayout, VkImageLayout, uint32_t) const;
-            void copyBufferToImage(VkBuffer, VkImage);
+            void copyBufferToImage(VkBuffer, VkImage) const;
             void generateMipmaps(VkImage, VkFormat) const;
 
             unsigned int getBytesByPixel() const;

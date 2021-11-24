@@ -9,15 +9,15 @@
 namespace urchin {
 
     ResourceRetriever::ResourceRetriever() {
-        loadersRegistry.emplace("tga", std::make_unique<LoaderTGA>());
-        loadersRegistry.emplace("png", std::make_unique<LoaderPNG>());
+        loadersRegistry.try_emplace("tga", std::make_unique<LoaderTGA>());
+        loadersRegistry.try_emplace("png", std::make_unique<LoaderPNG>());
 
-        loadersRegistry.emplace(typeid(ConstMeshes).name(), std::make_unique<LoaderUrchinMesh>());
-        loadersRegistry.emplace(typeid(ConstAnimation).name(), std::make_unique<LoaderUrchinAnim>());
+        loadersRegistry.try_emplace(typeid(ConstMeshes).name(), std::make_unique<LoaderUrchinMesh>());
+        loadersRegistry.try_emplace(typeid(ConstAnimation).name(), std::make_unique<LoaderUrchinAnim>());
 
-        loadersRegistry.emplace(typeid(Material).name(), std::make_unique<LoaderMaterial>());
+        loadersRegistry.try_emplace(typeid(Material).name(), std::make_unique<LoaderMaterial>());
 
-        loadersRegistry.emplace(typeid(Font).name(), std::make_unique<LoaderTTF>());
+        loadersRegistry.try_emplace(typeid(Font).name(), std::make_unique<LoaderTTF>());
     }
 
 }

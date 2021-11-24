@@ -84,7 +84,7 @@ namespace urchin {
         return pipeline;
     }
 
-    void PipelineBuilder::checkSetup() {
+    void PipelineBuilder::checkSetup() const {
         if (!renderTarget) {
             throw std::runtime_error("Render target not setup on pipeline");
         } else if (!shader) {
@@ -122,7 +122,7 @@ namespace urchin {
         return hash;
     }
 
-    void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) {
+    void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) const {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         uint32_t shaderUniformBinding = 0;

@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void OffscreenRender::resetOutputTextures() {
-        for (auto& outputTexture : outputTextures) {
+        for (const auto& outputTexture : outputTextures) {
             if (outputTexture.texture->getLastTextureWriter() == this) {
                 outputTexture.texture->setLastTextureWriter(nullptr);
             }
@@ -232,7 +232,7 @@ namespace urchin {
     }
 
     void OffscreenRender::updateTexturesWriter() {
-        for (auto& outputTexture : outputTextures) {
+        for (const auto& outputTexture : outputTextures) {
             outputTexture.texture->setLastTextureWriter(this);
         }
 

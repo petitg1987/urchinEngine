@@ -18,7 +18,7 @@ namespace urchin {
             bool onMouseMoveEvent(int, int);
             bool onScrollEvent(double);
 
-            bool isScrollbarWidget(Widget*) const;
+            bool isScrollbarWidget(const Widget*) const;
 
             bool isScrollbarRequired() const;
             int getScrollShiftY() const;
@@ -27,7 +27,7 @@ namespace urchin {
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void updateScrollingPosition(int);
             void updateScrollingPosition();
-            void updateCursorPosition();
+            void updateCursorPosition() const;
             void computeShiftPositionY();
             std::vector<Widget*> getContentChildren() const;
 

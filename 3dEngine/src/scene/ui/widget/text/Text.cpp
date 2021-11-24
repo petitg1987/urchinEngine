@@ -58,7 +58,7 @@ namespace urchin {
         }
     }
 
-    unsigned int Text::getMaxWidth() {
+    unsigned int Text::getMaxWidth() const {
         if (maxWidthType == LengthType::PIXEL) {
             return (unsigned int)maxWidth;
         } else if (maxWidthType == LengthType::SCREEN_PERCENT) {
@@ -120,7 +120,7 @@ namespace urchin {
         refreshRendererData();
     }
 
-    const Font& Text::getFont() {
+    const Font& Text::getFont() const {
         return *font;
     }
 
@@ -131,7 +131,7 @@ namespace urchin {
         //compute widget size
         float width = 0.0f;
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
-        for (auto& textLine : cutTextLines) { //each line
+        for (const auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine) { //each letter
                 auto letterWidth = (float)font->getGlyph(textLetter).width;
@@ -235,7 +235,7 @@ namespace urchin {
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
-        for (auto& textLine : cutTextLines) { //each line
+        for (const auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine) { //each letter
                 auto letterShift = (float)font->getGlyph(textLetter).shift;

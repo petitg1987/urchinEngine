@@ -63,7 +63,7 @@ namespace urchin {
             Camera* getCamera() const;
 
             //models
-            void findModelsByTag(const std::string&, std::vector<Model*>&);
+            void findModelsByTag(const std::string&, std::vector<Model*>&) const;
             void addModel(std::shared_ptr<Model>);
             std::shared_ptr<Model> removeModel(Model*);
             void preWarmModels();

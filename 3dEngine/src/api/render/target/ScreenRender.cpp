@@ -134,6 +134,7 @@ namespace urchin {
         for (auto imageView : swapChainImageViews) {
             vkDestroyImageView(GraphicService::instance().getDevices().getLogicalDevice(), imageView, nullptr);
         }
+        swapChainImageViews.clear();
     }
 
     void ScreenRender::createRenderPass() {

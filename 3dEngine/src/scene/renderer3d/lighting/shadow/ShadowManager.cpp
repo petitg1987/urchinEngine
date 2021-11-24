@@ -31,7 +31,7 @@ namespace urchin {
 
         lightingRendererBuilder
                 ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance);
+                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance.data());
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
@@ -43,7 +43,7 @@ namespace urchin {
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<LightManager*>(observable)) {
-            Light* light = lightManager.getLastUpdatedLight();
+            const Light* light = lightManager.getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
@@ -55,7 +55,7 @@ namespace urchin {
                     removeShadowLight(*light);
                 }
             }
-        } else if (auto* light = dynamic_cast<Light*>(observable)) {
+        } else if (const auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::PRODUCE_SHADOW) {
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
@@ -124,14 +124,14 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upVisibleModel");
 
         splitFrustum(frustum);
-        for (const auto& lightShadowMap : lightShadowMaps) {
-            updateLightSplitsShadowMap(*lightShadowMap.second);
+        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+            updateLightSplitsShadowMap(*lightShadowMap);
         }
 
         //store all visible models from all lights
         visibleModels.clear();
-        for (const auto& lightShadowMap : lightShadowMaps) {
-            for (const auto& lightSplitShadowMap : lightShadowMap.second->getLightSplitShadowMaps()) {
+        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
                 OctreeableHelper<Model>::merge(visibleModels, lightSplitShadowMap->getModels());
             }
         }
@@ -140,13 +140,13 @@ namespace urchin {
     /**
      * @return All visible models from all lights
      */
-    const std::vector<Model*>& ShadowManager::getVisibleModels() {
+    const std::vector<Model*>& ShadowManager::getVisibleModels() const {
         return visibleModels;
     }
 
-    void ShadowManager::removeModel(Model* model) {
-        for (auto& lightShadowMap : lightShadowMaps) {
-            lightShadowMap.second->removeModel(model);
+    void ShadowManager::removeModel(Model* model) const {
+        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+            lightShadowMap->removeModel(model);
         }
     }
 
@@ -211,8 +211,8 @@ namespace urchin {
     void ShadowManager::updateShadowLights() {
         std::vector<const Light*> allLights;
         allLights.reserve(lightShadowMaps.size());
-        for (const auto& lightShadowMap : lightShadowMaps) {
-            allLights.emplace_back(lightShadowMap.first);
+        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+            allLights.emplace_back(light);
         }
 
         for (const auto& light : allLights) {
@@ -262,19 +262,19 @@ namespace urchin {
         bForceUpdateAllShadowMaps = true;
     }
 
-    void ShadowManager::updateShadowMaps() {
+    void ShadowManager::updateShadowMaps() const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
         unsigned int renderingOrder = 0;
 
-        for (auto& lightShadowMap : lightShadowMaps) {
-            lightShadowMap.second->renderModels(renderingOrder);
-            lightShadowMap.second->applyTextureFilters();
+        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
+            lightShadowMap->renderModels(renderingOrder);
+            lightShadowMap->applyTextureFilters();
         }
     }
 
     void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit) {
         std::size_t shadowLightIndex = 0;
-        for (auto* visibleLight : lightManager.getVisibleLights()) {
+        for (const auto* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
@@ -307,7 +307,7 @@ namespace urchin {
         }
 
         lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());
-        lightingRenderer.updateUniformData(4, depthSplitDistance);
+        lightingRenderer.updateUniformData(4, depthSplitDistance.data());
     }
 
 }

@@ -29,7 +29,7 @@ namespace urchin {
         for (const void* imageDataPtr : dataPtr) {
             if (imageDataPtr != nullptr) {
                 auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
-                this->dataPtr.emplace_back(std::vector<uint8_t>(imageDataCharPtr, imageDataCharPtr + getImageSize()));
+                this->dataPtr.emplace_back(imageDataCharPtr, imageDataCharPtr + getImageSize());
             } else {
                 std::vector<uint8_t> emptyData(0);
                 this->dataPtr.emplace_back(emptyData);
@@ -294,7 +294,7 @@ namespace urchin {
         CommandBufferHelper::endSingleTimeCommands(commandBuffer);
     }
 
-    void Texture::copyBufferToImage(VkBuffer buffer, VkImage image) {
+    void Texture::copyBufferToImage(VkBuffer buffer, VkImage image) const {
         VkCommandBuffer commandBuffer = CommandBufferHelper::beginSingleTimeCommands();
         {
             std::vector<VkBufferImageCopy> regions;

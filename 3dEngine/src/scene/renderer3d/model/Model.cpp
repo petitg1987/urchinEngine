@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     const AABBox<float> &Model::getDefaultModelLocalAABBox() const {
-        static AABBox<float> defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+        static AABBox<float> defaultModelLocalAABBox(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
         return defaultModelLocalAABBox;
     }
 
@@ -129,7 +129,7 @@ namespace urchin {
     }
 
     void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
-        Animation* previousActiveAnimation = activeAnimation;
+        const Animation* previousActiveAnimation = activeAnimation;
         activeAnimation = animations.at(animationName).get();
         if (previousActiveAnimation != activeAnimation) {
             onMoving(transform);
@@ -182,7 +182,7 @@ namespace urchin {
     std::map<std::string, const ConstAnimation*> Model::getAnimations() const {
         std::map<std::string, const ConstAnimation*> constConstAnimations;
         for (const auto& animation : animations) {
-            constConstAnimations.emplace(animation.first, &animation.second->getConstAnimation());
+            constConstAnimations.try_emplace(animation.first, &animation.second->getConstAnimation());
         }
         return constConstAnimations;
     }

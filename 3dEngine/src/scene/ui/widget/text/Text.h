@@ -26,7 +26,7 @@ namespace urchin {
 
             bool isTranslatableLabel() const;
             const std::string& getText() const;
-            const Font& getFont();
+            const Font& getFont() const;
 
         protected:
             void createOrUpdateWidget() override;
@@ -39,7 +39,7 @@ namespace urchin {
         private:
             Text(Position, std::string, std::string, bool);
 
-            unsigned int getMaxWidth();
+            unsigned int getMaxWidth() const;
 
             void refreshTextAndWidgetSize();
             void cutText();

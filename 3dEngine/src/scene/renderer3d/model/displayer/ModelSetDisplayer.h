@@ -34,7 +34,7 @@ namespace urchin {
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
             void updateModels(const std::vector<Model*>&);
-            void removeModel(Model*);
+            void removeModel(const Model*);
             const std::vector<Model*>& getModels() const;
             bool isModelDisplayerExist(const Model&) const;
 

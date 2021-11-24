@@ -136,7 +136,7 @@ namespace urchin {
     }
 
     unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float>& localXzCoordinate) const {
-        Point3<float> localCoordinate = Point3<float>(localXzCoordinate.X, 0.0f, localXzCoordinate.Y);
+        Point3<float> localCoordinate(localXzCoordinate.X, 0.0f, localXzCoordinate.Y);
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
 
         float xInterval = mesh->getVertices()[1].X - mesh->getVertices()[0].X;

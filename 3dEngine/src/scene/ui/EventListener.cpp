@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     void EventListener::onValueChange(Widget*) {
-
+        //can be overridden
     }
 
 }

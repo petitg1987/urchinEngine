@@ -23,7 +23,7 @@ namespace urchin {
         }
     }
 
-    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) const {
         lightingRendererBuilder
                 ->addUniformData(sizeof(LightsData), &lightsData);
     }
@@ -106,7 +106,7 @@ namespace urchin {
         lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum);
 
         visibleLights.clear();
-        for(auto& sunLight : sunLights) {
+        for(const auto& sunLight : sunLights) {
             visibleLights.push_back(sunLight.get());
         }
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
@@ -159,7 +159,7 @@ namespace urchin {
         lightOctreeManager.postRefreshOctreeables();
     }
 
-    void LightManager::logMaxLightsReach() {
+    void LightManager::logMaxLightsReach() const {
         static bool maxLightReachLogged = false;
         if (!maxLightReachLogged) {
             Logger::instance().logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");

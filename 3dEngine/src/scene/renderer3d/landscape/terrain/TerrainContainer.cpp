@@ -39,7 +39,7 @@ namespace urchin {
         return config;
     }
 
-    void TerrainContainer::updateAllTerrainConfig() {
+    void TerrainContainer::updateAllTerrainConfig() const {
         for (const auto& terrain : terrains) {
             updateTerrainConfig(*terrain);
         }

@@ -59,7 +59,7 @@ namespace urchin {
      * Add vertex with its associate normal. Method is thread-safe.
      */
     void TerrainGrassQuadtree::addVertex(const Point3<float>& vertex, const Vector3<float>& normal) {
-        std::lock_guard<std::mutex> lock(mutexAddVertex);
+        std::scoped_lock<std::mutex> lock(mutexAddVertex);
 
         assert(children.empty());
         assert(bbox == nullptr);

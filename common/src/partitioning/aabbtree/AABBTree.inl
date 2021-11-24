@@ -83,7 +83,7 @@ template <class OBJ> void AABBTree<OBJ>::addObject(std::unique_ptr<AABBNodeData<
 }
 
 template<class OBJ> void AABBTree<OBJ>::postAddObjectCallback(AABBNode<OBJ>&) {
-    //can be override
+    //can be overridden
 }
 
 template<class OBJ> void AABBTree<OBJ>::insertNode(std::shared_ptr<AABBNode<OBJ>> nodeToInsert, std::shared_ptr<AABBNode<OBJ>> currentNode) {
@@ -139,7 +139,7 @@ template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
 }
 
 template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>&) {
-    //can be override
+    //can be overridden
 }
 
 template<class OBJ> void AABBTree<OBJ>::removeLeafNode(AABBNode<OBJ>& nodeToRemove) {

@@ -211,10 +211,10 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
         preFilterRenderTarget->render();
-        for(auto& downSampleRenderTarget : downSampleRenderTargets) {
+        for(const auto& downSampleRenderTarget : downSampleRenderTargets) {
             downSampleRenderTarget->render();
         }
-        for(auto& upSampleRenderTarget : upSampleRenderTargets) {
+        for(const auto& upSampleRenderTarget : upSampleRenderTargets) {
             upSampleRenderTarget->render();
         }
 

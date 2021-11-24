@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    LightSplitShadowMap::LightSplitShadowMap(LightShadowMap* lightShadowMap) :
+    LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
             updateShadowMapThreshold(ConfigService::instance().getFloatValue("shadow.updateShadowMapThreshold")),
             shadowCasterReceiverBoxUpdated(false),
@@ -50,7 +50,7 @@ namespace urchin {
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
 
         //determine point belonging to shadow caster/receiver box
-        Point3<float> shadowReceiverAndCasterVertex[16];
+        std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
         for (std::size_t i = 0; i < 8; ++i) {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
@@ -63,7 +63,7 @@ namespace urchin {
         }
 
         //build shadow receiver/caster bounding box from points
-        return AABBox<float>(shadowReceiverAndCasterVertex, 16);
+        return AABBox<float>(shadowReceiverAndCasterVertex.data(), 16);
     }
 
     float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
@@ -147,7 +147,7 @@ namespace urchin {
         if (models != this->models) {
             modelsRequireUpdate = true;
         } else {
-            for (auto* model : models) {
+            for (const auto* model : models) {
                 if (model->isMovingInOctree() || model->isAnimated()) {
                     modelsRequireUpdate = true;
                     break;

@@ -118,7 +118,7 @@ namespace urchin {
         return true;
     }
 
-    bool Scrollbar::isScrollbarWidget(Widget* widget) const {
+    bool Scrollbar::isScrollbarWidget(const Widget* widget) const {
         return widget == scrollbarCursor.get() || widget == scrollbarLine.get();
     }
 
@@ -163,7 +163,7 @@ namespace urchin {
         }
     }
 
-    void Scrollbar::updateCursorPosition() {
+    void Scrollbar::updateCursorPosition() const {
         float cursorPositionX = scrollbarCursor->getPosition().getX();
         LengthType cursorPositionXType = scrollbarCursor->getPosition().getXType();
 

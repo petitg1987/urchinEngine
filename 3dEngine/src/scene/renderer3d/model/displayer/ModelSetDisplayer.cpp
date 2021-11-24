@@ -106,7 +106,7 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::removeModel(Model* model) {
+    void ModelSetDisplayer::removeModel(const Model* model) {
         modelsDisplayer.erase(model);
     }
 

@@ -11,21 +11,21 @@ namespace urchin {
 
     ResourceContainer::~ResourceContainer() {
         cleanResources();
-        for (auto& resource : resources) {
-            Logger::instance().logError("Resources not released: " + resource.second->getName() + ". Usage count: " + std::to_string(resource.second.use_count()));
+        for (auto& [resourceId, resource] : resources) {
+            Logger::instance().logError("Resources not released: " + resource->getName() + ". Usage count: " + std::to_string(resource.use_count()));
         }
     }
 
     void ResourceContainer::addResource(const std::shared_ptr<Resource>& resource) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         #ifdef URCHIN_DEBUG
             assert(resources.find(resource->getId()) == resources.end());
         #endif
-        resources.emplace(resource->getId(), resource);
+        resources.try_emplace(resource->getId(), resource);
     }
 
     void ResourceContainer::cleanResources() {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
 
         bool resourcesDestroyed;
         do {

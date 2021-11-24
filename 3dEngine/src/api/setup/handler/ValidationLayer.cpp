@@ -90,12 +90,9 @@ namespace urchin {
         vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
         assert(validationLayer.size() == 1);
-        for (const auto& layerProperties : availableLayers) {
-            if (std::strcmp(validationLayer[0], layerProperties.layerName) == 0) {
-                return true;
-            }
-        }
-        return false;
+        return std::any_of(availableLayers.begin(), availableLayers.end(), [&](const auto& layerProperties) {
+            return std::strcmp(validationLayer[0], layerProperties.layerName) == 0;
+        });
     }
 
     void ValidationLayer::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) const {
@@ -109,7 +106,7 @@ namespace urchin {
     }
 
     VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayer::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void*) {
-        std::string validationMessage = std::string(pCallbackData->pMessage);
+        auto validationMessage = std::string(pCallbackData->pMessage);
         if (severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
             static unsigned int numErrorsLogged = 0;
             if (!ignoreValidationMessage(validationMessage) && numErrorsLogged++ < MAX_ERRORS_LOG) {

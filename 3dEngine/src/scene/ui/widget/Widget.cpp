@@ -29,7 +29,7 @@ namespace urchin {
         this->uiRenderer = &uiRenderer;
 
         createOrUpdateWidget();
-        for (auto& child : children) {
+        for (const auto& child : children) {
             child->initialize(uiRenderer);
         }
     }
@@ -41,7 +41,7 @@ namespace urchin {
     void Widget::onResize() {
         createOrUpdateWidget();
 
-        for (auto& child : children) {
+        for (const auto& child : children) {
             child->onResize();
         }
     }
@@ -49,7 +49,7 @@ namespace urchin {
     void Widget::onCameraProjectionUpdate() {
         createOrUpdateWidget();
 
-        for (auto& child : children) {
+        for (const auto& child : children) {
             child->onCameraProjectionUpdate();
         }
     }
@@ -75,10 +75,10 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
 
-        Container* parentContainer = getParentContainer();
+        const Container* parentContainer = getParentContainer();
         if (parentContainer && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
-            Vector2<int> scissorOffset = Vector2<int>(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
-            Vector2<unsigned int> scissorSize = Vector2<unsigned int>(parentContainer->getWidth(), parentContainer->getHeight());
+            Vector2<int> scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
+            Vector2<unsigned int> scissorSize(parentContainer->getWidth(), parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
         }
 
@@ -198,7 +198,7 @@ namespace urchin {
     }
 
     void Widget::updatePosition(Position position) {
-        auto* thisContainer = dynamic_cast<Container*>(this);
+        const auto* thisContainer = dynamic_cast<Container*>(this);
         if (thisContainer) {
             throw std::runtime_error("Can not move a container: scissor update is not implemented");
         }
@@ -213,14 +213,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     int Widget::getPositionX() const {
-        return widthLengthToPixel(position.getX(), position.getXType(), [&](){return (float)getPositionY();});
+        return widthLengthToPixel(position.getX(), position.getXType(), [this](){return (float)getPositionY();});
     }
 
     /**
     * @return Relative position Y of the widget
     */
     int Widget::getPositionY() const {
-        return heightLengthToPixel(position.getY(), position.getYType(), [&](){return (float)getPositionX();});
+        return heightLengthToPixel(position.getY(), position.getYType(), [this](){return (float)getPositionX();});
     }
 
     const WidgetOutline& Widget::getOutline() const {
@@ -271,7 +271,7 @@ namespace urchin {
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int)((float)parent->getHeight() / 2.0f);
             }
 
-            auto* scrollable = dynamic_cast<Scrollable*>(parent);
+            const auto* scrollable = dynamic_cast<Scrollable*>(parent);
             if (scrollable) {
                 startPosition += scrollable->getScrollShiftY();
             }
@@ -300,11 +300,11 @@ namespace urchin {
     }
 
     unsigned int Widget::getWidth() const {
-        return (unsigned int)widthLengthToPixel(size.getWidth(), size.getWidthType(), [&](){return (float)getHeight();});
+        return (unsigned int)widthLengthToPixel(size.getWidth(), size.getWidthType(), [this](){return (float)getHeight();});
     }
 
     unsigned int Widget::getHeight() const {
-        return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightType(), [&](){return (float)getWidth();});
+        return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightType(), [this](){return (float)getWidth();});
     }
 
     Rectangle<int> Widget::widgetRectangle() const {
@@ -386,14 +386,14 @@ namespace urchin {
             propagateEvent = onKeyPressEvent(key);
 
             if (widgetStateUpdated && widgetState == Widget::CLICKING) {
-                for (auto& eventListener : eventListeners) {
+                for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onMouseLeftClick(this);
                 }
             }
 
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> childrenCopy = children;
-            for (auto& child : childrenCopy) {
+            for (const auto& child : childrenCopy) {
                 if (!child->onKeyPress(key)) {
                     return false;
                 }
@@ -429,18 +429,18 @@ namespace urchin {
             propagateEvent = onKeyReleaseEvent(key);
 
             if (widgetStateUpdated && widgetState == Widget::FOCUS) {
-                for (auto& eventListener : eventListeners) {
+                for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onMouseLeftClickRelease(this);
                 }
             } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
-                for (auto& eventListener : eventListeners) {
+                for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onFocusLost(this);
                 }
             }
 
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> childrenCopy = children;
-            for (auto& child : childrenCopy) {
+            for (const auto& child : childrenCopy) {
                 if (!child->onKeyRelease(key)) {
                     return false;
                 }
@@ -476,7 +476,7 @@ namespace urchin {
         if (isVisible()) {
             propagateEvent = onCharEvent(unicodeCharacter);
 
-            for (auto& child : children) {
+            for (const auto& child : children) {
                 if (!child->onChar(unicodeCharacter)) {
                     return false;
                 }
@@ -499,16 +499,16 @@ namespace urchin {
             propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
             if (widgetStateUpdated && widgetState == Widget::FOCUS) {
-                for (auto& eventListener : eventListeners) {
+                for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onFocus(this);
                 }
             } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
-                for (auto& eventListener : eventListeners) {
+                for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onFocusLost(this);
                 }
             }
 
-            for (auto& child : children) {
+            for (const auto& child : children) {
                 if (!child->onMouseMove(mouseX, mouseY)) {
                     return false;
                 }
@@ -540,7 +540,7 @@ namespace urchin {
         if (isVisible()) {
             propagateEvent = onScrollEvent(offsetY);
 
-            for (auto& child : children) {
+            for (const auto& child : children) {
                 if (!child->onScroll(offsetY)) {
                     return false;
                 }
@@ -564,7 +564,7 @@ namespace urchin {
             handleWidgetResetState();
             onResetStateEvent();
 
-            for (auto& child : children) {
+            for (const auto& child : children) {
                 child->onResetState();
             }
         }
@@ -573,14 +573,14 @@ namespace urchin {
     void Widget::handleWidgetResetState() {
         if (widgetState == CLICKING) {
             widgetState = FOCUS;
-            for (auto& eventListener : eventListeners) {
+            for (const auto& eventListener : eventListeners) {
                 eventListener->onMouseLeftClickRelease(this);
             }
         }
 
         if (widgetState == FOCUS) {
             widgetState = DEFAULT;
-            for (auto& eventListener : eventListeners) {
+            for (const auto& eventListener : eventListeners) {
                 eventListener->onFocusLost(this);
             }
         }
@@ -605,7 +605,7 @@ namespace urchin {
             containers.push(getParentContainer());
 
             while (!containers.empty()) {
-                Container* container = containers.top();
+                const Container* container = containers.top();
                 containers.pop();
                 if (container) {
                     if (!container->widgetRectangle().collideWithPoint(mouseCoordinate)) {
@@ -621,7 +621,7 @@ namespace urchin {
 
     unsigned int Widget::computeDepthLevel() const {
         unsigned int depthLevel = 0;
-        Widget* currentParent = getParent();
+        const Widget* currentParent = getParent();
         while (currentParent != nullptr) {
             depthLevel++;
             currentParent = currentParent->getParent();
@@ -633,7 +633,7 @@ namespace urchin {
         if (isVisible()) {
             prepareWidgetRendering(dt, renderingOrder, projectionViewMatrix);
 
-            for (auto& child: children) {
+            for (const auto& child: children) {
                 renderingOrder++;
                 child->prepareRendering(dt, renderingOrder, projectionViewMatrix);
             }

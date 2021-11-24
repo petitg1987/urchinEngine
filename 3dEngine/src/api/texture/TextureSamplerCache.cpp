@@ -22,7 +22,7 @@ namespace urchin {
         #endif
 
         SharedSampler sharedSampler = {1, sampler};
-        samplersCache.emplace(key, sharedSampler);
+        samplersCache.try_emplace(key, sharedSampler);
     }
 
     VkSampler TextureSamplerCache::retrieveAndMarkUsed(uint64_t key) {

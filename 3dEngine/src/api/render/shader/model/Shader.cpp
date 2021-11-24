@@ -4,23 +4,22 @@
 
 namespace urchin {
 
-    Shader::Shader(std::size_t shaderId, std::string shaderName, const std::vector<std::pair<Shader::ShaderType,
-                   std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
+    Shader::Shader(std::size_t shaderId, std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
             shaderId(shaderId),
             shaderName(std::move(shaderName)),
             shaderConstants(std::move(shaderConstants)) {
-        for (const auto& shaderSource : shaderSources) {
+        for (const auto& [shaderType, shaderCode] : shaderSources) {
             auto shaderStageData = std::make_unique<ShaderStageData>();
 
-            fillShaderModule(*shaderStageData, shaderSource.second);
-            fillPipelineShaderStage(*shaderStageData, shaderSource.first);
+            fillShaderModule(*shaderStageData, shaderCode);
+            fillPipelineShaderStage(*shaderStageData, shaderType);
 
             shaderStagesData.emplace_back(std::move(shaderStageData));
         }
     }
 
     Shader::~Shader() {
-        for (auto& shaderStageData : shaderStagesData) {
+        for (const auto& shaderStageData : shaderStagesData) {
             vkDestroyShaderModule(GraphicService::instance().getDevices().getLogicalDevice(), shaderStageData->shaderModule, nullptr);
         }
     }

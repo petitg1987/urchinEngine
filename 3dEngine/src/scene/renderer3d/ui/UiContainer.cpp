@@ -12,13 +12,13 @@ namespace urchin {
     void UiContainer::onCameraProjectionUpdate(const Camera& camera) {
         this->camera = &camera;
 
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             ui->onCameraProjectionUpdate(camera);
         }
     }
 
     bool UiContainer::onKeyPress(unsigned int key) {
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             if (!ui->onKeyPress(key)) {
                 return false;
             }
@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     bool UiContainer::onKeyRelease(unsigned int key) {
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             if (!ui->onKeyRelease(key)) {
                 return false;
             }
@@ -36,7 +36,7 @@ namespace urchin {
     }
 
     bool UiContainer::onChar(char32_t unicodeCharacter) {
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             if (!ui->onChar(unicodeCharacter)) {
                 return false;
             }
@@ -45,7 +45,7 @@ namespace urchin {
     }
 
     bool UiContainer::onMouseMove(double mouseX, double mouseY) {
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             if (!ui->onMouseMove(mouseX, mouseY)) {
                 return false;
             }
@@ -54,7 +54,7 @@ namespace urchin {
     }
 
     bool UiContainer::onScroll(double offsetY) {
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             if (!ui->onScroll(offsetY)) {
                 return false;
             }
@@ -70,7 +70,7 @@ namespace urchin {
     }
 
     void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        for (auto& ui : uis) {
+        for (const auto& ui : uis) {
             ui->prepareRendering(dt, renderingOrder, projectionViewMatrix);
         }
     }

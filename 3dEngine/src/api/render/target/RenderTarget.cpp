@@ -78,7 +78,7 @@ namespace urchin {
     void RenderTarget::addRenderer(GenericRenderer* renderer) {
         #ifdef URCHIN_DEBUG
             assert(&renderer->getRenderTarget() == this);
-            for (auto* r : renderers) {
+            for (const auto* r : renderers) {
                 assert(r != renderer);
             }
         #endif
@@ -92,21 +92,21 @@ namespace urchin {
         renderersDirty = true;
     }
 
-    void RenderTarget::notifyRendererEnabled(GenericRenderer* renderer) {
+    void RenderTarget::notifyRendererEnabled(const GenericRenderer* renderer) {
         if (!renderer->isEnabled()) {
             assert(false);
         }
         renderersDirty = true;
     }
 
-    void RenderTarget::notifyRendererDisabled(GenericRenderer* renderer) {
+    void RenderTarget::notifyRendererDisabled(const GenericRenderer* renderer) {
         if (renderer->isEnabled()) {
             assert(false);
         }
         renderersDirty = true;
     }
 
-    void RenderTarget::disableAllRenderers() {
+    void RenderTarget::disableAllRenderers() const {
         for (auto& renderer: renderers) {
             if (renderer->isEnabled()) {
                 renderer->disableRenderer();
@@ -114,13 +114,13 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::initializeRenderers() {
+    void RenderTarget::initializeRenderers() const {
         for (auto& renderer: renderers) {
             renderer->initialize();
         }
     }
 
-    void RenderTarget::cleanupRenderers() {
+    void RenderTarget::cleanupRenderers() const {
         for (auto& renderer: renderers) {
             renderer->cleanup();
         }
@@ -363,7 +363,7 @@ namespace urchin {
         submitInfo.pWaitDstStageMask = queueSubmitWaitStages.data();
     }
 
-    void RenderTarget::updateGraphicData(uint32_t frameIndex) {
+    void RenderTarget::updateGraphicData(uint32_t frameIndex) const {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
         for (auto& renderer : renderers) {
