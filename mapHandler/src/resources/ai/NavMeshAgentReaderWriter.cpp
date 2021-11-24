@@ -12,7 +12,7 @@ namespace urchin {
         auto jumpDistanceChunk = udaParser.getUniqueChunk(true, JUMP_DISTANCE_TAG, UdaAttribute(), navMeshAgentChunk);
         float jumpDistance = jumpDistanceChunk->getFloatValue();
 
-        std::unique_ptr<NavMeshAgent> navMeshAgent = std::make_unique<NavMeshAgent>(NavMeshAgent(agentHeight, agentRadius));
+        auto navMeshAgent = std::make_unique<NavMeshAgent>(NavMeshAgent(agentHeight, agentRadius));
         navMeshAgent->setMaxSlope(maxSlopeInRadian);
         navMeshAgent->setJumpDistance(jumpDistance);
 

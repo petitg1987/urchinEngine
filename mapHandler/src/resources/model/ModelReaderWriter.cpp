@@ -46,14 +46,14 @@ namespace urchin {
         std::map<std::string, const ConstAnimation*> animations = model.getAnimations();
         if (!animations.empty()) {
             auto& animationsListChunk = udaWriter.createChunk(ANIMATIONS_TAG, UdaAttribute(), &modelChunk);
-            for (auto& animation : animations) {
+            for (const auto& [animName, constAnimation] : animations) {
                 auto& animationChunk = udaWriter.createChunk(ANIMATION_TAG, UdaAttribute(), &animationsListChunk);
 
                 auto& animationNameChunk = udaWriter.createChunk(NAME_TAG, UdaAttribute(), &animationChunk);
                 auto& animationFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &animationChunk);
 
-                animationNameChunk.setStringValue(animation.first);
-                animationFilenameChunk.setStringValue(animation.second->getAnimationFilename());
+                animationNameChunk.setStringValue(animName);
+                animationFilenameChunk.setStringValue(constAnimation->getAnimationFilename());
             }
         }
     }

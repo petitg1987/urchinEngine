@@ -29,7 +29,7 @@ namespace urchin {
         try{
             const auto& scaledHeightfieldShape = dynamic_cast<const CollisionHeightfieldShape&>(shape);
             return buildAITerrain(name, scaledHeightfieldShape, transform);
-        } catch (const std::bad_cast& e) {
+        } catch (const std::bad_cast&) {
             throw std::invalid_argument("Unknown terrain shape type: " + std::string(typeid(shape).name()));
         }
     }

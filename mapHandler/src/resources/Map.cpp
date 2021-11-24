@@ -363,11 +363,11 @@ namespace urchin {
     }
 
     void Map::refreshEntities() {
-        for (auto& sceneModel : sceneModels) {
+        for (const auto& sceneModel : sceneModels) {
             sceneModel->refresh();
         }
 
-        for (auto& sceneTerrain : sceneTerrains) {
+        for (const auto& sceneTerrain : sceneTerrains) {
             sceneTerrain->refresh();
         }
     }

@@ -27,11 +27,11 @@ namespace urchin {
         Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
-        UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
-        UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
+        const UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
+        const UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
         relativeWorkingDirectory = workingDirChunk->getStringValue();
 
-        UdaChunk* sceneChunk = udaParser.getUniqueChunk(true, SCENE_TAG);
+        const UdaChunk* sceneChunk = udaParser.getUniqueChunk(true, SCENE_TAG);
         map->loadFrom(sceneChunk, udaParser, loadMapCallback);
     }
 
@@ -54,8 +54,8 @@ namespace urchin {
      */
     std::string MapHandler::getRelativeWorkingDirectory(const std::string& filename) {
         UdaParser udaParser(filename);
-        UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
-        UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
+        const UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
+        const UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
 
         return workingDirChunk->getStringValue();
     }
