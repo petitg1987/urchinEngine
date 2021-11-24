@@ -4,6 +4,7 @@ project(urchinCommon)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
+#TODO remove all reference to Xrandr lib (cmake, docker, etc...) ?
 if (WIN32)
     set(IMAGE_HLP_LIB imagehlp)
 else()
