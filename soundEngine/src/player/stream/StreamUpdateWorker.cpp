@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     StreamUpdateWorker::~StreamUpdateWorker() {
-        for (auto& task : tasks) {
+        for (const auto& task : tasks) {
             deleteTask(*task);
         }
         tasks.clear();
@@ -53,12 +53,12 @@ namespace urchin {
             assert(!isTaskExist(audioStreamPlayer));
         #endif
 
-        std::lock_guard<std::mutex> lock(tasksMutex);
+        std::scoped_lock<std::mutex> lock(tasksMutex);
         tasks.push_back(std::move(task));
     }
 
     bool StreamUpdateWorker::isTaskExist(const AudioStreamPlayer& audioStreamPlayer) const {
-        std::lock_guard<std::mutex> lock(tasksMutex);
+        std::scoped_lock<std::mutex> lock(tasksMutex);
 
         return std::any_of(tasks.begin(), tasks.end(), [&audioStreamPlayer](const auto& task) {
             return task->getSourceId() == audioStreamPlayer.getSourceId();
@@ -66,7 +66,7 @@ namespace urchin {
     }
 
     void StreamUpdateWorker::removeTask(const AudioStreamPlayer& audioStreamPlayer) {
-        std::lock_guard<std::mutex> lock(tasksMutex);
+        std::scoped_lock<std::mutex> lock(tasksMutex);
 
         for (auto it = tasks.begin(); it != tasks.end(); ++it) {
             if ((*it)->getSourceId() == audioStreamPlayer.getSourceId()) {
@@ -95,7 +95,7 @@ namespace urchin {
         try {
             while (continueExecution()) {
                 {
-                    std::lock_guard<std::mutex> lock(tasksMutex);
+                    std::scoped_lock<std::mutex> lock(tasksMutex);
 
                     for (auto it = tasks.begin(); it != tasks.end();) {
                         bool taskFinished = processTask(*(*it));
@@ -110,7 +110,7 @@ namespace urchin {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
             }
-        } catch (std::exception& e) {
+        } catch (const std::exception&) {
             Logger::instance().logError("Error cause sound thread crash: exception reported to main thread");
             soundThreadExceptionPtr = std::current_exception();
         }
@@ -196,7 +196,7 @@ namespace urchin {
         throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found (" + task.getSoundFilename() + ")");
     }
 
-    void StreamUpdateWorker::clearQueue(StreamUpdateTask& task) const {
+    void StreamUpdateWorker::clearQueue(const StreamUpdateTask& task) const {
         ALint nbQueues;
         alGetSourcei(task.getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
 

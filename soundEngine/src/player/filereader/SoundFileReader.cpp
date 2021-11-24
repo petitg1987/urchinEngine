@@ -48,7 +48,7 @@ namespace urchin {
         numSamplesRead = 0;
         while (numSamplesRead < buffer.size()) {
             int bytesToRead = (int)(buffer.size() - numSamplesRead) * (int)sizeof(int16_t);
-            int bytesRead = (int)ov_read(&vorbisFile, reinterpret_cast<char*>(&buffer[numSamplesRead]), bytesToRead, 0, 2, 1, nullptr);
+            auto bytesRead = (int)ov_read(&vorbisFile, reinterpret_cast<char*>(&buffer[numSamplesRead]), bytesToRead, 0, 2, 1, nullptr);
 
             if (bytesRead > 0) {
                 numSamplesRead += (unsigned int)bytesRead / (unsigned int)sizeof(int16_t);

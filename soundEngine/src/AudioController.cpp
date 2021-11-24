@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     AudioController::~AudioController() {
-        for (auto& audioPlayer : audioPlayers) {
+        for (const auto& audioPlayer : audioPlayers) {
             audioPlayer->stop();
         }
     }
@@ -28,7 +28,7 @@ namespace urchin {
     }
 
     void AudioController::changeSoundTrigger(std::shared_ptr<SoundTrigger> newSoundTrigger) {
-        for (auto& audioPlayer : audioPlayers) {
+        for (const auto& audioPlayer : audioPlayers) {
             audioPlayer->stop();
         }
         audioPlayers.clear();
@@ -37,7 +37,7 @@ namespace urchin {
     }
 
     void AudioController::pauseAll() {
-        for(auto& audioPlayer : audioPlayers) {
+        for(const auto& audioPlayer : audioPlayers) {
             if (audioPlayer->isPlaying()) {
                 audioPlayer->pause();
             }
@@ -45,7 +45,7 @@ namespace urchin {
     }
 
     void AudioController::unpauseAll() {
-        for(auto& audioPlayer : audioPlayers) {
+        for(const auto& audioPlayer : audioPlayers) {
             if (audioPlayer->isPaused()) {
                 audioPlayer->unpause();
             }
@@ -69,7 +69,7 @@ namespace urchin {
         }
 
         //update audio players (sound position, volume, etc.)
-        for (auto& audioPlayer : audioPlayers) {
+        for (const auto& audioPlayer : audioPlayers) {
             sound->updateSource(audioPlayer->getSourceId());
             audioPlayer->changeVolume(soundVolumes.at(audioPlayer->getSound().getSoundCategory()));
         }
@@ -83,16 +83,16 @@ namespace urchin {
             audioPlayers.push_back(std::make_unique<AudioStreamPlayer>(*this->sound, streamUpdateWorker));
             audioPlayers.back()->playLoop();
         } else if (triggerAction == SoundTrigger::STOP_ALL) {
-            for (auto& audioPlayer : audioPlayers) {
+            for (const auto& audioPlayer : audioPlayers) {
                 audioPlayer->stop();
             }
             audioPlayers.clear();
         } else if (triggerAction == SoundTrigger::PAUSE_ALL) {
-            for (auto& audioPlayer : audioPlayers) {
+            for (const auto& audioPlayer : audioPlayers) {
                 audioPlayer->pause();
             }
         } else if (triggerAction == SoundTrigger::UNPAUSE_ALL) {
-            for (auto& audioPlayer : audioPlayers) {
+            for (const auto& audioPlayer : audioPlayers) {
                 audioPlayer->unpause();
             }
         }

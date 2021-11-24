@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     void SoundEnvironment::changeSoundTrigger(const Sound& sound, std::shared_ptr<SoundTrigger> newSoundTrigger) {
-        for (auto& audioController : audioControllers) {
+        for (const auto& audioController : audioControllers) {
             if (&audioController->getSound() == &sound) {
                 audioController->changeSoundTrigger(std::move(newSoundTrigger));
                 break;
@@ -72,13 +72,13 @@ namespace urchin {
     }
 
     void SoundEnvironment::pause() {
-        for (auto& audioController : audioControllers) {
+        for (const auto& audioController : audioControllers) {
             audioController->pauseAll();
         }
     }
 
     void SoundEnvironment::unpause() {
-        for (auto& audioController : audioControllers) {
+        for (const auto& audioController : audioControllers) {
             audioController->unpauseAll();
         }
     }
@@ -101,7 +101,7 @@ namespace urchin {
         alListenerfv(AL_ORIENTATION, &listenerOrientation.frontVector.X);
         alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 
-        for (auto& audioController : audioControllers) {
+        for (const auto& audioController : audioControllers) {
             audioController->process(listenerPosition, soundVolumes);
         }
 
