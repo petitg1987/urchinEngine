@@ -58,8 +58,8 @@ namespace urchin {
                     apex = getPortalPoint(portals, otherSide, otherSideIndex);
                     portals[otherSideIndex]->setTransitionPoint(apex);
 
-                    updateSideIndex(otherSide, otherSideIndex+1);
-                    updateSideIndex(updateSide, otherSideIndex+1);
+                    updateSideIndex(otherSide, otherSideIndex + 1);
+                    updateSideIndex(updateSide, otherSideIndex + 1);
 
                     return (int)otherSideIndex + 1;
                 }

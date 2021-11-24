@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(urchinCommon)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if (WIN32)
     set(IMAGE_HLP_LIB imagehlp)

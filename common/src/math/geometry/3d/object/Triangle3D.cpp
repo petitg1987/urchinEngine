@@ -133,7 +133,7 @@ namespace urchin {
         Vector3<T> normal = computeNormal();
 
         for (unsigned int i = 0; i < 3; ++i) {
-            Vector3<T> triangleVector = triangleShape.getPoints()[(i+1)%3].vector(triangleShape.getPoints()[i]);
+            Vector3<T> triangleVector = triangleShape.getPoints()[(i + 1) % 3].vector(triangleShape.getPoints()[i]);
             Vector3<T> pointToTriangle = point.vector(triangleShape.getPoints()[i]);
             Vector3<T> tetrahedronFaceNormal = triangleVector.crossProduct(pointToTriangle);
             if (tetrahedronFaceNormal.dotProduct(normal) < 0.0) {

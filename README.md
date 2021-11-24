@@ -1,7 +1,7 @@
 <h2 align="center">Urchin Engine</h2>
 
 # Description
-Game engine library in C++17: 3D, Physics, Sound, Network, IA, Map Editor
+Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
 
 Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 

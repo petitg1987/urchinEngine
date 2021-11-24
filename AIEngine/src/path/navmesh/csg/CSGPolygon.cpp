@@ -135,8 +135,8 @@ namespace urchin {
         //move or exclude points too close (not neighbor points)
         for (int i = 0; i < (int)cwPoints.size(); i++) {
             //Use j = i + 3 because:
-            // cwPoints[i] and cwPoints[i+1] cannot be close points: they should be already erased by first loop because they are close neighbor
-            // cwPoints[i] and cwPoints[i+2] cannot be close points: they should be already erased by previous loop because of the angle between cwPoints[i]-cwPoints[i+1]-cwPoints[i+2]
+            // cwPoints[i] and cwPoints[i + 1] cannot be close points: they should be already erased by first loop because they are close neighbor
+            // cwPoints[i] and cwPoints[i + 2] cannot be close points: they should be already erased by previous loop because of the angle between cwPoints[i]-cwPoints[i+1]-cwPoints[i+2]
             bool keepGoing = true;
             for (int j = i + 3; j < (int)cwPoints.size() && keepGoing; j++) {
                 if (cwPoints[(std::size_t)i].squareDistance(cwPoints[(std::size_t)j]) <= mergePointsSquareDistance) {

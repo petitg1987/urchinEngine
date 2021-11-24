@@ -6,7 +6,7 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
 endif()
 
 set(URCHIN_BUILD_TOOLS "YES" CACHE STRING "Build the urchin engine tools (map editor, test runner).")
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(common)
 add_subdirectory(3dEngine)

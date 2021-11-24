@@ -6,7 +6,7 @@
 using namespace urchin;
 
 /**
- * Create 4 bodies. Body n will be in contact with body n+1.
+ * Create 4 bodies. Body n will be in contact with body n + 1.
  * All bodies of container should belong to same island.
  */
 void IslandContainerTest::cascadeMergeIslands() {

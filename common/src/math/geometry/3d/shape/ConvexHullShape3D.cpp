@@ -94,9 +94,9 @@ namespace urchin {
             const Vector3<T>& triangleToPoint = point0.vector(newPoint);
 
             if (triangleNormal.dotProduct(triangleToPoint) > 0.0) {
-                for (int i = 0; i < 3; i++) { //each edge
+                for (std::size_t i = 0; i < 3; i++) { //each edge
                     std::size_t index1 = indexedTriangle.getIndices()[i];
-                    std::size_t index2 = indexedTriangle.getIndices()[(i+1)%3];
+                    std::size_t index2 = indexedTriangle.getIndices()[(i + 1) % 3];
 
                     auto edgeId = (uint_fast64_t)std::min(index1, index2);
                     edgeId = edgeId << 32u;
@@ -195,7 +195,7 @@ namespace urchin {
     template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator& itTriangle) {
         //remove reference of triangles on points
         const std::array<std::size_t, 3>& indices = itTriangle->second.getIndices();
-        for (unsigned long index : indices) {
+        for (std::size_t index : indices) {
             std::vector<std::size_t>& pointTriangles = points.at(index).triangleIndices;
             pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
             if (pointTriangles.empty()) { //orphan point: remove it

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(urchinNetworkEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if (WIN32)
     set(CURL_LIB curl.a ssl.a crypto.a brotlidec-static.a brotlicommon-static.a z.a nghttp2.a idn2.a gdi32.a zstd.a ws2_32.a iconv unistring psl)
