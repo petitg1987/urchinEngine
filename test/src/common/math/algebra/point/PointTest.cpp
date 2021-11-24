@@ -5,9 +5,9 @@
 using namespace urchin;
 
 void PointTest::triviallyCopyable() {
-    AssertHelper::assertTrue( std::is_trivially_copyable<Point2<float>>::value);
-    AssertHelper::assertTrue( std::is_trivially_copyable<Point3<float>>::value);
-    AssertHelper::assertTrue( std::is_trivially_copyable<Point4<float>>::value);
+    AssertHelper::assertTrue(std::is_trivially_copyable_v<Point2<float>>);
+    AssertHelper::assertTrue(std::is_trivially_copyable_v<Point3<float>>);
+    AssertHelper::assertTrue(std::is_trivially_copyable_v<Point4<float>>);
 }
 
 CppUnit::Test* PointTest::suite() {

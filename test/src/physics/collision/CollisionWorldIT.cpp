@@ -40,7 +40,7 @@ void CollisionWorldIT::ccdPushOnGround() {
 
 void CollisionWorldIT::ccdBounceOnGroundAndRoof() {
     auto bodyContainer = buildWorld(Point3<float>(0.0f, 5.0f, 0.0f));
-    std::unique_ptr<CollisionBoxShape> roofShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
+    auto roofShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
     bodyContainer->addBody(std::make_unique<RigidBody>("roof", PhysicsTransform(Point3<float>(0.0f, 10.0f, 0.0f), Quaternion<float>()), std::move(roofShape)));
     auto collisionWorld = std::make_unique<CollisionWorld>(*bodyContainer);
     collisionWorld->process(1.0f / 1000.0f, Vector3<float>(0.0f, 0.0f, 0.0f));
@@ -86,7 +86,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
     //2. change position (in thread different from physics thread)
-    std::thread thread = std::thread([&cubeBody]() {
+    auto thread = std::thread([&cubeBody]() {
         cubeBody->setTransform(PhysicsTransform(Point3<float>(25.0, 5.0, 0.0), Quaternion<float>()));
     });
     thread.join();
@@ -150,11 +150,11 @@ void CollisionWorldIT::changeMass() {
 std::unique_ptr<BodyContainer> CollisionWorldIT::buildWorld(const Point3<float>& cubePosition) const {
     auto bodyContainer = std::make_unique<BodyContainer>();
 
-    std::unique_ptr<CollisionBoxShape> groundShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
+    auto groundShape = std::make_unique<CollisionBoxShape>(Vector3<float>(50.0f, 0.5f, 50.0f));
     auto groundBody = std::make_unique<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), std::move(groundShape));
     bodyContainer->addBody(std::move(groundBody));
 
-    std::unique_ptr<CollisionBoxShape> cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
+    auto cubeShape = std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f));
     auto cubeBody = std::make_unique<RigidBody>("cube", PhysicsTransform(cubePosition, Quaternion<float>()), std::move(cubeShape));
     cubeBody->setMass(10.0f);
     bodyContainer->addBody(std::move(cubeBody));

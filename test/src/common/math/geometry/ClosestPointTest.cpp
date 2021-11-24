@@ -6,7 +6,7 @@
 using namespace urchin;
 
 void ClosestPointTest::closestPointLineSegment2D() {
-    float barycentrics[2];
+    std::array<float, 2> barycentrics;
     LineSegment2D<float> lineSegment(Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 1.0f));
 
     //point outside segment (right)
@@ -29,7 +29,7 @@ void ClosestPointTest::closestPointLineSegment2D() {
 }
 
 void ClosestPointTest::closestPointLineSegment3D() {
-    float barycentrics[2];
+    std::array<float, 2> barycentrics;
     LineSegment3D<float> lineSegment(Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(2.0f, 1.0f, 0.0f));
 
     //point outside segment (right)
@@ -52,7 +52,7 @@ void ClosestPointTest::closestPointLineSegment3D() {
 }
 
 void ClosestPointTest::closestPointTriangle3D() {
-    float barycentrics[3];
+    std::array<float, 3> barycentrics;
     Triangle3D<float> triangle(Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(3.0f, 1.0f, 0.0f), Point3<float>(2.0f, 3.0f, 0.0f));
 
     //point in front of triangle
@@ -106,7 +106,7 @@ void ClosestPointTest::closestPointTriangle3D() {
 }
 
 void ClosestPointTest::closestPointTetrahedron() {
-    float barycentrics[4];
+    std::array<float, 4> barycentrics;
     Tetrahedron<float> tetrahedron(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 1.0f), Point3<float>(2.0f, 3.0f, 0.5f));
 
     //point in voronoi region of D

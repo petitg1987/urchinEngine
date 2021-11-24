@@ -3,11 +3,10 @@
 #include <memory>
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
-using namespace urchin;
 
 class GJKTestHelper {
     public:
-        static std::shared_ptr<GJKResult<float>> executeGJK(const CollisionConvexObject3D&, const CollisionConvexObject3D&);
+        static std::shared_ptr<urchin::GJKResult<float>> executeGJK(const urchin::CollisionConvexObject3D&, const urchin::CollisionConvexObject3D&);
 
     private:
         GJKTestHelper() = default;

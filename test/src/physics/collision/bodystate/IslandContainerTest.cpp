@@ -13,7 +13,7 @@ void IslandContainerTest::cascadeMergeIslands() {
     std::array<std::unique_ptr<TestBody>, 4> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
     std::vector<IslandElement*> bodiesPtr;
     bodiesPtr.reserve(bodies.size());
-    for (auto& body : bodies) {
+    for (const auto& body : bodies) {
         bodiesPtr.emplace_back(body.get());
     }
 
@@ -39,7 +39,7 @@ void IslandContainerTest::mergeAllIslands() {
     std::array<std::unique_ptr<TestBody>, 3> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
     std::vector<IslandElement*> bodiesPtr;
     bodiesPtr.reserve(bodies.size());
-    for (auto& body : bodies) {
+    for (const auto& body : bodies) {
         bodiesPtr.emplace_back(body.get());
     }
 
@@ -65,7 +65,7 @@ void IslandContainerTest::createTwoSeparateIslands() {
     std::array<std::unique_ptr<TestBody>, 4> bodies = {std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>(), std::make_unique<TestBody>()};
     std::vector<IslandElement*> bodiesPtr;
     bodiesPtr.reserve(bodies.size());
-    for (auto& body : bodies) {
+    for (const auto& body : bodies) {
         bodiesPtr.emplace_back(body.get());
     }
 

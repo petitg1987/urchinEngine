@@ -1,4 +1,4 @@
-void AssertHelper::assertTrue(bool b, const std::string& msg) {
+inline void AssertHelper::assertTrue(bool b, const std::string& msg) {
     if (msg.empty()) {
         CPPUNIT_ASSERT(b);
     } else {
@@ -6,57 +6,57 @@ void AssertHelper::assertTrue(bool b, const std::string& msg) {
     }
 }
 
-void AssertHelper::assertObjectEquals(void* object, void* expectedObject) {
+inline void AssertHelper::assertObjectEquals(void* object, void* expectedObject) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Objects are different", object == expectedObject);
 }
 
-void AssertHelper::assertStringEquals(const std::string& value, const std::string& expected) {
+inline void AssertHelper::assertStringEquals(const std::string& value, const std::string& expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + value + ", expected: " + expected, value == expected);
 }
 
-void AssertHelper::assertIntEquals(int value, int expected) {
+inline void AssertHelper::assertIntEquals(int value, int expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
-void AssertHelper::assertUnsignedIntEquals(unsigned int value, unsigned int expected) {
+inline void AssertHelper::assertUnsignedIntEquals(unsigned int value, unsigned int expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
-void AssertHelper::assertUnsignedIntEquals(std::size_t value, std::size_t expected) {
+inline void AssertHelper::assertUnsignedIntEquals(std::size_t value, std::size_t expected) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value == expected);
 }
 
-void AssertHelper::assert3SizesEquals(const std::size_t* value, std::array<std::size_t, 3> expected) {
+inline void AssertHelper::assert3SizesEquals(const std::array<std::size_t, 3>& value, const std::array<std::size_t, 3>& expected) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
     }
 }
 
-void AssertHelper::assertFloatEquals(float value, float expected, float epsilon) {
+inline void AssertHelper::assertFloatEquals(float value, float expected, float epsilon) {
     CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + floatToString(value) + ", expected: " + floatToString(expected),
                            urchin::MathFunction::isEqual(value, expected, epsilon));
 }
 
-void AssertHelper::assertPoint2FloatEquals(const urchin::Point2<float>& value, const urchin::Point2<float>& expected, float epsilon) {
+inline void AssertHelper::assertPoint2FloatEquals(const urchin::Point2<float>& value, const urchin::Point2<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 2; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),
                                urchin::MathFunction::isEqual(value[i], expected[i], epsilon));
     }
 }
 
-void AssertHelper::assertPoint2IntEquals(const urchin::Point2<int>& value, const urchin::Point2<int>& expected) {
+inline void AssertHelper::assertPoint2IntEquals(const urchin::Point2<int>& value, const urchin::Point2<int>& expected) {
     for (std::size_t i = 0; i < 2; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
     }
 }
 
-void AssertHelper::assertPoint2LongLongEquals(const urchin::Point2<long long>& value, const urchin::Point2<long long>& expected) {
+inline void AssertHelper::assertPoint2LongLongEquals(const urchin::Point2<long long>& value, const urchin::Point2<long long>& expected) {
     for (std::size_t i = 0; i < 2; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
     }
 }
 
-void AssertHelper::assertPoints2FloatEquals(const std::vector<urchin::Point2<float>>& points, const std::vector<urchin::Point2<float>>& expectedPoints, float epsilon) {
+inline void AssertHelper::assertPoints2FloatEquals(const std::vector<urchin::Point2<float>>& points, const std::vector<urchin::Point2<float>>& expectedPoints, float epsilon) {
     AssertHelper::assertUnsignedIntEquals(points.size(), expectedPoints.size());
 
     for (std::size_t i = 0; i < points.size(); ++i) {
@@ -64,7 +64,7 @@ void AssertHelper::assertPoints2FloatEquals(const std::vector<urchin::Point2<flo
     }
 }
 
-void AssertHelper::assertPoints2LongLongEquals(const std::vector<urchin::Point2<long long>>& points, const std::vector<urchin::Point2<long long>>& expectedPoints) {
+inline void AssertHelper::assertPoints2LongLongEquals(const std::vector<urchin::Point2<long long>>& points, const std::vector<urchin::Point2<long long>>& expectedPoints) {
     AssertHelper::assertUnsignedIntEquals(points.size(), expectedPoints.size());
 
     for (std::size_t i = 0; i < points.size(); ++i) {
@@ -72,27 +72,27 @@ void AssertHelper::assertPoints2LongLongEquals(const std::vector<urchin::Point2<
     }
 }
 
-void AssertHelper::assertPoint3FloatEquals(const urchin::Point3<float>& value, const urchin::Point3<float>& expected, float epsilon) {
+inline void AssertHelper::assertPoint3FloatEquals(const urchin::Point3<float>& value, const urchin::Point3<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),
                                urchin::MathFunction::isEqual(value[i], expected[i], epsilon));
     }
 }
 
-void AssertHelper::assertPoint3IntEquals(const urchin::Point3<int>& value, const urchin::Point3<int>& expected) {
+inline void AssertHelper::assertPoint3IntEquals(const urchin::Point3<int>& value, const urchin::Point3<int>& expected) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + std::to_string(value[i]) + ", expected: " + std::to_string(expected[i]), value[i] == expected[i]);
     }
 }
 
-void AssertHelper::assertVector3FloatEquals(const urchin::Vector3<float>& value, const urchin::Vector3<float>& expected, float epsilon) {
+inline void AssertHelper::assertVector3FloatEquals(const urchin::Vector3<float>& value, const urchin::Vector3<float>& expected, float epsilon) {
     for (std::size_t i = 0; i < 3; ++i) {
         CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value: " + floatToString(value[i]) + ", expected: " + floatToString(expected[i]),
                                urchin::MathFunction::isEqual(value[i], expected[i], epsilon));
     }
 }
 
-void AssertHelper::assertQuaternionFloatEquals(const urchin::Quaternion<float>& value, const urchin::Quaternion<float>& expected, float epsilon) {
+inline void AssertHelper::assertQuaternionFloatEquals(const urchin::Quaternion<float>& value, const urchin::Quaternion<float>& expected, float epsilon) {
     urchin::Quaternion<float> qTest1(value);
     if ((value.W < 0.0f && expected.W > 0.0f) || (value.W > 0.0f && expected.W < 0.0f)) {
         qTest1.X = -qTest1.X;
@@ -107,13 +107,13 @@ void AssertHelper::assertQuaternionFloatEquals(const urchin::Quaternion<float>& 
     }
 }
 
-void AssertHelper::assertPolygonFloatEquals(std::vector<urchin::Point2<float>> orientedPoints, const std::vector<urchin::Point2<float>>& orientedExpectedPoints, float epsilon) {
+inline void AssertHelper::assertPolygonFloatEquals(std::vector<urchin::Point2<float>> orientedPoints, const std::vector<urchin::Point2<float>>& orientedExpectedPoints, float epsilon) {
     AssertHelper::assertUnsignedIntEquals(orientedPoints.size(), orientedExpectedPoints.size());
 
     for (std::size_t i = 0; i < orientedPoints.size(); ++i) {
         try {
             assertPoints2FloatEquals(orientedPoints, orientedExpectedPoints, epsilon);
-        } catch (std::exception& e) {
+        } catch (const std::exception&) {
             std::rotate(orientedPoints.begin(), orientedPoints.begin() + 1, orientedPoints.end());
             continue;
         }
@@ -124,13 +124,13 @@ void AssertHelper::assertPolygonFloatEquals(std::vector<urchin::Point2<float>> o
     assertTrue(false);
 }
 
-void AssertHelper::assertPolygonLongLongEquals(std::vector<urchin::Point2<long long>> orientedPoints, const std::vector<urchin::Point2<long long>>& orientedExpectedPoints) {
+inline void AssertHelper::assertPolygonLongLongEquals(std::vector<urchin::Point2<long long>> orientedPoints, const std::vector<urchin::Point2<long long>>& orientedExpectedPoints) {
     AssertHelper::assertUnsignedIntEquals(orientedPoints.size(), orientedExpectedPoints.size());
 
     for (std::size_t i = 0; i < orientedPoints.size(); ++i) {
         try {
             assertPoints2LongLongEquals(orientedPoints, orientedExpectedPoints);
-        } catch (std::exception& e) {
+        } catch (const std::exception&) {
             std::rotate(orientedPoints.begin(), orientedPoints.begin() + 1, orientedPoints.end());
             continue;
         }
@@ -141,7 +141,7 @@ void AssertHelper::assertPolygonLongLongEquals(std::vector<urchin::Point2<long l
     assertTrue(false);
 }
 
-std::string AssertHelper::floatToString(float f) {
+inline std::string AssertHelper::floatToString(float f) {
     std::stringstream stream;
     stream << std::fixed << std::setprecision(10) << f;
     return stream.str();

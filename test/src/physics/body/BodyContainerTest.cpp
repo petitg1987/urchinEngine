@@ -9,7 +9,7 @@ using namespace urchin;
 
 void BodyContainerTest::addAndRemoveBody() {
     auto bodyContainer = std::make_unique<BodyContainer>();
-    std::unique_ptr<CollisionBoxShape> groundShape = std::make_unique<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
+    auto groundShape = std::make_unique<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
     auto groundBody = std::make_shared<RigidBody>("ground", PhysicsTransform(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>()), std::move(groundShape));
     bodyContainer->addBody(groundBody);
     bodyContainer->removeBody(*groundBody);

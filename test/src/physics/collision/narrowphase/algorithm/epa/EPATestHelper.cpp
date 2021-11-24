@@ -6,5 +6,5 @@ std::shared_ptr<EPAResult<float>> EPATestHelper::executeEPA(const CollisionConve
     std::shared_ptr<GJKResult<float>> resultGjk = GJKTestHelper::executeGJK(object1, object2);
 
     EPAAlgorithm<float> epa;
-    return epa.processEPA(object1, object2, *resultGjk.get());
+    return epa.processEPA(object1, object2, *resultGjk);
 }

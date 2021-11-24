@@ -5,9 +5,9 @@
 using namespace urchin;
 
 void VectorTest::triviallyCopyable() {
-    AssertHelper::assertTrue( std::is_trivially_copyable<Vector2<float>>::value);
-    AssertHelper::assertTrue( std::is_trivially_copyable<Vector3<float>>::value);
-    AssertHelper::assertTrue( std::is_trivially_copyable<Vector4<float>>::value);
+    AssertHelper::assertTrue( std::is_trivially_copyable_v<Vector2<float>>);
+    AssertHelper::assertTrue( std::is_trivially_copyable_v<Vector3<float>>);
+    AssertHelper::assertTrue( std::is_trivially_copyable_v<Vector4<float>>);
 }
 
 CppUnit::Test* VectorTest::suite() {

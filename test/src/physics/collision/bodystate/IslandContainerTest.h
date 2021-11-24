@@ -20,7 +20,4 @@ class TestBody : public urchin::IslandElement {
         bool isActive() const override {
             return true;
         }
-
-    private:
-        unsigned int id;
 };
