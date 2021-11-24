@@ -4,12 +4,10 @@ project(urchinCommon)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
-#TODO check X11_LIB still needed here !
 if (WIN32)
     set(IMAGE_HLP_LIB imagehlp)
 else()
-    SET(X11_LIB X11) #not static because X11 can use libraries not mentioned in its dependencies
-    set(LINK_OPT -rdynamic dl ${X11_LIB}) #rdynamic: necessary for SignalHandler to work correctly
+    set(LINK_OPT -rdynamic dl) #rdynamic: necessary for SignalHandler to work correctly
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
