@@ -71,7 +71,7 @@ template<class T> void Octree<T>::addOctreeable(std::shared_ptr<T> octreeable, b
 template<class T> std::shared_ptr<T> Octree<T>::removeOctreeable(T* octreeable, bool removeRef) {
     assert(bIsLeaf);
 
-    auto it = std::find_if(octreeables.begin(), octreeables.end(), [&octreeable](const auto& o){return o.get() == octreeable;});
+    auto it = std::ranges::find_if(octreeables, [&octreeable](const auto& o){return o.get() == octreeable;});
     if (it != octreeables.end()) {
         std::shared_ptr<T> removedOctreeable = *it; //keep a copy before remove the octreeable
         VectorUtil::erase(octreeables, it);

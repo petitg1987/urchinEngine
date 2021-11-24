@@ -218,7 +218,7 @@ template<class T> std::vector<std::shared_ptr<T>> OctreeManager<T>::getAllOctree
         }
     }
 
-    std::for_each(allOctreeables.begin(), allOctreeables.end(), [](const std::shared_ptr<T>& o){o->setProcessed(false);});
+    std::ranges::for_each(allOctreeables, [](const std::shared_ptr<T>& o){o->setProcessed(false);});
 
     return allOctreeables;
 }
@@ -252,7 +252,7 @@ template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<f
         }
     }
 
-    std::for_each(visibleOctreeables.begin(), visibleOctreeables.end(), [](T* o){o->setProcessed(false);});
+    std::ranges::for_each(visibleOctreeables, [](T* o){o->setProcessed(false);});
 }
 
 template<class T> bool OctreeManager<T>::resizeOctree(std::shared_ptr<T> newOctreeable) {

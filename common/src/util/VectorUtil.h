@@ -12,8 +12,6 @@ namespace urchin {
 
             template<class T> static void removeDuplicates(std::vector<T>&);
 
-            template<class T, class Compare> static void insertSorted(std::vector<T>&, T&, Compare);
-
             template<class T, class... A> static std::vector<T> concatenate(const std::vector<T>&, A&&...);
     };
 

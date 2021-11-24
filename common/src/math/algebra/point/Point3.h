@@ -45,7 +45,6 @@ namespace urchin {
             const Point3<T>& operator -=(T t);
 
             bool operator ==(const Point3<T>&) const;
-            bool operator !=(const Point3<T>&) const;
             bool operator <(const Point3<T>&) const;
 
             T& operator [](std::size_t i);

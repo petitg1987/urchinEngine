@@ -515,10 +515,6 @@ namespace urchin {
         return (X == q.X && Y == q.Y && Z == q.Z && W == q.W);
     }
 
-    template<class T> bool Quaternion<T>::operator !=(const Quaternion<T>& q) const {
-        return !(this->operator == (q));
-    }
-
     template<class T> T& Quaternion<T>::operator [](std::size_t i) {
         return (&X)[i];
     }

@@ -162,10 +162,6 @@ namespace urchin {
         return (X == p.X && Y == p.Y && Z == p.Z && W == p.W);
     }
 
-    template<class T> bool Point4<T>::operator !=(const Point4<T>& p) const {
-        return !(this->operator==(p));
-    }
-
     template<class T> bool Point4<T>::operator <(const Point4<T>& p) const {
         return X < p.X || (X == p.X && Y < p.Y) || (X == p.X && Y == p.Y && Z < p.Z) || (X == p.X && Y == p.Y && Z == p.Z && W < p.W);
     }

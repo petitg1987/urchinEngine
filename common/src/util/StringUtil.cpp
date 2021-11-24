@@ -57,11 +57,11 @@ namespace urchin {
     }
 
     void StringUtil::ltrim(std::string& str) {
-        str.erase(str.begin(), std::find_if (str.begin(), str.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+        str.erase(str.begin(), std::ranges::find_if(str, std::not1(std::ptr_fun<int, int>(std::isspace))));
     }
 
     void StringUtil::rtrim(std::string& str) {
-        str.erase(std::find_if (str.rbegin(), str.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
+        str.erase(std::find_if(str.rbegin(), str.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
     }
 
     void StringUtil::trim(std::string& str) {

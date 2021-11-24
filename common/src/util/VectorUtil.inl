@@ -15,12 +15,8 @@ template<class T> void VectorUtil::erase(std::vector<T>& v, typename std::vector
 }
 
 template<class T> void VectorUtil::removeDuplicates(std::vector<T>& v) {
-    std::sort(v.begin(), v.end());
-    v.erase(std::unique(v.begin(), v.end()), v.end());
-}
-
-template<class T, class Compare> void VectorUtil::insertSorted(std::vector<T>& v, T& item, Compare compare) {
-    v.insert(std::upper_bound(v.begin(), v.end(), item, compare), item);
+    std::ranges::sort(v);
+    v.erase(std::ranges::begin(std::ranges::unique(v)), v.end());
 }
 
 template<class T, class... A> std::vector<T> VectorUtil::concatenate(const std::vector<T>& v1, A&&... vr) {
