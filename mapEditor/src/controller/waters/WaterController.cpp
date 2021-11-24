@@ -32,7 +32,7 @@ namespace urchin {
     }
 
     const SceneWater& WaterController::updateSceneWaterGeneral(const SceneWater& constSceneWater, const Point3<float>& centerPosition, float xSize, float zSize) {
-        SceneWater& sceneWater = findSceneWater(constSceneWater);
+        const SceneWater& sceneWater = findSceneWater(constSceneWater);
         Water* water = sceneWater.getWater();
 
         water->setCenterPosition(centerPosition);
@@ -45,7 +45,7 @@ namespace urchin {
 
     const SceneWater& WaterController::updateSceneWaterSurface(const SceneWater& constSceneWater, const Vector3<float>& waterColor, const std::string& normalFilename,
                                                                const std::string& dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
-        SceneWater& sceneWater = findSceneWater(constSceneWater);
+        const SceneWater& sceneWater = findSceneWater(constSceneWater);
         Water* water = sceneWater.getWater();
 
         water->setWaterColor(waterColor);
@@ -61,7 +61,7 @@ namespace urchin {
     }
 
     const SceneWater& WaterController::updateSceneWaterUnderWater(const SceneWater& constSceneWater, float density, float gradient) {
-        SceneWater& sceneWater = findSceneWater(constSceneWater);
+        const SceneWater& sceneWater = findSceneWater(constSceneWater);
         Water* water = sceneWater.getWater();
 
         water->setDensity(density);

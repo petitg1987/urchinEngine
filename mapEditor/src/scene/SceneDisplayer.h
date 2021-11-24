@@ -92,7 +92,7 @@ namespace urchin {
             std::unique_ptr<MapHandler> mapHandler;
 
             //scene specifics
-            bool viewProperties[LAST_VIEW_PROPERTIES];
+            std::array<bool, LAST_VIEW_PROPERTIES> viewProperties;
             const SceneModel* highlightSceneModel;
             const SceneLight* highlightSceneLight;
             const SceneSound* highlightSceneSound;

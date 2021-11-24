@@ -85,7 +85,7 @@ namespace urchin {
             }
             auto model = Model::fromMeshesFile(relativeMeshesFilename);
             sceneModel->setModel(std::move(model));
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
         }

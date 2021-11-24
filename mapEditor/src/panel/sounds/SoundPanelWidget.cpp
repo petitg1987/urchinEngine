@@ -220,7 +220,7 @@ namespace urchin {
     }
 
     void SoundPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
+        if (const auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
                 if (soundTableView->hasSceneSoundSelected()) {
                     const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
@@ -335,7 +335,7 @@ namespace urchin {
 
         if (newSceneSoundDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneSound> sceneSound = newSceneSoundDialog.moveSceneSound();
-            SceneSound* sceneSoundPtr = sceneSound.get();
+            const SceneSound* sceneSoundPtr = sceneSound.get();
             soundController->addSceneSound(std::move(sceneSound));
 
             soundTableView->addSound(*sceneSoundPtr);

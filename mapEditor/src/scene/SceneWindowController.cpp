@@ -39,7 +39,7 @@ namespace urchin {
         std::vector<std::string> requiredExtensions;
         for (auto& extension : extensions) {
             bool extensionSupported = false;
-            for (auto& supportedExtension : QVulkanInstance().supportedExtensions()) {
+            for (const auto& supportedExtension : QVulkanInstance().supportedExtensions()) {
                 if (extension == std::string(supportedExtension.name.constData())) {
                     extensionSupported = true;
                     break;

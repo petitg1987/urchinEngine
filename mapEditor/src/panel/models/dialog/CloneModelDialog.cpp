@@ -51,7 +51,7 @@ namespace urchin {
         try {
             sceneModel = std::make_unique<SceneModel>();
             sceneModel->setName(modelName);
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
         }

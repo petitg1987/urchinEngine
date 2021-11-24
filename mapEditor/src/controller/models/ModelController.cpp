@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     const SceneModel& ModelController::updateSceneModelTransform(const SceneModel& constSceneModel, const Transform<float>& transform) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
+        const SceneModel& sceneModel = findSceneModel(constSceneModel);
         Model* model = sceneModel.getModel();
 
         Transform<float> oldTransform = model->getTransform();
@@ -109,7 +109,7 @@ namespace urchin {
     }
 
     const SceneModel& ModelController::updateSceneModelFlags(const SceneModel& constSceneModel, bool produceShadow) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
+        const SceneModel& sceneModel = findSceneModel(constSceneModel);
         Model* model = sceneModel.getModel();
 
         model->setProduceShadow(produceShadow);
@@ -119,7 +119,7 @@ namespace urchin {
     }
 
     const SceneModel& ModelController::updateSceneModelTags(const SceneModel& constSceneModel, const std::string& tagsValues) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
+        const SceneModel& sceneModel = findSceneModel(constSceneModel);
         Model* model = sceneModel.getModel();
 
         model->removeAllTags();
@@ -136,7 +136,7 @@ namespace urchin {
     const SceneModel& ModelController::updateSceneModelPhysicsProperties(const SceneModel& constSceneModel, float mass, float restitution,
             float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
             const Vector3<float>& angularFactor) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
+        const SceneModel& sceneModel = findSceneModel(constSceneModel);
         RigidBody* rigidBody = sceneModel.getRigidBody();
 
         rigidBody->setMass(mass);
@@ -155,7 +155,7 @@ namespace urchin {
 
     const SceneModel& ModelController::updateSceneModelPhysicsShape(const SceneModel& constSceneModel, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
         SceneModel& sceneModel = findSceneModel(constSceneModel);
-        RigidBody* rigidBody = sceneModel.getRigidBody();
+        const RigidBody* rigidBody = sceneModel.getRigidBody();
 
         const std::string& bodyId = constSceneModel.getName();
         Transform<float> modelTransform = constSceneModel.getModel()->getTransform();

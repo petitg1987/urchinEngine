@@ -61,7 +61,7 @@ namespace urchin {
             std::unique_ptr<SceneWindowController> sceneWindowController;
             MouseController mouseController;
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
-            bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
+            std::array<bool, SceneDisplayer::LAST_VIEW_PROPERTIES> viewProperties;
 
             int mouseX, mouseY;
             std::string lastPickedBodyId;

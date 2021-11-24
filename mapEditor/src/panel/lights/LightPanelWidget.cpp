@@ -185,7 +185,7 @@ namespace urchin {
     }
 
     void LightPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
+        if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
                 if (lightTableView->hasSceneLightSelected()) {
                     const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
@@ -256,7 +256,7 @@ namespace urchin {
 
         if (newSceneLightDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneLight> sceneLight = newSceneLightDialog.moveSceneLight();
-            SceneLight* sceneLightPtr = sceneLight.get();
+            const SceneLight* sceneLightPtr = sceneLight.get();
             lightController->addSceneLight(std::move(sceneLight));
 
             lightTableView->addLight(*sceneLightPtr);

@@ -71,14 +71,14 @@ namespace urchin {
             LabelStyleHelper::applyNormalStyle(shapesLabel);
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes = localizedShapeTableView->getLocalizedShapes();
             return std::make_unique<const CollisionCompoundShape>(std::move(localizedCollisionShapes));
-        } catch (std::invalid_argument& e) {
+        } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
             return DefaultBodyShapeCreator(*getSceneModel()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
         }
     }
 
     void BodyCompoundShapeWidget::notify(Observable* observable, int notificationType) {
-        if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
+        if (const auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
             if (notificationType == LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
@@ -203,7 +203,7 @@ namespace urchin {
                 throw std::invalid_argument("Localized shape table hasn't localized shaped selected");
             }
 
-            std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+            auto localizedShape = std::make_shared<LocalizedCollisionShape>();
 
             localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
             localizedShape->shape = bodyShapeWidget->moveShape();
@@ -240,7 +240,7 @@ namespace urchin {
                 }
             }
 
-            std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+            auto localizedShape = std::make_shared<LocalizedCollisionShape>();
             localizedShape->position = nextPosition;
             localizedShape->shape = std::move(defaultNewShape);
             localizedShape->transform = PhysicsTransform();

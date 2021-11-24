@@ -186,15 +186,15 @@ namespace urchin {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if (auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
+        } else if (const auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
             if (notificationType == ModelTableView::MODEL_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightSceneModel(modelTableView->getSelectedSceneModel());
             }
-        } else if (auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
+        } else if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
-        } else if (auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
+        } else if (const auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
@@ -210,14 +210,14 @@ namespace urchin {
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
-        if (auto* modelControllerWidget = dynamic_cast<ModelPanelWidget*>(observable)) {
+        if (const auto* modelControllerWidget = dynamic_cast<ModelPanelWidget*>(observable)) {
             if (notificationType == ModelPanelWidget::MODEL_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget* bodyShapeWidget = modelControllerWidget->getBodyShapeWidget();
-                if (auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
+                if (const auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
-        } else if (auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
+        } else if (const auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
             if (notificationType == LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
@@ -342,8 +342,8 @@ namespace urchin {
         saveAction->setEnabled(hasMapOpen);
         saveAsAction->setEnabled(hasMapOpen);
         closeAction->setEnabled(hasMapOpen);
-        for (auto& viewAction : viewActions) {
-            viewAction.second->setEnabled(hasMapOpen);
+        for (const auto& [viewProperties, action] : viewActions) {
+            action->setEnabled(hasMapOpen);
         }
 
         refreshWindowTitle();

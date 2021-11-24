@@ -36,7 +36,7 @@ namespace urchin {
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
 
-            std::shared_ptr<LocalizedCollisionShape> boxLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+            auto boxLocalizedShape = std::make_shared<LocalizedCollisionShape>();
             boxLocalizedShape->position = 0;
             boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(modelAABBox.getHalfSizes());
             boxLocalizedShape->transform = PhysicsTransform();

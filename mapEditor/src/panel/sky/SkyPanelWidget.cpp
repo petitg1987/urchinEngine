@@ -49,39 +49,39 @@ namespace urchin {
         auto* skyboxLayout = new QGridLayout(skyboxGroupBox);
 
         auto* xnSkyboxLayout = createFilenameInputText(skyboxLayout, 0, "X-:", &xnSkyboxFilenameText);
-        auto* selectXnSkyboxFileButton = createSelectFileButton(xnSkyboxLayout);
+        const auto* selectXnSkyboxFileButton = createSelectFileButton(xnSkyboxLayout);
         connect(selectXnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showXnSkyboxFilenameDialog()));
-        auto* clearXnSkyboxFileButton = createClearFileButton(xnSkyboxLayout);
+        const auto* clearXnSkyboxFileButton = createClearFileButton(xnSkyboxLayout);
         connect(clearXnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearXnSkyboxFilename()));
 
         auto* xpSkyboxLayout = createFilenameInputText(skyboxLayout, 1, "X+:", &xpSkyboxFilenameText);
-        auto* selectXpSkyboxFileButton = createSelectFileButton(xpSkyboxLayout);
+        const auto* selectXpSkyboxFileButton = createSelectFileButton(xpSkyboxLayout);
         connect(selectXpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showXpSkyboxFilenameDialog()));
-        auto* clearXpSkyboxFileButton = createClearFileButton(xpSkyboxLayout);
+        const auto* clearXpSkyboxFileButton = createClearFileButton(xpSkyboxLayout);
         connect(clearXpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearXpSkyboxFilename()));
 
         auto* ynSkyboxLayout = createFilenameInputText(skyboxLayout, 2, "Y-:", &ynSkyboxFilenameText);
-        auto* selectYnSkyboxFileButton = createSelectFileButton(ynSkyboxLayout);
+        const auto* selectYnSkyboxFileButton = createSelectFileButton(ynSkyboxLayout);
         connect(selectYnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showYnSkyboxFilenameDialog()));
-        auto* clearYnSkyboxFileButton = createClearFileButton(ynSkyboxLayout);
+        const auto* clearYnSkyboxFileButton = createClearFileButton(ynSkyboxLayout);
         connect(clearYnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearYnSkyboxFilename()));
 
         auto* ypSkyboxLayout = createFilenameInputText(skyboxLayout, 3, "Y+:", &ypSkyboxFilenameText);
-        auto* selectYpSkyboxFileButton = createSelectFileButton(ypSkyboxLayout);
+        const auto* selectYpSkyboxFileButton = createSelectFileButton(ypSkyboxLayout);
         connect(selectYpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showYpSkyboxFilenameDialog()));
-        auto* clearYpSkyboxFileButton = createClearFileButton(ypSkyboxLayout);
+        const auto* clearYpSkyboxFileButton = createClearFileButton(ypSkyboxLayout);
         connect(clearYpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearYpSkyboxFilename()));
 
         auto* znSkyboxLayout = createFilenameInputText(skyboxLayout, 4, "Z-:", &znSkyboxFilenameText);
-        auto* selectZnSkyboxFileButton = createSelectFileButton(znSkyboxLayout);
+        const auto* selectZnSkyboxFileButton = createSelectFileButton(znSkyboxLayout);
         connect(selectZnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showZnSkyboxFilenameDialog()));
-        auto* clearZnSkyboxFileButton = createClearFileButton(znSkyboxLayout);
+        const auto* clearZnSkyboxFileButton = createClearFileButton(znSkyboxLayout);
         connect(clearZnSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearZnSkyboxFilename()));
 
         auto* zpSkyboxLayout = createFilenameInputText(skyboxLayout, 5, "Z+:", &zpSkyboxFilenameText);
-        auto* selectZpSkyboxFileButton = createSelectFileButton(zpSkyboxLayout);
+        const auto* selectZpSkyboxFileButton = createSelectFileButton(zpSkyboxLayout);
         connect(selectZpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showZpSkyboxFilenameDialog()));
-        auto* clearZpSkyboxFileButton = createClearFileButton(zpSkyboxLayout);
+        const auto* clearZpSkyboxFileButton = createClearFileButton(zpSkyboxLayout);
         connect(clearZpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearZpSkyboxFilename()));
 
         auto* offsetYLabel = new QLabel("Offset Y:");
@@ -162,7 +162,7 @@ namespace urchin {
 
             try {
                 skyChanged();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearSkyboxFilename(skyboxFilenameText);
             }

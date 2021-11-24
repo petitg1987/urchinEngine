@@ -266,7 +266,7 @@ namespace urchin {
     }
 
     void WaterPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* waterTableView = dynamic_cast<WaterTableView*>(observable)) {
+        if (const auto* waterTableView = dynamic_cast<WaterTableView*>(observable)) {
             if (notificationType == WaterTableView::SELECTION_CHANGED) {
                 if (waterTableView->hasSceneWaterSelected()) {
                     const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
@@ -322,7 +322,7 @@ namespace urchin {
 
         if (newSceneWaterDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneWater> sceneWater = newSceneWaterDialog.moveSceneWater();
-            SceneWater* sceneWaterPtr = sceneWater.get();
+            const SceneWater* sceneWaterPtr = sceneWater.get();
             waterController->addSceneWater(std::move(sceneWater));
 
             waterTableView->addWater(*sceneWaterPtr);
@@ -381,7 +381,7 @@ namespace urchin {
 
             try {
                 updateSurfaceWaterProperties();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearNormalTextureFilename();
             }
@@ -408,7 +408,7 @@ namespace urchin {
 
             try {
                 updateSurfaceWaterProperties();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearDudvMapFilename();
             }

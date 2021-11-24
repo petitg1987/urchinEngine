@@ -141,7 +141,7 @@ namespace urchin {
             auto soundTrigger = std::make_shared<ManualTrigger>(SoundTrigger::PLAY_ONCE);
 
             sceneSound->setSoundElements(sound, soundTrigger);
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
         }

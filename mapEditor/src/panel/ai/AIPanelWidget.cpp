@@ -81,7 +81,7 @@ namespace urchin {
 
     void AIPanelWidget::aiChanged() {
         if (!disableAIEvent) {
-            std::unique_ptr<NavMeshAgent> navMeshAgent = std::make_unique<NavMeshAgent>((float)agentHeight->value(), (float)agentRadius->value());
+            auto navMeshAgent = std::make_unique<NavMeshAgent>((float)agentHeight->value(), (float)agentRadius->value());
             navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));
             navMeshAgent->setJumpDistance((float)jumpDistance->value());
 

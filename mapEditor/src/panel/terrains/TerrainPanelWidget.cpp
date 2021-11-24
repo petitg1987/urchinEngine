@@ -339,7 +339,7 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
+        if (const auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
             if (notificationType == TerrainTableView::SELECTION_CHANGED) {
                 if (terrainTableView->hasSceneTerrainSelected()) {
                     const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
@@ -408,7 +408,7 @@ namespace urchin {
 
         if (newSceneTerrainDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneTerrain> sceneTerrain = newSceneTerrainDialog.moveSceneTerrain();
-            SceneTerrain* sceneTerrainPtr = sceneTerrain.get();
+            const SceneTerrain* sceneTerrainPtr = sceneTerrain.get();
             terrainController->addSceneTerrain(std::move(sceneTerrain));
 
             terrainTableView->addTerrain(*sceneTerrainPtr);
@@ -481,7 +481,7 @@ namespace urchin {
 
             try {
                 updateTerrainMaterial();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
@@ -495,7 +495,7 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::showMaterialFilenameDialog(const QString& positionIndexStr) {
-        unsigned int i = (unsigned int)std::stoi(positionIndexStr.toStdString());
+        auto i = (unsigned int)std::stoi(positionIndexStr.toStdString());
 
         std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
         QString directory = preferredMaterialPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaterialPath;
@@ -510,7 +510,7 @@ namespace urchin {
 
             try {
                 updateTerrainMaterial();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaterialFilename(positionIndexStr);
             }
@@ -518,7 +518,7 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::clearMaterialFilename(const QString& positionIndexStr) {
-        unsigned int i = (unsigned int)std::stoi(positionIndexStr.toStdString());
+        auto i = (unsigned int)std::stoi(positionIndexStr.toStdString());
         this->materialFilenameTexts[i]->setText("");
 
         updateTerrainMaterial();
@@ -538,7 +538,7 @@ namespace urchin {
 
             try {
                 updateTerrainGrass();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }
@@ -565,7 +565,7 @@ namespace urchin {
 
             try {
                 updateTerrainGrass();
-            } catch (std::exception& e) {
+            } catch (const std::exception& e) {
                 QMessageBox::critical(this, "Error", e.what());
                 clearMaskFilename();
             }

@@ -33,7 +33,7 @@ namespace urchin {
 
     const SceneTerrain& TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain& constSceneTerrain,
                                                                                const Point3<float>& position, float ambient) {
-        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        const SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain.getTerrain();
 
         terrain->setPosition(position);
@@ -48,7 +48,7 @@ namespace urchin {
     }
 
     const SceneTerrain& TerrainController::updateSceneTerrainMesh(const SceneTerrain& constSceneTerrain, float xzScale, float yScale) {
-        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        const SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain.getTerrain();
 
         auto terrainMesh = std::make_unique<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale);
@@ -60,7 +60,7 @@ namespace urchin {
 
     const SceneTerrain& TerrainController::updateSceneTerrainMaterial(const SceneTerrain& constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
                                                                       const std::vector<std::string>& materialFilenames) {
-        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        const SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain.getTerrain();
 
         auto terrainMaterials = std::make_unique<TerrainMaterials>(maskMapFilename, materialFilenames, sRepeat, tRepeat);
@@ -73,7 +73,7 @@ namespace urchin {
     const SceneTerrain& TerrainController::updateSceneTerrainGrass(const SceneTerrain& constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
                                                                    unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                    const Vector3<float>& windDirection, float windStrength) {
-        SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
+        const SceneTerrain& sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain* terrain = sceneTerrain.getTerrain();
         TerrainGrass& terrainGrass = terrain->getGrass();
 

@@ -404,7 +404,7 @@ namespace urchin {
     }
 
     void ModelPanelWidget::notify(Observable* observable, int notificationType) {
-        if (auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
+        if (const auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
             if (notificationType == ModelTableView::MODEL_SELECTION_CHANGED) {
                 if (modelTableView->hasSceneModelSelected()) {
                     const SceneModel& sceneModel = *modelTableView->getSelectedSceneModel();
@@ -419,7 +419,7 @@ namespace urchin {
                     tabWidget->hide();
                 }
             }
-        } else if (auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWindow*>(observable)) {
+        } else if (const auto* sceneDisplayerWidget = dynamic_cast<SceneDisplayerWindow*>(observable)) {
             if (notificationType == SceneDisplayerWindow::BODY_PICKED) {
                 const std::string& bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                 const SceneModel* sceneModel = bodyId.empty() ? nullptr : modelController->findSceneModelByBodyId(bodyId);
@@ -432,7 +432,7 @@ namespace urchin {
                     this->modelTableView->clearSelection();
                 }
             }
-        } else if (auto* modelMoveController = dynamic_cast<ModelMoveController*>(observable)) {
+        } else if (const auto* modelMoveController = dynamic_cast<ModelMoveController*>(observable)) {
             if (notificationType == ModelMoveController::MODEL_MOVED) {
                 setupModelDataFrom(*modelMoveController->getSelectedSceneModel());
             }
@@ -494,7 +494,7 @@ namespace urchin {
             hasRigidBody->setChecked(false);
             tabPhysicsRigidBody->hide();
 
-            BodyShapeWidget& bodyShapeWidget = createNoBodyShapeWidget(sceneModel);
+            const BodyShapeWidget& bodyShapeWidget = createNoBodyShapeWidget(sceneModel);
             shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget.getBodyShapeName()));
         }
 
@@ -528,7 +528,7 @@ namespace urchin {
 
         if (newSceneModelDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneModel> sceneModel = newSceneModelDialog.moveSceneModel();
-            SceneModel* sceneModelPtr = sceneModel.get();
+            const SceneModel* sceneModelPtr = sceneModel.get();
             modelController->addSceneModel(std::move(sceneModel));
             modelController->createDefaultBody(*sceneModelPtr);
 
@@ -552,7 +552,7 @@ namespace urchin {
 
         if (cloneSceneModelDialog.result() == QDialog::Accepted) {
             std::unique_ptr<SceneModel> newSceneModel = cloneSceneModelDialog.moveSceneModel();
-            SceneModel* newSceneModelPtr = newSceneModel.get();
+            const SceneModel* newSceneModelPtr = newSceneModel.get();
             const SceneModel& toCloneSceneModel = *modelTableView->getSelectedSceneModel();
             modelController->cloneSceneModel(std::move(newSceneModel), toCloneSceneModel);
 

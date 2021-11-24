@@ -55,7 +55,7 @@ namespace urchin {
             auto water = std::make_shared<Water>();
 
             sceneWater->setWater(water);
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
         }

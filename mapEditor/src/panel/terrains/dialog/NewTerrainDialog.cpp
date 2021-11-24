@@ -86,7 +86,7 @@ namespace urchin {
             auto terrain = std::make_shared<Terrain>(std::move(terrainMesh), std::move(terrainMaterials), Point3<float>(0.0f, 0.0f, 0.0f));
 
             sceneTerrain->setTerrain(terrain);
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
         }

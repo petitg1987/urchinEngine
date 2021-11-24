@@ -61,7 +61,7 @@ namespace urchin {
     }
 
     bool ModelMoveController::isCameraMoved() const {
-        Camera* camera = scene.getActiveRenderer3d()->getCamera();
+        const Camera* camera = scene.getActiveRenderer3d()->getCamera();
         for (unsigned int i = 0; i < 16; ++i) {
             if (this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i)) {
                 return true;
@@ -87,8 +87,8 @@ namespace urchin {
         }
 
         if (mousePosition != newMousePosition) {
-            oldMouseX = (int)newMousePosition.X;
-            oldMouseY = (int)newMousePosition.Y;
+            oldMouseX = newMousePosition.X;
+            oldMouseY = newMousePosition.Y;
 
             mouseController.moveMouse(newMousePosition.X, newMousePosition.Y);
             return true;
