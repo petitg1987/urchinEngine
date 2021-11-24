@@ -14,7 +14,7 @@ namespace urchin {
 
     class CollisionTriangleShape : public CollisionShape3D {
         public:
-            explicit CollisionTriangleShape(const Point3<float>*);
+            explicit CollisionTriangleShape(const std::array<Point3<float>, 3>&);
             CollisionTriangleShape(TriangleShape3D<float>*, FixedSizePool<TriangleShape3D<float>>&);
             CollisionTriangleShape(CollisionTriangleShape&&) noexcept;
             CollisionTriangleShape(const CollisionTriangleShape&) = delete;

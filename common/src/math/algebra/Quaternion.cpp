@@ -234,8 +234,8 @@ namespace urchin {
             assert(normValue <= (T)1.001);
         #endif
 
-        Quaternion<T> final = (*this) * point * this->conjugate();
-        return Point3<T>(final.X, final.Y, final.Z);
+        Quaternion<T> finalResult = (*this) * point * this->conjugate();
+        return Point3<T>(finalResult.X, finalResult.Y, finalResult.Z);
     }
 
     template<class T> Vector3<T> Quaternion<T>::rotateVector(const Vector3<T>& vector) const {
@@ -246,8 +246,8 @@ namespace urchin {
             assert(normValue <= (T)1.001);
         #endif
 
-        Quaternion<T> final = (*this) * vector * this->conjugate();
-        return Vector3<T>(final.X, final.Y, final.Z);
+        Quaternion<T> finalResult = (*this) * vector * this->conjugate();
+        return Vector3<T>(finalResult.X, finalResult.Y, finalResult.Z);
     }
 
     template<class T> Quaternion<T> Quaternion<T>::slerp(const Quaternion& q, T t) const {

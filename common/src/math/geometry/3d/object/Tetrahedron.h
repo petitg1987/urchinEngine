@@ -16,7 +16,7 @@ namespace urchin {
             Tetrahedron(const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&);
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
-            Point3<T> closestPoint(const Point3<T>&, T [4], unsigned short voronoiRegionMask = 15u) const;
+            Point3<T> closestPoint(const Point3<T>&, std::array<T, 4>&, unsigned short voronoiRegionMask = 15u) const;
 
             bool collideWithPoint(const Point3<T>&) const;
 

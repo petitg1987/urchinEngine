@@ -15,7 +15,7 @@ namespace urchin {
 
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const AIObject& aiObject, const NavMeshAgent& navMeshAgent) {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const AIObject& aiObject, const NavMeshAgent& navMeshAgent) const {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         unsigned int aiShapeIndex = 0;
@@ -48,7 +48,7 @@ namespace urchin {
         return expandedPolytopes;
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const AITerrain& aiTerrain, const NavMeshAgent& navMeshAgent) {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const AITerrain& aiTerrain, const NavMeshAgent& navMeshAgent) const {
         #ifdef URCHIN_DEBUG
             assert(MathFunction::isOne(aiTerrain.getTransform().getScale()));
             assert(MathFunction::isOne(aiTerrain.getTransform().getOrientationMatrix().determinant()));
@@ -90,14 +90,14 @@ namespace urchin {
         return expandedPolytopes;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, OBBox<float>* box, const NavMeshAgent& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const OBBox<float>* box, const NavMeshAgent& navMeshAgent) const {
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
         std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
         return std::make_unique<Polytope>(name, expandedPolytopeSurfaces);
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Capsule<float>* capsule, const NavMeshAgent& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const Capsule<float>* capsule, const NavMeshAgent& navMeshAgent) const {
         Vector3<float> boxHalfSizes(capsule->getRadius(), capsule->getRadius(), capsule->getRadius());
         boxHalfSizes[capsule->getCapsuleOrientation()] += capsule->getCylinderHeight() / 2.0f;
 
@@ -108,7 +108,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cone<float>* cone, const NavMeshAgent& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const Cone<float>* cone, const NavMeshAgent& navMeshAgent) const {
         Vector3<float> boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
         boxHalfSizes[cone->getConeOrientation() / 2] = cone->getHeight() / 2.0f;
 
@@ -119,7 +119,7 @@ namespace urchin {
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, ConvexHull3D<float>* convexHull, const NavMeshAgent& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const ConvexHull3D<float>* convexHull, const NavMeshAgent& navMeshAgent) const {
         std::map<std::size_t, Plane<float>> expandedPlanes;
         for (const auto& itTriangles : convexHull->getIndexedTriangles()) {
             const Point3<float>& point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
@@ -133,7 +133,7 @@ namespace urchin {
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
         for (const auto& indexedTriangle : expandedConvexHull->getIndexedTriangles()) {
-            const std::size_t* indices = indexedTriangle.second.getIndices();
+            const std::array<std::size_t, 3>& indices = indexedTriangle.second.getIndices();
 
             std::vector<Point3<float>> surfacePoints = {
                     expandedConvexHull->getConvexHullPoints().find(indices[0])->second.point,
@@ -143,13 +143,13 @@ namespace urchin {
             expandedSurfaces.emplace_back(std::make_shared<PolytopePlaneSurface>(std::move(surfacePoints), true));
         }
 
-        std::unique_ptr<Polytope> polytope = std::make_unique<Polytope>(name, expandedSurfaces);
+        auto polytope = std::make_unique<Polytope>(name, expandedSurfaces);
         polytope->setWalkableCandidate(false);
 
         return polytope;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Cylinder<float>* cylinder, const NavMeshAgent& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const Cylinder<float>* cylinder, const NavMeshAgent& navMeshAgent) const {
         Vector3<float> boxHalfSizes(cylinder->getRadius(), cylinder->getRadius(), cylinder->getRadius());
         boxHalfSizes[cylinder->getCylinderOrientation()] = cylinder->getHeight() / 2.0f;
 
@@ -166,7 +166,7 @@ namespace urchin {
         return std::make_unique<Polytope>(name, expandedSurfaces);
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, Sphere<float>* sphere, const NavMeshAgent& navMeshAgent) const {
+    std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const Sphere<float>* sphere, const NavMeshAgent& navMeshAgent) const {
         OBBox<float> sphereBox(*sphere);
         std::unique_ptr<Polytope> polytope = createExpandedPolytopeFor(name, &sphereBox, navMeshAgent);
         polytope->setWalkableCandidate(false);

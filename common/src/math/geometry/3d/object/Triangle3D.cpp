@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    template<class T> Triangle3D<T>::Triangle3D(const Point3<T>* points):
+    template<class T> Triangle3D<T>::Triangle3D(const std::array<Point3<T>, 3>& points):
             triangleShape(TriangleShape3D<T>(points)) {
 
     }
@@ -12,7 +12,7 @@ namespace urchin {
 
     }
 
-    template<class T> const Point3<T> *Triangle3D<T>::getPoints() const {
+    template<class T> const std::array<Point3<T>, 3>& Triangle3D<T>::getPoints() const {
         return triangleShape.getPoints();
     }
 
@@ -42,7 +42,7 @@ namespace urchin {
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on triangle closest to point p
      */
-    template<class T> Point3<T> Triangle3D<T>::closestPoint(const Point3<T>& p, T barycentrics[3]) const {
+    template<class T> Point3<T> Triangle3D<T>::closestPoint(const Point3<T>& p, std::array<T, 3>& barycentrics) const {
         const Point3<T>& a = this->getPoints()[0];
         const Point3<T>& b = this->getPoints()[1];
         const Point3<T>& c = this->getPoints()[2];

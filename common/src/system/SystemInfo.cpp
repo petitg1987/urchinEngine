@@ -239,7 +239,7 @@ namespace urchin {
                 return "";
             }
             return userLocale.substr(0, pos);
-        } catch (std::runtime_error& e) {
+        } catch (const std::runtime_error&) {
             return "";
         }
     }

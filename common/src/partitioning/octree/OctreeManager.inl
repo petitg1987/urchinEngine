@@ -25,7 +25,7 @@ template<class T> OctreeManager<T>::~OctreeManager() {
 template<class T> void OctreeManager<T>::notify(Observable* observable, int notificationType) {
     if (dynamic_cast<T*>(observable)) {
         if (notificationType == T::MOVE) {
-            T* octreeable = dynamic_cast<T*>(observable);
+            auto octreeable = dynamic_cast<T*>(observable);
             movingOctreeables.emplace_back(octreeable);
         }
     }
@@ -113,7 +113,7 @@ template<class T> void OctreeManager<T>::addOctreeable(std::shared_ptr<T> octree
 
 template<class T> std::shared_ptr<T> OctreeManager<T>::removeOctreeable(T* octreeable) {
     //keep size in variable because we remove references during looping
-    int refOctreeSize = (int)octreeable->getRefOctree().size();
+    auto refOctreeSize = (int)octreeable->getRefOctree().size();
 
     //remove from end to start: more faster for a vector
     std::shared_ptr<T> removedOctreeable(nullptr);

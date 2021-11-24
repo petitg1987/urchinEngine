@@ -28,7 +28,6 @@ namespace urchin {
         }
 
         if (pointDDotDirection > maxPointDotDirection) {
-            //maxPointDotDirection = pointDDotDirection;
             supportPoint = d;
         }
 
@@ -41,9 +40,9 @@ namespace urchin {
      * respectively the following voronoi regions: ABC, ACD, ADB, BDC.
      * @return Point on tetrahedron closest to point p
      */
-    template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T>& p, T barycentrics[4], unsigned short voronoiRegionMask) const {
+    template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T>& p, std::array<T, 4>& barycentrics, unsigned short voronoiRegionMask) const {
         Point3<T> closestPoint;
-        T triangleBarycentrics[3];
+        std::array<T, 3> triangleBarycentrics{};
         T bestSquareDist = std::numeric_limits<T>::max();
 
         bool pointOutsideOrInPlaneABC = pointOutsidePlane(p, a, b, c, d, true);
@@ -105,8 +104,6 @@ namespace urchin {
             Vector3<T> pq = p.vector(q);
             T squareDist = pq.dotProduct(pq);
             if (squareDist < bestSquareDist) {
-                //bestSquareDist = squareDist;
-
                 closestPoint = q;
                 barycentrics[0] = 0.0;
                 barycentrics[1] = triangleBarycentrics[0];

@@ -4,10 +4,8 @@
 
 namespace urchin {
 
-    template<class T> TriangleShape3D<T>::TriangleShape3D(const Point3<T>* points) {
-        this->points[0] = points[0];
-        this->points[1] = points[1];
-        this->points[2] = points[2];
+    template<class T> TriangleShape3D<T>::TriangleShape3D(const std::array<Point3<T>, 3>& points) :
+            points(points) {
     }
 
     template<class T> TriangleShape3D<T>::TriangleShape3D(const Point3<T>& point1, const Point3<T>& point2, const Point3<T>& point3) {
@@ -16,7 +14,7 @@ namespace urchin {
         this->points[2] = point3;
     }
 
-    template<class T> const Point3<T> *TriangleShape3D<T>::getPoints() const {
+    template<class T> const std::array<Point3<T>, 3>& TriangleShape3D<T>::getPoints() const {
         return points;
     }
 

@@ -150,7 +150,7 @@ namespace urchin {
 
         Triangle3D<float> triangle = triangleObject->retrieveTriangle();
         Point3<float> contactPointOther = otherObject->getSupportPoint(-triangle.computeNormal(), true);
-        float triangleBarycentrics[3];
+        std::array<float, 3> triangleBarycentrics{};
         Point3<float> contactPointTriangle = triangle.closestPoint(contactPointOther, triangleBarycentrics);
         if (triangle.projectedPointInsideTriangle(contactPointOther)) {
             float distanceToOrigin = contactPointTriangle.distance(contactPointOther);
@@ -372,7 +372,7 @@ namespace urchin {
         const Triangle3D<T> triangle(point1, point2, point3);
 
         //compute point on the triangle nearest to origin
-        T barycentrics[3];
+        std::array<T, 3> barycentrics;
         Point3<T> closestPointToOrigin = triangle.closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics);
 
         //compute minimum distance between triangle and the origin

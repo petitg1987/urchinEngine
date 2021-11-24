@@ -6,7 +6,7 @@ namespace urchin {
         taggable->setupTagHolder(this);
     }
 
-    void TagHolder::removeTaggableResource(TaggableResource* taggable) {
+    void TagHolder::removeTaggableResource(TaggableResource* taggable) const {
         taggable->setupTagHolder(nullptr);
     }
 

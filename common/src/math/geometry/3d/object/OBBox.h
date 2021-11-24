@@ -46,8 +46,8 @@ namespace urchin {
             Point3<T> centerOfMass;
             Quaternion<T> orientation;
 
-            Vector3<T> axis[3];
-            Vector3<T> normalizedAxis[3];
+            std::array<Vector3<T>, 3> axis;
+            std::array<Vector3<T>, 3> normalizedAxis;
     };
 
     template<class T> OBBox<T> operator *(const Matrix4<T>&, const OBBox<T>&);

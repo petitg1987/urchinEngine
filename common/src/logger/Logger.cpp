@@ -65,7 +65,7 @@ namespace urchin {
         return result;
     }
 
-    std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel) {
+    std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel) const {
         if (criticalityLevel == INFO_LVL) {
             return "II";
         } else if (criticalityLevel == WARNING_LVL) {

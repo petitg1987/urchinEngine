@@ -21,7 +21,7 @@ namespace urchin {
             void startTimer();
             bool stopTimer();
 
-            void log(unsigned int, std::stringstream&, double);
+            void log(unsigned int, std::stringstream&, double) const;
 
         private:
             std::string name;

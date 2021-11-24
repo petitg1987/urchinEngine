@@ -9,7 +9,7 @@ template<class T> ThreadSafeSingleton<T>::~ThreadSafeSingleton() {
 template<class T> T& ThreadSafeSingleton<T>::instance() {
     T* singletonInstance = objectT.load(std::memory_order_acquire);
     if (!singletonInstance) {
-        std::lock_guard<std::mutex> lock(mutexInstanceCreation);
+        std::scoped_lock<std::mutex> lock(mutexInstanceCreation);
         singletonInstance = objectT.load(std::memory_order_relaxed);
         if (!singletonInstance) {
             auto newObjectT = std::unique_ptr<T>(new T);

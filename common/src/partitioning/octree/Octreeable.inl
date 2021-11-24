@@ -15,7 +15,7 @@ template<class T> Octreeable<T>::Octreeable(const Octreeable<T>& octreeable) :
 template<class T> Octreeable<T>::~Octreeable() {
     //remove references to this octreeable
     for (auto it = refOctree.begin(); it != refOctree.end(); ++it) {
-        T* toctreeable = static_cast<T*>(this);
+        auto toctreeable = static_cast<T*>(this);
         (*it)->removeOctreeable(toctreeable, false);
     }
 }

@@ -26,10 +26,10 @@ namespace urchin {
     }
 
     void StringUtil::split(const std::string& str, const char& delimiter, std::vector<std::string>& tokens) {
-        std::string::const_iterator start = str.begin();
+        auto start = str.begin();
 
         while (start != str.end()) {
-            std::string::const_iterator temp = std::find(start, str.end(), delimiter);
+            auto temp = std::find(start, str.end(), delimiter);
             tokens.emplace_back(std::string(start, temp));
 
             start = temp;

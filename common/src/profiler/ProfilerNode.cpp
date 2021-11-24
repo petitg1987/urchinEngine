@@ -71,7 +71,7 @@ namespace urchin {
         return isStopped;
     }
 
-    void ProfilerNode::log(unsigned int level, std::stringstream& logStream, double levelOneTotalTime) {
+    void ProfilerNode::log(unsigned int level, std::stringstream& logStream, double levelOneTotalTime) const {
         if (startCount != 0) {
             throw std::runtime_error("Impossible to print node " + getName() + " because there is " + std::to_string(startCount) + " missing stop call");
         }

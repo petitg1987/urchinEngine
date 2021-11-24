@@ -103,13 +103,6 @@ namespace urchin {
      * Update the simplex: remove useless point, find closest point to origin and barycentrics.
      */
     template<class T> void Simplex<T>::updateSimplex() {
-        T barycentrics[4];
-        barycentrics[0] = 0.0;
-        barycentrics[1] = 0.0;
-        barycentrics[2] = 0.0;
-        barycentrics[3] = 0.0;
-
-
         if (getSize() == 1) { //simplex is a point
             closestPointToOrigin = getPoint(0);
 
@@ -119,6 +112,7 @@ namespace urchin {
             const Point3<T>& pointA = getPoint(0);
             const Point3<T>& pointB = getPoint(1); //pointB is the last point added to the simplex
 
+            std::array<T, 2> barycentrics = {0.0, 0.0};
             closestPointToOrigin = LineSegment3D<T>(pointA, pointB).closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics);
             setBarycentric(0, barycentrics[0]);
             setBarycentric(1, barycentrics[1]);
@@ -133,6 +127,7 @@ namespace urchin {
             const Vector3<T> ca = pointC.vector(pointA);
             const Vector3<T> normalAbc = cb.crossProduct(ca);
 
+            std::array<T, 3> barycentrics = {0.0, 0.0, 0.0};
             closestPointToOrigin = Triangle3D<T>(pointA, pointB, pointC).closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics);
             setBarycentric(0, barycentrics[0]);
             setBarycentric(1, barycentrics[1]);
@@ -155,6 +150,7 @@ namespace urchin {
             const Point3<T>& pointC = getPoint(2);
             const Point3<T>& pointD = getPoint(3); //pointD is the last point added to the simplex
 
+            std::array<T, 4> barycentrics = {0.0, 0.0, 0.0, 0.0};
             const unsigned short voronoiRegionMask = 14u; //test all voronoi regions except the one which doesn't include the new point added (pointD)
             closestPointToOrigin = Tetrahedron<T>(pointA, pointB, pointC, pointD).closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics, voronoiRegionMask);
             setBarycentric(0, barycentrics[0]);

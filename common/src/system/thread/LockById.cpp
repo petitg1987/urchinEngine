@@ -19,7 +19,7 @@ namespace urchin {
         }
 
         auto lockById = std::make_shared<LockById>(instanceName);
-        instances.emplace(instanceName, lockById);
+        instances.try_emplace(instanceName, lockById);
         return lockById;
     }
 
@@ -32,7 +32,7 @@ namespace urchin {
     }
 
     void LockById::unlock(uint_fast32_t id) {
-        std::lock_guard<std::mutex> lock(accessMutex);
+        std::scoped_lock<std::mutex> lock(accessMutex);
 
         mutexById.find(id)->second.unlock();
     }

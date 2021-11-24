@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T>& a,  const Point3<T>& b) :
+    template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T>& a, const Point3<T>& b) :
             a(a),
             b(b) {
 
@@ -55,7 +55,7 @@ namespace urchin {
      * @param barycentrics [out] Returns barycentric coordinates for closest point
      * @return Point on segment AB closest to point p
      */
-    template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T>& p, T barycentrics[2]) const {
+    template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T>& p, std::array<T, 2>& barycentrics) const {
         Vector3<T> ab = a.vector(b);
 
         T abSquareLength = ab.squareLength();

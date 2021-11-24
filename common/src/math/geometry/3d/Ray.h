@@ -28,7 +28,7 @@ namespace urchin {
 
             //additional data for performance (ray tracing, collision...)
             Vector3<T> inverseDirection;
-            unsigned int directionSigns[3];
+            std::array<unsigned int, 3> directionSigns;
     };
 
 }

@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    CollisionTriangleShape::CollisionTriangleShape(const Point3<float>* points) :
+    CollisionTriangleShape::CollisionTriangleShape(const std::array<Point3<float>, 3>& points) :
             CollisionShape3D(),
             triangleShape(std::make_unique<TriangleShape3D<float>>(points)),
             triangleShapesPool(nullptr) {

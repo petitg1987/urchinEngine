@@ -19,11 +19,11 @@ namespace urchin {
 
     void TaggableResource::setupTagHolder(TagHolder* tagHolder) {
         if (tagHolder) {
-            for (std::string& tag: tags) {
+            for (const std::string& tag: tags) {
                 tagHolder->addTag(this, tag);
             }
         } else {
-            for (std::string& tag: tags) {
+            for (const std::string& tag: tags) {
                 this->tagHolder->removeTag(this, tag);
             }
         }

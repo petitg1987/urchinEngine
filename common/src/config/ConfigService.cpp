@@ -23,12 +23,12 @@ namespace urchin {
         properties.insert(loadedProperties.begin(), loadedProperties.end());
 
         //build specific maps for performance reason (numeric conversion is slow)
-        for (const auto& property : properties) {
-            if (TypeConverter::isUnsignedInt(property.second)) {
-                unsignedIntProperties[property.first] = TypeConverter::toUnsignedInt(property.second);
+        for (const auto& [propertyName, propertyValue] : properties) {
+            if (TypeConverter::isUnsignedInt(propertyValue)) {
+                unsignedIntProperties[propertyName] = TypeConverter::toUnsignedInt(propertyValue);
             }
-            if (TypeConverter::isFloat(property.second)) {
-                floatProperties[property.first] = TypeConverter::toFloat(property.second);
+            if (TypeConverter::isFloat(propertyValue)) {
+                floatProperties[propertyName] = TypeConverter::toFloat(propertyValue);
             }
         }
     }

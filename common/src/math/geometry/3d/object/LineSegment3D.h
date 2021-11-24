@@ -20,7 +20,7 @@ namespace urchin {
 
             Point3<T> getSupportPoint(const Vector3<T>&) const;
             Point3<T> closestPoint(const Point3<T>&) const;
-            Point3<T> closestPoint(const Point3<T>&, T [2]) const;
+            Point3<T> closestPoint(const Point3<T>&, std::array<T, 2>&) const;
             T squareDistance(const Point3<T>&) const;
 
             Vector3<T> toVector() const;

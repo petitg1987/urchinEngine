@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     template<class T> Vector2<T> Vector2<T>::normalize() const {
-        const T norm = (T)std::sqrt(X * X + Y * Y);
+        const auto norm = (T)std::sqrt(X * X + Y * Y);
 
         if (norm > (T)0.0) {
             return Vector2<T>(X / norm, Y / norm);

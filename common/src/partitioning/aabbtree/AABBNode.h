@@ -46,7 +46,7 @@ namespace urchin {
             AABBox<float> aabbox;
 
             AABBNode<OBJ>* parentNode;
-            std::shared_ptr<AABBNode<OBJ>> children[2];
+            std::array<std::shared_ptr<AABBNode<OBJ>>, 2> children;
     };
 
     #include "AABBNode.inl"

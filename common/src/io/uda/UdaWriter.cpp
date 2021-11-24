@@ -16,7 +16,7 @@ namespace urchin {
     UdaChunk& UdaWriter::createChunk(const std::string& chunkName, const UdaAttribute& attribute, UdaChunk* parent) {
         std::map<std::string, std::string> attributes;
         if (!attribute.getAttributeName().empty()) {
-            attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
+            attributes.try_emplace(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
         auto newNode = std::make_unique<UdaChunk>(chunkName, "", attributes, parent);
@@ -42,7 +42,7 @@ namespace urchin {
             stack.push((*it).get());
         }
         while (!stack.empty()) {
-            UdaChunk* node = stack.top();
+            const UdaChunk* node = stack.top();
             stack.pop();
 
             unsigned int indentLevel = computeIndentLevel(*node);
@@ -61,7 +61,7 @@ namespace urchin {
 
     unsigned int UdaWriter::computeIndentLevel(const UdaChunk& udaChunk) const {
         unsigned int indentLevel = 0;
-        auto* parentNode = udaChunk.getParent();
+        const auto* parentNode = udaChunk.getParent();
         while (parentNode != nullptr) {
             parentNode = parentNode->getParent();
             indentLevel++;

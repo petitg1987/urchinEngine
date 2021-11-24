@@ -11,7 +11,7 @@ namespace urchin {
         #ifdef URCHIN_DEBUG
             assert(singletons.find(name) == singletons.end());
         #endif
-        singletons.emplace(name, std::move(ptr));
+        singletons.try_emplace(name, std::move(ptr));
     }
 
     void SingletonContainer::destroyAllSingletons() {

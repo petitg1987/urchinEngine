@@ -22,7 +22,7 @@ namespace urchin {
         this->indices[2] = index3;
     }
 
-    template<class T> const std::size_t *IndexedTriangle3D<T>::getIndices() const {
+    template<class T> const std::array<std::size_t, 3>& IndexedTriangle3D<T>::getIndices() const {
         return indices;
     }
 

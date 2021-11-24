@@ -103,7 +103,7 @@ template<class T> void GridContainer<T>::getItems(std::vector<T*>& items) const 
 }
 
 template<class T> std::shared_ptr<T> GridContainer<T>::findNeighbor(const Point3<int>& gridPosition, Axis axis, Direction direction) const {
-    std::size_t axisIndex = (std::size_t)axis;
+    auto axisIndex = (std::size_t)axis;
     const auto& sortedItems = axisSortedItems[axisIndex];
 
     std::int64_t key = buildKey(gridPosition, axisIndex);

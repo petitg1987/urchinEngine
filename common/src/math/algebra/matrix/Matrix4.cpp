@@ -128,8 +128,8 @@ namespace urchin {
     }
 
     template<class T> void Matrix4<T>::buildRotationX(T angle) {
-        const T cos = (T)std::cos(angle);
-        const T sin = (T)std::sin(angle);
+        const auto cos = (T)std::cos(angle);
+        const auto sin = (T)std::sin(angle);
 
         a11 = 1.0; a12 = 0.0; a13 = 0.0; a14 = 0.0;
         a21 = 0.0; a22 = cos;  a23 = -sin; a24 = 0.0;
@@ -138,8 +138,8 @@ namespace urchin {
     }
 
     template<class T> void Matrix4<T>::buildRotationY(T angle) {
-        const T cos = (T)std::cos(angle);
-        const T sin = (T)std::sin(angle);
+        const auto cos = (T)std::cos(angle);
+        const auto sin = (T)std::sin(angle);
 
         a11 = cos;  a12 = 0.0; a13 = sin; a14 = 0.0;
         a21 = 0.0; a22 = 1.0; a23 = 0.0; a24 = 0.0;
@@ -148,8 +148,8 @@ namespace urchin {
     }
 
     template<class T> void Matrix4<T>::buildRotationZ(T angle) {
-        const T cos = (T)std::cos(angle);
-        const T sin = (T)std::sin(angle);
+        const auto cos = (T)std::cos(angle);
+        const auto sin = (T)std::sin(angle);
 
         a11 = cos;  a12 = -sin;  a13 = 0.0; a14 = 0.0;
         a21 = sin;  a22 = cos;  a23 = 0.0; a24 = 0.0;

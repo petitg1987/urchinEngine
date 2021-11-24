@@ -123,7 +123,7 @@ namespace urchin {
             std::size_t newPointIndex = nextPointIndex++;
             points[newPointIndex].point = newPoint;
 
-            for (auto& edge : edges) {
+            for (const auto& edge : edges) {
                 addTriangle(IndexedTriangle3D<T>(edge.second.first, edge.second.second, newPointIndex));
             }
 
@@ -194,12 +194,12 @@ namespace urchin {
 
     template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator& itTriangle) {
         //remove reference of triangles on points
-        const std::size_t* indices = itTriangle->second.getIndices();
-        for (std::size_t i = 0; i < 3; i++) {
-            std::vector<std::size_t>& pointTriangles = points.at(indices[i]).triangleIndices;
+        const std::array<std::size_t, 3>& indices = itTriangle->second.getIndices();
+        for (unsigned long index : indices) {
+            std::vector<std::size_t>& pointTriangles = points.at(index).triangleIndices;
             pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
             if (pointTriangles.empty()) { //orphan point: remove it
-                points.erase(indices[i]);
+                points.erase(index);
             }
 
         }

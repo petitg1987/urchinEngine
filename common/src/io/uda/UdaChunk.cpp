@@ -30,7 +30,7 @@ namespace urchin {
     }
 
     void UdaChunk::addAttribute(const UdaAttribute& attribute) {
-        attributes.emplace(attribute.getAttributeName(), attribute.getAttributeValue());
+        attributes.try_emplace(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 
     UdaChunk* UdaChunk::getParent() const {
