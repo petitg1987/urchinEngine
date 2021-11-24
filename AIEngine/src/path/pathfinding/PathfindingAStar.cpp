@@ -133,7 +133,7 @@ namespace urchin {
      * Compute score from 'startPoint to 'link'
      */
     float PathfindingAStar::computeGScore(const std::shared_ptr<PathNode>& currentNode, const std::shared_ptr<NavLink>& link, const Point3<float>& startPoint) const {
-        std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(link->getTargetTriangle(), 0.0f, 0.0f);
+        auto neighborNodePath = std::make_shared<PathNode>(link->getTargetTriangle(), 0.0f, 0.0f);
         neighborNodePath->setPreviousNode(currentNode, link);
         std::vector<std::unique_ptr<PathPortal>> pathPortals = determinePath(neighborNodePath, startPoint, link->getTargetTriangle()->getCenterPoint());
         std::vector<PathPoint> path = pathPortalsToPathPoints(pathPortals, false);

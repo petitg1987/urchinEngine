@@ -26,7 +26,7 @@ namespace urchin {
             for (unsigned int xSample = 0; xSample < xSamples; ++xSample) {
                 unsigned int xSize = MathFunction::roundToUInt((float)((xSample + 1) * xLength) / (float)xSamples) - xShit;
 
-                TerrainSplit terrainSplit = TerrainSplit();
+                auto terrainSplit = TerrainSplit();
                 terrainSplit.name = name + "-" + std::to_string((zSample * xSamples) + xSample);
                 terrainSplit.position = position;
                 terrainSplit.localVertices.reserve(xSize * zSize);

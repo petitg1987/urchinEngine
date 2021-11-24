@@ -13,7 +13,7 @@ namespace urchin {
 
         allPolygonPaths.clear();
         for (const auto& polygon : polygons) {
-            allPolygonPaths.emplace_back(CSGPolygonPath(polygon));
+            allPolygonPaths.emplace_back(polygon);
         }
 
         while (!allPolygonPaths.empty()) {
@@ -61,10 +61,10 @@ namespace urchin {
             assert(!solution.Childs[0]->IsHole());
 
             std::string unionName = "{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}";
-            twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, unionName));
+            twoPolygonUnions.emplace_back(solution.Childs[0]->Contour, unionName);
         } else if (solution.Childs.size() == 2) {
-            twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, polygon1.getName()));
-            twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[1]->Contour, polygon2.getName()));
+            twoPolygonUnions.emplace_back(solution.Childs[0]->Contour, polygon1.getName());
+            twoPolygonUnions.emplace_back(solution.Childs[1]->Contour, polygon2.getName());
         }
 
         return twoPolygonUnions;

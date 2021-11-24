@@ -141,7 +141,7 @@ namespace urchin {
             for (int j = i + 3; j < (int)cwPoints.size() && keepGoing; j++) {
                 if (cwPoints[(std::size_t)i].squareDistance(cwPoints[(std::size_t)j]) <= mergePointsSquareDistance) {
                     std::size_t previousI = (i == 0) ? cwPoints.size() - 1 : (std::size_t)i - 1;
-                    Vector2<T> moveVector = cwPoints[(std::size_t)i].vector(cwPoints[(std::size_t)previousI]);
+                    Vector2<T> moveVector = cwPoints[(std::size_t)i].vector(cwPoints[previousI]);
                     T moveVectorLength = moveVector.length();
                     if (moveVectorLength > 2 * polygonMergePointsDistanceThreshold) {
                         cwPoints[(std::size_t)i] = cwPoints[(std::size_t)i].translate((moveVector / moveVectorLength) * polygonMergePointsDistanceThreshold);

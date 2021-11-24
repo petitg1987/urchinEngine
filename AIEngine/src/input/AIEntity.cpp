@@ -14,7 +14,7 @@ namespace urchin {
 
     void AIEntity::updateTransform(const Point3<float>& position, const Quaternion<float>& orientation) {
         {
-            std::lock_guard<std::mutex> lock(mutex);
+            std::scoped_lock<std::mutex> lock(mutex);
             this->transform = Transform<float>(position, orientation, 1.0);
         }
 
@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     Transform<float> AIEntity::getTransform() const {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         return transform;
     }
 

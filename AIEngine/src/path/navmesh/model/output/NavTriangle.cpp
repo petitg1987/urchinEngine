@@ -49,7 +49,7 @@ namespace urchin {
     /**
      * @return Indices of points in CCW order when looked from top
      */
-    const std::size_t* NavTriangle::getIndices() const {
+    const std::array<std::size_t, 3>& NavTriangle::getIndices() const {
         return indices;
     }
 
@@ -121,6 +121,7 @@ namespace urchin {
                             case NavLinkType::STANDARD: countStandardLink++; break;
                             case NavLinkType::JOIN_POLYGONS: countJoinPolygonsLink++; break;
                             case NavLinkType::JUMP: countJumpLink++; break;
+                            default: break;
                         }
                     }
                 }

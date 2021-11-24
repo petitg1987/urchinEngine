@@ -20,7 +20,7 @@ namespace urchin {
             std::shared_ptr<NavPolygon> getNavPolygon() const;
             const Point3<float>& getCenterPoint() const;
 
-            const std::size_t* getIndices() const;
+            const std::array<std::size_t, 3>& getIndices() const;
             std::size_t getIndex(std::size_t) const;
 
             void addStandardLink(std::size_t, const std::shared_ptr<NavTriangle>&);
@@ -39,7 +39,7 @@ namespace urchin {
 
             std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references (=memory leak) between triangle and polygon
 
-            std::size_t indices[3];
+            std::array<std::size_t, 3> indices;
             std::vector<std::shared_ptr<NavLink>> links;
 
             Point3<float> centerPoint;

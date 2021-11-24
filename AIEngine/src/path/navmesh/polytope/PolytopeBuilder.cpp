@@ -121,19 +121,19 @@ namespace urchin {
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string& name, const ConvexHull3D<float>* convexHull, const NavMeshAgent& navMeshAgent) const {
         std::map<std::size_t, Plane<float>> expandedPlanes;
-        for (const auto& itTriangles : convexHull->getIndexedTriangles()) {
-            const Point3<float>& point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
-            const Point3<float>& point2 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(1)).point;
-            const Point3<float>& point3 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(2)).point;
-            expandedPlanes.emplace(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent));
+        for (const auto& [triangleId, triangle] : convexHull->getIndexedTriangles()) {
+            const Point3<float>& point1 = convexHull->getConvexHullPoints().at(triangle.getIndex(0)).point;
+            const Point3<float>& point2 = convexHull->getConvexHullPoints().at(triangle.getIndex(1)).point;
+            const Point3<float>& point3 = convexHull->getConvexHullPoints().at(triangle.getIndex(2)).point;
+            expandedPlanes.try_emplace(triangleId, createExpandedPlane(point1, point2, point3, navMeshAgent));
         }
 
         std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::resizeConvexHull(*convexHull, expandedPlanes);
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
-        for (const auto& indexedTriangle : expandedConvexHull->getIndexedTriangles()) {
-            const std::array<std::size_t, 3>& indices = indexedTriangle.second.getIndices();
+        for (const auto& [triangleId, triangle] : expandedConvexHull->getIndexedTriangles()) {
+            const std::array<std::size_t, 3>& indices = triangle.getIndices();
 
             std::vector<Point3<float>> surfacePoints = {
                     expandedConvexHull->getConvexHullPoints().find(indices[0])->second.point,
@@ -191,7 +191,7 @@ namespace urchin {
         std::vector<Plane<float>> expandedPlanes;
         expandedPlanes.reserve(6);
 
-        for (auto pointIndex : POINT_INDEX_TO_PLANES) {
+        for (const auto& pointIndex : POINT_INDEX_TO_PLANES) {
             expandedPlanes.emplace_back(createExpandedPlane(sortedPoints[pointIndex[0]], sortedPoints[pointIndex[1]], sortedPoints[pointIndex[2]], navMeshAgent));
         }
 
@@ -220,7 +220,7 @@ namespace urchin {
             Vector3<float> n2CrossN3 = plane1.getNormal().crossProduct(plane2.getNormal());
             Vector3<float> n3CrossN1 = plane2.getNormal().crossProduct(plane0.getNormal());
 
-            Point3<float> newPoint = Point3<float>(n2CrossN3 * plane0.getDistanceToOrigin());
+            Point3<float> newPoint(n2CrossN3 * plane0.getDistanceToOrigin());
             newPoint += Point3<float>(n3CrossN1 * plane1.getDistanceToOrigin());
             newPoint += Point3<float>(n1CrossN2 * plane2.getDistanceToOrigin());
             newPoint *= -1.0f / plane0.getNormal().dotProduct(n2CrossN3);

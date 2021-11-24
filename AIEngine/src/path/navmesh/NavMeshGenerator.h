@@ -42,7 +42,7 @@ namespace urchin {
             std::vector<CSGPolygon<float>>& determineObstacles(NavObject&, const PolytopeSurface&) const;
             CSGPolygon<float> computePolytopeFootprint(const Polytope&, const PolytopeSurface&) const;
             void applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>>&);
-            std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float>&, const PolytopeSurface&, bool) const;
+            std::shared_ptr<NavPolygon> createNavigationPolygon(const CSGPolygon<float>&, const PolytopeSurface&, bool) const;
             std::vector<Point3<float>> elevateTriangulatedPoints(const std::vector<std::vector<Point2<float>>>&, const PolytopeSurface&) const;
 
             void deleteNavLinks();

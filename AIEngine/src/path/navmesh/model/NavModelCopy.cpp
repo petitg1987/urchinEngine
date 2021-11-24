@@ -21,10 +21,9 @@ namespace urchin {
             //build map of original positions for polygons and triangles
             std::map<const NavTriangle*, std::pair<std::size_t, std::size_t>> originalTrianglesPositionsMap;
             for (std::size_t originalTriangleIndex = 0; originalTriangleIndex < originalPolygon->getTriangles().size(); ++originalTriangleIndex) {
-                originalTrianglesPositionsMap.insert(std::make_pair(originalPolygon->getTriangles()[originalTriangleIndex].get(),
-                                                                    std::make_pair(originalPolygonIndex, originalTriangleIndex)));
+                originalTrianglesPositionsMap.try_emplace(originalPolygon->getTriangles()[originalTriangleIndex].get(), std::make_pair(originalPolygonIndex, originalTriangleIndex));
             }
-            originalPositionsMap.insert(std::make_pair(originalPolygon.get(), originalTrianglesPositionsMap));
+            originalPositionsMap.try_emplace(originalPolygon.get(), originalTrianglesPositionsMap);
 
             copiedNavPolygons.push_back(copiedNavPolygon);
         }

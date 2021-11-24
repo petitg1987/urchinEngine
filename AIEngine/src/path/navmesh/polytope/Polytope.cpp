@@ -14,7 +14,7 @@ namespace urchin {
             surfaces(std::move(surfaces)),
             walkableCandidate(true),
             obstacleCandidate(true) {
-        for (auto& surface : this->surfaces) {
+        for (const auto& surface : this->surfaces) {
             surface->setPolytope(this);
         }
 

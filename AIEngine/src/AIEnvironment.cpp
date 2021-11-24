@@ -42,12 +42,12 @@ namespace urchin {
     }
 
     void AIEnvironment::addPathRequest(const std::shared_ptr<PathRequest>& pathRequest) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         pathRequests.push_back(pathRequest);
     }
 
     void AIEnvironment::removePathRequest(const PathRequest& pathRequest) {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
 
         auto itFind = std::find_if(pathRequests.begin(), pathRequests.end(), [&pathRequest](const auto& o){return o.get() == &pathRequest;});
         if (itFind != pathRequests.end()) {
@@ -69,17 +69,17 @@ namespace urchin {
     }
 
     void AIEnvironment::pause() {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         paused = true;
     }
 
     void AIEnvironment::unpause() {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         paused = false;
     }
 
     bool AIEnvironment::isPaused() const {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::scoped_lock<std::mutex> lock(mutex);
         return paused;
     }
 
@@ -124,7 +124,7 @@ namespace urchin {
             }
 
             Profiler::ai().log(); //log for AI thread
-        } catch (std::exception& e) {
+        } catch (const std::exception&) {
             Logger::instance().logError("Error cause AI thread crash: exception reported to main thread");
             aiThreadExceptionPtr = std::current_exception();
         }
@@ -144,7 +144,7 @@ namespace urchin {
         bool paused;
         copiedPathRequests.clear();
         {
-            std::lock_guard<std::mutex> lock(mutex);
+            std::scoped_lock<std::mutex> lock(mutex);
 
             paused = this->paused;
             copiedPathRequests = this->pathRequests;
@@ -155,7 +155,7 @@ namespace urchin {
             std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
             PathfindingAStar pathfindingAStar(navMesh);
-            for (auto& pathRequest : copiedPathRequests) {
+            for (const auto& pathRequest : copiedPathRequests) {
                 pathRequest->setPath(pathfindingAStar.findPath(pathRequest->getStartPoint(), pathRequest->getEndPoint()));
             }
         }

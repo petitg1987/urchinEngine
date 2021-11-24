@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     void NavMeshGenerator::setNavMeshAgent(std::unique_ptr<NavMeshAgent> navMeshAgent) {
-        std::lock_guard<std::mutex> lock(navMeshMutex);
+        std::scoped_lock<std::mutex> lock(navMeshMutex);
 
         this->navMeshAgent = std::move(navMeshAgent);
         this->needFullRefresh.store(true, std::memory_order_release);
@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const {
-        std::lock_guard<std::mutex> lock(navMeshMutex);
+        std::scoped_lock<std::mutex> lock(navMeshMutex);
 
         return NavMesh(*navMesh);
     }
@@ -76,12 +76,12 @@ namespace urchin {
         newOrMovingNavObjectsToRefresh.clear();
         affectedNavObjectsToRefresh.clear();
 
-        for (auto& aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset()) {
+        for (const auto& aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset()) {
             removeNavObject(*aiObjectToRemove);
         }
 
         bool refreshAllEntities = needFullRefresh.exchange(false, std::memory_order_release);
-        for (auto& aiEntity : aiWorld.getEntities()) {
+        for (const auto& aiEntity : aiWorld.getEntities()) {
             if (aiEntity->isToRebuild() || refreshAllEntities) {
                 removeNavObject(*aiEntity);
                 aiEntity->removeAllNavObjects();
@@ -160,7 +160,7 @@ namespace urchin {
             for (const auto& relinkNavObject : navObject->retrieveNearObjects()) {
                 std::shared_ptr<NavObject> sharedPtrRelinkNavObject = relinkNavObject.lock();
                 if (affectedNavObjectsToRefresh.count(sharedPtrRelinkNavObject) == 0 && newOrMovingNavObjectsToRefresh.count(sharedPtrRelinkNavObject) == 0) {
-                    navObjectsLinksToRefresh.insert(std::make_pair(sharedPtrRelinkNavObject, navObject));
+                    navObjectsLinksToRefresh.emplace(sharedPtrRelinkNavObject, navObject);
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace urchin {
 
         std::string walkableName = walkableSurface.getPolytope()->getName() + "[" + std::to_string(walkableSurface.getSurfacePosition()) + "]";
         walkablePolygons.clear();
-        walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableSurface.getOutlineCwPoints()));
+        walkablePolygons.emplace_back(walkableName, walkableSurface.getOutlineCwPoints());
         std::vector<CSGPolygon<float>>& obstaclePolygons = determineObstacles(navObject, walkableSurface);
 
         applyObstaclesOnWalkablePolygon(obstaclePolygons);
@@ -248,7 +248,7 @@ namespace urchin {
         Plane<float> walkablePlane = walkableSurface.getPlane(polytopeObstacle.getXZRectangle());
 
         for (const auto& polytopeSurface : polytopeObstacle.getSurfaces()) {
-            if (auto* polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface*>(polytopeSurface.get())) {
+            if (const auto* polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface*>(polytopeSurface.get())) {
                 for (std::size_t i = 0, previousI = polytopePlaneSurface->getCcwPoints().size() - 1; i < polytopePlaneSurface->getCcwPoints().size(); previousI = i++) {
                     float distance1 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[previousI]);
                     float distance2 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[i]);
@@ -306,7 +306,7 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float>& walkablePolygon, const PolytopeSurface& walkableSurface, bool uniqueWalkableSurface) const {
+    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(const CSGPolygon<float>& walkablePolygon, const PolytopeSurface& walkableSurface, bool uniqueWalkableSurface) const {
         ScopeProfiler sp(Profiler::ai(), "createNavPoly");
 
         navPolygonName = "<" + walkablePolygon.getName() + ">";
@@ -348,9 +348,9 @@ namespace urchin {
     void NavMeshGenerator::deleteNavLinks() {
         ScopeProfiler sp(Profiler::ai(), "delNavLinks");
 
-        for (const auto& navObjectLinksToRefresh : navObjectsLinksToRefresh) {
-            for (const auto& sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) {
-                for (const auto& targetNavPolygon : navObjectLinksToRefresh.second->getNavPolygons()) {
+        for (const auto& [srcNavObject, targetNavObject] : navObjectsLinksToRefresh) {
+            for (const auto& sourceNavPolygon : srcNavObject->getNavPolygons()) {
+                for (const auto& targetNavPolygon : targetNavObject->getNavPolygons()) {
                     sourceNavPolygon->removeLinksTo(*targetNavPolygon);
                 }
             }
@@ -370,10 +370,10 @@ namespace urchin {
             }
         }
 
-        for (const auto& navObjectLinksToRefresh : navObjectsLinksToRefresh) {
-            for (const auto& sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) {
+        for (const auto& [srcNavObject, targetNavObject] : navObjectsLinksToRefresh) {
+            for (const auto& sourceNavPolygon : srcNavObject->getNavPolygons()) {
                 for (const auto& sourceExternalEdge : sourceNavPolygon->retrieveExternalEdges()) {
-                    createNavLinks(sourceExternalEdge, *navObjectLinksToRefresh.second);
+                    createNavLinks(sourceExternalEdge, *targetNavObject);
                 }
             }
         }
@@ -411,7 +411,7 @@ namespace urchin {
             allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
         }
 
-        std::lock_guard<std::mutex> lock(navMeshMutex);
+        std::scoped_lock<std::mutex> lock(navMeshMutex);
         navMesh->copyAllPolygons(allNavPolygons);
     }
 
