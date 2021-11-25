@@ -148,7 +148,7 @@ namespace urchin {
 
         unsigned int deepestIndex = getDeepestPointIndex();
         std::array<float, MAX_PERSISTENT_POINTS> areas = {};
-        std::fill(areas.begin(), areas.end(), 0.0f);
+        std::ranges::fill(areas, 0.0f);
 
         //compute areas
         if (deepestIndex != 0) {

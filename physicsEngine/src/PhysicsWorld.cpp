@@ -10,7 +10,7 @@ namespace urchin {
     std::exception_ptr PhysicsWorld::physicsThreadExceptionPtr = nullptr;
 
     PhysicsWorld::PhysicsWorld() :
-            physicsSimulationThread(std::unique_ptr<std::thread>(nullptr)),
+            physicsSimulationThread(std::unique_ptr<std::jthread>(nullptr)),
             physicsSimulationStopper(false),
             gravity(Vector3<float>(0.0f, -9.81f, 0.0f)),
             timeStep(0.0f),
@@ -60,7 +60,7 @@ namespace urchin {
     void PhysicsWorld::removeProcessable(const Processable& processable) {
         std::scoped_lock<std::mutex> lock(mutex);
 
-        auto itFind = std::find_if(processables.begin(), processables.end(), [&processable](const auto& o){return o.get() == &processable;});
+        auto itFind = std::ranges::find_if(processables, [&processable](const auto& o){return o.get() == &processable;});
         if (itFind != processables.end()) {
             processables.erase(itFind);
         }
@@ -102,7 +102,7 @@ namespace urchin {
         }
 
         this->timeStep = timeStep;
-        physicsSimulationThread = std::make_unique<std::thread>(&PhysicsWorld::startPhysicsUpdate, this);
+        physicsSimulationThread = std::make_unique<std::jthread>(&PhysicsWorld::startPhysicsUpdate, this);
     }
 
     void PhysicsWorld::pause() {

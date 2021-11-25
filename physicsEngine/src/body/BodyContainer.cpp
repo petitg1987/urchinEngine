@@ -13,15 +13,13 @@ namespace urchin {
     void BodyContainer::addBody(std::shared_ptr<AbstractBody> body) {
         std::scoped_lock<std::mutex> lock(bodiesMutex);
 
-        BodyRefresh bodyUpdate{nullptr, std::move(body)};
-        bodiesToRefresh.emplace_back(bodyUpdate);
+        bodiesToRefresh.push_back({nullptr, std::move(body)});
     }
 
     void BodyContainer::removeBody(const AbstractBody& body) {
         std::scoped_lock<std::mutex> lock(bodiesMutex);
 
-        BodyRefresh bodyUpdate{&body, std::shared_ptr<AbstractBody>(nullptr)};
-        bodiesToRefresh.emplace_back(bodyUpdate);
+        bodiesToRefresh.push_back({&body, std::shared_ptr<AbstractBody>(nullptr)});
     }
 
     const std::shared_ptr<AbstractBody>& BodyContainer::getLastUpdatedBody() const {
@@ -49,7 +47,7 @@ namespace urchin {
             }
 
             if (bodyToRefresh.bodyToRemove) {
-                auto itFind = std::find_if(bodies.begin(), bodies.end(), [&bodyToRefresh](const auto& o){return o.get() == bodyToRefresh.bodyToRemove;});
+                auto itFind = std::ranges::find_if(bodies, [&bodyToRefresh](const auto& o){return o.get() == bodyToRefresh.bodyToRemove;});
                 if (itFind != bodies.end()) {
                     std::shared_ptr<AbstractBody> bodyToRemovePtr = *itFind; //keep a smart pointer on body for notify event
                     bodies.erase(itFind);

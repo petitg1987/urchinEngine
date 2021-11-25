@@ -53,7 +53,7 @@ namespace urchin {
             void setupProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&) const;
             void executeProcessables(const std::vector<std::shared_ptr<Processable>>&, float, const Vector3<float>&) const;
 
-            std::unique_ptr<std::thread> physicsSimulationThread;
+            std::unique_ptr<std::jthread> physicsSimulationThread;
             std::atomic_bool physicsSimulationStopper;
             static std::exception_ptr physicsThreadExceptionPtr;
 

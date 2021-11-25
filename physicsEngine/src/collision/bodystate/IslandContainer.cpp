@@ -56,7 +56,7 @@ namespace urchin {
             islandElementsLink[i].islandIdRef = findIslandId((unsigned int)i);
         }
 
-        std::sort(islandElementsLink.begin(), islandElementsLink.end(), [](const auto& lhs, const auto& rhs){return lhs.islandIdRef < rhs.islandIdRef;});
+        std::ranges::sort(islandElementsLink, [](const auto& lhs, const auto& rhs){return lhs.islandIdRef < rhs.islandIdRef;});
         containerSorted = true;
 
         return islandElementsLink;

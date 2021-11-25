@@ -13,7 +13,7 @@ namespace urchin {
                 sizeof(GJKResultCollide<double>),
                 sizeof(GJKResultInvalid<double>),
                 sizeof(GJKResultNoCollide<double>)};
-        unsigned int maxElementSize = *std::max_element(resultSizes.begin(), resultSizes.end());
+        unsigned int maxElementSize = *std::ranges::max_element(resultSizes);
         unsigned int algorithmPoolSize = ConfigService::instance().getUnsignedIntValue("narrowPhase.algorithmPoolSize");
 
         //pool is synchronized because elements could be created/deleted by different threads as narrow phase can be called by different threads

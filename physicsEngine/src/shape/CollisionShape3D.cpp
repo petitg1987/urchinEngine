@@ -74,14 +74,14 @@ namespace urchin {
     }
 
     bool CollisionShape3D::isConvex() const {
-        return std::find(convexShapes().begin(), convexShapes().end(), getShapeType()) != convexShapes().end();
+        return std::ranges::find(convexShapes(), getShapeType()) != convexShapes().end();
     }
 
     bool CollisionShape3D::isConcave() const {
-        return std::find(concaveShapes().begin(), concaveShapes().end(), getShapeType()) != concaveShapes().end();
+        return std::ranges::find(concaveShapes(), getShapeType()) != concaveShapes().end();
     }
 
     bool CollisionShape3D::isCompound() const {
-        return std::find(compoundShapes().begin(), compoundShapes().end(), getShapeType()) != compoundShapes().end();
+        return std::ranges::find(compoundShapes(), getShapeType()) != compoundShapes().end();
     }
 }

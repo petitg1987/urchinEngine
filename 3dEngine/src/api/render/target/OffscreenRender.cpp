@@ -39,7 +39,7 @@ namespace urchin {
             texture->initialize();
         }
 
-        outputTextures.emplace_back(OutputTexture{texture, loadType, clearColor});
+        outputTextures.push_back({texture, loadType, clearColor});
     }
 
     void OffscreenRender::resetOutputTextures() {
