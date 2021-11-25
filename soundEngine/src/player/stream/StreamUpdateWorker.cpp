@@ -60,7 +60,7 @@ namespace urchin {
     bool StreamUpdateWorker::isTaskExist(const AudioStreamPlayer& audioStreamPlayer) const {
         std::scoped_lock<std::mutex> lock(tasksMutex);
 
-        return std::any_of(tasks.begin(), tasks.end(), [&audioStreamPlayer](const auto& task) {
+        return std::ranges::any_of(tasks, [&audioStreamPlayer](const auto& task) {
             return task->getSourceId() == audioStreamPlayer.getSourceId();
         });
     }

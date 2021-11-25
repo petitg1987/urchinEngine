@@ -39,7 +39,7 @@ namespace urchin {
 
             //stream chunk updater thread
             StreamUpdateWorker streamUpdateWorker;
-            std::thread streamUpdateWorkerThread;
+            std::jthread streamUpdateWorkerThread;
     };
 
 }

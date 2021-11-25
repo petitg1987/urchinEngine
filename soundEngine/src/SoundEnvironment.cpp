@@ -8,7 +8,7 @@ namespace urchin {
 
     SoundEnvironment::SoundEnvironment() :
             streamUpdateWorker(StreamUpdateWorker()),
-            streamUpdateWorkerThread(std::thread(&StreamUpdateWorker::start, &streamUpdateWorker)) {
+            streamUpdateWorkerThread(std::jthread(&StreamUpdateWorker::start, &streamUpdateWorker)) {
         SignalHandler::instance().initialize();
 
         AudioDevice::instance().enable(true);
