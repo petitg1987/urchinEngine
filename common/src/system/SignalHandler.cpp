@@ -152,7 +152,7 @@ namespace urchin {
             }
         }
         std::string stacktrace = ss.str();
-        if (StringUtil::endWith(stacktrace, "\n")) {
+        if (stacktrace.ends_with("\n")) {
             stacktrace = stacktrace.substr(0, stacktrace.size() - 1);
         }
 

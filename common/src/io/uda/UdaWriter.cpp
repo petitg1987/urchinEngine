@@ -1,4 +1,5 @@
 #include <memory>
+#include <ranges>
 #include <stdexcept>
 #include <stack>
 #include <utility>
@@ -38,8 +39,8 @@ namespace urchin {
         }
 
         std::stack<UdaChunk*> stack;
-        for (auto it = rootNodes.rbegin(); it != rootNodes.rend(); ++it) {
-            stack.push((*it).get());
+        for (auto& rootNode : std::ranges::reverse_view(rootNodes)) {
+            stack.push(rootNode.get());
         }
         while (!stack.empty()) {
             const UdaChunk* node = stack.top();
@@ -51,8 +52,8 @@ namespace urchin {
             file << indent << buildRawContentLine(*node) << std::endl;
 
             const auto& children = node->getChildren();
-            for (auto it = children.rbegin(); it != children.rend(); ++it) {
-                stack.push((*it).get());
+            for (const auto& it : std::ranges::reverse_view(children)) {
+                stack.push(it.get());
             }
         }
 
