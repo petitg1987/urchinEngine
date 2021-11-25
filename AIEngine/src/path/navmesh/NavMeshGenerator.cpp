@@ -147,7 +147,7 @@ namespace urchin {
 
             for (const auto& nearObject : navObject->retrieveNearObjects()) {
                 std::shared_ptr<NavObject> sharedPtrNearObject = nearObject.lock();
-                if (newOrMovingNavObjectsToRefresh.count(sharedPtrNearObject) == 0) {
+                if (!newOrMovingNavObjectsToRefresh.contains(sharedPtrNearObject)) {
                     affectedNavObjectsToRefresh.insert(sharedPtrNearObject);
                 }
             }
@@ -159,7 +159,7 @@ namespace urchin {
             //when an affected NavObject is refreshed (deleted & created): we recreate existing links toward this NavObject:
             for (const auto& relinkNavObject : navObject->retrieveNearObjects()) {
                 std::shared_ptr<NavObject> sharedPtrRelinkNavObject = relinkNavObject.lock();
-                if (affectedNavObjectsToRefresh.count(sharedPtrRelinkNavObject) == 0 && newOrMovingNavObjectsToRefresh.count(sharedPtrRelinkNavObject) == 0) {
+                if (!affectedNavObjectsToRefresh.contains(sharedPtrRelinkNavObject) && !newOrMovingNavObjectsToRefresh.contains(sharedPtrRelinkNavObject)) {
                     navObjectsLinksToRefresh.emplace(sharedPtrRelinkNavObject, navObject);
                 }
             }
@@ -270,7 +270,7 @@ namespace urchin {
 
         ConvexHull2D<float> footprintConvexHull(footprintPoints);
         std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
-        std::reverse(cwPoints.begin(), cwPoints.end());
+        std::ranges::reverse(cwPoints);
         return CSGPolygon<float>(polytopeObstacle.getName(), std::move(cwPoints));
     }
 
@@ -333,7 +333,7 @@ namespace urchin {
 
         std::vector<Point3<float>> elevatedPoints;
         std::size_t polygonPointsCount = 0;
-        std::for_each(polygonPoints.begin(), polygonPoints.end(),[&polygonPointsCount](const std::vector<Point2<float>>& vec) {polygonPointsCount += vec.size();});
+        std::ranges::for_each(polygonPoints, [&polygonPointsCount](const std::vector<Point2<float>>& vec) {polygonPointsCount += vec.size();});
         elevatedPoints.reserve(polygonPointsCount);
 
         for (const auto& polygonComponent : polygonPoints) {

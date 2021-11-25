@@ -49,7 +49,7 @@ namespace urchin {
     void AIEnvironment::removePathRequest(const PathRequest& pathRequest) {
         std::scoped_lock<std::mutex> lock(mutex);
 
-        auto itFind = std::find_if(pathRequests.begin(), pathRequests.end(), [&pathRequest](const auto& o){return o.get() == &pathRequest;});
+        auto itFind = std::ranges::find_if(pathRequests, [&pathRequest](const auto& o){return o.get() == &pathRequest;});
         if (itFind != pathRequests.end()) {
             VectorUtil::erase(pathRequests, itFind);
         }
@@ -65,7 +65,7 @@ namespace urchin {
         }
 
         this->timeStep = timeStep;
-        aiSimulationThread = std::make_unique<std::thread>(&AIEnvironment::startAIUpdate, this);
+        aiSimulationThread = std::make_unique<std::jthread>(&AIEnvironment::startAIUpdate, this);
     }
 
     void AIEnvironment::pause() {

@@ -43,7 +43,7 @@ namespace urchin {
             for (const auto& link : currTriangle.getLinks()) {
                 auto neighborTriangle = link->getTargetTriangle();
 
-                if (closedList.find(neighborTriangle.get()) != closedList.end()) { //already processed
+                if (closedList.contains(neighborTriangle.get())) { //already processed
                     continue;
                 }
 
@@ -178,7 +178,7 @@ namespace urchin {
             pathNode = pathNode->getPreviousNode();
         }
         portals.emplace_back(std::make_unique<PathPortal>(LineSegment3D<float>(startPoint, startPoint), nullptr, pathNode, false));
-        std::reverse(portals.begin(), portals.end());
+        std::ranges::reverse(portals);
 
         FunnelAlgorithm().computePivotPoints(portals);
         return portals;

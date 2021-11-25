@@ -82,7 +82,7 @@ namespace urchin {
 
             std::vector<unsigned int> neighborSquares = retrieveNeighbors(currSquareIndex);
             for (unsigned int neighborSquare : neighborSquares) {
-                bool notProcessed = std::find(inaccessibleNeighbors.begin(), inaccessibleNeighbors.end(), neighborSquare) == inaccessibleNeighbors.end();
+                bool notProcessed = std::ranges::find(inaccessibleNeighbors, neighborSquare) == inaccessibleNeighbors.end();
                 if (notProcessed && !isWalkableSquare(neighborSquare, maxSlopeDotProduct)) { //inaccessible square
                     squaresToProcess.push(neighborSquare);
                 }
@@ -194,7 +194,7 @@ namespace urchin {
     }
 
     bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int>& squares) const {
-        return std::any_of(squares.begin(), squares.end(), [&](const auto& squareIndex) {
+        return std::ranges::any_of(squares, [&](const auto& squareIndex) {
             return ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
                    ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2));
         });

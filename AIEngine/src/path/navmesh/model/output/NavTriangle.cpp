@@ -80,9 +80,9 @@ namespace urchin {
     }
 
     void NavTriangle::removeLinksTo(const NavPolygon& navPolygon) {
-        links.erase(std::remove_if (links.begin(), links.end(), [&navPolygon](const auto& link){
+        std::erase_if(links, [&navPolygon](const auto& link){
             return link->getTargetTriangle()->getNavPolygon().get() == &navPolygon;
-        }), links.end());
+        });
     }
 
     std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const {
@@ -90,13 +90,13 @@ namespace urchin {
     }
 
     bool NavTriangle::hasEdgeLinks(std::size_t edgeIndex) const {
-        return std::any_of(links.begin(), links.end(), [&edgeIndex](const auto& link) {
+        return std::ranges::any_of(links, [&edgeIndex](const auto& link) {
             return link->getSourceEdgeIndex() == edgeIndex;
         });
     }
 
     bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const {
-        return std::all_of(links.begin(), links.end(), [&edgeIndex](const auto& link) {
+        return std::ranges::all_of(links, [&edgeIndex](const auto& link) {
             return link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::STANDARD;
         });
     }

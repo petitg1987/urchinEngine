@@ -35,7 +35,7 @@ namespace urchin {
         std::scoped_lock<std::mutex> lock(mutex);
         std::vector<std::shared_ptr<AIEntity>> result = entitiesToRemove;
         for (const auto& objectToRemove : entitiesToRemove) {
-            entities.erase(std::remove(entities.begin(), entities.end(), objectToRemove), entities.end());
+            std::erase(entities, objectToRemove);
         }
         entitiesToRemove.clear();
         return result;
