@@ -56,7 +56,7 @@ namespace urchin {
             return true;
         }
 
-        return std::any_of(subControllers.begin(), subControllers.end(), [](const auto& subController) {
+        return std::ranges::any_of(subControllers, [](const auto& subController) {
             return subController->isModified();
         });
     }

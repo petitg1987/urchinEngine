@@ -73,7 +73,7 @@ namespace urchin {
 
     SceneWater& WaterController::findSceneWater(const SceneWater& constSceneWater) {
         const auto& sceneWaters = getMapHandler()->getMap().getSceneWaters();
-        auto it = std::find_if(sceneWaters.begin(), sceneWaters.end(), [&constSceneWater](const auto& o){return o.get() == &constSceneWater;});
+        auto it = std::ranges::find_if(sceneWaters, [&constSceneWater](const auto& o){return o.get() == &constSceneWater;});
 
         if (it != sceneWaters.end()) {
             return *(*it);

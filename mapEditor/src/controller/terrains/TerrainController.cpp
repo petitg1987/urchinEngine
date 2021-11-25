@@ -94,7 +94,7 @@ namespace urchin {
 
     SceneTerrain& TerrainController::findSceneTerrain(const SceneTerrain& constSceneTerrain) {
         const auto& sceneTerrains = getMapHandler()->getMap().getSceneTerrains();
-        auto it = std::find_if(sceneTerrains.begin(), sceneTerrains.end(), [&constSceneTerrain](const auto& o){return o.get() == &constSceneTerrain;});
+        auto it = std::ranges::find_if(sceneTerrains, [&constSceneTerrain](const auto& o){return o.get() == &constSceneTerrain;});
 
         if (it != sceneTerrains.end()) {
             return *(*it);

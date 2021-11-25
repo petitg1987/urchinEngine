@@ -110,7 +110,7 @@ namespace urchin {
 
     SceneSound& SoundController::findSceneSound(const SceneSound& constSceneSound) {
         const auto& sceneSounds = getMapHandler()->getMap().getSceneSounds();
-        auto it = std::find_if(sceneSounds.begin(), sceneSounds.end(), [&constSceneSound](const auto& o){return o.get() == &constSceneSound;});
+        auto it = std::ranges::find_if(sceneSounds, [&constSceneSound](const auto& o){return o.get() == &constSceneSound;});
 
         if (it != sceneSounds.end()) {
             return *(*it);

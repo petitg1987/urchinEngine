@@ -79,8 +79,8 @@ namespace urchin {
     }
 
     /**
-      * Interrupt the thread
-      */
+     * Interrupt the thread
+     */
     void StreamUpdateWorker::interrupt() {
         streamUpdateWorkerStopper.store(true, std::memory_order_release);
     }

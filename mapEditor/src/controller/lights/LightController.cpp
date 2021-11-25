@@ -70,7 +70,7 @@ namespace urchin {
 
     SceneLight& LightController::findSceneLight(const SceneLight& constSceneLight) {
         const auto& sceneLights = getMapHandler()->getMap().getSceneLights();
-        auto it = std::find_if(sceneLights.begin(), sceneLights.end(), [&constSceneLight](const auto& o){return o.get() == &constSceneLight;});
+        auto it = std::ranges::find_if(sceneLights, [&constSceneLight](const auto& o){return o.get() == &constSceneLight;});
 
         if (it != sceneLights.end()) {
             return *(*it);

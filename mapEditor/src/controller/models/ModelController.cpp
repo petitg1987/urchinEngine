@@ -178,7 +178,7 @@ namespace urchin {
 
     SceneModel& ModelController::findSceneModel(const SceneModel& constSceneModel) {
         const auto& sceneModels = getMapHandler()->getMap().getSceneModels();
-        auto it = std::find_if(sceneModels.begin(), sceneModels.end(), [&constSceneModel](const auto& o){return o.get() == &constSceneModel;});
+        auto it = std::ranges::find_if(sceneModels, [&constSceneModel](const auto& o){return o.get() == &constSceneModel;});
 
         if (it != sceneModels.end()) {
             return *(*it);

@@ -137,7 +137,7 @@ namespace urchin {
 
     bool NewModelDialog::isSceneModelExist(const std::string& name) {
         std::list<const SceneModel*> sceneModels = modelController->getSceneModels();
-        return std::any_of(sceneModels.begin(), sceneModels.end(), [&name](const auto& so){return so->getName() == name;});
+        return std::ranges::any_of(sceneModels, [&name](const auto& so){return so->getName() == name;});
     }
 
 }
