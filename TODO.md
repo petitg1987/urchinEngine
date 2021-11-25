@@ -19,6 +19,8 @@
   * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
   * **OPTIMIZATION** (`minor`): Software occlusion culling
+* Resources
+  * **NEW FEATURE** (`medium`): Support QOI image format (https://github.com/phoboslab/qoi) 
 * Model
   * **OPTIMIZATION** (`medium`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Draw calls batching
