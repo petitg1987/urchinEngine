@@ -168,7 +168,7 @@ namespace urchin {
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
-    void Terrain::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
+    void Terrain::prepareRendering(unsigned int renderingOrder, const Camera& camera, float dt) {
         assert(isInitialized);
 
         terrainRenderer->updateUniformData(0, &camera.getProjectionViewMatrix());

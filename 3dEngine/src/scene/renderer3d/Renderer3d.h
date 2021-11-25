@@ -103,7 +103,7 @@ namespace urchin {
             void deferredRendering(float);
             void renderDebugSceneData(GeometryContainer&);
             void lightingPassRendering();
-            void renderDebugFramebuffers(unsigned int&);
+            void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();
 
             static constexpr float MODELS_OCTREE_MIN_SIZE = 20.0f;

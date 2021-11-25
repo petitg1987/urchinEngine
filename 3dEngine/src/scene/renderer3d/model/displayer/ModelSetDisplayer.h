@@ -38,7 +38,7 @@ namespace urchin {
             const std::vector<Model*>& getModels() const;
             bool isModelDisplayerExist(const Model&) const;
 
-            void prepareRendering(unsigned int&, const Matrix4<float>&);
+            void prepareRendering(unsigned int, const Matrix4<float>&);
 
             void drawBBox(GeometryContainer&) const;
             void drawBaseBones(GeometryContainer&) const;

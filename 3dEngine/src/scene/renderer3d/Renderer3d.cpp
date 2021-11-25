@@ -553,7 +553,7 @@ namespace urchin {
         lightingRenderTarget->render();
     }
 
-    void Renderer3d::renderDebugFramebuffers(unsigned int& renderingOrder) {
+    void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {
         if (refreshDebugFramebuffers) {
             debugFramebuffers.clear();
             refreshDebugFramebuffers = false;

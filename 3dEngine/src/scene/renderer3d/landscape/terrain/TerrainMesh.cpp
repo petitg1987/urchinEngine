@@ -301,9 +301,9 @@ namespace urchin {
     }
 
     std::string TerrainMesh::readHash(std::ifstream& file) const {
-        char hash[TERRAIN_HASH_SIZE];
-        file.read(&hash[0], sizeof(hash));
-        return std::string(hash, TERRAIN_HASH_SIZE);
+        std::string hash(TERRAIN_HASH_SIZE, '\0');
+        file.read(&hash[0], TERRAIN_HASH_SIZE);
+        return hash;
     }
 
 }

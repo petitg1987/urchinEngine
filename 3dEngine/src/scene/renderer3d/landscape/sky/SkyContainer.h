@@ -13,7 +13,7 @@ namespace urchin {
             void setSkybox(std::unique_ptr<Skybox>);
             const Skybox* getSkybox() const;
 
-            void prepareRendering(unsigned int&, const Matrix4<float>&, const Point3<float>&);
+            void prepareRendering(unsigned int, const Matrix4<float>&, const Point3<float>&);
 
         private:
             RenderTarget& renderTarget;
