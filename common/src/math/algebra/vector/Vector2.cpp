@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <math/algebra/vector/Vector2.h>
 
 namespace urchin {
@@ -51,7 +53,11 @@ namespace urchin {
      * @return Perpendicular vector. There are two possibilities and this method return one of them.
      */
     template<class T> Vector2<T> Vector2<T>::perpendicularVector() const {
-        return Vector2<T>((T)-Y, X); //second possibility: Vector2<T>(Y, -X)
+        #ifdef URCHIN_DEBUG
+            assert(std::is_signed_v<T>);
+        #endif
+
+        return Vector2<T>(-Y, X); //second possibility: Vector2<T>(Y, -X)
     }
 
     template<class T> Vector2<T> Vector2<T>::truncate(T maxLength) const {
@@ -67,7 +73,11 @@ namespace urchin {
     }
 
     template<class T> Vector2<T> Vector2<T>::operator -() const {
-        return Vector2<T>((T)-X, (T)-Y);
+        #ifdef URCHIN_DEBUG
+            assert(std::is_signed_v<T>);
+        #endif
+
+        return Vector2<T>(-X, -Y);
     }
 
     template<class T> Vector2<T> Vector2<T>::operator +(const Vector2<T>& v) const {

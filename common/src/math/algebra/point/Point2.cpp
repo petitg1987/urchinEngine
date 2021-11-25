@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <math/algebra/point/Point2.h>
 
 namespace urchin {
@@ -54,7 +56,11 @@ namespace urchin {
     }
 
     template<class T> Point2<T> Point2<T>::operator -() const {
-        return Point2<T>((T)-X, (T)-Y);
+        #ifdef URCHIN_DEBUG
+            assert(std::is_signed_v<T>);
+        #endif
+
+        return Point2<T>(-X, -Y);
     }
 
     template<class T> Point2<T> Point2<T>::operator +(const Point2<T>& p) const {

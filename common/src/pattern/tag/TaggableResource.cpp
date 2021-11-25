@@ -45,7 +45,7 @@ namespace urchin {
         if (tagHolder) {
             tagHolder->removeTag(this, tag);
         }
-        tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
+        std::erase(tags, tag);
     }
 
     void TaggableResource::removeAllTags() {

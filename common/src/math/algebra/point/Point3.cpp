@@ -89,15 +89,15 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Point3<T>::operator +(const Point3<T>& p) const {
-        return Point3<T>(    X + p.X,
-                    Y + p.Y,
-                    Z + p.Z);
+        return Point3<T>(X + p.X,
+                         Y + p.Y,
+                         Z + p.Z);
     }
 
     template<class T> Point3<T> Point3<T>::operator -(const Point3<T>& p) const {
-        return Point3<T>(    X - p.X,
-                    Y - p.Y,
-                    Z - p.Z);
+        return Point3<T>(X - p.X,
+                         Y - p.Y,
+                         Z - p.Z);
     }
 
     template<class T> const Point3<T>& Point3<T>::operator +=(const Point3<T>& p) {

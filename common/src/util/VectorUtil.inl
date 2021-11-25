@@ -21,8 +21,8 @@ template<class T> void VectorUtil::removeDuplicates(std::vector<T>& v) {
 
 template<class T, class... A> std::vector<T> VectorUtil::concatenate(const std::vector<T>& v1, A&&... vr) {
     std::vector<T> result = v1;
-    result.reserve(v1.size() + (vr.size() + ...));
+    result.reserve(v1.size() + (std::size(vr) + ...));
 
-    (result.insert(result.end(), vr.begin(), vr.end()), ...);
+    (result.insert(result.end(), std::begin(vr), std::end(vr)), ...);
     return result;
 }
