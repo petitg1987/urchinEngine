@@ -17,7 +17,7 @@ namespace urchin {
         size_t startPos;
         if ((startPos = str.find(startLineValue)) != std::string::npos) {
             size_t endOfLinePos = str.find('\n', startPos);
-            if (endOfLinePos == std::string::npos) {
+            if (endOfLinePos == std::string::npos) [[unlikely]] {
                 throw std::runtime_error("Impossible to replace '" + startLineValue + "' by '" + newLineValue + "' because EOL not found");
             }
 

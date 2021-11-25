@@ -96,7 +96,7 @@ namespace urchin {
         for (std::size_t i = 1; i < planeIndices.size(); ++i) {
             const Plane<T>& plane2 = allPlanes.at(planeIndices[i]);
 
-            if (plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE) { //planes are parallel: continue on next plane
+            if (plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE) [[unlikely]] { //planes are parallel: continue on next plane
                 continue;
             }
 

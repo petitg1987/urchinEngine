@@ -49,7 +49,7 @@ namespace urchin {
         Matrix2<T> ret;
         T det = determinant();
 
-        if (std::fabs(det) > 0.0) {
+        if (std::fabs(det) > 0.0) [[likely]] {
             ret.a11 =  a22 / det;
             ret.a12 = -a12 / det;
 

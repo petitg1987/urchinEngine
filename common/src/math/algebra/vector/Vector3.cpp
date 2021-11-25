@@ -29,7 +29,7 @@ namespace urchin {
 
     template<class T> Vector3<T> Vector3<T>::normalize() const {
         const auto norm = (T)std::sqrt(X * X + Y * Y + Z * Z);
-        if (norm > 0.0) {
+        if (norm > 0.0) [[likely]] {
             return Vector3<T>(X / norm, Y / norm, Z / norm);
         }
 

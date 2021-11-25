@@ -87,7 +87,7 @@ namespace urchin {
         float remainingDt = dt;
         do {
             float stepDt;
-            if (stepLoopCounter < MAX_UPDATE_LOOP_BY_FRAME) {
+            if (stepLoopCounter < MAX_UPDATE_LOOP_BY_FRAME) [[likely]] {
                 stepDt = std::min(remainingDt, 1.0f / minUpdateFrequency);
                 remainingDt -= stepDt;
             } else {
@@ -175,7 +175,7 @@ namespace urchin {
         }
 
         //jump
-        if (makeJump) {
+        if (makeJump) [[unlikely]] {
             makeJump = false;
             bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
             if (closeToTheGround && !jumping) {

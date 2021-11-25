@@ -203,7 +203,7 @@ namespace urchin {
                     > this->getHalfSize(i)
                     + std::abs(bbox.getHalfSize(0) * AdotB[i][0])
                     + std::abs(bbox.getHalfSize(1) * AdotB[i][1])
-                    + std::abs(bbox.getHalfSize(2) * AdotB[i][2])) {
+                    + std::abs(bbox.getHalfSize(2) * AdotB[i][2])) [[unlikely]] {
                 return false;
             }
         }
@@ -214,7 +214,7 @@ namespace urchin {
                     > std::abs(this->getHalfSize(0) * AdotB[0][i])
                     + std::abs(this->getHalfSize(1) * AdotB[1][i])
                     + std::abs(this->getHalfSize(2) * AdotB[2][i])
-                    + bbox.getHalfSize(i)) {
+                    + bbox.getHalfSize(i)) [[unlikely]] {
                 return false;
             }
         }
@@ -224,7 +224,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(1) * AdotB[2][0])
                 + std::abs(this->getHalfSize(2) * AdotB[1][0])
                 + std::abs(bbox.getHalfSize(1) * AdotB[0][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[0][1])) {
+                + std::abs(bbox.getHalfSize(2) * AdotB[0][1])) [[unlikely]] {
             return false;
         }
 
@@ -233,7 +233,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(1) * AdotB[2][1])
                 + std::abs(this->getHalfSize(2) * AdotB[1][1])
                 + std::abs(bbox.getHalfSize(0) * AdotB[0][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[0][0])) {
+                + std::abs(bbox.getHalfSize(2) * AdotB[0][0])) [[unlikely]] {
             return false;
         }
 
@@ -242,7 +242,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(1) * AdotB[2][2])
                 + std::abs(this->getHalfSize(2) * AdotB[1][2])
                 + std::abs(bbox.getHalfSize(0) * AdotB[0][1])
-                + std::abs(bbox.getHalfSize(1) * AdotB[0][0])) {
+                + std::abs(bbox.getHalfSize(1) * AdotB[0][0])) [[unlikely]] {
             return false;
         }
 
@@ -251,7 +251,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(0) * AdotB[2][0])
                 + std::abs(this->getHalfSize(2) * AdotB[0][0])
                 + std::abs(bbox.getHalfSize(1) * AdotB[1][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[1][1])) {
+                + std::abs(bbox.getHalfSize(2) * AdotB[1][1])) [[unlikely]] {
             return false;
         }
 
@@ -260,7 +260,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(0) * AdotB[2][1])
                 + std::abs(this->getHalfSize(2) * AdotB[0][1])
                 + std::abs(bbox.getHalfSize(0) * AdotB[1][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[1][0])) {
+                + std::abs(bbox.getHalfSize(2) * AdotB[1][0])) [[unlikely]] {
             return false;
         }
 
@@ -269,7 +269,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(0) * AdotB[2][2])
                 + std::abs(this->getHalfSize(2) * AdotB[0][2])
                 + std::abs(bbox.getHalfSize(0) * AdotB[1][1])
-                + std::abs(bbox.getHalfSize(1) * AdotB[1][0])) {
+                + std::abs(bbox.getHalfSize(1) * AdotB[1][0])) [[unlikely]] {
             return false;
         }
 
@@ -278,7 +278,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(0) * AdotB[1][0])
                 + std::abs(this->getHalfSize(1) * AdotB[0][0])
                 + std::abs(bbox.getHalfSize(1) * AdotB[2][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[2][1])) {
+                + std::abs(bbox.getHalfSize(2) * AdotB[2][1])) [[unlikely]] {
             return false;
         }
 
@@ -287,7 +287,7 @@ namespace urchin {
                 > std::abs(this->getHalfSize(0) * AdotB[1][1])
                 + std::abs(this->getHalfSize(1) * AdotB[0][1])
                 + std::abs(bbox.getHalfSize(0) * AdotB[2][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[2][0])) {
+                + std::abs(bbox.getHalfSize(2) * AdotB[2][0])) [[unlikely]] {
             return false;
         }
 

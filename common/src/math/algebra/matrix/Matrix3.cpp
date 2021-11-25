@@ -56,7 +56,7 @@ namespace urchin {
         Matrix3<T> ret;
         T det = determinant();
 
-        if (std::fabs(det) > 0.0) {
+        if (std::fabs(det) > 0.0) [[likely]] {
             ret.a11 =  (a22 * a33 - a32 * a23) / det;
             ret.a12 = -(a12 * a33 - a32 * a13) / det;
             ret.a13 =  (a12 * a23 - a13 * a22) / det;

@@ -192,7 +192,7 @@ namespace urchin {
         const T normValue = norm();
 
         //checks for bogus norm, to protect against divide by zero
-        if (normValue > 0.0) {
+        if (normValue > 0.0) [[likely]] {
             return Quaternion<T>(X / normValue, Y / normValue, Z / normValue, W / normValue);
         }
 
@@ -252,10 +252,10 @@ namespace urchin {
 
     template<class T> Quaternion<T> Quaternion<T>::slerp(const Quaternion& q, T t) const {
         //check for out-of range parameter and return edge points if so
-        if (t <= 0.0) {
+        if (t <= 0.0) [[unlikely]] {
             return *this;
         }
-        if (t >= 1.0) {
+        if (t >= 1.0) [[unlikely]] {
             return q;
         }
 
@@ -265,7 +265,7 @@ namespace urchin {
         T qZ = q.Z;
         T qW = q.W;
 
-        if (cosOmega < 0.0) { //ensure to take shortest path
+        if (cosOmega < 0.0) { //ensure to take the shortest path
             cosOmega = -cosOmega;
             qX = -qX;
             qY = -qY;
@@ -274,7 +274,9 @@ namespace urchin {
         }
 
         //we should have two unit quaternions, so dot should be <= 1.0
-        assert(cosOmega < 1.1);
+        #ifdef URCHIN_DEBUG
+            assert(cosOmega < 1.1);
+        #endif
 
         //computes interpolation fraction, checking for quaternions almost exactly the same
         T k0, k1;
@@ -307,10 +309,10 @@ namespace urchin {
 
     template<class T> Quaternion<T> Quaternion<T>::lerp(const Quaternion& q, T t) const {
         //check for out-of range parameter and return edge points if so
-        if (t <= 0.0) {
+        if (t <= 0.0) [[unlikely]] {
             return *this;
         }
-        if (t >= 1.0) {
+        if (t >= 1.0) [[unlikely]] {
             return q;
         }
 

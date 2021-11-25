@@ -15,7 +15,7 @@ template<class T> OctreeManager<T>::OctreeManager(float minSize) :
 }
 
 template<class T> OctreeManager<T>::~OctreeManager() {
-    if (mainOctree) {
+    if (mainOctree) [[likely]] {
         for (const auto& octreeable : getAllOctreeables()) {
             removeOctreeable(octreeable.get());
         }

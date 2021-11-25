@@ -26,7 +26,7 @@ namespace urchin {
     template<class T> Vector2<T> Vector2<T>::normalize() const {
         const auto norm = (T)std::sqrt(X * X + Y * Y);
 
-        if (norm > (T)0.0) {
+        if (norm > (T)0.0) [[likely]] {
             return Vector2<T>(X / norm, Y / norm);
         }
 

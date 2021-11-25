@@ -122,7 +122,7 @@ namespace urchin {
         Vector2<T> thisToOther = a.vector(other.getA());
         T startPointsCrossR = thisToOther.crossProduct(r);
 
-        if (rCrossS == 0) { //line segments are parallel
+        if (rCrossS == 0) [[unlikely]] { //line segments are parallel
             auto rDotR = (double)r.dotProduct(r);
             if (startPointsCrossR == 0 && rDotR != 0.0) { //line segments are collinear
                 double t0 = (double)thisToOther.dotProduct(r) / rDotR;

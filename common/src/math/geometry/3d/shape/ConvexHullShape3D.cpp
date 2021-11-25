@@ -18,7 +18,7 @@ namespace urchin {
 
         //add each point to the tetrahedron
         for (std::size_t i = 0; i < points.size(); i++) {
-            if (!pointsToExclude.contains(i)) {
+            if (!pointsToExclude.contains(i)) [[likely]] {
                 addNewPoint(points[i]);
             }
         }
@@ -127,14 +127,14 @@ namespace urchin {
                 addTriangle(IndexedTriangle3D<T>(edgeIndices.first, edgeIndices.second, newPointIndex));
             }
 
-            if (points[newPointIndex].triangleIndices.size() < 3) {
+            if (points[newPointIndex].triangleIndices.size() < 3) [[unlikely]] {
                 logConvexHullData("Add new point on convex hull: new point (index: " + std::to_string(newPointIndex) + ") having less then 3 triangles");
             }
 
             return newPointIndex;
         }
 
-        if (edges.empty() && trianglesRemoved > 0) {
+        if (edges.empty() && trianglesRemoved > 0) [[unlikely]] {
             std::stringstream logNewPointStream;
             logNewPointStream.precision(std::numeric_limits<T>::max_digits10);
             logNewPointStream<<newPoint;
@@ -215,7 +215,7 @@ namespace urchin {
         std::set<std::size_t> pointsUsed;
 
         //2. build a point (use first point)
-        if (points.empty()) {
+        if (points.empty()) [[unlikely]] {
             throw buildException(points, pointsUsed);
         }
 
@@ -224,14 +224,14 @@ namespace urchin {
 
         //3. build a line (find two distinct points)
         for (std::size_t i = 1; i < points.size(); i++) {
-            if (points[i] != this->points[0].point) {
+            if (points[i] != this->points[0].point) [[likely]] {
                 this->points[nextPointIndex++].point = points[i];
                 pointsUsed.insert(i);
                 break;
             }
         }
 
-        if (pointsUsed.size() != 2) {
+        if (pointsUsed.size() != 2) [[unlikely]] {
             throw buildException(points, pointsUsed);
         }
 
@@ -250,7 +250,7 @@ namespace urchin {
             }
         }
 
-        if (pointsUsed.size() != 3) {
+        if (pointsUsed.size() != 3) [[unlikely]] {
             throw buildException(points, pointsUsed);
         }
 
@@ -283,12 +283,12 @@ namespace urchin {
             }
         }
 
-        if (pointsUsed.size() != 4) {
+        if (pointsUsed.size() != 4) [[unlikely]] {
             throw buildException(points, pointsUsed);
         }
 
         for (unsigned int i = 0; i < 4; ++i) {
-            if (this->points[i].triangleIndices.size() < 3) {
+            if (this->points[i].triangleIndices.size() < 3) [[unlikely]] {
                 logConvexHullData("Initial convex hull tetrahedron built with a point having less then 3 triangles");
                 break;
             }

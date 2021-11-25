@@ -141,7 +141,7 @@ namespace urchin {
         Vector3<T> lineVector = line.getA().vector(line.getB());
 
         T tDenominator = normal.dotProduct(lineVector);
-        if (tDenominator == 0.0) {
+        if (tDenominator == 0.0) [[unlikely]] {
             hasIntersection = false;
             return Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
         }

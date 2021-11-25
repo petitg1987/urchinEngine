@@ -191,13 +191,13 @@ namespace urchin {
         const float maxValue = (float)std::numeric_limits<long long>::max() / scale;
 
         if (value < 0.0) {
-            if (value < minValue) {
+            if (value < minValue) [[unlikely]] {
                 Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
             }
             return std::llround(value * scale - 0.5);
         }
         else {
-            if (value > maxValue) {
+            if (value > maxValue) [[unlikely]] {
                 Logger::instance().logError("Impossible to convert float " + std::to_string(value) + " in long long type.");
             }
             return std::llround(value * scale + 0.5);
@@ -237,7 +237,7 @@ namespace urchin {
         stringValues.reserve(expectedSplit);
         StringUtil::split(str, NUMBER_DELIMITER, stringValues);
 
-        if (stringValues.size() != expectedSplit) {
+        if (stringValues.size() != expectedSplit) [[unlikely]] {
             throw std::invalid_argument("Number of float expected: " + std::to_string(expectedSplit) + ", found: "
                     + std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
         }
@@ -256,7 +256,7 @@ namespace urchin {
         stringValues.reserve(expectedSplit);
         StringUtil::split(str, NUMBER_DELIMITER, stringValues);
 
-        if (stringValues.size() != expectedSplit) {
+        if (stringValues.size() != expectedSplit) [[unlikely]] {
             throw std::invalid_argument("Number of int expected: " + std::to_string(expectedSplit) + ", found: "
                                         + std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
         }

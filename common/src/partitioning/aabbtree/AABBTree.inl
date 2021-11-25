@@ -28,7 +28,7 @@ template <class OBJ> AABBNodeData<OBJ>& AABBTree<OBJ>::getNodeData(void* objectP
  */
 template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nodeObjects) const {
     browseNodes.clear();
-    if (rootNode != nullptr) {
+    if (rootNode != nullptr) [[likely]] {
         browseNodes.push_back(rootNode.get());
     }
 
@@ -48,7 +48,7 @@ template <class OBJ> std::vector<std::unique_ptr<AABBNodeData<OBJ>>> AABBTree<OB
     std::vector<std::unique_ptr<AABBNodeData<OBJ>>> allNodeData = {};
 
     browseNodes.clear();
-    if (rootNode != nullptr) {
+    if (rootNode != nullptr) [[likely]] {
         browseNodes.push_back(rootNode.get());
     }
 
@@ -69,7 +69,7 @@ template <class OBJ> std::vector<std::unique_ptr<AABBNodeData<OBJ>>> AABBTree<OB
 template <class OBJ> void AABBTree<OBJ>::addObject(std::unique_ptr<AABBNodeData<OBJ>> nodeData) {
     auto nodeToInsert = std::make_shared<AABBNode<OBJ>>(std::move(nodeData));
 
-    if (rootNode) {
+    if (rootNode) [[likely]] {
         nodeToInsert->updateAABBox(fatMargin);
         insertNode(nodeToInsert, rootNode);
     } else {
@@ -184,7 +184,7 @@ template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ>&) 
  */
 template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox, std::vector<OBJ>& objectsAABBoxHit) const {
     browseNodes.clear();
-    if (rootNode) {
+    if (rootNode) [[likely]] {
         browseNodes.push_back(rootNode.get());
     }
 
@@ -207,7 +207,7 @@ template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float>& aabbox,
  */
 template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vector<OBJ>& objectsAABBoxHitRay) const {
     browseNodes.clear();
-    if (rootNode) {
+    if (rootNode) [[likely]] {
         browseNodes.push_back(rootNode.get());
     }
 
@@ -234,7 +234,7 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
 template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, const void* objectPtrToExclude,
         std::vector<OBJ>& objectsAABBoxHitEnlargedRay) const {
     browseNodes.clear();
-    if (rootNode) {
+    if (rootNode) [[likely]] {
         browseNodes.push_back(rootNode.get());
     }
 
