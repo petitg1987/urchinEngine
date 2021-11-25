@@ -151,7 +151,7 @@ namespace urchin {
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {
-        return allowedCharacters.empty() || std::find(allowedCharacters.begin(), allowedCharacters.end(), unicodeCharacter) != allowedCharacters.end();
+        return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
     }
 
     bool TextBox::isMaxLengthReach() const {

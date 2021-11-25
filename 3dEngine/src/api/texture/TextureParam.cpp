@@ -141,8 +141,4 @@ namespace urchin {
         return a.readMode == b.readMode && a.readQuality == b.readQuality && a.anisotropy == b.anisotropy;
     }
 
-    bool operator!= (const TextureParam& a, const TextureParam& b) {
-        return !(operator==(a, b));
-    }
-
 }

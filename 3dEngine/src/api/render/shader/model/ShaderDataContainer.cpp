@@ -50,11 +50,11 @@ namespace urchin {
     }
 
     void ShaderDataContainer::markDataAsProcessed() {
-        std::fill(bHasNewData.begin(), bHasNewData.end(), false);
+        std::ranges::fill(bHasNewData, false);
     }
 
     void ShaderDataContainer::markDataAsNew() {
-        std::fill(bHasNewData.begin(), bHasNewData.end(), true);
+        std::ranges::fill(bHasNewData, true);
     }
 
 }

@@ -140,7 +140,7 @@ namespace urchin {
         if (activeRenderer3d == renderer3d) {
             activeRenderer3d = nullptr;
         }
-        renderers3d.erase(std::remove_if(renderers3d.begin(), renderers3d.end(), [&](auto& p){return renderer3d == p.get();}), renderers3d.end());
+        std::erase_if(renderers3d, [&](auto& p){return renderer3d == p.get();});
     }
 
     Renderer3d* Scene::getActiveRenderer3d() const {
@@ -168,7 +168,7 @@ namespace urchin {
         if (activeUiRenderers == uiRenderer) {
             activeUiRenderers = nullptr;
         }
-        uiRenderers.erase(std::remove_if(uiRenderers.begin(), uiRenderers.end(), [&](auto& p){return uiRenderer == p.get();}), uiRenderers.end());
+        std::erase_if(uiRenderers, [&](auto& p){return uiRenderer == p.get();});
     }
 
     UIRenderer* Scene::getActiveUIRenderer() const {

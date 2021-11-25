@@ -49,7 +49,7 @@ namespace urchin {
             float getWindStrength() const;
             void setWindStrength(float);
 
-            void prepareRendering(unsigned int&, const Camera&, float);
+            void prepareRendering(unsigned int, const Camera&, float);
 
         private:
             void generateGrass(const TerrainMesh*, const Point3<float>&);

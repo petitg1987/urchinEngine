@@ -90,7 +90,7 @@ namespace urchin {
         vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
         assert(validationLayer.size() == 1);
-        return std::any_of(availableLayers.begin(), availableLayers.end(), [&](const auto& layerProperties) {
+        return std::ranges::any_of(availableLayers, [&](const auto& layerProperties) {
             return std::strcmp(validationLayer[0], layerProperties.layerName) == 0;
         });
     }
@@ -135,7 +135,7 @@ namespace urchin {
     }
 
     bool ValidationLayer::ignoreValidationMessage(const std::string& validationMessage) {
-        return std::any_of(filterOutMessages.begin(), filterOutMessages.end(), [&validationMessage](const auto& filterOutMessage){
+        return std::ranges::any_of(filterOutMessages, [&validationMessage](const auto& filterOutMessage){
             return validationMessage.find(filterOutMessage) != std::string::npos;
         });
     }

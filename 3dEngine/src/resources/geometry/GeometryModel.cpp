@@ -103,7 +103,7 @@ namespace urchin {
         this->modelMatrix = modelMatrix;
     }
 
-    void GeometryModel::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
+    void GeometryModel::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         if (!isInitialized) {
             throw std::runtime_error("Geometry model must be initialized before call prepare rendering");
         }

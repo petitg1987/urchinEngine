@@ -101,12 +101,12 @@ namespace urchin {
             float startX = mesh->getVertices()[0].X;
             float startZ = mesh->getVertices()[0].Z;
 
-            std::vector<std::thread> threads(NUM_THREADS);
+            std::vector<std::jthread> threads(NUM_THREADS);
             for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
                 unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
                 unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
-                threads[threadI] = std::thread([&, beginX, endX]() {
+                threads[threadI] = std::jthread([&, beginX, endX]() {
                     for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
                         const float xFixedValue = startX + (float)xIndex / grassQuantity;
 
@@ -128,7 +128,7 @@ namespace urchin {
                     }
                 });
             }
-            std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
+            std::ranges::for_each(threads, [](std::jthread& x){x.join();});
 
             createRenderers(leafGrassPatches);
             buildGrassQuadtree(std::move(leafGrassPatches), patchQuantityX, patchQuantityZ);
@@ -346,7 +346,7 @@ namespace urchin {
         }
     }
 
-    void TerrainGrass::prepareRendering(unsigned int& renderingOrder, const Camera& camera, float dt) {
+    void TerrainGrass::prepareRendering(unsigned int renderingOrder, const Camera& camera, float dt) {
         assert(bIsInitialized);
 
         if (grassTexture) {

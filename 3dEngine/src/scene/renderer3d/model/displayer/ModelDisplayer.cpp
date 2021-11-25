@@ -160,7 +160,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
+    void ModelDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
             const Mesh& mesh = model->getMeshes()->getMesh(meshIndex++);

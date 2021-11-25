@@ -23,7 +23,7 @@ namespace urchin {
             void initialize();
             void notify(Observable*, int) override;
 
-            void prepareRendering(unsigned int&, const Matrix4<float>&, const MeshFilter*) const;
+            void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*) const;
 
             void drawBBox(GeometryContainer&);
             void drawBaseBones(GeometryContainer&, const MeshFilter*) const;

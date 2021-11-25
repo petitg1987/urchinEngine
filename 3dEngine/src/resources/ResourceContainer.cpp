@@ -30,14 +30,13 @@ namespace urchin {
         bool resourcesDestroyed;
         do {
             resourcesDestroyed = false;
-            for (auto it = resources.begin(); it != resources.end();) {
-                if (it->second.use_count() <= 1) { //resource not used anymore
-                    it = resources.erase(it);
+            std::erase_if(resources, [&resourcesDestroyed](const auto& resource){
+                if (resource.second.use_count() <= 1) { //resource not used anymore
                     resourcesDestroyed = true;
-                } else {
-                    ++it;
+                    return true;
                 }
-            }
+                return false;
+            });
         } while(resourcesDestroyed);
     }
 

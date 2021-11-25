@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     void GeometryContainer::removeGeometry(const GeometryModel& geometry) {
-        auto it = std::find_if(geometryModels.begin(), geometryModels.end(), [&geometry](const auto& o){return o.get() == &geometry;});
+        auto it = std::ranges::find_if(geometryModels, [&geometry](const auto& o){return o.get() == &geometry;});
         if (it != geometryModels.end()) {
             geometryModels.erase(it);
         }

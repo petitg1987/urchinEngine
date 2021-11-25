@@ -88,7 +88,7 @@ namespace urchin {
     }
 
     void RenderTarget::removeRenderer(const GenericRenderer* renderer) {
-        renderers.erase(std::remove(renderers.begin(), renderers.end(), renderer), renderers.end());
+        std::erase(renderers, renderer);
         renderersDirty = true;
     }
 
@@ -131,8 +131,9 @@ namespace urchin {
     }
 
     bool RenderTarget::hasRenderer() const {
-        const auto& rendererIsEnabled = [](const auto* renderer){return renderer->isEnabled();};
-        return std::any_of(renderers.begin(), renderers.end(), rendererIsEnabled);
+        return std::ranges::any_of(renderers, [](const auto* renderer) {
+            return renderer->isEnabled();
+        });
     }
 
     bool RenderTarget::areRenderersDirty() const {
@@ -377,7 +378,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
         if (needCommandBufferRefresh(frameIndex)) {
-            std::sort(renderers.begin(), renderers.end(), GenericRenderer::RendererComp());
+            std::ranges::sort(renderers, GenericRenderer::RendererComp());
 
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

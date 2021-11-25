@@ -20,16 +20,16 @@ namespace urchin {
         }
 
         //create the textures
-        std::vector<std::thread> loadImageThreads(6);
+        std::vector<std::jthread> loadImageThreads(6);
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             std::string filename = filenames[i];
-            loadImageThreads[i] = std::thread([i, filename, this]() {
+            loadImageThreads[i] = std::jthread([i, filename, this]() {
                 if (!filename.empty()) {
                     skyboxImages[i] = ResourceRetriever::instance().getResource<Image>(filename);
                 }
             });
         }
-        std::for_each(loadImageThreads.begin(), loadImageThreads.end(), [](std::thread& x){x.join();});
+        std::ranges::for_each(loadImageThreads, [](std::jthread& x){x.join();});
 
         //add missing default textures
         unsigned int skyboxSize = 1;
@@ -77,7 +77,7 @@ namespace urchin {
         std::vector<const void*> cubeDataPtr = {&skyboxImages[0]->getTexels()[0], &skyboxImages[1]->getTexels()[0], &skyboxImages[2]->getTexels()[0],
                                                 &skyboxImages[3]->getTexels()[0], &skyboxImages[4]->getTexels()[0], &skyboxImages[5]->getTexels()[0] };
         auto skyboxTexture = Texture::buildCubeMap(skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr);
-        std::fill(begin(skyboxImages), end(skyboxImages), std::shared_ptr<Image>(nullptr));
+        std::ranges::fill(skyboxImages, std::shared_ptr<Image>(nullptr));
 
         //visual
         skyboxShader = ShaderBuilder::createShader("skybox.vert.spv", "", "skybox.frag.spv");
@@ -148,7 +148,7 @@ namespace urchin {
         return filenames;
     }
 
-    void Skybox::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const Point3<float>& cameraPosition) {
+    void Skybox::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Point3<float>& cameraPosition) {
         assert(isInitialized);
         translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxProjectionViewMatrix = projectionViewMatrix * translationMatrix;

@@ -115,7 +115,7 @@ namespace urchin {
     }
 
     bool ModelSetDisplayer::isModelDisplayerExist(const Model& model) const {
-        return modelsDisplayer.find(&model) != modelsDisplayer.end();
+        return modelsDisplayer.contains(&model);
     }
 
     void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

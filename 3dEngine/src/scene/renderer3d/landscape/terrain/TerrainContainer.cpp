@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     void TerrainContainer::removeTerrain(const Terrain& terrain) {
-        auto itFind = std::find_if(terrains.begin(), terrains.end(), [&terrain](const auto& o){return o.get() == &terrain;});
+        auto itFind = std::ranges::find_if(terrains, [&terrain](const auto& o){return o.get() == &terrain;});
         if (itFind != terrains.end()) {
             terrains.erase(itFind);
         }

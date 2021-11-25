@@ -65,7 +65,7 @@ namespace urchin {
             dataDestination += subResourceLayout.offset;
 
             std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
-            bool bgraToRgba = std::find(formatsBGRA.begin(), formatsBGRA.end(), imageFormat) != formatsBGRA.end();
+            bool bgraToRgba = std::ranges::find(formatsBGRA, imageFormat) != formatsBGRA.end();
 
             float scaleX = (float)srcWidth / (float)dstWidth;
             float scaleY = (float)srcHeight / (float)dstHeight;

@@ -248,7 +248,7 @@ namespace urchin {
             return true;
         }
 
-        return std::any_of(getRenderers().begin(), getRenderers().end(), [](const auto* renderer) {
+        return std::ranges::any_of(getRenderers(), [](const auto* renderer) {
             return renderer->isEnabled() && renderer->isDrawCommandDirty();
         });
     }

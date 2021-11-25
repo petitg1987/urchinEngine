@@ -112,7 +112,7 @@ namespace urchin {
     void UIRenderer::notify(Observable* observable, int notificationType) {
         if (const auto* widget = dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::SET_IN_FOREGROUND) {
-                auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return widget == o.get();});
+                auto itFind = std::ranges::find_if(widgets, [&widget](const auto& o){return widget == o.get();});
                 std::shared_ptr<Widget> widgetPtr = *itFind;
                 widgets.erase(itFind);
                 widgets.push_back(widgetPtr);
@@ -283,7 +283,7 @@ namespace urchin {
     }
 
     void UIRenderer::removeWidget(const Widget& widget) {
-        auto itFind = std::find_if(widgets.begin(), widgets.end(), [&widget](const auto& o){return &widget == o.get();});
+        auto itFind = std::ranges::find_if(widgets, [&widget](const auto& o){return &widget == o.get();});
         if (itFind == widgets.end()) {
             throw std::runtime_error("The provided widget is not widget of this UI renderer");
         }

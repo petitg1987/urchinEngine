@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     void WaterContainer::removeWater(const Water& water) {
-        auto itFind = std::find_if(waters.begin(), waters.end(), [&water](const auto& o){return o.get() == &water;});
+        auto itFind = std::ranges::find_if(waters, [&water](const auto& o){return o.get() == &water;});
         if (itFind != waters.end()) {
             waters.erase(itFind);
         }

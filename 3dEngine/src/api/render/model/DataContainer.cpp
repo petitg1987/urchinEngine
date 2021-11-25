@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <cstring>
+#include <algorithm>
 
 #include <api/render/model/DataContainer.h>
 
@@ -126,10 +127,10 @@ namespace urchin {
     }
 
     void DataContainer::markDataAsProcessed() {
-        std::fill(bHasNewData.begin(), bHasNewData.end(), false);
+        std::ranges::fill(bHasNewData, false);
     }
 
     void DataContainer::markDataAsNew() {
-        std::fill(bHasNewData.begin(), bHasNewData.end(), true);
+        std::ranges::fill(bHasNewData, true);
     }
 }

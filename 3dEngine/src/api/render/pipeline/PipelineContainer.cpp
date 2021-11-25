@@ -25,13 +25,9 @@ namespace urchin {
     }
 
     void PipelineContainer::cleanPipelines() {
-        for (auto it = pipelines.begin(); it != pipelines.end();) {
-            if (it->second.use_count() <= 1) { //pipeline not used anymore
-                it = pipelines.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        std::erase_if(pipelines, [](const auto& pipeline) {
+            return pipeline.second.use_count() <= 1; //pipeline not used anymore
+        });
     }
 
 }

@@ -38,7 +38,7 @@ namespace urchin {
             auto secondLanguageLabels = retrieveLanguageLabels(secondLanguage);
 
             for (const auto& [labelKey, labelValue] : firstLanguageLabels) {
-                if (secondLanguageLabels.find(labelKey) == secondLanguageLabels.end()) {
+                if (!secondLanguageLabels.contains(labelKey)) {
                     logMissingTranslation(secondLanguage, labelKey);
                     break;
                 }
@@ -68,7 +68,7 @@ namespace urchin {
 
     void LabelTranslator::loadLanguageLabels(const std::string& language) {
         if (language != loadedLanguage) {
-            if (std::count(availableLanguages.begin(), availableLanguages.end(), language)) {
+            if (std::ranges::count(availableLanguages, language)) {
                 loadedLanguageLabels = retrieveLanguageLabels(language);
             } else {
                 loadedLanguageLabels.clear();

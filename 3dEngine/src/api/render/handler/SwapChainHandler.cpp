@@ -147,9 +147,9 @@ namespace urchin {
 
     VkPresentModeKHR SwapChainHandler::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes, bool verticalSyncEnabled) {
         if (!verticalSyncEnabled) {
-            if (std::find(availablePresentModes.begin(), availablePresentModes.end(), VK_PRESENT_MODE_MAILBOX_KHR) != availablePresentModes.end()) {
+            if (std::ranges::find(availablePresentModes, VK_PRESENT_MODE_MAILBOX_KHR) != availablePresentModes.end()) {
                 return VK_PRESENT_MODE_MAILBOX_KHR;
-            } else if (std::find(availablePresentModes.begin(), availablePresentModes.end(), VK_PRESENT_MODE_IMMEDIATE_KHR) != availablePresentModes.end()) {
+            } else if (std::ranges::find(availablePresentModes, VK_PRESENT_MODE_IMMEDIATE_KHR) != availablePresentModes.end()) {
                 return VK_PRESENT_MODE_IMMEDIATE_KHR;
             }
         }

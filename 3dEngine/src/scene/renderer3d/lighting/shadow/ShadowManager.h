@@ -57,7 +57,7 @@ namespace urchin {
 
             void updateVisibleModels(const Frustum<float>&);
             const std::vector<Model*>& getVisibleModels() const;
-            void removeModel(Model*) const;
+            void removeModel(const Model*) const;
 
             void forceUpdateAllShadowMaps();
             void updateShadowMaps() const;

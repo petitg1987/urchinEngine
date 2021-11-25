@@ -189,7 +189,7 @@ namespace urchin {
         poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
 
         int uniformTexReadersCount = 0;
-        std::for_each(uniformTextureReaders.begin(), uniformTextureReaders.end(), [&] (auto& r){uniformTexReadersCount += (int)r.size();});
+        std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.size();});
         int textureDescriptorCount = std::max(1, (int)renderTarget.getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;

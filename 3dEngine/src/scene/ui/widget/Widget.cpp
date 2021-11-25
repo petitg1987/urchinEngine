@@ -157,7 +157,7 @@ namespace urchin {
 
     void Widget::detachChild(Widget* childWidget) {
         if (childWidget) {
-            auto itFind = std::find_if(children.begin(), children.end(), [&childWidget](const auto& o) { return childWidget == o.get(); });
+            auto itFind = std::ranges::find_if(children, [&childWidget](const auto& o) { return childWidget == o.get(); });
             if (itFind == children.end()) {
                 throw std::runtime_error("The provided child widget is not a child of this widget");
             }

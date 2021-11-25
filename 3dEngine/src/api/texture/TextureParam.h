@@ -38,7 +38,6 @@ namespace urchin {
             VkSampler getTextureSampler() const;
 
             friend bool operator== (const TextureParam&, const TextureParam&);
-            friend bool operator!= (const TextureParam&, const TextureParam&);
 
         private:
             TextureParam(ReadMode, ReadQuality, Anisotropy);

@@ -151,7 +151,7 @@ namespace urchin {
         std::vector<VkExtensionProperties> availableExtensions(extensionCount);
         vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
 
-        return std::any_of(availableExtensions.begin(), availableExtensions.end(), [&extensionName](const auto& extension) {
+        return std::ranges::any_of(availableExtensions, [&extensionName](const auto& extension) {
             return std::strcmp(extension.extensionName, extensionName) == 0;
         });
     }
@@ -182,7 +182,7 @@ namespace urchin {
         }
 
         std::vector<const char*> physicalDeviceExtensions;
-        std::for_each(physicalDeviceRequiredExtensions.begin(), physicalDeviceRequiredExtensions.end(), [&](std::pair<const char*, std::string>& ext) {physicalDeviceExtensions.emplace_back(ext.first);});
+        std::ranges::for_each(physicalDeviceRequiredExtensions, [&](std::pair<const char*, std::string>& ext) {physicalDeviceExtensions.emplace_back(ext.first);});
         VkDeviceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
