@@ -36,11 +36,10 @@ void ShapeToAABBoxTest::coneConversion() {
 }
 
 void ShapeToAABBoxTest::convexHullConversion() {
-    Point3<float> boxPointsTab[] = {
+    std::vector<Point3<float>> boxPoints = {
             Point3<float>(-1.0f, -2.0f, 1.0f), Point3<float>(1.0f, -2.0f, 1.0f), Point3<float>(1.0f, 2.0f, 1.0f), Point3<float>(-1.0f, 2.0f, 1.0f),
             Point3<float>(-1.0f, -2.0f, -1.0f), Point3<float>(1.0f, -2.0f, -1.0f), Point3<float>(1.0f, 2.0f, -1.0f), Point3<float>(-1.0f, 2.0f, -1.0f),
     };
-    std::vector<Point3<float>> boxPoints(boxPointsTab, boxPointsTab + sizeof(boxPointsTab) / sizeof(Point3<float>));
 
     CollisionConvexHullShape collisionConvexHull(boxPoints);
     PhysicsTransform transform(Point3<float>(0.0f, 0.0f, 0.0f), //move 0 unit on X, Y and Z axis

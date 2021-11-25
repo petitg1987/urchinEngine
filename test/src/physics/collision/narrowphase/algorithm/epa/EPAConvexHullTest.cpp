@@ -10,17 +10,15 @@
 using namespace urchin;
 
 void EPAConvexHullTest::identicalBox() {
-    Point3<float> obbPointsTab1[] = {
+    std::vector<Point3<float>> obbPoints1 = {
             Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
             Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints1(obbPointsTab1, obbPointsTab1+sizeof(obbPointsTab1)/sizeof(Point3<float>));
 
-    Point3<float> obbPointsTab2[] = {
+    std::vector<Point3<float>> obbPoints2 = {
             Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
             Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints2(obbPointsTab2, obbPointsTab2+sizeof(obbPointsTab2)/sizeof(Point3<float>));
 
     CollisionConvexHullObject ch1(0.0f, obbPoints1, obbPoints1);
     CollisionConvexHullObject ch2(0.0f, obbPoints2, obbPoints2);
@@ -32,17 +30,15 @@ void EPAConvexHullTest::identicalBox() {
 }
 
 void EPAConvexHullTest::cornerInsideBox() {
-    Point3<float> aabbPointsTab[] = {
+    std::vector<Point3<float>> aabbPoints = {
             Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(1.0f, -1.0f, 0.0f), Point3<float>(0.0f, -1.0f, 0.0f),
             Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(1.0f, 1.0f, -1.0f), Point3<float>(1.0f, -1.0f, -1.0f), Point3<float>(0.0f, -1.0f, -1.0f)
     };
-    std::vector<Point3<float>> aabbPoints(aabbPointsTab, aabbPointsTab + sizeof(aabbPointsTab) / sizeof(Point3<float>));
 
-    Point3<float> obbPointsTab[] = {
+    std::vector<Point3<float>> obbPoints = {
             Point3<float>(-0.3f, 1.0f, 0.0f), Point3<float>(0.2f, 0.0f, 0.0f), Point3<float>(-0.3f, -1.0f, 0.0f), Point3<float>(-0.8f, 0.0f, 0.0f),
             Point3<float>(-0.3f, 1.0f, -1.0f), Point3<float>(0.2f, 0.0f, -1.0f), Point3<float>(-0.3f, -1.0f, -1.0f), Point3<float>(-0.8f, 0.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints(obbPointsTab, obbPointsTab + sizeof(obbPointsTab) / sizeof(Point3<float>));
 
     CollisionConvexHullObject ch1(0.0f, aabbPoints, aabbPoints);
     CollisionConvexHullObject ch2(0.0f, obbPoints, obbPoints);
@@ -60,17 +56,15 @@ void EPAConvexHullTest::cornerInsideBox() {
 }
 
 void EPAConvexHullTest::faceInsideTrapeze() {
-    Point3<float> trapezePointsTab1[] = {
+    std::vector<Point3<float>> trapezePoints1 = {
             Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f), Point3<float>(0.0f, 3.0f, 0.0f), Point3<float>(0.0f, 1.0f, 0.0f),
             Point3<float>(1.0f, 0.0f, -1.0f), Point3<float>(3.0f, 0.0f, -1.0f), Point3<float>(0.0f, 3.0f, -1.0f), Point3<float>(0.0f, 1.0f, -1.0f),
     };
-    std::vector<Point3<float>> trapezePoints1(trapezePointsTab1, trapezePointsTab1+sizeof(trapezePointsTab1)/sizeof(Point3<float>));
 
-    Point3<float> trapezePointsTab2[] = {
+    std::vector<Point3<float>> trapezePoints2 = {
             Point3<float>(0.0f, -1.0f, 0.0f), Point3<float>(1.0f, 0.8f, 0.0f), Point3<float>(0.8f, 1.0f, 0.0f), Point3<float>(-1.0f, 0.0f, 0.0f),
             Point3<float>(0.0f, -1.0f, -1.0f), Point3<float>(1.0f, 0.8f, -1.0f), Point3<float>(0.8f, 1.0f, -1.0f), Point3<float>(-1.0f, 0.0f, -1.0f),
     };
-    std::vector<Point3<float>> trapezePoints2(trapezePointsTab2, trapezePointsTab2+sizeof(trapezePointsTab2)/sizeof(Point3<float>));
 
     CollisionConvexHullObject ch1(0.0f, trapezePoints1, trapezePoints1);
     CollisionConvexHullObject ch2(0.0f, trapezePoints2, trapezePoints2);
@@ -88,17 +82,15 @@ void EPAConvexHullTest::faceInsideTrapeze() {
 }
 
 void EPAConvexHullTest::cornerInsideHexagon() {
-    Point3<float> hexagonPointsTab1[] = {
+    std::vector<Point3<float>> hexagonPoints1 = {
             Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(1.5f, 1.0f, 0.0f), Point3<float>(1.0f, 2.0f, 0.0f), Point3<float>(0.0f, 2.0f, 0.0f), Point3<float>(-0.5f, 1.0f, 0.0f),
             Point3<float>(0.0f, 0.0f, -1.0f), Point3<float>(1.0f, 0.0f, -1.0f), Point3<float>(1.5f, 1.0f, -1.0f), Point3<float>(1.0f, 2.0f, -1.0f), Point3<float>(0.0f, 2.0f, -1.0f), Point3<float>(-0.5f, 1.0f, -1.0f),
     };
-    std::vector<Point3<float>> hexagonPoints1(hexagonPointsTab1, hexagonPointsTab1+sizeof(hexagonPointsTab1)/sizeof(Point3<float>));
 
-    Point3<float> hexagonPointsTab2[] = {
+    std::vector<Point3<float>> hexagonPoints2 = {
             Point3<float>(-1.5f, 0.0f, 0.0f), Point3<float>(-0.5f, 0.0f, 0.0f), Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(-0.5f, 2.0f, 0.0f), Point3<float>(-1.5f, 2.0f, 0.0f), Point3<float>(-2.0f, 1.0f, 0.0f),
             Point3<float>(-1.5f, 0.0f, -1.0f), Point3<float>(-0.5f, 0.0f, -1.0f), Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(-0.5f, 2.0f, -1.0f), Point3<float>(-1.5f, 2.0f, -1.0f), Point3<float>(-2.0f, 1.0f, -1.0f),
     };
-    std::vector<Point3<float>> hexagonPoints2(hexagonPointsTab2, hexagonPointsTab2+sizeof(hexagonPointsTab2)/sizeof(Point3<float>));
 
     CollisionConvexHullObject ch1(0.0f, hexagonPoints1, hexagonPoints1);
     CollisionConvexHullObject ch2(0.0f, hexagonPoints2, hexagonPoints2);

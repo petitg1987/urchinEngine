@@ -86,7 +86,7 @@ void CollisionWorldIT::changePositionOnInactiveBody() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move (1)");
 
     //2. change position (in thread different from physics thread)
-    auto thread = std::thread([&cubeBody]() {
+    auto thread = std::jthread([&cubeBody]() {
         cubeBody->setTransform(PhysicsTransform(Point3<float>(25.0, 5.0, 0.0), Quaternion<float>()));
     });
     thread.join();
