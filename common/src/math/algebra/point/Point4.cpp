@@ -162,8 +162,15 @@ namespace urchin {
         return (X == p.X && Y == p.Y && Z == p.Z && W == p.W);
     }
 
-    template<class T> bool Point4<T>::operator <(const Point4<T>& p) const {
-        return X < p.X || (X == p.X && Y < p.Y) || (X == p.X && Y == p.Y && Z < p.Z) || (X == p.X && Y == p.Y && Z == p.Z && W < p.W);
+    template<class T> std::partial_ordering Point4<T>::operator <=>(const Point4<T>& p) const {
+        if (auto cmpX = X <=> p.X; cmpX != 0) {
+            return cmpX;
+        } else if (auto cmpY = Y <=> p.Y; cmpY != 0) {
+            return cmpY;
+        } else if (auto cmpZ = Z <=> p.Z; cmpZ != 0) {
+            return cmpZ;
+        }
+        return W <=> p.W;
     }
 
     template<class T> T& Point4<T>::operator [](std::size_t i) {

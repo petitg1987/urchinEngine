@@ -1,4 +1,3 @@
-#include <ctime>
 #include <stdexcept>
 
 #include <logger/Logger.h>
@@ -59,8 +58,7 @@ namespace urchin {
      * @return Prefix composed of date/time and criticality
      */
     std::string Logger::prefix(CriticalityLevel criticalityLevel) const {
-        time_t now = time(nullptr);
-        std::string result = "[" + DateTimeUtil::epochToDateTime(now) + "]";
+        std::string result = "[" + DateTimeUtil::timePointToDateTime(std::chrono::system_clock::now()) + "]";
         result += " (" + getCriticalityString(criticalityLevel) + ") ";
         return result;
     }

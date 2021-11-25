@@ -18,7 +18,7 @@ namespace urchin {
 
         //add each point to the tetrahedron
         for (std::size_t i = 0; i < points.size(); i++) {
-            if (pointsToExclude.contains(i)) {
+            if (!pointsToExclude.contains(i)) {
                 addNewPoint(points[i]);
             }
         }
@@ -197,11 +197,10 @@ namespace urchin {
         const std::array<std::size_t, 3>& indices = itTriangle->second.getIndices();
         for (std::size_t index : indices) {
             std::vector<std::size_t>& pointTriangles = points.at(index).triangleIndices;
-            pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
+            std::erase(pointTriangles, itTriangle->first);
             if (pointTriangles.empty()) { //orphan point: remove it
                 points.erase(index);
             }
-
         }
 
         //remove indexed triangles from triangle map

@@ -15,13 +15,9 @@ namespace urchin {
     }
 
     void TagHolder::removeTag(const TaggableResource* taggable, const std::string& tag) {
-        for (auto it = tagsMap.begin(); it != tagsMap.end(); ) {
-            if (it->second == taggable && it->first == tag) {
-                it = tagsMap.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        std::erase_if(tagsMap, [&](const auto& tagPair) {
+            return tagPair.second == taggable && tagPair.first == tag;
+        });
     }
 
 }

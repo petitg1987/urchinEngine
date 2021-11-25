@@ -1,4 +1,6 @@
 #include <mutex>
+#include <iomanip>
+
 #include <util/DateTimeUtil.h>
 
 namespace urchin {
@@ -6,15 +8,23 @@ namespace urchin {
     //static
     std::mutex DateTimeUtil::localtimeMutex;
 
-    std::string DateTimeUtil::epochToDateTime(time_t epochSeconds) {
-        char timeBuffer[64];
+    long DateTimeUtil::currentEpoch() {
+        return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    }
+
+    std::string DateTimeUtil::timePointToDateTime(std::chrono::system_clock::time_point timePoint) {
+        std::time_t epochSeconds = std::chrono::system_clock::to_time_t(timePoint);
+        std::stringstream ss;
         {
             std::scoped_lock<std::mutex> lock(localtimeMutex); //mutex for not thread safe localtime function
-            tm timeStruct = *localtime(&epochSeconds);
-            strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%d %X", &timeStruct);
+            ss << std::put_time(std::localtime(&epochSeconds), "%Y-%m-%d %X");
         }
+        return ss.str();
+    }
 
-        return std::string(timeBuffer);
+    std::string DateTimeUtil::epochToDateTime(long epochSeconds) {
+        auto timePoint = std::chrono::system_clock::time_point{std::chrono::seconds{epochSeconds}};
+        return timePointToDateTime(timePoint);
     }
 
 }

@@ -54,17 +54,17 @@ namespace urchin {
     }
 
     template<class T> Point2<T> Point2<T>::operator -() const {
-        return Point2<T>(-X, -Y);
+        return Point2<T>((T)-X, (T)-Y);
     }
 
     template<class T> Point2<T> Point2<T>::operator +(const Point2<T>& p) const {
-        return Point2<T>(    X + p.X,
-                    Y + p.Y);
+        return Point2<T>(X + p.X,
+                         Y + p.Y);
     }
 
     template<class T> Point2<T> Point2<T>::operator -(const Point2<T>& p) const {
-        return Point2<T>(    X - p.X,
-                    Y - p.Y);
+        return Point2<T>(X - p.X,
+                         Y - p.Y);
     }
 
     template<class T> const Point2<T>& Point2<T>::operator +=(const Point2<T>& p) {
@@ -113,8 +113,11 @@ namespace urchin {
         return (X == p.X && Y == p.Y);
     }
 
-    template<class T> bool Point2<T>::operator <(const Point2<T>& p) const {
-        return X < p.X || (X == p.X && Y < p.Y);
+    template<class T> std::partial_ordering Point2<T>::operator <=>(const Point2<T>& p) const {
+        if (auto cmpX = X <=> p.X; cmpX != 0) {
+            return cmpX;
+        }
+        return Y <=> p.Y;
     }
 
     template<class T> T& Point2<T>::operator [](std::size_t i) {

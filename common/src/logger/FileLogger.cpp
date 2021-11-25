@@ -1,10 +1,10 @@
 #include <fstream>
 #include <stdexcept>
 #include <vector>
-#include <ctime>
 
 #include <logger/FileLogger.h>
 #include <util/FileUtil.h>
+#include <util/DateTimeUtil.h>
 #include <util/UserAuthorityException.h>
 
 namespace urchin {
@@ -50,7 +50,7 @@ namespace urchin {
         std::string archiveFilename;
         std::string logFileContent = retrieveContent(std::numeric_limits<unsigned long>::max());
         if (!logFileContent.empty()) {
-            std::string epoch = std::to_string(std::time(nullptr));
+            std::string epoch = std::to_string(DateTimeUtil::currentEpoch());
             std::string extension = FileUtil::getFileExtension(filename);
             archiveFilename = filename.substr(0, filename.size() - extension.size() - 1) + "_" + epoch + "." + extension;
 

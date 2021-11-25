@@ -16,7 +16,12 @@ namespace urchin {
      * @return -1 if value is negative, 0 if value is 0, otherwise 1
      */
     template<class T> T MathFunction::sign(T value) {
-        return (T)((T)0.0 < value) - (value < (T)0.0);
+        if (value < 0) {
+            return (T)-1;
+        } else if (value > 0) {
+            return 1;
+        }
+        return 0;
     }
 
     template<class T> T MathFunction::lerp(T v0, T v1, T t) { //see https://en.wikipedia.org/wiki/Linear_interpolation
