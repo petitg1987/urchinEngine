@@ -20,7 +20,7 @@
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
   * **OPTIMIZATION** (`minor`): Software occlusion culling
 * Resources
-  * **NEW FEATURE** (`medium`): Support QOI image format (https://github.com/phoboslab/qoi) 
+  * **NEW FEATURE** (`medium`): Support QOI image format (see <https://github.com/phoboslab/qoi>) 
 * Model
   * **OPTIMIZATION** (`medium`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Draw calls batching
@@ -30,14 +30,14 @@
   * **OPTIMIZATION** (`medium`): Models LOD
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
+  * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
   * **NEW FEATURE** (`major`): Improve variance shadow map (see <https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-8-summed-area-variance-shadow-maps>)
-  * **NEW FEATURE** (`medium`): PCSS
+  * **NEW FEATURE** (`major`): PCSS
   * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
     * Tips: try to re-use models in the second method + call octree manager one times for all frustum splits and then split the models
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-  * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
 * Ambient occlusion
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Landscape
