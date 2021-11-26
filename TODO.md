@@ -3,7 +3,7 @@
   * **OPTIMIZATION** (`minor`): Use PGO in g++
   * **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>#getSupportPoint()...)
 * Setup
-  * **NEW FEATURE** (`major`): Update DEV.md to make glslc available in mingw64.exe shell
+  * **NEW FEATURE** (`medium`): Update DEV.md to make glslc available in mingw64.exe shell
 
 # 3d Engine
 * Graphics API
@@ -13,9 +13,9 @@
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
-  * **NEW FEATURE** (`major`): Replace geometry shaders by instantiation
+  * **NEW FEATURE** (`medium`): Replace geometry shaders by instantiation
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
-  * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering()
+  * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering
   * **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
   * **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
   * **OPTIMIZATION** (`minor`): Software occlusion culling
@@ -24,34 +24,27 @@
 * Model
   * **OPTIMIZATION** (`medium`): Use instantiation mechanism when identical models are displayed several times in the scene
   * **OPTIMIZATION** (`medium`): Draw calls batching
-    * Tips 1: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
-  * **NEW FEATURE** (`medium`): Animation blending
+    * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
   * **OPTIMIZATION** (`major`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
   * **OPTIMIZATION** (`major`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
-* Geometry model 
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
-  * **OPTIMIZATION** (`major`): Improve performance of ShadowManager::updateVisibleModels and Renderer3d::updateModelsInFrustum
-    * Tips 1: find solution where models could be re-used in the second method
-    * Tips 2: call octree manager one times for all frustum splits and then split the models
-  * **NEW FEATURE** (`minor`): Blur variance shadow map with 'summed area' technique
-    * Note 1: decreased light bleeding to improve quality
-    * Note 2: force usage of 32 bits shadow map
-  * **NEW FEATURE** (`medium`): Use mipmap on shadow map (on blurred shadow maps when blur used)
-  * **NEW FEATURE** (`minor`): Use anisotropic on shadow map (on blurred shadow maps when blur used)
-  * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
-  * **NEW FEATURE** (`minor`): Implement PCSS
+  * **NEW FEATURE** (`major`): Improve variance shadow map (see <https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-8-summed-area-variance-shadow-maps>)
+  * **NEW FEATURE** (`medium`): PCSS
+  * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
+  * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
+    * Tips: try to re-use models in the second method + call octree manager one times for all frustum splits and then split the models
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-  * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
+  * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
 * Ambient occlusion
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Landscape
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
-  * **NEW FEATURE** (`medium`): Use material textures (normal map...) for terrain
-  * **NEW FEATURE** (`minor`): Add auto shadow on terrain
   * **OPTIMIZATION** (`medium`): Do not build grass quadtree which are 100% discarded by grass mask
+  * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
+  * **NEW FEATURE** (`minor`): Add auto shadow on terrain
 * UI
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
   * **NEW FEATURE** (`medium`): Handle transparency in UI 3d fragment shader to have a text rendering more smooth
@@ -97,7 +90,7 @@
   * **OPTIMIZATION** (`minor`): EPA, add new point on convex hull to improve thanks to adjacent edges: find faster the triangles visible by the new point (see Reactphysics3d code)
 * Island
   * **BUG** (`major`): A body balancing from one side to the other side (e.g.: cone on his base) could be disabled when velocity reach zero
-    * Tips 1: don't disable bodies when there is only one contact point
+    * Tips: don't disable bodies when there is only one contact point
 * Constraints solver
   * **BUG** (`medium`): A restitution of 1.0 introduce new force in the system. Example: a superball bounces higher and higher at each collision
 * Character
