@@ -18,7 +18,8 @@ namespace urchin {
             config({}),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
-            bForceUpdateAllShadowMaps(false) {
+            bForceUpdateAllShadowMaps(false),
+            depthSplitDistance({}) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
