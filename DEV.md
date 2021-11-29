@@ -118,9 +118,9 @@
 * Install:
   * Download Linux 'run' from https://developer.nvidia.com/nsight-graphics
   * Execute file and install in ~/various/tools/nsight
-* Launch Nsight as root:
+* Launch Nsight (as root ? Nsight not working on Ubuntu 21.10):
     ```
-    sudo ~/various/tools/nsight/host/linux-desktop-nomad-x64/ngfx-ui
+    ~/various/tools/nsight/host/linux-desktop-nomad-x64/ngfx-ui
     ```
 
 ## Memory profiler: Valgrind - massif
