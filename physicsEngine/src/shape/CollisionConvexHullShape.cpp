@@ -125,7 +125,7 @@ namespace urchin {
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionConvexHullShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
         Transform<float> transform = physicsTransform.toTransform();
-        auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
+        auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(static_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
 
         void* memPtr = getObjectsPool().allocate(sizeof(CollisionConvexHullObject));
 
@@ -137,7 +137,7 @@ namespace urchin {
             return std::unique_ptr<CollisionConvexHullObject, ObjectDeleter>(collisionObjectPtr);
         }
 
-        auto convexHullWithoutMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShapeReduced->toConvexObject(transform).release()));
+        auto convexHullWithoutMargin = std::shared_ptr<ConvexHull3D<float>>(static_cast<ConvexHull3D<float>*>(convexHullShapeReduced->toConvexObject(transform).release()));
 
         auto* collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
         return std::unique_ptr<CollisionConvexHullObject, ObjectDeleter>(collisionObjectPtr);
