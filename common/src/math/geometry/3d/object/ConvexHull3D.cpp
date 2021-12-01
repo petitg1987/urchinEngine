@@ -7,11 +7,13 @@ namespace urchin {
      * @param points Points used to construct the convex hull. Points inside the convex hull are accepted but will unused.
      */
     template<class T> ConvexHull3D<T>::ConvexHull3D(const std::vector<Point3<T>>& points) :
+            ConvexObject3D<T>(ConvexObjectType::CONVEX_HULL),
             localizedConvexHullShape(ConvexHullShape3D<T>(points)) {
 
     }
 
     template<class T> ConvexHull3D<T>::ConvexHull3D(const ConvexHullShape3D<T>& localizedConvexHullShape) :
+            ConvexObject3D<T>(ConvexObjectType::CONVEX_HULL),
             localizedConvexHullShape(localizedConvexHullShape) {
 
     }

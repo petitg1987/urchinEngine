@@ -6,6 +6,7 @@
 namespace urchin {
 
     template<class T> Cone<T>::Cone() :
+            ConvexObject3D<T>(ConvexObjectType::CONE),
             coneShape(ConeShape<T>(0.0, 0.0, ConeShape<T>::CONE_X_POSITIVE)),
             centerOfMass(Point3<T>(0.0, 0.0, 0.0)),
             baseSideCosAngle(0.0) {
@@ -15,6 +16,7 @@ namespace urchin {
     }
 
     template<class T> Cone<T>::Cone(T radius, T height, typename ConeShape<T>::ConeOrientation coneOrientation, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+            ConvexObject3D<T>(ConvexObjectType::CONE),
             coneShape(ConeShape<T>(radius, height, coneOrientation)),
             centerOfMass(centerOfMass),
             orientation(orientation),

@@ -8,7 +8,8 @@
 
 namespace urchin {
 
-    template<class T> Frustum<T>::Frustum() {
+    template<class T> Frustum<T>::Frustum() :
+            ConvexObject3D<T>(ConvexObjectType::FRUSTUM) {
         buildFrustum(90.0, 1.0, 0.01f, 1.0);
     }
 
@@ -18,7 +19,8 @@ namespace urchin {
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
-    template<class T> Frustum<T>::Frustum(T fovYAngle, T ratio, T nearDistance, T farDistance) {
+    template<class T> Frustum<T>::Frustum(T fovYAngle, T ratio, T nearDistance, T farDistance) :
+            ConvexObject3D<T>(ConvexObjectType::FRUSTUM) {
         buildFrustum(fovYAngle, ratio, nearDistance, farDistance);
     }
 
@@ -33,11 +35,13 @@ namespace urchin {
     * @param fbr Far bottom right point
     */
     template<class T> Frustum<T>::Frustum(const Point3<T>& ntl, const Point3<T>& ntr, const Point3<T>& nbl, const Point3<T>& nbr,
-        const Point3<T>& ftl, const Point3<T>& ftr, const Point3<T>& fbl, const Point3<T>& fbr) {
+        const Point3<T>& ftl, const Point3<T>& ftr, const Point3<T>& fbl, const Point3<T>& fbr) :
+            ConvexObject3D<T>(ConvexObjectType::FRUSTUM) {
         buildFrustum(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
     }
 
     template<class T> Frustum<T>::Frustum(Frustum<T>&& frustum) noexcept :
+            ConvexObject3D<T>(ConvexObjectType::FRUSTUM),
             position(frustum.getPosition()) {
         frustumPoints[0] = frustum.getFrustumPoints()[0];
         frustumPoints[1] = frustum.getFrustumPoints()[1];

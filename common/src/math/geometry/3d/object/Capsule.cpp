@@ -3,6 +3,7 @@
 namespace urchin {
 
     template<class T> Capsule<T>::Capsule():
+            ConvexObject3D<T>(ConvexObjectType::CAPSULE),
             capsuleShape(CapsuleShape<T>(0.0, 0.0, CapsuleShape<T>::CAPSULE_X)),
             centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
@@ -11,6 +12,7 @@ namespace urchin {
     }
 
     template<class T> Capsule<T>::Capsule(T radius, T cylinderHeight, typename CapsuleShape<T>::CapsuleOrientation capsuleOrientation, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+            ConvexObject3D<T>(ConvexObjectType::CAPSULE),
             capsuleShape(CapsuleShape<T>(radius, cylinderHeight, capsuleOrientation)),
             centerOfMass(centerOfMass),
             orientation(orientation) {

@@ -9,6 +9,7 @@
 namespace urchin {
 
     template<class T> OBBox<T>::OBBox():
+            ConvexObject3D<T>(ConvexObjectType::OBBOX),
             halfSizes(Vector3<T>(0.0, 0.0, 0.0)),
             centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
@@ -20,7 +21,8 @@ namespace urchin {
         normalizedAxis[2] = Vector3<T>(0.0, 0.0, 0.0);
     }
 
-    template<class T> OBBox<T>::OBBox(const Vector3<T>& halfSizes, const Point3<T>& centerOfMass, const Quaternion<T>& orientation):
+    template<class T> OBBox<T>::OBBox(const Vector3<T>& halfSizes, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+            ConvexObject3D<T>(ConvexObjectType::OBBOX),
             halfSizes(halfSizes),
             centerOfMass(centerOfMass),
             orientation(orientation) {
@@ -34,6 +36,7 @@ namespace urchin {
     }
 
     template<class T> OBBox<T>::OBBox(const AABBox<T>& aabb) :
+            ConvexObject3D<T>(ConvexObjectType::OBBOX),
             halfSizes(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / (T)2.0, (aabb.getMax().Y - aabb.getMin().Y) / (T)2.0, (aabb.getMax().Z - aabb.getMin().Z) / (T)2.0)),
             centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0) {
         axis[0] = Vector3<T>(halfSizes[0], 0.0, 0.0);
@@ -46,6 +49,7 @@ namespace urchin {
     }
 
     template<class T> OBBox<T>::OBBox(const Sphere<T>& sphere) :
+            ConvexObject3D<T>(ConvexObjectType::OBBOX),
             halfSizes(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius())),
             centerOfMass(sphere.getCenterOfMass()) {
         axis[0] = Vector3<T>(halfSizes[0], 0.0, 0.0);

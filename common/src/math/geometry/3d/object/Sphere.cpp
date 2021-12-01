@@ -3,12 +3,14 @@
 namespace urchin {
 
     template<class T> Sphere<T>::Sphere() :
+            ConvexObject3D<T>(ConvexObjectType::SPHERE),
             sphereShape(SphereShape<T>(0.0)),
             centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
 
     }
 
     template<class T> Sphere<T>::Sphere(T radius, const Point3<T>& centerOfMass) :
+            ConvexObject3D<T>(ConvexObjectType::SPHERE),
             sphereShape(SphereShape<T>(radius)),
             centerOfMass(centerOfMass) {
 

@@ -3,6 +3,7 @@
 namespace urchin {
 
     template<class T> Cylinder<T>::Cylinder():
+            ConvexObject3D<T>(ConvexObjectType::CYLINDER),
             cylinderShape(CylinderShape<T>(0.0, 0.0, CylinderShape<T>::CYLINDER_X)),
             centerOfMass(Point3<T>(0.0, 0.0, 0.0)) {
         axis[0] = Vector3<T>(0.0, 0.0, 0.0);
@@ -11,6 +12,7 @@ namespace urchin {
     }
 
     template<class T> Cylinder<T>::Cylinder(T radius, T height, typename CylinderShape<T>::CylinderOrientation cylinderOrientation, const Point3<T>& centerOfMass, const Quaternion<T>& orientation) :
+            ConvexObject3D<T>(ConvexObjectType::CYLINDER),
             cylinderShape(CylinderShape<T>(radius, height, cylinderOrientation)),
             centerOfMass(centerOfMass),
             orientation(orientation) {

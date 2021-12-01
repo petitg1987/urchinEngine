@@ -6,6 +6,7 @@
 namespace urchin {
 
     template<class T> AABBox<T>::AABBox():
+            ConvexObject3D<T>(ConvexObjectType::AABBOX),
             boxShape(BoxShape<T>(Vector3<T>(0.5, 0.5, 0.5))),
             min(Point3<T>(0.0, 0.0, 0.0)),
             max(Point3<T>(1.0, 1.0, 1.0)) {
@@ -13,6 +14,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Point3<T>& max) :
+            ConvexObject3D<T>(ConvexObjectType::AABBOX),
             boxShape(BoxShape<T>(Vector3<T>((max.X - min.X) / (T)2.0, (max.Y - min.Y) / (T)2.0, (max.Z - min.Z) / (T)2.0))),
             min(min),
             max(max) {
@@ -22,6 +24,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Vector3<T>& diagonal) :
+            ConvexObject3D<T>(ConvexObjectType::AABBOX),
             boxShape(BoxShape<T>(Vector3<T>(diagonal.X / (T)2.0, diagonal.Y / (T)2.0, diagonal.Z / (T)2.0))),
             min(min),
             max(min.translate(diagonal)) {
@@ -31,6 +34,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(const std::vector<Point3<T>>& points) :
+            ConvexObject3D<T>(ConvexObjectType::AABBOX),
             min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
             max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max())) {
         for (const auto& point : points) {
@@ -47,6 +51,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(std::span<Point3<T>> points) :
+            ConvexObject3D<T>(ConvexObjectType::AABBOX),
             min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
             max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max())) {
         for (unsigned int i = 0; i < std::size(points); ++i) {
@@ -65,6 +70,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T>::AABBox(const AABBox<T>& aabbox) :
+            ConvexObject3D<T>(ConvexObjectType::AABBOX),
             boxShape(BoxShape<T>(aabbox.getHalfSizes())),
             min(aabbox.getMin()),
             max(aabbox.getMax()) {

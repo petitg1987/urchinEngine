@@ -2,12 +2,14 @@
 
 namespace urchin {
 
-    template<class T> Triangle3D<T>::Triangle3D(const std::array<Point3<T>, 3>& points):
+    template<class T> Triangle3D<T>::Triangle3D(const std::array<Point3<T>, 3>& points) :
+            ConvexObject3D<T>(ConvexObjectType::TRIANGLE),
             triangleShape(TriangleShape3D<T>(points)) {
 
     }
 
-    template<class T> Triangle3D<T>::Triangle3D(const Point3<T>& point1, const Point3<T>& point2, const Point3<T>& point3):
+    template<class T> Triangle3D<T>::Triangle3D(const Point3<T>& point1, const Point3<T>& point2, const Point3<T>& point3) :
+            ConvexObject3D<T>(ConvexObjectType::TRIANGLE),
             triangleShape(TriangleShape3D<T>(point1, point2, point3)) {
 
     }

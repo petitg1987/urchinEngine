@@ -23,9 +23,8 @@ template<class T> OctreeManager<T>::~OctreeManager() {
 }
 
 template<class T> void OctreeManager<T>::notify(Observable* observable, int notificationType) {
-    if (dynamic_cast<T*>(observable)) {
+    if (auto octreeable = dynamic_cast<T*>(observable)) {
         if (notificationType == T::MOVE) {
-            auto octreeable = dynamic_cast<T*>(observable);
             movingOctreeables.emplace_back(octreeable);
         }
     }

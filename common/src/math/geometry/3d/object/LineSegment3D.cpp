@@ -3,12 +3,14 @@
 namespace urchin {
 
     template<class T> LineSegment3D<T>::LineSegment3D() :
+            ConvexObject3D<T>(ConvexObjectType::LINE_SEGMENT),
             a(Point3<T>(NAN, NAN, NAN)),
             b(Point3<T>(NAN, NAN, NAN)) {
 
     }
 
     template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T>& a, const Point3<T>& b) :
+            ConvexObject3D<T>(ConvexObjectType::LINE_SEGMENT),
             a(a),
             b(b) {
 
