@@ -12,6 +12,8 @@ namespace urchin {
         public:
             explicit Meshes(std::shared_ptr<ConstMeshes>);
 
+            static constexpr float MIN_BBOX_SIZE = 0.01f;
+
             unsigned int getNumberMeshes() const;
             Mesh& getMesh(unsigned int) const;
             const AABBox<float>& getMeshesAABBox() const;
@@ -28,8 +30,6 @@ namespace urchin {
 
         private:
             void computeLocalAABBox(bool);
-
-            static constexpr float MIN_BBOX_SIZE = 0.01f;
 
             std::shared_ptr<ConstMeshes> constMeshes;
             unsigned int numMeshes;
