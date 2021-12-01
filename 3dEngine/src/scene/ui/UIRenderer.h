@@ -25,7 +25,7 @@ namespace urchin {
 
     class UIRenderer : public Renderer, public Observer {
         public:
-            explicit UIRenderer(RenderTarget&, I18nService&);
+            UIRenderer(RenderTarget&, I18nService&);
 
             //3d specific
             void setupUi3d(const Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
