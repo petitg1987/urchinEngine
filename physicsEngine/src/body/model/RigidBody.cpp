@@ -30,11 +30,10 @@ namespace urchin {
     }
 
     RigidBody& RigidBody::upCast(AbstractBody& abstractBody) {
-        return dynamic_cast<RigidBody&>(abstractBody);
+        return static_cast<RigidBody&>(abstractBody);
     }
 
-    void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,
-                                        const Vector3<float>& linearFactor, const Vector3<float>& angularFactor) {
+    void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping, const Vector3<float>& linearFactor, const Vector3<float>& angularFactor) {
         this->mass = mass;
 
         this->linearDamping = linearDamping;
