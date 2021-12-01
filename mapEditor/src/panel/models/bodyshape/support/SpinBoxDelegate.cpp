@@ -25,12 +25,12 @@ namespace urchin {
     void SpinBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
         double value = index.model()->data(index, Qt::EditRole).toDouble();
 
-        auto* spinBox = dynamic_cast<QDoubleSpinBox*>(editor);
+        auto* spinBox = static_cast<QDoubleSpinBox*>(editor);
         spinBox->setValue(value);
     }
 
     void SpinBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-        auto* spinBox = dynamic_cast<QDoubleSpinBox*>(editor);
+        auto* spinBox = static_cast<QDoubleSpinBox*>(editor);
         spinBox->interpretText();
         double value = spinBox->value();
         model->setData(index, value, Qt::EditRole);

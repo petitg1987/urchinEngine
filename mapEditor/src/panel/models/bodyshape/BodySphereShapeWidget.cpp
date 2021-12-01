@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     void BodySphereShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
-        const auto& sphereShape = dynamic_cast<const CollisionSphereShape&>(shape);
+        const auto& sphereShape = static_cast<const CollisionSphereShape&>(shape);
 
         radius->setValue(sphereShape.getRadius());
     }

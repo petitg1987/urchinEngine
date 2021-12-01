@@ -12,7 +12,7 @@ namespace urchin {
             return std::make_shared<AIObject>(name, transform, true, std::move(singleShape));
         } else if (shape.isCompound()) {
             std::vector<std::unique_ptr<AIShape>> aiShapes;
-            const auto& scaledCompoundShape = dynamic_cast<const CollisionCompoundShape&>(shape);
+            const auto& scaledCompoundShape = static_cast<const CollisionCompoundShape&>(shape);
             for (const auto& scaledLocalizedShape : scaledCompoundShape.getLocalizedShapes()) {
                 aiShapes.push_back(std::make_unique<AIShape>(scaledLocalizedShape->shape->getSingleShape().clone(), scaledLocalizedShape->transform.toTransform()));
             }
@@ -27,7 +27,7 @@ namespace urchin {
         assert(MathFunction::isOne(transform.getScale(), 0.01f));
 
         try{
-            const auto& scaledHeightfieldShape = dynamic_cast<const CollisionHeightfieldShape&>(shape);
+            const auto& scaledHeightfieldShape = static_cast<const CollisionHeightfieldShape&>(shape);
             return buildAITerrain(name, scaledHeightfieldShape, transform);
         } catch (const std::bad_cast&) {
             throw std::invalid_argument("Unknown terrain shape type: " + std::string(typeid(shape).name()));

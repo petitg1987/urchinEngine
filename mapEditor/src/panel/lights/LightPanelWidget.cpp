@@ -214,10 +214,10 @@ namespace urchin {
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
         if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-            setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight*>(light));
+            setupOmnidirectionalLightDataFrom(static_cast<const OmnidirectionalLight*>(light));
             this->produceShadowCheckBox->setDisabled(true);
         } else if (light->getLightType() == Light::LightType::SUN) {
-            setupSunLightDataFrom(dynamic_cast<const SunLight*>(light));
+            setupSunLightDataFrom(static_cast<const SunLight*>(light));
             this->produceShadowCheckBox->setDisabled(false);
         } else {
             throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string(light->getLightType()));

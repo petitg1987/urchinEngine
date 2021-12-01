@@ -15,7 +15,7 @@ namespace urchin {
 
     std::unique_ptr<DownSampleFilter> DownSampleFilterBuilder::buildDownSample() {
         std::unique_ptr<TextureFilter> downSample = build();
-        return std::unique_ptr<DownSampleFilter>(dynamic_cast<DownSampleFilter*>(downSample.release()));
+        return std::unique_ptr<DownSampleFilter>(static_cast<DownSampleFilter*>(downSample.release()));
     }
 
 }

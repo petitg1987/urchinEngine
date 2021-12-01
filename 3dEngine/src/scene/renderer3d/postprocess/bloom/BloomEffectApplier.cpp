@@ -74,7 +74,7 @@ namespace urchin {
         preFilterShader = createShader("bloomPreFilter.vert.spv", "bloomPreFilter.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
         if (outputRenderTarget.isValidRenderTarget()) {
             preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", RenderTarget::NO_DEPTH_ATTACHMENT);
-            dynamic_cast<OffscreenRender*>(preFilterRenderTarget.get())->addOutputTexture(bloomStepTextures[0]);
+            static_cast<OffscreenRender*>(preFilterRenderTarget.get())->addOutputTexture(bloomStepTextures[0]);
             preFilterRenderTarget->initialize();
         } else {
             preFilterShader = ShaderBuilder::createNullShader();
@@ -98,7 +98,7 @@ namespace urchin {
             std::unique_ptr<RenderTarget> downSampleRenderTarget;
             if (outputRenderTarget.isValidRenderTarget()) {
                 downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
-                dynamic_cast<OffscreenRender*>(downSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex]);
+                static_cast<OffscreenRender*>(downSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex]);
                 downSampleRenderTarget->initialize();
             } else {
                 downSampleRenderTarget = std::make_unique<NullRenderTarget>(bloomStepTextures[outTexIndex]->getWidth(), bloomStepTextures[outTexIndex]->getHeight());
@@ -122,7 +122,7 @@ namespace urchin {
             std::unique_ptr<RenderTarget> upSampleRenderTarget;
             if (outputRenderTarget.isValidRenderTarget()) {
                 upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
-                dynamic_cast<OffscreenRender*>(upSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::LOAD_CONTENT);
+                static_cast<OffscreenRender*>(upSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::LOAD_CONTENT);
                 upSampleRenderTarget->initialize();
             } else {
                 upSampleRenderTarget = std::make_unique<NullRenderTarget>(bloomStepTextures[outTexIndex]->getWidth(), bloomStepTextures[outTexIndex]->getHeight());

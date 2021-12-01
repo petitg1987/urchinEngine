@@ -30,7 +30,7 @@ namespace urchin {
     void CollisionCylinderReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
-        const auto& cylinderShape = dynamic_cast<const CollisionCylinderShape&>(collisionShape);
+        const auto& cylinderShape = static_cast<const CollisionCylinderShape&>(collisionShape);
 
         auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
         CylinderShape<float>::CylinderOrientation orientationValue = cylinderShape.getCylinderOrientation();

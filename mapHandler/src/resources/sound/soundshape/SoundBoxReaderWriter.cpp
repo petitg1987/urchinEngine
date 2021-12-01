@@ -23,7 +23,7 @@ namespace urchin {
     void SoundBoxReaderWriter::writeOn(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, BOX_VALUE));
 
-        const auto& boxShape = dynamic_cast<const SoundBox&>(soundShape);
+        const auto& boxShape = static_cast<const SoundBox&>(soundShape);
 
         auto& halfSizesChunk = udaWriter.createChunk(HALF_SIZES_TAG, UdaAttribute(), &shapeChunk);
         halfSizesChunk.setVector3Value(boxShape.getHalfSizes());

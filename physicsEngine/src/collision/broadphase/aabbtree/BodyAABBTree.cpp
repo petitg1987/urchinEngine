@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::preRemoveObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>& nodeToDelete) {
-        const auto& bodyNodeToDelete = dynamic_cast<BodyAABBNodeData&>(nodeToDelete.getNodeData());
+        const auto& bodyNodeToDelete = static_cast<BodyAABBNodeData&>(nodeToDelete.getNodeData());
         removeOverlappingPairs(bodyNodeToDelete);
     }
 
@@ -59,7 +59,7 @@ namespace urchin {
 
             if (&leafNode != currentNode && leafNode.getAABBox().collideWithAABBox(currentNode->getAABBox())) {
                 if (currentNode->isLeaf()) {
-                    createOverlappingPair(dynamic_cast<BodyAABBNodeData&>(leafNode.getNodeData()), dynamic_cast<BodyAABBNodeData&>(currentNode->getNodeData()));
+                    createOverlappingPair(static_cast<BodyAABBNodeData&>(leafNode.getNodeData()), static_cast<BodyAABBNodeData&>(currentNode->getNodeData()));
                 } else {
                     browseNodes.push_back(currentNode->getRightChild());
                     browseNodes.push_back(currentNode->getLeftChild());
@@ -101,7 +101,7 @@ namespace urchin {
 
         for (const auto& overlappingPair : overlappingPairs) {
             const std::shared_ptr<AbstractBody>& otherPairBody = &overlappingPair.getBody1() == &body ? overlappingPair.getBody2Ptr() : overlappingPair.getBody1Ptr();
-            auto& otherNodeData = dynamic_cast<BodyAABBNodeData&>(AABBTree::getNodeData(otherPairBody.get()));
+            auto& otherNodeData = static_cast<BodyAABBNodeData&>(AABBTree::getNodeData(otherPairBody.get()));
 
             otherNodeData.removeOwnerPairContainer(bodyPairContainer);
         }

@@ -18,7 +18,7 @@ namespace urchin {
     void SoundSphereReaderWriter::writeOn(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPHERE_VALUE));
 
-        const auto& sphereShape = dynamic_cast<const SoundSphere&>(soundShape);
+        const auto& sphereShape = static_cast<const SoundSphere&>(soundShape);
 
         auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(sphereShape.getRadius());

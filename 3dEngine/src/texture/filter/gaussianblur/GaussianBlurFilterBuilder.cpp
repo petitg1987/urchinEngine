@@ -41,7 +41,7 @@ namespace urchin {
 
     std::unique_ptr<GaussianBlurFilter> GaussianBlurFilterBuilder::buildGaussianBlur() {
         std::unique_ptr<TextureFilter> gaussianBlur = build();
-        return std::unique_ptr<GaussianBlurFilter>(dynamic_cast<GaussianBlurFilter*>(gaussianBlur.release()));
+        return std::unique_ptr<GaussianBlurFilter>(static_cast<GaussianBlurFilter*>(gaussianBlur.release()));
     }
 
 }

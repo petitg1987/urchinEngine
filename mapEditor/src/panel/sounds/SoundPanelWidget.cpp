@@ -247,7 +247,7 @@ namespace urchin {
         if (sound->getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
         } else if (sound->getSoundType() == Sound::SoundType::SPATIAL) {
-            setupSpatialSoundDataFrom(dynamic_cast<const SpatialSound*>(sound));
+            setupSpatialSoundDataFrom(static_cast<const SpatialSound*>(sound));
         } else {
             throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
         }
@@ -311,7 +311,7 @@ namespace urchin {
         specificTriggerShapeGroupBox->show();
         soundTriggerType->setText(ChangeSoundTriggerDialog::SHAPE_TRIGGER_LABEL);
 
-        const auto* shapeTrigger = dynamic_cast<const ShapeTrigger*>(sceneSound.getSoundTrigger());
+        const auto* shapeTrigger = static_cast<const ShapeTrigger*>(sceneSound.getSoundTrigger());
         auto& soundShape = shapeTrigger->getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, sceneSound);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);

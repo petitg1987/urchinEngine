@@ -55,13 +55,13 @@ namespace urchin {
             }
         } else {
             if (renderTarget) {
-                dynamic_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
+                static_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
             }
             renderTarget->setExternalDepthTexture(depthTexture);
-            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(accumulationTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f)));
-            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(revealTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f)));
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(accumulationTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f)));
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(revealTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f)));
             renderTarget->initialize();
         }
     }

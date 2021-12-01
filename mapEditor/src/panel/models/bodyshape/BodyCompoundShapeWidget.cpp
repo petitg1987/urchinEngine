@@ -57,7 +57,7 @@ namespace urchin {
     }
 
     void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
-        const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(shape);
+        const auto& compoundShape = static_cast<const CollisionCompoundShape&>(shape);
 
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {

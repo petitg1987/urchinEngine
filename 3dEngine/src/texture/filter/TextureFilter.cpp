@@ -37,7 +37,7 @@ namespace urchin {
             renderTarget = std::make_unique<NullRenderTarget>(texture->getWidth(), texture->getHeight());
         } else {
             renderTarget = std::make_unique<OffscreenRender>(name, RenderTarget::NO_DEPTH_ATTACHMENT);
-            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(texture);
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(texture);
             renderTarget->initialize();
         }
     }

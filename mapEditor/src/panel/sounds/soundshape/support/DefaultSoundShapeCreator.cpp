@@ -12,7 +12,7 @@ namespace urchin {
         Point3<float> position(0.0f, 0.0f, 0.0f);
         float radius = 1.0f;
         if (sound->getSoundType() == Sound::SoundType::SPATIAL) {
-            const auto* pointSound = dynamic_cast<const SpatialSound*>(sound);
+            const auto* pointSound = static_cast<const SpatialSound*>(sound);
             position = pointSound->getPosition();
             radius = pointSound->getInaudibleDistance();
         }

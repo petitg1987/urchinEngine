@@ -31,7 +31,7 @@ namespace urchin {
     void CollisionCompoundShapeReaderWriter::writeOn(UdaChunk& mainShapeChunk, const CollisionShape3D& mainCollisionShape, UdaWriter& udaWriter) const {
         mainShapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, COMPOUND_SHAPE_VALUE));
 
-        const auto& compoundShape = dynamic_cast<const CollisionCompoundShape&>(mainCollisionShape);
+        const auto& compoundShape = static_cast<const CollisionCompoundShape&>(mainCollisionShape);
 
         auto& localizedShapesListChunk = udaWriter.createChunk(LOCALIZED_SHAPES, UdaAttribute(), &mainShapeChunk);
         const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();

@@ -35,7 +35,7 @@ namespace urchin {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
-            const auto& shapeTrigger = dynamic_cast<const ShapeTrigger&>(soundTrigger);
+            const auto& shapeTrigger = static_cast<const ShapeTrigger&>(soundTrigger);
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, SHAPE_VALUE));
 
             auto& soundShapeChunk = udaWriter.createChunk(SOUND_SHAPE_TAG, UdaAttribute(), &soundTriggerChunk);

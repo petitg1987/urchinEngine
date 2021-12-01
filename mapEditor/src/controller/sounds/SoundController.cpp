@@ -67,7 +67,7 @@ namespace urchin {
     const SceneSound& SoundController::updateSceneSpatialSoundProperties(const SceneSound& constSceneSound, const Point3<float>& position,
             float inaudibleDistance) {
         const SceneSound& sceneSound = findSceneSound(constSceneSound);
-        auto* pointSound = dynamic_cast<SpatialSound*>(sceneSound.getSound());
+        auto* pointSound = static_cast<SpatialSound*>(sceneSound.getSound());
 
         pointSound->setPosition(position);
         pointSound->setInaudibleDistance(inaudibleDistance);
@@ -84,7 +84,7 @@ namespace urchin {
         if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = std::make_shared<ManualTrigger>(playBehavior);
         } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
-            const auto* shapeTrigger = dynamic_cast<ShapeTrigger*>(soundTrigger);
+            const auto* shapeTrigger = static_cast<ShapeTrigger*>(soundTrigger);
             auto clonedShape = shapeTrigger->getSoundShape().clone();
             newSoundTrigger = std::make_shared<ShapeTrigger>(playBehavior, std::move(clonedShape));
         } else {
@@ -99,7 +99,7 @@ namespace urchin {
 
     const SceneSound& SoundController::updateSceneSoundShape(const SceneSound& constSceneSound, std::unique_ptr<const SoundShape> newSoundShape) {
         SceneSound& sceneSound = findSceneSound(constSceneSound);
-        const auto* shapeTrigger = dynamic_cast<ShapeTrigger*>(sceneSound.getSoundTrigger());
+        const auto* shapeTrigger = static_cast<ShapeTrigger*>(sceneSound.getSoundTrigger());
 
         auto newShapeTrigger = std::make_shared<ShapeTrigger>(shapeTrigger->getPlayBehavior(), std::move(newSoundShape));
         sceneSound.changeSoundTrigger(newShapeTrigger);

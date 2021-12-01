@@ -20,7 +20,7 @@ namespace urchin {
     void CollisionConvexHullReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
 
-        const auto& convexHullShape = dynamic_cast<const CollisionConvexHullShape&>(collisionShape);
+        const auto& convexHullShape = static_cast<const CollisionConvexHullShape&>(collisionShape);
 
         auto& pointsListChunk = udaWriter.createChunk(POINTS_TAG, UdaAttribute(), &shapeChunk);
         const std::vector<Point3<float>>& points = convexHullShape.getPoints();

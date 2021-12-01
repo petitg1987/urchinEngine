@@ -55,7 +55,7 @@ namespace urchin {
         }
 
         if (sound.getSoundType() == Sound::SPATIAL) {
-            const auto& spatialSound = dynamic_cast<const SpatialSound&>(sound);
+            const auto& spatialSound = static_cast<const SpatialSound&>(sound);
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPATIAL_VALUE));
 
             auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &soundChunk);

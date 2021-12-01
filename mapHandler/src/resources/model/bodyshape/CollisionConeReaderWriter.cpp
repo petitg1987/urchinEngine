@@ -36,7 +36,7 @@ namespace urchin {
     void CollisionConeReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CONE_VALUE));
 
-        const auto& coneShape = dynamic_cast<const CollisionConeShape&>(collisionShape);
+        const auto& coneShape = static_cast<const CollisionConeShape&>(collisionShape);
 
         auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
         ConeShape<float>::ConeOrientation orientationValue = coneShape.getConeOrientation();

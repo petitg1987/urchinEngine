@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void BodyBoxShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
-        const auto& boxShape = dynamic_cast<const CollisionBoxShape&>(shape);
+        const auto& boxShape = static_cast<const CollisionBoxShape&>(shape);
 
         const Vector3<float>& halfSizes = boxShape.getHalfSizes();
         halfSizeX->setValue(halfSizes.X);

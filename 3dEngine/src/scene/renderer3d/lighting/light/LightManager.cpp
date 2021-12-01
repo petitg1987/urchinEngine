@@ -137,10 +137,10 @@ namespace urchin {
                 lightsData.lightsInfo[i].lightAmbient = light->getAmbientColor();
 
                 if (lights[i]->getLightType() == Light::SUN) {
-                    const auto* sunLight = dynamic_cast<const SunLight*>(light);
+                    const auto* sunLight = static_cast<const SunLight*>(light);
                     lightsData.lightsInfo[i].positionOrDirection = sunLight->getDirections()[0];
                 } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
-                    const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
+                    const auto* omnidirectionalLight = static_cast<const OmnidirectionalLight*>(light);
                     lightsData.lightsInfo[i].positionOrDirection = omnidirectionalLight->getPosition().toVector();
                     lightsData.lightsInfo[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
                 } else {

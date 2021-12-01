@@ -28,7 +28,7 @@ namespace urchin {
             renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
         } else {
             renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
-            dynamic_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
             renderTarget->initialize();
         }
 

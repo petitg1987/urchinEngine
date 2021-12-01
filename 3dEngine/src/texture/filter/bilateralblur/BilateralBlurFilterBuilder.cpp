@@ -67,7 +67,7 @@ namespace urchin {
 
     std::unique_ptr<BilateralBlurFilter> BilateralBlurFilterBuilder::buildBilateralBlur() {
         std::unique_ptr<TextureFilter> bilateralBlurFilter = build();
-        return std::unique_ptr<BilateralBlurFilter>(dynamic_cast<BilateralBlurFilter*>(bilateralBlurFilter.release()));
+        return std::unique_ptr<BilateralBlurFilter>(static_cast<BilateralBlurFilter*>(bilateralBlurFilter.release()));
     }
 
 }

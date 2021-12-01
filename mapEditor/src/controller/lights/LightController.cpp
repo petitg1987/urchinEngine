@@ -49,7 +49,7 @@ namespace urchin {
     const SceneLight& LightController::updateSceneOmnidirectionalLightProperties(const SceneLight& constSceneLight,
                                                                                  float attenuation, const Point3<float>& position) {
         const SceneLight& sceneLight = findSceneLight(constSceneLight);
-        auto* light = dynamic_cast<OmnidirectionalLight*>(sceneLight.getLight());
+        auto* light = static_cast<OmnidirectionalLight*>(sceneLight.getLight());
 
         light->setAttenuation(attenuation);
         light->setPosition(position);
@@ -60,7 +60,7 @@ namespace urchin {
 
     const SceneLight& LightController::updateSceneSunLightProperties(const SceneLight& constSceneLight, const Vector3<float>& direction) {
         const SceneLight& sceneLight = findSceneLight(constSceneLight);
-        auto* light = dynamic_cast<SunLight*>(sceneLight.getLight());
+        auto* light = static_cast<SunLight*>(sceneLight.getLight());
 
         light->setDirection(direction);
 

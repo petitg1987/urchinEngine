@@ -116,7 +116,7 @@ namespace urchin {
 
         std::unique_ptr<const CollisionShape3D> ccdGhostBodyShape;
         try {
-            auto& ghostBodyCapsule = dynamic_cast<const CollisionCapsuleShape&>(ghostBody->getShape());
+            auto& ghostBodyCapsule = static_cast<const CollisionCapsuleShape&>(ghostBody->getShape());
 
             float radius = ghostBodyCapsule.getRadius();
             float height = ghostBodyCapsule.getCylinderHeight() + (2.0f * radius);

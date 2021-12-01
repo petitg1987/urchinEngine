@@ -30,7 +30,7 @@ namespace urchin {
     void CollisionCapsuleReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
-        const auto& capsuleShape = dynamic_cast<const CollisionCapsuleShape&>(collisionShape);
+        const auto& capsuleShape = static_cast<const CollisionCapsuleShape&>(collisionShape);
 
         auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
         CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape.getCapsuleOrientation();

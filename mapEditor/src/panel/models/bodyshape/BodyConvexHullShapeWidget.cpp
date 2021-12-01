@@ -55,7 +55,7 @@ namespace urchin {
     }
 
     void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(const CollisionShape3D& shape) {
-        const auto& convexHullShape = dynamic_cast<const CollisionConvexHullShape&>(shape);
+        const auto& convexHullShape = static_cast<const CollisionConvexHullShape&>(shape);
 
         const std::vector<Point3<float>>& points = convexHullShape.getPoints();
         for (const auto& point : points) {

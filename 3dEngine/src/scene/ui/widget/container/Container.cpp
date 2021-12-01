@@ -51,8 +51,7 @@ namespace urchin {
     void Container::onScrollableContentUpdated() const {
         Rectangle<int> containerRectangle = widgetRectangle();
         for (const auto& child : getChildren()) {
-            auto* lazyWidget = dynamic_cast<LazyWidget*>(child.get());
-            if (lazyWidget) {
+            if (auto* lazyWidget = dynamic_cast<LazyWidget*>(child.get())) {
                 if (containerRectangle.collideWithRectangle(child->widgetRectangle())) {
                     lazyWidget->loadChildren();
                 } else {

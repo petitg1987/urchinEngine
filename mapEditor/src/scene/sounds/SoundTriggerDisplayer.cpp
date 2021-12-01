@@ -20,7 +20,7 @@ namespace urchin {
             const SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
 
             if (soundTrigger->getTriggerType() == ShapeTrigger::TriggerType::SHAPE_TRIGGER) {
-                const auto& shapeTrigger = dynamic_cast<const ShapeTrigger*>(soundTrigger);
+                const auto& shapeTrigger = static_cast<const ShapeTrigger*>(soundTrigger);
                 auto geometryModel = retrieveGeometry(shapeTrigger->getSoundShape());
                 soundTriggerModels.push_back(std::move(geometryModel));
             }
@@ -44,12 +44,12 @@ namespace urchin {
     }
 
     std::unique_ptr<GeometryModel> SoundTriggerDisplayer::retrieveSphereGeometry(const SoundShape& soundShape) const {
-        const auto& soundSphere = dynamic_cast<const SoundSphere&>(soundShape);
+        const auto& soundSphere = static_cast<const SoundSphere&>(soundShape);
         return std::make_unique<SphereModel>(soundSphere.getPlayTriggerSphere(), 15);
     }
 
     std::unique_ptr<GeometryModel> SoundTriggerDisplayer::retrieveBoxGeometry(const SoundShape& soundShape) const {
-        const auto& soundBox = dynamic_cast<const SoundBox&>(soundShape);
+        const auto& soundBox = static_cast<const SoundBox&>(soundShape);
         return std::make_unique<OBBoxModel>(soundBox.getPlayTriggerBox());
     }
 

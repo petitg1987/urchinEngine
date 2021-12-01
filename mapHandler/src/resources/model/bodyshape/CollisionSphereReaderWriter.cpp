@@ -12,7 +12,7 @@ namespace urchin {
     void CollisionSphereReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPHERE_VALUE));
 
-        const auto& sphereShape = dynamic_cast<const CollisionSphereShape&>(collisionShape);
+        const auto& sphereShape = static_cast<const CollisionSphereShape&>(collisionShape);
 
         auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(sphereShape.getRadius());

@@ -12,7 +12,7 @@ namespace urchin {
     void CollisionBoxReaderWriter::writeOn(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, BOX_VALUE));
 
-        const auto& boxShape = dynamic_cast<const CollisionBoxShape&>(collisionShape);
+        const auto& boxShape = static_cast<const CollisionBoxShape&>(collisionShape);
 
         auto& halfSizeChunk = udaWriter.createChunk(HALF_SIZE_TAG, UdaAttribute(), &shapeChunk);
         halfSizeChunk.setVector3Value(boxShape.getHalfSizes());

@@ -39,7 +39,7 @@ namespace urchin {
 
     void LightReaderWriter::buildChunkFrom(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
         if (light.getLightType() == Light::OMNIDIRECTIONAL) {
-            const auto& omnidirectionalLight = dynamic_cast<const OmnidirectionalLight&>(light);
+            const auto& omnidirectionalLight = static_cast<const OmnidirectionalLight&>(light);
             lightChunk.addAttribute(UdaAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
             auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &lightChunk);
@@ -48,7 +48,7 @@ namespace urchin {
             auto& exponentialAttenuationChunk = udaWriter.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightChunk);
             exponentialAttenuationChunk.setFloatValue(omnidirectionalLight.getExponentialAttenuation());
         } else if (light.getLightType() == Light::SUN) {
-            const auto& sunLight = dynamic_cast<const SunLight&>(light);
+            const auto& sunLight = static_cast<const SunLight&>(light);
             lightChunk.addAttribute(UdaAttribute(TYPE_ATTR, SUN_VALUE));
 
             auto& directionChunk = udaWriter.createChunk(DIRECTION_TAG, UdaAttribute(), &lightChunk);
