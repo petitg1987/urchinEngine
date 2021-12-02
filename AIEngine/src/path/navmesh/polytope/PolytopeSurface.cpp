@@ -4,11 +4,16 @@
 #include <path/navmesh/polytope/Polytope.h>
 
 namespace urchin {
-    PolytopeSurface::PolytopeSurface() :
+    PolytopeSurface::PolytopeSurface(PolytopeType polytopeType) :
+            polytopeType(polytopeType),
             polytope(nullptr),
             surfacePosition(std::numeric_limits<unsigned int>::max()),
             walkableCandidate(true) {
 
+    }
+
+    PolytopeType PolytopeSurface::getPolytopeType() const {
+        return polytopeType;
     }
 
     void PolytopeSurface::setPolytope(const Polytope* polytope) {

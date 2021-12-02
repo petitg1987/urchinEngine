@@ -7,7 +7,7 @@ namespace urchin {
 
     PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float>& position, std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength,
             const Vector3<float>& approximateNormal, std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
-            PolytopeSurface(),
+            PolytopeSurface(PolytopeType::TERRAIN),
             position(position),
             localVertices(std::move(localVertices)),
             xLength(xLength),

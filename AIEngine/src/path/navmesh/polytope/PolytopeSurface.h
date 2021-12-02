@@ -8,12 +8,19 @@
 
 namespace urchin {
 
+    enum class PolytopeType {
+        PLANE,
+        TERRAIN
+    };
+
     class Polytope;
 
     class PolytopeSurface {
         public:
-            PolytopeSurface();
+            explicit PolytopeSurface(PolytopeType);
             virtual ~PolytopeSurface() = default;
+
+            PolytopeType getPolytopeType() const;
 
             void setPolytope(const Polytope*);
             const Polytope* getPolytope() const;
@@ -35,6 +42,7 @@ namespace urchin {
         private:
             std::size_t computeSurfacePosition();
 
+            PolytopeType polytopeType;
             const Polytope* polytope;
             std::size_t surfacePosition; //position/index of surface in polytope
             bool walkableCandidate;

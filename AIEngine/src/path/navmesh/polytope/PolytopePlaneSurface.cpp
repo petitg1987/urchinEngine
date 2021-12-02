@@ -9,6 +9,7 @@ namespace urchin {
      * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
      */
     PolytopePlaneSurface::PolytopePlaneSurface(std::vector<Point3<float>> ccwPoints, bool isSlopeWalkable) :
+            PolytopeSurface(PolytopeType::PLANE),
             ccwPoints(std::move(ccwPoints)),
             isSlopeWalkable(isSlopeWalkable) {
         Vector3<float> v1 = this->ccwPoints[0].vector(this->ccwPoints[2]);
@@ -23,6 +24,7 @@ namespace urchin {
      * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
      */
     PolytopePlaneSurface::PolytopePlaneSurface(std::vector<Point3<float>> ccwPoints, const Vector3<float>& normal, bool isSlopeWalkable) :
+            PolytopeSurface(PolytopeType::PLANE),
             ccwPoints(std::move(ccwPoints)),
             normal(normal),
             isSlopeWalkable(isSlopeWalkable) {

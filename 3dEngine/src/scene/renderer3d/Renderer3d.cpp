@@ -335,7 +335,8 @@ namespace urchin {
         //deferred rendering
         diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        if (auto* deferredOffscreenRenderTarget = dynamic_cast<OffscreenRender*>(deferredRenderTarget.get())) {
+        if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
+            auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
             deferredOffscreenRenderTarget->resetOutputTextures();
             deferredOffscreenRenderTarget->addOutputTexture(diffuseTexture);
             deferredOffscreenRenderTarget->addOutputTexture(normalAndAmbientTexture);
@@ -344,7 +345,8 @@ namespace urchin {
 
         //lighting pass rendering
         lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
-        if (auto* offscreenLightingRenderTarget = dynamic_cast<OffscreenRender*>(lightingRenderTarget.get())) {
+        if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
+            auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
             offscreenLightingRenderTarget->resetOutputTextures();
             offscreenLightingRenderTarget->addOutputTexture(lightingPassTexture);
             offscreenLightingRenderTarget->initialize();
