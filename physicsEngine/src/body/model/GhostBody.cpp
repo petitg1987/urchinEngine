@@ -4,14 +4,17 @@
 namespace urchin {
 
     GhostBody::GhostBody(const std::string& id, const PhysicsTransform& physicsTransform, std::unique_ptr<const CollisionShape3D> shape) :
-            AbstractBody(id, physicsTransform, std::move(shape)),
+            AbstractBody(BodyType::GHOST, id, physicsTransform, std::move(shape)),
             pairContainer(std::make_unique<SyncVectorPairContainer>()) {
         setIsStatic(false); //can move and be affected by the physics world: not a static body
         setIsActive(false); //default value: body is not active
     }
 
-    GhostBody* GhostBody::upCast(AbstractBody* workBody) {
-        return dynamic_cast<GhostBody*>(workBody);
+    GhostBody* GhostBody::upCast(AbstractBody* abstractBody) {
+        if (abstractBody->getBodyType() == BodyType::GHOST) {
+            return static_cast<GhostBody*>(abstractBody);
+        }
+        return nullptr;
     }
 
     /**
@@ -19,10 +22,6 @@ namespace urchin {
      */
     PairContainer* GhostBody::getPairContainer() const {
         return pairContainer.get();
-    }
-
-    bool GhostBody::isGhostBody() const {
-        return true;
     }
 
 }

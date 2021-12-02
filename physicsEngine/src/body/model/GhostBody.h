@@ -19,8 +19,6 @@ namespace urchin {
 
             PairContainer* getPairContainer() const override;
 
-            bool isGhostBody() const override;
-
         private:
             std::unique_ptr<PairContainer> pairContainer;
     };

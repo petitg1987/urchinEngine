@@ -23,10 +23,11 @@ template<class T> OctreeManager<T>::~OctreeManager() {
 }
 
 template<class T> void OctreeManager<T>::notify(Observable* observable, int notificationType) {
-    if (auto octreeable = dynamic_cast<T*>(observable)) {
-        if (notificationType == T::MOVE) {
-            movingOctreeables.emplace_back(octreeable);
-        }
+    #ifdef URCHIN_DEBUG
+        assert(dynamic_cast<T*>(observable));
+    #endif
+    if (notificationType == T::MOVE) {
+        movingOctreeables.emplace_back(static_cast<T*>(observable));
     }
 }
 

@@ -10,10 +10,11 @@ namespace urchin {
     uint_fast32_t AbstractBody::nextObjectId = 0;
     bool AbstractBody::bDisableAllBodies = false;
 
-    AbstractBody::AbstractBody(std::string id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
+    AbstractBody::AbstractBody(BodyType bodyType, std::string id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
             ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(transform),
             isManuallyMoved(false),
+            bodyType(bodyType),
             id(std::move(id)),
             shape(std::move(shape)),
             restitution(0.0f),
@@ -31,6 +32,7 @@ namespace urchin {
             ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
+            bodyType(abstractBody.bodyType),
             id(abstractBody.getId()),
             shape(abstractBody.getShape().clone()),
             restitution(0.0f),
@@ -81,6 +83,10 @@ namespace urchin {
 
     const CollisionShape3D& AbstractBody::getShape() const {
         return *shape;
+    }
+
+    BodyType AbstractBody::getBodyType() const {
+        return bodyType;
     }
 
     void AbstractBody::setId(const std::string& id) {
@@ -178,10 +184,6 @@ namespace urchin {
      */
     bool AbstractBody::isActive() const {
         return !bDisableAllBodies && bIsActive.load(std::memory_order_acquire);
-    }
-
-    bool AbstractBody::isGhostBody() const {
-        return false;
     }
 
     uint_fast32_t AbstractBody::getObjectId() const {

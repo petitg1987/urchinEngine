@@ -198,8 +198,7 @@ namespace urchin {
             if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
-        }
-        else if (dynamic_cast<AbstractController*>(observable)) {
+        } else if (dynamic_cast<AbstractController*>(observable)) {
             if (notificationType == AbstractController::CHANGES_DONE) {
                 refreshWindowTitle();
 

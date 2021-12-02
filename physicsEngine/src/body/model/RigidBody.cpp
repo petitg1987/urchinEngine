@@ -8,7 +8,7 @@
 namespace urchin {
 
     RigidBody::RigidBody(const std::string& id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
-            AbstractBody(id, transform, std::move(shape)),
+            AbstractBody(BodyType::RIGID, id, transform, std::move(shape)),
             mass(0.0f),
             invMass(0.0f),
             linearDamping(0.0f),
@@ -26,7 +26,10 @@ namespace urchin {
     }
 
     RigidBody* RigidBody::upCast(AbstractBody* abstractBody) {
-        return dynamic_cast<RigidBody*>(abstractBody);
+        if (abstractBody->getBodyType() == BodyType::RIGID) {
+            return static_cast<RigidBody*>(abstractBody);
+        }
+        return nullptr;
     }
 
     RigidBody& RigidBody::upCast(AbstractBody& abstractBody) {

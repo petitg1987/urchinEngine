@@ -12,11 +12,16 @@
 
 namespace urchin {
 
+    enum class BodyType {
+            RIGID,
+            GHOST
+    };
+
     class PairContainer;
 
     class AbstractBody : public IslandElement {
         public:
-            AbstractBody(std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
+            AbstractBody(BodyType, std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             AbstractBody(const AbstractBody&);
             ~AbstractBody() override = default;
 
@@ -28,6 +33,7 @@ namespace urchin {
 
             const CollisionShape3D& getShape() const;
 
+            BodyType getBodyType() const;
             void setId(const std::string&);
             const std::string& getId() const;
 
@@ -47,7 +53,6 @@ namespace urchin {
             bool isStatic() const;
             void setIsActive(bool);
             bool isActive() const override;
-            virtual bool isGhostBody() const;
 
             uint_fast32_t getObjectId() const;
 
@@ -69,6 +74,7 @@ namespace urchin {
 
         private:
             //body description data
+            BodyType bodyType;
             std::string id;
             std::unique_ptr<const CollisionShape3D> shape;
             float restitution;

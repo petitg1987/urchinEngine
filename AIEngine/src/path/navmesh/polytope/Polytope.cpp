@@ -2,7 +2,6 @@
 
 #include <path/navmesh/polytope/Polytope.h>
 #include <path/navmesh/polytope/PolytopePlaneSurface.h>
-#include <path/navmesh/polytope/PolytopeTerrainSurface.h>
 
 namespace urchin {
 
@@ -72,13 +71,13 @@ namespace urchin {
         unsigned int surfaceIndex = 0;
         for (const auto& surface : polytope.getSurfaces()) {
             stream << "Surface " << surfaceIndex++ << " ";
-            if (const auto* planeSurface = dynamic_cast<PolytopePlaneSurface*>(surface.get())) {
+            if (surface->getPolytopeType() == PolytopeType::PLANE) {
+                const auto* planeSurface = static_cast<PolytopePlaneSurface*>(surface.get());
                 for (const auto& point : planeSurface->getCcwPoints()) {
                     stream << "(" << point << ") ";
                 }
                 stream << std::endl;
-            } else if (const auto* terrainSurface = dynamic_cast<PolytopeTerrainSurface*>(surface.get())) {
-                terrainSurface->isWalkableCandidate(); //@IgnoreUnused
+            } else if (surface->getPolytopeType() == PolytopeType::TERRAIN) {
                 stream << "(terrain: " << polytope.getName() << ") " << std::endl;
             }
         }

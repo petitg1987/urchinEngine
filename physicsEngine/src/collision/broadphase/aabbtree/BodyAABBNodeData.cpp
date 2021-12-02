@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     bool BodyAABBNodeData::isGhostBody() const {
-        return getNodeObject()->isGhostBody();
+        return getNodeObject()->getBodyType() == BodyType::GHOST;
     }
 
     PairContainer* BodyAABBNodeData::getBodyPairContainer() const {
