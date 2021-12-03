@@ -126,11 +126,11 @@ namespace urchin {
 
         const std::string& lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
-            lengthType = LengthType::PIXEL;
+            lengthType = PIXEL;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "screenPercent")) {
-            lengthType = LengthType::SCREEN_PERCENT;
+            lengthType = SCREEN_PERCENT;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "containerPercent")) {
-            lengthType = LengthType::CONTAINER_PERCENT;
+            lengthType = CONTAINER_PERCENT;
         } else {
             throw std::runtime_error("Unknown length type: " + lengthTypeString);
         }
