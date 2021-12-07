@@ -21,6 +21,7 @@ namespace urchin {
             bool onScroll(double);
 
             UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
+            void removeUI3dRenderer(const UIRenderer*);
 
             void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 

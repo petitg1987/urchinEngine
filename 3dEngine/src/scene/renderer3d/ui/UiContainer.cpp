@@ -69,6 +69,10 @@ namespace urchin {
         return *uis.back();
     }
 
+    void UiContainer::removeUI3dRenderer(const UIRenderer* ui3dRenderer) {
+        std::erase_if(uis, [&](auto& p){return ui3dRenderer == p.get();});
+    }
+
     void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         for (const auto& ui : uis) {
             ui->prepareRendering(dt, renderingOrder, projectionViewMatrix);
