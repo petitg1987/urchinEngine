@@ -167,7 +167,7 @@ namespace urchin {
     }
 
     void Widget::detachChildren() {
-        for(auto it = children.begin(); it != children.end();) {
+        for (auto it = children.begin(); it != children.end();) {
             (*it)->parent = nullptr;
             it = children.erase(it);
         }

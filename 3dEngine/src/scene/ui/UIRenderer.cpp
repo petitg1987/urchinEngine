@@ -31,12 +31,10 @@ namespace urchin {
             throw std::runtime_error("UI renderer cannot be initialized for UI 3d because widgets already exist");
         }
         if (!MathFunction::isOne(transform.getScale())) {
-            throw std::runtime_error("Transform for UI 3d must have a scale of 1");
+            throw std::runtime_error("Transform for UI 3d must have a scale of 1 (scale: " + TypeConverter::toString(transform.getScale()) + ")");
         }
         if (!MathFunction::isEqual((float)uiResolution.X / (float)uiResolution.Y, uiSize.X / uiSize.Y, 0.01f)) {
-            std::stringstream logStream;
-            logStream << "UI size (" << uiSize << ") and UI resolution (" << uiResolution << ") have not the same proportion";
-            Logger::instance().logWarning(logStream.str());
+            Logger::instance().logWarning("UI size (" + StringUtil::toString(uiSize) + ") and UI resolution (" + StringUtil::toString(uiResolution) + ") have not the same proportion");
         }
 
         this->ui3dData = std::make_unique<UI3dData>();
@@ -122,9 +120,9 @@ namespace urchin {
                     widgets[(std::size_t)i]->onResetState();
                 }
             }
-        } else if(dynamic_cast<Camera*>(observable)) {
+        } else if (dynamic_cast<Camera*>(observable)) {
             if (notificationType == Camera::POSITION_UPDATED) {
-                if(ui3dData) {
+                if (ui3dData) {
                     onMouseMove(rawMouseX, rawMouseY);
                 }
             }

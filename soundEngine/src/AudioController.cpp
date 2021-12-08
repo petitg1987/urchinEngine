@@ -37,7 +37,7 @@ namespace urchin {
     }
 
     void AudioController::pauseAll() {
-        for(const auto& audioPlayer : audioPlayers) {
+        for (const auto& audioPlayer : audioPlayers) {
             if (audioPlayer->isPlaying()) {
                 audioPlayer->pause();
             }
@@ -45,7 +45,7 @@ namespace urchin {
     }
 
     void AudioController::unpauseAll() {
-        for(const auto& audioPlayer : audioPlayers) {
+        for (const auto& audioPlayer : audioPlayers) {
             if (audioPlayer->isPaused()) {
                 audioPlayer->unpause();
             }

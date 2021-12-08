@@ -1,3 +1,4 @@
+
 template<class T> AxisCompare<T>::AxisCompare(std::size_t axisIndex) :
         axisIndex(axisIndex) {
 
@@ -17,9 +18,7 @@ template<class T> void GridContainer<T>::addItem(std::shared_ptr<T> item) {
         ItemSet<T>& setContainer = insertResult.first->second;
         const auto& insertSetResult = setContainer.insert(item);
         if (!insertSetResult.second) [[unlikely]] {
-            std::stringstream errorStream;
-            errorStream << "Item cannot be added because an item already exists at this position: " << item->getGridPosition();
-            throw std::runtime_error(errorStream.str());
+            throw std::runtime_error("Item cannot be added because an item already exists at this position: " + StringUtil::toString(item->getGridPosition()));
         }
     }
 }
@@ -55,9 +54,7 @@ template<class T> std::shared_ptr<T> GridContainer<T>::removeItem(const Point3<i
 template<class T> void GridContainer<T>::updateItemPosition(T& item, const Point3<int>& newGridPosition) {
     std::shared_ptr<T> removedItem = removeItem(item.getGridPosition());
     if (!removedItem) {
-        std::stringstream errorStream;
-        errorStream << "Item position cannot be updated because the item is not found at this position: " << item.getGridPosition();
-        throw std::runtime_error(errorStream.str());
+        throw std::runtime_error("Item position cannot be updated because the item is not found at this position: " + StringUtil::toString(item.getGridPosition()));
     }
 
     removedItem->setGridPosition(newGridPosition);

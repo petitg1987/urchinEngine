@@ -120,7 +120,7 @@ namespace urchin {
         ss << "Signal caught " << signalId << " (code: " << signalInfo->si_code << "):" << std::endl;
 
         constexpr int MAX_STACK_FRAMES = 256;
-        std::array<void*, MAX_STACK_FRAMES> traces;
+        std::array<void*, MAX_STACK_FRAMES> traces{nullptr};
         int traceSize = backtrace(traces.data(), MAX_STACK_FRAMES);
         char **symbols = backtrace_symbols(traces.data(), traceSize);
 

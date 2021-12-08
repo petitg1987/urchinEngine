@@ -295,7 +295,7 @@ namespace urchin {
             }
         }
 
-        for(auto i = (unsigned int)shadowLightIndex; i < getMaxShadowLights(); ++i) {
+        for (auto i = (unsigned int)shadowLightIndex; i < getMaxShadowLights(); ++i) {
             if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, i)->getTexture() != getEmptyShadowMapTexture().get()) {
                 //when a shadow light is removed or moved of position: reset the texture to an empty one to free the texture memory
                 lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, i, TextureReader::build(getEmptyShadowMapTexture(), TextureParam::buildNearest()));

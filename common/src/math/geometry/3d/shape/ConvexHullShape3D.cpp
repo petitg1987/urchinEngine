@@ -137,7 +137,7 @@ namespace urchin {
         if (edges.empty() && trianglesRemoved > 0) [[unlikely]] {
             std::stringstream logNewPointStream;
             logNewPointStream.precision(std::numeric_limits<T>::max_digits10);
-            logNewPointStream<<newPoint;
+            logNewPointStream << newPoint;
             logConvexHullData("Add new point on convex hull: triangles removed but no new point added (value: " + logNewPointStream.str() + ")");
         }
 

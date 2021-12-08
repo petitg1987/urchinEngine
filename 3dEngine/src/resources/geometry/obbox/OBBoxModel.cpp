@@ -14,7 +14,7 @@ namespace urchin {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(8);
 
-        for(unsigned int i = 0; i < 8; ++i) {
+        for (unsigned int i = 0; i < 8; ++i) {
             vertexArray.push_back(obbox.getPoint(i));
         }
         

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace urchin {
 
@@ -20,9 +21,13 @@ namespace urchin {
 
             static bool insensitiveEquals(const std::string&, const std::string&);
 
+            template<class T> static std::string toString(const T&);
+
         private:
             StringUtil() = default;
             ~StringUtil() = default;
     };
+
+    #include "StringUtil.inl"
 
 }

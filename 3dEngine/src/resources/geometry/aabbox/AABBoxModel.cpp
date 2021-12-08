@@ -30,7 +30,7 @@ namespace urchin {
             vertexArray.emplace_back(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMin().Z);
         }
         
-        for(uint32_t i = 0; i < aabboxes.size(); ++i) {
+        for (uint32_t i = 0; i < aabboxes.size(); ++i) {
             uint32_t startIndex = i * 8;
             
             //back

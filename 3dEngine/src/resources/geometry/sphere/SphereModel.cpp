@@ -20,7 +20,7 @@ namespace urchin {
         std::vector<Point3<float>> vertexArray;
         vertexArray.reserve(spheres.size() * 6 * slices * slices);
 
-        for(const Sphere<float>& sphere : spheres) {
+        for (const Sphere<float>& sphere : spheres) {
             float radius = sphere.getRadius();
 
             for (unsigned int i = 1; i <= slices; i++) {

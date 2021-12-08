@@ -11,7 +11,7 @@ namespace urchin {
     std::list<const SceneTerrain*> TerrainController::getSceneTerrains() const {
         const auto& sceneTerrains = getMapHandler()->getMap().getSceneTerrains();
         std::list<const SceneTerrain*> constSceneTerrains;
-        for(auto& sceneTerrain : sceneTerrains) {
+        for (auto& sceneTerrain : sceneTerrains) {
             constSceneTerrains.emplace_back(sceneTerrain.get());
         }
 

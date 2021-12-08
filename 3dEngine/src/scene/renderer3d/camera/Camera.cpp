@@ -186,7 +186,7 @@ namespace urchin {
     }
 
     void Camera::moveTo(const Point3<float>& position) {
-        if(this->position != position) {
+        if (this->position != position) {
             this->position = position;
 
             updateComponents();

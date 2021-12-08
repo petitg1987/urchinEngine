@@ -36,7 +36,7 @@ namespace urchin {
 
     void Container::resetChildren() {
         std::vector<std::shared_ptr<Widget>> copyChildren = getChildren();
-        for(const auto& child : copyChildren) {
+        for (const auto& child : copyChildren) {
             if (!scrollbar->isScrollbarWidget(child.get())) {
                 Widget::detachChild(child.get());
             }

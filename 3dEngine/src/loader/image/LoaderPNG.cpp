@@ -67,7 +67,7 @@ namespace urchin {
 
     bool LoaderPNG::isPixelsHaveTransparency(const std::vector<unsigned char>& pixelsRgba8Bits) const {
         assert(pixelsRgba8Bits.size() % 4 == 0);
-        for(std::size_t i = 3; i < pixelsRgba8Bits.size(); i += 4) {
+        for (std::size_t i = 3; i < pixelsRgba8Bits.size(); i += 4) {
             if (pixelsRgba8Bits[i] < 255) {
                 return true;
             }

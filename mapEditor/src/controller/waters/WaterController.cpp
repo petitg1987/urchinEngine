@@ -11,7 +11,7 @@ namespace urchin {
     std::list<const SceneWater*> WaterController::getSceneWaters() const {
         const auto& sceneWaters = getMapHandler()->getMap().getSceneWaters();
         std::list<const SceneWater*> constSceneWaters;
-        for(auto& sceneWater : sceneWaters) {
+        for (auto& sceneWater : sceneWaters) {
             constSceneWaters.emplace_back(sceneWater.get());
         }
 

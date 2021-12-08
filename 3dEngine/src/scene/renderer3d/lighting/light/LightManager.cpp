@@ -106,7 +106,7 @@ namespace urchin {
         lightOctreeManager.getOctreeablesIn(frustum, lightsInFrustum);
 
         visibleLights.clear();
-        for(const auto& sunLight : sunLights) {
+        for (const auto& sunLight : sunLights) {
             visibleLights.push_back(sunLight.get());
         }
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());

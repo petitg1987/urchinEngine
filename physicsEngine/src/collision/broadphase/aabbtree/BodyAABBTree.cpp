@@ -125,10 +125,7 @@ namespace urchin {
         if (bodyAABBox.getMax().Y < minYBoundary) {
             std::shared_ptr<AbstractBody> body = leafNode.getNodeData().getNodeObject();
             if (!body->isStatic()) {
-                std::stringstream logStream;
-                logStream << "Body " << body->getId() << " is below the limit of " << std::to_string(minYBoundary) << ": " << body->getTransform().getPosition();
-                Logger::instance().logWarning(logStream.str());
-
+                Logger::instance().logWarning("Body " + body->getId() + " is below the limit of " + TypeConverter::toString(minYBoundary) + ": " + StringUtil::toString(body->getTransform().getPosition()));
                 body->setIsActive(false);
             }
         }

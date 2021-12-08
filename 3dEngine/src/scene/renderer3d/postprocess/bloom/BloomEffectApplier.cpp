@@ -43,7 +43,7 @@ namespace urchin {
         unsigned int textureWidth = sceneWidth / 2;
         unsigned int textureHeight = sceneHeight / 2;
         bloomStepTextures.clear();
-        for(unsigned int i = 0; i < config.maxIterations; ++i) {
+        for (unsigned int i = 0; i < config.maxIterations; ++i) {
             bloomStepTextures.push_back(Texture::build(textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT, nullptr));
 
             textureWidth = textureWidth / 2;
@@ -92,7 +92,7 @@ namespace urchin {
 
         //down sample
         downSampleShader = createShader("bloomDownSample.vert.spv", "bloomDownSample.frag.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
-        for(std::size_t outTexIndex = 1, i = 0; outTexIndex < bloomStepTextures.size(); ++outTexIndex, ++i) {
+        for (std::size_t outTexIndex = 1, i = 0; outTexIndex < bloomStepTextures.size(); ++outTexIndex, ++i) {
             std::size_t srcTexIndex = outTexIndex - 1;
 
             std::unique_ptr<RenderTarget> downSampleRenderTarget;
@@ -116,7 +116,7 @@ namespace urchin {
 
         //up sample
         upSampleShader = createShader("bloomUpSample.vert.spv", "bloomUpSample.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst));
-        for(std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
+        for (std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
             std::size_t outTexIndex = srcTexIndex - 1;
 
             std::unique_ptr<RenderTarget> upSampleRenderTarget;
@@ -158,14 +158,14 @@ namespace urchin {
 
         //up sample
         upSampleRenderers.clear();
-        for(const auto& upSampleRenderTarget : upSampleRenderTargets) {
+        for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
             upSampleRenderTarget->cleanup();
         }
         upSampleRenderTargets.clear();
 
         //down sample
         downSampleRenderers.clear();
-        for(const auto& downSampleRenderTarget : downSampleRenderTargets) {
+        for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
             downSampleRenderTarget->cleanup();
         }
         downSampleRenderTargets.clear();
@@ -211,10 +211,10 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
         preFilterRenderTarget->render();
-        for(const auto& downSampleRenderTarget : downSampleRenderTargets) {
+        for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
             downSampleRenderTarget->render();
         }
-        for(const auto& upSampleRenderTarget : upSampleRenderTargets) {
+        for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
             upSampleRenderTarget->render();
         }
 
