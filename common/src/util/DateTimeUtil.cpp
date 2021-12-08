@@ -8,8 +8,8 @@ namespace urchin {
     //static
     std::mutex DateTimeUtil::localtimeMutex;
 
-    long DateTimeUtil::currentEpoch() {
-        return std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    uint64_t DateTimeUtil::currentEpoch() {
+        return (uint64_t)std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     }
 
     std::string DateTimeUtil::timePointToDateTime(std::chrono::system_clock::time_point timePoint) {
@@ -22,7 +22,7 @@ namespace urchin {
         return ss.str();
     }
 
-    std::string DateTimeUtil::epochToDateTime(long epochSeconds) {
+    std::string DateTimeUtil::epochToDateTime(uint64_t epochSeconds) {
         auto timePoint = std::chrono::system_clock::time_point{std::chrono::seconds{epochSeconds}};
         return timePointToDateTime(timePoint);
     }

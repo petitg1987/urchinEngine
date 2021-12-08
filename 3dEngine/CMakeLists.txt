@@ -38,3 +38,4 @@ file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURR
 add_library(urchin3dEngine STATIC ${SOURCE_FILES})
 add_dependencies(urchin3dEngine urchinShader)
 target_link_libraries(urchin3dEngine ${LINK_OPT} ${FREETYPE_LIB} ${VULKAN_LIB} urchinCommon)
+target_precompile_headers(urchin3dEngine PRIVATE "../common/src/UrchinCommon.h")

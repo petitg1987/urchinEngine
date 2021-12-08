@@ -24,10 +24,12 @@ namespace urchin {
             static int toInt(const std::string&);
             static bool isLong(const std::string&);
             static long toLong(const std::string&);
+            static bool isUint64(const std::string&);
+            static uint64_t toUint64(const std::string&);
             static bool isUnsignedInt(const std::string&);
             static unsigned int toUnsignedInt(const std::string&);
-            static bool isSizeT(const std::string&);
-            static std::size_t toSizeT(const std::string&);
+            static bool isSize(const std::string&);
+            static std::size_t toSize(const std::string&);
             static bool isFloat(const std::string&);
             static float toFloat(const std::string&);
             static bool isDouble(const std::string&);

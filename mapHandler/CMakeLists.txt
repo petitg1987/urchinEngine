@@ -14,3 +14,9 @@ include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../so
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_library(urchinMapHandler STATIC ${SOURCE_FILES})
 target_link_libraries(urchinMapHandler ${LINK_OPT} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine)
+target_precompile_headers(urchinMapHandler PRIVATE
+        ../common/src/UrchinCommon.h
+        ../3dEngine/src/Urchin3dEngine.h
+        ../physicsEngine/src/UrchinPhysicsEngine.h
+        ../soundEngine/src/UrchinSoundEngine.h
+        ../AIEngine/src/UrchinAIEngine.h)

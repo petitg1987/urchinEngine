@@ -44,6 +44,23 @@ namespace urchin {
         return value;
     }
 
+    bool TypeConverter::isUint64(const std::string& str) {
+        std::istringstream iss(str);
+        uint64_t value = 0;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
+    uint64_t TypeConverter::toUint64(const std::string& str) {
+        #ifdef URCHIN_DEBUG
+            assert(isUint64(str));
+        #endif
+        std::istringstream iss(str);
+        uint64_t value = 0;
+        iss >> value;
+        return value;
+    }
+
     bool TypeConverter::isUnsignedInt(const std::string& str) {
         std::istringstream iss(str);
         unsigned int value = 0;
@@ -61,16 +78,16 @@ namespace urchin {
         return value;
     }
 
-    bool TypeConverter::isSizeT(const std::string& str) {
+    bool TypeConverter::isSize(const std::string& str) {
         std::istringstream iss(str);
         std::size_t value = 0;
         iss >> std::noskipws >> value;
         return iss.eof() && !iss.fail();
     }
 
-    std::size_t TypeConverter::toSizeT(const std::string& str) {
+    std::size_t TypeConverter::toSize(const std::string& str) {
         #ifdef URCHIN_DEBUG
-            assert(isSizeT(str));
+            assert(isSize(str));
         #endif
         std::istringstream iss(str);
         std::size_t value = 0;

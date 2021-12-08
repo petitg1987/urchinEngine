@@ -16,3 +16,8 @@ include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../AI
 file(GLOB_RECURSE MAIN_TESTS_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 add_executable(testExecutor ${MAIN_TESTS_SOURCE_FILES})
 target_link_libraries(testExecutor ${LINK_OPT} Threads::Threads cppunit urchinCommon urchin3dEngine urchinPhysicsEngine urchinAIEngine)
+target_precompile_headers(testExecutor PRIVATE
+        ../common/src/UrchinCommon.h
+        ../3dEngine/src/Urchin3dEngine.h
+        ../physicsEngine/src/UrchinPhysicsEngine.h
+        ../AIEngine/src/UrchinAIEngine.h)
