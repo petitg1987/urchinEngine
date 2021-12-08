@@ -21,10 +21,16 @@ namespace urchin {
 
             static int roundToInt(float);
             static unsigned int roundToUInt(float);
+            static int roundToInt(double);
+            static unsigned int roundToUInt(double);
             static int ceilToInt(float);
             static unsigned int ceilToUInt(float);
+            static int ceilToInt(double);
+            static unsigned int ceilToUInt(double);
             static int floorToInt(float);
             static unsigned int floorToUInt(float);
+            static int floorToInt(double);
+            static unsigned int floorToUInt(double);
             template<class T> static T roundDivision(T, T);
     };
 

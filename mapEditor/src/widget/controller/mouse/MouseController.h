@@ -9,8 +9,8 @@ namespace urchin {
         public:
             explicit MouseController(QWindow*);
 
-            void moveMouse(int, int);
-            Point2<int> getMousePosition() const;
+            void moveMouse(double, double);
+            Point2<double> getMousePosition() const;
 
         private:
             QWindow* widget;

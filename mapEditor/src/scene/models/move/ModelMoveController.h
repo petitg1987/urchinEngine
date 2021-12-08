@@ -22,7 +22,7 @@ namespace urchin {
             void onResize(unsigned int, unsigned int);
 
             void onCtrlXYZ(unsigned int);
-            bool onMouseMove(int, int);
+            bool onMouseMove(double, double);
             void onMouseOut();
             bool onMouseLeftButton();
             bool onEscapeKey();
@@ -50,7 +50,7 @@ namespace urchin {
             int selectedAxis;
             Point3<float> savedPosition;
 
-            int oldMouseX, oldMouseY;
+            double oldMouseX, oldMouseY;
             Matrix4<float> oldCameraViewMatrix;
     };
 

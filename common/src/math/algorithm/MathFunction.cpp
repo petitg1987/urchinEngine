@@ -65,6 +65,14 @@ namespace urchin {
         return (unsigned int)std::lround(value);
     }
 
+    int MathFunction::roundToInt(double value) {
+        return (int)std::lround(value);
+    }
+
+    unsigned int MathFunction::roundToUInt(double value) {
+        return (unsigned int)std::lround(value);
+    }
+
     int MathFunction::ceilToInt(float value) {
         return (int)std::ceil(value);
     }
@@ -73,11 +81,27 @@ namespace urchin {
         return (unsigned int)std::ceil(value);
     }
 
+    int MathFunction::ceilToInt(double value) {
+        return (int)std::ceil(value);
+    }
+
+    unsigned int MathFunction::ceilToUInt(double value) {
+        return (unsigned int)std::ceil(value);
+    }
+
     int MathFunction::floorToInt(float value) {
         return (int)std::floor(value);
     }
 
     unsigned int MathFunction::floorToUInt(float value) {
+        return (unsigned int)std::floor(value);
+    }
+
+    int MathFunction::floorToInt(double value) {
+        return (int)std::floor(value);
+    }
+
+    unsigned int MathFunction::floorToUInt(double value) {
         return (unsigned int)std::floor(value);
     }
 

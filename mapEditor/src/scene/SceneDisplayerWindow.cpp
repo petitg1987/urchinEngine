@@ -46,8 +46,8 @@ namespace urchin {
                 }
                 break;
             } case QEvent::Leave: { //mouse leaves widget
-                Point2<int> mousePositionInPixel = mouseController.getMousePosition();
-                if (sceneDisplayer && sceneDisplayer->getModelMoveController() && !geometry().contains(QPoint(mousePositionInPixel.X, mousePositionInPixel.Y))) {
+                Point2<double> mousePositionInPixel = mouseController.getMousePosition();
+                if (sceneDisplayer && sceneDisplayer->getModelMoveController() && !geometry().contains(QPoint((int)mousePositionInPixel.X, (int)mousePositionInPixel.Y))) {
                     sceneDisplayer->getModelMoveController()->onMouseOut();
                 }
                 break;
@@ -211,8 +211,8 @@ namespace urchin {
 
     void SceneDisplayerWindow::mouseMoveEvent(QMouseEvent* event) {
         //mouse coordinate computed in pixel
-        this->mouseX = MathFunction::roundToInt((float)event->x() * (float)devicePixelRatio());
-        this->mouseY = MathFunction::roundToInt((float)event->y() * (float)devicePixelRatio());
+        this->mouseX = (double)event->x() * (double)devicePixelRatio();
+        this->mouseY = (double)event->y() * (double)devicePixelRatio();
 
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY);

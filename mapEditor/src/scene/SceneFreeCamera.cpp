@@ -9,6 +9,7 @@ namespace urchin {
             FreeCamera(horizontalFovAngle, nearPlane, farPlane),
             mouseXBeforeMove(0.0),
             mouseYBeforeMove(0.0),
+            mouseUpdateCount(0),
             mouseController(mouseController) {
 
     }
@@ -41,8 +42,11 @@ namespace urchin {
     bool SceneFreeCamera::onMouseMove(double mouseX, double mouseY) {
         bool propagateEvent = Camera::onMouseMove(mouseX, mouseY);
         if (isUseMouseToMoveCamera()) {
-            mouseController.moveMouse((int)mouseXBeforeMove, (int)mouseYBeforeMove);
-            resetPreviousMousePosition(mouseXBeforeMove, mouseYBeforeMove);
+            if (mouseUpdateCount++ >= 5) { //ugly hack because QT does not seem to support sub-pixel mouse position
+                mouseController.moveMouse(mouseXBeforeMove, mouseYBeforeMove);
+                resetPreviousMousePosition(mouseXBeforeMove, mouseYBeforeMove);
+                mouseUpdateCount = 0;
+            }
         } else {
             mouseXBeforeMove = mouseX;
             mouseYBeforeMove = mouseY;

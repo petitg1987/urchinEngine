@@ -12,8 +12,8 @@ namespace urchin {
             statusBarController(statusBarController),
             selectedSceneModel(nullptr),
             selectedAxis(-1),
-            oldMouseX(-1),
-            oldMouseY(-1) {
+            oldMouseX(-1.0),
+            oldMouseY(-1.0) {
 
     }
 
@@ -31,11 +31,11 @@ namespace urchin {
         statusBarController.applyState(StatusBarState::MODEL_MOVE);
     }
 
-    bool ModelMoveController::onMouseMove(int mouseX, int mouseY) {
+    bool ModelMoveController::onMouseMove(double mouseX, double mouseY) {
         bool propagateEvent = true;
         bool mousePositionAdjusted = false;
         if (selectedAxis != -1) {
-            if (oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved()) {
+            if (oldMouseX > -1.0 && oldMouseY > -1.0 && !isCameraMoved()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
                     moveModel(Point2<float>((float)oldMouseX, (float)oldMouseY), Point2<float>((float)mouseX, (float)mouseY));
@@ -71,19 +71,19 @@ namespace urchin {
     }
 
     bool ModelMoveController::adjustMousePosition() {
-        Point2<int> mousePosition = mouseController.getMousePosition();
-        Point2<int> newMousePosition = mousePosition;
+        Point2<double> mousePosition = mouseController.getMousePosition();
+        Point2<double> newMousePosition = mousePosition;
 
-        if (mousePosition.X >= (int)sceneWidth) {
-            newMousePosition.X = 1;
+        if (mousePosition.X >= (double)sceneWidth) {
+            newMousePosition.X = 1.0;
         } else if (mousePosition.X <= 0) {
-            newMousePosition.X = (int)sceneWidth - 1;
+            newMousePosition.X = (double)sceneWidth - 1.0;
         }
 
-        if (mousePosition.Y >= (int)sceneHeight) {
-            newMousePosition.Y = 1;
+        if (mousePosition.Y >= (double)sceneHeight) {
+            newMousePosition.Y = 1.0;
         } else if (mousePosition.Y <= 0) {
-            newMousePosition.Y = (int)sceneHeight - 1;
+            newMousePosition.Y = (double)sceneHeight - 1.0;
         }
 
         if (mousePosition != newMousePosition) {

@@ -63,7 +63,7 @@ namespace urchin {
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
             std::array<bool, SceneDisplayer::LAST_VIEW_PROPERTIES> viewProperties;
 
-            int mouseX, mouseY;
+            double mouseX, mouseY;
             std::string lastPickedBodyId;
 
         private slots:
