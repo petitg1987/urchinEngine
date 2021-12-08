@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <iostream>
 
 #include <player/AudioPlayer.h>
 #include <sound/Sound.h>
