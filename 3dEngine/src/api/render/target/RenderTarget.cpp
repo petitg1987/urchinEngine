@@ -17,7 +17,7 @@ namespace urchin {
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
-            renderersDirty(true) {
+            renderersDirty(false) {
         Logger::instance().logInfo("Create render target: " + this->name);
     }
 
@@ -114,10 +114,11 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::initializeRenderers() const {
+    void RenderTarget::initializeRenderers() {
         for (auto& renderer: renderers) {
             renderer->initialize();
         }
+        renderersDirty = true;
     }
 
     void RenderTarget::cleanupRenderers() const {

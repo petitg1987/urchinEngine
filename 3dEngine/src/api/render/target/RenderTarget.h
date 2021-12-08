@@ -51,7 +51,7 @@ namespace urchin {
             virtual void render() = 0;
 
         protected:
-            void initializeRenderers() const;
+            void initializeRenderers();
             void cleanupRenderers() const;
             const std::vector<GenericRenderer*>& getRenderers() const;
             bool hasRenderer() const;

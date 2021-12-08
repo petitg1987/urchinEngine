@@ -42,7 +42,7 @@ namespace urchin {
     bool SceneFreeCamera::onMouseMove(double mouseX, double mouseY) {
         bool propagateEvent = Camera::onMouseMove(mouseX, mouseY);
         if (isUseMouseToMoveCamera()) {
-            if (mouseUpdateCount++ >= 5) { //ugly hack because QT does not seem to support sub-pixel mouse position
+            if (mouseUpdateCount++ >= 5) { //hack as QT does not seem to support sub-pixel mouse position
                 mouseController.moveMouse(mouseXBeforeMove, mouseYBeforeMove);
                 resetPreviousMousePosition(mouseXBeforeMove, mouseYBeforeMove);
                 mouseUpdateCount = 0;
