@@ -61,6 +61,23 @@ namespace urchin {
         return value;
     }
 
+    bool TypeConverter::isSizeT(const std::string& str) {
+        std::istringstream iss(str);
+        std::size_t value = 0;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
+    std::size_t TypeConverter::toSizeT(const std::string& str) {
+        #ifdef URCHIN_DEBUG
+            assert(isSizeT(str));
+        #endif
+        std::istringstream iss(str);
+        std::size_t value = 0;
+        iss >> value;
+        return value;
+    }
+
     bool TypeConverter::isFloat(const std::string& str) {
         std::istringstream iss(str);
         iss.imbue(std::locale::classic());
