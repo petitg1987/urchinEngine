@@ -3,9 +3,11 @@
 namespace urchin {
 
     bool TransparentMeshFilter::isAccepted(const Model& model) const {
-        for (unsigned int i = 0; i < model.getMeshes()->getNumberMeshes(); ++i) {
-            if (isAccepted(model.getMeshes()->getMesh(i))) {
-                return true;
+        if (model.getMeshes()) {
+            for (unsigned int i = 0; i < model.getMeshes()->getNumberMeshes(); ++i) {
+                if (isAccepted(model.getMeshes()->getMesh(i))) {
+                    return true;
+                }
             }
         }
         return false;

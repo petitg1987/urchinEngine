@@ -266,7 +266,7 @@ namespace urchin {
     }
 
     bool Model::isProduceShadow() const {
-        return bIsProduceShadow;
+        return bIsProduceShadow && getMeshes();
     }
 
     void Model::updateAnimation(float dt) {
