@@ -8,45 +8,45 @@ namespace urchin {
 
     }
 
-    std::list<const SceneWater*> WaterController::getSceneWaters() const {
-        const auto& sceneWaters = getMapHandler()->getMap().getSceneWaters();
-        std::list<const SceneWater*> constSceneWaters;
-        for (auto& sceneWater : sceneWaters) {
-            constSceneWaters.emplace_back(sceneWater.get());
+    std::list<const WaterEntity*> WaterController::getWaterEntities() const {
+        const auto& waterEntities = getMapHandler()->getMap().getWaterEntities();
+        std::list<const WaterEntity*> constWaterEntities;
+        for (auto& waterEntity : waterEntities) {
+            constWaterEntities.emplace_back(waterEntity.get());
         }
 
-        return constSceneWaters;
+        return constWaterEntities;
     }
 
-    void WaterController::addSceneWater(std::unique_ptr<SceneWater> sceneWater) {
-        getMapHandler()->getMap().addSceneWater(std::move(sceneWater));
+    void WaterController::addWaterEntity(std::unique_ptr<WaterEntity> waterEntity) {
+        getMapHandler()->getMap().addWaterEntity(std::move(waterEntity));
 
         markModified();
     }
 
-    void WaterController::removeSceneWater(const SceneWater& constSceneWater) {
-        SceneWater& sceneWater = findSceneWater(constSceneWater);
-        getMapHandler()->getMap().removeSceneWater(sceneWater);
+    void WaterController::removeWaterEntity(const WaterEntity& constWaterEntity) {
+        WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
+        getMapHandler()->getMap().removeWaterEntity(waterEntity);
 
         markModified();
     }
 
-    const SceneWater& WaterController::updateSceneWaterGeneral(const SceneWater& constSceneWater, const Point3<float>& centerPosition, float xSize, float zSize) {
-        const SceneWater& sceneWater = findSceneWater(constSceneWater);
-        Water* water = sceneWater.getWater();
+    const WaterEntity& WaterController::updateWaterGeneral(const WaterEntity& constWaterEntity, const Point3<float>& centerPosition, float xSize, float zSize) {
+        const WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
+        Water* water = waterEntity.getWater();
 
         water->setCenterPosition(centerPosition);
         water->setXSize(xSize);
         water->setZSize(zSize);
 
         markModified();
-        return sceneWater;
+        return waterEntity;
     }
 
-    const SceneWater& WaterController::updateSceneWaterSurface(const SceneWater& constSceneWater, const Vector3<float>& waterColor, const std::string& normalFilename,
-                                                               const std::string& dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
-        const SceneWater& sceneWater = findSceneWater(constSceneWater);
-        Water* water = sceneWater.getWater();
+    const WaterEntity& WaterController::updateWaterSurface(const WaterEntity& constWaterEntity, const Vector3<float>& waterColor, const std::string& normalFilename,
+                                                           const std::string& dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
+        const WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
+        Water* water = waterEntity.getWater();
 
         water->setWaterColor(waterColor);
         water->setNormalTexture(normalFilename);
@@ -57,28 +57,28 @@ namespace urchin {
         water->setTRepeat(tRepeat);
 
         markModified();
-        return sceneWater;
+        return waterEntity;
     }
 
-    const SceneWater& WaterController::updateSceneWaterUnderWater(const SceneWater& constSceneWater, float density, float gradient) {
-        const SceneWater& sceneWater = findSceneWater(constSceneWater);
-        Water* water = sceneWater.getWater();
+    const WaterEntity& WaterController::updateWaterUnderWater(const WaterEntity& constWaterEntity, float density, float gradient) {
+        const WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
+        Water* water = waterEntity.getWater();
 
         water->setDensity(density);
         water->setGradient(gradient);
 
         markModified();
-        return sceneWater;
+        return waterEntity;
     }
 
-    SceneWater& WaterController::findSceneWater(const SceneWater& constSceneWater) {
-        const auto& sceneWaters = getMapHandler()->getMap().getSceneWaters();
-        auto it = std::ranges::find_if(sceneWaters, [&constSceneWater](const auto& o){return o.get() == &constSceneWater;});
+    WaterEntity& WaterController::findWaterEntity(const WaterEntity& constWaterEntity) {
+        const auto& watersEntities = getMapHandler()->getMap().getWaterEntities();
+        auto it = std::ranges::find_if(watersEntities, [&constWaterEntity](const auto& o){return o.get() == &constWaterEntity;});
 
-        if (it != sceneWaters.end()) {
+        if (it != watersEntities.end()) {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find scene water: " + constSceneWater.getName());
+        throw std::invalid_argument("Impossible to find water entity: " + constWaterEntity.getName());
     }
 }

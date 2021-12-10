@@ -25,21 +25,21 @@ namespace urchin {
         notifyObservers(this, NotificationType::SELECTION_CHANGED);
     }
 
-    bool WaterTableView::hasSceneWaterSelected() const {
+    bool WaterTableView::hasWaterEntitySelected() const {
         return this->currentIndex().row() != -1;
     }
 
-    const SceneWater* WaterTableView::getSelectedSceneWater() const {
+    const WaterEntity* WaterTableView::getSelectedWaterEntity() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row() != -1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const SceneWater*>();
+            return selectedIndex.data(Qt::UserRole + 1).value<const WaterEntity*>();
         }
         return nullptr;
     }
 
-    void WaterTableView::addWater(const SceneWater& sceneWater) {
-        auto* itemWaterName = new QStandardItem(QString::fromStdString(sceneWater.getName()));
-        itemWaterName->setData(QVariant::fromValue(&sceneWater), Qt::UserRole + 1);
+    void WaterTableView::addWater(const WaterEntity& waterEntity) {
+        auto* itemWaterName = new QStandardItem(QString::fromStdString(waterEntity.getName()));
+        itemWaterName->setData(QVariant::fromValue(&waterEntity), Qt::UserRole + 1);
         itemWaterName->setEditable(false);
 
         int nextRow = watersListModel->rowCount();
@@ -50,7 +50,7 @@ namespace urchin {
     }
 
     bool WaterTableView::removeSelectedWater() {
-        if (hasSceneWaterSelected()) {
+        if (hasWaterEntitySelected()) {
             watersListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

@@ -13,17 +13,17 @@ namespace urchin {
         public:
             TerrainController();
 
-            std::list<const SceneTerrain*> getSceneTerrains() const;
-            void addSceneTerrain(std::unique_ptr<SceneTerrain>);
-            void removeSceneTerrain(const SceneTerrain&);
+            std::list<const TerrainEntity*> getTerrainEntities() const;
+            void addTerrainEntity(std::unique_ptr<TerrainEntity>);
+            void removeTerrainEntity(const TerrainEntity&);
 
-            const SceneTerrain& updateSceneTerrainGeneralProperties(const SceneTerrain&, const Point3<float>&, float);
-            const SceneTerrain& updateSceneTerrainMesh(const SceneTerrain&, float, float);
-            const SceneTerrain& updateSceneTerrainMaterial(const SceneTerrain&, float, float, const std::string&, const std::vector<std::string>&);
-            const SceneTerrain& updateSceneTerrainGrass(const SceneTerrain&, const std::string&, const std::string&, unsigned int, float, float, float, const Vector3<float>&, float);
+            const TerrainEntity& updateTerrainGeneralProperties(const TerrainEntity&, const Point3<float>&, float);
+            const TerrainEntity& updateTerrainMesh(const TerrainEntity&, float, float);
+            const TerrainEntity& updateTerrainMaterial(const TerrainEntity&, float, float, const std::string&, const std::vector<std::string>&);
+            const TerrainEntity& updateTerrainGrass(const TerrainEntity&, const std::string&, const std::string&, unsigned int, float, float, float, const Vector3<float>&, float);
 
         private:
-            SceneTerrain& findSceneTerrain(const SceneTerrain&);
+            TerrainEntity& findTerrainEntity(const TerrainEntity&);
     };
 
 }

@@ -7,7 +7,7 @@
 #include <UrchinMapHandler.h>
 #include <controller/SceneController.h>
 
-Q_DECLARE_METATYPE(const urchin::SceneTerrain*)
+Q_DECLARE_METATYPE(const urchin::TerrainEntity*)
 
 namespace urchin {
 
@@ -21,10 +21,10 @@ namespace urchin {
                 SELECTION_CHANGED
             };
 
-            bool hasSceneTerrainSelected() const;
-            const SceneTerrain* getSelectedSceneTerrain() const;
+            bool hasTerrainEntitySelected() const;
+            const TerrainEntity* getSelectedTerrainEntity() const;
 
-            void addTerrain(const SceneTerrain&);
+            void addTerrain(const TerrainEntity&);
             bool removeSelectedTerrain();
             void removeAllTerrains();
 

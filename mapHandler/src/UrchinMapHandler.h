@@ -6,7 +6,7 @@
 #include <resources/common/TagsReaderWriter.h>
 #include <resources/model/SceneModel.h>
 #include <resources/light/SceneLight.h>
-#include <resources/terrain/SceneTerrain.h>
+#include <resources/terrain/TerrainEntity.h>
 
 #include <load/LoadMapCallback.h>
 

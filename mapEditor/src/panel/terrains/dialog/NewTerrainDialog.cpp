@@ -19,7 +19,7 @@ namespace urchin {
             terrainNameText(nullptr),
             heightFilenameLabel(nullptr),
             heightFilenameText(nullptr),
-            sceneTerrain(nullptr) {
+            terrainEntity(nullptr) {
         this->setWindowTitle("New Terrain");
         this->resize(530, 130);
         this->setFixedSize(this->width(), this->height());
@@ -71,11 +71,11 @@ namespace urchin {
         }
     }
 
-    int NewTerrainDialog::buildSceneTerrain(int result) {
+    int NewTerrainDialog::buildTerrainEntity(int result) {
         try {
-            sceneTerrain = std::make_unique<SceneTerrain>();
+            terrainEntity = std::make_unique<TerrainEntity>();
 
-            sceneTerrain->setName(terrainName);
+            terrainEntity->setName(terrainName);
 
             std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
             std::string relativeHeightFilename = FileUtil::getRelativePath(resourcesDirectory, heightFilename);
@@ -85,7 +85,7 @@ namespace urchin {
             auto terrainMaterials = std::make_unique<TerrainMaterials>("", emptyMaterialFilenames, 1.0f, 1.0f);
             auto terrain = std::make_shared<Terrain>(std::move(terrainMesh), std::move(terrainMaterials), Point3<float>(0.0f, 0.0f, 0.0f));
 
-            sceneTerrain->setTerrain(terrain);
+            terrainEntity->setTerrain(terrain);
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
@@ -94,8 +94,8 @@ namespace urchin {
         return result;
     }
 
-    std::unique_ptr<SceneTerrain> NewTerrainDialog::moveSceneTerrain() {
-        return std::move(sceneTerrain);
+    std::unique_ptr<TerrainEntity> NewTerrainDialog::moveTerrainEntity() {
+        return std::move(terrainEntity);
     }
 
     void NewTerrainDialog::showHeightFilenameDialog() {
@@ -121,7 +121,7 @@ namespace urchin {
             if (terrainName.empty()) {
                 LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is mandatory");
                 hasError = true;
-            } else if (isSceneTerrainExist(terrainName)) {
+            } else if (isTerrainEntityExist(terrainName)) {
                 LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is already used");
                 hasError = true;
             }
@@ -131,7 +131,7 @@ namespace urchin {
             }
 
             if (!hasError) {
-                r = buildSceneTerrain(r);
+                r = buildTerrainEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -139,8 +139,8 @@ namespace urchin {
         }
     }
 
-    bool NewTerrainDialog::isSceneTerrainExist(const std::string& name) {
-        std::list<const SceneTerrain*> sceneTerrains = terrainController->getSceneTerrains();
-        return std::ranges::any_of(sceneTerrains, [&name](const auto& st){return st->getName() == name;});
+    bool NewTerrainDialog::isTerrainEntityExist(const std::string& name) {
+        std::list<const TerrainEntity*> terrainEntities = terrainController->getTerrainEntities();
+        return std::ranges::any_of(terrainEntities, [&name](const auto& st){return st->getName() == name;});
     }
 }

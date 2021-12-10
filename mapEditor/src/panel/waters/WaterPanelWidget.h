@@ -33,7 +33,7 @@ namespace urchin {
             void setupUnderWaterProperties(QVBoxLayout*);
 
             void notify(Observable*, int) override;
-            void setupWaterDataFrom(const SceneWater*);
+            void setupWaterDataFrom(const WaterEntity*);
 
             WaterController* waterController;
 

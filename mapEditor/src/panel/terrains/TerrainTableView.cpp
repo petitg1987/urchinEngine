@@ -28,27 +28,27 @@ namespace urchin {
         notifyObservers(this, NotificationType::SELECTION_CHANGED);
     }
 
-    bool TerrainTableView::hasSceneTerrainSelected() const {
+    bool TerrainTableView::hasTerrainEntitySelected() const {
         return this->currentIndex().row() != -1;
     }
 
-    const SceneTerrain* TerrainTableView::getSelectedSceneTerrain() const {
+    const TerrainEntity* TerrainTableView::getSelectedTerrainEntity() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row() != -1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const SceneTerrain*>();
+            return selectedIndex.data(Qt::UserRole + 1).value<const TerrainEntity*>();
         }
         return nullptr;
     }
 
-    void TerrainTableView::addTerrain(const SceneTerrain& sceneTerrain) {
-        auto* itemTerrainName = new QStandardItem(QString::fromStdString(sceneTerrain.getName()));
-        itemTerrainName->setData(QVariant::fromValue(&sceneTerrain), Qt::UserRole + 1);
+    void TerrainTableView::addTerrain(const TerrainEntity& terrainEntity) {
+        auto* itemTerrainName = new QStandardItem(QString::fromStdString(terrainEntity.getName()));
+        itemTerrainName->setData(QVariant::fromValue(&terrainEntity), Qt::UserRole + 1);
         itemTerrainName->setEditable(false);
 
-        std::string pathFileName = sceneTerrain.getTerrain()->getMesh()->getHeightFilename();
+        std::string pathFileName = terrainEntity.getTerrain()->getMesh()->getHeightFilename();
         auto* itemHeightFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(pathFileName)));
         itemHeightFile->setToolTip(QString::fromStdString(pathFileName));
-        itemHeightFile->setData(QVariant::fromValue(&sceneTerrain), Qt::UserRole + 1);
+        itemHeightFile->setData(QVariant::fromValue(&terrainEntity), Qt::UserRole + 1);
         itemHeightFile->setEditable(false);
 
         int nextRow = terrainsListModel->rowCount();
@@ -60,7 +60,7 @@ namespace urchin {
     }
 
     bool TerrainTableView::removeSelectedTerrain() {
-        if (hasSceneTerrainSelected()) {
+        if (hasTerrainEntitySelected()) {
             terrainsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

@@ -7,7 +7,7 @@
 #include <UrchinMapHandler.h>
 #include <controller/SceneController.h>
 
-Q_DECLARE_METATYPE(const urchin::SceneWater*)
+Q_DECLARE_METATYPE(const urchin::WaterEntity*)
 
 namespace urchin {
 
@@ -21,10 +21,10 @@ namespace urchin {
                 SELECTION_CHANGED
             };
 
-            bool hasSceneWaterSelected() const;
-            const SceneWater* getSelectedSceneWater() const;
+            bool hasWaterEntitySelected() const;
+            const WaterEntity* getSelectedWaterEntity() const;
 
-            void addWater(const SceneWater&);
+            void addWater(const WaterEntity&);
             bool removeSelectedWater();
             void removeAllWaters();
 

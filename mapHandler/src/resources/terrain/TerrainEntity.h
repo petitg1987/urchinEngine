@@ -7,15 +7,15 @@
 
 namespace urchin {
 
-    class SceneTerrain {
+    class TerrainEntity {
         //XML attributes
         static constexpr char NAME_ATTR[] = "name";
 
         public:
             friend class Map;
 
-            SceneTerrain();
-            ~SceneTerrain();
+            TerrainEntity();
+            ~TerrainEntity();
 
             void setup(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 

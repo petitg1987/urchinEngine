@@ -16,16 +16,16 @@ namespace urchin {
         public:
             NewWaterDialog(QWidget*, const WaterController*);
 
-            std::unique_ptr<SceneWater> moveSceneWater();
+            std::unique_ptr<WaterEntity> moveWaterEntity();
 
         private:
             void setupNameFields(QGridLayout*);
 
             void updateWaterName();
-            int buildSceneWater(int);
+            int buildWaterEntity(int);
 
             void done(int) override;
-            bool isSceneWaterExist(const std::string&);
+            bool isWaterEntityExist(const std::string&);
 
             const WaterController* waterController;
 
@@ -33,7 +33,7 @@ namespace urchin {
             QLineEdit* waterNameText;
 
             std::string waterName;
-            std::unique_ptr<SceneWater> sceneWater;
+            std::unique_ptr<WaterEntity> waterEntity;
     };
 
 }

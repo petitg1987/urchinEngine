@@ -76,7 +76,7 @@ namespace urchin {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find scene light: " + constSceneLight.getName());
+        throw std::invalid_argument("Impossible to find light entity: " + constSceneLight.getName());
     }
 
 }

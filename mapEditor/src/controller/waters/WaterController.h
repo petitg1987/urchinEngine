@@ -13,16 +13,16 @@ namespace urchin {
         public:
             WaterController();
 
-            std::list<const SceneWater*> getSceneWaters() const;
-            void addSceneWater(std::unique_ptr<SceneWater>);
-            void removeSceneWater(const SceneWater&);
+            std::list<const WaterEntity*> getWaterEntities() const;
+            void addWaterEntity(std::unique_ptr<WaterEntity>);
+            void removeWaterEntity(const WaterEntity&);
 
-            const SceneWater& updateSceneWaterGeneral(const SceneWater&, const Point3<float>&, float, float);
-            const SceneWater& updateSceneWaterSurface(const SceneWater&, const Vector3<float>&, const std::string&, const std::string&, float, float, float, float);
-            const SceneWater& updateSceneWaterUnderWater(const SceneWater&, float, float);
+            const WaterEntity& updateWaterGeneral(const WaterEntity&, const Point3<float>&, float, float);
+            const WaterEntity& updateWaterSurface(const WaterEntity&, const Vector3<float>&, const std::string&, const std::string&, float, float, float, float);
+            const WaterEntity& updateWaterUnderWater(const WaterEntity&, float, float);
 
         private:
-            SceneWater& findSceneWater(const SceneWater&);
+            WaterEntity& findWaterEntity(const WaterEntity&);
     };
 
 }

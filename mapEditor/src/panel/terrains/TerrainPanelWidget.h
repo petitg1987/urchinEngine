@@ -35,7 +35,7 @@ namespace urchin {
             void setupGrassBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
-            void setupTerrainDataFrom(const SceneTerrain*);
+            void setupTerrainDataFrom(const TerrainEntity*);
 
             TerrainController* terrainController;
 

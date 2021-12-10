@@ -5,12 +5,12 @@
 
 namespace urchin {
 
-    class SceneWater {
+    class WaterEntity {
         public:
             friend class Map;
 
-            SceneWater();
-            ~SceneWater();
+            WaterEntity();
+            ~WaterEntity();
 
             void setup(Renderer3d*);
 

@@ -16,17 +16,17 @@ namespace urchin {
         public:
             NewTerrainDialog(QWidget*, const TerrainController*);
 
-            std::unique_ptr<SceneTerrain> moveSceneTerrain();
+            std::unique_ptr<TerrainEntity> moveTerrainEntity();
 
         private:
             void setupNameFields(QGridLayout*);
             void setupHeightFilenameFields(QGridLayout*);
 
             void updateTerrainName();
-            int buildSceneTerrain(int);
+            int buildTerrainEntity(int);
 
             void done(int) override;
-            bool isSceneTerrainExist(const std::string&);
+            bool isTerrainEntityExist(const std::string&);
 
             const TerrainController* terrainController;
 
@@ -37,7 +37,7 @@ namespace urchin {
 
             std::string terrainName;
             std::string heightFilename;
-            std::unique_ptr<SceneTerrain> sceneTerrain;
+            std::unique_ptr<TerrainEntity> terrainEntity;
             static QString preferredHeightPath;
 
         private slots:

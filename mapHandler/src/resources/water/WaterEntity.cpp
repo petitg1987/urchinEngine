@@ -1,22 +1,22 @@
 #include <stdexcept>
 
-#include <resources/water/SceneWater.h>
+#include <resources/water/WaterEntity.h>
 #include <resources/water/WaterReaderWriter.h>
 
 namespace urchin {
-    SceneWater::SceneWater() :
+    WaterEntity::WaterEntity() :
             renderer3d(nullptr),
             water(nullptr) {
 
     }
 
-    SceneWater::~SceneWater() {
+    WaterEntity::~WaterEntity() {
         if (water) {
             renderer3d->getWaterContainer().removeWater(*water);
         }
     }
 
-    void SceneWater::setup(Renderer3d* renderer3d) {
+    void WaterEntity::setup(Renderer3d* renderer3d) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene water on two different renderer.");
         }
@@ -29,31 +29,31 @@ namespace urchin {
         renderer3d->getWaterContainer().addWater(water);
     }
 
-    void SceneWater::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+    void WaterEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setWater(WaterReaderWriter().loadFrom(chunk, udaParser));
     }
 
-    void SceneWater::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
+    void WaterEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
         WaterReaderWriter().writeOn(chunk, *water, udaWriter);
     }
 
-    std::string SceneWater::getName() const {
+    std::string WaterEntity::getName() const {
         return name;
     }
 
-    void SceneWater::setName(const std::string& name) {
+    void WaterEntity::setName(const std::string& name) {
         this->name = name;
     }
 
-    Water* SceneWater::getWater() const {
+    Water* WaterEntity::getWater() const {
         return water.get();
     }
 
-    void SceneWater::setWater(std::shared_ptr<Water> water) {
+    void WaterEntity::setWater(std::shared_ptr<Water> water) {
         if (!water) {
             throw std::invalid_argument("Cannot set a null water on scene water.");
         }

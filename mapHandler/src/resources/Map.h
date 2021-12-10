@@ -11,8 +11,8 @@
 #include <load/LoadMapCallback.h>
 #include <resources/model/SceneModel.h>
 #include <resources/light/SceneLight.h>
-#include <resources/terrain/SceneTerrain.h>
-#include <resources/water/SceneWater.h>
+#include <resources/terrain/TerrainEntity.h>
+#include <resources/water/WaterEntity.h>
 #include <resources/sky/SkyEntity.h>
 #include <resources/sound/SoundEntity.h>
 
@@ -43,15 +43,15 @@ namespace urchin {
             void addSceneLight(std::unique_ptr<SceneLight>);
             void removeSceneLight(SceneLight&);
 
-            const std::list<std::unique_ptr<SceneTerrain>>& getSceneTerrains() const;
-            SceneTerrain& getSceneTerrain(const std::string&) const;
-            void addSceneTerrain(std::unique_ptr<SceneTerrain>);
-            void removeSceneTerrain(SceneTerrain&);
+            const std::list<std::unique_ptr<TerrainEntity>>& getTerrainEntities() const;
+            TerrainEntity& getTerrainEntity(const std::string&) const;
+            void addTerrainEntity(std::unique_ptr<TerrainEntity>);
+            void removeTerrainEntity(TerrainEntity&);
 
-            const std::list<std::unique_ptr<SceneWater>>& getSceneWaters() const;
-            SceneWater& getSceneWater(const std::string&) const;
-            void addSceneWater(std::unique_ptr<SceneWater>);
-            void removeSceneWater(SceneWater&);
+            const std::list<std::unique_ptr<WaterEntity>>& getWaterEntities() const;
+            WaterEntity& getWaterEntity(const std::string&) const;
+            void addWaterEntity(std::unique_ptr<WaterEntity>);
+            void removeWaterEntity(WaterEntity&);
 
             const SkyEntity& getSkyEntity() const;
             void updateSkyEntity(std::unique_ptr<Skybox> skybox);
@@ -70,8 +70,8 @@ namespace urchin {
             void loadFrom(const UdaChunk*, const UdaParser&, LoadMapCallback&);
             void loadSceneModelsFrom(const UdaChunk*, const UdaParser&);
             void loadSceneLightsFrom(const UdaChunk*, const UdaParser&);
-            void loadSceneTerrainFrom(const UdaChunk*, const UdaParser&);
-            void loadSceneWaterFrom(const UdaChunk*, const UdaParser&);
+            void loadTerrainEntities(const UdaChunk*, const UdaParser&);
+            void loadWaterEntities(const UdaChunk*, const UdaParser&);
             void loadSkyEntity(const UdaChunk*, const UdaParser&);
             void loadSoundEntities(const UdaChunk*, const UdaParser&);
             void loadAIConfig(const UdaChunk*, const UdaParser&);
@@ -79,8 +79,8 @@ namespace urchin {
             void writeOn(UdaChunk&, UdaWriter&) const;
             void writeSceneModelsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneLightsOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneTerrainsOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneWatersOn(UdaChunk&, UdaWriter&) const;
+            void writeTerrainEntities(UdaChunk&, UdaWriter&) const;
+            void writeWaterEntities(UdaChunk&, UdaWriter&) const;
             void writeSkyEntity(UdaChunk&, UdaWriter&) const;
             void writeSoundEntities(UdaChunk&, UdaWriter&) const;
             void writeAIConfig(UdaChunk&, UdaWriter&) const;
@@ -108,8 +108,8 @@ namespace urchin {
             TagHolder modelTagHolder;
             std::list<std::unique_ptr<SceneModel>> sceneModels;
             std::list<std::unique_ptr<SceneLight>> sceneLights;
-            std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
-            std::list<std::unique_ptr<SceneWater>> sceneWaters;
+            std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
+            std::list<std::unique_ptr<WaterEntity>> waterEntities;
             SkyEntity skyEntity;
             std::list<std::unique_ptr<SoundEntity>> soundEntities;
     };

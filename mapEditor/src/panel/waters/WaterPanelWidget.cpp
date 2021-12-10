@@ -253,9 +253,9 @@ namespace urchin {
     void WaterPanelWidget::load(WaterController& waterController) {
         this->waterController = &waterController;
 
-        std::list<const SceneWater*> sceneWaters = this->waterController->getSceneWaters();
-        for (auto& sceneWater : sceneWaters) {
-            waterTableView->addWater(*sceneWater);
+        std::list<const WaterEntity*> waterEntities = this->waterController->getWaterEntities();
+        for (auto& waterEntity : waterEntities) {
+            waterTableView->addWater(*waterEntity);
         }
     }
 
@@ -268,9 +268,9 @@ namespace urchin {
     void WaterPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* waterTableView = dynamic_cast<WaterTableView*>(observable)) {
             if (notificationType == WaterTableView::SELECTION_CHANGED) {
-                if (waterTableView->hasSceneWaterSelected()) {
-                    const SceneWater* sceneWater = waterTableView->getSelectedSceneWater();
-                    setupWaterDataFrom(sceneWater);
+                if (waterTableView->hasWaterEntitySelected()) {
+                    const WaterEntity* waterEntity = waterTableView->getSelectedWaterEntity();
+                    setupWaterDataFrom(waterEntity);
 
                     removeWaterButton->setEnabled(true);
                     generalPropertiesGroupBox->show();
@@ -286,9 +286,9 @@ namespace urchin {
         }
     }
 
-    void WaterPanelWidget::setupWaterDataFrom(const SceneWater* sceneWater) {
+    void WaterPanelWidget::setupWaterDataFrom(const WaterEntity* waterEntity) {
         disableWaterEvent = true;
-        const Water* water = sceneWater->getWater();
+        const Water* water = waterEntity->getWater();
 
         this->positionX->setValue(water->getCenterPosition().X);
         this->positionY->setValue(water->getCenterPosition().Y);
@@ -317,22 +317,22 @@ namespace urchin {
     }
 
     void WaterPanelWidget::showAddWaterDialog() {
-        NewWaterDialog newSceneWaterDialog(this, waterController);
-        newSceneWaterDialog.exec();
+        NewWaterDialog newWaterEntityDialog(this, waterController);
+        newWaterEntityDialog.exec();
 
-        if (newSceneWaterDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<SceneWater> sceneWater = newSceneWaterDialog.moveSceneWater();
-            const SceneWater* sceneWaterPtr = sceneWater.get();
-            waterController->addSceneWater(std::move(sceneWater));
+        if (newWaterEntityDialog.result() == QDialog::Accepted) {
+            std::unique_ptr<WaterEntity> waterEntity = newWaterEntityDialog.moveWaterEntity();
+            const WaterEntity* waterEntityPtr = waterEntity.get();
+            waterController->addWaterEntity(std::move(waterEntity));
 
-            waterTableView->addWater(*sceneWaterPtr);
+            waterTableView->addWater(*waterEntityPtr);
         }
     }
 
     void WaterPanelWidget::removeSelectedWater() {
-        if (waterTableView->hasSceneWaterSelected()) {
-            const SceneWater& sceneWater = *waterTableView->getSelectedSceneWater();
-            waterController->removeSceneWater(sceneWater);
+        if (waterTableView->hasWaterEntitySelected()) {
+            const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
+            waterController->removeWaterEntity(waterEntity);
 
             waterTableView->removeSelectedWater();
         }
@@ -340,30 +340,30 @@ namespace urchin {
 
     void WaterPanelWidget::updateWaterProperties() {
         if (!disableWaterEvent) {
-            const SceneWater& sceneWater = *waterTableView->getSelectedSceneWater();
+            const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
 
             Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-            waterController->updateSceneWaterGeneral(sceneWater, position, (float)xSize->value(), (float)zSize->value());
+            waterController->updateWaterGeneral(waterEntity, position, (float)xSize->value(), (float)zSize->value());
         }
     }
 
     void WaterPanelWidget::updateSurfaceWaterProperties() {
         if (!disableWaterEvent) {
-            const SceneWater& sceneWater = *waterTableView->getSelectedSceneWater();
+            const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
 
             Vector3<float> waterColor((float)waterColorR->value(), (float)waterColorG->value(), (float)waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
             std::string dudvMapFilename = dudvMapFilenameText->text().toStdString();
-            waterController->updateSceneWaterSurface(sceneWater, waterColor, normalTextureFilename, dudvMapFilename, (float)waveSpeed->value(), (float)waveStrength->value(),
-                                                     (float)sRepeat->value(), (float)tRepeat->value());
+            waterController->updateWaterSurface(waterEntity, waterColor, normalTextureFilename, dudvMapFilename, (float)waveSpeed->value(), (float)waveStrength->value(),
+                                                (float)sRepeat->value(), (float)tRepeat->value());
         }
     }
 
     void WaterPanelWidget::updateUnderWaterProperties() {
         if (!disableWaterEvent) {
-            const SceneWater& sceneWater = *waterTableView->getSelectedSceneWater();
+            const WaterEntity& waterEntity = *waterTableView->getSelectedWaterEntity();
 
-            waterController->updateSceneWaterUnderWater(sceneWater, (float)density->value(), (float)gradient->value());
+            waterController->updateWaterUnderWater(waterEntity, (float)density->value(), (float)gradient->value());
         }
     }
 

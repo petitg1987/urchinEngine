@@ -182,7 +182,7 @@ namespace urchin {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find scene model: " + constSceneModel.getName());
+        throw std::invalid_argument("Impossible to find object entity: " + constSceneModel.getName());
     }
 
 }

@@ -53,8 +53,8 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::START_LOADING);
-        loadSceneTerrainFrom(sceneChunk, udaParser);
-        loadSceneWaterFrom(sceneChunk, udaParser);
+        loadTerrainEntities(sceneChunk, udaParser);
+        loadWaterEntities(sceneChunk, udaParser);
         loadSkyEntity(sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::LOADED);
 
@@ -92,27 +92,27 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneTerrainFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadTerrainEntities(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto terrainsListChunk = udaParser.getUniqueChunk(true, TERRAINS_TAG, UdaAttribute(), sceneChunk);
         auto terrainsChunk = udaParser.getChunks(TERRAIN_TAG, UdaAttribute(), terrainsListChunk);
 
         for (const auto& terrainChunk : terrainsChunk) {
-            auto sceneTerrain = std::make_unique<SceneTerrain>();
-            sceneTerrain->loadFrom(terrainChunk, udaParser);
+            auto terrainEntity = std::make_unique<TerrainEntity>();
+            terrainEntity->loadFrom(terrainChunk, udaParser);
 
-            addSceneTerrain(std::move(sceneTerrain));
+            addTerrainEntity(std::move(terrainEntity));
         }
     }
 
-    void Map::loadSceneWaterFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadWaterEntities(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto watersListChunk = udaParser.getUniqueChunk(true, WATERS_TAG, UdaAttribute(), sceneChunk);
         auto watersChunk = udaParser.getChunks(WATER_TAG, UdaAttribute(), watersListChunk);
 
         for (const auto& waterChunk : watersChunk) {
-            auto sceneWater = std::make_unique<SceneWater>();
-            sceneWater->loadFrom(waterChunk, udaParser);
+            auto waterEntity = std::make_unique<WaterEntity>();
+            waterEntity->loadFrom(waterChunk, udaParser);
 
-            addSceneWater(std::move(sceneWater));
+            addWaterEntity(std::move(waterEntity));
         }
     }
 
@@ -142,8 +142,8 @@ namespace urchin {
     void Map::writeOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         writeSceneModelsOn(sceneChunk, udaWriter);
         writeSceneLightsOn(sceneChunk, udaWriter);
-        writeSceneTerrainsOn(sceneChunk, udaWriter);
-        writeSceneWatersOn(sceneChunk, udaWriter);
+        writeTerrainEntities(sceneChunk, udaWriter);
+        writeWaterEntities(sceneChunk, udaWriter);
         writeSkyEntity(sceneChunk, udaWriter);
         writeSoundEntities(sceneChunk, udaWriter);
         writeAIConfig(sceneChunk, udaWriter);
@@ -167,21 +167,21 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneTerrainsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeTerrainEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& terrainsListChunk = udaWriter.createChunk(TERRAINS_TAG, UdaAttribute(), &sceneChunk);
 
-        for (auto& sceneTerrain : sceneTerrains) {
+        for (auto& terrainEntity : terrainEntities) {
             auto& terrainsChunk = udaWriter.createChunk(TERRAIN_TAG, UdaAttribute(), &terrainsListChunk);
-            sceneTerrain->writeOn(terrainsChunk, udaWriter);
+            terrainEntity->writeOn(terrainsChunk, udaWriter);
         }
     }
 
-    void Map::writeSceneWatersOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeWaterEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& watersListChunk = udaWriter.createChunk(WATERS_TAG, UdaAttribute(), &sceneChunk);
 
-        for (auto& sceneWater : sceneWaters) {
+        for (auto& waterEntity : waterEntities) {
             auto& watersChunk = udaWriter.createChunk(WATER_TAG, UdaAttribute(), &watersListChunk);
-            sceneWater->writeOn(watersChunk, udaWriter);
+            waterEntity->writeOn(watersChunk, udaWriter);
         }
     }
 
@@ -215,7 +215,7 @@ namespace urchin {
                 return *sceneModel;
             }
         }
-        throw std::invalid_argument("Impossible to find a scene object having name: " + name);
+        throw std::invalid_argument("Impossible to find a object entity having name: " + name);
     }
 
     void Map::findSceneModelsByTag(const std::string& tag, std::vector<SceneModel*>& models) const {
@@ -243,7 +243,7 @@ namespace urchin {
                 return *sceneLight;
             }
         }
-        throw std::invalid_argument("Impossible to find a scene light having name: " + name);
+        throw std::invalid_argument("Impossible to find a light entity having name: " + name);
     }
 
     void Map::addSceneLight(std::unique_ptr<SceneLight> sceneLight) {
@@ -255,48 +255,48 @@ namespace urchin {
         sceneLights.remove_if([&sceneLight](const auto& o){return o.get()==&sceneLight;});
     }
 
-    const std::list<std::unique_ptr<SceneTerrain>>& Map::getSceneTerrains() const {
-        return sceneTerrains;
+    const std::list<std::unique_ptr<TerrainEntity>>& Map::getTerrainEntities() const {
+        return terrainEntities;
     }
 
-    SceneTerrain& Map::getSceneTerrain(const std::string& name) const {
-        for (auto& sceneTerrain : sceneTerrains) {
-            if (sceneTerrain->getName() == name) {
-                return *sceneTerrain;
+    TerrainEntity& Map::getTerrainEntity(const std::string& name) const {
+        for (auto& terrainEntity : terrainEntities) {
+            if (terrainEntity->getName() == name) {
+                return *terrainEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a scene terrain having name: " + name);
+        throw std::invalid_argument("Impossible to find a terrain entity having name: " + name);
     }
 
-    void Map::addSceneTerrain(std::unique_ptr<SceneTerrain> sceneTerrain) {
-        sceneTerrain->setup(renderer3d, physicsWorld, aiEnvironment);
-        sceneTerrains.push_back(std::move(sceneTerrain));
+    void Map::addTerrainEntity(std::unique_ptr<TerrainEntity> terrainEntity) {
+        terrainEntity->setup(renderer3d, physicsWorld, aiEnvironment);
+        terrainEntities.push_back(std::move(terrainEntity));
     }
 
-    void Map::removeSceneTerrain(SceneTerrain& sceneTerrain) {
-        sceneTerrains.remove_if([&sceneTerrain](const auto& o){return o.get()==&sceneTerrain;});
+    void Map::removeTerrainEntity(TerrainEntity& terrainEntity) {
+        terrainEntities.remove_if([&terrainEntity](const auto& o){return o.get()==&terrainEntity;});
     }
 
-    const std::list<std::unique_ptr<SceneWater>>& Map::getSceneWaters() const {
-        return sceneWaters;
+    const std::list<std::unique_ptr<WaterEntity>>& Map::getWaterEntities() const {
+        return waterEntities;
     }
 
-    SceneWater& Map::getSceneWater(const std::string& name) const {
-        for (auto& sceneWater : sceneWaters) {
-            if (sceneWater->getName() == name) {
-                return *sceneWater;
+    WaterEntity& Map::getWaterEntity(const std::string& name) const {
+        for (auto& waterEntity : waterEntities) {
+            if (waterEntity->getName() == name) {
+                return *waterEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a scene water having name: " + name);
+        throw std::invalid_argument("Impossible to find a water entity having name: " + name);
     }
 
-    void Map::addSceneWater(std::unique_ptr<SceneWater> sceneWater) {
-        sceneWater->setup(renderer3d);
-        sceneWaters.push_back(std::move(sceneWater));
+    void Map::addWaterEntity(std::unique_ptr<WaterEntity> waterEntity) {
+        waterEntity->setup(renderer3d);
+        waterEntities.push_back(std::move(waterEntity));
     }
 
-    void Map::removeSceneWater(SceneWater& sceneWater) {
-        sceneWaters.remove_if([&sceneWater](const auto& o){return o.get()==&sceneWater;});
+    void Map::removeWaterEntity(WaterEntity& waterEntity) {
+        waterEntities.remove_if([&waterEntity](const auto& o){return o.get()==&waterEntity;});
     }
 
     const SkyEntity& Map::getSkyEntity() const {
@@ -317,7 +317,7 @@ namespace urchin {
                 return *soundEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a scene sound having name: " + name);
+        throw std::invalid_argument("Impossible to find a sound entity having name: " + name);
     }
 
     void Map::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
@@ -373,8 +373,8 @@ namespace urchin {
         for (const auto& sceneModel : sceneModels) {
             sceneModel->refresh();
         }
-        for (const auto& sceneTerrain : sceneTerrains) {
-            sceneTerrain->refresh();
+        for (const auto& terrainEntity : terrainEntities) {
+            terrainEntity->refresh();
         }
         refreshSound();
     }

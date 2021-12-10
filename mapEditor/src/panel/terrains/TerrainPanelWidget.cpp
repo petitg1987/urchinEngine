@@ -326,9 +326,9 @@ namespace urchin {
     void TerrainPanelWidget::load(TerrainController& terrainController) {
         this->terrainController = &terrainController;
 
-        std::list<const SceneTerrain*> sceneTerrains = this->terrainController->getSceneTerrains();
-        for (auto& sceneTerrain : sceneTerrains) {
-            terrainTableView->addTerrain(*sceneTerrain);
+        std::list<const TerrainEntity*> terrainEntities = this->terrainController->getTerrainEntities();
+        for (auto& terrainEntity : terrainEntities) {
+            terrainTableView->addTerrain(*terrainEntity);
         }
     }
 
@@ -341,9 +341,9 @@ namespace urchin {
     void TerrainPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* terrainTableView = dynamic_cast<TerrainTableView*>(observable)) {
             if (notificationType == TerrainTableView::SELECTION_CHANGED) {
-                if (terrainTableView->hasSceneTerrainSelected()) {
-                    const SceneTerrain* sceneTerrain = terrainTableView->getSelectedSceneTerrain();
-                    setupTerrainDataFrom(sceneTerrain);
+                if (terrainTableView->hasTerrainEntitySelected()) {
+                    const TerrainEntity* terrainEntity = terrainTableView->getSelectedTerrainEntity();
+                    setupTerrainDataFrom(terrainEntity);
 
                     removeTerrainButton->setEnabled(true);
                     generalPropertiesGroupBox->show();
@@ -361,9 +361,9 @@ namespace urchin {
         }
     }
 
-    void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain* sceneTerrain) {
+    void TerrainPanelWidget::setupTerrainDataFrom(const TerrainEntity* terrainEntity) {
         disableTerrainEvent = true;
-        const Terrain* terrain = sceneTerrain->getTerrain();
+        const Terrain* terrain = terrainEntity->getTerrain();
 
         this->positionX->setValue(terrain->getPosition().X);
         this->positionY->setValue(terrain->getPosition().Y);
@@ -403,22 +403,22 @@ namespace urchin {
     }
 
     void TerrainPanelWidget::showAddTerrainDialog() {
-        NewTerrainDialog newSceneTerrainDialog(this, terrainController);
-        newSceneTerrainDialog.exec();
+        NewTerrainDialog newTerrainEntityDialog(this, terrainController);
+        newTerrainEntityDialog.exec();
 
-        if (newSceneTerrainDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<SceneTerrain> sceneTerrain = newSceneTerrainDialog.moveSceneTerrain();
-            const SceneTerrain* sceneTerrainPtr = sceneTerrain.get();
-            terrainController->addSceneTerrain(std::move(sceneTerrain));
+        if (newTerrainEntityDialog.result() == QDialog::Accepted) {
+            std::unique_ptr<TerrainEntity> terrainEntity = newTerrainEntityDialog.moveTerrainEntity();
+            const TerrainEntity* terrainEntityPtr = terrainEntity.get();
+            terrainController->addTerrainEntity(std::move(terrainEntity));
 
-            terrainTableView->addTerrain(*sceneTerrainPtr);
+            terrainTableView->addTerrain(*terrainEntityPtr);
         }
     }
 
     void TerrainPanelWidget::removeSelectedTerrain() {
-        if (terrainTableView->hasSceneTerrainSelected()) {
-            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
-            terrainController->removeSceneTerrain(sceneTerrain);
+        if (terrainTableView->hasTerrainEntitySelected()) {
+            const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
+            terrainController->removeTerrainEntity(terrainEntity);
 
             terrainTableView->removeSelectedTerrain();
         }
@@ -426,43 +426,43 @@ namespace urchin {
 
     void TerrainPanelWidget::updateTerrainGeneralProperties() {
         if (!disableTerrainEvent) {
-            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
+            const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
             Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-            terrainController->updateSceneTerrainGeneralProperties(sceneTerrain, position, (float)ambient->value());
+            terrainController->updateTerrainGeneralProperties(terrainEntity, position, (float)ambient->value());
         }
     }
 
     void TerrainPanelWidget::updateTerrainMesh() {
         if (!disableTerrainEvent) {
-            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
+            const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
-            terrainController->updateSceneTerrainMesh(sceneTerrain, (float)xzScale->value(), (float)yScale->value());
+            terrainController->updateTerrainMesh(terrainEntity, (float)xzScale->value(), (float)yScale->value());
         }
     }
 
     void TerrainPanelWidget::updateTerrainMaterial() {
         if (!disableTerrainEvent) {
-            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
+            const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
             std::string maskMapFilename = maskMapFilenameText->text().toStdString();
             std::vector<std::string> materialFilenames;
             for (unsigned int i = 0; i < TerrainMaterials::MAX_MATERIAL; ++i) {
                 materialFilenames.push_back(materialFilenameTexts[i]->text().toStdString());
             }
-            terrainController->updateSceneTerrainMaterial(sceneTerrain, (float)sRepeat->value(), (float)tRepeat->value(), maskMapFilename, materialFilenames);
+            terrainController->updateTerrainMaterial(terrainEntity, (float)sRepeat->value(), (float)tRepeat->value(), maskMapFilename, materialFilenames);
         }
     }
 
     void TerrainPanelWidget::updateTerrainGrass() {
         if (!disableTerrainEvent) {
-            const SceneTerrain& sceneTerrain = *terrainTableView->getSelectedSceneTerrain();
+            const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
             auto numGrassInTexValue = (unsigned int)numGrassInTex->value();
             Vector3<float> windDirection((float)windDirectionX->value(), (float)windDirectionY->value(), (float)windDirectionZ->value());
-            terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
+            terrainController->updateTerrainGrass(terrainEntity, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
                                                        (float)grassHeight->value(), (float)grassLength->value(), windDirection, (float)windStrength->value());
         }
     }

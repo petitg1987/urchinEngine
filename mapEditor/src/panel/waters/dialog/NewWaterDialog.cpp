@@ -12,7 +12,7 @@ namespace urchin {
             waterController(waterController),
             waterNameLabel(nullptr),
             waterNameText(nullptr),
-            sceneWater(nullptr) {
+            waterEntity(nullptr) {
         this->setWindowTitle("New Water");
         this->resize(530, 130);
         this->setFixedSize(this->width(), this->height());
@@ -47,14 +47,14 @@ namespace urchin {
         }
     }
 
-    int NewWaterDialog::buildSceneWater(int result) {
+    int NewWaterDialog::buildWaterEntity(int result) {
         try {
-            sceneWater = std::make_unique<SceneWater>();
-            sceneWater->setName(waterName);
+            waterEntity = std::make_unique<WaterEntity>();
+            waterEntity->setName(waterName);
             
             auto water = std::make_shared<Water>();
 
-            sceneWater->setWater(water);
+            waterEntity->setWater(water);
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
@@ -64,8 +64,8 @@ namespace urchin {
     }
 
 
-    std::unique_ptr<SceneWater> NewWaterDialog::moveSceneWater() {
-        return std::move(sceneWater);
+    std::unique_ptr<WaterEntity> NewWaterDialog::moveWaterEntity() {
+        return std::move(waterEntity);
     }
 
     void NewWaterDialog::done(int r) {
@@ -78,13 +78,13 @@ namespace urchin {
             if (waterName.empty()) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is mandatory");
                 hasError = true;
-            } else if (isSceneWaterExist(waterName)) {
+            } else if (isWaterEntityExist(waterName)) {
                 LabelStyleHelper::applyErrorStyle(waterNameLabel, "Water name is already used");
                 hasError = true;
             }
 
             if (!hasError) {
-                r = buildSceneWater(r);
+                r = buildWaterEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -92,8 +92,8 @@ namespace urchin {
         }
     }
 
-    bool NewWaterDialog::isSceneWaterExist(const std::string& name) {
-        std::list<const SceneWater*> sceneWaters = waterController->getSceneWaters();
-        return std::ranges::any_of(sceneWaters, [&name](const auto& sw){return sw->getName() == name;});
+    bool NewWaterDialog::isWaterEntityExist(const std::string& name) {
+        std::list<const WaterEntity*> waterEntities = waterController->getWaterEntities();
+        return std::ranges::any_of(waterEntities, [&name](const auto& we){return we->getName() == name;});
     }
 }

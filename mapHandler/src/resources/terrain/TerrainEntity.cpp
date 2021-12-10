@@ -1,11 +1,11 @@
 #include <stdexcept>
 
-#include <resources/terrain/SceneTerrain.h>
+#include <resources/terrain/TerrainEntity.h>
 #include <resources/terrain/TerrainReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {
-    SceneTerrain::SceneTerrain() :
+    TerrainEntity::TerrainEntity() :
             renderer3d(nullptr),
             physicsWorld(nullptr),
             aiEnvironment(nullptr),
@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    SceneTerrain::~SceneTerrain() {
+    TerrainEntity::~TerrainEntity() {
         if (terrain) {
             renderer3d->getTerrainContainer().removeTerrain(*terrain);
         }
@@ -22,7 +22,7 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void SceneTerrain::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
+    void TerrainEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
         }
@@ -45,7 +45,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+    void TerrainEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setTerrain(TerrainReaderWriter().loadFrom(chunk, udaParser));
@@ -57,25 +57,25 @@ namespace urchin {
         setupInteractiveBody(std::move(terrainRigidBody));
     }
 
-    void SceneTerrain::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
+    void TerrainEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
         TerrainReaderWriter().writeOn(chunk, *terrain, udaWriter);
     }
 
-    std::string SceneTerrain::getName() const {
+    std::string TerrainEntity::getName() const {
         return name;
     }
 
-    void SceneTerrain::setName(const std::string& name) {
+    void TerrainEntity::setName(const std::string& name) {
         this->name = name;
     }
 
-    Terrain* SceneTerrain::getTerrain() const {
+    Terrain* TerrainEntity::getTerrain() const {
         return terrain.get();
     }
 
-    void SceneTerrain::setTerrain(std::shared_ptr<Terrain> terrain) {
+    void TerrainEntity::setTerrain(std::shared_ptr<Terrain> terrain) {
         if (!terrain) {
             throw std::invalid_argument("Cannot set a null terrain on scene terrain.");
         }
@@ -90,16 +90,16 @@ namespace urchin {
         this->terrain = std::move(terrain);
     }
 
-    RigidBody* SceneTerrain::getRigidBody() const {
+    RigidBody* TerrainEntity::getRigidBody() const {
         return rigidBody.get();
     }
 
-    void SceneTerrain::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
+    void TerrainEntity::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject();
     }
 
-    void SceneTerrain::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
+    void TerrainEntity::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
@@ -108,7 +108,7 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::setupAIObject() {
+    void TerrainEntity::setupAIObject() {
         deleteAIObjects();
 
         if (!rigidBody) {
@@ -122,20 +122,20 @@ namespace urchin {
         }
     }
 
-    void SceneTerrain::deleteRigidBody() {
+    void TerrainEntity::deleteRigidBody() {
         if (physicsWorld && rigidBody) {
             physicsWorld->removeBody(*rigidBody);
         }
         rigidBody = nullptr;
     }
 
-    void SceneTerrain::deleteAIObjects() {
+    void TerrainEntity::deleteAIObjects() {
         if (aiEnvironment && aiTerrain) {
             aiEnvironment->removeEntity(aiTerrain);
         }
     }
 
-    void SceneTerrain::refresh() {
+    void TerrainEntity::refresh() {
         if (rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();
             terrain->setPosition(physicsTransform.getPosition());
