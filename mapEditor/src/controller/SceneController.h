@@ -26,7 +26,7 @@ namespace urchin {
 
             void saveMapOnFile(const std::string&);
 
-            ModelController& getModelController();
+            ModelController& getObjectController();
             LightController& getLightController();
             TerrainController& getTerrainController();
             WaterController& getWaterController();
@@ -37,7 +37,7 @@ namespace urchin {
         private:
             std::vector<AbstractController*> subControllers;
 
-            std::unique_ptr<ModelController> modelController;
+            std::unique_ptr<ModelController> objectController;
             std::unique_ptr<LightController> lightController;
             std::unique_ptr<TerrainController> terrainController;
             std::unique_ptr<WaterController> waterController;

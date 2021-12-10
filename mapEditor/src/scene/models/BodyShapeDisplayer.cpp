@@ -7,7 +7,7 @@ namespace urchin {
 
     BodyShapeDisplayer::BodyShapeDisplayer(Scene& scene) :
             scene(scene),
-            selectedSceneModel(nullptr),
+            selectedObjectEntity(nullptr),
             selectedCompoundShapeComponent(nullptr) {
 
     }
@@ -16,8 +16,8 @@ namespace urchin {
         clearDisplay();
     }
 
-    void BodyShapeDisplayer::setSelectedSceneModel(const SceneModel* selectedSceneModel) {
-        this->selectedSceneModel = selectedSceneModel;
+    void BodyShapeDisplayer::setSelectedObjectEntity(const ObjectEntity* selectedObjectEntity) {
+        this->selectedObjectEntity = selectedObjectEntity;
     }
 
     void BodyShapeDisplayer::setSelectedCompoundShapeComponent(const LocalizedCollisionShape* selectedCompoundShapeComponent) {
@@ -27,9 +27,9 @@ namespace urchin {
     void BodyShapeDisplayer::displayBodyShape() {
         clearDisplay();
 
-        if (selectedSceneModel && selectedSceneModel->getRigidBody()) {
-            const Transform<float>& modelTransform = selectedSceneModel->getModel()->getTransform();
-            const CollisionShape3D& bodyShape = selectedSceneModel->getRigidBody()->getShape();
+        if (selectedObjectEntity && selectedObjectEntity->getRigidBody()) {
+            const Transform<float>& modelTransform = selectedObjectEntity->getModel()->getTransform();
+            const CollisionShape3D& bodyShape = selectedObjectEntity->getRigidBody()->getShape();
 
             if (bodyShape.isConcave()) {
                 PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());

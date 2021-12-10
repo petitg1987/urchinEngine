@@ -11,12 +11,12 @@
 
 namespace urchin {
 
-    class ModelMoveController : public Observable {
+    class ModelMoveController : public Observable { //TODO rename
         public:
             ModelMoveController(Scene&, SceneController&, MouseController&, StatusBarController&);
 
             enum NotificationType {
-                MODEL_MOVED
+                OBJECT_MOVED
             };
 
             void onResize(unsigned int, unsigned int);
@@ -27,8 +27,8 @@ namespace urchin {
             bool onMouseLeftButton();
             bool onEscapeKey();
 
-            void setSelectedSceneModel(const SceneModel*);
-            const SceneModel* getSelectedSceneModel() const;
+            void setSelectedObjectEntity(const ObjectEntity*);
+            const ObjectEntity* getSelectedObjectEntity() const;
 
             void displayAxis();
 
@@ -46,7 +46,7 @@ namespace urchin {
             MouseController& mouseController;
             StatusBarController& statusBarController;
 
-            const SceneModel* selectedSceneModel;
+            const ObjectEntity* selectedObjectEntity;
             int selectedAxis;
             Point3<float> savedPosition;
 

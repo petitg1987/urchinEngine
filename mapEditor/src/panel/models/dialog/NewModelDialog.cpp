@@ -13,15 +13,15 @@ namespace urchin {
 
     QString NewModelDialog::preferredMeshesPath = QString();
 
-    NewModelDialog::NewModelDialog(QWidget* parent, const ModelController* modelController) :
+    NewModelDialog::NewModelDialog(QWidget* parent, const ModelController* objectController) :
             QDialog(parent),
-            modelController(modelController),
-            modelNameLabel(nullptr),
-            modelNameText(nullptr),
+            objectController(objectController),
+            objectNameLabel(nullptr),
+            objectNameText(nullptr),
             meshesFilenameLabel(nullptr),
             meshesFilenameText(nullptr),
-            sceneModel(nullptr) {
-        this->setWindowTitle("New Model");
+            objectEntity(nullptr) {
+        this->setWindowTitle("New Object");
         this->resize(530, 130);
         this->setFixedSize(this->width(), this->height());
 
@@ -41,12 +41,12 @@ namespace urchin {
     }
 
     void NewModelDialog::setupNameFields(QGridLayout* mainLayout) {
-        modelNameLabel = new QLabel("Model Name:");
-        mainLayout->addWidget(modelNameLabel, 0, 0);
+        objectNameLabel = new QLabel("Object Name:");
+        mainLayout->addWidget(objectNameLabel, 0, 0);
 
-        modelNameText = new QLineEdit();
-        mainLayout->addWidget(modelNameText, 0, 1);
-        modelNameText->setFixedWidth(360);
+        objectNameText = new QLineEdit();
+        mainLayout->addWidget(objectNameText, 0, 1);
+        objectNameText->setFixedWidth(360);
     }
 
     void NewModelDialog::setupMeshFilenameFields(QGridLayout* mainLayout) {
@@ -65,18 +65,18 @@ namespace urchin {
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showMeshFilenameDialog()));
     }
 
-    void NewModelDialog::updateModelName() {
-        QString modelName = modelNameText->text();
-        if (!modelName.isEmpty()) {
-            this->modelName = modelName.toUtf8().constData();
+    void NewModelDialog::updateObjectName() {
+        QString objectName = objectNameText->text();
+        if (!objectName.isEmpty()) {
+            this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    int NewModelDialog::buildSceneModel(int result) {
+    int NewModelDialog::buildObjectEntity(int result) {
         try {
-            sceneModel = std::make_unique<SceneModel>();
+            objectEntity = std::make_unique<ObjectEntity>();
 
-            sceneModel->setName(modelName);
+            objectEntity->setName(objectName);
 
             std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
             std::string relativeMeshesFilename;
@@ -84,7 +84,7 @@ namespace urchin {
                 relativeMeshesFilename = FileUtil::getRelativePath(resourcesDirectory, meshesFilename);
             }
             auto model = Model::fromMeshesFile(relativeMeshesFilename);
-            sceneModel->setModel(std::move(model));
+            objectEntity->setModel(std::move(model));
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
@@ -94,8 +94,8 @@ namespace urchin {
     }
 
 
-    std::unique_ptr<SceneModel> NewModelDialog::moveSceneModel() {
-        return std::move(sceneModel);
+    std::unique_ptr<ObjectEntity> NewModelDialog::moveObjectEntity() {
+        return std::move(objectEntity);
     }
 
     void NewModelDialog::showMeshFilenameDialog() {
@@ -114,20 +114,20 @@ namespace urchin {
         if (QDialog::Accepted == r) {
             bool hasError = false;
 
-            updateModelName();
-            LabelStyleHelper::applyNormalStyle(modelNameLabel);
+            updateObjectName();
+            LabelStyleHelper::applyNormalStyle(objectNameLabel);
             LabelStyleHelper::applyNormalStyle(meshesFilenameLabel);
 
-            if (modelName.empty()) {
-                LabelStyleHelper::applyErrorStyle(modelNameLabel, "Model name is mandatory");
+            if (objectName.empty()) {
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (isSceneModelExist(modelName)) {
-                LabelStyleHelper::applyErrorStyle(modelNameLabel, "Model name is already used");
+            } else if (isObjectEntityExist(objectName)) {
+                LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }
 
             if (!hasError) {
-                r = buildSceneModel(r);
+                r = buildObjectEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -135,9 +135,9 @@ namespace urchin {
         }
     }
 
-    bool NewModelDialog::isSceneModelExist(const std::string& name) {
-        std::list<const SceneModel*> sceneModels = modelController->getSceneModels();
-        return std::ranges::any_of(sceneModels, [&name](const auto& so){return so->getName() == name;});
+    bool NewModelDialog::isObjectEntityExist(const std::string& name) {
+        std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
+        return std::ranges::any_of(objectEntities, [&name](const auto& so){return so->getName() == name;});
     }
 
 }

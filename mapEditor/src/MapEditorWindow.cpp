@@ -91,14 +91,14 @@ namespace urchin {
 
         auto* viewMenu = new QMenu("View");
 
-        auto* viewModelMenu = new QMenu("Model");
-        viewMenu->addMenu(viewModelMenu);
+        auto* viewObjectMenu = new QMenu("Object");
+        viewMenu->addMenu(viewObjectMenu);
         auto* viewPhysicsShapeAction = new QAction("Physics Shape", this);
         viewPhysicsShapeAction->setEnabled(false);
         viewPhysicsShapeAction->setCheckable(true);
         viewPhysicsShapeAction->setChecked(true);
-        viewModelMenu->addAction(viewPhysicsShapeAction);
-        viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
+        viewObjectMenu->addAction(viewPhysicsShapeAction);
+        viewActions[SceneDisplayer::OBJECT_PHYSICS] = viewPhysicsShapeAction;
         connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
         auto* viewLightMenu = new QMenu("Light");
@@ -162,14 +162,14 @@ namespace urchin {
         sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
-        scenePanelWidget->getModelPanelWidget()->addObserver(this, ModelPanelWidget::MODEL_BODY_SHAPE_WIDGET_CREATED);
-        scenePanelWidget->getModelPanelWidget()->getModelTableView()->addObserver(this, ModelTableView::MODEL_SELECTION_CHANGED);
+        scenePanelWidget->getObjectPanelWidget()->addObserver(this, ModelPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+        scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ModelTableView::OBJECT_SELECTION_CHANGED);
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
         scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
         horizontalLayout->addWidget(scenePanelWidget);
 
-        sceneDisplayerWindow->addObserver(scenePanelWidget->getModelPanelWidget(), SceneDisplayerWindow::BODY_PICKED);
+        sceneDisplayerWindow->addObserver(scenePanelWidget->getObjectPanelWidget(), SceneDisplayerWindow::BODY_PICKED);
     }
 
     QString MapEditorWindow::getPreferredMapPath() const {
@@ -187,8 +187,8 @@ namespace urchin {
                 executeViewPropertiesChangeAction();
             }
         } else if (const auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
-            if (notificationType == ModelTableView::MODEL_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightObjectEntity(modelTableView->getSelectedSceneModel());
+            if (notificationType == ModelTableView::OBJECT_SELECTION_CHANGED) {
+                sceneDisplayerWindow->setHighlightObjectEntity(modelTableView->getSelectedObjectEntity());
             }
         } else if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
@@ -210,7 +210,7 @@ namespace urchin {
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
         if (const auto* modelControllerWidget = dynamic_cast<ModelPanelWidget*>(observable)) {
-            if (notificationType == ModelPanelWidget::MODEL_BODY_SHAPE_WIDGET_CREATED) {
+            if (notificationType == ModelPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget* bodyShapeWidget = modelControllerWidget->getBodyShapeWidget();
                 if (const auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
@@ -253,7 +253,7 @@ namespace urchin {
         scenePanelWidget->loadMap(*sceneController);
 
         sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
-        sceneDisplayerWindow->addObserverModelMoveController(scenePanelWidget->getModelPanelWidget(), ModelMoveController::MODEL_MOVED);
+        sceneDisplayerWindow->addObserverModelMoveController(scenePanelWidget->getObjectPanelWidget(), ModelMoveController::OBJECT_MOVED);
 
         updateMapFilename(mapFilename);
         updateInterfaceState();
@@ -382,8 +382,8 @@ namespace urchin {
     }
 
     ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties) {
-        if (SceneDisplayer::MODEL_PHYSICS == viewProperties) {
-            return ScenePanelWidget::MODELS;
+        if (SceneDisplayer::OBJECT_PHYSICS == viewProperties) {
+            return ScenePanelWidget::OBJECTS;
         }
         if (SceneDisplayer::LIGHT_SCOPE == viewProperties) {
             return ScenePanelWidget::LIGHTS;

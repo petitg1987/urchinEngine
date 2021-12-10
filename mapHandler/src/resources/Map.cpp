@@ -72,10 +72,10 @@ namespace urchin {
         auto modelsChunk = udaParser.getChunks(MODEL_TAG, UdaAttribute(), modelsListChunk);
 
         for (const auto& modelChunk : modelsChunk) {
-            auto sceneModel = std::make_unique<SceneModel>();
-            sceneModel->loadFrom(modelChunk, udaParser);
+            auto objectEntity = std::make_unique<ObjectEntity>();
+            objectEntity->loadFrom(modelChunk, udaParser);
 
-            addSceneModel(std::move(sceneModel));
+            addObjectEntity(std::move(objectEntity));
         }
         renderer3d->preWarmModels();
     }
@@ -152,9 +152,9 @@ namespace urchin {
     void Map::writeObjectEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& modelsListChunk = udaWriter.createChunk(MODELS_TAG, UdaAttribute(), &sceneChunk);
 
-        for (auto& sceneModel : sceneModels) {
+        for (auto& objectEntity : objectEntities) {
             auto& modelsChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &modelsListChunk);
-            sceneModel->writeOn(modelsChunk, udaWriter);
+            objectEntity->writeOn(modelsChunk, udaWriter);
         }
     }
 
@@ -205,32 +205,32 @@ namespace urchin {
         NavMeshAgentReaderWriter::writeOn(aiElementsListChunk, aiEnvironment->getNavMeshGenerator().getNavMeshAgent(), udaWriter);
     }
 
-    const std::list<std::unique_ptr<SceneModel>>& Map::getSceneModels() const {
-        return sceneModels;
+    const std::list<std::unique_ptr<ObjectEntity>>& Map::getObjectEntities() const {
+        return objectEntities;
     }
 
-    SceneModel& Map::getSceneModel(const std::string& name) const {
-        for (auto& sceneModel : sceneModels) {
-            if (sceneModel->getName() == name) {
-                return *sceneModel;
+    ObjectEntity& Map::getObjectEntity(const std::string& name) const {
+        for (auto& objectEntity : objectEntities) {
+            if (objectEntity->getName() == name) {
+                return *objectEntity;
             }
         }
         throw std::invalid_argument("Impossible to find a object entity having name: " + name);
     }
 
-    void Map::findSceneModelsByTag(const std::string& tag, std::vector<SceneModel*>& models) const {
-        modelTagHolder.findByTag<SceneModel*>(tag, models);
+    void Map::findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const {
+        objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, models);
     }
 
-    void Map::addSceneModel(std::unique_ptr<SceneModel> sceneModel) {
-        sceneModel->setup(renderer3d, physicsWorld, aiEnvironment);
-        modelTagHolder.addTaggableResource(*sceneModel);
-        sceneModels.push_back(std::move(sceneModel));
+    void Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+        objectEntity->setup(renderer3d, physicsWorld, aiEnvironment);
+        objectEntitiesTagHolder.addTaggableResource(*objectEntity);
+        objectEntities.push_back(std::move(objectEntity));
     }
 
-    void Map::removeSceneModel(SceneModel& sceneModel) {
-        modelTagHolder.removeTaggableResource(sceneModel);
-        sceneModels.remove_if([&sceneModel](const auto& o){return o.get()==&sceneModel;});
+    void Map::removeObjectEntity(ObjectEntity& objectEntity) {
+        objectEntitiesTagHolder.removeTaggableResource(objectEntity);
+        objectEntities.remove_if([&objectEntity](const auto& o){return o.get()==&objectEntity;});
     }
 
     const std::list<std::unique_ptr<LightEntity>>& Map::getLightEntities() const {
@@ -370,17 +370,14 @@ namespace urchin {
         aiEnvironment->checkNoExceptionRaised();
         soundEnvironment->checkNoExceptionRaised();
 
-        for (const auto& sceneModel : sceneModels) {
-            sceneModel->refresh();
+        for (const auto& objectEntity : objectEntities) {
+            objectEntity->refresh();
         }
+
         for (const auto& terrainEntity : terrainEntities) {
             terrainEntity->refresh();
         }
-        refreshSound();
-    }
 
-    void Map::refreshSound() {
-        //update sound event
         if (renderer3d && renderer3d->getCamera()) {
             soundEnvironment->process(renderer3d->getCamera()->getPosition(), renderer3d->getCamera()->getView(), renderer3d->getCamera()->getUp());
         } else {

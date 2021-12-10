@@ -12,130 +12,130 @@ namespace urchin {
 
     }
 
-    std::list<const SceneModel*> ModelController::getSceneModels() const {
-        const auto& sceneModels = getMapHandler()->getMap().getSceneModels();
-        std::list<const SceneModel*> constSceneModels;
-        for (auto& sceneModel : sceneModels) {
-            constSceneModels.emplace_back(sceneModel.get());
+    std::list<const ObjectEntity*> ModelController::getObjectEntities() const {
+        const auto& objectEntities = getMapHandler()->getMap().getObjectEntities();
+        std::list<const ObjectEntity*> constObjectEntities;
+        for (auto& objectEntity : objectEntities) {
+            constObjectEntities.emplace_back(objectEntity.get());
         }
 
-        return constSceneModels;
+        return constObjectEntities;
     }
 
-    const SceneModel* ModelController::findSceneModelByBodyId(const std::string& bodyId) const {
-        for (const auto* sceneModel : getSceneModels()) {
-            if (sceneModel->getRigidBody() && sceneModel->getRigidBody()->getId() == bodyId) {
-                return sceneModel;
+    const ObjectEntity* ModelController::findObjectEntityByBodyId(const std::string& bodyId) const {
+        for (const auto* objectEntity : getObjectEntities()) {
+            if (objectEntity->getRigidBody() && objectEntity->getRigidBody()->getId() == bodyId) {
+                return objectEntity;
             }
         }
 
         return nullptr;
     }
 
-    void ModelController::addSceneModel(std::unique_ptr<SceneModel> sceneModel) {
-        getMapHandler()->getMap().addSceneModel(std::move(sceneModel));
+    void ModelController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+        getMapHandler()->getMap().addObjectEntity(std::move(objectEntity));
 
         markModified();
     }
 
-    void ModelController::removeSceneModel(const SceneModel& constSceneModel) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
-        getMapHandler()->getMap().removeSceneModel(sceneModel);
+    void ModelController::removeObjectEntity(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        getMapHandler()->getMap().removeObjectEntity(objectEntity);
 
         markModified();
     }
 
-    void ModelController::cloneSceneModel(std::unique_ptr<SceneModel> newSceneModel, const SceneModel& toCloneSceneModel) {
-        Model* toCloneModel = toCloneSceneModel.getModel();
+    void ModelController::cloneObjectEntity(std::unique_ptr<ObjectEntity> newObjectModel, const ObjectEntity& toCloneObjectEntity) {
+        Model* toCloneModel = toCloneObjectEntity.getModel();
         auto model = std::make_shared<Model>(*toCloneModel);
         Point3<float> shiftPosition(0.5f, 0.0f, 0.0f);
         model->setPosition(model->getTransform().getPosition() + shiftPosition);
-        newSceneModel->setModel(model);
+        newObjectModel->setModel(model);
 
-        RigidBody* toCloneRigidBody = toCloneSceneModel.getRigidBody();
+        RigidBody* toCloneRigidBody = toCloneObjectEntity.getRigidBody();
         if (toCloneRigidBody) {
             auto rigidBody = std::make_unique<RigidBody>(*toCloneRigidBody);
-            rigidBody->setId(newSceneModel->getName());
+            rigidBody->setId(newObjectModel->getName());
             rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
-            newSceneModel->setupInteractiveBody(std::move(rigidBody));
+            newObjectModel->setupInteractiveBody(std::move(rigidBody));
         }
 
-        addSceneModel(std::move(newSceneModel));
+        addObjectEntity(std::move(newObjectModel));
     }
 
-    void ModelController::createDefaultBody(const SceneModel& constSceneModel) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
+    void ModelController::createDefaultBody(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
-        const std::string& bodyId = constSceneModel.getName();
-        Transform<float> modelTransform = constSceneModel.getModel()->getTransform();
+        const std::string& bodyId = constObjectEntity.getName();
+        Transform<float> modelTransform = constObjectEntity.getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
-        auto bodyShape = DefaultBodyShapeCreator(constSceneModel).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
+        auto bodyShape = DefaultBodyShapeCreator(constObjectEntity).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
 
         auto rigidBody = std::make_unique<RigidBody>(bodyId, physicsTransform, std::move(bodyShape));
-        sceneModel.setupInteractiveBody(std::move(rigidBody));
+        objectEntity.setupInteractiveBody(std::move(rigidBody));
 
         markModified();
     }
 
-    void ModelController::changeBodyShape(const SceneModel& constSceneModel, CollisionShape3D::ShapeType shapeType) {
-        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constSceneModel).createDefaultBodyShape(shapeType);
-        updateSceneModelPhysicsShape(constSceneModel, std::move(newCollisionShape));
+    void ModelController::changeBodyShape(const ObjectEntity& constObjectEntity, CollisionShape3D::ShapeType shapeType) {
+        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constObjectEntity).createDefaultBodyShape(shapeType);
+        updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 
-    void ModelController::removeBody(const SceneModel& constSceneModel) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
-        sceneModel.setupInteractiveBody(nullptr);
+    void ModelController::removeBody(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        objectEntity.setupInteractiveBody(nullptr);
 
         markModified();
     }
 
-    const SceneModel& ModelController::updateSceneModelTransform(const SceneModel& constSceneModel, const Transform<float>& transform) {
-        const SceneModel& sceneModel = findSceneModel(constSceneModel);
-        Model* model = sceneModel.getModel();
+    const ObjectEntity& ModelController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        Model* model = objectEntity.getModel();
 
         Transform<float> oldTransform = model->getTransform();
         model->setTransform(transform);
 
-        if (sceneModel.getRigidBody()) {
+        if (objectEntity.getRigidBody()) {
             float scaleRatio = transform.getScale() / oldTransform.getScale();
-            const CollisionShape3D& collisionShape = sceneModel.getRigidBody()->getShape();
+            const CollisionShape3D& collisionShape = objectEntity.getRigidBody()->getShape();
             auto scaledCollisionShape = collisionShape.scale(scaleRatio);
 
-            updateSceneModelPhysicsShape(sceneModel, std::move(scaledCollisionShape));
+            updateObjectPhysicsShape(objectEntity, std::move(scaledCollisionShape));
         }
 
         markModified();
-        return sceneModel;
+        return objectEntity;
     }
 
-    const SceneModel& ModelController::updateSceneModelFlags(const SceneModel& constSceneModel, bool produceShadow) {
-        const SceneModel& sceneModel = findSceneModel(constSceneModel);
-        Model* model = sceneModel.getModel();
+    const ObjectEntity& ModelController::updateObjectFlags(const ObjectEntity& constObjectEntity, bool produceShadow) {
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        Model* model = objectEntity.getModel();
 
         model->setProduceShadow(produceShadow);
 
         markModified();
-        return sceneModel;
+        return objectEntity;
     }
 
-    const SceneModel& ModelController::updateSceneModelTags(const SceneModel& constSceneModel, const std::string& tagsValues) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
+    const ObjectEntity& ModelController::updateObjectTags(const ObjectEntity& constObjectEntity, const std::string& tagsValues) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
-        sceneModel.removeAllTags();
+        objectEntity.removeAllTags();
         std::vector<std::string> tagsList = StringUtil::split(tagsValues, TagsReaderWriter::TAGS_SEPARATOR);
         for (const std::string& tag: tagsList) {
-            sceneModel.addTag(tag);
+            objectEntity.addTag(tag);
         }
 
         markModified();
-        return sceneModel;
+        return objectEntity;
     }
 
-    const SceneModel& ModelController::updateSceneModelPhysicsProperties(const SceneModel& constSceneModel, float mass, float restitution,
+    const ObjectEntity& ModelController::updateObjectPhysicsProperties(const ObjectEntity& constObjectEntity, float mass, float restitution,
             float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
             const Vector3<float>& angularFactor) {
-        const SceneModel& sceneModel = findSceneModel(constSceneModel);
-        RigidBody* rigidBody = sceneModel.getRigidBody();
+        const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        RigidBody* rigidBody = objectEntity.getRigidBody();
 
         rigidBody->setMass(mass);
         rigidBody->setRestitution(restitution);
@@ -148,15 +148,15 @@ namespace urchin {
         rigidBody->setAngularFactor(angularFactor);
 
         markModified();
-        return sceneModel;
+        return objectEntity;
     }
 
-    const SceneModel& ModelController::updateSceneModelPhysicsShape(const SceneModel& constSceneModel, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
-        SceneModel& sceneModel = findSceneModel(constSceneModel);
-        const RigidBody* rigidBody = sceneModel.getRigidBody();
+    const ObjectEntity& ModelController::updateObjectPhysicsShape(const ObjectEntity& constObjectEntity, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        const RigidBody* rigidBody = objectEntity.getRigidBody();
 
-        const std::string& bodyId = constSceneModel.getName();
-        Transform<float> modelTransform = constSceneModel.getModel()->getTransform();
+        const std::string& bodyId = constObjectEntity.getName();
+        Transform<float> modelTransform = constObjectEntity.getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
 
         auto newRigidBody = std::make_unique<RigidBody>(bodyId, physicsTransform, std::move(newCollisionShape));
@@ -168,21 +168,21 @@ namespace urchin {
         newRigidBody->setLinearFactor(rigidBody->getLinearFactor());
         newRigidBody->setAngularFactor(rigidBody->getAngularFactor());
 
-        sceneModel.setupInteractiveBody(std::move(newRigidBody));
+        objectEntity.setupInteractiveBody(std::move(newRigidBody));
 
         markModified();
-        return sceneModel;
+        return objectEntity;
     }
 
-    SceneModel& ModelController::findSceneModel(const SceneModel& constSceneModel) {
-        const auto& sceneModels = getMapHandler()->getMap().getSceneModels();
-        auto it = std::ranges::find_if(sceneModels, [&constSceneModel](const auto& o){return o.get() == &constSceneModel;});
+    ObjectEntity& ModelController::findObjectEntity(const ObjectEntity& constObjectEntity) {
+        const auto& objectEntities = getMapHandler()->getMap().getObjectEntities();
+        auto it = std::ranges::find_if(objectEntities, [&constObjectEntity](const auto& o){return o.get() == &constObjectEntity;});
 
-        if (it != sceneModels.end()) {
+        if (it != objectEntities.end()) {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find object entity: " + constSceneModel.getName());
+        throw std::invalid_argument("Impossible to find object entity: " + constObjectEntity.getName());
     }
 
 }

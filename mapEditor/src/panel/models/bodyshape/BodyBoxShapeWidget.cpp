@@ -5,8 +5,8 @@
 
 namespace urchin {
 
-    BodyBoxShapeWidget::BodyBoxShapeWidget(const SceneModel* sceneModel) :
-            BodyShapeWidget(sceneModel) {
+    BodyBoxShapeWidget::BodyBoxShapeWidget(const ObjectEntity* objectEntity) :
+            BodyShapeWidget(objectEntity) {
         auto* halfSizesLabel = new QLabel("Half Sizes:", this);
         mainLayout->addWidget(halfSizesLabel, 0, 0);
 

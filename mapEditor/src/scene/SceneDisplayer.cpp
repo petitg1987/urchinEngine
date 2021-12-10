@@ -118,12 +118,12 @@ namespace urchin {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightObjectEntity(const SceneModel* highlightObjectEntity) {
+    void SceneDisplayer::setHighlightObjectEntity(const ObjectEntity* highlightObjectEntity) {
         if (this->highlightObjectEntity != highlightObjectEntity) {
             this->highlightObjectEntity = highlightObjectEntity;
 
-            bodyShapeDisplayer->setSelectedSceneModel(highlightObjectEntity);
-            modelMoveController->setSelectedSceneModel(highlightObjectEntity);
+            bodyShapeDisplayer->setSelectedObjectEntity(highlightObjectEntity);
+            modelMoveController->setSelectedObjectEntity(highlightObjectEntity);
         }
     }
 
@@ -137,7 +137,7 @@ namespace urchin {
 
     void SceneDisplayer::refreshObjectsModel() {
         if (bodyShapeDisplayer && modelMoveController) {
-            if (viewProperties[MODEL_PHYSICS]) {
+            if (viewProperties[OBJECT_PHYSICS]) {
                 bodyShapeDisplayer->displayBodyShape();
             } else {
                 bodyShapeDisplayer->clearDisplay();

@@ -5,9 +5,9 @@
 
 namespace urchin {
 
-    BodyShapeWidget::BodyShapeWidget(const SceneModel* sceneModel) :
+    BodyShapeWidget::BodyShapeWidget(const ObjectEntity* objectEntity) :
             disableShapeEvent(false),
-            sceneModel(sceneModel) {
+            objectEntity(objectEntity) {
         setContentsMargins(0, 0, 0, 0);
 
         mainLayout = new QGridLayout(this);
@@ -15,8 +15,8 @@ namespace urchin {
         mainLayout->setContentsMargins(0, 0, 0, 0);
     }
 
-    const SceneModel* BodyShapeWidget::getSceneModel() const {
-        return sceneModel;
+    const ObjectEntity* BodyShapeWidget::getObjectEntity() const {
+        return objectEntity;
     }
 
     std::unique_ptr<const CollisionShape3D> BodyShapeWidget::moveShape() {

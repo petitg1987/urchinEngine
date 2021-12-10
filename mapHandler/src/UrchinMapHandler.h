@@ -4,7 +4,7 @@
 
 #include <resources/Map.h>
 #include <resources/common/TagsReaderWriter.h>
-#include <resources/model/SceneModel.h>
+#include <resources/model/ObjectEntity.h>
 #include <resources/light/LightEntity.h>
 #include <resources/terrain/TerrainEntity.h>
 

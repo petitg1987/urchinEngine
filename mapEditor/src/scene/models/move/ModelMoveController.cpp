@@ -10,7 +10,7 @@ namespace urchin {
             sceneController(sceneController),
             mouseController(mouseController),
             statusBarController(statusBarController),
-            selectedSceneModel(nullptr),
+            selectedObjectEntity(nullptr),
             selectedAxis(-1),
             oldMouseX(-1.0),
             oldMouseY(-1.0) {
@@ -24,7 +24,7 @@ namespace urchin {
 
     void ModelMoveController::onCtrlXYZ(unsigned int axisIndex) {
         if (selectedAxis == -1) {
-            savedPosition = selectedSceneModel->getModel()->getTransform().getPosition();
+            savedPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
         }
 
         selectedAxis = (int)axisIndex;
@@ -98,7 +98,7 @@ namespace urchin {
     }
 
     void ModelMoveController::moveModel(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
-        Point3<float> modelPosition = selectedSceneModel->getModel()->getTransform().getPosition();
+        Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(*scene.getActiveRenderer3d()->getCamera());
 
         Point3<float> startAxisWorldSpacePoint = modelPosition;
@@ -122,11 +122,11 @@ namespace urchin {
     }
 
     void ModelMoveController::updateModelPosition(const Point3<float>& newPosition) {
-        Transform<float> transform = selectedSceneModel->getModel()->getTransform();
+        Transform<float> transform = selectedObjectEntity->getModel()->getTransform();
         transform.setPosition(newPosition);
 
-        sceneController.getModelController().updateSceneModelTransform(*selectedSceneModel, transform);
-        notifyObservers(this, NotificationType::MODEL_MOVED);
+        sceneController.getObjectController().updateObjectTransform(*selectedObjectEntity, transform);
+        notifyObservers(this, NotificationType::OBJECT_MOVED);
     }
 
     bool ModelMoveController::onMouseLeftButton() {
@@ -153,24 +153,24 @@ namespace urchin {
         return propagateEvent;
     }
 
-    void ModelMoveController::setSelectedSceneModel(const SceneModel* selectedSceneModel) {
-        this->selectedSceneModel = selectedSceneModel;
+    void ModelMoveController::setSelectedObjectEntity(const ObjectEntity* selectedObjectEntity) {
+        this->selectedObjectEntity = selectedObjectEntity;
         this->selectedAxis = -1;
 
-        if (selectedSceneModel) {
+        if (selectedObjectEntity) {
             statusBarController.applyState(StatusBarState::MODEL_SELECTED);
         } else {
             statusBarController.applyPreviousState();
         }
     }
 
-    const SceneModel* ModelMoveController::getSelectedSceneModel() const {
-        return selectedSceneModel;
+    const ObjectEntity* ModelMoveController::getSelectedObjectEntity() const {
+        return selectedObjectEntity;
     }
 
     void ModelMoveController::displayAxis() {
-        if (selectedSceneModel) {
-            Point3<float> modelPosition = selectedSceneModel->getModel()->getTransform().getPosition();
+        if (selectedObjectEntity) {
+            Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
             modelMoveAxisDisplayer.displayAxis(modelPosition, (unsigned int)selectedAxis);
         } else {
             modelMoveAxisDisplayer.cleanCurrentDisplay();

@@ -9,29 +9,29 @@
 
 namespace urchin {
 
-    class ModelController : public AbstractController {
+    class ModelController : public AbstractController { //TODO rename
         public:
             ModelController();
 
-            std::list<const SceneModel*> getSceneModels() const;
-            const SceneModel* findSceneModelByBodyId(const std::string&) const;
-            void addSceneModel(std::unique_ptr<SceneModel>);
-            void removeSceneModel(const SceneModel&);
-            void cloneSceneModel(std::unique_ptr<SceneModel>, const SceneModel&);
+            std::list<const ObjectEntity*> getObjectEntities() const;
+            const ObjectEntity* findObjectEntityByBodyId(const std::string&) const;
+            void addObjectEntity(std::unique_ptr<ObjectEntity>);
+            void removeObjectEntity(const ObjectEntity&);
+            void cloneObjectEntity(std::unique_ptr<ObjectEntity>, const ObjectEntity&);
 
-            void createDefaultBody(const SceneModel&);
-            void changeBodyShape(const SceneModel&, CollisionShape3D::ShapeType);
-            void removeBody(const SceneModel&);
+            void createDefaultBody(const ObjectEntity&);
+            void changeBodyShape(const ObjectEntity&, CollisionShape3D::ShapeType);
+            void removeBody(const ObjectEntity&);
 
-            const SceneModel& updateSceneModelTransform(const SceneModel&, const Transform<float>&);
-            const SceneModel& updateSceneModelFlags(const SceneModel&, bool);
-            const SceneModel& updateSceneModelTags(const SceneModel&, const std::string&);
-            const SceneModel& updateSceneModelPhysicsProperties(const SceneModel&, float, float, float, float, float, float,
+            const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
+            const ObjectEntity& updateObjectFlags(const ObjectEntity&, bool);
+            const ObjectEntity& updateObjectTags(const ObjectEntity&, const std::string&);
+            const ObjectEntity& updateObjectPhysicsProperties(const ObjectEntity&, float, float, float, float, float, float,
                     const Vector3<float>&, const Vector3<float>&);
-            const SceneModel& updateSceneModelPhysicsShape(const SceneModel&, std::unique_ptr<const CollisionShape3D>);
+            const ObjectEntity& updateObjectPhysicsShape(const ObjectEntity&, std::unique_ptr<const CollisionShape3D>);
 
         private:
-            SceneModel& findSceneModel(const SceneModel&);
+            ObjectEntity& findObjectEntity(const ObjectEntity&);
     };
 
 }

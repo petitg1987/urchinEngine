@@ -12,8 +12,8 @@
 
 namespace urchin {
 
-    BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(const SceneModel* sceneModel) :
-            sceneModel(sceneModel) {
+    BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(const ObjectEntity* objectEntity) :
+            objectEntity(objectEntity) {
 
     }
 
@@ -21,19 +21,19 @@ namespace urchin {
         std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
 
         if (shapeType == CollisionShape3D::ShapeType::SPHERE_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodySphereShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodySphereShapeWidget>(objectEntity);
         } else if (shapeType == CollisionShape3D::ShapeType::BOX_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodyBoxShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodyBoxShapeWidget>(objectEntity);
         } else if (shapeType == CollisionShape3D::ShapeType::CAPSULE_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodyCapsuleShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodyCapsuleShapeWidget>(objectEntity);
         } else if (shapeType == CollisionShape3D::ShapeType::CYLINDER_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodyCylinderShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodyCylinderShapeWidget>(objectEntity);
         } else if (shapeType == CollisionShape3D::ShapeType::CONE_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodyConeShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodyConeShapeWidget>(objectEntity);
         } else if (shapeType == CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodyConvexHullShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodyConvexHullShapeWidget>(objectEntity);
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
-            bodyShapeWidget = std::make_unique<BodyCompoundShapeWidget>(sceneModel);
+            bodyShapeWidget = std::make_unique<BodyCompoundShapeWidget>(objectEntity);
         } else {
             throw std::invalid_argument("Unknown shape type to retrieve body shape widget: " + std::to_string(shapeType));
         }

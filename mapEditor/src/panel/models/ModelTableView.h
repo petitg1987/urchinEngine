@@ -7,31 +7,31 @@
 #include <UrchinMapHandler.h>
 #include <controller/SceneController.h>
 
-Q_DECLARE_METATYPE(const urchin::SceneModel*)
+Q_DECLARE_METATYPE(const urchin::ObjectEntity*)
 
 namespace urchin {
 
-    class ModelTableView : public QTableView, public Observable {
+    class ModelTableView : public QTableView, public Observable { //TODO rename
         Q_OBJECT
 
         public:
             explicit ModelTableView(QWidget* = nullptr);
 
             enum NotificationType {
-                MODEL_SELECTION_CHANGED
+                OBJECT_SELECTION_CHANGED
             };
 
-            bool hasSceneModelSelected() const;
-            const SceneModel* getSelectedSceneModel() const;
+            bool hasObjectEntitySelected() const;
+            const ObjectEntity* getSelectedObjectEntity() const;
 
-            int getSceneModelRow(const SceneModel*) const;
+            int getObjectEntityRow(const ObjectEntity*) const;
 
-            int addModel(const SceneModel&);
-            bool removeSelectedModel();
-            void removeAllModels();
+            int addObject(const ObjectEntity&);
+            bool removeSelectedObject();
+            void removeAllObjects();
 
         private:
-            QStandardItemModel* modelsListModel;
+            QStandardItemModel* objectsListModel;
 
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
     };

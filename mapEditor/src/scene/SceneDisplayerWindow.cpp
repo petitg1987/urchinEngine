@@ -110,7 +110,7 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWindow::setHighlightObjectEntity(const SceneModel* highlightObjectEntity) {
+    void SceneDisplayerWindow::setHighlightObjectEntity(const ObjectEntity* highlightObjectEntity) {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightObjectEntity(highlightObjectEntity);
         }

@@ -7,10 +7,10 @@ namespace urchin {
 
     ModelTableView::ModelTableView(QWidget* parent) :
             QTableView(parent) {
-        modelsListModel = new QStandardItemModel(0, 2, this);
-        modelsListModel->setHorizontalHeaderItem(0, new QStandardItem("Model Name"));
-        modelsListModel->setHorizontalHeaderItem(1, new QStandardItem("Meshes File"));
-        QTableView::setModel(modelsListModel);
+        objectsListModel = new QStandardItemModel(0, 2, this);
+        objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
+        objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Meshes File"));
+        QTableView::setModel(objectsListModel);
 
         horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
         horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
@@ -27,18 +27,18 @@ namespace urchin {
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);
 
-        notifyObservers(this, NotificationType::MODEL_SELECTION_CHANGED);
+        notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
     }
 
-    bool ModelTableView::hasSceneModelSelected() const {
+    bool ModelTableView::hasObjectEntitySelected() const {
         return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
     }
 
-    int ModelTableView::getSceneModelRow(const SceneModel* expectedSceneModel) const {
-        for (int rowId = 0; rowId < modelsListModel->rowCount(); ++rowId) {
-            QModelIndex index = modelsListModel->index(rowId, 0);
-            auto* sceneModel = index.data(Qt::UserRole + 1).value<const SceneModel*>();
-            if (expectedSceneModel->getName() == sceneModel->getName()) {
+    int ModelTableView::getObjectEntityRow(const ObjectEntity* expectedObjectEntity) const {
+        for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
+            QModelIndex index = objectsListModel->index(rowId, 0);
+            auto* objectEntity = index.data(Qt::UserRole + 1).value<const ObjectEntity*>();
+            if (expectedObjectEntity->getName() == objectEntity->getName()) {
                 return rowId;
             }
         }
@@ -46,42 +46,42 @@ namespace urchin {
         return -1;
     }
 
-    const SceneModel* ModelTableView::getSelectedSceneModel() const {
-        if (hasSceneModelSelected()) {
-            return this->currentIndex().data(Qt::UserRole + 1).value<const SceneModel*>();
+    const ObjectEntity* ModelTableView::getSelectedObjectEntity() const {
+        if (hasObjectEntitySelected()) {
+            return this->currentIndex().data(Qt::UserRole + 1).value<const ObjectEntity*>();
         }
         return nullptr;
     }
 
-    int ModelTableView::addModel(const SceneModel& sceneModel) {
-        auto* itemModelName = new QStandardItem(QString::fromStdString(sceneModel.getName()));
-        itemModelName->setData(QVariant::fromValue(&sceneModel), Qt::UserRole + 1);
+    int ModelTableView::addObject(const ObjectEntity& objectEntity) {
+        auto* itemModelName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
+        itemModelName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
         itemModelName->setEditable(false);
 
         std::string meshesName;
         std::string meshesFilename;
-        if (sceneModel.getModel()->getConstMeshes()) {
-            meshesName = sceneModel.getModel()->getConstMeshes()->getMeshesName();
-            meshesFilename = sceneModel.getModel()->getConstMeshes()->getMeshesFilename();
+        if (objectEntity.getModel()->getConstMeshes()) {
+            meshesName = objectEntity.getModel()->getConstMeshes()->getMeshesName();
+            meshesFilename = objectEntity.getModel()->getConstMeshes()->getMeshesFilename();
         }
         auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
         itemMeshName->setToolTip(QString::fromStdString(meshesFilename));
-        itemMeshName->setData(QVariant::fromValue(&sceneModel), Qt::UserRole + 1);
+        itemMeshName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
         itemMeshName->setEditable(false);
 
-        int nextRow = modelsListModel->rowCount();
-        modelsListModel->insertRow(nextRow);
-        modelsListModel->setItem(nextRow, 0, itemModelName);
-        modelsListModel->setItem(nextRow, 1, itemMeshName);
+        int nextRow = objectsListModel->rowCount();
+        objectsListModel->insertRow(nextRow);
+        objectsListModel->setItem(nextRow, 0, itemModelName);
+        objectsListModel->setItem(nextRow, 1, itemMeshName);
 
         resizeRowsToContents();
 
         return nextRow;
     }
 
-    bool ModelTableView::removeSelectedModel() {
-        if (hasSceneModelSelected()) {
-            modelsListModel->removeRow(this->currentIndex().row());
+    bool ModelTableView::removeSelectedObject() {
+        if (hasObjectEntitySelected()) {
+            objectsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 
             return true;
@@ -90,8 +90,8 @@ namespace urchin {
         return false;
     }
 
-    void ModelTableView::removeAllModels() {
-        modelsListModel->removeRows(0, modelsListModel->rowCount());
+    void ModelTableView::removeAllObjects() {
+        objectsListModel->removeRows(0, objectsListModel->rowCount());
         resizeRowsToContents();
     }
 

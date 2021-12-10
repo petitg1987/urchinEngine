@@ -13,8 +13,8 @@
 
 namespace urchin {
 
-    BodyCompoundShapeWidget::BodyCompoundShapeWidget(const SceneModel* sceneModel) :
-            BodyShapeWidget(sceneModel) {
+    BodyCompoundShapeWidget::BodyCompoundShapeWidget(const ObjectEntity* objectEntity) :
+            BodyShapeWidget(objectEntity) {
         shapesLabel = new QLabel("Shapes:");
         mainLayout->addWidget(shapesLabel, 0, 0);
 
@@ -73,7 +73,7 @@ namespace urchin {
             return std::make_unique<const CollisionCompoundShape>(std::move(localizedCollisionShapes));
         } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
-            return DefaultBodyShapeCreator(*getSceneModel()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
+            return DefaultBodyShapeCreator(*getObjectEntity()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
         }
     }
 
@@ -174,7 +174,7 @@ namespace urchin {
         shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         auto* shapeLayout = new QGridLayout(shapeGroupBox);
-        bodyShapeWidget = BodyShapeWidgetRetriever(getSceneModel()).createBodyShapeWidget(localizedShape->shape->getShapeType()).release();
+        bodyShapeWidget = BodyShapeWidgetRetriever(getObjectEntity()).createBodyShapeWidget(localizedShape->shape->getShapeType()).release();
         shapeLayout->addWidget(bodyShapeWidget, 0, 0);
         bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         bodyShapeWidget->setupShapePropertiesFrom(*localizedShape->shape);
@@ -231,7 +231,7 @@ namespace urchin {
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
-            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(*getSceneModel()).createDefaultBodyShape(shapeType);
+            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(*getObjectEntity()).createDefaultBodyShape(shapeType);
 
             std::size_t nextPosition = 0;
             for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {

@@ -11,34 +11,34 @@
 
 namespace urchin {
 
-    class NewModelDialog : public QDialog {
+    class NewModelDialog : public QDialog { //TODO rename
         Q_OBJECT
 
         public:
             NewModelDialog(QWidget*, const ModelController*);
 
-            std::unique_ptr<SceneModel> moveSceneModel();
+            std::unique_ptr<ObjectEntity> moveObjectEntity();
 
         private:
             void setupNameFields(QGridLayout*);
             void setupMeshFilenameFields(QGridLayout*);
 
-            void updateModelName();
-            int buildSceneModel(int);
+            void updateObjectName();
+            int buildObjectEntity(int);
 
             void done(int) override;
-            bool isSceneModelExist(const std::string&);
+            bool isObjectEntityExist(const std::string&);
 
-            const ModelController* modelController;
+            const ModelController* objectController;
 
-            QLabel* modelNameLabel;
-            QLineEdit* modelNameText;
+            QLabel* objectNameLabel;
+            QLineEdit* objectNameText;
             QLabel* meshesFilenameLabel;
             QLineEdit* meshesFilenameText;
 
-            std::string modelName;
+            std::string objectName;
             std::string meshesFilename;
-            std::unique_ptr<SceneModel> sceneModel;
+            std::unique_ptr<ObjectEntity> objectEntity;
             static QString preferredMeshesPath;
 
         private slots:

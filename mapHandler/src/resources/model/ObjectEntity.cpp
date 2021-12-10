@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <AIEnvironment.h>
 
-#include <resources/model/SceneModel.h>
+#include <resources/model/ObjectEntity.h>
 #include <resources/model/ModelReaderWriter.h>
 #include <resources/model/RigidBodyReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    SceneModel::SceneModel() :
+    ObjectEntity::ObjectEntity() :
             renderer3d(nullptr),
             physicsWorld(nullptr),
             aiEnvironment(nullptr),
@@ -18,13 +18,13 @@ namespace urchin {
 
     }
 
-    SceneModel::~SceneModel() {
+    ObjectEntity::~ObjectEntity() {
         renderer3d->removeModel(model.get());
         deleteRigidBody();
         deleteAIObjects();
     }
 
-    void SceneModel::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
+    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
         if (this->renderer3d) {
             throw std::invalid_argument("Cannot add the scene object on two different object managers.");
         }
@@ -47,7 +47,7 @@ namespace urchin {
         }
     }
 
-    void SceneModel::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+    void ObjectEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         auto modelChunk = udaParser.getUniqueChunk(true, MODEL_TAG, UdaAttribute(), chunk);
@@ -66,7 +66,7 @@ namespace urchin {
         }
     }
 
-    void SceneModel::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
+    void ObjectEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
         auto& modelChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &chunk);
@@ -83,19 +83,19 @@ namespace urchin {
         }
     }
 
-    const std::string& SceneModel::getName() const {
+    const std::string& ObjectEntity::getName() const {
         return name;
     }
 
-    void SceneModel::setName(const std::string& name) {
+    void ObjectEntity::setName(const std::string& name) {
         this->name = name;
     }
 
-    Model* SceneModel::getModel() const {
+    Model* ObjectEntity::getModel() const {
         return model.get();
     }
 
-    void SceneModel::setModel(const std::shared_ptr<Model>& model) {
+    void ObjectEntity::setModel(const std::shared_ptr<Model>& model) {
         if (!model) {
             throw std::invalid_argument("Cannot set a null model on scene object.");
         }
@@ -108,16 +108,16 @@ namespace urchin {
         this->model = model;
     }
 
-    void SceneModel::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
+    void ObjectEntity::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject();
     }
 
-    RigidBody* SceneModel::getRigidBody() const {
+    RigidBody* ObjectEntity::getRigidBody() const {
         return rigidBody.get();
     }
 
-    void SceneModel::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
+    void ObjectEntity::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
         deleteRigidBody();
 
         this->rigidBody = rigidBody;
@@ -126,7 +126,7 @@ namespace urchin {
         }
     }
 
-    void SceneModel::setupAIObject() {
+    void ObjectEntity::setupAIObject() {
         deleteAIObjects();
 
         if (!rigidBody || !model->getConstMeshes()) {
@@ -140,20 +140,20 @@ namespace urchin {
         }
     }
 
-    void SceneModel::deleteRigidBody() {
+    void ObjectEntity::deleteRigidBody() {
         if (physicsWorld && rigidBody) {
             physicsWorld->removeBody(*rigidBody);
         }
         rigidBody = nullptr;
     }
 
-    void SceneModel::deleteAIObjects() {
+    void ObjectEntity::deleteAIObjects() {
         if (aiEnvironment && aiObject) {
             aiEnvironment->removeEntity(aiObject);
         }
     }
 
-    void SceneModel::refresh() {
+    void ObjectEntity::refresh() {
         if (rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();
             model->setTransform(Transform(physicsTransform.getPosition(), physicsTransform.getOrientation(), model->getTransform().getScale()));

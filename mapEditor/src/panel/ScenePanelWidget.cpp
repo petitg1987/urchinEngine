@@ -7,8 +7,8 @@ namespace urchin {
     ScenePanelWidget::ScenePanelWidget(QWidget* parent) :
             QTabWidget(parent),
             sceneController(nullptr) {
-        tabModels = new ModelPanelWidget();
-        addTab(tabModels, "Model");
+        tabObjects = new ModelPanelWidget();
+        addTab(tabObjects, "Object");
 
         tabLights = new LightPanelWidget();
         addTab(tabLights, "Light");
@@ -33,8 +33,8 @@ namespace urchin {
         setEnabled(false);
     }
 
-    ModelPanelWidget* ScenePanelWidget::getModelPanelWidget() const {
-        return tabModels;
+    ModelPanelWidget* ScenePanelWidget::getObjectPanelWidget() const {
+        return tabObjects;
     }
 
     LightPanelWidget* ScenePanelWidget::getLightPanelWidget() const {
@@ -66,7 +66,7 @@ namespace urchin {
         this->sceneController = &sceneController;
 
         setEnabled(true);
-        tabModels->load(sceneController.getModelController());
+        tabObjects->load(sceneController.getObjectController());
         tabLights->load(sceneController.getLightController());
         tabTerrains->load(sceneController.getTerrainController());
         tabWaters->load(sceneController.getWaterController());
@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     void ScenePanelWidget::closeMap() {
-        tabModels->unload();
+        tabObjects->unload();
         tabLights->unload();
         tabTerrains->unload();
         tabWaters->unload();
@@ -93,7 +93,7 @@ namespace urchin {
     ScenePanelWidget::TabName ScenePanelWidget::getTabSelected() const {
         int tabIndex = this->currentIndex();
         if (tabIndex == 0) {
-            return TabName::MODELS;
+            return TabName::OBJECTS;
         } else if (tabIndex == 1) {
             return TabName::LIGHTS;
         } else if (tabIndex == 2) {

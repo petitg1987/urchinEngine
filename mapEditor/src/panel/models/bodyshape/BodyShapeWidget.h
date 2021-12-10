@@ -23,10 +23,10 @@ namespace urchin {
             static constexpr char CONVEX_HULL_SHAPE_LABEL[] = "Convex Hull";
             static constexpr char COMPOUND_SHAPE_LABEL[] = "Compound Shape";
 
-            explicit BodyShapeWidget(const SceneModel*);
+            explicit BodyShapeWidget(const ObjectEntity*);
             ~BodyShapeWidget() override = default;
 
-            const SceneModel* getSceneModel() const;
+            const ObjectEntity* getObjectEntity() const;
             virtual std::string getBodyShapeName() const = 0;
             std::unique_ptr<const CollisionShape3D> moveShape();
 
@@ -46,7 +46,7 @@ namespace urchin {
             virtual std::unique_ptr<const CollisionShape3D> createBodyShape() const = 0;
 
         private:
-            const SceneModel* sceneModel;
+            const ObjectEntity* objectEntity;
 
             std::unique_ptr<const CollisionShape3D> shape;
     };

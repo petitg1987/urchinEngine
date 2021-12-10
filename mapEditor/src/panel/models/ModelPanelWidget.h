@@ -20,7 +20,7 @@
 
 namespace urchin {
 
-    class ModelPanelWidget : public QWidget, public Observer, public Observable {
+    class ModelPanelWidget : public QWidget, public Observer, public Observable { //TODO rename in object + packages
         Q_OBJECT
 
         public:
@@ -28,10 +28,10 @@ namespace urchin {
             ~ModelPanelWidget() override = default;
 
             enum NotificationType {
-                MODEL_BODY_SHAPE_WIDGET_CREATED
+                OBJECT_BODY_SHAPE_WIDGET_CREATED
             };
 
-            ModelTableView* getModelTableView() const;
+            ModelTableView* getObjectTableView() const;
             BodyShapeWidget* getBodyShapeWidget() const;
 
             void load(ModelController&);
@@ -51,20 +51,20 @@ namespace urchin {
             void setupTagsBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
-            void setupModelDataFrom(const SceneModel&);
-            void setupModelPhysicsDataFrom(const SceneModel&);
-            void setupModelTagsDataFrom(const SceneModel&);
+            void setupObjectDataFrom(const ObjectEntity&);
+            void setupObjectPhysicsDataFrom(const ObjectEntity&);
+            void setupObjectTagsDataFrom(const ObjectEntity&);
 
-            BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const SceneModel&);
-            BodyShapeWidget& createNoBodyShapeWidget(const SceneModel&);
+            BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const ObjectEntity&);
+            BodyShapeWidget& createNoBodyShapeWidget(const ObjectEntity&);
             void setupBodyShapeWidget();
 
-            ModelController* modelController;
+            ModelController* objectController;
 
-            ModelTableView* modelTableView;
-            QPushButton* addModelButton;
-            QPushButton* removeModelButton;
-            QPushButton* cloneModelButton;
+            ModelTableView* objectTableView;
+            QPushButton* addObjectButton;
+            QPushButton* removeObjectButton;
+            QPushButton* cloneObjectButton;
             QTabWidget* tabWidget;
 
             bool disableModelEvent;
@@ -102,19 +102,19 @@ namespace urchin {
             std::unique_ptr<BodyShapeWidget> bodyShapeWidget;
 
         private slots:
-            void showAddModelDialog();
-            void removeSelectedModel();
-            void showCloneModelDialog();
+            void showAddObjectDialog();
+            void removeSelectedObject();
+            void showCloneObjectDialog();
 
-            void updateModelOrientationType();
-            void updateModelTransform();
-            void updateModelScale();
-            void updateModelFlags();
-            void updateModelTags();
+            void updateObjectOrientationType();
+            void updateObjectTransform();
+            void updateObjectScale();
+            void updateObjectFlags();
+            void updateObjectTags();
 
             void showChangeBodyShapeDialog();
             void rigidBodyToggled(int);
-            void updateModelPhysicsProperties();
+            void updateObjectPhysicsProperties();
             void bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&);
     };
 

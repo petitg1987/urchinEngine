@@ -9,7 +9,7 @@
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
 #include <load/LoadMapCallback.h>
-#include <resources/model/SceneModel.h>
+#include <resources/model/ObjectEntity.h>
 #include <resources/light/LightEntity.h>
 #include <resources/terrain/TerrainEntity.h>
 #include <resources/water/WaterEntity.h>
@@ -32,11 +32,11 @@ namespace urchin {
             SoundEnvironment* getSoundEnvironment() const;
             AIEnvironment* getAIEnvironment() const;
 
-            const std::list<std::unique_ptr<SceneModel>>& getSceneModels() const;
-            SceneModel& getSceneModel(const std::string&) const;
-            void findSceneModelsByTag(const std::string& tag, std::vector<SceneModel*>& models) const;
-            void addSceneModel(std::unique_ptr<SceneModel>);
-            void removeSceneModel(SceneModel&);
+            const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
+            ObjectEntity& getObjectEntity(const std::string&) const;
+            void findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const;
+            void addObjectEntity(std::unique_ptr<ObjectEntity>);
+            void removeObjectEntity(ObjectEntity&);
 
             const std::list<std::unique_ptr<LightEntity>>& getLightEntities() const;
             LightEntity& getLightEntity(const std::string&) const;
@@ -85,9 +85,7 @@ namespace urchin {
             void writeSoundEntities(UdaChunk&, UdaWriter&) const;
             void writeAIConfig(UdaChunk&, UdaWriter&) const;
 
-            void refreshSound();
-
-            static constexpr char MODELS_TAG[] = "models";
+            static constexpr char MODELS_TAG[] = "models"; //TODO rename
             static constexpr char MODEL_TAG[] = "model";
             static constexpr char LIGHTS_TAG[] = "lights";
             static constexpr char LIGHT_TAG[] = "light";
@@ -105,8 +103,8 @@ namespace urchin {
             SoundEnvironment* soundEnvironment;
             AIEnvironment* aiEnvironment;
 
-            TagHolder modelTagHolder;
-            std::list<std::unique_ptr<SceneModel>> sceneModels;
+            TagHolder objectEntitiesTagHolder;
+            std::list<std::unique_ptr<ObjectEntity>> objectEntities;
             std::list<std::unique_ptr<LightEntity>> lightEntities;
             std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
             std::list<std::unique_ptr<WaterEntity>> waterEntities;

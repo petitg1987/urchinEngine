@@ -7,12 +7,12 @@
 
 namespace urchin {
 
-    class SceneModel : public TaggableResource {
+    class ObjectEntity : public TaggableResource {
         public:
             friend class Map;
 
-            SceneModel();
-            ~SceneModel() override;
+            ObjectEntity();
+            ~ObjectEntity() override;
 
             void setup(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 

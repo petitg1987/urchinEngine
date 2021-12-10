@@ -27,7 +27,7 @@ namespace urchin {
             };
 
             enum TabName {
-                MODELS,
+                OBJECTS,
                 LIGHTS,
                 TERRAINS,
                 WATERS,
@@ -36,7 +36,7 @@ namespace urchin {
                 AI
             };
 
-            ModelPanelWidget* getModelPanelWidget() const;
+            ModelPanelWidget* getObjectPanelWidget() const;
             LightPanelWidget* getLightPanelWidget() const;
             TerrainPanelWidget* getTerrainPanelWidget() const;
             WaterPanelWidget* getWaterPanelWidget() const;
@@ -52,7 +52,7 @@ namespace urchin {
         private:
             SceneController* sceneController;
 
-            ModelPanelWidget* tabModels;
+            ModelPanelWidget* tabObjects;
             LightPanelWidget* tabLights;
             TerrainPanelWidget* tabTerrains;
             WaterPanelWidget* tabWaters;

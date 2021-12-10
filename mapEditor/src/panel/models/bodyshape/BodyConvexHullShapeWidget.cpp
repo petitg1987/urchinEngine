@@ -10,8 +10,8 @@
 
 namespace urchin {
 
-    BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(const SceneModel* sceneModel) :
-            BodyShapeWidget(sceneModel) {
+    BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(const ObjectEntity* objectEntity) :
+            BodyShapeWidget(objectEntity) {
         pointsLabel = new QLabel("Points:");
         mainLayout->addWidget(pointsLabel, 0, 0);
 
@@ -69,13 +69,13 @@ namespace urchin {
             auto scaledShape = std::make_unique<const CollisionConvexHullShape>(getPoints());
 
             //test construction of original shape because can throw an exception due to imprecision of float
-            float invScale = 1.0f / getSceneModel()->getModel()->getTransform().getScale();
+            float invScale = 1.0f / getObjectEntity()->getModel()->getTransform().getScale();
             scaledShape->scale(invScale);
 
             return scaledShape;
         } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(pointsLabel, std::string(e.what()));
-            return DefaultBodyShapeCreator(*getSceneModel()).createDefaultBodyShape(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
+            return DefaultBodyShapeCreator(*getObjectEntity()).createDefaultBodyShape(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
         }
     }
 

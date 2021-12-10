@@ -11,30 +11,30 @@
 
 namespace urchin {
 
-    class CloneModelDialog : public QDialog {
+    class CloneModelDialog : public QDialog { //TODO rename
             Q_OBJECT
 
         public:
             CloneModelDialog(QWidget*, const ModelController*);
 
-            std::unique_ptr<SceneModel> moveSceneModel();
+            std::unique_ptr<ObjectEntity> moveObjectEntity();
 
         private:
             void setupNameFields(QGridLayout*);
 
-            void updateModelName();
-            int buildSceneModel(int);
+            void updateObjectName();
+            int buildObjectEntity(int);
 
             void done(int) override;
-            bool isSceneModelExist(const std::string&);
+            bool isObjectEntityExist(const std::string&);
 
-            const ModelController* modelController;
+            const ModelController* objectController;
 
-            QLabel* modelNameLabel;
-            QLineEdit* modelNameText;
+            QLabel* objectNameLabel;
+            QLineEdit* objectNameText;
 
-            std::string modelName;
-            std::unique_ptr<SceneModel> sceneModel;
+            std::string objectName;
+            std::unique_ptr<ObjectEntity> objectEntity;
     };
 
 }

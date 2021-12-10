@@ -2,14 +2,14 @@
 
 namespace urchin {
 
-    DefaultBodyShapeCreator::DefaultBodyShapeCreator(const SceneModel& sceneModel) :
-            sceneModel(sceneModel) {
+    DefaultBodyShapeCreator::DefaultBodyShapeCreator(const ObjectEntity& objectEntity) :
+            objectEntity(objectEntity) {
 
     }
 
     std::unique_ptr<const CollisionShape3D> DefaultBodyShapeCreator::createDefaultBodyShape(CollisionShape3D::ShapeType shapeType) const {
         std::unique_ptr<CollisionShape3D> shape;
-        const AABBox<float>& modelAABBox = sceneModel.getModel()->getLocalAABBox();
+        const AABBox<float>& modelAABBox = objectEntity.getModel()->getLocalAABBox();
 
         if (shapeType == CollisionShape3D::ShapeType::BOX_SHAPE) {
             shape = std::make_unique<CollisionBoxShape>(modelAABBox.getHalfSizes());
@@ -31,7 +31,7 @@ namespace urchin {
 
             shape = std::make_unique<CollisionConeShape>(radius, height, ConeShape<float>::CONE_X_POSITIVE);
         } else if (shapeType == CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE) {
-            auto convexHullShape = buildConvexHullShape(sceneModel.getModel());
+            auto convexHullShape = buildConvexHullShape(objectEntity.getModel());
             shape = std::make_unique<CollisionConvexHullShape>(std::move(convexHullShape));
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
@@ -47,7 +47,7 @@ namespace urchin {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
         }
 
-        float scale = sceneModel.getModel()->getTransform().getScale();
+        float scale = objectEntity.getModel()->getTransform().getScale();
         return shape->scale(scale);
     }
 

@@ -25,7 +25,7 @@ namespace urchin {
     class SceneDisplayer {
         public:
             enum ViewProperties {
-                MODEL_PHYSICS = 0,
+                OBJECT_PHYSICS = 0,
                 LIGHT_SCOPE,
                 SOUND_TRIGGER,
                 NAV_MESH,
@@ -40,7 +40,7 @@ namespace urchin {
             void loadEmptyScene(const std::string&);
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
-            void setHighlightObjectEntity(const SceneModel*);
+            void setHighlightObjectEntity(const ObjectEntity*);
             void setHighlightLightEntity(const LightEntity*);
             void setHighlightSoundEntity(const SoundEntity*);
 
@@ -93,7 +93,7 @@ namespace urchin {
 
             //scene specifics
             std::array<bool, LAST_VIEW_PROPERTIES> viewProperties;
-            const SceneModel* highlightObjectEntity;
+            const ObjectEntity* highlightObjectEntity;
             const LightEntity* highlightLightEntity;
             const SoundEntity* highlightSoundEntity;
     };

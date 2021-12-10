@@ -11,12 +11,12 @@ namespace urchin {
 
     class BodyShapeWidgetRetriever {
         public:
-            explicit BodyShapeWidgetRetriever(const SceneModel*);
+            explicit BodyShapeWidgetRetriever(const ObjectEntity*);
 
             std::unique_ptr<BodyShapeWidget> createBodyShapeWidget(CollisionShape3D::ShapeType);
 
         private:
-            const SceneModel* sceneModel;
+            const ObjectEntity* objectEntity;
     };
 
 }
