@@ -8,10 +8,10 @@
 
 namespace urchin {
 
-    class ModelMoveAxisDisplayer {
+    class ObjectMoveAxisDisplayer {
         public:
-            explicit ModelMoveAxisDisplayer(Scene&);
-            ~ModelMoveAxisDisplayer();
+            explicit ObjectMoveAxisDisplayer(Scene&);
+            ~ObjectMoveAxisDisplayer();
 
             void displayAxis(const Point3<float>&, unsigned int);
             void cleanCurrentDisplay();
@@ -20,7 +20,7 @@ namespace urchin {
             GeometryModel& createAxisModel(const Point3<float>&, unsigned int, std::size_t);
 
             Scene& scene;
-            std::vector<std::shared_ptr<GeometryModel>> modelMoveAxisModels;
+            std::vector<std::shared_ptr<GeometryModel>> objectMoveAxisModels;
     };
 
 }

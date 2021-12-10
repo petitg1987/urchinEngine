@@ -11,7 +11,7 @@
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
-#include <scene/objects/move/ModelMoveController.h>
+#include <scene/objects/move/ObjectMoveController.h>
 #include <panel/objects/bodyshape/NoBodyShapeWidget.h>
 #include <scene/SceneDisplayerWindow.h>
 
@@ -45,9 +45,9 @@ namespace urchin {
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
 
-        objectTableView = new ModelTableView(this);
+        objectTableView = new ObjectTableView(this);
         mainLayout->addWidget(objectTableView);
-        objectTableView->addObserver(this, ModelTableView::OBJECT_SELECTION_CHANGED);
+        objectTableView->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
         objectTableView->setFixedHeight(220);
 
         auto* buttonsLayout = new QHBoxLayout();
@@ -101,7 +101,7 @@ namespace urchin {
         tabWidget->addTab(tabTags, "Tags");
     }
 
-    ModelTableView* ObjectPanelWidget::getObjectTableView() const {
+    ObjectTableView* ObjectPanelWidget::getObjectTableView() const {
         return objectTableView;
     }
 
@@ -411,8 +411,8 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
-        if (const auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
-            if (notificationType == ModelTableView::OBJECT_SELECTION_CHANGED) {
+        if (const auto* modelTableView = dynamic_cast<ObjectTableView*>(observable)) {
+            if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 if (modelTableView->hasObjectEntitySelected()) {
                     const ObjectEntity& objectEntity = *modelTableView->getSelectedObjectEntity();
                     setupObjectDataFrom(objectEntity);
@@ -439,8 +439,8 @@ namespace urchin {
                     this->objectTableView->clearSelection();
                 }
             }
-        } else if (const auto* modelMoveController = dynamic_cast<ModelMoveController*>(observable)) {
-            if (notificationType == ModelMoveController::OBJECT_MOVED) {
+        } else if (const auto* modelMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
+            if (notificationType == ObjectMoveController::OBJECT_MOVED) {
                 setupObjectDataFrom(*modelMoveController->getSelectedObjectEntity());
             }
         }

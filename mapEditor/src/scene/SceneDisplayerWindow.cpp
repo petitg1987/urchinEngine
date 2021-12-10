@@ -47,8 +47,8 @@ namespace urchin {
                 break;
             } case QEvent::Leave: { //mouse leaves widget
                 Point2<double> mousePositionInPixel = mouseController.getMousePosition();
-                if (sceneDisplayer && sceneDisplayer->getModelMoveController() && !geometry().contains(QPoint((int)mousePositionInPixel.X, (int)mousePositionInPixel.Y))) {
-                    sceneDisplayer->getModelMoveController()->onMouseOut();
+                if (sceneDisplayer && sceneDisplayer->getObjectMoveController() && !geometry().contains(QPoint((int)mousePositionInPixel.X, (int)mousePositionInPixel.Y))) {
+                    sceneDisplayer->getObjectMoveController()->onMouseOut();
                 }
                 break;
             } default: {
@@ -178,7 +178,7 @@ namespace urchin {
             } else if (event->key() == Qt::Key_Right) {
                 sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::RIGHT_ARROW);
             } else if (event->key() == Qt::Key_Escape) {
-                sceneDisplayer->getModelMoveController()->onEscapeKey();
+                sceneDisplayer->getObjectMoveController()->onEscapeKey();
             }
         }
     }
@@ -196,7 +196,7 @@ namespace urchin {
     void SceneDisplayerWindow::mouseReleaseEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
             if (event->button() == Qt::LeftButton) {
-                bool propagateEvent = sceneDisplayer->getModelMoveController() == nullptr || sceneDisplayer->getModelMoveController()->onMouseLeftButton();
+                bool propagateEvent = sceneDisplayer->getObjectMoveController() == nullptr || sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
                 if (propagateEvent) {
                     propagateEvent = onMouseClickBodyPickup();
                     if (propagateEvent) {
@@ -216,8 +216,8 @@ namespace urchin {
 
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY);
-            if (propagateEvent && sceneDisplayer->getModelMoveController()) {
-                sceneDisplayer->getModelMoveController()->onMouseMove(mouseX, mouseY);
+            if (propagateEvent && sceneDisplayer->getObjectMoveController()) {
+                sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }
         }
     }
@@ -252,26 +252,26 @@ namespace urchin {
         return lastPickedBodyId;
     }
 
-    void SceneDisplayerWindow::addObserverModelMoveController(Observer* observer, int notificationType) {
+    void SceneDisplayerWindow::addObserverObjectMoveController(Observer* observer, int notificationType) {
         assert(sceneDisplayer);
-        sceneDisplayer->getModelMoveController()->addObserver(observer, notificationType);
+        sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }
 
     void SceneDisplayerWindow::onCtrlXPressed() {
-        if (sceneDisplayer && sceneDisplayer->getModelMoveController()) {
-            sceneDisplayer->getModelMoveController()->onCtrlXYZ(0);
+        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
+            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
         }
     }
 
     void SceneDisplayerWindow::onCtrlYPressed() {
-        if (sceneDisplayer && sceneDisplayer->getModelMoveController()) {
-            sceneDisplayer->getModelMoveController()->onCtrlXYZ(1);
+        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
+            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
         }
     }
 
     void SceneDisplayerWindow::onCtrlZPressed() {
-        if (sceneDisplayer && sceneDisplayer->getModelMoveController()) {
-            sceneDisplayer->getModelMoveController()->onCtrlXYZ(2);
+        if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
+            sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
         }
     }
 

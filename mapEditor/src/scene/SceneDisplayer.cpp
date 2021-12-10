@@ -28,7 +28,7 @@ namespace urchin {
         physicsWorld.reset(nullptr);
 
         bodyShapeDisplayer.reset(nullptr);
-        modelMoveController.reset(nullptr);
+        objectMoveController.reset(nullptr);
         lightScopeDisplayer.reset(nullptr);
         soundTriggerDisplayer.reset(nullptr);
         navMeshDisplayer.reset(nullptr);
@@ -96,7 +96,7 @@ namespace urchin {
         scene->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point3<float>(0.05f, 0.05f, 0.05f));
 
         bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*scene);
-        modelMoveController = std::make_unique<ModelMoveController>(*scene, *sceneController, mouseController, statusBarController);
+        objectMoveController = std::make_unique<ObjectMoveController>(*scene, *sceneController, mouseController, statusBarController);
         lightScopeDisplayer = std::make_unique<LightScopeDisplayer>(*scene);
         soundTriggerDisplayer = std::make_unique<SoundTriggerDisplayer>(*scene);
 
@@ -123,7 +123,7 @@ namespace urchin {
             this->highlightObjectEntity = highlightObjectEntity;
 
             bodyShapeDisplayer->setSelectedObjectEntity(highlightObjectEntity);
-            modelMoveController->setSelectedObjectEntity(highlightObjectEntity);
+            objectMoveController->setSelectedObjectEntity(highlightObjectEntity);
         }
     }
 
@@ -136,14 +136,14 @@ namespace urchin {
     }
 
     void SceneDisplayer::refreshObjectsModel() {
-        if (bodyShapeDisplayer && modelMoveController) {
+        if (bodyShapeDisplayer && objectMoveController) {
             if (viewProperties[OBJECT_PHYSICS]) {
                 bodyShapeDisplayer->displayBodyShape();
             } else {
                 bodyShapeDisplayer->clearDisplay();
             }
 
-            modelMoveController->displayAxis();
+            objectMoveController->displayAxis();
         }
     }
 
@@ -202,8 +202,8 @@ namespace urchin {
     void SceneDisplayer::resize(unsigned int width, unsigned int height) {
         if (isInitialized) {
             scene->onResize();
-            if (modelMoveController) {
-                modelMoveController->onResize(width, height);
+            if (objectMoveController) {
+                objectMoveController->onResize(width, height);
             }
         }
     }
@@ -231,8 +231,8 @@ namespace urchin {
         return bodyShapeDisplayer.get();
     }
 
-    ModelMoveController* SceneDisplayer::getModelMoveController() const {
-        return modelMoveController.get();
+    ObjectMoveController* SceneDisplayer::getObjectMoveController() const {
+        return objectMoveController.get();
     }
 
 }

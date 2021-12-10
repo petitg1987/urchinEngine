@@ -11,11 +11,11 @@ Q_DECLARE_METATYPE(const urchin::ObjectEntity*)
 
 namespace urchin {
 
-    class ModelTableView : public QTableView, public Observable { //TODO rename
+    class ObjectTableView : public QTableView, public Observable {
         Q_OBJECT
 
         public:
-            explicit ModelTableView(QWidget* = nullptr);
+            explicit ObjectTableView(QWidget* = nullptr);
 
             enum NotificationType {
                 OBJECT_SELECTION_CHANGED

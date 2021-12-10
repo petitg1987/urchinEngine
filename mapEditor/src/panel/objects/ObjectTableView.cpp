@@ -1,11 +1,11 @@
 #include <QHeaderView>
 #include <QVariant>
 
-#include <panel/objects/ModelTableView.h>
+#include <panel/objects/ObjectTableView.h>
 
 namespace urchin {
 
-    ModelTableView::ModelTableView(QWidget* parent) :
+    ObjectTableView::ObjectTableView(QWidget* parent) :
             QTableView(parent) {
         objectsListModel = new QStandardItemModel(0, 2, this);
         objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
@@ -22,7 +22,7 @@ namespace urchin {
         setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     }
 
-    void ModelTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
+    void ObjectTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
         horizontalHeader()->resizeSection(0, 91);
         horizontalHeader()->resizeSection(0, 90);
@@ -30,11 +30,11 @@ namespace urchin {
         notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
     }
 
-    bool ModelTableView::hasObjectEntitySelected() const {
+    bool ObjectTableView::hasObjectEntitySelected() const {
         return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
     }
 
-    int ModelTableView::getObjectEntityRow(const ObjectEntity* expectedObjectEntity) const {
+    int ObjectTableView::getObjectEntityRow(const ObjectEntity* expectedObjectEntity) const {
         for (int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId) {
             QModelIndex index = objectsListModel->index(rowId, 0);
             auto* objectEntity = index.data(Qt::UserRole + 1).value<const ObjectEntity*>();
@@ -46,14 +46,14 @@ namespace urchin {
         return -1;
     }
 
-    const ObjectEntity* ModelTableView::getSelectedObjectEntity() const {
+    const ObjectEntity* ObjectTableView::getSelectedObjectEntity() const {
         if (hasObjectEntitySelected()) {
             return this->currentIndex().data(Qt::UserRole + 1).value<const ObjectEntity*>();
         }
         return nullptr;
     }
 
-    int ModelTableView::addObject(const ObjectEntity& objectEntity) {
+    int ObjectTableView::addObject(const ObjectEntity& objectEntity) {
         auto* itemModelName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
         itemModelName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
         itemModelName->setEditable(false);
@@ -79,7 +79,7 @@ namespace urchin {
         return nextRow;
     }
 
-    bool ModelTableView::removeSelectedObject() {
+    bool ObjectTableView::removeSelectedObject() {
         if (hasObjectEntitySelected()) {
             objectsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
@@ -90,7 +90,7 @@ namespace urchin {
         return false;
     }
 
-    void ModelTableView::removeAllObjects() {
+    void ObjectTableView::removeAllObjects() {
         objectsListModel->removeRows(0, objectsListModel->rowCount());
         resizeRowsToContents();
     }

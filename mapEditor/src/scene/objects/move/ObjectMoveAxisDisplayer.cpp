@@ -1,16 +1,16 @@
-#include <scene/objects/move/ModelMoveAxisDisplayer.h>
+#include <scene/objects/move/ObjectMoveAxisDisplayer.h>
 
 namespace urchin {
-    ModelMoveAxisDisplayer::ModelMoveAxisDisplayer(Scene& scene) :
+    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(Scene& scene) :
             scene(scene) {
 
     }
 
-    ModelMoveAxisDisplayer::~ModelMoveAxisDisplayer() {
+    ObjectMoveAxisDisplayer::~ObjectMoveAxisDisplayer() {
         cleanCurrentDisplay();
     }
 
-    void ModelMoveAxisDisplayer::displayAxis(const Point3<float>& position, unsigned int selectedAxis) {
+    void ObjectMoveAxisDisplayer::displayAxis(const Point3<float>& position, unsigned int selectedAxis) {
         cleanCurrentDisplay();
 
         GeometryModel& xLine = createAxisModel(position, selectedAxis, 0);
@@ -22,19 +22,19 @@ namespace urchin {
         GeometryModel& zLine = createAxisModel(position, selectedAxis, 2);
         zLine.setColor(0.0f, 0.0f, 1.0f);
 
-        for (const auto& modelMoveAxisModel : modelMoveAxisModels) {
-            scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(modelMoveAxisModel);
+        for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
+            scene.getActiveRenderer3d()->getGeometryContainer().addGeometry(objectMoveAxisModel);
         }
     }
 
-    void ModelMoveAxisDisplayer::cleanCurrentDisplay() {
-        for (const auto& modelMoveAxisModel : modelMoveAxisModels) {
-            scene.getActiveRenderer3d()->getGeometryContainer().removeGeometry(*modelMoveAxisModel);
+    void ObjectMoveAxisDisplayer::cleanCurrentDisplay() {
+        for (const auto& objectMoveAxisModel : objectMoveAxisModels) {
+            scene.getActiveRenderer3d()->getGeometryContainer().removeGeometry(*objectMoveAxisModel);
         }
-        modelMoveAxisModels.clear();
+        objectMoveAxisModels.clear();
     }
 
-    GeometryModel& ModelMoveAxisDisplayer::createAxisModel(const Point3<float>& position, unsigned int selectedAxis, std::size_t axisIndex) {
+    GeometryModel& ObjectMoveAxisDisplayer::createAxisModel(const Point3<float>& position, unsigned int selectedAxis, std::size_t axisIndex) {
         Point3<float> startPoint = position;
         Point3<float> endPoint = position;
         endPoint[axisIndex] += 0.4f;
@@ -46,8 +46,8 @@ namespace urchin {
         auto axisModel = std::make_shared<CylinderModel>(Cylinder<float>(radius, axeVector.length(), CylinderShape<float>::CYLINDER_X, axeCenter, axeOrientation), 10);
         axisModel->setPolygonMode(PolygonMode::FILL);
         axisModel->setAlwaysVisible(true);
-        modelMoveAxisModels.push_back(std::move(axisModel));
+        objectMoveAxisModels.push_back(std::move(axisModel));
 
-        return *modelMoveAxisModels.back();
+        return *objectMoveAxisModels.back();
     }
 }

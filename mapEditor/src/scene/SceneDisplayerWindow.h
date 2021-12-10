@@ -48,7 +48,7 @@ namespace urchin {
 
             bool onMouseClickBodyPickup();
             const std::string& getLastPickedBodyId() const;
-            void addObserverModelMoveController(Observer*, int);
+            void addObserverObjectMoveController(Observer*, int);
 
         private:
             void clearVkInstance();

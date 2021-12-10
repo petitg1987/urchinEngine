@@ -10,7 +10,7 @@
 #include <MapEditorWindow.h>
 #include <widget/dialog/NewDialog.h>
 #include <widget/dialog/NotSavedDialog.h>
-#include <panel/objects/ModelTableView.h>
+#include <panel/objects/ObjectTableView.h>
 #include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
 #include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
 #include <panel/lights/LightTableView.h>
@@ -163,7 +163,7 @@ namespace urchin {
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
         scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
-        scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ModelTableView::OBJECT_SELECTION_CHANGED);
+        scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
         scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
@@ -186,8 +186,8 @@ namespace urchin {
             if (notificationType == ScenePanelWidget::TAB_SELECTED) {
                 executeViewPropertiesChangeAction();
             }
-        } else if (const auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
-            if (notificationType == ModelTableView::OBJECT_SELECTION_CHANGED) {
+        } else if (const auto* modelTableView = dynamic_cast<ObjectTableView*>(observable)) {
+            if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightObjectEntity(modelTableView->getSelectedObjectEntity());
             }
         } else if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
@@ -253,7 +253,7 @@ namespace urchin {
         scenePanelWidget->loadMap(*sceneController);
 
         sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
-        sceneDisplayerWindow->addObserverModelMoveController(scenePanelWidget->getObjectPanelWidget(), ModelMoveController::OBJECT_MOVED);
+        sceneDisplayerWindow->addObserverObjectMoveController(scenePanelWidget->getObjectPanelWidget(), ObjectMoveController::OBJECT_MOVED);
 
         updateMapFilename(mapFilename);
         updateInterfaceState();
