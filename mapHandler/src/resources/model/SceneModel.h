@@ -5,14 +5,12 @@
 #include <UrchinPhysicsEngine.h>
 #include <UrchinAIEngine.h>
 
-#include <resources/common/SceneEntity.h>
-
 namespace urchin {
 
     /**
     * Represent a models on the scene (3d model and physics)
     */
-    class SceneModel : public SceneEntity, public TaggableResource {
+    class SceneModel : public TaggableResource {
         public:
             friend class Map;
 
@@ -29,10 +27,9 @@ namespace urchin {
 
             void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
 
-            RigidBody* getRigidBody() const override;
+            RigidBody* getRigidBody() const;
 
-        protected:
-            void moveTo(const Point3<float>&, const Quaternion<float>&) override;
+            void refresh();
 
         private:
             void loadFrom(const UdaChunk*, const UdaParser&);

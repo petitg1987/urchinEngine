@@ -16,7 +16,6 @@
 #include <resources/sky/SceneSky.h>
 #include <resources/sound/SceneSound.h>
 #include <resources/ai/SceneAI.h>
-#include <resources/common/SceneEntity.h>
 
 namespace urchin {
 

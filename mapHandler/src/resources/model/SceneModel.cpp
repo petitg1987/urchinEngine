@@ -117,13 +117,6 @@ namespace urchin {
         return rigidBody.get();
     }
 
-    void SceneModel::moveTo(const Point3<float>& position, const Quaternion<float>& orientation) {
-        model->setTransform(Transform(position, orientation, model->getTransform().getScale()));
-        if (aiObject) {
-            aiObject->updateTransform(position, orientation);
-        }
-    }
-
     void SceneModel::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
         deleteRigidBody();
 
@@ -157,6 +150,16 @@ namespace urchin {
     void SceneModel::deleteAIObjects() {
         if (aiEnvironment && aiObject) {
             aiEnvironment->removeEntity(aiObject);
+        }
+    }
+
+    void SceneModel::refresh() {
+        if (rigidBody && rigidBody->isActive()) {
+            PhysicsTransform physicsTransform = rigidBody->getTransform();
+            model->setTransform(Transform(physicsTransform.getPosition(), physicsTransform.getOrientation(), model->getTransform().getScale()));
+            if (aiObject) {
+                aiObject->updateTransform(physicsTransform.getPosition(), physicsTransform.getOrientation());
+            }
         }
     }
 

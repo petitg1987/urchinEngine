@@ -5,11 +5,9 @@
 #include <UrchinPhysicsEngine.h>
 #include <UrchinAIEngine.h>
 
-#include <resources/common/SceneEntity.h>
-
 namespace urchin {
 
-    class SceneTerrain : public SceneEntity {
+    class SceneTerrain {
         //XML attributes
         static constexpr char NAME_ATTR[] = "name";
 
@@ -17,7 +15,7 @@ namespace urchin {
             friend class Map;
 
             SceneTerrain();
-            ~SceneTerrain() override;
+            ~SceneTerrain();
 
             void setup(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 
@@ -27,10 +25,9 @@ namespace urchin {
             Terrain* getTerrain() const;
             void setTerrain(std::shared_ptr<Terrain>);
 
-            RigidBody* getRigidBody() const override;
+            RigidBody* getRigidBody() const; //TODO still used ?
 
-        protected:
-            void moveTo(const Point3<float>&, const Quaternion<float>&) override;
+            void refresh();
 
         private:
             void loadFrom(const UdaChunk*, const UdaParser&);
