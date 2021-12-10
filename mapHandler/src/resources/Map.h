@@ -85,8 +85,8 @@ namespace urchin {
             void writeSoundEntities(UdaChunk&, UdaWriter&) const;
             void writeAIConfig(UdaChunk&, UdaWriter&) const;
 
-            static constexpr char MODELS_TAG[] = "models"; //TODO rename
-            static constexpr char MODEL_TAG[] = "model";
+            static constexpr char OBJECTS_TAG[] = "objects";
+            static constexpr char OBJECT_TAG[] = "object";
             static constexpr char LIGHTS_TAG[] = "lights";
             static constexpr char LIGHT_TAG[] = "light";
             static constexpr char TERRAINS_TAG[] = "terrains";

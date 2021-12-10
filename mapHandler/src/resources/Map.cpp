@@ -68,12 +68,12 @@ namespace urchin {
     }
 
     void Map::loadObjectEntities(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
-        auto modelsListChunk = udaParser.getUniqueChunk(true, MODELS_TAG, UdaAttribute(), sceneChunk);
-        auto modelsChunk = udaParser.getChunks(MODEL_TAG, UdaAttribute(), modelsListChunk);
+        auto objectsListChunk = udaParser.getUniqueChunk(true, OBJECTS_TAG, UdaAttribute(), sceneChunk);
+        auto objectsChunk = udaParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
 
-        for (const auto& modelChunk : modelsChunk) {
+        for (const auto& objectChunk : objectsChunk) {
             auto objectEntity = std::make_unique<ObjectEntity>();
-            objectEntity->loadFrom(modelChunk, udaParser);
+            objectEntity->loadFrom(objectChunk, udaParser);
 
             addObjectEntity(std::move(objectEntity));
         }
@@ -150,11 +150,11 @@ namespace urchin {
     }
 
     void Map::writeObjectEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
-        auto& modelsListChunk = udaWriter.createChunk(MODELS_TAG, UdaAttribute(), &sceneChunk);
+        auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& objectEntity : objectEntities) {
-            auto& modelsChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &modelsListChunk);
-            objectEntity->writeOn(modelsChunk, udaWriter);
+            auto& objectsChunk = udaWriter.createChunk(OBJECT_TAG, UdaAttribute(), &objectsListChunk);
+            objectEntity->writeOn(objectsChunk, udaWriter);
         }
     }
 
