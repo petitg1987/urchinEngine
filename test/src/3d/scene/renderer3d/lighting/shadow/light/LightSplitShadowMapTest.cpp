@@ -72,7 +72,12 @@ std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeM
     auto modelOctreeManager = std::make_unique<OctreeManager<Model>>(10.0f);
 
     for (const auto& modelPosition : modelPositions) {
-        auto model = Model::fromMeshesFile(""); //default model size: 1.0 x 1.0 x 1.0
+        ModelBuilder modelBuilder("materials/opaque.uda");
+        std::vector<Point3<float>> vertices = {Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, -0.5f, 0.5f)};
+        std::vector<unsigned int> triangleIndices = {0, 1, 2};
+        std::vector<Point2<float>> uv = {Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 0.0f), Point2<float>(0.0f, 0.0f)};
+        std::unique_ptr<Model> model = modelBuilder.newModel("modelName", vertices, triangleIndices, uv);
+
         model->setPosition(modelPosition);
         modelOctreeManager->addOctreeable(std::move(model));
     }
