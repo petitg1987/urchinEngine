@@ -9,8 +9,8 @@ namespace urchin {
 
     class TagHolder {
         public:
-            void addTaggableResource(TaggableResource*);
-            void removeTaggableResource(TaggableResource*) const;
+            void addTaggableResource(TaggableResource&);
+            void removeTaggableResource(TaggableResource&) const;
 
             template<class T> void findByTag(const std::string&, std::vector<T>&) const;
             void addTag(TaggableResource*, const std::string&);

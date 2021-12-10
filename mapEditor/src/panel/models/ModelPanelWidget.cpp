@@ -82,7 +82,6 @@ namespace urchin {
         generalLayout->setContentsMargins(1, 1, 1, 1);
         setupTransformBox(generalLayout);
         setupFlagsBox(generalLayout);
-        setupTagsBox(generalLayout);
         tabWidget->addTab(tabGeneral, "General");
 
         //physics properties
@@ -92,6 +91,14 @@ namespace urchin {
         physicsLayout->setContentsMargins(1, 1, 1, 1);
         setupPhysicsBox(physicsLayout);
         tabWidget->addTab(tabPhysics, "Physics");
+
+        //tags properties
+        auto* tabTags = new QWidget();
+        auto* tagsLayout = new QVBoxLayout(tabTags);
+        tagsLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+        tagsLayout->setContentsMargins(1, 1, 1, 1);
+        setupTagsBox(tagsLayout);
+        tabWidget->addTab(tabTags, "Tags");
     }
 
     ModelTableView* ModelPanelWidget::getModelTableView() const {
@@ -186,23 +193,6 @@ namespace urchin {
         produceShadowCheckBox = new QCheckBox("Product Shadow");
         flagsLayout->addWidget(produceShadowCheckBox);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateModelFlags()));
-    }
-
-    void ModelPanelWidget::setupTagsBox(QVBoxLayout* generalLayout) {
-        auto* tagsGroupBox = new QGroupBox("Tags");
-        generalLayout->addWidget(tagsGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(tagsGroupBox);
-        tagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        auto* tagsLayout = new QGridLayout(tagsGroupBox);
-
-        auto* tagsLabel = new QLabel("Tags:");
-        tagsLabel->setToolTip("Comma separated");
-        tagsLayout->addWidget(tagsLabel, 0, 0);
-
-        tags = new QLineEdit();
-        tagsLayout->addWidget(tags, 0, 1);
-        connect(tags, SIGNAL(textChanged(const QString &)), this, SLOT(updateModelTags()));
     }
 
     void ModelPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
@@ -388,6 +378,23 @@ namespace urchin {
         bodyShapeWidget = nullptr;
     }
 
+    void ModelPanelWidget::setupTagsBox(QVBoxLayout* mainTagsLayout) {
+        auto* tagsGroupBox = new QGroupBox("Tags");
+        mainTagsLayout->addWidget(tagsGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(tagsGroupBox);
+        tagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        auto* tagsLayout = new QGridLayout(tagsGroupBox);
+
+        auto* tagsLabel = new QLabel("Tags:");
+        tagsLabel->setToolTip("Comma separated");
+        tagsLayout->addWidget(tagsLabel, 0, 0);
+
+        tags = new QLineEdit();
+        tagsLayout->addWidget(tags, 0, 1);
+        connect(tags, SIGNAL(textChanged(const QString &)), this, SLOT(updateModelTags()));
+    }
+
     void ModelPanelWidget::load(ModelController& modelController) {
         this->modelController = &modelController;
 
@@ -457,10 +464,8 @@ namespace urchin {
 
         this->produceShadowCheckBox->setChecked(model->isProduceShadow());
 
-        std::string tagsValues = StringUtil::merge(model->getTags(), ModelReaderWriter::TAGS_SEPARATOR);
-        this->tags->setText(QString::fromStdString(tagsValues));
-
         setupModelPhysicsDataFrom(sceneModel);
+        setupModelTagsDataFrom(sceneModel);
         disableModelEvent = false;
     }
 
@@ -520,6 +525,11 @@ namespace urchin {
         connect(bodyShapeWidget.get(), SIGNAL(bodyShapeChange(std::unique_ptr<const CollisionShape3D>&)), this, SLOT(bodyShapeChanged(std::unique_ptr<const CollisionShape3D>&)));
 
         notifyObservers(this, NotificationType::MODEL_BODY_SHAPE_WIDGET_CREATED);
+    }
+
+    void ModelPanelWidget::setupModelTagsDataFrom(const SceneModel& sceneModel) {
+        std::string tagsValues = StringUtil::merge(sceneModel.getTags(), TagsReaderWriter::TAGS_SEPARATOR);
+        this->tags->setText(QString::fromStdString(tagsValues));
     }
 
     void ModelPanelWidget::showAddModelDialog() {

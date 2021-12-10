@@ -31,6 +31,7 @@ namespace urchin {
 
             const std::list<std::unique_ptr<SceneModel>>& getSceneModels() const;
             SceneModel& getSceneModel(const std::string&) const;
+            void findSceneModelsByTag(const std::string& tag, std::vector<SceneModel*>& models) const;
             void addSceneModel(std::unique_ptr<SceneModel>);
             void removeSceneModel(SceneModel&);
 
@@ -105,12 +106,19 @@ namespace urchin {
             SoundEnvironment* soundEnvironment;
             AIEnvironment* aiEnvironment;
 
+            TagHolder modelTagHolder;
             std::list<std::unique_ptr<SceneModel>> sceneModels;
+
             std::list<std::unique_ptr<SceneLight>> sceneLights;
+
             std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
+
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
+
             SceneSky sceneSky;
+
             std::list<std::unique_ptr<SceneSound>> sceneSounds;
+
             SceneAI sceneAI;
     };
 

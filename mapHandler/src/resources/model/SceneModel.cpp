@@ -5,6 +5,7 @@
 #include <resources/model/ModelReaderWriter.h>
 #include <resources/model/RigidBodyReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
+#include <resources/common/TagsReaderWriter.h>
 
 namespace urchin {
 
@@ -56,8 +57,12 @@ namespace urchin {
         if (physicsChunk != nullptr) {
             std::string rigidBodyId = this->name;
             const Transform<float>& modelTransform = this->model->getTransform();
-
             setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk, rigidBodyId, modelTransform, udaParser));
+        }
+
+        auto tagsChunk = udaParser.getUniqueChunk(false, TAGS_TAG, UdaAttribute(), chunk);
+        if (tagsChunk != nullptr) {
+            addTags(TagsReaderWriter::loadTags(tagsChunk, udaParser));
         }
     }
 
@@ -70,6 +75,11 @@ namespace urchin {
         if (rigidBody) {
             auto& physicsChunk = udaWriter.createChunk(PHYSICS_TAG, UdaAttribute(), &chunk);
             RigidBodyReaderWriter::writeOn(physicsChunk, *rigidBody, udaWriter);
+        }
+
+        if (!getTags().empty()) {
+            auto& tagsChunk = udaWriter.createChunk(TAGS_TAG, UdaAttribute(), &chunk);
+            TagsReaderWriter::writeTags(tagsChunk, getTags(), udaWriter);
         }
     }
 

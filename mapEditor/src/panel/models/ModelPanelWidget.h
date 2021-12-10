@@ -43,16 +43,17 @@ namespace urchin {
             void setupOrientation(QGridLayout*);
             void setupScale(QGridLayout*);
             void setupFlagsBox(QVBoxLayout*);
-            void setupTagsBox(QVBoxLayout*);
             void setupPhysicsBox(QVBoxLayout*);
             void setupPhysicsGeneralPropertiesBox(QVBoxLayout*);
             void setupPhysicsDampingPropertiesBox(QVBoxLayout*);
             void setupPhysicsFactorPropertiesBox(QVBoxLayout*);
             void setupPhysicsShapeBox(QVBoxLayout*);
+            void setupTagsBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
             void setupModelDataFrom(const SceneModel&);
             void setupModelPhysicsDataFrom(const SceneModel&);
+            void setupModelTagsDataFrom(const SceneModel&);
 
             BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const SceneModel&);
             BodyShapeWidget& createNoBodyShapeWidget(const SceneModel&);

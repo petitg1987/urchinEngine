@@ -2,7 +2,6 @@
 
 #include <pattern/tag/TaggableResource.h>
 #include <pattern/tag/TagHolder.h>
-#include <util/VectorUtil.h>
 
 namespace urchin {
 
@@ -13,7 +12,7 @@ namespace urchin {
 
     TaggableResource::~TaggableResource() {
         if (tagHolder) {
-            tagHolder->removeTaggableResource(this);
+            tagHolder->removeTaggableResource(*this);
         }
     }
 
@@ -39,6 +38,12 @@ namespace urchin {
             tagHolder->addTag(this, tag);
         }
         tags.push_back(tag);
+    }
+
+    void TaggableResource::addTags(const std::vector<std::string>& tags) {
+        for(const auto& tag : tags) {
+            addTag(tag);
+        }
     }
 
     void TaggableResource::removeTag(const std::string& tag) {

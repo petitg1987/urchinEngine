@@ -63,7 +63,6 @@ namespace urchin {
             Camera* getCamera() const;
 
             //models
-            void findModelsByTag(const std::string&, std::vector<Model*>&) const;
             void addModel(std::shared_ptr<Model>);
             std::shared_ptr<Model> removeModel(Model*);
             void preWarmModels();
@@ -113,7 +112,6 @@ namespace urchin {
             unsigned int sceneWidth, sceneHeight;
             bool paused;
             std::shared_ptr<Camera> camera;
-            TagHolder modelTagHolder;
 
             //deferred rendering
             std::unique_ptr<RenderTarget> deferredRenderTarget;

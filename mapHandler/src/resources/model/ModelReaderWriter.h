@@ -10,8 +10,6 @@ namespace urchin {
 
     class ModelReaderWriter {
         public:
-            static constexpr char TAGS_SEPARATOR = ',';
-
             static std::shared_ptr<Model> loadFrom(const UdaChunk*, const UdaParser&);
             static void writeOn(UdaChunk&, const Model&, UdaWriter&);
 
@@ -25,9 +23,6 @@ namespace urchin {
             static void loadFlagsOn(Model&, const UdaChunk*, const UdaParser&);
             static void writeFlagsOn(UdaChunk&, const Model&, UdaWriter&);
 
-            static void loadTagsOn(Model&, const UdaChunk*, const UdaParser&);
-            static void writeTagsOn(UdaChunk&, const Model&, UdaWriter&);
-
             static constexpr char MESHES_TAG[] = "meshes";
             static constexpr char FILENAME_TAG[] = "filename";
             static constexpr char ANIMATIONS_TAG[] = "animations";
@@ -37,7 +32,6 @@ namespace urchin {
             static constexpr char POSITION_TAG[] = "position";
             static constexpr char SCALE_TAG[] = "scale";
             static constexpr char PRODUCE_SHADOW_TAG[] = "produceShadow";
-            static constexpr char TAGS_TAG[] = "tags";
     };
 
 }

@@ -204,12 +204,18 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a scene object having name: " + name);
     }
 
+    void Map::findSceneModelsByTag(const std::string& tag, std::vector<SceneModel*>& models) const {
+        modelTagHolder.findByTag<SceneModel*>(tag, models);
+    }
+
     void Map::addSceneModel(std::unique_ptr<SceneModel> sceneModel) {
         sceneModel->setup(renderer3d, physicsWorld, aiEnvironment);
+        modelTagHolder.addTaggableResource(*sceneModel);
         sceneModels.push_back(std::move(sceneModel));
     }
 
     void Map::removeSceneModel(SceneModel& sceneModel) {
+        modelTagHolder.removeTaggableResource(sceneModel);
         sceneModels.remove_if([&sceneModel](const auto& o){return o.get()==&sceneModel;});
     }
 

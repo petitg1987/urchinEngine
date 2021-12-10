@@ -10,9 +10,9 @@
 namespace urchin {
 
     /**
-    * Represent an models on the scene (3d model and physics)
+    * Represent a models on the scene (3d model and physics)
     */
-    class SceneModel : public SceneEntity {
+    class SceneModel : public SceneEntity, public TaggableResource {
         public:
             friend class Map;
 
@@ -46,6 +46,7 @@ namespace urchin {
 
             static constexpr char MODEL_TAG[] = "model";
             static constexpr char PHYSICS_TAG[] = "physics";
+            static constexpr char TAGS_TAG[] = "tags";
             static constexpr char NAME_ATTR[] = "name";
 
             Renderer3d* renderer3d;

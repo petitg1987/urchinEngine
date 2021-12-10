@@ -119,14 +119,12 @@ namespace urchin {
     }
 
     const SceneModel& ModelController::updateSceneModelTags(const SceneModel& constSceneModel, const std::string& tagsValues) {
-        const SceneModel& sceneModel = findSceneModel(constSceneModel);
-        Model* model = sceneModel.getModel();
+        SceneModel& sceneModel = findSceneModel(constSceneModel);
 
-        model->removeAllTags();
-
-        std::vector<std::string> tagsList = StringUtil::split(tagsValues, ModelReaderWriter::TAGS_SEPARATOR);
+        sceneModel.removeAllTags();
+        std::vector<std::string> tagsList = StringUtil::split(tagsValues, TagsReaderWriter::TAGS_SEPARATOR);
         for (const std::string& tag: tagsList) {
-            model->addTag(tag);
+            sceneModel.addTag(tag);
         }
 
         markModified();

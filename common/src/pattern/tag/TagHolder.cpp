@@ -2,12 +2,12 @@
 
 namespace urchin {
 
-    void TagHolder::addTaggableResource(TaggableResource* taggable) {
-        taggable->setupTagHolder(this);
+    void TagHolder::addTaggableResource(TaggableResource& taggable) {
+        taggable.setupTagHolder(this);
     }
 
-    void TagHolder::removeTaggableResource(TaggableResource* taggable) const {
-        taggable->setupTagHolder(nullptr);
+    void TagHolder::removeTaggableResource(TaggableResource& taggable) const {
+        taggable.setupTagHolder(nullptr);
     }
 
     void TagHolder::addTag(TaggableResource* taggable, const std::string& tag) {
