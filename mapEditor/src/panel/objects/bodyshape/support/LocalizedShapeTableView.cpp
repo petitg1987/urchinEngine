@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
-        notifyObservers(this, NotificationType::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
+        notifyObservers(this, NotificationType::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
     }
 
     bool LocalizedShapeTableView::hasLocalizedShapeSelected() const {
@@ -92,10 +92,10 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::selectLocalizedShape(int rowId) {
-        QModelIndex modelIndexSelection = localizedShapesTableModel->index(rowId, 0);
-        if (modelIndexSelection.row() != -1) {
-            selectionModel()->setCurrentIndex(modelIndexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
-            selectionModel()->select(modelIndexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+        QModelIndex indexSelection = localizedShapesTableModel->index(rowId, 0);
+        if (indexSelection.row() != -1) {
+            selectionModel()->setCurrentIndex(indexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+            selectionModel()->select(indexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
         }
     }
 

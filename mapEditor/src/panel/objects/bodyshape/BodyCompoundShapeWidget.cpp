@@ -21,7 +21,7 @@ namespace urchin {
         localizedShapeTableView = new LocalizedShapeTableView();
         mainLayout->addWidget(localizedShapeTableView, 1, 0);
         localizedShapeTableView->setFixedHeight(100);
-        localizedShapeTableView->addObserver(this, LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
+        localizedShapeTableView->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
 
         auto* buttonLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonLayout, 2, 0);
@@ -79,7 +79,7 @@ namespace urchin {
 
     void BodyCompoundShapeWidget::notify(Observable* observable, int notificationType) {
         if (const auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
-            if (notificationType == LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED) {
+            if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 if (localizedShapeTableView->hasLocalizedShapeSelected()) {
                     const LocalizedCollisionShape* localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 

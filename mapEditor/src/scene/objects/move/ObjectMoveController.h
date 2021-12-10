@@ -35,12 +35,12 @@ namespace urchin {
         private:
             bool isCameraMoved() const;
             bool adjustMousePosition();
-            void moveModel(const Point2<float>&, const Point2<float>&);
-            void updateModelPosition(const Point3<float>&);
+            void moveObject(const Point2<float>&, const Point2<float>&);
+            void updateObjectPosition(const Point3<float>&);
 
             unsigned int sceneWidth, sceneHeight;
 
-            ObjectMoveAxisDisplayer modelMoveAxisDisplayer;
+            ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
             Scene& scene;
             SceneController& sceneController;
             MouseController& mouseController;

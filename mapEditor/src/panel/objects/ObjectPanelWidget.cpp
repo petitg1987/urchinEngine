@@ -24,7 +24,7 @@ namespace urchin {
             removeObjectButton(nullptr),
             cloneObjectButton(nullptr),
             tabWidget(nullptr),
-            disableModelEvent(false),
+            disableObjectEvent(false),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
             orientationType(nullptr),
             eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
@@ -411,10 +411,10 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::notify(Observable* observable, int notificationType) {
-        if (const auto* modelTableView = dynamic_cast<ObjectTableView*>(observable)) {
+        if (const auto* objectTableView = dynamic_cast<ObjectTableView*>(observable)) {
             if (notificationType == ObjectTableView::OBJECT_SELECTION_CHANGED) {
-                if (modelTableView->hasObjectEntitySelected()) {
-                    const ObjectEntity& objectEntity = *modelTableView->getSelectedObjectEntity();
+                if (objectTableView->hasObjectEntitySelected()) {
+                    const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
                     setupObjectDataFrom(objectEntity);
 
                     removeObjectButton->setEnabled(true);
@@ -439,15 +439,15 @@ namespace urchin {
                     this->objectTableView->clearSelection();
                 }
             }
-        } else if (const auto* modelMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
+        } else if (const auto* objectMoveController = dynamic_cast<ObjectMoveController*>(observable)) {
             if (notificationType == ObjectMoveController::OBJECT_MOVED) {
-                setupObjectDataFrom(*modelMoveController->getSelectedObjectEntity());
+                setupObjectDataFrom(*objectMoveController->getSelectedObjectEntity());
             }
         }
     }
 
     void ObjectPanelWidget::setupObjectDataFrom(const ObjectEntity& objectEntity) {
-        disableModelEvent = true;
+        disableObjectEvent = true;
         const Model* model = objectEntity.getModel();
         const Transform<float>& modelTransform = model->getTransform();
 
@@ -466,11 +466,11 @@ namespace urchin {
 
         setupObjectPhysicsDataFrom(objectEntity);
         setupObjectTagsDataFrom(objectEntity);
-        disableModelEvent = false;
+        disableObjectEvent = false;
     }
 
     void ObjectPanelWidget::setupObjectPhysicsDataFrom(const ObjectEntity& objectEntity) {
-        disableModelEvent = true;
+        disableObjectEvent = true;
         const RigidBody* rigidBody = objectEntity.getRigidBody();
 
         if (rigidBody) {
@@ -503,7 +503,7 @@ namespace urchin {
             shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget.getBodyShapeName()));
         }
 
-        disableModelEvent = false;
+        disableObjectEvent = false;
     }
 
     BodyShapeWidget& ObjectPanelWidget::createBodyShapeWidget(const CollisionShape3D& shape, const ObjectEntity& objectEntity) {
@@ -572,7 +572,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectOrientationType() {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity* objectEntity = objectTableView->getSelectedObjectEntity();
 
             QVariant variant = orientationType->currentData();
@@ -590,7 +590,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectTransform() {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
             Vector3<float> eulerAngle(
@@ -612,7 +612,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectScale() {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             updateObjectTransform();
 
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
@@ -625,7 +625,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectFlags() {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
             bool produceShadow = produceShadowCheckBox->checkState() == Qt::Checked;
@@ -634,7 +634,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectTags() {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
             std::string tagsValues = tags->text().toUtf8().constData();
@@ -656,7 +656,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::rigidBodyToggled(int rigidBodyState) {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             if (Qt::CheckState::Checked == rigidBodyState) {
                 tabPhysicsRigidBody->show();
@@ -671,7 +671,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::updateObjectPhysicsProperties() {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
             Vector3<float> linearFactor((float)linearFactorX->value(), (float)linearFactorY->value(), (float)linearFactorZ->value());
@@ -684,7 +684,7 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::bodyShapeChanged(std::unique_ptr<const CollisionShape3D>& shape) {
-        if (!disableModelEvent) {
+        if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             objectController->updateObjectPhysicsShape(objectEntity, std::move(shape));
         }

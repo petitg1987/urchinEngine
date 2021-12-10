@@ -67,7 +67,7 @@ namespace urchin {
             QPushButton* cloneObjectButton;
             QTabWidget* tabWidget;
 
-            bool disableModelEvent;
+            bool disableObjectEvent;
 
             //general
             QDoubleSpinBox* positionX;

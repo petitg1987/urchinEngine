@@ -54,9 +54,9 @@ namespace urchin {
     }
 
     int ObjectTableView::addObject(const ObjectEntity& objectEntity) {
-        auto* itemModelName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
-        itemModelName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
-        itemModelName->setEditable(false);
+        auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
+        itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
+        itemObjectName->setEditable(false);
 
         std::string meshesName;
         std::string meshesFilename;
@@ -71,7 +71,7 @@ namespace urchin {
 
         int nextRow = objectsListModel->rowCount();
         objectsListModel->insertRow(nextRow);
-        objectsListModel->setItem(nextRow, 0, itemModelName);
+        objectsListModel->setItem(nextRow, 0, itemObjectName);
         objectsListModel->setItem(nextRow, 1, itemMeshName);
 
         resizeRowsToContents();

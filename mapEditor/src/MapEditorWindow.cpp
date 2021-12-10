@@ -213,11 +213,11 @@ namespace urchin {
             if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget* bodyShapeWidget = modelControllerWidget->getBodyShapeWidget();
                 if (const auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
-                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
+                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
         } else if (const auto* localizedShapeTableView = dynamic_cast<LocalizedShapeTableView*>(observable)) {
-            if (notificationType == LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED) {
+            if (notificationType == LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED) {
                 sceneDisplayerWindow->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }
         }

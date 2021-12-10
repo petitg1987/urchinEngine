@@ -5,7 +5,7 @@ namespace urchin {
                                                StatusBarController& statusBarController) :
             sceneWidth(0),
             sceneHeight(0),
-            modelMoveAxisDisplayer(ObjectMoveAxisDisplayer(scene)),
+            objectMoveAxisDisplayer(ObjectMoveAxisDisplayer(scene)),
             scene(scene),
             sceneController(sceneController),
             mouseController(mouseController),
@@ -38,7 +38,7 @@ namespace urchin {
             if (oldMouseX > -1.0 && oldMouseY > -1.0 && !isCameraMoved()) {
                 mousePositionAdjusted = adjustMousePosition();
                 if (!mousePositionAdjusted) {
-                    moveModel(Point2<float>((float)oldMouseX, (float)oldMouseY), Point2<float>((float)mouseX, (float)mouseY));
+                    moveObject(Point2<float>((float)oldMouseX, (float)oldMouseY), Point2<float>((float)mouseX, (float)mouseY));
                 }
             }
 
@@ -97,7 +97,7 @@ namespace urchin {
         return false;
     }
 
-    void ObjectMoveController::moveModel(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
+    void ObjectMoveController::moveObject(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
         Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(*scene.getActiveRenderer3d()->getCamera());
 
@@ -118,10 +118,10 @@ namespace urchin {
 
         Point3<float> newPosition = modelPosition;
         newPosition[(unsigned int)selectedAxis] += moveFactor * moveSpeed * moveReduceFactor;
-        updateModelPosition(newPosition);
+        updateObjectPosition(newPosition);
     }
 
-    void ObjectMoveController::updateModelPosition(const Point3<float>& newPosition) {
+    void ObjectMoveController::updateObjectPosition(const Point3<float>& newPosition) {
         Transform<float> transform = selectedObjectEntity->getModel()->getTransform();
         transform.setPosition(newPosition);
 
@@ -144,7 +144,7 @@ namespace urchin {
     bool ObjectMoveController::onEscapeKey() {
         bool propagateEvent = true;
         if (selectedAxis != -1) {
-            updateModelPosition(savedPosition);
+            updateObjectPosition(savedPosition);
 
             statusBarController.applyPreviousState();
             selectedAxis = -1;
@@ -171,9 +171,9 @@ namespace urchin {
     void ObjectMoveController::displayAxis() {
         if (selectedObjectEntity) {
             Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
-            modelMoveAxisDisplayer.displayAxis(modelPosition, (unsigned int)selectedAxis);
+            objectMoveAxisDisplayer.displayAxis(modelPosition, (unsigned int)selectedAxis);
         } else {
-            modelMoveAxisDisplayer.cleanCurrentDisplay();
+            objectMoveAxisDisplayer.cleanCurrentDisplay();
         }
     }
 }
