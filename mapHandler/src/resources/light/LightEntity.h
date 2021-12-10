@@ -5,15 +5,12 @@
 
 namespace urchin {
 
-    /**
-    * Represent a light on the scene
-    */
-    class SceneLight {
+    class LightEntity {
         public:
             friend class Map;
 
-            SceneLight();
-            ~SceneLight();
+            LightEntity();
+            ~LightEntity();
 
             void setup(LightManager&);
 

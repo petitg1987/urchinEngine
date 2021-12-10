@@ -15,8 +15,8 @@ namespace urchin {
             mouseController(mouseController),
             statusBarController(statusBarController),
             viewProperties(),
-            highlightSceneModel(nullptr),
-            highlightSceneLight(nullptr),
+            highlightObjectEntity(nullptr),
+            highlightLightEntity(nullptr),
             highlightSoundEntity(nullptr) {
 
     }
@@ -118,17 +118,17 @@ namespace urchin {
         viewProperties[viewProperty] = value;
     }
 
-    void SceneDisplayer::setHighlightSceneModel(const SceneModel* highlightSceneModel) {
-        if (this->highlightSceneModel != highlightSceneModel) {
-            this->highlightSceneModel = highlightSceneModel;
+    void SceneDisplayer::setHighlightObjectEntity(const SceneModel* highlightObjectEntity) {
+        if (this->highlightObjectEntity != highlightObjectEntity) {
+            this->highlightObjectEntity = highlightObjectEntity;
 
-            bodyShapeDisplayer->setSelectedSceneModel(highlightSceneModel);
-            modelMoveController->setSelectedSceneModel(highlightSceneModel);
+            bodyShapeDisplayer->setSelectedSceneModel(highlightObjectEntity);
+            modelMoveController->setSelectedSceneModel(highlightObjectEntity);
         }
     }
 
-    void SceneDisplayer::setHighlightSceneLight(const SceneLight* highlightSceneLight) {
-        this->highlightSceneLight = highlightSceneLight;
+    void SceneDisplayer::setHighlightLightEntity(const LightEntity* highlightLightEntity) {
+        this->highlightLightEntity = highlightLightEntity;
     }
 
     void SceneDisplayer::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) {
@@ -149,8 +149,8 @@ namespace urchin {
 
     void SceneDisplayer::refreshLightScopeModel() {
         if (lightScopeDisplayer) {
-            if (viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight()) {
-                lightScopeDisplayer->displayLightScope(highlightSceneLight);
+            if (viewProperties[LIGHT_SCOPE] && highlightLightEntity && highlightLightEntity->getLight()) {
+                lightScopeDisplayer->displayLightScope(highlightLightEntity);
             } else {
                 lightScopeDisplayer->displayLightScope(nullptr);
             }

@@ -110,9 +110,9 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWindow::setHighlightSceneModel(const SceneModel* highlightSceneModel) {
+    void SceneDisplayerWindow::setHighlightObjectEntity(const SceneModel* highlightObjectEntity) {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightSceneModel(highlightSceneModel);
+            sceneDisplayer->setHighlightObjectEntity(highlightObjectEntity);
         }
     }
 
@@ -122,9 +122,9 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWindow::setHighlightSceneLight(const SceneLight* highlightSceneLight) {
+    void SceneDisplayerWindow::setHighlightLightEntity(const LightEntity* highlightLightEntity) {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
+            sceneDisplayer->setHighlightLightEntity(highlightLightEntity);
         }
     }
 

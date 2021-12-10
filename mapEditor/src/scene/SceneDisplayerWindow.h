@@ -33,9 +33,9 @@ namespace urchin {
             void closeMap();
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
-            void setHighlightSceneModel(const SceneModel*);
+            void setHighlightObjectEntity(const SceneModel*);
             void setHighlightCompoundShapeComponent(const LocalizedCollisionShape*);
-            void setHighlightSceneLight(const SceneLight*);
+            void setHighlightLightEntity(const LightEntity*);
             void setHighlightSoundEntity(const SoundEntity*);
 
             void render();

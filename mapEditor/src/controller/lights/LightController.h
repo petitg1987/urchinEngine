@@ -13,16 +13,16 @@ namespace urchin {
         public:
             LightController();
 
-            std::list<const SceneLight*> getSceneLights() const;
-            void addSceneLight(std::unique_ptr<SceneLight>);
-            void removeSceneLight(const SceneLight&);
+            std::list<const LightEntity*> getLightEntities() const;
+            void addLightEntity(std::unique_ptr<LightEntity>);
+            void removeLightEntity(const LightEntity&);
 
-            const SceneLight& updateSceneLightGeneralProperties(const SceneLight&, const Point3<float>&, bool);
-            const SceneLight& updateSceneOmnidirectionalLightProperties(const SceneLight&, float, const Point3<float>&);
-            const SceneLight& updateSceneSunLightProperties(const SceneLight&, const Vector3<float>&);
+            const LightEntity& updateLightGeneralProperties(const LightEntity&, const Point3<float>&, bool);
+            const LightEntity& updateOmnidirectionalLightProperties(const LightEntity&, float, const Point3<float>&);
+            const LightEntity& updateSunLightProperties(const LightEntity&, const Vector3<float>&);
 
         private:
-            SceneLight& findSceneLight(const SceneLight&);
+            LightEntity& findLightEntity(const LightEntity&);
     };
 
 }

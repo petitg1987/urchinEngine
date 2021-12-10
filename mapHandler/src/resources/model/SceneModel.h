@@ -7,9 +7,6 @@
 
 namespace urchin {
 
-    /**
-    * Represent a models on the scene (3d model and physics)
-    */
     class SceneModel : public TaggableResource {
         public:
             friend class Map;

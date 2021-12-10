@@ -9,33 +9,33 @@ namespace urchin {
 
     }
 
-    std::list<const SceneLight*> LightController::getSceneLights() const {
-        const auto& sceneLights = getMapHandler()->getMap().getSceneLights();
-        std::list<const SceneLight*> constSceneLights;
-        for (auto& sceneLight : sceneLights) {
-            constSceneLights.emplace_back(sceneLight.get());
+    std::list<const LightEntity*> LightController::getLightEntities() const {
+        const auto& lightEntities = getMapHandler()->getMap().getLightEntities();
+        std::list<const LightEntity*> constLightEntities;
+        for (auto& lightEntity : lightEntities) {
+            constLightEntities.emplace_back(lightEntity.get());
         }
 
-        return constSceneLights;
+        return constLightEntities;
     }
 
-    void LightController::addSceneLight(std::unique_ptr<SceneLight> sceneLight) {
-        getMapHandler()->getMap().addSceneLight(std::move(sceneLight));
+    void LightController::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
+        getMapHandler()->getMap().addLightEntity(std::move(lightEntity));
 
         markModified();
     }
 
-    void LightController::removeSceneLight(const SceneLight& constSceneLight) {
-        SceneLight& sceneLight = findSceneLight(constSceneLight);
-        getMapHandler()->getMap().removeSceneLight(sceneLight);
+    void LightController::removeLightEntity(const LightEntity& constLightEntity) {
+        LightEntity& lightEntity = findLightEntity(constLightEntity);
+        getMapHandler()->getMap().removeLightEntity(lightEntity);
 
         markModified();
     }
 
-    const SceneLight& LightController::updateSceneLightGeneralProperties(const SceneLight& constSceneLight,
-                                                                         const Point3<float>& ambientColor, bool isProduceShadow) {
-        const SceneLight& sceneLight = findSceneLight(constSceneLight);
-        Light* light = sceneLight.getLight();
+    const LightEntity& LightController::updateLightGeneralProperties(const LightEntity& constLightEntity,
+                                                                     const Point3<float>& ambientColor, bool isProduceShadow) {
+        const LightEntity& lightEntity = findLightEntity(constLightEntity);
+        Light* light = lightEntity.getLight();
 
         light->setAmbientColor(ambientColor);
         if (light->isProduceShadow() != isProduceShadow) {
@@ -43,40 +43,40 @@ namespace urchin {
         }
 
         markModified();
-        return sceneLight;
+        return lightEntity;
     }
 
-    const SceneLight& LightController::updateSceneOmnidirectionalLightProperties(const SceneLight& constSceneLight,
-                                                                                 float attenuation, const Point3<float>& position) {
-        const SceneLight& sceneLight = findSceneLight(constSceneLight);
-        auto* light = static_cast<OmnidirectionalLight*>(sceneLight.getLight());
+    const LightEntity& LightController::updateOmnidirectionalLightProperties(const LightEntity& constLightEntity,
+                                                                             float attenuation, const Point3<float>& position) {
+        const LightEntity& lightEntity = findLightEntity(constLightEntity);
+        auto* light = static_cast<OmnidirectionalLight*>(lightEntity.getLight());
 
         light->setAttenuation(attenuation);
         light->setPosition(position);
 
         markModified();
-        return sceneLight;
+        return lightEntity;
     }
 
-    const SceneLight& LightController::updateSceneSunLightProperties(const SceneLight& constSceneLight, const Vector3<float>& direction) {
-        const SceneLight& sceneLight = findSceneLight(constSceneLight);
-        auto* light = static_cast<SunLight*>(sceneLight.getLight());
+    const LightEntity& LightController::updateSunLightProperties(const LightEntity& constLightEntity, const Vector3<float>& direction) {
+        const LightEntity& lightEntity = findLightEntity(constLightEntity);
+        auto* light = static_cast<SunLight*>(lightEntity.getLight());
 
         light->setDirection(direction);
 
         markModified();
-        return sceneLight;
+        return lightEntity;
     }
 
-    SceneLight& LightController::findSceneLight(const SceneLight& constSceneLight) {
-        const auto& sceneLights = getMapHandler()->getMap().getSceneLights();
-        auto it = std::ranges::find_if(sceneLights, [&constSceneLight](const auto& o){return o.get() == &constSceneLight;});
+    LightEntity& LightController::findLightEntity(const LightEntity& constLightEntity) {
+        const auto& lightEntities = getMapHandler()->getMap().getLightEntities();
+        auto it = std::ranges::find_if(lightEntities, [&constLightEntity](const auto& o){return o.get() == &constLightEntity;});
 
-        if (it != sceneLights.end()) {
+        if (it != lightEntities.end()) {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find light entity: " + constSceneLight.getName());
+        throw std::invalid_argument("Impossible to find light entity: " + constLightEntity.getName());
     }
 
 }

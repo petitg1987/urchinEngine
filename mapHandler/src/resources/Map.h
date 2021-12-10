@@ -10,7 +10,7 @@
 #include <UrchinAIEngine.h>
 #include <load/LoadMapCallback.h>
 #include <resources/model/SceneModel.h>
-#include <resources/light/SceneLight.h>
+#include <resources/light/LightEntity.h>
 #include <resources/terrain/TerrainEntity.h>
 #include <resources/water/WaterEntity.h>
 #include <resources/sky/SkyEntity.h>
@@ -38,10 +38,10 @@ namespace urchin {
             void addSceneModel(std::unique_ptr<SceneModel>);
             void removeSceneModel(SceneModel&);
 
-            const std::list<std::unique_ptr<SceneLight>>& getSceneLights() const;
-            SceneLight& getSceneLight(const std::string&) const;
-            void addSceneLight(std::unique_ptr<SceneLight>);
-            void removeSceneLight(SceneLight&);
+            const std::list<std::unique_ptr<LightEntity>>& getLightEntities() const;
+            LightEntity& getLightEntity(const std::string&) const;
+            void addLightEntity(std::unique_ptr<LightEntity>);
+            void removeLightEntity(LightEntity&);
 
             const std::list<std::unique_ptr<TerrainEntity>>& getTerrainEntities() const;
             TerrainEntity& getTerrainEntity(const std::string&) const;
@@ -68,8 +68,8 @@ namespace urchin {
 
         private:
             void loadFrom(const UdaChunk*, const UdaParser&, LoadMapCallback&);
-            void loadSceneModelsFrom(const UdaChunk*, const UdaParser&);
-            void loadSceneLightsFrom(const UdaChunk*, const UdaParser&);
+            void loadObjectEntities(const UdaChunk*, const UdaParser&);
+            void loadLightEntities(const UdaChunk*, const UdaParser&);
             void loadTerrainEntities(const UdaChunk*, const UdaParser&);
             void loadWaterEntities(const UdaChunk*, const UdaParser&);
             void loadSkyEntity(const UdaChunk*, const UdaParser&);
@@ -77,8 +77,8 @@ namespace urchin {
             void loadAIConfig(const UdaChunk*, const UdaParser&);
 
             void writeOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneModelsOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneLightsOn(UdaChunk&, UdaWriter&) const;
+            void writeObjectEntities(UdaChunk&, UdaWriter&) const;
+            void writeLightEntities(UdaChunk&, UdaWriter&) const;
             void writeTerrainEntities(UdaChunk&, UdaWriter&) const;
             void writeWaterEntities(UdaChunk&, UdaWriter&) const;
             void writeSkyEntity(UdaChunk&, UdaWriter&) const;
@@ -107,7 +107,7 @@ namespace urchin {
 
             TagHolder modelTagHolder;
             std::list<std::unique_ptr<SceneModel>> sceneModels;
-            std::list<std::unique_ptr<SceneLight>> sceneLights;
+            std::list<std::unique_ptr<LightEntity>> lightEntities;
             std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
             std::list<std::unique_ptr<WaterEntity>> waterEntities;
             SkyEntity skyEntity;

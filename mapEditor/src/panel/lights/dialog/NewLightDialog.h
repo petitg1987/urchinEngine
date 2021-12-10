@@ -20,17 +20,17 @@ namespace urchin {
 
             NewLightDialog(QWidget*, const LightController*);
 
-            std::unique_ptr<SceneLight> moveSceneLight();
+            std::unique_ptr<LightEntity> moveLightEntity();
 
         private:
             void setupNameFields(QGridLayout*);
             void setupLightTypeFields(QGridLayout*);
 
             void updateLightName();
-            int buildSceneLight(int);
+            int buildLightEntity(int);
 
             void done(int) override;
-            bool isSceneLightExist(const std::string&);
+            bool isLightEntityExist(const std::string&);
 
             const LightController* lightController;
 
@@ -40,7 +40,7 @@ namespace urchin {
             QComboBox* lightTypeComboBox;
 
             std::string lightName;
-            std::unique_ptr<SceneLight> sceneLight;
+            std::unique_ptr<LightEntity> lightEntity;
     };
 
 }

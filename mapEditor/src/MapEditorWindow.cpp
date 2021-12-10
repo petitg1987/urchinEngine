@@ -188,11 +188,11 @@ namespace urchin {
             }
         } else if (const auto* modelTableView = dynamic_cast<ModelTableView*>(observable)) {
             if (notificationType == ModelTableView::MODEL_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightSceneModel(modelTableView->getSelectedSceneModel());
+                sceneDisplayerWindow->setHighlightObjectEntity(modelTableView->getSelectedSceneModel());
             }
         } else if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
+                sceneDisplayerWindow->setHighlightLightEntity(lightTableView->getSelectedLightEntity());
             }
         } else if (const auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {

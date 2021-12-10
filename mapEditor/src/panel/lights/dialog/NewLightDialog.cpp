@@ -16,7 +16,7 @@ namespace urchin {
             lightNameText(nullptr),
             lightTypeLabel(nullptr),
             lightTypeComboBox(nullptr),
-            sceneLight(nullptr) {
+            lightEntity(nullptr) {
         this->setWindowTitle("New Light");
         this->resize(530, 130);
         this->setFixedSize(this->width(), this->height());
@@ -63,10 +63,10 @@ namespace urchin {
         }
     }
 
-    int NewLightDialog::buildSceneLight(int result) {
-        sceneLight = std::make_unique<SceneLight>();
+    int NewLightDialog::buildLightEntity(int result) {
+        lightEntity = std::make_unique<LightEntity>();
 
-        sceneLight->setName(lightName);
+        lightEntity->setName(lightName);
 
         QVariant variant = lightTypeComboBox->currentData();
         auto lightType = static_cast<Light::LightType>(variant.toInt());
@@ -80,13 +80,13 @@ namespace urchin {
             throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));
         }
 
-        sceneLight->setLight(light);
+        lightEntity->setLight(light);
 
         return result;
     }
 
-    std::unique_ptr<SceneLight> NewLightDialog::moveSceneLight() {
-        return std::move(sceneLight);
+    std::unique_ptr<LightEntity> NewLightDialog::moveLightEntity() {
+        return std::move(lightEntity);
     }
 
     void NewLightDialog::done(int r) {
@@ -99,13 +99,13 @@ namespace urchin {
             if (lightName.empty()) {
                 LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is mandatory");
                 hasError = true;
-            } else if (isSceneLightExist(lightName)) {
+            } else if (isLightEntityExist(lightName)) {
                 LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is already used");
                 hasError = true;
             }
 
             if (!hasError) {
-                r = buildSceneLight(r);
+                r = buildLightEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -113,9 +113,9 @@ namespace urchin {
         }
     }
 
-    bool NewLightDialog::isSceneLightExist(const std::string& name) {
-        std::list<const SceneLight*> sceneLights = lightController->getSceneLights();
-        return std::ranges::any_of(sceneLights, [&name](const auto& sl){return sl->getName() == name;});
+    bool NewLightDialog::isLightEntityExist(const std::string& name) {
+        std::list<const LightEntity*> lightEntities = lightController->getLightEntities();
+        return std::ranges::any_of(lightEntities, [&name](const auto& sl){return sl->getName() == name;});
     }
 
 }

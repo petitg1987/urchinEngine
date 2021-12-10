@@ -172,9 +172,9 @@ namespace urchin {
     void LightPanelWidget::load(LightController& lightController) {
         this->lightController = &lightController;
 
-        std::list<const SceneLight*> sceneLights = this->lightController->getSceneLights();
-        for (auto& sceneLight : sceneLights) {
-            lightTableView->addLight(*sceneLight);
+        std::list<const LightEntity*> lightEntities = this->lightController->getLightEntities();
+        for (auto& lightEntity : lightEntities) {
+            lightTableView->addLight(*lightEntity);
         }
     }
 
@@ -187,9 +187,9 @@ namespace urchin {
     void LightPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* lightTableView = dynamic_cast<LightTableView*>(observable)) {
             if (notificationType == LightTableView::LIGHT_SELECTION_CHANGED) {
-                if (lightTableView->hasSceneLightSelected()) {
-                    const SceneLight* sceneLight = lightTableView->getSelectedSceneLight();
-                    setupLightDataFrom(sceneLight);
+                if (lightTableView->hasLightEntitySelected()) {
+                    const LightEntity* lightEntity = lightTableView->getSelectedLightEntity();
+                    setupLightDataFrom(lightEntity);
 
                     removeLightButton->setEnabled(true);
                     generalPropertiesGroupBox->show();
@@ -203,9 +203,9 @@ namespace urchin {
         }
     }
 
-    void LightPanelWidget::setupLightDataFrom(const SceneLight* sceneLight) {
+    void LightPanelWidget::setupLightDataFrom(const LightEntity* lightEntity) {
         disableLightEvent = true;
-        const Light* light = sceneLight->getLight();
+        const Light* light = lightEntity->getLight();
 
         this->ambientR->setValue(light->getAmbientColor().X);
         this->ambientG->setValue(light->getAmbientColor().Y);
@@ -251,22 +251,22 @@ namespace urchin {
     }
 
     void LightPanelWidget::showAddLightDialog() {
-        NewLightDialog newSceneLightDialog(this, lightController);
-        newSceneLightDialog.exec();
+        NewLightDialog newLightEntityDialog(this, lightController);
+        newLightEntityDialog.exec();
 
-        if (newSceneLightDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<SceneLight> sceneLight = newSceneLightDialog.moveSceneLight();
-            const SceneLight* sceneLightPtr = sceneLight.get();
-            lightController->addSceneLight(std::move(sceneLight));
+        if (newLightEntityDialog.result() == QDialog::Accepted) {
+            std::unique_ptr<LightEntity> lightEntity = newLightEntityDialog.moveLightEntity();
+            const LightEntity* lightEntityPtr = lightEntity.get();
+            lightController->addLightEntity(std::move(lightEntity));
 
-            lightTableView->addLight(*sceneLightPtr);
+            lightTableView->addLight(*lightEntityPtr);
         }
     }
 
     void LightPanelWidget::removeSelectedLight() {
-        if (lightTableView->hasSceneLightSelected()) {
-            const SceneLight& sceneLight = *lightTableView->getSelectedSceneLight();
-            lightController->removeSceneLight(sceneLight);
+        if (lightTableView->hasLightEntitySelected()) {
+            const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
+            lightController->removeLightEntity(lightEntity);
 
             lightTableView->removeSelectedLight();
         }
@@ -274,26 +274,26 @@ namespace urchin {
 
     void LightPanelWidget::updateLightGeneralProperties() {
         if (!disableLightEvent) {
-            const SceneLight& sceneLight = *lightTableView->getSelectedSceneLight();
+            const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
 
             Point3<float> ambientColor((float)ambientR->value(), (float)ambientG->value(), (float)ambientB->value());
             bool produceShadow = produceShadowCheckBox->isChecked();
 
-            lightController->updateSceneLightGeneralProperties(sceneLight, ambientColor, produceShadow);
+            lightController->updateLightGeneralProperties(lightEntity, ambientColor, produceShadow);
         }
     }
 
     void LightPanelWidget::updateLightSpecificProperties() {
         if (!disableLightEvent) {
-            const SceneLight& sceneLight = *lightTableView->getSelectedSceneLight();
-            const Light* light = sceneLight.getLight();
+            const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
+            const Light* light = lightEntity.getLight();
 
             if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-                lightController->updateSceneOmnidirectionalLightProperties(sceneLight, (float)attenuation->value(), position);
+                lightController->updateOmnidirectionalLightProperties(lightEntity, (float)attenuation->value(), position);
             } else if (light->getLightType() == Light::LightType::SUN) {
                 Vector3<float> direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
-                lightController->updateSceneSunLightProperties(sceneLight, direction);
+                lightController->updateSunLightProperties(lightEntity, direction);
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string(light->getLightType()));
             }

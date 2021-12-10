@@ -5,9 +5,6 @@
 
 namespace urchin {
 
-    /**
-    * Represent a sound and sound trigger on the scene
-    */
     class SoundEntity {
         public:
             friend class Map;

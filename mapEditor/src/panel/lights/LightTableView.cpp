@@ -26,21 +26,21 @@ namespace urchin {
         notifyObservers(this, NotificationType::LIGHT_SELECTION_CHANGED);
     }
 
-    bool LightTableView::hasSceneLightSelected() const {
+    bool LightTableView::hasLightEntitySelected() const {
         return this->currentIndex().row() != -1;
     }
 
-    const SceneLight* LightTableView::getSelectedSceneLight() const {
+    const LightEntity* LightTableView::getSelectedLightEntity() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row() != -1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const SceneLight*>();
+            return selectedIndex.data(Qt::UserRole + 1).value<const LightEntity*>();
         }
         return nullptr;
     }
 
-    void LightTableView::addLight(const SceneLight& sceneLight) {
-        auto* itemLightName = new QStandardItem(QString::fromStdString(sceneLight.getName()));
-        itemLightName->setData(QVariant::fromValue(&sceneLight), Qt::UserRole + 1);
+    void LightTableView::addLight(const LightEntity& lightEntity) {
+        auto* itemLightName = new QStandardItem(QString::fromStdString(lightEntity.getName()));
+        itemLightName->setData(QVariant::fromValue(&lightEntity), Qt::UserRole + 1);
         itemLightName->setEditable(false);
 
         int nextRow = lightsListModel->rowCount();
@@ -51,7 +51,7 @@ namespace urchin {
     }
 
     bool LightTableView::removeSelectedLight() {
-        if (hasSceneLightSelected()) {
+        if (hasLightEntitySelected()) {
             lightsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

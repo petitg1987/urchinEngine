@@ -7,7 +7,7 @@
 #include <UrchinMapHandler.h>
 #include <controller/SceneController.h>
 
-Q_DECLARE_METATYPE(const urchin::SceneLight*)
+Q_DECLARE_METATYPE(const urchin::LightEntity*)
 
 namespace urchin {
 
@@ -21,10 +21,10 @@ namespace urchin {
                 LIGHT_SELECTION_CHANGED
             };
 
-            bool hasSceneLightSelected() const;
-            const SceneLight* getSelectedSceneLight() const;
+            bool hasLightEntitySelected() const;
+            const LightEntity* getSelectedLightEntity() const;
 
-            void addLight(const SceneLight&);
+            void addLight(const LightEntity&);
             bool removeSelectedLight();
             void removeAllLights();
 

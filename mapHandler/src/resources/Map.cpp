@@ -45,11 +45,11 @@ namespace urchin {
         }
 
         loadMapCallback.notify(LoadMapCallback::MODELS, LoadMapCallback::START_LOADING);
-        loadSceneModelsFrom(sceneChunk, udaParser);
+        loadObjectEntities(sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::MODELS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::START_LOADING);
-        loadSceneLightsFrom(sceneChunk, udaParser);
+        loadLightEntities(sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::LIGHTS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::START_LOADING);
@@ -67,7 +67,7 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::LOADED);
     }
 
-    void Map::loadSceneModelsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadObjectEntities(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto modelsListChunk = udaParser.getUniqueChunk(true, MODELS_TAG, UdaAttribute(), sceneChunk);
         auto modelsChunk = udaParser.getChunks(MODEL_TAG, UdaAttribute(), modelsListChunk);
 
@@ -80,15 +80,15 @@ namespace urchin {
         renderer3d->preWarmModels();
     }
 
-    void Map::loadSceneLightsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadLightEntities(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto lightsListChunk = udaParser.getUniqueChunk(true, LIGHTS_TAG, UdaAttribute(), sceneChunk);
         auto lightsChunk = udaParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
 
         for (const auto& lightChunk : lightsChunk) {
-            auto sceneLight = std::make_unique<SceneLight>();
-            sceneLight->loadFrom(lightChunk, udaParser);
+            auto lightEntity = std::make_unique<LightEntity>();
+            lightEntity->loadFrom(lightChunk, udaParser);
 
-            addSceneLight(std::move(sceneLight));
+            addLightEntity(std::move(lightEntity));
         }
     }
 
@@ -140,8 +140,8 @@ namespace urchin {
     }
 
     void Map::writeOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
-        writeSceneModelsOn(sceneChunk, udaWriter);
-        writeSceneLightsOn(sceneChunk, udaWriter);
+        writeObjectEntities(sceneChunk, udaWriter);
+        writeLightEntities(sceneChunk, udaWriter);
         writeTerrainEntities(sceneChunk, udaWriter);
         writeWaterEntities(sceneChunk, udaWriter);
         writeSkyEntity(sceneChunk, udaWriter);
@@ -149,7 +149,7 @@ namespace urchin {
         writeAIConfig(sceneChunk, udaWriter);
     }
 
-    void Map::writeSceneModelsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeObjectEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& modelsListChunk = udaWriter.createChunk(MODELS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& sceneModel : sceneModels) {
@@ -158,12 +158,12 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneLightsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeLightEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& lightsListChunk = udaWriter.createChunk(LIGHTS_TAG, UdaAttribute(), &sceneChunk);
 
-        for (auto& sceneLight : sceneLights) {
+        for (auto& lightEntity : lightEntities) {
             auto& lightsChunk = udaWriter.createChunk(LIGHT_TAG, UdaAttribute(), &lightsListChunk);
-            sceneLight->writeOn(lightsChunk, udaWriter);
+            lightEntity->writeOn(lightsChunk, udaWriter);
         }
     }
 
@@ -233,26 +233,26 @@ namespace urchin {
         sceneModels.remove_if([&sceneModel](const auto& o){return o.get()==&sceneModel;});
     }
 
-    const std::list<std::unique_ptr<SceneLight>>& Map::getSceneLights() const {
-        return sceneLights;
+    const std::list<std::unique_ptr<LightEntity>>& Map::getLightEntities() const {
+        return lightEntities;
     }
 
-    SceneLight& Map::getSceneLight(const std::string& name) const {
-        for (auto& sceneLight : sceneLights) {
-            if (sceneLight->getName() == name) {
-                return *sceneLight;
+    LightEntity& Map::getLightEntity(const std::string& name) const {
+        for (auto& lightEntity : lightEntities) {
+            if (lightEntity->getName() == name) {
+                return *lightEntity;
             }
         }
         throw std::invalid_argument("Impossible to find a light entity having name: " + name);
     }
 
-    void Map::addSceneLight(std::unique_ptr<SceneLight> sceneLight) {
-        sceneLight->setup(renderer3d->getLightManager());
-        sceneLights.push_back(std::move(sceneLight));
+    void Map::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
+        lightEntity->setup(renderer3d->getLightManager());
+        lightEntities.push_back(std::move(lightEntity));
     }
 
-    void Map::removeSceneLight(SceneLight& sceneLight) {
-        sceneLights.remove_if([&sceneLight](const auto& o){return o.get()==&sceneLight;});
+    void Map::removeLightEntity(LightEntity& lightEntity) {
+        lightEntities.remove_if([&lightEntity](const auto& o){return o.get()==&lightEntity;});
     }
 
     const std::list<std::unique_ptr<TerrainEntity>>& Map::getTerrainEntities() const {
