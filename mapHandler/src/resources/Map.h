@@ -108,17 +108,11 @@ namespace urchin {
 
             TagHolder modelTagHolder;
             std::list<std::unique_ptr<SceneModel>> sceneModels;
-
             std::list<std::unique_ptr<SceneLight>> sceneLights;
-
             std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
-
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
-
             SceneSky sceneSky;
-
             std::list<std::unique_ptr<SceneSound>> sceneSounds;
-
             SceneAI sceneAI;
     };
 
