@@ -11,7 +11,7 @@ namespace urchin {
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
             aiEnvironment(aiEnvironment),
-            sceneSky(SceneSky(renderer3d)) {
+            skyEntity(SkyEntity(renderer3d)) {
 
     }
 
@@ -55,7 +55,7 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::START_LOADING);
         loadSceneTerrainFrom(sceneChunk, udaParser);
         loadSceneWaterFrom(sceneChunk, udaParser);
-        loadSceneSkyFrom(sceneChunk, udaParser);
+        loadSkyEntity(sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::START_LOADING);
@@ -116,10 +116,10 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneSkyFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadSkyEntity(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto skyChunk = udaParser.getUniqueChunk(true, SKY_TAG, UdaAttribute(), sceneChunk);
 
-        sceneSky.loadFrom(skyChunk, udaParser);
+        skyEntity.loadFrom(skyChunk, udaParser);
     }
 
     void Map::loadSceneSoundsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
@@ -144,9 +144,9 @@ namespace urchin {
         writeSceneLightsOn(sceneChunk, udaWriter);
         writeSceneTerrainsOn(sceneChunk, udaWriter);
         writeSceneWatersOn(sceneChunk, udaWriter);
-        writeSceneSkyOn(sceneChunk, udaWriter);
+        writeSkyEntity(sceneChunk, udaWriter);
         writeSceneSoundsOn(sceneChunk, udaWriter);
-        writeSceneAIOn(sceneChunk, udaWriter);
+        writeAIConfig(sceneChunk, udaWriter);
     }
 
     void Map::writeSceneModelsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
@@ -185,10 +185,10 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneSkyOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeSkyEntity(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& skyChunk = udaWriter.createChunk(SKY_TAG, UdaAttribute(), &sceneChunk);
 
-        sceneSky.writeOn(skyChunk, udaWriter);
+        skyEntity.writeOn(skyChunk, udaWriter);
     }
 
     void Map::writeSceneSoundsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
@@ -200,7 +200,7 @@ namespace urchin {
         }
     }
 
-    void Map::writeSceneAIOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeAIConfig(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
         NavMeshAgentReaderWriter::writeOn(aiElementsListChunk, aiEnvironment->getNavMeshGenerator().getNavMeshAgent(), udaWriter);
     }
@@ -299,12 +299,12 @@ namespace urchin {
         sceneWaters.remove_if([&sceneWater](const auto& o){return o.get()==&sceneWater;});
     }
 
-    const SceneSky& Map::getSceneSky() const {
-        return sceneSky;
+    const SkyEntity& Map::getSkyEntity() const {
+        return skyEntity;
     }
 
-    void Map::updateSceneSky(std::unique_ptr<Skybox> skybox) {
-        sceneSky.changeSkybox(std::move(skybox));
+    void Map::updateSkyEntity(std::unique_ptr<Skybox> skybox) {
+        skyEntity.changeSkybox(std::move(skybox));
     }
 
     const std::list<std::unique_ptr<SceneSound>>& Map::getSceneSounds() const {

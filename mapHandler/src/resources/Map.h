@@ -13,7 +13,7 @@
 #include <resources/light/SceneLight.h>
 #include <resources/terrain/SceneTerrain.h>
 #include <resources/water/SceneWater.h>
-#include <resources/sky/SceneSky.h>
+#include <resources/sky/SkyEntity.h>
 #include <resources/sound/SceneSound.h>
 
 namespace urchin {
@@ -53,8 +53,8 @@ namespace urchin {
             void addSceneWater(std::unique_ptr<SceneWater>);
             void removeSceneWater(SceneWater&);
 
-            const SceneSky& getSceneSky() const;
-            void updateSceneSky(std::unique_ptr<Skybox> skybox);
+            const SkyEntity& getSkyEntity() const;
+            void updateSkyEntity(std::unique_ptr<Skybox> skybox);
 
             const std::list<std::unique_ptr<SceneSound>>& getSceneSounds() const;
             SceneSound& getSceneSound(const std::string&) const;
@@ -72,7 +72,7 @@ namespace urchin {
             void loadSceneLightsFrom(const UdaChunk*, const UdaParser&);
             void loadSceneTerrainFrom(const UdaChunk*, const UdaParser&);
             void loadSceneWaterFrom(const UdaChunk*, const UdaParser&);
-            void loadSceneSkyFrom(const UdaChunk*, const UdaParser&);
+            void loadSkyEntity(const UdaChunk*, const UdaParser&);
             void loadSceneSoundsFrom(const UdaChunk*, const UdaParser&);
             void loadAIConfig(const UdaChunk*, const UdaParser&);
 
@@ -81,9 +81,9 @@ namespace urchin {
             void writeSceneLightsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneTerrainsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneWatersOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneSkyOn(UdaChunk&, UdaWriter&) const;
+            void writeSkyEntity(UdaChunk&, UdaWriter&) const;
             void writeSceneSoundsOn(UdaChunk&, UdaWriter&) const;
-            void writeSceneAIOn(UdaChunk&, UdaWriter&) const;
+            void writeAIConfig(UdaChunk&, UdaWriter&) const;
 
             void refreshEntities();
             void refreshSound();
@@ -111,7 +111,7 @@ namespace urchin {
             std::list<std::unique_ptr<SceneLight>> sceneLights;
             std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
-            SceneSky sceneSky;
+            SkyEntity skyEntity;
             std::list<std::unique_ptr<SceneSound>> sceneSounds;
     };
 

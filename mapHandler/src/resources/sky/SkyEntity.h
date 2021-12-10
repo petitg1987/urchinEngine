@@ -4,11 +4,11 @@
 
 namespace urchin {
 
-    class SceneSky {
+    class SkyEntity {
         public:
             friend class Map;
 
-            explicit SceneSky(Renderer3d*);
+            explicit SkyEntity(Renderer3d*);
 
             const Skybox* getSkybox() const;
             void changeSkybox(std::unique_ptr<Skybox>);

@@ -32,7 +32,7 @@ namespace urchin {
     void SkyPanelWidget::load(SkyController& skyController) {
         this->skyController = &skyController;
 
-        auto* skybox = this->skyController->getSceneSky().getSkybox();
+        auto* skybox = this->skyController->getSkyEntity().getSkybox();
         setupSkyDataFrom(skybox);
     }
 
@@ -221,7 +221,7 @@ namespace urchin {
             skyboxFilenames.emplace_back(znSkyboxFilenameText->text().toStdString());
             skyboxFilenames.emplace_back(zpSkyboxFilenameText->text().toStdString());
 
-            skyController->updateSceneSky(skyboxFilenames, (float)offsetY->value());
+            skyController->updateSkyEntity(skyboxFilenames, (float)offsetY->value());
         }
     }
 

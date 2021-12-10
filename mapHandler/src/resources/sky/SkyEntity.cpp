@@ -1,25 +1,25 @@
-#include <resources/sky/SceneSky.h>
+#include <resources/sky/SkyEntity.h>
 #include <resources/sky/SkyboxReaderWriter.h>
 
 namespace urchin {
-    SceneSky::SceneSky(Renderer3d* renderer3d) :
+    SkyEntity::SkyEntity(Renderer3d* renderer3d) :
             renderer3d(renderer3d) {
 
     }
 
-    const Skybox* SceneSky::getSkybox() const {
+    const Skybox* SkyEntity::getSkybox() const {
         return renderer3d->getSkyContainer().getSkybox();
     }
 
-    void SceneSky::changeSkybox(std::unique_ptr<Skybox> skybox) {
+    void SkyEntity::changeSkybox(std::unique_ptr<Skybox> skybox) {
         renderer3d->getSkyContainer().setSkybox(std::move(skybox));
     }
 
-    void SceneSky::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+    void SkyEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
         changeSkybox(SkyboxReaderWriter::loadFrom(chunk, udaParser));
     }
 
-    void SceneSky::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
+    void SkyEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         SkyboxReaderWriter::writeOn(chunk, getSkybox(), udaWriter);
     }
 }

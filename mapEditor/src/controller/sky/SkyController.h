@@ -11,9 +11,9 @@ namespace urchin {
         public:
             SkyController();
 
-            const SceneSky& getSceneSky() const;
+            const SkyEntity& getSkyEntity() const;
 
-            const SceneSky& updateSceneSky(const std::vector<std::string>&, float);
+            const SkyEntity& updateSkyEntity(const std::vector<std::string>&, float);
 
         private:
             bool isSkyboxFilenamesAllEmpty(const std::vector<std::string>&) const;

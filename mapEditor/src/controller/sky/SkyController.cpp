@@ -6,28 +6,23 @@ namespace urchin {
 
     }
 
-    const SceneSky& SkyController::getSceneSky() const {
-        return getMapHandler()->getMap().getSceneSky();
+    const SkyEntity& SkyController::getSkyEntity() const {
+        return getMapHandler()->getMap().getSkyEntity();
     }
 
-    const SceneSky& SkyController::updateSceneSky(const std::vector<std::string>& skyboxFilenames, float offsetY) {
+    const SkyEntity& SkyController::updateSkyEntity(const std::vector<std::string>& skyboxFilenames, float offsetY) {
         std::unique_ptr<Skybox> updatedSkybox(nullptr);
         if (!isSkyboxFilenamesAllEmpty(skyboxFilenames)) {
             updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);
             updatedSkybox->setOffsetY(offsetY);
         }
-        getMapHandler()->getMap().updateSceneSky(std::move(updatedSkybox));
+        getMapHandler()->getMap().updateSkyEntity(std::move(updatedSkybox));
 
         markModified();
-        return getMapHandler()->getMap().getSceneSky();
+        return getMapHandler()->getMap().getSkyEntity();
     }
 
     bool SkyController::isSkyboxFilenamesAllEmpty(const std::vector<std::string>& skyboxFilenames) const {
-        for (const auto& skyboxFilename : skyboxFilenames) {
-            if (!skyboxFilename.empty()) {
-                return false;
-            }
-        }
-        return true;
+        return std::ranges::all_of(skyboxFilenames, [](const auto& skyboxFilename){return skyboxFilename.empty();});
     }
 }
