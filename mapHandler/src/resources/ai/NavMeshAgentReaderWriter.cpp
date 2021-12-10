@@ -2,7 +2,9 @@
 
 namespace urchin {
 
-    std::unique_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const UdaChunk* navMeshAgentChunk, const UdaParser& udaParser) {
+    std::unique_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const UdaChunk* aiElementsListChunk, const UdaParser& udaParser) {
+        auto navMeshAgentChunk = udaParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, UdaAttribute(), aiElementsListChunk);
+
         auto agentHeightChunk = udaParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, UdaAttribute(), navMeshAgentChunk);
         float agentHeight = agentHeightChunk->getFloatValue();
         auto agentRadiusChunk = udaParser.getUniqueChunk(true, AGENT_RADIUS_TAG, UdaAttribute(), navMeshAgentChunk);
@@ -19,7 +21,9 @@ namespace urchin {
         return navMeshAgent;
     }
 
-    void NavMeshAgentReaderWriter::writeOn(UdaChunk& navMeshAgentChunk, const NavMeshAgent* navMeshAgent, UdaWriter& udaWriter) {
+    void NavMeshAgentReaderWriter::writeOn(UdaChunk& aiElementsListChunk, const NavMeshAgent* navMeshAgent, UdaWriter& udaWriter) {
+        auto& navMeshAgentChunk = udaWriter.createChunk(NAV_MESH_AGENT_TAG, UdaAttribute(), &aiElementsListChunk);
+
         auto& agentHeightChunk = udaWriter.createChunk(AGENT_HEIGHT_TAG, UdaAttribute(), &navMeshAgentChunk);
         agentHeightChunk.setFloatValue(navMeshAgent->getAgentHeight());
         auto& agentRadiusChunk = udaWriter.createChunk(AGENT_RADIUS_TAG, UdaAttribute(), &navMeshAgentChunk);

@@ -28,13 +28,10 @@ namespace urchin {
 
         if (shape.getShapeType() == CollisionShape3D::ShapeType::HEIGHTFIELD_SHAPE) {
             const auto& scaledHeightfieldShape = static_cast<const CollisionHeightfieldShape&>(shape);
-            return buildAITerrain(name, scaledHeightfieldShape, transform);
+            return std::make_shared<AITerrain>(name, transform, false, scaledHeightfieldShape.getVertices(), scaledHeightfieldShape.getXLength(), scaledHeightfieldShape.getZLength());
         } else {
             throw std::invalid_argument("Unknown terrain shape type: " + std::string(typeid(shape).name()));
         }
     }
 
-    std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(const std::string& name, const CollisionHeightfieldShape& heightfieldShape, const Transform<float>& transform) {
-        return std::make_shared<AITerrain>(name, transform, false, heightfieldShape.getVertices(), heightfieldShape.getXLength(), heightfieldShape.getZLength());
-    }
 }

@@ -1,8 +1,6 @@
 #include <memory>
 #include <controller/ai/AIController.h>
 
-#include <controller/ai/AIController.h>
-
 namespace urchin {
 
     AIController::AIController() :
@@ -10,15 +8,13 @@ namespace urchin {
 
     }
 
-    const SceneAI& AIController::getSceneAI() const {
-        return getMapHandler()->getMap().getSceneAI();
+    const NavMeshAgent* AIController::getNavMeshAgent() const {
+        return getMapHandler()->getMap().getAIEnvironment()->getNavMeshGenerator().getNavMeshAgent();
     }
 
-    const SceneAI& AIController::updateSceneAI(std::unique_ptr<NavMeshAgent> navMeshAgent) {
-        getMapHandler()->getMap().updateSceneAI(std::move(navMeshAgent));
-
+    void AIController::updateNavMeshAgent(std::unique_ptr<NavMeshAgent> navMeshAgent) {
+        getMapHandler()->getMap().getAIEnvironment()->getNavMeshGenerator().setNavMeshAgent(std::move(navMeshAgent));
         markModified();
-        return getMapHandler()->getMap().getSceneAI();
     }
 
 }

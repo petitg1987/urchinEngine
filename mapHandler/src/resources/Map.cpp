@@ -2,6 +2,7 @@
 #include <memory>
 
 #include <resources/Map.h>
+#include <resources/ai/NavMeshAgentReaderWriter.h>
 
 namespace urchin {
 
@@ -10,9 +11,24 @@ namespace urchin {
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
             aiEnvironment(aiEnvironment),
-            sceneSky(SceneSky(renderer3d)),
-            sceneAI(SceneAI(aiEnvironment)) {
+            sceneSky(SceneSky(renderer3d)) {
 
+    }
+
+    Renderer3d* Map::getRenderer3d() const {
+        return renderer3d;
+    }
+
+    PhysicsWorld* Map::getPhysicsWorld() const {
+        return physicsWorld;
+    }
+
+    SoundEnvironment* Map::getSoundEnvironment() const {
+        return soundEnvironment;
+    }
+
+    AIEnvironment* Map::getAIEnvironment() const {
+        return aiEnvironment;
     }
 
     void Map::loadFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) {
@@ -47,7 +63,7 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::START_LOADING);
-        loadSceneAIFrom(sceneChunk, udaParser);
+        loadAIConfig(sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::LOADED);
     }
 
@@ -118,10 +134,9 @@ namespace urchin {
         }
     }
 
-    void Map::loadSceneAIFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadAIConfig(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto aiElementsListChunk = udaParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
-
-        sceneAI.loadFrom(aiElementsListChunk, udaParser);
+        aiEnvironment->getNavMeshGenerator().setNavMeshAgent(NavMeshAgentReaderWriter::loadFrom(aiElementsListChunk, udaParser));
     }
 
     void Map::writeOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
@@ -187,8 +202,7 @@ namespace urchin {
 
     void Map::writeSceneAIOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
-
-        sceneAI.writeOn(aiElementsListChunk, udaWriter);
+        NavMeshAgentReaderWriter::writeOn(aiElementsListChunk, aiEnvironment->getNavMeshGenerator().getNavMeshAgent(), udaWriter);
     }
 
     const std::list<std::unique_ptr<SceneModel>>& Map::getSceneModels() const {
@@ -313,14 +327,6 @@ namespace urchin {
 
     void Map::removeSceneSound(SceneSound& sceneSound) {
         sceneSounds.remove_if([&sceneSound](const auto& o){return o.get()==&sceneSound;});
-    }
-
-    const SceneAI& Map::getSceneAI() const {
-        return sceneAI;
-    }
-
-    void Map::updateSceneAI(std::unique_ptr<NavMeshAgent> navMeshAgent) {
-        sceneAI.changeNavMeshAgent(std::move(navMeshAgent));
     }
 
     void Map::pause() {

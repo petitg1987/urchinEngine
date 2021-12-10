@@ -12,6 +12,7 @@ namespace urchin {
             static void writeOn(UdaChunk&, const NavMeshAgent*, UdaWriter&);
 
         private:
+            static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";
             static constexpr char AGENT_HEIGHT_TAG[] = "agentHeight";
             static constexpr char AGENT_RADIUS_TAG[] = "agentRadius";
             static constexpr char MAX_SLOPE_IN_RADIAN_TAG[] = "maxSlopeInRadian";

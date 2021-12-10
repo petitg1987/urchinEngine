@@ -15,7 +15,6 @@
 #include <resources/water/SceneWater.h>
 #include <resources/sky/SceneSky.h>
 #include <resources/sound/SceneSound.h>
-#include <resources/ai/SceneAI.h>
 
 namespace urchin {
 
@@ -27,6 +26,11 @@ namespace urchin {
             friend class MapHandler;
 
             Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
+
+            Renderer3d* getRenderer3d() const;
+            PhysicsWorld* getPhysicsWorld() const;
+            SoundEnvironment* getSoundEnvironment() const;
+            AIEnvironment* getAIEnvironment() const;
 
             const std::list<std::unique_ptr<SceneModel>>& getSceneModels() const;
             SceneModel& getSceneModel(const std::string&) const;
@@ -57,9 +61,6 @@ namespace urchin {
             void addSceneSound(std::unique_ptr<SceneSound>);
             void removeSceneSound(SceneSound&);
 
-            const SceneAI& getSceneAI() const;
-            void updateSceneAI(std::unique_ptr<NavMeshAgent>);
-
             void refreshMap();
 
             void pause();
@@ -73,7 +74,7 @@ namespace urchin {
             void loadSceneWaterFrom(const UdaChunk*, const UdaParser&);
             void loadSceneSkyFrom(const UdaChunk*, const UdaParser&);
             void loadSceneSoundsFrom(const UdaChunk*, const UdaParser&);
-            void loadSceneAIFrom(const UdaChunk*, const UdaParser&);
+            void loadAIConfig(const UdaChunk*, const UdaParser&);
 
             void writeOn(UdaChunk&, UdaWriter&) const;
             void writeSceneModelsOn(UdaChunk&, UdaWriter&) const;
@@ -112,7 +113,6 @@ namespace urchin {
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
             SceneSky sceneSky;
             std::list<std::unique_ptr<SceneSound>> sceneSounds;
-            SceneAI sceneAI;
     };
 
 }

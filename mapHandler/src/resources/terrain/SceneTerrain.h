@@ -25,7 +25,7 @@ namespace urchin {
             Terrain* getTerrain() const;
             void setTerrain(std::shared_ptr<Terrain>);
 
-            RigidBody* getRigidBody() const; //TODO still used ?
+            RigidBody* getRigidBody() const;
 
             void refresh();
 

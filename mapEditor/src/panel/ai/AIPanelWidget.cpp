@@ -25,7 +25,7 @@ namespace urchin {
     void AIPanelWidget::load(AIController& aiController) {
         this->aiController = &aiController;
 
-        const NavMeshAgent* navMeshAgent = this->aiController->getSceneAI().getNavMeshAgent();
+        const NavMeshAgent* navMeshAgent = this->aiController->getNavMeshAgent();
         setupNavMeshAgentDataFrom(navMeshAgent);
     }
 
@@ -85,7 +85,7 @@ namespace urchin {
             navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));
             navMeshAgent->setJumpDistance((float)jumpDistance->value());
 
-            aiController->updateSceneAI(std::move(navMeshAgent));
+            aiController->updateNavMeshAgent(std::move(navMeshAgent));
         }
     }
 
