@@ -8,12 +8,12 @@ namespace urchin {
     /**
     * Represent a sound and sound trigger on the scene
     */
-    class SceneSound {
+    class SoundEntity {
         public:
             friend class Map;
 
-            SceneSound();
-            ~SceneSound();
+            SoundEntity();
+            ~SoundEntity();
 
             void setup(SoundEnvironment*);
 

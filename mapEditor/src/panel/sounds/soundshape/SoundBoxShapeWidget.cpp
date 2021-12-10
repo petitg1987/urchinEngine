@@ -7,8 +7,8 @@
 
 namespace urchin {
 
-    SoundBoxShapeWidget::SoundBoxShapeWidget(const SceneSound& sceneSound) :
-            SoundShapeWidget(sceneSound) {
+    SoundBoxShapeWidget::SoundBoxShapeWidget(const SoundEntity& soundEntity) :
+            SoundShapeWidget(soundEntity) {
         auto* positionLabel = new QLabel("Position:");
         mainLayout->addWidget(positionLabel, 1, 0);
 

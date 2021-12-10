@@ -13,11 +13,11 @@ namespace urchin {
         cleanCurrentDisplay();
     }
 
-    void SoundTriggerDisplayer::displaySoundTriggerFor(const SceneSound* sceneSound) {
+    void SoundTriggerDisplayer::displaySoundTrigger(const SoundEntity* soundEntity) {
         cleanCurrentDisplay();
 
-        if (sceneSound) {
-            const SoundTrigger* soundTrigger = sceneSound->getSoundTrigger();
+        if (soundEntity) {
+            const SoundTrigger* soundTrigger = soundEntity->getSoundTrigger();
 
             if (soundTrigger->getTriggerType() == ShapeTrigger::TriggerType::SHAPE_TRIGGER) {
                 const auto& shapeTrigger = static_cast<const ShapeTrigger*>(soundTrigger);

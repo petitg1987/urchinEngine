@@ -1,23 +1,23 @@
 #include <stdexcept>
 
-#include <resources/sound/SceneSound.h>
+#include <resources/sound/SoundEntity.h>
 #include <resources/sound/SoundReaderWriter.h>
 #include <resources/sound/SoundTriggerReaderWriter.h>
 
 namespace urchin {
 
-    SceneSound::SceneSound() :
+    SoundEntity::SoundEntity() :
             soundEnvironment(nullptr) {
 
     }
 
-    SceneSound::~SceneSound() {
+    SoundEntity::~SoundEntity() {
         if (soundEnvironment) {
             soundEnvironment->removeSound(*sound);
         }
     }
 
-    void SceneSound::setup(SoundEnvironment* soundEnvironment) {
+    void SoundEntity::setup(SoundEnvironment* soundEnvironment) {
         this->soundEnvironment = soundEnvironment;
 
         if (soundEnvironment) {
@@ -25,7 +25,7 @@ namespace urchin {
         }
     }
 
-    void SceneSound::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
+    void SoundEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         auto soundChunk = udaParser.getUniqueChunk(true, SOUND_TAG, UdaAttribute(), chunk);
@@ -34,7 +34,7 @@ namespace urchin {
         setSoundElements(SoundReaderWriter::loadFrom(soundChunk, udaParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk, udaParser));
     }
 
-    void SceneSound::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
+    void SoundEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
         chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
 
         auto& soundChunk = udaWriter.createChunk(SOUND_TAG, UdaAttribute(), &chunk);
@@ -44,23 +44,23 @@ namespace urchin {
         SoundTriggerReaderWriter::writeOn(soundTriggerChunk, *soundTrigger, udaWriter);
     }
 
-    std::string SceneSound::getName() const {
+    std::string SoundEntity::getName() const {
         return name;
     }
 
-    void SceneSound::setName(const std::string& name) {
+    void SoundEntity::setName(const std::string& name) {
         this->name = name;
     }
 
-    Sound* SceneSound::getSound() const {
+    Sound* SoundEntity::getSound() const {
         return sound.get();
     }
 
-    SoundTrigger* SceneSound::getSoundTrigger() const {
+    SoundTrigger* SoundEntity::getSoundTrigger() const {
         return soundTrigger.get();
     }
 
-    void SceneSound::setSoundElements(const std::shared_ptr<Sound>& sound, const std::shared_ptr<SoundTrigger>& soundTrigger) {
+    void SoundEntity::setSoundElements(const std::shared_ptr<Sound>& sound, const std::shared_ptr<SoundTrigger>& soundTrigger) {
         if (!sound) {
             throw std::invalid_argument("Cannot set a null sound on scene sound.");
         } else if (!soundTrigger) {
@@ -76,7 +76,7 @@ namespace urchin {
         this->soundTrigger = soundTrigger;
     }
 
-    void SceneSound::changeSoundTrigger(const std::shared_ptr<SoundTrigger>& newSoundTrigger) {
+    void SoundEntity::changeSoundTrigger(const std::shared_ptr<SoundTrigger>& newSoundTrigger) {
         if (!sound) {
             throw std::invalid_argument("Cannot change sound trigger without having a sound on scene sound.");
         }

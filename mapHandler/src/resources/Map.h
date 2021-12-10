@@ -14,7 +14,7 @@
 #include <resources/terrain/SceneTerrain.h>
 #include <resources/water/SceneWater.h>
 #include <resources/sky/SkyEntity.h>
-#include <resources/sound/SceneSound.h>
+#include <resources/sound/SoundEntity.h>
 
 namespace urchin {
 
@@ -56,12 +56,12 @@ namespace urchin {
             const SkyEntity& getSkyEntity() const;
             void updateSkyEntity(std::unique_ptr<Skybox> skybox);
 
-            const std::list<std::unique_ptr<SceneSound>>& getSceneSounds() const;
-            SceneSound& getSceneSound(const std::string&) const;
-            void addSceneSound(std::unique_ptr<SceneSound>);
-            void removeSceneSound(SceneSound&);
+            const std::list<std::unique_ptr<SoundEntity>>& getSoundEntities() const;
+            SoundEntity& getSoundEntity(const std::string&) const;
+            void addSoundEntity(std::unique_ptr<SoundEntity>);
+            void removeSoundEntity(SoundEntity&);
 
-            void refreshMap();
+            void refresh();
 
             void pause();
             void unpause();
@@ -73,7 +73,7 @@ namespace urchin {
             void loadSceneTerrainFrom(const UdaChunk*, const UdaParser&);
             void loadSceneWaterFrom(const UdaChunk*, const UdaParser&);
             void loadSkyEntity(const UdaChunk*, const UdaParser&);
-            void loadSceneSoundsFrom(const UdaChunk*, const UdaParser&);
+            void loadSoundEntities(const UdaChunk*, const UdaParser&);
             void loadAIConfig(const UdaChunk*, const UdaParser&);
 
             void writeOn(UdaChunk&, UdaWriter&) const;
@@ -82,10 +82,9 @@ namespace urchin {
             void writeSceneTerrainsOn(UdaChunk&, UdaWriter&) const;
             void writeSceneWatersOn(UdaChunk&, UdaWriter&) const;
             void writeSkyEntity(UdaChunk&, UdaWriter&) const;
-            void writeSceneSoundsOn(UdaChunk&, UdaWriter&) const;
+            void writeSoundEntities(UdaChunk&, UdaWriter&) const;
             void writeAIConfig(UdaChunk&, UdaWriter&) const;
 
-            void refreshEntities();
             void refreshSound();
 
             static constexpr char MODELS_TAG[] = "models";
@@ -112,7 +111,7 @@ namespace urchin {
             std::list<std::unique_ptr<SceneTerrain>> sceneTerrains;
             std::list<std::unique_ptr<SceneWater>> sceneWaters;
             SkyEntity skyEntity;
-            std::list<std::unique_ptr<SceneSound>> sceneSounds;
+            std::list<std::unique_ptr<SoundEntity>> soundEntities;
     };
 
 }

@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    SoundShapeWidget::SoundShapeWidget(const SceneSound& sceneSound) :
+    SoundShapeWidget::SoundShapeWidget(const SoundEntity& soundEntity) :
             disableShapeEvent(false),
-            sceneSound(sceneSound),
+            soundEntity(soundEntity),
             shape(nullptr) {
         setContentsMargins(0, 0, 0, 0);
 
@@ -26,8 +26,8 @@ namespace urchin {
         connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
     }
 
-    const SceneSound& SoundShapeWidget::getSceneSound() const {
-        return sceneSound;
+    const SoundEntity& SoundShapeWidget::getSoundEntity() const {
+        return soundEntity;
     }
 
     const SoundShape* SoundShapeWidget::retrieveShape() {

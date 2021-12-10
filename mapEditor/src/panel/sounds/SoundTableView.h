@@ -7,7 +7,7 @@
 #include <UrchinMapHandler.h>
 #include <controller/SceneController.h>
 
-Q_DECLARE_METATYPE(const urchin::SceneSound*)
+Q_DECLARE_METATYPE(const urchin::SoundEntity*)
 
 namespace urchin {
 
@@ -21,10 +21,10 @@ namespace urchin {
                 SOUND_SELECTION_CHANGED
             };
 
-            bool hasSceneSoundSelected() const;
-            const SceneSound* getSelectedSceneSound() const;
+            bool hasSoundEntitySelected() const;
+            const SoundEntity* getSelectedSoundEntity() const;
 
-            void addSound(const SceneSound&);
+            void addSound(const SoundEntity&);
             bool removeSelectedSound();
             void removeAllSounds();
 

@@ -10,75 +10,75 @@ namespace urchin {
 
     }
 
-    std::list<const SceneSound*> SoundController::getSceneSounds() const {
-        const auto& sceneSounds = getMapHandler()->getMap().getSceneSounds();
-        std::list<const SceneSound*> constSceneSounds;
-        for (auto& sceneSound : sceneSounds) {
-            constSceneSounds.emplace_back(sceneSound.get());
+    std::list<const SoundEntity*> SoundController::getSoundEntities() const {
+        const auto& soundEntities = getMapHandler()->getMap().getSoundEntities();
+        std::list<const SoundEntity*> constSoundEntities;
+        for (auto& soundEntity : soundEntities) {
+            constSoundEntities.emplace_back(soundEntity.get());
         }
 
-        return constSceneSounds;
+        return constSoundEntities;
     }
 
-    void SoundController::addSceneSound(std::unique_ptr<SceneSound> sceneSound) {
-        getMapHandler()->getMap().addSceneSound(std::move(sceneSound));
+    void SoundController::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
+        getMapHandler()->getMap().addSoundEntity(std::move(soundEntity));
 
         markModified();
     }
 
-    void SoundController::removeSceneSound(const SceneSound& constSceneSound) {
-        SceneSound& sceneSound = findSceneSound(constSceneSound);
-        getMapHandler()->getMap().removeSceneSound(sceneSound);
+    void SoundController::removeSoundEntity(const SoundEntity& constSoundEntity) {
+        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        getMapHandler()->getMap().removeSoundEntity(soundEntity);
 
         markModified();
     }
 
-    void SoundController::changeSoundTrigger(const SceneSound& constSceneSound, SoundTrigger::TriggerType triggerType) {
-        SceneSound& sceneSound = findSceneSound(constSceneSound);
-        const SoundTrigger* soundTrigger = sceneSound.getSoundTrigger();
+    void SoundController::changeSoundTrigger(const SoundEntity& constSoundEntity, SoundTrigger::TriggerType triggerType) {
+        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        const SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
 
         std::shared_ptr<SoundTrigger> newSoundTrigger;
         if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = std::make_shared<ManualTrigger>(soundTrigger->getPlayBehavior());
         } else if (triggerType == SoundTrigger::SHAPE_TRIGGER) {
-            auto newDefaultShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
+            auto newDefaultShape = DefaultSoundShapeCreator(constSoundEntity).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
             newSoundTrigger = std::make_shared<ShapeTrigger>(soundTrigger->getPlayBehavior(), std::move(newDefaultShape));
         } else {
             throw std::invalid_argument("Impossible to change of trigger type: " + std::to_string(triggerType));
         }
 
-        sceneSound.changeSoundTrigger(newSoundTrigger);
+        soundEntity.changeSoundTrigger(newSoundTrigger);
 
         markModified();
     }
 
-    void SoundController::changeSoundShape(const SceneSound& constSceneSound, SoundShape::ShapeType shapeType) {
-        SceneSound& sceneSound = findSceneSound(constSceneSound);
-        const SoundTrigger* soundTrigger = sceneSound.getSoundTrigger();
+    void SoundController::changeSoundShape(const SoundEntity& constSoundEntity, SoundShape::ShapeType shapeType) {
+        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        const SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
 
-        auto newShape = DefaultSoundShapeCreator(constSceneSound).createDefaultSoundShape(shapeType);
+        auto newShape = DefaultSoundShapeCreator(constSoundEntity).createDefaultSoundShape(shapeType);
         auto newSoundTrigger = std::make_shared<ShapeTrigger>(soundTrigger->getPlayBehavior(), std::move(newShape));
 
-        sceneSound.changeSoundTrigger(newSoundTrigger);
+        soundEntity.changeSoundTrigger(newSoundTrigger);
 
         markModified();
     }
 
-    const SceneSound& SoundController::updateSceneSpatialSoundProperties(const SceneSound& constSceneSound, const Point3<float>& position,
+    const SoundEntity& SoundController::updateSpatialSoundProperties(const SoundEntity& constSoundEntity, const Point3<float>& position,
             float inaudibleDistance) {
-        const SceneSound& sceneSound = findSceneSound(constSceneSound);
-        auto* pointSound = static_cast<SpatialSound*>(sceneSound.getSound());
+        const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        auto* pointSound = static_cast<SpatialSound*>(soundEntity.getSound());
 
         pointSound->setPosition(position);
         pointSound->setInaudibleDistance(inaudibleDistance);
 
         markModified();
-        return sceneSound;
+        return soundEntity;
     }
 
-    const SceneSound& SoundController::updateSceneSoundTriggerGeneralProperties(const SceneSound& constSceneSound, SoundTrigger::PlayBehavior playBehavior) {
-        SceneSound& sceneSound = findSceneSound(constSceneSound);
-        SoundTrigger* soundTrigger = sceneSound.getSoundTrigger();
+    const SoundEntity& SoundController::updateSoundTriggerGeneralProperties(const SoundEntity& constSoundEntity, SoundTrigger::PlayBehavior playBehavior) {
+        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
 
         std::shared_ptr<SoundTrigger> newSoundTrigger;
         if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
@@ -91,32 +91,32 @@ namespace urchin {
             throw std::invalid_argument("Impossible to update sound trigger because unknown trigger type: " + std::to_string(soundTrigger->getTriggerType()));
         }
 
-        sceneSound.changeSoundTrigger(newSoundTrigger);
+        soundEntity.changeSoundTrigger(newSoundTrigger);
 
         markModified();
-        return sceneSound;
+        return soundEntity;
     }
 
-    const SceneSound& SoundController::updateSceneSoundShape(const SceneSound& constSceneSound, std::unique_ptr<const SoundShape> newSoundShape) {
-        SceneSound& sceneSound = findSceneSound(constSceneSound);
-        const auto* shapeTrigger = static_cast<ShapeTrigger*>(sceneSound.getSoundTrigger());
+    const SoundEntity& SoundController::updateSoundShape(const SoundEntity& constSoundEntity, std::unique_ptr<const SoundShape> newSoundShape) {
+        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        const auto* shapeTrigger = static_cast<ShapeTrigger*>(soundEntity.getSoundTrigger());
 
         auto newShapeTrigger = std::make_shared<ShapeTrigger>(shapeTrigger->getPlayBehavior(), std::move(newSoundShape));
-        sceneSound.changeSoundTrigger(newShapeTrigger);
+        soundEntity.changeSoundTrigger(newShapeTrigger);
 
         markModified();
-        return sceneSound;
+        return soundEntity;
     }
 
-    SceneSound& SoundController::findSceneSound(const SceneSound& constSceneSound) {
-        const auto& sceneSounds = getMapHandler()->getMap().getSceneSounds();
-        auto it = std::ranges::find_if(sceneSounds, [&constSceneSound](const auto& o){return o.get() == &constSceneSound;});
+    SoundEntity& SoundController::findSoundEntity(const SoundEntity& constSoundEntity) {
+        const auto& soundEntities = getMapHandler()->getMap().getSoundEntities();
+        auto it = std::ranges::find_if(soundEntities, [&constSoundEntity](const auto& o){return o.get() == &constSoundEntity;});
 
-        if (it != sceneSounds.end()) {
+        if (it != soundEntities.end()) {
             return *(*it);
         }
 
-        throw std::invalid_argument("Impossible to find scene sound: " + constSceneSound.getName());
+        throw std::invalid_argument("Impossible to find sound entity: " + constSoundEntity.getName());
     }
 
 }

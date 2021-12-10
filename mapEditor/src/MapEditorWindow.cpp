@@ -196,7 +196,7 @@ namespace urchin {
             }
         } else if (const auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
-                sceneDisplayerWindow->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
+                sceneDisplayerWindow->setHighlightSoundEntity(soundTableView->getSelectedSoundEntity());
             }
         } else if (dynamic_cast<AbstractController*>(observable)) {
             if (notificationType == AbstractController::CHANGES_DONE) {

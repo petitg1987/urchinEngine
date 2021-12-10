@@ -207,9 +207,9 @@ namespace urchin {
     void SoundPanelWidget::load(SoundController& soundController) {
         this->soundController = &soundController;
 
-        std::list<const SceneSound*> sceneSounds = this->soundController->getSceneSounds();
-        for (auto& sceneSound : sceneSounds) {
-            soundTableView->addSound(*sceneSound);
+        std::list<const SoundEntity*> soundsEntities = this->soundController->getSoundEntities();
+        for (auto& soundsEntity : soundsEntities) {
+            soundTableView->addSound(*soundsEntity);
         }
     }
 
@@ -222,9 +222,9 @@ namespace urchin {
     void SoundPanelWidget::notify(Observable* observable, int notificationType) {
         if (const auto* soundTableView = dynamic_cast<SoundTableView*>(observable)) {
             if (notificationType == SoundTableView::SOUND_SELECTION_CHANGED) {
-                if (soundTableView->hasSceneSoundSelected()) {
-                    const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
-                    setupSoundDataFrom(sceneSound);
+                if (soundTableView->hasSoundEntitySelected()) {
+                    const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
+                    setupSoundDataFrom(soundEntity);
 
                     removeSoundButton->setEnabled(true);
                     soundPropertiesGroupBox->show();
@@ -238,11 +238,11 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::setupSoundDataFrom(const SceneSound& sceneSound) {
+    void SoundPanelWidget::setupSoundDataFrom(const SoundEntity& soundEntity) {
         disableSoundEvent = true;
 
         //sound
-        const Sound* sound = sceneSound.getSound();
+        const Sound* sound = soundEntity.getSound();
 
         if (sound->getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
@@ -263,13 +263,13 @@ namespace urchin {
         initialVolume->setText(std::to_string(sound->getInitialVolume()).c_str());
 
         //sound trigger
-        const SoundTrigger* soundTrigger = sceneSound.getSoundTrigger();
+        const SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
         setupPlayBehaviorDataFrom(soundTrigger);
 
         if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
         } else if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::SHAPE_TRIGGER) {
-            setupShapeTriggerDataFrom(sceneSound);
+            setupShapeTriggerDataFrom(soundEntity);
         } else {
             throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger->getTriggerType()));
         }
@@ -307,20 +307,20 @@ namespace urchin {
         soundTriggerType->setText(ChangeSoundTriggerDialog::MANUAL_TRIGGER_LABEL);
     }
 
-    void SoundPanelWidget::setupShapeTriggerDataFrom(const SceneSound& sceneSound) {
+    void SoundPanelWidget::setupShapeTriggerDataFrom(const SoundEntity& soundEntity) {
         specificTriggerShapeGroupBox->show();
         soundTriggerType->setText(ChangeSoundTriggerDialog::SHAPE_TRIGGER_LABEL);
 
-        const auto* shapeTrigger = static_cast<const ShapeTrigger*>(sceneSound.getSoundTrigger());
+        const auto* shapeTrigger = static_cast<const ShapeTrigger*>(soundEntity.getSoundTrigger());
         auto& soundShape = shapeTrigger->getSoundShape();
-        SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, sceneSound);
+        SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 
         soundShapeType->setText(QString::fromStdString(soundShapeWidget.getSoundShapeName()));
     }
 
-    SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SceneSound& sceneSound) {
-        soundShapeWidget = SoundShapeWidgetRetriever(sceneSound).retrieveShapeWidget(shape.getShapeType());
+    SoundShapeWidget& SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape& shape, const SoundEntity& soundEntity) {
+        soundShapeWidget = SoundShapeWidgetRetriever(soundEntity).retrieveShapeWidget(shape.getShapeType());
         triggerShapeLayout->addWidget(soundShapeWidget.get());
         soundShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundShapeWidget->show();
@@ -330,22 +330,22 @@ namespace urchin {
     }
 
     void SoundPanelWidget::showAddSoundDialog() {
-        NewSoundDialog newSceneSoundDialog(this, soundController);
-        newSceneSoundDialog.exec();
+        NewSoundDialog newSoundEntityDialog(this, soundController);
+        newSoundEntityDialog.exec();
 
-        if (newSceneSoundDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<SceneSound> sceneSound = newSceneSoundDialog.moveSceneSound();
-            const SceneSound* sceneSoundPtr = sceneSound.get();
-            soundController->addSceneSound(std::move(sceneSound));
+        if (newSoundEntityDialog.result() == QDialog::Accepted) {
+            std::unique_ptr<SoundEntity> soundEntity = newSoundEntityDialog.moveSoundEntity();
+            const SoundEntity* soundEntityPtr = soundEntity.get();
+            soundController->addSoundEntity(std::move(soundEntity));
 
-            soundTableView->addSound(*sceneSoundPtr);
+            soundTableView->addSound(*soundEntityPtr);
         }
     }
 
     void SoundPanelWidget::removeSelectedSound() {
-        if (soundTableView->hasSceneSoundSelected()) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
-            soundController->removeSceneSound(sceneSound);
+        if (soundTableView->hasSoundEntitySelected()) {
+            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
+            soundController->removeSoundEntity(soundEntity);
 
             soundTableView->removeSelectedSound();
         }
@@ -353,8 +353,8 @@ namespace urchin {
 
     void SoundPanelWidget::updateSoundSpecificProperties() {
         if (!disableSoundEvent) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
-            const Sound* sound = sceneSound.getSound();
+            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
+            const Sound* sound = soundEntity.getSound();
 
             if (sound->getSoundType() == Sound::GLOBAL) {
                 //nothing to update
@@ -362,7 +362,7 @@ namespace urchin {
                 Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
                 auto inaudibleDistance = (float)this->inaudibleDistance->value();
 
-                soundController->updateSceneSpatialSoundProperties(sceneSound, position, inaudibleDistance);
+                soundController->updateSpatialSoundProperties(soundEntity, position, inaudibleDistance);
             } else {
                 throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound->getSoundType()));
             }
@@ -371,12 +371,12 @@ namespace urchin {
 
     void SoundPanelWidget::updateSoundTriggerProperties() {
         if (!disableSoundEvent) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
+            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
 
             QVariant playVariant = playBehavior->currentData();
             auto playBehavior = static_cast<SoundTrigger::PlayBehavior>(playVariant.toInt());
 
-            soundController->updateSceneSoundTriggerGeneralProperties(sceneSound, playBehavior);
+            soundController->updateSoundTriggerGeneralProperties(soundEntity, playBehavior);
         }
     }
 
@@ -385,11 +385,11 @@ namespace urchin {
         changeSoundTriggerDialog.exec();
 
         if (changeSoundTriggerDialog.result() == QDialog::Accepted) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
+            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
             SoundTrigger::TriggerType triggerType = changeSoundTriggerDialog.getTriggerType();
 
-            soundController->changeSoundTrigger(sceneSound, triggerType);
-            setupSoundDataFrom(sceneSound);
+            soundController->changeSoundTrigger(soundEntity, triggerType);
+            setupSoundDataFrom(soundEntity);
         }
     }
 
@@ -398,19 +398,19 @@ namespace urchin {
         changeSoundShapeDialog.exec();
 
         if (changeSoundShapeDialog.result() == QDialog::Accepted) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
+            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
             SoundShape::ShapeType shapeType = changeSoundShapeDialog.getShapeType();
 
-            soundController->changeSoundShape(sceneSound, shapeType);
-            setupShapeTriggerDataFrom(sceneSound);
+            soundController->changeSoundShape(soundEntity, shapeType);
+            setupShapeTriggerDataFrom(soundEntity);
         }
     }
 
     void SoundPanelWidget::soundShapeChanged(const SoundShape* soundShape) {
         if (!disableSoundEvent) {
-            const SceneSound& sceneSound = *soundTableView->getSelectedSceneSound();
+            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
 
-            soundController->updateSceneSoundShape(sceneSound, std::unique_ptr<const SoundShape>(soundShape));
+            soundController->updateSoundShape(soundEntity, std::unique_ptr<const SoundShape>(soundShape));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace urchin {
             soundTypeComboBox(nullptr),
             soundCategoryComboBox(nullptr),
             initialVolumeSpinBox(nullptr),
-            sceneSound(nullptr) {
+            soundEntity(nullptr) {
         this->setWindowTitle("New Sound");
         this->resize(530, 200);
         this->setFixedSize(this->width(), this->height());
@@ -112,11 +112,11 @@ namespace urchin {
         }
     }
 
-    int NewSoundDialog::buildSceneSound(int result) {
+    int NewSoundDialog::buildSoundEntity(int result) {
         try {
-            sceneSound = std::make_unique<SceneSound>();
+            soundEntity = std::make_unique<SoundEntity>();
 
-            sceneSound->setName(soundName);
+            soundEntity->setName(soundName);
 
             std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
             std::string relativeSoundFilename = FileUtil::getRelativePath(resourcesDirectory, soundFilename);
@@ -140,7 +140,7 @@ namespace urchin {
 
             auto soundTrigger = std::make_shared<ManualTrigger>(SoundTrigger::PLAY_ONCE);
 
-            sceneSound->setSoundElements(sound, soundTrigger);
+            soundEntity->setSoundElements(sound, soundTrigger);
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
@@ -150,8 +150,8 @@ namespace urchin {
     }
 
 
-    std::unique_ptr<SceneSound> NewSoundDialog::moveSceneSound() {
-        return std::move(sceneSound);
+    std::unique_ptr<SoundEntity> NewSoundDialog::moveSoundEntity() {
+        return std::move(soundEntity);
     }
 
     void NewSoundDialog::showSoundFilenameDialog() {
@@ -177,7 +177,7 @@ namespace urchin {
             if (soundName.empty()) {
                 LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is mandatory");
                 hasError = true;
-            } else if (isSceneSoundExist(soundName)) {
+            } else if (isSoundEntityExist(soundName)) {
                 LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is already used");
                 hasError = true;
             }
@@ -187,7 +187,7 @@ namespace urchin {
             }
 
             if (!hasError) {
-                r = buildSceneSound(r);
+                r = buildSoundEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -195,9 +195,9 @@ namespace urchin {
         }
     }
 
-    bool NewSoundDialog::isSceneSoundExist(const std::string& name) {
-        std::list<const SceneSound*> sceneSounds = soundController->getSceneSounds();
-        return std::ranges::any_of(sceneSounds, [&name](const auto& ss){return ss->getName() == name;});
+    bool NewSoundDialog::isSoundEntityExist(const std::string& name) {
+        std::list<const SoundEntity*> soundEntities = soundController->getSoundEntities();
+        return std::ranges::any_of(soundEntities, [&name](const auto& soundEntity){return soundEntity->getName() == name;});
     }
 
 }

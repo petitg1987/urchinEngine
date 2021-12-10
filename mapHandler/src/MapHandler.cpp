@@ -75,7 +75,7 @@ namespace urchin {
     }
 
     void MapHandler::refreshMap() {
-        map->refreshMap();
+        map->refresh();
     }
 
     Map& MapHandler::getMap() const {

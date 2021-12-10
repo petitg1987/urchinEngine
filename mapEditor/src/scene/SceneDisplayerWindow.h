@@ -36,7 +36,7 @@ namespace urchin {
             void setHighlightSceneModel(const SceneModel*);
             void setHighlightCompoundShapeComponent(const LocalizedCollisionShape*);
             void setHighlightSceneLight(const SceneLight*);
-            void setHighlightSceneSound(const SceneSound*);
+            void setHighlightSoundEntity(const SoundEntity*);
 
             void render();
 

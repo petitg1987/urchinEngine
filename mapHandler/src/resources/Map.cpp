@@ -59,7 +59,7 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::LANDSCAPE, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::START_LOADING);
-        loadSceneSoundsFrom(sceneChunk, udaParser);
+        loadSoundEntities(sceneChunk, udaParser);
         loadMapCallback.notify(LoadMapCallback::SOUNDS, LoadMapCallback::LOADED);
 
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::START_LOADING);
@@ -122,15 +122,15 @@ namespace urchin {
         skyEntity.loadFrom(skyChunk, udaParser);
     }
 
-    void Map::loadSceneSoundsFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void Map::loadSoundEntities(const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto soundElementsListChunk = udaParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
         auto soundElementsChunk = udaParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
 
         for (const auto& soundElementChunk : soundElementsChunk) {
-            auto sceneSound = std::make_unique<SceneSound>();
-            sceneSound->loadFrom(soundElementChunk, udaParser);
+            auto soundEntity = std::make_unique<SoundEntity>();
+            soundEntity->loadFrom(soundElementChunk, udaParser);
 
-            addSceneSound(std::move(sceneSound));
+            addSoundEntity(std::move(soundEntity));
         }
     }
 
@@ -145,7 +145,7 @@ namespace urchin {
         writeSceneTerrainsOn(sceneChunk, udaWriter);
         writeSceneWatersOn(sceneChunk, udaWriter);
         writeSkyEntity(sceneChunk, udaWriter);
-        writeSceneSoundsOn(sceneChunk, udaWriter);
+        writeSoundEntities(sceneChunk, udaWriter);
         writeAIConfig(sceneChunk, udaWriter);
     }
 
@@ -191,12 +191,12 @@ namespace urchin {
         skyEntity.writeOn(skyChunk, udaWriter);
     }
 
-    void Map::writeSceneSoundsOn(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void Map::writeSoundEntities(UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& soundElementsListChunk = udaWriter.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
 
-        for (auto& sceneSound : sceneSounds) {
+        for (auto& soundEntity : soundEntities) {
             auto& soundElementsChunk = udaWriter.createChunk(SOUND_ELEMENT_TAG, UdaAttribute(), &soundElementsListChunk);
-            sceneSound->writeOn(soundElementsChunk, udaWriter);
+            soundEntity->writeOn(soundElementsChunk, udaWriter);
         }
     }
 
@@ -307,26 +307,26 @@ namespace urchin {
         skyEntity.changeSkybox(std::move(skybox));
     }
 
-    const std::list<std::unique_ptr<SceneSound>>& Map::getSceneSounds() const {
-        return sceneSounds;
+    const std::list<std::unique_ptr<SoundEntity>>& Map::getSoundEntities() const {
+        return soundEntities;
     }
 
-    SceneSound& Map::getSceneSound(const std::string& name) const {
-        for (auto& sceneSound : sceneSounds) {
-            if (sceneSound->getName() == name) {
-                return *sceneSound;
+    SoundEntity& Map::getSoundEntity(const std::string& name) const {
+        for (auto& soundEntity : soundEntities) {
+            if (soundEntity->getName() == name) {
+                return *soundEntity;
             }
         }
         throw std::invalid_argument("Impossible to find a scene sound having name: " + name);
     }
 
-    void Map::addSceneSound(std::unique_ptr<SceneSound> sceneSound) {
-        sceneSound->setup(soundEnvironment);
-        sceneSounds.push_back(std::move(sceneSound));
+    void Map::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
+        soundEntity->setup(soundEnvironment);
+        soundEntities.push_back(std::move(soundEntity));
     }
 
-    void Map::removeSceneSound(SceneSound& sceneSound) {
-        sceneSounds.remove_if([&sceneSound](const auto& o){return o.get()==&sceneSound;});
+    void Map::removeSoundEntity(SoundEntity& soundEntity) {
+        soundEntities.remove_if([&soundEntity](const auto& o){return o.get()==&soundEntity;});
     }
 
     void Map::pause() {
@@ -365,23 +365,18 @@ namespace urchin {
         }
     }
 
-    void Map::refreshMap() {
+    void Map::refresh() {
         physicsWorld->checkNoExceptionRaised();
         aiEnvironment->checkNoExceptionRaised();
         soundEnvironment->checkNoExceptionRaised();
 
-        refreshEntities();
-        refreshSound();
-    }
-
-    void Map::refreshEntities() {
         for (const auto& sceneModel : sceneModels) {
             sceneModel->refresh();
         }
-
         for (const auto& sceneTerrain : sceneTerrains) {
             sceneTerrain->refresh();
         }
+        refreshSound();
     }
 
     void Map::refreshSound() {

@@ -17,7 +17,7 @@ namespace urchin {
             viewProperties(),
             highlightSceneModel(nullptr),
             highlightSceneLight(nullptr),
-            highlightSceneSound(nullptr) {
+            highlightSoundEntity(nullptr) {
 
     }
 
@@ -131,8 +131,8 @@ namespace urchin {
         this->highlightSceneLight = highlightSceneLight;
     }
 
-    void SceneDisplayer::setHighlightSceneSound(const SceneSound* highlightSceneSound) {
-        this->highlightSceneSound = highlightSceneSound;
+    void SceneDisplayer::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) {
+        this->highlightSoundEntity = highlightSoundEntity;
     }
 
     void SceneDisplayer::refreshObjectsModel() {
@@ -150,19 +150,19 @@ namespace urchin {
     void SceneDisplayer::refreshLightScopeModel() {
         if (lightScopeDisplayer) {
             if (viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight()) {
-                lightScopeDisplayer->displayLightScopeFor(highlightSceneLight);
+                lightScopeDisplayer->displayLightScope(highlightSceneLight);
             } else {
-                lightScopeDisplayer->displayLightScopeFor(nullptr);
+                lightScopeDisplayer->displayLightScope(nullptr);
             }
         }
     }
 
     void SceneDisplayer::refreshSoundTriggerModel() {
         if (soundTriggerDisplayer) {
-            if (viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger()) {
-                soundTriggerDisplayer->displaySoundTriggerFor(highlightSceneSound);
+            if (viewProperties[SOUND_TRIGGER] && highlightSoundEntity && highlightSoundEntity->getSoundTrigger()) {
+                soundTriggerDisplayer->displaySoundTrigger(highlightSoundEntity);
             } else {
-                soundTriggerDisplayer->displaySoundTriggerFor(nullptr);
+                soundTriggerDisplayer->displaySoundTrigger(nullptr);
             }
         }
     }

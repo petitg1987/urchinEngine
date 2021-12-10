@@ -11,7 +11,7 @@ namespace urchin {
             explicit SoundTriggerDisplayer(Scene&);
             ~SoundTriggerDisplayer();
 
-            void displaySoundTriggerFor(const SceneSound*);
+            void displaySoundTrigger(const SoundEntity*);
 
         private:
             std::unique_ptr<GeometryModel> retrieveGeometry(const SoundShape&);

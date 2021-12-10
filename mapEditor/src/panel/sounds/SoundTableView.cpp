@@ -30,25 +30,25 @@ namespace urchin {
         notifyObservers(this, NotificationType::SOUND_SELECTION_CHANGED);
     }
 
-    bool SoundTableView::hasSceneSoundSelected() const {
+    bool SoundTableView::hasSoundEntitySelected() const {
         return this->currentIndex().row() != -1;
     }
 
-    const SceneSound* SoundTableView::getSelectedSceneSound() const {
+    const SoundEntity* SoundTableView::getSelectedSoundEntity() const {
         QModelIndex selectedIndex = this->currentIndex();
         if (selectedIndex.row() != -1) {
-            return selectedIndex.data(Qt::UserRole + 1).value<const SceneSound*>();
+            return selectedIndex.data(Qt::UserRole + 1).value<const SoundEntity*>();
         }
         return nullptr;
     }
 
-    void SoundTableView::addSound(const SceneSound& sceneSound) {
-        auto* itemSoundName = new QStandardItem(QString::fromStdString(sceneSound.getName()));
-        itemSoundName->setData(QVariant::fromValue(&sceneSound), Qt::UserRole + 1);
+    void SoundTableView::addSound(const SoundEntity& soundEntity) {
+        auto* itemSoundName = new QStandardItem(QString::fromStdString(soundEntity.getName()));
+        itemSoundName->setData(QVariant::fromValue(&soundEntity), Qt::UserRole + 1);
         itemSoundName->setEditable(false);
 
-        auto* itemSoundFile = new QStandardItem(QString::fromStdString(sceneSound.getSound()->getFilename()));
-        itemSoundFile->setData(QVariant::fromValue(&sceneSound), Qt::UserRole + 1);
+        auto* itemSoundFile = new QStandardItem(QString::fromStdString(soundEntity.getSound()->getFilename()));
+        itemSoundFile->setData(QVariant::fromValue(&soundEntity), Qt::UserRole + 1);
         itemSoundFile->setEditable(false);
 
         int nextRow = soundsListModel->rowCount();
@@ -60,7 +60,7 @@ namespace urchin {
     }
 
     bool SoundTableView::removeSelectedSound() {
-        if (hasSceneSoundSelected()) {
+        if (hasSoundEntitySelected()) {
             soundsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
 

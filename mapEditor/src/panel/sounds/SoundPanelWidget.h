@@ -39,14 +39,14 @@ namespace urchin {
             void setupSpecificTriggerShapeBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
-            void setupSoundDataFrom(const SceneSound&);
+            void setupSoundDataFrom(const SoundEntity&);
             void setupGlobalSoundDataFrom();
             void setupSpatialSoundDataFrom(const SpatialSound*);
             void setupPlayBehaviorDataFrom(const SoundTrigger*);
             void setupManualTriggerDataFrom();
-            void setupShapeTriggerDataFrom(const SceneSound&);
+            void setupShapeTriggerDataFrom(const SoundEntity&);
 
-            SoundShapeWidget& retrieveSoundShapeWidget(const SoundShape&, const SceneSound&);
+            SoundShapeWidget& retrieveSoundShapeWidget(const SoundShape&, const SoundEntity&);
 
             SoundController* soundController;
 

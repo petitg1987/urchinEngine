@@ -128,9 +128,9 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayerWindow::setHighlightSceneSound(const SceneSound* highlightSceneSound) {
+    void SceneDisplayerWindow::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) {
         if (sceneDisplayer) {
-            sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
+            sceneDisplayer->setHighlightSoundEntity(highlightSoundEntity);
         }
     }
 
