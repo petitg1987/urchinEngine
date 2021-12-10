@@ -10,9 +10,9 @@
 #include <MapEditorWindow.h>
 #include <widget/dialog/NewDialog.h>
 #include <widget/dialog/NotSavedDialog.h>
-#include <panel/models/ModelTableView.h>
-#include <panel/models/bodyshape/BodyCompoundShapeWidget.h>
-#include <panel/models/bodyshape/support/LocalizedShapeTableView.h>
+#include <panel/objects/ModelTableView.h>
+#include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
+#include <panel/objects/bodyshape/support/LocalizedShapeTableView.h>
 #include <panel/lights/LightTableView.h>
 #include <panel/sounds/SoundTableView.h>
 #include <StateSaveHelper.h>

@@ -3,7 +3,7 @@
 #include <UrchinMapHandler.h>
 
 #include <controller/objects/ObjectController.h>
-#include <panel/models/bodyshape/support/DefaultBodyShapeCreator.h>
+#include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {
 

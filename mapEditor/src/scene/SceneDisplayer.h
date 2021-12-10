@@ -12,8 +12,8 @@
 #include <widget/controller/statusbar/StatusBarController.h>
 #include <controller/SceneController.h>
 #include <scene/SceneFreeCamera.h>
-#include <scene/models/BodyShapeDisplayer.h>
-#include <scene/models/move/ModelMoveController.h>
+#include <scene/objects/BodyShapeDisplayer.h>
+#include <scene/objects/move/ModelMoveController.h>
 #include <scene/lights/LightScopeDisplayer.h>
 #include <scene/sounds/SoundTriggerDisplayer.h>
 
