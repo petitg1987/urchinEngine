@@ -9,9 +9,9 @@
 
 namespace urchin {
 
-    class ModelController : public AbstractController { //TODO rename
+    class ObjectController : public AbstractController {
         public:
-            ModelController();
+            ObjectController();
 
             std::list<const ObjectEntity*> getObjectEntities() const;
             const ObjectEntity* findObjectEntityByBodyId(const std::string&) const;

@@ -14,7 +14,7 @@
 
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
-#include <controller/models/ModelController.h>
+#include <controller/objects/ObjectController.h>
 #include <panel/models/ModelTableView.h>
 #include <panel/models/bodyshape/BodyShapeWidget.h>
 
@@ -34,7 +34,7 @@ namespace urchin {
             ModelTableView* getObjectTableView() const;
             BodyShapeWidget* getBodyShapeWidget() const;
 
-            void load(ModelController&);
+            void load(ObjectController&);
             void unload();
 
         private:
@@ -59,7 +59,7 @@ namespace urchin {
             BodyShapeWidget& createNoBodyShapeWidget(const ObjectEntity&);
             void setupBodyShapeWidget();
 
-            ModelController* objectController;
+            ObjectController* objectController;
 
             ModelTableView* objectTableView;
             QPushButton* addObjectButton;

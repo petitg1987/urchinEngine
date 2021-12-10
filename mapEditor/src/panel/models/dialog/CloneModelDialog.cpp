@@ -7,7 +7,7 @@
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
-    CloneModelDialog::CloneModelDialog(QWidget* parent, const ModelController* objectController) :
+    CloneModelDialog::CloneModelDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),

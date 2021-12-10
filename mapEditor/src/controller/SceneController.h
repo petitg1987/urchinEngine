@@ -3,7 +3,7 @@
 #include <list>
 
 #include <UrchinMapHandler.h>
-#include <controller/models/ModelController.h>
+#include <controller/objects/ObjectController.h>
 #include <controller/lights/LightController.h>
 #include <controller/terrains/TerrainController.h>
 #include <controller/waters/WaterController.h>
@@ -26,7 +26,7 @@ namespace urchin {
 
             void saveMapOnFile(const std::string&);
 
-            ModelController& getObjectController();
+            ObjectController& getObjectController();
             LightController& getLightController();
             TerrainController& getTerrainController();
             WaterController& getWaterController();
@@ -37,7 +37,7 @@ namespace urchin {
         private:
             std::vector<AbstractController*> subControllers;
 
-            std::unique_ptr<ModelController> objectController;
+            std::unique_ptr<ObjectController> objectController;
             std::unique_ptr<LightController> lightController;
             std::unique_ptr<TerrainController> terrainController;
             std::unique_ptr<WaterController> waterController;

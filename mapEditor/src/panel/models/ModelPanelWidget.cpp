@@ -395,7 +395,7 @@ namespace urchin {
         connect(tags, SIGNAL(textChanged(const QString &)), this, SLOT(updateObjectTags()));
     }
 
-    void ModelPanelWidget::load(ModelController& objectController) {
+    void ModelPanelWidget::load(ObjectController& objectController) {
         this->objectController = &objectController;
 
         std::list<const ObjectEntity*> objectEntities = this->objectController->getObjectEntities();

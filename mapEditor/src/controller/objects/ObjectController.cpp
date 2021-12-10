@@ -2,17 +2,17 @@
 #include <memory>
 #include <UrchinMapHandler.h>
 
-#include <controller/models/ModelController.h>
+#include <controller/objects/ObjectController.h>
 #include <panel/models/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {
 
-    ModelController::ModelController() :
+    ObjectController::ObjectController() :
             AbstractController() {
 
     }
 
-    std::list<const ObjectEntity*> ModelController::getObjectEntities() const {
+    std::list<const ObjectEntity*> ObjectController::getObjectEntities() const {
         const auto& objectEntities = getMapHandler()->getMap().getObjectEntities();
         std::list<const ObjectEntity*> constObjectEntities;
         for (auto& objectEntity : objectEntities) {
@@ -22,7 +22,7 @@ namespace urchin {
         return constObjectEntities;
     }
 
-    const ObjectEntity* ModelController::findObjectEntityByBodyId(const std::string& bodyId) const {
+    const ObjectEntity* ObjectController::findObjectEntityByBodyId(const std::string& bodyId) const {
         for (const auto* objectEntity : getObjectEntities()) {
             if (objectEntity->getRigidBody() && objectEntity->getRigidBody()->getId() == bodyId) {
                 return objectEntity;
@@ -32,20 +32,20 @@ namespace urchin {
         return nullptr;
     }
 
-    void ModelController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+    void ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
         getMapHandler()->getMap().addObjectEntity(std::move(objectEntity));
 
         markModified();
     }
 
-    void ModelController::removeObjectEntity(const ObjectEntity& constObjectEntity) {
+    void ObjectController::removeObjectEntity(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         getMapHandler()->getMap().removeObjectEntity(objectEntity);
 
         markModified();
     }
 
-    void ModelController::cloneObjectEntity(std::unique_ptr<ObjectEntity> newObjectModel, const ObjectEntity& toCloneObjectEntity) {
+    void ObjectController::cloneObjectEntity(std::unique_ptr<ObjectEntity> newObjectModel, const ObjectEntity& toCloneObjectEntity) {
         Model* toCloneModel = toCloneObjectEntity.getModel();
         auto model = std::make_shared<Model>(*toCloneModel);
         Point3<float> shiftPosition(0.5f, 0.0f, 0.0f);
@@ -63,7 +63,7 @@ namespace urchin {
         addObjectEntity(std::move(newObjectModel));
     }
 
-    void ModelController::createDefaultBody(const ObjectEntity& constObjectEntity) {
+    void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
         const std::string& bodyId = constObjectEntity.getName();
@@ -77,19 +77,19 @@ namespace urchin {
         markModified();
     }
 
-    void ModelController::changeBodyShape(const ObjectEntity& constObjectEntity, CollisionShape3D::ShapeType shapeType) {
+    void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, CollisionShape3D::ShapeType shapeType) {
         std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constObjectEntity).createDefaultBodyShape(shapeType);
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 
-    void ModelController::removeBody(const ObjectEntity& constObjectEntity) {
+    void ObjectController::removeBody(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         objectEntity.setupInteractiveBody(nullptr);
 
         markModified();
     }
 
-    const ObjectEntity& ModelController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
+    const ObjectEntity& ObjectController::updateObjectTransform(const ObjectEntity& constObjectEntity, const Transform<float>& transform) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Model* model = objectEntity.getModel();
 
@@ -108,7 +108,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ModelController::updateObjectFlags(const ObjectEntity& constObjectEntity, bool produceShadow) {
+    const ObjectEntity& ObjectController::updateObjectFlags(const ObjectEntity& constObjectEntity, bool produceShadow) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Model* model = objectEntity.getModel();
 
@@ -118,7 +118,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ModelController::updateObjectTags(const ObjectEntity& constObjectEntity, const std::string& tagsValues) {
+    const ObjectEntity& ObjectController::updateObjectTags(const ObjectEntity& constObjectEntity, const std::string& tagsValues) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
         objectEntity.removeAllTags();
@@ -131,7 +131,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ModelController::updateObjectPhysicsProperties(const ObjectEntity& constObjectEntity, float mass, float restitution,
+    const ObjectEntity& ObjectController::updateObjectPhysicsProperties(const ObjectEntity& constObjectEntity, float mass, float restitution,
             float friction, float rollingFriction, float linearDamping, float angularDamping, const Vector3<float>& linearFactor,
             const Vector3<float>& angularFactor) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
@@ -151,7 +151,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ModelController::updateObjectPhysicsShape(const ObjectEntity& constObjectEntity, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
+    const ObjectEntity& ObjectController::updateObjectPhysicsShape(const ObjectEntity& constObjectEntity, std::unique_ptr<const CollisionShape3D> newCollisionShape) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         const RigidBody* rigidBody = objectEntity.getRigidBody();
 
@@ -174,7 +174,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    ObjectEntity& ModelController::findObjectEntity(const ObjectEntity& constObjectEntity) {
+    ObjectEntity& ObjectController::findObjectEntity(const ObjectEntity& constObjectEntity) {
         const auto& objectEntities = getMapHandler()->getMap().getObjectEntities();
         auto it = std::ranges::find_if(objectEntities, [&constObjectEntity](const auto& o){return o.get() == &constObjectEntity;});
 

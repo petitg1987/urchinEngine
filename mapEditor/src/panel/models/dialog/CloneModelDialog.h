@@ -7,7 +7,7 @@
 #include <QtWidgets/QLabel>
 
 #include <UrchinMapHandler.h>
-#include <controller/models/ModelController.h>
+#include <controller/objects/ObjectController.h>
 
 namespace urchin {
 
@@ -15,7 +15,7 @@ namespace urchin {
             Q_OBJECT
 
         public:
-            CloneModelDialog(QWidget*, const ModelController*);
+            CloneModelDialog(QWidget*, const ObjectController*);
 
             std::unique_ptr<ObjectEntity> moveObjectEntity();
 
@@ -28,7 +28,7 @@ namespace urchin {
             void done(int) override;
             bool isObjectEntityExist(const std::string&);
 
-            const ModelController* objectController;
+            const ObjectController* objectController;
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;

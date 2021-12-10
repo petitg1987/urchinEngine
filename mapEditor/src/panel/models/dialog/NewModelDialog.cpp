@@ -13,7 +13,7 @@ namespace urchin {
 
     QString NewModelDialog::preferredMeshesPath = QString();
 
-    NewModelDialog::NewModelDialog(QWidget* parent, const ModelController* objectController) :
+    NewModelDialog::NewModelDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
