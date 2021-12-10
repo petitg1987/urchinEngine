@@ -3,11 +3,11 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include <panel/objects/dialog/CloneModelDialog.h>
+#include <panel/objects/dialog/CloneObjectDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
-    CloneModelDialog::CloneModelDialog(QWidget* parent, const ObjectController* objectController) :
+    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
@@ -31,7 +31,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void CloneModelDialog::setupNameFields(QGridLayout* mainLayout) {
+    void CloneObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         objectNameLabel = new QLabel("Object Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -40,14 +40,14 @@ namespace urchin {
         objectNameText->setFixedWidth(360);
     }
 
-    void CloneModelDialog::updateObjectName() {
+    void CloneObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
         if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    int CloneModelDialog::buildObjectEntity(int result) {
+    int CloneObjectDialog::buildObjectEntity(int result) {
         try {
             objectEntity = std::make_unique<ObjectEntity>();
             objectEntity->setName(objectName);
@@ -59,11 +59,11 @@ namespace urchin {
         return result;
     }
 
-    std::unique_ptr<ObjectEntity> CloneModelDialog::moveObjectEntity() {
+    std::unique_ptr<ObjectEntity> CloneObjectDialog::moveObjectEntity() {
         return std::move(objectEntity);
     }
 
-    void CloneModelDialog::done(int r) {
+    void CloneObjectDialog::done(int r) {
         if (QDialog::Accepted == r) {
             bool hasError = false;
 
@@ -87,7 +87,7 @@ namespace urchin {
         }
     }
 
-    bool CloneModelDialog::isObjectEntityExist(const std::string& name) {
+    bool CloneObjectDialog::isObjectEntityExist(const std::string& name) {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
         return std::ranges::any_of(objectEntities, [&name](const auto& so){return so->getName() == name;});
     }

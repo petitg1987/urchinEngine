@@ -7,7 +7,7 @@ namespace urchin {
     ScenePanelWidget::ScenePanelWidget(QWidget* parent) :
             QTabWidget(parent),
             sceneController(nullptr) {
-        tabObjects = new ModelPanelWidget();
+        tabObjects = new ObjectPanelWidget();
         addTab(tabObjects, "Object");
 
         tabLights = new LightPanelWidget();
@@ -33,7 +33,7 @@ namespace urchin {
         setEnabled(false);
     }
 
-    ModelPanelWidget* ScenePanelWidget::getObjectPanelWidget() const {
+    ObjectPanelWidget* ScenePanelWidget::getObjectPanelWidget() const {
         return tabObjects;
     }
 

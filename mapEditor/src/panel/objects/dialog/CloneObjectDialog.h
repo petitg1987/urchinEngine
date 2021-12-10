@@ -11,17 +11,16 @@
 
 namespace urchin {
 
-    class NewModelDialog : public QDialog { //TODO rename
-        Q_OBJECT
+    class CloneObjectDialog : public QDialog {
+            Q_OBJECT
 
         public:
-            NewModelDialog(QWidget*, const ObjectController*);
+            CloneObjectDialog(QWidget*, const ObjectController*);
 
             std::unique_ptr<ObjectEntity> moveObjectEntity();
 
         private:
             void setupNameFields(QGridLayout*);
-            void setupMeshFilenameFields(QGridLayout*);
 
             void updateObjectName();
             int buildObjectEntity(int);
@@ -33,16 +32,9 @@ namespace urchin {
 
             QLabel* objectNameLabel;
             QLineEdit* objectNameText;
-            QLabel* meshesFilenameLabel;
-            QLineEdit* meshesFilenameText;
 
             std::string objectName;
-            std::string meshesFilename;
             std::unique_ptr<ObjectEntity> objectEntity;
-            static QString preferredMeshesPath;
-
-        private slots:
-            void showMeshFilenameDialog();
     };
 
 }

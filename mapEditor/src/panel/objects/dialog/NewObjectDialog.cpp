@@ -5,15 +5,15 @@
 #include <QtWidgets/QFileDialog>
 #include <UrchinCommon.h>
 
-#include <panel/objects/dialog/NewModelDialog.h>
+#include <panel/objects/dialog/NewObjectDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 
 namespace urchin {
 
-    QString NewModelDialog::preferredMeshesPath = QString();
+    QString NewObjectDialog::preferredMeshesPath = QString();
 
-    NewModelDialog::NewModelDialog(QWidget* parent, const ObjectController* objectController) :
+    NewObjectDialog::NewObjectDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
@@ -40,7 +40,7 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void NewModelDialog::setupNameFields(QGridLayout* mainLayout) {
+    void NewObjectDialog::setupNameFields(QGridLayout* mainLayout) {
         objectNameLabel = new QLabel("Object Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
@@ -49,7 +49,7 @@ namespace urchin {
         objectNameText->setFixedWidth(360);
     }
 
-    void NewModelDialog::setupMeshFilenameFields(QGridLayout* mainLayout) {
+    void NewObjectDialog::setupMeshFilenameFields(QGridLayout* mainLayout) {
         meshesFilenameLabel = new QLabel("Meshes File:");
         mainLayout->addWidget(meshesFilenameLabel, 1, 0);
 
@@ -65,14 +65,14 @@ namespace urchin {
         connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showMeshFilenameDialog()));
     }
 
-    void NewModelDialog::updateObjectName() {
+    void NewObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
         if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    int NewModelDialog::buildObjectEntity(int result) {
+    int NewObjectDialog::buildObjectEntity(int result) {
         try {
             objectEntity = std::make_unique<ObjectEntity>();
 
@@ -94,11 +94,11 @@ namespace urchin {
     }
 
 
-    std::unique_ptr<ObjectEntity> NewModelDialog::moveObjectEntity() {
+    std::unique_ptr<ObjectEntity> NewObjectDialog::moveObjectEntity() {
         return std::move(objectEntity);
     }
 
-    void NewModelDialog::showMeshFilenameDialog() {
+    void NewObjectDialog::showMeshFilenameDialog() {
         QString directory = preferredMeshesPath.isEmpty() ? QString::fromStdString(FileSystem::instance().getResourcesDirectory()) : preferredMeshesPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open meshes file"), directory, "Meshes file (*.urchinMesh)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
@@ -110,7 +110,7 @@ namespace urchin {
         }
     }
 
-    void NewModelDialog::done(int r) {
+    void NewObjectDialog::done(int r) {
         if (QDialog::Accepted == r) {
             bool hasError = false;
 
@@ -135,7 +135,7 @@ namespace urchin {
         }
     }
 
-    bool NewModelDialog::isObjectEntityExist(const std::string& name) {
+    bool NewObjectDialog::isObjectEntityExist(const std::string& name) {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
         return std::ranges::any_of(objectEntities, [&name](const auto& so){return so->getName() == name;});
     }

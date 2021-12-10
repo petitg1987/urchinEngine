@@ -20,12 +20,12 @@
 
 namespace urchin {
 
-    class ModelPanelWidget : public QWidget, public Observer, public Observable { //TODO rename in object
+    class ObjectPanelWidget : public QWidget, public Observer, public Observable {
         Q_OBJECT
 
         public:
-            ModelPanelWidget();
-            ~ModelPanelWidget() override = default;
+            ObjectPanelWidget();
+            ~ObjectPanelWidget() override = default;
 
             enum NotificationType {
                 OBJECT_BODY_SHAPE_WIDGET_CREATED

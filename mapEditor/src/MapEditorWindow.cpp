@@ -162,7 +162,7 @@ namespace urchin {
         sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
         scenePanelWidget->setSizePolicy(sizePolicy);
         scenePanelWidget->setMaximumSize(QSize(380, 16777215));
-        scenePanelWidget->getObjectPanelWidget()->addObserver(this, ModelPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+        scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
         scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ModelTableView::OBJECT_SELECTION_CHANGED);
         scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
         scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
@@ -209,8 +209,8 @@ namespace urchin {
     }
 
     void MapEditorWindow::handleCompoundShapeSelectionChange(Observable* observable, int notificationType) {
-        if (const auto* modelControllerWidget = dynamic_cast<ModelPanelWidget*>(observable)) {
-            if (notificationType == ModelPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
+        if (const auto* modelControllerWidget = dynamic_cast<ObjectPanelWidget*>(observable)) {
+            if (notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED) {
                 BodyShapeWidget* bodyShapeWidget = modelControllerWidget->getBodyShapeWidget();
                 if (const auto* bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget*>(bodyShapeWidget)) {
                     bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::MODEL_COMPOUND_SHAPE_SELECTION_CHANGED);
