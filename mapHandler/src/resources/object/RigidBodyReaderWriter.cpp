@@ -1,6 +1,6 @@
-#include <resources/model/RigidBodyReaderWriter.h>
-#include <resources/model/bodyshape/CollisionShapeReaderWriter.h>
-#include <resources/model/bodyshape/CollisionShapeReaderWriterRetriever.h>
+#include <resources/object/RigidBodyReaderWriter.h>
+#include <resources/object/bodyshape/CollisionShapeReaderWriter.h>
+#include <resources/object/bodyshape/CollisionShapeReaderWriterRetriever.h>
 
 namespace urchin {
 

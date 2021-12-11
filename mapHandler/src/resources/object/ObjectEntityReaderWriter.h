@@ -1,6 +1,6 @@
 #pragma once
 
-#include <resources/model/ObjectEntity.h>
+#include <resources/object/ObjectEntity.h>
 
 namespace urchin {
 

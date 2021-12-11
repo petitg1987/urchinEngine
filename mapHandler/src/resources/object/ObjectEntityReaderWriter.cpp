@@ -1,6 +1,6 @@
-#include <resources/model/ObjectEntityReaderWriter.h>
-#include <resources/model/RigidBodyReaderWriter.h>
-#include <resources/model/ModelReaderWriter.h>
+#include <resources/object/ObjectEntityReaderWriter.h>
+#include <resources/object/RigidBodyReaderWriter.h>
+#include <resources/object/ModelReaderWriter.h>
 #include <resources/common/TagsReaderWriter.h>
 
 namespace urchin {

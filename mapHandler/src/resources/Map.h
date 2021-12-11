@@ -9,7 +9,7 @@
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
 #include <load/LoadMapCallback.h>
-#include <resources/model/ObjectEntity.h>
+#include <resources/object/ObjectEntity.h>
 #include <resources/light/LightEntity.h>
 #include <resources/terrain/TerrainEntity.h>
 #include <resources/water/WaterEntity.h>

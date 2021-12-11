@@ -2,7 +2,7 @@
 
 #include <MapHandler.h>
 #include <resources/ai/NavMeshAgentReaderWriter.h>
-#include <resources/model/ObjectEntityReaderWriter.h>
+#include <resources/object/ObjectEntityReaderWriter.h>
 #include <resources/terrain/TerrainEntityReaderWriter.h>
 #include <resources/light/LightEntityReaderWriter.h>
 #include <resources/sound/SoundEntityReaderWriter.h>

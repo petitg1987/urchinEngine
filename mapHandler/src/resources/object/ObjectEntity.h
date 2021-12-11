@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class ObjectEntity : public TaggableResource { //TODO rename package
+    class ObjectEntity : public TaggableResource {
         public:
             ObjectEntity();
             ~ObjectEntity() override;

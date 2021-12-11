@@ -4,19 +4,20 @@
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
 
-#include <resources/model/bodyshape/CollisionShapeReaderWriter.h>
+#include <resources/object/bodyshape/CollisionShapeReaderWriter.h>
 
 namespace urchin {
 
-    class CollisionSphereReaderWriter : public CollisionShapeReaderWriter {
+    class CollisionConvexHullReaderWriter : public CollisionShapeReaderWriter {
         public:
-            ~CollisionSphereReaderWriter() override = default;
+            ~CollisionConvexHullReaderWriter() override = default;
 
             CollisionShape3D* loadFrom(const UdaChunk*, const UdaParser&) const override;
             void writeOn(UdaChunk&, const CollisionShape3D&, UdaWriter&) const override;
 
         private:
-            static constexpr char RADIUS_TAG[] = "radius";
+            static constexpr char POINTS_TAG[] = "points";
+            static constexpr char POINT_TAG[] = "point";
     };
 
 }

@@ -1,9 +1,7 @@
 #include <stdexcept>
 #include <AIEnvironment.h>
 
-#include <resources/model/ObjectEntity.h>
-#include <resources/model/ModelReaderWriter.h>
-#include <resources/model/RigidBodyReaderWriter.h>
+#include <resources/object/ObjectEntity.h>
 #include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {

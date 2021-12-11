@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <string>
-
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 

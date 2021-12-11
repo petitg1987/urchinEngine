@@ -1,4 +1,4 @@
-#include <resources/model/ModelReaderWriter.h>
+#include <resources/object/ModelReaderWriter.h>
 #include <resources/common/OrientationReaderWriter.h>
 
 namespace urchin {

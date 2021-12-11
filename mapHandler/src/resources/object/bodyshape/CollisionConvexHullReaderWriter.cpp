@@ -1,6 +1,6 @@
 #include <vector>
 
-#include <resources/model/bodyshape/CollisionConvexHullReaderWriter.h>
+#include <resources/object/bodyshape/CollisionConvexHullReaderWriter.h>
 
 namespace urchin {
 

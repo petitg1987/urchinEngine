@@ -1,4 +1,4 @@
-#include <resources/model/bodyshape/CollisionBoxReaderWriter.h>
+#include <resources/object/bodyshape/CollisionBoxReaderWriter.h>
 
 namespace urchin {
 

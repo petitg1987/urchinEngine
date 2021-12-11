@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <resources/model/bodyshape/CollisionConeReaderWriter.h>
+#include <resources/object/bodyshape/CollisionConeReaderWriter.h>
 
 namespace urchin {
 
