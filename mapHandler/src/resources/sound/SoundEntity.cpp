@@ -1,8 +1,6 @@
 #include <stdexcept>
 
 #include <resources/sound/SoundEntity.h>
-#include <resources/sound/SoundReaderWriter.h>
-#include <resources/sound/SoundTriggerReaderWriter.h>
 
 namespace urchin {
 

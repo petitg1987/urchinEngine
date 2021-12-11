@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include <resources/light/LightEntity.h>
-#include <resources/light/LightEntityReaderWriter.h>
 
 namespace urchin {
 

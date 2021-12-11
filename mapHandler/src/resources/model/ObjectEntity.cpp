@@ -5,7 +5,6 @@
 #include <resources/model/ModelReaderWriter.h>
 #include <resources/model/RigidBodyReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
-#include <resources/common/TagsReaderWriter.h>
 
 namespace urchin {
 

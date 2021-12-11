@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include <resources/terrain/TerrainEntity.h>
-#include <resources/terrain/TerrainEntityReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {

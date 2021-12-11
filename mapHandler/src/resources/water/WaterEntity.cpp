@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include <resources/water/WaterEntity.h>
-#include <resources/water/WaterEntityReaderWriter.h>
 
 namespace urchin {
     WaterEntity::WaterEntity() :
