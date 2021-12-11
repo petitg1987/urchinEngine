@@ -13,33 +13,19 @@
 
 namespace urchin {
 
-    /**
-    * A map handler for 3d objects, physics, sounds...
-    */
-    class MapHandler {
+    class MapHandler { //TODO rename in MapSaveService ?
         public:
-            MapHandler(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
+            MapHandler();
 
-            void loadMapFromFile(const std::string&, LoadMapCallback&);
-            void writeMapOnFile(const std::string&) const;
+            void loadMapFromFile(const std::string&, LoadMapCallback&, const std::unique_ptr<Map>&);
+            void writeMapOnFile(const std::string&, Map&) const;
 
             static std::string getRelativeWorkingDirectory(const std::string&);
-            std::string getRelativeWorkingDirectory() const;
-            void setRelativeWorkingDirectory(const std::string&);
-
-            void refreshMap();
-            Map& getMap() const;
-
-            void pause();
-            void unpause();
 
         private:
             static constexpr char CONFIG_TAG[] = "config";
             static constexpr char WORKING_DIR_TAG[] = "relativeWorkingDirectory";
             static constexpr char SCENE_TAG[] = "scene";
-
-            std::string relativeWorkingDirectory;
-            std::unique_ptr<Map> map;
     };
 
 }

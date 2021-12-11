@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     std::list<const LightEntity*> LightController::getLightEntities() const {
-        const auto& lightEntities = getMapHandler()->getMap().getLightEntities();
+        const auto& lightEntities = getMap().getLightEntities();
         std::list<const LightEntity*> constLightEntities;
         for (auto& lightEntity : lightEntities) {
             constLightEntities.emplace_back(lightEntity.get());
@@ -20,14 +20,14 @@ namespace urchin {
     }
 
     void LightController::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
-        getMapHandler()->getMap().addLightEntity(std::move(lightEntity));
+        getMap().addLightEntity(std::move(lightEntity));
 
         markModified();
     }
 
     void LightController::removeLightEntity(const LightEntity& constLightEntity) {
         LightEntity& lightEntity = findLightEntity(constLightEntity);
-        getMapHandler()->getMap().removeLightEntity(lightEntity);
+        getMap().removeLightEntity(lightEntity);
 
         markModified();
     }
@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     LightEntity& LightController::findLightEntity(const LightEntity& constLightEntity) {
-        const auto& lightEntities = getMapHandler()->getMap().getLightEntities();
+        const auto& lightEntities = getMap().getLightEntities();
         auto it = std::ranges::find_if(lightEntities, [&constLightEntity](const auto& o){return o.get() == &constLightEntity;});
 
         if (it != lightEntities.end()) {

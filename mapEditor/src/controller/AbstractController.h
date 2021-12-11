@@ -13,7 +13,7 @@ namespace urchin {
                 CHANGES_DONE
             };
 
-            virtual void setup(MapHandler*);
+            virtual void setup(Map&);
 
             virtual bool isModified() const;
             virtual void resetModified();
@@ -21,12 +21,12 @@ namespace urchin {
         protected:
             void markModified();
 
-            MapHandler* getMapHandler() const;
+            Map& getMap() const;
 
         private:
             bool bIsModified;
 
-            MapHandler* mapHandler;
+            Map* map;
     };
 
 }

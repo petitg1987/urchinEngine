@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     std::list<const ObjectEntity*> ObjectController::getObjectEntities() const {
-        const auto& objectEntities = getMapHandler()->getMap().getObjectEntities();
+        const auto& objectEntities = getMap().getObjectEntities();
         std::list<const ObjectEntity*> constObjectEntities;
         for (auto& objectEntity : objectEntities) {
             constObjectEntities.emplace_back(objectEntity.get());
@@ -33,14 +33,14 @@ namespace urchin {
     }
 
     void ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
-        getMapHandler()->getMap().addObjectEntity(std::move(objectEntity));
+        getMap().addObjectEntity(std::move(objectEntity));
 
         markModified();
     }
 
     void ObjectController::removeObjectEntity(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        getMapHandler()->getMap().removeObjectEntity(objectEntity);
+        getMap().removeObjectEntity(objectEntity);
 
         markModified();
     }
@@ -175,7 +175,7 @@ namespace urchin {
     }
 
     ObjectEntity& ObjectController::findObjectEntity(const ObjectEntity& constObjectEntity) {
-        const auto& objectEntities = getMapHandler()->getMap().getObjectEntities();
+        const auto& objectEntities = getMap().getObjectEntities();
         auto it = std::ranges::find_if(objectEntities, [&constObjectEntity](const auto& o){return o.get() == &constObjectEntity;});
 
         if (it != objectEntities.end()) {

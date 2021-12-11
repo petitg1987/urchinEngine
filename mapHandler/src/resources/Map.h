@@ -18,12 +18,9 @@
 
 namespace urchin {
 
-    /**
-    * Represent a map loaded in memory
-    */
     class Map {
         public:
-            friend class MapHandler;
+            friend class MapHandler; //TODO remove...
 
             Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
 
@@ -31,6 +28,9 @@ namespace urchin {
             PhysicsWorld* getPhysicsWorld() const;
             SoundEnvironment* getSoundEnvironment() const;
             AIEnvironment* getAIEnvironment() const;
+
+            void setRelativeWorkingDirectory(const std::string&);
+            const std::string& getRelativeWorkingDirectory() const;
 
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
             ObjectEntity& getObjectEntity(const std::string&) const;
@@ -62,7 +62,6 @@ namespace urchin {
             void removeSoundEntity(SoundEntity&);
 
             void refresh();
-
             void pause();
             void unpause();
 
@@ -102,6 +101,8 @@ namespace urchin {
             PhysicsWorld* physicsWorld;
             SoundEnvironment* soundEnvironment;
             AIEnvironment* aiEnvironment;
+
+            std::string relativeWorkingDirectory;
 
             TagHolder objectEntitiesTagHolder;
             std::list<std::unique_ptr<ObjectEntity>> objectEntities;

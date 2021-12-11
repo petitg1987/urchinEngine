@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class NavMeshAgentReaderWriter {
+    class NavMeshAgentReaderWriter { //TODO class in wrong folder
         public:
             static std::unique_ptr<NavMeshAgent> loadFrom(const UdaChunk*, const UdaParser&);
             static void writeOn(UdaChunk&, const NavMeshAgent*, UdaWriter&);

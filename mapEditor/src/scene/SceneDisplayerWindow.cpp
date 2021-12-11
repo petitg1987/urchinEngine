@@ -80,7 +80,7 @@ namespace urchin {
         sceneDisplayer->resize( //size is computed in pixel
                 MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),
                 MathFunction::roundToUInt((float)geometry().height() * (float)devicePixelRatio()));
-        sceneController.setup(&sceneDisplayer->getMapHandler());
+        sceneController.setup(sceneDisplayer->getMap());
         updateSceneDisplayerViewProperties();
     }
 

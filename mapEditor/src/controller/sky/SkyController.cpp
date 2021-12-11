@@ -7,7 +7,7 @@ namespace urchin {
     }
 
     const SkyEntity& SkyController::getSkyEntity() const {
-        return getMapHandler()->getMap().getSkyEntity();
+        return getMap().getSkyEntity();
     }
 
     const SkyEntity& SkyController::updateSkyEntity(const std::vector<std::string>& skyboxFilenames, float offsetY) {
@@ -16,10 +16,10 @@ namespace urchin {
             updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);
             updatedSkybox->setOffsetY(offsetY);
         }
-        getMapHandler()->getMap().updateSkyEntity(std::move(updatedSkybox));
+        getMap().updateSkyEntity(std::move(updatedSkybox));
 
         markModified();
-        return getMapHandler()->getMap().getSkyEntity();
+        return getMap().getSkyEntity();
     }
 
     bool SkyController::isSkyboxFilenamesAllEmpty(const std::vector<std::string>& skyboxFilenames) const {

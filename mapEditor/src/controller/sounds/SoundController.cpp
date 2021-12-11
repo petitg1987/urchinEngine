@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     std::list<const SoundEntity*> SoundController::getSoundEntities() const {
-        const auto& soundEntities = getMapHandler()->getMap().getSoundEntities();
+        const auto& soundEntities = getMap().getSoundEntities();
         std::list<const SoundEntity*> constSoundEntities;
         for (auto& soundEntity : soundEntities) {
             constSoundEntities.emplace_back(soundEntity.get());
@@ -21,14 +21,14 @@ namespace urchin {
     }
 
     void SoundController::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
-        getMapHandler()->getMap().addSoundEntity(std::move(soundEntity));
+        getMap().addSoundEntity(std::move(soundEntity));
 
         markModified();
     }
 
     void SoundController::removeSoundEntity(const SoundEntity& constSoundEntity) {
         SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        getMapHandler()->getMap().removeSoundEntity(soundEntity);
+        getMap().removeSoundEntity(soundEntity);
 
         markModified();
     }
@@ -109,7 +109,7 @@ namespace urchin {
     }
 
     SoundEntity& SoundController::findSoundEntity(const SoundEntity& constSoundEntity) {
-        const auto& soundEntities = getMapHandler()->getMap().getSoundEntities();
+        const auto& soundEntities = getMap().getSoundEntities();
         auto it = std::ranges::find_if(soundEntities, [&constSoundEntity](const auto& o){return o.get() == &constSoundEntity;});
 
         if (it != soundEntities.end()) {

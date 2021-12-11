@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     std::list<const WaterEntity*> WaterController::getWaterEntities() const {
-        const auto& waterEntities = getMapHandler()->getMap().getWaterEntities();
+        const auto& waterEntities = getMap().getWaterEntities();
         std::list<const WaterEntity*> constWaterEntities;
         for (auto& waterEntity : waterEntities) {
             constWaterEntities.emplace_back(waterEntity.get());
@@ -19,14 +19,14 @@ namespace urchin {
     }
 
     void WaterController::addWaterEntity(std::unique_ptr<WaterEntity> waterEntity) {
-        getMapHandler()->getMap().addWaterEntity(std::move(waterEntity));
+        getMap().addWaterEntity(std::move(waterEntity));
 
         markModified();
     }
 
     void WaterController::removeWaterEntity(const WaterEntity& constWaterEntity) {
         WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
-        getMapHandler()->getMap().removeWaterEntity(waterEntity);
+        getMap().removeWaterEntity(waterEntity);
 
         markModified();
     }
@@ -72,7 +72,7 @@ namespace urchin {
     }
 
     WaterEntity& WaterController::findWaterEntity(const WaterEntity& constWaterEntity) {
-        const auto& watersEntities = getMapHandler()->getMap().getWaterEntities();
+        const auto& watersEntities = getMap().getWaterEntities();
         auto it = std::ranges::find_if(watersEntities, [&constWaterEntity](const auto& o){return o.get() == &constWaterEntity;});
 
         if (it != watersEntities.end()) {

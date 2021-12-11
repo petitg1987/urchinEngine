@@ -28,16 +28,11 @@ namespace urchin {
         subControllers.emplace_back(aiController.get());
     }
 
-    void SceneController::setup(MapHandler* mapHandler) {
-        AbstractController::setup(mapHandler);
-
-        objectController->setup(mapHandler);
-        lightController->setup(mapHandler);
-        terrainController->setup(mapHandler);
-        waterController->setup(mapHandler);
-        skyController->setup(mapHandler);
-        soundController->setup(mapHandler);
-        aiController->setup(mapHandler);
+    void SceneController::setup(Map& map) {
+        AbstractController::setup(map);
+        for (const auto& subController: subControllers) {
+            subController->setup(map);
+        }
     }
 
     void SceneController::addObserverOnAllControllers(Observer* observer, int notificationType) {
@@ -71,7 +66,7 @@ namespace urchin {
     void SceneController::saveMapOnFile(const std::string& mapFilename) {
         std::string tmpResourcesDirectory = FileSystem::instance().getResourcesDirectory();
         FileSystem::instance().setupResourcesDirectory("");
-        getMapHandler()->writeMapOnFile(mapFilename);
+        MapHandler().writeMapOnFile(mapFilename, getMap());
         FileSystem::instance().setupResourcesDirectory(tmpResourcesDirectory);
 
         resetModified();

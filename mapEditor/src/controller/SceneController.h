@@ -17,7 +17,7 @@ namespace urchin {
         public:
             SceneController();
 
-            void setup(MapHandler*) override;
+            void setup(Map&) override;
             void addObserverOnAllControllers(Observer*, int);
 
             void forceModified();

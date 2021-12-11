@@ -4,46 +4,34 @@
 
 namespace urchin {
 
-    MapHandler::MapHandler(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment* aiEnvironment) :
-            map(nullptr) {
-        SignalHandler::instance().initialize();
-
-        if (!renderer3d) {
-            throw std::invalid_argument("Renderer 3d cannot be null in map handler");
-        }
-
-        if (!soundEnvironment) {
-            throw std::invalid_argument("Sound environment cannot be null in map handler");
-        }
-
-        if (!aiEnvironment) {
-            throw std::invalid_argument("AI environment cannot be null in map handler");
-        }
-
-        map = std::make_unique<Map>(renderer3d, physicsWorld, soundEnvironment, aiEnvironment);
+    MapHandler::MapHandler() {
+        SignalHandler::instance().initialize(); //TODO move somewhere else ?
     }
 
-    void MapHandler::loadMapFromFile(const std::string& filename, LoadMapCallback& loadMapCallback) {
+    /**
+     * @param map [out] Map to load the entities (must be empty)
+     */
+    void MapHandler::loadMapFromFile(const std::string& filename, LoadMapCallback& loadMapCallback, const std::unique_ptr<Map>& map) {
         Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
         const UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
         const UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
-        relativeWorkingDirectory = workingDirChunk->getStringValue();
+        map->setRelativeWorkingDirectory(workingDirChunk->getStringValue());
 
         const UdaChunk* sceneChunk = udaParser.getUniqueChunk(true, SCENE_TAG);
         map->loadFrom(sceneChunk, udaParser, loadMapCallback);
     }
 
-    void MapHandler::writeMapOnFile(const std::string& filename) const {
+    void MapHandler::writeMapOnFile(const std::string& filename, Map& map) const {
         UdaWriter udaWriter(FileSystem::instance().getResourcesDirectory() + filename);
 
         auto& configChunk = udaWriter.createChunk(CONFIG_TAG);
         auto& workingDirChunk = udaWriter.createChunk(WORKING_DIR_TAG, UdaAttribute(), &configChunk);
-        workingDirChunk.setStringValue(relativeWorkingDirectory);
+        workingDirChunk.setStringValue(map.getRelativeWorkingDirectory());
 
         auto& sceneChunk = udaWriter.createChunk(SCENE_TAG);
-        map->writeOn(sceneChunk, udaWriter);
+        map.writeOn(sceneChunk, udaWriter);
 
         udaWriter.saveInFile();
     }
@@ -58,36 +46,6 @@ namespace urchin {
         const UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
 
         return workingDirChunk->getStringValue();
-    }
-
-    /**
-     * @return Working directory relative to the map file
-     */
-    std::string MapHandler::getRelativeWorkingDirectory() const {
-        return relativeWorkingDirectory;
-    }
-
-    /**
-     * @param relativeWorkingDirectory Relative working directory to the map file
-     */
-    void MapHandler::setRelativeWorkingDirectory(const std::string& relativeWorkingDirectory) {
-        this->relativeWorkingDirectory = relativeWorkingDirectory;
-    }
-
-    void MapHandler::refreshMap() {
-        map->refresh();
-    }
-
-    Map& MapHandler::getMap() const {
-        return *map;
-    }
-
-    void MapHandler::pause() {
-        map->pause();
-    }
-
-    void MapHandler::unpause() {
-        map->unpause();
     }
 
 }

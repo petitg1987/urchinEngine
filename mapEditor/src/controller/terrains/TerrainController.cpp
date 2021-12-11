@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     std::list<const TerrainEntity*> TerrainController::getTerrainEntities() const {
-        const auto& terrainEntities = getMapHandler()->getMap().getTerrainEntities();
+        const auto& terrainEntities = getMap().getTerrainEntities();
         std::list<const TerrainEntity*> constTerrainEntities;
         for (auto& terrainEntity : terrainEntities) {
             constTerrainEntities.emplace_back(terrainEntity.get());
@@ -19,14 +19,14 @@ namespace urchin {
     }
 
     void TerrainController::addTerrainEntity(std::unique_ptr<TerrainEntity> terrainEntity) {
-        getMapHandler()->getMap().addTerrainEntity(std::move(terrainEntity));
+        getMap().addTerrainEntity(std::move(terrainEntity));
 
         markModified();
     }
 
     void TerrainController::removeTerrainEntity(const TerrainEntity& constTerrainEntity) {
         TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
-        getMapHandler()->getMap().removeTerrainEntity(terrainEntity);
+        getMap().removeTerrainEntity(terrainEntity);
 
         markModified();
     }
@@ -93,7 +93,7 @@ namespace urchin {
     }
 
     TerrainEntity& TerrainController::findTerrainEntity(const TerrainEntity& constTerrainEntity) {
-        const auto& terrainsEntities = getMapHandler()->getMap().getTerrainEntities();
+        const auto& terrainsEntities = getMap().getTerrainEntities();
         auto it = std::ranges::find_if(terrainsEntities, [&constTerrainEntity](const auto& o){return o.get() == &constTerrainEntity;});
 
         if (it != terrainsEntities.end()) {

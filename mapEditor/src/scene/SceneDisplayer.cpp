@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     SceneDisplayer::~SceneDisplayer() {
-        mapHandler.reset(nullptr);
+        map.reset(nullptr);
         soundEnvironment.reset(nullptr);
         aiEnvironment.reset(nullptr);
         physicsWorld.reset(nullptr);
@@ -45,15 +45,16 @@ namespace urchin {
 
             initializeScene(mapFilename);
 
-            mapHandler = std::make_unique<MapHandler>(scene->getActiveRenderer3d(), physicsWorld.get(), soundEnvironment.get(), aiEnvironment.get());
-            mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             std::ifstream streamMapFile(FileSystem::instance().getResourcesDirectory() + relativeMapFilename);
+            map = std::make_unique<Map>(scene->getActiveRenderer3d(), physicsWorld.get(), soundEnvironment.get(), aiEnvironment.get());
             if (streamMapFile) { //existing map
                 LoadMapCallback nullLoadCallback;
-                mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
+                MapHandler().loadMapFromFile(relativeMapFilename, nullLoadCallback, map);
+            } else {
+                map->setRelativeWorkingDirectory(relativeWorkingDirectory);
             }
-            mapHandler->unpause();
+            map->unpause();
 
             isInitialized = true;
         } catch (const std::exception& e) {
@@ -180,8 +181,8 @@ namespace urchin {
     void SceneDisplayer::paint() {
         try {
             if (isInitialized) {
-                if (mapHandler) {
-                    mapHandler->refreshMap();
+                if (map) {
+                    map->refresh();
                 }
 
                 refreshObjectsModel();
@@ -222,9 +223,9 @@ namespace urchin {
         return *physicsWorld;
     }
 
-    MapHandler& SceneDisplayer::getMapHandler() const {
-        assert(mapHandler);
-        return *mapHandler;
+    Map& SceneDisplayer::getMap() const {
+        assert(map);
+        return *map;
     }
 
     BodyShapeDisplayer* SceneDisplayer::getBodyShapeDisplayer() const {

@@ -3,12 +3,12 @@
 namespace urchin {
     AbstractController::AbstractController() :
             bIsModified(false),
-            mapHandler(nullptr) {
+            map(nullptr) {
 
     }
 
-    void AbstractController::setup(MapHandler* mapHandler) {
-        this->mapHandler = mapHandler;
+    void AbstractController::setup(Map& map) {
+        this->map = &map;
     }
 
     bool AbstractController::isModified() const {
@@ -25,7 +25,7 @@ namespace urchin {
         notifyObservers(this, AbstractController::CHANGES_DONE);
     }
 
-    MapHandler* AbstractController::getMapHandler() const {
-        return mapHandler;
+    Map& AbstractController::getMap() const {
+        return *map;
     }
 }

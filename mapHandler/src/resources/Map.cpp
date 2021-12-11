@@ -12,7 +12,15 @@ namespace urchin {
             soundEnvironment(soundEnvironment),
             aiEnvironment(aiEnvironment),
             skyEntity(SkyEntity(renderer3d)) {
-
+        if (!renderer3d) {
+            throw std::invalid_argument("Renderer 3d cannot be null in map");
+        }
+        if (!soundEnvironment) {
+            throw std::invalid_argument("Sound environment cannot be null in map");
+        }
+        if (!aiEnvironment) {
+            throw std::invalid_argument("AI environment cannot be null in map");
+        }
     }
 
     Renderer3d* Map::getRenderer3d() const {
@@ -29,6 +37,14 @@ namespace urchin {
 
     AIEnvironment* Map::getAIEnvironment() const {
         return aiEnvironment;
+    }
+
+    void Map::setRelativeWorkingDirectory(const std::string& relativeWorkingDirectory) {
+        this->relativeWorkingDirectory = relativeWorkingDirectory;
+    }
+
+    const std::string& Map::getRelativeWorkingDirectory() const {
+        return relativeWorkingDirectory;
     }
 
     void Map::loadFrom(const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) {
