@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <resources/light/LightEntity.h>
-#include <resources/light/LightReaderWriter.h>
+#include <resources/light/LightEntityReaderWriter.h>
 
 namespace urchin {
 
@@ -21,18 +21,6 @@ namespace urchin {
 
         this->lightManager = &lightManager;
         lightManager.addLight(light);
-    }
-
-    void LightEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        this->name = chunk->getAttributeValue(NAME_ATTR);
-
-        setLight(LightReaderWriter::loadFrom(chunk, udaParser));
-    }
-
-    void LightEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
-
-        LightReaderWriter::writeOn(chunk, *light, udaWriter);
     }
 
     std::string LightEntity::getName() const {

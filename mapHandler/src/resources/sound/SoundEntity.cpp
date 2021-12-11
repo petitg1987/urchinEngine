@@ -25,25 +25,6 @@ namespace urchin {
         }
     }
 
-    void SoundEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        this->name = chunk->getAttributeValue(NAME_ATTR);
-
-        auto soundChunk = udaParser.getUniqueChunk(true, SOUND_TAG, UdaAttribute(), chunk);
-        auto soundTriggerChunk = udaParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, UdaAttribute(), chunk);
-
-        setSoundElements(SoundReaderWriter::loadFrom(soundChunk, udaParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk, udaParser));
-    }
-
-    void SoundEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
-
-        auto& soundChunk = udaWriter.createChunk(SOUND_TAG, UdaAttribute(), &chunk);
-        auto& soundTriggerChunk = udaWriter.createChunk(SOUND_TRIGGER_TAG, UdaAttribute(), &chunk);
-
-        SoundReaderWriter::writeOn(soundChunk, *sound, udaWriter);
-        SoundTriggerReaderWriter::writeOn(soundTriggerChunk, *soundTrigger, udaWriter);
-    }
-
     std::string SoundEntity::getName() const {
         return name;
     }

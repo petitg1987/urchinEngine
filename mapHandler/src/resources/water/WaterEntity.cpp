@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <resources/water/WaterEntity.h>
-#include <resources/water/WaterReaderWriter.h>
+#include <resources/water/WaterEntityReaderWriter.h>
 
 namespace urchin {
     WaterEntity::WaterEntity() :
@@ -27,18 +27,6 @@ namespace urchin {
         this->renderer3d = renderer3d;
 
         renderer3d->getWaterContainer().addWater(water);
-    }
-
-    void WaterEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        this->name = chunk->getAttributeValue(NAME_ATTR);
-
-        setWater(WaterReaderWriter().loadFrom(chunk, udaParser));
-    }
-
-    void WaterEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
-
-        WaterReaderWriter().writeOn(chunk, *water, udaWriter);
     }
 
     std::string WaterEntity::getName() const {

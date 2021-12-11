@@ -20,8 +20,6 @@ namespace urchin {
 
     class Map {
         public:
-            friend class MapHandler; //TODO remove...
-
             Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
 
             Renderer3d* getRenderer3d() const;
@@ -54,7 +52,7 @@ namespace urchin {
             void removeWaterEntity(WaterEntity&);
 
             const SkyEntity& getSkyEntity() const;
-            void updateSkyEntity(std::unique_ptr<Skybox> skybox);
+            void updateSkyEntity(std::unique_ptr<Skybox>); //TODO use SkyEntity instead of Skybox ?
 
             const std::list<std::unique_ptr<SoundEntity>>& getSoundEntities() const;
             SoundEntity& getSoundEntity(const std::string&) const;
@@ -66,37 +64,6 @@ namespace urchin {
             void unpause();
 
         private:
-            void loadFrom(const UdaChunk*, const UdaParser&, LoadMapCallback&);
-            void loadObjectEntities(const UdaChunk*, const UdaParser&);
-            void loadLightEntities(const UdaChunk*, const UdaParser&);
-            void loadTerrainEntities(const UdaChunk*, const UdaParser&);
-            void loadWaterEntities(const UdaChunk*, const UdaParser&);
-            void loadSkyEntity(const UdaChunk*, const UdaParser&);
-            void loadSoundEntities(const UdaChunk*, const UdaParser&);
-            void loadAIConfig(const UdaChunk*, const UdaParser&);
-
-            void writeOn(UdaChunk&, UdaWriter&) const;
-            void writeObjectEntities(UdaChunk&, UdaWriter&) const;
-            void writeLightEntities(UdaChunk&, UdaWriter&) const;
-            void writeTerrainEntities(UdaChunk&, UdaWriter&) const;
-            void writeWaterEntities(UdaChunk&, UdaWriter&) const;
-            void writeSkyEntity(UdaChunk&, UdaWriter&) const;
-            void writeSoundEntities(UdaChunk&, UdaWriter&) const;
-            void writeAIConfig(UdaChunk&, UdaWriter&) const;
-
-            static constexpr char OBJECTS_TAG[] = "objects";
-            static constexpr char OBJECT_TAG[] = "object";
-            static constexpr char LIGHTS_TAG[] = "lights";
-            static constexpr char LIGHT_TAG[] = "light";
-            static constexpr char TERRAINS_TAG[] = "terrains";
-            static constexpr char TERRAIN_TAG[] = "terrain";
-            static constexpr char WATERS_TAG[] = "waters";
-            static constexpr char WATER_TAG[] = "water";
-            static constexpr char SKY_TAG[] = "sky";
-            static constexpr char SOUND_ELEMENTS_TAG[] = "soundElements";
-            static constexpr char SOUND_ELEMENT_TAG[] = "soundElement";
-            static constexpr char AI_ELEMENTS_TAG[] = "aiElements";
-
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;
             SoundEnvironment* soundEnvironment;

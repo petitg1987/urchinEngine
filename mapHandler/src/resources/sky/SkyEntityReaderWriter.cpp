@@ -1,7 +1,8 @@
-#include <resources/sky/SkyboxReaderWriter.h>
+#include <resources/sky/SkyEntityReaderWriter.h>
 
 namespace urchin {
-    std::unique_ptr<Skybox> SkyboxReaderWriter::loadFrom(const UdaChunk* skyChunk, const UdaParser& udaParser) {
+
+    std::unique_ptr<Skybox> SkyEntityReaderWriter::loadFrom(const UdaChunk* skyChunk, const UdaParser& udaParser) {
         std::unique_ptr<Skybox> skybox(nullptr);
 
         auto skyboxChunk = udaParser.getUniqueChunk(false, SKYBOX_TAG, UdaAttribute(), skyChunk);
@@ -24,18 +25,18 @@ namespace urchin {
         return skybox;
     }
 
-    void SkyboxReaderWriter::writeOn(UdaChunk& skyChunk, const Skybox* skybox, UdaWriter& udaWriter) {
-        if (skybox != nullptr) {
+    void SkyEntityReaderWriter::writeOn(UdaChunk& skyChunk, const SkyEntity& skyEntity, UdaWriter& udaWriter) {
+        if (skyEntity.getSkybox() != nullptr) {
             auto& skyboxChunk = udaWriter.createChunk(SKYBOX_TAG, UdaAttribute(), &skyChunk);
 
             auto& texturesChunk = udaWriter.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
-            for (const auto& filename : skybox->getFilenames()) {
+            for (const auto& filename : skyEntity.getSkybox()->getFilenames()) {
                 auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk);
                 filenameChunk.setStringValue(filename);
             }
 
             auto& offsetYChunk = udaWriter.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk);
-            offsetYChunk.setFloatValue(skybox->getOffsetY());
+            offsetYChunk.setFloatValue(skyEntity.getSkybox()->getOffsetY());
         }
     }
 }

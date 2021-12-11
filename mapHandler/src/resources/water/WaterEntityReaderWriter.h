@@ -1,16 +1,17 @@
 #pragma once
 
 #include <memory>
-
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
+#include <resources/water/WaterEntity.h>
+
 namespace urchin {
 
-    class WaterReaderWriter {
+    class WaterEntityReaderWriter {
         public:
-            std::unique_ptr<Water> loadFrom(const UdaChunk*, const UdaParser&) const;
-            void writeOn(UdaChunk&, const Water&, UdaWriter&) const;
+            static std::unique_ptr<WaterEntity> loadFrom(const UdaChunk*, const UdaParser&);
+            static void writeOn(UdaChunk&, const WaterEntity&, UdaWriter&);
 
         private:
             static void loadGeneralPropertiesOn(Water&, const UdaChunk*, const UdaParser&);
@@ -22,6 +23,7 @@ namespace urchin {
             static void loadUnderWaterProperties(Water&, const UdaChunk*, const UdaParser&);
             static void writeUnderWaterPropertiesOn(UdaChunk&, const Water&, UdaWriter&);
 
+            static constexpr char NAME_ATTR[] = "name";
             static constexpr char CENTER_POSITION_TAG[] = "centerPosition";
             static constexpr char X_SIZE_TAG[] = "xSize";
             static constexpr char Z_SIZE_TAG[] = "zSize";

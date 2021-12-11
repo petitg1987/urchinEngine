@@ -2,15 +2,16 @@
 
 #include <memory>
 #include <vector>
-
 #include <Urchin3dEngine.h>
+
+#include <resources/sky/SkyEntity.h>
 
 namespace urchin {
 
-    class SkyboxReaderWriter {
+    class SkyEntityReaderWriter {
         public:
             static std::unique_ptr<Skybox> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const Skybox*, UdaWriter&);
+            static void writeOn(UdaChunk&, const SkyEntity&, UdaWriter&);
 
         private:
             static constexpr char SKYBOX_TAG[] = "skybox";

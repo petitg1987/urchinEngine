@@ -47,42 +47,6 @@ namespace urchin {
         }
     }
 
-    void ObjectEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        this->name = chunk->getAttributeValue(NAME_ATTR);
-
-        auto modelChunk = udaParser.getUniqueChunk(true, MODEL_TAG, UdaAttribute(), chunk);
-        setModel(ModelReaderWriter::loadFrom(modelChunk, udaParser));
-
-        auto physicsChunk = udaParser.getUniqueChunk(false, PHYSICS_TAG, UdaAttribute(), chunk);
-        if (physicsChunk != nullptr) {
-            std::string rigidBodyId = this->name;
-            const Transform<float>& modelTransform = this->model->getTransform();
-            setupInteractiveBody(RigidBodyReaderWriter::loadFrom(physicsChunk, rigidBodyId, modelTransform, udaParser));
-        }
-
-        auto tagsChunk = udaParser.getUniqueChunk(false, TAGS_TAG, UdaAttribute(), chunk);
-        if (tagsChunk != nullptr) {
-            addTags(TagsReaderWriter::loadTags(tagsChunk, udaParser));
-        }
-    }
-
-    void ObjectEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
-
-        auto& modelChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &chunk);
-        ModelReaderWriter::writeOn(modelChunk, *model, udaWriter);
-
-        if (rigidBody) {
-            auto& physicsChunk = udaWriter.createChunk(PHYSICS_TAG, UdaAttribute(), &chunk);
-            RigidBodyReaderWriter::writeOn(physicsChunk, *rigidBody, udaWriter);
-        }
-
-        if (!getTags().empty()) {
-            auto& tagsChunk = udaWriter.createChunk(TAGS_TAG, UdaAttribute(), &chunk);
-            TagsReaderWriter::writeTags(tagsChunk, getTags(), udaWriter);
-        }
-    }
-
     const std::string& ObjectEntity::getName() const {
         return name;
     }

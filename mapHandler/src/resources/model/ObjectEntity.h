@@ -7,10 +7,8 @@
 
 namespace urchin {
 
-    class ObjectEntity : public TaggableResource {
+    class ObjectEntity : public TaggableResource { //TODO rename package
         public:
-            friend class Map;
-
             ObjectEntity();
             ~ObjectEntity() override;
 
@@ -23,25 +21,16 @@ namespace urchin {
             void setModel(const std::shared_ptr<Model>&);
 
             void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
-
             RigidBody* getRigidBody() const;
 
             void refresh();
 
         private:
-            void loadFrom(const UdaChunk*, const UdaParser&);
-            void writeOn(UdaChunk&, UdaWriter&) const;
-
             void setupRigidBody(const std::shared_ptr<RigidBody>&);
             void setupAIObject();
 
             void deleteRigidBody();
             void deleteAIObjects();
-
-            static constexpr char MODEL_TAG[] = "model";
-            static constexpr char PHYSICS_TAG[] = "physics";
-            static constexpr char TAGS_TAG[] = "tags";
-            static constexpr char NAME_ATTR[] = "name";
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;

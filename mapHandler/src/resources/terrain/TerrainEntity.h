@@ -8,12 +8,7 @@
 namespace urchin {
 
     class TerrainEntity {
-        //XML attributes
-        static constexpr char NAME_ATTR[] = "name";
-
         public:
-            friend class Map;
-
             TerrainEntity();
             ~TerrainEntity();
 
@@ -26,14 +21,11 @@ namespace urchin {
             void setTerrain(std::shared_ptr<Terrain>);
 
             RigidBody* getRigidBody() const;
+            void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
 
             void refresh();
 
         private:
-            void loadFrom(const UdaChunk*, const UdaParser&);
-            void writeOn(UdaChunk&, UdaWriter&) const;
-
-            void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
             void setupRigidBody(const std::shared_ptr<RigidBody>&);
             void setupAIObject();
 

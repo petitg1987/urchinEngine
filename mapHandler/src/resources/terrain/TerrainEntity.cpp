@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <resources/terrain/TerrainEntity.h>
-#include <resources/terrain/TerrainReaderWriter.h>
+#include <resources/terrain/TerrainEntityReaderWriter.h>
 #include <resources/common/AIEntityBuilder.h>
 
 namespace urchin {
@@ -43,24 +43,6 @@ namespace urchin {
         if (aiEnvironment && aiTerrain) {
             aiEnvironment->addEntity(aiTerrain);
         }
-    }
-
-    void TerrainEntity::loadFrom(const UdaChunk* chunk, const UdaParser& udaParser) {
-        this->name = chunk->getAttributeValue(NAME_ATTR);
-
-        setTerrain(TerrainReaderWriter().loadFrom(chunk, udaParser));
-
-        auto collisionTerrainShape = std::make_unique<urchin::CollisionHeightfieldShape>(terrain->getMesh()->getVertices(),
-                                                                                         terrain->getMesh()->getXSize(),
-                                                                                         terrain->getMesh()->getZSize());
-        auto terrainRigidBody = std::make_unique<RigidBody>(this->name, PhysicsTransform(terrain->getPosition()), std::move(collisionTerrainShape));
-        setupInteractiveBody(std::move(terrainRigidBody));
-    }
-
-    void TerrainEntity::writeOn(UdaChunk& chunk, UdaWriter& udaWriter) const {
-        chunk.addAttribute(UdaAttribute(NAME_ATTR, this->name));
-
-        TerrainReaderWriter().writeOn(chunk, *terrain, udaWriter);
     }
 
     std::string TerrainEntity::getName() const {

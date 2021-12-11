@@ -1,19 +1,20 @@
 #pragma once
 
 #include <memory>
-
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 
+#include <resources/light/LightEntity.h>
+
 namespace urchin {
 
-    class LightReaderWriter {
+    class LightEntityReaderWriter {
         public:
-            static std::shared_ptr<Light> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const Light&, UdaWriter&);
+            static std::unique_ptr<LightEntity> loadFrom(const UdaChunk*, const UdaParser&);
+            static void writeOn(UdaChunk&, const LightEntity&, UdaWriter&);
 
         private:
-            static std::shared_ptr<Light> buildLightFrom(const UdaChunk*, const UdaParser&);
+            static std::unique_ptr<Light> buildLightFrom(const UdaChunk*, const UdaParser&);
             static void buildChunkFrom(UdaChunk&, const Light&, UdaWriter&);
 
             static void loadPropertiesFrom(Light&, const UdaChunk*, const UdaParser&);
@@ -22,6 +23,7 @@ namespace urchin {
             static void loadFlagsFrom(Light&, const UdaChunk*, const UdaParser&);
             static void writeFlagsOn(UdaChunk&, const Light&, UdaWriter&);
 
+            static constexpr char NAME_ATTR[] = "name";
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";
             static constexpr char SUN_VALUE[] = "SUN";

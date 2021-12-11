@@ -1,28 +1,33 @@
-#include <resources/light/LightReaderWriter.h>
+#include <resources/light/LightEntityReaderWriter.h>
 
 namespace urchin {
 
-    std::shared_ptr<Light> LightReaderWriter::loadFrom(const UdaChunk* lightChunk, const UdaParser& udaParser) {
-        std::shared_ptr<Light> light = buildLightFrom(lightChunk, udaParser);
+    std::unique_ptr<LightEntity> LightEntityReaderWriter::loadFrom(const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
+        auto lightEntity = std::make_unique<LightEntity>();
 
-        loadPropertiesFrom(*light, lightChunk, udaParser);
-        loadFlagsFrom(*light, lightChunk, udaParser);
+        lightEntity->setName(lightEntityChunk->getAttributeValue(NAME_ATTR));
 
-        return light;
+        std::unique_ptr<Light> light = buildLightFrom(lightEntityChunk, udaParser);
+        loadPropertiesFrom(*light, lightEntityChunk, udaParser);
+        loadFlagsFrom(*light, lightEntityChunk, udaParser);
+        lightEntity->setLight(std::move(light));
+
+        return lightEntity;
     }
 
-    void LightReaderWriter::writeOn(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
-        buildChunkFrom(lightChunk, light, udaWriter);
+    void LightEntityReaderWriter::writeOn(UdaChunk& chunk, const LightEntity& lightEntity, UdaWriter& udaWriter) {
+        chunk.addAttribute(UdaAttribute(NAME_ATTR, lightEntity.getName()));
 
-        writePropertiesOn(lightChunk, light, udaWriter);
-        writeFlagsOn(lightChunk, light, udaWriter);
+        buildChunkFrom(chunk, *lightEntity.getLight(), udaWriter);
+        writePropertiesOn(chunk, *lightEntity.getLight(), udaWriter);
+        writeFlagsOn(chunk, *lightEntity.getLight(), udaWriter);
     }
 
-    std::shared_ptr<Light> LightReaderWriter::buildLightFrom(const UdaChunk* lightChunk, const UdaParser& udaParser) {
+    std::unique_ptr<Light> LightEntityReaderWriter::buildLightFrom(const UdaChunk* lightChunk, const UdaParser& udaParser) {
         std::string lightType = lightChunk->getAttributeValue(TYPE_ATTR);
         if (lightType == OMNIDIRECTIONAL_VALUE) {
             auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), lightChunk);
-            auto omnidirectional = std::make_shared<OmnidirectionalLight>(positionChunk->getPoint3Value());
+            auto omnidirectional = std::make_unique<OmnidirectionalLight>(positionChunk->getPoint3Value());
 
             auto exponentialAttenuationChunk = udaParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), lightChunk);
             omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
@@ -31,13 +36,13 @@ namespace urchin {
         } else if (lightType == SUN_VALUE) {
             auto directionChunk = udaParser.getUniqueChunk(true, DIRECTION_TAG, UdaAttribute(), lightChunk);
 
-            return std::make_shared<SunLight>(directionChunk->getVector3Value());
+            return std::make_unique<SunLight>(directionChunk->getVector3Value());
         }
 
         throw std::invalid_argument("Unknown light type read from map: " + lightType);
     }
 
-    void LightReaderWriter::buildChunkFrom(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
+    void LightEntityReaderWriter::buildChunkFrom(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
         if (light.getLightType() == Light::OMNIDIRECTIONAL) {
             const auto& omnidirectionalLight = static_cast<const OmnidirectionalLight&>(light);
             lightChunk.addAttribute(UdaAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
@@ -58,22 +63,22 @@ namespace urchin {
         }
     }
 
-    void LightReaderWriter::loadPropertiesFrom(Light& light, const UdaChunk* lightChunk, const UdaParser& udaParser) {
+    void LightEntityReaderWriter::loadPropertiesFrom(Light& light, const UdaChunk* lightChunk, const UdaParser& udaParser) {
         auto ambientColorChunk = udaParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, UdaAttribute(), lightChunk);
         light.setAmbientColor(ambientColorChunk->getPoint3Value());
     }
 
-    void LightReaderWriter::writePropertiesOn(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
+    void LightEntityReaderWriter::writePropertiesOn(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
         auto& ambientColorChunk = udaWriter.createChunk(AMBIENT_COLOR_TAG, UdaAttribute(), &lightChunk);
         ambientColorChunk.setPoint3Value(light.getAmbientColor());
     }
 
-    void LightReaderWriter::loadFlagsFrom(Light& light, const UdaChunk* lightChunk, const UdaParser& udaParser) {
+    void LightEntityReaderWriter::loadFlagsFrom(Light& light, const UdaChunk* lightChunk, const UdaParser& udaParser) {
         auto produceShadowChunk = udaParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, UdaAttribute(), lightChunk);
         light.setProduceShadow(produceShadowChunk->getBoolValue());
     }
 
-    void LightReaderWriter::writeFlagsOn(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
+    void LightEntityReaderWriter::writeFlagsOn(UdaChunk& lightChunk, const Light& light, UdaWriter& udaWriter) {
         auto& produceShadowChunk = udaWriter.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &lightChunk);
         produceShadowChunk.setBoolValue(light.isProduceShadow());
     }

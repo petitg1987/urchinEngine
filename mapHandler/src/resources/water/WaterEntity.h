@@ -7,8 +7,6 @@ namespace urchin {
 
     class WaterEntity {
         public:
-            friend class Map;
-
             WaterEntity();
             ~WaterEntity();
 
@@ -21,11 +19,6 @@ namespace urchin {
             void setWater(std::shared_ptr<Water>);
 
         private:
-            void loadFrom(const UdaChunk*, const UdaParser&);
-            void writeOn(UdaChunk&, UdaWriter&) const;
-
-            static constexpr char NAME_ATTR[] = "name";
-
             Renderer3d* renderer3d;
 
             std::string name;

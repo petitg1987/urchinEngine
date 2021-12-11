@@ -7,8 +7,6 @@ namespace urchin {
 
     class SoundEntity {
         public:
-            friend class Map;
-
             SoundEntity();
             ~SoundEntity();
 
@@ -23,13 +21,6 @@ namespace urchin {
             void changeSoundTrigger(const std::shared_ptr<SoundTrigger>&);
 
         private:
-            void loadFrom(const UdaChunk*, const UdaParser&);
-            void writeOn(UdaChunk&, UdaWriter&) const;
-
-            static constexpr char NAME_ATTR[] = "name";
-            static constexpr char SOUND_TAG[] = "sound";
-            static constexpr char SOUND_TRIGGER_TAG[] = "soundTrigger";
-
             SoundEnvironment* soundEnvironment;
 
             std::string name;
