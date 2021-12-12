@@ -1,14 +1,15 @@
 #pragma once
 
-#include <MapSaveService.h>
+#include <model/ObjectEntity.h>
+#include <model/LightEntity.h>
+#include <model/TerrainEntity.h>
+#include <model/WaterEntity.h>
+#include <model/SoundEntity.h>
+#include <model/SkyEntity.h>
 
-#include <resources/Map.h>
-#include <resources/common/TagsReaderWriter.h>
-#include <resources/object/ObjectEntity.h>
-#include <resources/light/LightEntity.h>
-#include <resources/terrain/TerrainEntity.h>
+#include <map/Map.h>
+#include <map/save/MapSaveService.h>
+#include <map/save/LoadMapCallback.h>
 
-#include <load/LoadMapCallback.h>
-
-#include <display/NavMeshDisplayer.h>
-#include <display/CollisionPointDisplayer.h>
+#include <debug/NavMeshDisplayer.h>
+#include <debug/CollisionPointDisplayer.h>

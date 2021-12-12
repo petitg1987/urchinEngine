@@ -11,6 +11,8 @@ namespace urchin {
 
     class ObjectController : public AbstractController {
         public:
+            static constexpr char TAGS_SEPARATOR = ',';
+
             ObjectController();
 
             std::list<const ObjectEntity*> getObjectEntities() const;

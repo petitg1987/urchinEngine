@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <memory>
-#include <UrchinMapHandler.h>
 
 #include <controller/objects/ObjectController.h>
 #include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
@@ -122,7 +121,7 @@ namespace urchin {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
         objectEntity.removeAllTags();
-        std::vector<std::string> tagsList = StringUtil::split(tagsValues, TagsReaderWriter::TAGS_SEPARATOR);
+        std::vector<std::string> tagsList = StringUtil::split(tagsValues, TAGS_SEPARATOR);
         for (const std::string& tag: tagsList) {
             objectEntity.addTag(tag);
         }
