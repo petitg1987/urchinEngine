@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    CollisionPointDisplayer::CollisionPointDisplayer(PhysicsWorld& physicsWorld, Renderer3d* renderer3d) :
+    CollisionPointDisplayer::CollisionPointDisplayer(PhysicsWorld& physicsWorld, Renderer3d& renderer3d) :
             physicsWorld(physicsWorld),
             renderer3d(renderer3d) {
         physicsWorld.createCollisionVisualizer();
@@ -27,13 +27,13 @@ namespace urchin {
         if (!contactSpheres.empty()) {
             contactSpheresModel = std::make_shared<SphereModel>(contactSpheres, 7);
             contactSpheresModel->setPolygonMode(PolygonMode::FILL);
-            renderer3d->getGeometryContainer().addGeometry(contactSpheresModel);
+            renderer3d.getGeometryContainer().addGeometry(contactSpheresModel);
         }
     }
 
     void CollisionPointDisplayer::clearDisplay() {
         if (contactSpheresModel) {
-            renderer3d->getGeometryContainer().removeGeometry(*contactSpheresModel);
+            renderer3d.getGeometryContainer().removeGeometry(*contactSpheresModel);
             contactSpheresModel.reset();
         }
     }
