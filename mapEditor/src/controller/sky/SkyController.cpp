@@ -11,12 +11,13 @@ namespace urchin {
     }
 
     const SkyEntity& SkyController::updateSkyEntity(const std::vector<std::string>& skyboxFilenames, float offsetY) {
-        std::unique_ptr<Skybox> updatedSkybox(nullptr);
+        std::unique_ptr<SkyEntity> skyEntity = std::make_unique<SkyEntity>();
         if (!isSkyboxFilenamesAllEmpty(skyboxFilenames)) {
-            updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);
+            std::unique_ptr<Skybox> updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);
             updatedSkybox->setOffsetY(offsetY);
+            skyEntity->setSkybox(std::move(updatedSkybox));
         }
-        getMap().updateSkyEntity(std::move(updatedSkybox));
+        getMap().setSkyEntity(std::move(skyEntity));
 
         markModified();
         return getMap().getSkyEntity();

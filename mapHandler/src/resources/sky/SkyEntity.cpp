@@ -7,7 +7,7 @@ namespace urchin {
     }
 
     SkyEntity::~SkyEntity() {
-        if (skybox) {
+        if (skybox && renderer3d->getSkyContainer().getSkybox() == skybox.get()) {
             renderer3d->getSkyContainer().setSkybox(nullptr);
         }
     }

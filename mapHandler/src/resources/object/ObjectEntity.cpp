@@ -21,8 +21,8 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
-        if (this->renderer3d) {
+    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) { //TODO move in private ?
+        if (this->renderer3d) { //TODO why not this if for all ?
             throw std::invalid_argument("Cannot add the object entity on two different renderer 3d.");
         }
         if (!renderer3d) {
