@@ -7,10 +7,10 @@ namespace urchin {
 
     class SoundEntity {
         public:
+            friend class Map;
+
             SoundEntity();
             ~SoundEntity();
-
-            void setup(SoundEnvironment*);
 
             std::string getName() const;
             void setName(const std::string&);
@@ -21,6 +21,8 @@ namespace urchin {
             void changeSoundTrigger(const std::shared_ptr<SoundTrigger>&);
 
         private:
+            void setup(SoundEnvironment&);
+
             SoundEnvironment* soundEnvironment;
 
             std::string name;

@@ -21,26 +21,17 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) { //TODO move in private ?
-        if (this->renderer3d) { //TODO why not this if for all ?
-            throw std::invalid_argument("Cannot add the object entity on two different renderer 3d.");
+    void ObjectEntity::setup(Renderer3d& renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
+        this->renderer3d = &renderer3d;
+        this->physicsWorld = &physicsWorld;
+        this->aiEnvironment = &aiEnvironment;
+
+        renderer3d.addModel(model);
+        if (rigidBody) {
+            physicsWorld.addBody(rigidBody);
         }
-        if (!renderer3d) {
-            throw std::invalid_argument("Cannot specify a null renderer 3d for an object entity.");
-        }
-
-        this->renderer3d = renderer3d;
-        this->physicsWorld = physicsWorld;
-        this->aiEnvironment = aiEnvironment;
-
-        renderer3d->addModel(model);
-
-        if (physicsWorld && rigidBody) {
-            physicsWorld->addBody(rigidBody);
-        }
-
-        if (aiEnvironment && aiObject) {
-            aiEnvironment->addEntity(aiObject);
+        if (aiObject) {
+            aiEnvironment.addEntity(aiObject);
         }
     }
 
@@ -57,15 +48,10 @@ namespace urchin {
     }
 
     void ObjectEntity::setModel(const std::shared_ptr<Model>& model) {
-        if (!model) {
-            throw std::invalid_argument("Cannot set a null model on an object entity.");
-        }
-
         if (renderer3d) {
             renderer3d->removeModel(this->model.get());
             renderer3d->addModel(model);
         }
-
         this->model = model;
     }
 

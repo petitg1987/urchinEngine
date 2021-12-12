@@ -9,10 +9,10 @@ namespace urchin {
 
     class TerrainEntity {
         public:
+            friend class Map;
+
             TerrainEntity();
             ~TerrainEntity();
-
-            void setup(Renderer3d*, PhysicsWorld*, AIEnvironment*);
 
             std::string getName() const;
             void setName(const std::string&);
@@ -26,6 +26,7 @@ namespace urchin {
             void refresh();
 
         private:
+            void setup(Renderer3d&, PhysicsWorld&, AIEnvironment&);
             void setupRigidBody(const std::shared_ptr<RigidBody>&);
             void setupAIObject();
 

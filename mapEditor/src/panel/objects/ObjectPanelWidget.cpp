@@ -528,8 +528,10 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::setupObjectTagsDataFrom(const ObjectEntity& objectEntity) {
+        disableObjectEvent = true;
         std::string tagsValues = StringUtil::merge(objectEntity.getTags(), TagsReaderWriter::TAGS_SEPARATOR);
         this->tags->setText(QString::fromStdString(tagsValues));
+        disableObjectEvent = false;
     }
 
     void ObjectPanelWidget::showAddObjectDialog() {

@@ -7,10 +7,10 @@ namespace urchin {
 
     class WaterEntity {
         public:
+            friend class Map;
+
             WaterEntity();
             ~WaterEntity();
-
-            void setup(Renderer3d*);
 
             std::string getName() const;
             void setName(const std::string&);
@@ -19,6 +19,8 @@ namespace urchin {
             void setWater(std::shared_ptr<Water>);
 
         private:
+            void setup(Renderer3d&);
+
             Renderer3d* renderer3d;
 
             std::string name;

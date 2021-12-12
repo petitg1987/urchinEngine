@@ -21,26 +21,17 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void TerrainEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment* aiEnvironment) {
-        if (this->renderer3d) {
-            throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
+    void TerrainEntity::setup(Renderer3d& renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
+        this->renderer3d = &renderer3d;
+        this->physicsWorld = &physicsWorld;
+        this->aiEnvironment = &aiEnvironment;
+
+        renderer3d.getTerrainContainer().addTerrain(terrain);
+        if (rigidBody) {
+            physicsWorld.addBody(rigidBody);
         }
-        if (!renderer3d) {
-            throw std::invalid_argument("Cannot specify a null renderer manager for a scene terrain.");
-        }
-
-        this->renderer3d = renderer3d;
-        this->physicsWorld = physicsWorld;
-        this->aiEnvironment = aiEnvironment;
-
-        renderer3d->getTerrainContainer().addTerrain(terrain);
-
-        if (physicsWorld) {
-            physicsWorld->addBody(rigidBody);
-        }
-
-        if (aiEnvironment && aiTerrain) {
-            aiEnvironment->addEntity(aiTerrain);
+        if (aiTerrain) {
+            aiEnvironment.addEntity(aiTerrain);
         }
     }
 

@@ -15,12 +15,10 @@ namespace urchin {
         }
     }
 
-    void SoundEntity::setup(SoundEnvironment* soundEnvironment) {
-        this->soundEnvironment = soundEnvironment;
+    void SoundEntity::setup(SoundEnvironment& soundEnvironment) {
+        this->soundEnvironment = &soundEnvironment;
 
-        if (soundEnvironment) {
-            soundEnvironment->addSound(sound, soundTrigger);
-        }
+        soundEnvironment.addSound(sound, soundTrigger);
     }
 
     std::string SoundEntity::getName() const {
@@ -40,12 +38,6 @@ namespace urchin {
     }
 
     void SoundEntity::setSoundElements(const std::shared_ptr<Sound>& sound, const std::shared_ptr<SoundTrigger>& soundTrigger) {
-        if (!sound) {
-            throw std::invalid_argument("Cannot set a null sound on scene sound.");
-        } else if (!soundTrigger) {
-            throw std::invalid_argument("Cannot set a null sound trigger on scene sound.");
-        }
-
         if (soundEnvironment) {
             soundEnvironment->removeSound(*this->sound);
             soundEnvironment->addSound(sound, soundTrigger);

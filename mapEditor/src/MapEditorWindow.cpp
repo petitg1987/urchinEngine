@@ -201,7 +201,6 @@ namespace urchin {
         } else if (dynamic_cast<AbstractController*>(observable)) {
             if (notificationType == AbstractController::CHANGES_DONE) {
                 refreshWindowTitle();
-
             }
         } else {
             handleCompoundShapeSelectionChange(observable, notificationType);

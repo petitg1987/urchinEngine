@@ -46,9 +46,8 @@ namespace urchin {
             initializeScene(mapFilename);
 
             std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
-            std::ifstream streamMapFile(FileSystem::instance().getResourcesDirectory() + relativeMapFilename);
-            map = std::make_unique<Map>(scene->getActiveRenderer3d(), physicsWorld.get(), soundEnvironment.get(), aiEnvironment.get());
-            if (streamMapFile) { //existing map
+            map = std::make_unique<Map>(*scene->getActiveRenderer3d(), *physicsWorld, *soundEnvironment, *aiEnvironment);
+            if (FileUtil::isFileExist(FileSystem::instance().getResourcesDirectory() + relativeMapFilename)) { //existing map
                 LoadMapCallback nullLoadCallback;
                 MapSaveService().loadMap(relativeMapFilename, nullLoadCallback, map);
             } else {

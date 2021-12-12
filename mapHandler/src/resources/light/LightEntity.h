@@ -7,10 +7,10 @@ namespace urchin {
 
     class LightEntity {
         public:
+            friend class Map;
+
             LightEntity();
             ~LightEntity();
-
-            void setup(LightManager&);
 
             std::string getName() const;
             void setName(const std::string&);
@@ -19,6 +19,8 @@ namespace urchin {
             void setLight(const std::shared_ptr<Light>&);
 
         private:
+            void setup(LightManager&);
+
             LightManager* lightManager;
 
             std::string name;

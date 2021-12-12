@@ -12,14 +12,10 @@ namespace urchin {
         }
     }
 
-    void SkyEntity::setup(Renderer3d* renderer3d) {
-        if (!renderer3d) {
-            throw std::invalid_argument("Cannot specify a null renderer 3d for a sky entity.");
-        }
+    void SkyEntity::setup(Renderer3d& renderer3d) {
+        this->renderer3d = &renderer3d;
 
-        this->renderer3d = renderer3d;
-
-        renderer3d->getSkyContainer().setSkybox(skybox);
+        renderer3d.getSkyContainer().setSkybox(skybox);
     }
 
     const Skybox* SkyEntity::getSkybox() const {

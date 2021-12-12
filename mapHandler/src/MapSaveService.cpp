@@ -31,15 +31,13 @@ namespace urchin {
     }
 
     void MapSaveService::loadMap(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) {
-        if (map.getRenderer3d() && !map.getRenderer3d()->isPaused()) { //to avoid move camera before being able to see the map
+        if (!map.getRenderer3d().isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
-
-        if (map.getPhysicsWorld() && !map.getPhysicsWorld()->isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
+        if (!map.getPhysicsWorld().isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
             throw std::runtime_error("Physics world should be paused while loading map.");
         }
-
-        if (map.getAIEnvironment() && !map.getAIEnvironment()->isPaused()) { //to avoid compute path based on a world with missing objects
+        if (!map.getAIEnvironment().isPaused()) { //to avoid compute path based on a world with missing objects
             throw std::runtime_error("AI environment should be paused while loading map.");
         }
 
@@ -74,7 +72,7 @@ namespace urchin {
             std::unique_ptr<ObjectEntity> objectEntity = ObjectEntityReaderWriter::load(objectChunk, udaParser);
             map.addObjectEntity(std::move(objectEntity));
         }
-        map.getRenderer3d()->preWarmModels();
+        map.getRenderer3d().preWarmModels();
     }
 
     void MapSaveService::loadLightEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
@@ -125,7 +123,7 @@ namespace urchin {
 
     void MapSaveService::loadAIConfig(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto aiElementsListChunk = udaParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
-        map.getAIEnvironment()->getNavMeshGenerator().setNavMeshAgent(NavMeshAgentReaderWriter::loadNavMeshAgent(aiElementsListChunk, udaParser));
+        map.getAIEnvironment().getNavMeshGenerator().setNavMeshAgent(NavMeshAgentReaderWriter::loadNavMeshAgent(aiElementsListChunk, udaParser));
     }
 
     void MapSaveService::saveMap(const std::string& filename, Map& map) const {
@@ -204,7 +202,7 @@ namespace urchin {
 
     void MapSaveService::writeAIConfig(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
-        NavMeshAgentReaderWriter::writeNavMeshAgent(aiElementsListChunk, map.getAIEnvironment()->getNavMeshGenerator().getNavMeshAgent(), udaWriter);
+        NavMeshAgentReaderWriter::writeNavMeshAgent(aiElementsListChunk, map.getAIEnvironment().getNavMeshGenerator().getNavMeshAgent(), udaWriter);
     }
 
     /**
