@@ -12,7 +12,7 @@ if (NOT WIN32)
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
-include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../aggregation/src)
+include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../aiEngine/src ../aggregation/src)
 
 #QT
 find_package(Qt5Core)
@@ -30,5 +30,5 @@ target_precompile_headers(urchinMapEditor PRIVATE
         ../3dEngine/src/Urchin3dEngine.h
         ../physicsEngine/src/UrchinPhysicsEngine.h
         ../soundEngine/src/UrchinSoundEngine.h
-        ../AIEngine/src/UrchinAIEngine.h
+        ../aiEngine/src/UrchinAIEngine.h
         ../aggregation/src/UrchinAggregation.h)
