@@ -13,7 +13,6 @@
 
 #include <system/SignalHandler.h>
 #include <util/FileUtil.h>
-#include <util/StringUtil.h>
 #include <logger/Logger.h>
 
 namespace urchin {
