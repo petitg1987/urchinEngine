@@ -10,8 +10,7 @@ namespace urchin {
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
-            aiEnvironment(aiEnvironment),
-            skyEntity(SkyEntity(renderer3d)) {
+            aiEnvironment(aiEnvironment) {
         if (!renderer3d) {
             throw std::invalid_argument("Renderer 3d cannot be null in map");
         }
@@ -142,11 +141,12 @@ namespace urchin {
     }
 
     const SkyEntity& Map::getSkyEntity() const {
-        return skyEntity;
+        return *skyEntity;
     }
 
-    void Map::updateSkyEntity(std::unique_ptr<Skybox> skybox) {
-        skyEntity.changeSkybox(std::move(skybox));
+    void Map::setSkyEntity(std::unique_ptr<SkyEntity> skyEntity) {
+        skyEntity->setup(renderer3d);
+        this->skyEntity = std::move(skyEntity);
     }
 
     const std::list<std::unique_ptr<SoundEntity>>& Map::getSoundEntities() const {

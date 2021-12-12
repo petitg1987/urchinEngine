@@ -52,7 +52,7 @@ namespace urchin {
             void removeWaterEntity(WaterEntity&);
 
             const SkyEntity& getSkyEntity() const;
-            void updateSkyEntity(std::unique_ptr<Skybox>); //TODO use SkyEntity instead of Skybox ?
+            void setSkyEntity(std::unique_ptr<SkyEntity>);
 
             const std::list<std::unique_ptr<SoundEntity>>& getSoundEntities() const;
             SoundEntity& getSoundEntity(const std::string&) const;
@@ -76,7 +76,7 @@ namespace urchin {
             std::list<std::unique_ptr<LightEntity>> lightEntities;
             std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
             std::list<std::unique_ptr<WaterEntity>> waterEntities;
-            SkyEntity skyEntity;
+            std::unique_ptr<SkyEntity> skyEntity;
             std::list<std::unique_ptr<SoundEntity>> soundEntities;
     };
 

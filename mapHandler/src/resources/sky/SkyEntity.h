@@ -6,13 +6,18 @@ namespace urchin {
 
     class SkyEntity {
         public:
-            explicit SkyEntity(Renderer3d*);
+            SkyEntity();
+            ~SkyEntity();
+
+            void setup(Renderer3d*);
 
             const Skybox* getSkybox() const;
-            void changeSkybox(std::unique_ptr<Skybox>);
+            void setSkybox(std::unique_ptr<Skybox>);
 
         private:
             Renderer3d* renderer3d;
+
+            std::shared_ptr<Skybox> skybox;
     };
 
 }

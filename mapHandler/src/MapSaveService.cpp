@@ -110,7 +110,7 @@ namespace urchin {
     void MapSaveService::loadSkyEntity(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto skyChunk = udaParser.getUniqueChunk(true, SKY_TAG, UdaAttribute(), sceneChunk);
 
-        map.updateSkyEntity(SkyEntityReaderWriter::load(skyChunk, udaParser));
+        map.setSkyEntity(SkyEntityReaderWriter::load(skyChunk, udaParser));
     }
 
     void MapSaveService::loadSoundEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {

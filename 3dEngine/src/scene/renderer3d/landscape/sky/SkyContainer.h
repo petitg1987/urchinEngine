@@ -10,7 +10,7 @@ namespace urchin {
         public:
             explicit SkyContainer(RenderTarget&);
 
-            void setSkybox(std::unique_ptr<Skybox>);
+            void setSkybox(std::shared_ptr<Skybox>);
             const Skybox* getSkybox() const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&, const Point3<float>&);
@@ -18,7 +18,7 @@ namespace urchin {
         private:
             RenderTarget& renderTarget;
 
-            std::unique_ptr<Skybox> skybox;
+            std::shared_ptr<Skybox> skybox;
     };
 
 }

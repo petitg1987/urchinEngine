@@ -1,17 +1,37 @@
 #include <resources/sky/SkyEntity.h>
 
 namespace urchin {
-    SkyEntity::SkyEntity(Renderer3d* renderer3d) :
-            renderer3d(renderer3d) {
+    SkyEntity::SkyEntity() :
+            renderer3d(nullptr) {
 
+    }
+
+    SkyEntity::~SkyEntity() {
+        if (skybox) {
+            renderer3d->getSkyContainer().setSkybox(nullptr);
+        }
+    }
+
+    void SkyEntity::setup(Renderer3d* renderer3d) {
+        if (!renderer3d) {
+            throw std::invalid_argument("Cannot specify a null renderer 3d for a sky entity.");
+        }
+
+        this->renderer3d = renderer3d;
+
+        renderer3d->getSkyContainer().setSkybox(skybox);
     }
 
     const Skybox* SkyEntity::getSkybox() const {
-        return renderer3d->getSkyContainer().getSkybox();
+        return skybox.get();
     }
 
-    void SkyEntity::changeSkybox(std::unique_ptr<Skybox> skybox) {
-        renderer3d->getSkyContainer().setSkybox(std::move(skybox));
+    void SkyEntity::setSkybox(std::unique_ptr<Skybox> skybox) {
+        this->skybox = std::move(skybox);
+
+        if (renderer3d) {
+            renderer3d->getSkyContainer().setSkybox(this->skybox);
+        }
     }
 
 }

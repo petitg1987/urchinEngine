@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    std::unique_ptr<Skybox> SkyEntityReaderWriter::load(const UdaChunk* skyChunk, const UdaParser& udaParser) {
-        std::unique_ptr<Skybox> skybox(nullptr);
+    std::unique_ptr<SkyEntity> SkyEntityReaderWriter::load(const UdaChunk* skyChunk, const UdaParser& udaParser) {
+        std::unique_ptr<SkyEntity> skyEntity = std::make_unique<SkyEntity>();
 
         auto skyboxChunk = udaParser.getUniqueChunk(false, SKYBOX_TAG, UdaAttribute(), skyChunk);
         if (skyboxChunk != nullptr) {
@@ -17,12 +17,15 @@ namespace urchin {
             for (const auto& filenameChunk : filenameListChunk) {
                 filenames.emplace_back(filenameChunk->getStringValue());
             }
-            skybox = std::make_unique<Skybox>(filenames);
+            std::unique_ptr<Skybox> skybox = std::make_unique<Skybox>(filenames);
 
             auto offsetYChunk = udaParser.getUniqueChunk(true, OFFSET_Y_TAG, UdaAttribute(), skyboxChunk);
             skybox->setOffsetY(offsetYChunk->getFloatValue());
+
+            skyEntity->setSkybox(std::move(skybox));
         }
-        return skybox;
+
+        return skyEntity;
     }
 
     void SkyEntityReaderWriter::write(UdaChunk& skyChunk, const SkyEntity& skyEntity, UdaWriter& udaWriter) {
