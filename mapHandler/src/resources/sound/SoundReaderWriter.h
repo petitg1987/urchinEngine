@@ -10,13 +10,10 @@ namespace urchin {
 
     class SoundReaderWriter {
         public:
-            static std::unique_ptr<Sound> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const Sound&, UdaWriter&);
+            static std::unique_ptr<Sound> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const Sound&, UdaWriter&);
 
         private:
-            static std::unique_ptr<Sound> buildSoundFrom(const UdaChunk*, const UdaParser&);
-            static void buildChunkFrom(UdaChunk&, const Sound&, UdaWriter&);
-
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char CATEGORY_ATTR[] = "category";
             static constexpr char SPATIAL_VALUE[] = "SPATIAL";

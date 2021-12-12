@@ -240,7 +240,7 @@ namespace urchin {
             QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "UDA file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
             if (!filename.isNull()) {
                 std::string mapFilename = filename.toUtf8().constData();
-                std::string relativeWorkingDirectory = MapHandler::getRelativeWorkingDirectory(mapFilename);
+                std::string relativeWorkingDirectory = MapSaveService::getRelativeWorkingDirectory(mapFilename);
                 loadMap(mapFilename, relativeWorkingDirectory);
             }
         }

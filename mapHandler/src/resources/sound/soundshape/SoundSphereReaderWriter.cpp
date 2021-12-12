@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    std::unique_ptr<SoundShape> SoundSphereReaderWriter::loadFrom(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+    std::unique_ptr<SoundShape> SoundSphereReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
         auto radiusChunk = udaParser.getUniqueChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
@@ -15,7 +15,7 @@ namespace urchin {
         return std::make_unique<SoundSphere>(radius, position, margin);
     }
 
-    void SoundSphereReaderWriter::writeOn(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
+    void SoundSphereReaderWriter::write(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto& sphereShape = static_cast<const SoundSphere&>(soundShape);

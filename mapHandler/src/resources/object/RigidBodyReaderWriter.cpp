@@ -4,27 +4,27 @@
 
 namespace urchin {
 
-    std::unique_ptr<RigidBody> RigidBodyReaderWriter::loadFrom(const UdaChunk* physicsChunk, const std::string& id,
+    std::unique_ptr<RigidBody> RigidBodyReaderWriter::load(const UdaChunk* physicsChunk, const std::string& id,
             const Transform<float>& modelTransform, const UdaParser& udaParser) {
         auto shapeChunk = udaParser.getUniqueChunk(true, SHAPE_TAG, UdaAttribute(), physicsChunk);
         std::unique_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
-        auto bodyShape = std::unique_ptr<CollisionShape3D>(shapeReaderWriter->loadFrom(shapeChunk, udaParser));
+        auto bodyShape = std::unique_ptr<CollisionShape3D>(shapeReaderWriter->load(shapeChunk, udaParser));
 
         auto rigidBody = std::make_unique<RigidBody>(id, PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()), std::move(bodyShape));
-        loadBodyPropertiesOn(*rigidBody, physicsChunk, udaParser);
+        loadBodyProperties(*rigidBody, physicsChunk, udaParser);
 
         return rigidBody;
     }
 
-    void RigidBodyReaderWriter::writeOn(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaWriter& udaWriter) {
+    void RigidBodyReaderWriter::write(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaWriter& udaWriter) {
         auto& shapeChunk = udaWriter.createChunk(SHAPE_TAG, UdaAttribute(), &physicsChunk);
         std::unique_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody.getShape());
 
-        shapeReaderWriter->writeOn(shapeChunk, rigidBody.getShape(), udaWriter);
-        writeBodyPropertiesOn(physicsChunk, rigidBody, udaWriter);
+        shapeReaderWriter->write(shapeChunk, rigidBody.getShape(), udaWriter);
+        writeBodyProperties(physicsChunk, rigidBody, udaWriter);
     }
 
-    void RigidBodyReaderWriter::loadBodyPropertiesOn(RigidBody& rigidBody, const UdaChunk* physicsChunk, const UdaParser& udaParser) {
+    void RigidBodyReaderWriter::loadBodyProperties(RigidBody& rigidBody, const UdaChunk* physicsChunk, const UdaParser& udaParser) {
         auto massChunk = udaParser.getUniqueChunk(true, MASS_TAG, UdaAttribute(), physicsChunk);
         float bodyMass = massChunk->getFloatValue();
         rigidBody.setMass(bodyMass);
@@ -49,7 +49,7 @@ namespace urchin {
         rigidBody.setAngularFactor(angularFactorChunk->getVector3Value());
     }
 
-    void RigidBodyReaderWriter::writeBodyPropertiesOn(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaWriter& udaWriter) {
+    void RigidBodyReaderWriter::writeBodyProperties(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaWriter& udaWriter) {
         auto& massChunk = udaWriter.createChunk(MASS_TAG, UdaAttribute(), &physicsChunk);
         massChunk.setFloatValue(rigidBody.getMass());
 

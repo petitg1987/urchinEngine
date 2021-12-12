@@ -2,12 +2,12 @@
 
 namespace urchin {
 
-    std::unique_ptr<TerrainEntity> TerrainEntityReaderWriter::loadFrom(const UdaChunk* terrainEntityChunk, const UdaParser& udaParser) {
+    std::unique_ptr<TerrainEntity> TerrainEntityReaderWriter::load(const UdaChunk* terrainEntityChunk, const UdaParser& udaParser) {
         auto terrainEntity = std::make_unique<TerrainEntity>();
 
-        std::unique_ptr<Terrain> terrain = buildTerrainFrom(terrainEntityChunk, udaParser);
-        loadPropertiesOn(*terrain, terrainEntityChunk, udaParser);
-        loadGrassOn(*terrain, terrainEntityChunk, udaParser);
+        std::unique_ptr<Terrain> terrain = buildTerrain(terrainEntityChunk, udaParser);
+        loadProperties(*terrain, terrainEntityChunk, udaParser);
+        loadGrass(*terrain, terrainEntityChunk, udaParser);
         auto collisionTerrainShape = std::make_unique<CollisionHeightfieldShape>(terrain->getMesh()->getVertices(), terrain->getMesh()->getXSize(), terrain->getMesh()->getZSize());
         auto terrainRigidBody = std::make_unique<RigidBody>(terrainEntity->getName(), PhysicsTransform(terrain->getPosition()), std::move(collisionTerrainShape));
 
@@ -18,16 +18,15 @@ namespace urchin {
         return terrainEntity;
     }
 
-    void TerrainEntityReaderWriter::writeOn(UdaChunk& terrainEntityChunk, const TerrainEntity& terrainEntity, UdaWriter& udaWriter) {
+    void TerrainEntityReaderWriter::write(UdaChunk& terrainEntityChunk, const TerrainEntity& terrainEntity, UdaWriter& udaWriter) {
         terrainEntityChunk.addAttribute(UdaAttribute(NAME_ATTR, terrainEntity.getName()));
 
-        buildChunkFrom(terrainEntityChunk, *terrainEntity.getTerrain(), udaWriter);
-
-        writePropertiesOn(terrainEntityChunk, *terrainEntity.getTerrain(), udaWriter);
-        writeGrassOn(terrainEntityChunk, *terrainEntity.getTerrain(), udaWriter);
+        writeTerrainChunk(terrainEntityChunk, *terrainEntity.getTerrain(), udaWriter);
+        writeProperties(terrainEntityChunk, *terrainEntity.getTerrain(), udaWriter);
+        writeGrass(terrainEntityChunk, *terrainEntity.getTerrain(), udaWriter);
     }
 
-    std::unique_ptr<Terrain> TerrainEntityReaderWriter::buildTerrainFrom(const UdaChunk* terrainEntityChunk, const UdaParser& udaParser) {
+    std::unique_ptr<Terrain> TerrainEntityReaderWriter::buildTerrain(const UdaChunk* terrainEntityChunk, const UdaParser& udaParser) {
         auto meshChunk = udaParser.getUniqueChunk(true, MESH_TAG, UdaAttribute(), terrainEntityChunk);
         auto heightFilenameChunk = udaParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, UdaAttribute(), meshChunk);
         auto xzScaleChunk = udaParser.getUniqueChunk(true, XZ_SCALE_TAG, UdaAttribute(), meshChunk);
@@ -55,7 +54,7 @@ namespace urchin {
         return std::make_unique<Terrain>(std::move(terrainMesh), std::move(terrainMaterial), positionChunk->getPoint3Value());
     }
 
-    void TerrainEntityReaderWriter::buildChunkFrom(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
+    void TerrainEntityReaderWriter::writeTerrainChunk(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
         auto& meshChunk = udaWriter.createChunk(MESH_TAG, UdaAttribute(), &terrainEntityChunk);
         auto& heightFilenameChunk = udaWriter.createChunk(HEIGHT_FILENAME_TAG, UdaAttribute(), &meshChunk);
         heightFilenameChunk.setStringValue(terrain.getMesh()->getHeightFilename());
@@ -85,17 +84,17 @@ namespace urchin {
         positionChunk.setPoint3Value(terrain.getPosition());
     }
 
-    void TerrainEntityReaderWriter::loadPropertiesOn(Terrain& terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) {
+    void TerrainEntityReaderWriter::loadProperties(Terrain& terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) {
         auto ambientChunk = udaParser.getUniqueChunk(true, AMBIENT_TAG, UdaAttribute(), terrainChunk);
         terrain.setAmbient(ambientChunk->getFloatValue());
     }
 
-    void TerrainEntityReaderWriter::writePropertiesOn(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
+    void TerrainEntityReaderWriter::writeProperties(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
         auto& ambientChunk = udaWriter.createChunk(AMBIENT_TAG, UdaAttribute(), &terrainEntityChunk);
         ambientChunk.setFloatValue(terrain.getAmbient());
     }
 
-    void TerrainEntityReaderWriter::loadGrassOn(Terrain& terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) {
+    void TerrainEntityReaderWriter::loadGrass(Terrain& terrain, const UdaChunk* terrainChunk, const UdaParser& udaParser) {
         auto grassChunk = udaParser.getUniqueChunk(false, GRASS_TAG, UdaAttribute(), terrainChunk);
         if (grassChunk) {
             auto grassTextureFilenameChunk = udaParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, UdaAttribute(), grassChunk);
@@ -124,7 +123,7 @@ namespace urchin {
         }
     }
 
-    void TerrainEntityReaderWriter::writeGrassOn(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
+    void TerrainEntityReaderWriter::writeGrass(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
         auto& grassChunk = udaWriter.createChunk(GRASS_TAG, UdaAttribute(), &terrainEntityChunk);
 
         auto& grassTextureFilenameChunk = udaWriter.createChunk(GRASS_TEXTURE_FILENAME_TAG, UdaAttribute(), &grassChunk);

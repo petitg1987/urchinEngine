@@ -6,8 +6,8 @@ namespace urchin {
 
     class SoundEntityReaderWriter {
         public:
-            static std::unique_ptr<SoundEntity> loadFrom(const UdaChunk*, const UdaParser&); //TODO rename methods and similar
-            static void writeOn(UdaChunk&, const SoundEntity&, UdaWriter&);
+            static std::unique_ptr<SoundEntity> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const SoundEntity&, UdaWriter&);
 
         private:
             static constexpr char NAME_ATTR[] = "name";

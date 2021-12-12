@@ -9,18 +9,18 @@ namespace urchin {
 
     class ModelReaderWriter {
         public:
-            static std::shared_ptr<Model> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const Model&, UdaWriter&);
+            static std::shared_ptr<Model> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const Model&, UdaWriter&);
 
         private:
-            static void loadAnimationsOn(Model&, const UdaChunk*, const UdaParser&);
-            static void writeAnimationsOn(UdaChunk&, const Model&, UdaWriter&);
+            static void loadAnimations(Model&, const UdaChunk*, const UdaParser&);
+            static void writeAnimations(UdaChunk&, const Model&, UdaWriter&);
 
-            static void loadTransformOn(Model&, const UdaChunk*, const UdaParser&);
-            static void writeTransformOn(UdaChunk&, const Model&, UdaWriter&);
+            static void loadTransform(Model&, const UdaChunk*, const UdaParser&);
+            static void writeTransform(UdaChunk&, const Model&, UdaWriter&);
 
-            static void loadFlagsOn(Model&, const UdaChunk*, const UdaParser&);
-            static void writeFlagsOn(UdaChunk&, const Model&, UdaWriter&);
+            static void loadFlags(Model&, const UdaChunk*, const UdaParser&);
+            static void writeFlags(UdaChunk&, const Model&, UdaWriter&);
 
             static constexpr char MESHES_TAG[] = "meshes";
             static constexpr char FILENAME_TAG[] = "filename";

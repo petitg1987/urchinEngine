@@ -6,8 +6,8 @@ namespace urchin {
 
     class ObjectEntityReaderWriter {
         public:
-            static std::unique_ptr<ObjectEntity> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const ObjectEntity&, UdaWriter&);
+            static std::unique_ptr<ObjectEntity> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const ObjectEntity&, UdaWriter&);
 
         private:
             static constexpr char MODEL_TAG[] = "model";

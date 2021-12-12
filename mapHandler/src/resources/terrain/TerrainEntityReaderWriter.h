@@ -10,18 +10,18 @@ namespace urchin {
 
     class TerrainEntityReaderWriter {
         public:
-            static std::unique_ptr<TerrainEntity> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const TerrainEntity&, UdaWriter&);
+            static std::unique_ptr<TerrainEntity> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const TerrainEntity&, UdaWriter&);
 
         private:
-            static std::unique_ptr<Terrain> buildTerrainFrom(const UdaChunk*, const UdaParser&);
-            static void buildChunkFrom(UdaChunk&, const Terrain&, UdaWriter&);
+            static std::unique_ptr<Terrain> buildTerrain(const UdaChunk*, const UdaParser&);
+            static void writeTerrainChunk(UdaChunk&, const Terrain&, UdaWriter&);
 
-            static void loadPropertiesOn(Terrain&, const UdaChunk*, const UdaParser&);
-            static void writePropertiesOn(UdaChunk&, const Terrain&, UdaWriter&);
+            static void loadProperties(Terrain&, const UdaChunk*, const UdaParser&);
+            static void writeProperties(UdaChunk&, const Terrain&, UdaWriter&);
 
-            static void loadGrassOn(Terrain&, const UdaChunk*, const UdaParser&);
-            static void writeGrassOn(UdaChunk&, const Terrain&, UdaWriter&);
+            static void loadGrass(Terrain&, const UdaChunk*, const UdaParser&);
+            static void writeGrass(UdaChunk&, const Terrain&, UdaWriter&);
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char INDEX_ATTR[] = "index";

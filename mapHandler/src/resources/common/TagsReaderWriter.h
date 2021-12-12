@@ -6,8 +6,8 @@ namespace urchin {
         public:
             static constexpr char TAGS_SEPARATOR = ',';
 
-            static std::vector<std::string> loadTags(const UdaChunk*, const UdaParser&);
-            static void writeTags(UdaChunk&, const std::vector<std::string>&, UdaWriter&);
+            static std::vector<std::string> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const std::vector<std::string>&, UdaWriter&);
 
         private:
 

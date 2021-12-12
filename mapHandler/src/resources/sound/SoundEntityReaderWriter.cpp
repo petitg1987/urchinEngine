@@ -4,25 +4,25 @@
 
 namespace urchin {
 
-    std::unique_ptr<SoundEntity> SoundEntityReaderWriter::loadFrom(const UdaChunk* soundEntityChunk, const UdaParser& udaParser) {
+    std::unique_ptr<SoundEntity> SoundEntityReaderWriter::load(const UdaChunk* soundEntityChunk, const UdaParser& udaParser) {
         auto soundEntity = std::make_unique<SoundEntity>();
 
         soundEntity->setName(soundEntityChunk->getAttributeValue(NAME_ATTR));
 
         auto soundChunk = udaParser.getUniqueChunk(true, SOUND_TAG, UdaAttribute(), soundEntityChunk);
         auto soundTriggerChunk = udaParser.getUniqueChunk(true, SOUND_TRIGGER_TAG, UdaAttribute(), soundEntityChunk);
-        soundEntity->setSoundElements(SoundReaderWriter::loadFrom(soundChunk, udaParser), SoundTriggerReaderWriter::loadFrom(soundTriggerChunk, udaParser));
+        soundEntity->setSoundElements(SoundReaderWriter::load(soundChunk, udaParser), SoundTriggerReaderWriter::load(soundTriggerChunk, udaParser));
 
         return soundEntity;
     }
 
-    void SoundEntityReaderWriter::writeOn(UdaChunk& soundEntityChunk, const SoundEntity& soundEntity, UdaWriter& udaWriter) {
+    void SoundEntityReaderWriter::write(UdaChunk& soundEntityChunk, const SoundEntity& soundEntity, UdaWriter& udaWriter) {
         soundEntityChunk.addAttribute(UdaAttribute(NAME_ATTR, soundEntity.getName()));
 
         auto& soundChunk = udaWriter.createChunk(SOUND_TAG, UdaAttribute(), &soundEntityChunk);
         auto& soundTriggerChunk = udaWriter.createChunk(SOUND_TRIGGER_TAG, UdaAttribute(), &soundEntityChunk);
-        SoundReaderWriter::writeOn(soundChunk, *soundEntity.getSound(), udaWriter);
-        SoundTriggerReaderWriter::writeOn(soundTriggerChunk, *soundEntity.getSoundTrigger(), udaWriter);
+        SoundReaderWriter::write(soundChunk, *soundEntity.getSound(), udaWriter);
+        SoundTriggerReaderWriter::write(soundTriggerChunk, *soundEntity.getSoundTrigger(), udaWriter);
     }
 
 }

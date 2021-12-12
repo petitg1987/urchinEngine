@@ -13,17 +13,17 @@
 
 namespace urchin {
 
-    class MapHandler { //TODO rename in MapSaveService ?
+    class MapSaveService {
         public:
-            MapHandler();
+            MapSaveService();
 
-            void loadMapFromFile(const std::string&, LoadMapCallback&, const std::unique_ptr<Map>&);
-            void writeMapOnFile(const std::string&, Map&) const;
+            void loadMap(const std::string&, LoadMapCallback&, const std::unique_ptr<Map>&);
+            void saveMap(const std::string&, Map&) const;
 
             static std::string getRelativeWorkingDirectory(const std::string&);
 
         private:
-            void loadFrom(Map&, const UdaChunk*, const UdaParser&, LoadMapCallback&); //TODO rename
+            void loadMap(Map&, const UdaChunk*, const UdaParser&, LoadMapCallback&);
             void loadObjectEntities(Map&, const UdaChunk*, const UdaParser&);
             void loadLightEntities(Map& p, const UdaChunk*, const UdaParser&);
             void loadTerrainEntities(Map&, const UdaChunk*, const UdaParser&);
@@ -32,7 +32,7 @@ namespace urchin {
             void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&);
             void loadAIConfig(Map&, const UdaChunk*, const UdaParser&);
 
-            void writeOn(Map&, UdaChunk&, UdaWriter&) const; //TODO rename
+            void writeMap(Map&, UdaChunk&, UdaWriter&) const;
             void writeObjectEntities(Map&, UdaChunk&, UdaWriter&) const;
             void writeLightEntities(Map&, UdaChunk&, UdaWriter&) const;
             void writeTerrainEntities(Map&, UdaChunk&, UdaWriter&) const;

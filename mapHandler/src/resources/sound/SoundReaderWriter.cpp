@@ -2,15 +2,7 @@
 
 namespace urchin {
 
-    std::unique_ptr<Sound> SoundReaderWriter::loadFrom(const UdaChunk* soundChunk, const UdaParser& udaParser) {
-        return buildSoundFrom(soundChunk, udaParser);
-    }
-
-    void SoundReaderWriter::writeOn(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
-        buildChunkFrom(soundChunk, sound, udaWriter);
-    }
-
-    std::unique_ptr<Sound> SoundReaderWriter::buildSoundFrom(const UdaChunk* soundChunk, const UdaParser& udaParser) {
+    std::unique_ptr<Sound> SoundReaderWriter::load(const UdaChunk* soundChunk, const UdaParser& udaParser) {
         auto filenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
@@ -39,7 +31,7 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::buildChunkFrom(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+    void SoundReaderWriter::write(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
         auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk);
         filenameChunk.setStringValue(sound.getFilename());
 

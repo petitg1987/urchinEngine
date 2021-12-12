@@ -10,18 +10,18 @@ namespace urchin {
 
     class WaterEntityReaderWriter {
         public:
-            static std::unique_ptr<WaterEntity> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const WaterEntity&, UdaWriter&);
+            static std::unique_ptr<WaterEntity> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const WaterEntity&, UdaWriter&);
 
         private:
-            static void loadGeneralPropertiesOn(Water&, const UdaChunk*, const UdaParser&);
-            static void writeGeneralPropertiesOn(UdaChunk&, const Water&, UdaWriter&);
+            static void loadGeneralProperties(Water&, const UdaChunk*, const UdaParser&);
+            static void writeGeneralProperties(UdaChunk&, const Water&, UdaWriter&);
 
             static void loadWaterSurfaceProperties(Water&, const UdaChunk*, const UdaParser&);
-            static void writeWaterSurfacePropertiesOn(UdaChunk&, const Water&, UdaWriter&);
+            static void writeWaterSurfaceProperties(UdaChunk&, const Water&, UdaWriter&);
 
             static void loadUnderWaterProperties(Water&, const UdaChunk*, const UdaParser&);
-            static void writeUnderWaterPropertiesOn(UdaChunk&, const Water&, UdaWriter&);
+            static void writeUnderWaterProperties(UdaChunk&, const Water&, UdaWriter&);
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char CENTER_POSITION_TAG[] = "centerPosition";

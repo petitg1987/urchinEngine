@@ -12,8 +12,8 @@ namespace urchin {
         public:
             ~CollisionSphereReaderWriter() override = default;
 
-            CollisionShape3D* loadFrom(const UdaChunk*, const UdaParser&) const override;
-            void writeOn(UdaChunk&, const CollisionShape3D&, UdaWriter&) const override;
+            CollisionShape3D* load(const UdaChunk*, const UdaParser&) const override;
+            void write(UdaChunk&, const CollisionShape3D&, UdaWriter&) const override;
 
         private:
             static constexpr char RADIUS_TAG[] = "radius";

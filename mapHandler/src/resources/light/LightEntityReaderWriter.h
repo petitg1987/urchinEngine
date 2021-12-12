@@ -10,18 +10,18 @@ namespace urchin {
 
     class LightEntityReaderWriter {
         public:
-            static std::unique_ptr<LightEntity> loadFrom(const UdaChunk*, const UdaParser&);
-            static void writeOn(UdaChunk&, const LightEntity&, UdaWriter&);
+            static std::unique_ptr<LightEntity> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const LightEntity&, UdaWriter&);
 
         private:
-            static std::unique_ptr<Light> buildLightFrom(const UdaChunk*, const UdaParser&);
-            static void buildChunkFrom(UdaChunk&, const Light&, UdaWriter&);
+            static std::unique_ptr<Light> buildLight(const UdaChunk*, const UdaParser&);
+            static void writeLightChunk(UdaChunk&, const Light&, UdaWriter&);
 
-            static void loadPropertiesFrom(Light&, const UdaChunk*, const UdaParser&);
-            static void writePropertiesOn(UdaChunk&, const Light&, UdaWriter&);
+            static void loadProperties(Light&, const UdaChunk*, const UdaParser&);
+            static void writeProperties(UdaChunk&, const Light&, UdaWriter&);
 
-            static void loadFlagsFrom(Light&, const UdaChunk*, const UdaParser&);
-            static void writeFlagsOn(UdaChunk&, const Light&, UdaWriter&);
+            static void loadFlags(Light&, const UdaChunk*, const UdaParser&);
+            static void writeFlags(UdaChunk&, const Light&, UdaWriter&);
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char TYPE_ATTR[] = "type";

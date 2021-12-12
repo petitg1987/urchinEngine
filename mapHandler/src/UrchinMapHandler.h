@@ -1,6 +1,6 @@
 #pragma once
 
-#include <MapHandler.h>
+#include <MapSaveService.h>
 
 #include <resources/Map.h>
 #include <resources/common/TagsReaderWriter.h>
