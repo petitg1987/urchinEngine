@@ -11,10 +11,6 @@
 
 namespace urchin {
 
-    MapSaveService::MapSaveService() {
-        SignalHandler::instance().initialize(); //TODO move somewhere else ?
-    }
-
     /**
      * @param map [out] Map to load the entities (must be empty)
      */

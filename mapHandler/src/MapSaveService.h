@@ -15,8 +15,6 @@ namespace urchin {
 
     class MapSaveService {
         public:
-            MapSaveService();
-
             void loadMap(const std::string&, LoadMapCallback&, const std::unique_ptr<Map>&);
             void saveMap(const std::string&, Map&) const;
 
