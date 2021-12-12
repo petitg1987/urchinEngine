@@ -3,7 +3,7 @@
 #include <list>
 #include <UrchinCommon.h>
 #include <UrchinPhysicsEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 #include <controller/AbstractController.h>
 

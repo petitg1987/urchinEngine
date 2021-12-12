@@ -3,7 +3,7 @@
 #include <memory>
 #include <QWidget>
 #include <UrchinPhysicsEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 #include <panel/objects/bodyshape/BodyShapeWidget.h>
 

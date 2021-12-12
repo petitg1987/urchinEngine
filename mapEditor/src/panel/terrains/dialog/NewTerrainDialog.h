@@ -5,7 +5,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <controller/terrains/TerrainController.h>
 
 namespace urchin {

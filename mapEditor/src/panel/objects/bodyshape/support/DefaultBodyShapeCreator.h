@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <UrchinPhysicsEngine.h>
 
 namespace urchin {

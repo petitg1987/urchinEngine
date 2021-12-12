@@ -4,7 +4,7 @@
 #include <QStandardItemModel>
 
 #include <UrchinCommon.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <controller/SceneController.h>
 
 Q_DECLARE_METATYPE(const urchin::TerrainEntity*)

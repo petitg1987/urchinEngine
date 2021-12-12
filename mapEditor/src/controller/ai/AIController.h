@@ -1,7 +1,7 @@
 #pragma once
 
 #include <UrchinCommon.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 #include <controller/AbstractController.h>
 

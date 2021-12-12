@@ -6,7 +6,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
 
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <UrchinSoundEngine.h>
 
 namespace urchin {

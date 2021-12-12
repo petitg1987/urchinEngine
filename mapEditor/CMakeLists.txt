@@ -12,7 +12,7 @@ if (NOT WIN32)
 endif()
 
 add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
-include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
+include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../aggregation/src)
 
 #QT
 find_package(Qt5Core)
@@ -24,11 +24,11 @@ file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURR
 add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/* ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/)
 add_executable(urchinMapEditor ${SOURCE_FILES})
 add_dependencies(urchinMapEditor copyShaders)
-target_link_libraries(urchinMapEditor ${LINK_OPT} ${QT_LIB} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)
+target_link_libraries(urchinMapEditor ${LINK_OPT} ${QT_LIB} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinAggregation)
 target_precompile_headers(urchinMapEditor PRIVATE
         ../common/src/UrchinCommon.h
         ../3dEngine/src/Urchin3dEngine.h
         ../physicsEngine/src/UrchinPhysicsEngine.h
         ../soundEngine/src/UrchinSoundEngine.h
         ../AIEngine/src/UrchinAIEngine.h
-        ../mapHandler/src/UrchinMapHandler.h)
+        ../aggregation/src/UrchinAggregation.h)

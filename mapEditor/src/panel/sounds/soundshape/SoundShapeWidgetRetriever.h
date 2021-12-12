@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include <UrchinSoundEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <panel/sounds/soundshape/SoundShapeWidget.h>
 
 namespace urchin {

@@ -2,7 +2,7 @@
 
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 namespace urchin {
 

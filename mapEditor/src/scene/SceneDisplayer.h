@@ -6,7 +6,7 @@
 #include <UrchinPhysicsEngine.h>
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 #include <widget/controller/mouse/MouseController.h>
 #include <widget/controller/statusbar/StatusBarController.h>

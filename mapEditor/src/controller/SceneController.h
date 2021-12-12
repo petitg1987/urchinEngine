@@ -2,7 +2,7 @@
 
 #include <list>
 
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <controller/objects/ObjectController.h>
 #include <controller/lights/LightController.h>
 #include <controller/terrains/TerrainController.h>

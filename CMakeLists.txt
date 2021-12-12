@@ -14,7 +14,7 @@ add_subdirectory(physicsEngine)
 add_subdirectory(soundEngine)
 add_subdirectory(networkEngine)
 add_subdirectory(AIEngine)
-add_subdirectory(mapHandler)
+add_subdirectory(aggregation)
 if ((URCHIN_BUILD_TOOLS MATCHES "YES") AND (NOT WIN32)) #not handled on Windows
     add_subdirectory(mapEditor)
     add_subdirectory(test)

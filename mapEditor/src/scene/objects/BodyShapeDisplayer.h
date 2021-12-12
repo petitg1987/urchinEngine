@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <Urchin3dEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 namespace urchin {
 

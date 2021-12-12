@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 #include <controller/SceneController.h>
 #include <scene/objects/move/ObjectMoveAxisDisplayer.h>

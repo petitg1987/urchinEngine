@@ -2,7 +2,7 @@
 
 #include <list>
 #include <UrchinCommon.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <Urchin3dEngine.h>
 
 #include <controller/AbstractController.h>

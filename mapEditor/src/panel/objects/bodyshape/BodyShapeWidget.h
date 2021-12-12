@@ -6,7 +6,7 @@
 #include <QtWidgets/QGridLayout>
 
 #include <UrchinCommon.h>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 #include <UrchinPhysicsEngine.h>
 
 namespace urchin {

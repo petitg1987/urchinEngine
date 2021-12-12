@@ -1,5 +1,5 @@
 #include <QtWidgets/QHBoxLayout>
-#include <UrchinMapHandler.h>
+#include <UrchinAggregation.h>
 
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>

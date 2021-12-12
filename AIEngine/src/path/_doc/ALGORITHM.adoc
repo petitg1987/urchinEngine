@@ -1,7 +1,7 @@
 :toc:
 
 == Nav mesh generation - overview
-* _Input:_ `AIWorld` (updated by mapHandler)
+* _Input:_ `AIWorld` (updated by aggregation)
 * `NavMeshGenerator::updateExpandedPolytopes()`:
 ** For each new or updated `AIObject` in scene:
 *** Create or update the `NavObject`
