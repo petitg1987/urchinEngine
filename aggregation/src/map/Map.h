@@ -33,22 +33,22 @@ namespace urchin {
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
             ObjectEntity& getObjectEntity(const std::string&) const;
             void findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const;
-            void addObjectEntity(std::unique_ptr<ObjectEntity>);
+            ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(ObjectEntity&);
 
             const std::list<std::unique_ptr<LightEntity>>& getLightEntities() const;
             LightEntity& getLightEntity(const std::string&) const;
-            void addLightEntity(std::unique_ptr<LightEntity>);
+            LightEntity& addLightEntity(std::unique_ptr<LightEntity>);
             void removeLightEntity(LightEntity&);
 
             const std::list<std::unique_ptr<TerrainEntity>>& getTerrainEntities() const;
             TerrainEntity& getTerrainEntity(const std::string&) const;
-            void addTerrainEntity(std::unique_ptr<TerrainEntity>);
+            TerrainEntity& addTerrainEntity(std::unique_ptr<TerrainEntity>);
             void removeTerrainEntity(TerrainEntity&);
 
             const std::list<std::unique_ptr<WaterEntity>>& getWaterEntities() const;
             WaterEntity& getWaterEntity(const std::string&) const;
-            void addWaterEntity(std::unique_ptr<WaterEntity>);
+            WaterEntity& addWaterEntity(std::unique_ptr<WaterEntity>);
             void removeWaterEntity(WaterEntity&);
 
             const SkyEntity& getSkyEntity() const;
@@ -56,7 +56,7 @@ namespace urchin {
 
             const std::list<std::unique_ptr<SoundEntity>>& getSoundEntities() const;
             SoundEntity& getSoundEntity(const std::string&) const;
-            void addSoundEntity(std::unique_ptr<SoundEntity>);
+            SoundEntity& addSoundEntity(std::unique_ptr<SoundEntity>);
             void removeSoundEntity(SoundEntity&);
 
             void refresh();

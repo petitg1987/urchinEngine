@@ -54,10 +54,11 @@ namespace urchin {
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, models);
     }
 
-    void Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+    ObjectEntity& Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
         objectEntity->setup(renderer3d, physicsWorld, aiEnvironment);
         objectEntitiesTagHolder.addTaggableResource(*objectEntity);
         objectEntities.push_back(std::move(objectEntity));
+        return *objectEntities.back();
     }
 
     void Map::removeObjectEntity(ObjectEntity& objectEntity) {
@@ -78,9 +79,10 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a light entity having name: " + name);
     }
 
-    void Map::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
+    LightEntity& Map::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
         lightEntity->setup(renderer3d.getLightManager());
         lightEntities.push_back(std::move(lightEntity));
+        return *lightEntities.back();
     }
 
     void Map::removeLightEntity(LightEntity& lightEntity) {
@@ -100,9 +102,10 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a terrain entity having name: " + name);
     }
 
-    void Map::addTerrainEntity(std::unique_ptr<TerrainEntity> terrainEntity) {
+    TerrainEntity& Map::addTerrainEntity(std::unique_ptr<TerrainEntity> terrainEntity) {
         terrainEntity->setup(renderer3d, physicsWorld, aiEnvironment);
         terrainEntities.push_back(std::move(terrainEntity));
+        return *terrainEntities.back();
     }
 
     void Map::removeTerrainEntity(TerrainEntity& terrainEntity) {
@@ -122,9 +125,10 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a water entity having name: " + name);
     }
 
-    void Map::addWaterEntity(std::unique_ptr<WaterEntity> waterEntity) {
+    WaterEntity& Map::addWaterEntity(std::unique_ptr<WaterEntity> waterEntity) {
         waterEntity->setup(renderer3d);
         waterEntities.push_back(std::move(waterEntity));
+        return *waterEntities.back();
     }
 
     void Map::removeWaterEntity(WaterEntity& waterEntity) {
@@ -153,9 +157,10 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a sound entity having name: " + name);
     }
 
-    void Map::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
+    SoundEntity& Map::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {
         soundEntity->setup(soundEnvironment);
         soundEntities.push_back(std::move(soundEntity));
+        return *soundEntities.back();
     }
 
     void Map::removeSoundEntity(SoundEntity& soundEntity) {
