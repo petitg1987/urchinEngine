@@ -92,7 +92,7 @@ namespace urchin {
 
         SymCleanup(process);
 
-        urchin::Logger::instance().logError(stacktrace);
+        Logger::instance().logError(stacktrace);
         if (instance().signalReceptor) {
             instance().signalReceptor->onSignalReceived(exceptionInfo->ExceptionRecord->ExceptionCode);
         }
@@ -159,7 +159,7 @@ namespace urchin {
             free(symbols);
         }
 
-        urchin::Logger::instance().logError(stacktrace);
+        Logger::instance().logError(stacktrace);
         if (instance().signalReceptor) {
             instance().signalReceptor->onSignalReceived((unsigned long)signalId);
         }

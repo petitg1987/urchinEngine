@@ -6,11 +6,11 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
-MyGridItem::MyGridItem(const urchin::Point3<int>& position) :
+MyGridItem::MyGridItem(const Point3<int>& position) :
         position(position) {
 }
 
-const urchin::Point3<int>& MyGridItem::getGridPosition() const {
+const Point3<int>& MyGridItem::getGridPosition() const {
     return position;
 }
 
