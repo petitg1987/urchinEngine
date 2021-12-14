@@ -20,7 +20,7 @@ namespace urchin {
         public:
             friend class ThreadSafeSingleton<ResourceRetriever>;
 
-            template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string>& = {});
+            template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string>& = {}, bool = false);
 
         private:
             ResourceRetriever();

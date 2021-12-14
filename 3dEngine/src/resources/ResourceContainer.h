@@ -21,6 +21,8 @@ namespace urchin {
         private:
             ResourceContainer();
 
+            void cleanResources(bool);
+
             mutable std::mutex mutex;
             std::map<std::string, std::shared_ptr<Resource>> resources;
     };

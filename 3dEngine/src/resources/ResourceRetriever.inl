@@ -1,9 +1,9 @@
 /**
  * @param filename Resource filename
- * @param params (optional) Parameter to load the resource
- * @param fileContentType (optional) Define the content of the file when extension is not sufficient. Example: a .json file define the format of the file but not its content.
+ * @param params Parameters required to load the resource
+ * @param keepForever Indicates if resource must be keep in memory forever. This parameter can be useful when a resource is loaded / unloaded constantly over different frames.
  */
-template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string>& params) {
+template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string>& params, bool keepForever) {
     //resource already charged ?
     std::string resourceId = filename + "_" + MapSerializer::serialize(params);
     std::shared_ptr<T> resource = ResourceContainer::instance().getResource<T>(resourceId);
@@ -28,6 +28,7 @@ template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::s
     resource = loader->loadFromFile(filename, params);
     resource->setId(resourceId);
     resource->setName(filename);
+    resource->setPermanent(keepForever);
 
     ResourceContainer::instance().addResource(resource);
     return resource;

@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     ResourceContainer::~ResourceContainer() {
-        cleanResources();
+        cleanResources(true);
         for (const auto& [resourceId, resource] : resources) {
             Logger::instance().logError("Resources not released: " + resource->getName() + ". Usage count: " + std::to_string(resource.use_count()));
         }
@@ -25,15 +25,22 @@ namespace urchin {
     }
 
     void ResourceContainer::cleanResources() {
+        cleanResources(false);
+    }
+
+    void ResourceContainer::cleanResources(bool forceClean) {
         std::scoped_lock<std::mutex> lock(mutex);
 
         bool resourcesDestroyed;
         do {
             resourcesDestroyed = false;
-            std::erase_if(resources, [&resourcesDestroyed](const auto& resource){
+            std::erase_if(resources, [&resourcesDestroyed, &forceClean](const auto& resource) {
                 if (resource.second.use_count() <= 1) { //resource not used anymore
-                    resourcesDestroyed = true;
-                    return true;
+                    bool canDestroy = forceClean || !resource.second->isPermanent();
+                    if (canDestroy) {
+                        resourcesDestroyed = true;
+                        return true;
+                    }
                 }
                 return false;
             });

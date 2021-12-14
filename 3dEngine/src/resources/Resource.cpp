@@ -3,6 +3,11 @@
 
 namespace urchin {
 
+    Resource::Resource() :
+            permanent(false) {
+
+    }
+
     const std::string& Resource::getId() const {
         return id;
     }
@@ -17,6 +22,14 @@ namespace urchin {
 
     void Resource::setName(const std::string& name) {
         this->name = name;
+    }
+
+    bool Resource::isPermanent() const {
+        return permanent;
+    }
+
+    void Resource::setPermanent(bool permanent) {
+        this->permanent = permanent;
     }
 
 }
