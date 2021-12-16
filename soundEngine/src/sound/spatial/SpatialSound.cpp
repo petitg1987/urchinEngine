@@ -26,15 +26,15 @@ namespace urchin {
         //  gain/volume = AL_REFERENCE_DISTANCE / (AL_REFERENCE_DISTANCE + AL_ROLLOFF_FACTOR * (distance – AL_REFERENCE_DISTANCE));
         //
         //Formula can be visualized on https://www.desmos.com/calculator :
-        //  Expression: "0.5 / (0.5 + 2.0 * (min(max(x, 0.5), 15.0) – 0.5))"
-        //  Values used: 0.5 = AL_REFERENCE_DISTANCE, 2.0 = AL_ROLLOFF_FACTOR, 15.0 = AL_MAX_DISTANCE
+        //  Expression: "1.0 / (1.0 + 2.0 * (min(max(x, 1.0), 15.0) – 1.0))"
+        //  Values used: 1.0 = AL_REFERENCE_DISTANCE, 2.0 = AL_ROLLOFF_FACTOR, 15.0 = AL_MAX_DISTANCE
         static int soundModelInitialized = false;
         if (!soundModelInitialized) {
             alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
             soundModelInitialized = true;
         }
         alSourcef(sourceId, AL_MAX_DISTANCE, inaudibleDistance);
-        alSourcef(sourceId, AL_REFERENCE_DISTANCE, 0.5f); //no sound volume decrease over the distance from 0.0f to AL_REFERENCE_DISTANCE
+        alSourcef(sourceId, AL_REFERENCE_DISTANCE, 1.0f); //no sound volume decrease over the distance from 0.0f to AL_REFERENCE_DISTANCE
         alSourcef(sourceId, AL_ROLLOFF_FACTOR, 2.0f);
     }
 
