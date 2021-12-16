@@ -180,7 +180,7 @@ namespace urchin {
     /**
      * @return True if thread execution is not interrupted
      */
-    bool PhysicsWorld::continueExecution() {
+    bool PhysicsWorld::continueExecution() const {
         return !physicsSimulationStopper.load(std::memory_order_acquire);
     }
 

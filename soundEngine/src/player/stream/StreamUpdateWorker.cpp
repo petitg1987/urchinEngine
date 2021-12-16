@@ -13,7 +13,7 @@ namespace urchin {
     StreamUpdateWorker::StreamUpdateWorker() :
             nbChunkBuffer(ConfigService::instance().getUnsignedIntValue("player.numberOfStreamBuffer")),
             nbSecondByChunk(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInSecond")),
-            updateStreamBufferPauseTime(ConfigService::instance().getUnsignedIntValue("player.updateStreamBufferPauseTime")),
+            updateStreamBufferPauseTime((int)ConfigService::instance().getUnsignedIntValue("player.updateStreamBufferPauseTime")),
             streamUpdateWorkerStopper(false) {
         if (nbChunkBuffer <= 1) {
             throw std::domain_error("Number of chunk buffer must be greater than one.");
@@ -108,7 +108,9 @@ namespace urchin {
                     }
                 }
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
+                if (StepSleep::sleep(updateStreamBufferPauseTime, this)) {
+                    break;
+                }
             }
         } catch (const std::exception&) {
             Logger::instance().logError("Error cause sound thread crash: exception reported to main thread");
@@ -119,7 +121,7 @@ namespace urchin {
     /**
      * @return True if thread execution is not interrupted
      */
-    bool StreamUpdateWorker::continueExecution() {
+    bool StreamUpdateWorker::continueExecution() const {
         return !streamUpdateWorkerStopper.load(std::memory_order_acquire);
     }
 

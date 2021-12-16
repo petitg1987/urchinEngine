@@ -116,7 +116,9 @@ namespace urchin {
 
                 float remainingTime = timeStep - (float)((double)deltaTimeInUs / 1000000.0f);
                 if (remainingTime >= 0.0f) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds((int)(remainingTime * 1000.0f)));
+                    if (StepSleep::sleep((int)(remainingTime * 1000.0f), this)) {
+                        break;
+                    }
                     frameStartTime = std::chrono::steady_clock::now();
                 } else {
                     frameStartTime = frameEndTime;
@@ -133,7 +135,7 @@ namespace urchin {
     /**
      * @return True if thread execution is not interrupted
     */
-    bool AIEnvironment::continueExecution() {
+    bool AIEnvironment::continueExecution() const {
         return !aiSimulationStopper.load(std::memory_order_acquire);
     }
 

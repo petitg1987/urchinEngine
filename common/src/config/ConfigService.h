@@ -19,7 +19,7 @@ namespace urchin {
 
             bool isExist(const std::string&) const;
 
-            unsigned getUnsignedIntValue(const std::string&) const;
+            unsigned int getUnsignedIntValue(const std::string&) const;
             float getFloatValue(const std::string&) const;
             std::string getStringValue(const std::string&) const;
             char getCharValue(const std::string&) const;

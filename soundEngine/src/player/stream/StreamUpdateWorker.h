@@ -13,6 +13,8 @@ namespace urchin {
     */
     class StreamUpdateWorker {
         public:
+            friend class StepSleep;
+
             StreamUpdateWorker();
             ~StreamUpdateWorker();
 
@@ -25,7 +27,7 @@ namespace urchin {
             void checkNoExceptionRaised();
 
         private:
-            bool continueExecution();
+            bool continueExecution() const;
 
             bool processTask(StreamUpdateTask&);
             void deleteTask(StreamUpdateTask&);
@@ -37,7 +39,7 @@ namespace urchin {
 
             const unsigned int nbChunkBuffer;
             const unsigned int nbSecondByChunk;
-            const unsigned int updateStreamBufferPauseTime;
+            const int updateStreamBufferPauseTime;
 
             std::atomic_bool streamUpdateWorkerStopper;
             static std::exception_ptr soundThreadExceptionPtr;

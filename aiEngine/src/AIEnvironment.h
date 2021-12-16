@@ -16,6 +16,8 @@ namespace urchin {
 
     class AIEnvironment {
         public:
+            friend class StepSleep;
+
             AIEnvironment();
             ~AIEnvironment();
 
@@ -36,7 +38,7 @@ namespace urchin {
 
         private:
             void startAIUpdate();
-            bool continueExecution();
+            bool continueExecution() const;
             void processAIUpdate();
 
             std::unique_ptr<std::jthread> aiSimulationThread;
