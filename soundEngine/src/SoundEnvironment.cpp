@@ -1,5 +1,4 @@
 #include <AL/al.h>
-#include <algorithm>
 #include <stdexcept>
 
 #include <SoundEnvironment.h>
@@ -12,7 +11,6 @@ namespace urchin {
         SignalHandler::instance().initialize();
 
         AudioDevice::instance().enable(true);
-        alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
         alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 
         soundVolumes[Sound::SoundCategory::MUSIC] = 1.0f;
