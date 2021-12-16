@@ -15,4 +15,3 @@ template<class T> bool StepSleep::sleep(int sleepMs, const T* threadClass) {
     }
     return false;
 }
-
