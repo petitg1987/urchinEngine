@@ -18,9 +18,7 @@ namespace urchin {
             maxWidth(100.0f),
             maxWidthType(LengthType::SCREEN_PERCENT),
             font(nullptr) {
-        if (!hasTranslatableText()) {
-            text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
-        }
+
     }
 
     std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, std::string inputText) {
@@ -35,12 +33,14 @@ namespace urchin {
 
     void Text::createOrUpdateWidget() {
         refreshFont();
-        refreshTextAndWidgetSize();
-        refreshRenderer();
 
         if (hasTranslatableText()) {
             getI18nService()->add(this);
+        } else {
+            text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
+            refreshTextAndWidgetSize();
         }
+        refreshRenderer();
     }
 
     void Text::setMaxWidth(float maxWidth, LengthType maxWidthType) {
@@ -82,12 +82,11 @@ namespace urchin {
 
         if (!hasTranslatableText()) {
             text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
+            refreshTextAndWidgetSize();
+            refreshRendererData();
         } else {
             getI18nService()->add(this);
         }
-
-        refreshTextAndWidgetSize();
-        refreshRendererData();
     }
 
     const std::string& Text::getText() const {
