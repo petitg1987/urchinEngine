@@ -43,7 +43,7 @@ namespace urchin {
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
 
         if (translatableValues) {
-            currentValueText = Text::createTranslatable(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
+            currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, i18n(values[selectedIndex]));
         } else {
             currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         }

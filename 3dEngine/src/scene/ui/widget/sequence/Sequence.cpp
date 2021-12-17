@@ -68,7 +68,7 @@ namespace urchin {
         valuesText.resize(values.size(), std::shared_ptr<Text>(nullptr));
         for (std::size_t i = 0; i < values.size(); ++i) {
             if (translatableValues) {
-                valuesText[i] = Text::createTranslatable(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
+                valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, i18n(values[i]));
             } else {
                 valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
             }

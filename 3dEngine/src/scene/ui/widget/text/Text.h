@@ -20,7 +20,6 @@ namespace urchin {
     class Text : public Widget, public TranslatableLabel {
         public:
             static std::shared_ptr<Text> create(Widget*, Position, std::string, std::string);
-            static std::shared_ptr<Text> createTranslatable(Widget*, Position, std::string, const std::string&);
             ~Text() override;
 
             void setMaxWidth(float, LengthType);
