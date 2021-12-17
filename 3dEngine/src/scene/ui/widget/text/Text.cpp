@@ -15,6 +15,7 @@ namespace urchin {
             skinName(std::move(skinName)),
             inputText(std::move(inputText)),
             inputTextParameters(std::move(inputTextParameters)),
+            parameterRegex("\\{[a-zA-Z-]+}"),
             maxWidth(100.0f),
             maxWidthType(LengthType::SCREEN_PERCENT),
             font(nullptr) {
@@ -132,10 +133,7 @@ namespace urchin {
                 paramValue = languageTranslator.translate(paramValue.substr(1));
             }
 
-            bool parameterReplaced = StringUtil::replaceFirst(text, "{}", paramValue);
-            if(!parameterReplaced) {
-                throw std::runtime_error("Wrong number of parameters in '" + inputText + "'. Expected parameters: " + std::to_string(inputTextParameters.size()));
-            }
+            text = std::regex_replace(text, parameterRegex, paramValue, std::regex_constants::format_first_only);
         }
 
         refreshTextAndWidgetSize();

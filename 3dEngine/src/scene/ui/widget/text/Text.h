@@ -4,6 +4,7 @@
 #include <memory>
 #include <codecvt>
 #include <optional>
+#include <regex>
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
@@ -56,6 +57,7 @@ namespace urchin {
             std::string skinName;
             std::string inputText;
             std::vector<std::string> inputTextParameters;
+            std::regex parameterRegex;
             std::string text;
             float maxWidth;
             LengthType maxWidthType;
