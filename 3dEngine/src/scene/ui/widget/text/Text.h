@@ -24,7 +24,6 @@ namespace urchin {
 
             void setMaxWidth(float, LengthType);
             void updateText(std::string);
-            void updateLabelKey(std::string);
 
             const std::string& getText() const;
             const Font& getFont() const;

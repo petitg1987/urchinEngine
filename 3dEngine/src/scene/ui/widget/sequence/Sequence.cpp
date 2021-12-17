@@ -6,11 +6,10 @@
 
 namespace urchin {
 
-    Sequence::Sequence(Position position, Size size, std::string skinName, const std::vector<std::string>& values, bool translatableValues) :
+    Sequence::Sequence(Position position, Size size, std::string skinName, const std::vector<std::string>& values) :
             Widget(position, size),
             skinName(std::move(skinName)),
             values(values),
-            translatableValues(translatableValues),
             loopOnValuesEnabled(true),
             selectedIndex(0),
             leftButton(nullptr),
@@ -21,11 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Sequence> Sequence::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
-        return Widget::create<Sequence>(new Sequence(position, size, std::move(skinName), texts, false), parent);
-    }
-
-    std::shared_ptr<Sequence> Sequence::createTranslatable(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& textKeys) {
-        return Widget::create<Sequence>(new Sequence(position, size, std::move(skinName), textKeys, true), parent);
+        return Widget::create<Sequence>(new Sequence(position, size, std::move(skinName), texts), parent);
     }
 
     void Sequence::createOrUpdateWidget() {
@@ -67,11 +62,7 @@ namespace urchin {
         //values
         valuesText.resize(values.size(), std::shared_ptr<Text>(nullptr));
         for (std::size_t i = 0; i < values.size(); ++i) {
-            if (translatableValues) {
-                valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, i18n(values[i]));
-            } else {
-                valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
-            }
+            valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
             valuesText[i]->setIsVisible(false);
         }
         valuesText[selectedIndex]->setIsVisible(true);

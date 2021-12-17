@@ -5,12 +5,11 @@
 
 namespace urchin {
 
-    Slider::Slider(Position position, Size size, std::string skinName, const std::vector<std::string>& values, bool translatableValues) :
+    Slider::Slider(Position position, Size size, std::string skinName, const std::vector<std::string>& values) :
             Widget(position, size),
             TEXT_SHIFT_LENGTH(10.0f),
             skinName(std::move(skinName)),
             values(values),
-            translatableValues(translatableValues),
             selectedIndex(0),
             state(DEFAULT),
             currentValueText(nullptr),
@@ -21,11 +20,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Slider> Slider::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
-        return Widget::create<Slider>(new Slider(position, size, std::move(skinName), texts, false), parent);
-    }
-
-    std::shared_ptr<Slider> Slider::createTranslatable(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& textKeys) {
-        return Widget::create<Slider>(new Slider(position, size, std::move(skinName), textKeys, true), parent);
+        return Widget::create<Slider>(new Slider(position, size, std::move(skinName), texts), parent);
     }
 
     void Slider::createOrUpdateWidget() {
@@ -42,11 +37,7 @@ namespace urchin {
         auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), sliderChunk);
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
 
-        if (translatableValues) {
-            currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, i18n(values[selectedIndex]));
-        } else {
-            currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
-        }
+        currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
         currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
@@ -90,11 +81,7 @@ namespace urchin {
         this->selectedIndex = index;
 
         if (currentValueText) {
-            if (translatableValues) {
-                currentValueText->updateLabelKey(values[selectedIndex]);
-            } else {
-                currentValueText->updateText(values[selectedIndex]);
-            }
+            currentValueText->updateText(values[selectedIndex]);
             moveSliderCursor();
         }
     }
@@ -149,11 +136,7 @@ namespace urchin {
         moveSliderCursor();
 
         //update text
-        if (translatableValues) {
-            currentValueText->updateLabelKey(values[selectedIndex]);
-        } else {
-            currentValueText->updateText(values[selectedIndex]);
-        }
+        currentValueText->updateText(values[selectedIndex]);
 
         //event
         if (oldSelectedIndex != selectedIndex) {

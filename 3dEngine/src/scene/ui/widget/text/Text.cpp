@@ -73,29 +73,18 @@ namespace urchin {
         });
     }
 
-    void Text::updateText(std::string text) {
-        if (inputTexts.size() > 1) {
-            throw std::runtime_error("Cannot update text when text is composed");
-        } else if (hasTranslatableText()) {
-            throw std::runtime_error("Cannot manually update text on a translatable text");
+    void Text::updateText(std::string inputText) {
+        if (hasTranslatableText()) {
+            getI18nService()->remove(this);
         }
 
-        this->inputTexts[0] = std::move(text);
-        this->text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
-        refreshTextAndWidgetSize();
-        refreshRendererData();
-    }
+        this->inputTexts = {std::move(inputText)};
 
-    void Text::updateLabelKey(std::string labelKey) {
-        if (inputTexts.size() > 1) {
-            throw std::runtime_error("Cannot update label key when text is composed");
-        } else if (!hasTranslatableText()) {
-            throw std::runtime_error("Cannot manually update label key on a non translatable text");
+        if (!hasTranslatableText()) {
+            text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
+        } else {
+            getI18nService()->add(this);
         }
-
-        this->inputTexts[0] = TRANSLATABLE_TEXT_PREFIX + std::move(labelKey);
-        getI18nService()->remove(this);
-        getI18nService()->add(this);
 
         refreshTextAndWidgetSize();
         refreshRendererData();
