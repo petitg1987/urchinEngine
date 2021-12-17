@@ -7,6 +7,7 @@
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
+#include <scene/ui/widget/text/ParameterizedText.h>
 #include <scene/ui/allocator/StringConverterAllocator.h>
 #include <i18n/TranslatableLabel.h>
 #include <resources/font/Font.h>
@@ -14,16 +15,17 @@
 
 namespace urchin {
 
-    constexpr char TRANSLATABLE_TEXT_PREFIX = '~';
-    constexpr auto i18n = [](const std::string& text) { return TRANSLATABLE_TEXT_PREFIX + text; };
-
     class Text : public Widget, public TranslatableLabel {
         public:
+            static constexpr char TRANSLATABLE_TEXT_PREFIX = '~';
+
             static std::shared_ptr<Text> create(Widget*, Position, std::string, std::string);
+            static std::shared_ptr<Text> create(Widget*, Position, std::string, const ParameterizedText&);
             ~Text() override;
 
             void setMaxWidth(float, LengthType);
             void updateText(std::string);
+            void updateText(const ParameterizedText&);
 
             const std::string& getText() const;
             const Font& getFont() const;
@@ -36,10 +38,11 @@ namespace urchin {
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
-            Text(Position, std::string, std::string);
+            Text(Position, std::string, std::string, std::vector<std::string>);
 
+            void updateText(std::string, std::vector<std::string>);
             unsigned int getMaxWidth() const;
-            bool hasTranslatableText() const;
+            bool hasTranslatableInput() const;
 
             void refreshTextAndWidgetSize();
             void cutText();
@@ -51,7 +54,8 @@ namespace urchin {
 
             //properties
             std::string skinName;
-            std::vector<std::string> inputTexts;
+            std::string inputText;
+            std::vector<std::string> inputTextParameters;
             std::string text;
             float maxWidth;
             LengthType maxWidthType;
@@ -66,5 +70,7 @@ namespace urchin {
             std::vector<Point2<float>> textureCoord;
             std::unique_ptr<GenericRenderer> textRenderer;
     };
+
+    constexpr auto i18n = [](const std::string& text) { return Text::TRANSLATABLE_TEXT_PREFIX + text; };
 
 }

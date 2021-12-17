@@ -6,17 +6,26 @@
 namespace urchin {
 
     void StringUtil::replaceAll(std::string& str, const std::string& from, const std::string& to) {
-        size_t startPos = 0;
+        std::size_t startPos = 0;
         while ((startPos = str.find(from, startPos)) != std::string::npos) {
             str.replace(startPos, from.length(), to);
             startPos += to.length();
         }
     }
 
+    bool StringUtil::replaceFirst(std::string& str, const std::string& from, const std::string& to) {
+        std::size_t pos;
+        if ((pos = str.find(from)) != std::string::npos) {
+            str.replace(pos, from.length(), to);
+            return true;
+        }
+        return false;
+    }
+
     void StringUtil::replaceLine(std::string& str, const std::string& startLineValue, const std::string& newLineValue) {
-        size_t startPos;
+        std::size_t startPos;
         if ((startPos = str.find(startLineValue)) != std::string::npos) {
-            size_t endOfLinePos = str.find('\n', startPos);
+            std::size_t endOfLinePos = str.find('\n', startPos);
             if (endOfLinePos == std::string::npos) [[unlikely]] {
                 throw std::runtime_error("Impossible to replace '" + startLineValue + "' by '" + newLineValue + "' because EOL not found");
             }

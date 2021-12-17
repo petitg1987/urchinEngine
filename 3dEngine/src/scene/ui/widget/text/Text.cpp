@@ -1,6 +1,5 @@
 #include <memory>
 #include <utility>
-#include <numeric>
 
 #include <scene/ui/widget/text/Text.h>
 #include <scene/ui/widget/container/Container.h>
@@ -11,10 +10,11 @@
 
 namespace urchin {
 
-    Text::Text(Position position, std::string skinName, std::string inputText) :
+    Text::Text(Position position, std::string skinName, std::string inputText, std::vector<std::string> inputTextParameters) :
             Widget(position, Size(0, 0, LengthType::PIXEL)),
             skinName(std::move(skinName)),
-            inputTexts({std::move(inputText)}),
+            inputText(std::move(inputText)),
+            inputTextParameters(std::move(inputTextParameters)),
             maxWidth(100.0f),
             maxWidthType(LengthType::SCREEN_PERCENT),
             font(nullptr) {
@@ -22,11 +22,15 @@ namespace urchin {
     }
 
     std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, std::string inputText) {
-        return Widget::create<Text>(new Text(position, std::move(skinName), std::move(inputText)), parent);
+        return Widget::create<Text>(new Text(position, std::move(skinName), std::move(inputText), {}), parent);
+    }
+
+    std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, const ParameterizedText& parameterizedText) {
+        return Widget::create<Text>(new Text(position, std::move(skinName), parameterizedText.getText(), parameterizedText.getParameters()), parent);
     }
 
     Text::~Text() {
-        if (hasTranslatableText() && getI18nService()) {
+        if (hasTranslatableInput() && getI18nService()) {
             getI18nService()->remove(this);
         }
     }
@@ -34,10 +38,11 @@ namespace urchin {
     void Text::createOrUpdateWidget() {
         refreshFont();
 
-        if (hasTranslatableText()) {
+        if (hasTranslatableInput()) {
             getI18nService()->add(this);
         } else {
-            text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
+            assert(inputTextParameters.empty());
+            text = inputText;
             refreshTextAndWidgetSize();
         }
         refreshRenderer();
@@ -67,21 +72,43 @@ namespace urchin {
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
 
-    bool Text::hasTranslatableText() const {
-        return std::ranges::any_of(inputTexts, [&](const std::string& inputText) {
-            return !inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX;
-        });
+    bool Text::hasTranslatableInput() const {
+        if (!inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX) {
+            return true;
+        }
+
+        if (!inputTextParameters.empty()) {
+            bool hasTranslatableParameters = std::ranges::any_of(inputTextParameters, [](const std::string& parameter) {
+                return !parameter.empty() && parameter[0] == TRANSLATABLE_TEXT_PREFIX;
+            });
+            if (hasTranslatableParameters) {
+                return true;
+            }
+            throw std::runtime_error("Parameterized text without translatable input text found: use string concatenation instead of parameterized text");
+        }
+
+        return false;
     }
 
     void Text::updateText(std::string inputText) {
-        if (hasTranslatableText()) {
+        updateText(std::move(inputText), {});
+    }
+
+    void Text::updateText(const ParameterizedText& parameterizedText) {
+        updateText(parameterizedText.getText(), parameterizedText.getParameters());
+    }
+
+    void Text::updateText(std::string inputText, std::vector<std::string> inputTextParameters) {
+        if (hasTranslatableInput()) {
             getI18nService()->remove(this);
         }
 
-        this->inputTexts = {std::move(inputText)};
+        this->inputText = std::move(inputText);
+        this->inputTextParameters = std::move(inputTextParameters);
 
-        if (!hasTranslatableText()) {
-            text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
+        if (!hasTranslatableInput()) {
+            assert(this->inputTextParameters.empty());
+            text = this->inputText;
             refreshTextAndWidgetSize();
             refreshRendererData();
         } else {
@@ -94,14 +121,23 @@ namespace urchin {
     }
 
     void Text::refreshTranslation(const LanguageTranslator&& languageTranslator) {
-        this->text = "";
-        for (const std::string& inputText : inputTexts) {
-            if (!inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX) {
-                text += languageTranslator.translate(inputText.substr(1));
-            } else {
-                text += inputText;
+        text = inputText;
+        if (!text.empty() && text[0] == TRANSLATABLE_TEXT_PREFIX) {
+            text = languageTranslator.translate(text.substr(1));
+        }
+
+        for (const std::string& inputTextParameter : inputTextParameters) {
+            std::string paramValue = inputTextParameter;
+            if (!paramValue.empty() && paramValue[0] == TRANSLATABLE_TEXT_PREFIX) {
+                paramValue = languageTranslator.translate(paramValue.substr(1));
+            }
+
+            bool parameterReplaced = StringUtil::replaceFirst(text, "{}", paramValue);
+            if(!parameterReplaced) {
+                throw std::runtime_error("Wrong number of parameters in '" + inputText + "'. Expected parameters: " + std::to_string(inputTextParameters.size()));
             }
         }
+
         refreshTextAndWidgetSize();
         refreshRendererData();
     }
@@ -270,7 +306,7 @@ namespace urchin {
     void Text::refreshRenderer() {
         refreshCoordinates();
 
-        std::string renderName = inputTexts[0].substr(0, std::min((std::size_t)10, inputTexts[0].size()));
+        std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
         textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
