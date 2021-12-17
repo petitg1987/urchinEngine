@@ -14,15 +14,18 @@
 
 namespace urchin {
 
+    constexpr char TRANSLATABLE_TEXT_PREFIX = '~';
+    constexpr auto i18n = [](const std::string& text) { return TRANSLATABLE_TEXT_PREFIX + text; };
+
     class Text : public Widget, public TranslatableLabel {
         public:
             static std::shared_ptr<Text> create(Widget*, Position, std::string, std::string);
-            static std::shared_ptr<Text> createTranslatable(Widget*, Position, std::string, std::string);
+            static std::shared_ptr<Text> createTranslatable(Widget*, Position, std::string, const std::string&);
             ~Text() override;
 
             void setMaxWidth(float, LengthType);
             void updateText(std::string);
-            void updateLabelKey(const std::string&);
+            void updateLabelKey(std::string);
 
             const std::string& getText() const;
             const Font& getFont() const;
@@ -30,15 +33,15 @@ namespace urchin {
         protected:
             void createOrUpdateWidget() override;
 
-            bool isTranslatableLabel() const;
             void refreshTranslation(const LanguageTranslator&&) override;
 
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
-            Text(Position, std::string, std::string, bool);
+            Text(Position, std::string, std::string);
 
             unsigned int getMaxWidth() const;
+            bool hasTranslatableText() const;
 
             void refreshTextAndWidgetSize();
             void cutText();
@@ -50,8 +53,8 @@ namespace urchin {
 
             //properties
             std::string skinName;
+            std::vector<std::string> inputTexts;
             std::string text;
-            std::optional<std::string> labelKey;
             float maxWidth;
             LengthType maxWidthType;
 

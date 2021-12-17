@@ -1,5 +1,6 @@
 #include <memory>
 #include <utility>
+#include <numeric>
 
 #include <scene/ui/widget/text/Text.h>
 #include <scene/ui/widget/container/Container.h>
@@ -10,30 +11,28 @@
 
 namespace urchin {
 
-    Text::Text(Position position, std::string skinName, std::string textOrKey, bool translatable) :
+    Text::Text(Position position, std::string skinName, std::string inputText) :
             Widget(position, Size(0, 0, LengthType::PIXEL)),
             skinName(std::move(skinName)),
+            inputTexts({std::move(inputText)}),
             maxWidth(100.0f),
             maxWidthType(LengthType::SCREEN_PERCENT),
             font(nullptr) {
-        if (translatable) {
-            labelKey = std::move(textOrKey);
-            text = "@TO_TRANSLATE@";
-        } else {
-            text = std::move(textOrKey);
+        if (!hasTranslatableText()) {
+            text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
         }
     }
 
     std::shared_ptr<Text> Text::create(Widget* parent, Position position, std::string skinName, std::string text) {
-        return Widget::create<Text>(new Text(position, std::move(skinName), std::move(text), false), parent);
+        return Widget::create<Text>(new Text(position, std::move(skinName), std::move(text)), parent);
     }
 
-    std::shared_ptr<Text> Text::createTranslatable(Widget* parent, Position position, std::string skinName, std::string textKey) {
-        return Widget::create<Text>(new Text(position, std::move(skinName), std::move(textKey), true), parent);
+    std::shared_ptr<Text> Text::createTranslatable(Widget* parent, Position position, std::string skinName, const std::string& textKey) {
+        return Widget::create<Text>(new Text(position, std::move(skinName), TRANSLATABLE_TEXT_PREFIX + textKey), parent);
     }
 
     Text::~Text() {
-        if (isTranslatableLabel() && getI18nService()) {
+        if (hasTranslatableText() && getI18nService()) {
             getI18nService()->remove(this);
         }
     }
@@ -43,7 +42,7 @@ namespace urchin {
         refreshTextAndWidgetSize();
         refreshRenderer();
 
-        if (isTranslatableLabel()) {
+        if (hasTranslatableText()) {
             getI18nService()->add(this);
         }
     }
@@ -72,26 +71,33 @@ namespace urchin {
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
 
+    bool Text::hasTranslatableText() const {
+        return std::ranges::any_of(inputTexts, [&](const std::string& inputText) {
+            return !inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX;
+        });
+    }
+
     void Text::updateText(std::string text) {
-        if (isTranslatableLabel()) {
+        if (inputTexts.size() > 1) {
+            throw std::runtime_error("Cannot update text when text is composed");
+        } else if (hasTranslatableText()) {
             throw std::runtime_error("Cannot manually update text on a translatable text");
-        } else if (this->text == text) {
-            return;
         }
 
-        this->text = std::move(text);
+        this->inputTexts[0] = std::move(text);
+        this->text = std::accumulate(inputTexts.begin(), inputTexts.end(), std::string(""));
         refreshTextAndWidgetSize();
         refreshRendererData();
     }
 
-    void Text::updateLabelKey(const std::string& labelKey) {
-        if (!isTranslatableLabel()) {
+    void Text::updateLabelKey(std::string labelKey) {
+        if (inputTexts.size() > 1) {
+            throw std::runtime_error("Cannot update label key when text is composed");
+        } else if (!hasTranslatableText()) {
             throw std::runtime_error("Cannot manually update label key on a non translatable text");
-        } else if (this->labelKey == labelKey) {
-            return;
         }
 
-        this->labelKey = labelKey;
+        this->inputTexts[0] = TRANSLATABLE_TEXT_PREFIX + std::move(labelKey);
         getI18nService()->remove(this);
         getI18nService()->add(this);
 
@@ -103,12 +109,15 @@ namespace urchin {
         return text;
     }
 
-    bool Text::isTranslatableLabel() const {
-        return labelKey.has_value();
-    }
-
     void Text::refreshTranslation(const LanguageTranslator&& languageTranslator) {
-        this->text = languageTranslator.translate(labelKey.value());
+        this->text = "";
+        for (const std::string& inputText : inputTexts) {
+            if (!inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX) {
+                text += languageTranslator.translate(inputText.substr(1));
+            } else {
+                text += inputText;
+            }
+        }
         refreshTextAndWidgetSize();
         refreshRendererData();
     }
@@ -277,7 +286,7 @@ namespace urchin {
     void Text::refreshRenderer() {
         refreshCoordinates();
 
-        std::string renderName = labelKey.value_or(text.substr(0, std::min((std::size_t)15, text.size())));
+        std::string renderName = inputTexts[0].substr(0, std::min((std::size_t)10, inputTexts[0].size()));
         textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
