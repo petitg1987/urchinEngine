@@ -99,23 +99,16 @@ namespace urchin {
         refreshRendererData();
     }
 
-    bool Text::isTranslatableLabel() const {
-        return labelKey.has_value();
-    }
-
     const std::string& Text::getText() const {
         return text;
     }
 
-    const std::string& Text::getLabelKey() const {
-        if (!isTranslatableLabel()) {
-            throw std::runtime_error("Label key requested on a no translatable label: " + text);
-        }
-        return labelKey.value();
+    bool Text::isTranslatableLabel() const {
+        return labelKey.has_value();
     }
 
-    void Text::updateLabel(const std::string& label) {
-        this->text = label;
+    void Text::refreshTranslation(const LanguageTranslator&& languageTranslator) {
+        this->text = languageTranslator.translate(labelKey.value());
         refreshTextAndWidgetSize();
         refreshRendererData();
     }

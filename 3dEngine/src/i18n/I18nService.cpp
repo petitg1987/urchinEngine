@@ -1,6 +1,7 @@
 #include <UrchinCommon.h>
 
 #include <i18n/I18nService.h>
+#include <i18n/LanguageTranslator.h>
 
 namespace urchin {
 
@@ -33,8 +34,7 @@ namespace urchin {
     }
 
     void I18nService::refreshTranslation(TranslatableLabel* translatableLabel) {
-        std::string translatedLabel = labelTranslator.translate(language, translatableLabel->getLabelKey());
-        translatableLabel->updateLabel(translatedLabel);
+        translatableLabel->refreshTranslation(LanguageTranslator(labelTranslator, language));
     }
 
 }

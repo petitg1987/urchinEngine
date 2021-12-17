@@ -24,15 +24,14 @@ namespace urchin {
             void updateText(std::string);
             void updateLabelKey(const std::string&);
 
-            bool isTranslatableLabel() const;
             const std::string& getText() const;
             const Font& getFont() const;
 
         protected:
             void createOrUpdateWidget() override;
 
-            const std::string& getLabelKey() const override;
-            void updateLabel(const std::string&) override;
+            bool isTranslatableLabel() const;
+            void refreshTranslation(const LanguageTranslator&&) override;
 
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
