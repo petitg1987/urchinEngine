@@ -2,8 +2,6 @@
 * Performance
   * **OPTIMIZATION** (`minor`): Use PGO in g++
   * **OPTIMIZATION** (`minor`): Use SSE (3 dot products: Triangle3D<T>#getSupportPoint()...)
-* Setup
-  * **NEW FEATURE** (`medium`): Update DEV.md to make glslc available in mingw64.exe shell
 
 # 3d Engine
 * Graphics API
