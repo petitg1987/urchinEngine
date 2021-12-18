@@ -32,11 +32,13 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> ConeShape<T>::toConvexObject(const Transform<T>& transform) const {
-        if (!MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.01)) {
-            throw std::runtime_error("Cone cannot by transformed with a different scale on X and Z axis: " + StringUtil::toString(transform.getScale()));
+        std::size_t heightAxis = (coneOrientation == ConeOrientation::CONE_X_POSITIVE || coneOrientation == ConeOrientation::CONE_X_NEGATIVE) ? 0 :
+                                 (coneOrientation == ConeOrientation::CONE_Y_POSITIVE || coneOrientation == ConeOrientation::CONE_Y_NEGATIVE) ? 1 : 2;
+        if (!MathFunction::isEqual((T)transform.getScale()[(heightAxis + 1) % 3], (T)transform.getScale()[(heightAxis + 2) % 3], (T)0.01)) {
+            throw std::runtime_error("Cone cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }
 
-        return std::make_unique<Cone<T>>(radius * transform.getScale().X, height * transform.getScale().Y,
+        return std::make_unique<Cone<T>>(radius * transform.getScale()[(heightAxis + 1) % 3], height * transform.getScale()[heightAxis],
                 coneOrientation, transform.getPosition(), transform.getOrientation());
     }
 

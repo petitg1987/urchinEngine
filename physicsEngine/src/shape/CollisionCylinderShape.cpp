@@ -43,12 +43,14 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCylinderShape::scale(const Vector3<float>& scale) const {
-        if (!MathFunction::isEqual(scale.X, scale.Z, 0.01f)) {
+        std::size_t heightAxis = (cylinderShape->getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_X) ? 0 :
+                                 (cylinderShape->getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_Y) ? 1 : 2;
+        if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Cylinder cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
-        float scaleXZ = (scale.X + scale.Z) / 2.0f;
-        return std::make_unique<CollisionCylinderShape>(cylinderShape->getRadius() * scaleXZ, cylinderShape->getHeight() * scale.Y, cylinderShape->getCylinderOrientation());
+        float averageScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
+        return std::make_unique<CollisionCylinderShape>(cylinderShape->getRadius() * averageScale, cylinderShape->getHeight() * scale[heightAxis], cylinderShape->getCylinderOrientation());
     }
 
     AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {
