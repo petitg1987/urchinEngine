@@ -3,6 +3,7 @@
 #include <math/geometry/3d/shape/CylinderShape.h>
 #include <math/geometry/3d/object/Cylinder.h>
 #include <math/algorithm/MathFunction.h>
+#include <util/StringUtil.h>
 
 namespace urchin {
 
@@ -31,9 +32,10 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CylinderShape<T>::toConvexObject(const Transform<T>& transform) const {
-        #ifdef URCHIN_DEBUG //TODO review
-            assert(MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.001));
-        #endif
+        if (!MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.001)) {
+            throw std::runtime_error("Cylinder cannot by transformed with a different scale on X and Z axis: " + StringUtil::toString(transform.getScale()));
+        }
+
         return std::make_unique<Cylinder<T>>(radius * transform.getScale().X, height * transform.getScale().Y,
                 cylinderOrientation, transform.getPosition(), transform.getOrientation());
     }

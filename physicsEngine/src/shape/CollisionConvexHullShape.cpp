@@ -87,7 +87,7 @@ namespace urchin {
         newPoints.reserve(convexHullPoints.size());
 
         for (const auto& convexHullPoint : convexHullPoints) {
-            newPoints.push_back(convexHullPoint.translate(scale));
+            newPoints.emplace_back(convexHullPoint.X * scale.X, convexHullPoint.Y * scale.Y, convexHullPoint.Z * scale.Z);
         }
 
         return std::make_unique<CollisionConvexHullShape>(newPoints);
