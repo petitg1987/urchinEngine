@@ -43,10 +43,12 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionConeShape::scale(const Vector3<float>& scale) const {
-        #ifdef URCHIN_DEBUG //TODO review
-            assert(MathFunction::isEqual(scale.X, scale.Z, 0.001f));
-        #endif
-        return std::make_unique<CollisionConeShape>(coneShape->getRadius() * scale.X, coneShape->getHeight() * scale.Y, coneShape->getConeOrientation());
+        if (!MathFunction::isEqual(scale.X, scale.Z, 0.01f)) {
+            Logger::instance().logWarning("Cone cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
+        }
+
+        float scaleXZ = (scale.X + scale.Z) / 2.0f;
+        return std::make_unique<CollisionConeShape>(coneShape->getRadius() * scaleXZ, coneShape->getHeight() * scale.Y, coneShape->getConeOrientation());
     }
 
     AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform& physicsTransform) const {

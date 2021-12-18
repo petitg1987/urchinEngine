@@ -21,8 +21,8 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> SphereShape<T>::toConvexObject(const Transform<T>& transform) const {
-        if (!MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Y, (T)0.001)
-                || !MathFunction::isEqual((T)transform.getScale().Y, (T)transform.getScale().Z, (T)0.001)) {
+        if (!MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Y, (T)0.01)
+                || !MathFunction::isEqual((T)transform.getScale().Y, (T)transform.getScale().Z, (T)0.01)) {
             throw std::runtime_error("Sphere cannot by transformed with different scales: " + StringUtil::toString(transform.getScale()));
         }
 

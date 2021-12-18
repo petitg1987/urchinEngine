@@ -36,7 +36,7 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T>& transform) const {
-        if (!MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.001)) {
+        if (!MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.01)) {
             throw std::runtime_error("Capsule cannot by transformed with a different scale on X and Z axis: " + StringUtil::toString(transform.getScale()));
         }
 

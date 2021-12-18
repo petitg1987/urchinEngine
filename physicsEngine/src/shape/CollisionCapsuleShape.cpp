@@ -42,10 +42,12 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCapsuleShape::scale(const Vector3<float>& scale) const {
-        #ifdef URCHIN_DEBUG //TODO review
-            assert(MathFunction::isEqual(scale.X, scale.Z, 0.001f));
-        #endif
-        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius() * scale.X, capsuleShape->getCylinderHeight() * scale.Y, capsuleShape->getCapsuleOrientation());
+        if (!MathFunction::isEqual(scale.X, scale.Z, 0.01f)) {
+            Logger::instance().logWarning("Capsule cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
+        }
+
+        float scaleXZ = (scale.X + scale.Z) / 2.0f;
+        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius() * scaleXZ, capsuleShape->getCylinderHeight() * scale.Y, capsuleShape->getCapsuleOrientation());
     }
 
     AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform& physicsTransform) const {
