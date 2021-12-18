@@ -16,8 +16,11 @@ namespace urchin {
             static int pow(int, unsigned int);
 
             static bool isEqual(float, float, float tolerance = std::numeric_limits<float>::epsilon());
+            static bool isEqual(double, double, double tolerance = std::numeric_limits<double>::epsilon());
             static bool isZero(float, float tolerance = std::numeric_limits<float>::epsilon());
+            static bool isZero(double, double tolerance = std::numeric_limits<double>::epsilon());
             static bool isOne(float, float tolerance = std::numeric_limits<float>::epsilon());
+            static bool isOne(double, double tolerance = std::numeric_limits<double>::epsilon());
 
             static int roundToInt(float);
             static unsigned int roundToUInt(float);

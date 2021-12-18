@@ -96,7 +96,7 @@ namespace urchin {
         model->setTransform(transform);
 
         if (objectEntity.getRigidBody()) {
-            float scaleRatio = transform.getScale() / oldTransform.getScale();
+            Vector3<float> scaleRatio = transform.getScale() / oldTransform.getScale();
             const CollisionShape3D& collisionShape = objectEntity.getRigidBody()->getShape();
             auto scaledCollisionShape = collisionShape.scale(scaleRatio);
 

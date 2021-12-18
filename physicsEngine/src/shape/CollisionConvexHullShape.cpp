@@ -80,14 +80,14 @@ namespace urchin {
         return convexHullShape->getPoints();
     }
 
-    std::unique_ptr<CollisionShape3D> CollisionConvexHullShape::scale(float scale) const {
+    std::unique_ptr<CollisionShape3D> CollisionConvexHullShape::scale(const Vector3<float>& scale) const {
         const std::vector<Point3<float>>& convexHullPoints = convexHullShape->getPoints();
 
         std::vector<Point3<float>> newPoints;
         newPoints.reserve(convexHullPoints.size());
 
         for (const auto& convexHullPoint : convexHullPoints) {
-            newPoints.push_back(convexHullPoint * scale);
+            newPoints.push_back(convexHullPoint.translate(scale));
         }
 
         return std::make_unique<CollisionConvexHullShape>(newPoints);

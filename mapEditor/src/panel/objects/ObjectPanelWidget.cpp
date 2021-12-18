@@ -28,7 +28,7 @@ namespace urchin {
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
             orientationType(nullptr),
             eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
-            scale(nullptr),
+            scaleX(nullptr), scaleY(nullptr), scaleZ(nullptr),
             produceShadowCheckBox(nullptr),
             tags(nullptr),
             hasRigidBody(nullptr),
@@ -175,11 +175,23 @@ namespace urchin {
         auto* angleLabel = new QLabel("Scale:");
         transformLayout->addWidget(angleLabel, 3, 0);
 
-        scale = new QDoubleSpinBox();
-        transformLayout->addWidget(scale, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(scale);
-        scale->setMinimum(0.01);
-        connect(scale, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
+        auto* positionLayout = new QHBoxLayout();
+        transformLayout->addLayout(positionLayout, 3, 1);
+        scaleX = new QDoubleSpinBox();
+        positionLayout->addWidget(scaleX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(scaleX);
+        scaleX->setMinimum(0.01);
+        connect(scaleX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
+        scaleY = new QDoubleSpinBox();
+        positionLayout->addWidget(scaleY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(scaleY);
+        scaleY->setMinimum(0.01);
+        connect(scaleY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
+        scaleZ = new QDoubleSpinBox();
+        positionLayout->addWidget(scaleZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(scaleZ);
+        scaleZ->setMinimum(0.01);
+        connect(scaleZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 
     void ObjectPanelWidget::setupFlagsBox(QVBoxLayout* generalLayout) {
@@ -460,7 +472,9 @@ namespace urchin {
         this->eulerAxis1->setValue(AngleConverter<double>::toDegree(eulerAngle[1]));
         this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));
 
-        this->scale->setValue(modelTransform.getScale());
+        this->scaleX->setValue(modelTransform.getScale().X);
+        this->scaleY->setValue(modelTransform.getScale().Y);
+        this->scaleZ->setValue(modelTransform.getScale().Z);
 
         this->produceShadowCheckBox->setChecked(model->isProduceShadow());
 
@@ -607,7 +621,7 @@ namespace urchin {
             Transform<float> newObjectEntityTransform(
                     Point3<float>((float)positionX->value(),(float)positionY->value(),(float)positionZ->value()),
                     Quaternion<float>::fromEuler(eulerAngle, rotationSequence),
-                    (float)scale->value());
+                    Vector3<float>((float)scaleX->value(), (float)scaleY->value(), (float)scaleZ->value()));
 
             objectController->updateObjectTransform(objectEntity, newObjectEntityTransform);
         }

@@ -15,7 +15,7 @@ namespace urchin {
     void AIEntity::updateTransform(const Point3<float>& position, const Quaternion<float>& orientation) {
         {
             std::scoped_lock<std::mutex> lock(mutex);
-            this->transform = Transform<float>(position, orientation, 1.0);
+            this->transform = Transform<float>(position, orientation);
         }
 
         this->bToRebuild.store(true, std::memory_order_release);

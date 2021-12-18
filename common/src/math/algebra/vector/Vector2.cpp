@@ -142,6 +142,17 @@ namespace urchin {
         return *this;
     }
 
+    template<class T> bool Vector2<T>::operator ==(const Vector2<T>& p) const {
+        return (X == p.X && Y == p.Y);
+    }
+
+    template<class T> std::partial_ordering Vector2<T>::operator <=>(const Vector2<T>& p) const {
+        if (auto cmpX = X <=> p.X; cmpX != 0) {
+            return cmpX;
+        }
+        return Y <=> p.Y;
+    }
+
     template<class T> T& Vector2<T>::operator [](std::size_t i) {
         return (&X)[i];
     }

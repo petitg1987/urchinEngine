@@ -43,7 +43,7 @@ namespace urchin {
 
             void setPosition(const Point3<float>&);
             void setOrientation(const Quaternion<float>&);
-            void setScale(float);
+            void setScale(const Vector3<float>&);
             void setTransform(const Transform<float>&);
             const Transform<float>& getTransform() const override;
 

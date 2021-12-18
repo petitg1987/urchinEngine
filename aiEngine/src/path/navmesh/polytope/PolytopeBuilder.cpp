@@ -50,7 +50,7 @@ namespace urchin {
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const AITerrain& aiTerrain, const NavMeshAgent& navMeshAgent) const {
         #ifdef URCHIN_DEBUG
-            assert(MathFunction::isOne(aiTerrain.getTransform().getScale()));
+            assert(!aiTerrain.getTransform().hasScaling());
             assert(MathFunction::isOne(aiTerrain.getTransform().getOrientationMatrix().determinant()));
         #endif
 

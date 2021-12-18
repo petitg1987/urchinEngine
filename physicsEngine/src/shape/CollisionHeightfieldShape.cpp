@@ -56,8 +56,8 @@ namespace urchin {
         throw std::runtime_error("Impossible to retrieve single convex shape for heightfield shape");
     }
 
-    std::unique_ptr<CollisionShape3D> CollisionHeightfieldShape::scale(float scale) const {
-        if ((scale - std::numeric_limits<float>::min()) > 1.0 || (scale + std::numeric_limits<float>::min()) < 0.0) {
+    std::unique_ptr<CollisionShape3D> CollisionHeightfieldShape::scale(const Vector3<float>& scale) const {
+        if (!MathFunction::isOne(scale.X, 0.001f) || !MathFunction::isOne(scale.Y, 0.001f) || !MathFunction::isOne(scale.Z, 0.001f)) {
             throw std::runtime_error("Scaling a heightfield shape is currently not supported");
         }
 

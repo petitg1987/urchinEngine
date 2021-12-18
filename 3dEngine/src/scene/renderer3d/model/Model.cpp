@@ -240,7 +240,7 @@ namespace urchin {
         }
     }
 
-    void Model::setScale(float scale) {
+    void Model::setScale(const Vector3<float>& scale) {
         if (scale != transform.getScale()) {
             transform.setScale(scale);
             onMoving(transform);

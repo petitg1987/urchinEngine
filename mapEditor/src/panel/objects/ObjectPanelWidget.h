@@ -77,7 +77,9 @@ namespace urchin {
             QDoubleSpinBox* eulerAxis0;
             QDoubleSpinBox* eulerAxis1;
             QDoubleSpinBox* eulerAxis2;
-            QDoubleSpinBox* scale;
+            QDoubleSpinBox* scaleX;
+            QDoubleSpinBox* scaleY;
+            QDoubleSpinBox* scaleZ;
             QCheckBox* produceShadowCheckBox;
             QLineEdit* tags;
 

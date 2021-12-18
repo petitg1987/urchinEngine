@@ -69,7 +69,7 @@ namespace urchin {
             auto scaledShape = std::make_unique<const CollisionConvexHullShape>(getPoints());
 
             //test construction of original shape because can throw an exception due to imprecision of float
-            float invScale = 1.0f / getObjectEntity()->getModel()->getTransform().getScale();
+            Vector3<float> invScale = Vector3<float>(1.0f, 1.0f, 1.0f) / getObjectEntity()->getModel()->getTransform().getScale();
             scaledShape->scale(invScale);
 
             return scaledShape;

@@ -37,7 +37,7 @@ namespace urchin {
         return *triangleShape;
     }
 
-    std::unique_ptr<CollisionShape3D> CollisionTriangleShape::scale(float) const {
+    std::unique_ptr<CollisionShape3D> CollisionTriangleShape::scale(const Vector3<float>&) const {
         throw std::runtime_error("Scaling is currently not supported (triangle is only usable as a sub-shape)");
     }
 

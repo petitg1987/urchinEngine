@@ -65,9 +65,9 @@ namespace urchin {
         Quaternion<float> orientation = OrientationReaderWriter::load(transformChunk, udaParser);
 
         auto scaleChunk = udaParser.getUniqueChunk(false, SCALE_TAG, UdaAttribute(), transformChunk);
-        float scale = 1.0f;
+        Vector3<float> scale = Vector3<float>(1.0f, 1.0f, 1.0f);
         if (scaleChunk) {
-            scale = scaleChunk->getFloatValue();
+            scale = scaleChunk->getVector3Value();
         }
 
         model.setTransform(Transform<float>(position, orientation, scale));
@@ -82,7 +82,7 @@ namespace urchin {
         OrientationReaderWriter::write(transformChunk, model.getTransform().getOrientation(), udaWriter);
 
         auto& scaleChunk = udaWriter.createChunk(SCALE_TAG, UdaAttribute(), &transformChunk);
-        scaleChunk.setFloatValue(model.getTransform().getScale());
+        scaleChunk.setVector3Value(model.getTransform().getScale());
     }
 
     void ModelReaderWriter::loadFlags(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {

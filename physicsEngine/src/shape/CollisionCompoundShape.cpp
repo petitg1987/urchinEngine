@@ -40,14 +40,15 @@ namespace urchin {
         return localizedShapes;
     }
 
-    std::unique_ptr<CollisionShape3D> CollisionCompoundShape::scale(float scale) const {
+    std::unique_ptr<CollisionShape3D> CollisionCompoundShape::scale(const Vector3<float>& scale) const {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> scaledLocalizedShapes;
         scaledLocalizedShapes.reserve(localizedShapes.size());
         for (const auto& localizedShape : localizedShapes) {
             auto scaledLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+            Point3<float> scaledPosition(localizedShape->transform.getPosition().X * scale.X, localizedShape->transform.getPosition().Y * scale.Y, localizedShape->transform.getPosition().Z * scale.Z);
             scaledLocalizedShape->position = localizedShape->position;
             scaledLocalizedShape->shape = localizedShape->shape->scale(scale);
-            scaledLocalizedShape->transform = PhysicsTransform(localizedShape->transform.getPosition() * scale, localizedShape->transform.getOrientation());
+            scaledLocalizedShape->transform = PhysicsTransform(scaledPosition, localizedShape->transform.getOrientation());
 
             scaledLocalizedShapes.push_back(std::move(scaledLocalizedShape));
         }

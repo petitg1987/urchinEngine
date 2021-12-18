@@ -2,6 +2,7 @@
 
 #include <math/geometry/3d/shape/SphereShape.h>
 #include <math/geometry/3d/object/Sphere.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -19,7 +20,11 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> SphereShape<T>::toConvexObject(const Transform<T>& transform) const {
-        return std::make_unique<Sphere<T>>(radius * transform.getScale(), transform.getPosition());
+        #ifdef URCHIN_DEBUG //TODO review
+            assert(MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Y, (T)0.001));
+            assert(MathFunction::isEqual((T)transform.getScale().Y, (T)transform.getScale().Z, (T)0.001));
+        #endif
+        return std::make_unique<Sphere<T>>(radius * transform.getScale().X, transform.getPosition());
     }
 
     //explicit template

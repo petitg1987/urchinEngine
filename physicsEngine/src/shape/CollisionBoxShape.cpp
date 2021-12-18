@@ -40,7 +40,7 @@ namespace urchin {
         return boxShape->getHalfSizes();
     }
 
-    std::unique_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const {
+    std::unique_ptr<CollisionShape3D> CollisionBoxShape::scale(const Vector3<float>& scale) const {
         return std::make_unique<CollisionBoxShape>(boxShape->getHalfSizes() * scale);
     }
 

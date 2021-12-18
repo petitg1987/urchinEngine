@@ -47,7 +47,7 @@ namespace urchin {
             throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
         }
 
-        float scale = objectEntity.getModel()->getTransform().getScale();
+        Vector3<float> scale = objectEntity.getModel()->getTransform().getScale();
         return shape->scale(scale);
     }
 

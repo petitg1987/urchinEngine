@@ -49,12 +49,24 @@ namespace urchin {
         return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
     }
 
+    bool MathFunction::isEqual(double value1, double value2, double tolerance) {
+        return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
+    }
+
     bool MathFunction::isZero(float value, float tolerance) {
         return isEqual(value, 0.0f, tolerance);
     }
 
+    bool MathFunction::isZero(double value, double tolerance) {
+        return isEqual(value, 0.0, tolerance);
+    }
+
     bool MathFunction::isOne(float value, float tolerance) {
         return isEqual(value, 1.0f, tolerance);
+    }
+
+    bool MathFunction::isOne(double value, double tolerance) {
+        return isEqual(value, 1.0, tolerance);
     }
 
     int MathFunction::roundToInt(float value) {

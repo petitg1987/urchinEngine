@@ -2,6 +2,7 @@
 
 #include <math/geometry/3d/shape/CapsuleShape.h>
 #include <math/geometry/3d/object/Capsule.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -34,7 +35,10 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T>& transform) const {
-        return std::make_unique<Capsule<T>>(radius * transform.getScale(), cylinderHeight * transform.getScale(),
+        #ifdef URCHIN_DEBUG //TODO review
+            assert(MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.001));
+        #endif
+        return std::make_unique<Capsule<T>>(radius * transform.getScale().X, cylinderHeight * transform.getScale().Y,
                 capsuleOrientation, transform.getPosition(), transform.getOrientation());
     }
 

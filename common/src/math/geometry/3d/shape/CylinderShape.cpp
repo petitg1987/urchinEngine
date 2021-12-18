@@ -2,6 +2,7 @@
 
 #include <math/geometry/3d/shape/CylinderShape.h>
 #include <math/geometry/3d/object/Cylinder.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -30,7 +31,10 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CylinderShape<T>::toConvexObject(const Transform<T>& transform) const {
-        return std::make_unique<Cylinder<T>>(radius * transform.getScale(), height * transform.getScale(),
+        #ifdef URCHIN_DEBUG //TODO review
+            assert(MathFunction::isEqual((T)transform.getScale().X, (T)transform.getScale().Z, (T)0.001));
+        #endif
+        return std::make_unique<Cylinder<T>>(radius * transform.getScale().X, height * transform.getScale().Y,
                 cylinderOrientation, transform.getPosition(), transform.getOrientation());
     }
 

@@ -43,6 +43,9 @@ namespace urchin {
             const Vector3<T>& operator *=(T t);
             const Vector3<T>& operator /=(T t);
 
+            bool operator ==(const Vector3<T>&) const;
+            std::partial_ordering operator <=>(const Vector3<T>&) const;
+
             T& operator [](std::size_t i);
             const T& operator [](std::size_t i) const;
 

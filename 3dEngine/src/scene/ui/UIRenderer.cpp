@@ -30,8 +30,8 @@ namespace urchin {
         if (!widgets.empty()) {
             throw std::runtime_error("UI renderer cannot be initialized for UI 3d because widgets already exist");
         }
-        if (!MathFunction::isOne(transform.getScale())) {
-            throw std::runtime_error("Transform for UI 3d must have a scale of 1 (scale: " + TypeConverter::toString(transform.getScale()) + ")");
+        if (transform.hasScaling()) {
+            throw std::runtime_error("Transform for UI 3d must have a scale of 1 (scale: " + StringUtil::toString(transform.getScale()) + ")");
         }
         if (!MathFunction::isEqual((float)uiResolution.X / (float)uiResolution.Y, uiSize.X / uiSize.Y, 0.01f)) {
             Logger::instance().logWarning("UI size (" + StringUtil::toString(uiSize) + ") and UI resolution (" + StringUtil::toString(uiResolution) + ") have not the same proportion");

@@ -22,8 +22,8 @@ namespace urchin {
     PhysicsTransform::PhysicsTransform(const Transform<float>& transform) :
             position(transform.getPosition()),
             orientation(transform.getOrientation()) {
-        if (!MathFunction::isOne(transform.getScale(), 0.001f)) {
-            throw std::runtime_error("Cannot construct physics transform from transform having a scale: " + std::to_string(transform.getScale()));
+        if (transform.hasScaling()) {
+            throw std::runtime_error("Cannot construct physics transform from transform having a scale: " + StringUtil::toString(transform.getScale()));
         }
     }
 
@@ -57,7 +57,7 @@ namespace urchin {
      * @return Transform object with a scale of 1.0
      */
     Transform<float> PhysicsTransform::toTransform() const {
-        return Transform<float>(position, orientation, 1.0f);
+        return Transform<float>(position, orientation);
     }
 
     PhysicsTransform PhysicsTransform::inverse() const {

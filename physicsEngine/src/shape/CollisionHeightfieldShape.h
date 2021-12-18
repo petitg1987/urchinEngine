@@ -24,7 +24,7 @@ namespace urchin {
             unsigned int getXLength() const;
             unsigned int getZLength() const;
 
-            std::unique_ptr<CollisionShape3D> scale(float) const override;
+            std::unique_ptr<CollisionShape3D> scale(const Vector3<float>&) const override;
 
             AABBox<float> toAABBox(const PhysicsTransform&) const override;
             std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform&) const override;

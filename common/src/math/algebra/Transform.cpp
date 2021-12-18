@@ -1,30 +1,31 @@
 #include <math/algebra/Transform.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
     template<class T> Transform<T>::Transform() :
-            fScale(1.0) {
+            vScale(Vector3<T>(1.0, 1.0, 1.0)) {
         pPosition.setNull();
         qOrientation.setIdentity();
         //not need to compute transform matrix: it's the identity matrix
     }
 
-    template<class T> Transform<T>::Transform(const Point3<T>& position, const Quaternion<T>& orientation, T scale) :
+    template<class T> Transform<T>::Transform(const Point3<T>& position, const Quaternion<T>& orientation, const Vector3<T>& scale) :
             pPosition(position),
             qOrientation(orientation),
-            fScale(scale),
+            vScale(scale),
             mOrientation(orientation.toMatrix4()) {
         mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
 
-        mScale.buildScale(fScale, fScale, fScale);
-        mTransform = mPosition * mScale * mOrientation;
+        mScale.buildScale(vScale.X, vScale.Y, vScale.Z);
+        mTransform = mPosition * mOrientation * mScale;
     }
 
     template<class T> void Transform<T>::setPosition(const Point3<T>& position) {
         pPosition = position;
 
         mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
-        mTransform = mPosition * mScale * mOrientation;
+        mTransform = mPosition * mOrientation * mScale;
     }
 
     template<class T> const Point3<T> &Transform<T>::getPosition() const {
@@ -35,22 +36,26 @@ namespace urchin {
         qOrientation = orientation;
 
         mOrientation = qOrientation.toMatrix4();
-        mTransform =  mPosition * mScale * mOrientation;
+        mTransform =  mPosition * mOrientation * mScale;
     }
 
     template<class T> const Quaternion<T> &Transform<T>::getOrientation() const {
         return qOrientation;
     }
 
-    template<class T> void Transform<T>::setScale(T scale) {
-        fScale = scale;
+    template<class T> void Transform<T>::setScale(const Vector3<T>& scale) {
+        vScale = scale;
 
-        mScale.buildScale(fScale, fScale, fScale);
-        mTransform = mPosition * mScale * mOrientation;
+        mScale.buildScale(vScale.X, vScale.Y, vScale.Z);
+        mTransform = mPosition * mOrientation * mScale;
     }
 
-    template<class T> T Transform<T>::getScale() const {
-        return fScale;
+    template<class T> const Vector3<T>& Transform<T>::getScale() const {
+        return vScale;
+    }
+
+    template<class T> bool Transform<T>::hasScaling() const {
+        return !MathFunction::isOne((T)vScale.X, (T)0.001) || !MathFunction::isOne((T)vScale.Y, (T)0.001) || !MathFunction::isOne((T)vScale.Z, (T)0.001);
     }
 
     template<class T> const Matrix4<T> &Transform<T>::getPositionMatrix() const {
@@ -72,7 +77,7 @@ namespace urchin {
     template<class T> Transform<T> Transform<T>::operator *(const Transform<T>& transform) const {
         return Transform<T>(pPosition + qOrientation.rotatePoint(transform.getPosition()),
                          qOrientation * transform.getOrientation(),
-                         fScale * transform.getScale());
+                         vScale * transform.getScale());
     }
 
     template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T>& transform) {
@@ -81,7 +86,7 @@ namespace urchin {
     }
 
     template<class T> bool Transform<T>::operator ==(const Transform<T>& t) const {
-        return pPosition == t.getPosition() && qOrientation == t.getOrientation() && fScale == t.getScale();
+        return pPosition == t.getPosition() && qOrientation == t.getOrientation() && vScale == t.getScale();
     }
 
     //explicit template
