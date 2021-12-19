@@ -47,4 +47,15 @@ namespace urchin {
         throw std::runtime_error("Unknown UV scale type: " + std::to_string((int)vScaleType));
     }
 
+    bool UvScale::operator ==(const UvScale& uvScale) const {
+        return (uScaleType == uvScale.uScaleType && vScaleType == uvScale.vScaleType);
+    }
+
+    std::partial_ordering UvScale::operator <=>(const UvScale& uvScale) const {
+        if (auto cmpU = uScaleType <=> uvScale.uScaleType; cmpU != 0) {
+            return cmpU;
+        }
+        return vScaleType <=> uvScale.vScaleType;
+    }
+
 }

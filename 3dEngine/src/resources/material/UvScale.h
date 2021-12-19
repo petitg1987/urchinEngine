@@ -15,6 +15,9 @@ namespace urchin {
             float scaleU(float, const Vector3<float>&) const;
             float scaleV(float, const Vector3<float>&) const;
 
+            bool operator ==(const UvScale&) const;
+            std::partial_ordering operator <=>(const UvScale&) const;
+
         private:
             UvScaleType uScaleType;
             UvScaleType vScaleType;

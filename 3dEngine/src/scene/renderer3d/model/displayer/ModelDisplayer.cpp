@@ -121,7 +121,7 @@ namespace urchin {
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
-    std::vector<Point2<float>> ModelDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const UvScale& uvScale) const { //TODO update material could affect this method
+    std::vector<Point2<float>> ModelDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const UvScale& uvScale) const {
         std::vector<Point2<float>> scaledUvTexture;
         scaledUvTexture.reserve(uvTexture.size());
 
@@ -133,7 +133,7 @@ namespace urchin {
     }
 
     TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
-        auto textureReadMode = mesh.getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+        TextureParam::ReadMode textureReadMode = mesh.getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 
