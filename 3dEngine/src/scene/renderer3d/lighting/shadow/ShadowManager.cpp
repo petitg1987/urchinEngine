@@ -113,12 +113,12 @@ namespace urchin {
     }
 
     const LightShadowMap& ShadowManager::getLightShadowMap(const Light* light) const {
-        auto it = lightShadowMaps.find(light);
-        if (it == lightShadowMaps.end()) {
+        auto itFind = lightShadowMaps.find(light);
+        if (itFind == lightShadowMaps.end()) {
             throw std::runtime_error("No light shadow map found for this light.");
         }
 
-        return *it->second;
+        return *itFind->second;
     }
 
     void ShadowManager::updateVisibleModels(const Frustum<float>& frustum) {
