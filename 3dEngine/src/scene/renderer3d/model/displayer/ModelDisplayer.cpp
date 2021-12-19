@@ -1,5 +1,6 @@
 #include <memory>
 
+#include <resources/material/UvScale.h>
 #include <scene/renderer3d/model/displayer/ModelDisplayer.h>
 #include <api/render/GenericRendererBuilder.h>
 
@@ -96,8 +97,9 @@ namespace urchin {
                 }
 
                 if (displayMode == DEFAULT_MODE) {
+                    const UvScale& uvScale = mesh.getMaterial().getUvScale();
                     meshRendererBuilder
-                            ->addData(scaleUv(constMesh, mesh))
+                            ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture())
                             ->addData(mesh.getNormals())
                             ->addData(mesh.getTangents())
                             ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
@@ -119,19 +121,15 @@ namespace urchin {
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
-    std::vector<Point2<float>> ModelDisplayer::scaleUv(const ConstMesh& constMesh, const Mesh& mesh) const { //TODO update material could affect this method
-        const UvScale& uvScale = mesh.getMaterial().getUvScale();
-        if (uvScale.hasScaling()) {
-            std::vector<Point2<float>> scaledUv;
-            scaledUv.reserve(constMesh.getTextureCoordinates().size());
+    std::vector<Point2<float>> ModelDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const UvScale& uvScale) const { //TODO update material could affect this method
+        std::vector<Point2<float>> scaledUvTexture;
+    scaledUvTexture.reserve(uvTexture.size());
 
-            const Vector3<float> scale = model->getTransform().getScale();
-            for(const Point2<float>& uv : constMesh.getTextureCoordinates()) {
-                scaledUv.emplace_back(uvScale.scaleU(uv.X, scale), uvScale.scaleV(uv.Y, scale));
-            }
-            return scaledUv;
+        const Vector3<float> scale = model->getTransform().getScale();
+        for(const Point2<float>& uv : uvTexture) {
+            scaledUvTexture.emplace_back(uvScale.scaleU(uv.X, scale), uvScale.scaleV(uv.Y, scale));
         }
-        return constMesh.getTextureCoordinates(); //TODO possible to avoid copy ?
+        return scaledUvTexture;
     }
 
     TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
@@ -178,7 +176,8 @@ namespace urchin {
                     for (const auto& meshRenderer: meshRenderers) {
                         const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
                         const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
-                        meshRenderer->updateData(1, scaleUv(constMesh, mesh));
+                        const UvScale& uvScale = mesh.getMaterial().getUvScale();
+                        meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture());
 
                         meshIndex++;
                     }

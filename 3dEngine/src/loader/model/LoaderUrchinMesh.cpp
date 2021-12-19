@@ -4,6 +4,7 @@
 
 #include <loader/model/LoaderUrchinMesh.h>
 #include <resources/ResourceRetriever.h>
+#include <resources/material/UvScale.h>
 
 namespace urchin {
 

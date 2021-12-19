@@ -14,9 +14,9 @@ namespace urchin {
     }
 
     std::unique_ptr<Model> ModelBuilder::newModel(const std::string& meshesName, const std::vector<Point3<float>>& vertices,
-                                                  const std::vector<unsigned int>& trianglesIndices, const std::vector<Point2<float>>& texCoords) const {
+                                                  const std::vector<unsigned int>& trianglesIndices, const std::vector<Point2<float>>& uvTexture) const {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
-        constMeshesVector.push_back(buildConstMesh(vertices, trianglesIndices, texCoords));
+        constMeshesVector.push_back(buildConstMesh(vertices, trianglesIndices, uvTexture));
         auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
 
         auto meshes = std::make_unique<Meshes>(std::move(constMeshes));
@@ -24,9 +24,9 @@ namespace urchin {
     }
 
     std::unique_ptr<const ConstMesh> ModelBuilder::buildConstMesh(const std::vector<Point3<float>>& vertices, const std::vector<unsigned int>& trianglesIndices,
-                                                                  const std::vector<Point2<float>>& texCoords) const {
-        if (vertices.size() != texCoords.size()) {
-            throw std::runtime_error("Vertices (" + std::to_string(vertices.size()) + ") must have exactly one UV coordinate (" + std::to_string(texCoords.size()) + ")");
+                                                                  const std::vector<Point2<float>>& uvTexture) const {
+        if (vertices.size() != uvTexture.size()) {
+            throw std::runtime_error("Vertices (" + std::to_string(vertices.size()) + ") must have exactly one UV coordinate (" + std::to_string(uvTexture.size()) + ")");
         } else if (trianglesIndices.size() % 3 != 0) {
             throw std::runtime_error("Triangle indices must be a multiple of three");
         }
@@ -36,7 +36,7 @@ namespace urchin {
         std::vector<Weight> modelWeights;
         modelWeights.reserve(vertices.size());
         std::vector<Point2<float>> modelUvs;
-        modelUvs.reserve(texCoords.size());
+        modelUvs.reserve(uvTexture.size());
 
         unsigned int verticesGroupId = 0;
         int weightStart = 0;
@@ -48,7 +48,7 @@ namespace urchin {
             modelVertex.weightCount = 1;
             modelVertices.push_back(modelVertex);
 
-            modelUvs.push_back(texCoords[i]);
+            modelUvs.push_back(uvTexture[i]);
 
             Weight modelWeight = {};
             modelWeight.bone = 0;
@@ -65,7 +65,7 @@ namespace urchin {
         modelBone.orient = Quaternion<float>();
         modelBaseSkeleton.push_back(modelBone);
 
-        return std::make_unique<ConstMesh>(material, modelVertices, texCoords, trianglesIndices, modelWeights, modelBaseSkeleton);
+        return std::make_unique<ConstMesh>(material, modelVertices, uvTexture, trianglesIndices, modelWeights, modelBaseSkeleton);
     }
     
 }

@@ -30,7 +30,7 @@ namespace urchin {
 
         private:
             void fillMaterialData(const Mesh&);
-            std::vector<Point2<float>> scaleUv(const ConstMesh&, const Mesh&) const;
+            std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
             bool isInitialized;

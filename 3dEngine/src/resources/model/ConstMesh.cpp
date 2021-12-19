@@ -7,11 +7,11 @@
 
 namespace urchin {
 
-    ConstMesh::ConstMesh(std::shared_ptr<Material> initialMaterial, const std::vector<Vertex>& vertices, std::vector<Point2<float>> texCoords,
+    ConstMesh::ConstMesh(std::shared_ptr<Material> initialMaterial, const std::vector<Vertex>& vertices, std::vector<Point2<float>> uvTexture,
             std::vector<unsigned int> trianglesIndices, std::vector<Weight> weights, const std::vector<Bone>& baseSkeleton) :
             initialMaterial(std::move(initialMaterial)),
             vertices(vertices),
-            texCoords(std::move(texCoords)),
+            uvTexture(std::move(uvTexture)),
             trianglesIndices(std::move(trianglesIndices)),
             weights(std::move(weights)),
             baseSkeleton(baseSkeleton) {
@@ -38,8 +38,8 @@ namespace urchin {
         return vertices[index];
     }
 
-    const std::vector<Point2<float>>& ConstMesh::getTextureCoordinates() const {
-        return texCoords;
+    const std::vector<Point2<float>>& ConstMesh::getUvTexture() const {
+        return uvTexture;
     }
 
     /**
