@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model *model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
+    ModelDisplayer::ModelDisplayer(Model* model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
             model(model),
             displayMode(displayMode),
@@ -97,7 +97,7 @@ namespace urchin {
 
                 if (displayMode == DEFAULT_MODE) {
                     meshRendererBuilder
-                            ->addData(constMesh.getTextureCoordinates())
+                            ->addData(scaleUv(constMesh, mesh))
                             ->addData(mesh.getNormals())
                             ->addData(mesh.getTangents())
                             ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
@@ -109,6 +109,7 @@ namespace urchin {
 
         model->addObserver(this, Model::MESH_UPDATED);
         model->addObserver(this, Model::MATERIAL_UPDATED);
+        model->addObserver(this, Model::SCALE_UPDATED);
 
         isInitialized = true;
     }
@@ -116,6 +117,17 @@ namespace urchin {
     void ModelDisplayer::fillMaterialData(const Mesh& mesh) {
         materialData.encodedEmissiveFactor = MathFunction::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
+    }
+
+    std::vector<Point2<float>> ModelDisplayer::scaleUv(const ConstMesh& constMesh, const Mesh& mesh) const {
+        if (mesh.getMaterial().isRepeatTextures()) { //TODO add parameter on material ?
+            std::vector<Point2<float>> scaledUv = constMesh.getTextureCoordinates();
+
+            std::cout <<" New scale: "<<model->getTransform().getScale()<<std::endl;
+            //TODO adapt based on scaling !
+            return scaledUv;
+        }
+        return constMesh.getTextureCoordinates(); //TODO possible to avoid copy ?
     }
 
     TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
@@ -152,6 +164,17 @@ namespace urchin {
                         if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
                             meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
                         }
+
+                        meshIndex++;
+                    }
+                }
+            } else if (notificationType == Model::SCALE_UPDATED) {
+                if (displayMode == DEFAULT_MODE) {
+                    unsigned int meshIndex = 0;
+                    for (const auto& meshRenderer: meshRenderers) {
+                        const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
+                        const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                        meshRenderer->updateData(1, scaleUv(constMesh, mesh));
 
                         meshIndex++;
                     }

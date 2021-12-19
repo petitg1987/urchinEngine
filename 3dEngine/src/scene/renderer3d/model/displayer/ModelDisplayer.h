@@ -12,7 +12,7 @@ namespace urchin {
 
     class ModelDisplayer : public Observer {
         public:
-            ModelDisplayer(Model *, DisplayMode, RenderTarget&, const Shader&);
+            ModelDisplayer(Model*, DisplayMode, RenderTarget&, const Shader&);
             ~ModelDisplayer() override;
 
             void setupCustomShaderVariable(CustomModelShaderVariable*);
@@ -30,6 +30,7 @@ namespace urchin {
 
         private:
             void fillMaterialData(const Mesh&);
+            std::vector<Point2<float>> scaleUv(const ConstMesh&, const Mesh&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
             bool isInitialized;

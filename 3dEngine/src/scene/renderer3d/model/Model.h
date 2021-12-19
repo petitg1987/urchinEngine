@@ -17,7 +17,8 @@ namespace urchin {
         public:
             enum NotificationType {
                 MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,
-                MATERIAL_UPDATED
+                MATERIAL_UPDATED,
+                SCALE_UPDATED
             };
 
             Model(const Model&);

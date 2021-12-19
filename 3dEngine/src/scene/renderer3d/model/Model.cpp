@@ -244,13 +244,18 @@ namespace urchin {
         if (scale != transform.getScale()) {
             transform.setScale(scale);
             onMoving(transform);
+            notifyObservers(this, Model::SCALE_UPDATED);
         }
     }
 
     void Model::setTransform(const Transform<float>& transform) {
         if (transform != this->transform) {
+            bool scaleUpdated = this->transform.getScale() != transform.getScale();
             this->transform = transform;
             onMoving(transform);
+            if (scaleUpdated) {
+                notifyObservers(this, Model::SCALE_UPDATED);
+            }
         }
     }
 
