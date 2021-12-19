@@ -123,7 +123,7 @@ namespace urchin {
 
     std::vector<Point2<float>> ModelDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const UvScale& uvScale) const { //TODO update material could affect this method
         std::vector<Point2<float>> scaledUvTexture;
-    scaledUvTexture.reserve(uvTexture.size());
+        scaledUvTexture.reserve(uvTexture.size());
 
         const Vector3<float> scale = model->getTransform().getScale();
         for(const Point2<float>& uv : uvTexture) {
