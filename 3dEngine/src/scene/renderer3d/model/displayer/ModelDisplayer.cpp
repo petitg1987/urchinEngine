@@ -119,12 +119,17 @@ namespace urchin {
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
-    std::vector<Point2<float>> ModelDisplayer::scaleUv(const ConstMesh& constMesh, const Mesh& mesh) const {
+    std::vector<Point2<float>> ModelDisplayer::scaleUv(const ConstMesh& constMesh, const Mesh& mesh) const { //TODO update material could affect this method
         if (mesh.getMaterial().isRepeatTextures()) { //TODO add parameter on material ?
-            std::vector<Point2<float>> scaledUv = constMesh.getTextureCoordinates();
+            std::vector<Point2<float>> scaledUv;
+            scaledUv.reserve(constMesh.getTextureCoordinates().size());
 
-            std::cout <<" New scale: "<<model->getTransform().getScale()<<std::endl;
-            //TODO adapt based on scaling !
+            const Vector3<float> scale = model->getTransform().getScale();
+
+            for(const Point2<float>& uv : constMesh.getTextureCoordinates()) {
+                scaledUv.emplace_back(uv.X * scale.X, uv.Y * scale.Y); //TODO improve and use scale.Z
+            }
+
             return scaledUv;
         }
         return constMesh.getTextureCoordinates(); //TODO possible to avoid copy ?
