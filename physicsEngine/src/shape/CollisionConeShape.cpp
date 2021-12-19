@@ -49,9 +49,10 @@ namespace urchin {
             Logger::instance().logWarning("Cone cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
-        float radiusScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
-        float heightScale = scale[heightAxis];
-        return std::make_unique<CollisionConeShape>(coneShape->getRadius() * radiusScale, coneShape->getHeight() * heightScale, coneShape->getConeOrientation());
+        float radiusScale = std::min(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3]);
+        float newRadius = std::max(0.001f, coneShape->getRadius() * radiusScale);
+        float newHeight = std::max(0.001f, coneShape->getHeight() * scale[heightAxis]);
+        return std::make_unique<CollisionConeShape>(newRadius, newHeight, coneShape->getConeOrientation());
     }
 
     AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform& physicsTransform) const {

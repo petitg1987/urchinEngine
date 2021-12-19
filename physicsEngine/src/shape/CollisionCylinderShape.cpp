@@ -49,9 +49,10 @@ namespace urchin {
             Logger::instance().logWarning("Cylinder cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
-        float radiusScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
-        float heightScale = scale[heightAxis];
-        return std::make_unique<CollisionCylinderShape>(cylinderShape->getRadius() * radiusScale, cylinderShape->getHeight() * heightScale, cylinderShape->getCylinderOrientation());
+        float radiusScale = std::min(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3]);
+        float newRadius = std::max(0.001f, cylinderShape->getRadius() * radiusScale);
+        float newHeight = std::max(0.001f, cylinderShape->getHeight() * scale[heightAxis]);
+        return std::make_unique<CollisionCylinderShape>(newRadius, newHeight, cylinderShape->getCylinderOrientation());
     }
 
     AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {

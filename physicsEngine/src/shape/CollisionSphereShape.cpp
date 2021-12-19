@@ -34,8 +34,9 @@ namespace urchin {
             Logger::instance().logWarning("Sphere cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
-        float radiusScale = (scale.X + scale.Y + scale.Z) / 3.0f;
-        return std::make_unique<CollisionSphereShape>(sphereShape->getRadius() * radiusScale);
+        float radiusScale = std::min(scale.X, std::min(scale.Y, scale.Z));
+        float newRadius = std::max(0.001f, sphereShape->getRadius() * radiusScale);
+        return std::make_unique<CollisionSphereShape>(newRadius);
     }
 
     AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform& physicsTransform) const {
