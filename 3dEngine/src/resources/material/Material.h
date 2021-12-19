@@ -4,17 +4,19 @@
 
 #include <resources/Resource.h>
 #include <resources/image/Image.h>
+#include <resources/material/UvScale.h>
 
 namespace urchin {
 
     class Material : public Resource {
         public:
-            Material(bool, std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, float, float);
+            Material(bool, UvScale, std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, float, float);
             ~Material() override = default;
 
             static constexpr float MAX_EMISSIVE_FACTOR = 20.0f;
 
             bool isRepeatTextures() const;
+            const UvScale& getUvScale() const;
             const std::shared_ptr<Texture>& getDiffuseTexture() const;
             const std::shared_ptr<Texture>& getNormalTexture() const;
 
@@ -25,6 +27,7 @@ namespace urchin {
 
         private:
             bool repeatTextures;
+            UvScale uvScale;
             std::shared_ptr<Texture> diffuseTexture;
             std::shared_ptr<Texture> normalTexture;
 

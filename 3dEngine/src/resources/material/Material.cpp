@@ -2,9 +2,10 @@
 
 namespace urchin {
 
-    Material::Material(bool repeatTextures, std::shared_ptr<Texture> diffuseTexture, std::shared_ptr<Texture> normalTexture,
+    Material::Material(bool repeatTextures, UvScale uvScale, std::shared_ptr<Texture> diffuseTexture, std::shared_ptr<Texture> normalTexture,
                        bool hasTransparency, float emissiveFactor, float ambientFactor) :
             repeatTextures(repeatTextures),
+            uvScale(uvScale),
             diffuseTexture(std::move(diffuseTexture)),
             normalTexture(std::move(normalTexture)),
             bHasTransparency(hasTransparency),
@@ -24,6 +25,10 @@ namespace urchin {
 
     bool Material::isRepeatTextures() const {
         return repeatTextures;
+    }
+
+    const UvScale& Material::getUvScale() const {
+        return uvScale;
     }
 
     const std::shared_ptr<Texture>& Material::getDiffuseTexture() const {

@@ -120,16 +120,15 @@ namespace urchin {
     }
 
     std::vector<Point2<float>> ModelDisplayer::scaleUv(const ConstMesh& constMesh, const Mesh& mesh) const { //TODO update material could affect this method
-        if (mesh.getMaterial().isRepeatTextures()) { //TODO add parameter on material ?
+        const UvScale& uvScale = mesh.getMaterial().getUvScale();
+        if (uvScale.hasScaling()) {
             std::vector<Point2<float>> scaledUv;
             scaledUv.reserve(constMesh.getTextureCoordinates().size());
 
             const Vector3<float> scale = model->getTransform().getScale();
-
             for(const Point2<float>& uv : constMesh.getTextureCoordinates()) {
-                scaledUv.emplace_back(uv.X * scale.X, uv.Y * scale.Y); //TODO improve and use scale.Z
+                scaledUv.emplace_back(uvScale.scaleU(uv.X, scale), uvScale.scaleV(uv.Y, scale));
             }
-
             return scaledUv;
         }
         return constMesh.getTextureCoordinates(); //TODO possible to avoid copy ?

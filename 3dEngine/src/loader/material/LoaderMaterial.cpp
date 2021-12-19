@@ -11,11 +11,20 @@ namespace urchin {
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
-        //textures data
+        //repeat textures
         bool repeatTextures = false;
         auto repeatTexturesChunk = udaParser.getUniqueChunk(false, "repeatTextures");
         if (repeatTexturesChunk) {
             repeatTextures = repeatTexturesChunk->getBoolValue();
+        }
+
+        //UV scale
+        UvScale uvScale(UvScaleType::NONE, UvScaleType::NONE);
+        auto uvScaleChunk = udaParser.getUniqueChunk(false, "uvScale");
+        if (uvScaleChunk) {
+            std::string uScale = udaParser.getUniqueChunk(true, "uScale", UdaAttribute(), uvScaleChunk)->getStringValue();
+            std::string vScale = udaParser.getUniqueChunk(true, "vScale", UdaAttribute(), uvScaleChunk)->getStringValue();
+            uvScale = UvScale(toUvScaleType(uScale, filename), toUvScaleType(vScale, filename));
         }
 
         //diffuse texture/color
@@ -73,7 +82,21 @@ namespace urchin {
             ambientFactor = ambientFactorChunk->getFloatValue();
         }
 
-        return std::make_shared<Material>(repeatTextures, diffuseTexture, normalTexture, hasTransparency, emissiveFactor, ambientFactor);
+        return std::make_shared<Material>(repeatTextures, uvScale, diffuseTexture, normalTexture, hasTransparency, emissiveFactor, ambientFactor);
+    }
+
+    UvScaleType LoaderMaterial::toUvScaleType(const std::string& uvScaleValue, const std::string& filename) const {
+        if (uvScaleValue == UV_SCALE_NONE) {
+            return UvScaleType::NONE;
+        } else if (uvScaleValue == UV_SCALE_MESH_SCALE_X) {
+            return UvScaleType::MESH_SCALE_X;
+        } else if (uvScaleValue == UV_SCALE_MESH_SCALE_Y) {
+            return UvScaleType::MESH_SCALE_Y;
+        } else if (uvScaleValue == UV_SCALE_MESH_SCALE_Z) {
+            return UvScaleType::MESH_SCALE_Z;
+        }
+
+        throw std::runtime_error("Unknown U/V scale value '" + uvScaleValue + "' for material: " + filename);
     }
 
 }

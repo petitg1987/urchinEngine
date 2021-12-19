@@ -57,8 +57,9 @@ namespace urchin {
             iss >> sdata >> materialFilename;
             materialFilename = materialFilename.substr(1, materialFilename.length()-2); //remove quote
             if (materialFilename.empty() || materialFilename == "default") {
+                UvScale uvScale(UvScaleType::NONE, UvScaleType::NONE);
                 Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({177, 106, 168, 255}), false);
-                material = std::make_shared<Material>(false, defaultDiffuseImage.createTexture(false), nullptr, false, 0.0f, 0.5f);
+                material = std::make_shared<Material>(false, uvScale, defaultDiffuseImage.createTexture(false), nullptr, false, 0.0f, 0.5f);
             } else {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
             }
