@@ -41,8 +41,11 @@ namespace urchin {
             throw std::runtime_error("Capsule cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }
 
-        return std::make_unique<Capsule<T>>(radius * transform.getScale()[(heightAxis + 1) % 3], cylinderHeight * transform.getScale()[heightAxis],
-                capsuleOrientation, transform.getPosition(), transform.getOrientation());
+        T radiusScale = transform.getScale()[(heightAxis + 1) % 3];
+        T heightScale = transform.getScale()[heightAxis];
+        T originalCylinderHeight = (radius * (T)2.0) + cylinderHeight;
+        T newHeight = std::max((T)0.001, (originalCylinderHeight * heightScale) - 2.0f * (radius * radiusScale));
+        return std::make_unique<Capsule<T>>(radius * radiusScale, newHeight, capsuleOrientation, transform.getPosition(), transform.getOrientation());
     }
 
     //explicit template

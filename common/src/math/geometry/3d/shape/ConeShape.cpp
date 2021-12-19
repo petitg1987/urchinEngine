@@ -38,8 +38,9 @@ namespace urchin {
             throw std::runtime_error("Cone cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }
 
-        return std::make_unique<Cone<T>>(radius * transform.getScale()[(heightAxis + 1) % 3], height * transform.getScale()[heightAxis],
-                coneOrientation, transform.getPosition(), transform.getOrientation());
+        T radiusScale = transform.getScale()[(heightAxis + 1) % 3];
+        T heightScale = transform.getScale()[heightAxis];
+        return std::make_unique<Cone<T>>(radius * radiusScale, height * heightScale, coneOrientation, transform.getPosition(), transform.getOrientation());
     }
 
     //explicit template

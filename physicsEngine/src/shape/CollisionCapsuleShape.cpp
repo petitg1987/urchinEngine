@@ -48,8 +48,11 @@ namespace urchin {
             Logger::instance().logWarning("Capsule cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
-        float averageScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
-        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius() * averageScale, capsuleShape->getCylinderHeight() * scale[heightAxis], capsuleShape->getCapsuleOrientation());
+        float radiusScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
+        float heightScale = scale[heightAxis];
+        float originalCylinderHeight = (capsuleShape->getRadius() * 2.0f) + capsuleShape->getCylinderHeight();
+        float newHeight = std::max(0.001f, (originalCylinderHeight * heightScale) - 2.0f * (capsuleShape->getRadius() * radiusScale));
+        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius() * radiusScale, newHeight, capsuleShape->getCapsuleOrientation());
     }
 
     AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform& physicsTransform) const {

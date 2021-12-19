@@ -26,7 +26,8 @@ namespace urchin {
             throw std::runtime_error("Sphere cannot by transformed with different scales: " + StringUtil::toString(transform.getScale()));
         }
 
-        return std::make_unique<Sphere<T>>(radius * transform.getScale().X, transform.getPosition());
+        T radiusScale = transform.getScale().X;
+        return std::make_unique<Sphere<T>>(radius * radiusScale, transform.getPosition());
     }
 
     //explicit template

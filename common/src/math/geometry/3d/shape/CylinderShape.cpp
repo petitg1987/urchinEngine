@@ -37,8 +37,9 @@ namespace urchin {
             throw std::runtime_error("Cylinder cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }
 
-        return std::make_unique<Cylinder<T>>(radius * transform.getScale()[(heightAxis + 1) % 3], height * transform.getScale()[heightAxis],
-                cylinderOrientation, transform.getPosition(), transform.getOrientation());
+        T radiusScale = transform.getScale()[(heightAxis + 1) % 3];
+        T heightScale = transform.getScale()[heightAxis];
+        return std::make_unique<Cylinder<T>>(radius * radiusScale, height * heightScale, cylinderOrientation, transform.getPosition(), transform.getOrientation());
     }
 
     //explicit template

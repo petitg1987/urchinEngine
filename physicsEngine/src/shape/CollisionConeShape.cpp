@@ -42,15 +42,16 @@ namespace urchin {
         return coneShape->getConeOrientation();
     }
 
-    std::unique_ptr<CollisionShape3D> CollisionConeShape::scale(const Vector3<float>& scale) const { //TODO review for different orientation (+capsule & cylinder)
+    std::unique_ptr<CollisionShape3D> CollisionConeShape::scale(const Vector3<float>& scale) const {
         std::size_t heightAxis = (coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE || coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) ? 0 :
                                  (coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE || coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) ? 1 : 2;
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Cone cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
-        float averageScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
-        return std::make_unique<CollisionConeShape>(coneShape->getRadius() * averageScale, coneShape->getHeight() * scale[heightAxis], coneShape->getConeOrientation());
+        float radiusScale = (scale[(heightAxis + 1) % 3] + scale[(heightAxis + 2) % 3]) / 2.0f;
+        float heightScale = scale[heightAxis];
+        return std::make_unique<CollisionConeShape>(coneShape->getRadius() * radiusScale, coneShape->getHeight() * heightScale, coneShape->getConeOrientation());
     }
 
     AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform& physicsTransform) const {

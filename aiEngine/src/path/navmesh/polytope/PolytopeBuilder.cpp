@@ -244,7 +244,7 @@ namespace urchin {
         std::vector<Point3<float>> surfacePoints;
         surfacePoints.reserve(4);
 
-        for (auto pointIndex : POINT_INDEX_TO_PLANES) {
+        for (const auto& pointIndex : POINT_INDEX_TO_PLANES) {
             Vector3<float> v1 = sortedOriginalPoints[pointIndex[0]].vector(sortedOriginalPoints[pointIndex[2]]);
             Vector3<float> v2 = sortedOriginalPoints[pointIndex[1]].vector(sortedOriginalPoints[pointIndex[0]]);
             Vector3<float> normal = v1.crossProduct(v2).normalize();
@@ -257,7 +257,7 @@ namespace urchin {
             if (isSlopeWalkable) { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
 
                 Vector3<float> shiftVector = normal * navMeshAgent.computeExpandDistance(normal);
-                for (unsigned int i = 0; i < 4; ++i) {
+                for (std::size_t i = 0; i < 4; ++i) {
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
                 }
 
@@ -266,7 +266,7 @@ namespace urchin {
                     expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(planeSurfaceSplit.planeSurfacePoints, normal, isSlopeWalkable));
                 }
             } else {
-                for (unsigned int i = 0; i < 4; ++i) {
+                for (std::size_t i = 0; i < 4; ++i) {
                     surfacePoints.push_back(sortedExpandedPoints[pointIndex[i]]);
                 }
 
