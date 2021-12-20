@@ -18,7 +18,7 @@ template<class T> void GridContainer<T>::addItem(std::shared_ptr<T> item) {
         ItemSet<T>& setContainer = insertResult.first->second;
         const auto& insertSetResult = setContainer.insert(item);
         if (!insertSetResult.second) [[unlikely]] {
-            throw std::runtime_error("Item cannot be added because an item already exists at this position: " + StringUtil::toString(item->getGridPosition()));
+            Logger::instance().logError("Item cannot be added because an item already exists at this position: " + StringUtil::toString(item->getGridPosition()));
         }
     }
 }
