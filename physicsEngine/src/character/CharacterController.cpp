@@ -144,11 +144,11 @@ namespace urchin {
             //compute values
             slopeInPercentage = 0.0f;
             if (isOnGround) {
-                verticalSpeed = 0.0f;
+                verticalSpeed = std::max(0.0f, verticalSpeed);
                 slopeInPercentage = computeSlope();
             }
             if (hitRoof) {
-                verticalSpeed = 0.0f;
+                verticalSpeed = std::min(0.0f, verticalSpeed);
             }
         } else {
             respawnBodies();
