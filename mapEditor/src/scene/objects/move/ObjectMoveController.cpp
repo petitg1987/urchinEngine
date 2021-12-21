@@ -23,12 +23,14 @@ namespace urchin {
     }
 
     void ObjectMoveController::onCtrlXYZ(unsigned int axisIndex) {
-        if (selectedAxis == -1) {
-            savedPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
-        }
+        if (selectedObjectEntity) {
+            if (selectedAxis == -1) {
+                savedPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
+            }
 
-        selectedAxis = (int)axisIndex;
-        statusBarController.applyState(StatusBarState::MODEL_MOVE);
+            selectedAxis = (int) axisIndex;
+            statusBarController.applyState(StatusBarState::MODEL_MOVE);
+        }
     }
 
     bool ObjectMoveController::onMouseMove(double mouseX, double mouseY) {
