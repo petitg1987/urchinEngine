@@ -1,0 +1,20 @@
+#pragma once
+
+#include <string>
+
+#include <resources/image/Image.h>
+#include <loader/Loader.h>
+
+namespace urchin {
+
+    class LoaderQOI : public Loader<Image> {
+        public:
+            ~LoaderQOI() override = default;
+
+            std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+
+        private:
+
+    };
+
+}
