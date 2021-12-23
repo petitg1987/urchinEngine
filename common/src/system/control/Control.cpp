@@ -66,9 +66,9 @@ namespace urchin {
         keysLabelMap[Control::Key::PAUSE] = "Pause";
 
         //mouse
-        keysLabelMap[Control::Key::LMB] = "LMB";
-        keysLabelMap[Control::Key::RMB] = "RMB";
-        keysLabelMap[Control::Key::MMB] = "MMB";
+        keysLabelMap[Control::Key::LMB] = "Mouse Left";
+        keysLabelMap[Control::Key::RMB] = "Mouse Right";
+        keysLabelMap[Control::Key::MMB] = "Mouse Wheel";
         keysLabelMap[Control::Key::MOUSE_F1] = "Mouse F1";
         keysLabelMap[Control::Key::MOUSE_F2] = "Mouse F2";
         keysLabelMap[Control::Key::MOUSE_F3] = "Mouse F3";
