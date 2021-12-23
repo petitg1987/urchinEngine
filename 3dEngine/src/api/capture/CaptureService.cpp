@@ -2,6 +2,7 @@
 
 #include <libs/vma/vk_mem_alloc.h>
 #include <libs/lodepng/lodepng.h>
+#include <libs/qoi/qoi.h>
 #include <api/capture/CaptureService.h>
 #include <api/helper/CommandBufferHelper.h>
 #include <api/helper/ImageHelper.h>
@@ -98,9 +99,24 @@ namespace urchin {
         vkDestroyImage(logicalDevice, dstImage, nullptr);
         vmaFreeMemory(allocator, imageMemory);
 
-        unsigned createPngStatus = lodepng::encode(filename, imageData.data(), dstWidth, dstHeight);
-        if (createPngStatus) {
-            throw std::runtime_error("Impossible to encode capture in PNG format (status: " + std::to_string(createPngStatus) + ", message: " + lodepng_error_text(createPngStatus) + ", filename: " + filename + ")");
+        if (filename.ends_with(".qoi")) {
+            qoi_desc desc;
+            desc.channels = 4;
+            desc.width = dstWidth;
+            desc.height = dstHeight;
+            desc.colorspace = 1;
+            desc.hasTransparency = false;
+            int createQoiStatus = qoi_write(filename.c_str(), imageData.data(), &desc);
+            if (createQoiStatus == 0) {
+                throw std::runtime_error("Impossible to encode capture in QOI format (status: " + std::to_string(createQoiStatus) + ", filename: " + filename + ")");
+            }
+        } else if (filename.ends_with(".png")) {
+            unsigned int createPngStatus = lodepng::encode(filename, imageData.data(), dstWidth, dstHeight);
+            if (createPngStatus) {
+                throw std::runtime_error("Impossible to encode capture in PNG format (status: " + std::to_string(createPngStatus) + ", message: " + lodepng_error_text(createPngStatus) + ", filename: " + filename + ")");
+            }
+        } else {
+            throw std::runtime_error("Unknown filename extension to encode capture: " + filename);
         }
     }
 

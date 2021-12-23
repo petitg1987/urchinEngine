@@ -301,14 +301,14 @@ typedef union {
 
 static const unsigned char qoi_padding[8] = {0,0,0,0,0,0,0,1};
 
-void qoi_write_32(unsigned char *bytes, int *p, unsigned int v) {
+inline void qoi_write_32(unsigned char *bytes, int *p, unsigned int v) {
 	bytes[(*p)++] = (0xff000000 & v) >> 24;
 	bytes[(*p)++] = (0x00ff0000 & v) >> 16;
 	bytes[(*p)++] = (0x0000ff00 & v) >> 8;
 	bytes[(*p)++] = (0x000000ff & v);
 }
 
-unsigned int qoi_read_32(const unsigned char *bytes, int *p) {
+inline unsigned int qoi_read_32(const unsigned char *bytes, int *p) {
 	unsigned int a = bytes[(*p)++];
 	unsigned int b = bytes[(*p)++];
 	unsigned int c = bytes[(*p)++];
@@ -316,7 +316,7 @@ unsigned int qoi_read_32(const unsigned char *bytes, int *p) {
 	return a << 24 | b << 16 | c << 8 | d;
 }
 
-void *qoi_encode(const void *data, const qoi_desc *desc, int *out_len) {
+inline void *qoi_encode(const void *data, const qoi_desc *desc, int *out_len) {
 	int i, max_size, p, run;
 	int px_len, px_end, px_pos, channels;
 	unsigned char *bytes;
@@ -449,7 +449,7 @@ void *qoi_encode(const void *data, const qoi_desc *desc, int *out_len) {
 	return bytes;
 }
 
-std::vector<unsigned char> qoi_decode(const void *data, int size, qoi_desc *desc, int channels) {
+inline std::vector<unsigned char> qoi_decode(const void *data, int size, qoi_desc *desc, int channels) {
 	const unsigned char *bytes;
 	unsigned int header_magic;
 	std::vector<unsigned char> pixels;
@@ -556,7 +556,7 @@ std::vector<unsigned char> qoi_decode(const void *data, int size, qoi_desc *desc
 #ifndef QOI_NO_STDIO
 #include <stdio.h>
 
-int qoi_write(const char *filename, const void *data, const qoi_desc *desc) {
+inline int qoi_write(const char *filename, const void *data, const qoi_desc *desc) {
 	FILE *f = fopen(filename, "wb");
 	int size;
 	void *encoded;
@@ -578,7 +578,7 @@ int qoi_write(const char *filename, const void *data, const qoi_desc *desc) {
 	return size;
 }
 
-std::vector<unsigned char> qoi_read(const char *filename, qoi_desc *desc, int channels) {
+inline std::vector<unsigned char> qoi_read(const char *filename, qoi_desc *desc, int channels) {
 	FILE *f = fopen(filename, "rb");
 	int size, bytes_read;
 	void *data;
