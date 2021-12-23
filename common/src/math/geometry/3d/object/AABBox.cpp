@@ -222,11 +222,11 @@ namespace urchin {
     }
 
     template<class T> AABBox<T> AABBox<T>::enlarge(const Vector3<T>& minAdditionalSize, const Vector3<T>& maxAdditionalSize) const {
-        return AABBox<T>(getMin() - Point3<T>(minAdditionalSize), getMax() + Point3<T>(maxAdditionalSize));
+        return AABBox<T>(getMin().translate(-minAdditionalSize), getMax().translate(maxAdditionalSize));
     }
 
     template<class T> AABBox<T> AABBox<T>::enlarge(T minAdditionalSize, T maxAdditionalSize) const {
-        return AABBox<T>(getMin() - Point3<T>(minAdditionalSize, minAdditionalSize, minAdditionalSize), getMax() + Point3<T>(maxAdditionalSize, maxAdditionalSize, maxAdditionalSize));
+        return enlarge(Vector3<T>(minAdditionalSize, minAdditionalSize, minAdditionalSize), Vector3<T>(maxAdditionalSize, maxAdditionalSize, maxAdditionalSize));
     }
 
     template<class T> bool AABBox<T>::collideWithPoint(const Point3<T>& point) const {
