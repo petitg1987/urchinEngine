@@ -1,10 +1,15 @@
 #pragma once
 
+#include <character/CharacterEventCallback.h>
+
 namespace urchin {
 
     class CharacterControllerConfig {
         public:
             CharacterControllerConfig();
+
+            void setupEventCallback(CharacterEventCallback&);
+            CharacterEventCallback& getEventCallback() const;
 
             void setJumpSpeed(float);
             float getJumpSpeed() const;
@@ -30,6 +35,9 @@ namespace urchin {
             float getRunSpeed() const;
 
         private:
+            std::unique_ptr<CharacterEventCallback> defaultCharacterEventCallback;
+            CharacterEventCallback& characterEventCallback;
+
             float jumpSpeed;
 
             float maxSlopeInRadian, maxSlopeInPercentage;

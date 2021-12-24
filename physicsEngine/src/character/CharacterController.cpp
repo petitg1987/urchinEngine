@@ -9,12 +9,12 @@
 
 namespace urchin {
 
-    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, const CharacterControllerConfig& config, PhysicsWorld& physicsWorld) :
+    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
             ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
             maxDepthToRecover(ConfigService::instance().getFloatValue("character.maxDepthToRecover")),
             minUpdateFrequency(ConfigService::instance().getFloatValue("character.minUpdateFrequency")),
             physicsCharacter(std::move(physicsCharacter)),
-            config(config),
+            config(std::move(config)),
             physicsWorld(physicsWorld),
             ghostBody(nullptr),
             ccdGhostBody(nullptr),
@@ -189,12 +189,13 @@ namespace urchin {
     }
 
     void CharacterController::updateBodiesTransform(float dt) {
-        //save values
+        //values
         previousBodyPosition = ghostBody->getTransform().getPosition();
+        bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
 
         //user velocity
         Point3<float> targetPosition = previousBodyPosition;
-        if (bIsOnGround) {
+        if (closeToTheGround) {
             float slopeSpeedVariation = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
             slopeSpeedVariation = MathFunction::clamp(slopeSpeedVariation, 1.0f - config.getMaxSlopeSpeedVariation(), 1.0f + config.getMaxSlopeSpeedVariation());
             targetPosition = targetPosition.translate(velocity * dt * slopeSpeedVariation);
@@ -206,14 +207,27 @@ namespace urchin {
             targetPosition = targetPosition.translate(walkDirectionInAir * dt * momentumSpeedDecrease);
         }
 
+        //callback events
+        if (closeToTheGround) {
+            if (velocity.xz().squareLength() - 0.01f > config.getWalkSpeed() * config.getWalkSpeed()) {
+                config.getEventCallback().notifyRunning();
+            } else if (velocity.xz().squareLength() - 0.01f > 0.0f) {
+                config.getEventCallback().notifyWalking();
+            } else {
+                config.getEventCallback().notifyNoStepping();
+            }
+        } else {
+            config.getEventCallback().notifyNoStepping();
+        }
+
         //jump
         if (makeJump) [[unlikely]] {
             makeJump = false;
-            bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
             if (closeToTheGround && !jumping) {
                 verticalSpeed += config.getJumpSpeed();
                 bIsOnGround = false;
                 jumping = true;
+                config.getEventCallback().onStartJumping();
             }
         } else if (bIsOnGround && jumping) {
             jumping = false;
@@ -342,6 +356,10 @@ namespace urchin {
         bIsOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < config.getMaxSlopeInRadian();
         timeInTheAir = bIsOnGround ? 0.0f : timeInTheAir + dt;
+
+        if (bIsOnGround && verticalSpeed < -0.1f) { //TODO to review and generalize
+            config.getEventCallback().onHit(std::abs(verticalSpeed));
+        }
     }
 
     /**

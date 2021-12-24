@@ -5,6 +5,8 @@
 namespace urchin {
 
     CharacterControllerConfig::CharacterControllerConfig() :
+            defaultCharacterEventCallback(std::make_unique<CharacterEventCallback>()),
+            characterEventCallback(*defaultCharacterEventCallback),
             jumpSpeed(5.0f),
             maxSlopeInRadian(0.0f),
             maxSlopeInPercentage(0.0f),
@@ -16,6 +18,14 @@ namespace urchin {
             runSpeed(10.0f) //36 km/h
     {
         setMaxSlopeInRadian(MathValue::PI_FLOAT / 4.0f); //45 degrees
+    }
+
+    void CharacterControllerConfig::setupEventCallback(CharacterEventCallback& characterEventCallback) {
+        this->characterEventCallback = characterEventCallback;
+    }
+
+    CharacterEventCallback& CharacterControllerConfig::getEventCallback() const {
+        return characterEventCallback;
     }
 
     void CharacterControllerConfig::setJumpSpeed(float jumpSpeed) {
@@ -75,7 +85,7 @@ namespace urchin {
     }
 
     /**
-     * Define the horizontal walk speed allowed for the character. The character speed could be higher in downhill.
+     * Define the horizontal walk speed allowed for the character. The character walk speed is higher in downhill.
      */
     void CharacterControllerConfig::setWalkSpeed(float walkSpeed) {
         this->walkSpeed = walkSpeed;
@@ -86,7 +96,7 @@ namespace urchin {
     }
 
     /**
-     * Define the horizontal run speed allowed for the character. The character speed could be higher in downhill.
+     * Define the horizontal run speed allowed for the character. The character run speed is higher in downhill.
      */
     void CharacterControllerConfig::setRunSpeed(float runSpeed) {
         this->runSpeed = runSpeed;

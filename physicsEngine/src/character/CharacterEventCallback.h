@@ -4,14 +4,23 @@ namespace urchin {
 
     class CharacterEventCallback {
         public:
-            virtual void startMoving() = 0;
-            virtual void stopMoving() = 0;
+            CharacterEventCallback();
+            virtual ~CharacterEventCallback() = default;
 
-            virtual void startRun() = 0;
-            virtual void stopRun() = 0;
+            void notifyWalking();
+            void notifyRunning();
+            void notifyNoStepping();
 
-            virtual void fall(float) = 0;
-            virtual void jump() = 0;
+            virtual void onStartWalking();
+            virtual void onStopWalking();
+            virtual void onStartRunning();
+            virtual void onStopRunning();
+            virtual void onHit(float);
+            virtual void onStartJumping();
+
+        private:
+            bool isWalking;
+            bool isRunning;
     };
 
 }
