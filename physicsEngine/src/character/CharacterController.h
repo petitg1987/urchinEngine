@@ -39,7 +39,9 @@ namespace urchin {
             CharacterController(std::shared_ptr<PhysicsCharacter>, const CharacterControllerConfig&, PhysicsWorld&);
             ~CharacterController();
 
-            void setVelocity(const Vector3<float>&);
+            void walk(const Vector3<float>&);
+            void run(const Vector3<float>&);
+            void verticalMove(float);
             void setOrientation(const Vector3<float>&);
             void jump();
             void enableGravity(bool);

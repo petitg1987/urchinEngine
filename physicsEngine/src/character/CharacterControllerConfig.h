@@ -22,8 +22,12 @@ namespace urchin {
 
             void setMaxVerticalSpeed(float);
             float getMaxVerticalSpeed() const;
-            void setMaxHorizontalSpeed(float);
-            float getMaxHorizontalSpeed() const;
+
+            void setWalkSpeed(float);
+            float getWalkSpeed() const;
+
+            void setRunSpeed(float);
+            float getRunSpeed() const;
 
         private:
             float jumpSpeed;
@@ -35,7 +39,9 @@ namespace urchin {
             float percentageControlInAir;
 
             float maxVerticalSpeed; //in units/second
-            float maxHorizontalSpeed; // in units/second
+
+            float walkSpeed; //in units/second
+            float runSpeed; //in units/second
     };
 
 }

@@ -43,21 +43,31 @@ namespace urchin {
         physicsWorld.getCollisionWorld().getBroadPhase().removeBodyAsync(ghostBody);
     }
 
-    void CharacterController::setVelocity(const Vector3<float>& velocity) {
-        this->velocity = velocity;
+    void CharacterController::walk(const Vector3<float>& direction) {
+        Vector3<float> newVelocity = direction;
+        if (isGravityEnabled()) {
+            newVelocity.Y = 0.0f;
+        }
+        this->velocity = newVelocity.normalize() * config.getWalkSpeed();
+    }
 
-        //clamp velocity to max horizontal speed
-        Vector2<float> horizontalVelocity = velocity.xz();
-        float velocityLength = horizontalVelocity.length();
-        if (velocityLength > config.getMaxHorizontalSpeed()) {
-            horizontalVelocity = (horizontalVelocity / velocityLength) * config.getMaxHorizontalSpeed();
-            this->velocity = Vector3(horizontalVelocity.X, velocity.Y, horizontalVelocity.Y);
+    void CharacterController::run(const Vector3<float>& direction) {
+        Vector3<float> newVelocity = direction;
+        if (isGravityEnabled()) {
+            newVelocity.Y = 0.0f;
+        }
+        this->velocity = newVelocity.normalize() * config.getRunSpeed();
+    }
+
+    void CharacterController::verticalMove(float verticalSpeed) {
+        if (!isGravityEnabled()) {
+            this->velocity.Y += verticalSpeed;
         }
     }
 
     /**
      * Define the character orientation. This orientation has only effect when the character is not moving.
-     * When the character is moving, the orientation is determined in function of velocity direction.
+     * When the character is moving, the orientation is determined in function of the direction.
      */
     void CharacterController::setOrientation(const Vector3<float>& viewVector) {
         //Following lines are equivalent to Camera#updateComponents() but with simplification to avoid the rotation on X/Z axis:
@@ -140,7 +150,7 @@ namespace urchin {
 
             float radius = ghostBodyCapsule.getRadius();
             float height = ghostBodyCapsule.getCylinderHeight() + (2.0f * radius);
-            float maximumCharacterSpeed = config.getMaxHorizontalSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
+            float maximumCharacterSpeed = config.getRunSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
 
             float ccdRadius = std::max(radius, maximumCharacterSpeed / minUpdateFrequency);
             float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
