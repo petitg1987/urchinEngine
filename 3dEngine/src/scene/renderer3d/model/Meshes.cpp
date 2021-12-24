@@ -17,6 +17,7 @@ namespace urchin {
     }
 
     Mesh& Meshes::getMesh(unsigned int meshIndex) const {
+        assert(meshes.size() > meshIndex);
         return *meshes[meshIndex];
     }
 
@@ -50,12 +51,12 @@ namespace urchin {
     }
 
     void Meshes::updateMesh(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {
-        meshes[meshIndex]->updateVertices(vertices);
+        getMesh(meshIndex).updateVertices(vertices);
         computeLocalAABBox(true);
     }
 
-    void Meshes::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) {
-        meshes[meshIndex]->updateMaterial(material);
+    void Meshes::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) const {
+        getMesh(meshIndex).updateMaterial(material);
     }
 
     void Meshes::onMoving(const Transform<float>& newTransform) {
