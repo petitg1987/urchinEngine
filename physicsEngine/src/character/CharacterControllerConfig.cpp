@@ -1,3 +1,4 @@
+#include <utility>
 #include <UrchinCommon.h>
 
 #include <character/CharacterControllerConfig.h>
@@ -5,8 +6,7 @@
 namespace urchin {
 
     CharacterControllerConfig::CharacterControllerConfig() :
-            defaultCharacterEventCallback(std::make_unique<CharacterEventCallback>()),
-            characterEventCallback(*defaultCharacterEventCallback),
+            characterEventCallback(std::make_unique<CharacterEventCallback>()),
             jumpSpeed(5.0f),
             maxSlopeInRadian(0.0f),
             maxSlopeInPercentage(0.0f),
@@ -20,12 +20,12 @@ namespace urchin {
         setMaxSlopeInRadian(MathValue::PI_FLOAT / 4.0f); //45 degrees
     }
 
-    void CharacterControllerConfig::setupEventCallback(CharacterEventCallback& characterEventCallback) {
-        this->characterEventCallback = characterEventCallback;
+    void CharacterControllerConfig::setupEventCallback(std::shared_ptr<CharacterEventCallback> characterEventCallback) {
+        this->characterEventCallback = std::move(characterEventCallback);
     }
 
     CharacterEventCallback& CharacterControllerConfig::getEventCallback() const {
-        return characterEventCallback;
+        return *characterEventCallback;
     }
 
     void CharacterControllerConfig::setJumpSpeed(float jumpSpeed) {

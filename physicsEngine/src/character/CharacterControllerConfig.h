@@ -8,7 +8,7 @@ namespace urchin {
         public:
             CharacterControllerConfig();
 
-            void setupEventCallback(CharacterEventCallback&);
+            void setupEventCallback(std::shared_ptr<CharacterEventCallback>);
             CharacterEventCallback& getEventCallback() const;
 
             void setJumpSpeed(float);
@@ -35,8 +35,7 @@ namespace urchin {
             float getRunSpeed() const;
 
         private:
-            std::unique_ptr<CharacterEventCallback> defaultCharacterEventCallback;
-            CharacterEventCallback& characterEventCallback;
+            std::shared_ptr<CharacterEventCallback> characterEventCallback;
 
             float jumpSpeed;
 

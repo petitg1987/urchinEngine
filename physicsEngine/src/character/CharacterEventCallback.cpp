@@ -35,32 +35,26 @@ namespace urchin {
     }
 
     void CharacterEventCallback::onStartWalking() {
-        std::cout<<"start walking"<<std::endl; //TODO rem
         //can be overridden
     }
 
     void CharacterEventCallback::onStopWalking() {
-        std::cout<<"stop walking"<<std::endl; //TODO rem
         //can be overridden
     }
 
     void CharacterEventCallback::onStartRunning() {
-        std::cout<<"start running"<<std::endl; //TODO rem
         //can be overridden
     }
 
     void CharacterEventCallback::onStopRunning() {
-        std::cout<<"stop running"<<std::endl; //TODO rem
         //can be overridden
     }
 
-    void CharacterEventCallback::onHit(float hitSpeed) {
-        std::cout<<"hit ground: "<<hitSpeed<<std::endl; //TODO rem
+    void CharacterEventCallback::onHit(float) {
         //can be overridden
     }
 
     void CharacterEventCallback::onStartJumping() {
-        std::cout<<"jump"<<std::endl; //TODO rem
         //can be overridden
     }
 
