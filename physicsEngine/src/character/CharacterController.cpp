@@ -338,13 +338,13 @@ namespace urchin {
     void CharacterController::saveSignificantContactValues(const Vector3<float>& normal) {
         significantContactValues.numberOfHit++;
 
-        float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
+        float dotProductUpNormalAxis = -normal.Y; //equivalent to: (-normal).dotProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
         if (dotProductUpNormalAxis > significantContactValues.maxDotProductUpNormalAxis) {
             significantContactValues.maxDotProductUpNormalAxis = dotProductUpNormalAxis;
             significantContactValues.mostUpVerticalNormal = -normal;
         }
 
-        float dotProductDownNormalAxis = (-normal).dotProduct(Vector3<float>(0.0f, -1.0f, 0.0f));
+        float dotProductDownNormalAxis = normal.Y; //equivalent to: (-normal).dotProduct(Vector3<float>(0.0f, -1.0f, 0.0f));
         if (dotProductDownNormalAxis > significantContactValues.maxDotProductDownNormalAxis) {
             significantContactValues.maxDotProductDownNormalAxis = dotProductDownNormalAxis;
             significantContactValues.mostDownVerticalNormal = -normal;
