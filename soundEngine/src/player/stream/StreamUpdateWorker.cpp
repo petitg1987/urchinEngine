@@ -35,6 +35,9 @@ namespace urchin {
     void StreamUpdateWorker::addTask(const AudioStreamPlayer& audioStreamPlayer, bool playLoop) {
         ScopeProfiler sp(Profiler::sound(), "addTask");
 
+        if (audioStreamPlayer.getSourceId() == 0) {
+            return; //invalid source: probably too many sources in progress
+        }
         auto task = std::make_unique<StreamUpdateTask>(audioStreamPlayer, nbChunkBuffer, playLoop);
 
         //create buffers/chunks

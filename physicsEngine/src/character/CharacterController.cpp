@@ -296,7 +296,7 @@ namespace urchin {
         resetSignificantContactValues();
 
         PhysicsTransform characterTransform = ghostBody->getTransform();
-        for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTOR.size(); ++subStepIndex) {
+        for (unsigned int subStepIndex = 0; subStepIndex < RECOVER_FACTORS.size(); ++subStepIndex) {
             manifoldResults.clear();
             physicsWorld.getCollisionWorld().getNarrowPhase().processGhostBody(*ghostBody, manifoldResults);
 
@@ -308,7 +308,7 @@ namespace urchin {
 
                     if (depth < maxDepthToRecover) {
                         Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
-                        Vector3<float> moveVector = normal * depth * RECOVER_FACTOR[subStepIndex];
+                        Vector3<float> moveVector = normal * depth * RECOVER_FACTORS[subStepIndex];
 
                         characterTransform.setPosition(characterTransform.getPosition().translate(moveVector));
                         ghostBody->setTransform(characterTransform);

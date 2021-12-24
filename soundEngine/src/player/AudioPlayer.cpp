@@ -14,14 +14,19 @@ namespace urchin {
         }
 
         alGenSources(1, &sourceId);
-        sound.initializeSource(sourceId);
-
-        applyVolume();
+        if (sourceId == 0) {
+            Logger::instance().logError("Impossible to generate source id for sound: " + sound.getFilename());
+        } else {
+            sound.initializeSource(sourceId);
+            applyVolume();
+        }
     }
 
     AudioPlayer::~AudioPlayer() {
-        alSourcei(sourceId, AL_BUFFER, 0);
-        alDeleteSources(1, &sourceId);
+        if (sourceId != 0) {
+            alSourcei(sourceId, AL_BUFFER, 0);
+            alDeleteSources(1, &sourceId);
+        }
     }
 
     bool AudioPlayer::isPlaying() const {
