@@ -42,6 +42,10 @@ namespace urchin {
             void setVelocity(const Vector3<float>&);
             void setOrientation(const Vector3<float>&);
             void jump();
+            void enableGravity(bool);
+
+            bool isOnGround() const;
+            bool isGravityEnabled() const;
 
             void update(float);
 
@@ -82,10 +86,11 @@ namespace urchin {
             Point3<float> previousBodyPosition;
             Quaternion<float> initialOrientation;
             unsigned int numberOfHit; //number of contact point touching the character
-            bool isOnGround; //character is on the ground
+            bool bIsOnGround; //character is on the ground
             bool hitRoof; //character has hit the roof
             float timeInTheAir; //time (sec.) character is not on the ground
             bool jumping; //character is jumping
+            bool gravityEnabled; //without gravity, character is able to navigate freely up and down
             float slopeInPercentage; //slope in percentage (a positive value means that character climb)
     };
 

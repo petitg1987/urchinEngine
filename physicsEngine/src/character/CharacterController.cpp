@@ -24,10 +24,11 @@ namespace urchin {
             respawnValues({}),
             initialOrientation(this->physicsCharacter->getTransform().getOrientation()),
             numberOfHit(0),
-            isOnGround(false),
+            bIsOnGround(false),
             hitRoof(false),
             timeInTheAir(0.0f),
             jumping(false),
+            gravityEnabled(true),
             slopeInPercentage(0.0f) {
         createBodies();
         physicsWorld.getCollisionWorld().getBroadPhase().addBodyAsync(ghostBody);
@@ -74,7 +75,26 @@ namespace urchin {
     }
 
     void CharacterController::jump() {
-        makeJump = true;
+        if (gravityEnabled) {
+            makeJump = true;
+        }
+    }
+
+    void CharacterController::enableGravity(bool gravityEnabled) {
+        this->gravityEnabled = gravityEnabled;
+        if (!gravityEnabled) {
+            this->verticalSpeed = 0.0f;
+            this->makeJump = false;
+            this->jumping = false;
+        }
+    }
+
+    bool CharacterController::isOnGround() const {
+        return bIsOnGround;
+    }
+
+    bool CharacterController::isGravityEnabled() const {
+        return gravityEnabled;
     }
 
     /**
@@ -143,7 +163,7 @@ namespace urchin {
 
             //compute values
             slopeInPercentage = 0.0f;
-            if (isOnGround) {
+            if (bIsOnGround) {
                 verticalSpeed = std::max(0.0f, verticalSpeed);
                 slopeInPercentage = computeSlope();
             }
@@ -164,10 +184,12 @@ namespace urchin {
 
         //user velocity
         Point3<float> targetPosition = previousBodyPosition;
-        if (isOnGround) {
+        if (bIsOnGround) {
             float slopeSpeedVariation = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
             slopeSpeedVariation = MathFunction::clamp(slopeSpeedVariation, 1.0f - config.getMaxSlopeSpeedVariation(), 1.0f + config.getMaxSlopeSpeedVariation());
             targetPosition = targetPosition.translate(velocity * dt * slopeSpeedVariation);
+        } else if (!gravityEnabled) {
+            targetPosition = targetPosition.translate(velocity * dt);
         } else if (timeInTheAir < config.getTimeKeepMoveInAir()) {
             float momentumSpeedDecrease = 1.0f - (timeInTheAir / config.getTimeKeepMoveInAir());
             Vector3<float> walkDirectionInAir = velocity * (1.0f - config.getPercentageControlInAir()) + velocity * config.getPercentageControlInAir();
@@ -180,16 +202,18 @@ namespace urchin {
             bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
             if (closeToTheGround && !jumping) {
                 verticalSpeed += config.getJumpSpeed();
-                isOnGround = false;
+                bIsOnGround = false;
                 jumping = true;
             }
-        } else if (isOnGround && jumping) {
+        } else if (bIsOnGround && jumping) {
             jumping = false;
         }
 
         //gravity velocity
-        if (!isOnGround || numberOfHit > 1) {
-            verticalSpeed -= (-physicsWorld.getGravity().Y) * dt;
+        if (!bIsOnGround || numberOfHit > 1) {
+            if (gravityEnabled) {
+                verticalSpeed -= (-physicsWorld.getGravity().Y) * dt;
+            }
             if (verticalSpeed < -config.getMaxVerticalSpeed()) {
                 verticalSpeed = -config.getMaxVerticalSpeed();
             }
@@ -305,9 +329,9 @@ namespace urchin {
 
     void CharacterController::computeSignificantContactValues(float dt) {
         numberOfHit = significantContactValues.numberOfHit;
-        isOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
+        bIsOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < config.getMaxSlopeInRadian();
-        timeInTheAir = isOnGround ? 0.0f : timeInTheAir + dt;
+        timeInTheAir = bIsOnGround ? 0.0f : timeInTheAir + dt;
     }
 
     /**
