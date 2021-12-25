@@ -15,7 +15,7 @@ namespace urchin {
             virtual void onStopWalking();
             virtual void onStartRunning();
             virtual void onStopRunning();
-            virtual void onHit(float);
+            virtual void onHitGround(float);
             virtual void onStartJumping();
 
         private:

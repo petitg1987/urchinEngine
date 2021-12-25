@@ -355,10 +355,14 @@ namespace urchin {
         numberOfHit = significantContactValues.numberOfHit;
         bIsOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < config.getMaxSlopeInRadian();
-        timeInTheAir = bIsOnGround ? 0.0f : timeInTheAir + dt;
 
-        if (bIsOnGround && verticalSpeed < -0.1f) { //TODO to review and generalize
-            config.getEventCallback().onHit(std::abs(verticalSpeed));
+        if(bIsOnGround) {
+            if (timeInTheAir > 0.05f) {
+                config.getEventCallback().onHitGround(timeInTheAir);
+            }
+            timeInTheAir = 0.0f;
+        } else {
+            timeInTheAir += dt;
         }
     }
 

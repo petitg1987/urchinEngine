@@ -50,7 +50,7 @@ namespace urchin {
         //can be overridden
     }
 
-    void CharacterEventCallback::onHit(float) {
+    void CharacterEventCallback::onHitGround(float) {
         //can be overridden
     }
 
