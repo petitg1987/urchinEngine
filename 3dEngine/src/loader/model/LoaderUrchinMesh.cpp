@@ -4,7 +4,7 @@
 
 #include <loader/model/LoaderUrchinMesh.h>
 #include <resources/ResourceRetriever.h>
-#include <resources/material/UvScale.h>
+#include <resources/material/MaterialBuilder.h>
 
 namespace urchin {
 
@@ -56,11 +56,10 @@ namespace urchin {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> materialFilename;
-            materialFilename = materialFilename.substr(1, materialFilename.length()-2); //remove quote
+            materialFilename = materialFilename.substr(1, materialFilename.length() - 2); //remove quote
             if (materialFilename.empty() || materialFilename == "default") {
-                UvScale uvScale(UvScaleType::NONE, UvScaleType::NONE);
                 Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({177, 106, 168, 255}), false);
-                material = std::make_shared<Material>(false, uvScale, defaultDiffuseImage.createTexture(false), nullptr, false, 0.0f, 0.5f);
+                material = MaterialBuilder::create(defaultDiffuseImage.createTexture(false), false)->build();
             } else {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
             }

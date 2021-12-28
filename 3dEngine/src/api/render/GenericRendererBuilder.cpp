@@ -60,12 +60,12 @@ namespace urchin {
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::indices(const std::vector<uint32_t>& indices) {
-        pIndices = std::make_shared<IndexContainer>(indices.size(), indices.data());
+        mIndices = std::make_shared<IndexContainer>(indices.size(), indices.data());
         return shared_from_this();
     }
 
     const std::shared_ptr<IndexContainer>& GenericRendererBuilder::getIndices() const {
-        return pIndices;
+        return mIndices;
     }
 
     /**
@@ -168,7 +168,7 @@ namespace urchin {
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
-        auto renderer = std::make_unique<GenericRenderer>(this);
+        auto renderer = std::make_unique<GenericRenderer>(*this);
         renderTarget.addRenderer(renderer.get());
         return renderer;
     }

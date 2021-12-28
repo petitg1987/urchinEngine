@@ -5,84 +5,92 @@
 #include <loader/material/LoaderMaterial.h>
 #include <resources/ResourceRetriever.h>
 #include <resources/image/Image.h>
+#include <resources/material/MaterialBuilder.h>
 
 namespace urchin {
 
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
+        //diffuse texture/color
+        bool hasTransparency = false;
+        std::shared_ptr<Texture> diffuseTexture;
+        auto diffuseChunk = udaParser.getUniqueChunk(true, "diffuse");
+        auto diffuseTextureChunk = udaParser.getUniqueChunk(false, "texture", UdaAttribute(), diffuseChunk);
+        if (diffuseTextureChunk) {
+            auto diffuseImage = ResourceRetriever::instance().getResource<Image>(diffuseTextureChunk->getStringValue());
+            diffuseTexture = diffuseImage->createTexture(true);
+            hasTransparency = diffuseImage->hasTransparency();
+        }
+
+        auto diffuseColorChunk = udaParser.getUniqueChunk(false, "color", UdaAttribute(), diffuseChunk);
+        if (diffuseColorChunk) {
+            if (diffuseTexture) {
+                throw std::runtime_error("Material defines a diffuse color while a diffuse texture is defined: " + filename);
+            }
+
+            Vector4<float> color = diffuseColorChunk->getVector4Value();
+            if (color.X > 1.0f || color.Y > 1.0f || color.Z > 1.0f || color.W > 1.0f
+                || color.X < 0.0f || color.Y < 0.0f || color.Z < 0.0f || color.W < 0.0f) {
+                throw std::runtime_error("Material color must be in range 0.0 - 1.0: " + filename);
+            }
+
+            std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
+                                                  (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
+            Image diffuseImage(1, 1, Image::IMAGE_RGBA, std::move(rgbaColor), false);
+            diffuseTexture = diffuseImage.createTexture(false);
+            hasTransparency = !MathFunction::isOne(color.W);
+        }
+        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(diffuseTexture, hasTransparency);
+
         //repeat textures
-        bool repeatTextures = false;
         auto repeatTexturesChunk = udaParser.getUniqueChunk(false, "repeatTextures");
-        if (repeatTexturesChunk) {
-            repeatTextures = repeatTexturesChunk->getBoolValue();
+        if (repeatTexturesChunk && repeatTexturesChunk->getBoolValue()) {
+            materialBuilder->enableRepeatTextures();
+
         }
 
         //UV scale
-        UvScale uvScale(UvScaleType::NONE, UvScaleType::NONE);
         auto uvScaleChunk = udaParser.getUniqueChunk(false, "uvScale");
         if (uvScaleChunk) {
             std::string uScale = udaParser.getUniqueChunk(true, "uScale", UdaAttribute(), uvScaleChunk)->getStringValue();
             std::string vScale = udaParser.getUniqueChunk(true, "vScale", UdaAttribute(), uvScaleChunk)->getStringValue();
-            uvScale = UvScale(toUvScaleType(uScale, filename), toUvScaleType(vScale, filename));
-        }
-
-        //diffuse texture/color
-        bool hasTransparency = false;
-        std::shared_ptr<Texture> diffuseTexture;
-        auto diffuseChunk = udaParser.getUniqueChunk(false, "diffuse");
-        if (diffuseChunk) {
-            auto diffuseTextureChunk = udaParser.getUniqueChunk(false, "texture", UdaAttribute(), diffuseChunk);
-            if (diffuseTextureChunk) {
-                auto diffuseImage = ResourceRetriever::instance().getResource<Image>(diffuseTextureChunk->getStringValue());
-                diffuseTexture = diffuseImage->createTexture(true);
-                hasTransparency = diffuseImage->hasTransparency();
-            }
-
-            auto diffuseColorChunk = udaParser.getUniqueChunk(false, "color", UdaAttribute(), diffuseChunk);
-            if (diffuseColorChunk) {
-                if (diffuseTexture) {
-                    throw std::runtime_error("Material defines a diffuse color while a diffuse texture is defined: " + filename);
-                }
-
-                Vector4<float> color = diffuseColorChunk->getVector4Value();
-                if (color.X > 1.0f || color.Y > 1.0f || color.Z > 1.0f || color.W > 1.0f
-                        || color.X < 0.0f || color.Y < 0.0f || color.Z < 0.0f || color.W < 0.0f) {
-                    throw std::runtime_error("Material color must be in range 0.0 - 1.0: " + filename);
-                }
-
-                std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
-                                                      (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-                Image diffuseImage(1, 1, Image::IMAGE_RGBA, std::move(rgbaColor), false);
-                diffuseTexture = diffuseImage.createTexture(false);
-                hasTransparency = !MathFunction::isOne(color.W);
-            }
+            materialBuilder->uvScale(UvScale(toUvScaleType(uScale, filename), toUvScaleType(vScale, filename)));
         }
 
         //normal texture
-        std::shared_ptr<Texture> normalTexture;
         auto normalChunk = udaParser.getUniqueChunk(false, "normal");
         if (normalChunk) {
             auto normalTextureChunk = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), normalChunk);
             auto normalImage = ResourceRetriever::instance().getResource<Image>(normalTextureChunk->getStringValue());
-            normalTexture = normalImage->createTexture(true);
+            materialBuilder->normalTexture(normalImage->createTexture(true));
         }
 
         //emissive factor
-        float emissiveFactor = 0.0f;
         auto emissiveFactorChunk = udaParser.getUniqueChunk(false, "emissiveFactor");
         if (emissiveFactorChunk) {
-            emissiveFactor = emissiveFactorChunk->getFloatValue();
+            materialBuilder->emissiveFactor(emissiveFactorChunk->getFloatValue());
         }
 
         //ambient factor
-        float ambientFactor = 0.0f;
         auto ambientFactorChunk = udaParser.getUniqueChunk(false, "ambientFactor");
         if (ambientFactorChunk) {
-            ambientFactor = ambientFactorChunk->getFloatValue();
+            materialBuilder->ambientFactor(ambientFactorChunk->getFloatValue());
         }
 
-        return std::make_shared<Material>(repeatTextures, uvScale, diffuseTexture, normalTexture, hasTransparency, emissiveFactor, ambientFactor);
+        //depth test
+        auto depthTestChunk = udaParser.getUniqueChunk(false, "depthTest");
+        if (depthTestChunk && !depthTestChunk->getBoolValue()) {
+            materialBuilder->disableDepthTest();
+        }
+
+        //depth write
+        auto depthWriteChunk = udaParser.getUniqueChunk(false, "depthWrite");
+        if (depthWriteChunk && !depthWriteChunk->getBoolValue()) {
+            materialBuilder->disableDepthWrite();
+        }
+
+        return materialBuilder->build();
     }
 
     UvScaleType LoaderMaterial::toUvScaleType(const std::string& uvScaleValue, const std::string& filename) const {

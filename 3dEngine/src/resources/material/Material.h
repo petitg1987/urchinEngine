@@ -8,33 +8,41 @@
 
 namespace urchin {
 
+    class MaterialBuilder;
+
     class Material : public Resource {
         public:
-            Material(bool, UvScale, std::shared_ptr<Texture>, std::shared_ptr<Texture>, bool, float, float);
+            explicit Material(const MaterialBuilder&);
             ~Material() override = default;
 
             static constexpr float MAX_EMISSIVE_FACTOR = 20.0f;
 
-            bool isRepeatTextures() const;
-            const UvScale& getUvScale() const;
             const std::shared_ptr<Texture>& getDiffuseTexture() const;
-            const std::shared_ptr<Texture>& getNormalTexture() const;
-
             bool hasTransparency() const;
+
+            bool repeatTextures() const;
+            const UvScale& getUvScale() const;
+            const std::shared_ptr<Texture>& getNormalTexture() const;
 
             float getEmissiveFactor() const;
             float getAmbientFactor() const;
 
-        private:
-            bool repeatTextures;
-            UvScale uvScale;
-            std::shared_ptr<Texture> diffuseTexture;
-            std::shared_ptr<Texture> normalTexture;
+            bool isDepthTestEnabled() const;
+            bool isDepthWriteEnabled() const;
 
+        private:
+            std::shared_ptr<Texture> diffuseTexture;
             bool bHasTransparency;
+
+            bool bRepeatTextures;
+            UvScale uvScale;
+            std::shared_ptr<Texture> normalTexture;
 
             float emissiveFactor;
             float ambientFactor;
+
+            bool depthTestEnabled;
+            bool depthWriteEnabled;
     };
 
 }

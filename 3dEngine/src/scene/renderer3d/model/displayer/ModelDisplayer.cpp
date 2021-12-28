@@ -83,10 +83,10 @@ namespace urchin {
                     meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 2 & 3
                 }
 
-                if (depthTestEnabled) {
+                if (depthTestEnabled && mesh.getMaterial().isDepthTestEnabled()) {
                     meshRendererBuilder->enableDepthTest();
                 }
-                if (depthWriteEnabled) {
+                if (depthWriteEnabled && mesh.getMaterial().isDepthWriteEnabled()) {
                     meshRendererBuilder->enableDepthWrite();
                 }
                 if (!enableFaceCull) {
@@ -133,7 +133,7 @@ namespace urchin {
     }
 
     TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
-        TextureParam::ReadMode textureReadMode = mesh.getMaterial().isRepeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
+        TextureParam::ReadMode textureReadMode = mesh.getMaterial().repeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 

@@ -11,33 +11,37 @@ namespace urchin {
 
     bool GenericRenderer::RendererComp::operator()(const GenericRenderer* lhs, const GenericRenderer* rhs) const {
         if (lhs->renderingOrder == rhs->renderingOrder) {
-            return lhs->pipeline->getId() < rhs->pipeline->getId();
+            if (lhs->isAlwaysOnTop == rhs->isAlwaysOnTop) {
+                return lhs->pipeline->getId() < rhs->pipeline->getId(); //TODO should be ordered always in the same way if equal
+            }
+            return lhs->isAlwaysOnTop > rhs->isAlwaysOnTop; //TODO review
         }
         return lhs->renderingOrder < rhs->renderingOrder;
     }
 
-    GenericRenderer::GenericRenderer(const GenericRendererBuilder* rendererBuilder) :
+    GenericRenderer::GenericRenderer(const GenericRendererBuilder& rendererBuilder) :
             isInitialized(false),
             bIsEnabled(true),
             renderingOrder(0),
-            name(rendererBuilder->getName()),
-            renderTarget(rendererBuilder->getRenderTarget()),
-            shader(rendererBuilder->getShader()),
-            data(rendererBuilder->getData()),
-            indices(rendererBuilder->getIndices()),
-            uniformData(rendererBuilder->getUniformData()),
-            uniformTextureReaders(rendererBuilder->getUniformTextureReaders()),
+            name(rendererBuilder.getName()),
+            isAlwaysOnTop(rendererBuilder.isDepthTestEnabled() && rendererBuilder.isDepthWriteEnabled()),
+            renderTarget(rendererBuilder.getRenderTarget()),
+            shader(rendererBuilder.getShader()),
+            data(rendererBuilder.getData()),
+            indices(rendererBuilder.getIndices()),
+            uniformData(rendererBuilder.getUniformData()),
+            uniformTextureReaders(rendererBuilder.getUniformTextureReaders()),
             descriptorPool(nullptr),
             drawCommandDirty(false) {
         pipelineBuilder = std::make_unique<PipelineBuilder>(name);
         pipelineBuilder->setupRenderTarget(renderTarget);
         pipelineBuilder->setupShader(shader);
-        pipelineBuilder->setupShapeType(rendererBuilder->getShapeType());
-        pipelineBuilder->setupBlendFunctions(rendererBuilder->getBlendFunctions());
-        pipelineBuilder->setupDepthOperations(rendererBuilder->isDepthTestEnabled(), rendererBuilder->isDepthWriteEnabled());
-        pipelineBuilder->setupCallFaceOperation(rendererBuilder->isCullFaceEnabled());
-        pipelineBuilder->setupPolygonMode(rendererBuilder->getPolygonMode());
-        pipelineBuilder->setupScissor(rendererBuilder->isScissorEnabled(), rendererBuilder->getScissorOffset(), rendererBuilder->getScissorSize());
+        pipelineBuilder->setupShapeType(rendererBuilder.getShapeType());
+        pipelineBuilder->setupBlendFunctions(rendererBuilder.getBlendFunctions());
+        pipelineBuilder->setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
+        pipelineBuilder->setupCallFaceOperation(rendererBuilder.isCullFaceEnabled());
+        pipelineBuilder->setupPolygonMode(rendererBuilder.getPolygonMode());
+        pipelineBuilder->setupScissor(rendererBuilder.isScissorEnabled(), rendererBuilder.getScissorOffset(), rendererBuilder.getScissorSize());
 
         if (renderTarget.isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {

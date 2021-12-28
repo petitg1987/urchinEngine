@@ -33,7 +33,7 @@ namespace urchin {
             const std::shared_ptr<IndexContainer>& getIndices() const;
 
             std::shared_ptr<GenericRendererBuilder> addUniformData(std::size_t, const void*);
-            const std::vector<ShaderDataContainer> &getUniformData() const;
+            const std::vector<ShaderDataContainer>& getUniformData() const;
 
             std::shared_ptr<GenericRendererBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
             std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
@@ -69,7 +69,7 @@ namespace urchin {
             ShapeType shapeType;
 
             std::vector<DataContainer> data;
-            std::shared_ptr<IndexContainer> pIndices;
+            std::shared_ptr<IndexContainer> mIndices;
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             std::vector<BlendFunction> blendFunctions;

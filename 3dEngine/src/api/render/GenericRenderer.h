@@ -24,7 +24,7 @@ namespace urchin {
 
     class GenericRendererBuilder;
 
-    class GenericRenderer : public std::enable_shared_from_this<GenericRenderer> {
+    class GenericRenderer : public std::enable_shared_from_this<GenericRenderer> /* TODO useful ? */ {
         public:
             friend class RenderTarget;
             static constexpr uint32_t PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
@@ -33,7 +33,7 @@ namespace urchin {
                 bool operator()(const GenericRenderer*, const GenericRenderer*) const;
             };
 
-            explicit GenericRenderer(const GenericRendererBuilder*);
+            explicit GenericRenderer(const GenericRendererBuilder&);
             ~GenericRenderer();
 
             const std::string& getName() const;
@@ -85,6 +85,7 @@ namespace urchin {
             unsigned int renderingOrder;
 
             std::string name;
+            bool isAlwaysOnTop; //TODO review... put in pipeline ?
             RenderTarget& renderTarget;
             const Shader& shader;
 

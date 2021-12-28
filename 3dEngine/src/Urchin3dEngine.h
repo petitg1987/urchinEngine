@@ -39,6 +39,7 @@
 #include <i18n/LabelTranslator.h>
 
 #include <resources/ResourceRetriever.h>
+#include <resources/material/MaterialBuilder.h>
 
 #include <api/render/shader/config/ShaderConfig.h>
 #include <api/render/target/NullRenderTarget.h>
