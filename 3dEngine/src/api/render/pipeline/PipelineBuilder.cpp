@@ -107,6 +107,15 @@ namespace urchin {
     std::size_t PipelineBuilder::computePipelineHash() const {
         std::size_t hash = 0;
 
+        unsigned int repeatCount;
+        HashUtil::combine(hash, data->size(), instanceData->size());
+        for (auto& singleData : *data) {
+            HashUtil::combine(hash, singleData.getVulkanFormat(repeatCount));
+        }
+        for (auto& singleInstanceData : *instanceData) {
+            HashUtil::combine(hash, singleInstanceData.getVulkanFormat(repeatCount));
+        }
+
         for (auto& bf : blendFunctions) {
             HashUtil::combine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
         }
