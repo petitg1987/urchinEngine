@@ -86,6 +86,7 @@ namespace urchin {
             const Shader& shader;
 
             std::vector<DataContainer> data;
+            std::vector<DataContainer> instanceData;
             std::shared_ptr<IndexContainer> indices;
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
@@ -95,6 +96,7 @@ namespace urchin {
             std::unique_ptr<PipelineBuilder> pipelineBuilder;
             std::shared_ptr<Pipeline> pipeline;
             std::vector<AlterableBufferHandler> vertexBuffers;
+            std::vector<AlterableBufferHandler> instanceVertexBuffers;
             AlterableBufferHandler indexBuffer;
             std::vector<AlterableBufferHandler> uniformsBuffers;
             VkDescriptorPool descriptorPool;
@@ -102,6 +104,7 @@ namespace urchin {
 
             bool drawCommandDirty;
             std::vector<VkBuffer> rawVertexBuffers;
+            std::vector<VkBuffer> rawInstanceVertexBuffers;
     };
 
 }

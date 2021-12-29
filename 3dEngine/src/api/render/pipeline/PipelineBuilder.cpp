@@ -13,6 +13,7 @@ namespace urchin {
             shader(nullptr),
             shapeType(ShapeType::TRIANGLE),
             data(nullptr),
+            instanceData(nullptr),
             uniformData(nullptr),
             uniformTextureReaders(nullptr),
             depthTestEnabled(false),
@@ -58,8 +59,9 @@ namespace urchin {
         this->scissorSize = scissorSize;
     }
 
-    void PipelineBuilder::setupData(const std::vector<DataContainer>& data) {
+    void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const std::vector<DataContainer>& instanceData) {
         this->data = &data;
+        this->instanceData = &instanceData;
     }
 
     void PipelineBuilder::setupUniform(const std::vector<ShaderDataContainer>& uniformData, const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders) {
@@ -168,7 +170,7 @@ namespace urchin {
         std::vector<VkVertexInputBindingDescription> bindingDescriptions;
         std::vector<VkVertexInputAttributeDescription> attributeDescriptions;
         for (uint32_t i = 0; i < data->size(); ++i) {
-            VkVertexInputBindingDescription bindingDescription{};
+            VkVertexInputBindingDescription bindingDescription{}; //TODO in Sascha example: there is only one VkVertexInputBindingDescription. Why not here ?
             bindingDescription.binding = i;
             bindingDescription.stride = (uint32_t)(*data)[i].getDataSize();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
@@ -180,6 +182,23 @@ namespace urchin {
             attributeDescription.format = (*data)[i].getVulkanFormat();
             attributeDescription.offset = 0;
             attributeDescriptions.emplace_back(attributeDescription);
+        }
+
+        if (instanceData) {
+            for (uint32_t i = 0; i < instanceData->size(); ++i) {
+                VkVertexInputBindingDescription bindingDescription{};
+                bindingDescription.binding = i + (uint32_t)data->size();
+                bindingDescription.stride = (uint32_t) (*instanceData)[i].getDataSize();
+                bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
+                bindingDescriptions.emplace_back(bindingDescription);
+
+                VkVertexInputAttributeDescription attributeDescription{};
+                attributeDescription.binding = i + (uint32_t)data->size();
+                attributeDescription.location = i + (uint32_t)data->size();
+                attributeDescription.format = (*instanceData)[i].getVulkanFormat();
+                attributeDescription.offset = 0;
+                attributeDescriptions.emplace_back(attributeDescription);
+            }
         }
 
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};

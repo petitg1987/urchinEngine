@@ -73,6 +73,12 @@ namespace urchin {
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                     ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
 
+                //TODO review:
+                std::vector<Point3<float>> shiftPos;
+                shiftPos.emplace_back(0.0f, 0.0f, 0.0f);
+                shiftPos.emplace_back(1.0f, 0.5f, 0.0f);
+                meshRendererBuilder->addInstanceData(shiftPos);
+
                 if (customShaderVariable) {
                     customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
                 }
