@@ -207,6 +207,16 @@ namespace urchin {
             positioningData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
             meshRenderer->updateUniformData(0, &positioningData);
 
+            //TODO review:
+            std::vector<Matrix4<float>> shiftMatrices;
+            shiftMatrices.emplace_back(Matrix4<float>());
+            Matrix4<float> shiftMatrix;
+            static float a = 0.0f;
+            a+= 0.0001f;
+            shiftMatrix.buildTranslation(1.0f, 0.5f + a, 0.0f);
+            shiftMatrices.emplace_back(shiftMatrix);
+            meshRenderer->updateInstanceData(0, shiftMatrices);
+
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }

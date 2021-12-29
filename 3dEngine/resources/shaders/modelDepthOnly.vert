@@ -15,5 +15,5 @@ layout(location = 1) in mat4 mModel; //use location 1, 2, 3 & 4
 invariant gl_Position;
 
 void main() {
-    gl_Position = postioningData.mProjectionView * (postioningData.mModel * mModel * vec4(vertexPosition, 1.0));
+    gl_Position = mModel * postioningData.mProjectionView * (postioningData.mModel * vec4(vertexPosition, 1.0));
 }

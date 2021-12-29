@@ -326,6 +326,15 @@ namespace urchin {
         data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
     }
 
+    void GenericRenderer::updateInstanceData(std::size_t instanceDataIndex, const std::vector<Matrix4<float>>& dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(instanceData.size() > instanceDataIndex);
+            assert(instanceData[instanceDataIndex].getDataDimension() == DataDimension::SIXTEEN_DIMENSION);
+            assert(instanceData[instanceDataIndex].getDataType() == DataType::FLOAT);
+        #endif
+        instanceData[instanceDataIndex].replaceData(dataPtr.size(), dataPtr.data());
+    }
+
     void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(uniformData.size() > uniformDataIndex);
@@ -408,7 +417,7 @@ namespace urchin {
         for (std::size_t instanceDataIndex = 0; instanceDataIndex < instanceData.size(); ++instanceDataIndex) {
             if (instanceData[instanceDataIndex].hasNewData(frameIndex)) {
                 DataContainer& dataContainer = instanceData[instanceDataIndex];
-                drawCommandDirty |= vertexBuffers[instanceDataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
+                drawCommandDirty |= instanceVertexBuffers[instanceDataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
                 dataContainer.markDataAsProcessed(frameIndex);
             }
         }
@@ -432,6 +441,7 @@ namespace urchin {
 
         std::array<VkDeviceSize, 20> offsets = {0};
         assert(offsets.size() >= data.size());
+        assert(offsets.size() >= instanceData.size());
 
         rawVertexBuffers.clear();
         for (const auto& vertexBuffer : vertexBuffers) {
