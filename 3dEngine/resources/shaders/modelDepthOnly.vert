@@ -10,10 +10,10 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
 layout(location = 0) in vec3 vertexPosition;
 
 //instance data
-layout(location = 1) in vec3 shiftPos; //TODO review
+layout(location = 1) in mat4 mModel; //use location 1, 2, 3 & 4
 
 invariant gl_Position;
 
 void main() {
-    gl_Position = postioningData.mProjectionView * (postioningData.mModel * vec4(vertexPosition + shiftPos, 1.0));
+    gl_Position = postioningData.mProjectionView * (postioningData.mModel * mModel * vec4(vertexPosition, 1.0));
 }

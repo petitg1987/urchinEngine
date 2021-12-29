@@ -73,46 +73,48 @@ namespace urchin {
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                     ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
 
-                //TODO review:
-                std::vector<Point3<float>> shiftPos;
-                shiftPos.emplace_back(0.0f, 0.0f, 0.0f);
-                shiftPos.emplace_back(1.0f, 0.5f, 0.0f);
-                meshRendererBuilder->addInstanceData(shiftPos);
+            //TODO review:
+            std::vector<Matrix4<float>> shiftMatrices;
+            shiftMatrices.emplace_back(Matrix4<float>());
+            Matrix4<float> shiftMatrix;
+            shiftMatrix.buildTranslation(1.0f, 0.5f, 0.0f);
+            shiftMatrices.emplace_back(shiftMatrix);
+            meshRendererBuilder->addInstanceData(shiftMatrices);
 
-                if (customShaderVariable) {
-                    customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
-                }
-                int missingUniformData = 4 - (int)meshRendererBuilder->getUniformData().size();
-                assert(missingUniformData >= 0);
-                for (int i = 0; i < missingUniformData; ++i) {
-                    int customDummyValue = 0;
-                    meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 2 & 3
-                }
+            if (customShaderVariable) {
+                customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
+            }
+            int missingUniformData = 4 - (int)meshRendererBuilder->getUniformData().size();
+            assert(missingUniformData >= 0);
+            for (int i = 0; i < missingUniformData; ++i) {
+                int customDummyValue = 0;
+                meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 2 & 3
+            }
 
-                if (depthTestEnabled && mesh.getMaterial().isDepthTestEnabled()) {
-                    meshRendererBuilder->enableDepthTest();
-                }
-                if (depthWriteEnabled && mesh.getMaterial().isDepthWriteEnabled()) {
-                    meshRendererBuilder->enableDepthWrite();
-                }
-                if (!enableFaceCull) {
-                    meshRendererBuilder->disableCullFace();
-                }
-                if (!blendFunctions.empty()) {
-                    meshRendererBuilder->enableTransparency(blendFunctions);
-                }
+            if (depthTestEnabled && mesh.getMaterial().isDepthTestEnabled()) {
+                meshRendererBuilder->enableDepthTest();
+            }
+            if (depthWriteEnabled && mesh.getMaterial().isDepthWriteEnabled()) {
+                meshRendererBuilder->enableDepthWrite();
+            }
+            if (!enableFaceCull) {
+                meshRendererBuilder->disableCullFace();
+            }
+            if (!blendFunctions.empty()) {
+                meshRendererBuilder->enableTransparency(blendFunctions);
+            }
 
-                if (displayMode == DEFAULT_MODE) {
-                    const UvScale& uvScale = mesh.getMaterial().getUvScale();
-                    meshRendererBuilder
-                            ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture())
-                            ->addData(mesh.getNormals())
-                            ->addData(mesh.getTangents())
-                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
-                            ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))); //binding 5
-                }
+            if (displayMode == DEFAULT_MODE) {
+                const UvScale& uvScale = mesh.getMaterial().getUvScale();
+                meshRendererBuilder
+                        ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture())
+                        ->addData(mesh.getNormals())
+                        ->addData(mesh.getTangents())
+                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
+                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))); //binding 5
+            }
 
-                meshRenderers.push_back(meshRendererBuilder->build());
+            meshRenderers.push_back(meshRendererBuilder->build());
         }
 
         model->addObserver(this, Model::MESH_UPDATED);

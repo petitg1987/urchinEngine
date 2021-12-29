@@ -27,7 +27,7 @@ namespace urchin {
             std::size_t getDataSize() const;
             std::size_t getBufferSize() const;
 
-            VkFormat getVulkanFormat() const;
+            VkFormat getVulkanFormat(unsigned int&) const;
 
             bool hasNewData(uint32_t) const;
             void markDataAsProcessed(uint32_t);

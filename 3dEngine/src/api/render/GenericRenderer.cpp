@@ -404,7 +404,6 @@ namespace urchin {
             }
         }
 
-        //TODO require ?
         //update instance data
         for (std::size_t instanceDataIndex = 0; instanceDataIndex < instanceData.size(); ++instanceDataIndex) {
             if (instanceData[instanceDataIndex].hasNewData(frameIndex)) {
@@ -445,15 +444,18 @@ namespace urchin {
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());
+        uint32_t instanceCount = 1;
         if (!instanceData.empty()) {
-            vkCmdBindVertexBuffers(commandBuffer, 4, (uint32_t)instanceData.size(), rawInstanceVertexBuffers.data(), offsets.data()); //TODO avoid hardcoded first binding param
+            auto firstBinding = (uint32_t)data.size();
+            vkCmdBindVertexBuffers(commandBuffer, firstBinding, (uint32_t)instanceData.size(), rawInstanceVertexBuffers.data(), offsets.data());
+            instanceCount = (uint32_t)instanceData[0].getDataCount();
         }
         if (indices && indexBuffer.getBuffer(frameIndex)) {
             vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(frameIndex), 0, VK_INDEX_TYPE_UINT32);
-            vkCmdDrawIndexed(commandBuffer, (uint32_t)indices->getIndicesCount(), 2, 0, 0, 0); //TODO review nb instance
+            vkCmdDrawIndexed(commandBuffer, (uint32_t)indices->getIndicesCount(), instanceCount, 0, 0, 0);
         } else {
             auto vertexCount = (uint32_t)data[0].getDataCount();
-            vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0);
+            vkCmdDraw(commandBuffer, vertexCount, instanceCount, 0, 0);
         }
 
         drawCommandDirty = false;

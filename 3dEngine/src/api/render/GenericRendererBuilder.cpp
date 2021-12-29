@@ -59,9 +59,9 @@ namespace urchin {
         return data;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addInstanceData(const std::vector<Point3<float>>& dataPtr) {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addInstanceData(const std::vector<Matrix4<float>>& dataPtr) {
         assert(instanceData.empty() || dataPtr.size() == instanceData[0].getDataCount());
-        instanceData.emplace_back(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data());
+        instanceData.emplace_back(DataType::FLOAT, DataDimension::SIXTEEN_DIMENSION, dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 

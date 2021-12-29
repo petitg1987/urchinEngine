@@ -4,7 +4,8 @@ namespace urchin {
 
     enum class DataDimension {
         TWO_DIMENSION,
-        THREE_DIMENSION
+        THREE_DIMENSION,
+        SIXTEEN_DIMENSION
     };
 
 }

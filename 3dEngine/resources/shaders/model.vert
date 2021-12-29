@@ -13,7 +13,7 @@ layout(location = 2) in vec3 normal;
 layout(location = 3) in vec3 tangent;
 
 //instance data
-layout(location = 4) in vec3 shiftPos; //TODO review
+layout(location = 4) in mat4 mModel; //use location 4, 5, 7 & 8
 
 layout(location = 0) out vec3 t;
 layout(location = 1) out vec3 b;
@@ -29,6 +29,6 @@ void main() {
     n = normalize(mat3(postioningData.mNormal) * normal);
     b = normalize(cross(n, t));
 
-    worldPosition =  vec4(shiftPos, 0.0) + postioningData.mModel * vec4(vertexPosition, 1.0);
+    worldPosition =  postioningData.mModel * mModel * vec4(vertexPosition, 1.0);
     gl_Position = postioningData.mProjectionView * worldPosition;
 }

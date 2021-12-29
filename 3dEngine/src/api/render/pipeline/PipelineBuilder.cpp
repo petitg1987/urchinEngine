@@ -168,37 +168,52 @@ namespace urchin {
 
         //vertex input stage
         std::vector<VkVertexInputBindingDescription> bindingDescriptions;
+        bindingDescriptions.reserve(data->size() + instanceData->size());
         std::vector<VkVertexInputAttributeDescription> attributeDescriptions;
-        for (uint32_t i = 0; i < data->size(); ++i) {
-            VkVertexInputBindingDescription bindingDescription{}; //TODO in Sascha example: there is only one VkVertexInputBindingDescription. Why not here ?
-            bindingDescription.binding = i;
-            bindingDescription.stride = (uint32_t)(*data)[i].getDataSize();
+        attributeDescriptions.reserve(data->size() + (instanceData->size() * 4)); //estimated memory size
+
+        uint32_t binding = 0;
+        uint32_t shaderLocation = 0;
+        for (const auto& singleData : *data) {
+            VkVertexInputBindingDescription bindingDescription{};
+            bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
+            bindingDescription.stride = (uint32_t)singleData.getDataSize();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
             bindingDescriptions.emplace_back(bindingDescription);
 
-            VkVertexInputAttributeDescription attributeDescription{};
-            attributeDescription.binding = i;
-            attributeDescription.location = i;
-            attributeDescription.format = (*data)[i].getVulkanFormat();
-            attributeDescription.offset = 0;
-            attributeDescriptions.emplace_back(attributeDescription);
+            unsigned int repeatCount = 0;
+            VkFormat attributeFormat = singleData.getVulkanFormat(repeatCount);
+            for (unsigned int i = 0; i < repeatCount; ++i) {
+                VkVertexInputAttributeDescription attributeDescription{};
+                attributeDescription.binding = binding;
+                attributeDescription.location = shaderLocation;
+                attributeDescription.format = attributeFormat;
+                attributeDescription.offset = (uint32_t)(i * (singleData.getDataSize() / repeatCount));
+                attributeDescriptions.emplace_back(attributeDescription);
+                shaderLocation++;
+            }
+            binding++;
         }
 
-        if (instanceData) {
-            for (uint32_t i = 0; i < instanceData->size(); ++i) {
-                VkVertexInputBindingDescription bindingDescription{};
-                bindingDescription.binding = i + (uint32_t)data->size();
-                bindingDescription.stride = (uint32_t) (*instanceData)[i].getDataSize();
-                bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
-                bindingDescriptions.emplace_back(bindingDescription);
+        for (const auto& singleInstanceData : *instanceData) {
+            VkVertexInputBindingDescription bindingDescription{};
+            bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
+            bindingDescription.stride = (uint32_t)singleInstanceData.getDataSize();
+            bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
+            bindingDescriptions.emplace_back(bindingDescription);
 
+            unsigned int repeatCount = 0;
+            VkFormat attributeFormat = singleInstanceData.getVulkanFormat(repeatCount);
+            for (unsigned int i = 0; i < repeatCount; ++i) {
                 VkVertexInputAttributeDescription attributeDescription{};
-                attributeDescription.binding = i + (uint32_t)data->size();
-                attributeDescription.location = i + (uint32_t)data->size();
-                attributeDescription.format = (*instanceData)[i].getVulkanFormat();
-                attributeDescription.offset = 0;
+                attributeDescription.binding = binding;
+                attributeDescription.location = shaderLocation;
+                attributeDescription.format = attributeFormat;
+                attributeDescription.offset = (uint32_t)(i * (singleInstanceData.getDataSize() / repeatCount));
                 attributeDescriptions.emplace_back(attributeDescription);
+                shaderLocation++;
             }
+            binding++;
         }
 
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
