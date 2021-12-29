@@ -29,10 +29,6 @@ namespace urchin {
             friend class RenderTarget;
             static constexpr uint32_t PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
 
-            struct RendererComp {
-                bool operator()(const GenericRenderer*, const GenericRenderer*) const;
-            };
-
             explicit GenericRenderer(const GenericRendererBuilder&);
             ~GenericRenderer();
 
@@ -45,6 +41,7 @@ namespace urchin {
             void disableRenderer();
 
             unsigned int getRenderingOrder() const;
+            bool isDepthTestEnabled() const;
             std::size_t getPipelineId() const;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
@@ -85,7 +82,6 @@ namespace urchin {
             unsigned int renderingOrder;
 
             std::string name;
-            bool isAlwaysOnTop; //TODO review... put in pipeline ?
             RenderTarget& renderTarget;
             const Shader& shader;
 
@@ -95,6 +91,7 @@ namespace urchin {
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             mutable std::vector<OffscreenRender*> texturesWriter;
 
+            bool depthTestEnabled;
             std::unique_ptr<PipelineBuilder> pipelineBuilder;
             std::shared_ptr<Pipeline> pipeline;
             std::vector<AlterableBufferHandler> vertexBuffers;

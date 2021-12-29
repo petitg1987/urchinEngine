@@ -7,6 +7,7 @@
 #include <api/helper/ImageHelper.h>
 #include <api/render/GenericRenderer.h>
 #include <api/render/target/OffscreenRender.h>
+#include <api/render/GenericRendererComparator.h>
 
 namespace urchin {
 
@@ -379,7 +380,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
         if (needCommandBufferRefresh(frameIndex)) {
-            std::ranges::sort(renderers, GenericRenderer::RendererComp());
+            std::ranges::sort(renderers, GenericRendererComparator());
 
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

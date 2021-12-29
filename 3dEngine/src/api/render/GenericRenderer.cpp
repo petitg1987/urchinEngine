@@ -9,28 +9,18 @@
 
 namespace urchin {
 
-    bool GenericRenderer::RendererComp::operator()(const GenericRenderer* lhs, const GenericRenderer* rhs) const {
-        if (lhs->renderingOrder == rhs->renderingOrder) {
-            if (lhs->isAlwaysOnTop == rhs->isAlwaysOnTop) {
-                return lhs->pipeline->getId() < rhs->pipeline->getId(); //TODO should be ordered always in the same way if equal
-            }
-            return lhs->isAlwaysOnTop > rhs->isAlwaysOnTop; //TODO review
-        }
-        return lhs->renderingOrder < rhs->renderingOrder;
-    }
-
     GenericRenderer::GenericRenderer(const GenericRendererBuilder& rendererBuilder) :
             isInitialized(false),
             bIsEnabled(true),
             renderingOrder(0),
             name(rendererBuilder.getName()),
-            isAlwaysOnTop(rendererBuilder.isDepthTestEnabled() && rendererBuilder.isDepthWriteEnabled()),
             renderTarget(rendererBuilder.getRenderTarget()),
             shader(rendererBuilder.getShader()),
             data(rendererBuilder.getData()),
             indices(rendererBuilder.getIndices()),
             uniformData(rendererBuilder.getUniformData()),
             uniformTextureReaders(rendererBuilder.getUniformTextureReaders()),
+            depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             descriptorPool(nullptr),
             drawCommandDirty(false) {
         pipelineBuilder = std::make_unique<PipelineBuilder>(name);
@@ -123,6 +113,10 @@ namespace urchin {
 
     unsigned int GenericRenderer::getRenderingOrder() const {
         return renderingOrder;
+    }
+
+    bool GenericRenderer::isDepthTestEnabled() const {
+        return depthTestEnabled;
     }
 
     std::size_t GenericRenderer::getPipelineId() const {
