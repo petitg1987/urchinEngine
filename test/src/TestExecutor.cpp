@@ -18,6 +18,7 @@
 #include <common/math/geometry/ConvexHullShape2DTest.h>
 #include <common/math/geometry/SortPointsTest.h>
 #include <common/partitioning/GridContainerTest.h>
+#include <3d/api/render/GenericRendererComparatorTest.h>
 #include <3d/scene/renderer3d/Renderer3dTest.h>
 #include <3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h>
 #include <3d/scene/ui/UIRendererTest.h>
@@ -81,6 +82,9 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 }
 
 void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
+    //api
+    runner.addTest(GenericRendererComparatorTest::suite());
+
     //renderer 3d
     runner.addTest(Renderer3dTest::suite());
 

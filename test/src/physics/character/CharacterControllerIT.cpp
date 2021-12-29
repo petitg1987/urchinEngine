@@ -54,8 +54,10 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
-    characterController.setVelocity(Vector3<float>(0.0f, 0.0f, -5.0f));
+    CharacterControllerConfig characterControllerConfig;
+    characterControllerConfig.setWalkSpeed(5.0f);
+    auto characterController = CharacterController(character, characterControllerConfig, *physicsWorld);
+    characterController.walk(Vector3<float>(0.0f, 0.0f, -1.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 300; ++i) {
@@ -115,8 +117,10 @@ void CharacterControllerIT::ccdMovingCharacter() {
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
     auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
-    characterController.setVelocity(Vector3<float>(0.0f, 0.0f, -15.0f));
+    CharacterControllerConfig characterControllerConfig;
+    characterControllerConfig.setWalkSpeed(15.0f);
+    auto characterController = CharacterController(character, characterControllerConfig, *physicsWorld);
+    characterController.walk(Vector3<float>(0.0f, 0.0f, -1.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 100; ++i) {
