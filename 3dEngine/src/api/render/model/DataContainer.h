@@ -5,13 +5,13 @@
 #include <vulkan/vulkan.h>
 
 #include <api/render/model/DataType.h>
-#include <api/render/model/DataDimension.h>
+#include <api/render/model/VariableType.h>
 
 namespace urchin {
 
     class DataContainer {
         public:
-            DataContainer(DataType, DataDimension, std::size_t, const void*);
+            DataContainer(DataType, VariableType, std::size_t, const void*);
             DataContainer(const DataContainer&);
             DataContainer& operator=(const DataContainer&) = delete;
             DataContainer(DataContainer&&) noexcept;
@@ -21,7 +21,7 @@ namespace urchin {
             void replaceData(std::size_t, const void*);
 
             const void* getData() const;
-            DataDimension getDataDimension() const;
+            VariableType getVariableType() const;
             DataType getDataType() const;
             std::size_t getDataCount() const;
             std::size_t getDataSize() const;
@@ -35,11 +35,11 @@ namespace urchin {
 
         private:
             unsigned int getTypeSize() const;
-            unsigned int getDimensionSize() const;
+            unsigned int getVariableSize() const;
             void markDataAsNew();
 
             DataType dataType;
-            DataDimension dataDimension;
+            VariableType variableType;
             std::size_t dataCount;
             void* ptr;
 

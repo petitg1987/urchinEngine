@@ -39,19 +39,19 @@ namespace urchin {
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point2<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        data.emplace_back(DataType::FLOAT, DataDimension::TWO_DIMENSION, dataPtr.size(), dataPtr.data());
+        data.emplace_back(DataType::FLOAT, VariableType::VEC2, dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point3<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        data.emplace_back(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data());
+        data.emplace_back(DataType::FLOAT, VariableType::VEC3, dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Vector3<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        data.emplace_back(DataType::FLOAT, DataDimension::THREE_DIMENSION, dataPtr.size(), dataPtr.data());
+        data.emplace_back(DataType::FLOAT, VariableType::VEC3, dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
@@ -59,17 +59,8 @@ namespace urchin {
         return data;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::instanceData(std::size_t instanceCount, std::size_t dataSize, const float* dataPtr) {
-        DataDimension dataDimension;
-        if (dataSize / sizeof(float) == 16) {
-            dataDimension = DataDimension::DIM_16;
-        } else if (dataSize / sizeof(float) == 32) {
-            dataDimension = DataDimension::DIM_32;
-        } else {
-            throw std::runtime_error(""); //TODO improve msg + if/else
-        }
-
-        mInstanceData = std::make_shared<DataContainer>(DataType::FLOAT, dataDimension, instanceCount, dataPtr);
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::instanceData(std::size_t instanceCount, VariableType variableType, const float* dataPtr) {
+        mInstanceData = std::make_shared<DataContainer>(DataType::FLOAT, variableType, instanceCount, dataPtr);
         return shared_from_this();
     }
 

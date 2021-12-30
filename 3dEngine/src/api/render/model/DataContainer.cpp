@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    DataContainer::DataContainer(DataType dataType, DataDimension dataDimension, std::size_t dataCount, const void* ptr) :
+    DataContainer::DataContainer(DataType dataType, VariableType variableType, std::size_t dataCount, const void* ptr) :
             dataType(dataType),
-            dataDimension(dataDimension),
+            variableType(variableType),
             dataCount(dataCount),
             bHasNewData({}) {
         this->ptr = ::operator new(getBufferSize());
@@ -19,7 +19,7 @@ namespace urchin {
 
     DataContainer::DataContainer(const DataContainer& src) :
             dataType(src.dataType),
-            dataDimension(src.dataDimension),
+            variableType(src.variableType),
             dataCount(src.dataCount),
             bHasNewData(src.bHasNewData) {
         this->ptr = ::operator new(getBufferSize());
@@ -28,7 +28,7 @@ namespace urchin {
 
     DataContainer::DataContainer(DataContainer&& src) noexcept :
             dataType(src.dataType),
-            dataDimension(src.dataDimension),
+            variableType(src.variableType),
             dataCount(src.dataCount),
             ptr(src.ptr),
             bHasNewData(src.bHasNewData) {
@@ -58,8 +58,8 @@ namespace urchin {
         return ptr;
     }
 
-    DataDimension DataContainer::getDataDimension() const {
-        return dataDimension;
+    VariableType DataContainer::getVariableType() const {
+        return variableType;
     }
 
     DataType DataContainer::getDataType() const {
@@ -77,32 +77,32 @@ namespace urchin {
      * @return Memory size of one data (= vector/point)
      */
     std::size_t DataContainer::getDataSize() const {
-        return getTypeSize() * getDimensionSize();
+        return getTypeSize() * getVariableSize();
     }
 
     /**
      * @return Memory size of all the data (= vector/point)
      */
     std::size_t DataContainer::getBufferSize() const {
-        return getTypeSize() * getDimensionSize() * dataCount;
+        return getTypeSize() * getVariableSize() * dataCount;
     }
 
     VkFormat DataContainer::getVulkanFormat(unsigned int& repeatCount) const {
         if (dataType == DataType::FLOAT) {
-            if (dataDimension == DataDimension::TWO_DIMENSION) {
+            if (variableType == VariableType::VEC2) {
                 repeatCount = 1;
                 return VK_FORMAT_R32G32_SFLOAT;
-            } else if (dataDimension == DataDimension::THREE_DIMENSION) {
+            } else if (variableType == VariableType::VEC3) {
                 repeatCount = 1;
                 return VK_FORMAT_R32G32B32_SFLOAT;
-            } else if (dataDimension == DataDimension::DIM_16) {
+            } else if (variableType == VariableType::MAT4) {
                 repeatCount = 4;
                 return VK_FORMAT_R32G32B32A32_SFLOAT;
-            } else if (dataDimension == DataDimension::DIM_32) {
+            } else if (variableType == VariableType::TWO_MAT4) {
                 repeatCount = 8;
                 return VK_FORMAT_R32G32B32A32_SFLOAT;
             }
-            throw std::runtime_error("Unknown data dimension: " + std::to_string((int)dataDimension));
+            throw std::runtime_error("Unknown variable type: " + std::to_string((int)variableType));
         }
         throw std::runtime_error("Unknown data type: " + std::to_string((int)dataType));
     }
@@ -114,17 +114,17 @@ namespace urchin {
         throw std::runtime_error("Unknown data type: " + std::to_string((int)dataType));
     }
 
-    unsigned int DataContainer::getDimensionSize() const {
-        if (dataDimension == DataDimension::TWO_DIMENSION) {
+    unsigned int DataContainer::getVariableSize() const {
+        if (variableType == VariableType::VEC2) {
             return 2;
-        } else if (dataDimension == DataDimension::THREE_DIMENSION) {
+        } else if (variableType == VariableType::VEC3) {
             return 3;
-        } else if (dataDimension == DataDimension::DIM_16) {
+        } else if (variableType == VariableType::MAT4) {
             return 16;
-        } else if (dataDimension == DataDimension::DIM_32) {
+        } else if (variableType == VariableType::TWO_MAT4) {
             return 32;
         }
-        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)dataDimension));
+        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)variableType));
     }
 
     bool DataContainer::hasNewData(uint32_t frameIndex) const {

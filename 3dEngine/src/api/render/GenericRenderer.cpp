@@ -299,7 +299,7 @@ namespace urchin {
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
-            assert(data[dataIndex].getDataDimension() == DataDimension::TWO_DIMENSION);
+            assert(data[dataIndex].getVariableType() == VariableType::VEC2);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
         data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
@@ -308,7 +308,7 @@ namespace urchin {
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>>& dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
-            assert(data[dataIndex].getDataDimension() == DataDimension::THREE_DIMENSION);
+            assert(data[dataIndex].getVariableType() == VariableType::VEC3);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
         data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
@@ -317,7 +317,7 @@ namespace urchin {
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Vector3<float>>& dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
-            assert(data[dataIndex].getDataDimension() == DataDimension::THREE_DIMENSION);
+            assert(data[dataIndex].getVariableType() == VariableType::VEC3);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
         data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());

@@ -8,7 +8,7 @@
 #include <api/render/handler/AlterableBufferHandler.h>
 #include <api/render/model/ShapeType.h>
 #include <api/render/model/DataType.h>
-#include <api/render/model/DataDimension.h>
+#include <api/render/model/VariableType.h>
 #include <api/render/model/PolygonMode.h>
 #include <api/render/model/DataContainer.h>
 #include <api/render/model/IndexContainer.h>
