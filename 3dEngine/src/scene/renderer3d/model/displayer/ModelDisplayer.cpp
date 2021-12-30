@@ -209,7 +209,6 @@ namespace urchin {
     void ModelDisplayer::addInstanceModel(Model* model) {
         instanceModels.push_back(model);
 
-        //add observers only to detect un-authorized event (e.g. can not update mesh on model displayer having objects instancing)
         model->addObserver(this, Model::MESH_UPDATED);
         model->addObserver(this, Model::MATERIAL_UPDATED);
         model->addObserver(this, Model::SCALE_UPDATED);
