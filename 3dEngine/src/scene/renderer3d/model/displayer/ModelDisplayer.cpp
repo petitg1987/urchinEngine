@@ -16,10 +16,11 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
+        instanceModels.push_back(model);
+
         model->addObserver(this, Model::MESH_UPDATED);
         model->addObserver(this, Model::MATERIAL_UPDATED);
         model->addObserver(this, Model::SCALE_UPDATED);
-        instanceModels.push_back(model);
     }
 
     ModelDisplayer::~ModelDisplayer() {
@@ -207,11 +208,20 @@ namespace urchin {
 
     void ModelDisplayer::addInstanceModel(Model* model) {
         instanceModels.push_back(model);
+
+        //add observers only to detect un-authorized event (e.g. can not update mesh on model displayer having objects instancing)
+        model->addObserver(this, Model::MESH_UPDATED);
+        model->addObserver(this, Model::MATERIAL_UPDATED);
+        model->addObserver(this, Model::SCALE_UPDATED);
     }
 
     void ModelDisplayer::removeInstanceModel(Model* modelToRemove) {
         assert(getInstanceCount() > 1); //Can not leave a model displayer with zero model. The model displayer should be removed instead.
         std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == modelToRemove;});
+
+        modelToRemove->removeObserver(this, Model::MATERIAL_UPDATED);
+        modelToRemove->removeObserver(this, Model::MESH_UPDATED);
+        modelToRemove->removeObserver(this, Model::SCALE_UPDATED);
     }
 
     unsigned int ModelDisplayer::getInstanceCount() const {
