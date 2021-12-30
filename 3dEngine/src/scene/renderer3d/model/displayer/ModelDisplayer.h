@@ -41,9 +41,9 @@ namespace urchin {
             const Shader& shader;
             mutable struct {
                 alignas(16) Matrix4<float> projectionViewMatrix;
-                alignas(16) Matrix4<float> modelMatrix;
                 alignas(16) Matrix4<float> normalMatrix;
             } positioningData;
+            mutable std::vector<Matrix4<float>> instanceModelMatrices;
             mutable struct {
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;

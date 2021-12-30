@@ -65,21 +65,15 @@ namespace urchin {
             const Mesh& mesh = model->getMeshes()->getMesh(i);
             auto meshName = model->getMeshes()->getConstMeshes().getMeshesName();
 
+            instanceModelMatrices.push_back(model->getTransform().getTransformMatrix());
             fillMaterialData(mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
+                    ->addInstanceData(instanceModelMatrices)
                     ->indices(constMesh.getTrianglesIndices())
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
                     ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
-
-            //TODO review:
-            std::vector<Matrix4<float>> shiftMatrices;
-            shiftMatrices.emplace_back(Matrix4<float>());
-            Matrix4<float> shiftMatrix;
-            shiftMatrix.buildTranslation(1.0f, 0.5f, 0.0f);
-            shiftMatrices.emplace_back(shiftMatrix);
-            meshRendererBuilder->addInstanceData(shiftMatrices);
 
             if (customShaderVariable) {
                 customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
@@ -203,19 +197,12 @@ namespace urchin {
             }
 
             positioningData.projectionViewMatrix = projectionViewMatrix;
-            positioningData.modelMatrix = model->getTransform().getTransformMatrix();
             positioningData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
             meshRenderer->updateUniformData(0, &positioningData);
 
-            //TODO review:
-            std::vector<Matrix4<float>> shiftMatrices;
-            shiftMatrices.emplace_back(Matrix4<float>());
-            Matrix4<float> shiftMatrix;
-            static float a = 0.0f;
-            a+= 0.0001f;
-            shiftMatrix.buildTranslation(1.0f, 0.5f + a, 0.0f);
-            shiftMatrices.emplace_back(shiftMatrix);
-            meshRenderer->updateInstanceData(0, shiftMatrices);
+            instanceModelMatrices.clear();
+            instanceModelMatrices.push_back(model->getTransform().getTransformMatrix());
+            meshRenderer->updateInstanceData(0, instanceModelMatrices);
 
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);

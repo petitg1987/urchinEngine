@@ -3,7 +3,6 @@
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjectionView;
-    mat4 mModel;
     mat4 mNormal;
 } postioningData;
 
@@ -29,6 +28,6 @@ void main() {
     n = normalize(mat3(postioningData.mNormal) * normal);
     b = normalize(cross(n, t));
 
-    worldPosition =  mModel * postioningData.mModel * vec4(vertexPosition, 1.0);
+    worldPosition =  mModel * vec4(vertexPosition, 1.0);
     gl_Position = postioningData.mProjectionView * worldPosition;
 }

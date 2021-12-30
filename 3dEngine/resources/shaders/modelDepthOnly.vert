@@ -3,7 +3,6 @@
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjectionView;
-    mat4 mModel;
     mat4 mNormal;
 } postioningData;
 
@@ -15,5 +14,5 @@ layout(location = 1) in mat4 mModel; //use location 1, 2, 3 & 4
 invariant gl_Position;
 
 void main() {
-    gl_Position = mModel * postioningData.mProjectionView * (postioningData.mModel * vec4(vertexPosition, 1.0));
+    gl_Position = postioningData.mProjectionView * (mModel * vec4(vertexPosition, 1.0));
 }
