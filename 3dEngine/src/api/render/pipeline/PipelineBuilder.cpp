@@ -59,9 +59,9 @@ namespace urchin {
         this->scissorSize = scissorSize;
     }
 
-    void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const std::vector<DataContainer>& instanceData) {
+    void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const DataContainer* instanceData) {
         this->data = &data;
-        this->instanceData = &instanceData;
+        this->instanceData = instanceData;
     }
 
     void PipelineBuilder::setupUniform(const std::vector<ShaderDataContainer>& uniformData, const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders) {
@@ -108,12 +108,14 @@ namespace urchin {
         std::size_t hash = 0;
 
         unsigned int repeatCount;
-        HashUtil::combine(hash, data->size(), instanceData->size());
+        HashUtil::combine(hash, data->size());
         for (auto& singleData : *data) {
             HashUtil::combine(hash, singleData.getVulkanFormat(repeatCount));
+            HashUtil::combine(hash, repeatCount);
         }
-        for (auto& singleInstanceData : *instanceData) {
-            HashUtil::combine(hash, singleInstanceData.getVulkanFormat(repeatCount));
+        if (instanceData) {
+            HashUtil::combine(hash, instanceData->getVulkanFormat(repeatCount));
+            HashUtil::combine(hash, repeatCount);
         }
 
         for (auto& bf : blendFunctions) {
@@ -177,9 +179,9 @@ namespace urchin {
 
         //vertex input stage
         std::vector<VkVertexInputBindingDescription> bindingDescriptions;
-        bindingDescriptions.reserve(data->size() + instanceData->size());
+        bindingDescriptions.reserve(data->size() + ((instanceData != nullptr) ? 1 : 0));
         std::vector<VkVertexInputAttributeDescription> attributeDescriptions;
-        attributeDescriptions.reserve(data->size() + (instanceData->size() * 4)); //estimated memory size
+        attributeDescriptions.reserve(data->size()); //estimated memory size
 
         uint32_t binding = 0;
         uint32_t shaderLocation = 0;
@@ -204,25 +206,24 @@ namespace urchin {
             binding++;
         }
 
-        for (const auto& singleInstanceData : *instanceData) {
+        if (instanceData) {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
-            bindingDescription.stride = (uint32_t)singleInstanceData.getDataSize();
+            bindingDescription.stride = (uint32_t)instanceData->getDataSize();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
             bindingDescriptions.emplace_back(bindingDescription);
 
             unsigned int repeatCount = 0;
-            VkFormat attributeFormat = singleInstanceData.getVulkanFormat(repeatCount);
+            VkFormat attributeFormat = instanceData->getVulkanFormat(repeatCount);
             for (unsigned int i = 0; i < repeatCount; ++i) {
                 VkVertexInputAttributeDescription attributeDescription{};
                 attributeDescription.binding = binding;
                 attributeDescription.location = shaderLocation;
                 attributeDescription.format = attributeFormat;
-                attributeDescription.offset = (uint32_t)(i * (singleInstanceData.getDataSize() / repeatCount));
+                attributeDescription.offset = (uint32_t)(i * (instanceData->getDataSize() / repeatCount));
                 attributeDescriptions.emplace_back(attributeDescription);
                 shaderLocation++;
             }
-            binding++;
         }
 
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};

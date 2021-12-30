@@ -27,7 +27,7 @@ namespace urchin {
             void setupCallFaceOperation(bool);
             void setupPolygonMode(PolygonMode);
             void setupScissor(bool, Vector2<int>, Vector2<unsigned int>);
-            void setupData(const std::vector<DataContainer>&, const std::vector<DataContainer>&);
+            void setupData(const std::vector<DataContainer>&, const DataContainer*);
             void setupUniform(const std::vector<ShaderDataContainer>&, const std::vector<std::vector<std::shared_ptr<TextureReader>>>&);
 
             std::shared_ptr<Pipeline> buildPipeline();
@@ -47,7 +47,7 @@ namespace urchin {
             ShapeType shapeType;
 
             const std::vector<DataContainer>* data;
-            const std::vector<DataContainer>* instanceData;
+            const DataContainer* instanceData;
             const std::vector<ShaderDataContainer>* uniformData;
             const std::vector<std::vector<std::shared_ptr<TextureReader>>>* uniformTextureReaders;
 

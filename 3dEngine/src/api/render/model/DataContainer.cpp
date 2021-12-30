@@ -95,8 +95,11 @@ namespace urchin {
             } else if (dataDimension == DataDimension::THREE_DIMENSION) {
                 repeatCount = 1;
                 return VK_FORMAT_R32G32B32_SFLOAT;
-            } else if (dataDimension == DataDimension::SIXTEEN_DIMENSION) {
+            } else if (dataDimension == DataDimension::DIM_16) {
                 repeatCount = 4;
+                return VK_FORMAT_R32G32B32A32_SFLOAT;
+            } else if (dataDimension == DataDimension::DIM_32) {
+                repeatCount = 8;
                 return VK_FORMAT_R32G32B32A32_SFLOAT;
             }
             throw std::runtime_error("Unknown data dimension: " + std::to_string((int)dataDimension));
@@ -116,8 +119,10 @@ namespace urchin {
             return 2;
         } else if (dataDimension == DataDimension::THREE_DIMENSION) {
             return 3;
-        } else if (dataDimension == DataDimension::SIXTEEN_DIMENSION) {
+        } else if (dataDimension == DataDimension::DIM_16) {
             return 16;
+        } else if (dataDimension == DataDimension::DIM_32) {
+            return 32;
         }
         throw std::runtime_error("Unknown data dimension: " + std::to_string((int)dataDimension));
     }

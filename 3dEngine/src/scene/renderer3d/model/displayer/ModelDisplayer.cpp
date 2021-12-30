@@ -12,7 +12,6 @@ namespace urchin {
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
-            positioningData({}),
             materialData({}),
             customShaderVariable(nullptr),
             depthTestEnabled(true),
@@ -65,14 +64,18 @@ namespace urchin {
             const Mesh& mesh = model->getMeshes()->getMesh(i);
             auto meshName = model->getMeshes()->getConstMeshes().getMeshesName();
 
-            instanceModelMatrices.push_back(model->getTransform().getTransformMatrix());
+            InstanceMatrix identityInstanceMatrix;
+            identityInstanceMatrix.modelMatrix = Matrix4<float>();
+            identityInstanceMatrix.normalMatrix = Matrix4<float>();
+            instanceMatrices.push_back(identityInstanceMatrix);
+            Matrix4<float> projectionMatrix;
             fillMaterialData(mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
-                    ->addInstanceData(instanceModelMatrices)
+                    ->instanceData(instanceMatrices.size(), sizeof(identityInstanceMatrix), (const float*)instanceMatrices.data())
                     ->indices(constMesh.getTrianglesIndices())
-                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
+                    ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                     ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
 
             if (customShaderVariable) {
@@ -196,13 +199,14 @@ namespace urchin {
                 continue;
             }
 
-            positioningData.projectionViewMatrix = projectionViewMatrix;
-            positioningData.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
-            meshRenderer->updateUniformData(0, &positioningData);
+            meshRenderer->updateUniformData(0, &projectionViewMatrix);
 
-            instanceModelMatrices.clear();
-            instanceModelMatrices.push_back(model->getTransform().getTransformMatrix());
-            meshRenderer->updateInstanceData(0, instanceModelMatrices);
+            instanceMatrices.clear();
+            InstanceMatrix instanceMatrix;
+            instanceMatrix.modelMatrix = model->getTransform().getTransformMatrix();
+            instanceMatrix.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
+            instanceMatrices.push_back(instanceMatrix);
+            meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*)instanceMatrices.data());
 
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);

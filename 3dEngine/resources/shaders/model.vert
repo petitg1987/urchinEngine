@@ -3,7 +3,6 @@
 
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjectionView;
-    mat4 mNormal;
 } postioningData;
 
 layout(location = 0) in vec3 vertexPosition;
@@ -13,6 +12,7 @@ layout(location = 3) in vec3 tangent;
 
 //instance data
 layout(location = 4) in mat4 mModel; //use location 4, 5, 6 & 7
+layout(location = 8) in mat4 mNormal; //use location 8, 9, 10 & 11
 
 layout(location = 0) out vec3 t;
 layout(location = 1) out vec3 b;
@@ -24,8 +24,8 @@ invariant gl_Position;
 void main() {
     texCoordinates = texCoord;
 
-    t = normalize(mat3(postioningData.mNormal) * tangent);
-    n = normalize(mat3(postioningData.mNormal) * normal);
+    t = normalize(mat3(mNormal) * tangent);
+    n = normalize(mat3(mNormal) * normal);
     b = normalize(cross(n, t));
 
     worldPosition =  mModel * vec4(vertexPosition, 1.0);

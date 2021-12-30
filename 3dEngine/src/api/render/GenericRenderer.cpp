@@ -125,7 +125,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createPipeline() {
-        pipelineBuilder->setupData(data, instanceData);
+        pipelineBuilder->setupData(data, instanceData.get());
         pipelineBuilder->setupUniform(uniformData, uniformTextureReaders);
         pipeline = pipelineBuilder->buildPipeline();
     }
@@ -142,19 +142,16 @@ namespace urchin {
             dataContainer.markDataAsProcessed();
         }
 
-        instanceVertexBuffers.resize(instanceData.size());
-        for (std::size_t instanceDataIndex = 0; instanceDataIndex < instanceData.size(); ++instanceDataIndex) {
-            DataContainer& dataContainer = instanceData[instanceDataIndex];
-            instanceVertexBuffers[instanceDataIndex].initialize(BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
-            dataContainer.markDataAsProcessed();
+        if (instanceData) {
+            instanceVertexBuffer.initialize(BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
+            instanceData->markDataAsProcessed();
         }
     }
 
     void GenericRenderer::destroyVertexBuffers() {
-        for (auto& instanceVertexBuffer : instanceVertexBuffers) {
+        if (instanceData) {
             instanceVertexBuffer.cleanup();
         }
-        instanceVertexBuffers.clear();
 
         for (auto& vertexBuffer : vertexBuffers) {
             vertexBuffer.cleanup();
@@ -326,13 +323,11 @@ namespace urchin {
         data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
     }
 
-    void GenericRenderer::updateInstanceData(std::size_t instanceDataIndex, const std::vector<Matrix4<float>>& dataPtr) {
+    void GenericRenderer::updateInstanceData(std::size_t instanceCount, const float* dataPtr) {
         #ifdef URCHIN_DEBUG
-            assert(instanceData.size() > instanceDataIndex);
-            assert(instanceData[instanceDataIndex].getDataDimension() == DataDimension::SIXTEEN_DIMENSION);
-            assert(instanceData[instanceDataIndex].getDataType() == DataType::FLOAT);
+            assert(instanceData->getDataType() == DataType::FLOAT);
         #endif
-        instanceData[instanceDataIndex].replaceData(dataPtr.size(), dataPtr.data());
+        instanceData->replaceData(instanceCount, dataPtr);
     }
 
     void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
@@ -414,12 +409,9 @@ namespace urchin {
         }
 
         //update instance data
-        for (std::size_t instanceDataIndex = 0; instanceDataIndex < instanceData.size(); ++instanceDataIndex) {
-            if (instanceData[instanceDataIndex].hasNewData(frameIndex)) {
-                DataContainer& dataContainer = instanceData[instanceDataIndex];
-                drawCommandDirty |= instanceVertexBuffers[instanceDataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
-                dataContainer.markDataAsProcessed(frameIndex);
-            }
+        if (instanceData && instanceData->hasNewData(frameIndex)) {
+            drawCommandDirty |= instanceVertexBuffer.updateData(frameIndex, instanceData->getBufferSize(), instanceData->getData());
+            instanceData->markDataAsProcessed(frameIndex);
         }
 
         //update shader uniforms
@@ -441,24 +433,20 @@ namespace urchin {
 
         std::array<VkDeviceSize, 20> offsets = {0};
         assert(offsets.size() >= data.size());
-        assert(offsets.size() >= instanceData.size());
 
         rawVertexBuffers.clear();
         for (const auto& vertexBuffer : vertexBuffers) {
             rawVertexBuffers.emplace_back(vertexBuffer.getBuffer(frameIndex));
         }
-        rawInstanceVertexBuffers.clear();
-        for (const auto& instanceVertexBuffer : instanceVertexBuffers) {
-            rawInstanceVertexBuffers.emplace_back(instanceVertexBuffer.getBuffer(frameIndex));
-        }
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());
         uint32_t instanceCount = 1;
-        if (!instanceData.empty()) {
+        if (instanceData) {
             auto firstBinding = (uint32_t)data.size();
-            vkCmdBindVertexBuffers(commandBuffer, firstBinding, (uint32_t)instanceData.size(), rawInstanceVertexBuffers.data(), offsets.data());
-            instanceCount = (uint32_t)instanceData[0].getDataCount();
+            VkBuffer buffer = instanceVertexBuffer.getBuffer(frameIndex);
+            vkCmdBindVertexBuffers(commandBuffer, firstBinding, 1, &buffer, offsets.data());
+            instanceCount = (uint32_t)instanceData->getDataCount();
         }
         if (indices && indexBuffer.getBuffer(frameIndex)) {
             vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getBuffer(frameIndex), 0, VK_INDEX_TYPE_UINT32);

@@ -59,14 +59,22 @@ namespace urchin {
         return data;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addInstanceData(const std::vector<Matrix4<float>>& dataPtr) {
-        assert(instanceData.empty() || dataPtr.size() == instanceData[0].getDataCount());
-        instanceData.emplace_back(DataType::FLOAT, DataDimension::SIXTEEN_DIMENSION, dataPtr.size(), dataPtr.data());
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::instanceData(std::size_t instanceCount, std::size_t dataSize, const float* dataPtr) {
+        DataDimension dataDimension;
+        if (dataSize / sizeof(float) == 16) {
+            dataDimension = DataDimension::DIM_16;
+        } else if (dataSize / sizeof(float) == 32) {
+            dataDimension = DataDimension::DIM_32;
+        } else {
+            throw std::runtime_error(""); //TODO improve msg + if/else
+        }
+
+        mInstanceData = std::make_shared<DataContainer>(DataType::FLOAT, dataDimension, instanceCount, dataPtr);
         return shared_from_this();
     }
 
-    const std::vector<DataContainer>& GenericRendererBuilder::getInstanceData() const {
-        return instanceData;
+    const std::shared_ptr<DataContainer>& GenericRendererBuilder::getInstanceData() const {
+        return mInstanceData;
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::indices(const std::vector<uint32_t>& indices) {
