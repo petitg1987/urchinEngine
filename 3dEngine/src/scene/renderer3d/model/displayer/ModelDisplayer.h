@@ -23,19 +23,26 @@ namespace urchin {
             void initialize();
             void notify(Observable*, int) override;
 
+            void addInstanceModel(Model*);
+            void removeInstanceModel(Model*);
+            unsigned int getInstanceCount() const;
+
             void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*) const;
 
             void drawBBox(GeometryContainer&);
             void drawBaseBones(GeometryContainer&, const MeshFilter*) const;
 
         private:
+            bool hasInstancing() const;
+            Model& getReferenceModel() const;
+
             void fillMaterialData(const Mesh&);
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
             bool isInitialized;
 
-            Model *model;
+            std::vector<Model*> instanceModels;
             DisplayMode displayMode;
             RenderTarget& renderTarget;
             const Shader& shader;
@@ -56,7 +63,7 @@ namespace urchin {
             std::vector<BlendFunction> blendFunctions;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
-            std::shared_ptr<AABBoxModel> aabboxModel;
+            std::vector<std::shared_ptr<AABBoxModel>> aabboxModels;
     };
 
 }

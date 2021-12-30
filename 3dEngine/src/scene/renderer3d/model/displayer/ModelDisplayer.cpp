@@ -8,7 +8,6 @@ namespace urchin {
 
     ModelDisplayer::ModelDisplayer(Model* model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
-            model(model),
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
@@ -17,24 +16,30 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-
+        model->addObserver(this, Model::MESH_UPDATED);
+        model->addObserver(this, Model::MATERIAL_UPDATED);
+        model->addObserver(this, Model::SCALE_UPDATED);
+        instanceModels.push_back(model);
     }
 
     ModelDisplayer::~ModelDisplayer() {
-        model->removeObserver(this, Model::MATERIAL_UPDATED);
-        model->removeObserver(this, Model::MESH_UPDATED);
+        for (Model* model : instanceModels) {
+            model->removeObserver(this, Model::MATERIAL_UPDATED);
+            model->removeObserver(this, Model::MESH_UPDATED);
+            model->removeObserver(this, Model::SCALE_UPDATED);
+        }
     }
 
     void ModelDisplayer::setupCustomShaderVariable(CustomModelShaderVariable* customShaderVariable) {
         if (customShaderVariable && isInitialized) {
-            throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + model->getConstMeshes()->getName());
+            throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->customShaderVariable = customShaderVariable;
     }
 
     void ModelDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         if (isInitialized) {
-            throw std::runtime_error("Can not define depth operations on an initialized model displayer: " + model->getConstMeshes()->getName());
+            throw std::runtime_error("Can not define depth operations on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
@@ -42,27 +47,27 @@ namespace urchin {
 
     void ModelDisplayer::setupFaceCull(bool enableFaceCull) {
         if (isInitialized) {
-            throw std::runtime_error("Can not define face cull flag on an initialized model displayer: " + model->getConstMeshes()->getName());
+            throw std::runtime_error("Can not define face cull flag on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->enableFaceCull = enableFaceCull;
     }
 
     void ModelDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         if (!blendFunctions.empty() && isInitialized) {
-            throw std::runtime_error("Can not define blend functions on an initialized model displayer: " + model->getConstMeshes()->getName());
+            throw std::runtime_error("Can not define blend functions on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->blendFunctions = blendFunctions;
     }
 
     void ModelDisplayer::initialize() {
         if (isInitialized) {
-            throw std::runtime_error("Model displayer is already initialized: " + model->getConstMeshes()->getName());
+            throw std::runtime_error("Model displayer is already initialized: " + getReferenceModel().getConstMeshes()->getName());
         }
 
-        for (unsigned int i = 0; i < model->getMeshes()->getNumberMeshes(); ++i) {
-            const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(i);
-            const Mesh& mesh = model->getMeshes()->getMesh(i);
-            auto meshName = model->getMeshes()->getConstMeshes().getMeshesName();
+        for (unsigned int i = 0; i < getReferenceModel().getMeshes()->getNumberMeshes(); ++i) {
+            const ConstMesh& constMesh = getReferenceModel().getConstMeshes()->getConstMesh(i);
+            const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(i);
+            auto meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
 
             InstanceMatrix identityInstanceMatrix;
             identityInstanceMatrix.modelMatrix = Matrix4<float>();
@@ -114,11 +119,17 @@ namespace urchin {
             meshRenderers.push_back(meshRendererBuilder->build());
         }
 
-        model->addObserver(this, Model::MESH_UPDATED);
-        model->addObserver(this, Model::MATERIAL_UPDATED);
-        model->addObserver(this, Model::SCALE_UPDATED);
-
         isInitialized = true;
+    }
+
+    bool ModelDisplayer::hasInstancing() const {
+        return instanceModels.size() > 1;
+    }
+
+    Model& ModelDisplayer::getReferenceModel() const {
+        //A reference model is a model which can be used to represent all instance models.
+        //For unique properties (e.g. Model#getTransform()#getPosition()): do not use the reference model.
+        return *instanceModels[0];
     }
 
     void ModelDisplayer::fillMaterialData(const Mesh& mesh) {
@@ -130,8 +141,8 @@ namespace urchin {
         std::vector<Point2<float>> scaledUvTexture;
         scaledUvTexture.reserve(uvTexture.size());
 
-        const Vector3<float> scale = model->getTransform().getScale();
-        for(const Point2<float>& uv : uvTexture) {
+        const Vector3<float> scale = getReferenceModel().getTransform().getScale();
+        for (const Point2<float>& uv : uvTexture) {
             scaledUvTexture.emplace_back(uvScale.scaleU(uv.X, scale), uvScale.scaleV(uv.Y, scale));
         }
         return scaledUvTexture;
@@ -145,6 +156,7 @@ namespace urchin {
     void ModelDisplayer::notify(Observable* observable, int notificationType) {
         if (const auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_UPDATED) {
+                assert(!hasInstancing()); //The mesh cannot be updated on a model displayer using instancing. A new model displayer should be used.
                 unsigned int meshIndex = 0;
                 for (const auto& meshRenderer : meshRenderers) {
                     const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
@@ -158,6 +170,7 @@ namespace urchin {
                 }
             } else if (notificationType == Model::MATERIAL_UPDATED) {
                 if (displayMode == DEFAULT_MODE) {
+                    assert(!hasInstancing()); //The material cannot be updated on a model displayer using instancing. A new model displayer should be used.
                     unsigned int meshIndex = 0;
                     for (const auto& meshRenderer : meshRenderers) {
                         const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
@@ -177,6 +190,7 @@ namespace urchin {
                 }
             } else if (notificationType == Model::SCALE_UPDATED) {
                 if (displayMode == DEFAULT_MODE) {
+                    assert(!hasInstancing()); //The scale cannot be updated on a model displayer using instancing. A new model displayer should be used.
                     unsigned int meshIndex = 0;
                     for (const auto& meshRenderer: meshRenderers) {
                         const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
@@ -191,23 +205,37 @@ namespace urchin {
         }
     }
 
+    void ModelDisplayer::addInstanceModel(Model* model) {
+        instanceModels.push_back(model);
+    }
+
+    void ModelDisplayer::removeInstanceModel(Model* modelToRemove) {
+        assert(getInstanceCount() > 1); //Can not leave a model displayer with zero model. The model displayer should be removed instead.
+        std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == modelToRemove;});
+    }
+
+    unsigned int ModelDisplayer::getInstanceCount() const {
+        return (unsigned int)instanceModels.size();
+    }
+
     void ModelDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
-            const Mesh& mesh = model->getMeshes()->getMesh(meshIndex++);
+            const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex++);
             if (meshFilter && !meshFilter->isAccepted(mesh)) {
                 continue;
             }
 
-            meshRenderer->updateUniformData(0, &projectionViewMatrix);
-
             instanceMatrices.clear();
-            InstanceMatrix instanceMatrix;
-            instanceMatrix.modelMatrix = model->getTransform().getTransformMatrix();
-            instanceMatrix.normalMatrix = model->getTransform().getTransformMatrix().inverse().transpose();
-            instanceMatrices.push_back(instanceMatrix);
+            for (Model* instanceModel : instanceModels) {
+                InstanceMatrix instanceMatrix;
+                instanceMatrix.modelMatrix = instanceModel->getTransform().getTransformMatrix();
+                instanceMatrix.normalMatrix = instanceModel->getTransform().getTransformMatrix().inverse().transpose();
+                instanceMatrices.push_back(instanceMatrix);
+            }
             meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*)instanceMatrices.data());
 
+            meshRenderer->updateUniformData(0, &projectionViewMatrix);
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);
             }
@@ -217,20 +245,25 @@ namespace urchin {
     }
 
     void ModelDisplayer::drawBBox(GeometryContainer& geometryContainer) {
-        if (aabboxModel) {
+        for (auto& aabboxModel : aabboxModels) {
             geometryContainer.removeGeometry(*aabboxModel);
         }
+        aabboxModels.clear();
 
-        aabboxModel = std::make_shared<AABBoxModel>(model->getAABBox());
-        geometryContainer.addGeometry(aabboxModel);
+        for (Model* instanceModel : instanceModels) {
+            aabboxModels.push_back(std::make_shared<AABBoxModel>(instanceModel->getAABBox()));
+            geometryContainer.addGeometry(aabboxModels.back());
+        }
     }
 
     void ModelDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
-        if (model->getMeshes()) {
-            for (unsigned int m = 0; m < model->getMeshes()->getNumberMeshes(); ++m) {
-                const Mesh& mesh = model->getMeshes()->getMesh(m);
-                if (!meshFilter || meshFilter->isAccepted(mesh)) {
-                    model->getMeshes()->getMesh(m).drawBaseBones(geometryContainer, model->getTransform().getTransformMatrix());
+        for (Model* instanceModel : instanceModels) {
+            if (instanceModel->getMeshes()) {
+                for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumberMeshes(); ++m) {
+                    const Mesh& mesh = instanceModel->getMeshes()->getMesh(m);
+                    if (!meshFilter || meshFilter->isAccepted(mesh)) {
+                        instanceModel->getMeshes()->getMesh(m).drawBaseBones(geometryContainer, instanceModel->getTransform().getTransformMatrix());
+                    }
                 }
             }
         }
