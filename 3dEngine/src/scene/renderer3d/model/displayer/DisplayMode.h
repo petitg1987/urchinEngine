@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    enum DisplayMode {
+    enum class DisplayMode {
         /* DEFAULT_MODE provide:
             * Texturing
             * Depth information

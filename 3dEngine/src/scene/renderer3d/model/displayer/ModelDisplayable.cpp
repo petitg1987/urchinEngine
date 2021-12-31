@@ -1,0 +1,44 @@
+#include <scene/renderer3d/model/displayer/ModelDisplayable.h>
+#include <scene/renderer3d/model/displayer/ModelDisplayer.h>
+
+namespace urchin {
+
+    void ModelDisplayable::attachModelDisplayer(ModelDisplayer& modelDisplayer) {
+        modelDisplayers.push_back(&modelDisplayer);
+    }
+
+    void ModelDisplayable::detachModelDisplayer(ModelDisplayer& modelDisplayerToRemove) {
+        std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
+    }
+
+    std::size_t ModelDisplayable::computeInstanceId(DisplayMode displayMode) const {
+        const auto* model = static_cast<const Model*>(this);
+
+        if (model->hasLoadedAnimation()) {
+            return 0; //no instancing on models containing animation
+        }
+
+        std::size_t instanceHash = 0;
+        HashUtil::combine(instanceHash, model->getConstMeshes()->getId());
+
+        if (displayMode == DisplayMode::DEFAULT_MODE) {
+            bool hasUvScaling = false;
+            for (unsigned int meshIndex = 0; meshIndex < model->getMeshes()->getNumberMeshes(); ++meshIndex) {
+                Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                HashUtil::combine(instanceHash, mesh.getMaterial().getId());
+                hasUvScaling |= mesh.getMaterial().getUvScale().hasScaling();
+            }
+            if (hasUvScaling) {
+                //UV are not part of the shader instance variables. Therefore, different scaling cannot be part of the same model instancing.
+                HashUtil::combine(instanceHash, model->getTransform().getScale().X, model->getTransform().getScale().Y, model->getTransform().getScale().Z);
+            }
+            return instanceHash;
+        } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+            return instanceHash;
+        }
+
+        throw std::runtime_error("Unknown display mode: " + std::to_string((int)displayMode));
+    }
+
+}
+

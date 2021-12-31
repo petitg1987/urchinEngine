@@ -7,13 +7,14 @@
 
 #include <scene/renderer3d/model/Meshes.h>
 #include <scene/renderer3d/model/Animation.h>
+#include <scene/renderer3d/model/displayer/ModelDisplayable.h>
 #include <resources/model/ConstMeshes.h>
 #include <resources/model/ConstAnimation.h>
 #include <api/render/target/RenderTarget.h>
 
 namespace urchin {
 
-    class Model : public Octreeable<Model> {
+    class Model : public Octreeable<Model>, public ModelDisplayable {
         public:
             enum NotificationType {
                 MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,
@@ -26,6 +27,7 @@ namespace urchin {
             static std::unique_ptr<Model> fromMemory(std::unique_ptr<Meshes>);
 
             void loadAnimation(const std::string&, const std::string&);
+            bool hasLoadedAnimation() const;
             void animate(const std::string&, bool);
             void stopAnimation(bool);
             void resetAnimations();

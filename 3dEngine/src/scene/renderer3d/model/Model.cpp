@@ -90,6 +90,10 @@ namespace urchin {
         }
     }
 
+    bool Model::hasLoadedAnimation() const {
+        return !animations.empty();
+    }
+
     void Model::animate(const std::string& animationName, bool animationLoop) {
         activeAnimation = animations.at(animationName).get();
         isModelAnimated = true;

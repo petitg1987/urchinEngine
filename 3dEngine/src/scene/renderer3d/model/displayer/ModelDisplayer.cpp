@@ -1,13 +1,15 @@
 #include <memory>
 
-#include <resources/material/UvScale.h>
 #include <scene/renderer3d/model/displayer/ModelDisplayer.h>
+#include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
+#include <resources/material/UvScale.h>
 #include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(Model* model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
+    ModelDisplayer::ModelDisplayer(const ModelSetDisplayer& modelSetDisplayer, Model& model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
+            modelSetDisplayer(modelSetDisplayer),
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
@@ -16,11 +18,12 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-        instanceModels.push_back(model);
+        instanceModels.push_back(&model);
+        instanceId = model.computeInstanceId(displayMode);
 
-        model->addObserver(this, Model::MESH_UPDATED);
-        model->addObserver(this, Model::MATERIAL_UPDATED);
-        model->addObserver(this, Model::SCALE_UPDATED);
+        model.addObserver(this, Model::MESH_UPDATED);
+        model.addObserver(this, Model::MATERIAL_UPDATED);
+        model.addObserver(this, Model::SCALE_UPDATED);
     }
 
     ModelDisplayer::~ModelDisplayer() {
@@ -107,7 +110,7 @@ namespace urchin {
                 meshRendererBuilder->enableTransparency(blendFunctions);
             }
 
-            if (displayMode == DEFAULT_MODE) {
+            if (displayMode == DisplayMode::DEFAULT_MODE) {
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
                 meshRendererBuilder
                         ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture())
@@ -162,7 +165,7 @@ namespace urchin {
                 for (const auto& meshRenderer : meshRenderers) {
                     const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, mesh.getVertices());
-                    if (displayMode == DEFAULT_MODE) {
+                    if (displayMode == DisplayMode::DEFAULT_MODE) {
                         meshRenderer->updateData(2, mesh.getNormals());
                         meshRenderer->updateData(3, mesh.getTangents());
                     }
@@ -170,7 +173,7 @@ namespace urchin {
                     meshIndex++;
                 }
             } else if (notificationType == Model::MATERIAL_UPDATED) {
-                if (displayMode == DEFAULT_MODE) {
+                if (displayMode == DisplayMode::DEFAULT_MODE) {
                     assert(!hasInstancing()); //The material cannot be updated on a model displayer using instancing. A new model displayer should be used.
                     unsigned int meshIndex = 0;
                     for (const auto& meshRenderer : meshRenderers) {
@@ -190,7 +193,7 @@ namespace urchin {
                     }
                 }
             } else if (notificationType == Model::SCALE_UPDATED) {
-                if (displayMode == DEFAULT_MODE) {
+                if (displayMode == DisplayMode::DEFAULT_MODE) {
                     assert(!hasInstancing()); //The scale cannot be updated on a model displayer using instancing. A new model displayer should be used.
                     unsigned int meshIndex = 0;
                     for (const auto& meshRenderer: meshRenderers) {
@@ -206,21 +209,28 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::addInstanceModel(Model* model) {
-        instanceModels.push_back(model);
-
-        model->addObserver(this, Model::MESH_UPDATED);
-        model->addObserver(this, Model::MATERIAL_UPDATED);
-        model->addObserver(this, Model::SCALE_UPDATED);
+    const ModelSetDisplayer& ModelDisplayer::getModelSetDisplayer() const {
+        return modelSetDisplayer;
     }
 
-    void ModelDisplayer::removeInstanceModel(Model* modelToRemove) {
-        assert(getInstanceCount() > 1); //Can not leave a model displayer with zero model. The model displayer should be removed instead.
-        std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == modelToRemove;});
+    void ModelDisplayer::addInstanceModel(Model& model) {
+        #ifdef URCHIN_DEBUG
+            assert(model.computeInstanceId(displayMode) == instanceId);
+        #endif
+        instanceModels.push_back(&model);
 
-        modelToRemove->removeObserver(this, Model::MATERIAL_UPDATED);
-        modelToRemove->removeObserver(this, Model::MESH_UPDATED);
-        modelToRemove->removeObserver(this, Model::SCALE_UPDATED);
+        model.addObserver(this, Model::MESH_UPDATED);
+        model.addObserver(this, Model::MATERIAL_UPDATED);
+        model.addObserver(this, Model::SCALE_UPDATED);
+    }
+
+    void ModelDisplayer::removeInstanceModel(Model& modelToRemove) {
+        assert(getInstanceCount() > 1); //Can not leave a model displayer with zero model. The model displayer should be removed instead.
+        std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == &modelToRemove;});
+
+        modelToRemove.removeObserver(this, Model::MATERIAL_UPDATED);
+        modelToRemove.removeObserver(this, Model::MESH_UPDATED);
+        modelToRemove.removeObserver(this, Model::SCALE_UPDATED);
     }
 
     unsigned int ModelDisplayer::getInstanceCount() const {

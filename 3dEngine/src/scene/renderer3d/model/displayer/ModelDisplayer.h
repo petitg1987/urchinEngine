@@ -10,9 +10,11 @@
 
 namespace urchin {
 
+    class ModelSetDisplayer;
+
     class ModelDisplayer : public Observer {
         public:
-            ModelDisplayer(Model*, DisplayMode, RenderTarget&, const Shader&);
+            ModelDisplayer(const ModelSetDisplayer&, Model&, DisplayMode, RenderTarget&, const Shader&);
             ~ModelDisplayer() override;
 
             void setupCustomShaderVariable(CustomModelShaderVariable*);
@@ -23,8 +25,10 @@ namespace urchin {
             void initialize();
             void notify(Observable*, int) override;
 
-            void addInstanceModel(Model*);
-            void removeInstanceModel(Model*);
+            const ModelSetDisplayer& getModelSetDisplayer() const;
+
+            void addInstanceModel(Model&);
+            void removeInstanceModel(Model&);
             unsigned int getInstanceCount() const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*) const;
@@ -42,10 +46,13 @@ namespace urchin {
 
             bool isInitialized;
 
+            const ModelSetDisplayer& modelSetDisplayer;
             std::vector<Model*> instanceModels;
+            std::size_t instanceId;
             DisplayMode displayMode;
             RenderTarget& renderTarget;
             const Shader& shader;
+
             mutable Matrix4<float> projectionViewMatrix;
             struct InstanceMatrix {
                 Matrix4<float> modelMatrix;

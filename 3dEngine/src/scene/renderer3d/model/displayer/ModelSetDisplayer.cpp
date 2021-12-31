@@ -28,17 +28,17 @@ namespace urchin {
         this->renderTarget = &renderTarget;
 
         if (renderTarget.isValidRenderTarget()) {
-            if (displayMode == DEFAULT_MODE) {
+            if (displayMode == DisplayMode::DEFAULT_MODE) {
                 if (fragmentShaderName.empty()) {
                     //use default fragment shader
                     fragmentShaderName = "model.frag.spv";
                 }
                 modelShader = ShaderBuilder::createShader("model.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
-            } else if (displayMode == DEPTH_ONLY_MODE) {
+            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
                 assert(!fragmentShaderName.empty());
                 modelShader = ShaderBuilder::createShader("modelDepthOnly.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
             } else {
-                throw std::invalid_argument("Unknown display mode: " + std::to_string(displayMode));
+                throw std::invalid_argument("Unknown display mode: " + std::to_string((int)displayMode));
             }
         } else {
             modelShader = ShaderBuilder::createNullShader();
@@ -92,7 +92,7 @@ namespace urchin {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 const auto& itModel = modelsDisplayer.find(model);
                 if (itModel == modelsDisplayer.end()) {
-                    auto modelDisplayer = std::make_unique<ModelDisplayer>(model, displayMode, *renderTarget, *modelShader);
+                    auto modelDisplayer = std::make_unique<ModelDisplayer>(*this, *model, displayMode, *renderTarget, *modelShader);
                     modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
                     modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
                     modelDisplayer->setupBlendFunctions(blendFunctions);
