@@ -82,6 +82,15 @@ namespace urchin {
         this->meshFilter = std::move(meshFilter);
     }
 
+    ModelDisplayer* ModelSetDisplayer::findModelDisplayer(const Model& model) const {
+        for (ModelDisplayer* modelDisplayer : model.getModelDisplayers()) {
+            if (&modelDisplayer->getModelSetDisplayer() == this) {
+                return modelDisplayer;
+            }
+        }
+        return nullptr;
+    }
+
     void ModelSetDisplayer::updateModels(const std::vector<Model*>& models) {
         ScopeProfiler sp(Profiler::graphic(), "updateModels");
         assert(renderTarget);
@@ -92,16 +101,9 @@ namespace urchin {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
 
-                //find existing model displayer (if exist)
-                ModelDisplayer* currentModelDisplayer = nullptr;
-                for (ModelDisplayer* modelDisplayer : model->getModelDisplayers()) {
-                    if (&modelDisplayer->getModelSetDisplayer() == this) {
-                        currentModelDisplayer = modelDisplayer;
-                        break;
-                    }
-                }
-
+                ModelDisplayer* currentModelDisplayer = findModelDisplayer(*model);
                 std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+
                 if (currentModelDisplayer) {
                     if (currentModelDisplayer->getInstanceId() == modelInstanceId) {
                         continue; //current model displayer is still valid for the model
@@ -130,8 +132,13 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::removeModel(const Model* model) {
-        modelsDisplayer.erase(model);
+    void ModelSetDisplayer::removeModel(Model* model) {
+        if (model) {
+            ModelDisplayer* modelDisplayer = findModelDisplayer(*model);
+            if (modelDisplayer) {
+                model->detachModelDisplayer(*modelDisplayer);
+            }
+        }
     }
 
     const std::vector<Model*>& ModelSetDisplayer::getModels() const {
@@ -139,7 +146,7 @@ namespace urchin {
     }
 
     bool ModelSetDisplayer::isModelDisplayerExist(const Model& model) const {
-        return modelsDisplayer.contains(&model);
+        return findModelDisplayer(model) != nullptr;
     }
 
     void ModelSetDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
@@ -151,21 +158,27 @@ namespace urchin {
             throw std::runtime_error("Render target must be specified before call display");
         }
 
-        for (auto model : models) {
-            modelsDisplayer.at(model)->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+        for (Model* model : models) {
+            ModelDisplayer* modelDisplayer = findModelDisplayer(*model);
+            assert(modelDisplayer);
+            modelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
     void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            modelsDisplayer.at(model)->drawBBox(geometryContainer);
+            ModelDisplayer* modelDisplayer = findModelDisplayer(*model);
+            assert(modelDisplayer);
+            modelDisplayer->drawBBox(geometryContainer);
         }
     }
 
     void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
             if (model->getConstMeshes()) {
-                modelsDisplayer.at(model)->drawBaseBones(geometryContainer, meshFilter.get());
+                ModelDisplayer* modelDisplayer = findModelDisplayer(*model);
+                assert(modelDisplayer);
+                modelDisplayer->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }
     }

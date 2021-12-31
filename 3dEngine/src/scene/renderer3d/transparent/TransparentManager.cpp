@@ -98,7 +98,7 @@ namespace urchin {
         modelSetDisplayer->updateModels(models);
     }
 
-    void TransparentManager::removeModel(const Model* model) const {
+    void TransparentManager::removeModel(Model* model) const {
         if (modelSetDisplayer) {
             modelSetDisplayer->removeModel(model);
         }

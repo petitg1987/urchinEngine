@@ -34,7 +34,7 @@ namespace urchin {
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
             void updateModels(const std::vector<Model*>&);
-            void removeModel(const Model*);
+            void removeModel(Model*);
             const std::vector<Model*>& getModels() const;
             bool isModelDisplayerExist(const Model&) const;
 
@@ -44,6 +44,8 @@ namespace urchin {
             void drawBaseBones(GeometryContainer&) const;
 
         private:
+            ModelDisplayer* findModelDisplayer(const Model&) const;
+
             bool isInitialized;
 
             std::string geometryShaderName, fragmentShaderName;

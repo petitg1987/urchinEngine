@@ -229,7 +229,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::removeInstanceModel(Model& modelToRemove) {
-        std::size_t erasedCount = std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == &modelToRemove;});
+        std::size_t erasedCount = std::erase_if(instanceModels, [&modelToRemove](const Model* model) {return model == &modelToRemove;});
         if (erasedCount != 1) {
             throw std::runtime_error("Removing the instance model fail: " + modelToRemove.getConstMeshes()->getId());
         }

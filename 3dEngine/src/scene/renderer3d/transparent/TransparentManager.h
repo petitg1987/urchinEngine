@@ -20,7 +20,7 @@ namespace urchin {
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             void updateModels(const std::vector<Model*>&) const;
-            void removeModel(const Model*) const;
+            void removeModel(Model*) const;
 
             void updateTransparentTextures(const Camera&) const;
             void loadTransparentTextures(GenericRenderer&, std::size_t, std::size_t) const;

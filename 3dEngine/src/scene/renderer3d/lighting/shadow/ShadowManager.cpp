@@ -145,7 +145,7 @@ namespace urchin {
         return visibleModels;
     }
 
-    void ShadowManager::removeModel(const Model* model) const {
+    void ShadowManager::removeModel(Model* model) const {
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
             lightShadowMap->removeModel(model);
         }
