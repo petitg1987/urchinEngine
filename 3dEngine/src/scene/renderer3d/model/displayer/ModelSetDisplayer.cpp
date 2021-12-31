@@ -147,6 +147,7 @@ namespace urchin {
             ModelDisplayer* modelDisplayer = findModelDisplayer(*model);
             if (modelDisplayer) {
                 model->detachModelDisplayer(*modelDisplayer);
+                //TODO clean: modelDisplayer->getInstanceCount() == 0;
             }
 
             //TODO remove model from models ?
