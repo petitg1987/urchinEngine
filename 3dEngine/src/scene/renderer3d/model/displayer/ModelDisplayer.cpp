@@ -10,6 +10,7 @@ namespace urchin {
     ModelDisplayer::ModelDisplayer(const ModelSetDisplayer& modelSetDisplayer, Model& model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
             modelSetDisplayer(modelSetDisplayer),
+            instanceId(model.computeInstanceId(displayMode)),
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
@@ -18,12 +19,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-        instanceModels.push_back(&model);
-        instanceId = model.computeInstanceId(displayMode);
-
-        model.addObserver(this, Model::MESH_UPDATED);
-        model.addObserver(this, Model::MATERIAL_UPDATED);
-        model.addObserver(this, Model::SCALE_UPDATED);
+        model.attachModelDisplayer(*this);
     }
 
     ModelDisplayer::~ModelDisplayer() {
@@ -133,6 +129,9 @@ namespace urchin {
     Model& ModelDisplayer::getReferenceModel() const {
         //A reference model is a model which can be used to represent all instance models.
         //For unique properties (e.g. Model#getTransform()#getPosition()): do not use the reference model.
+        if (instanceModels.empty()) {
+            throw std::runtime_error("No reference model on bared model displayer");
+        }
         return *instanceModels[0];
     }
 
@@ -213,9 +212,14 @@ namespace urchin {
         return modelSetDisplayer;
     }
 
+    std::size_t ModelDisplayer::getInstanceId() const {
+        return instanceId;
+    }
+
     void ModelDisplayer::addInstanceModel(Model& model) {
         #ifdef URCHIN_DEBUG
-            assert(model.computeInstanceId(displayMode) == instanceId);
+            assert(instanceModels.empty() || instanceId != ModelDisplayable::INSTANCING_DENY_ID);
+            assert(instanceId == model.computeInstanceId(displayMode));
         #endif
         instanceModels.push_back(&model);
 
@@ -225,8 +229,10 @@ namespace urchin {
     }
 
     void ModelDisplayer::removeInstanceModel(Model& modelToRemove) {
-        assert(getInstanceCount() > 1); //Can not leave a model displayer with zero model. The model displayer should be removed instead.
-        std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == &modelToRemove;});
+        std::size_t erasedCount = std::erase_if(instanceModels, [modelToRemove](const Model* model) {return model == &modelToRemove;});
+        if (erasedCount != 1) {
+            throw std::runtime_error("Removing the instance model fail: " + modelToRemove.getConstMeshes()->getId());
+        }
 
         modelToRemove.removeObserver(this, Model::MATERIAL_UPDATED);
         modelToRemove.removeObserver(this, Model::MESH_UPDATED);

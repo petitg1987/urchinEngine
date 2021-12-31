@@ -26,6 +26,7 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
+            std::size_t getInstanceId() const;
 
             void addInstanceModel(Model&);
             void removeInstanceModel(Model&);

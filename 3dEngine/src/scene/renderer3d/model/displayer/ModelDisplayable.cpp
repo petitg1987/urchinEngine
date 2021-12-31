@@ -4,18 +4,28 @@
 namespace urchin {
 
     void ModelDisplayable::attachModelDisplayer(ModelDisplayer& modelDisplayer) {
+        auto* model = static_cast<Model*>(this);
+        modelDisplayer.addInstanceModel(*model);
+
         modelDisplayers.push_back(&modelDisplayer);
     }
 
     void ModelDisplayable::detachModelDisplayer(ModelDisplayer& modelDisplayerToRemove) {
+        auto* model = static_cast<Model*>(this);
+        modelDisplayerToRemove.removeInstanceModel(*model);
+
         std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
+    }
+
+    const std::vector<ModelDisplayer*>& ModelDisplayable::getModelDisplayers() const {
+        return modelDisplayers;
     }
 
     std::size_t ModelDisplayable::computeInstanceId(DisplayMode displayMode) const {
         const auto* model = static_cast<const Model*>(this);
 
         if (model->hasLoadedAnimation()) {
-            return 0; //no instancing on models containing animation
+            return INSTANCING_DENY_ID; //no instancing on models containing animation
         }
 
         std::size_t instanceHash = 0;

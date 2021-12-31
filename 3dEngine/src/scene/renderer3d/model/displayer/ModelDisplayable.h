@@ -9,8 +9,11 @@ namespace urchin {
 
     class ModelDisplayable {
         public:
+            static constexpr std::size_t INSTANCING_DENY_ID = 0;
+
             void attachModelDisplayer(ModelDisplayer&);
             void detachModelDisplayer(ModelDisplayer&);
+            const std::vector<ModelDisplayer*>& getModelDisplayers() const;
 
             std::size_t computeInstanceId(DisplayMode) const;
 

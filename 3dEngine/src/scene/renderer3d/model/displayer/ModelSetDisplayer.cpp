@@ -88,20 +88,44 @@ namespace urchin {
 
         this->models.clear();
 
-        for (auto model : models) {
+        for (Model* model : models) {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
-                const auto& itModel = modelsDisplayer.find(model);
-                if (itModel == modelsDisplayer.end()) {
-                    auto modelDisplayer = std::make_unique<ModelDisplayer>(*this, *model, displayMode, *renderTarget, *modelShader);
-                    modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
-                    modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
-                    modelDisplayer->setupBlendFunctions(blendFunctions);
-                    modelDisplayer->setupFaceCull(enableFaceCull);
-                    modelDisplayer->initialize();
-                    modelsDisplayer.emplace(std::make_pair(model, std::move(modelDisplayer)));
+                this->models.push_back(model);
+
+                //find existing model displayer (if exist)
+                ModelDisplayer* currentModelDisplayer = nullptr;
+                for (ModelDisplayer* modelDisplayer : model->getModelDisplayers()) {
+                    if (&modelDisplayer->getModelSetDisplayer() == this) {
+                        currentModelDisplayer = modelDisplayer;
+                        break;
+                    }
                 }
 
-                this->models.push_back(model);
+                std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+                if (currentModelDisplayer) {
+                    if (currentModelDisplayer->getInstanceId() == modelInstanceId) {
+                        continue; //current model displayer is still valid for the model
+                    }
+
+                    model->detachModelDisplayer(*currentModelDisplayer);
+                    //TODO clean: currentModelDisplayer->getInstanceCount() == 0;
+                }
+
+                if (modelInstanceId != ModelDisplayable::INSTANCING_DENY_ID) {
+                    const auto& itModelDisplayer = modelsDisplayer.find(modelInstanceId);
+                    if (itModelDisplayer != modelsDisplayer.end()) {
+                        model->attachModelDisplayer(*itModelDisplayer->second);
+                        continue; //an existing model displayer has been found for the model
+                    }
+                }
+
+                auto modelDisplayer = std::make_unique<ModelDisplayer>(*this, *model, displayMode, *renderTarget, *modelShader);
+                modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
+                modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
+                modelDisplayer->setupBlendFunctions(blendFunctions);
+                modelDisplayer->setupFaceCull(enableFaceCull);
+                modelDisplayer->initialize();
+                modelsDisplayer.try_emplace(modelInstanceId, std::move(modelDisplayer));
             }
         }
     }

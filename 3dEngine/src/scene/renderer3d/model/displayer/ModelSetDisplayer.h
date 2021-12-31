@@ -60,7 +60,7 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;
-            std::unordered_map<const Model*, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
+            std::unordered_map<std::size_t, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
     };
 
 }
