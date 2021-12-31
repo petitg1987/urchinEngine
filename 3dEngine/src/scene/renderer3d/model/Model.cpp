@@ -10,7 +10,8 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            bIsProduceShadow(true) {
+            bIsProduceShadow(true),
+            bIsMeshUpdated(false) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
             meshes = std::make_unique<Meshes>(std::move(constMeshes));
@@ -24,7 +25,8 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            bIsProduceShadow(true) {
+            bIsProduceShadow(true),
+            bIsMeshUpdated(false) {
         initialize();
     }
 
@@ -35,7 +37,8 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
-            bIsProduceShadow(model.isProduceShadow()) {
+            bIsProduceShadow(model.isProduceShadow()),
+            bIsMeshUpdated(model.isMeshUpdated()) {
         if (model.meshes) {
             meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
         }
@@ -129,7 +132,7 @@ namespace urchin {
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
-        notifyObservers(this, Model::MESH_UPDATED);
+        notifyMeshUpdated();
     }
 
     void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
@@ -141,7 +144,7 @@ namespace urchin {
 
         if (activeAnimation->getCurrentFrame() != animationFrameIndex) {
             activeAnimation->gotoFrame(animationFrameIndex);
-            notifyObservers(this, Model::MESH_UPDATED);
+            notifyMeshUpdated();
         }
     }
 
@@ -170,6 +173,11 @@ namespace urchin {
 
         //inform the OctreeManager that the model should be updated in the octree
         this->notifyOctreeableMove();
+    }
+
+    void Model::notifyMeshUpdated() {
+        this->bIsMeshUpdated = true;
+        notifyObservers(this, Model::MESH_UPDATED);
     }
 
     const Meshes* Model::getMeshes() const {
@@ -278,6 +286,10 @@ namespace urchin {
         return bIsProduceShadow && getMeshes();
     }
 
+    bool Model::isMeshUpdated() const {
+        return bIsMeshUpdated && getMeshes();
+    }
+
     void Model::updateAnimation(float dt) {
         if (isAnimated()) {
             if (stopAnimationAtLastFrame && activeAnimation->getCurrentFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
@@ -285,7 +297,7 @@ namespace urchin {
                 stopAnimationAtLastFrame = false;
             } else {
                 activeAnimation->animate(dt);
-                notifyObservers(this, Model::MESH_UPDATED);
+                notifyMeshUpdated();
             }
         }
     }
@@ -294,7 +306,7 @@ namespace urchin {
         meshes->updateMesh(meshIndex, vertices);
 
         onMoving(transform);
-        notifyObservers(this, Model::MESH_UPDATED);
+        notifyMeshUpdated();
     }
 
     void Model::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) {

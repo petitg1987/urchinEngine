@@ -27,8 +27,9 @@ namespace urchin {
     std::size_t ModelDisplayable::computeInstanceId(DisplayMode displayMode) const {
         const auto* model = static_cast<const Model*>(this);
 
-        if (model->hasLoadedAnimation()) {
-            return INSTANCING_DENY_ID; //no instancing on models containing animation
+        if (model->isMeshUpdated()) {
+            //no instancing on models animated or where mesh is manually updated
+            return INSTANCING_DENY_ID;
         }
 
         std::size_t instanceHash = 0;

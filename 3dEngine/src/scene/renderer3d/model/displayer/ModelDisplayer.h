@@ -38,12 +38,16 @@ namespace urchin {
             void drawBaseBones(GeometryContainer&, const MeshFilter*) const;
 
         private:
-            bool hasInstancing() const;
             Model& getReferenceModel() const;
 
             void fillMaterialData(const Mesh&);
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
+
+            bool checkForModelUpdate(const Model*) const;
+            void updateMesh(const Model*);
+            void updateMaterial(const Model*);
+            void updateScale(const Model*);
 
             bool isInitialized;
 

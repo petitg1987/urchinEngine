@@ -124,10 +124,6 @@ namespace urchin {
         isInitialized = true;
     }
 
-    bool ModelDisplayer::hasInstancing() const {
-        return instanceModels.size() > 1;
-    }
-
     Model& ModelDisplayer::getReferenceModel() const {
         //A reference model is a model which can be used to represent all instance models.
         //For unique properties (e.g. Model#getTransform()#getPosition()): do not use the reference model.
@@ -161,51 +157,73 @@ namespace urchin {
     void ModelDisplayer::notify(Observable* observable, int notificationType) {
         if (const auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_UPDATED) {
-                assert(!hasInstancing()); //The mesh cannot be updated on a model displayer using instancing. A new model displayer should be used.
-                unsigned int meshIndex = 0;
-                for (const auto& meshRenderer : meshRenderers) {
-                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
-                    meshRenderer->updateData(0, mesh.getVertices());
-                    if (displayMode == DisplayMode::DEFAULT_MODE) {
-                        meshRenderer->updateData(2, mesh.getNormals());
-                        meshRenderer->updateData(3, mesh.getTangents());
-                    }
-
-                    meshIndex++;
-                }
+                updateMesh(model);
             } else if (notificationType == Model::MATERIAL_UPDATED) {
-                if (displayMode == DisplayMode::DEFAULT_MODE) {
-                    assert(!hasInstancing()); //The material cannot be updated on a model displayer using instancing. A new model displayer should be used.
-                    unsigned int meshIndex = 0;
-                    for (const auto& meshRenderer : meshRenderers) {
-                        const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
-
-                        fillMaterialData(mesh);
-                        meshRenderer->updateUniformData(1, &materialData);
-
-                        if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
-                            meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
-                        }
-                        if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
-                            meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
-                        }
-
-                        meshIndex++;
-                    }
-                }
+                updateMaterial(model);
             } else if (notificationType == Model::SCALE_UPDATED) {
-                if (displayMode == DisplayMode::DEFAULT_MODE) {
-                    assert(!hasInstancing()); //The scale cannot be updated on a model displayer using instancing. A new model displayer should be used.
-                    unsigned int meshIndex = 0;
-                    for (const auto& meshRenderer: meshRenderers) {
-                        const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
-                        const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
-                        const UvScale& uvScale = mesh.getMaterial().getUvScale();
-                        meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture());
+                updateScale(model);
+            }
+        }
+    }
 
-                        meshIndex++;
-                    }
+    bool ModelDisplayer::checkForModelUpdate(const Model* model) const {
+        bool modelCanBeUpdated = instanceId == ModelDisplayable::INSTANCING_DENY_ID;
+        if (!modelCanBeUpdated && model) { //TODO find solution to use model in non debug
+            #ifdef URCHIN_DEBUG
+                //a different instance ID ensure that a new displayer will be created for the model
+                assert(model->computeInstanceId(displayMode) != instanceId);
+            #endif
+        }
+        return modelCanBeUpdated;
+    }
+
+    void ModelDisplayer::updateMesh(const Model* model) {
+        if (checkForModelUpdate(model)) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer: meshRenderers) {
+                const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                meshRenderer->updateData(0, mesh.getVertices());
+                if (displayMode == DisplayMode::DEFAULT_MODE) {
+                    meshRenderer->updateData(2, mesh.getNormals());
+                    meshRenderer->updateData(3, mesh.getTangents());
                 }
+
+                meshIndex++;
+            }
+        }
+    }
+
+    void ModelDisplayer::updateMaterial(const Model* model) {
+        if (displayMode == DisplayMode::DEFAULT_MODE && checkForModelUpdate(model)) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer: meshRenderers) {
+                const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+
+                fillMaterialData(mesh);
+                meshRenderer->updateUniformData(1, &materialData);
+
+                if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
+                    meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
+                }
+                if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
+                    meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                }
+
+                meshIndex++;
+            }
+        }
+    }
+
+    void ModelDisplayer::updateScale(const Model* model) {
+        if (displayMode == DisplayMode::DEFAULT_MODE && checkForModelUpdate(model)) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer: meshRenderers) {
+                const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
+                const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                const UvScale& uvScale = mesh.getMaterial().getUvScale();
+                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture());
+
+                meshIndex++;
             }
         }
     }
