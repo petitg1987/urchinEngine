@@ -20,6 +20,7 @@ namespace urchin {
     ModelSetDisplayer::~ModelSetDisplayer() {
         //TODO clean all displayer from Model
         modelsDisplayer.clear();
+        instancingModelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::initialize(RenderTarget& renderTarget) {
@@ -60,23 +61,27 @@ namespace urchin {
 
     void ModelSetDisplayer::setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable> customShaderVariable) {
         this->customShaderVariable = std::move(customShaderVariable);
-        modelsDisplayer.clear();
+        modelsDisplayer.clear(); //TODO create method: clearModelDisplayer
+        instancingModelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
         modelsDisplayer.clear();
+        instancingModelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::setupFaceCull(bool enableFaceCull) {
         this->enableFaceCull = enableFaceCull;
         modelsDisplayer.clear();
+        instancingModelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         this->blendFunctions = blendFunctions;
         modelsDisplayer.clear();
+        instancingModelsDisplayer.clear();
     }
 
     void ModelSetDisplayer::setupMeshFilter(std::unique_ptr<MeshFilter> meshFilter) {
@@ -115,8 +120,8 @@ namespace urchin {
                 }
 
                 if (modelInstanceId != ModelDisplayable::INSTANCING_DENY_ID) {
-                    const auto& itModelDisplayer = modelsDisplayer.find(modelInstanceId);
-                    if (itModelDisplayer != modelsDisplayer.end()) {
+                    const auto& itModelDisplayer = instancingModelsDisplayer.find(modelInstanceId);
+                    if (itModelDisplayer != instancingModelsDisplayer.end()) {
                         model->attachModelDisplayer(*itModelDisplayer->second);
                         continue; //an existing model displayer has been found for the model
                     }
@@ -128,7 +133,11 @@ namespace urchin {
                 modelDisplayer->setupBlendFunctions(blendFunctions);
                 modelDisplayer->setupFaceCull(enableFaceCull);
                 modelDisplayer->initialize();
-                modelsDisplayer.try_emplace(modelInstanceId, std::move(modelDisplayer)); //TODO wrong for id = 0
+                if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
+                    modelsDisplayer.try_emplace(model, std::move(modelDisplayer));
+                } else {
+                    instancingModelsDisplayer.try_emplace(modelInstanceId, std::move(modelDisplayer));
+                }
             }
         }
     }
