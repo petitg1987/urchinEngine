@@ -18,6 +18,7 @@ namespace urchin {
     }
 
     ModelSetDisplayer::~ModelSetDisplayer() {
+        //TODO clean all displayer from Model
         modelsDisplayer.clear();
     }
 
@@ -127,7 +128,7 @@ namespace urchin {
                 modelDisplayer->setupBlendFunctions(blendFunctions);
                 modelDisplayer->setupFaceCull(enableFaceCull);
                 modelDisplayer->initialize();
-                modelsDisplayer.try_emplace(modelInstanceId, std::move(modelDisplayer));
+                modelsDisplayer.try_emplace(modelInstanceId, std::move(modelDisplayer)); //TODO wrong for id = 0
             }
         }
     }
@@ -138,6 +139,9 @@ namespace urchin {
             if (modelDisplayer) {
                 model->detachModelDisplayer(*modelDisplayer);
             }
+
+            //TODO remove model from models ?
+            assert(false);
         }
     }
 

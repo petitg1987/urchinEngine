@@ -14,7 +14,10 @@ namespace urchin {
         auto* model = static_cast<Model*>(this);
         modelDisplayerToRemove.removeInstanceModel(*model);
 
-        std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
+        std::size_t erasedCount = std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
+        if (erasedCount != 1) {
+            throw std::runtime_error("Removing the model displayer from model fail: " + model->getConstMeshes()->getId());
+        }
     }
 
     const std::vector<ModelDisplayer*>& ModelDisplayable::getModelDisplayers() const {

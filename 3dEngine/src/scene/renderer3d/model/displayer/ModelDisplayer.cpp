@@ -23,6 +23,8 @@ namespace urchin {
     }
 
     ModelDisplayer::~ModelDisplayer() {
+        //TODO add control to ensure instanceModels don't have reference to ModelDisplayer (and check in ~Model that ModelDisplayer has no ref too)
+
         for (Model* model : instanceModels) {
             model->removeObserver(this, Model::MATERIAL_UPDATED);
             model->removeObserver(this, Model::MESH_UPDATED);
@@ -246,6 +248,10 @@ namespace urchin {
     void ModelDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
+            if (meshRenderer->isEnabled()) {
+                continue; //TODO find better solution
+            }
+
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex++);
             if (meshFilter && !meshFilter->isAccepted(mesh)) {
                 continue;
