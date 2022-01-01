@@ -166,19 +166,21 @@ namespace urchin {
         }
     }
 
-    bool ModelDisplayer::checkForModelUpdate(const Model* model) const {
-        bool modelCanBeUpdated = instanceId == ModelDisplayable::INSTANCING_DENY_ID;
-        if (!modelCanBeUpdated && model) { //TODO find solution to use model in non debug
-            #ifdef URCHIN_DEBUG
-                //a different instance ID ensure that a new displayer will be created for the model
-                assert(model->computeInstanceId(displayMode) != instanceId);
-            #endif
+    bool ModelDisplayer::checkUpdateAllowance(const Model* model) const {
+        bool canUpdateDisplayer = instanceId == ModelDisplayable::INSTANCING_DENY_ID;
+        if (!canUpdateDisplayer) {
+            if (model->computeInstanceId(displayMode) == instanceId) {
+                //Update without impact on the instance ID, either:
+                // - Update has no effect. Examples: change scale from 1.0f to 1.0f, switch between two materials created programmatically and having the exact same properties.
+                // - Bug in the way the instance ID is computed
+                return true;
+            }
         }
-        return modelCanBeUpdated;
+        return canUpdateDisplayer;
     }
 
     void ModelDisplayer::updateMesh(const Model* model) {
-        if (checkForModelUpdate(model)) {
+        if (checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
                 const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
@@ -194,7 +196,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::updateMaterial(const Model* model) {
-        if (displayMode == DisplayMode::DEFAULT_MODE && checkForModelUpdate(model)) {
+        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
                 const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
@@ -215,7 +217,7 @@ namespace urchin {
     }
 
     void ModelDisplayer::updateScale(const Model* model) {
-        if (displayMode == DisplayMode::DEFAULT_MODE && checkForModelUpdate(model)) {
+        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
                 const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);

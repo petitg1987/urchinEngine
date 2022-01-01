@@ -44,7 +44,7 @@ namespace urchin {
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
-            bool checkForModelUpdate(const Model*) const;
+            bool checkUpdateAllowance(const Model*) const;
             void updateMesh(const Model*);
             void updateMaterial(const Model*);
             void updateScale(const Model*);
