@@ -12,10 +12,10 @@ namespace urchin {
 
     class ModelSetDisplayer;
 
-    class ModelDisplayer : public Observer {
+    class ModelInstanceDisplayer : public Observer {
         public:
-            ModelDisplayer(const ModelSetDisplayer&, Model&, DisplayMode, RenderTarget&, const Shader&);
-            ~ModelDisplayer() override;
+            ModelInstanceDisplayer(const ModelSetDisplayer&, Model&, DisplayMode, RenderTarget&, const Shader&);
+            ~ModelInstanceDisplayer() override;
 
             void setupCustomShaderVariable(CustomModelShaderVariable*);
             void setupDepthOperations(bool, bool);

@@ -9,7 +9,7 @@
 #include <api/render/target/RenderTarget.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
-#include <scene/renderer3d/model/displayer/ModelDisplayer.h>
+#include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <resources/geometry/GeometryContainer.h>
@@ -44,7 +44,8 @@ namespace urchin {
             void drawBaseBones(GeometryContainer&) const;
 
         private:
-            ModelDisplayer* findModelDisplayer(const Model&) const;
+            ModelInstanceDisplayer* findModelDisplayer(const Model&) const;
+            void clearModelInstanceDisplayers();
 
             bool isInitialized;
 
@@ -62,8 +63,8 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;
-            std::unordered_map<Model*, std::unique_ptr<ModelDisplayer>> modelsDisplayer;
-            std::unordered_map<std::size_t, std::unique_ptr<ModelDisplayer>> instancingModelsDisplayer;
+            std::unordered_map<Model*, std::unique_ptr<ModelInstanceDisplayer>> modelDisplayers;
+            std::unordered_map<std::size_t, std::unique_ptr<ModelInstanceDisplayer>> modelInstanceDisplayers;
     };
 
 }

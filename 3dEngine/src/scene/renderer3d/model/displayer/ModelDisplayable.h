@@ -5,20 +5,22 @@
 
 namespace urchin {
 
-    class ModelDisplayer;
+    class ModelInstanceDisplayer;
 
     class ModelDisplayable {
         public:
             static constexpr std::size_t INSTANCING_DENY_ID = 0;
 
-            void attachModelDisplayer(ModelDisplayer&);
-            void detachModelDisplayer(ModelDisplayer&);
-            const std::vector<ModelDisplayer*>& getModelDisplayers() const;
+            virtual ~ModelDisplayable();
+
+            void attachModelDisplayer(ModelInstanceDisplayer&);
+            void detachModelDisplayer(ModelInstanceDisplayer&);
+            const std::vector<ModelInstanceDisplayer*>& getModelDisplayers() const;
 
             std::size_t computeInstanceId(DisplayMode) const;
 
         private:
-            std::vector<ModelDisplayer*> modelDisplayers;
+            std::vector<ModelInstanceDisplayer*> modelDisplayers;
     };
 
 }

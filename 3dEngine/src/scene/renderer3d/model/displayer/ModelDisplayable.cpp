@@ -1,26 +1,30 @@
 #include <scene/renderer3d/model/displayer/ModelDisplayable.h>
-#include <scene/renderer3d/model/displayer/ModelDisplayer.h>
+#include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
 
 namespace urchin {
 
-    void ModelDisplayable::attachModelDisplayer(ModelDisplayer& modelDisplayer) {
+    ModelDisplayable::~ModelDisplayable() {
+        assert(modelDisplayers.empty()); //can not remove a model when displayer still use it
+    }
+
+    void ModelDisplayable::attachModelDisplayer(ModelInstanceDisplayer& modelDisplayer) {
         auto* model = static_cast<Model*>(this);
         modelDisplayer.addInstanceModel(*model);
 
         modelDisplayers.push_back(&modelDisplayer);
     }
 
-    void ModelDisplayable::detachModelDisplayer(ModelDisplayer& modelDisplayerToRemove) {
+    void ModelDisplayable::detachModelDisplayer(ModelInstanceDisplayer& modelDisplayerToRemove) {
         auto* model = static_cast<Model*>(this);
         modelDisplayerToRemove.removeInstanceModel(*model);
 
-        std::size_t erasedCount = std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
+        std::size_t erasedCount = std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelInstanceDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
         if (erasedCount != 1) {
             throw std::runtime_error("Removing the model displayer from model fail: " + model->getConstMeshes()->getId());
         }
     }
 
-    const std::vector<ModelDisplayer*>& ModelDisplayable::getModelDisplayers() const {
+    const std::vector<ModelInstanceDisplayer*>& ModelDisplayable::getModelDisplayers() const {
         return modelDisplayers;
     }
 

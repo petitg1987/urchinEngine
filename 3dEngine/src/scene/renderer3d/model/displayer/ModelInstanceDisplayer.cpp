@@ -1,13 +1,13 @@
 #include <memory>
 
-#include <scene/renderer3d/model/displayer/ModelDisplayer.h>
+#include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <resources/material/UvScale.h>
 #include <api/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    ModelDisplayer::ModelDisplayer(const ModelSetDisplayer& modelSetDisplayer, Model& model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
+    ModelInstanceDisplayer::ModelInstanceDisplayer(const ModelSetDisplayer& modelSetDisplayer, Model& model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
             modelSetDisplayer(modelSetDisplayer),
             instanceId(model.computeInstanceId(displayMode)),
@@ -19,27 +19,30 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-        model.attachModelDisplayer(*this);
+        model.attachModelDisplayer(*this); //TODO review responsibility of detach / attach. ModelInstanceDisplayer or ModelSetDisplayer ?
     }
 
-    ModelDisplayer::~ModelDisplayer() {
-        //TODO add control to ensure instanceModels don't have reference to ModelDisplayer (and check in ~Model that ModelDisplayer has no ref too)
-
+    ModelInstanceDisplayer::~ModelInstanceDisplayer() {
         for (Model* model : instanceModels) {
             model->removeObserver(this, Model::MATERIAL_UPDATED);
             model->removeObserver(this, Model::MESH_UPDATED);
             model->removeObserver(this, Model::SCALE_UPDATED);
         }
+
+        std::vector<Model*> copiedInstanceModels = instanceModels;
+        for (Model* model : copiedInstanceModels) {
+            model->detachModelDisplayer(*this);
+        }
     }
 
-    void ModelDisplayer::setupCustomShaderVariable(CustomModelShaderVariable* customShaderVariable) {
+    void ModelInstanceDisplayer::setupCustomShaderVariable(CustomModelShaderVariable* customShaderVariable) {
         if (customShaderVariable && isInitialized) {
             throw std::runtime_error("Can not define a custom model shader variable on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->customShaderVariable = customShaderVariable;
     }
 
-    void ModelDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+    void ModelInstanceDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         if (isInitialized) {
             throw std::runtime_error("Can not define depth operations on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
@@ -47,21 +50,21 @@ namespace urchin {
         this->depthWriteEnabled = depthWriteEnabled;
     }
 
-    void ModelDisplayer::setupFaceCull(bool enableFaceCull) {
+    void ModelInstanceDisplayer::setupFaceCull(bool enableFaceCull) {
         if (isInitialized) {
             throw std::runtime_error("Can not define face cull flag on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->enableFaceCull = enableFaceCull;
     }
 
-    void ModelDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
+    void ModelInstanceDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         if (!blendFunctions.empty() && isInitialized) {
             throw std::runtime_error("Can not define blend functions on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->blendFunctions = blendFunctions;
     }
 
-    void ModelDisplayer::initialize() {
+    void ModelInstanceDisplayer::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized: " + getReferenceModel().getConstMeshes()->getName());
         }
@@ -124,7 +127,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    Model& ModelDisplayer::getReferenceModel() const {
+    Model& ModelInstanceDisplayer::getReferenceModel() const {
         //A reference model is a model which can be used to represent all instance models.
         //For unique properties (e.g. Model#getTransform()#getPosition()): do not use the reference model.
         if (instanceModels.empty()) {
@@ -133,12 +136,12 @@ namespace urchin {
         return *instanceModels[0];
     }
 
-    void ModelDisplayer::fillMaterialData(const Mesh& mesh) {
+    void ModelInstanceDisplayer::fillMaterialData(const Mesh& mesh) {
         materialData.encodedEmissiveFactor = MathFunction::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
-    std::vector<Point2<float>> ModelDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const UvScale& uvScale) const {
+    std::vector<Point2<float>> ModelInstanceDisplayer::scaleUv(const std::vector<Point2 < float>>& uvTexture, const UvScale& uvScale) const {
         std::vector<Point2<float>> scaledUvTexture;
         scaledUvTexture.reserve(uvTexture.size());
 
@@ -149,12 +152,12 @@ namespace urchin {
         return scaledUvTexture;
     }
 
-    TextureParam ModelDisplayer::buildTextureParam(const Mesh& mesh) const {
+    TextureParam ModelInstanceDisplayer::buildTextureParam(const Mesh& mesh) const {
         TextureParam::ReadMode textureReadMode = mesh.getMaterial().repeatTextures() ? TextureParam::ReadMode::REPEAT : TextureParam::ReadMode::EDGE_CLAMP;
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 
-    void ModelDisplayer::notify(Observable* observable, int notificationType) {
+    void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) { //TODO move event in ModelSetDisplayer ?
         if (const auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_UPDATED) {
                 updateMesh(model);
@@ -166,7 +169,7 @@ namespace urchin {
         }
     }
 
-    bool ModelDisplayer::checkUpdateAllowance(const Model* model) const {
+    bool ModelInstanceDisplayer::checkUpdateAllowance(const Model* model) const {
         bool canUpdateDisplayer = instanceId == ModelDisplayable::INSTANCING_DENY_ID;
         if (!canUpdateDisplayer) {
             if (model->computeInstanceId(displayMode) == instanceId) {
@@ -179,7 +182,7 @@ namespace urchin {
         return canUpdateDisplayer;
     }
 
-    void ModelDisplayer::updateMesh(const Model* model) {
+    void ModelInstanceDisplayer::updateMesh(const Model* model) {
         if (checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -195,7 +198,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::updateMaterial(const Model* model) {
+    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -216,7 +219,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::updateScale(const Model* model) {
+    void ModelInstanceDisplayer::updateScale(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -230,15 +233,15 @@ namespace urchin {
         }
     }
 
-    const ModelSetDisplayer& ModelDisplayer::getModelSetDisplayer() const {
+    const ModelSetDisplayer& ModelInstanceDisplayer::getModelSetDisplayer() const {
         return modelSetDisplayer;
     }
 
-    std::size_t ModelDisplayer::getInstanceId() const {
+    std::size_t ModelInstanceDisplayer::getInstanceId() const {
         return instanceId;
     }
 
-    void ModelDisplayer::addInstanceModel(Model& model) {
+    void ModelInstanceDisplayer::addInstanceModel(Model& model) {
         #ifdef URCHIN_DEBUG
             assert(instanceModels.empty() || instanceId != ModelDisplayable::INSTANCING_DENY_ID);
             assert(instanceId == model.computeInstanceId(displayMode));
@@ -250,7 +253,7 @@ namespace urchin {
         model.addObserver(this, Model::SCALE_UPDATED);
     }
 
-    void ModelDisplayer::removeInstanceModel(Model& modelToRemove) {
+    void ModelInstanceDisplayer::removeInstanceModel(Model& modelToRemove) {
         std::size_t erasedCount = std::erase_if(instanceModels, [&modelToRemove](const Model* model) {return model == &modelToRemove;});
         if (erasedCount != 1) {
             throw std::runtime_error("Removing the instance model fail: " + modelToRemove.getConstMeshes()->getId());
@@ -261,11 +264,11 @@ namespace urchin {
         modelToRemove.removeObserver(this, Model::SCALE_UPDATED);
     }
 
-    unsigned int ModelDisplayer::getInstanceCount() const {
+    unsigned int ModelInstanceDisplayer::getInstanceCount() const {
         return (unsigned int)instanceModels.size();
     }
 
-    void ModelDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
+    void ModelInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
             if (meshRenderer->isEnabled()) {
@@ -295,7 +298,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBBox(GeometryContainer& geometryContainer) {
+    void ModelInstanceDisplayer::drawBBox(GeometryContainer& geometryContainer) {
         for (auto& aabboxModel : aabboxModels) {
             geometryContainer.removeGeometry(*aabboxModel);
         }
@@ -307,7 +310,7 @@ namespace urchin {
         }
     }
 
-    void ModelDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
+    void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
         for (Model* instanceModel : instanceModels) {
             if (instanceModel->getMeshes()) {
                 for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumberMeshes(); ++m) {
