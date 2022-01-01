@@ -36,7 +36,7 @@ namespace urchin {
             void updateModels(const std::vector<Model*>&);
             void removeModel(Model*);
             const std::vector<Model*>& getModels() const;
-            bool isModelDisplayerExist(const Model&) const;
+            bool isDisplayerExist(const Model&) const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&);
 
@@ -44,7 +44,7 @@ namespace urchin {
             void drawBaseBones(GeometryContainer&) const;
 
         private:
-            ModelInstanceDisplayer* findModelDisplayer(const Model&) const;
+            ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             void clearModelInstanceDisplayers();
 
             bool isInitialized;

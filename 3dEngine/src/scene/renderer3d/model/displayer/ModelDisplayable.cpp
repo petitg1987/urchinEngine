@@ -4,28 +4,28 @@
 namespace urchin {
 
     ModelDisplayable::~ModelDisplayable() {
-        assert(modelDisplayers.empty()); //can not remove a model when displayer still use it
+        assert(modelInstanceDisplayers.empty()); //can not remove a model when displayer still use it
     }
 
-    void ModelDisplayable::attachModelDisplayer(ModelInstanceDisplayer& modelDisplayer) {
+    void ModelDisplayable::attachModelInstanceDisplayer(ModelInstanceDisplayer& modelInstanceDisplayer) {
         auto* model = static_cast<Model*>(this);
-        modelDisplayer.addInstanceModel(*model);
+        modelInstanceDisplayer.addInstanceModel(*model);
 
-        modelDisplayers.push_back(&modelDisplayer);
+        modelInstanceDisplayers.push_back(&modelInstanceDisplayer);
     }
 
-    void ModelDisplayable::detachModelDisplayer(ModelInstanceDisplayer& modelDisplayerToRemove) {
+    void ModelDisplayable::detachModelInstanceDisplayer(ModelInstanceDisplayer& modelInstanceDisplayer) {
         auto* model = static_cast<Model*>(this);
-        modelDisplayerToRemove.removeInstanceModel(*model);
+        modelInstanceDisplayer.removeInstanceModel(*model);
 
-        std::size_t erasedCount = std::erase_if(modelDisplayers, [&modelDisplayerToRemove](const ModelInstanceDisplayer* modelDisplayer){return modelDisplayer == &modelDisplayerToRemove;});
+        std::size_t erasedCount = std::erase_if(modelInstanceDisplayers, [&modelInstanceDisplayer](const ModelInstanceDisplayer* mid){ return mid == &modelInstanceDisplayer; });
         if (erasedCount != 1) {
             throw std::runtime_error("Removing the model displayer from model fail: " + model->getConstMeshes()->getId());
         }
     }
 
-    const std::vector<ModelInstanceDisplayer*>& ModelDisplayable::getModelDisplayers() const {
-        return modelDisplayers;
+    const std::vector<ModelInstanceDisplayer*>& ModelDisplayable::getModelInstanceDisplayers() const {
+        return modelInstanceDisplayers;
     }
 
     std::size_t ModelDisplayable::computeInstanceId(DisplayMode displayMode) const {

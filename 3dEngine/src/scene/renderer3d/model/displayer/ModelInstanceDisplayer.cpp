@@ -19,7 +19,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-        model.attachModelDisplayer(*this); //TODO review responsibility of detach / attach. ModelInstanceDisplayer or ModelSetDisplayer ?
+        model.attachModelInstanceDisplayer(*this); //TODO review responsibility of detach / attach. ModelInstanceDisplayer or ModelSetDisplayer ?
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {
@@ -31,7 +31,7 @@ namespace urchin {
 
         std::vector<Model*> copiedInstanceModels = instanceModels;
         for (Model* model : copiedInstanceModels) {
-            model->detachModelDisplayer(*this);
+            model->detachModelInstanceDisplayer(*this);
         }
     }
 
@@ -272,7 +272,7 @@ namespace urchin {
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
             if (meshRenderer->isEnabled()) {
-                continue; //TODO find better solution
+                continue; //TODO find better solution (only display instance models visible on screen)
             }
 
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex++);

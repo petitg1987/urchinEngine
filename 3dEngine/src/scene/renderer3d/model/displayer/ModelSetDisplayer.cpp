@@ -82,10 +82,10 @@ namespace urchin {
         this->meshFilter = std::move(meshFilter);
     }
 
-    ModelInstanceDisplayer* ModelSetDisplayer::findModelDisplayer(const Model& model) const {
-        for (ModelInstanceDisplayer* modelDisplayer : model.getModelDisplayers()) {
-            if (&modelDisplayer->getModelSetDisplayer() == this) {
-                return modelDisplayer;
+    ModelInstanceDisplayer* ModelSetDisplayer::findModelInstanceDisplayer(const Model& model) const {
+        for (ModelInstanceDisplayer* modelInstanceDisplayer : model.getModelInstanceDisplayers()) {
+            if (&modelInstanceDisplayer->getModelSetDisplayer() == this) {
+                return modelInstanceDisplayer;
             }
         }
         return nullptr;
@@ -106,36 +106,36 @@ namespace urchin {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
 
-                ModelInstanceDisplayer* currentModelDisplayer = findModelDisplayer(*model);
-                std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+                ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
+                std::size_t modelInstanceId = model->computeInstanceId(displayMode); //TODO check perf
 
-                if (currentModelDisplayer) {
-                    if (currentModelDisplayer->getInstanceId() == modelInstanceId) {
+                if (currentModelInstanceDisplayer) {
+                    if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
                         continue; //current model displayer is still valid for the model
                     }
 
-                    model->detachModelDisplayer(*currentModelDisplayer);
+                    model->detachModelInstanceDisplayer(*currentModelInstanceDisplayer);
                     //TODO clean: currentModelDisplayer->getInstanceCount() == 0;
                 }
 
                 if (modelInstanceId != ModelDisplayable::INSTANCING_DENY_ID) {
-                    const auto& itModelDisplayer = modelInstanceDisplayers.find(modelInstanceId);
-                    if (itModelDisplayer != modelInstanceDisplayers.end()) {
-                        model->attachModelDisplayer(*itModelDisplayer->second);
+                    const auto& itModelInstanceDisplayer = modelInstanceDisplayers.find(modelInstanceId);
+                    if (itModelInstanceDisplayer != modelInstanceDisplayers.end()) {
+                        model->attachModelInstanceDisplayer(*itModelInstanceDisplayer->second);
                         continue; //an existing model displayer has been found for the model
                     }
                 }
 
-                auto modelDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, *model, displayMode, *renderTarget, *modelShader);
-                modelDisplayer->setupCustomShaderVariable(customShaderVariable.get());
-                modelDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
-                modelDisplayer->setupBlendFunctions(blendFunctions);
-                modelDisplayer->setupFaceCull(enableFaceCull);
-                modelDisplayer->initialize();
+                auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, *model, displayMode, *renderTarget, *modelShader);
+                modelInstanceDisplayer->setupCustomShaderVariable(customShaderVariable.get());
+                modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
+                modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
+                modelInstanceDisplayer->setupFaceCull(enableFaceCull);
+                modelInstanceDisplayer->initialize();
                 if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-                    modelDisplayers.try_emplace(model, std::move(modelDisplayer));
+                    modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
                 } else {
-                    modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelDisplayer));
+                    modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
                 }
             }
         }
@@ -144,9 +144,9 @@ namespace urchin {
     void ModelSetDisplayer::removeModel(Model* modelToRemove) {
         if (modelToRemove) {
             modelDisplayers.erase(modelToRemove);
-            ModelInstanceDisplayer* modelDisplayer = findModelDisplayer(*modelToRemove);
-            if (modelDisplayer) {
-                modelToRemove->detachModelDisplayer(*modelDisplayer);
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*modelToRemove);
+            if (modelInstanceDisplayer) {
+                modelToRemove->detachModelInstanceDisplayer(*modelInstanceDisplayer);
                 //TODO clean: modelDisplayer->getInstanceCount() == 0;
             }
 
@@ -158,8 +158,8 @@ namespace urchin {
         return models;
     }
 
-    bool ModelSetDisplayer::isModelDisplayerExist(const Model& model) const {
-        return findModelDisplayer(model) != nullptr;
+    bool ModelSetDisplayer::isDisplayerExist(const Model& model) const {
+        return findModelInstanceDisplayer(model) != nullptr;
     }
 
     void ModelSetDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
@@ -172,26 +172,26 @@ namespace urchin {
         }
 
         for (Model* model : models) {
-            ModelInstanceDisplayer* modelDisplayer = findModelDisplayer(*model);
-            assert(modelDisplayer);
-            modelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            assert(modelInstanceDisplayer);
+            modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
     void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            ModelInstanceDisplayer* modelDisplayer = findModelDisplayer(*model);
-            assert(modelDisplayer);
-            modelDisplayer->drawBBox(geometryContainer);
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            assert(modelInstanceDisplayer);
+            modelInstanceDisplayer->drawBBox(geometryContainer);
         }
     }
 
     void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
             if (model->getConstMeshes()) {
-                ModelInstanceDisplayer* modelDisplayer = findModelDisplayer(*model);
-                assert(modelDisplayer);
-                modelDisplayer->drawBaseBones(geometryContainer, meshFilter.get());
+                ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+                assert(modelInstanceDisplayer);
+                modelInstanceDisplayer->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }
     }

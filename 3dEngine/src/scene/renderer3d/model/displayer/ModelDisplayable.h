@@ -13,14 +13,14 @@ namespace urchin {
 
             virtual ~ModelDisplayable();
 
-            void attachModelDisplayer(ModelInstanceDisplayer&);
-            void detachModelDisplayer(ModelInstanceDisplayer&);
-            const std::vector<ModelInstanceDisplayer*>& getModelDisplayers() const;
+            void attachModelInstanceDisplayer(ModelInstanceDisplayer&);
+            void detachModelInstanceDisplayer(ModelInstanceDisplayer&);
+            const std::vector<ModelInstanceDisplayer*>& getModelInstanceDisplayers() const;
 
             std::size_t computeInstanceId(DisplayMode) const;
 
         private:
-            std::vector<ModelInstanceDisplayer*> modelDisplayers;
+            std::vector<ModelInstanceDisplayer*> modelInstanceDisplayers;
     };
 
 }
