@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     ModelSetDisplayer::~ModelSetDisplayer() {
-        clearModelInstanceDisplayers();
+        clearDisplayers();
     }
 
     void ModelSetDisplayer::initialize(RenderTarget& renderTarget) {
@@ -59,23 +59,23 @@ namespace urchin {
 
     void ModelSetDisplayer::setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable> customShaderVariable) {
         this->customShaderVariable = std::move(customShaderVariable);
-        clearModelInstanceDisplayers();
+        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
-        clearModelInstanceDisplayers();
+        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupFaceCull(bool enableFaceCull) {
         this->enableFaceCull = enableFaceCull;
-        clearModelInstanceDisplayers();
+        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         this->blendFunctions = blendFunctions;
-        clearModelInstanceDisplayers();
+        clearDisplayers();
     }
 
     void ModelSetDisplayer::setupMeshFilter(std::unique_ptr<MeshFilter> meshFilter) {
@@ -91,9 +91,19 @@ namespace urchin {
         return nullptr;
     }
 
-    void ModelSetDisplayer::clearModelInstanceDisplayers() {
+    void ModelSetDisplayer::clearDisplayers() {
         modelDisplayers.clear();
         modelInstanceDisplayers.clear();
+    }
+
+    void ModelSetDisplayer::detachModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
+        model.detachModelInstanceDisplayer(modelInstanceDisplayer);
+
+        if (modelInstanceDisplayer.getInstanceCount() == 0) {
+            //to do:
+            // - remove the displayer based on strategy to define (unused for x seconds, too much unused displayers, etc.)
+            // - erase displayer from modelDisplayers/modelInstanceDisplayers
+        }
     }
 
     void ModelSetDisplayer::updateModels(const std::vector<Model*>& models) {
@@ -105,24 +115,28 @@ namespace urchin {
         for (Model* model : models) {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
-
-                ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
                 std::size_t modelInstanceId = model->computeInstanceId(displayMode); //TODO check perf
 
+                ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
                 if (currentModelInstanceDisplayer) {
                     if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
-                        continue; //current model displayer is still valid for the model
+                        continue; //the model displayer attached to the model is still valid
                     }
-
-                    model->detachModelInstanceDisplayer(*currentModelInstanceDisplayer);
-                    //TODO clean: currentModelDisplayer->getInstanceCount() == 0;
+                    detachModelFromDisplayer(*model, *currentModelInstanceDisplayer);
                 }
 
-                if (modelInstanceId != ModelDisplayable::INSTANCING_DENY_ID) {
-                    const auto& itModelInstanceDisplayer = modelInstanceDisplayers.find(modelInstanceId);
-                    if (itModelInstanceDisplayer != modelInstanceDisplayers.end()) {
-                        model->attachModelInstanceDisplayer(*itModelInstanceDisplayer->second);
-                        continue; //an existing model displayer has been found for the model
+                if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
+                    const auto& itFind = modelDisplayers.find(model);
+                    if (itFind != modelDisplayers.end()) {
+                        assert(itFind->second->getInstanceCount() == 0);
+                        model->attachModelInstanceDisplayer(*itFind->second);
+                        continue; //the model displayer used in past for this model has been found
+                    }
+                } else {
+                    const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
+                    if (itFind != modelInstanceDisplayers.end()) {
+                        model->attachModelInstanceDisplayer(*itFind->second);
+                        continue; //a matching model instance displayer has been found for the model
                     }
                 }
 
@@ -141,16 +155,15 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::removeModel(Model* modelToRemove) {
-        if (modelToRemove) {
-            modelDisplayers.erase(modelToRemove);
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*modelToRemove);
+    void ModelSetDisplayer::removeModel(Model* model) {
+        if (model) {
+            modelDisplayers.erase(model);
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (modelInstanceDisplayer) {
-                modelToRemove->detachModelInstanceDisplayer(*modelInstanceDisplayer);
-                //TODO clean: modelDisplayer->getInstanceCount() == 0;
+                detachModelFromDisplayer(*model, *modelInstanceDisplayer);
             }
 
-            std::erase_if(models, [modelToRemove](const Model* m){return m == modelToRemove;});
+            std::erase_if(models, [model](const Model* m){return m == model;});
         }
     }
 

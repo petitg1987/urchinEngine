@@ -20,7 +20,7 @@
 * Model
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
-  * **OPTIMIZATION** (`major`): Clean ModelDisplayer in ModelSetDisplayer for models not displayed for a long time
+  * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#detachModelFromDisplayer() for models not displayed for a long time
   * **OPTIMIZATION** (`major`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
