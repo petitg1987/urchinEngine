@@ -23,12 +23,6 @@ namespace urchin {
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {
-        for (Model* model : instanceModels) {
-            model->removeObserver(this, Model::MATERIAL_UPDATED);
-            model->removeObserver(this, Model::MESH_UPDATED);
-            model->removeObserver(this, Model::SCALE_UPDATED);
-        }
-
         std::vector<Model*> copiedInstanceModels = instanceModels;
         for (Model* model : copiedInstanceModels) {
             removeInstanceModel(*model);
