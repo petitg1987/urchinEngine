@@ -271,27 +271,30 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
+    void ModelInstanceDisplayer::clearModelForRendering() {
+        instanceMatrices.clear();
+    }
+
+    void ModelInstanceDisplayer::registerModelForRendering(Model& model) { //TODO check model is in instanceModels ?! or remove instanceModels ?
+        InstanceMatrix instanceMatrix;
+        instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
+        instanceMatrix.normalMatrix = model.getTransform().getTransformMatrix().inverse().transpose();
+        instanceMatrices.push_back(instanceMatrix);
+    }
+
     void ModelInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
+        if (instanceMatrices.empty()) {
+            return;
+        }
+
         unsigned int meshIndex = 0;
         for (auto& meshRenderer : meshRenderers) {
-            if (meshRenderer->isEnabled()) {
-                continue; //TODO find better solution (only display instance models visible on screen)
-            }
-
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex++);
             if (meshFilter && !meshFilter->isAccepted(mesh)) {
                 continue;
             }
 
-            instanceMatrices.clear();
-            for (Model* instanceModel : instanceModels) {
-                InstanceMatrix instanceMatrix;
-                instanceMatrix.modelMatrix = instanceModel->getTransform().getTransformMatrix();
-                instanceMatrix.normalMatrix = instanceModel->getTransform().getTransformMatrix().inverse().transpose();
-                instanceMatrices.push_back(instanceMatrix);
-            }
             meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*)instanceMatrices.data());
-
             meshRenderer->updateUniformData(0, &projectionViewMatrix);
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);

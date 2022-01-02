@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
-#include <map>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <UrchinCommon.h>
 
 #include <api/render/shader/model/Shader.h>
@@ -64,6 +65,7 @@ namespace urchin {
 
             RenderTarget* renderTarget;
             std::vector<Model*> models;
+            std::unordered_set<ModelInstanceDisplayer*> activeModelDisplayers;
             std::unordered_map<Model*, std::unique_ptr<ModelInstanceDisplayer>> modelDisplayers;
             std::unordered_map<std::size_t, std::unique_ptr<ModelInstanceDisplayer>> modelInstanceDisplayers;
     };

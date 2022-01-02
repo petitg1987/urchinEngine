@@ -188,27 +188,30 @@ namespace urchin {
             throw std::runtime_error("Render target must be specified before call display");
         }
 
+        activeModelDisplayers.clear();
         for (Model* model : models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            assert(modelInstanceDisplayer);
-            modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+            auto insertResult = activeModelDisplayers.insert(modelInstanceDisplayer);
+            if (insertResult.second) {
+                modelInstanceDisplayer->clearModelForRendering();
+            }
+            modelInstanceDisplayer->registerModelForRendering(*model);
+        }
+        for (ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) {
+            activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
     void ModelSetDisplayer::drawBBox(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
-            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            assert(modelInstanceDisplayer);
-            modelInstanceDisplayer->drawBBox(geometryContainer);
+            findModelInstanceDisplayer(*model)->drawBBox(geometryContainer);
         }
     }
 
     void ModelSetDisplayer::drawBaseBones(GeometryContainer& geometryContainer) const {
         for (const auto& model : models) {
             if (model->getConstMeshes()) {
-                ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-                assert(modelInstanceDisplayer);
-                modelInstanceDisplayer->drawBaseBones(geometryContainer, meshFilter.get());
+                findModelInstanceDisplayer(*model)->drawBaseBones(geometryContainer, meshFilter.get());
             }
         }
     }
