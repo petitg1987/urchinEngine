@@ -48,7 +48,7 @@ namespace urchin {
 
             textureWidth = textureWidth / 2;
             textureHeight = textureHeight / 2;
-            if (textureWidth < 2 || textureHeight < 2) {
+            if (textureWidth <= 8 || textureHeight <= 8) {
                 break;
             }
         }
