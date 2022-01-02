@@ -16,7 +16,7 @@ namespace urchin {
     }
 
     ObjectEntity::~ObjectEntity() {
-        if(renderer3d) {
+        if (renderer3d) {
             renderer3d->removeModel(model.get());
         }
         deleteRigidBody();

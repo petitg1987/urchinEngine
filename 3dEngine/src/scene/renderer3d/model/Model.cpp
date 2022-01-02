@@ -310,7 +310,7 @@ namespace urchin {
     }
 
     void Model::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) {
-        if(material.get() != &meshes->getMesh(meshIndex).getMaterial()) {
+        if (material.get() != &meshes->getMesh(meshIndex).getMaterial()) {
             meshes->updateMaterial(meshIndex, material);
             notifyObservers(this, Model::MATERIAL_UPDATED);
         }

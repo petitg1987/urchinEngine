@@ -27,7 +27,7 @@ namespace urchin {
             const std::vector<std::unique_ptr<OverlappingPair>>& getOverlappingPairs() const;
 
         private:
-            void computeOverlappingPairsFor(const AABBNode<std::shared_ptr<AbstractBody>>&);
+            void computeOverlappingPairs(const AABBNode<std::shared_ptr<AbstractBody>>&);
             void createOverlappingPair(BodyAABBNodeData&, BodyAABBNodeData&);
             void removeOverlappingPairs(const BodyAABBNodeData&);
             void removeBodyPairContainerReferences(const AbstractBody&, PairContainer*);

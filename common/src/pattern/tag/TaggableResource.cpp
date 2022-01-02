@@ -41,7 +41,7 @@ namespace urchin {
     }
 
     void TaggableResource::addTags(const std::vector<std::string>& tags) {
-        for(const auto& tag : tags) {
+        for (const auto& tag : tags) {
             addTag(tag);
         }
     }

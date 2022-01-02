@@ -271,11 +271,15 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
-    void ModelInstanceDisplayer::clearModelForRendering() { //TODO rename
+    void ModelInstanceDisplayer::resetRenderingModels() {
         instanceMatrices.clear();
     }
 
-    void ModelInstanceDisplayer::registerModelForRendering(Model& model) { //TODO check model is in instanceModels ?! or remove instanceModels ?
+    void ModelInstanceDisplayer::registerRenderingModel(Model& model) {
+        #ifdef URCHIN_DEBUG
+            assert(model.computeInstanceId(displayMode) == instanceId);
+        #endif
+
         InstanceMatrix instanceMatrix;
         instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
         instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();

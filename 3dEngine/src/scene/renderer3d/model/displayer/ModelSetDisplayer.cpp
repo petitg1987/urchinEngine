@@ -191,11 +191,10 @@ namespace urchin {
         activeModelDisplayers.clear();
         for (Model* model : models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
-            auto insertResult = activeModelDisplayers.insert(modelInstanceDisplayer);
-            if (insertResult.second) {
-                modelInstanceDisplayer->clearModelForRendering();
+            if (activeModelDisplayers.insert(modelInstanceDisplayer).second) {
+                modelInstanceDisplayer->resetRenderingModels();
             }
-            modelInstanceDisplayer->registerModelForRendering(*model);
+            modelInstanceDisplayer->registerRenderingModel(*model);
         }
         for (ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());

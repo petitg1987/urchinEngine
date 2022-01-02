@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     void BodyAABBTree::postAddObjectCallback(AABBNode<std::shared_ptr<AbstractBody>>& newNode) {
-        computeOverlappingPairsFor(newNode);
+        computeOverlappingPairs(newNode);
     }
 
     void BodyAABBTree::removeBody(const AbstractBody& body) {
@@ -50,7 +50,7 @@ namespace urchin {
         return defaultPairContainer->getOverlappingPairs();
     }
 
-    void BodyAABBTree::computeOverlappingPairsFor(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) {
+    void BodyAABBTree::computeOverlappingPairs(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) {
         browseNodes.clear();
         browseNodes.push_back(AABBTree::getRootNode());
 
