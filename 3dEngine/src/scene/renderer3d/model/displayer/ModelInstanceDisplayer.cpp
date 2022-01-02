@@ -7,10 +7,10 @@
 
 namespace urchin {
 
-    ModelInstanceDisplayer::ModelInstanceDisplayer(const ModelSetDisplayer& modelSetDisplayer, Model& model, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
+    ModelInstanceDisplayer::ModelInstanceDisplayer(const ModelSetDisplayer& modelSetDisplayer, DisplayMode displayMode, RenderTarget& renderTarget, const Shader& shader) :
             isInitialized(false),
             modelSetDisplayer(modelSetDisplayer),
-            instanceId(model.computeInstanceId(displayMode)),
+            instanceId(ModelDisplayable::INSTANCING_DENY_ID),
             displayMode(displayMode),
             renderTarget(renderTarget),
             shader(shader),
@@ -19,7 +19,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-        addInstanceModel(model);
+
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {
@@ -61,6 +61,8 @@ namespace urchin {
     void ModelInstanceDisplayer::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized: " + getReferenceModel().getConstMeshes()->getName());
+        } else if (instanceModels.empty()) {
+            throw std::runtime_error("At least one instance model must be added before initialization");
         }
 
         for (unsigned int i = 0; i < getReferenceModel().getMeshes()->getNumberMeshes(); ++i) {
@@ -151,7 +153,7 @@ namespace urchin {
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 
-    void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) { //TODO move event in ModelSetDisplayer ?
+    void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) {
         if (const auto* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_UPDATED) {
                 updateMesh(model);
@@ -236,10 +238,15 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::addInstanceModel(Model& model) {
-        #ifdef URCHIN_DEBUG
-            assert(instanceModels.empty() || instanceId != ModelDisplayable::INSTANCING_DENY_ID);
-            assert(instanceId == model.computeInstanceId(displayMode));
-        #endif
+        if (instanceModels.empty()) {
+            instanceId = model.computeInstanceId(displayMode);
+        } else {
+            #ifdef URCHIN_DEBUG
+                assert(instanceId != ModelDisplayable::INSTANCING_DENY_ID);
+                assert(instanceId == model.computeInstanceId(displayMode));
+            #endif
+        }
+
         instanceModels.push_back(&model);
         model.attachModelInstanceDisplayer(*this);
 

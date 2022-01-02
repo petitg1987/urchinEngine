@@ -14,7 +14,7 @@ namespace urchin {
 
     class ModelInstanceDisplayer : public Observer {
         public:
-            ModelInstanceDisplayer(const ModelSetDisplayer&, Model&, DisplayMode, RenderTarget&, const Shader&);
+            ModelInstanceDisplayer(const ModelSetDisplayer&, DisplayMode, RenderTarget&, const Shader&);
             ~ModelInstanceDisplayer() override;
 
             void setupCustomShaderVariable(CustomModelShaderVariable*);

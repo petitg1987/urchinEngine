@@ -98,12 +98,15 @@ namespace urchin {
 
     void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
         modelInstanceDisplayer.removeInstanceModel(model);
-
         if (modelInstanceDisplayer.getInstanceCount() == 0) {
             //to do:
             // - remove the displayer based on strategy to define (unused for x seconds, too much unused displayers, etc.)
             // - erase displayer from modelDisplayers/modelInstanceDisplayers
         }
+    }
+
+    void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
+        modelInstanceDisplayer.addInstanceModel(model);
     }
 
     void ModelSetDisplayer::updateModels(const std::vector<Model*>& models) {
@@ -129,22 +132,23 @@ namespace urchin {
                     const auto& itFind = modelDisplayers.find(model);
                     if (itFind != modelDisplayers.end()) {
                         assert(itFind->second->getInstanceCount() == 0);
-                        itFind->second->addInstanceModel(*model);
+                        addModelToDisplayer(*model, *itFind->second);
                         continue; //the model displayer used in past for this model has been found
                     }
                 } else {
                     const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
                     if (itFind != modelInstanceDisplayers.end()) {
-                        itFind->second->addInstanceModel(*model);
+                        addModelToDisplayer(*model, *itFind->second);
                         continue; //a matching model instance displayer has been found for the model
                     }
                 }
 
-                auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, *model, displayMode, *renderTarget, *modelShader);
+                auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, displayMode, *renderTarget, *modelShader);
                 modelInstanceDisplayer->setupCustomShaderVariable(customShaderVariable.get());
                 modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
                 modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
                 modelInstanceDisplayer->setupFaceCull(enableFaceCull);
+                addModelToDisplayer(*model, *modelInstanceDisplayer);
                 modelInstanceDisplayer->initialize();
                 if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
                     modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
@@ -163,7 +167,7 @@ namespace urchin {
                 removeModelFromDisplayer(*model, *modelInstanceDisplayer);
             }
 
-            std::erase_if(models, [model](const Model* m){return m == model;});
+            std::erase(models, model);
         }
     }
 

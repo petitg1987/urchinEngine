@@ -1,6 +1,6 @@
 #pragma once
 
-#include <unordered_set>
+#include <vector>
 #include <map>
 #include <memory>
 
@@ -12,13 +12,13 @@ namespace urchin {
         public:
             virtual ~Observable();
 
-            void addObserver(Observer*, int) const;
+            void addObserver(Observer*, int) const; //TODO remove const !
             void removeObserver(Observer*, int) const;
 
             void notifyObservers(Observable*, int);
 
         private:
-            mutable std::map<int, std::unique_ptr<std::unordered_set<Observer*>>> mapObservers;
+            mutable std::map<int, std::vector<Observer*>> mapObservers;
     };
 
 }

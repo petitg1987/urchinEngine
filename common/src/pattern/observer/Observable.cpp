@@ -1,4 +1,5 @@
 #include <pattern/observer/Observable.h>
+#include <algorithm>
 
 namespace urchin {
 
@@ -7,21 +8,21 @@ namespace urchin {
     }
 
     void Observable::addObserver(Observer* observer, int notificationType) const {
-        auto it = mapObservers.find(notificationType);
-        if (it == mapObservers.end()) {
-            auto observers = std::make_unique<std::unordered_set<Observer*>>();
-            observers->insert(observer);
-            mapObservers[notificationType] = std::move(observers);
+        auto itFind = mapObservers.find(notificationType);
+        if (itFind != mapObservers.end()) {
+            if (std::ranges::find(itFind->second, observer) == itFind->second.end()) {
+                itFind->second.push_back(observer);
+            }
         } else {
-            it->second->insert(observer);
+            std::vector<Observer*> observers = {observer};
+            mapObservers.try_emplace(notificationType, observers);
         }
     }
 
     void Observable::removeObserver(Observer* observer, int notificationType) const {
-        auto it = mapObservers.find(notificationType);
-        if (it != mapObservers.end()) {
-            const auto& observers = it->second;
-            observers->erase(observer);
+        auto itFind = mapObservers.find(notificationType);
+        if (itFind != mapObservers.end()) {
+            std::erase(itFind->second, observer);
         }
     }
 
@@ -29,9 +30,9 @@ namespace urchin {
     * @param observable Observable producing this notification
     */
     void Observable::notifyObservers(Observable* observable, int notificationType) {
-        auto it = mapObservers.find(notificationType);
-        if (it != mapObservers.end()) {
-            for (auto* observer : *it->second) {
+        auto itFind = mapObservers.find(notificationType);
+        if (itFind != mapObservers.end()) {
+            for (Observer* observer : itFind->second) {
                 observer->notify(observable, notificationType);
             }
         }

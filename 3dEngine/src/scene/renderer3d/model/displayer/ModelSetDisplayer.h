@@ -25,7 +25,6 @@ namespace urchin {
             ~ModelSetDisplayer();
 
             void initialize(RenderTarget&);
-
             void setupShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
             void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
             void setupDepthOperations(bool, bool);
@@ -47,6 +46,7 @@ namespace urchin {
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             void clearDisplayers();
             void removeModelFromDisplayer(Model&, ModelInstanceDisplayer&);
+            void addModelToDisplayer(Model&, ModelInstanceDisplayer&);
 
             bool isInitialized;
 
