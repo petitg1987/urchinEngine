@@ -271,7 +271,7 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
-    void ModelInstanceDisplayer::clearModelForRendering() {
+    void ModelInstanceDisplayer::clearModelForRendering() { //TODO rename
         instanceMatrices.clear();
     }
 
