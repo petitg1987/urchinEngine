@@ -1,9 +1,9 @@
 #include <resources/Resource.h>
-#include <resources/ResourceContainer.h>
 
 namespace urchin {
 
     Resource::Resource() :
+            hashId(0),
             permanent(false) {
 
     }
@@ -14,6 +14,13 @@ namespace urchin {
 
     void Resource::setId(const std::string& id) {
         this->id = id;
+    }
+
+    std::size_t Resource::retrieveHashId() const {
+        if (hashId == 0) {
+            hashId = std::hash<std::string>{}(id);
+        }
+        return hashId;
     }
 
     const std::string& Resource::getName() const {

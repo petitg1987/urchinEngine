@@ -118,7 +118,7 @@ namespace urchin {
         for (Model* model : models) {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
-                std::size_t modelInstanceId = model->computeInstanceId(displayMode); //TODO pre-compute
+                std::size_t modelInstanceId = model->computeInstanceId(displayMode);
 
                 ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
                 if (currentModelInstanceDisplayer) {

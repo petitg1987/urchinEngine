@@ -11,6 +11,7 @@ namespace urchin {
 
             const std::string& getId() const;
             void setId(const std::string&);
+            std::size_t retrieveHashId() const;
 
             const std::string& getName() const;
             void setName(const std::string&);
@@ -20,6 +21,7 @@ namespace urchin {
 
         private:
             std::string id;
+            mutable std::size_t hashId;
             std::string name;
             bool permanent;
     };

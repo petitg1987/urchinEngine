@@ -277,7 +277,7 @@ namespace urchin {
 
     void ModelInstanceDisplayer::registerRenderingModel(Model& model) {
         #ifdef URCHIN_DEBUG
-            assert(model.computeInstanceId(displayMode) == instanceId);
+            assert(model.computeInstanceId(displayMode) == instanceId); //TODO open door: crash here
         #endif
 
         InstanceMatrix instanceMatrix;
