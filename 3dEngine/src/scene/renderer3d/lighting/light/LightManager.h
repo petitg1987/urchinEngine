@@ -44,10 +44,8 @@ namespace urchin {
             void onLightEvent(Light*, NotificationType);
             void logMaxLightsReach() const;
 
+            static constexpr unsigned int MAX_LIGHTS = 10; //maximum of lights authorized to affect the scene in the same time
             static constexpr unsigned int LIGHTS_SHADER_LIMIT = 15; //must be equals to MAX_LIGHTS/LIGHTS_SHADER_LIMIT/MAX_LIGHTS in lighting/modelShadowMap/modelTransparent shaders
-            static constexpr float LIGHTS_OCTREE_MIN_SIZE = 50.0;
-
-            const unsigned int maxLights; //maximum of lights authorized to affect the scene in the same time
 
             //lights container
             std::vector<std::shared_ptr<Light>> sunLights;

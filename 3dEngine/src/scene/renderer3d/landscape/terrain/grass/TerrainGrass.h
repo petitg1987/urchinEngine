@@ -58,7 +58,11 @@ namespace urchin {
             void createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>&);
             std::vector<GenericRenderer*> getAllRenderers() const;
 
-            const float grassPositionRandomPercentage;
+            //Grass are positioned randomly in function of a percentage:
+            // - 0%: no random in positioning
+            // - 50%: two grass can have the same position (-50% on one grass and +50% on another grass)
+            static constexpr float GRASS_POSITION_RANDOM_PERCENTAGE = 0.35f;
+
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 

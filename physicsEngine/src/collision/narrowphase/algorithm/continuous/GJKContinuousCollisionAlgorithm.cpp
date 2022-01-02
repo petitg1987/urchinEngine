@@ -8,13 +8,6 @@
 
 namespace urchin {
 
-    template<class T, class U> GJKContinuousCollisionAlgorithm<T, U>::GJKContinuousCollisionAlgorithm() :
-            squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
-            maxIteration(ConfigService::instance().getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
-            terminationTolerance(ConfigService::instance().getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance")) {
-
-    }
-
     template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1, const TemporalObject& object2,
                                                                                                                                                                   AbstractBody& body2) const {
         T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
@@ -35,7 +28,7 @@ namespace urchin {
 
         Vector3<T> direction = (-initialPoint).toVector();
 
-        for (unsigned int iterationNumber = 0; iterationNumber < maxIteration; ++iterationNumber) {
+        for (unsigned int iterationNumber = 0; iterationNumber < MAX_ITERATION; ++iterationNumber) {
             Point3<T> supportPoint1 = getWorldSupportPoint(object1, direction, interpolatedTransform1);
             Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
             Point3<T> newPoint = supportPoint1 - supportPoint2;
@@ -49,7 +42,7 @@ namespace urchin {
 
             if (closestPointDotNewPoint > 0.0) {
                 T closestPointDotRelativeMotion = vClosestPoint.dotProduct(relativeMotion);
-                if (closestPointDotRelativeMotion >= -squareEpsilon) {
+                if (closestPointDotRelativeMotion >= -SQUARE_EPSILON) {
                     return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
                 }
 
@@ -69,7 +62,7 @@ namespace urchin {
             direction = (-simplex.getClosestPointToOrigin()).toVector();
             T closestPointSquareDistance = direction.squareLength();
 
-            if (closestPointSquareDistance < terminationTolerance) {
+            if (closestPointSquareDistance < TERMINATION_TOLERANCE) {
                 if (simplex.getSize() == 4 && !normalFromObject2Defined) {
                     if (timeToHit == (T)0.0 && simplex.getClosestPointToOrigin() == Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
                         Point3<T> hitPointOnObject1, hitPointOnObject2;
@@ -92,7 +85,7 @@ namespace urchin {
             }
         }
 
-        std::string maxIterationReachMsg = "Maximum of iteration reached on GJK continuous collision algorithm (" + std::to_string(maxIteration) + ").";
+        std::string maxIterationReachMsg = "Maximum of iteration reached on GJK continuous collision algorithm (" + std::to_string(MAX_ITERATION) + ").";
         logInputData(object1, object2, maxIterationReachMsg, Logger::WARNING_LVL);
         return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
     }
@@ -119,7 +112,7 @@ namespace urchin {
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
         logStream << message << std::endl;
-        logStream << " - Termination tolerance: " << terminationTolerance << std::endl;
+        logStream << " - Termination tolerance: " << TERMINATION_TOLERANCE << std::endl;
         logStream << " - Object 1: " << std::endl << object1.getLocalObject().toString() << std::endl;
         logStream << " - Object 1, from: " << object1.getFrom() << std::endl;
         logStream << " - Object 1, to: " << object1.getTo() << std::endl;

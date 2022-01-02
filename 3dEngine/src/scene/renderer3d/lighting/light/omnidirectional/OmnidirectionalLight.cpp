@@ -9,7 +9,6 @@ namespace urchin {
     OmnidirectionalLight::OmnidirectionalLight(const Point3<float>& position) :
             Light(),
             position(position),
-            attenuationNoEffect(ConfigService::instance().getFloatValue("light.attenuationNoEffect")),
             exponentialAttenuation(0.1f),
             sphereScope(nullptr),
             bboxScope(nullptr) {
@@ -78,7 +77,7 @@ namespace urchin {
      * Computes the sphere scope representing light affectation zone
      */
     void OmnidirectionalLight::computeScope() {
-        float radius = -std::log(attenuationNoEffect) / getExponentialAttenuation();
+        float radius = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
         sphereScope = std::make_unique<Sphere<float>>(radius, getPosition());
         bboxScope = std::make_unique<AABBox<float>>(getPosition()-radius, getPosition()+radius);
 

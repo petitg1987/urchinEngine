@@ -21,6 +21,10 @@ namespace urchin {
 
     class AbstractBody : public IslandElement {
         public:
+            //Factor used to determine the default continuous collision detection motion threshold.
+            //The threshold is this factor multiplied by the minimum half size of the body shape.
+            static constexpr float CCD_MOTION_THRESHOLD_FACTOR = 0.8f;
+
             AbstractBody(BodyType, std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             AbstractBody(const AbstractBody&);
             ~AbstractBody() override = default;
@@ -62,7 +66,6 @@ namespace urchin {
             void setIsStatic(bool);
 
             //technical data
-            const float ccdMotionThresholdFactor;
             std::thread::id physicsThreadId;
 
             //mutex for attributes modifiable from external

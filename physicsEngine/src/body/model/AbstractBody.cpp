@@ -11,7 +11,6 @@ namespace urchin {
     bool AbstractBody::bDisableAllBodies = false;
 
     AbstractBody::AbstractBody(BodyType bodyType, std::string id, const PhysicsTransform& transform, std::unique_ptr<const CollisionShape3D> shape) :
-            ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(transform),
             isManuallyMoved(false),
             bodyType(bodyType),
@@ -29,7 +28,6 @@ namespace urchin {
 
     AbstractBody::AbstractBody(const AbstractBody& abstractBody) :
             IslandElement(abstractBody),
-            ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")),
             transform(abstractBody.getTransform()),
             isManuallyMoved(false),
             bodyType(abstractBody.bodyType),
@@ -57,7 +55,7 @@ namespace urchin {
 
         //shape check and data
         shape->checkInnerMarginQuality(id);
-        ccdMotionThreshold = shape->getMinDistanceToCenter() * ccdMotionThresholdFactor;
+        ccdMotionThreshold = shape->getMinDistanceToCenter() * CCD_MOTION_THRESHOLD_FACTOR;
 
         //body description data
         this->restitution = restitution;
@@ -143,7 +141,7 @@ namespace urchin {
 
     /**
      * @return Threshold for continuous collision detection in distance unit (process continuous collision detection if the motion in one
-     * step is more then threshold). A default value is determinate automatically for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
+     * step is more then threshold). A default value is determinate automatically for each body thanks to constant 'CCD_MOTION_THRESHOLD_FACTOR'.
      */
     float AbstractBody::getCcdMotionThreshold() const {
         std::scoped_lock<std::mutex> lock(bodyMutex);

@@ -4,15 +4,8 @@
 
 #include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 #include <collision/narrowphase/algorithm/gjk/GJKAlgorithm.h>
-#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
-
-    template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
-            maxIteration(EagerPropertyLoader::getNarrowPhaseGjkMaxIteration()),
-            terminationTolerance(EagerPropertyLoader::getNarrowPhaseGjkTerminationTolerance()) {
-
-    }
 
     /**
     * @param includeMargin Indicate whether algorithm operates on objects with margin
@@ -32,7 +25,7 @@ namespace urchin {
         Simplex<T> simplex;
         simplex.addPoint(initialSupportPointA, initialSupportPointB);
 
-        for (unsigned int iterationNumber = 0; iterationNumber < maxIteration; ++iterationNumber) {
+        for (unsigned int iterationNumber = 0; iterationNumber < MAX_ITERATION; ++iterationNumber) {
             Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<T>();
             Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>(), includeMargin).template cast<T>();
             Point3<T> newPoint = supportPointA - supportPointB;
@@ -42,7 +35,7 @@ namespace urchin {
             T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
             //check termination conditions: new point is not more extreme that existing ones OR new point already exist in simplex
-            if ((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint)) {
+            if ((closestPointSquareDistance-closestPointDotNewPoint) <= TERMINATION_TOLERANCE || simplex.isPointInSimplex(newPoint)) {
                 if (closestPointDotNewPoint <= 0.0) { //collision detected
                     return AlgorithmResultAllocator::instance().newGJKResultCollide<T>(simplex);
                 }
@@ -65,8 +58,8 @@ namespace urchin {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        logStream << "Maximum of iteration reached on GJK algorithm (" << maxIteration << ")." << std::endl;
-        logStream << " - Termination tolerance: " << terminationTolerance << std::endl;
+        logStream << "Maximum of iteration reached on GJK algorithm (" << MAX_ITERATION << ")." << std::endl;
+        logStream << " - Termination tolerance: " << TERMINATION_TOLERANCE << std::endl;
         logStream << " - Include margin: " << includeMargin << std::endl;
         logStream << " - Convex object 1: " << std::endl << convexObject1.toString() << std::endl;
         logStream << " - Convex object 2: " << std::endl << convexObject2.toString();

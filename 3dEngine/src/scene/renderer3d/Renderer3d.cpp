@@ -34,7 +34,7 @@ namespace urchin {
             deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
-            modelOctreeManager(OctreeManager<Model>(MODELS_OCTREE_MIN_SIZE)),
+            modelOctreeManager(OctreeManager<Model>(ConfigService::instance().getFloatValue("model.octreeMinSize"))),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
             terrainContainer(TerrainContainer(*deferredRenderTarget)),

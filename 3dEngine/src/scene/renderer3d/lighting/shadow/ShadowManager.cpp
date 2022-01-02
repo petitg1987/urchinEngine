@@ -13,8 +13,6 @@
 namespace urchin {
 
     ShadowManager::ShadowManager(LightManager& lightManager, OctreeManager<Model>& modelOctreeManager) :
-            shadowMapBias(ConfigService::instance().getFloatValue("shadow.shadowMapBias")),
-            percentageUniformSplit(ConfigService::instance().getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
             config({}),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
@@ -72,7 +70,7 @@ namespace urchin {
     }
 
     float ShadowManager::getShadowMapBias() const {
-        return shadowMapBias;
+        return SHADOW_MAP_BIAS;
     }
 
     void ShadowManager::updateConfig(const Config& config) {
@@ -250,7 +248,7 @@ namespace urchin {
         for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
             uniformSplitDistance += uniformSplitLength;
             float logarithmicSplitDistance = std::pow(config.viewingShadowDistance, (float)i / (float)config.nbShadowMaps);
-            float splitDistance = (percentageUniformSplit * uniformSplitDistance) + ((1.0f - percentageUniformSplit) * logarithmicSplitDistance);
+            float splitDistance = (PERCENTAGE_UNIFORM_SPLIT * uniformSplitDistance) + ((1.0f - PERCENTAGE_UNIFORM_SPLIT) * logarithmicSplitDistance);
 
             splitDistances.push_back(splitDistance);
             splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));

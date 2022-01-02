@@ -68,9 +68,8 @@ namespace urchin {
             static constexpr std::array<float, 4> RECOVER_FACTORS = {0.4f, 0.7f, 0.9f, 1.0f};
             static constexpr std::size_t MAX_UPDATE_LOOP_BY_FRAME = 25;
             static constexpr unsigned int MAX_ERRORS_LOG = 10;
-            const float ccdMotionThresholdFactor;
-            const float maxDepthToRecover;
-            const float minUpdateFrequency;
+            static constexpr float MAX_DEPTH_TO_RECOVER = 0.0001f;
+            static constexpr float MIN_UPDATE_FREQUENCY = 30;
 
             std::shared_ptr<PhysicsCharacter> physicsCharacter;
             CharacterControllerConfig config;

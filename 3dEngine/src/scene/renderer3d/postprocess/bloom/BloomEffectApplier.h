@@ -32,16 +32,18 @@ namespace urchin {
             void applyBloom(unsigned int);
 
         private:
-            struct BloomShadersConst {
-                uint32_t qualityTextureFetch;
-                float upSampleScale;
-            };
-
             void checkConfig() const;
             void refreshRenderers();
             void clearRenderers();
 
             std::unique_ptr<Shader> createShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
+
+            static constexpr float UP_SAMPLE_SCALE = 0.95f;
+
+            struct BloomShadersConst {
+                uint32_t qualityTextureFetch;
+                float upSampleScale;
+            };
 
             RenderTarget& outputRenderTarget;
             Config config;

@@ -10,9 +10,6 @@
 namespace urchin {
 
     CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
-            ccdMotionThresholdFactor(ConfigService::instance().getFloatValue("collisionShape.ccdMotionThresholdFactor")) ,
-            maxDepthToRecover(ConfigService::instance().getFloatValue("character.maxDepthToRecover")),
-            minUpdateFrequency(ConfigService::instance().getFloatValue("character.minUpdateFrequency")),
             physicsCharacter(std::move(physicsCharacter)),
             config(std::move(config)),
             physicsWorld(physicsWorld),
@@ -118,7 +115,7 @@ namespace urchin {
         do {
             float stepDt;
             if (stepLoopCounter < MAX_UPDATE_LOOP_BY_FRAME) [[likely]] {
-                stepDt = std::min(remainingDt, 1.0f / minUpdateFrequency);
+                stepDt = std::min(remainingDt, 1.0f / MIN_UPDATE_FREQUENCY);
                 remainingDt -= stepDt;
             } else {
                 static unsigned int numErrorsLogged = 0;
@@ -127,7 +124,7 @@ namespace urchin {
                     logStream << "Maximum of iteration reached on character update" << std::endl;
                     logStream << " - Delta time (second): " << dt << std::endl;
                     logStream << " - Remaining time (second): " << remainingDt << std::endl;
-                    logStream << " - Min update frequency (hz): " << minUpdateFrequency;
+                    logStream << " - Min update frequency (hz): " << MIN_UPDATE_FREQUENCY;
                     Logger::instance().logWarning(logStream.str());
                 }
                 stepDt = remainingDt;
@@ -152,8 +149,8 @@ namespace urchin {
             float height = ghostBodyCapsule.getCylinderHeight() + (2.0f * radius);
             float maximumCharacterSpeed = config.getRunSpeed() * (1.0f + config.getMaxSlopeSpeedVariation());
 
-            float ccdRadius = std::max(radius, maximumCharacterSpeed / minUpdateFrequency);
-            float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / minUpdateFrequency) * 2.0f);
+            float ccdRadius = std::max(radius, maximumCharacterSpeed / MIN_UPDATE_FREQUENCY);
+            float ccdHeight = std::max(height, (config.getMaxVerticalSpeed() / MIN_UPDATE_FREQUENCY) * 2.0f);
             float ccdCylinderHeight = std::max(0.01f, ccdHeight - (2.0f * ccdRadius));
             ccdGhostBodyShape = std::make_unique<const CollisionCapsuleShape>(ccdRadius, ccdCylinderHeight, ghostBodyCapsule.getCapsuleOrientation());
         } else {
@@ -261,7 +258,7 @@ namespace urchin {
                     float motionAppliedOnObstacle = moveVector.dotProduct(contactNormal);
                     float motionToPassThroughObstacle = previousBodyPosition.vector(obstacleContactPoint).length();
 
-                    if (motionAppliedOnObstacle > motionToPassThroughObstacle * ccdMotionThresholdFactor) {
+                    if (motionAppliedOnObstacle > motionToPassThroughObstacle * AbstractBody::CCD_MOTION_THRESHOLD_FACTOR) {
                         Vector3<float> obstacleReactionMotion = (-contactNormal) * motionAppliedOnObstacle;
                         moveVector += obstacleReactionMotion;
                         targetPosition = previousBodyPosition.translate(moveVector);
@@ -306,7 +303,7 @@ namespace urchin {
                     const ManifoldContactPoint& manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
                     float depth = manifoldContactPoint.getDepth();
 
-                    if (depth < maxDepthToRecover) {
+                    if (depth < MAX_DEPTH_TO_RECOVER) {
                         Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
                         Vector3<float> moveVector = normal * depth * RECOVER_FACTORS[subStepIndex];
 

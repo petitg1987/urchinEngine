@@ -28,7 +28,7 @@ namespace urchin {
 
     void SoundEnvironment::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
         if (sound && soundTrigger) {
-            ScopeProfiler sp(Profiler::graphic(), "addSound");
+            ScopeProfiler sp(Profiler::sound(), "addSound");
 
             audioControllers.push_back(std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), streamUpdateWorker));
         }

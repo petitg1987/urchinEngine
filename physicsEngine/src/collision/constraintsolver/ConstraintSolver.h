@@ -40,7 +40,7 @@ namespace urchin {
             std::vector<ConstraintSolvingData*> constraintsSolvingData;
             std::unique_ptr<FixedSizePool<ConstraintSolvingData>> constraintSolvingDataPool;
 
-            const unsigned int constraintSolverIteration;
+            static constexpr unsigned int CONSTRAINT_SOLVER_ITERATION = 10;
             const float biasFactor;
             const bool useWarmStarting;
             const float restitutionVelocityThreshold;

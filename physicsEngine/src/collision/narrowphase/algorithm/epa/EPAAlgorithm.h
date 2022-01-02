@@ -22,8 +22,6 @@ namespace urchin {
 
     template<class T> class EPAAlgorithm {
         public:
-            EPAAlgorithm();
-
             std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> processEPA(const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
 
         private:
@@ -38,8 +36,8 @@ namespace urchin {
 
             void logInputData(const std::string&, const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
 
-            const unsigned int maxIteration;
-            const float terminationTolerance;
+            static constexpr unsigned int MAX_ITERATION = 30;
+            static constexpr float TERMINATION_TOLERANCE = 0.01f;
     };
 
 }

@@ -3,7 +3,6 @@
 namespace urchin {
 
     ConstraintSolver::ConstraintSolver() :
-            constraintSolverIteration(ConfigService::instance().getUnsignedIntValue("constraintSolver.constraintSolverIteration")),
             biasFactor(ConfigService::instance().getFloatValue("constraintSolver.biasFactor")),
             useWarmStarting(ConfigService::instance().getBoolValue("constraintSolver.useWarmStarting")),
             restitutionVelocityThreshold(ConfigService::instance().getFloatValue("constraintSolver.restitutionVelocityThreshold")) {
@@ -29,7 +28,7 @@ namespace urchin {
         setupConstraints(manifoldResults, dt);
 
         //iterative constraint solver
-        for (unsigned int i = 0; i < constraintSolverIteration; ++i) {
+        for (unsigned int i = 0; i < CONSTRAINT_SOLVER_ITERATION; ++i) {
             solveConstraints();
         }
     }

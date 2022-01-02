@@ -43,7 +43,7 @@ namespace urchin {
             const BroadPhase& broadPhase;
 
             CollisionAlgorithmSelector collisionAlgorithmSelector;
-            const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
+            GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
 
             std::shared_ptr<LockById> bodiesMutex;
 

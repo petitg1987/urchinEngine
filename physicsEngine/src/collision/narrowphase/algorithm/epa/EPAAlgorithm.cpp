@@ -1,15 +1,8 @@
 #include <object/CollisionTriangleObject.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 #include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
-#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
-
-    template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
-            maxIteration(EagerPropertyLoader::getNarrowPhaseEpaMaxIteration()),
-            terminationTolerance(EagerPropertyLoader::getNarrowPhaseEpaTerminationTolerance()) {
-
-    }
 
     template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2,
             const GJKResult<T>& gjkResult) const {
@@ -64,7 +57,7 @@ namespace urchin {
             normal = closestTriangleData.getNormal();
             distanceToOrigin = closestTriangleData.getDistanceToOrigin();
 
-            if (iterationNumber > maxIteration) { //can happen on spherical forms where EPA algorithm doesn't progress enough fast
+            if (iterationNumber > MAX_ITERATION) { //can happen on spherical forms where EPA algorithm doesn't progress enough fast
                 break;
             }
 
@@ -74,7 +67,7 @@ namespace urchin {
             const Point3<T> minkowskiDiffPoint = supportPointNormal - supportPointMinusNormal;
 
             upperBoundPenDepth = std::min(upperBoundPenDepth, std::abs(minkowskiDiffPoint.toVector().dotProduct(normal)));
-            bool closeEnough = upperBoundPenDepth <= (1.0 + terminationTolerance) * distanceToOrigin;
+            bool closeEnough = upperBoundPenDepth <= (1.0 + TERMINATION_TOLERANCE) * distanceToOrigin;
 
             if (!closeEnough) { //polytope can be extended in direction of normal: add a new point
                 std::vector<std::size_t> removedTriangleIndices;
@@ -372,7 +365,7 @@ namespace urchin {
         const Triangle3D<T> triangle(point1, point2, point3);
 
         //compute point on the triangle nearest to origin
-        std::array<T, 3> barycentrics;
+        std::array<T, 3> barycentrics{};
         Point3<T> closestPointToOrigin = triangle.closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics);
 
         //compute minimum distance between triangle and the origin

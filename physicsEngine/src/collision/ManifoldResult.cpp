@@ -1,15 +1,13 @@
 #include <cassert>
 
 #include <collision/ManifoldResult.h>
-#include <utils/property/EagerPropertyLoader.h>
 
 namespace urchin {
 
     ManifoldResult::ManifoldResult(AbstractBody& body1, AbstractBody& body2) :
             body1(body1),
             body2(body2),
-            nbContactPoint(0),
-            contactBreakingThreshold(EagerPropertyLoader::getNarrowPhaseContactBreakingThreshold()) {
+            nbContactPoint(0) {
 
     }
 
@@ -35,7 +33,7 @@ namespace urchin {
     }
 
     float ManifoldResult::getContactBreakingThreshold() const {
-        return contactBreakingThreshold;
+        return CONTACT_BREAKING_THRESHOLD;
     }
 
     ManifoldContactPoint& ManifoldResult::getManifoldContactPoint(unsigned int index) {
@@ -71,7 +69,7 @@ namespace urchin {
      */
     void ManifoldResult::addContactPoint(const Vector3<float>& normalFromObject2, const Point3<float>& pointOnObject1, const Point3<float>& pointOnObject2,
             const Point3<float>& localPointOnObject1, const Point3<float>& localPointOnObject2, float depth, bool isPredictive) {
-        assert(isPredictive || depth <= contactBreakingThreshold);
+        assert(isPredictive || depth <= CONTACT_BREAKING_THRESHOLD);
 
         //1. if similar point exist in manifold result: replace it
         int nearestPointIndex = getNearestPointIndex(localPointOnObject2);
@@ -106,12 +104,12 @@ namespace urchin {
         }
 
         for (auto i = (int)nbContactPoint - 1; i >= 0; --i) { //loop from last to first in order to be able to remove contact points
-            if (contactPoints[(std::size_t)i].getDepth() > contactBreakingThreshold) {
+            if (contactPoints[(std::size_t)i].getDepth() > CONTACT_BREAKING_THRESHOLD) {
                 removeContactPoint((std::size_t)i);
             } else {
                 Point3<float> projectedPointOnObject2 = contactPoints[(std::size_t)i].getPointOnObject1().translate(-(contactPoints[(std::size_t)i].getNormalFromObject2() * contactPoints[(std::size_t)i].getDepth()));
                 Vector3<float> projectedDifference = projectedPointOnObject2.vector(contactPoints[(std::size_t)i].getPointOnObject2());
-                if (projectedDifference.squareLength() > contactBreakingThreshold * contactBreakingThreshold) {
+                if (projectedDifference.squareLength() > CONTACT_BREAKING_THRESHOLD * CONTACT_BREAKING_THRESHOLD) {
                     removeContactPoint((std::size_t)i);
                 }
             }
@@ -123,7 +121,7 @@ namespace urchin {
      * @return Nearest point index to point given in parameter. If all points are too far: '-1' is returned.
      */
     int ManifoldResult::getNearestPointIndex(const Point3<float>& localPointOnObject2) const {
-        float shortestDistance = contactBreakingThreshold * contactBreakingThreshold;
+        float shortestDistance = CONTACT_BREAKING_THRESHOLD * CONTACT_BREAKING_THRESHOLD;
         int nearestPointIndex = -1;
         for (unsigned int i = 0; i < nbContactPoint; ++i) {
             Vector3<float> diff = localPointOnObject2.vector(contactPoints[i].getLocalPointOnObject2());

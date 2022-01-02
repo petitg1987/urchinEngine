@@ -37,13 +37,13 @@ namespace urchin {
             void removeContactPoint(std::size_t);
 
             static constexpr std::size_t MAX_PERSISTENT_POINTS = 4;
+            static constexpr float CONTACT_BREAKING_THRESHOLD = 0.02f;
 
             AbstractBody& body1;
             AbstractBody& body2;
 
             std::array<ManifoldContactPoint, MAX_PERSISTENT_POINTS> contactPoints;
             unsigned int nbContactPoint;
-            const float contactBreakingThreshold;
     };
 
 }

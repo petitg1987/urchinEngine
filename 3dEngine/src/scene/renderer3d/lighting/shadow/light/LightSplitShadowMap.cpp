@@ -7,6 +7,7 @@ namespace urchin {
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
             updateShadowMapThreshold(ConfigService::instance().getFloatValue("shadow.updateShadowMapThreshold")),
+            useSceneDependentProjection(ConfigService::instance().getBoolValue("shadow.useSceneDependentProjection")),
             shadowCasterReceiverBoxUpdated(false),
             modelsRequireUpdate(false) {
 
@@ -19,7 +20,13 @@ namespace urchin {
         obboxModels.clear();
         lightShadowMap->getModelOctreeManager().getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
         updateModels(obboxModels);
-        buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, bForceUpdateAllShadowMaps);
+
+        if (useSceneDependentProjection) {
+            AABBox<float> aabboxSceneDependent = buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace);
+            updateShadowCasterReceiverBox(aabboxSceneDependent, bForceUpdateAllShadowMaps);
+        } else {
+            updateShadowCasterReceiverBox(aabboxSceneIndependent, bForceUpdateAllShadowMaps);
+        }
     }
 
     const AABBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
@@ -79,7 +86,7 @@ namespace urchin {
     /**
      * Build box in light space containing shadow caster and receiver (scene dependent)
      */
-    void LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace, bool forceUpdateAllShadowMap) {
+    AABBox<float> LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace) {
         ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
 
         unsigned int modelsCount = 0;
@@ -91,7 +98,7 @@ namespace urchin {
                 modelsCount++;
             } else {
                 for (const auto& splitAABBox : model->getSplitAABBoxes()) {
-                    if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox)) {
+                    if (obboxSceneIndependentViewSpace.toAABBox().collideWithAABBox(splitAABBox)) {
                         modelsAabbox = modelsAabbox.merge(lightShadowMap->getLightViewMatrix() * splitAABBox);
                         modelsCount++;
                     }
@@ -114,10 +121,8 @@ namespace urchin {
             aabboxSceneDependent = AABBox<float>(cutMin, cutMax);
         }
 
-        //avoid aabbox of size zero when there is no model or when all models are outside of the aabboxSceneIndependent
-        aabboxSceneDependent = AABBox<float>(aabboxSceneDependent.getMin() - LIGHT_BOX_MARGIN, aabboxSceneDependent.getMax() + LIGHT_BOX_MARGIN);
-
-        updateShadowCasterReceiverBox(aabboxSceneDependent, forceUpdateAllShadowMap);
+        //avoid aabbox of size zero when there is no model or when all models are outside the aabboxSceneIndependent
+        return AABBox<float>(aabboxSceneDependent.getMin() - LIGHT_BOX_MARGIN, aabboxSceneDependent.getMax() + LIGHT_BOX_MARGIN);
     }
 
     void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
@@ -146,6 +151,7 @@ namespace urchin {
 
         if (models != this->models) {
             modelsRequireUpdate = true;
+            this->models = models;
         } else {
             for (const auto* model : models) {
                 if (model->isMovingInOctree() || model->isAnimated()) {
@@ -154,7 +160,5 @@ namespace urchin {
                 }
             }
         }
-
-        this->models = models;
     }
 }

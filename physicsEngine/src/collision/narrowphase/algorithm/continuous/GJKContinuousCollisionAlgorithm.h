@@ -14,8 +14,6 @@ namespace urchin {
     */
     template<class T, class U> class GJKContinuousCollisionAlgorithm {
         public:
-            GJKContinuousCollisionAlgorithm();
-
             std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject&, const TemporalObject&, AbstractBody&) const;
 
         private:
@@ -24,9 +22,9 @@ namespace urchin {
 
             void logInputData(const TemporalObject&, const TemporalObject&, const std::string&, Logger::CriticalityLevel) const;
 
-            const T squareEpsilon;
-            const unsigned int maxIteration;
-            const float terminationTolerance;
+            static constexpr T SQUARE_EPSILON = std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon();
+            static constexpr unsigned int MAX_ITERATION = 25;
+            static constexpr float TERMINATION_TOLERANCE = 0.0001f;
     };
 
 }

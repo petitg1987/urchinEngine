@@ -8,14 +8,10 @@
 namespace urchin {
 
     LightManager::LightManager() :
-            maxLights(ConfigService::instance().getUnsignedIntValue("light.maxLights")),
-            lightOctreeManager(OctreeManager<Light>(LIGHTS_OCTREE_MIN_SIZE)),
+            lightOctreeManager(OctreeManager<Light>(ConfigService::instance().getFloatValue("light.octreeMinSize"))),
             lastUpdatedLight(nullptr),
             lightsData({}) {
-        if (maxLights > LIGHTS_SHADER_LIMIT) {
-            throw std::invalid_argument("Maximum lights value is limited to " + std::to_string(LIGHTS_SHADER_LIMIT));
-        }
-
+        static_assert(MAX_LIGHTS < LIGHTS_SHADER_LIMIT);
         lightsData.globalAmbientColor = Point3<float>(0.0f, 0.0f, 0.0f);
         LightInfo emptyLightData{};
         for (auto& light : lightsData.lightsInfo) {
@@ -45,7 +41,7 @@ namespace urchin {
      * @return Maximum of lights authorized to affect the scene in the same time
      */
     unsigned int LightManager::getMaxLights() const {
-        return maxLights;
+        return MAX_LIGHTS;
     }
 
     const std::vector<std::shared_ptr<Light>>& LightManager::getSunLights() const {
@@ -111,9 +107,9 @@ namespace urchin {
         }
         visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
 
-        if (visibleLights.size() > maxLights) {
+        if (visibleLights.size() > MAX_LIGHTS) {
             logMaxLightsReach();
-            visibleLights.resize(maxLights);
+            visibleLights.resize(MAX_LIGHTS);
         }
 
         /*
@@ -127,7 +123,7 @@ namespace urchin {
     void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer, std::size_t lightsDataUniformIndex) {
         const std::vector<Light*>& lights = getVisibleLights();
 
-        for (unsigned int i = 0; i < maxLights; ++i) {
+        for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
             if (lights.size() > i) {
                 const Light* light = lights[i];
 
@@ -162,7 +158,7 @@ namespace urchin {
     void LightManager::logMaxLightsReach() const {
         static bool maxLightReachLogged = false;
         if (!maxLightReachLogged) {
-            Logger::instance().logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
+            Logger::instance().logWarning("Light in scene (" + std::to_string(visibleLights.size()) + ") is higher that max light (" + std::to_string(MAX_LIGHTS) + ") authorized");
             maxLightReachLogged = true;
         }
     }

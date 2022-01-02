@@ -28,12 +28,13 @@ namespace urchin {
         private:
             void computeScope();
 
+            static constexpr float ATTENUATION_NO_EFFECT = 0.1f; //defines when the attenuation of a light has no light effect on objects
+
             //general properties
             Point3<float> position;
             std::vector<Vector3<float>> directions;
 
             //attenuation properties
-            const float attenuationNoEffect; //defines when the attenuation of a light has no light effect on objects
             float exponentialAttenuation;
             std::unique_ptr<Sphere<float>> sphereScope;
             std::unique_ptr<AABBox<float>> bboxScope;

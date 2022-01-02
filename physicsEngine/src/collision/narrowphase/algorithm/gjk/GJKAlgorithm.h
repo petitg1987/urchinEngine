@@ -17,15 +17,13 @@ namespace urchin {
     */
     template<class T> class GJKAlgorithm {
         public:
-            GJKAlgorithm();
-
             std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> processGJK(const CollisionConvexObject3D&, const CollisionConvexObject3D&, bool) const;
 
         private:
             void logMaximumIterationReach(const CollisionConvexObject3D&, const CollisionConvexObject3D&, bool) const;
 
-            const unsigned int maxIteration;
-            const float terminationTolerance;
+            static constexpr unsigned int MAX_ITERATION = 20;
+            static constexpr float TERMINATION_TOLERANCE = 0.0001f;
     };
 
 }

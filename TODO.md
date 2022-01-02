@@ -30,7 +30,7 @@
   * **NEW FEATURE** (`major`): PCSS
   * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
-    * Tips: try to re-use models in the second method + call octree manager one times for all frustum splits and then split the models
+    * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
 * Ambient occlusion
@@ -42,6 +42,7 @@
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
 * UI
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
+  * **IMPROVEMENT** (`medium`): Do not display UI 3d when outside the camera view
   * **NEW FEATURE** (`medium`): Handle transparency in UI 3d fragment shader to have a text rendering more smooth
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d

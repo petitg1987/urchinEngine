@@ -12,7 +12,6 @@
 namespace urchin {
 
     TerrainGrass::TerrainGrass(const std::string& grassTextureFilename) :
-            grassPositionRandomPercentage(ConfigService::instance().getFloatValue("terrain.grassPositionRandomPercentage")),
             grassPatchSize(ConfigService::instance().getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance().getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             bIsInitialized(false),
@@ -82,7 +81,7 @@ namespace urchin {
 
             unsigned int seed = 0; //no need to generate different random numbers at each start
             std::default_random_engine generator(seed);
-            std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage / grassQuantity);
+            std::uniform_real_distribution<float> distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
 
             auto grassXQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
             auto grassZQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
