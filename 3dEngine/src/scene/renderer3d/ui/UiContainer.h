@@ -12,7 +12,7 @@ namespace urchin {
         public:
             UiContainer(RenderTarget&, I18nService&);
 
-            void onCameraProjectionUpdate(const Camera&);
+            void onCameraProjectionUpdate(Camera&);
 
             bool onKeyPress(unsigned int);
             bool onKeyRelease(unsigned int);
@@ -28,7 +28,7 @@ namespace urchin {
         private:
             RenderTarget& renderTarget;
             I18nService& i18nService;
-            const Camera* camera;
+            Camera* camera;
 
             std::vector<std::unique_ptr<UIRenderer>> uis;
     };

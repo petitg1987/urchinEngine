@@ -18,7 +18,7 @@ namespace urchin {
 
     class LightShadowMap : public Observer {
         public:
-            LightShadowMap(const Light&, const OctreeManager<Model>&, float, std::shared_ptr<Texture>, unsigned int, std::unique_ptr<OffscreenRender>);
+            LightShadowMap(Light&, const OctreeManager<Model>&, float, std::shared_ptr<Texture>, unsigned int, std::unique_ptr<OffscreenRender>);
             ~LightShadowMap() override;
 
             void notify(Observable*, int) override;
@@ -48,7 +48,7 @@ namespace urchin {
             void updateLightViewMatrix();
             const std::vector<Model*>& retrieveModels() const;
 
-            const Light& light;
+            Light& light;
             const OctreeManager<Model>& modelOctreeManager;
             float viewingShadowDistance;
             unsigned int nbShadowMaps;

@@ -12,13 +12,13 @@ namespace urchin {
         public:
             virtual ~Observable();
 
-            void addObserver(Observer*, int) const; //TODO remove const !
-            void removeObserver(Observer*, int) const;
+            void addObserver(Observer*, int);
+            void removeObserver(Observer*, int);
 
             void notifyObservers(Observable*, int);
 
         private:
-            mutable std::map<int, std::vector<Observer*>> mapObservers;
+            std::map<int, std::vector<Observer*>> mapObservers;
     };
 
 }

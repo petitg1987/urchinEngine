@@ -25,7 +25,7 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::setupUi3d(const Camera* camera, const Transform<float>& transform, const Point2<unsigned int>& uiResolution,
+    void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<unsigned int>& uiResolution,
                                const Point2<float>& uiSize, float ambient) {
         if (!widgets.empty()) {
             throw std::runtime_error("UI renderer cannot be initialized for UI 3d because widgets already exist");
@@ -67,7 +67,7 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::onCameraProjectionUpdate(const Camera& camera) {
+    void UIRenderer::onCameraProjectionUpdate(Camera& camera) {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }

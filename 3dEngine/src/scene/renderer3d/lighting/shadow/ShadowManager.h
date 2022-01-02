@@ -65,8 +65,8 @@ namespace urchin {
 
         private:
             //light handling
-            void addShadowLight(const Light&);
-            void removeShadowLight(const Light&);
+            void addShadowLight(Light&);
+            void removeShadowLight(Light&);
             void updateShadowLights();
 
             //splits handling
@@ -89,7 +89,7 @@ namespace urchin {
             //shadow information
             std::vector<float> splitDistances;
             std::vector<Frustum<float>> splitFrustums;
-            std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
+            std::map<Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
             bool bForceUpdateAllShadowMaps;
             std::array<float, SHADOW_MAPS_SHADER_LIMIT * 4> depthSplitDistance; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment

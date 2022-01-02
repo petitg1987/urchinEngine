@@ -3,9 +3,8 @@
 
 namespace urchin {
 
-    BroadPhase::BroadPhase(const BodyContainer& bodyContainer) :
+    BroadPhase::BroadPhase(BodyContainer& bodyContainer) :
             broadPhaseAlgorithm(std::make_unique<AABBTreeAlgorithm>()) {
-
         bodyContainer.addObserver(this, BodyContainer::ADD_BODY);
         bodyContainer.addObserver(this, BodyContainer::REMOVE_BODY);
     }

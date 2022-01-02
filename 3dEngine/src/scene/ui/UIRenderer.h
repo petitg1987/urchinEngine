@@ -13,7 +13,7 @@
 namespace urchin {
 
     struct UI3dData {
-        const Camera* camera = nullptr;
+        Camera* camera = nullptr;
         Matrix4<float> modelMatrix;
         Matrix4<float> normalMatrix;
 
@@ -28,8 +28,8 @@ namespace urchin {
             UIRenderer(RenderTarget&, I18nService&);
 
             //3d specific
-            void setupUi3d(const Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
-            void onCameraProjectionUpdate(const Camera&);
+            void setupUi3d(Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
+            void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
 
             void onResize(unsigned int, unsigned int) override;

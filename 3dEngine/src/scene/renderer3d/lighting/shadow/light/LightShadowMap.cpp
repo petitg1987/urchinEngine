@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(const Light& light, const OctreeManager<Model>& modelOctreeManager, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
+    LightShadowMap::LightShadowMap(Light& light, const OctreeManager<Model>& modelOctreeManager, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
                                    unsigned int nbShadowMaps, std::unique_ptr<OffscreenRender> renderTarget) :
             light(light),
             modelOctreeManager(modelOctreeManager),

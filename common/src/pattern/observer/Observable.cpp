@@ -7,7 +7,7 @@ namespace urchin {
         mapObservers.clear();
     }
 
-    void Observable::addObserver(Observer* observer, int notificationType) const {
+    void Observable::addObserver(Observer* observer, int notificationType) {
         auto itFind = mapObservers.find(notificationType);
         if (itFind != mapObservers.end()) {
             if (std::ranges::find(itFind->second, observer) == itFind->second.end()) {
@@ -19,7 +19,7 @@ namespace urchin {
         }
     }
 
-    void Observable::removeObserver(Observer* observer, int notificationType) const {
+    void Observable::removeObserver(Observer* observer, int notificationType) {
         auto itFind = mapObservers.find(notificationType);
         if (itFind != mapObservers.end()) {
             std::erase(itFind->second, observer);

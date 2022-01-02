@@ -9,7 +9,7 @@ namespace urchin {
 
     }
 
-    void UiContainer::onCameraProjectionUpdate(const Camera& camera) {
+    void UiContainer::onCameraProjectionUpdate(Camera& camera) {
         this->camera = &camera;
 
         for (const auto& ui : uis) {

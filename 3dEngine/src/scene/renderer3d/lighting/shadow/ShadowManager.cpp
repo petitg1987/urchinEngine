@@ -44,7 +44,7 @@ namespace urchin {
 
     void ShadowManager::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<LightManager*>(observable)) {
-            const Light* light = lightManager.getLastUpdatedLight();
+            Light* light = lightManager.getLastUpdatedLight();
             if (notificationType == LightManager::ADD_LIGHT) {
                 light->addObserver(this, Light::PRODUCE_SHADOW);
                 if (light->isProduceShadow()) {
@@ -56,7 +56,7 @@ namespace urchin {
                     removeShadowLight(*light);
                 }
             }
-        } else if (const auto* light = dynamic_cast<Light*>(observable)) {
+        } else if (auto* light = dynamic_cast<Light*>(observable)) {
             if (notificationType == Light::PRODUCE_SHADOW) {
                 if (light->isProduceShadow()) {
                     addShadowLight(*light);
@@ -113,7 +113,7 @@ namespace urchin {
     }
 
     const LightShadowMap& ShadowManager::getLightShadowMap(const Light* light) const {
-        auto itFind = lightShadowMaps.find(light);
+        auto itFind = lightShadowMaps.find(const_cast<Light*>(light));
         if (itFind == lightShadowMaps.end()) {
             throw std::runtime_error("No light shadow map found for this light.");
         }
@@ -151,7 +151,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::addShadowLight(const Light& light) {
+    void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
 
         auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
@@ -202,7 +202,7 @@ namespace urchin {
         lightShadowMaps[&light] = std::move(newLightShadowMap);
     }
 
-    void ShadowManager::removeShadowLight(const Light& light) {
+    void ShadowManager::removeShadowLight(Light& light) {
         lightShadowMaps.erase(&light);
     }
 
@@ -210,13 +210,13 @@ namespace urchin {
      * Updates lights data which producing shadows
      */
     void ShadowManager::updateShadowLights() {
-        std::vector<const Light*> allLights;
+        std::vector<Light*> allLights;
         allLights.reserve(lightShadowMaps.size());
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
             allLights.emplace_back(light);
         }
 
-        for (const auto& light : allLights) {
+        for (Light* light : allLights) {
             removeShadowLight(*light);
             addShadowLight(*light);
         }
@@ -275,10 +275,10 @@ namespace urchin {
 
     void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit) {
         std::size_t shadowLightIndex = 0;
-        for (const auto* visibleLight : lightManager.getVisibleLights()) {
+        for (const Light* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
-                const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
+                const auto& lightShadowMap = lightShadowMaps.find(const_cast<Light*>(visibleLight))->second;
 
                 if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture().get()) {
                     lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
