@@ -8,18 +8,13 @@ namespace urchin {
     }
 
     void ModelDisplayable::attachModelInstanceDisplayer(ModelInstanceDisplayer& modelInstanceDisplayer) {
-        auto* model = static_cast<Model*>(this);
-        modelInstanceDisplayer.addInstanceModel(*model);
-
         modelInstanceDisplayers.push_back(&modelInstanceDisplayer);
     }
 
     void ModelDisplayable::detachModelInstanceDisplayer(ModelInstanceDisplayer& modelInstanceDisplayer) {
-        auto* model = static_cast<Model*>(this);
-        modelInstanceDisplayer.removeInstanceModel(*model);
-
         std::size_t erasedCount = std::erase_if(modelInstanceDisplayers, [&modelInstanceDisplayer](const ModelInstanceDisplayer* mid){ return mid == &modelInstanceDisplayer; });
         if (erasedCount != 1) {
+            auto* model = static_cast<Model*>(this);
             throw std::runtime_error("Removing the model displayer from model fail: " + model->getConstMeshes()->getId());
         }
     }

@@ -96,8 +96,8 @@ namespace urchin {
         modelInstanceDisplayers.clear();
     }
 
-    void ModelSetDisplayer::detachModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
-        model.detachModelInstanceDisplayer(modelInstanceDisplayer);
+    void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
+        modelInstanceDisplayer.removeInstanceModel(model);
 
         if (modelInstanceDisplayer.getInstanceCount() == 0) {
             //to do:
@@ -122,20 +122,20 @@ namespace urchin {
                     if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
                         continue; //the model displayer attached to the model is still valid
                     }
-                    detachModelFromDisplayer(*model, *currentModelInstanceDisplayer);
+                    removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
                 }
 
                 if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
                     const auto& itFind = modelDisplayers.find(model);
                     if (itFind != modelDisplayers.end()) {
                         assert(itFind->second->getInstanceCount() == 0);
-                        model->attachModelInstanceDisplayer(*itFind->second);
+                        itFind->second->addInstanceModel(*model);
                         continue; //the model displayer used in past for this model has been found
                     }
                 } else {
                     const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
                     if (itFind != modelInstanceDisplayers.end()) {
-                        model->attachModelInstanceDisplayer(*itFind->second);
+                        itFind->second->addInstanceModel(*model);
                         continue; //a matching model instance displayer has been found for the model
                     }
                 }
@@ -160,7 +160,7 @@ namespace urchin {
             modelDisplayers.erase(model);
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (modelInstanceDisplayer) {
-                detachModelFromDisplayer(*model, *modelInstanceDisplayer);
+                removeModelFromDisplayer(*model, *modelInstanceDisplayer);
             }
 
             std::erase_if(models, [model](const Model* m){return m == model;});

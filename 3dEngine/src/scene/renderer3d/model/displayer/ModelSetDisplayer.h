@@ -46,7 +46,7 @@ namespace urchin {
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             void clearDisplayers();
-            void detachModelFromDisplayer(Model&, ModelInstanceDisplayer&);
+            void removeModelFromDisplayer(Model&, ModelInstanceDisplayer&);
 
             bool isInitialized;
 

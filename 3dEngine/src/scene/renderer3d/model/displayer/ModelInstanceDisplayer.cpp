@@ -19,7 +19,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true) {
-        model.attachModelInstanceDisplayer(*this); //TODO review responsibility of detach / attach. ModelInstanceDisplayer or ModelSetDisplayer ?
+        addInstanceModel(model);
     }
 
     ModelInstanceDisplayer::~ModelInstanceDisplayer() {
@@ -31,7 +31,7 @@ namespace urchin {
 
         std::vector<Model*> copiedInstanceModels = instanceModels;
         for (Model* model : copiedInstanceModels) {
-            model->detachModelInstanceDisplayer(*this);
+            removeInstanceModel(*model);
         }
     }
 
@@ -247,21 +247,23 @@ namespace urchin {
             assert(instanceId == model.computeInstanceId(displayMode));
         #endif
         instanceModels.push_back(&model);
+        model.attachModelInstanceDisplayer(*this);
 
         model.addObserver(this, Model::MESH_UPDATED);
         model.addObserver(this, Model::MATERIAL_UPDATED);
         model.addObserver(this, Model::SCALE_UPDATED);
     }
 
-    void ModelInstanceDisplayer::removeInstanceModel(Model& modelToRemove) {
-        std::size_t erasedCount = std::erase_if(instanceModels, [&modelToRemove](const Model* model) {return model == &modelToRemove;});
+    void ModelInstanceDisplayer::removeInstanceModel(Model& model) {
+        model.detachModelInstanceDisplayer(*this);
+        std::size_t erasedCount = std::erase_if(instanceModels, [&model](const Model* m) {return m == &model;});
         if (erasedCount != 1) {
-            throw std::runtime_error("Removing the instance model fail: " + modelToRemove.getConstMeshes()->getId());
+            throw std::runtime_error("Removing the instance model fail: " + model.getConstMeshes()->getId());
         }
 
-        modelToRemove.removeObserver(this, Model::MATERIAL_UPDATED);
-        modelToRemove.removeObserver(this, Model::MESH_UPDATED);
-        modelToRemove.removeObserver(this, Model::SCALE_UPDATED);
+        model.removeObserver(this, Model::MATERIAL_UPDATED);
+        model.removeObserver(this, Model::MESH_UPDATED);
+        model.removeObserver(this, Model::SCALE_UPDATED);
     }
 
     unsigned int ModelInstanceDisplayer::getInstanceCount() const {
