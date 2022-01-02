@@ -278,7 +278,7 @@ namespace urchin {
     void ModelInstanceDisplayer::registerModelForRendering(Model& model) { //TODO check model is in instanceModels ?! or remove instanceModels ?
         InstanceMatrix instanceMatrix;
         instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
-        instanceMatrix.normalMatrix = model.getTransform().getTransformMatrix().inverse().transpose();
+        instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
         instanceMatrices.push_back(instanceMatrix);
     }
 
