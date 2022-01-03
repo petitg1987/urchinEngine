@@ -159,9 +159,8 @@ namespace urchin {
             }
             width = std::max(width, offsetX - spaceBetweenLetters);
         }
-        std::size_t numberOfLines = cutTextLines.empty() ? 1 : cutTextLines.size();
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
-        auto textHeight = (float)(numberOfLines * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines());
+        auto textHeight = (float)(font->getHeight() + (numberOfInterLines * font->getSpaceBetweenLines()));
         setSize(Size(width, textHeight, LengthType::PIXEL));
     }
 

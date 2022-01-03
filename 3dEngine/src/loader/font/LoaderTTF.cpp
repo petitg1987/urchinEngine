@@ -85,9 +85,9 @@ namespace urchin {
         for (int i = 'A'; i < 'Z'; i++) {
             height = std::max(height, glyph[(std::size_t)i].height);
         }
-        auto spaceBetweenLines = (unsigned int)((float)height * 1.9f);
-        auto spaceBetweenLetters = 2u;
-        glyph[(int)' '].width = (unsigned int)((float)glyph[(int)'A'].width * 0.4f);
+        unsigned int spaceBetweenLines = MathFunction::roundToUInt((float)height * 1.9f);
+        unsigned int spaceBetweenLetters = 2u;
+        glyph[(int)' '].width = MathFunction::roundToUInt((float)glyph[(int)'A'].width * 0.4f);
 
         //dimension of letters and texture
         unsigned int dimensionLetters = 0;
