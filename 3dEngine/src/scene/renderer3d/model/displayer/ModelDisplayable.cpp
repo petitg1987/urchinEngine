@@ -27,13 +27,10 @@ namespace urchin {
         const auto* model = static_cast<const Model*>(this);
 
         if (model->isMeshUpdated()) {
-            //no instancing on models animated or where mesh is manually updated
-            return INSTANCING_DENY_ID;
+            return INSTANCING_DENY_ID; //no instancing on models animated or where mesh is manually updated
         }
 
-        std::size_t instanceHash = 0;
-        HashUtil::combine(instanceHash, model->getConstMeshes()->retrieveHashId());
-
+        std::size_t instanceHash = model->getConstMeshes()->retrieveHashId();
         if (displayMode == DisplayMode::DEFAULT_MODE) {
             bool hasUvScaling = false;
             for (unsigned int meshIndex = 0; meshIndex < model->getMeshes()->getNumberMeshes(); ++meshIndex) {

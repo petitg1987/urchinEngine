@@ -92,9 +92,6 @@ namespace urchin {
 
             void onCameraProjectionUpdate();
 
-            //model
-            void updateModelsInFrustum();
-
             //scene
             void createOrUpdateLightingPass();
             void createOrUpdateLightingShader();

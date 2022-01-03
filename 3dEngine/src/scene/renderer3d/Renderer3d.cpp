@@ -203,11 +203,6 @@ namespace urchin {
         refreshDebugFramebuffers = true;
     }
 
-    void Renderer3d::updateModelsInFrustum() {
-        modelsInFrustum.clear();
-        modelOctreeManager.getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
-    }
-
     Camera* Renderer3d::getCamera() const {
         return camera.get();
     }
@@ -424,8 +419,8 @@ namespace urchin {
         modelOctreeManager.refreshOctreeables();
 
         //determine model visible on scene
-        updateModelsInFrustum();
-        modelSetDisplayer.updateModels(modelsInFrustum);
+        modelsInFrustum.clear();
+        modelOctreeManager.getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
 
         //determine visible lights on scene
         lightManager.updateVisibleLights(camera->getFrustum());
@@ -445,6 +440,8 @@ namespace urchin {
             }
         }
 
+        //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)
+        modelSetDisplayer.updateModels(modelsInFrustum);
         transparentManager.updateModels(modelsInFrustum);
     }
 
