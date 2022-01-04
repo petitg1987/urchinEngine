@@ -297,10 +297,12 @@ namespace urchin {
     }
 
     template<class T> AABBox<T> operator *(const Matrix4<T>& m, const AABBox<T>& aabb) {
-        //projection matrix not accepted
-        assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
-        assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
-        assert(fabs(m(3,2)) < std::numeric_limits<T>::epsilon());
+        #ifdef URCHIN_DEBUG
+            //projection matrix not accepted
+            assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
+            assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
+            assert(fabs(m(3,2)) < std::numeric_limits<T>::epsilon());
+        #endif
 
         Point3<T> xa = Point3<T>(m(0,0), m(1,0), m(2,0)) * aabb.getMin().X;
         Point3<T> xb = Point3<T>(m(0,0), m(1,0), m(2,0)) * aabb.getMax().X;
