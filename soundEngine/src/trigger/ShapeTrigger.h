@@ -8,7 +8,7 @@ namespace urchin {
     /**
     * Trigger performed when inside a shape
     */
-    class ShapeTrigger : public SoundTrigger {
+    class ShapeTrigger : public SoundTrigger { //TODO rename in ZoneTrigger ?
         public:
             ShapeTrigger(PlayBehavior, std::unique_ptr<const SoundShape>);
 

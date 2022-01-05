@@ -15,3 +15,7 @@
 #include <trigger/shape/SoundSphere.h>
 
 #include <builder/SoundBuilder.h>
+#include <builder/ManualSound.h>
+#include <builder/ManualSpatialSound.h>
+#include <builder/ZoneSound.h>
+#include <builder/ZoneSpatialSound.h>
