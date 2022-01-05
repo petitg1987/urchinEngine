@@ -17,12 +17,12 @@ namespace urchin {
 
         if (!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
             isPlaying = true;
-            if (getPlayBehavior() == SoundTrigger::PLAY_LOOP) {
+            if (getPlayBehavior() == PlayBehavior::PLAY_LOOP) {
                 triggerActions.emplace_back(SoundTrigger::PLAY_NEW_LOOP);
-            } else if (getPlayBehavior() == SoundTrigger::PLAY_ONCE) {
+            } else if (getPlayBehavior() == PlayBehavior::PLAY_ONCE) {
                 triggerActions.emplace_back(SoundTrigger::PLAY_NEW);
             } else {
-                throw std::runtime_error("Unknown play behavior: " + std::to_string(getPlayBehavior()));
+                throw std::runtime_error("Unknown play behavior: " + std::to_string((int)getPlayBehavior()));
             }
         }else if (isPlaying && !soundShape->pointInsideStopShape(listenerPosition)) {
             isPlaying = false;

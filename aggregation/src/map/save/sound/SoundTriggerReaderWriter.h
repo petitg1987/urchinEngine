@@ -14,8 +14,8 @@ namespace urchin {
             static void write(UdaChunk&, const SoundTrigger&, UdaWriter&);
 
         private:
-            static SoundTrigger::PlayBehavior loadPlayBehavior(const UdaChunk*, const UdaParser&);
-            static void writePlayBehavior(UdaChunk&, SoundTrigger::PlayBehavior, UdaWriter&);
+            static PlayBehavior loadPlayBehavior(const UdaChunk*, const UdaParser&);
+            static void writePlayBehavior(UdaChunk&, PlayBehavior, UdaWriter&);
 
             static constexpr char TYPE_ATTR[] = "type";
             static constexpr char MANUAL_VALUE[] = "MANUAL";

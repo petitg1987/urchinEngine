@@ -2,6 +2,8 @@
 
 #include <UrchinCommon.h>
 
+#include <trigger/PlayBehavior.h>
+
 namespace urchin {
 
     class SoundTrigger {
@@ -9,11 +11,6 @@ namespace urchin {
             enum TriggerType {
                 MANUAL_TRIGGER,
                 SHAPE_TRIGGER
-            };
-
-            enum PlayBehavior {
-                PLAY_ONCE,
-                PLAY_LOOP
             };
 
             enum TriggerAction {

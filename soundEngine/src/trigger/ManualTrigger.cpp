@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     void ManualTrigger::playNew() {
-        if (getPlayBehavior() == SoundTrigger::PLAY_LOOP) {
+        if (getPlayBehavior() == PlayBehavior::PLAY_LOOP) {
             manualTriggerActions.emplace_back(ManualTriggerAction::PLAY_NEW_LOOP);
         } else {
             manualTriggerActions.emplace_back(ManualTriggerAction::PLAY_NEW);

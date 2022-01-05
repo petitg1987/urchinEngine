@@ -21,8 +21,8 @@ namespace urchin {
             void addSound(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
             void removeSound(const Sound&);
             void changeSoundTrigger(const Sound&, std::shared_ptr<SoundTrigger>);
-            void setupSoundsVolume(Sound::SoundCategory, float);
 
+            void setupSoundsVolume(Sound::SoundCategory, float);
             void setMasterVolume(float);
             float getMasterVolume() const;
 
