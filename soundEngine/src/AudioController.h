@@ -17,12 +17,9 @@ namespace urchin {
     class AudioController {
         public:
             AudioController(std::shared_ptr<SoundComponent>, StreamUpdateWorker&);
-            AudioController(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>, StreamUpdateWorker&); //TODO remove ?
             ~AudioController();
 
-            Sound& getSound() const;
-            SoundTrigger& getSoundTrigger() const;
-            void changeSoundTrigger(std::shared_ptr<SoundTrigger>);
+            SoundComponent& getSoundComponent() const;
 
             void pauseAll();
             void unpauseAll();

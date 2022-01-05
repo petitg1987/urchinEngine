@@ -159,7 +159,7 @@ namespace urchin {
 
     void SceneDisplayer::refreshSoundTriggerModel() {
         if (soundTriggerDisplayer) {
-            if (viewProperties[SOUND_TRIGGER] && highlightSoundEntity && highlightSoundEntity->getSoundTrigger()) {
+            if (viewProperties[SOUND_TRIGGER] && highlightSoundEntity && highlightSoundEntity->getSoundComponent()) {
                 soundTriggerDisplayer->displaySoundTrigger(highlightSoundEntity);
             } else {
                 soundTriggerDisplayer->displaySoundTrigger(nullptr);

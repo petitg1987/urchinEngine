@@ -100,6 +100,10 @@
 * Listener    
   * **NEW FEATURE** (`minor`): Define a velocity to the listener
 
+# Aggregation
+* Object entity
+  * **NEW FEATURE** (`major`): Attach a sound component to an object entity
+
 # Map editor
 * Render
   * **NEW FEATURE** (`medium`): When change orientation of cylinder/capsule: resize physics shape to fit the object size

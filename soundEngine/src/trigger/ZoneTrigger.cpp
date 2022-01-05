@@ -36,4 +36,8 @@ namespace urchin {
         return *soundShape;
     }
 
+    void ZoneTrigger::setSoundShape(std::unique_ptr<const SoundShape> soundShape) {
+        this->soundShape = std::move(soundShape);
+    }
+
 }

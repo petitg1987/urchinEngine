@@ -17,11 +17,11 @@ namespace urchin {
         cleanCurrentDisplay();
 
         if (soundEntity) {
-            const SoundTrigger* soundTrigger = soundEntity->getSoundTrigger();
+            const SoundTrigger& soundTrigger = soundEntity->getSoundComponent()->getSoundTrigger();
 
-            if (soundTrigger->getTriggerType() == ZoneTrigger::TriggerType::ZONE_TRIGGER) {
-                const auto& zoneTrigger = static_cast<const ZoneTrigger*>(soundTrigger);
-                auto geometryModel = retrieveGeometry(zoneTrigger->getSoundShape());
+            if (soundTrigger.getTriggerType() == ZoneTrigger::TriggerType::ZONE_TRIGGER) {
+                const auto& zoneTrigger = static_cast<const ZoneTrigger&>(soundTrigger);
+                auto geometryModel = retrieveGeometry(zoneTrigger.getSoundShape());
                 soundTriggerModels.push_back(std::move(geometryModel));
             }
 

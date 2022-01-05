@@ -25,7 +25,9 @@ namespace urchin {
             virtual ~SoundTrigger() = default;
 
             TriggerType getTriggerType() const;
+
             PlayBehavior getPlayBehavior() const;
+            void setPlayBehavior(PlayBehavior);
 
             virtual const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) = 0;
 

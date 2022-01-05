@@ -12,8 +12,13 @@ namespace urchin {
         return triggerType;
     }
 
+
     PlayBehavior SoundTrigger::getPlayBehavior() const {
         return playBehavior;
+    }
+
+    void SoundTrigger::setPlayBehavior(PlayBehavior playBehavior) {
+        this->playBehavior = playBehavior;
     }
 
 }

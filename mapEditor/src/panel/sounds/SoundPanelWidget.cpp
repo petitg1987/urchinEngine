@@ -29,7 +29,6 @@ namespace urchin {
             playBehavior(nullptr),
             soundTriggerType(nullptr),
             triggerShapeLayout(nullptr),
-            changeSoundTriggerTypeButton(nullptr),
             soundShapeType(nullptr),
             changeSoundShapeTypeButton(nullptr),
             soundShapeWidget(nullptr) {
@@ -130,7 +129,7 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
-        auto* inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
+        auto* inaudibleDistanceLabel= new QLabel("Inau. Dist.:");
         spatialSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
 
         inaudibleDistance = new QDoubleSpinBox();
@@ -162,11 +161,6 @@ namespace urchin {
 
         soundTriggerType = new QLabel();
         generalLayout->addWidget(soundTriggerType, 3, 1);
-
-        changeSoundTriggerTypeButton = new QPushButton("Change");
-        generalLayout->addWidget(changeSoundTriggerTypeButton, 3, 2);
-        ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
-        connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
     }
 
     void SoundPanelWidget::setupSpecificZoneTriggerBox(QVBoxLayout* soundTriggerLayout) {
@@ -242,36 +236,36 @@ namespace urchin {
         disableSoundEvent = true;
 
         //sound
-        const Sound* sound = soundEntity.getSound();
+        const Sound& sound = soundEntity.getSoundComponent()->getSound();
 
-        if (sound->getSoundType() == Sound::SoundType::GLOBAL) {
+        if (sound.getSoundType() == Sound::SoundType::GLOBAL) {
             setupGlobalSoundDataFrom();
-        } else if (sound->getSoundType() == Sound::SoundType::SPATIAL) {
-            setupSpatialSoundDataFrom(static_cast<const SpatialSound*>(sound));
+        } else if (sound.getSoundType() == Sound::SoundType::SPATIAL) {
+            setupSpatialSoundDataFrom(static_cast<const SpatialSound&>(sound));
         } else {
-            throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
+            throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound.getSoundType()));
         }
 
-        if (sound->getSoundCategory() == Sound::SoundCategory::MUSIC) {
+        if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
             soundCategory->setText(NewSoundDialog::MUSIC_SOUND_LABEL);
-        } else if (sound->getSoundCategory() == Sound::SoundCategory::EFFECTS) {
+        } else if (sound.getSoundCategory() == Sound::SoundCategory::EFFECTS) {
             soundCategory->setText(NewSoundDialog::EFFECTS_SOUND_LABEL);
         } else {
-            throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound->getSoundCategory()));
+            throw std::invalid_argument("Impossible to setup specific sound data for sound of category: " + std::to_string(sound.getSoundCategory()));
         }
 
-        initialVolume->setText(std::to_string(sound->getInitialVolume()).c_str());
+        initialVolume->setText(std::to_string(sound.getInitialVolume()).c_str());
 
         //sound trigger
-        const SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
+        const SoundTrigger& soundTrigger = soundEntity.getSoundComponent()->getSoundTrigger();
         setupPlayBehaviorDataFrom(soundTrigger);
 
-        if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
+        if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
-        } else if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
+        } else if (soundTrigger.getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
             setupShapeTriggerDataFrom(soundEntity);
         } else {
-            throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger->getTriggerType()));
+            throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger.getTriggerType()));
         }
 
         disableSoundEvent = false;
@@ -283,20 +277,20 @@ namespace urchin {
         soundType->setText(NewSoundDialog::GLOBAL_SOUND_LABEL);
     }
 
-    void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound* spatialSound) {
+    void SoundPanelWidget::setupSpatialSoundDataFrom(const SpatialSound& spatialSound) {
         specificSpatialSoundGroupBox->show();
 
         soundType->setText(NewSoundDialog::SPATIAL_SOUND_LABEL);
 
-        this->positionX->setValue(spatialSound->getPosition().X);
-        this->positionY->setValue(spatialSound->getPosition().Y);
-        this->positionZ->setValue(spatialSound->getPosition().Z);
+        this->positionX->setValue(spatialSound.getPosition().X);
+        this->positionY->setValue(spatialSound.getPosition().Y);
+        this->positionZ->setValue(spatialSound.getPosition().Z);
 
-        this->inaudibleDistance->setValue(spatialSound->getInaudibleDistance());
+        this->inaudibleDistance->setValue(spatialSound.getInaudibleDistance());
     }
 
-    void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger* soundTrigger) {
-        int playBehaviorIndex = playBehavior->findData((int)soundTrigger->getPlayBehavior());
+    void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger& soundTrigger) {
+        int playBehaviorIndex = playBehavior->findData((int)soundTrigger.getPlayBehavior());
         if (playBehaviorIndex != -1) {
             playBehavior->setCurrentIndex(playBehaviorIndex);
         }
@@ -311,8 +305,7 @@ namespace urchin {
         specificZoneTriggerGroupBox->show();
         soundTriggerType->setText(ChangeSoundTriggerDialog::ZONE_TRIGGER_LABEL);
 
-        const auto* zoneTrigger = static_cast<const ZoneTrigger*>(soundEntity.getSoundTrigger());
-        auto& soundShape = zoneTrigger->getSoundShape();
+        auto& soundShape = soundEntity.getSoundComponent()->getZoneTrigger().getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 
@@ -354,17 +347,17 @@ namespace urchin {
     void SoundPanelWidget::updateSoundSpecificProperties() {
         if (!disableSoundEvent) {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
-            const Sound* sound = soundEntity.getSound();
+            const Sound& sound = soundEntity.getSoundComponent()->getSound();
 
-            if (sound->getSoundType() == Sound::GLOBAL) {
+            if (sound.getSoundType() == Sound::GLOBAL) {
                 //nothing to update
-            } else if (sound->getSoundType() == Sound::SPATIAL) {
+            } else if (sound.getSoundType() == Sound::SPATIAL) {
                 Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
                 auto inaudibleDistance = (float)this->inaudibleDistance->value();
 
                 soundController->updateSpatialSoundProperties(soundEntity, position, inaudibleDistance);
             } else {
-                throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound->getSoundType()));
+                throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound.getSoundType()));
             }
         }
     }
@@ -380,7 +373,7 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::showChangeSoundTriggerDialog() {
+    void SoundPanelWidget::showChangeSoundTriggerDialog() { //TODO remove
         ChangeSoundTriggerDialog changeSoundTriggerDialog(this);
         changeSoundTriggerDialog.exec();
 

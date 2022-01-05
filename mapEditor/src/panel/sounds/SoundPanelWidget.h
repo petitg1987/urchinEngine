@@ -41,8 +41,8 @@ namespace urchin {
             void notify(Observable*, int) override;
             void setupSoundDataFrom(const SoundEntity&);
             void setupGlobalSoundDataFrom();
-            void setupSpatialSoundDataFrom(const SpatialSound*);
-            void setupPlayBehaviorDataFrom(const SoundTrigger*);
+            void setupSpatialSoundDataFrom(const SpatialSound&);
+            void setupPlayBehaviorDataFrom(const SoundTrigger&);
             void setupManualTriggerDataFrom();
             void setupShapeTriggerDataFrom(const SoundEntity&);
 
@@ -78,7 +78,6 @@ namespace urchin {
 
             //sound trigger specific properties
             QVBoxLayout* triggerShapeLayout;
-            QPushButton* changeSoundTriggerTypeButton;
             QLabel* soundShapeType;
             QPushButton* changeSoundShapeTypeButton;
             std::unique_ptr<SoundShapeWidget> soundShapeWidget;

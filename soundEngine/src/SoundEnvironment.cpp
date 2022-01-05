@@ -26,32 +26,6 @@ namespace urchin {
         Profiler::sound().log();
     }
 
-    void SoundEnvironment::addSound(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
-        if (sound && soundTrigger) {
-            ScopeProfiler sp(Profiler::sound(), "addSound");
-
-            audioControllers.push_back(std::make_unique<AudioController>(std::move(sound), std::move(soundTrigger), streamUpdateWorker));
-        }
-    }
-
-    void SoundEnvironment::removeSound(const Sound& sound) {
-        for (auto it = audioControllers.begin(); it != audioControllers.end(); ++it) {
-            if (&(*it)->getSound() == &sound) {
-                audioControllers.erase(it);
-                break;
-            }
-        }
-    }
-
-    void SoundEnvironment::changeSoundTrigger(const Sound& sound, std::shared_ptr<SoundTrigger> newSoundTrigger) {
-        for (const auto& audioController : audioControllers) {
-            if (&audioController->getSound() == &sound) {
-                audioController->changeSoundTrigger(std::move(newSoundTrigger));
-                break;
-            }
-        }
-    }
-
     void SoundEnvironment::addSoundComponent(std::shared_ptr<SoundComponent> soundComponent) {
         ScopeProfiler sp(Profiler::sound(), "addSoundComponent");
 
@@ -59,7 +33,9 @@ namespace urchin {
     }
 
     void SoundEnvironment::removeSoundComponent(const SoundComponent& soundComponent) {
-        std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const std::unique_ptr<AudioController>& ac){ return &ac->getSound() == &soundComponent.getSound(); });
+        std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const std::unique_ptr<AudioController>& ac){
+            return &ac->getSoundComponent().getSound() == &soundComponent.getSound();
+        });
         if (erasedCount != 1) {
             throw std::runtime_error("Removing the sound component fail: " + soundComponent.getSound().getFilename());
         }

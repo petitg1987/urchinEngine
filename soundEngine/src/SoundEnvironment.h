@@ -19,11 +19,6 @@ namespace urchin {
             SoundEnvironment();
             ~SoundEnvironment();
 
-            //TODO remove / update
-            void addSound(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
-            void removeSound(const Sound&);
-            void changeSoundTrigger(const Sound&, std::shared_ptr<SoundTrigger>);
-
             void addSoundComponent(std::shared_ptr<SoundComponent>);
             void removeSoundComponent(const SoundComponent&);
 

@@ -15,10 +15,8 @@ namespace urchin {
             std::string getName() const;
             void setName(const std::string&);
 
-            Sound* getSound() const;
-            SoundTrigger* getSoundTrigger() const;
-            void setSoundElements(const std::shared_ptr<Sound>&, const std::shared_ptr<SoundTrigger>&);
-            void changeSoundTrigger(const std::shared_ptr<SoundTrigger>&);
+            SoundComponent* getSoundComponent() const;
+            void setSoundComponent(const std::shared_ptr<SoundComponent>&);
 
         private:
             void setup(SoundEnvironment&);
@@ -26,8 +24,7 @@ namespace urchin {
             SoundEnvironment* soundEnvironment;
 
             std::string name;
-            std::shared_ptr<Sound> sound;
-            std::shared_ptr<SoundTrigger> soundTrigger;
+            std::shared_ptr<SoundComponent> soundComponent;
     };
 
 }
