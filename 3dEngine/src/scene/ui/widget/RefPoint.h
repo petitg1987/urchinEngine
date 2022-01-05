@@ -9,7 +9,9 @@ namespace urchin {
         RIGHT_BOTTOM,
         CENTER_XY,
         CENTERX_TOP,
-        LEFT_CENTERY
+        CENTERX_BOTTOM,
+        LEFT_CENTERY,
+        RIGHT_CENTERY
     };
 
 }

@@ -243,9 +243,9 @@ namespace urchin {
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::RIGHT_TOP || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM) { //right
+        if (position.getReferencePoint() == RefPoint::RIGHT_TOP || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_CENTERY) { //right
             startPosition -= (int)getWidth();
-        } else if (position.getReferencePoint() == RefPoint::CENTER_XY || position.getReferencePoint() == RefPoint::CENTERX_TOP) { //center X
+        } else if (position.getReferencePoint() == RefPoint::CENTER_XY || position.getReferencePoint() == RefPoint::CENTERX_TOP || position.getReferencePoint() == RefPoint::CENTERX_BOTTOM) { //center X
             startPosition -= (int)((float)getWidth() / 2.0f);
         }
 
@@ -274,9 +274,9 @@ namespace urchin {
             }
         }
 
-        if (position.getReferencePoint() == RefPoint::LEFT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM) { //bottom
+        if (position.getReferencePoint() == RefPoint::LEFT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM || position.getReferencePoint() == RefPoint::CENTERX_BOTTOM) { //bottom
             startPosition -= (int)getHeight();
-        } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::LEFT_CENTERY) { //center Y
+        } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::LEFT_CENTERY || position.getReferencePoint() == RefPoint::RIGHT_CENTERY) { //center Y
             startPosition -= (int)((float)getHeight() / 2.0f);
         }
 

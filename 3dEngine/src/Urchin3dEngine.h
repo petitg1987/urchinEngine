@@ -35,6 +35,7 @@
 #include <scene/ui/widget/sequence/Sequence.h>
 #include <scene/ui/widget/slider/Slider.h>
 #include <scene/ui/widget/checkbox/CheckBox.h>
+#include <scene/ui/animation/AnimationTranslate.h>
 
 #include <i18n/LabelTranslator.h>
 
