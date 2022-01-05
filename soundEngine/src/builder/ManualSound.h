@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+
 #include <SoundEnvironment.h>
 #include <sound/global/GlobalSound.h>
 #include <trigger/ManualTrigger.h>
