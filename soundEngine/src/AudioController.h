@@ -7,6 +7,7 @@
 #include <trigger/SoundTrigger.h>
 #include <player/AudioPlayer.h>
 #include <player/stream/StreamUpdateWorker.h>
+#include <SoundComponent.h>
 
 namespace urchin {
 
@@ -15,7 +16,8 @@ namespace urchin {
     */
     class AudioController {
         public:
-            AudioController(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>, StreamUpdateWorker&);
+            AudioController(std::shared_ptr<SoundComponent>, StreamUpdateWorker&);
+            AudioController(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>, StreamUpdateWorker&); //TODO remove ?
             ~AudioController();
 
             Sound& getSound() const;
@@ -30,8 +32,7 @@ namespace urchin {
         private:
             void processTriggerValue(SoundTrigger::TriggerAction);
 
-            std::shared_ptr<Sound> sound;
-            std::shared_ptr<SoundTrigger> soundTrigger;
+            std::shared_ptr<SoundComponent> soundComponent;
             StreamUpdateWorker& streamUpdateWorker;
 
             std::vector<std::unique_ptr<AudioPlayer>> audioPlayers;

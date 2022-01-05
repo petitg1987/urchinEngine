@@ -52,6 +52,19 @@ namespace urchin {
         }
     }
 
+    void SoundEnvironment::addSoundComponent(std::shared_ptr<SoundComponent> soundComponent) {
+        ScopeProfiler sp(Profiler::sound(), "addSoundComponent");
+
+        audioControllers.push_back(std::make_unique<AudioController>(std::move(soundComponent), streamUpdateWorker));
+    }
+
+    void SoundEnvironment::removeSoundComponent(const SoundComponent& soundComponent) {
+        std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const std::unique_ptr<AudioController>& ac){ return &ac->getSound() == &soundComponent.getSound(); });
+        if (erasedCount != 1) {
+            throw std::runtime_error("Removing the sound component fail: " + soundComponent.getSound().getFilename());
+        }
+    }
+
     void SoundEnvironment::setupSoundsVolume(Sound::SoundCategory soundCategory, float volumePercentageChange) {
         soundVolumes[soundCategory] = volumePercentageChange;
     }

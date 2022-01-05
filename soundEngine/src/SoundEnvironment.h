@@ -10,6 +10,7 @@
 #include <sound/Sound.h>
 #include <trigger/SoundTrigger.h>
 #include <player/stream/StreamUpdateWorker.h>
+#include <SoundComponent.h>
 
 namespace urchin {
 
@@ -18,9 +19,13 @@ namespace urchin {
             SoundEnvironment();
             ~SoundEnvironment();
 
+            //TODO remove / update
             void addSound(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
             void removeSound(const Sound&);
             void changeSoundTrigger(const Sound&, std::shared_ptr<SoundTrigger>);
+
+            void addSoundComponent(std::shared_ptr<SoundComponent>);
+            void removeSoundComponent(const SoundComponent&);
 
             void setupSoundsVolume(Sound::SoundCategory, float);
             void setMasterVolume(float);
