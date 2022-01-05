@@ -6,6 +6,7 @@
 
 #include <UrchinCommon.h>
 #include <panel/sounds/dialog/NewSoundDialog.h>
+#include <panel/sounds/soundshape/support/DefaultSoundShapeCreator.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
@@ -24,9 +25,10 @@ namespace urchin {
             soundTypeComboBox(nullptr),
             soundCategoryComboBox(nullptr),
             initialVolumeSpinBox(nullptr),
+            soundTriggerTypeComboBox(nullptr),
             soundEntity(nullptr) {
         this->setWindowTitle("New Sound");
-        this->resize(530, 200);
+        this->resize(530, 240);
         this->setFixedSize(this->width(), this->height());
 
         auto* mainLayout = new QGridLayout(this);
@@ -37,9 +39,10 @@ namespace urchin {
         setupSoundTypeFields(mainLayout);
         setupSoundCategoryFields(mainLayout);
         setupSoundInitialVolume(mainLayout);
+        setupSoundTriggerTypeFields(mainLayout);
 
         auto* buttonBox = new QDialogButtonBox();
-        mainLayout->addWidget(buttonBox, 5, 0, 1, 3, Qt::AlignRight);
+        mainLayout->addWidget(buttonBox, 6, 0, 1, 3, Qt::AlignRight);
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -95,7 +98,7 @@ namespace urchin {
     }
 
     void NewSoundDialog::setupSoundInitialVolume(QGridLayout* mainLayout) {
-        auto* soundInitialVolumeLabel= new QLabel("Initial volume:");
+        auto* soundInitialVolumeLabel= new QLabel("Initial Volume:");
         mainLayout->addWidget(soundInitialVolumeLabel, 4, 0);
 
         initialVolumeSpinBox = new QDoubleSpinBox();
@@ -103,6 +106,17 @@ namespace urchin {
         SpinBoxStyleHelper::applyDefaultStyleOn(initialVolumeSpinBox);
         initialVolumeSpinBox->setMinimum(0.0);
         initialVolumeSpinBox->setValue(1.0);
+    }
+
+    void NewSoundDialog::setupSoundTriggerTypeFields(QGridLayout* mainLayout) {
+        auto* soundTriggerTypeLabel = new QLabel("Trigger Type:");
+        mainLayout->addWidget(soundTriggerTypeLabel, 5, 0);
+
+        soundTriggerTypeComboBox = new QComboBox();
+        mainLayout->addWidget(soundTriggerTypeComboBox, 5, 1);
+        soundTriggerTypeComboBox->setFixedWidth(150);
+        soundTriggerTypeComboBox->addItem(MANUAL_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::MANUAL_TRIGGER));
+        soundTriggerTypeComboBox->addItem(ZONE_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::ZONE_TRIGGER));
     }
 
     void NewSoundDialog::updateSoundName() {
@@ -138,8 +152,17 @@ namespace urchin {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }
 
-            auto soundTrigger = std::make_shared<ManualTrigger>(PlayBehavior::PLAY_ONCE);
-            //TODO allow to choose sound trigger type !
+            QVariant variant = soundTriggerTypeComboBox->currentData();
+            auto triggerType = static_cast<SoundTrigger::TriggerType>(variant.toInt());
+            std::shared_ptr<SoundTrigger> soundTrigger;
+            if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
+                soundTrigger = std::make_shared<ManualTrigger>(PlayBehavior::PLAY_ONCE);
+            } else if (triggerType == SoundTrigger::ZONE_TRIGGER) {
+                auto newDefaultShape = DefaultSoundShapeCreator(*sound).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
+                soundTrigger = std::make_shared<ZoneTrigger>(PlayBehavior::PLAY_ONCE, std::move(newDefaultShape));
+            } else {
+                throw std::invalid_argument("Unknown the trigger type to create a new sound trigger: " + std::to_string(triggerType));
+            }
 
             soundEntity->setSoundComponent(std::make_unique<SoundComponent>(sound, soundTrigger));
         } catch (const std::exception& e) {
@@ -149,7 +172,6 @@ namespace urchin {
 
         return result;
     }
-
 
     std::unique_ptr<SoundEntity> NewSoundDialog::moveSoundEntity() {
         return std::move(soundEntity);

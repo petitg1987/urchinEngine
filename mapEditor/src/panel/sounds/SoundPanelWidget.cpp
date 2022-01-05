@@ -6,7 +6,6 @@
 #include <widget/style/ButtonStyleHelper.h>
 #include <widget/style/FrameStyleHelper.h>
 #include <panel/sounds/dialog/NewSoundDialog.h>
-#include <panel/sounds/dialog/ChangeSoundTriggerDialog.h>
 #include <panel/sounds/dialog/ChangeSoundShapeDialog.h>
 #include <panel/sounds/soundshape/SoundShapeWidgetRetriever.h>
 
@@ -299,12 +298,12 @@ namespace urchin {
 
     void SoundPanelWidget::setupManualTriggerDataFrom() {
         specificZoneTriggerGroupBox->hide();
-        soundTriggerType->setText(ChangeSoundTriggerDialog::MANUAL_TRIGGER_LABEL);
+        soundTriggerType->setText(NewSoundDialog::MANUAL_TRIGGER_LABEL);
     }
 
     void SoundPanelWidget::setupShapeTriggerDataFrom(const SoundEntity& soundEntity) {
         specificZoneTriggerGroupBox->show();
-        soundTriggerType->setText(ChangeSoundTriggerDialog::ZONE_TRIGGER_LABEL);
+        soundTriggerType->setText(NewSoundDialog::ZONE_TRIGGER_LABEL);
 
         auto& soundShape = soundEntity.getSoundComponent()->getZoneTrigger().getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
@@ -371,19 +370,6 @@ namespace urchin {
             auto playBehavior = static_cast<PlayBehavior>(playVariant.toInt());
 
             soundController->updateSoundTriggerGeneralProperties(soundEntity, playBehavior);
-        }
-    }
-
-    void SoundPanelWidget::showChangeSoundTriggerDialog() { //TODO remove
-        ChangeSoundTriggerDialog changeSoundTriggerDialog(this);
-        changeSoundTriggerDialog.exec();
-
-        if (changeSoundTriggerDialog.result() == QDialog::Accepted) {
-            const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
-            SoundTrigger::TriggerType triggerType = changeSoundTriggerDialog.getTriggerType();
-
-            soundController->changeSoundTrigger(soundEntity, triggerType);
-            setupSoundDataFrom(soundEntity);
         }
     }
 

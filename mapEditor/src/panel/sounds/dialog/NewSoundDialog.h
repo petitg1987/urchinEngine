@@ -20,6 +20,8 @@ namespace urchin {
             static constexpr char SPATIAL_SOUND_LABEL[] = "Spatial";
             static constexpr char MUSIC_SOUND_LABEL[] = "Music";
             static constexpr char EFFECTS_SOUND_LABEL[] = "Effect";
+            static constexpr char MANUAL_TRIGGER_LABEL[] = "Manual";
+            static constexpr char ZONE_TRIGGER_LABEL[] = "Zone";
 
             NewSoundDialog(QWidget*, const SoundController*);
 
@@ -31,6 +33,7 @@ namespace urchin {
             void setupSoundTypeFields(QGridLayout*);
             void setupSoundCategoryFields(QGridLayout*);
             void setupSoundInitialVolume(QGridLayout*);
+            void setupSoundTriggerTypeFields(QGridLayout*);
 
             void updateSoundName();
             int buildSoundEntity(int);
@@ -47,6 +50,7 @@ namespace urchin {
             QComboBox* soundTypeComboBox;
             QComboBox* soundCategoryComboBox;
             QDoubleSpinBox* initialVolumeSpinBox;
+            QComboBox* soundTriggerTypeComboBox;
 
             std::string soundName;
             std::string soundFilename;

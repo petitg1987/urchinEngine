@@ -32,31 +32,12 @@ namespace urchin {
 
         markModified();
     }
-
-    void SoundController::changeSoundTrigger(const SoundEntity& constSoundEntity, SoundTrigger::TriggerType triggerType) { //TODO remove
-        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        const SoundTrigger& soundTrigger = soundEntity.getSoundComponent()->getSoundTrigger();
-
-        std::shared_ptr<SoundTrigger> newSoundTrigger;
-        if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
-            newSoundTrigger = std::make_shared<ManualTrigger>(soundTrigger.getPlayBehavior());
-        } else if (triggerType == SoundTrigger::ZONE_TRIGGER) {
-            auto newDefaultShape = DefaultSoundShapeCreator(constSoundEntity).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
-            newSoundTrigger = std::make_shared<ZoneTrigger>(soundTrigger.getPlayBehavior(), std::move(newDefaultShape));
-        } else {
-            throw std::invalid_argument("Impossible to change of trigger type: " + std::to_string(triggerType));
-        }
-
-        //soundEntity.changeSoundTrigger(newSoundTrigger);
-
-        markModified();
-    }
-
+    
     void SoundController::changeSoundShape(const SoundEntity& constSoundEntity, SoundShape::ShapeType shapeType) {
         SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         ZoneTrigger& zoneTrigger = soundEntity.getSoundComponent()->getZoneTrigger();
 
-        auto newShape = DefaultSoundShapeCreator(constSoundEntity).createDefaultSoundShape(shapeType);
+        auto newShape = DefaultSoundShapeCreator(constSoundEntity.getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
         zoneTrigger.setSoundShape(std::move(newShape));
 
         markModified();
