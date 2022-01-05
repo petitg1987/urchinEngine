@@ -21,7 +21,7 @@
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
   * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#detachModelFromDisplayer() for models not displayed for a long time
-  * **OPTIMIZATION** (`major`): Parallelize the creation of the ModelDisplayer
+  * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
@@ -96,7 +96,8 @@
 # Sound engine
 * Sound trigger
   * **NEW FEATURE** (`medium`): Support convex hull sound shape
-  * **NEW FEATURE** (`major`): Support portal IN and portal OUT to trigger sound
+  * **NEW FEATURE** (`medium`): Support portal IN and portal OUT to trigger sound
+  * **NEW FEATURE** (`major`): Review spatial sound creation to avoid manual creation of the sphere shape trigger matching the spatial sound properties
 * Listener    
   * **NEW FEATURE** (`minor`): Define a velocity to the listener
 
