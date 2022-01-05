@@ -130,6 +130,7 @@ namespace urchin {
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
         auto* inaudibleDistanceLabel= new QLabel("Inau. Dist.:");
+        inaudibleDistanceLabel->setToolTip("Inaudible Distance");
         spatialSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
 
         inaudibleDistance = new QDoubleSpinBox();
