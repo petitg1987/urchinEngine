@@ -10,7 +10,7 @@ namespace urchin {
         public:
             enum TriggerType {
                 MANUAL_TRIGGER,
-                SHAPE_TRIGGER
+                ZONE_TRIGGER
             };
 
             enum TriggerAction {

@@ -16,7 +16,7 @@ namespace urchin {
 
         public:
             static constexpr char MANUAL_TRIGGER_LABEL[] = "Manual";
-            static constexpr char SHAPE_TRIGGER_LABEL[] = "Shape";
+            static constexpr char ZONE_TRIGGER_LABEL[] = "Zone";
 
             explicit ChangeSoundTriggerDialog(QWidget*);
 

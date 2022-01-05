@@ -1,18 +1,18 @@
-#include <trigger/ShapeTrigger.h>
+#include <trigger/ZoneTrigger.h>
 
 namespace urchin {
 
     /**
      * @param soundShape Delimited shape which trigger the sound play
      */
-    ShapeTrigger::ShapeTrigger(PlayBehavior playBehavior, std::unique_ptr<const SoundShape> soundShape) :
-            SoundTrigger(SoundTrigger::SHAPE_TRIGGER, playBehavior),
+    ZoneTrigger::ZoneTrigger(PlayBehavior playBehavior, std::unique_ptr<const SoundShape> soundShape) :
+            SoundTrigger(SoundTrigger::ZONE_TRIGGER, playBehavior),
             soundShape(std::move(soundShape)),
             isPlaying(false) {
 
     }
 
-    const std::vector<SoundTrigger::TriggerAction>& ShapeTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
+    const std::vector<SoundTrigger::TriggerAction>& ZoneTrigger::evaluateTrigger(const Point3<float>& listenerPosition) {
         triggerActions.clear();
 
         if (!isPlaying && soundShape->pointInsidePlayShape(listenerPosition)) {
@@ -32,7 +32,7 @@ namespace urchin {
         return triggerActions;
     }
 
-    const SoundShape& ShapeTrigger::getSoundShape() const {
+    const SoundShape& ZoneTrigger::getSoundShape() const {
         return *soundShape;
     }
 

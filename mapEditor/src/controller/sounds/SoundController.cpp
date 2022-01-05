@@ -40,9 +40,9 @@ namespace urchin {
         std::shared_ptr<SoundTrigger> newSoundTrigger;
         if (triggerType == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = std::make_shared<ManualTrigger>(soundTrigger->getPlayBehavior());
-        } else if (triggerType == SoundTrigger::SHAPE_TRIGGER) {
+        } else if (triggerType == SoundTrigger::ZONE_TRIGGER) {
             auto newDefaultShape = DefaultSoundShapeCreator(constSoundEntity).createDefaultSoundShape(SoundShape::SPHERE_SHAPE);
-            newSoundTrigger = std::make_shared<ShapeTrigger>(soundTrigger->getPlayBehavior(), std::move(newDefaultShape));
+            newSoundTrigger = std::make_shared<ZoneTrigger>(soundTrigger->getPlayBehavior(), std::move(newDefaultShape));
         } else {
             throw std::invalid_argument("Impossible to change of trigger type: " + std::to_string(triggerType));
         }
@@ -57,7 +57,7 @@ namespace urchin {
         const SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
 
         auto newShape = DefaultSoundShapeCreator(constSoundEntity).createDefaultSoundShape(shapeType);
-        auto newSoundTrigger = std::make_shared<ShapeTrigger>(soundTrigger->getPlayBehavior(), std::move(newShape));
+        auto newSoundTrigger = std::make_shared<ZoneTrigger>(soundTrigger->getPlayBehavior(), std::move(newShape));
 
         soundEntity.changeSoundTrigger(newSoundTrigger);
 
@@ -76,17 +76,17 @@ namespace urchin {
         return soundEntity;
     }
 
-    const SoundEntity& SoundController::updateSoundTriggerGeneralProperties(const SoundEntity& constSoundEntity, SoundTrigger::PlayBehavior playBehavior) {
+    const SoundEntity& SoundController::updateSoundTriggerGeneralProperties(const SoundEntity& constSoundEntity, PlayBehavior playBehavior) {
         SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         SoundTrigger* soundTrigger = soundEntity.getSoundTrigger();
 
         std::shared_ptr<SoundTrigger> newSoundTrigger;
         if (soundTrigger->getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             newSoundTrigger = std::make_shared<ManualTrigger>(playBehavior);
-        } else if (soundTrigger->getTriggerType() == SoundTrigger::SHAPE_TRIGGER) {
-            const auto* shapeTrigger = static_cast<ShapeTrigger*>(soundTrigger);
-            auto clonedShape = shapeTrigger->getSoundShape().clone();
-            newSoundTrigger = std::make_shared<ShapeTrigger>(playBehavior, std::move(clonedShape));
+        } else if (soundTrigger->getTriggerType() == SoundTrigger::ZONE_TRIGGER) {
+            const auto* zoneTrigger = static_cast<ZoneTrigger*>(soundTrigger);
+            auto clonedShape = zoneTrigger->getSoundShape().clone();
+            newSoundTrigger = std::make_shared<ZoneTrigger>(playBehavior, std::move(clonedShape));
         } else {
             throw std::invalid_argument("Impossible to update sound trigger because unknown trigger type: " + std::to_string(soundTrigger->getTriggerType()));
         }
@@ -99,9 +99,9 @@ namespace urchin {
 
     const SoundEntity& SoundController::updateSoundShape(const SoundEntity& constSoundEntity, std::unique_ptr<const SoundShape> newSoundShape) {
         SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        const auto* shapeTrigger = static_cast<ShapeTrigger*>(soundEntity.getSoundTrigger());
+        const auto* zoneTrigger = static_cast<ZoneTrigger*>(soundEntity.getSoundTrigger());
 
-        auto newShapeTrigger = std::make_shared<ShapeTrigger>(shapeTrigger->getPlayBehavior(), std::move(newSoundShape));
+        auto newShapeTrigger = std::make_shared<ZoneTrigger>(zoneTrigger->getPlayBehavior(), std::move(newSoundShape));
         soundEntity.changeSoundTrigger(newShapeTrigger);
 
         markModified();

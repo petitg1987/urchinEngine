@@ -21,12 +21,12 @@ namespace urchin {
             std::unique_ptr<ManualSpatialSound> newManualSpatialMusic(std::string, const Point3<float>&, float, PlayBehavior);
 
             //usage example: user reach end of level and the success sound is played
-            std::unique_ptr<ZoneSound> newZoneEffect(std::string, std::shared_ptr<ShapeTrigger>);
-            std::unique_ptr<ZoneSound> newZoneMusic(std::string, std::shared_ptr<ShapeTrigger>);
+            std::unique_ptr<ZoneSound> newZoneEffect(std::string, std::shared_ptr<ZoneTrigger>);
+            std::unique_ptr<ZoneSound> newZoneMusic(std::string, std::shared_ptr<ZoneTrigger>);
 
             //usage examples: machine making noise, radio playing musics
-            std::unique_ptr<ZoneSpatialSound> newZoneSpatialEffect(std::string, const Point3<float>&, float, std::shared_ptr<ShapeTrigger>);
-            std::unique_ptr<ZoneSpatialSound> newZoneSpatialMusic(std::string, const Point3<float>&, float, std::shared_ptr<ShapeTrigger>);
+            std::unique_ptr<ZoneSpatialSound> newZoneSpatialEffect(std::string, const Point3<float>&, float, std::shared_ptr<ZoneTrigger>);
+            std::unique_ptr<ZoneSpatialSound> newZoneSpatialMusic(std::string, const Point3<float>&, float, std::shared_ptr<ZoneTrigger>);
 
         private:
             SoundEnvironment& soundEnvironment;

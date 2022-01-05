@@ -19,7 +19,7 @@ namespace urchin {
             removeSoundButton(nullptr),
             soundPropertiesGroupBox(nullptr),
             soundTriggerGroupBox(nullptr),
-            specificTriggerShapeGroupBox(nullptr),
+            specificZoneTriggerGroupBox(nullptr),
             specificSpatialSoundGroupBox(nullptr),
             disableSoundEvent(false),
             soundType(nullptr),
@@ -75,7 +75,7 @@ namespace urchin {
 
         auto* soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
         setupSoundTriggerGeneralPropertiesBox(soundTriggerLayout);
-        setupSpecificTriggerShapeBox(soundTriggerLayout);
+        setupSpecificZoneTriggerBox(soundTriggerLayout);
     }
 
     void SoundPanelWidget::setupSoundGeneralPropertiesBox(QVBoxLayout* soundPropertiesLayout) {
@@ -153,8 +153,8 @@ namespace urchin {
 
         playBehavior = new QComboBox();
         generalLayout->addWidget(playBehavior, 0, 1, 1, 3);
-        playBehavior->addItem(PLAY_ONCE_LABEL, QVariant(SoundTrigger::PLAY_ONCE));
-        playBehavior->addItem(PLAY_LOOP_LABEL, QVariant(SoundTrigger::PLAY_LOOP));
+        playBehavior->addItem(PLAY_ONCE_LABEL, QVariant((int)PlayBehavior::PLAY_ONCE));
+        playBehavior->addItem(PLAY_LOOP_LABEL, QVariant((int)PlayBehavior::PLAY_LOOP));
         connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundTriggerProperties()));
 
         auto* soundTriggerTypeLabel= new QLabel("Trigger:");
@@ -169,13 +169,13 @@ namespace urchin {
         connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
     }
 
-    void SoundPanelWidget::setupSpecificTriggerShapeBox(QVBoxLayout* soundTriggerLayout) {
-        specificTriggerShapeGroupBox = new QGroupBox("Trigger Shape");
-        soundTriggerLayout->addWidget(specificTriggerShapeGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificTriggerShapeGroupBox);
-        specificTriggerShapeGroupBox->hide();
+    void SoundPanelWidget::setupSpecificZoneTriggerBox(QVBoxLayout* soundTriggerLayout) {
+        specificZoneTriggerGroupBox = new QGroupBox("Zone Trigger");
+        soundTriggerLayout->addWidget(specificZoneTriggerGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificZoneTriggerGroupBox);
+        specificZoneTriggerGroupBox->hide();
 
-        triggerShapeLayout = new QVBoxLayout(specificTriggerShapeGroupBox);
+        triggerShapeLayout = new QVBoxLayout(specificZoneTriggerGroupBox);
 
         auto* shapeTypeLayout = new QHBoxLayout();
         shapeTypeLayout->setAlignment(Qt::AlignLeft);
@@ -268,7 +268,7 @@ namespace urchin {
 
         if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::MANUAL_TRIGGER) {
             setupManualTriggerDataFrom();
-        } else if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::SHAPE_TRIGGER) {
+        } else if (soundTrigger->getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
             setupShapeTriggerDataFrom(soundEntity);
         } else {
             throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger->getTriggerType()));
@@ -296,23 +296,23 @@ namespace urchin {
     }
 
     void SoundPanelWidget::setupPlayBehaviorDataFrom(const SoundTrigger* soundTrigger) {
-        int playBehaviorIndex = playBehavior->findData(soundTrigger->getPlayBehavior());
+        int playBehaviorIndex = playBehavior->findData((int)soundTrigger->getPlayBehavior());
         if (playBehaviorIndex != -1) {
             playBehavior->setCurrentIndex(playBehaviorIndex);
         }
     }
 
     void SoundPanelWidget::setupManualTriggerDataFrom() {
-        specificTriggerShapeGroupBox->hide();
+        specificZoneTriggerGroupBox->hide();
         soundTriggerType->setText(ChangeSoundTriggerDialog::MANUAL_TRIGGER_LABEL);
     }
 
     void SoundPanelWidget::setupShapeTriggerDataFrom(const SoundEntity& soundEntity) {
-        specificTriggerShapeGroupBox->show();
-        soundTriggerType->setText(ChangeSoundTriggerDialog::SHAPE_TRIGGER_LABEL);
+        specificZoneTriggerGroupBox->show();
+        soundTriggerType->setText(ChangeSoundTriggerDialog::ZONE_TRIGGER_LABEL);
 
-        const auto* shapeTrigger = static_cast<const ShapeTrigger*>(soundEntity.getSoundTrigger());
-        auto& soundShape = shapeTrigger->getSoundShape();
+        const auto* zoneTrigger = static_cast<const ZoneTrigger*>(soundEntity.getSoundTrigger());
+        auto& soundShape = zoneTrigger->getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 
@@ -374,7 +374,7 @@ namespace urchin {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
 
             QVariant playVariant = playBehavior->currentData();
-            auto playBehavior = static_cast<SoundTrigger::PlayBehavior>(playVariant.toInt());
+            auto playBehavior = static_cast<PlayBehavior>(playVariant.toInt());
 
             soundController->updateSoundTriggerGeneralProperties(soundEntity, playBehavior);
         }

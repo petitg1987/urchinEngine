@@ -21,7 +21,7 @@ namespace urchin {
             void changeSoundShape(const SoundEntity&, SoundShape::ShapeType);
 
             const SoundEntity& updateSpatialSoundProperties(const SoundEntity&, const Point3<float>&, float);
-            const SoundEntity& updateSoundTriggerGeneralProperties(const SoundEntity&, SoundTrigger::PlayBehavior);
+            const SoundEntity& updateSoundTriggerGeneralProperties(const SoundEntity&, PlayBehavior);
             const SoundEntity& updateSoundShape(const SoundEntity&, std::unique_ptr<const SoundShape>);
 
         private:

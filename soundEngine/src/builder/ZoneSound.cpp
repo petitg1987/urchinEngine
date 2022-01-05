@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    ZoneSound::ZoneSound(SoundEnvironment& soundEnvironment, std::shared_ptr<GlobalSound> sound, std::shared_ptr<ShapeTrigger> trigger) :
+    ZoneSound::ZoneSound(SoundEnvironment& soundEnvironment, std::shared_ptr<GlobalSound> sound, std::shared_ptr<ZoneTrigger> trigger) :
             soundEnvironment(soundEnvironment),
             sound(std::move(sound)),
             trigger(std::move(trigger)) {
@@ -17,7 +17,7 @@ namespace urchin {
         return *sound;
     }
 
-    ShapeTrigger& ZoneSound::getTrigger() const {
+    ZoneTrigger& ZoneSound::getTrigger() const {
         return *trigger;
     }
 

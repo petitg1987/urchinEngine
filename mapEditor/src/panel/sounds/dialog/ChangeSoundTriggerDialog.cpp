@@ -37,7 +37,7 @@ namespace urchin {
         mainLayout->addWidget(soundTriggerTypeComboBox, 0, 1);
         soundTriggerTypeComboBox->setFixedWidth(150);
         soundTriggerTypeComboBox->addItem(MANUAL_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::MANUAL_TRIGGER));
-        soundTriggerTypeComboBox->addItem(SHAPE_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::SHAPE_TRIGGER));
+        soundTriggerTypeComboBox->addItem(ZONE_TRIGGER_LABEL, QVariant(SoundTrigger::TriggerType::ZONE_TRIGGER));
     }
 
     void ChangeSoundTriggerDialog::done(int r) {
