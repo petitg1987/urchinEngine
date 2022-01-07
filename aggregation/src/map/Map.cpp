@@ -54,6 +54,15 @@ namespace urchin {
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, models);
     }
 
+    ObjectEntity* Map::findObjectEntityByTag(const std::string& tag) const {
+        tmpObjectEntities.clear();
+        objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, tmpObjectEntities);
+        if (tmpObjectEntities.size() != 1) {
+            throw std::runtime_error("Impossible to find an unique object entity (" + std::to_string(tmpObjectEntities.size()) + " found) with tag: " + tag);
+        }
+        return tmpObjectEntities[0];
+    }
+
     ObjectEntity& Map::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
         objectEntity->setup(renderer3d, physicsWorld, aiEnvironment);
         objectEntitiesTagHolder.addTaggableResource(*objectEntity);

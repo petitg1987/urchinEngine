@@ -33,6 +33,7 @@ namespace urchin {
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
             ObjectEntity& getObjectEntity(const std::string&) const;
             void findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const;
+            ObjectEntity* findObjectEntityByTag(const std::string&) const;
             ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(ObjectEntity&);
 
@@ -72,6 +73,7 @@ namespace urchin {
             std::string relativeWorkingDirectory;
 
             TagHolder objectEntitiesTagHolder;
+            mutable std::vector<ObjectEntity*> tmpObjectEntities;
             std::list<std::unique_ptr<ObjectEntity>> objectEntities;
             std::list<std::unique_ptr<LightEntity>> lightEntities;
             std::list<std::unique_ptr<TerrainEntity>> terrainEntities;
