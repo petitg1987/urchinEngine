@@ -4,48 +4,65 @@
 namespace urchin {
 
     Container::Container(Position position, Size size, std::string skinName) :
-            Widget(position, size),
-            skinName(std::move(skinName)) {
-        scrollbar = std::make_unique<Scrollbar>(*this, this->skinName);
+            Widget(position, size) {
+        if (!skinName.empty()) {
+            scrollbar = std::make_unique<Scrollbar>(*this, std::move(skinName));
+        }
     }
 
-    std::shared_ptr<Container> Container::create(Widget* parent, Position position, Size size, std::string skinName) {
+    std::shared_ptr<Container> Container::create(Widget* parent, Position position, Size size) {
+        return Widget::create<Container>(new Container(position, size, ""), parent);
+    }
+
+    std::shared_ptr<Container> Container::createScrollable(Widget* parent, Position position, Size size, std::string skinName) {
         return Widget::create<Container>(new Container(position, size, std::move(skinName)), parent);
     }
 
     void Container::onResize() {
         Widget::onResize();
-        scrollbar->onScrollableWidgetsUpdated();
+        if (scrollbar) {
+            scrollbar->onScrollableWidgetsUpdated();
+        }
     }
 
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
-        scrollbar->onScrollableWidgetsUpdated();
+        if (scrollbar) {
+            scrollbar->onScrollableWidgetsUpdated();
+        }
     }
 
     void Container::detachChild(Widget* child){
         Widget::detachChild(child);
-        scrollbar->onScrollableWidgetsUpdated();
+        if (scrollbar) {
+            scrollbar->onScrollableWidgetsUpdated();
+        }
     }
 
     void Container::detachChildren() {
         Widget::detachChildren();
-
-        scrollbar->onScrollableWidgetsUpdated();
+        if (scrollbar) {
+            scrollbar->onScrollableWidgetsUpdated();
+        }
     }
 
     void Container::resetChildren() {
         std::vector<std::shared_ptr<Widget>> copyChildren = getChildren();
         for (const auto& child : copyChildren) {
-            if (!scrollbar->isScrollbarWidget(child.get())) {
+            if (!scrollbar || !scrollbar->isScrollbarWidget(child.get())) {
                 Widget::detachChild(child.get());
             }
         }
-        scrollbar->onScrollableWidgetsUpdated();
+        if (scrollbar) {
+            scrollbar->onScrollableWidgetsUpdated();
+        }
     }
 
     int Container::getScrollShiftY() const {
-        return scrollbar->getScrollShiftY();
+        if (scrollbar) {
+            return scrollbar->getScrollShiftY();
+        }
+        return 0;
     }
 
     void Container::onScrollableContentUpdated() const {
@@ -62,23 +79,37 @@ namespace urchin {
     }
 
     void Container::createOrUpdateWidget() {
-        scrollbar->initializeOrUpdate();
+        if (scrollbar) {
+            scrollbar->initializeOrUpdate();
+        }
     }
 
     bool Container::onKeyPressEvent(unsigned int key) {
-        return scrollbar->onKeyPressEvent(key);
+        if (scrollbar) {
+            return scrollbar->onKeyPressEvent(key);
+        }
+        return true;
     }
 
     bool Container::onKeyReleaseEvent(unsigned int key) {
-        return scrollbar->onKeyReleaseEvent(key);
+        if (scrollbar) {
+            return scrollbar->onKeyReleaseEvent(key);
+        }
+        return true;
     }
 
     bool Container::onMouseMoveEvent(int mouseX, int mouseY) {
-        return scrollbar->onMouseMoveEvent(mouseX, mouseY);
+        if (scrollbar) {
+            return scrollbar->onMouseMoveEvent(mouseX, mouseY);
+        }
+        return true;
     }
 
     bool Container::onScrollEvent(double offsetY) {
-        return scrollbar->onScrollEvent(offsetY);
+        if (scrollbar) {
+            return scrollbar->onScrollEvent(offsetY);
+        }
+        return true;
     }
 
 }

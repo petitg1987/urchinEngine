@@ -13,7 +13,8 @@ namespace urchin {
      */
     class Container : public Widget, public Scrollable {
         public:
-            static std::shared_ptr<Container> create(Widget*, Position, Size, std::string);
+            static std::shared_ptr<Container> create(Widget*, Position, Size);
+            static std::shared_ptr<Container> createScrollable(Widget*, Position, Size, std::string);
 
             void onResize() override;
 
@@ -35,7 +36,6 @@ namespace urchin {
             bool onScrollEvent(double) override;
 
         private:
-            const std::string skinName;
             std::unique_ptr<Scrollbar> scrollbar;
     };
 
