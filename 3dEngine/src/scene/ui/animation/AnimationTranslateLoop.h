@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    class AnimationTranslate : public UIAnimation {
+    class AnimationTranslateLoop : public UIAnimation {
         public:
-            AnimationTranslate(Widget&, const Point2<float>&, const Point2<float>&, float);
+            AnimationTranslateLoop(Widget&, const Point2<float>&, const Point2<float>&, float);
 
             void animate(float) override;
             bool isCompleted() const override;
@@ -16,6 +16,7 @@ namespace urchin {
             Point2<float> end;
             float animationSpeed;
 
+            bool startToEnd;
             float progression;
     };
 
