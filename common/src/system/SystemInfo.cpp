@@ -1,4 +1,3 @@
-#include <locale>
 #include <functional>
 #include <stdexcept>
 #ifdef _WIN32
@@ -233,24 +232,35 @@ namespace urchin {
 
     std::string SystemInfo::userLanguage() {
         try {
-            std::string userLocale = std::locale("").name();
-            Logger::instance().logInfo("User locale retrieved: " + userLocale);
+            #ifdef _WIN32
+                char locale[10];
+		        int localeLength = GetLocaleInfo(GetSystemDefaultUILanguage(), LOCALE_SISO639LANGNAME, locale, sizeof(locale));
+		        std::string userLocale(locale, (unsigned long)localeLength);
+                if (!userLocale.empty() && (int)userLocale[userLocale.size() - 1] == 0) {
+                    userLocale.resize(userLocale.size() - 1);
+                }
+                Logger::instance().logInfo("User locale retrieved: " + userLocale);
+                return userLocale;
+            #else
+                std::string userLocale = std::locale("").name();
+                Logger::instance().logInfo("User locale retrieved: " + userLocale);
 
-            const std::string LC_CTYPE_STR = "LC_CTYPE=";
-            if (std::count(userLocale.begin(), userLocale.end(), '_') == 1) { //format is probably: "en_US.UTF8"
-                std::size_t pos = userLocale.find('_');
-                if (pos == std::string::npos) {
-                    return "";
+                const std::string LC_CTYPE_STR = "LC_CTYPE=";
+                if (std::count(userLocale.begin(), userLocale.end(), '_') == 1) { //format is probably: "en_US.UTF8"
+                    std::size_t pos = userLocale.find('_');
+                    if (pos == std::string::npos) {
+                        return "";
+                    }
+                    return userLocale.substr(0, pos);
+                } else if (std::size_t cTypePos = userLocale.find(LC_CTYPE_STR); cTypePos != std::string::npos) { //format is probably: "LC_CTYPE=en_US.UTF-8;LC_NUMERIC=..."
+                    std::size_t cTypeValuePos = cTypePos + LC_CTYPE_STR.size();
+                    if (cTypeValuePos + 2 >= userLocale.size()) {
+                        return "";
+                    }
+                    return userLocale.substr(cTypeValuePos, 2);
                 }
-                return userLocale.substr(0, pos);
-            } else if (std::size_t cTypePos = userLocale.find(LC_CTYPE_STR); cTypePos != std::string::npos) { //format is probably: "LC_CTYPE=en_US.UTF-8;LC_NUMERIC=..."
-                std::size_t cTypeValuePos = cTypePos + LC_CTYPE_STR.size();
-                if (cTypeValuePos + 2 >= userLocale.size()) {
-                    return "";
-                }
-                return userLocale.substr(cTypeValuePos, 2);
-            }
-            return "";
+                return "";
+            #endif
         } catch (const std::runtime_error&) {
             return "";
         }

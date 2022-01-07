@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <stdexcept>
+#include <cctype>
 
 #include <util/StringUtil.h>
 
@@ -88,7 +89,7 @@ namespace urchin {
         }
 
         for (std::size_t i = 0; i < a.size(); ++i) {
-            if (tolower(a[i]) != tolower(b[i])) {
+            if (std::tolower(a[i]) != std::tolower(b[i])) {
                 return false;
             }
         }
