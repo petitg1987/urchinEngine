@@ -29,7 +29,7 @@ namespace urchin {
             orientationType(nullptr),
             eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
             scaleX(nullptr), scaleY(nullptr), scaleZ(nullptr),
-            produceShadowCheckBox(nullptr),
+            shadowClass(nullptr),
             tags(nullptr),
             hasRigidBody(nullptr),
             tabPhysicsRigidBody(nullptr),
@@ -81,7 +81,7 @@ namespace urchin {
         generalLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
         generalLayout->setContentsMargins(1, 1, 1, 1);
         setupTransformBox(generalLayout);
-        setupFlagsBox(generalLayout);
+        setupPropertiesBox(generalLayout);
         tabWidget->addTab(tabGeneral, "General");
 
         //physics properties
@@ -194,17 +194,25 @@ namespace urchin {
         connect(scaleZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
     }
 
-    void ObjectPanelWidget::setupFlagsBox(QVBoxLayout* generalLayout) {
-        auto* flagsGroupBox = new QGroupBox("Flags");
-        generalLayout->addWidget(flagsGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
-        flagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    void ObjectPanelWidget::setupPropertiesBox(QVBoxLayout* generalLayout) {
+        auto* propertiesGroupBox = new QGroupBox("Properties");
+        generalLayout->addWidget(propertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(propertiesGroupBox);
+        propertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        auto* flagsLayout = new QGridLayout(flagsGroupBox);
+        auto* propertiesLayout = new QGridLayout(propertiesGroupBox);
+        propertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        produceShadowCheckBox = new QCheckBox("Product Shadow");
-        flagsLayout->addWidget(produceShadowCheckBox);
-        connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateObjectFlags()));
+        auto* shadowClassLabel = new QLabel("Shadow class:");
+        propertiesLayout->addWidget(shadowClassLabel, 0, 0);
+
+        shadowClass = new QComboBox();
+        propertiesLayout->addWidget(shadowClass, 0, 1, 1, 3);
+        shadowClass->setFixedWidth(150);
+        shadowClass->addItem(RECEIVER_AND_CASTER_LABEL, QVariant(Model::ShadowClass::RECEIVER_AND_CASTER));
+        shadowClass->addItem(RECEIVER_ONLY_LABEL, QVariant(Model::ShadowClass::RECEIVER_ONLY));
+        shadowClass->addItem(NONE_LABEL, QVariant(Model::ShadowClass::NONE));
+        connect(shadowClass, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
     }
 
     void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
@@ -476,7 +484,10 @@ namespace urchin {
         this->scaleY->setValue(modelTransform.getScale().Y);
         this->scaleZ->setValue(modelTransform.getScale().Z);
 
-        this->produceShadowCheckBox->setChecked(model->isProduceShadow());
+        int shadowClassIndex = shadowClass->findData((int)model->getShadowClass());
+        if (shadowClassIndex != -1) {
+            shadowClass->setCurrentIndex(shadowClassIndex);
+        }
 
         setupObjectPhysicsDataFrom(objectEntity);
         setupObjectTagsDataFrom(objectEntity);
@@ -640,12 +651,13 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::updateObjectFlags() {
+    void ObjectPanelWidget::updateObjectProperties() {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
-            bool produceShadow = produceShadowCheckBox->checkState() == Qt::Checked;
-            objectController->updateObjectFlags(objectEntity, produceShadow);
+            QVariant variant = shadowClass->currentData();
+            auto shadowClassValue = static_cast<Model::ShadowClass>(variant.toInt());
+            objectController->updateObjectProperties(objectEntity, shadowClassValue);
         }
     }
 

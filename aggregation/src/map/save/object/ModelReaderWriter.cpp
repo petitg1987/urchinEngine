@@ -10,7 +10,7 @@ namespace urchin {
         auto model = Model::fromMeshesFile(meshesFilenameChunk->getStringValue());
         loadAnimations(*model, modelChunk, udaParser);
         loadTransform(*model, modelChunk, udaParser);
-        loadFlags(*model, modelChunk, udaParser);
+        loadProperties(*model, modelChunk, udaParser);
 
         return model;
     }
@@ -24,7 +24,7 @@ namespace urchin {
         }
         writeAnimations(modelChunk, model, udaWriter);
         writeTransform(modelChunk, model, udaWriter);
-        writeFlags(modelChunk, model, udaWriter);
+        writeProperties(modelChunk, model, udaWriter);
     }
 
     void ModelReaderWriter::loadAnimations(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
@@ -85,7 +85,7 @@ namespace urchin {
         scaleChunk.setVector3Value(model.getTransform().getScale());
     }
 
-    void ModelReaderWriter::loadFlags(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
+    void ModelReaderWriter::loadProperties(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
         auto shadowClassChunk = udaParser.getUniqueChunk(false, SHADOW_CLASS_TAG, UdaAttribute(), modelChunk);
         if (shadowClassChunk) {
             if (shadowClassChunk->getStringValue() == RECEIVER_AND_CASTER_VALUE) {
@@ -102,7 +102,7 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::writeFlags(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
+    void ModelReaderWriter::writeProperties(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
         auto& shadowClassChunk = udaWriter.createChunk(SHADOW_CLASS_TAG, UdaAttribute(), &modelChunk);
 
         if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {

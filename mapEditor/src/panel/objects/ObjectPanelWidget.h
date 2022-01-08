@@ -42,7 +42,7 @@ namespace urchin {
             void setupPosition(QGridLayout*);
             void setupOrientation(QGridLayout*);
             void setupScale(QGridLayout*);
-            void setupFlagsBox(QVBoxLayout*);
+            void setupPropertiesBox(QVBoxLayout*);
             void setupPhysicsBox(QVBoxLayout*);
             void setupPhysicsGeneralPropertiesBox(QVBoxLayout*);
             void setupPhysicsDampingPropertiesBox(QVBoxLayout*);
@@ -58,6 +58,10 @@ namespace urchin {
             BodyShapeWidget& createBodyShapeWidget(const CollisionShape3D&, const ObjectEntity&);
             BodyShapeWidget& createNoBodyShapeWidget(const ObjectEntity&);
             void setupBodyShapeWidget();
+
+            static constexpr char RECEIVER_AND_CASTER_LABEL[] = "Receiver & Caster";
+            static constexpr char RECEIVER_ONLY_LABEL[] = "Receiver only";
+            static constexpr char NONE_LABEL[] = "None";
 
             ObjectController* objectController;
 
@@ -80,7 +84,7 @@ namespace urchin {
             QDoubleSpinBox* scaleX;
             QDoubleSpinBox* scaleY;
             QDoubleSpinBox* scaleZ;
-            QCheckBox* produceShadowCheckBox;
+            QComboBox* shadowClass;
             QLineEdit* tags;
 
             //physics
@@ -111,7 +115,7 @@ namespace urchin {
             void updateObjectOrientationType();
             void updateObjectTransform();
             void updateObjectScale();
-            void updateObjectFlags();
+            void updateObjectProperties();
             void updateObjectTags();
 
             void showChangeBodyShapeDialog();

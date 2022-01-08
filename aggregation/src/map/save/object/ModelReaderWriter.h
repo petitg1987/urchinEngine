@@ -19,8 +19,8 @@ namespace urchin {
             static void loadTransform(Model&, const UdaChunk*, const UdaParser&);
             static void writeTransform(UdaChunk&, const Model&, UdaWriter&);
 
-            static void loadFlags(Model&, const UdaChunk*, const UdaParser&);
-            static void writeFlags(UdaChunk&, const Model&, UdaWriter&);
+            static void loadProperties(Model&, const UdaChunk*, const UdaParser&);
+            static void writeProperties(UdaChunk&, const Model&, UdaWriter&);
 
             static constexpr char MESHES_TAG[] = "meshes";
             static constexpr char FILENAME_TAG[] = "filename";

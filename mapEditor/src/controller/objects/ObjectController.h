@@ -26,7 +26,7 @@ namespace urchin {
             void removeBody(const ObjectEntity&);
 
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);
-            const ObjectEntity& updateObjectFlags(const ObjectEntity&, bool);
+            const ObjectEntity& updateObjectProperties(const ObjectEntity&, Model::ShadowClass);
             const ObjectEntity& updateObjectTags(const ObjectEntity&, const std::string&);
             const ObjectEntity& updateObjectPhysicsProperties(const ObjectEntity&, float, float, float, float, float, float,
                     const Vector3<float>&, const Vector3<float>&);

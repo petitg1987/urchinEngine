@@ -107,11 +107,11 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateObjectFlags(const ObjectEntity& constObjectEntity, bool produceShadow) {
+    const ObjectEntity& ObjectController::updateObjectProperties(const ObjectEntity& constObjectEntity, Model::ShadowClass shadowClass) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Model* model = objectEntity.getModel();
 
-        model->setProduceShadow(produceShadow);
+        model->setShadowClass(shadowClass);
 
         markModified();
         return objectEntity;
