@@ -107,9 +107,9 @@ namespace urchin {
 
         if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
             shadowClassChunk.setStringValue(RECEIVER_AND_CASTER_VALUE);
-        } else if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
+        } else if (model.getShadowClass() == Model::RECEIVER_ONLY) {
             shadowClassChunk.setStringValue(RECEIVER_ONLY_VALUE);
-        } else if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
+        } else if (model.getShadowClass() == Model::NONE) {
             shadowClassChunk.setStringValue(NONE_VALUE);
         } else {
             throw std::runtime_error("Unknown shadow class: " + std::to_string(model.getShadowClass()));
