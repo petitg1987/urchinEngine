@@ -21,6 +21,11 @@ namespace urchin {
                 MATERIAL_UPDATED,
                 SCALE_UPDATED
             };
+            enum ShadowClass {
+                RECEIVER_AND_CASTER, //Models which can receive and cast shadow
+                RECEIVER_ONLY, //Models which only receive shadow (e.g.: ground). Can provide better shadow quality.
+                NONE //Models which does not receive and cast shadow. Can improve performance.
+            };
 
             Model(const Model&);
             static std::unique_ptr<Model> fromMeshesFile(const std::string&);
@@ -50,8 +55,8 @@ namespace urchin {
             void setTransform(const Transform<float>&);
             const Transform<float>& getTransform() const override;
 
-            void setProduceShadow(bool);
-            bool isProduceShadow() const;
+            void setShadowClass(ShadowClass);
+            ShadowClass getShadowClass() const;
             bool isMeshUpdated() const;
 
             void updateAnimation(float);
@@ -82,7 +87,7 @@ namespace urchin {
             Transform<float> transform;
 
             //properties
-            bool bIsProduceShadow;
+            ShadowClass shadowClass;
             bool bIsMeshUpdated;
     };
 

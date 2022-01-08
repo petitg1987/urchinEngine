@@ -10,7 +10,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            bIsProduceShadow(true),
+            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
             bIsMeshUpdated(false) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
@@ -25,7 +25,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            bIsProduceShadow(true),
+            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
             bIsMeshUpdated(false) {
         initialize();
     }
@@ -37,7 +37,7 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
-            bIsProduceShadow(model.isProduceShadow()),
+            shadowClass(model.getShadowClass()),
             bIsMeshUpdated(model.isMeshUpdated()) {
         if (model.meshes) {
             meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
@@ -266,7 +266,7 @@ namespace urchin {
             this->transform = transform;
             onMoving(transform);
             if (scaleUpdated) {
-                notifyObservers(this, Model::SCALE_UPDATED);
+                notifyObservers(this, NotificationType::SCALE_UPDATED);
             }
         }
     }
@@ -275,15 +275,15 @@ namespace urchin {
         return transform;
     }
 
-    /**
-     * @param isProduceShadow Indicate whether model can produce shadow. The value should be generally set to false for ground to having better shadow rendering.
-     */
-    void Model::setProduceShadow(bool bIsProduceShadow) {
-        this->bIsProduceShadow = bIsProduceShadow;
+    void Model::setShadowClass(ShadowClass shadowClass) {
+        this->shadowClass = shadowClass;
     }
 
-    bool Model::isProduceShadow() const {
-        return bIsProduceShadow && getMeshes();
+    Model::ShadowClass Model::getShadowClass() const {
+        if (!getMeshes()) {
+            return ShadowClass::NONE;
+        }
+        return shadowClass;
     }
 
     bool Model::isMeshUpdated() const {

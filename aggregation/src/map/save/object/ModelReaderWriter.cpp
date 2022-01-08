@@ -86,18 +86,33 @@ namespace urchin {
     }
 
     void ModelReaderWriter::loadFlags(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto produceShadowChunk = udaParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, UdaAttribute(), modelChunk);
-        if (produceShadowChunk) {
-            model.setProduceShadow(produceShadowChunk->getBoolValue());
+        auto shadowClassChunk = udaParser.getUniqueChunk(false, SHADOW_CLASS_TAG, UdaAttribute(), modelChunk);
+        if (shadowClassChunk) {
+            if (shadowClassChunk->getStringValue() == RECEIVER_AND_CASTER_VALUE) {
+                model.setShadowClass(Model::RECEIVER_AND_CASTER);
+            } else if (shadowClassChunk->getStringValue() == RECEIVER_ONLY_VALUE) {
+                model.setShadowClass(Model::RECEIVER_ONLY);
+            } else if (shadowClassChunk->getStringValue() == NONE_VALUE) {
+                model.setShadowClass(Model::NONE);
+            } else {
+                throw std::runtime_error("Unknown shadow class value: " + shadowClassChunk->getStringValue());
+            }
         } else {
-            model.setProduceShadow(true);
+            model.setShadowClass(Model::RECEIVER_AND_CASTER);
         }
     }
 
     void ModelReaderWriter::writeFlags(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        if (!model.isProduceShadow()) {
-            auto& produceShadowChunk = udaWriter.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &modelChunk);
-            produceShadowChunk.setBoolValue(model.isProduceShadow());
+        auto& shadowClassChunk = udaWriter.createChunk(SHADOW_CLASS_TAG, UdaAttribute(), &modelChunk);
+
+        if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
+            shadowClassChunk.setStringValue(RECEIVER_AND_CASTER_VALUE);
+        } else if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
+            shadowClassChunk.setStringValue(RECEIVER_ONLY_VALUE);
+        } else if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
+            shadowClassChunk.setStringValue(NONE_VALUE);
+        } else {
+            throw std::runtime_error("Unknown shadow class: " + std::to_string(model.getShadowClass()));
         }
     }
 
