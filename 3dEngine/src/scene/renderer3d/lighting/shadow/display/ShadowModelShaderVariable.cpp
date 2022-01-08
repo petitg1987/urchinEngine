@@ -17,9 +17,11 @@ namespace urchin {
             throw std::runtime_error("Number of shadow maps (" + std::to_string(lightShadowMap->getNumberShadowMaps())
                     + ") is not expected to exceed " + std::to_string(shadowData.projectionMatrices.size()));
         }
-        std::size_t shadowDataSize = sizeof(shadowData.layerToUpdate) + lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
-        meshRendererBuilder
-                ->addUniformData(shadowDataSize, &shadowData); //binding 2
+        static_assert(sizeof(float) == sizeof(int));
+        int* projectMatricesStartAddress = reinterpret_cast<int*>(&shadowData.projectionMatrices[0](0, 0));
+        std::size_t layerToUpdateAndPaddingSize = ((std::size_t)(projectMatricesStartAddress - &shadowData.layerToUpdate)) * sizeof(int);
+        std::size_t shadowDataSize = layerToUpdateAndPaddingSize + lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
+        meshRendererBuilder->addUniformData(shadowDataSize, &shadowData); //binding 2
     }
 
     void ShadowModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
