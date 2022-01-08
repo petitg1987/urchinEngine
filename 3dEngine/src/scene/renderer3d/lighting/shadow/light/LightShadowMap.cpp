@@ -37,7 +37,7 @@ namespace urchin {
             const Vector3<float>& f = lightDirection.normalize();
             const Vector3<float>& s = f.crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f)).normalize();
             const Vector3<float>& u = s.crossProduct(f).normalize();
-            Matrix4<float> M(
+            Matrix4<float> m(
                     s[0],    s[1],    s[2],    0,
                     u[0],    u[1],    u[2],    0,
                     -f[0],   -f[1],   -f[2],   0,
@@ -45,9 +45,7 @@ namespace urchin {
 
             Matrix4<float> eye;
             eye.buildTranslation(lightDirection.X, lightDirection.Y, lightDirection.Z);
-            Matrix4<float> mViewShadow = M * eye;
-
-            this->lightViewMatrix = mViewShadow;
+            this->lightViewMatrix = m * eye;
         } else {
             throw std::runtime_error("Shadow currently not supported on omnidirectional light.");
         }
