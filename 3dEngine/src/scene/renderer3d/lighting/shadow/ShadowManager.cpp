@@ -236,25 +236,22 @@ namespace urchin {
     }
 
     void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
-        ScopeProfiler sp(Profiler::graphic(), "splitFrustum");
-
         splitDistances.clear();
         splitFrustums.clear();
 
-        float uniformSplitLength = config.viewingShadowDistance / (float)config.nbShadowMaps;
-        float uniformSplitDistance = 0.0f;
+        float sliceLength = config.viewingShadowDistance / (float)(pow(2, config.nbShadowMaps) - 1);
         float previousSplitDistance = 0.0f;
-
         for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
-            uniformSplitDistance += uniformSplitLength;
-            float logarithmicSplitDistance = std::pow(config.viewingShadowDistance, (float)i / (float)config.nbShadowMaps);
-            float splitDistance = (PERCENTAGE_UNIFORM_SPLIT * uniformSplitDistance) + ((1.0f - PERCENTAGE_UNIFORM_SPLIT) * logarithmicSplitDistance);
+            auto nbSlices = (float)(pow(2, i) - 1);
+            float splitDistance = sliceLength * nbSlices;
 
             splitDistances.push_back(splitDistance);
             splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
-
             previousSplitDistance = splitDistance;
         }
+        #ifdef URCHIN_DEBUG
+            assert(MathFunction::isEqual(config.viewingShadowDistance, previousSplitDistance, 0.01f));
+        #endif
     }
 
     void ShadowManager::forceUpdateAllShadowMaps() {

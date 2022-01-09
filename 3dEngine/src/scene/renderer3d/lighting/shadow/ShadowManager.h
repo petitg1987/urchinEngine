@@ -76,7 +76,6 @@ namespace urchin {
             //shadow map quality
             void checkConfig() const;
             static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
-            static constexpr float PERCENTAGE_UNIFORM_SPLIT = 0.5; //percentage of uniform split against the logarithmic split to split frustum
             static constexpr float SHADOW_MAP_BIAS = 0.0005f; //Bias formula: tan(acos(NdotL)*bias. This bias avoid glitter on objects and reduce fake shadow between split shadow maps.
             Config config;
 
