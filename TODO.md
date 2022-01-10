@@ -14,7 +14,7 @@
   * **NEW FEATURE** (`medium`): Replace geometry shaders by instantiation
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering
-  * **NEW FEATURE** (`medium`): Implement a better culling (GPU driven rendering, coherent hierarchical culling revisited, software occlusion culling)
+  * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering, coherent hierarchical culling revisited, software occlusion culling)
 * Model
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
@@ -27,8 +27,8 @@
   * **NEW FEATURE** (`minor`): Use mipmap and multisample antialiasing (MSAA) on the shadow map
   * **NEW FEATURE** (`medium`): Implement a shadow map warping (trapezoid or camera space)
   * **NEW FEATURE** (`major`): Implement PCSS
-  * **NEW FEATURE** (`minor`): Find solution to have a soft transition between cascade
-  * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
+  * **NEW FEATURE** (`minor`): Find solution to have a soft transition between shadow cascade
+  * **OPTIMIZATION** (`medium`): Check attributes of VkPipelineRasterizationStateCreateInfo to improve the performances (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
   * **OPTIMIZATION** (`minor`): Use models LOD
