@@ -26,8 +26,9 @@
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
-  * **NEW FEATURE** (`major`): Review and improve variance shadow map (see <https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-8-summed-area-variance-shadow-maps>)
-  * **NEW FEATURE** (`major`): PCSS
+  * **NEW FEATURE** (`medium`): Use mipmap and multisample antialiasing (MSAA) on the shadow map
+  * **NEW FEATURE** (`medium`): Implement shadow map warping (trapezoid or camera space)
+  * **NEW FEATURE** (`major`): Implement percentage closer shadow map (PCSS)
   * **OPTIMIZATION** (`medium`): Check if fields of VkPipelineRasterizationStateCreateInfo can improve the performances (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
