@@ -46,7 +46,8 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             unsigned int getMaxShadowLights() const;
-            float getShadowMapBias() const;
+            float getShadowMapConstantBias() const;
+            float getShadowMapSlopeBiasFactor() const;
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -76,7 +77,8 @@ namespace urchin {
             //shadow map quality
             void checkConfig() const;
             static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
-            static constexpr float SHADOW_MAP_BIAS = 0.0005f; //Bias formula: tan(acos(NdotL)*bias. This bias avoid glitter on objects and reduce fake shadow between split shadow maps.
+            static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.0002f;
+            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0005f;
             Config config;
 
             //scene information

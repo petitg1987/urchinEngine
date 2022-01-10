@@ -7,8 +7,9 @@
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
 layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
-layout(constant_id = 3) const float SHADOW_MAP_BIAS = 0.0;
-layout(constant_id = 4) const float MAX_EMISSIVE_FACTOR = 0.0;
+layout(constant_id = 3) const float SHADOW_MAP_CONSTANT_BIAS = 0.0;
+layout(constant_id = 4) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
+layout(constant_id = 5) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
@@ -77,8 +78,8 @@ float maxComponent(vec3 components) {
 }
 
 float computeShadowAttenuation(float shadowMapZ, vec2 moments, float NdotL) {
-    float tanAcosNdotL = sqrt(1.0 - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
-    float bias = max(SHADOW_MAP_BIAS * tanAcosNdotL, 0.00001);
+    float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
+    float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
     float shadowMapZBias = shadowMapZ - bias;
     if (shadowMapZBias <= moments.x) {
         return 1.0; //no attentuation / no shadow

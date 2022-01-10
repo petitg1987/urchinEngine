@@ -69,8 +69,12 @@ namespace urchin {
         return lightManager.getMaxLights();
     }
 
-    float ShadowManager::getShadowMapBias() const {
-        return SHADOW_MAP_BIAS;
+    float ShadowManager::getShadowMapConstantBias() const {
+        return SHADOW_MAP_CONSTANT_BIAS;
+    }
+
+    float ShadowManager::getShadowMapSlopeBiasFactor() const {
+        return SHADOW_MAP_SLOPE_BIAS_FACTOR;
     }
 
     void ShadowManager::updateConfig(const Config& config) {

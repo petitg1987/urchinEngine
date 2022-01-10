@@ -28,7 +28,6 @@
   * **NEW FEATURE** (`medium`): Implement a shadow map warping (trapezoid or camera space)
   * **NEW FEATURE** (`major`): Implement PCSS
   * **NEW FEATURE** (`minor`): Find solution to have a soft transition between shadow cascade
-  * **OPTIMIZATION** (`medium`): Check attributes of VkPipelineRasterizationStateCreateInfo to improve the performances (check Sascha Willems: deferredshadows)
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
   * **OPTIMIZATION** (`minor`): Use models LOD
