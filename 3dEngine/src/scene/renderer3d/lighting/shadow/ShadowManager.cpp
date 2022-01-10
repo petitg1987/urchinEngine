@@ -276,7 +276,8 @@ namespace urchin {
                 const auto& lightShadowMap = lightShadowMaps.find(const_cast<Light*>(visibleLight))->second;
 
                 if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture().get()) {
-                    lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), TextureParam::buildLinear()));
+                    TextureParam textureParam = TextureParam::build(TextureParam::ReadMode::EDGE_CLAMP, TextureParam::ReadQuality::LINEAR, TextureParam::Anisotropy::ANISOTROPY);
+                    lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), std::move(textureParam)));
                 }
 
                 unsigned int shadowMapIndex = 0;
