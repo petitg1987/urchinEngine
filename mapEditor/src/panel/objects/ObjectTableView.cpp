@@ -12,10 +12,10 @@ namespace urchin {
         objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Meshes File"));
         QTableView::setModel(objectsListModel);
 
-        horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
-        horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
-        horizontalHeader()->resizeSection(0, 90);
-        horizontalHeader()->resizeSection(1, 265);
+        horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+        horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+        horizontalHeader()->resizeSection(0, 180);
+        horizontalHeader()->resizeSection(1, 160);
         verticalHeader()->hide();
 
         setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
@@ -24,8 +24,8 @@ namespace urchin {
 
     void ObjectTableView::selectionChanged(const QItemSelection&, const QItemSelection&) {
         //hack to refresh selection
-        horizontalHeader()->resizeSection(0, 91);
-        horizontalHeader()->resizeSection(0, 90);
+        horizontalHeader()->resizeSection(0, 180);
+        horizontalHeader()->resizeSection(0, 160);
 
         notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
     }
