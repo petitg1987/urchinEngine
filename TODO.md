@@ -5,8 +5,8 @@
 
 # 3d Engine
 * Graphics API
-  * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo.pSpecializationInfo) instead of uniform for values infrequently refreshed
-  * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer.updateDescriptorSets) with updated values only
+  * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo#pSpecializationInfo) instead of uniform for values infrequently refreshed
+  * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer#updateDescriptorSets) with updated values only
   * **OPTIMIZATION** (`major`): Create descriptor sets by binding frequency: one for global (view matrix), one for material and one per-object (model matrix) (see <https://www.youtube.com/watch?v=d5p44idnZLQ>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
@@ -28,7 +28,7 @@
   * **NEW FEATURE** (`medium`): Implement a shadow map warping (trapezoid or camera space)
   * **NEW FEATURE** (`major`): Implement PCSS
   * **NEW FEATURE** (`minor`): Find solution to have a soft transition between shadow cascade
-  * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager::updateVisibleModels / Renderer3d::updateModelsInFrustum
+  * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager#updateVisibleModels / Renderer3d#updateModelsInFrustum
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
@@ -56,6 +56,8 @@
 # AI engine
 * Navigation mesh
   * **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
+  * **BUG** (`major`): Surrounded faces are not walkable (NavMeshGeneratorTest#surroundedWalkableFace)
+  * **BUG** (`medium`): Jump links visualization are not exact
   * **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
   * **NEW FEATURE** (`major`): Add possibility to exclude dynamic objects from navigation mesh
     * Note: worth it only when steering behaviour will be implemented in pathfinding

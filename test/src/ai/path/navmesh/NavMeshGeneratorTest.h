@@ -15,6 +15,8 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture {
         void holeOverlapOnWalkableFace();
         void holeAndCrossingHoleOnWalkableFace();
 
+        void surroundedWalkableFace();
+
         void moveHoleOnWalkableFace();
         void removeHoleFromWalkableFace();
 

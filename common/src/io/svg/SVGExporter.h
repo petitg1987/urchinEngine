@@ -16,7 +16,7 @@ namespace urchin {
 
             void addShape(std::unique_ptr<SVGShape>);
 
-            void generateSVG(int zoomPercentage = 100) const;
+            void generateSVG() const;
 
         private:
             std::string retrieveViewBox() const;

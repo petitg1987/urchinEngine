@@ -60,14 +60,15 @@ namespace urchin {
                     Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
                     LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
-                    auto svgLine = std::make_unique<SVGLine>(line, SVGPolygon::BLUE, 0.5f);
-                    svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
+                    SVGPolygon::SVGColor linkColor = (link->getLinkType() == NavLinkType::JUMP) ? SVGPolygon::ORANGE : SVGPolygon::BLUE;
+                    auto svgLine = std::make_unique<SVGLine>(line, linkColor, 0.5f);
+                    svgLine->setStroke(linkColor, 0.05f);
                     svgExporter.addShape(std::move(svgLine));
                 }
             }
         }
 
-        svgExporter.generateSVG(400);
+        svgExporter.generateSVG();
     }
 
     unsigned int NavMesh::changeUpdateId() {

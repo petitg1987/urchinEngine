@@ -12,20 +12,15 @@ namespace urchin {
         shapes.push_back(std::move(shape));
     }
 
-    void SVGExporter::generateSVG(int zoomPercentage) const {
+    void SVGExporter::generateSVG() const {
         std::ofstream fileStream;
         fileStream.open(filename);
 
-        fileStream << "<!DOCTYPE html>" << std::endl;
-        fileStream << "<html>" << std::endl;
-        fileStream << "<body>" << std::endl;
-        fileStream << R"(<svg height=")" + std::to_string(zoomPercentage) + R"(%" width=")" + std::to_string(zoomPercentage) + R"(%" viewbox=")" + retrieveViewBox() + "\">" << std::endl;
+        fileStream << R"(<svg height="100%" width="100%" viewbox=")" + retrieveViewBox() + "\">" << std::endl;
 
         addShapes(fileStream);
 
         fileStream << "</svg>" << std::endl;
-        fileStream << "</body>" << std::endl;
-        fileStream << "</html>" << std::endl;
 
         fileStream.close();
     }

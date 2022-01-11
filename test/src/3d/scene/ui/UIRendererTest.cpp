@@ -9,7 +9,7 @@ using namespace urchin;
 
 void UIRendererTest::focusState() {
     auto uiRenderer = setupUiRenderer();
-    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
+    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
     uiRenderer->addWidget(container);
     auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
@@ -21,7 +21,7 @@ void UIRendererTest::focusState() {
 
 void UIRendererTest::noFocusStateBecauseOutsideContainer() {
     auto uiRenderer = setupUiRenderer();
-    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 10.0f, PIXEL), "test");
+    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 10.0f, PIXEL));
     uiRenderer->addWidget(container);
     auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
@@ -117,7 +117,7 @@ void UIRendererTest::screenPercentagePosition() {
 
 void UIRendererTest::containerPercentagePosition() {
     auto uiRenderer = setupUiRenderer();
-    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
+    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
     uiRenderer->addWidget(container);
     auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, CONTAINER_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
@@ -136,9 +136,9 @@ void UIRendererTest::relativeLengthSize() {
 
 void UIRendererTest::buttonRemoveParentContainer() {
     auto uiRenderer = setupUiRenderer();
-    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
+    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
     uiRenderer->addWidget(container);
-    std::weak_ptr<Container> childContainer = Container::create(container.get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
+    std::weak_ptr<Container> childContainer = Container::create(container.get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
     std::weak_ptr<StaticBitmap> deleteButton = StaticBitmap::create(childContainer.lock().get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
     deleteButton.lock()->addEventListener(std::make_unique<DetachChildrenEventListener>(container.get()));
 
@@ -151,7 +151,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
 
 void UIRendererTest::containerWithLazyWidgets() {
     auto uiRenderer = setupUiRenderer();
-    auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
+    auto container = Container::createScrollable(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(container);
     auto loadChildrenFunction = [](LazyWidget* parent) {
         StaticBitmap::create(parent, Position(0.0f, 0.0f, PIXEL), Size(1.0f, 1.0f, PIXEL), "ui/widget/empty.png");

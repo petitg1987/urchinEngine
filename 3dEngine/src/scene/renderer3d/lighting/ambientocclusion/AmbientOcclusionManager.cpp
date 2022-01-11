@@ -181,7 +181,7 @@ namespace urchin {
         }
 
         if (DEBUG_EXPORT_SSAO_KERNEL) {
-            exportSVG(SystemInfo::homeDirectory() + "ssaoKernel.html", ssaoKernel);
+            exportSVG(SystemInfo::homeDirectory() + "ssaoKernel.svg", ssaoKernel);
         }
     }
 
@@ -198,16 +198,16 @@ namespace urchin {
             ssaoNoise.emplace_back(0); //z
             ssaoNoise.emplace_back(255); //w (not used)
         }
-        noiseTexture = Texture::build(config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, &ssaoNoise[0]);
+        noiseTexture = Texture::build(config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, ssaoNoise.data());
     }
 
     void AmbientOcclusionManager::exportSVG(const std::string& filename, const std::vector<Vector4<float>>& ssaoKernel) const {
         SVGExporter svgExporter(filename);
-        svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0, 0.0), config.radius, SVGPolygon::BLUE));
+        svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0f, 0.0f), 1.0f, SVGPolygon::BLUE));
         for (const auto& kernel : ssaoKernel) {
-            svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.001f, SVGPolygon::LIME));
+            svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.01f, SVGPolygon::LIME));
         }
-        svgExporter.generateSVG(100);
+        svgExporter.generateSVG();
     }
 
     void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera& camera) {
