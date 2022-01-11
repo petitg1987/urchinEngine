@@ -8,7 +8,7 @@ template<class T> bool AxisCompare<T>::operator() (const T& item1, const T& item
     return item1->getGridPosition()[axisIndex] < item2->getGridPosition()[axisIndex];
 }
 
-template<class T> void GridContainer<T>::addItem(std::shared_ptr<T> item) {
+template<class T> bool GridContainer<T>::addItem(std::shared_ptr<T> item) {
     for (std::size_t axisIndex = 0; axisIndex < 3; ++axisIndex) {
         std::int64_t key = buildKey(item->getGridPosition(), axisIndex);
 
@@ -18,9 +18,11 @@ template<class T> void GridContainer<T>::addItem(std::shared_ptr<T> item) {
         ItemSet<T>& setContainer = insertResult.first->second;
         const auto& insertSetResult = setContainer.insert(item);
         if (!insertSetResult.second) [[unlikely]] {
-            Logger::instance().logError("Item cannot be added because an item already exists at this position: " + StringUtil::toString(item->getGridPosition()));
+            removeItem(item->getGridPosition());
+            return false;
         }
     }
+    return true;
 }
 
 template<class T> std::int64_t GridContainer<T>::buildKey(const Point3<int>& gridPosition, std::size_t excludeIndex) const {
