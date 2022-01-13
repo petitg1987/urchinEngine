@@ -4,7 +4,6 @@
 
 #include <panel/objects/bodyshape/BodyConvexHullShapeWidget.h>
 #include <panel/objects/bodyshape/support/SpinBoxDelegate.h>
-#include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
 
@@ -75,7 +74,7 @@ namespace urchin {
             return scaledShape;
         } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(pointsLabel, std::string(e.what()));
-            return DefaultBodyShapeCreator(*getObjectEntity()).createDefaultBodyShape(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
+            return DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE);
         }
     }
 

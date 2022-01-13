@@ -4,7 +4,6 @@
 #include <panel/objects/bodyshape/BodyCompoundShapeWidget.h>
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
-#include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/GroupBoxStyleHelper.h>
 #include <widget/style/SpinBoxStyleHelper.h>
@@ -73,7 +72,7 @@ namespace urchin {
             return std::make_unique<const CollisionCompoundShape>(std::move(localizedCollisionShapes));
         } catch (const std::invalid_argument& e) {
             LabelStyleHelper::applyErrorStyle(shapesLabel, std::string(e.what()));
-            return DefaultBodyShapeCreator(*getObjectEntity()).createDefaultBodyShape(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
+            return DefaultBodyShapeGenerator(*getObjectEntity()).generate(CollisionShape3D::ShapeType::COMPOUND_SHAPE);
         }
     }
 
@@ -231,7 +230,7 @@ namespace urchin {
 
         if (changeBodyShapeDialog.result() == QDialog::Accepted) {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
-            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(*getObjectEntity()).createDefaultBodyShape(shapeType);
+            std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeGenerator(*getObjectEntity()).generate(shapeType);
 
             std::size_t nextPosition = 0;
             for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {

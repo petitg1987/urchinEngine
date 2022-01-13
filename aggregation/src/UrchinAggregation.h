@@ -11,5 +11,8 @@
 #include <map/save/MapSaveService.h>
 #include <map/save/LoadMapCallback.h>
 
+#include <generate/DefaultBodyShapeGenerator.h>
+#include <generate/DefaultRigidBodyGenerator.h>
+
 #include <debug/NavMeshDisplayer.h>
 #include <debug/CollisionPointDisplayer.h>

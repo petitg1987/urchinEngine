@@ -2,7 +2,6 @@
 #include <memory>
 
 #include <controller/objects/ObjectController.h>
-#include <panel/objects/bodyshape/support/DefaultBodyShapeCreator.h>
 
 namespace urchin {
 
@@ -64,20 +63,14 @@ namespace urchin {
 
     void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-
-        const std::string& bodyId = constObjectEntity.getName();
-        Transform<float> modelTransform = constObjectEntity.getModel()->getTransform();
-        PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
-        auto bodyShape = DefaultBodyShapeCreator(constObjectEntity).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE);
-
-        auto rigidBody = std::make_unique<RigidBody>(bodyId, physicsTransform, std::move(bodyShape));
+        auto rigidBody = DefaultRigidBodyGenerator(constObjectEntity).generate(CollisionShape3D::ShapeType::BOX_SHAPE);
         objectEntity.setupInteractiveBody(std::move(rigidBody));
 
         markModified();
     }
 
     void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, CollisionShape3D::ShapeType shapeType) {
-        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeCreator(constObjectEntity).createDefaultBodyShape(shapeType);
+        std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity).generate(shapeType);
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 

@@ -81,7 +81,7 @@ namespace urchin {
     }
 
     Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const { //rough local inertia computed based on box including capsule.
-        Vector3<float> boxSizes(getRadius()*2.0f, getRadius()*2.0f, getRadius()*2.0f);
+        Vector3<float> boxSizes(getRadius() * 2.0f, getRadius() * 2.0f, getRadius() * 2.0f);
         boxSizes[getCapsuleOrientation()] += getCylinderHeight();
 
         float widthSquare = boxSizes.X * boxSizes.X;
