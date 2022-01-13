@@ -8,7 +8,6 @@ namespace urchin {
 
     template<class T> T MathFunction::clamp(T value, T minValue, T maxValue) {
         assert((maxValue + std::numeric_limits<T>::epsilon()) > minValue);
-
         return std::max(minValue, std::min(maxValue, value));
     }
 
@@ -26,6 +25,16 @@ namespace urchin {
 
     template<class T> T MathFunction::lerp(T v0, T v1, T t) { //see https://en.wikipedia.org/wiki/Linear_interpolation
         return ((T)1.0 - t) * v0 + t * v1;
+    }
+
+    template<class T> T MathFunction::max(const std::vector<T>& values) {
+        T maxValue = -std::numeric_limits<T>::max();
+        for (T value : values) {
+            if (value > maxValue) {
+                maxValue = value;
+            }
+        }
+        return maxValue;
     }
 
     unsigned int MathFunction::powerOfTwo(unsigned int exponent) {
@@ -130,6 +139,7 @@ namespace urchin {
     template float MathFunction::clamp<float>(float, float, float);
     template float MathFunction::sign<float>(float);
     template float MathFunction::lerp<float>(float, float, float);
+    template float MathFunction::max(const std::vector<float>&);
     template float MathFunction::roundDivision<float>(float, float);
 
     template double MathFunction::clamp<double>(double, double, double);
