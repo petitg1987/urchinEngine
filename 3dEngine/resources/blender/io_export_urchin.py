@@ -1,3 +1,6 @@
+import bpy, struct, math, os, time, sys, mathutils, enum
+from enum import Enum
+
 bl_info = {
     "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "version": (1, 0, 0),
@@ -6,9 +9,6 @@ bl_info = {
     "location": "File > Export",
     "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "category": "Import-Export"}
-
-import bpy, struct, math, os, time, sys, mathutils, enum
-from enum import Enum
 
 
 # ---------------------------------------------------------------------------
@@ -410,9 +410,11 @@ class UrchinAnimation:
 # EXPORT MAIN
 # ---------------------------------------------------------------------------
 class UrchinSettings:
-    def __init__(self, save_path, export_mode):
+    def __init__(self, save_path, export_mode, anim_start_index, anim_end_index):
         self.save_path = save_path
         self.export_mode = export_mode
+        self.anim_start_index = anim_start_index
+        self.anim_end_index = anim_end_index
 
 
 def treat_bone(skeleton, b, w_matrix, parent=None):
@@ -682,6 +684,10 @@ def export_all(settings):
             animation = animations[armature_action.name] = UrchinAnimation(skeleton)
 
             frame_min, frame_max = armature_action.frame_range
+            if settings.anim_start_index != -1:
+                frame_min = max(frame_min, settings.anim_start_index)
+            if settings.anim_end_index != -1:
+                frame_max = min(frame_max, settings.anim_end_index)
             print("[INFO] Frame start: " + str(frame_min))
             print("[INFO] Frame end: " + str(frame_max))
             range_start = int(frame_min)
@@ -750,11 +756,13 @@ class ExportUrchin(bpy.types.Operator):
 
     filepath: bpy.props.StringProperty(subtype='FILE_PATH', name="File Path", description="File path for exporting", maxlen=1024, default="")
     export_mode: bpy.props.EnumProperty(name="Exports", items=export_modes, description="Choose export mode", default='mesh only')
+    anim_start_index: bpy.props.IntProperty(name="Anim Start", description="Animation start index", default=-1)
+    anim_end_index: bpy.props.IntProperty(name="Anim End", description="Animation end index", default=-1)
 
     def execute(self, context):
         global reporter
         reporter = self
-        settings = UrchinSettings(save_path=self.properties.filepath, export_mode=self.properties.export_mode)
+        settings = UrchinSettings(save_path=self.properties.filepath, export_mode=self.properties.export_mode, anim_start_index=self.properties.anim_start_index, anim_end_index=self.properties.anim_end_index)
         export_urchin(settings)
         return {'FINISHED'}
 
