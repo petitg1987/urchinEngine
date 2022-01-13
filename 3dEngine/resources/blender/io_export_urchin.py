@@ -51,11 +51,13 @@ def matrix_invert(m):
     ])
     return r
 
+
 # ---------------------------------------------------------------------------
 # GLOBAL VARIABLES
 # ---------------------------------------------------------------------------
 bones = {}
 reporter = None
+
 
 # ---------------------------------------------------------------------------
 # MESH DATA OBJECTS
@@ -442,14 +444,9 @@ def get_min_max(list_of_points):
 
 def get_meshes_to_export():
     meshes_to_export = []
-    for obj in bpy.context.selected_objects:
+    for obj in bpy.context.visible_objects:
         if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0):
             meshes_to_export.append(obj)
-
-    if len(meshes_to_export) == 0:
-        for obj in bpy.context.visible_objects:
-            if (obj is not None) and (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0):
-                meshes_to_export.append(obj)
 
     return meshes_to_export
 
@@ -468,7 +465,7 @@ def find_armature(meshes_to_export):
             reporter.report({'ERROR'}, "Armature not found on object: " + mesh_to_export.name)
             return None
 
-    return armature_found;
+    return armature_found
 
 
 def generate_bounding_box(urchin_animation, frame_range):
@@ -488,24 +485,24 @@ def generate_bounding_box(urchin_animation, frame_range):
 
 
 def rotate_axis(obj_to_rotate, rotate_angle, rotate_axis):
-    #Save selected and active objects
+    # Save selected and active objects
     saved_selected_objects = bpy.context.selected_objects
     saved_active_object = bpy.context.view_layer.objects.active
 
-    #Select object to rotate
+    # Select object to rotate
     bpy.ops.object.select_all(action='DESELECT')
     bpy.context.view_layer.objects.active = obj_to_rotate
     obj_to_rotate.select_set(True)
 
-    #Rotate
+    # Rotate
     bpy.ops.transform.rotate(value=math.radians(rotate_angle), orient_axis=rotate_axis, orient_type='GLOBAL')
 
-    #Apply rotation
+    # Apply rotation
     for child in bpy.context.object.children:
         child.select_set(True)
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
 
-    #Restore selected and active objects
+    # Restore selected and active objects
     bpy.ops.object.select_all(action='DESELECT')
     for selected_object in saved_selected_objects:
         selected_object.select_set(True)
@@ -570,7 +567,7 @@ def export_all(settings):
 
         if len(modified_mesh.materials) == 0:
             reporter.report({'ERROR'}, "Missing material on: " + mesh_to_export.name)
-            break;
+            break
 
         while faces:
             material_index = faces[0].material_index
@@ -765,16 +762,19 @@ class ExportUrchin(bpy.types.Operator):
         context.window_manager.fileselect_add(self)
         return {"RUNNING_MODAL"}
 
+
 def export_menu_func(self, context):
     default_path = os.path.splitext(bpy.data.filepath)[0]
     self.layout.operator(ExportUrchin.bl_idname, text="Urchin Engine (.urchinMesh .urchinAnim)", icon='BLENDER').filepath = default_path
 
+
 # ---------------------------------------------------------------------------
 # URCHIN MENU
 # ---------------------------------------------------------------------------
-def selectAllMeshes():
+def select_all_meshes():
     bpy.ops.object.select_by_type(type='MESH')
     bpy.context.view_layer.objects.active = bpy.context.selected_objects[0] # Active one random mesh otherwise some scripts do not work correctly
+
 
 class AdjustMeshOrigin(bpy.types.Operator):
     """Adjust Mesh Origin: move all the meshes origins to the center of the global bounding box"""
@@ -784,7 +784,7 @@ class AdjustMeshOrigin(bpy.types.Operator):
 
     def execute(self, context):
         # Apply transform
-        selectAllMeshes()
+        select_all_meshes()
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
 
         # Move the 3D cursor to the center of the global bounding box
@@ -797,7 +797,7 @@ class AdjustMeshOrigin(bpy.types.Operator):
         bpy.ops.object.delete() # Remove the duplicate meshes
 
         # Move all meshes origin to 3D cursor
-        selectAllMeshes()
+        select_all_meshes()
         bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
 
         return {'FINISHED'}
@@ -810,7 +810,7 @@ class AdjustArmatureOrigin(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        #Apply transform
+        # Apply transform
         bpy.ops.object.select_by_type(type='ARMATURE')
         bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
 
@@ -819,6 +819,7 @@ class AdjustArmatureOrigin(bpy.types.Operator):
         bpy.ops.view3d.snap_selected_to_cursor()
 
         return {'FINISHED'}
+
 
 def object_menu_func(self, context):
     self.layout.separator()
