@@ -32,7 +32,7 @@ namespace urchin {
         std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
         shaderStages.reserve(shaderStagesData.size());
 
-        for (auto& shaderStageData : shaderStagesData) {
+        for (const auto& shaderStageData : shaderStagesData) {
             shaderStages.emplace_back(shaderStageData->shaderStageCreateInfo);
         }
 
