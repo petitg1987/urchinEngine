@@ -16,7 +16,7 @@ namespace urchin {
             farPlane(farPlane),
             maxRotationX(0.995f),
             distance(0.0f),
-            bUseMouse(false),
+            useMouse(false),
             mouseSensitivityPercentage(1.0f),
             invertYAxis(false),
             sceneWidth(0),
@@ -76,22 +76,21 @@ namespace urchin {
     }
 
     void Camera::resetPreviousMousePosition(double previousMouseX, double previousMouseY) {
-        if (bUseMouse) {
+        if (useMouse) {
             this->previousMouseX = previousMouseX;
             this->previousMouseY = previousMouseY;
         }
     }
 
-    void Camera::useMouseToMoveCamera(bool use) {
-        bUseMouse = use;
-
-        if (bUseMouse) {
+    void Camera::useMouseToMoveCamera(bool use, bool resetMousePosition) {
+        useMouse = use;
+        if (useMouse && resetMousePosition) {
             resetPreviousMousePosition();
         }
     }
 
     bool Camera::isUseMouseToMoveCamera() const {
-        return bUseMouse;
+        return useMouse;
     }
 
     void Camera::setMouseSensitivityPercentage(float mouseSensitivityPercentage) {
@@ -246,7 +245,7 @@ namespace urchin {
     }
 
     bool Camera::onMouseMove(double mouseX, double mouseY) {
-        if (bUseMouse) {
+        if (useMouse) {
             if (previousMouseX == std::numeric_limits<double>::max() && previousMouseY == std::numeric_limits<double>::max()) {
                 previousMouseX = mouseX;
                 previousMouseY = mouseY;

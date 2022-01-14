@@ -20,7 +20,7 @@ namespace urchin {
             unsigned int getSceneHeight() const;
 
             void resetPreviousMousePosition(double previousMouseX = std::numeric_limits<double>::max(), double previousMouseY = std::numeric_limits<double>::max());
-            void useMouseToMoveCamera(bool);
+            void useMouseToMoveCamera(bool, bool resetMousePosition = true);
             bool isUseMouseToMoveCamera() const;
             void setMouseSensitivityPercentage(float);
             void setInvertYAxis(bool);
@@ -80,7 +80,7 @@ namespace urchin {
 
             float maxRotationX;
             float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
-            bool bUseMouse; //true if the cursor is used to move the camera
+            bool useMouse; //true if the cursor is used to move the camera
             float mouseSensitivityPercentage;
             bool invertYAxis;
             unsigned int sceneWidth, sceneHeight;
