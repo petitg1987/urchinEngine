@@ -1,12 +1,12 @@
 #pragma once
 
-#include <scene/ui/animation/UIAnimation.h>
+#include <scene/ui/animation/AbstractUIWidgetAnimation.h>
 
 namespace urchin {
 
-    class AnimationTranslateLoop : public UIAnimation {
+    class UIAnimationTranslate : public AbstractUIWidgetAnimation {
         public:
-            AnimationTranslateLoop(Widget&, const Point2<float>&, float);
+            UIAnimationTranslate(Widget&, const Point2<float>&, float);
 
             void initializeAnimation() override;
             void doAnimation(float) override;
@@ -18,7 +18,6 @@ namespace urchin {
             Point2<float> endPosition;
             float animationSpeed;
 
-            bool startToEnd;
             float progression;
     };
 

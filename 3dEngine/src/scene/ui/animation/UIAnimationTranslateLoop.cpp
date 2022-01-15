@@ -1,9 +1,9 @@
-#include <scene/ui/animation/AnimationTranslateLoop.h>
+#include <scene/ui/animation/UIAnimationTranslateLoop.h>
 
 namespace urchin {
 
-    AnimationTranslateLoop::AnimationTranslateLoop(Widget& widget, const Point2<float>& endPosition, float animationSpeed) :
-            UIAnimation(widget),
+    UIAnimationTranslateLoop::UIAnimationTranslateLoop(Widget& widget, const Point2<float>& endPosition, float animationSpeed) :
+            AbstractUIWidgetAnimation(widget),
             endPosition(endPosition),
             animationSpeed(animationSpeed),
             startToEnd(true),
@@ -11,11 +11,11 @@ namespace urchin {
 
     }
 
-    void AnimationTranslateLoop::initializeAnimation() {
+    void UIAnimationTranslateLoop::initializeAnimation() {
         startPosition = Point2<float>(getWidget().getPosition().getX(), getWidget().getPosition().getY());
     }
 
-    void AnimationTranslateLoop::doAnimation(float dt) {
+    void UIAnimationTranslateLoop::doAnimation(float dt) {
         if (startToEnd) {
             progression += dt * animationSpeed;
             if (progression > 1.0f) {
@@ -27,12 +27,10 @@ namespace urchin {
                 startToEnd = true;
             }
         }
-
-        Point2<float> newPosition = startPosition.translate(startPosition.vector(endPosition) * progression);
-        updatePosition(newPosition);
+        updatePosition(startPosition.translate(startPosition.vector(endPosition) * progression));
     }
 
-    bool AnimationTranslateLoop::isCompleted() const {
+    bool UIAnimationTranslateLoop::isCompleted() const {
         return false;
     }
 

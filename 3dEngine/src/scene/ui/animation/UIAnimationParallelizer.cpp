@@ -2,13 +2,13 @@
 
 namespace urchin {
 
-    UIAnimationParallelizer::UIAnimationParallelizer(std::vector<std::unique_ptr<UIAnimation>> animations) :
+    UIAnimationParallelizer::UIAnimationParallelizer(std::vector<std::unique_ptr<AbstractUIAnimation>> animations) :
             animations(std::move(animations)) {
 
     }
 
-    void UIAnimationParallelizer::animate(float dt) {
-        for (std::unique_ptr<UIAnimation>& animation : animations) {
+    void UIAnimationParallelizer::doAnimation(float dt) {
+        for (std::unique_ptr<AbstractUIAnimation>& animation : animations) {
             animation->animate(dt);
         }
     }

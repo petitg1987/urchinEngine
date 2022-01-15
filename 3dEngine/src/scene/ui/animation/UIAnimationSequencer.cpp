@@ -2,15 +2,15 @@
 
 namespace urchin {
 
-    UIAnimationSequencer::UIAnimationSequencer(std::vector<std::unique_ptr<UIAnimation>> animations) :
+    UIAnimationSequencer::UIAnimationSequencer(std::vector<std::unique_ptr<AbstractUIAnimation>> animations) :
             currentAnimationIndex(0),
             animations(std::move(animations)) {
 
     }
 
-    void UIAnimationSequencer::animate(float dt) {
+    void UIAnimationSequencer::doAnimation(float dt) {
         if (!isCompleted()) {
-            std::unique_ptr<UIAnimation>& currentAnimation = animations[currentAnimationIndex];
+            std::unique_ptr<AbstractUIAnimation>& currentAnimation = animations[currentAnimationIndex];
 
             currentAnimation->animate(dt);
             if (currentAnimation->isCompleted()) {

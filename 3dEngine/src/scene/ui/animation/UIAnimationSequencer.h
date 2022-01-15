@@ -1,19 +1,19 @@
 #pragma once
 
-#include <scene/ui/animation/UIAnimation.h>
+#include <scene/ui/animation/AbstractUIAnimation.h>
 
 namespace urchin {
 
-    class UIAnimationSequencer {
+    class UIAnimationSequencer : public AbstractUIAnimation {
         public:
-            explicit UIAnimationSequencer(std::vector<std::unique_ptr<UIAnimation>>);
+            explicit UIAnimationSequencer(std::vector<std::unique_ptr<AbstractUIAnimation>>);
 
-            void animate(float);
-            bool isCompleted() const;
+            void doAnimation(float) override;
+            bool isCompleted() const override;
 
         private:
             unsigned int currentAnimationIndex;
-            std::vector<std::unique_ptr<UIAnimation>> animations;
+            std::vector<std::unique_ptr<AbstractUIAnimation>> animations;
     };
 
 }
