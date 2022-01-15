@@ -6,14 +6,16 @@ namespace urchin {
 
     class AnimationTranslate : public UIAnimation {
         public:
-            AnimationTranslate(Widget&, const Point2<float>&, const Point2<float>&, float);
+            AnimationTranslate(Widget&, const Point2<float>&, float);
 
-            void animate(float) override;
+            void initializeAnimation() override;
+            void doAnimation(float) override;
+
             bool isCompleted() const override;
 
         private:
-            Point2<float> start;
-            Point2<float> end;
+            Point2<float> startPosition;
+            Point2<float> endPosition;
             float animationSpeed;
 
             float progression;

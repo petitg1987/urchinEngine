@@ -9,14 +9,19 @@ namespace urchin {
             explicit UIAnimation(Widget&);
             virtual ~UIAnimation() = default;
 
-            virtual void animate(float) = 0;
+            void animate(float);
             virtual bool isCompleted() const = 0;
 
         protected:
+            virtual void initializeAnimation() = 0;
+            virtual void doAnimation(float) = 0;
+
+            const Widget& getWidget() const;
             void updatePosition(const Point2<float>&);
 
         private:
             Widget& widget;
+            bool animationInitialized;
     };
 
 }

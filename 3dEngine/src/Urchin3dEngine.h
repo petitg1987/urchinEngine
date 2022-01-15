@@ -36,6 +36,7 @@
 #include <scene/ui/widget/slider/Slider.h>
 #include <scene/ui/widget/checkbox/CheckBox.h>
 #include <scene/ui/animation/UIAnimationSequencer.h>
+#include <scene/ui/animation/UIAnimationParallelizer.h>
 #include <scene/ui/animation/AnimationTranslateLoop.h>
 #include <scene/ui/animation/AnimationTranslate.h>
 

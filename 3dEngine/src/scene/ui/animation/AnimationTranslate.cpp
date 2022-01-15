@@ -2,20 +2,23 @@
 
 namespace urchin {
 
-    AnimationTranslate::AnimationTranslate(Widget& widget, const Point2<float>& start, const Point2<float>& end, float animationSpeed) :
+    AnimationTranslate::AnimationTranslate(Widget& widget, const Point2<float>& endPosition, float animationSpeed) :
             UIAnimation(widget),
-            start(start),
-            end(end),
+            endPosition(endPosition),
             animationSpeed(animationSpeed),
             progression(0.0f) {
 
     }
 
-    void AnimationTranslate::animate(float dt) {
+    void AnimationTranslate::initializeAnimation() {
+        startPosition = Point2<float>(getWidget().getPosition().getX(), getWidget().getPosition().getY());
+    }
+
+    void AnimationTranslate::doAnimation(float dt) {
         if (!isCompleted()) {
             progression += dt * animationSpeed;
 
-            Point2<float> newPosition = start.translate(start.vector(end) * progression);
+            Point2<float> newPosition = startPosition.translate(startPosition.vector(endPosition) * progression);
             updatePosition(newPosition);
         }
     }

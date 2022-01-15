@@ -9,7 +9,7 @@ namespace urchin {
     }
 
     void UIAnimationSequencer::animate(float dt) {
-        if (currentAnimationIndex < animations.size()) {
+        if (!isCompleted()) {
             std::unique_ptr<UIAnimation>& currentAnimation = animations[currentAnimationIndex];
 
             currentAnimation->animate(dt);
@@ -17,6 +17,10 @@ namespace urchin {
                 currentAnimationIndex++;
             }
         }
+    }
+
+    bool UIAnimationSequencer::isCompleted() const {
+        return currentAnimationIndex >= animations.size();
     }
 
 }

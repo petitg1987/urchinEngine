@@ -4,15 +4,14 @@
 
 namespace urchin {
 
-    class UIAnimationSequencer {
+    class UIAnimationParallelizer {
         public:
-            explicit UIAnimationSequencer(std::vector<std::unique_ptr<UIAnimation>>);
+            explicit UIAnimationParallelizer(std::vector<std::unique_ptr<UIAnimation>>);
 
             void animate(float);
             bool isCompleted() const;
 
         private:
-            unsigned int currentAnimationIndex;
             std::vector<std::unique_ptr<UIAnimation>> animations;
     };
 
