@@ -11,6 +11,8 @@ namespace urchin {
             void doAnimation(float) override;
             bool isCompleted() const override;
 
+            unsigned int getAnimationIndex() const;
+
         private:
             unsigned int currentAnimationIndex;
             std::vector<std::unique_ptr<AbstractUIAnimation>> animations;

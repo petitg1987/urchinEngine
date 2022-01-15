@@ -23,4 +23,8 @@ namespace urchin {
         return currentAnimationIndex >= animations.size();
     }
 
+    unsigned int UIAnimationSequencer::getAnimationIndex() const {
+        return currentAnimationIndex;
+    }
+
 }
