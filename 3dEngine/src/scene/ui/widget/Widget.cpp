@@ -227,19 +227,29 @@ namespace urchin {
 
     int Widget::getGlobalPositionX() const {
         int startPosition = 0;
-        if (parent) {
-            if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
-                    || position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
-                    || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY) { //left
+        if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
+                || position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
+                || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY) { //left
+            if (parent) {
                 startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
-                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
-                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //right
-                startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int)parent->getWidth();
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //center X
-                startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int)((float)parent->getWidth() / 2.0f);
+            } else {
+                startPosition = 0;
+            }
+        } else if (position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
+                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
+                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //right
+            if (parent) {
+                startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int) parent->getWidth();
+            } else {
+                startPosition = (int)getSceneSize().X;
+            }
+        } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
+                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP
+                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //center X
+            if (parent) {
+                startPosition = parent->getGlobalPositionX() + parent->getOutline().leftWidth + (int) ((float) parent->getWidth() / 2.0f);
+            } else {
+                startPosition = (int)((float)getSceneSize().X / 2.0f);
             }
         }
 
@@ -254,24 +264,34 @@ namespace urchin {
 
     int Widget::getGlobalPositionY() const {
         int startPosition = 0;
-        if (parent) {
-            if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
-                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP) { //top
+        if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
+                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
+                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP) { //top
+            if (parent) {
                 startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth;
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
-                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
-                    || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //bottom
-                startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int)parent->getHeight();
-            } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
-                    || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY
-                    || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //center Y
-                startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int)((float)parent->getHeight() / 2.0f);
+            } else {
+                startPosition = 0;
             }
+        } else if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
+                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
+                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //bottom
+            if (parent) {
+                startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int) parent->getHeight();
+            } else {
+                startPosition = (int)getSceneSize().Y;
+            }
+        } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
+                || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY
+                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //center Y
+            if (parent) {
+                startPosition = parent->getGlobalPositionY() + parent->getOutline().topWidth + (int) ((float) parent->getHeight() / 2.0f);
+            } else {
+                startPosition = (int)((float)getSceneSize().Y / 2.0f);
+            }
+        }
 
-            if (const auto* scrollable = dynamic_cast<Scrollable*>(parent)) {
-                startPosition += scrollable->getScrollShiftY();
-            }
+        if (const auto* scrollable = dynamic_cast<Scrollable*>(parent)) {
+            startPosition += scrollable->getScrollShiftY();
         }
 
         if (position.getReferencePoint() == RefPoint::LEFT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM || position.getReferencePoint() == RefPoint::CENTERX_BOTTOM) { //bottom
