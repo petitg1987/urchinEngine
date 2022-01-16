@@ -21,7 +21,7 @@ namespace urchin {
             respawnValues({}),
             initialOrientation(this->physicsCharacter->getTransform().getOrientation()),
             numberOfHit(0),
-            bIsOnGround(false),
+            onGround(false),
             hitRoof(false),
             timeInTheAir(0.0f),
             jumping(false),
@@ -58,7 +58,11 @@ namespace urchin {
 
     void CharacterController::verticalMove(float verticalSpeed) {
         if (!isGravityEnabled()) {
-            this->velocity.Y += verticalSpeed;
+            bool descendAllowed = verticalSpeed < 0.0f && !onGround;
+            bool ascendAllowed = verticalSpeed > 0.0f && !hitRoof;
+            if (descendAllowed || ascendAllowed) {
+                this->velocity.Y += verticalSpeed;
+            }
         }
     }
 
@@ -97,7 +101,7 @@ namespace urchin {
     }
 
     bool CharacterController::isOnGround() const {
-        return bIsOnGround;
+        return onGround;
     }
 
     bool CharacterController::isGravityEnabled() const {
@@ -170,7 +174,7 @@ namespace urchin {
 
             //compute values
             slopeInPercentage = 0.0f;
-            if (bIsOnGround) {
+            if (onGround) {
                 verticalSpeed = std::max(0.0f, verticalSpeed);
                 slopeInPercentage = computeSlope();
             }
@@ -222,16 +226,16 @@ namespace urchin {
             makeJump = false;
             if (closeToTheGround && !jumping) {
                 verticalSpeed += config.getJumpSpeed();
-                bIsOnGround = false;
+                onGround = false;
                 jumping = true;
                 config.getEventCallback().onStartJumping();
             }
-        } else if (bIsOnGround && jumping) {
+        } else if (onGround && jumping) {
             jumping = false;
         }
 
         //gravity velocity
-        if (!bIsOnGround || numberOfHit > 1) {
+        if (!onGround || numberOfHit > 1) {
             if (gravityEnabled) {
                 verticalSpeed -= (-physicsWorld.getGravity().Y) * dt;
             }
@@ -350,10 +354,10 @@ namespace urchin {
 
     void CharacterController::computeSignificantContactValues(float dt) {
         numberOfHit = significantContactValues.numberOfHit;
-        bIsOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
+        onGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < config.getMaxSlopeInRadian();
         hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < config.getMaxSlopeInRadian();
 
-        if (bIsOnGround) {
+        if (onGround) {
             if (timeInTheAir > 0.05f) {
                 config.getEventCallback().onHitGround(timeInTheAir);
             }

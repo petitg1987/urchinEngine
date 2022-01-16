@@ -87,7 +87,7 @@ namespace urchin {
             Point3<float> previousBodyPosition;
             Quaternion<float> initialOrientation;
             unsigned int numberOfHit; //number of contact point touching the character
-            bool bIsOnGround; //character is on the ground
+            bool onGround; //character is on the ground
             bool hitRoof; //character has hit the roof
             float timeInTheAir; //time (sec.) character is not on the ground
             bool jumping; //character is jumping
