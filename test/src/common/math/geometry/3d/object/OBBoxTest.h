@@ -8,5 +8,6 @@ class OBBoxTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 
-        void rayIntersection();
+        void leftRightLineIntersection();
+        void rightLeftLineIntersection();
 };

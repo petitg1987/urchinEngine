@@ -192,11 +192,55 @@ namespace urchin {
         return separatedAxisTheoremCollision(OBBox<T>(bbox));
     }
 
-    template<class T> Point3<T> OBBox<T>::intersectPoint(const Ray<T>& /*line*/, bool& /*hasIntersection*/) const {
-        Plane<T> verticalPlane(getPoint(0), getPoint(1), getPoint(2));
+    template<class T> Point3<T> OBBox<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {
+        Point3<T> bestIntersectionPoint(0.0f, 0.0f, 0.0f);
+        hasIntersection = false;
 
-        //TODO impl...
-        return Point3<T>();
+        std::array<std::array<Point3<T>, 4>, 6> squaresCwPoints = {{
+            {getPoint(4), getPoint(6), getPoint(7), getPoint(5)}, //left
+            {getPoint(0), getPoint(1), getPoint(3), getPoint(2)}, //right
+            {getPoint(5), getPoint(1), getPoint(0), getPoint(4)}, //top
+            {getPoint(3), getPoint(7), getPoint(6), getPoint(2)}, //bottom
+            {getPoint(4), getPoint(0), getPoint(2), getPoint(6)}, //front
+            {getPoint(1), getPoint(5), getPoint(7), getPoint(3)}, //back
+        }};
+
+        for(std::size_t i = 0; i < squaresCwPoints.size(); ++i) {
+            Plane<T> plane(squaresCwPoints[i][0], squaresCwPoints[i][2], squaresCwPoints[i][1]); //normal is external
+            bool hasPlaneIntersection;
+            Point3<T> intersectionPoint = plane.intersectPoint(line, hasPlaneIntersection);
+            if (hasPlaneIntersection) {
+                if (pointInsideSquare(intersectionPoint, squaresCwPoints[i], plane.getNormal())) {
+                    if (!hasIntersection || (line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint))) {
+                        bestIntersectionPoint = intersectionPoint;
+                        hasIntersection = true;
+                    }
+                }
+            } else {
+                i++; //skip next parallel plane
+            }
+        }
+        return bestIntersectionPoint;
+    }
+
+    template<class T> bool OBBox<T>::pointInsideSquare(const Point3<T>& testPoint, const std::array<Point3<T>, 4>& points, const Vector3<T>& normal) const {
+        T orient1 = testPoint.vector(points[0]).crossProduct(testPoint.vector(points[1])).dotProduct(normal);
+        T orient2 = testPoint.vector(points[1]).crossProduct(testPoint.vector(points[2])).dotProduct(normal);
+        if ((orient1 < 0.0f && orient2 > 0.0f) || (orient1 > 0.0f && orient2 < 0.0f)) {
+            return false;
+        }
+
+        T orient3 = testPoint.vector(points[2]).crossProduct(testPoint.vector(points[3])).dotProduct(normal);
+        if ((orient1 < 0.0f && orient3 > 0.0f) || (orient1 > 0.0f && orient3 < 0.0f)) {
+            return false;
+        }
+
+        T orient4 = testPoint.vector(points[3]).crossProduct(testPoint.vector(points[0])).dotProduct(normal);
+        if ((orient1 < 0.0f && orient4 > 0.0f) || (orient1 > 0.0f && orient4 < 0.0f)) {
+            return false;
+        }
+
+        return true; //all orients have the same sign
     }
 
     template<class T> bool OBBox<T>::separatedAxisTheoremCollision(const OBBox<T>& bbox) const {
