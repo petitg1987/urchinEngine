@@ -3,7 +3,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/ConvexHullShape2DTest.h>
+#include <common/math/geometry/2d/shape/ConvexHullShape2DTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 

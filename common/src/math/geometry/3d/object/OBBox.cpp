@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include <math/geometry/3d/object/OBBox.h>
+#include <math/geometry/3d/Plane.h>
 #include <math/algebra/point/Point4.h>
 
 namespace urchin {
@@ -103,7 +104,7 @@ namespace urchin {
      * Points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
      */
     template<class T> Point3<T> OBBox<T>::getPoint(unsigned int index) const {
-        switch(index) {
+        switch (index) {
             case 0:
                 return centerOfMass.translate(axis[0] + axis[1] + axis[2]);
             case 1:
@@ -191,23 +192,31 @@ namespace urchin {
         return separatedAxisTheoremCollision(OBBox<T>(bbox));
     }
 
+    template<class T> Point3<T> OBBox<T>::intersectPoint(const Ray<T>& /*line*/, bool& /*hasIntersection*/) const {
+        Plane<T> verticalPlane(getPoint(0), getPoint(1), getPoint(2));
+
+        //TODO impl...
+        return Point3<T>();
+    }
+
     template<class T> bool OBBox<T>::separatedAxisTheoremCollision(const OBBox<T>& bbox) const {
         //separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
         Vector3<T> distCenterPoint = getCenterOfMass().vector(bbox.getCenterOfMass());
-        const T AdotB[3][3] = {
-                {normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(2))},
-                {normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(2))},
-                {normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(2))}
-        };
+        std::array<std::array<T, 3>, 3> aDotB = {{
+               {normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[0].dotProduct(bbox.getNormalizedAxis(2))},
+               {normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[1].dotProduct(bbox.getNormalizedAxis(2))},
+               {normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(0)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(1)), normalizedAxis[2].dotProduct(bbox.getNormalizedAxis(2))}
+       }};
+
         constexpr auto EPSILON = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
 
         //case 1, 2, 3 (projectionAxis = axis[0] | axis[1] | axis[2])
         for (unsigned int i = 0; i < 3; i++) {
             if (std::abs(distCenterPoint.dotProduct(normalizedAxis[i]))
                     > this->getHalfSize(i)
-                    + std::abs(bbox.getHalfSize(0) * AdotB[i][0])
-                    + std::abs(bbox.getHalfSize(1) * AdotB[i][1])
-                    + std::abs(bbox.getHalfSize(2) * AdotB[i][2])) [[unlikely]] {
+                    + std::abs(bbox.getHalfSize(0) * aDotB[i][0])
+                    + std::abs(bbox.getHalfSize(1) * aDotB[i][1])
+                    + std::abs(bbox.getHalfSize(2) * aDotB[i][2])) [[unlikely]] {
                 return false;
             }
         }
@@ -215,9 +224,9 @@ namespace urchin {
         //case 4, 5, 6 (projectionAxis = bbox.getAxis(0) | bbox.getAxis(1) | bbox.getAxis(2))
         for (unsigned int i = 0; i < 3; i++) {
             if (std::abs(distCenterPoint.dotProduct(bbox.getNormalizedAxis(i)))
-                    > std::abs(this->getHalfSize(0) * AdotB[0][i])
-                    + std::abs(this->getHalfSize(1) * AdotB[1][i])
-                    + std::abs(this->getHalfSize(2) * AdotB[2][i])
+                    > std::abs(this->getHalfSize(0) * aDotB[0][i])
+                    + std::abs(this->getHalfSize(1) * aDotB[1][i])
+                    + std::abs(this->getHalfSize(2) * aDotB[2][i])
                     + bbox.getHalfSize(i)) [[unlikely]] {
                 return false;
             }
@@ -225,82 +234,82 @@ namespace urchin {
 
         //case 7 (projectionAxis = axis[0].crossProduct(bbox.getAxis(0)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[0].crossProduct(bbox.getNormalizedAxis(0)))) - EPSILON
-                > std::abs(this->getHalfSize(1) * AdotB[2][0])
-                + std::abs(this->getHalfSize(2) * AdotB[1][0])
-                + std::abs(bbox.getHalfSize(1) * AdotB[0][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[0][1])) [[unlikely]] {
+                > std::abs(this->getHalfSize(1) * aDotB[2][0])
+                + std::abs(this->getHalfSize(2) * aDotB[1][0])
+                + std::abs(bbox.getHalfSize(1) * aDotB[0][2])
+                + std::abs(bbox.getHalfSize(2) * aDotB[0][1])) [[unlikely]] {
             return false;
         }
 
         //case 8 (projectionAxis = axis[0].crossProduct(bbox.getAxis(1)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[0].crossProduct(bbox.getNormalizedAxis(1)))) - EPSILON
-                > std::abs(this->getHalfSize(1) * AdotB[2][1])
-                + std::abs(this->getHalfSize(2) * AdotB[1][1])
-                + std::abs(bbox.getHalfSize(0) * AdotB[0][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[0][0])) [[unlikely]] {
+                > std::abs(this->getHalfSize(1) * aDotB[2][1])
+                + std::abs(this->getHalfSize(2) * aDotB[1][1])
+                + std::abs(bbox.getHalfSize(0) * aDotB[0][2])
+                + std::abs(bbox.getHalfSize(2) * aDotB[0][0])) [[unlikely]] {
             return false;
         }
 
         //case 9 (projectionAxis = axis[0].crossProduct(bbox.getAxis(2)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[0].crossProduct(bbox.getNormalizedAxis(2)))) - EPSILON
-                > std::abs(this->getHalfSize(1) * AdotB[2][2])
-                + std::abs(this->getHalfSize(2) * AdotB[1][2])
-                + std::abs(bbox.getHalfSize(0) * AdotB[0][1])
-                + std::abs(bbox.getHalfSize(1) * AdotB[0][0])) [[unlikely]] {
+                > std::abs(this->getHalfSize(1) * aDotB[2][2])
+                + std::abs(this->getHalfSize(2) * aDotB[1][2])
+                + std::abs(bbox.getHalfSize(0) * aDotB[0][1])
+                + std::abs(bbox.getHalfSize(1) * aDotB[0][0])) [[unlikely]] {
             return false;
         }
 
         //case 10 (projectionAxis = axis[1].crossProduct(bbox.getAxis(0)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[1].crossProduct(bbox.getNormalizedAxis(0)))) - EPSILON
-                > std::abs(this->getHalfSize(0) * AdotB[2][0])
-                + std::abs(this->getHalfSize(2) * AdotB[0][0])
-                + std::abs(bbox.getHalfSize(1) * AdotB[1][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[1][1])) [[unlikely]] {
+                > std::abs(this->getHalfSize(0) * aDotB[2][0])
+                + std::abs(this->getHalfSize(2) * aDotB[0][0])
+                + std::abs(bbox.getHalfSize(1) * aDotB[1][2])
+                + std::abs(bbox.getHalfSize(2) * aDotB[1][1])) [[unlikely]] {
             return false;
         }
 
         //case 11 (projectionAxis = axis[1].crossProduct(bbox.getAxis(1)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[1].crossProduct(bbox.getNormalizedAxis(1)))) - EPSILON
-                > std::abs(this->getHalfSize(0) * AdotB[2][1])
-                + std::abs(this->getHalfSize(2) * AdotB[0][1])
-                + std::abs(bbox.getHalfSize(0) * AdotB[1][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[1][0])) [[unlikely]] {
+                > std::abs(this->getHalfSize(0) * aDotB[2][1])
+                + std::abs(this->getHalfSize(2) * aDotB[0][1])
+                + std::abs(bbox.getHalfSize(0) * aDotB[1][2])
+                + std::abs(bbox.getHalfSize(2) * aDotB[1][0])) [[unlikely]] {
             return false;
         }
 
         //case 12 (projectionAxis = axis[1].crossProduct(bbox.getAxis(2)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[1].crossProduct(bbox.getNormalizedAxis(2)))) - EPSILON
-                > std::abs(this->getHalfSize(0) * AdotB[2][2])
-                + std::abs(this->getHalfSize(2) * AdotB[0][2])
-                + std::abs(bbox.getHalfSize(0) * AdotB[1][1])
-                + std::abs(bbox.getHalfSize(1) * AdotB[1][0])) [[unlikely]] {
+                > std::abs(this->getHalfSize(0) * aDotB[2][2])
+                + std::abs(this->getHalfSize(2) * aDotB[0][2])
+                + std::abs(bbox.getHalfSize(0) * aDotB[1][1])
+                + std::abs(bbox.getHalfSize(1) * aDotB[1][0])) [[unlikely]] {
             return false;
         }
 
         //case 13 (projectionAxis = axis[2].crossProduct(bbox.getAxis(0)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[2].crossProduct(bbox.getNormalizedAxis(0)))) - EPSILON
-                > std::abs(this->getHalfSize(0) * AdotB[1][0])
-                + std::abs(this->getHalfSize(1) * AdotB[0][0])
-                + std::abs(bbox.getHalfSize(1) * AdotB[2][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[2][1])) [[unlikely]] {
+                > std::abs(this->getHalfSize(0) * aDotB[1][0])
+                + std::abs(this->getHalfSize(1) * aDotB[0][0])
+                + std::abs(bbox.getHalfSize(1) * aDotB[2][2])
+                + std::abs(bbox.getHalfSize(2) * aDotB[2][1])) [[unlikely]] {
             return false;
         }
 
         //case 14 (projectionAxis = axis[2].crossProduct(bbox.getAxis(1)))
         if (std::abs(distCenterPoint.dotProduct(normalizedAxis[2].crossProduct(bbox.getNormalizedAxis(1)))) - EPSILON
-                > std::abs(this->getHalfSize(0) * AdotB[1][1])
-                + std::abs(this->getHalfSize(1) * AdotB[0][1])
-                + std::abs(bbox.getHalfSize(0) * AdotB[2][2])
-                + std::abs(bbox.getHalfSize(2) * AdotB[2][0])) [[unlikely]] {
+                > std::abs(this->getHalfSize(0) * aDotB[1][1])
+                + std::abs(this->getHalfSize(1) * aDotB[0][1])
+                + std::abs(bbox.getHalfSize(0) * aDotB[2][2])
+                + std::abs(bbox.getHalfSize(2) * aDotB[2][0])) [[unlikely]] {
             return false;
         }
 
         //case 15 (projectionAxis = axis[2].crossProduct(bbox.getAxis(2)))
         return std::abs(distCenterPoint.dotProduct(normalizedAxis[2].crossProduct(bbox.getNormalizedAxis(2)))) - EPSILON
-                <= std::abs(this->getHalfSize(0) * AdotB[1][2])
-                + std::abs(this->getHalfSize(1) * AdotB[0][2])
-                + std::abs(bbox.getHalfSize(0) * AdotB[2][1])
-                + std::abs(bbox.getHalfSize(1) * AdotB[2][0]);
+                <= std::abs(this->getHalfSize(0) * aDotB[1][2])
+                + std::abs(this->getHalfSize(1) * aDotB[0][2])
+                + std::abs(bbox.getHalfSize(0) * aDotB[2][1])
+                + std::abs(bbox.getHalfSize(1) * aDotB[2][0]);
     }
 
     template<class T> OBBox<T> operator *(const Matrix4<T>& m, const OBBox<T>& obb) {

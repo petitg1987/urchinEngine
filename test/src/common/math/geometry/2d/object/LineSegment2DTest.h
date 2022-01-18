@@ -3,9 +3,11 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class LineSegment2DCollisionTest : public CppUnit::TestFixture {
+class LineSegment2DTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
+
+        void closestPoint();
 
         void noIntersection();
         void parallelLines();

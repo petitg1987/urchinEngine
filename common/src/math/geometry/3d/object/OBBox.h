@@ -6,6 +6,7 @@
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/object/Sphere.h>
+#include <math/geometry/3d/Ray.h>
 #include <math/geometry/3d/shape/BoxShape.h>
 #include <math/algebra/matrix/Matrix4.h>
 #include <math/algebra/point/Point3.h>
@@ -38,6 +39,7 @@ namespace urchin {
 
             bool collideWithOBBox(const OBBox<T>&) const;
             bool collideWithAABBox(const AABBox<T>&) const;
+            Point3<T> intersectPoint(const Ray<T>&, bool&) const;
 
         private:
             bool separatedAxisTheoremCollision(const OBBox<T>&) const;

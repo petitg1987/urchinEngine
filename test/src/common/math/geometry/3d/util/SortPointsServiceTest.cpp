@@ -3,11 +3,11 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/SortPointsTest.h>
+#include <common/math/geometry/3d/util/SortPointsServiceTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
-void SortPointsTest::threePointsClockwise() {
+void SortPointsServiceTest::threePointsClockwise() {
     std::vector<Point3<float>> threePoints({
             Point3<float>(0.0, 0.0, 0.0),
             Point3<float>(0.5, 0.0, -1.0),
@@ -20,7 +20,7 @@ void SortPointsTest::threePointsClockwise() {
     AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(0.5, 0.0, -1.0));
 }
 
-void SortPointsTest::threePointsCounterClockwise() {
+void SortPointsServiceTest::threePointsCounterClockwise() {
     std::vector<Point3<float>> threePoints({
             Point3<float>(0.0, 0.0, 0.0),
             Point3<float>(1.0, 0.0, 0.0),
@@ -33,7 +33,7 @@ void SortPointsTest::threePointsCounterClockwise() {
     AssertHelper::assertPoint3FloatEquals(sortedPoints[2], Point3<float>(1.0, 0.0, 0.0));
 }
 
-void SortPointsTest::fourPointsClockwise() {
+void SortPointsServiceTest::fourPointsClockwise() {
     std::vector<Point3<float>> fourPoints({
             Point3<float>(0.0, 0.0, 0.0),
             Point3<float>(1.0, 0.0, -1.0),
@@ -48,7 +48,7 @@ void SortPointsTest::fourPointsClockwise() {
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(0.0, 0.0, -1.0));
 }
 
-void SortPointsTest::fourPointsCounterClockwiseZNormal() {
+void SortPointsServiceTest::fourPointsCounterClockwiseZNormal() {
     std::vector<Point3<float>> fourPoints({
             Point3<float>(-2.0, 0.0, -5.0),
             Point3<float>(1.0, 1.0, -5.0),
@@ -63,7 +63,7 @@ void SortPointsTest::fourPointsCounterClockwiseZNormal() {
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(1.0, 1.0, -5.0));
 }
 
-void SortPointsTest::fourPointsCounterClockwiseYNormal() {
+void SortPointsServiceTest::fourPointsCounterClockwiseYNormal() {
     std::vector<Point3<float>> fourPoints({
             Point3<float>(1.0, 0.0, -1.0),
             Point3<float>(1.0, 0.0, 1.0),
@@ -78,15 +78,15 @@ void SortPointsTest::fourPointsCounterClockwiseYNormal() {
     AssertHelper::assertPoint3FloatEquals(sortedPoints[3], Point3<float>(-1.0, 0.0, -1.0));
 }
 
-CppUnit::Test* SortPointsTest::suite() {
-    auto* suite = new CppUnit::TestSuite("SortPointsTest");
+CppUnit::Test* SortPointsServiceTest::suite() {
+    auto* suite = new CppUnit::TestSuite("SortPointsServiceTest");
 
-    suite->addTest(new CppUnit::TestCaller<SortPointsTest>("threePointsClockwise", &SortPointsTest::threePointsClockwise));
-    suite->addTest(new CppUnit::TestCaller<SortPointsTest>("threePointsCounterClockwise", &SortPointsTest::threePointsCounterClockwise));
+    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("threePointsClockwise", &SortPointsServiceTest::threePointsClockwise));
+    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("threePointsCounterClockwise", &SortPointsServiceTest::threePointsCounterClockwise));
 
-    suite->addTest(new CppUnit::TestCaller<SortPointsTest>("fourPointsClockwise", &SortPointsTest::fourPointsClockwise));
-    suite->addTest(new CppUnit::TestCaller<SortPointsTest>("fourPointsCounterClockwiseZNormal", &SortPointsTest::fourPointsCounterClockwiseZNormal));
-    suite->addTest(new CppUnit::TestCaller<SortPointsTest>("fourPointsCounterClockwiseYNormal", &SortPointsTest::fourPointsCounterClockwiseYNormal));
+    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("fourPointsClockwise", &SortPointsServiceTest::fourPointsClockwise));
+    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("fourPointsCounterClockwiseZNormal", &SortPointsServiceTest::fourPointsCounterClockwiseZNormal));
+    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("fourPointsCounterClockwiseYNormal", &SortPointsServiceTest::fourPointsCounterClockwiseYNormal));
 
     return suite;
 }

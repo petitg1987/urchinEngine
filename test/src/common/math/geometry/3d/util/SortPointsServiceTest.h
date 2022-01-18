@@ -3,7 +3,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class SortPointsTest : public CppUnit::TestFixture {
+class SortPointsServiceTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

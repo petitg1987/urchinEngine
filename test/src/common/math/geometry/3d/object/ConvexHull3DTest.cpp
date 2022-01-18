@@ -4,11 +4,11 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <common/math/geometry/ResizeConvexHull3DTest.h>
+#include <common/math/geometry/3d/object/ConvexHull3DTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
-void ResizeConvexHull3DTest::reduceBox() {
+void ConvexHull3DTest::reduceBox() {
     std::vector<Point3<float>> aabbPoints = {
             Point3<float>(0.0f, 1.0f, 0.0f), Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(1.0f, -1.0f, 0.0f), Point3<float>(0.0f, -1.0f, 0.0f),
             Point3<float>(0.0f, 1.0f, -1.0f), Point3<float>(1.0f, 1.0f, -1.0f), Point3<float>(1.0f, -1.0f, -1.0f), Point3<float>(0.0f, -1.0f, -1.0f)};
@@ -26,7 +26,7 @@ void ResizeConvexHull3DTest::reduceBox() {
     AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(-1.0f, -1.0f, 1.0f)), Point3<float>(0.1f, -0.9f, -0.1f));
 }
 
-void ResizeConvexHull3DTest::nullExpandTetrahedron() {
+void ConvexHull3DTest::nullExpandTetrahedron() {
     std::vector<Point3<float>> tetrahedronPoints = {
                 Point3<float>(-1.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 1.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(0.0f, 3.0f, 0.0f)};
     ConvexHull3D<float> convexHull(tetrahedronPoints);
@@ -39,7 +39,7 @@ void ResizeConvexHull3DTest::nullExpandTetrahedron() {
     AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(0.0f, 1.0f, 0.0f)), tetrahedronPoints[3]); //top point
 }
 
-void ResizeConvexHull3DTest::expandTetrahedron() {
+void ConvexHull3DTest::expandTetrahedron() {
     std::vector<Point3<float>> tetrahedronPoints = {
                 Point3<float>(-1.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 1.0f), Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(0.0f, 3.0f, 0.0f)};
     ConvexHull3D<float> convexHull(tetrahedronPoints);
@@ -52,13 +52,13 @@ void ResizeConvexHull3DTest::expandTetrahedron() {
     AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(0.0f, 1.0f, 0.0f)), Point3<float>(0.0f, 6.67945f, -0.5f)); //top point
 }
 
-CppUnit::Test* ResizeConvexHull3DTest::suite() {
-    auto* suite = new CppUnit::TestSuite("ResizeConvexHullTest");
+CppUnit::Test* ConvexHull3DTest::suite() {
+    auto* suite = new CppUnit::TestSuite("ConvexHull3DTest");
 
-    suite->addTest(new CppUnit::TestCaller<ResizeConvexHull3DTest>("reduceBox", &ResizeConvexHull3DTest::reduceBox));
+    suite->addTest(new CppUnit::TestCaller<ConvexHull3DTest>("reduceBox", &ConvexHull3DTest::reduceBox));
 
-    suite->addTest(new CppUnit::TestCaller<ResizeConvexHull3DTest>("nullExpandTetrahedron", &ResizeConvexHull3DTest::nullExpandTetrahedron));
-    suite->addTest(new CppUnit::TestCaller<ResizeConvexHull3DTest>("expandTetrahedron", &ResizeConvexHull3DTest::expandTetrahedron));
+    suite->addTest(new CppUnit::TestCaller<ConvexHull3DTest>("nullExpandTetrahedron", &ConvexHull3DTest::nullExpandTetrahedron));
+    suite->addTest(new CppUnit::TestCaller<ConvexHull3DTest>("expandTetrahedron", &ConvexHull3DTest::expandTetrahedron));
 
     return suite;
 }

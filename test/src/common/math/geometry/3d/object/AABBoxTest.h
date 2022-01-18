@@ -4,7 +4,7 @@
 #include <cppunit/Test.h>
 #include <UrchinCommon.h>
 
-class AABBoxCollisionTest : public CppUnit::TestFixture {
+class AABBoxTest : public CppUnit::TestFixture {
     public:
         static CppUnit::Test* suite();
 

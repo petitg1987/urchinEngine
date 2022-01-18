@@ -9,14 +9,19 @@
 #include <common/math/algebra/QuaternionTest.h>
 #include <common/math/algebra/point/PointTest.h>
 #include <common/math/algebra/vector/VectorTest.h>
-#include <common/math/geometry/OrthogonalProjectionTest.h>
-#include <common/math/geometry/ClosestPointTest.h>
-#include <common/math/geometry/AABBoxCollisionTest.h>
-#include <common/math/geometry/LineSegment2DCollisionTest.h>
-#include <common/math/geometry/ResizeConvexHull3DTest.h>
-#include <common/math/geometry/ResizePolygon2DServiceTest.h>
-#include <common/math/geometry/ConvexHullShape2DTest.h>
-#include <common/math/geometry/SortPointsTest.h>
+#include <common/math/geometry/2d/object/LineSegment2DTest.h>
+#include <common/math/geometry/2d/util/ResizePolygon2DServiceTest.h>
+#include <common/math/geometry/2d/shape/ConvexHullShape2DTest.h>
+#include <common/math/geometry/2d/Line2DTest.h>
+#include <common/math/geometry/3d/object/AABBoxTest.h>
+#include <common/math/geometry/3d/object/OBBoxTest.h>
+#include <common/math/geometry/3d/object/LineSegment3DTest.h>
+#include <common/math/geometry/3d/object/Triangle3DTest.h>
+#include <common/math/geometry/3d/object/TetrahedronTest.h>
+#include <common/math/geometry/3d/object/ConvexHull3DTest.h>
+#include <common/math/geometry/3d/util/SortPointsServiceTest.h>
+#include <common/math/geometry/3d/Line3DTest.h>
+#include <common/math/geometry/3d/PlaneTest.h>
 #include <common/partitioning/GridContainerTest.h>
 #include <3d/api/render/GenericRendererComparatorTest.h>
 #include <3d/scene/renderer3d/Renderer3dTest.h>
@@ -68,14 +73,19 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(VectorTest::suite());
 
     //math - geometry
-    runner.addTest(OrthogonalProjectionTest::suite());
-    runner.addTest(ClosestPointTest::suite());
-    runner.addTest(AABBoxCollisionTest::suite());
-    runner.addTest(LineSegment2DCollisionTest::suite());
-    runner.addTest(ResizeConvexHull3DTest::suite());
     runner.addTest(ResizePolygon2DServiceTest::suite());
+    runner.addTest(LineSegment2DTest::suite());
     runner.addTest(ConvexHullShape2DTest::suite());
-    runner.addTest(SortPointsTest::suite());
+    runner.addTest(Line2DTest::suite());
+    runner.addTest(AABBoxTest::suite());
+    runner.addTest(OBBoxTest::suite());
+    runner.addTest(LineSegment3DTest::suite());
+    runner.addTest(Triangle3DTest::suite());
+    runner.addTest(TetrahedronTest::suite());
+    runner.addTest(ConvexHull3DTest::suite());
+    runner.addTest(SortPointsServiceTest::suite());
+    runner.addTest(Line3DTest::suite());
+    runner.addTest(PlaneTest::suite());
 
     //partitioning
     runner.addTest(GridContainerTest::suite());
