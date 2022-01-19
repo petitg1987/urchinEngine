@@ -17,6 +17,9 @@ namespace urchin {
     }
 
     std::size_t Resource::retrieveHashId() const {
+        if (id.empty()) {
+            throw std::runtime_error("No resource id defined on resource named: " + name);
+        }
         if (hashId == 0) {
             hashId = std::hash<std::string>{}(id);
         }
