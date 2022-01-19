@@ -5,6 +5,9 @@
 
 namespace urchin {
 
+    //static
+    unsigned long MaterialBuilder::nextId = 0;
+
     MaterialBuilder::MaterialBuilder(std::string materialName, std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) :
             materialName(std::move(materialName)),
             mDiffuseTexture(std::move(diffuseTexture)),
@@ -103,7 +106,7 @@ namespace urchin {
 
     std::unique_ptr<Material> MaterialBuilder::build() {
         std::unique_ptr<Material> material = std::make_unique<Material>(*this);
-        //TODO add unique id to Material
+        material->setId("_" + std::to_string(nextId++));
         material->setName(materialName);
         return material;
     }

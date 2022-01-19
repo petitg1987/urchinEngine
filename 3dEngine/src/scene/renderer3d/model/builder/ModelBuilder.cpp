@@ -3,6 +3,9 @@
 
 namespace urchin {
 
+    //static
+    unsigned long ModelBuilder::nextId = 0;
+
     ModelBuilder::ModelBuilder(std::shared_ptr<Material> material) :
         material(std::move(material)) {
 
@@ -18,7 +21,7 @@ namespace urchin {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
         constMeshesVector.push_back(buildConstMesh(vertices, trianglesIndices, uvTexture));
         auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
-        //TODO set an unique id
+        constMeshes->setId("_" + std::to_string(nextId++));
 
         auto meshes = std::make_unique<Meshes>(std::move(constMeshes));
         return Model::fromMemory(std::move(meshes));

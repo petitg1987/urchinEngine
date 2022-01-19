@@ -39,6 +39,8 @@ namespace urchin {
         private:
             MaterialBuilder(std::string, std::shared_ptr<Texture>, bool);
 
+            static unsigned long nextId;
+
             std::string materialName;
             std::shared_ptr<Texture> mDiffuseTexture;
             bool mHasTransparency;

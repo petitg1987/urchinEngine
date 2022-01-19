@@ -19,6 +19,8 @@ namespace urchin {
         private:
             std::unique_ptr<const ConstMesh> buildConstMesh(const std::vector<Point3<float>>&, const std::vector<unsigned int>&, const std::vector<Point2<float>>&) const;
 
+            static unsigned long nextId;
+
             std::shared_ptr<Material> material;
     };
 
