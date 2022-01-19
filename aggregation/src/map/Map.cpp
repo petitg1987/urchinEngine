@@ -57,8 +57,11 @@ namespace urchin {
     ObjectEntity* Map::findObjectEntityByTag(const std::string& tag) const {
         tmpObjectEntities.clear();
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, tmpObjectEntities);
-        if (tmpObjectEntities.size() != 1) {
+        if (tmpObjectEntities.size() > 1) {
             throw std::runtime_error("Impossible to find an unique object entity (" + std::to_string(tmpObjectEntities.size()) + " found) with tag: " + tag);
+        }
+        if (tmpObjectEntities.empty()) {
+            return nullptr;
         }
         return tmpObjectEntities[0];
     }
@@ -72,7 +75,7 @@ namespace urchin {
 
     void Map::removeObjectEntity(ObjectEntity& objectEntity) {
         objectEntitiesTagHolder.removeTaggableResource(objectEntity);
-        objectEntities.remove_if([&objectEntity](const auto& o){return o.get()==&objectEntity;});
+        objectEntities.remove_if([&objectEntity](const auto& o){ return o.get()==&objectEntity; });
     }
 
     const std::list<std::unique_ptr<LightEntity>>& Map::getLightEntities() const {
