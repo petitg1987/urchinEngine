@@ -58,6 +58,8 @@ namespace urchin {
             newObjectModel->setupInteractiveBody(std::move(rigidBody));
         }
 
+        newObjectModel->addTags(toCloneObjectEntity.getTags());
+
         addObjectEntity(std::move(newObjectModel));
     }
 
