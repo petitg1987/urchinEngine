@@ -41,7 +41,7 @@ namespace urchin {
             diffuseTexture = diffuseImage.createTexture(false);
             hasTransparency = !MathFunction::isOne(color.W);
         }
-        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(diffuseTexture, hasTransparency);
+        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, diffuseTexture, hasTransparency);
 
         //repeat textures
         auto repeatTexturesChunk = udaParser.getUniqueChunk(false, "repeatTextures");

@@ -18,6 +18,7 @@ namespace urchin {
         std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector;
         constMeshesVector.push_back(buildConstMesh(vertices, trianglesIndices, uvTexture));
         auto constMeshes = ConstMeshes::fromMemory(meshesName, std::move(constMeshesVector));
+        //TODO set an unique id
 
         auto meshes = std::make_unique<Meshes>(std::move(constMeshes));
         return Model::fromMemory(std::move(meshes));

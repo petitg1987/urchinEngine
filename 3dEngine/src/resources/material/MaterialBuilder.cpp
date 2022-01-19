@@ -5,7 +5,8 @@
 
 namespace urchin {
 
-    MaterialBuilder::MaterialBuilder(std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) :
+    MaterialBuilder::MaterialBuilder(std::string materialName, std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) :
+            materialName(std::move(materialName)),
             mDiffuseTexture(std::move(diffuseTexture)),
             mHasTransparency(hasTransparency),
             mRepeatTextures(false),
@@ -17,12 +18,12 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) {
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(std::string materialName, std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) {
         if (!diffuseTexture) {
             throw std::runtime_error("Diffuse texture is mandatory to build a material");
         }
 
-        return std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(diffuseTexture), hasTransparency));
+        return std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(materialName), std::move(diffuseTexture), hasTransparency));
     }
 
     const std::shared_ptr<Texture>& MaterialBuilder::getDiffuseTexture() const {
@@ -101,7 +102,10 @@ namespace urchin {
     }
 
     std::unique_ptr<Material> MaterialBuilder::build() {
-        return std::make_unique<Material>(*this);
+        std::unique_ptr<Material> material = std::make_unique<Material>(*this);
+        //TODO add unique id to Material
+        material->setName(materialName);
+        return material;
     }
 
 }

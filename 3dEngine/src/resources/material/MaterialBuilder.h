@@ -9,7 +9,7 @@ namespace urchin {
 
     class MaterialBuilder : public std::enable_shared_from_this<MaterialBuilder> {
         public:
-            static std::shared_ptr<MaterialBuilder> create(std::shared_ptr<Texture>, bool);
+            static std::shared_ptr<MaterialBuilder> create(std::string, std::shared_ptr<Texture>, bool);
 
             const std::shared_ptr<Texture>& getDiffuseTexture() const;
             bool hasTransparency() const;
@@ -37,8 +37,9 @@ namespace urchin {
             std::unique_ptr<Material> build();
 
         private:
-            MaterialBuilder(std::shared_ptr<Texture>, bool);
+            MaterialBuilder(std::string, std::shared_ptr<Texture>, bool);
 
+            std::string materialName;
             std::shared_ptr<Texture> mDiffuseTexture;
             bool mHasTransparency;
 
