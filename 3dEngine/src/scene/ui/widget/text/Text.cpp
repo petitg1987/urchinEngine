@@ -42,7 +42,7 @@ namespace urchin {
         if (hasTranslatableInput()) {
             getI18nService()->add(this);
         } else {
-            text = evaluateText(nullptr);
+            text = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
         }
         refreshRenderer();
@@ -106,7 +106,7 @@ namespace urchin {
         this->inputTextParameters = std::move(inputTextParameters);
 
         if (!hasTranslatableInput()) {
-            text = evaluateText(nullptr);
+            text = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
             refreshRendererData();
         } else {
@@ -114,17 +114,21 @@ namespace urchin {
         }
     }
 
-    std::string Text::evaluateText(const LanguageTranslator* languageTranslator) const { //TODO review...
+    std::string Text::evaluateText(const std::optional<LanguageTranslator>& languageTranslator) const {
         std::string evaluatedText = inputText;
         if (!evaluatedText.empty() && evaluatedText[0] == TRANSLATABLE_TEXT_PREFIX) {
-            assert(languageTranslator);
+            if (!languageTranslator.has_value()) {
+                throw std::runtime_error("Language translator missing for text: " + inputText);
+            }
             evaluatedText = languageTranslator->translate(evaluatedText.substr(1));
         }
 
         for (const std::string& inputTextParameter : inputTextParameters) {
             std::string paramValue = inputTextParameter;
             if (!paramValue.empty() && paramValue[0] == TRANSLATABLE_TEXT_PREFIX) {
-                assert(languageTranslator);
+                if (!languageTranslator.has_value()) {
+                    throw std::runtime_error("Language translator missing for text: " + inputText);
+                }
                 paramValue = languageTranslator->translate(paramValue.substr(1));
             }
 
@@ -139,7 +143,7 @@ namespace urchin {
     }
 
     void Text::refreshTranslation(const LanguageTranslator& languageTranslator) {
-        text = evaluateText(&languageTranslator);
+        text = evaluateText(std::make_optional(languageTranslator));
 
         refreshTextAndWidgetSize();
         refreshRendererData();

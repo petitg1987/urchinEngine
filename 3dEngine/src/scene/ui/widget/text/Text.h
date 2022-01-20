@@ -42,7 +42,7 @@ namespace urchin {
             Text(Position, std::string, std::string, std::vector<std::string>);
 
             void updateText(std::string, std::vector<std::string>);
-            std::string evaluateText(const LanguageTranslator*) const;
+            std::string evaluateText(const std::optional<LanguageTranslator>&) const;
             unsigned int getMaxWidth() const;
             bool hasTranslatableInput() const;
 
