@@ -221,6 +221,7 @@ namespace urchin {
 
         //moves up vector
         up = rotationDelta.rotateVector(up);
+        up = up.normalize(); //normalize is required because due to float imprecision, the vector becomes less and less normalized
 
         //moves position point
         if (!isFirstPersonCamera()) {
