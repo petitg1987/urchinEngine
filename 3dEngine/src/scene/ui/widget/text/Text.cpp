@@ -42,8 +42,7 @@ namespace urchin {
         if (hasTranslatableInput()) {
             getI18nService()->add(this);
         } else {
-            assert(inputTextParameters.empty());
-            text = inputText;
+            text = evaluateText(nullptr);
             refreshTextAndWidgetSize();
         }
         refreshRenderer();
@@ -85,7 +84,6 @@ namespace urchin {
             if (hasTranslatableParameters) {
                 return true;
             }
-            throw std::runtime_error("Parameterized text without translatable input text found: use string concatenation instead of parameterized text");
         }
 
         return false;
@@ -108,8 +106,7 @@ namespace urchin {
         this->inputTextParameters = std::move(inputTextParameters);
 
         if (!hasTranslatableInput()) {
-            assert(this->inputTextParameters.empty());
-            text = this->inputText;
+            text = evaluateText(nullptr);
             refreshTextAndWidgetSize();
             refreshRendererData();
         } else {
@@ -117,24 +114,32 @@ namespace urchin {
         }
     }
 
-    const std::string& Text::getText() const {
-        return text;
-    }
-
-    void Text::refreshTranslation(const LanguageTranslator&& languageTranslator) {
-        text = inputText;
-        if (!text.empty() && text[0] == TRANSLATABLE_TEXT_PREFIX) {
-            text = languageTranslator.translate(text.substr(1));
+    std::string Text::evaluateText(const LanguageTranslator* languageTranslator) const { //TODO review...
+        std::string evaluatedText = inputText;
+        if (!evaluatedText.empty() && evaluatedText[0] == TRANSLATABLE_TEXT_PREFIX) {
+            assert(languageTranslator);
+            evaluatedText = languageTranslator->translate(evaluatedText.substr(1));
         }
 
         for (const std::string& inputTextParameter : inputTextParameters) {
             std::string paramValue = inputTextParameter;
             if (!paramValue.empty() && paramValue[0] == TRANSLATABLE_TEXT_PREFIX) {
-                paramValue = languageTranslator.translate(paramValue.substr(1));
+                assert(languageTranslator);
+                paramValue = languageTranslator->translate(paramValue.substr(1));
             }
 
-            text = std::regex_replace(text, parameterRegex, paramValue, std::regex_constants::format_first_only);
+            evaluatedText = std::regex_replace(evaluatedText, parameterRegex, paramValue, std::regex_constants::format_first_only);
         }
+
+        return evaluatedText;
+    }
+
+    const std::string& Text::getText() const {
+        return text;
+    }
+
+    void Text::refreshTranslation(const LanguageTranslator& languageTranslator) {
+        text = evaluateText(&languageTranslator);
 
         refreshTextAndWidgetSize();
         refreshRendererData();

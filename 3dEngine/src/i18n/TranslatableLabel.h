@@ -10,7 +10,7 @@ namespace urchin {
         public:
             virtual ~TranslatableLabel() = default;
 
-            virtual void refreshTranslation(const LanguageTranslator&&) = 0;
+            virtual void refreshTranslation(const LanguageTranslator&) = 0;
     };
 
 }

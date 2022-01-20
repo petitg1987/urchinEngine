@@ -15,6 +15,7 @@ namespace urchin {
     class Slider : public Widget {
         public:
             static std::shared_ptr<Slider> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Slider> create(Widget*, Position, Size, std::string, const std::vector<ParameterizedText>&);
 
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
@@ -29,7 +30,7 @@ namespace urchin {
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
-            Slider(Position, Size, std::string, const std::vector<std::string>&);
+            Slider(Position, Size, std::string, const std::vector<ParameterizedText>&);
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
             void updateSliderValue(int);
@@ -38,7 +39,7 @@ namespace urchin {
             //display information
             const float TEXT_SHIFT_LENGTH;
             const std::string skinName;
-            const std::vector<std::string> values;
+            const std::vector<ParameterizedText> values;
             unsigned int selectedIndex;
 
             //state

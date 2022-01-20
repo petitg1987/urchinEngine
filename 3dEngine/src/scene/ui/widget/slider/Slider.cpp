@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    Slider::Slider(Position position, Size size, std::string skinName, const std::vector<std::string>& values) :
+    Slider::Slider(Position position, Size size, std::string skinName, const std::vector<ParameterizedText>& values) :
             Widget(position, size),
             TEXT_SHIFT_LENGTH(10.0f),
             skinName(std::move(skinName)),
@@ -20,6 +20,15 @@ namespace urchin {
     }
 
     std::shared_ptr<Slider> Slider::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
+        std::vector<ParameterizedText> parameterizedTexts;
+        parameterizedTexts.reserve(texts.size());
+        for (const std::string& text : texts) {
+            parameterizedTexts.emplace_back(text);
+        }
+        return Widget::create<Slider>(new Slider(position, size, std::move(skinName), parameterizedTexts), parent);
+    }
+
+    std::shared_ptr<Slider> Slider::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<ParameterizedText>& texts) {
         return Widget::create<Slider>(new Slider(position, size, std::move(skinName), texts), parent);
     }
 

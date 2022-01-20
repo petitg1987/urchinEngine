@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    Sequence::Sequence(Position position, Size size, std::string skinName, const std::vector<std::string>& values) :
+    Sequence::Sequence(Position position, Size size, std::string skinName, const std::vector<ParameterizedText>& values) :
             Widget(position, size),
             skinName(std::move(skinName)),
             values(values),
@@ -20,6 +20,15 @@ namespace urchin {
     }
 
     std::shared_ptr<Sequence> Sequence::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<std::string>& texts) {
+        std::vector<ParameterizedText> parameterizedTexts;
+        parameterizedTexts.reserve(texts.size());
+        for (const std::string& text : texts) {
+            parameterizedTexts.emplace_back(text);
+        }
+        return Widget::create<Sequence>(new Sequence(position, size, std::move(skinName), parameterizedTexts), parent);
+    }
+
+    std::shared_ptr<Sequence> Sequence::create(Widget* parent, Position position, Size size, std::string skinName, const std::vector<ParameterizedText>& texts) {
         return Widget::create<Sequence>(new Sequence(position, size, std::move(skinName), texts), parent);
     }
 

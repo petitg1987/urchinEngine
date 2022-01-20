@@ -34,7 +34,7 @@ namespace urchin {
         protected:
             void createOrUpdateWidget() override;
 
-            void refreshTranslation(const LanguageTranslator&&) override;
+            void refreshTranslation(const LanguageTranslator&) override;
 
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
@@ -42,6 +42,7 @@ namespace urchin {
             Text(Position, std::string, std::string, std::vector<std::string>);
 
             void updateText(std::string, std::vector<std::string>);
+            std::string evaluateText(const LanguageTranslator*) const;
             unsigned int getMaxWidth() const;
             bool hasTranslatableInput() const;
 

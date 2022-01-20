@@ -14,6 +14,7 @@ namespace urchin {
     class Sequence : public Widget {
         public:
             static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
+            static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<ParameterizedText>&);
 
             void allowLoopOnValues(bool);
             bool isLoopOnValuesAllowed() const;
@@ -29,14 +30,14 @@ namespace urchin {
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
-            Sequence(Position, Size, std::string, const std::vector<std::string>&);
+            Sequence(Position, Size, std::string, const std::vector<ParameterizedText>&);
 
             void setupLeftButtonListeners();
             void setupRightButtonListeners();
 
             //display information
             const std::string skinName;
-            const std::vector<std::string> values;
+            const std::vector<ParameterizedText> values;
             bool loopOnValuesEnabled;
             unsigned int selectedIndex;
 
