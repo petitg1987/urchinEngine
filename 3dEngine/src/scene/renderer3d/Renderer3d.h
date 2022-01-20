@@ -93,6 +93,10 @@ namespace urchin {
 
             void onCameraProjectionUpdate();
 
+            //model
+            void registerModelForAnimation(Model&);
+            void unregisterModelForAnimation(Model&);
+
             //scene
             void createOrUpdateLightingPass();
             void createOrUpdateLightingShader();
@@ -113,6 +117,7 @@ namespace urchin {
             std::unique_ptr<RenderTarget> deferredRenderTarget;
             OctreeManager<Model> modelOctreeManager;
             ModelSetDisplayer modelSetDisplayer;
+            std::unordered_set<Model*> modelsAnimated;
             std::shared_ptr<AABBoxModel> debugModelOctree;
             std::vector<Model*> modelsInFrustum;
 

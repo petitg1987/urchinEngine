@@ -99,6 +99,10 @@ namespace urchin {
             if (notificationType == Camera::PROJECTION_UPDATE) {
                 onCameraProjectionUpdate();
             }
+        } else if (auto* model = dynamic_cast<Model*>(observable)) {
+            if (notificationType == Model::ANIMATION_STARTED) {
+                modelsAnimated.insert(model);
+            }
         }
     }
 
@@ -210,7 +214,8 @@ namespace urchin {
     void Renderer3d::addModel(std::shared_ptr<Model> model) {
         if (model) {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
-            
+
+            registerModelForAnimation(*model);
             modelOctreeManager.addOctreeable(std::move(model));
         }
     }
@@ -220,6 +225,7 @@ namespace urchin {
             shadowManager.removeModel(model);
             transparentManager.removeModel(model);
             modelSetDisplayer.removeModel(model);
+            unregisterModelForAnimation(*model);
             return modelOctreeManager.removeOctreeable(model);
         }
         return std::shared_ptr<Model>(nullptr);
@@ -318,6 +324,18 @@ namespace urchin {
 
         postUpdateScene();
         PipelineContainer::instance().cleanPipelines();
+    }
+
+    void Renderer3d::registerModelForAnimation(Model& model) {
+        model.addObserver(this, Model::ANIMATION_STARTED);
+        if (model.isAnimated()) {
+            modelsAnimated.insert(&model);
+        }
+    }
+
+    void Renderer3d::unregisterModelForAnimation(Model& model) {
+        modelsAnimated.erase(&model);
+        model.removeObserver(this, Model::ANIMATION_STARTED);
     }
 
     void Renderer3d::createOrUpdateLightingPass() {
@@ -427,18 +445,18 @@ namespace urchin {
         //determine visible lights on scene
         lightManager.updateVisibleLights(camera->getFrustum());
 
+        //determine models producing shadow on scene
         if (visualOption.isShadowActivated) {
-            //determine models producing shadow on scene
             shadowManager.updateVisibleModels(camera->getFrustum());
+        }
 
-            //animate models
-            for (auto model : shadowManager.getVisibleModels()) {
-                model->updateAnimation(dt);
-            }
-        } else {
-            //animate models
-            for (auto model : modelsInFrustum) {
-                model->updateAnimation(dt);
+        //animate models
+        for (auto itModel = modelsAnimated.begin(); itModel != modelsAnimated.end();) {
+            if ((*itModel)->isAnimated()) {
+                (*itModel)->updateAnimation(dt);
+                itModel++;
+            } else {
+                itModel = modelsAnimated.erase(itModel);
             }
         }
 

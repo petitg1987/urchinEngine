@@ -103,6 +103,7 @@ namespace urchin {
         stopAnimationAtLastFrame = !animationLoop;
 
         onMoving(transform);
+        notifyObservers(this, Model::ANIMATION_STARTED);
     }
 
     void Model::stopAnimation(bool immediate) {

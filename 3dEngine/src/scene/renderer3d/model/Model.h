@@ -19,7 +19,8 @@ namespace urchin {
             enum NotificationType {
                 MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,
                 MATERIAL_UPDATED,
-                SCALE_UPDATED
+                SCALE_UPDATED,
+                ANIMATION_STARTED,
             };
             enum ShadowClass {
                 RECEIVER_AND_CASTER, //Models which can receive and cast shadow
