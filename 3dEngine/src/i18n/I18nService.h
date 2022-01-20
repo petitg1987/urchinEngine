@@ -6,10 +6,6 @@
 
 namespace urchin {
 
-    class Translator {
-
-    };
-
     class I18nService {
         public:
             I18nService();
