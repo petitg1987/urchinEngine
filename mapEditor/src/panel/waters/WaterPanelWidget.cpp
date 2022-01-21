@@ -41,12 +41,12 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addWaterButton = new QPushButton("New Water");
+        addWaterButton = new QPushButton("New");
         buttonsLayout->addWidget(addWaterButton);
         ButtonStyleHelper::applyNormalStyle(addWaterButton);
         connect(addWaterButton, SIGNAL(clicked()), this, SLOT(showAddWaterDialog()));
 
-        removeWaterButton = new QPushButton("Remove Water");
+        removeWaterButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeWaterButton);
         ButtonStyleHelper::applyNormalStyle(removeWaterButton);
         removeWaterButton->setEnabled(false);

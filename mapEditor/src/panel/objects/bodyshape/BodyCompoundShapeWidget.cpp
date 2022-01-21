@@ -26,12 +26,12 @@ namespace urchin {
         mainLayout->addLayout(buttonLayout, 2, 0);
         buttonLayout->setAlignment(Qt::AlignLeft);
 
-        addShapeButton = new QPushButton("New Shape");
+        addShapeButton = new QPushButton("New");
         buttonLayout->addWidget(addShapeButton);
         ButtonStyleHelper::applyNormalStyle(addShapeButton);
         connect(addShapeButton, SIGNAL(clicked()), this, SLOT(addNewLocalizedShape()));
 
-        removeShapeButton = new QPushButton("Remove Shape");
+        removeShapeButton = new QPushButton("Remove");
         buttonLayout->addWidget(removeShapeButton);
         ButtonStyleHelper::applyNormalStyle(removeShapeButton);
         connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));

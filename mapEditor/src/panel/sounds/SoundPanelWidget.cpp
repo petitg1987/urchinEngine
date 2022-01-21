@@ -44,12 +44,12 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addSoundButton = new QPushButton("New Sound");
+        addSoundButton = new QPushButton("New");
         buttonsLayout->addWidget(addSoundButton);
         ButtonStyleHelper::applyNormalStyle(addSoundButton);
         connect(addSoundButton, SIGNAL(clicked()), this, SLOT(showAddSoundDialog()));
 
-        removeSoundButton = new QPushButton("Remove Sound");
+        removeSoundButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeSoundButton);
         ButtonStyleHelper::applyNormalStyle(removeSoundButton);
         removeSoundButton->setEnabled(false);

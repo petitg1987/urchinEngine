@@ -49,12 +49,12 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addTerrainButton = new QPushButton("New Terrain");
+        addTerrainButton = new QPushButton("New");
         buttonsLayout->addWidget(addTerrainButton);
         ButtonStyleHelper::applyNormalStyle(addTerrainButton);
         connect(addTerrainButton, SIGNAL(clicked()), this, SLOT(showAddTerrainDialog()));
 
-        removeTerrainButton = new QPushButton("Remove Terrain");
+        removeTerrainButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeTerrainButton);
         ButtonStyleHelper::applyNormalStyle(removeTerrainButton);
         removeTerrainButton->setEnabled(false);

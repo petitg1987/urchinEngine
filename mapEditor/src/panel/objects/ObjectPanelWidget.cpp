@@ -54,18 +54,18 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addObjectButton = new QPushButton("New Object");
+        addObjectButton = new QPushButton("New");
         buttonsLayout->addWidget(addObjectButton);
         ButtonStyleHelper::applyNormalStyle(addObjectButton);
         connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
-        removeObjectButton = new QPushButton("Remove Object");
+        removeObjectButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeObjectButton);
         ButtonStyleHelper::applyNormalStyle(removeObjectButton);
         removeObjectButton->setEnabled(false);
         connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
 
-        cloneObjectButton = new QPushButton("Clone Object");
+        cloneObjectButton = new QPushButton("Clone");
         buttonsLayout->addWidget(cloneObjectButton);
         ButtonStyleHelper::applyNormalStyle(cloneObjectButton);
         cloneObjectButton->setEnabled(false);

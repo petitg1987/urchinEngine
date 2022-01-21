@@ -39,12 +39,12 @@ namespace urchin {
         mainLayout->addLayout(buttonsLayout);
         buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        addLightButton = new QPushButton("New Light");
+        addLightButton = new QPushButton("New");
         buttonsLayout->addWidget(addLightButton);
         ButtonStyleHelper::applyNormalStyle(addLightButton);
         connect(addLightButton, SIGNAL(clicked()), this, SLOT(showAddLightDialog()));
 
-        removeLightButton = new QPushButton("Remove Light");
+        removeLightButton = new QPushButton("Remove");
         buttonsLayout->addWidget(removeLightButton);
         ButtonStyleHelper::applyNormalStyle(removeLightButton);
         removeLightButton->setEnabled(false);

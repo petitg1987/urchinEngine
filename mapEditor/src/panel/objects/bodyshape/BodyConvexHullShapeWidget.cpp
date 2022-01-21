@@ -38,12 +38,12 @@ namespace urchin {
         mainLayout->addLayout(buttonLayout, 2, 0);
         buttonLayout->setAlignment(Qt::AlignLeft);
 
-        addPointButton = new QPushButton("New Point");
+        addPointButton = new QPushButton("New");
         buttonLayout->addWidget(addPointButton);
         ButtonStyleHelper::applyNormalStyle(addPointButton);
         connect(addPointButton, SIGNAL(clicked()), this, SLOT(addNewPoint()));
 
-        removePointButton = new QPushButton("Remove Point");
+        removePointButton = new QPushButton("Remove");
         buttonLayout->addWidget(removePointButton);
         ButtonStyleHelper::applyNormalStyle(removePointButton);
         connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
