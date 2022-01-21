@@ -71,19 +71,19 @@ namespace urchin {
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
-        upObjectButton = new QPushButton("▲");
-        buttonsLayout->addWidget(upObjectButton);
-        ButtonStyleHelper::applyNormalStyle(upObjectButton);
-        upObjectButton->setFixedWidth(22);
-        upObjectButton->setEnabled(false);
-        connect(upObjectButton, SIGNAL(clicked()), this, SLOT(upSelectedObject()));
+        moveUpObjectButton = new QPushButton("▲");
+        buttonsLayout->addWidget(moveUpObjectButton);
+        ButtonStyleHelper::applyNormalStyle(moveUpObjectButton);
+        moveUpObjectButton->setFixedWidth(22);
+        moveUpObjectButton->setEnabled(false);
+        connect(moveUpObjectButton, SIGNAL(clicked()), this, SLOT(moveUpSelectedObject()));
 
-        downObjectButton = new QPushButton("▼");
-        buttonsLayout->addWidget(downObjectButton);
-        ButtonStyleHelper::applyNormalStyle(downObjectButton);
-        downObjectButton->setFixedWidth(22);
-        downObjectButton->setEnabled(false);
-        connect(upObjectButton, SIGNAL(clicked()), this, SLOT(downSelectedObject()));
+        moveDownObjectButton = new QPushButton("▼");
+        buttonsLayout->addWidget(moveDownObjectButton);
+        ButtonStyleHelper::applyNormalStyle(moveDownObjectButton);
+        moveDownObjectButton->setFixedWidth(22);
+        moveDownObjectButton->setEnabled(false);
+        connect(moveDownObjectButton, SIGNAL(clicked()), this, SLOT(moveDownSelectedObject()));
 
         tabWidget = new QTabWidget();
         mainLayout->addWidget(tabWidget);
@@ -453,10 +453,14 @@ namespace urchin {
 
                     removeObjectButton->setEnabled(true);
                     cloneObjectButton->setEnabled(true);
+                    moveUpObjectButton->setEnabled(!objectTableView->isFirstObjectEntitySelected());
+                    moveDownObjectButton->setEnabled(!objectTableView->isLastObjectEntitySelected());
                     tabWidget->show();
                 } else {
                     removeObjectButton->setEnabled(false);
                     cloneObjectButton->setEnabled(false);
+                    moveUpObjectButton->setEnabled(false);
+                    moveDownObjectButton->setEnabled(false);
                     tabWidget->hide();
                 }
             }
@@ -612,17 +616,27 @@ namespace urchin {
         }
     }
 
-    void ObjectPanelWidget::upSelectedObject() {
+    void ObjectPanelWidget::moveUpSelectedObject() {
         if (objectTableView->hasObjectEntitySelected()) {
-            //const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            //TODO impl..
+            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            bool controllerMoved = objectController->moveUpObjectEntity(objectEntity);
+            bool viewMoved = objectTableView->moveUpSelectedObject();
+
+            if (controllerMoved != viewMoved) {
+                Logger::instance().logError("Move up fail for: " + objectEntity.getName());
+            }
         }
     }
 
-    void ObjectPanelWidget::downSelectedObject() {
+    void ObjectPanelWidget::moveDownSelectedObject() {
         if (objectTableView->hasObjectEntitySelected()) {
-            //const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
-            //TODO impl..
+            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            bool controllerMoved = objectController->moveDownObjectEntity(objectEntity);
+            bool viewMoved = objectTableView->moveDownSelectedObject();
+
+            if (controllerMoved != viewMoved) {
+                Logger::instance().logError("Move down fail for: " + objectEntity.getName());
+            }
         }
     }
 

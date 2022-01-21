@@ -53,6 +53,14 @@ namespace urchin {
         return nullptr;
     }
 
+    bool ObjectTableView::isFirstObjectEntitySelected() const {
+        return hasObjectEntitySelected() && this->currentIndex().row() == 0;
+    }
+
+    bool ObjectTableView::isLastObjectEntitySelected() const {
+        return hasObjectEntitySelected() && this->currentIndex().row() == objectsListModel->rowCount() - 1;
+    }
+
     int ObjectTableView::addObject(const ObjectEntity& objectEntity) {
         auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
         itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
@@ -83,10 +91,36 @@ namespace urchin {
         if (hasObjectEntitySelected()) {
             objectsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
-
             return true;
         }
+        return false;
+    }
 
+    bool ObjectTableView::moveUpSelectedObject() {
+        if (hasObjectEntitySelected() && !isFirstObjectEntitySelected()) {
+            int currentRow = this->currentIndex().row();
+            int newRow = currentRow - 1;
+            QList<QStandardItem*> itemList = objectsListModel->takeRow(currentRow);
+            objectsListModel->insertRow(newRow, itemList);
+            selectRow(newRow);
+
+            resizeRowsToContents();
+            return true;
+        }
+        return false;
+    }
+
+    bool ObjectTableView::moveDownSelectedObject() {
+        if (hasObjectEntitySelected() && !isLastObjectEntitySelected()) {
+            int currentRow = this->currentIndex().row();
+            int newRow = currentRow + 1;
+            QList<QStandardItem*> itemList = objectsListModel->takeRow(currentRow);
+            objectsListModel->insertRow(newRow, itemList);
+            selectRow(newRow);
+
+            resizeRowsToContents();
+            return true;
+        }
         return false;
     }
 

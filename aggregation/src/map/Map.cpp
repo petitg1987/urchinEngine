@@ -75,7 +75,31 @@ namespace urchin {
 
     void Map::removeObjectEntity(ObjectEntity& objectEntity) {
         objectEntitiesTagHolder.removeTaggableResource(objectEntity);
-        objectEntities.remove_if([&objectEntity](const auto& o){ return o.get()==&objectEntity; });
+        objectEntities.remove_if([&objectEntity](const auto& o){ return o.get() == &objectEntity; });
+    }
+
+    bool Map::moveUpObjectEntity(ObjectEntity& objectEntityToMove) {
+        auto itFind = std::ranges::find_if(objectEntities, [&objectEntityToMove](const auto& o){ return o.get() == &objectEntityToMove; });
+        if (itFind != objectEntities.end() && itFind != objectEntities.begin()) {
+            auto itInsert = itFind;
+            itInsert--;
+            objectEntities.splice(itInsert, objectEntities, itFind);
+            return true;
+        }
+        return false;
+    }
+
+    bool Map::moveDownObjectEntity(ObjectEntity& objectEntityToMove) {
+        auto itFind = std::ranges::find_if(objectEntities, [&objectEntityToMove](const auto& o){ return o.get() == &objectEntityToMove; });
+        if (itFind != objectEntities.end()) {
+            auto itInsert = itFind;
+            itInsert++;
+            if (itInsert != objectEntities.end()) {
+                objectEntities.splice(++itInsert, objectEntities, itFind);
+                return true;
+            }
+        }
+        return false;
     }
 
     const std::list<std::unique_ptr<LightEntity>>& Map::getLightEntities() const {

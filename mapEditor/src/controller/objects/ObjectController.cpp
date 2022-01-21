@@ -63,6 +63,22 @@ namespace urchin {
         addObjectEntity(std::move(newObjectModel));
     }
 
+    bool ObjectController::moveUpObjectEntity(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        bool moved = getMap().moveUpObjectEntity(objectEntity);
+
+        markModified();
+        return moved;
+    }
+
+    bool ObjectController::moveDownObjectEntity(const ObjectEntity& constObjectEntity) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        bool moved = getMap().moveDownObjectEntity(objectEntity);
+
+        markModified();
+        return moved;
+    }
+
     void ObjectController::createDefaultBody(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         auto rigidBody = DefaultRigidBodyGenerator(constObjectEntity).generate(CollisionShape3D::ShapeType::BOX_SHAPE);

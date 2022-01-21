@@ -69,8 +69,8 @@ namespace urchin {
             QPushButton* addObjectButton;
             QPushButton* removeObjectButton;
             QPushButton* cloneObjectButton;
-            QPushButton* upObjectButton;
-            QPushButton* downObjectButton;
+            QPushButton* moveUpObjectButton;
+            QPushButton* moveDownObjectButton;
             QTabWidget* tabWidget;
 
             bool disableObjectEvent;
@@ -113,8 +113,8 @@ namespace urchin {
             void showAddObjectDialog();
             void removeSelectedObject();
             void showCloneObjectDialog();
-            void upSelectedObject();
-            void downSelectedObject();
+            void moveUpSelectedObject();
+            void moveDownSelectedObject();
 
             void updateObjectOrientationType();
             void updateObjectTransform();
