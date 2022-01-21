@@ -17,13 +17,13 @@ namespace urchin {
             void setValues(T, T);
             void setNull();
 
-            Vector2<T> normalize() const;
+            [[nodiscard]] Vector2<T> normalize() const;
             T length() const;
             T squareLength() const;
             T dotProduct(const Vector2<T>&) const;
             T crossProduct(const Vector2<T>&) const;
             Vector2<T> perpendicularVector() const;
-            Vector2<T> truncate(T) const;
+            [[nodiscard]] Vector2<T> truncate(T) const;
 
             Vector2<T> operator +() const;
             Vector2<T> operator -() const;

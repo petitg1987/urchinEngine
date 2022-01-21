@@ -41,16 +41,16 @@ namespace urchin {
             void computeW();
             void setIdentity();
 
-            Quaternion<T> normalize() const;
-            Quaternion<T> conjugate() const;
-            Quaternion<T> inverse() const;
+            [[nodiscard]] Quaternion<T> normalize() const;
+            [[nodiscard]] Quaternion<T> conjugate() const;
+            [[nodiscard]] Quaternion<T> inverse() const;
             T norm() const;
             T squareNorm() const;
             T dotProduct(const Quaternion<T>&) const;
             Point3<T> rotatePoint(const Point3<T>&) const;
             Vector3<T> rotateVector(const Vector3<T>&) const;
-            Quaternion<T> slerp(const Quaternion<T>&, T t) const;
-            Quaternion<T> lerp(const Quaternion<T>&, T t) const;
+            [[nodiscard]] Quaternion<T> slerp(const Quaternion<T>&, T t) const;
+            [[nodiscard]] Quaternion<T> lerp(const Quaternion<T>&, T t) const;
             Vector3<T> getForwardDirection() const;
 
             Matrix4<T> toMatrix4() const;

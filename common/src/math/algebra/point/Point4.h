@@ -29,7 +29,7 @@ namespace urchin {
             T squareDistance(const Point4<T>&) const;
             Vector4<T> vector(const Point4<T>&) const;
             Vector4<T> toVector() const;
-            Point4<T> translate(const Vector4<T>&) const;
+            [[nodiscard]] Point4<T> translate(const Vector4<T>&) const;
             Point4<T> divideByW() const;
             Point3<T> toPoint3() const;
 

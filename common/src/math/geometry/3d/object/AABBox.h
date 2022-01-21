@@ -42,14 +42,14 @@ namespace urchin {
             std::vector<Point3<T>> getPoints() const;
             T getVolume() const;
 
-            AABBox<T> moveAABBox(const Transform<T>&) const;
+            [[nodiscard]] AABBox<T> moveAABBox(const Transform<T>&) const;
             Matrix4<T> toProjectionMatrix() const;
             bool include(const AABBox<T>&) const;
             static AABBox<T> initMergeableAABBox();
             AABBox<T> merge(const AABBox<T>&) const;
             AABBox<T> cutTo(const AABBox<T>&) const;
-            AABBox<T> enlarge(const Vector3<T>&, const Vector3<T>&) const;
-            AABBox<T> enlarge(T, T) const;
+            [[nodiscard]] AABBox<T> enlarge(const Vector3<T>&, const Vector3<T>&) const;
+            [[nodiscard]] AABBox<T> enlarge(T, T) const;
 
             bool collideWithPoint(const Point3<T>&) const;
             bool collideWithAABBox(const AABBox<T>&) const;

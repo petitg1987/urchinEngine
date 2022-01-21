@@ -27,10 +27,10 @@ namespace urchin {
 
             void setIdentity();
             T determinant() const;
-            Matrix4<T> transpose() const;
-            Matrix4<T> inverse() const;
+            [[nodiscard]] Matrix4<T> transpose() const;
+            [[nodiscard]] Matrix4<T> inverse() const;
             Matrix3<T> toMatrix3() const;
-            Matrix4<T> scaled(T, T, T, T) const;
+            [[nodiscard]] Matrix4<T> scaled(T, T, T, T) const;
 
             void buildTranslation(T, T, T);
             void buildScale(T, T, T);

@@ -20,9 +20,9 @@ namespace urchin {
 
             void setIdentity();
             T determinant() const;
-            Matrix2<T> transpose() const;
-            Matrix2<T> inverse() const;
-            Matrix2<T> scaled(T, T) const;
+            [[nodiscard]] Matrix2<T> transpose() const;
+            [[nodiscard]] Matrix2<T> inverse() const;
+            [[nodiscard]] Matrix2<T> scaled(T, T) const;
 
             void buildScale(T, T);
 

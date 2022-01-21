@@ -23,7 +23,7 @@ namespace urchin {
             T squareDistance(const Point2<T>&) const;
             Vector2<T> vector(const Point2<T>&) const;
             Vector2<T> toVector() const;
-            Point2<T> translate(const Vector2<T>&) const;
+            [[nodiscard]] Point2<T> translate(const Vector2<T>&) const;
 
             Point2<T> operator +() const;
             Point2<T> operator -() const;

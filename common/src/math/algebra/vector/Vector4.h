@@ -19,7 +19,7 @@ namespace urchin {
             void setValues(T, T, T, T);
             void setNull();
 
-            Vector4<T> normalize() const;
+            [[nodiscard]] Vector4<T> normalize() const;
             T length() const;
             T squareLength() const;
             T dotProduct(const Vector4<T>&) const;

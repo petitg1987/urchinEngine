@@ -21,9 +21,9 @@ namespace urchin {
 
             void setIdentity();
             T determinant() const;
-            Matrix3<T> transpose() const;
-            Matrix3<T> inverse() const;
-            Matrix3<T> scaled(T, T, T) const;
+            [[nodiscard]] Matrix3<T> transpose() const;
+            [[nodiscard]] Matrix3<T> inverse() const;
+            [[nodiscard]] Matrix3<T> scaled(T, T, T) const;
 
             void buildTranslation(T, T);
             void buildScale(T, T, T);
