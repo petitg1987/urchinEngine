@@ -71,6 +71,20 @@ namespace urchin {
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
+        upObjectButton = new QPushButton("▲");
+        buttonsLayout->addWidget(upObjectButton);
+        ButtonStyleHelper::applyNormalStyle(upObjectButton);
+        upObjectButton->setFixedWidth(22);
+        upObjectButton->setEnabled(false);
+        connect(upObjectButton, SIGNAL(clicked()), this, SLOT(upSelectedObject()));
+
+        downObjectButton = new QPushButton("▼");
+        buttonsLayout->addWidget(downObjectButton);
+        ButtonStyleHelper::applyNormalStyle(downObjectButton);
+        downObjectButton->setFixedWidth(22);
+        downObjectButton->setEnabled(false);
+        connect(upObjectButton, SIGNAL(clicked()), this, SLOT(downSelectedObject()));
+
         tabWidget = new QTabWidget();
         mainLayout->addWidget(tabWidget);
         tabWidget->hide();
@@ -595,6 +609,20 @@ namespace urchin {
 
             int row = objectTableView->addObject(*newObjectEntityPtr);
             objectTableView->selectRow(row);
+        }
+    }
+
+    void ObjectPanelWidget::upSelectedObject() {
+        if (objectTableView->hasObjectEntitySelected()) {
+            //const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            //TODO impl..
+        }
+    }
+
+    void ObjectPanelWidget::downSelectedObject() {
+        if (objectTableView->hasObjectEntitySelected()) {
+            //const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            //TODO impl..
         }
     }
 
