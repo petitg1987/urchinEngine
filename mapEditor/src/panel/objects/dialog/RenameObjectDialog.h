@@ -15,7 +15,7 @@ namespace urchin {
         Q_OBJECT
 
         public:
-            RenameObjectDialog(QWidget*, const ObjectController*);
+            RenameObjectDialog(QWidget*, std::string, const ObjectController*);
 
             std::string getObjectName() const;
 
@@ -27,6 +27,7 @@ namespace urchin {
             void done(int) override;
             bool isObjectEntityExist(const std::string&);
 
+            std::string originalName;
             const ObjectController* objectController;
 
             QLabel* objectNameLabel;

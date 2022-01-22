@@ -8,8 +8,9 @@
 
 namespace urchin {
 
-    RenameObjectDialog::RenameObjectDialog(QWidget* parent, const ObjectController* objectController) :
+    RenameObjectDialog::RenameObjectDialog(QWidget* parent, std::string originalName, const ObjectController* objectController) :
             QDialog(parent),
+            originalName(std::move(originalName)),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr) {
@@ -38,7 +39,7 @@ namespace urchin {
         objectNameText = new QLineEdit();
         mainLayout->addWidget(objectNameText, 0, 1);
         objectNameText->setFixedWidth(360);
-        //TODO set default value..
+        objectNameText->setText(QString::fromStdString(originalName));
     }
 
     void RenameObjectDialog::updateObjectName() {
@@ -62,7 +63,7 @@ namespace urchin {
             if (objectName.empty()) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
                 hasError = true;
-            } else if (isObjectEntityExist(objectName)) {
+            } else if (objectName != originalName && isObjectEntityExist(objectName)) {
                 LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
                 hasError = true;
             }

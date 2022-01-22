@@ -434,7 +434,7 @@ namespace urchin {
 
         tags = new QLineEdit();
         tagsLayout->addWidget(tags, 0, 1);
-        connect(tags, SIGNAL(textChanged(const QString &)), this, SLOT(updateObjectTags()));
+        connect(tags, SIGNAL(textChanged(QString)), this, SLOT(updateObjectTags()));
     }
 
     void ObjectPanelWidget::load(ObjectController& objectController) {
@@ -627,7 +627,8 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showRenameObjectDialog() {
-        RenameObjectDialog renameObjectEntityDialog(this, objectController);
+        std::string originalName = objectTableView->getSelectedObjectEntity()->getName();
+        RenameObjectDialog renameObjectEntityDialog(this, originalName, objectController);
         renameObjectEntityDialog.exec();
 
         if (renameObjectEntityDialog.result() == QDialog::Accepted) {
