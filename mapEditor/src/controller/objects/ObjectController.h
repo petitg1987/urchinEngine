@@ -20,6 +20,7 @@ namespace urchin {
             void addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(const ObjectEntity&);
             void cloneObjectEntity(std::unique_ptr<ObjectEntity>, const ObjectEntity&);
+            void renameObjectEntity(const ObjectEntity&, const std::string&);
             bool moveUpObjectEntity(const ObjectEntity&);
             bool moveDownObjectEntity(const ObjectEntity&);
 

@@ -3,18 +3,17 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 
-#include <panel/objects/dialog/CloneObjectDialog.h>
+#include <panel/objects/dialog/RenameObjectDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 
 namespace urchin {
 
-    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const ObjectController* objectController) :
+    RenameObjectDialog::RenameObjectDialog(QWidget* parent, const ObjectController* objectController) :
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
-            objectNameText(nullptr),
-            objectEntity(nullptr) {
-        this->setWindowTitle("Clone Object");
+            objectNameText(nullptr) {
+        this->setWindowTitle("Rename Object");
         this->resize(530, 80);
         this->setFixedSize(this->width(), this->height());
 
@@ -32,39 +31,28 @@ namespace urchin {
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     }
 
-    void CloneObjectDialog::setupNameFields(QGridLayout* mainLayout) {
-        objectNameLabel = new QLabel("Object Name:");
+    void RenameObjectDialog::setupNameFields(QGridLayout* mainLayout) {
+        objectNameLabel = new QLabel("New Name:");
         mainLayout->addWidget(objectNameLabel, 0, 0);
 
         objectNameText = new QLineEdit();
         mainLayout->addWidget(objectNameText, 0, 1);
         objectNameText->setFixedWidth(360);
+        //TODO set default value..
     }
 
-    void CloneObjectDialog::updateObjectName() {
+    void RenameObjectDialog::updateObjectName() {
         QString objectName = objectNameText->text();
         if (!objectName.isEmpty()) {
             this->objectName = objectName.toUtf8().constData();
         }
     }
 
-    int CloneObjectDialog::buildObjectEntity(int result) {
-        try {
-            objectEntity = std::make_unique<ObjectEntity>();
-            objectEntity->setName(objectName);
-        } catch (const std::exception& e) {
-            QMessageBox::critical(this, "Error", e.what());
-            return QDialog::Rejected;
-        }
-
-        return result;
+    std::string RenameObjectDialog::getObjectName() const {
+        return objectName;
     }
 
-    std::unique_ptr<ObjectEntity> CloneObjectDialog::moveObjectEntity() {
-        return std::move(objectEntity);
-    }
-
-    void CloneObjectDialog::done(int r) {
+    void RenameObjectDialog::done(int r) {
         if (QDialog::Accepted == r) {
             bool hasError = false;
 
@@ -80,7 +68,6 @@ namespace urchin {
             }
 
             if (!hasError) {
-                r = buildObjectEntity(r);
                 QDialog::done(r);
             }
         } else {
@@ -88,9 +75,9 @@ namespace urchin {
         }
     }
 
-    bool CloneObjectDialog::isObjectEntityExist(const std::string& name) {
+    bool RenameObjectDialog::isObjectEntityExist(const std::string& name) {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
-        return std::ranges::any_of(objectEntities, [&name](const auto& so){return so->getName() == name;});
+        return std::ranges::any_of(objectEntities, [&name](const auto& so){ return so->getName() == name; });
     }
 
 }

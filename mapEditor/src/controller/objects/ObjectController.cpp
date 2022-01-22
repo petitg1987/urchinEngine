@@ -63,6 +63,13 @@ namespace urchin {
         addObjectEntity(std::move(newObjectModel));
     }
 
+    void ObjectController::renameObjectEntity(const ObjectEntity& constObjectEntity, const std::string& newObjectName) {
+        ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
+        objectEntity.setName(newObjectName);
+
+        markModified();
+    }
+
     bool ObjectController::moveUpObjectEntity(const ObjectEntity& constObjectEntity) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         bool moved = getMap().moveUpObjectEntity(objectEntity);

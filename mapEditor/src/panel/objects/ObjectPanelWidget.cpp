@@ -10,6 +10,7 @@
 #include <panel/objects/dialog/NewObjectDialog.h>
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <panel/objects/dialog/ChangeBodyShapeDialog.h>
+#include <panel/objects/dialog/RenameObjectDialog.h>
 #include <panel/objects/bodyshape/BodyShapeWidgetRetriever.h>
 #include <scene/objects/move/ObjectMoveController.h>
 #include <panel/objects/bodyshape/NoBodyShapeWidget.h>
@@ -23,6 +24,7 @@ namespace urchin {
             addObjectButton(nullptr),
             removeObjectButton(nullptr),
             cloneObjectButton(nullptr),
+            renameObjectButton(nullptr),
             tabWidget(nullptr),
             disableObjectEvent(false),
             positionX(nullptr), positionY(nullptr), positionZ(nullptr),
@@ -70,6 +72,12 @@ namespace urchin {
         ButtonStyleHelper::applyNormalStyle(cloneObjectButton);
         cloneObjectButton->setEnabled(false);
         connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
+
+        renameObjectButton = new QPushButton("Rename");
+        buttonsLayout->addWidget(renameObjectButton);
+        ButtonStyleHelper::applyNormalStyle(renameObjectButton);
+        renameObjectButton->setEnabled(false);
+        connect(renameObjectButton, SIGNAL(clicked()), this, SLOT(showRenameObjectDialog()));
 
         moveUpObjectButton = new QPushButton("▲");
         buttonsLayout->addWidget(moveUpObjectButton);
@@ -453,12 +461,14 @@ namespace urchin {
 
                     removeObjectButton->setEnabled(true);
                     cloneObjectButton->setEnabled(true);
+                    renameObjectButton->setEnabled(true);
                     moveUpObjectButton->setEnabled(!objectTableView->isFirstObjectEntitySelected());
                     moveDownObjectButton->setEnabled(!objectTableView->isLastObjectEntitySelected());
                     tabWidget->show();
                 } else {
                     removeObjectButton->setEnabled(false);
                     cloneObjectButton->setEnabled(false);
+                    renameObjectButton->setEnabled(false);
                     moveUpObjectButton->setEnabled(false);
                     moveDownObjectButton->setEnabled(false);
                     tabWidget->hide();
@@ -613,6 +623,19 @@ namespace urchin {
 
             int row = objectTableView->addObject(*newObjectEntityPtr);
             objectTableView->selectRow(row);
+        }
+    }
+
+    void ObjectPanelWidget::showRenameObjectDialog() {
+        RenameObjectDialog renameObjectEntityDialog(this, objectController);
+        renameObjectEntityDialog.exec();
+
+        if (renameObjectEntityDialog.result() == QDialog::Accepted) {
+            std::string newObjectName = renameObjectEntityDialog.getObjectName();
+            const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
+            objectController->renameObjectEntity(objectEntity, newObjectName);
+
+            objectTableView->updateSelectedObject(objectEntity);
         }
     }
 

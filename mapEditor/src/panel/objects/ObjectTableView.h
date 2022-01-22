@@ -30,14 +30,16 @@ namespace urchin {
 
             int addObject(const ObjectEntity&);
             bool removeSelectedObject();
+            bool updateSelectedObject(const ObjectEntity&);
             bool moveUpSelectedObject();
             bool moveDownSelectedObject();
             void removeAllObjects();
 
         private:
-            QStandardItemModel* objectsListModel;
-
             void selectionChanged(const QItemSelection&, const QItemSelection&) override;
+            std::vector<QStandardItem*> buildObjectEntityItems(const ObjectEntity&) const;
+
+            QStandardItemModel* objectsListModel;
     };
 
 }

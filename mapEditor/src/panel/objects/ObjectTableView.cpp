@@ -30,6 +30,30 @@ namespace urchin {
         notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
     }
 
+    std::vector<QStandardItem*> ObjectTableView::buildObjectEntityItems(const ObjectEntity& objectEntity) const {
+        std::vector<QStandardItem*> objectEntityItems;
+        objectEntityItems.reserve(2);
+
+        auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
+        itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
+        itemObjectName->setEditable(false);
+        objectEntityItems.push_back(itemObjectName);
+
+        std::string meshesName;
+        std::string meshesFilename;
+        if (objectEntity.getModel()->getConstMeshes()) {
+            meshesName = objectEntity.getModel()->getConstMeshes()->getMeshesName();
+            meshesFilename = objectEntity.getModel()->getConstMeshes()->getMeshesFilename();
+        }
+        auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
+        itemMeshName->setToolTip(QString::fromStdString(meshesFilename));
+        itemMeshName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
+        itemMeshName->setEditable(false);
+        objectEntityItems.push_back(itemMeshName);
+
+        return objectEntityItems;
+    }
+
     bool ObjectTableView::hasObjectEntitySelected() const {
         return this->currentIndex().row() != -1 && !this->selectedIndexes().empty();
     }
@@ -62,28 +86,16 @@ namespace urchin {
     }
 
     int ObjectTableView::addObject(const ObjectEntity& objectEntity) {
-        auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
-        itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
-        itemObjectName->setEditable(false);
-
-        std::string meshesName;
-        std::string meshesFilename;
-        if (objectEntity.getModel()->getConstMeshes()) {
-            meshesName = objectEntity.getModel()->getConstMeshes()->getMeshesName();
-            meshesFilename = objectEntity.getModel()->getConstMeshes()->getMeshesFilename();
-        }
-        auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
-        itemMeshName->setToolTip(QString::fromStdString(meshesFilename));
-        itemMeshName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
-        itemMeshName->setEditable(false);
-
         int nextRow = objectsListModel->rowCount();
         objectsListModel->insertRow(nextRow);
-        objectsListModel->setItem(nextRow, 0, itemObjectName);
-        objectsListModel->setItem(nextRow, 1, itemMeshName);
+
+        std::vector<QStandardItem*> objectEntityItems = buildObjectEntityItems(objectEntity);
+        int column = 0;
+        for (QStandardItem* objectEntityItem : objectEntityItems) {
+            objectsListModel->setItem(nextRow, column++, objectEntityItem);
+        }
 
         resizeRowsToContents();
-
         return nextRow;
     }
 
@@ -92,6 +104,25 @@ namespace urchin {
             objectsListModel->removeRow(this->currentIndex().row());
             resizeRowsToContents();
             return true;
+        }
+        return false;
+    }
+
+    bool ObjectTableView::updateSelectedObject(const ObjectEntity& updatedObjectEntity) {
+        if (hasObjectEntitySelected()) {
+            const ObjectEntity* selectObjectEntity = getSelectedObjectEntity();
+            if (selectObjectEntity == &updatedObjectEntity) {
+                std::vector<QStandardItem*> objectEntityItems = buildObjectEntityItems(updatedObjectEntity);
+                int column = 0;
+                for (QStandardItem* objectEntityItem : objectEntityItems) {
+                    objectsListModel->setItem(currentIndex().row(), column++, objectEntityItem);
+                }
+
+                resizeRowsToContents();
+                return true;
+            } else {
+                throw std::runtime_error("Update the selected object with a different instance is not allowed");
+            }
         }
         return false;
     }
