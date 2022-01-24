@@ -11,11 +11,11 @@ namespace urchin {
         assert(a.X != b.X || a.Y != b.Y);
     }
 
-    template<class T> const Point2<T> &Line2D<T>::getA() const {
+    template<class T> const Point2<T>& Line2D<T>::getA() const {
         return a;
     }
 
-    template<class T> const Point2<T> &Line2D<T>::getB() const {
+    template<class T> const Point2<T>& Line2D<T>::getB() const {
         return b;
     }
 

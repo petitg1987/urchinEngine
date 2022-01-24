@@ -93,7 +93,7 @@ namespace urchin {
         return shared_from_this();
     }
 
-    const std::vector<ShaderDataContainer> &GenericRendererBuilder::getUniformData() const {
+    const std::vector<ShaderDataContainer>& GenericRendererBuilder::getUniformData() const {
         return uniformData;
     }
 
