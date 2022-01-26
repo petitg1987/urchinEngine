@@ -16,6 +16,7 @@ namespace urchin {
             static std::shared_ptr<TextBox> create(Widget*, Position, Size, std::string);
 
             std::string getText();
+            void updateText(const std::string&);
 
             void setAllowedCharacters(const std::string&);
             void setMaxLength(unsigned int);
