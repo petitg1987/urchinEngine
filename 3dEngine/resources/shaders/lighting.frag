@@ -99,11 +99,12 @@ float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 posi
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         if (depthValue < shadowMap.depthSplitDistance[i]) {
             vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position;
-            shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
-            shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
             //model has produceShadow flag to true ?
-            if (shadowCoord.s <= 1.0 && shadowCoord.s >= 0.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= 0.0) {
+            if (shadowCoord.s <= 1.0 && shadowCoord.s >= -1.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= -1.0) {
+                shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
+                shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
+
                 vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
                 shadowAttenuation = computeShadowAttenuation(shadowCoord.z, moments, NdotL);
 
