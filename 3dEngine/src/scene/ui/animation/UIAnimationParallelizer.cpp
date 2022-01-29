@@ -8,7 +8,7 @@ namespace urchin {
     }
 
     void UIAnimationParallelizer::doAnimation(float dt) {
-        for (std::unique_ptr<AbstractUIAnimation>& animation : animations) {
+        for (const std::unique_ptr<AbstractUIAnimation>& animation : animations) {
             animation->animate(dt);
         }
     }

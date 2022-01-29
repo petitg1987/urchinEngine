@@ -10,7 +10,7 @@ namespace urchin {
 
     void UIAnimationSequencer::doAnimation(float dt) {
         if (!isCompleted()) {
-            std::unique_ptr<AbstractUIAnimation>& currentAnimation = animations[currentAnimationIndex];
+            const std::unique_ptr<AbstractUIAnimation>& currentAnimation = animations[currentAnimationIndex];
 
             currentAnimation->animate(dt);
             if (currentAnimation->isCompleted()) {
