@@ -108,21 +108,21 @@ namespace urchin {
      * @return File extension. If not extension found: return empty string
      */
     std::string FileUtil::getFileExtension(const std::string& filePath) {
-        std::size_t found = filePath.find_last_of('.');
-        if (found == std::string::npos) {
+        std::size_t extensionPos = filePath.find_last_of('.');
+        if (extensionPos == std::string::npos) {
             return "";
         }
 
-        return filePath.substr(found + 1, filePath.size()-found);
+        return filePath.substr(extensionPos + 1, filePath.size() - extensionPos);
     }
 
     std::string FileUtil::getFileName(const std::string& filePath) {
-        std::size_t found = filePath.find_last_of("/\\");
-        if (found == std::string::npos) {
+        std::size_t fileNamePos = filePath.find_last_of("/\\");
+        if (fileNamePos == std::string::npos) {
             return filePath;
         }
 
-        return filePath.substr(found + 1);
+        return filePath.substr(fileNamePos + 1);
     }
 
     std::string FileUtil::getFileNameNoExtension(const std::string& filePath) {
