@@ -21,7 +21,7 @@ namespace urchin {
             void cleanup();
 
             VkSwapchainKHR getSwapChain() const;
-            const std::vector<VkImage>& getSwapChainImages() const;
+            std::span<VkImage const> getSwapChainImages() const;
             VkFormat getImageFormat() const;
             VkExtent2D getSwapChainExtent() const;
 

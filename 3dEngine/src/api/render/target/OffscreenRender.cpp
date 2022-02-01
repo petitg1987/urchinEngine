@@ -119,7 +119,7 @@ namespace urchin {
             clearValues.emplace_back(clearDepth);
         }
 
-        for (auto& outputTexture : outputTextures) {
+        for (const auto& outputTexture : outputTextures) {
             Vector4<float> clearColorValue = outputTexture.clearColor.value_or(Vector4<float>(1.0f, 0.5f, 0.0f, 1.0) /*orange: should never be used */);
             VkClearValue clearColor{};
             clearColor.color = {{clearColorValue[0], clearColorValue[1], clearColorValue[2], clearColorValue[3]}};

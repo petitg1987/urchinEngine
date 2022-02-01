@@ -18,7 +18,7 @@ namespace urchin {
                     + ") is not expected to exceed " + std::to_string(shadowData.projectionMatrices.size()));
         }
         static_assert(sizeof(float) == sizeof(int));
-        int* projectMatricesStartAddress = reinterpret_cast<int*>(&shadowData.projectionMatrices[0](0, 0));
+        const auto* projectMatricesStartAddress = reinterpret_cast<const int*>(&shadowData.projectionMatrices[0](0, 0));
         std::size_t layerToUpdateAndPaddingSize = ((std::size_t)(projectMatricesStartAddress - &shadowData.layerToUpdate)) * sizeof(int);
         std::size_t shadowDataSize = layerToUpdateAndPaddingSize + lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
         meshRendererBuilder->addUniformData(shadowDataSize, &shadowData); //binding 2

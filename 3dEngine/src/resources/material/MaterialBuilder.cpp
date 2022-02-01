@@ -105,7 +105,7 @@ namespace urchin {
     }
 
     std::unique_ptr<Material> MaterialBuilder::build() {
-        std::unique_ptr<Material> material = std::make_unique<Material>(*this);
+        auto material = std::make_unique<Material>(*this);
         material->setId("_" + std::to_string(nextId++));
         material->setName(materialName);
         return material;

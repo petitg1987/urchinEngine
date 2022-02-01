@@ -57,7 +57,7 @@ namespace urchin {
             const LightShadowMap& getLightShadowMap(const Light*) const;
 
             void updateVisibleModels(const Frustum<float>&);
-            const std::vector<Model*>& getVisibleModels() const;
+            std::span<Model* const> getVisibleModels() const;
             void removeModel(Model*) const;
 
             void forceUpdateAllShadowMaps();

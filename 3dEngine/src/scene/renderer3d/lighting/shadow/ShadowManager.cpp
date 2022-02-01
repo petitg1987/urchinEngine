@@ -143,7 +143,7 @@ namespace urchin {
     /**
      * @return All visible models from all lights
      */
-    const std::vector<Model*>& ShadowManager::getVisibleModels() const {
+    std::span<Model* const> ShadowManager::getVisibleModels() const {
         return visibleModels;
     }
 

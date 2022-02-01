@@ -48,7 +48,7 @@ namespace urchin {
         return sunLights;
     }
 
-    const std::vector<Light*>& LightManager::getVisibleLights() const {
+    std::span<Light* const> LightManager::getVisibleLights() const {
         return visibleLights;
     }
 
@@ -121,7 +121,7 @@ namespace urchin {
     }
 
     void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer, std::size_t lightsDataUniformIndex) {
-        const std::vector<Light*>& lights = getVisibleLights();
+        std::span<Light* const> lights = getVisibleLights();
 
         for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
             if (lights.size() > i) {

@@ -109,7 +109,7 @@ namespace urchin {
         modelInstanceDisplayer.addInstanceModel(model);
     }
 
-    void ModelSetDisplayer::updateModels(const std::vector<Model*>& models) {
+    void ModelSetDisplayer::updateModels(std::span<Model* const> models) {
         ScopeProfiler sp(Profiler::graphic(), "updateModels");
         assert(renderTarget);
 
@@ -171,7 +171,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<Model*>& ModelSetDisplayer::getModels() const {
+    std::span<Model* const> ModelSetDisplayer::getModels() const {
         return models;
     }
 
@@ -189,14 +189,14 @@ namespace urchin {
         }
 
         activeModelDisplayers.clear();
-        for (Model* model : models) {
+        for (const Model* model : models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (activeModelDisplayers.insert(modelInstanceDisplayer).second) {
                 modelInstanceDisplayer->resetRenderingModels();
             }
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
-        for (ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) {
+        for (const ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }

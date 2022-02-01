@@ -275,7 +275,7 @@ namespace urchin {
         instanceMatrices.clear();
     }
 
-    void ModelInstanceDisplayer::registerRenderingModel(Model& model) {
+    void ModelInstanceDisplayer::registerRenderingModel(const Model& model) {
         #ifdef URCHIN_DEBUG
             assert(model.computeInstanceId(displayMode) == instanceId);
         #endif
@@ -309,19 +309,19 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::drawBBox(GeometryContainer& geometryContainer) {
-        for (auto& aabboxModel : aabboxModels) {
+        for (const auto& aabboxModel : aabboxModels) {
             geometryContainer.removeGeometry(*aabboxModel);
         }
         aabboxModels.clear();
 
-        for (Model* instanceModel : instanceModels) {
+        for (const Model* instanceModel : instanceModels) {
             aabboxModels.push_back(std::make_shared<AABBoxModel>(instanceModel->getAABBox()));
             geometryContainer.addGeometry(aabboxModels.back());
         }
     }
 
     void ModelInstanceDisplayer::drawBaseBones(GeometryContainer& geometryContainer, const MeshFilter* meshFilter) const {
-        for (Model* instanceModel : instanceModels) {
+        for (const Model* instanceModel : instanceModels) {
             if (instanceModel->getMeshes()) {
                 for (unsigned int m = 0; m < instanceModel->getMeshes()->getNumberMeshes(); ++m) {
                     const Mesh& mesh = instanceModel->getMeshes()->getMesh(m);

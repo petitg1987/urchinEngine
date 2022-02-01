@@ -99,7 +99,7 @@ namespace urchin {
         return swapChain;
     }
 
-    const std::vector<VkImage>& SwapChainHandler::getSwapChainImages() const {
+    std::span<VkImage const> SwapChainHandler::getSwapChainImages() const {
         assert(isInitialized);
         return swapChainImages;
     }

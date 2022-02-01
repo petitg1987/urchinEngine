@@ -15,7 +15,7 @@ namespace urchin {
 
             void attachModelInstanceDisplayer(ModelInstanceDisplayer&);
             void detachModelInstanceDisplayer(ModelInstanceDisplayer&);
-            const std::vector<ModelInstanceDisplayer*>& getModelInstanceDisplayers() const;
+            std::span<ModelInstanceDisplayer* const> getModelInstanceDisplayers() const;
 
             std::size_t computeInstanceId(DisplayMode) const;
 

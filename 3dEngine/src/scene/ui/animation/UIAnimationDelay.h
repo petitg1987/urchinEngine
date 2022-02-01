@@ -6,7 +6,7 @@ namespace urchin {
 
     class UIAnimationDelay : public AbstractUIAnimation {
         public:
-            UIAnimationDelay(float);
+            explicit UIAnimationDelay(float);
 
             void doAnimation(float) override;
 

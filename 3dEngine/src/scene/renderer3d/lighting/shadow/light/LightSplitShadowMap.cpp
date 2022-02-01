@@ -40,7 +40,7 @@ namespace urchin {
     /**
      * @return Models visible from light in frustum split
      */
-    const std::vector<Model*>& LightSplitShadowMap::getModels() const {
+    std::span<Model* const> LightSplitShadowMap::getModels() const {
         return models;
     }
 

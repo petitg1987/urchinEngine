@@ -53,7 +53,7 @@ namespace urchin {
         protected:
             void initializeRenderers();
             void cleanupRenderers() const;
-            const std::vector<GenericRenderer*>& getRenderers() const;
+            std::span<GenericRenderer* const> getRenderers() const;
             bool hasRenderer() const;
             bool areRenderersDirty() const;
 
@@ -63,13 +63,13 @@ namespace urchin {
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();
-            void addNewFrameBuffer(const std::vector<VkImageView>&);
+            void addNewFrameBuffer(std::span<VkImageView const>);
             void destroyFramebuffers();
             void createCommandBuffers();
             void createCommandPool();
             void destroyCommandBuffersAndPool();
 
-            const std::vector<OffscreenRender*>& getRenderDependencies() const;
+            std::span<OffscreenRender* const> getRenderDependencies() const;
             void configureWaitSemaphore(VkSubmitInfo&, VkSemaphore) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;

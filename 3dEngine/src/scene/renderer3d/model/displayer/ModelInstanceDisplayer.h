@@ -33,7 +33,7 @@ namespace urchin {
             unsigned int getInstanceCount() const;
 
             void resetRenderingModels();
-            void registerRenderingModel(Model&);
+            void registerRenderingModel(const Model&);
             void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*) const;
 
             void drawBBox(GeometryContainer&);

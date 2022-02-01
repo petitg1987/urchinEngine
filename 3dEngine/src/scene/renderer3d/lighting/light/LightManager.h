@@ -27,7 +27,7 @@ namespace urchin {
 
             unsigned int getMaxLights() const;
             const std::vector<std::shared_ptr<Light>>& getSunLights() const;
-            const std::vector<Light*>& getVisibleLights() const;
+            std::span<Light* const> getVisibleLights() const;
             void addLight(std::shared_ptr<Light>);
             std::shared_ptr<Light> removeLight(Light*);
 

@@ -212,7 +212,7 @@ namespace urchin {
         expandedPoints.reserve(8);
 
         for (auto planeIndex : PLANE_INDEX_TO_POINTS) {
-            const Plane<float> &plane0 = sortedExpandedPlanes[planeIndex[0]];
+            const Plane<float>& plane0 = sortedExpandedPlanes[planeIndex[0]];
             const Plane<float>& plane1 = sortedExpandedPlanes[planeIndex[1]];
             const Plane<float>& plane2 = sortedExpandedPlanes[planeIndex[2]];
 
