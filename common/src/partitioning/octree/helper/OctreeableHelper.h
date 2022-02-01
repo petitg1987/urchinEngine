@@ -9,7 +9,7 @@ namespace urchin {
             OctreeableHelper() = delete;
             ~OctreeableHelper() = delete;
 
-            static void merge(std::vector<T*>&, const std::vector<T*>&);
+            static void merge(std::vector<T*>&, std::span<T* const>);
     };
 
     #include "OctreeableHelper.inl"

@@ -1,5 +1,6 @@
 #include <functional>
 #include <stdexcept>
+#include <algorithm>
 #ifdef _WIN32
     #include <windows.h>
     #include <cstdio>
@@ -246,7 +247,7 @@ namespace urchin {
                 Logger::instance().logInfo("User locale retrieved: " + userLocale);
 
                 const std::string LC_CTYPE_STR = "LC_CTYPE=";
-                if (std::count(userLocale.begin(), userLocale.end(), '_') == 1) { //format is probably: "en_US.UTF8"
+                if (std::ranges::count(userLocale, '_') == 1) { //format is probably: "en_US.UTF8"
                     std::size_t pos = userLocale.find('_');
                     if (pos == std::string::npos) {
                         return "";

@@ -135,7 +135,7 @@ namespace urchin {
         visibleModels.clear();
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
             for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                OctreeableHelper<Model>::merge(visibleModels, lightSplitShadowMap->getModels());
+                OctreeableHelper<Model>::merge(visibleModels, std::span{lightSplitShadowMap->getModels()});
             }
         }
     }

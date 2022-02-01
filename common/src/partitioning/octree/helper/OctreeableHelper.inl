@@ -1,4 +1,4 @@
-template<class T> void OctreeableHelper<T>::merge(std::vector<T*>& targetOctreeables, const std::vector<T*>& additionalOctreeables) {
+template<class T> void OctreeableHelper<T>::merge(std::vector<T*>& targetOctreeables, std::span<T* const> additionalOctreeables) {
     std::ranges::for_each(targetOctreeables, [](T* o){o->setProcessed(true);});
 
     for (auto& additionalOctreeable : additionalOctreeables) {

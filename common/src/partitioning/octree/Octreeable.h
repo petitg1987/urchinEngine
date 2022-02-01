@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <stdexcept>
+#include <span>
 
 #include <partitioning/octree/Octree.h>
 #include <pattern/observer/Observable.h>
@@ -32,7 +33,7 @@ namespace urchin {
             void setProcessed(bool);
             bool isProcessed() const;
 
-            const std::vector<Octree<T>*>& getRefOctree() const;
+            std::span<Octree<T>* const> getRefOctree() const;
             void addRefOctree(Octree<T>*);
             void removeRefOctree(Octree<T>*);
 

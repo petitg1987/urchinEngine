@@ -62,7 +62,7 @@ template<class T> bool Octreeable<T>::isProcessed() const {
     return bIsProcessed;
 }
 
-template<class T> const std::vector<Octree<T>*>& Octreeable<T>::getRefOctree() const {
+template<class T> std::span<Octree<T>* const> Octreeable<T>::getRefOctree() const {
     return refOctree;
 }
 

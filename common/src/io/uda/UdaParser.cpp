@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <regex>
 #include <utility>
+#include <cassert>
 
 #include <io/uda/UdaParser.h>
 #include <io/file/FileReader.h>
@@ -84,6 +85,7 @@ namespace urchin {
                 currentNode = rootNodes.back().get();
                 currentNodeIndentLevel = 0;
             } else {
+                assert(currentNode);
                 if (indentLevel - 1 == currentNodeIndentLevel) {
                     auto newNode = buildChunk(rawContentLine, currentNode);
                     currentNode = &currentNode->addChild(std::move(newNode));
