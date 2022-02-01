@@ -33,6 +33,10 @@ namespace urchin {
         return tags;
     }
 
+    bool TaggableResource::hasTag(const std::string& tag) const {
+        return std::ranges::find(tags, tag) != tags.end();
+    }
+
     void TaggableResource::addTag(const std::string& tag) {
         if (tagHolder) {
             tagHolder->addTag(this, tag);
