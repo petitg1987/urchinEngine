@@ -67,9 +67,9 @@ namespace urchin {
             unsigned int getHeight() const;
             Rectangle<int> widgetRectangle() const;
 
-            int widthLengthToPixel(float, LengthType, const std::function<float()>&) const;
+            template<class T> int widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
-            int heightLengthToPixel(float, LengthType, const std::function<float()>&) const;
+            template<class T> int heightLengthToPixel(float, LengthType, const T&) const;
             float heightPixelToLength(float, LengthType) const;
 
             void setIsVisible(bool);

@@ -329,23 +329,6 @@ namespace urchin {
                               Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
     }
 
-    int Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const std::function<float()>& heightValueInPixel) const {
-        if (lengthType == LengthType::SCREEN_PERCENT) {
-            return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneSize().X);
-        } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            if (!getParentContainer()) {
-                throw std::runtime_error("Missing parent container on the widget");
-            }
-            return MathFunction::roundToInt(widthValue / 100.0f * (float)getParentContainer()->getWidth());
-        } else if (lengthType == LengthType::RATIO_TO_HEIGHT) {
-            float relativeMultiplyFactor = widthValue;
-            return MathFunction::roundToInt(heightValueInPixel() * relativeMultiplyFactor);
-        } else if (lengthType == LengthType::PIXEL) {
-            return MathFunction::roundToInt(widthValue);
-        }
-        throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
-    }
-
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (widthPixel / (float)getSceneSize().X) * 100.0f;
@@ -355,23 +338,6 @@ namespace urchin {
             return widthPixel;
         }
         throw std::runtime_error("Unknown/unimplemented length type: " + std::to_string(lengthType));
-    }
-
-    int Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const std::function<float()>& widthValueInPixel) const {
-        if (lengthType == LengthType::SCREEN_PERCENT) {
-            return MathFunction::roundToInt(heightValue / 100.0f * (float)getSceneSize().Y);
-        } else if (lengthType == LengthType::CONTAINER_PERCENT)  {
-            if (!getParentContainer()) {
-                throw std::runtime_error("Missing parent container on the widget");
-            }
-            return MathFunction::roundToInt(heightValue / 100.0f * (float)getParentContainer()->getHeight());
-        } else if (lengthType == LengthType::RATIO_TO_WIDTH) {
-            float relativeMultiplyFactor = heightValue;
-            return MathFunction::roundToInt(widthValueInPixel() * relativeMultiplyFactor);
-        } else if (lengthType == LengthType::PIXEL) {
-            return MathFunction::roundToInt(heightValue);
-        }
-        throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
     }
 
     float Widget::heightPixelToLength(float heightPixel, LengthType lengthType) const {
