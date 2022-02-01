@@ -15,8 +15,8 @@ namespace urchin {
 
     class MapSaveService {
         public:
-            void loadMap(const std::string&, LoadMapCallback&, const std::unique_ptr<Map>&);
-            void saveMap(const std::string&, Map&) const;
+            void loadMap(const std::string&, LoadMapCallback&, Map&);
+            void saveMap(const std::string&, const Map&) const;
 
             static std::string getRelativeWorkingDirectory(const std::string&);
 
@@ -28,16 +28,16 @@ namespace urchin {
             void loadWaterEntities(Map&, const UdaChunk*, const UdaParser&);
             void loadSkyEntity(Map&, const UdaChunk*, const UdaParser&);
             void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&);
-            void loadAIConfig(Map&, const UdaChunk*, const UdaParser&);
+            void loadAIConfig(const Map&, const UdaChunk*, const UdaParser&);
 
-            void writeMap(Map&, UdaChunk&, UdaWriter&) const;
-            void writeObjectEntities(Map&, UdaChunk&, UdaWriter&) const;
-            void writeLightEntities(Map&, UdaChunk&, UdaWriter&) const;
-            void writeTerrainEntities(Map&, UdaChunk&, UdaWriter&) const;
-            void writeWaterEntities(Map&, UdaChunk&, UdaWriter&) const;
-            void writeSkyEntity(Map&, UdaChunk&, UdaWriter&) const;
-            void writeSoundEntities(Map& , UdaChunk&, UdaWriter&) const;
-            void writeAIConfig(Map&, UdaChunk&, UdaWriter&) const;
+            void writeMap(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeObjectEntities(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeLightEntities(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeTerrainEntities(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeWaterEntities(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeSkyEntity(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeSoundEntities(const Map& , UdaChunk&, UdaWriter&) const;
+            void writeAIConfig(const Map&, UdaChunk&, UdaWriter&) const;
 
             static constexpr char CONFIG_TAG[] = "config";
             static constexpr char WORKING_DIR_TAG[] = "relativeWorkingDirectory";

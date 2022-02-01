@@ -14,16 +14,16 @@ namespace urchin {
     /**
      * @param map [out] Map to load the entities (must be empty)
      */
-    void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, const std::unique_ptr<Map>& map) {
+    void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, Map& map) {
         Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
         const UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
         const UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
-        map->setRelativeWorkingDirectory(workingDirChunk->getStringValue());
+        map.setRelativeWorkingDirectory(workingDirChunk->getStringValue());
 
         const UdaChunk* sceneChunk = udaParser.getUniqueChunk(true, SCENE_TAG);
-        loadMap(*map, sceneChunk, udaParser, loadMapCallback);
+        loadMap(map, sceneChunk, udaParser, loadMapCallback);
     }
 
     void MapSaveService::loadMap(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) {
@@ -117,12 +117,12 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::loadAIConfig(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadAIConfig(const Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
         auto aiElementsListChunk = udaParser.getUniqueChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
         map.getAIEnvironment().getNavMeshGenerator().setNavMeshAgent(NavMeshAgentReaderWriter::loadNavMeshAgent(aiElementsListChunk, udaParser));
     }
 
-    void MapSaveService::saveMap(const std::string& filename, Map& map) const {
+    void MapSaveService::saveMap(const std::string& filename, const Map& map) const {
         UdaWriter udaWriter(FileSystem::instance().getResourcesDirectory() + filename);
 
         auto& configChunk = udaWriter.createChunk(CONFIG_TAG);
@@ -135,7 +135,7 @@ namespace urchin {
         udaWriter.saveInFile();
     }
 
-    void MapSaveService::writeMap(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeMap(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         writeObjectEntities(map, sceneChunk, udaWriter);
         writeLightEntities(map, sceneChunk, udaWriter);
         writeTerrainEntities(map, sceneChunk, udaWriter);
@@ -145,7 +145,7 @@ namespace urchin {
         writeAIConfig(map, sceneChunk, udaWriter);
     }
 
-    void MapSaveService::writeObjectEntities(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeObjectEntities(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& objectsListChunk = udaWriter.createChunk(OBJECTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& objectEntity : map.getObjectEntities()) {
@@ -154,7 +154,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::writeLightEntities(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeLightEntities(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& lightsListChunk = udaWriter.createChunk(LIGHTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& lightEntity : map.getLightEntities()) {
@@ -163,7 +163,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::writeTerrainEntities(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeTerrainEntities(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& terrainsListChunk = udaWriter.createChunk(TERRAINS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& terrainEntity : map.getTerrainEntities()) {
@@ -172,7 +172,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::writeWaterEntities(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeWaterEntities(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& watersListChunk = udaWriter.createChunk(WATERS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& waterEntity : map.getWaterEntities()) {
@@ -181,13 +181,13 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::writeSkyEntity(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeSkyEntity(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& skyChunk = udaWriter.createChunk(SKY_TAG, UdaAttribute(), &sceneChunk);
 
         SkyEntityReaderWriter::write(skyChunk, map.getSkyEntity(), udaWriter);
     }
 
-    void MapSaveService::writeSoundEntities(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeSoundEntities(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& soundElementsListChunk = udaWriter.createChunk(SOUND_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
 
         for (auto& soundEntity : map.getSoundEntities()) {
@@ -196,7 +196,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::writeAIConfig(Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
+    void MapSaveService::writeAIConfig(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
         NavMeshAgentReaderWriter::writeNavMeshAgent(aiElementsListChunk, map.getAIEnvironment().getNavMeshGenerator().getNavMeshAgent(), udaWriter);
     }

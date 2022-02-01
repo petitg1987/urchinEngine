@@ -65,7 +65,7 @@ namespace urchin {
         Quaternion<float> orientation = OrientationReaderWriter::load(transformChunk, udaParser);
 
         auto scaleChunk = udaParser.getUniqueChunk(false, SCALE_TAG, UdaAttribute(), transformChunk);
-        Vector3<float> scale = Vector3<float>(1.0f, 1.0f, 1.0f);
+        Vector3<float> scale(1.0f, 1.0f, 1.0f);
         if (scaleChunk) {
             scale = scaleChunk->getVector3Value();
         }

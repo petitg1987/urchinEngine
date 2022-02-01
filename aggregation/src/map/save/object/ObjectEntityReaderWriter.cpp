@@ -41,7 +41,7 @@ namespace urchin {
 
         if (!objectEntity.getTags().empty()) {
             auto& tagsChunk = udaWriter.createChunk(TAGS_TAG, UdaAttribute(), &objectEntityChunk);
-            TagsReaderWriter::write(tagsChunk, objectEntity.getTags(), udaWriter);
+            TagsReaderWriter::write(tagsChunk, objectEntity.getTags());
         }
     }
 }

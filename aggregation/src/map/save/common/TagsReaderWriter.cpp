@@ -7,7 +7,7 @@ namespace urchin {
         return StringUtil::split(tagsValues, TAGS_SEPARATOR);
     }
 
-    void TagsReaderWriter::write(UdaChunk& tagsChunk, const std::vector<std::string>& tags, UdaWriter&) {
+    void TagsReaderWriter::write(UdaChunk& tagsChunk, const std::vector<std::string>& tags) {
         std::string tagsValues = StringUtil::merge(tags, TAGS_SEPARATOR);
         tagsChunk.setStringValue(tagsValues);
     }

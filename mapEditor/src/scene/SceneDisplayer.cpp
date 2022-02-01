@@ -49,7 +49,7 @@ namespace urchin {
             map = std::make_unique<Map>(*scene->getActiveRenderer3d(), *physicsWorld, *soundEnvironment, *aiEnvironment);
             if (FileUtil::isFileExist(FileSystem::instance().getResourcesDirectory() + relativeMapFilename)) { //existing map
                 LoadMapCallback nullLoadCallback;
-                MapSaveService().loadMap(relativeMapFilename, nullLoadCallback, map);
+                MapSaveService().loadMap(relativeMapFilename, nullLoadCallback, *map);
             } else {
                 map->setRelativeWorkingDirectory(relativeWorkingDirectory);
             }
