@@ -34,7 +34,7 @@ namespace urchin {
     }
     
     void SoundController::changeSoundShape(const SoundEntity& constSoundEntity, SoundShape::ShapeType shapeType) {
-        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         ZoneTrigger& zoneTrigger = soundEntity.getSoundComponent()->getZoneTrigger();
 
         auto newShape = DefaultSoundShapeCreator(constSoundEntity.getSoundComponent()->getSound()).createDefaultSoundShape(shapeType);
@@ -56,7 +56,7 @@ namespace urchin {
     }
 
     const SoundEntity& SoundController::updateSoundTriggerGeneralProperties(const SoundEntity& constSoundEntity, PlayBehavior playBehavior) {
-        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         SoundTrigger& soundTrigger = soundEntity.getSoundComponent()->getSoundTrigger();
 
         soundTrigger.setPlayBehavior(playBehavior);
@@ -66,7 +66,7 @@ namespace urchin {
     }
 
     const SoundEntity& SoundController::updateSoundShape(const SoundEntity& constSoundEntity, std::unique_ptr<const SoundShape> newSoundShape) {
-        SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
+        const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         ZoneTrigger& zoneTrigger = soundEntity.getSoundComponent()->getZoneTrigger();
 
         zoneTrigger.setSoundShape(std::move(newSoundShape));
