@@ -377,7 +377,7 @@ namespace urchin {
         return uniformTextureReaders[textureIndex];
     }
 
-    std::span<OffscreenRender* const> GenericRenderer::getTexturesWriter() const {
+    std::span<OffscreenRender*> GenericRenderer::getTexturesWriter() const {
         texturesWriter.clear();
 
         for (auto& uniformTextureReaderArray : uniformTextureReaders) {

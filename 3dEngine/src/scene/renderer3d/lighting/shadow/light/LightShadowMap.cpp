@@ -149,7 +149,7 @@ namespace urchin {
         shadowModelSetDisplayer->removeModel(model);
     }
 
-    std::span<Model* const> LightShadowMap::retrieveModels() const {
+    std::span<Model*> LightShadowMap::retrieveModels() const {
         models.clear();
         for (auto& lightSplitShadowMap : lightSplitShadowMaps) {
             if (lightSplitShadowMap->needShadowMapUpdate()) {

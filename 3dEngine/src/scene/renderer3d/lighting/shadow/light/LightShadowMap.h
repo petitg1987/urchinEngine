@@ -46,7 +46,7 @@ namespace urchin {
             void createOrUpdateShadowModelSetDisplayer(unsigned int);
 
             void updateLightViewMatrix();
-            std::span<Model* const> retrieveModels() const;
+            std::span<Model*> retrieveModels() const;
 
             Light& light;
             const OctreeManager<Model>& modelOctreeManager;

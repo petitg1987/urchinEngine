@@ -56,7 +56,7 @@ namespace urchin {
             const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t, std::size_t) const;
             void updateUniformTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
-            std::span<OffscreenRender* const> getTexturesWriter() const;
+            std::span<OffscreenRender*> getTexturesWriter() const;
 
         private:
             void initialize();

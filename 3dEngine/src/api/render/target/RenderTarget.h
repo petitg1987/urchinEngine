@@ -63,13 +63,13 @@ namespace urchin {
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();
-            void addNewFrameBuffer(std::span<VkImageView const>);
+            void addNewFrameBuffer(std::span<VkImageView>);
             void destroyFramebuffers();
             void createCommandBuffers();
             void createCommandPool();
             void destroyCommandBuffersAndPool();
 
-            std::span<OffscreenRender* const> getRenderDependencies() const;
+            std::span<OffscreenRender*> getRenderDependencies() const;
             void configureWaitSemaphore(VkSubmitInfo&, VkSemaphore) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;

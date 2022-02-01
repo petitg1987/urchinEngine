@@ -268,7 +268,7 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::addNewFrameBuffer(std::span<VkImageView const> attachments) {
+    void RenderTarget::addNewFrameBuffer(std::span<VkImageView> attachments) {
         VkFramebufferCreateInfo framebufferInfo{};
         framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
         framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo
@@ -325,7 +325,7 @@ namespace urchin {
         vkDestroyCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
-    std::span<OffscreenRender* const> RenderTarget::getRenderDependencies() const {
+    std::span<OffscreenRender*> RenderTarget::getRenderDependencies() const {
         renderDependencies.clear();
         for (auto& renderer : renderers) {
             if (renderer->isEnabled()) {
@@ -343,7 +343,7 @@ namespace urchin {
     }
 
     void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, VkSemaphore additionalCustomSemaphore) const {
-        std::span<OffscreenRender* const> renderDependencies = getRenderDependencies();
+        std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
 
         queueSubmitWaitSemaphores.clear();
         queueSubmitWaitStages.clear();
