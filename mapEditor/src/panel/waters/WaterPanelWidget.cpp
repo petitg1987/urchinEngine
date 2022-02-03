@@ -35,7 +35,7 @@ namespace urchin {
         waterTableView = new WaterTableView();
         mainLayout->addWidget(waterTableView);
         waterTableView->addObserver(this, WaterTableView::SELECTION_CHANGED);
-        waterTableView->setFixedHeight(220);
+        waterTableView->setFixedHeight(320);
 
         auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);

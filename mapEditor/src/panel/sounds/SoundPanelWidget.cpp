@@ -38,7 +38,7 @@ namespace urchin {
         soundTableView = new SoundTableView();
         mainLayout->addWidget(soundTableView);
         soundTableView->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
-        soundTableView->setFixedHeight(220);
+        soundTableView->setFixedHeight(320);
 
         auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);

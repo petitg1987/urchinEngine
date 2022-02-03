@@ -33,7 +33,7 @@ namespace urchin {
         lightTableView = new LightTableView();
         mainLayout->addWidget(lightTableView);
         lightTableView->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
-        lightTableView->setFixedHeight(220);
+        lightTableView->setFixedHeight(320);
 
         auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);

@@ -50,7 +50,7 @@ namespace urchin {
         objectTableView = new ObjectTableView(this);
         mainLayout->addWidget(objectTableView);
         objectTableView->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
-        objectTableView->setFixedHeight(220);
+        objectTableView->setFixedHeight(320);
 
         auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);

@@ -43,7 +43,7 @@ namespace urchin {
         terrainTableView = new TerrainTableView();
         mainLayout->addWidget(terrainTableView);
         terrainTableView->addObserver(this, TerrainTableView::SELECTION_CHANGED);
-        terrainTableView->setFixedHeight(220);
+        terrainTableView->setFixedHeight(320);
 
         auto* buttonsLayout = new QHBoxLayout();
         mainLayout->addLayout(buttonsLayout);
