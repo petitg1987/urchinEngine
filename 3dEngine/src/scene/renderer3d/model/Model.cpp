@@ -97,10 +97,13 @@ namespace urchin {
         return !animations.empty();
     }
 
-    void Model::animate(const std::string& animationName, bool animationLoop) {
+    void Model::animate(const std::string& animationName, AnimRepeat animLoop, AnimStart animStart) {
         activeAnimation = animations.at(animationName).get();
+        if (animStart == AnimStart::AT_FIRST_FRAME && activeAnimation->getCurrentFrame() != 0) {
+            activeAnimation->gotoFrame(0);
+        }
         isModelAnimated = true;
-        stopAnimationAtLastFrame = !animationLoop;
+        stopAnimationAtLastFrame = (animLoop == AnimRepeat::ONCE);
 
         onMoving(transform);
         notifyObservers(this, Model::ANIMATION_STARTED);

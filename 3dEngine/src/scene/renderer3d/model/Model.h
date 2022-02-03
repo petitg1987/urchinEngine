@@ -7,6 +7,8 @@
 
 #include <scene/renderer3d/model/Meshes.h>
 #include <scene/renderer3d/model/Animation.h>
+#include <scene/renderer3d/model/AnimRepeat.h>
+#include <scene/renderer3d/model/AnimStart.h>
 #include <scene/renderer3d/model/displayer/ModelDisplayable.h>
 #include <resources/model/ConstMeshes.h>
 #include <resources/model/ConstAnimation.h>
@@ -34,7 +36,7 @@ namespace urchin {
 
             void loadAnimation(const std::string&, const std::string&);
             bool hasLoadedAnimation() const;
-            void animate(const std::string&, bool);
+            void animate(const std::string&, AnimRepeat, AnimStart);
             void stopAnimation(bool);
             void resetAnimations();
             void gotoAnimationFrame(const std::string&, unsigned int);
