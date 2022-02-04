@@ -8,9 +8,9 @@ namespace urchin {
 
     class StringUtil {
         public:
-            static void replaceAll(std::string&, const std::string&, const std::string&);
-            static bool replaceFirst(std::string&, const std::string&, const std::string&);
-            static void replaceLine(std::string&, const std::string&, const std::string&);
+            static void replaceAll(std::string&, std::string_view, std::string_view);
+            static bool replaceFirst(std::string&, std::string_view, std::string_view);
+            static void replaceLine(std::string&, std::string_view, std::string_view);
 
             static void split(std::string_view, const char&, std::vector<std::string>&);
             static std::vector<std::string> split(std::string_view, const char&);

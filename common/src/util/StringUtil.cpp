@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    void StringUtil::replaceAll(std::string& str, const std::string& from, const std::string& to) {
+    void StringUtil::replaceAll(std::string& str, std::string_view from, std::string_view to) {
         std::size_t startPos = 0;
         while ((startPos = str.find(from, startPos)) != std::string::npos) {
             str.replace(startPos, from.length(), to);
@@ -14,7 +14,7 @@ namespace urchin {
         }
     }
 
-    bool StringUtil::replaceFirst(std::string& str, const std::string& from, const std::string& to) {
+    bool StringUtil::replaceFirst(std::string& str, std::string_view from, std::string_view to) {
         std::size_t pos;
         if ((pos = str.find(from)) != std::string::npos) {
             str.replace(pos, from.length(), to);
@@ -23,12 +23,12 @@ namespace urchin {
         return false;
     }
 
-    void StringUtil::replaceLine(std::string& str, const std::string& startLineValue, const std::string& newLineValue) {
+    void StringUtil::replaceLine(std::string& str, std::string_view startLineValue, std::string_view newLineValue) {
         std::size_t startPos;
         if ((startPos = str.find(startLineValue)) != std::string::npos) {
             std::size_t endOfLinePos = str.find('\n', startPos);
             if (endOfLinePos == std::string::npos) [[unlikely]] {
-                throw std::runtime_error("Impossible to replace '" + startLineValue + "' by '" + newLineValue + "' because EOL not found");
+                throw std::runtime_error("Impossible to replace '" + std::string(startLineValue) + "' by '" + std::string(newLineValue) + "' because EOL not found");
             }
 
             str.replace(startPos, endOfLinePos - startPos, newLineValue);
