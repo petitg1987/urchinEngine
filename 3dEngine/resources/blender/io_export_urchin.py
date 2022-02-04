@@ -781,7 +781,7 @@ def export_menu_func(self, context):
 # ---------------------------------------------------------------------------
 def select_all_meshes():
     bpy.ops.object.select_by_type(type='MESH')
-    bpy.context.view_layer.objects.active = bpy.context.selected_objects[0] # Active one random mesh otherwise some scripts do not work correctly
+    bpy.context.view_layer.objects.active = bpy.context.selected_objects[0]  # Active one random mesh otherwise some scripts do not work correctly
 
 
 class AdjustMeshOrigin(bpy.types.Operator):
