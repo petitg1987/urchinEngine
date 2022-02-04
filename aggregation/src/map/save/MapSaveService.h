@@ -18,7 +18,7 @@ namespace urchin {
             void loadMap(const std::string&, LoadMapCallback&, Map&);
             void saveMap(const std::string&, const Map&) const;
 
-            static std::string getRelativeWorkingDirectory(const std::string&);
+            static std::string getRelativeWorkingDirectory(std::string);
 
         private:
             void loadMap(Map&, const UdaChunk*, const UdaParser&, LoadMapCallback&);

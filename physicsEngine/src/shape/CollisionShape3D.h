@@ -59,7 +59,7 @@ namespace urchin {
             virtual float getMaxDistanceToCenter() const = 0;
             virtual float getMinDistanceToCenter() const = 0;
 
-            void checkInnerMarginQuality(const std::string&) const;
+            void checkInnerMarginQuality(std::string_view) const;
 
             virtual std::unique_ptr<CollisionShape3D> clone() const = 0;
 

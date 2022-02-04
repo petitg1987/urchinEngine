@@ -15,10 +15,10 @@ namespace urchin {
             void setupTagHolder(TagHolder*);
 
             const std::vector<std::string>& getTags() const;
-            bool hasTag(const std::string&) const;
-            void addTag(const std::string&);
+            bool hasTag(std::string_view) const;
+            void addTag(std::string);
             void addTags(const std::vector<std::string>&);
-            void removeTag(const std::string&);
+            void removeTag(std::string_view);
             void removeAllTags();
 
         private:

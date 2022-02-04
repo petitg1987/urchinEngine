@@ -22,7 +22,7 @@ namespace urchin {
             const Simplex<T>& getSimplex() const override;
 
         private:
-            void logInputData(const std::string&, const Simplex<T>&);
+            void logInputData(std::string_view, const Simplex<T>&);
 
             T separatingDistance;
             Point3<T> closestPointA, closestPointB;

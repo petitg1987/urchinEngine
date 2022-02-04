@@ -14,7 +14,7 @@ namespace urchin {
 
             ProfilerNode* getParent() const;
 
-            ProfilerNode* findChildren(const std::string&) const;
+            ProfilerNode* findChildren(std::string_view) const;
             void addChild(std::unique_ptr<ProfilerNode>);
 
             bool isStarted() const;

@@ -23,10 +23,10 @@ namespace urchin {
             void refreshWith(float);
 
             const std::string& getGrassTexture() const;
-            void setGrassTexture(const std::string&);
+            void setGrassTexture(std::string);
 
             const std::string& getMaskTexture() const;
-            void setMaskTexture(const std::string&);
+            void setMaskTexture(std::string);
 
             float getGrassDisplayDistance() const;
             void setGrassDisplayDistance(float);

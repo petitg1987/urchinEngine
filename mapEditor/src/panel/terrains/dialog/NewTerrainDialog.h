@@ -26,7 +26,7 @@ namespace urchin {
             int buildTerrainEntity(int);
 
             void done(int) override;
-            bool isTerrainEntityExist(const std::string&);
+            bool isTerrainEntityExist(std::string_view);
 
             const TerrainController* terrainController;
 

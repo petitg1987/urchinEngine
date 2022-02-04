@@ -24,8 +24,8 @@ namespace urchin {
         return name;
     }
 
-    void LightEntity::setName(const std::string& name) {
-        this->name = name;
+    void LightEntity::setName(std::string name) {
+        this->name = std::move(name);
     }
 
     Light* LightEntity::getLight() const {

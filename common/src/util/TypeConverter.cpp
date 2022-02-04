@@ -266,14 +266,14 @@ namespace urchin {
         return std::to_string(value);
     }
 
-    std::vector<float> TypeConverter::floatSplit(const std::string& str, unsigned int expectedSplit) {
+    std::vector<float> TypeConverter::floatSplit(std::string_view str, unsigned int expectedSplit) {
         std::vector<std::string> stringValues;
         stringValues.reserve(expectedSplit);
         StringUtil::split(str, NUMBER_DELIMITER, stringValues);
 
         if (stringValues.size() != expectedSplit) [[unlikely]] {
             throw std::invalid_argument("Number of float expected: " + std::to_string(expectedSplit) + ", found: "
-                    + std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
+                    + std::to_string((unsigned int)stringValues.size()) + ". String value: " + std::string(str) + ".");
         }
 
         std::vector<float> floatValues;
@@ -285,14 +285,14 @@ namespace urchin {
         return floatValues;
     }
 
-    std::vector<int> TypeConverter::intSplit(const std::string& str, unsigned int expectedSplit) {
+    std::vector<int> TypeConverter::intSplit(std::string_view str, unsigned int expectedSplit) {
         std::vector<std::string> stringValues;
         stringValues.reserve(expectedSplit);
         StringUtil::split(str, NUMBER_DELIMITER, stringValues);
 
         if (stringValues.size() != expectedSplit) [[unlikely]] {
             throw std::invalid_argument("Number of int expected: " + std::to_string(expectedSplit) + ", found: "
-                                        + std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
+                                        + std::to_string((unsigned int)stringValues.size()) + ". String value: " + std::string(str) + ".");
         }
 
         std::vector<int> intValues;

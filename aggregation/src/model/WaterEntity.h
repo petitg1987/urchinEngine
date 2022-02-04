@@ -13,7 +13,7 @@ namespace urchin {
             ~WaterEntity();
 
             std::string getName() const;
-            void setName(const std::string&);
+            void setName(std::string);
 
             Water* getWater() const;
             void setWater(std::shared_ptr<Water>);

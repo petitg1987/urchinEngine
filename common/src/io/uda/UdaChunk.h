@@ -34,7 +34,7 @@ namespace urchin {
             const std::vector<std::unique_ptr<UdaChunk>>& getChildren() const;
 
             std::string getStringValue() const;
-            void setStringValue(const std::string&);
+            void setStringValue(std::string);
 
             int getIntValue() const;
             void setIntValue(int);

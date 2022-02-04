@@ -87,7 +87,7 @@ namespace urchin {
         this->transparencyEnabled = true;
     }
 
-    void TextureRenderer::initialize(const std::string& name, RenderTarget& renderTarget, unsigned int sceneWidth, unsigned int sceneHeight,
+    void TextureRenderer::initialize(std::string name, RenderTarget& renderTarget, unsigned int sceneWidth, unsigned int sceneHeight,
                                      float minColorRange, float maxColorRange) {
         if (isInitialized) {
             throw std::runtime_error("Texture displayer cannot be initialized twice.");
@@ -163,7 +163,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        auto rendererBuilder = GenericRendererBuilder::create(name, renderTarget, *displayTextureShader, ShapeType::TRIANGLE)
+        auto rendererBuilder = GenericRendererBuilder::create(std::move(name), renderTarget, *displayTextureShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(mProjection), &mProjection) //binding 0
@@ -189,7 +189,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &trConstData);
 
-        const std::string& fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag.spv" : "displayTextureArray.frag.spv";
+        std::string fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag.spv" : "displayTextureArray.frag.spv";
         displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", "", fragShaderName, std::move(shaderConstants));
     }
 

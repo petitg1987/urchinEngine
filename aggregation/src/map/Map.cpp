@@ -29,8 +29,8 @@ namespace urchin {
         return aiEnvironment;
     }
 
-    void Map::setRelativeWorkingDirectory(const std::string& relativeWorkingDirectory) {
-        this->relativeWorkingDirectory = relativeWorkingDirectory;
+    void Map::setRelativeWorkingDirectory(std::string relativeWorkingDirectory) {
+        this->relativeWorkingDirectory = std::move(relativeWorkingDirectory);
     }
 
     const std::string& Map::getRelativeWorkingDirectory() const {

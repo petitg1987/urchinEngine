@@ -10,7 +10,7 @@ namespace urchin {
 
     class Profiler {
         public:
-            explicit Profiler(const std::string&);
+            explicit Profiler(std::string);
 
             static Profiler& graphic();
             static Profiler& physics();

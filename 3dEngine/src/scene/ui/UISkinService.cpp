@@ -124,7 +124,7 @@ namespace urchin {
     float UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName, LengthType& lengthType) const {
         auto lengthChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
 
-        const std::string& lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
+        std::string lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             lengthType = PIXEL;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "screenPercent")) {

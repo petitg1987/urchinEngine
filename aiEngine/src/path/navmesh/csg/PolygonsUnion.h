@@ -19,7 +19,7 @@ namespace urchin {
 
             const std::vector<CSGPolygonPath>& unionTwoPolygonPaths(const CSGPolygonPath&, const CSGPolygonPath&) const;
 
-            void logInputData(const std::vector<CSGPolygon<T>>&, const std::string&, Logger::CriticalityLevel) const;
+            void logInputData(const std::vector<CSGPolygon<T>>&, std::string_view, Logger::CriticalityLevel) const;
 
             mutable std::vector<CSGPolygon<T>> mergedPolygons;
             mutable std::vector<CSGPolygonPath> allPolygonPaths;

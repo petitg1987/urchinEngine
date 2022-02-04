@@ -9,7 +9,7 @@ namespace urchin {
 
     class TerrainMesh {
         public:
-            TerrainMesh(const std::string&, float, float);
+            TerrainMesh(std::string, float, float);
 
             const std::string& getHeightFilename() const;
             float getXZScale() const;

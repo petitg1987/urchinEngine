@@ -29,7 +29,7 @@ namespace urchin {
             FileUtil() = default;
             ~FileUtil() = default;
 
-            static void getFilesRecursive(const std::string&, std::vector<std::string>&);
+            static void getFilesRecursive(std::string_view, std::vector<std::string>&);
             static void checkDirectory(const std::string&);
     };
 

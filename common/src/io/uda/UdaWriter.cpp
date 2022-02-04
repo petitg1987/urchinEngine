@@ -14,13 +14,13 @@ namespace urchin {
 
     }
 
-    UdaChunk& UdaWriter::createChunk(const std::string& chunkName, const UdaAttribute& attribute, UdaChunk* parent) {
+    UdaChunk& UdaWriter::createChunk(std::string chunkName, const UdaAttribute& attribute, UdaChunk* parent) {
         std::map<std::string, std::string> attributes;
         if (!attribute.getAttributeName().empty()) {
             attributes.try_emplace(attribute.getAttributeName(), attribute.getAttributeValue());
         }
 
-        auto newNode = std::make_unique<UdaChunk>(chunkName, "", attributes, parent);
+        auto newNode = std::make_unique<UdaChunk>(std::move(chunkName), "", attributes, parent);
         auto newNodePtr = newNode.get();
         if (!parent) {
             rootNodes.push_back(std::move(newNode));

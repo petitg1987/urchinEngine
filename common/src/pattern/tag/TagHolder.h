@@ -13,8 +13,8 @@ namespace urchin {
             void removeTaggableResource(TaggableResource&) const;
 
             template<class T> void findByTag(const std::string&, std::vector<T>&) const;
-            void addTag(TaggableResource*, const std::string&);
-            void removeTag(const TaggableResource*, const std::string&);
+            void addTag(TaggableResource*, std::string);
+            void removeTag(const TaggableResource*, std::string_view);
 
         private:
             std::multimap<std::string, TaggableResource*> tagsMap;

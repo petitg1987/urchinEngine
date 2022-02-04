@@ -54,9 +54,9 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(const std::string& name, ShapeType shapeType, bool enableTransparency) const {
+    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool enableTransparency) const {
         assert(isInitialized());
-        auto rendererBuilder = GenericRendererBuilder::create(name, uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
+        auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
         Matrix4<float> normalMatrix, projectionViewModelMatrix;
         if (uiRenderer->getUi3dData()) {

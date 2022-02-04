@@ -20,7 +20,7 @@ namespace urchin {
             void copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>>&);
             const std::vector<std::shared_ptr<NavPolygon>>& getPolygons() const;
 
-            void svgMeshExport(const std::string&) const;
+            void svgMeshExport(std::string) const;
         private:
             unsigned int changeUpdateId();
 

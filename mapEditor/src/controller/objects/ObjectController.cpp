@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <memory>
+#include <utility>
 
 #include <controller/objects/ObjectController.h>
 
@@ -20,7 +21,7 @@ namespace urchin {
         return constObjectEntities;
     }
 
-    const ObjectEntity* ObjectController::findObjectEntityByBodyId(const std::string& bodyId) const {
+    const ObjectEntity* ObjectController::findObjectEntityByBodyId(std::string_view bodyId) const {
         for (const auto* objectEntity : getObjectEntities()) {
             if (objectEntity->getRigidBody() && objectEntity->getRigidBody()->getId() == bodyId) {
                 return objectEntity;
@@ -63,9 +64,9 @@ namespace urchin {
         addObjectEntity(std::move(newObjectModel));
     }
 
-    void ObjectController::renameObjectEntity(const ObjectEntity& constObjectEntity, const std::string& newObjectName) {
+    void ObjectController::renameObjectEntity(const ObjectEntity& constObjectEntity, std::string newObjectName) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
-        objectEntity.setName(newObjectName);
+        objectEntity.setName(std::move(newObjectName));
 
         markModified();
     }
@@ -135,7 +136,7 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateObjectTags(const ObjectEntity& constObjectEntity, const std::string& tagsValues) {
+    const ObjectEntity& ObjectController::updateObjectTags(const ObjectEntity& constObjectEntity, std::string_view tagsValues) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
 
         objectEntity.removeAllTags();

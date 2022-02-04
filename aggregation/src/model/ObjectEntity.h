@@ -15,7 +15,7 @@ namespace urchin {
             ~ObjectEntity() override;
 
             const std::string& getName() const;
-            void setName(const std::string&);
+            void setName(std::string);
 
             Model* getModel() const;
             void setModel(const std::shared_ptr<Model>&);

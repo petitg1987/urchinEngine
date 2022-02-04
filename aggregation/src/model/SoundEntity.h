@@ -13,7 +13,7 @@ namespace urchin {
             ~SoundEntity();
 
             std::string getName() const;
-            void setName(const std::string&);
+            void setName(std::string);
 
             SoundComponent* getSoundComponent() const;
             void setSoundComponent(const std::shared_ptr<SoundComponent>&);

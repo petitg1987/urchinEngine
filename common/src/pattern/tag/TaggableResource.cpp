@@ -33,15 +33,15 @@ namespace urchin {
         return tags;
     }
 
-    bool TaggableResource::hasTag(const std::string& tag) const {
+    bool TaggableResource::hasTag(std::string_view tag) const {
         return std::ranges::find(tags, tag) != tags.end();
     }
 
-    void TaggableResource::addTag(const std::string& tag) {
+    void TaggableResource::addTag(std::string tag) {
         if (tagHolder) {
             tagHolder->addTag(this, tag);
         }
-        tags.push_back(tag);
+        tags.push_back(std::move(tag));
     }
 
     void TaggableResource::addTags(const std::vector<std::string>& tags) {
@@ -50,7 +50,7 @@ namespace urchin {
         }
     }
 
-    void TaggableResource::removeTag(const std::string& tag) {
+    void TaggableResource::removeTag(std::string_view tag) {
         if (tagHolder) {
             tagHolder->removeTag(this, tag);
         }

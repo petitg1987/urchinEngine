@@ -92,8 +92,8 @@ namespace urchin {
         }
     }
 
-    bool NewWaterDialog::isWaterEntityExist(const std::string& name) {
+    bool NewWaterDialog::isWaterEntityExist(std::string_view name) {
         std::list<const WaterEntity*> waterEntities = waterController->getWaterEntities();
-        return std::ranges::any_of(waterEntities, [&name](const auto& we){return we->getName() == name;});
+        return std::ranges::any_of(waterEntities, [name](const auto& we){return we->getName() == name;});
     }
 }

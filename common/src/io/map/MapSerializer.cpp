@@ -45,15 +45,15 @@ namespace urchin {
         return outputMap;
     }
 
-    std::string MapSerializer::escape(const std::string& str) {
-        std::string escapedStr = str;
+    std::string MapSerializer::escape(std::string str) {
+        std::string escapedStr = std::move(str);
         StringUtil::replaceAll(escapedStr, "\\", "\\\\");
         StringUtil::replaceAll(escapedStr, std::string(1, DELIMITER), std::string("\\") + DELIMITER);
         return escapedStr;
     }
 
-    std::string MapSerializer::unescape(const std::string& str) {
-        std::string unescapedStr = str;
+    std::string MapSerializer::unescape(std::string str) {
+        std::string unescapedStr = std::move(str);
         StringUtil::replaceAll(unescapedStr, std::string("\\") + DELIMITER, std::string(1, DELIMITER));
         StringUtil::replaceAll(unescapedStr, "\\\\", "\\");
         return unescapedStr;

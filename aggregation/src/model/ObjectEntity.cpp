@@ -41,8 +41,8 @@ namespace urchin {
         return name;
     }
 
-    void ObjectEntity::setName(const std::string& name) {
-        this->name = name;
+    void ObjectEntity::setName(std::string name) {
+        this->name = std::move(name);
     }
 
     Model* ObjectEntity::getModel() const {

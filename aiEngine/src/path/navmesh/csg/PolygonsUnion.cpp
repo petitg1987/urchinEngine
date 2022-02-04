@@ -70,8 +70,7 @@ namespace urchin {
         return twoPolygonUnions;
     }
 
-    template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>>& polygons, const std::string& message,
-            Logger::CriticalityLevel logLevel) const {
+    template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>>& polygons, std::string_view message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

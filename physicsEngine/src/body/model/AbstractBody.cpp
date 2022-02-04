@@ -87,8 +87,8 @@ namespace urchin {
         return bodyType;
     }
 
-    void AbstractBody::setId(const std::string& id) {
-        this->id = id;
+    void AbstractBody::setId(std::string id) {
+        this->id = std::move(id);
     }
 
     const std::string& AbstractBody::getId() const {

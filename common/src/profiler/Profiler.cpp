@@ -8,9 +8,9 @@
 
 namespace urchin {
 
-    Profiler::Profiler(const std::string& instanceName) :
+    Profiler::Profiler(std::string instanceName) :
             isEnable(ConfigService::instance().getBoolValue("profiler." + instanceName + "Enable")),
-            instanceName(instanceName),
+            instanceName(std::move(instanceName)),
             currentNode(nullptr) {
         initializeOrReset();
     }

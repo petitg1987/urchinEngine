@@ -8,8 +8,8 @@ namespace urchin {
         this->shadersParentDirectory = FileSystem::instance().getResourcesDirectory();
     }
 
-    void ShaderConfig::replaceShadersParentDirectoryBy(const std::string& shadersParentDirectory) {
-        this->shadersParentDirectory = shadersParentDirectory;
+    void ShaderConfig::replaceShadersParentDirectoryBy(std::string shadersParentDirectory) {
+        this->shadersParentDirectory = std::move(shadersParentDirectory);
     }
 
     std::string ShaderConfig::getShadersDirectory() const {

@@ -24,12 +24,12 @@ namespace urchin {
         private:
             PolytopeBuilder();
 
-            std::unique_ptr<Polytope> createExpandedPolytope(const std::string&, const OBBox<float>*, const NavMeshAgent&) const;
-            std::unique_ptr<Polytope> createExpandedPolytope(const std::string&, const Capsule<float>*, const NavMeshAgent&) const;
-            std::unique_ptr<Polytope> createExpandedPolytope(const std::string&, const Cone<float>*, const NavMeshAgent&) const;
-            std::unique_ptr<Polytope> createExpandedPolytope(const std::string&, const ConvexHull3D<float>*, const NavMeshAgent&) const;
-            std::unique_ptr<Polytope> createExpandedPolytope(const std::string&, const Cylinder<float>*, const NavMeshAgent&) const;
-            std::unique_ptr<Polytope> createExpandedPolytope(const std::string&, const Sphere<float>*, const NavMeshAgent&) const;
+            std::unique_ptr<Polytope> createExpandedPolytope(std::string, const OBBox<float>*, const NavMeshAgent&) const;
+            std::unique_ptr<Polytope> createExpandedPolytope(std::string, const Capsule<float>*, const NavMeshAgent&) const;
+            std::unique_ptr<Polytope> createExpandedPolytope(std::string, const Cone<float>*, const NavMeshAgent&) const;
+            std::unique_ptr<Polytope> createExpandedPolytope(std::string, const ConvexHull3D<float>*, const NavMeshAgent&) const;
+            std::unique_ptr<Polytope> createExpandedPolytope(std::string, const Cylinder<float>*, const NavMeshAgent&) const;
+            std::unique_ptr<Polytope> createExpandedPolytope(std::string, const Sphere<float>*, const NavMeshAgent&) const;
 
             std::vector<Point3<float>> createExpandedPoints(const std::vector<Point3<float>>&, const NavMeshAgent&) const;
             std::vector<Plane<float>> createExpandedBoxPlanes(const std::vector<Point3<float>>&, const NavMeshAgent&) const;

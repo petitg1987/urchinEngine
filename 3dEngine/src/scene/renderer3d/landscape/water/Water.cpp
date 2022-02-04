@@ -126,13 +126,13 @@ namespace urchin {
         return waterProperties.color;
     }
 
-    void Water::setNormalTexture(const std::string& normalFilename) {
-        this->normalFilename = normalFilename;
+    void Water::setNormalTexture(std::string normalFilename) {
+        this->normalFilename = std::move(normalFilename);
 
-        if (normalFilename.empty()) {
+        if (this->normalFilename.empty()) {
             normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255}), false).createTexture(false);
         } else {
-            auto normalImage = ResourceRetriever::instance().getResource<Image>(normalFilename);
+            auto normalImage = ResourceRetriever::instance().getResource<Image>(this->normalFilename);
             if (normalImage->getImageFormat() != Image::IMAGE_RGBA) {
                 throw std::runtime_error("Water normal texture must have 4 components (RGBA). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
             }
@@ -146,13 +146,13 @@ namespace urchin {
         return normalFilename;
     }
 
-    void Water::setDudvMap(const std::string& dudvFilename) {
-        this->dudvFilename = dudvFilename;
+    void Water::setDudvMap(std::string dudvFilename) {
+        this->dudvFilename = std::move(dudvFilename);
 
-        if (dudvFilename.empty()) {
+        if (this->dudvFilename.empty()) {
             dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 255, 255}), false).createTexture(false);
         } else {
-            auto dudvImage = ResourceRetriever::instance().getResource<Image>(dudvFilename);
+            auto dudvImage = ResourceRetriever::instance().getResource<Image>(this->dudvFilename);
             if (dudvImage->getImageFormat() != Image::IMAGE_RGBA) {
                 throw std::runtime_error("Water dudv map must have 4 components (RGBA). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
             }

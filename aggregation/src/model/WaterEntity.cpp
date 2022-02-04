@@ -25,8 +25,8 @@ namespace urchin {
         return name;
     }
 
-    void WaterEntity::setName(const std::string& name) {
-        this->name = name;
+    void WaterEntity::setName(std::string name) {
+        this->name = std::move(name);
     }
 
     Water* WaterEntity::getWater() const {

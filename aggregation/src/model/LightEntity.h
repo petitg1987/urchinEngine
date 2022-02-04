@@ -13,7 +13,7 @@ namespace urchin {
             ~LightEntity();
 
             std::string getName() const;
-            void setName(const std::string&);
+            void setName(std::string);
 
             Light* getLight() const;
             void setLight(const std::shared_ptr<Light>&);

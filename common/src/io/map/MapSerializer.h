@@ -16,8 +16,8 @@ namespace urchin {
 
             static constexpr char DELIMITER = ',';
 
-            static std::string escape(const std::string&);
-            static std::string unescape(const std::string&);
+            static std::string escape(std::string);
+            static std::string unescape(std::string);
     };
 
 }

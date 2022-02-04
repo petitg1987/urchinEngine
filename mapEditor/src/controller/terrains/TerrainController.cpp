@@ -58,27 +58,27 @@ namespace urchin {
         return terrainEntity;
     }
 
-    const TerrainEntity& TerrainController::updateTerrainMaterial(const TerrainEntity& constTerrainEntity, float sRepeat, float tRepeat, const std::string& maskMapFilename,
+    const TerrainEntity& TerrainController::updateTerrainMaterial(const TerrainEntity& constTerrainEntity, float sRepeat, float tRepeat, std::string maskMapFilename,
                                                                   const std::vector<std::string>& materialFilenames) {
         const TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
         Terrain* terrain = terrainEntity.getTerrain();
 
-        auto terrainMaterials = std::make_unique<TerrainMaterials>(maskMapFilename, materialFilenames, sRepeat, tRepeat);
+        auto terrainMaterials = std::make_unique<TerrainMaterials>(std::move(maskMapFilename), materialFilenames, sRepeat, tRepeat);
         terrain->setMaterials(std::move(terrainMaterials));
 
         markModified();
         return terrainEntity;
     }
 
-    const TerrainEntity& TerrainController::updateTerrainGrass(const TerrainEntity& constTerrainEntity, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
+    const TerrainEntity& TerrainController::updateTerrainGrass(const TerrainEntity& constTerrainEntity, std::string grassTextureFilename, std::string grassMaskFilename,
                                                                unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                const Vector3<float>& windDirection, float windStrength) {
         const TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
         Terrain* terrain = terrainEntity.getTerrain();
         TerrainGrass& terrainGrass = terrain->getGrass();
 
-        terrainGrass.setGrassTexture(grassTextureFilename);
-        terrainGrass.setMaskTexture(grassMaskFilename);
+        terrainGrass.setGrassTexture(std::move(grassTextureFilename));
+        terrainGrass.setMaskTexture(std::move(grassMaskFilename));
         terrainGrass.setNumGrassInTexture(numGrassInTex);
         if (terrainGrass.getGrassQuantity() != grassQuantity) {
             terrainGrass.setGrassQuantity(grassQuantity);

@@ -14,8 +14,8 @@ namespace urchin {
         FileUtil::createDirectory(engineUserCacheDirectory);
     }
 
-    void FileSystem::setupResourcesDirectory(const std::string& resourcesDirectory) {
-        this->resourcesDirectory = resourcesDirectory;
+    void FileSystem::setupResourcesDirectory(std::string resourcesDirectory) {
+        this->resourcesDirectory = std::move(resourcesDirectory);
     }
 
     const std::string& FileSystem::getResourcesDirectory() const {

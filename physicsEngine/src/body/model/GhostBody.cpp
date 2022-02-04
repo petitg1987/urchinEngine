@@ -3,8 +3,8 @@
 
 namespace urchin {
 
-    GhostBody::GhostBody(const std::string& id, const PhysicsTransform& physicsTransform, std::unique_ptr<const CollisionShape3D> shape) :
-            AbstractBody(BodyType::GHOST, id, physicsTransform, std::move(shape)),
+    GhostBody::GhostBody(std::string id, const PhysicsTransform& physicsTransform, std::unique_ptr<const CollisionShape3D> shape) :
+            AbstractBody(BodyType::GHOST, std::move(id), physicsTransform, std::move(shape)),
             pairContainer(std::make_unique<SyncVectorPairContainer>()) {
         setIsStatic(false); //can move and be affected by the physics world: not a static body
         setIsActive(false); //default value: body is not active

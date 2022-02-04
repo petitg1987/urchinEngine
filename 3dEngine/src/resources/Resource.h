@@ -10,11 +10,11 @@ namespace urchin {
             virtual ~Resource() = default;
 
             const std::string& getId() const;
-            void setId(const std::string&);
+            void setId(std::string);
             std::size_t retrieveHashId() const;
 
             const std::string& getName() const;
-            void setName(const std::string&);
+            void setName(std::string);
 
             bool isPermanent() const;
             void setPermanent(bool);

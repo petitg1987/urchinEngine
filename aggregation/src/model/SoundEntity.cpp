@@ -25,8 +25,8 @@ namespace urchin {
         return name;
     }
 
-    void SoundEntity::setName(const std::string& name) {
-        this->name = name;
+    void SoundEntity::setName(std::string name) {
+        this->name = std::move(name);
     }
 
     SoundComponent* SoundEntity::getSoundComponent() const {

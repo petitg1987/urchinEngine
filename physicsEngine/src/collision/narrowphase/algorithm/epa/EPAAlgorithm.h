@@ -34,7 +34,7 @@ namespace urchin {
             typename std::map<std::size_t, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<std::size_t, EPATriangleData<T>>&) const;
             EPATriangleData<T> createTriangleData(const ConvexHullShape3D<T>&, std::size_t) const;
 
-            void logInputData(const std::string&, const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
+            void logInputData(std::string_view, const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
 
             static constexpr unsigned int MAX_ITERATION = 30;
             static constexpr float TERMINATION_TOLERANCE = 0.01f;

@@ -55,7 +55,7 @@ namespace urchin {
         return innerMargin;
     }
 
-    void CollisionShape3D::checkInnerMarginQuality(const std::string& shapeId) const {
+    void CollisionShape3D::checkInnerMarginQuality(std::string_view shapeId) const {
         if (initialInnerMargin > innerMargin) {
             constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 200.0;
             AABBox<float> aabbox = toAABBox(PhysicsTransform());

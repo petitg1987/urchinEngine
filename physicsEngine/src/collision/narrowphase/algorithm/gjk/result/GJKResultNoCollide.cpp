@@ -52,7 +52,7 @@ namespace urchin {
         return closestPointB;
     }
 
-    template<class T> void GJKResultNoCollide<T>::logInputData(const std::string& errorMessage, const Simplex<T>& simplex) {
+    template<class T> void GJKResultNoCollide<T>::logInputData(std::string_view errorMessage, const Simplex<T>& simplex) {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

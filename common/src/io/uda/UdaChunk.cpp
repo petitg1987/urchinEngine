@@ -50,8 +50,8 @@ namespace urchin {
         return value;
     }
 
-    void UdaChunk::setStringValue(const std::string& value) {
-        this->value = value;
+    void UdaChunk::setStringValue(std::string value) {
+        this->value = std::move(value);
     }
 
     int UdaChunk::getIntValue() const {

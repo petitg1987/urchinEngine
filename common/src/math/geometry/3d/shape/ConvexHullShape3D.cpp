@@ -331,7 +331,7 @@ namespace urchin {
         return std::invalid_argument("Impossible to build the convex hull shape. All points form a " + formName + ".");
     }
 
-    template<class T> void ConvexHullShape3D<T>::logConvexHullData(const std::string& errorMessage) const {
+    template<class T> void ConvexHullShape3D<T>::logConvexHullData(std::string_view errorMessage) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

@@ -47,13 +47,13 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelSetDisplayer::setupShader(const std::string& geometryShaderName, const std::string& fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
+    void ModelSetDisplayer::setupShader(std::string geometryShaderName, std::string fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
         }
 
-        this->geometryShaderName = geometryShaderName;
-        this->fragmentShaderName = fragmentShaderName;
+        this->geometryShaderName = std::move(geometryShaderName);
+        this->fragmentShaderName = std::move(fragmentShaderName);
         this->shaderConstants = std::move(shaderConstants);
     }
 

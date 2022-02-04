@@ -35,7 +35,7 @@ namespace urchin {
         }
     }
 
-    void StringUtil::split(const std::string& str, const char& delimiter, std::vector<std::string>& tokens) {
+    void StringUtil::split(std::string_view str, const char& delimiter, std::vector<std::string>& tokens) {
         auto start = str.begin();
 
         while (start != str.end()) {
@@ -49,7 +49,7 @@ namespace urchin {
         }
     }
 
-    std::vector<std::string> StringUtil::split(const std::string& str, const char& delimiter) {
+    std::vector<std::string> StringUtil::split(std::string_view str, const char& delimiter) {
         std::vector<std::string> tokens;
         split(str, delimiter, tokens);
         return tokens;
@@ -83,7 +83,7 @@ namespace urchin {
         rtrim(str);
     }
 
-    bool StringUtil::insensitiveEquals(const std::string& a, const std::string& b) {
+    bool StringUtil::insensitiveEquals(std::string_view a, std::string_view b) {
         if (a.size() != b.size()) {
             return false;
         }

@@ -60,8 +60,8 @@ namespace urchin {
             static std::string toString(int);
 
         private:
-            static std::vector<float> floatSplit(const std::string&, unsigned int);
-            static std::vector<int> intSplit(const std::string&, unsigned int);
+            static std::vector<float> floatSplit(std::string_view, unsigned int);
+            static std::vector<int> intSplit(std::string_view, unsigned int);
     };
 
 }

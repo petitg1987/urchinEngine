@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <utility>
 
 #include <controller/waters/WaterController.h>
 
@@ -43,14 +44,14 @@ namespace urchin {
         return waterEntity;
     }
 
-    const WaterEntity& WaterController::updateWaterSurface(const WaterEntity& constWaterEntity, const Vector3<float>& waterColor, const std::string& normalFilename,
-                                                           const std::string& dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
+    const WaterEntity& WaterController::updateWaterSurface(const WaterEntity& constWaterEntity, const Vector3<float>& waterColor, std::string normalFilename,
+                                                           std::string dudvMapFilename, float waveSpeed, float waveStrength, float sRepeat, float tRepeat) {
         const WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
         Water* water = waterEntity.getWater();
 
         water->setWaterColor(waterColor);
-        water->setNormalTexture(normalFilename);
-        water->setDudvMap(dudvMapFilename);
+        water->setNormalTexture(std::move(normalFilename));
+        water->setDudvMap(std::move(dudvMapFilename));
         water->setWaveSpeed(waveSpeed);
         water->setWaveStrength(waveStrength);
         water->setSRepeat(sRepeat);

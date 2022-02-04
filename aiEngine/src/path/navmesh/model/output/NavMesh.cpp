@@ -33,8 +33,8 @@ namespace urchin {
         return polygons;
     }
 
-    void NavMesh::svgMeshExport(const std::string& filename) const {
-        SVGExporter svgExporter(filename);
+    void NavMesh::svgMeshExport(std::string filename) const {
+        SVGExporter svgExporter(std::move(filename));
 
         for (const auto& polygon : polygons) {
             for (const auto& triangle : polygon->getTriangles()) {

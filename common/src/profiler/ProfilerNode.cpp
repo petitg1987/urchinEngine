@@ -25,7 +25,7 @@ namespace urchin {
         return parent;
     }
 
-    ProfilerNode* ProfilerNode::findChildren(const std::string& name) const {
+    ProfilerNode* ProfilerNode::findChildren(std::string_view name) const {
         for (const auto& child : children) {
             if (child->getName() == name) {
                 return child.get();

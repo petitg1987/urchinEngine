@@ -76,7 +76,7 @@ namespace urchin {
         return filenames;
     }
 
-    void FileUtil::getFilesRecursive(const std::string& directory, std::vector<std::string>& filenames) {
+    void FileUtil::getFilesRecursive(std::string_view directory, std::vector<std::string>& filenames) {
         for (const auto& entry : std::filesystem::directory_iterator(directory)) {
             if (entry.is_regular_file()) {
                 filenames.push_back(entry.path().string());

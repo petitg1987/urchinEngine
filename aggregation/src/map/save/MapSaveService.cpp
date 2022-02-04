@@ -205,8 +205,8 @@ namespace urchin {
      * @param filename Absolute path to file containing map information
      * @return Working directory relative to the map file
      */
-    std::string MapSaveService::getRelativeWorkingDirectory(const std::string& filename) {
-        UdaParser udaParser(filename);
+    std::string MapSaveService::getRelativeWorkingDirectory(std::string filename) {
+        UdaParser udaParser(std::move(filename));
         const UdaChunk* configChunk = udaParser.getUniqueChunk(true, CONFIG_TAG);
         const UdaChunk* workingDirChunk = udaParser.getUniqueChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);
 

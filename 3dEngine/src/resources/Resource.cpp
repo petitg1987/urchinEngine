@@ -12,8 +12,8 @@ namespace urchin {
         return id;
     }
 
-    void Resource::setId(const std::string& id) {
-        this->id = id;
+    void Resource::setId(std::string id) {
+        this->id = std::move(id);
     }
 
     std::size_t Resource::retrieveHashId() const {
@@ -30,8 +30,8 @@ namespace urchin {
         return name;
     }
 
-    void Resource::setName(const std::string& name) {
-        this->name = name;
+    void Resource::setName(std::string name) {
+        this->name = std::move(name);
     }
 
     bool Resource::isPermanent() const {

@@ -107,7 +107,7 @@ namespace urchin {
     }
 
     template<class T, class U> void GJKContinuousCollisionAlgorithm<T, U>::logInputData(const TemporalObject& object1, const TemporalObject& object2,
-                                                                                            const std::string& message, Logger::CriticalityLevel logLevel) const {
+            std::string_view message, Logger::CriticalityLevel logLevel) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

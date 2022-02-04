@@ -38,7 +38,7 @@ namespace urchin {
             const CollisionShape3D& getShape() const;
 
             BodyType getBodyType() const;
-            void setId(const std::string&);
+            void setId(std::string);
             const std::string& getId() const;
 
             void setRestitution(float);

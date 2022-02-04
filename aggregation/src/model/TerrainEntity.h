@@ -15,7 +15,7 @@ namespace urchin {
             ~TerrainEntity();
 
             std::string getName() const;
-            void setName(const std::string&);
+            void setName(std::string);
 
             Terrain* getTerrain() const;
             void setTerrain(std::shared_ptr<Terrain>);

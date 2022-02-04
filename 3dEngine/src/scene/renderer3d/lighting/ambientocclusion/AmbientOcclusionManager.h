@@ -68,7 +68,7 @@ namespace urchin {
             void createOrUpdateAOShader();
             void generateKernelSamples();
             void generateNoiseTexture();
-            void exportSVG(const std::string&, const std::vector<Vector4<float>>&) const;
+            void exportSVG(std::string, const std::vector<Vector4<float>>&) const;
 
             int retrieveTextureSizeFactor() const;
 

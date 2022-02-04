@@ -207,7 +207,7 @@ namespace urchin {
         return true;
     }
 
-    template<class T> void CSGPolygon<T>::logInputData(const std::string& message, Logger::CriticalityLevel logLevel, const CSGPolygon<T>& inputPolygon) const {
+    template<class T> void CSGPolygon<T>::logInputData(std::string_view message, Logger::CriticalityLevel logLevel, const CSGPolygon<T>& inputPolygon) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

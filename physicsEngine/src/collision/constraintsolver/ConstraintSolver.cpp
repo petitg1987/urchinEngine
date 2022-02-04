@@ -217,7 +217,7 @@ namespace urchin {
         return tangentVelocity / tangentVelocityLength;
     }
 
-    void ConstraintSolver::logCommonData(const std::string& message, const CommonSolvingData& commonData) const {
+    void ConstraintSolver::logCommonData(std::string_view message, const CommonSolvingData& commonData) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<float>::max_digits10);
 

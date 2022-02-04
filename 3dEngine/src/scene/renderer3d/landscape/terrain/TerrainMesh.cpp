@@ -10,11 +10,11 @@
 
 namespace urchin {
 
-    TerrainMesh::TerrainMesh(const std::string& heightFilename, float xzScale, float yScale) :
-            heightFilename(heightFilename),
+    TerrainMesh::TerrainMesh(std::string heightFilename, float xzScale, float yScale) :
+            heightFilename(std::move(heightFilename)),
             xzScale(xzScale),
             yScale(yScale) {
-        auto imgTerrain = ResourceRetriever::instance().getResource<Image>(heightFilename);
+        auto imgTerrain = ResourceRetriever::instance().getResource<Image>(this->heightFilename);
         if (imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE) {
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }

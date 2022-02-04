@@ -37,10 +37,10 @@ namespace urchin {
             void setWaterColor(const Vector3<float>&);
             const Vector3<float>& getWaterColor() const;
 
-            void setNormalTexture(const std::string&);
+            void setNormalTexture(std::string);
             const std::string& getNormalFilename() const;
 
-            void setDudvMap(const std::string&);
+            void setDudvMap(std::string);
             const std::string& getDudvFilename() const;
 
             void setWaveSpeed(float);

@@ -235,13 +235,13 @@ namespace urchin {
         return grassTextureFilename;
     }
 
-    void TerrainGrass::setGrassTexture(const std::string& grassTextureFilename) {
-        this->grassTextureFilename = grassTextureFilename;
+    void TerrainGrass::setGrassTexture(std::string grassTextureFilename) {
+        this->grassTextureFilename = std::move(grassTextureFilename);
 
-        if (grassTextureFilename.empty()) {
+        if (this->grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            auto grassTextureImg = ResourceRetriever::instance().getResource<Image>(grassTextureFilename);
+            auto grassTextureImg = ResourceRetriever::instance().getResource<Image>(this->grassTextureFilename);
             grassTexture = grassTextureImg->createTexture(true);
         }
     }
@@ -250,13 +250,13 @@ namespace urchin {
         return grassMaskFilename;
     }
 
-    void TerrainGrass::setMaskTexture(const std::string& grassMaskFilename) {
-        this->grassMaskFilename = grassMaskFilename;
+    void TerrainGrass::setMaskTexture(std::string grassMaskFilename) {
+        this->grassMaskFilename = std::move(grassMaskFilename);
 
-        if (grassMaskFilename.empty()) {
+        if (this->grassMaskFilename.empty()) {
             grassMaskTexture = Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}), false).createTexture(false);
         } else {
-            auto grassMaskImage = ResourceRetriever::instance().getResource<Image>(grassMaskFilename);
+            auto grassMaskImage = ResourceRetriever::instance().getResource<Image>(this->grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);
         }
 

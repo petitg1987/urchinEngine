@@ -10,7 +10,7 @@ namespace urchin {
 
     class RigidBodyReaderWriter {
         public:
-            static std::unique_ptr<RigidBody> load(const UdaChunk*, const std::string&, const Transform<float>&, const UdaParser&);
+            static std::unique_ptr<RigidBody> load(const UdaChunk*, std::string, const Transform<float>&, const UdaParser&);
             static void write(UdaChunk&, const RigidBody&, UdaWriter&);
 
         private:

@@ -27,7 +27,7 @@ namespace urchin {
             SoundEnvironment& getSoundEnvironment() const;
             AIEnvironment& getAIEnvironment() const;
 
-            void setRelativeWorkingDirectory(const std::string&);
+            void setRelativeWorkingDirectory(std::string);
             const std::string& getRelativeWorkingDirectory() const;
 
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;

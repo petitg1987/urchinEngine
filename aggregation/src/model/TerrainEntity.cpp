@@ -39,8 +39,8 @@ namespace urchin {
         return name;
     }
 
-    void TerrainEntity::setName(const std::string& name) {
-        this->name = name;
+    void TerrainEntity::setName(std::string name) {
+        this->name = std::move(name);
     }
 
     Terrain* TerrainEntity::getTerrain() const {

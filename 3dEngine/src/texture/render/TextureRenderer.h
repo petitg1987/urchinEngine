@@ -39,7 +39,7 @@ namespace urchin {
             void setFullScreen(bool);
             void enableTransparency();
 
-            void initialize(const std::string&, RenderTarget& renderTarget, unsigned int, unsigned int, float = 0.0f, float = 1.0f);
+            void initialize(std::string, RenderTarget& renderTarget, unsigned int, unsigned int, float = 0.0f, float = 1.0f);
 
             void prepareRendering(unsigned int);
 

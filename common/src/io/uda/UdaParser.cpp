@@ -20,7 +20,7 @@ namespace urchin {
         loadFile(file);
     }
 
-    std::vector<UdaChunk*> UdaParser::getChunks(const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
+    std::vector<UdaChunk*> UdaParser::getChunks(std::string_view chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         std::vector<UdaChunk*> chunks;
 
         const auto& nodes = parent ? parent->getChildren() : rootNodes;

@@ -201,8 +201,8 @@ namespace urchin {
         noiseTexture = Texture::build(config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, ssaoNoise.data());
     }
 
-    void AmbientOcclusionManager::exportSVG(const std::string& filename, const std::vector<Vector4<float>>& ssaoKernel) const {
-        SVGExporter svgExporter(filename);
+    void AmbientOcclusionManager::exportSVG(std::string filename, const std::vector<Vector4<float>>& ssaoKernel) const {
+        SVGExporter svgExporter(std::move(filename));
         svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0f, 0.0f), 1.0f, SVGPolygon::BLUE));
         for (const auto& kernel : ssaoKernel) {
             svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.01f, SVGPolygon::LIME));

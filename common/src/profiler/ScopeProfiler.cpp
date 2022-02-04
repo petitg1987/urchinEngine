@@ -1,10 +1,10 @@
 #include <profiler/ScopeProfiler.h>
 
 namespace urchin {
-    ScopeProfiler::ScopeProfiler(Profiler& profiler, const std::string& nodeName) :
+    ScopeProfiler::ScopeProfiler(Profiler& profiler, std::string nodeName) :
             profiler(profiler),
-            nodeName(nodeName) {
-        profiler.startNewProfile(nodeName);
+            nodeName(std::move(nodeName)) {
+        profiler.startNewProfile(this->nodeName);
     }
 
     ScopeProfiler::~ScopeProfiler() {

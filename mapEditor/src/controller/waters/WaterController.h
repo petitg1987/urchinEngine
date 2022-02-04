@@ -18,7 +18,7 @@ namespace urchin {
             void removeWaterEntity(const WaterEntity&);
 
             const WaterEntity& updateWaterGeneral(const WaterEntity&, const Point3<float>&, float, float);
-            const WaterEntity& updateWaterSurface(const WaterEntity&, const Vector3<float>&, const std::string&, const std::string&, float, float, float, float);
+            const WaterEntity& updateWaterSurface(const WaterEntity&, const Vector3<float>&, std::string, std::string, float, float, float, float);
             const WaterEntity& updateWaterUnderWater(const WaterEntity&, float, float);
 
         private:

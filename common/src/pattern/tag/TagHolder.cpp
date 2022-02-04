@@ -10,11 +10,11 @@ namespace urchin {
         taggable.setupTagHolder(nullptr);
     }
 
-    void TagHolder::addTag(TaggableResource* taggable, const std::string& tag) {
-        tagsMap.emplace(tag, taggable);
+    void TagHolder::addTag(TaggableResource* taggable, std::string tag) {
+        tagsMap.emplace(std::move(tag), taggable);
     }
 
-    void TagHolder::removeTag(const TaggableResource* taggable, const std::string& tag) {
+    void TagHolder::removeTag(const TaggableResource* taggable, std::string_view tag) {
         std::erase_if(tagsMap, [&](const auto& tagPair) {
             return tagPair.second == taggable && tagPair.first == tag;
         });

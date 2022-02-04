@@ -13,7 +13,7 @@ namespace urchin {
         public:
             static constexpr unsigned int MAX_MATERIAL = 4;
 
-            explicit TerrainMaterials(const std::string&, const std::vector<std::string>&, float, float);
+            TerrainMaterials(std::string, const std::vector<std::string>&, float, float);
 
             void refreshWith(unsigned int, unsigned int);
 
