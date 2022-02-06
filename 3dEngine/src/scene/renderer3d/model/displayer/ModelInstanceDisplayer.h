@@ -43,7 +43,7 @@ namespace urchin {
             Model& getReferenceModel() const;
 
             void fillMaterialData(const Mesh&);
-            std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const UvScale&) const;
+            std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
             bool checkUpdateAllowance(const Model*) const;

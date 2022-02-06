@@ -13,7 +13,7 @@ namespace urchin {
             mDiffuseTexture(std::move(diffuseTexture)),
             mHasTransparency(hasTransparency),
             mRepeatTextures(false),
-            mUvScale(UvScale(UvScaleType::NONE, UvScaleType::NONE)),
+            mUvScale(UvScale(UvScaleType::NONE)),
             mEmissiveFactor(0.0f),
             mAmbientFactor(0.5f),
             mDepthTestEnabled(true),

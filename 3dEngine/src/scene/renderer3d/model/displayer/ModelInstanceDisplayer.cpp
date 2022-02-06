@@ -110,7 +110,7 @@ namespace urchin {
             if (displayMode == DisplayMode::DEFAULT_MODE) {
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
                 meshRendererBuilder
-                        ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture())
+                        ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), mesh.getNormals(), uvScale) : constMesh.getUvTexture())
                         ->addData(mesh.getNormals())
                         ->addData(mesh.getTangents())
                         ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
@@ -137,13 +137,14 @@ namespace urchin {
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
-    std::vector<Point2<float>> ModelInstanceDisplayer::scaleUv(const std::vector<Point2 < float>>& uvTexture, const UvScale& uvScale) const {
+    std::vector<Point2<float>> ModelInstanceDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const std::vector<Vector3<float>>& normals, const UvScale& uvScale) const {
+        assert(uvTexture.size() == normals.size());
         std::vector<Point2<float>> scaledUvTexture;
         scaledUvTexture.reserve(uvTexture.size());
 
-        const Vector3<float> scale = getReferenceModel().getTransform().getScale();
-        for (const Point2<float>& uv : uvTexture) {
-            scaledUvTexture.emplace_back(uvScale.scaleU(uv.X, scale), uvScale.scaleV(uv.Y, scale));
+        const Vector3<float>& modelScale = getReferenceModel().getTransform().getScale();
+        for (std::size_t vertexIndex = 0; vertexIndex < uvTexture.size(); ++vertexIndex) {
+            scaledUvTexture.emplace_back(uvScale.scaleUV(uvTexture[vertexIndex], modelScale, normals[vertexIndex]));
         }
         return scaledUvTexture;
     }
@@ -222,7 +223,7 @@ namespace urchin {
                 const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
                 const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
-                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), uvScale) : constMesh.getUvTexture());
+                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), mesh.getNormals(), uvScale) : constMesh.getUvTexture());
 
                 meshIndex++;
             }

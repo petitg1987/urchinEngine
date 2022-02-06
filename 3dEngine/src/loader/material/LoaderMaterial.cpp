@@ -53,9 +53,8 @@ namespace urchin {
         //UV scale
         auto uvScaleChunk = udaParser.getUniqueChunk(false, "uvScale");
         if (uvScaleChunk) {
-            std::string uScale = udaParser.getUniqueChunk(true, "uScale", UdaAttribute(), uvScaleChunk)->getStringValue();
-            std::string vScale = udaParser.getUniqueChunk(true, "vScale", UdaAttribute(), uvScaleChunk)->getStringValue();
-            materialBuilder->uvScale(UvScale(toUvScaleType(uScale, filename), toUvScaleType(vScale, filename)));
+            std::string scaleType = udaParser.getUniqueChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
+            materialBuilder->uvScale(UvScale(toUvScaleType(scaleType, filename)));
         }
 
         //normal texture
@@ -96,15 +95,17 @@ namespace urchin {
     UvScaleType LoaderMaterial::toUvScaleType(const std::string& uvScaleValue, const std::string& filename) const {
         if (uvScaleValue == UV_SCALE_NONE) {
             return UvScaleType::NONE;
-        } else if (uvScaleValue == UV_SCALE_MESH_SCALE_X) {
-            return UvScaleType::MESH_SCALE_X;
-        } else if (uvScaleValue == UV_SCALE_MESH_SCALE_Y) {
-            return UvScaleType::MESH_SCALE_Y;
-        } else if (uvScaleValue == UV_SCALE_MESH_SCALE_Z) {
-            return UvScaleType::MESH_SCALE_Z;
+        } else if (uvScaleValue == SCALE_ON_AXIS_ALIGNED_FACES) {
+            return UvScaleType::SCALE_ON_AXIS_ALIGNED_FACES;
+        } else if (uvScaleValue == SCALE_ON_XY_FACES) {
+            return UvScaleType::SCALE_ON_XY_FACES;
+        } else if (uvScaleValue == SCALE_ON_XZ_FACES) {
+            return UvScaleType::SCALE_ON_XZ_FACES;
+        } else if (uvScaleValue == SCALE_ON_YZ_FACES) {
+            return UvScaleType::SCALE_ON_YZ_FACES;
         }
 
-        throw std::runtime_error("Unknown U/V scale value '" + uvScaleValue + "' for material: " + filename);
+        throw std::runtime_error("Unknown UV scale value '" + uvScaleValue + "' for material: " + filename);
     }
 
 }

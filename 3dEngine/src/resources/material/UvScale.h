@@ -6,21 +6,18 @@ namespace urchin {
 
     class UvScale {
         public:
-            UvScale(UvScaleType, UvScaleType);
+            explicit UvScale(UvScaleType);
 
             bool hasScaling() const;
-            UvScaleType getUScaleType() const;
-            UvScaleType getVScaleType() const;
+            UvScaleType getScaleType() const;
 
-            float scaleU(float, const Vector3<float>&) const;
-            float scaleV(float, const Vector3<float>&) const;
+            Point2<float> scaleUV(const Point2<float>&, const Vector3<float>&, const Vector3<float>&) const;
 
             bool operator ==(const UvScale&) const = default;
             std::partial_ordering operator <=>(const UvScale&) const;
 
         private:
-            UvScaleType uScaleType;
-            UvScaleType vScaleType;
+            UvScaleType scaleType;
     };
 
 }
