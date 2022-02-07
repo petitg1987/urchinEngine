@@ -5,6 +5,7 @@
 #include <common/io/map/MapSerializerTest.h>
 #include <common/system/SystemInfoTest.h>
 #include <common/util/StringUtilTest.h>
+#include <common/util/HashUtilTest.h>
 #include <common/util/FileUtilTest.h>
 #include <common/math/algebra/QuaternionTest.h>
 #include <common/math/algebra/point/PointTest.h>
@@ -65,6 +66,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //util
     runner.addTest(FileUtilTest::suite());
+    runner.addTest(HashUtilTest::suite());
     runner.addTest(StringUtilTest::suite());
 
     //math - algebra
