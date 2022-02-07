@@ -40,6 +40,7 @@
   * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
 * UI
+  * **OPTIMIZATION** (`major`): Regroup the renderers together
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
   * **IMPROVEMENT** (`medium`): Do not display UI 3d when outside the camera view
   * **NEW FEATURE** (`medium`): Handle transparency in UI 3d fragment shader to have a text rendering more smooth
