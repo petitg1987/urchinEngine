@@ -14,14 +14,16 @@ namespace urchin {
             ObjectEntity();
             ~ObjectEntity() override;
 
-            const std::string& getName() const;
             void setName(std::string);
+            const std::string& getName() const;
 
-            Model* getModel() const;
             void setModel(const std::shared_ptr<Model>&);
+            Model* getModel() const;
+            const std::shared_ptr<Model>& getModelPtr() const;
 
             void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
             RigidBody* getRigidBody() const;
+            const std::shared_ptr<RigidBody>& getRigidBodyPtr() const;
 
             void refresh();
 

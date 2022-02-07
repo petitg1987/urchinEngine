@@ -37,16 +37,12 @@ namespace urchin {
         }
     }
 
-    const std::string& ObjectEntity::getName() const {
-        return name;
-    }
-
     void ObjectEntity::setName(std::string name) {
         this->name = std::move(name);
     }
 
-    Model* ObjectEntity::getModel() const {
-        return model.get();
+    const std::string& ObjectEntity::getName() const {
+        return name;
     }
 
     void ObjectEntity::setModel(const std::shared_ptr<Model>& model) {
@@ -57,6 +53,14 @@ namespace urchin {
         this->model = model;
     }
 
+    Model* ObjectEntity::getModel() const {
+        return model.get();
+    }
+
+    const std::shared_ptr<Model>& ObjectEntity::getModelPtr() const {
+        return model;
+    }
+
     void ObjectEntity::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
         setupRigidBody(rigidBody);
         setupAIObject();
@@ -64,6 +68,10 @@ namespace urchin {
 
     RigidBody* ObjectEntity::getRigidBody() const {
         return rigidBody.get();
+    }
+
+    const std::shared_ptr<RigidBody>& ObjectEntity::getRigidBodyPtr() const {
+        return rigidBody;
     }
 
     void ObjectEntity::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
