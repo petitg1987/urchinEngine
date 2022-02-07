@@ -39,11 +39,12 @@
 #include <math/geometry/2d/object/ConvexObject2D.h>
 #include <math/geometry/2d/object/ConvexHull2D.h>
 #include <math/geometry/2d/object/LineSegment2D.h>
-#include <math/geometry/2d/object/Rectangle.h>
+#include <math/geometry/2d/object/Rectangle2D.h>
 #include <math/geometry/2d/util/ResizePolygon2DService.h>
 #include <math/geometry/3d/Line3D.h>
 #include <math/geometry/3d/Ray.h>
 #include <math/geometry/3d/Plane.h>
+#include <math/geometry/3d/Rectangle3D.h>
 #include <math/geometry/3d/IndexedTriangle3D.h>
 #include <math/geometry/3d/shape/ConvexShape3D.h>
 #include <math/geometry/3d/shape/BoxShape.h>

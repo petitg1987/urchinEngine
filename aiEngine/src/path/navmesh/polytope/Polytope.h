@@ -18,7 +18,7 @@ namespace urchin {
 
             const std::vector<std::shared_ptr<PolytopeSurface>>& getSurfaces() const;
 
-            const Rectangle<float>& getXZRectangle() const;
+            const Rectangle2D<float>& getXZRectangle() const;
             const AABBox<float>& getAABBox() const;
 
             void setWalkableCandidate(bool);
@@ -34,7 +34,7 @@ namespace urchin {
             std::string name;
             std::vector<std::shared_ptr<PolytopeSurface>> surfaces;
 
-            Rectangle<float> xzRectangle;
+            Rectangle2D<float> xzRectangle;
             AABBox<float> aabbox;
 
             bool walkableCandidate;

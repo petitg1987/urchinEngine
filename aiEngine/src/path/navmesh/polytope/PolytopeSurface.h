@@ -30,11 +30,11 @@ namespace urchin {
             bool isWalkableCandidate() const;
 
             virtual bool isWalkable() const = 0;
-            virtual Rectangle<float> computeXZRectangle() const = 0;
+            virtual Rectangle2D<float> computeXZRectangle() const = 0;
             virtual const AABBox<float>& getAABBox() const = 0;
 
             virtual const std::vector<Point2<float>>& getOutlineCwPoints() const = 0;
-            virtual Plane<float> getPlane(const Rectangle<float>&) const = 0;
+            virtual Plane<float> getPlane(const Rectangle2D<float>&) const = 0;
             virtual const std::vector<CSGPolygon<float>>& getSelfObstacles() const = 0;
             virtual Point3<float> computeRealPoint(const Point2<float>&, const NavMeshAgent&) const = 0;
             virtual const std::shared_ptr<const NavTopography>& getNavTopography() const = 0;

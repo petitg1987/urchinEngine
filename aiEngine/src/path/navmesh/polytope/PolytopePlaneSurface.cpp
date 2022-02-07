@@ -48,7 +48,7 @@ namespace urchin {
         return isWalkableCandidate() && isSlopeWalkable;
     }
 
-    Rectangle<float> PolytopePlaneSurface::computeXZRectangle() const {
+    Rectangle2D<float> PolytopePlaneSurface::computeXZRectangle() const {
         Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
         for (const auto& point : ccwPoints) {
@@ -58,7 +58,7 @@ namespace urchin {
             maxPoint.X = maxPoint.X < point.X ? point.X : minPoint.X;
             maxPoint.Y = maxPoint.Y < -point.Z ? -point.Z : minPoint.Y;
         }
-        return Rectangle<float>(minPoint, maxPoint);
+        return Rectangle2D<float>(minPoint, maxPoint);
     }
 
     const AABBox<float>& PolytopePlaneSurface::getAABBox() const {
@@ -69,7 +69,7 @@ namespace urchin {
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float>&) const {
+    Plane<float> PolytopePlaneSurface::getPlane(const Rectangle2D<float>&) const {
         return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
     }
 

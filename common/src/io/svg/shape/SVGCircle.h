@@ -11,7 +11,7 @@ namespace urchin {
             SVGCircle(const Point2<float>&, float, SVGColor, float opacity = 1.0f);
 
             std::string getShapeTag() const override;
-            Rectangle<float> computeRectangle() const override;
+            Rectangle2D<float> computeRectangle() const override;
 
         private:
             Point2<float> center;

@@ -26,7 +26,7 @@ namespace urchin {
         return stream.str();
     }
 
-    Rectangle<float> SVGPolygon::computeRectangle() const {
+    Rectangle2D<float> SVGPolygon::computeRectangle() const {
         Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 
@@ -46,6 +46,6 @@ namespace urchin {
             }
         }
 
-        return Rectangle<float>(minPoint, maxPoint);
+        return Rectangle2D<float>(minPoint, maxPoint);
     }
 }

@@ -26,10 +26,10 @@ namespace urchin {
         return stream.str();
     }
 
-    Rectangle<float> SVGCircle::computeRectangle() const {
+    Rectangle2D<float> SVGCircle::computeRectangle() const {
         Point2<float> minPoint(center - radius);
         Point2<float> maxPoint(center + radius);
 
-        return Rectangle<float>(minPoint, maxPoint);
+        return Rectangle2D<float>(minPoint, maxPoint);
     }
 }

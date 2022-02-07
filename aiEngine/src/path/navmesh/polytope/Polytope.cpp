@@ -29,7 +29,7 @@ namespace urchin {
         return surfaces;
     }
 
-    const Rectangle<float>& Polytope::getXZRectangle() const {
+    const Rectangle2D<float>& Polytope::getXZRectangle() const {
         return xzRectangle;
     }
 

@@ -13,7 +13,7 @@ namespace urchin {
             SVGPolygon(std::vector<Point2<float>>, SVGColor, float opacity = 1.0f);
 
             std::string getShapeTag() const override;
-            Rectangle<float> computeRectangle() const override;
+            Rectangle2D<float> computeRectangle() const override;
 
         private:
             std::vector<Point2<float>> polygonPoints;

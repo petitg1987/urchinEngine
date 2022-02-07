@@ -83,7 +83,7 @@ namespace urchin {
 
             Point3<float> centerPosition;
             float xSize, zSize;
-            std::unique_ptr<Rectangle<float>> waterRectangle;
+            std::unique_ptr<Rectangle2D<float>> waterRectangle;
 
             std::string normalFilename, dudvFilename;
             std::shared_ptr<Texture> normalTexture, dudvMap;

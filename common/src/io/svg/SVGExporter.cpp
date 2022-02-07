@@ -30,7 +30,7 @@ namespace urchin {
             return "";
         }
 
-        Rectangle<float> viewBox = shapes[0]->computeRectangle();
+        Rectangle2D<float> viewBox = shapes[0]->computeRectangle();
         for (const auto& shape : shapes) {
             viewBox = viewBox.merge(shape->computeRectangle());
         }

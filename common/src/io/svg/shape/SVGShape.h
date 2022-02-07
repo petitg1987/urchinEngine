@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <math/geometry/2d/object/Rectangle.h>
+#include <math/geometry/2d/object/Rectangle2D.h>
 
 namespace urchin {
 
@@ -24,7 +24,7 @@ namespace urchin {
             void setStroke(SVGColor, float);
 
             virtual std::string getShapeTag() const = 0;
-            virtual Rectangle<float> computeRectangle() const = 0;
+            virtual Rectangle2D<float> computeRectangle() const = 0;
 
         protected:
             std::string getStyle() const;

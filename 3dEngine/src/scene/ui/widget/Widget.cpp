@@ -324,9 +324,9 @@ namespace urchin {
         return (unsigned int)heightLengthToPixel(size.getHeight(), size.getHeightType(), [&](){ return (float)getWidth(); });
     }
 
-    Rectangle<int> Widget::widgetRectangle() const {
-        return Rectangle<int>(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-                              Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+    Rectangle2D<int> Widget::widgetRectangle() const {
+        return Rectangle2D<int>(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
+                                Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {

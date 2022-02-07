@@ -2,11 +2,13 @@
 #include <limits>
 #include <cmath>
 #include <stdexcept>
+#include <functional>
+#include <chrono>
 
 #include <math/geometry/3d/object/OBBox.h>
 #include <math/geometry/3d/Plane.h>
+#include <math/geometry/3d/Rectangle3D.h>
 #include <math/algebra/point/Point4.h>
-
 namespace urchin {
 
     template<class T> OBBox<T>::OBBox():
@@ -195,22 +197,20 @@ namespace urchin {
     template<class T> Point3<T> OBBox<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {
         Point3<T> bestIntersectionPoint(0.0f, 0.0f, 0.0f);
         hasIntersection = false;
+        std::array<std::function<Rectangle3D<T>()>, 6> faceRectangles = {
+                [&](){ return Rectangle3D<T>({getPoint(4), getPoint(6), getPoint(7), getPoint(5)}); }, //left
+                [&](){ return Rectangle3D<T>({getPoint(0), getPoint(1), getPoint(3), getPoint(2)}); }, //right
+                [&](){ return Rectangle3D<T>({getPoint(5), getPoint(1), getPoint(0), getPoint(4)}); }, //top
+                [&](){ return Rectangle3D<T>({getPoint(3), getPoint(7), getPoint(6), getPoint(2)}); }, //bottom
+                [&](){ return Rectangle3D<T>({getPoint(4), getPoint(0), getPoint(2), getPoint(6)}); }, //front
+                [&](){ return Rectangle3D<T>({getPoint(1), getPoint(5), getPoint(7), getPoint(3)}); } //back
+        };
 
-        std::array<std::array<Point3<T>, 4>, 6> squaresCwPoints = {{
-            {getPoint(4), getPoint(6), getPoint(7), getPoint(5)}, //left
-            {getPoint(0), getPoint(1), getPoint(3), getPoint(2)}, //right
-            {getPoint(5), getPoint(1), getPoint(0), getPoint(4)}, //top
-            {getPoint(3), getPoint(7), getPoint(6), getPoint(2)}, //bottom
-            {getPoint(4), getPoint(0), getPoint(2), getPoint(6)}, //front
-            {getPoint(1), getPoint(5), getPoint(7), getPoint(3)}, //back
-        }};
-
-        for(std::size_t i = 0; i < squaresCwPoints.size(); ++i) {
-            Plane<T> plane(squaresCwPoints[i][0], squaresCwPoints[i][2], squaresCwPoints[i][1]); //normal is external
-            bool hasPlaneIntersection;
-            Point3<T> intersectionPoint = plane.intersectPoint(line, hasPlaneIntersection);
+        for(std::size_t i = 0; i < faceRectangles.size(); ++i) {
+            bool hasRectangleIntersection, hasPlaneIntersection;
+            Point3<T> intersectionPoint = faceRectangles[i]().intersectPoint(line, hasRectangleIntersection, hasPlaneIntersection);
             if (hasPlaneIntersection) {
-                if (pointInsideSquare(intersectionPoint, squaresCwPoints[i], plane.getNormal())) {
+                if (hasRectangleIntersection) {
                     if (!hasIntersection || (line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint))) {
                         bestIntersectionPoint = intersectionPoint;
                         hasIntersection = true;
@@ -220,6 +220,7 @@ namespace urchin {
                 i++; //skip next parallel plane
             }
         }
+
         return bestIntersectionPoint;
     }
 

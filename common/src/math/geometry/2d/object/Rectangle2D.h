@@ -9,21 +9,21 @@ namespace urchin {
     /**
     * Represents a rectangle aligned on axis in space
     */
-    template<class T> class Rectangle : public ConvexObject2D<T> {
+    template<class T> class Rectangle2D : public ConvexObject2D<T> {
         public:
-            Rectangle();
-            Rectangle(const Point2<T>&, const Vector2<T>&);
-            Rectangle(const Point2<T>&, const Point2<T>&);
+            Rectangle2D();
+            Rectangle2D(const Point2<T>&, const Vector2<T>&);
+            Rectangle2D(const Point2<T>&, const Point2<T>&);
 
             Point2<T> getMin() const;
             Point2<T> getMax() const;
             Vector2<T> getDiagonal() const;
             Point2<T> getSupportPoint(const Vector2<T>&) const;
 
-            Rectangle<T> merge(const Rectangle<T>&) const;
+            Rectangle2D<T> merge(const Rectangle2D<T>&) const;
 
             bool collideWithPoint(const Point2<T>&) const;
-            bool collideWithRectangle(const Rectangle<T>&) const;
+            bool collideWithRectangle(const Rectangle2D<T>&) const;
 
         private:
             RectangleShape<T> rectangleShape;

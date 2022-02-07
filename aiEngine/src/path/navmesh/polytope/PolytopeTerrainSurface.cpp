@@ -47,14 +47,14 @@ namespace urchin {
         return isWalkableCandidate();
     }
 
-    Rectangle<float> PolytopeTerrainSurface::computeXZRectangle() const {
+    Rectangle2D<float> PolytopeTerrainSurface::computeXZRectangle() const {
         Point3<float> farRightVertex = position + localVertices[xLength - 1];
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
 
         Point2<float> minPoint(nearLeftVertex.X, -nearLeftVertex.Z);
         Point2<float> maxPoint(farRightVertex.X, -farRightVertex.Z);
 
-        return Rectangle<float>(minPoint, maxPoint);
+        return Rectangle2D<float>(minPoint, maxPoint);
     }
 
     const AABBox<float>& PolytopeTerrainSurface::getAABBox() const {
@@ -65,7 +65,7 @@ namespace urchin {
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float>& box) const {
+    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle2D<float>& box) const {
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
         Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));

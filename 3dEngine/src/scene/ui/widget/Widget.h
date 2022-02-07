@@ -65,7 +65,7 @@ namespace urchin {
             Size getSize() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
-            Rectangle<int> widgetRectangle() const;
+            Rectangle2D<int> widgetRectangle() const;
 
             template<class T> int widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
