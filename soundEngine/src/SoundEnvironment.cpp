@@ -18,7 +18,7 @@ namespace urchin {
     }
 
     SoundEnvironment::~SoundEnvironment() {
-        musicPools.clear();
+        musicLoopPlayers.clear();
         audioControllers.clear();
 
         streamUpdateWorker.interrupt();
@@ -48,15 +48,15 @@ namespace urchin {
         return *(*findAudioController);
     }
 
-    void SoundEnvironment::addMusicPool(std::shared_ptr<MusicPool> musicPool) {
-        musicPool->setup(*this);
-        musicPools.push_back(std::move(musicPool));
+    void SoundEnvironment::addMusicLoopPlayer(std::shared_ptr<MusicLoopPlayer> musicLoopPlayer) {
+        musicLoopPlayer->setup(*this);
+        musicLoopPlayers.push_back(std::move(musicLoopPlayer));
     }
 
-    void SoundEnvironment::removeMusicPool(const MusicPool& musicPool) {
-        std::size_t erasedCount = std::erase_if(musicPools, [&musicPool](const auto& mp){ return mp.get() == &musicPool; });
+    void SoundEnvironment::removeMusicLoopPlayer(const MusicLoopPlayer& musicLoopPlayer) {
+        std::size_t erasedCount = std::erase_if(musicLoopPlayers, [&musicLoopPlayer](const auto& mlp){ return mlp.get() == &musicLoopPlayer; });
         if (erasedCount != 1) {
-            throw std::runtime_error("Removing the music pool fail");
+            throw std::runtime_error("Removing the music loop player fail");
         }
     }
 
@@ -107,8 +107,8 @@ namespace urchin {
         alListenerfv(AL_ORIENTATION, &listenerOrientation.frontVector.X);
         alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 
-        for (const auto& musicPool : musicPools) {
-            musicPool->refresh();
+        for (const auto& musicLoopPlayer : musicLoopPlayers) {
+            musicLoopPlayer->refresh();
         }
         for (const auto& audioController : audioControllers) {
             audioController->process(listenerPosition, soundVolumes);

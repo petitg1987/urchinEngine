@@ -1,12 +1,12 @@
-#include <pool/MusicPool.h>
+#include <utility>
+
+#include <MusicLoopPlayer.h>
 #include <SoundBuilder.h>
 #include <SoundEnvironment.h>
 
-#include <utility>
-
 namespace urchin {
 
-    MusicPool::MusicPool(std::vector<std::string> musicFilenames) :
+    MusicLoopPlayer::MusicLoopPlayer(std::vector<std::string> musicFilenames) :
             soundEnvironment(nullptr),
             musicFilenames(std::move(musicFilenames)),
             currentMusicIndex(0),
@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    MusicPool::MusicPool(const std::string& resourcesMusicsDirectory) :
+    MusicLoopPlayer::MusicLoopPlayer(const std::string& resourcesMusicsDirectory) :
             soundEnvironment(nullptr),
             currentMusicIndex(0),
             isPaused(false) {
@@ -27,14 +27,14 @@ namespace urchin {
         }
     }
 
-    MusicPool::~MusicPool() {
+    MusicLoopPlayer::~MusicLoopPlayer() {
         for (const auto& music : musics) {
             soundEnvironment->removeSoundComponent(*music.soundComponent);
         }
         musics.clear();
     }
 
-    void MusicPool::setup(SoundEnvironment& soundEnvironment) {
+    void MusicLoopPlayer::setup(SoundEnvironment& soundEnvironment) {
         if (musicFilenames.empty()) {
             throw std::runtime_error("At least one music is required");
         }
@@ -48,17 +48,17 @@ namespace urchin {
         this->currentMusicIndex = musics.size() - 1;
     }
 
-    void MusicPool::pause() {
+    void MusicLoopPlayer::pause() {
         musics[currentMusicIndex].soundComponent->getManualTrigger().pauseAll();
         isPaused = true;
     }
 
-    void MusicPool::unpause() {
+    void MusicLoopPlayer::unpause() {
         musics[currentMusicIndex].soundComponent->getManualTrigger().unpauseAll();
         isPaused = false;
     }
 
-    void MusicPool::refresh() {
+    void MusicLoopPlayer::refresh() { //TODO not public method ?
         if (!isPaused) {
             if (musics[currentMusicIndex].audioController.getPlayersCount() == 0) {
                 currentMusicIndex = (currentMusicIndex + 1) % (unsigned int)musics.size();

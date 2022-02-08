@@ -16,11 +16,11 @@ namespace urchin {
         const AudioController& audioController;
     };
 
-    class MusicPool { //TODO rename + rename directory ?
+    class MusicLoopPlayer {
         public:
-            explicit MusicPool(std::vector<std::string>);
-            explicit MusicPool(const std::string&);
-            ~MusicPool();
+            explicit MusicLoopPlayer(std::vector<std::string>);
+            explicit MusicLoopPlayer(const std::string&);
+            ~MusicLoopPlayer();
 
             void setup(SoundEnvironment&);
 
