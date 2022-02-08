@@ -16,10 +16,15 @@ namespace urchin {
         const AudioController& audioController;
     };
 
+    enum MusicLoopStart {
+        FIRST_MUSIC,
+        RANDOM_MUSIC
+    };
+
     class MusicLoopPlayer {
         public:
-            explicit MusicLoopPlayer(std::vector<std::string>);
-            explicit MusicLoopPlayer(const std::string&);
+            MusicLoopPlayer(std::vector<std::string>, MusicLoopStart);
+            MusicLoopPlayer(const std::string&, MusicLoopStart);
             ~MusicLoopPlayer();
 
             void setup(SoundEnvironment&);
@@ -32,6 +37,8 @@ namespace urchin {
         private:
             SoundEnvironment* soundEnvironment;
             std::vector<std::string> musicFilenames;
+            MusicLoopStart musicLoopStart;
+
             std::vector<MusicInstance> musics;
             std::size_t currentMusicIndex;
             bool isPaused;

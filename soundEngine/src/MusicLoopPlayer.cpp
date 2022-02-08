@@ -1,4 +1,5 @@
 #include <utility>
+#include <random>
 
 #include <MusicLoopPlayer.h>
 #include <SoundBuilder.h>
@@ -6,16 +7,20 @@
 
 namespace urchin {
 
-    MusicLoopPlayer::MusicLoopPlayer(std::vector<std::string> musicFilenames) :
+    MusicLoopPlayer::MusicLoopPlayer(std::vector<std::string> musicFilenames, MusicLoopStart musicLoopStart) :
             soundEnvironment(nullptr),
             musicFilenames(std::move(musicFilenames)),
+            musicLoopStart(musicLoopStart),
             currentMusicIndex(0),
             isPaused(false) {
-
+        if (musicFilenames.empty()) {
+            throw std::runtime_error("At least one music is required");
+        }
     }
 
-    MusicLoopPlayer::MusicLoopPlayer(const std::string& resourcesMusicsDirectory) :
+    MusicLoopPlayer::MusicLoopPlayer(const std::string& resourcesMusicsDirectory, MusicLoopStart musicLoopStart) :
             soundEnvironment(nullptr),
+            musicLoopStart(musicLoopStart),
             currentMusicIndex(0),
             isPaused(false) {
         std::string musicsFullPathDirectory = FileSystem::instance().getResourcesDirectory() + resourcesMusicsDirectory;
@@ -25,6 +30,7 @@ namespace urchin {
         if (musicFilenames.empty()) {
             throw std::runtime_error("No musics found in directory: " + musicsFullPathDirectory);
         }
+        std::ranges::sort(musicFilenames);
     }
 
     MusicLoopPlayer::~MusicLoopPlayer() {
@@ -35,17 +41,23 @@ namespace urchin {
     }
 
     void MusicLoopPlayer::setup(SoundEnvironment& soundEnvironment) {
-        if (musicFilenames.empty()) {
-            throw std::runtime_error("At least one music is required");
-        }
+        this->soundEnvironment = &soundEnvironment;
+
         for (const std::string& musicFilename : musicFilenames) {
             std::shared_ptr<SoundComponent> soundComponent = SoundBuilder(soundEnvironment).newManualMusic(musicFilename, PlayBehavior::PLAY_ONCE);
             const AudioController& audioController = soundEnvironment.getAudioController(*soundComponent);
             musics.emplace_back(MusicInstance{soundComponent, audioController});
         }
 
-        this->soundEnvironment = &soundEnvironment;
-        this->currentMusicIndex = musics.size() - 1;
+        if (musicLoopStart == MusicLoopStart::FIRST_MUSIC) {
+            this->currentMusicIndex = musics.size() - 1;
+        } else if (musicLoopStart == MusicLoopStart::RANDOM_MUSIC) {
+            std::mt19937 mt(std::random_device{}());
+            std::uniform_int_distribution<std::size_t> distribution(0, musics.size() - 1);
+            this->currentMusicIndex = distribution(mt);
+        } else {
+            throw std::runtime_error("Unknown loop start type: " + std::to_string(musicLoopStart));
+        }
     }
 
     void MusicLoopPlayer::pause() {
