@@ -11,6 +11,7 @@
 #include <trigger/SoundTrigger.h>
 #include <player/stream/StreamUpdateWorker.h>
 #include <SoundComponent.h>
+#include <pool/MusicPool.h>
 
 namespace urchin {
 
@@ -22,6 +23,9 @@ namespace urchin {
             void addSoundComponent(std::shared_ptr<SoundComponent>);
             void removeSoundComponent(const SoundComponent&);
             const AudioController& getAudioController(const SoundComponent&) const;
+
+            void addMusicPool(std::shared_ptr<MusicPool>);
+            void removeMusicPool(const MusicPool&);
 
             void setupSoundsVolume(Sound::SoundCategory, float);
             void setMasterVolume(float);
@@ -36,6 +40,7 @@ namespace urchin {
 
         private:
             std::vector<std::unique_ptr<AudioController>> audioControllers;
+            std::vector<std::shared_ptr<MusicPool>> musicPools;
             std::map<Sound::SoundCategory, float> soundVolumes;
 
             //stream chunk updater thread

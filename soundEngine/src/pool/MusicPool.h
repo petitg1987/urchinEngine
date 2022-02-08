@@ -5,9 +5,11 @@
 #include <memory>
 
 #include <SoundComponent.h>
-#include <SoundEnvironment.h>
+#include <AudioController.h>
 
 namespace urchin {
+
+     class SoundEnvironment;
 
     struct MusicInstance {
         std::shared_ptr<SoundComponent> soundComponent;
@@ -16,20 +18,20 @@ namespace urchin {
 
     class MusicPool { //TODO rename + rename directory ?
         public:
-            explicit MusicPool(SoundEnvironment&, const std::vector<std::string>&);
-            explicit MusicPool(SoundEnvironment&, const std::string&);
+            explicit MusicPool(std::vector<std::string>);
+            explicit MusicPool(const std::string&);
             ~MusicPool();
+
+            void setup(SoundEnvironment&);
 
             void pause();
             void unpause();
 
-            void process();
+            void refresh();
 
         private:
-            void initialize(const std::vector<std::string>&);
-
-            SoundEnvironment& soundEnvironment;
-
+            SoundEnvironment* soundEnvironment;
+            std::vector<std::string> musicFilenames;
             std::vector<MusicInstance> musics;
             std::size_t currentMusicIndex;
             bool isPaused;

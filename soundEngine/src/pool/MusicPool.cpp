@@ -1,35 +1,40 @@
 #include <pool/MusicPool.h>
 #include <SoundBuilder.h>
+#include <SoundEnvironment.h>
+
+#include <utility>
 
 namespace urchin {
 
-    MusicPool::MusicPool(SoundEnvironment& soundEnvironment, const std::vector<std::string>& musicFilenames) :
-            soundEnvironment(soundEnvironment),
+    MusicPool::MusicPool(std::vector<std::string> musicFilenames) :
+            soundEnvironment(nullptr),
+            musicFilenames(std::move(musicFilenames)),
             currentMusicIndex(0),
             isPaused(false) {
-        initialize(musicFilenames);
+
     }
 
-    MusicPool::MusicPool(SoundEnvironment& soundEnvironment, const std::string& musicsDirectory) :
-            soundEnvironment(soundEnvironment),
+    MusicPool::MusicPool(const std::string& resourcesMusicsDirectory) :
+            soundEnvironment(nullptr),
             currentMusicIndex(0),
             isPaused(false) {
-        std::vector<std::string> musicFilenames;
-        for (const std::string& musicFullPath : FileUtil::getFilesRecursive(FileSystem::instance().getResourcesDirectory() + musicsDirectory)) {
-            std::string resourcesMusicFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), musicFullPath);
-            musicFilenames.push_back(resourcesMusicFilename);
+        std::string musicsFullPathDirectory = FileSystem::instance().getResourcesDirectory() + resourcesMusicsDirectory;
+        for (const std::string& musicFullPath : FileUtil::getFilesRecursive(musicsFullPathDirectory)) {
+            musicFilenames.push_back(FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), musicFullPath));
         }
-        initialize(musicFilenames);
+        if (musicFilenames.empty()) {
+            throw std::runtime_error("No musics found in directory: " + musicsFullPathDirectory);
+        }
     }
 
     MusicPool::~MusicPool() {
         for (const auto& music : musics) {
-            soundEnvironment.removeSoundComponent(*music.soundComponent);
+            soundEnvironment->removeSoundComponent(*music.soundComponent);
         }
         musics.clear();
     }
 
-    void MusicPool::initialize(const std::vector<std::string>& musicFilenames) {
+    void MusicPool::setup(SoundEnvironment& soundEnvironment) {
         if (musicFilenames.empty()) {
             throw std::runtime_error("At least one music is required");
         }
@@ -38,7 +43,9 @@ namespace urchin {
             const AudioController& audioController = soundEnvironment.getAudioController(*soundComponent);
             musics.emplace_back(MusicInstance{soundComponent, audioController});
         }
-        currentMusicIndex = musics.size() - 1;
+
+        this->soundEnvironment = &soundEnvironment;
+        this->currentMusicIndex = musics.size() - 1;
     }
 
     void MusicPool::pause() {
@@ -51,7 +58,7 @@ namespace urchin {
         isPaused = false;
     }
 
-    void MusicPool::process() {
+    void MusicPool::refresh() {
         if (!isPaused) {
             if (musics[currentMusicIndex].audioController.getPlayersCount() == 0) {
                 currentMusicIndex = (currentMusicIndex + 1) % (unsigned int)musics.size();
