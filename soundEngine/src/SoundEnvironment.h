@@ -21,6 +21,7 @@ namespace urchin {
 
             void addSoundComponent(std::shared_ptr<SoundComponent>);
             void removeSoundComponent(const SoundComponent&);
+            const AudioController& getAudioController(const SoundComponent&) const;
 
             void setupSoundsVolume(Sound::SoundCategory, float);
             void setMasterVolume(float);

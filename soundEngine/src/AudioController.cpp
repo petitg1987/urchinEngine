@@ -37,6 +37,10 @@ namespace urchin {
         }
     }
 
+    std::size_t AudioController::getPlayersCount() const {
+        return audioPlayers.size();
+    }
+
     void AudioController::process(const Point3<float>& listenerPosition, const std::map<Sound::SoundCategory, float>& soundVolumes) {
         //remove unused players
         for (auto it = audioPlayers.begin(); it != audioPlayers.end();) {

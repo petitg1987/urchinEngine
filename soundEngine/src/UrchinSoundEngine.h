@@ -15,3 +15,5 @@
 #include <trigger/shape/SoundShape.h>
 #include <trigger/shape/SoundBox.h>
 #include <trigger/shape/SoundSphere.h>
+
+#include <pool/MusicPool.h>

@@ -25,6 +25,10 @@ namespace urchin {
         manualTriggerActions.emplace_back(ManualTriggerAction::PAUSE_ALL);
     }
 
+    void ManualTrigger::unpauseAll() {
+        manualTriggerActions.emplace_back(ManualTriggerAction::UNPAUSE_ALL);
+    }
+
     const std::vector<SoundTrigger::TriggerAction>& ManualTrigger::evaluateTrigger(const Point3<float>&) {
         triggerActions.clear();
 
@@ -37,6 +41,8 @@ namespace urchin {
                 triggerActions.emplace_back(SoundTrigger::STOP_ALL);
             } else if (manualTriggerAction == ManualTriggerAction::PAUSE_ALL) {
                 triggerActions.emplace_back(SoundTrigger::PAUSE_ALL);
+            } else if (manualTriggerAction == ManualTriggerAction::UNPAUSE_ALL) {
+                triggerActions.emplace_back(SoundTrigger::UNPAUSE_ALL);
             } else {
                 throw std::invalid_argument("Unknown manual trigger action: " + std::to_string(manualTriggerAction));
             }

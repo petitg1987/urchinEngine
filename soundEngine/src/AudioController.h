@@ -23,6 +23,7 @@ namespace urchin {
 
             void pauseAll();
             void unpauseAll();
+            std::size_t getPlayersCount() const;
 
             void process(const Point3<float>&, const std::map<Sound::SoundCategory, float>&);
 

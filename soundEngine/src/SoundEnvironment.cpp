@@ -33,12 +33,18 @@ namespace urchin {
     }
 
     void SoundEnvironment::removeSoundComponent(const SoundComponent& soundComponent) {
-        std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const std::unique_ptr<AudioController>& ac){
-            return &ac->getSoundComponent().getSound() == &soundComponent.getSound();
-        });
+        std::size_t erasedCount = std::erase_if(audioControllers, [&soundComponent](const auto& ac){ return &ac->getSoundComponent() == &soundComponent; });
         if (erasedCount != 1) {
             throw std::runtime_error("Removing the sound component fail: " + soundComponent.getSound().getFilename());
         }
+    }
+
+    const AudioController& SoundEnvironment::getAudioController(const SoundComponent& soundComponent) const {
+        auto findAudioController = std::ranges::find_if(audioControllers, [&soundComponent](const auto& ac) { return &ac->getSoundComponent() == &soundComponent; });
+        if (findAudioController == audioControllers.end()) {
+            throw std::runtime_error("Retrieve the sound component fail: " + soundComponent.getSound().getFilename());
+        }
+        return *(*findAudioController);
     }
 
     void SoundEnvironment::setupSoundsVolume(Sound::SoundCategory soundCategory, float volumePercentageChange) {

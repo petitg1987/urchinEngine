@@ -14,6 +14,7 @@ namespace urchin {
             void playNew();
             void stopAll();
             void pauseAll();
+            void unpauseAll();
 
             const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
@@ -22,7 +23,8 @@ namespace urchin {
                 PLAY_NEW,
                 PLAY_NEW_LOOP,
                 STOP_ALL,
-                PAUSE_ALL
+                PAUSE_ALL,
+                UNPAUSE_ALL
             };
 
             std::vector<ManualTriggerAction> manualTriggerActions;
