@@ -58,7 +58,7 @@ namespace urchin {
         isPaused = false;
     }
 
-    void MusicLoopPlayer::refresh() { //TODO not public method ?
+    void MusicLoopPlayer::refresh() {
         if (!isPaused) {
             if (musics[currentMusicIndex].audioController.getPlayersCount() == 0) {
                 currentMusicIndex = (currentMusicIndex + 1) % (unsigned int)musics.size();
