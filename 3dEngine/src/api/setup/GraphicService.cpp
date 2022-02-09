@@ -24,7 +24,9 @@ namespace urchin {
 
     GraphicService::~GraphicService() {
         vmaDestroyAllocator(allocator);
-        vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
+        if (apiGraphicInitialized) {
+            vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
+        }
         deviceHandler.cleanup();
         validationLayer.cleanup();
         if (!useUniqueSurface) {

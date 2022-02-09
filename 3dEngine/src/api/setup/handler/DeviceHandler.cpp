@@ -95,7 +95,7 @@ namespace urchin {
         if (bestPhysicalDevice->first == -1) {
             assert(bestPhysicalDevice->second.missingRequisiteDescription.has_value());
             std::string noDeviceFoundReason = bestPhysicalDevice->second.missingRequisiteDescription.value();
-            throw UserAuthorityException("Failed to find a suitable graphic card: " + noDeviceFoundReason, "Make sure your graphic card matches the minimum requirement");
+            throw UserAuthorityException("Failed to find a suitable graphic card: " + noDeviceFoundReason, "Make sure your graphic card matches the minimum requirements and/or upgrade your graphic drivers");
         }
 
         return bestPhysicalDevice->second.physicalDevice;
