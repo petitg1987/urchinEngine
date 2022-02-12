@@ -22,7 +22,7 @@ namespace urchin {
             T getTimeToHit() const;
 
         private:
-            AbstractBody& body2;
+            AbstractBody& body2; //TODO should be owner of the body + test
 
             Vector3<T> normalFromObject2;
             Point3<T> hitPointOnObject2;

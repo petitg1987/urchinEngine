@@ -48,7 +48,7 @@ namespace urchin {
     template class ContinuousCollisionResult<float>;
     template class ContinuousCollisionResult<double>;
 
-    template class ContinuousCollisionResultComparator<float>;
-    template class ContinuousCollisionResultComparator<double>;
+    template struct ContinuousCollisionResultComparator<float>;
+    template struct ContinuousCollisionResultComparator<double>;
 
 }

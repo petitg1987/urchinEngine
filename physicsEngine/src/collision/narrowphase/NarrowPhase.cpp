@@ -197,8 +197,7 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1,
-                                                              AbstractBody& body2, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1, AbstractBody& body2, ccd_set& continuousCollisionResults) const {
         for (const auto& triangle : triangles) {
             PhysicsTransform fromToObject2 = body2.getTransform();
             TemporalObject temporalObject2(triangle, fromToObject2, fromToObject2);
@@ -210,8 +209,7 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2,
-                                                     AbstractBody& body2, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2, AbstractBody& body2, ccd_set& continuousCollisionResults) const {
         std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> continuousCollisionResult = gjkContinuousCollisionAlgorithm
                 .calculateTimeOfImpact(temporalObject1, temporalObject2, body2);
 
