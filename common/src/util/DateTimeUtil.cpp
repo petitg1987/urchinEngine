@@ -13,11 +13,19 @@ namespace urchin {
     }
 
     std::string DateTimeUtil::timePointToDateTime(std::chrono::system_clock::time_point timePoint) {
+        return timePointToCustomFormat(timePoint, "%Y-%m-%d %X");
+    }
+
+    std::string DateTimeUtil::timePointToDate(std::chrono::system_clock::time_point timePoint) {
+        return timePointToCustomFormat(timePoint, "%Y-%m-%d");
+    }
+
+    std::string DateTimeUtil::timePointToCustomFormat(std::chrono::system_clock::time_point timePoint, const std::string& format) {
         std::time_t epochSeconds = std::chrono::system_clock::to_time_t(timePoint);
         std::stringstream ss;
         {
             std::scoped_lock<std::mutex> lock(localtimeMutex); //mutex for not thread safe localtime function
-            ss << std::put_time(std::localtime(&epochSeconds), "%Y-%m-%d %X");
+            ss << std::put_time(std::localtime(&epochSeconds), format.c_str());
         }
         return ss.str();
     }
