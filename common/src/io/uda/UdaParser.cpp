@@ -33,7 +33,7 @@ namespace urchin {
         return chunks;
     }
 
-    UdaChunk* UdaParser::getFirstChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
+    UdaChunk* UdaParser::getFirstChunk(bool mandatory, std::string_view chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         const auto& nodes = parent ? parent->getChildren() : rootNodes;
         for (auto& node : nodes) {
             if (isNodeMatchCriteria(*node, chunkName, attribute)) {
@@ -42,7 +42,7 @@ namespace urchin {
         }
 
         if (mandatory) {
-            throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " was not found in file " + filenamePath);
+            throw std::invalid_argument("The chunk " + getChunkDescription(std::string(chunkName), attribute) + " was not found in file " + filenamePath);
         }
         return nullptr;
     }

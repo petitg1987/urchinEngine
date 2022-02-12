@@ -15,7 +15,7 @@ namespace urchin {
             explicit UdaParser(std::string);
 
             std::vector<UdaChunk*> getChunks(std::string_view = "", const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
-            UdaChunk* getFirstChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
+            UdaChunk* getFirstChunk(bool, std::string_view, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
 
         private:
             void loadFile(std::ifstream&);
