@@ -11,7 +11,7 @@ namespace urchin {
         if (soundTriggerType == MANUAL_VALUE) {
             return std::make_unique<ManualTrigger>(playBehavior);
         } else if (soundTriggerType == SHAPE_VALUE) {
-            auto soundShapeChunk = udaParser.getUniqueChunk(true, SOUND_SHAPE_TAG, UdaAttribute(), soundTriggerChunk);
+            auto soundShapeChunk = udaParser.getFirstChunk(true, SOUND_SHAPE_TAG, UdaAttribute(), soundTriggerChunk);
             std::unique_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk);
             auto soundShape = soundShapeReaderWriter->load(soundShapeChunk, udaParser);
 
@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     PlayBehavior SoundTriggerReaderWriter::loadPlayBehavior(const UdaChunk* soundTriggerChunk, const UdaParser& udaParser) {
-        auto playBehaviorChunk = udaParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, UdaAttribute(), soundTriggerChunk);
+        auto playBehaviorChunk = udaParser.getFirstChunk(true, PLAY_BEHAVIOR_TAG, UdaAttribute(), soundTriggerChunk);
         if (playBehaviorChunk->getStringValue() == PLAY_ONCE_VALUE) {
             return PlayBehavior::PLAY_ONCE;
         } else if (playBehaviorChunk->getStringValue() == PLAY_LOOP_VALUE) {

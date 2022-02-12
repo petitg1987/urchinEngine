@@ -9,6 +9,7 @@
 #include <utils/math/PhysicsTransform.h>
 
 namespace urchin {
+
     struct LocalizedCollisionShape {
         std::size_t position;
 

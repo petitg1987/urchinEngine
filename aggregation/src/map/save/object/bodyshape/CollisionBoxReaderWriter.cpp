@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionBoxReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
-        auto halfSizeChunk = udaParser.getUniqueChunk(true, HALF_SIZE_TAG, UdaAttribute(), shapeChunk);
+    std::unique_ptr<CollisionShape3D> CollisionBoxReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+        auto halfSizeChunk = udaParser.getFirstChunk(true, HALF_SIZE_TAG, UdaAttribute(), shapeChunk);
         Vector3<float> halfSize = halfSizeChunk->getVector3Value();
 
-        return new CollisionBoxShape(halfSize);
+        return std::make_unique<CollisionBoxShape>(halfSize);
     }
 
     void CollisionBoxReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {

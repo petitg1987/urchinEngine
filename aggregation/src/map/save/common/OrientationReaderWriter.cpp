@@ -3,10 +3,10 @@
 namespace urchin {
 
     Quaternion<float> OrientationReaderWriter::load(const UdaChunk* parentChunk, const UdaParser& udaParser) {
-        auto orientationChunk = udaParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), parentChunk);
+        auto orientationChunk = udaParser.getFirstChunk(true, ORIENTATION_TAG, UdaAttribute(), parentChunk);
 
-        auto orientationAxisChunk = udaParser.getUniqueChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
-        auto orientationAngleChunk = udaParser.getUniqueChunk(true, ANGLE_TAG, UdaAttribute(), orientationChunk);
+        auto orientationAxisChunk = udaParser.getFirstChunk(true, AXIS_TAG, UdaAttribute(), orientationChunk);
+        auto orientationAngleChunk = udaParser.getFirstChunk(true, ANGLE_TAG, UdaAttribute(), orientationChunk);
 
         return Quaternion<float>::fromAxisAngle(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
     }

@@ -3,7 +3,7 @@
 namespace urchin {
 
     std::unique_ptr<Sound> SoundReaderWriter::load(const UdaChunk* soundChunk, const UdaParser& udaParser) {
-        auto filenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
+        auto filenameChunk = udaParser.getFirstChunk(true, FILENAME_TAG, UdaAttribute(), soundChunk);
         std::string filename = filenameChunk->getStringValue();
 
         std::string soundCategory = soundChunk->getAttributeValue(CATEGORY_ATTR);
@@ -16,11 +16,11 @@ namespace urchin {
             throw std::invalid_argument("Unknown sound category read from map: " + soundCategory);
         }
 
-        float initialVolume = udaParser.getUniqueChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk)->getFloatValue();
+        float initialVolume = udaParser.getFirstChunk(true, INITIAL_VOLUME_TAG, UdaAttribute(), soundChunk)->getFloatValue();
         std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
         if (soundType == SPATIAL_VALUE) {
-            Point3<float> position = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), soundChunk)->getPoint3Value();
-            float inaudibleDistance = udaParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, UdaAttribute(), soundChunk)->getFloatValue();
+            Point3<float> position = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), soundChunk)->getPoint3Value();
+            float inaudibleDistance = udaParser.getFirstChunk(true, INAUDIBLE_DISTANCE_TAG, UdaAttribute(), soundChunk)->getFloatValue();
             auto spatialSound = std::make_unique<SpatialSound>(filename, category, initialVolume, position, inaudibleDistance);
 
             return spatialSound;

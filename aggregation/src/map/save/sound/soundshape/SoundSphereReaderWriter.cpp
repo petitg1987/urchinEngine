@@ -3,13 +3,13 @@
 namespace urchin {
 
     std::unique_ptr<SoundShape> SoundSphereReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
-        auto radiusChunk = udaParser.getUniqueChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
+        auto radiusChunk = udaParser.getFirstChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
-        auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), shapeChunk);
+        auto positionChunk = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), shapeChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
-        auto marginChunk = udaParser.getUniqueChunk(true, MARGIN_TAG, UdaAttribute(), shapeChunk);
+        auto marginChunk = udaParser.getFirstChunk(true, MARGIN_TAG, UdaAttribute(), shapeChunk);
         float margin = marginChunk->getFloatValue();
 
         return std::make_unique<SoundSphere>(radius, position, margin);

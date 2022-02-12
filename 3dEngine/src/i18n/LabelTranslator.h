@@ -11,13 +11,13 @@ namespace urchin {
             void checkMissingTranslation() const;
 
             const std::vector<std::string>& getAvailableLanguages() const;
-            std::string translate(const std::string&, const std::string&);
+            std::string translate(const std::string&, std::string_view);
 
         private:
             void loadAvailableLanguages();
 
             void loadLanguageLabels(const std::string&);
-            std::map<std::string, std::string> retrieveLanguageLabels(const std::string&) const;
+            std::map<std::string, std::string, std::less<>> retrieveLanguageLabels(const std::string&) const;
             void logMissingLanguage(const std::string&) const;
             void logMissingTranslation(const std::string&, const std::string&) const;
 
@@ -28,7 +28,7 @@ namespace urchin {
             std::vector<std::string> availableLanguages;
 
             std::string loadedLanguage;
-            std::map<std::string, std::string> loadedLanguageLabels;
+            std::map<std::string, std::string, std::less<>> loadedLanguageLabels;
     };
 
 }

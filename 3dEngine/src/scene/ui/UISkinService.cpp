@@ -19,19 +19,19 @@ namespace urchin {
 
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const UdaChunk* skinChunk, WidgetOutline* widgetOutline) const {
         //skin information
-        auto widgetImageElem = getSkinReader().getUniqueChunk(true, "image", UdaAttribute(), skinChunk);
+        auto widgetImageElem = getSkinReader().getFirstChunk(true, "image", UdaAttribute(), skinChunk);
         auto rawWidgetImage = ResourceRetriever::instance().getResource<Image>(widgetImageElem->getStringValue());
 
-        auto topElem = getSkinReader().getUniqueChunk(true, "part", UdaAttribute("zone", "top"), skinChunk);
+        auto topElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "top"), skinChunk);
         unsigned int top = topElem->getUnsignedIntValue();
 
-        auto bottomElem = getSkinReader().getUniqueChunk(true, "part", UdaAttribute("zone", "bottom"), skinChunk);
+        auto bottomElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "bottom"), skinChunk);
         unsigned int bottom = bottomElem->getUnsignedIntValue();
 
-        auto leftElem = getSkinReader().getUniqueChunk(true, "part", UdaAttribute("zone", "left"), skinChunk);
+        auto leftElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "left"), skinChunk);
         unsigned int left = leftElem->getUnsignedIntValue();
 
-        auto rightElem = getSkinReader().getUniqueChunk(true, "part", UdaAttribute("zone", "right"), skinChunk);
+        auto rightElem = getSkinReader().getFirstChunk(true, "part", UdaAttribute("zone", "right"), skinChunk);
         unsigned int right = rightElem->getUnsignedIntValue();
 
         //copy the information into the outline
@@ -122,9 +122,9 @@ namespace urchin {
      * @param lengthType [out] Typ of the length
      */
     float UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName, LengthType& lengthType) const {
-        auto lengthChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, lengthName, UdaAttribute(), mainChunk);
+        auto lengthChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, lengthName, UdaAttribute(), mainChunk);
 
-        std::string lengthTypeString = UISkinService::instance().getSkinReader().getUniqueChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
+        std::string lengthTypeString = UISkinService::instance().getSkinReader().getFirstChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
             lengthType = PIXEL;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "screenPercent")) {
@@ -135,7 +135,7 @@ namespace urchin {
             throw std::runtime_error("Unknown length type: " + lengthTypeString);
         }
 
-        return UISkinService::instance().getSkinReader().getUniqueChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
+        return UISkinService::instance().getSkinReader().getFirstChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
     }
 
     const UdaParser& UISkinService::getSkinReader() const {

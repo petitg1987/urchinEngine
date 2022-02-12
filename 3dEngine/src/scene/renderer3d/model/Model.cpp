@@ -97,8 +97,8 @@ namespace urchin {
         return !animations.empty();
     }
 
-    void Model::animate(const std::string& animationName, AnimRepeat animLoop, AnimStart animStart) {
-        activeAnimation = animations.at(animationName).get();
+    void Model::animate(std::string_view animationName, AnimRepeat animLoop, AnimStart animStart) {
+        activeAnimation = animations.find(animationName)->second.get();
         if (animStart == AnimStart::AT_FIRST_FRAME && activeAnimation->getCurrentFrame() != 0) {
             activeAnimation->gotoFrame(0);
         }
@@ -139,9 +139,9 @@ namespace urchin {
         notifyMeshUpdated();
     }
 
-    void Model::gotoAnimationFrame(const std::string& animationName, unsigned int animationFrameIndex) {
+    void Model::gotoAnimationFrame(std::string_view animationName, unsigned int animationFrameIndex) {
         const Animation* previousActiveAnimation = activeAnimation;
-        activeAnimation = animations.at(animationName).get();
+        activeAnimation = animations.find(animationName)->second.get();
         if (previousActiveAnimation != activeAnimation) {
             onMoving(transform);
         }

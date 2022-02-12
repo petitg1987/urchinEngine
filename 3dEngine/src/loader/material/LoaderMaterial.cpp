@@ -15,15 +15,15 @@ namespace urchin {
         //diffuse texture/color
         bool hasTransparency = false;
         std::shared_ptr<Texture> diffuseTexture;
-        auto diffuseChunk = udaParser.getUniqueChunk(true, "diffuse");
-        auto diffuseTextureChunk = udaParser.getUniqueChunk(false, "texture", UdaAttribute(), diffuseChunk);
+        auto diffuseChunk = udaParser.getFirstChunk(true, "diffuse");
+        auto diffuseTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), diffuseChunk);
         if (diffuseTextureChunk) {
             auto diffuseImage = ResourceRetriever::instance().getResource<Image>(diffuseTextureChunk->getStringValue());
             diffuseTexture = diffuseImage->createTexture(true);
             hasTransparency = diffuseImage->hasTransparency();
         }
 
-        auto diffuseColorChunk = udaParser.getUniqueChunk(false, "color", UdaAttribute(), diffuseChunk);
+        auto diffuseColorChunk = udaParser.getFirstChunk(false, "color", UdaAttribute(), diffuseChunk);
         if (diffuseColorChunk) {
             if (diffuseTexture) {
                 throw std::runtime_error("Material defines a diffuse color while a diffuse texture is defined: " + filename);
@@ -44,47 +44,47 @@ namespace urchin {
         std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, diffuseTexture, hasTransparency);
 
         //repeat textures
-        auto repeatTexturesChunk = udaParser.getUniqueChunk(false, "repeatTextures");
+        auto repeatTexturesChunk = udaParser.getFirstChunk(false, "repeatTextures");
         if (repeatTexturesChunk && repeatTexturesChunk->getBoolValue()) {
             materialBuilder->enableRepeatTextures();
 
         }
 
         //UV scale
-        auto uvScaleChunk = udaParser.getUniqueChunk(false, "uvScale");
+        auto uvScaleChunk = udaParser.getFirstChunk(false, "uvScale");
         if (uvScaleChunk) {
-            std::string scaleType = udaParser.getUniqueChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
+            std::string scaleType = udaParser.getFirstChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
             materialBuilder->uvScale(UvScale(toUvScaleType(scaleType, filename)));
         }
 
         //normal texture
-        auto normalChunk = udaParser.getUniqueChunk(false, "normal");
+        auto normalChunk = udaParser.getFirstChunk(false, "normal");
         if (normalChunk) {
-            auto normalTextureChunk = udaParser.getUniqueChunk(true, "texture", UdaAttribute(), normalChunk);
+            auto normalTextureChunk = udaParser.getFirstChunk(true, "texture", UdaAttribute(), normalChunk);
             auto normalImage = ResourceRetriever::instance().getResource<Image>(normalTextureChunk->getStringValue());
             materialBuilder->normalTexture(normalImage->createTexture(true));
         }
 
         //emissive factor
-        auto emissiveFactorChunk = udaParser.getUniqueChunk(false, "emissiveFactor");
+        auto emissiveFactorChunk = udaParser.getFirstChunk(false, "emissiveFactor");
         if (emissiveFactorChunk) {
             materialBuilder->emissiveFactor(emissiveFactorChunk->getFloatValue());
         }
 
         //ambient factor
-        auto ambientFactorChunk = udaParser.getUniqueChunk(false, "ambientFactor");
+        auto ambientFactorChunk = udaParser.getFirstChunk(false, "ambientFactor");
         if (ambientFactorChunk) {
             materialBuilder->ambientFactor(ambientFactorChunk->getFloatValue());
         }
 
         //depth test
-        auto depthTestChunk = udaParser.getUniqueChunk(false, "depthTest");
+        auto depthTestChunk = udaParser.getFirstChunk(false, "depthTest");
         if (depthTestChunk && !depthTestChunk->getBoolValue()) {
             materialBuilder->disableDepthTest();
         }
 
         //depth write
-        auto depthWriteChunk = udaParser.getUniqueChunk(false, "depthWrite");
+        auto depthWriteChunk = udaParser.getFirstChunk(false, "depthWrite");
         if (depthWriteChunk && !depthWriteChunk->getBoolValue()) {
             materialBuilder->disableDepthWrite();
         }

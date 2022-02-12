@@ -25,33 +25,40 @@ namespace urchin {
 
         const auto& nodes = parent ? parent->getChildren() : rootNodes;
         for (auto& node : nodes) {
-            if (chunkName.empty() || chunkName == node->getName()) {
-                if (!attribute.getAttributeName().empty()) {
-                    std::string attributeValue = node->getAttributeValue(attribute.getAttributeName());
-                    if (attributeValue == attribute.getAttributeValue()) {
-                        chunks.push_back(node.get());
-                    }
-                } else {
-                    chunks.push_back(node.get());
-                }
+            if (isNodeMatchCriteria(*node, chunkName, attribute)) {
+                chunks.push_back(node.get());
             }
         }
 
         return chunks;
     }
 
-    UdaChunk* UdaParser::getUniqueChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
-        auto chunks = getChunks(chunkName, attribute, parent);
-
-        if (chunks.size() > 1) {
-            throw std::invalid_argument("More than one chunk found for " + getChunkDescription(chunkName, attribute));
-        } else if (chunks.empty()) {
-            if (mandatory) {
-                throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " was not found in file " + filenamePath);
+    UdaChunk* UdaParser::getFirstChunk(bool mandatory, const std::string& chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
+        const auto& nodes = parent ? parent->getChildren() : rootNodes;
+        for (auto& node : nodes) {
+            if (isNodeMatchCriteria(*node, chunkName, attribute)) {
+                return node.get();
             }
-            return nullptr;
         }
-        return chunks[0];
+
+        if (mandatory) {
+            throw std::invalid_argument("The chunk " + getChunkDescription(chunkName, attribute) + " was not found in file " + filenamePath);
+        }
+        return nullptr;
+    }
+
+    bool UdaParser::isNodeMatchCriteria(UdaChunk& node, std::string_view chunkName, const UdaAttribute& attribute) const {
+        if (chunkName.empty() || chunkName == node.getName()) {
+            if (!attribute.getAttributeName().empty()) {
+                std::string attributeValue = node.getAttributeValue(attribute.getAttributeName());
+                if (attributeValue == attribute.getAttributeValue()) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     std::string UdaParser::getChunkDescription(const std::string& chunkName, const UdaAttribute& attribute) const {

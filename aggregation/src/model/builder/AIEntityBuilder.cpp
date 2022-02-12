@@ -12,8 +12,9 @@ namespace urchin {
             auto singleShape = std::make_unique<AIShape>(shape.getSingleShape().clone());
             return std::make_shared<AIObject>(std::move(name), transform, true, std::move(singleShape));
         } else if (shape.isCompound()) {
-            std::vector<std::unique_ptr<AIShape>> aiShapes;
             const auto& scaledCompoundShape = static_cast<const CollisionCompoundShape&>(shape);
+            std::vector<std::unique_ptr<AIShape>> aiShapes;
+            aiShapes.reserve(scaledCompoundShape.getLocalizedShapes().size());
             for (const auto& scaledLocalizedShape : scaledCompoundShape.getLocalizedShapes()) {
                 aiShapes.push_back(std::make_unique<AIShape>(scaledLocalizedShape->shape->getSingleShape().clone(), scaledLocalizedShape->transform.toTransform()));
             }

@@ -26,15 +26,15 @@ namespace urchin {
     std::unique_ptr<Light> LightEntityReaderWriter::buildLight(const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
         std::string lightType = lightEntityChunk->getAttributeValue(TYPE_ATTR);
         if (lightType == OMNIDIRECTIONAL_VALUE) {
-            auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), lightEntityChunk);
+            auto positionChunk = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), lightEntityChunk);
             auto omnidirectional = std::make_unique<OmnidirectionalLight>(positionChunk->getPoint3Value());
 
-            auto exponentialAttenuationChunk = udaParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), lightEntityChunk);
+            auto exponentialAttenuationChunk = udaParser.getFirstChunk(true, EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), lightEntityChunk);
             omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
 
             return omnidirectional;
         } else if (lightType == SUN_VALUE) {
-            auto directionChunk = udaParser.getUniqueChunk(true, DIRECTION_TAG, UdaAttribute(), lightEntityChunk);
+            auto directionChunk = udaParser.getFirstChunk(true, DIRECTION_TAG, UdaAttribute(), lightEntityChunk);
 
             return std::make_unique<SunLight>(directionChunk->getVector3Value());
         }
@@ -64,7 +64,7 @@ namespace urchin {
     }
 
     void LightEntityReaderWriter::loadProperties(Light& light, const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
-        auto ambientColorChunk = udaParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, UdaAttribute(), lightEntityChunk);
+        auto ambientColorChunk = udaParser.getFirstChunk(true, AMBIENT_COLOR_TAG, UdaAttribute(), lightEntityChunk);
         light.setAmbientColor(ambientColorChunk->getPoint3Value());
     }
 
@@ -74,7 +74,7 @@ namespace urchin {
     }
 
     void LightEntityReaderWriter::loadFlags(Light& light, const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
-        auto produceShadowChunk = udaParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, UdaAttribute(), lightEntityChunk);
+        auto produceShadowChunk = udaParser.getFirstChunk(true, PRODUCE_SHADOW_TAG, UdaAttribute(), lightEntityChunk);
         light.setProduceShadow(produceShadowChunk->getBoolValue());
     }
 

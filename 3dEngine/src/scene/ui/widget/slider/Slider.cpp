@@ -38,12 +38,12 @@ namespace urchin {
         detachChild(cursorImage.get());
 
         //skin information
-        auto sliderChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "slider", UdaAttribute("skin", skinName));
+        auto sliderChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "slider", UdaAttribute("skin", skinName));
 
-        auto valuesTextSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "valuesTextSkin", UdaAttribute(), sliderChunk);
+        auto valuesTextSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "valuesTextSkin", UdaAttribute(), sliderChunk);
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), sliderChunk);
+        auto cursorImageChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageCursor", UdaAttribute(), sliderChunk);
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
 
         currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
@@ -73,7 +73,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Slider::loadTexture(const UdaChunk* sliderChunk, const std::string& chunkName) const {
-        auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), sliderChunk);
+        auto imageElem = UISkinService::instance().getSkinReader().getFirstChunk(true, chunkName, UdaAttribute(), sliderChunk);
         auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
         return img->createTexture(false);
     }

@@ -46,7 +46,7 @@ namespace urchin {
         return children;
     }
 
-    std::string UdaChunk::getStringValue() const {
+    const std::string& UdaChunk::getStringValue() const {
         return value;
     }
 

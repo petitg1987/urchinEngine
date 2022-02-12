@@ -5,11 +5,11 @@ namespace urchin {
     std::unique_ptr<SkyEntity> SkyEntityReaderWriter::load(const UdaChunk* skyChunk, const UdaParser& udaParser) {
         auto skyEntity = std::make_unique<SkyEntity>();
 
-        auto skyboxChunk = udaParser.getUniqueChunk(false, SKYBOX_TAG, UdaAttribute(), skyChunk);
+        auto skyboxChunk = udaParser.getFirstChunk(false, SKYBOX_TAG, UdaAttribute(), skyChunk);
         if (skyboxChunk != nullptr) {
             std::vector<std::string> filenames;
             filenames.reserve(6);
-            auto texturesChunk = udaParser.getUniqueChunk(true, TEXTURES_TAG, UdaAttribute(), skyboxChunk);
+            auto texturesChunk = udaParser.getFirstChunk(true, TEXTURES_TAG, UdaAttribute(), skyboxChunk);
             auto filenameListChunk = udaParser.getChunks(FILENAME_TAG, UdaAttribute(), texturesChunk);
             if (filenameListChunk.size() != 6) {
                 throw std::runtime_error("Invalid number of skybox filenames found: " + std::to_string(filenameListChunk.size()));
@@ -19,7 +19,7 @@ namespace urchin {
             }
             auto skybox = std::make_unique<Skybox>(filenames);
 
-            auto offsetYChunk = udaParser.getUniqueChunk(true, OFFSET_Y_TAG, UdaAttribute(), skyboxChunk);
+            auto offsetYChunk = udaParser.getFirstChunk(true, OFFSET_Y_TAG, UdaAttribute(), skyboxChunk);
             skybox->setOffsetY(offsetYChunk->getFloatValue());
 
             skyEntity->setSkybox(std::move(skybox));

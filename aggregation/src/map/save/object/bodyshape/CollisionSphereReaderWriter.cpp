@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionSphereReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
-        auto radiusChunk = udaParser.getUniqueChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
+    std::unique_ptr<CollisionShape3D> CollisionSphereReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+        auto radiusChunk = udaParser.getFirstChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
-        return new CollisionSphereShape(radius);
+        return std::make_unique<CollisionSphereShape>(radius);
     }
 
     void CollisionSphereReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {

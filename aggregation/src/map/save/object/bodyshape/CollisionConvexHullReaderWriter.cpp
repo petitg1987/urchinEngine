@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionConvexHullReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
-        auto pointsListChunk = udaParser.getUniqueChunk(true, POINTS_TAG, UdaAttribute(), shapeChunk);
+    std::unique_ptr<CollisionShape3D> CollisionConvexHullReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+        auto pointsListChunk = udaParser.getFirstChunk(true, POINTS_TAG, UdaAttribute(), shapeChunk);
         auto pointsChunk = udaParser.getChunks(POINT_TAG, UdaAttribute(), pointsListChunk);
 
         std::vector<Point3<float>> points;
@@ -14,7 +14,7 @@ namespace urchin {
             points.push_back(pointChunk->getPoint3Value());
         }
 
-        return new CollisionConvexHullShape(points);
+        return std::make_unique<CollisionConvexHullShape>(points);
     }
 
     void CollisionConvexHullReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {

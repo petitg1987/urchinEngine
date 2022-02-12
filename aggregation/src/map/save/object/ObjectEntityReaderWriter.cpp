@@ -10,17 +10,17 @@ namespace urchin {
 
         objectEntity->setName(objectEntityChunk->getAttributeValue(NAME_ATTR));
 
-        auto modelChunk = udaParser.getUniqueChunk(true, MODEL_TAG, UdaAttribute(), objectEntityChunk);
+        auto modelChunk = udaParser.getFirstChunk(true, MODEL_TAG, UdaAttribute(), objectEntityChunk);
         objectEntity->setModel(ModelReaderWriter::load(modelChunk, udaParser));
 
-        auto physicsChunk = udaParser.getUniqueChunk(false, PHYSICS_TAG, UdaAttribute(), objectEntityChunk);
+        auto physicsChunk = udaParser.getFirstChunk(false, PHYSICS_TAG, UdaAttribute(), objectEntityChunk);
         if (physicsChunk != nullptr) {
             const std::string& rigidBodyId = objectEntity->getName();
             const Transform<float>& modelTransform = objectEntity->getModel()->getTransform();
             objectEntity->setupInteractiveBody(RigidBodyReaderWriter::load(physicsChunk, rigidBodyId, modelTransform, udaParser));
         }
 
-        auto tagsChunk = udaParser.getUniqueChunk(false, TAGS_TAG, UdaAttribute(), objectEntityChunk);
+        auto tagsChunk = udaParser.getFirstChunk(false, TAGS_TAG, UdaAttribute(), objectEntityChunk);
         if (tagsChunk != nullptr) {
             objectEntity->addTags(TagsReaderWriter::load(tagsChunk, udaParser));
         }

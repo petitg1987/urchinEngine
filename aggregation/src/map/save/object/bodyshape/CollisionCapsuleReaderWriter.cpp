@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    CollisionShape3D* CollisionCapsuleReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
-        auto orientationChunk = udaParser.getUniqueChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
+    std::unique_ptr<CollisionShape3D> CollisionCapsuleReaderWriter::load(const UdaChunk* shapeChunk, const UdaParser& udaParser) const {
+        auto orientationChunk = udaParser.getFirstChunk(true, ORIENTATION_TAG, UdaAttribute(), shapeChunk);
         std::string orientationValue = orientationChunk->getStringValue();
         CapsuleShape<float>::CapsuleOrientation orientation;
         if (orientationValue == X_VALUE) {
@@ -18,13 +18,13 @@ namespace urchin {
             throw std::invalid_argument("Capsule orientation type unknown: " + orientationValue);
         }
 
-        auto radiusChunk = udaParser.getUniqueChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
+        auto radiusChunk = udaParser.getFirstChunk(true, RADIUS_TAG, UdaAttribute(), shapeChunk);
         float radius = radiusChunk->getFloatValue();
 
-        auto cylinderHeightChunk = udaParser.getUniqueChunk(true, CYLINDER_HEIGHT_TAG, UdaAttribute(), shapeChunk);
+        auto cylinderHeightChunk = udaParser.getFirstChunk(true, CYLINDER_HEIGHT_TAG, UdaAttribute(), shapeChunk);
         float cylinderHeight = cylinderHeightChunk->getFloatValue();
 
-        return new CollisionCapsuleShape(radius, cylinderHeight, orientation);
+        return std::make_unique<CollisionCapsuleShape>(radius, cylinderHeight, orientation);
     }
 
     void CollisionCapsuleReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {

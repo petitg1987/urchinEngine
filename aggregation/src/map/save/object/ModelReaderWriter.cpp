@@ -4,8 +4,8 @@
 namespace urchin {
 
     std::shared_ptr<Model> ModelReaderWriter::load(const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto meshesChunk = udaParser.getUniqueChunk(true, MESHES_TAG, UdaAttribute(), modelChunk);
-        auto meshesFilenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), meshesChunk);
+        auto meshesChunk = udaParser.getFirstChunk(true, MESHES_TAG, UdaAttribute(), modelChunk);
+        auto meshesFilenameChunk = udaParser.getFirstChunk(true, FILENAME_TAG, UdaAttribute(), meshesChunk);
 
         auto model = Model::fromMeshesFile(meshesFilenameChunk->getStringValue());
         loadAnimations(*model, modelChunk, udaParser);
@@ -28,12 +28,12 @@ namespace urchin {
     }
 
     void ModelReaderWriter::loadAnimations(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto animationsListChunk = udaParser.getUniqueChunk(false, ANIMATIONS_TAG, UdaAttribute(), modelChunk);
+        auto animationsListChunk = udaParser.getFirstChunk(false, ANIMATIONS_TAG, UdaAttribute(), modelChunk);
         if (animationsListChunk) {
             auto animationsChunk = udaParser.getChunks(ANIMATION_TAG, UdaAttribute(), animationsListChunk);
             for (const auto& animationChunk : animationsChunk) {
-                auto animationNameChunk = udaParser.getUniqueChunk(true, NAME_TAG, UdaAttribute(), animationChunk);
-                auto animationFilenameChunk = udaParser.getUniqueChunk(true, FILENAME_TAG, UdaAttribute(), animationChunk);
+                auto animationNameChunk = udaParser.getFirstChunk(true, NAME_TAG, UdaAttribute(), animationChunk);
+                auto animationFilenameChunk = udaParser.getFirstChunk(true, FILENAME_TAG, UdaAttribute(), animationChunk);
 
                 model.loadAnimation(animationNameChunk->getStringValue(), animationFilenameChunk->getStringValue());
             }
@@ -57,14 +57,14 @@ namespace urchin {
     }
 
     void ModelReaderWriter::loadTransform(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto transformChunk = udaParser.getUniqueChunk(true, TRANSFORM_TAG, UdaAttribute(), modelChunk);
+        auto transformChunk = udaParser.getFirstChunk(true, TRANSFORM_TAG, UdaAttribute(), modelChunk);
 
-        auto positionChunk = udaParser.getUniqueChunk(true, POSITION_TAG, UdaAttribute(), transformChunk);
+        auto positionChunk = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), transformChunk);
         Point3<float> position = positionChunk->getPoint3Value();
 
         Quaternion<float> orientation = OrientationReaderWriter::load(transformChunk, udaParser);
 
-        auto scaleChunk = udaParser.getUniqueChunk(false, SCALE_TAG, UdaAttribute(), transformChunk);
+        auto scaleChunk = udaParser.getFirstChunk(false, SCALE_TAG, UdaAttribute(), transformChunk);
         Vector3<float> scale(1.0f, 1.0f, 1.0f);
         if (scaleChunk) {
             scale = scaleChunk->getVector3Value();
@@ -86,7 +86,7 @@ namespace urchin {
     }
 
     void ModelReaderWriter::loadProperties(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto shadowClassChunk = udaParser.getUniqueChunk(false, SHADOW_CLASS_TAG, UdaAttribute(), modelChunk);
+        auto shadowClassChunk = udaParser.getFirstChunk(false, SHADOW_CLASS_TAG, UdaAttribute(), modelChunk);
         if (shadowClassChunk) {
             if (shadowClassChunk->getStringValue() == RECEIVER_AND_CASTER_VALUE) {
                 model.setShadowClass(Model::RECEIVER_AND_CASTER);

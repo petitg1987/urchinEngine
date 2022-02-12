@@ -50,7 +50,7 @@ namespace urchin {
         return availableLanguages;
     }
 
-    std::string LabelTranslator::translate(const std::string& language, const std::string& labelKey) {
+    std::string LabelTranslator::translate(const std::string& language, std::string_view labelKey) {
         loadLanguageLabels(language);
 
         if (labelKey.empty()) {
@@ -62,8 +62,8 @@ namespace urchin {
             return itFind->second;
         }
 
-        logMissingTranslation(language, labelKey);
-        return "??" + labelKey + "??";
+        logMissingTranslation(language, std::string(labelKey));
+        return "??" + std::string(labelKey) + "??";
     }
 
     void LabelTranslator::loadLanguageLabels(const std::string& language) {
@@ -78,7 +78,7 @@ namespace urchin {
         }
     }
 
-    std::map<std::string, std::string> LabelTranslator::retrieveLanguageLabels(const std::string& language) const {
+    std::map<std::string, std::string, std::less<>> LabelTranslator::retrieveLanguageLabels(const std::string& language) const {
         return PropertyFileHandler(labelsFilesDirectoryName + FILE_PREFIX + language + FILE_POSTFIX).loadPropertyFile();
     }
 

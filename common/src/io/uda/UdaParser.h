@@ -15,13 +15,14 @@ namespace urchin {
             explicit UdaParser(std::string);
 
             std::vector<UdaChunk*> getChunks(std::string_view = "", const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
-            UdaChunk* getUniqueChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
+            UdaChunk* getFirstChunk(bool, const std::string&, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
 
         private:
             void loadFile(std::ifstream&);
             unsigned int computeIndentLevel(const std::string&) const;
             std::unique_ptr<UdaChunk> buildChunk(const std::string& rawContentLine, UdaChunk* parent) const;
 
+            bool isNodeMatchCriteria(UdaChunk&, std::string_view, const UdaAttribute&) const;
             std::string getChunkDescription(const std::string&, const UdaAttribute&) const;
 
             static constexpr char NAME_REGEX[] = "([a-zA-Z]+)";

@@ -38,43 +38,43 @@ namespace urchin {
         return it != properties.end();
     }
 
-    unsigned int ConfigService::getUnsignedIntValue(const std::string& propertyName) const {
+    unsigned int ConfigService::getUnsignedIntValue(std::string_view propertyName) const {
         auto it = unsignedIntProperties.find(propertyName);
         if (it != unsignedIntProperties.end()) {
             return it->second;
         }
 
-        throw std::invalid_argument("The property " + propertyName + " doesn't exist.");
+        throw std::invalid_argument("The property " + std::string(propertyName) + " doesn't exist.");
     }
 
-    float ConfigService::getFloatValue(const std::string& propertyName) const {
+    float ConfigService::getFloatValue(std::string_view propertyName) const {
         auto it = floatProperties.find(propertyName);
         if (it != floatProperties.end()) {
             return it->second;
         }
 
-        throw std::invalid_argument("The property "+ propertyName + " doesn't exist.");
+        throw std::invalid_argument("The property " + std::string(propertyName) + " doesn't exist.");
     }
 
-    std::string ConfigService::getStringValue(const std::string& propertyName) const {
+    const std::string& ConfigService::getStringValue(std::string_view propertyName) const {
         auto it = properties.find(propertyName);
         if (it != properties.end()) {
             return it->second;
         }
 
-        throw std::invalid_argument("The property " + propertyName + " doesn't exist.");
+        throw std::invalid_argument("The property " + std::string(propertyName) + " doesn't exist.");
     }
 
-    char ConfigService::getCharValue(const std::string& propertyName) const {
+    char ConfigService::getCharValue(std::string_view propertyName) const {
         auto it = properties.find(propertyName);
         if (it != properties.end()) {
             return TypeConverter::toChar(it->second);
         }
 
-        throw std::invalid_argument("The property " + propertyName + " doesn't exist.");
+        throw std::invalid_argument("The property " + std::string(propertyName) + " doesn't exist.");
     }
 
-    bool ConfigService::getBoolValue(const std::string& propertyName) const {
+    bool ConfigService::getBoolValue(std::string_view propertyName) const {
         auto it = properties.find(propertyName);
         if (it != properties.end()) {
             bool value = false;
@@ -84,7 +84,7 @@ namespace urchin {
             return value;
         }
 
-        throw std::invalid_argument("The property "+ propertyName + " doesn't exist.");
+        throw std::invalid_argument("The property " + std::string(propertyName) + " doesn't exist.");
     }
 
 }

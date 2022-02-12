@@ -41,18 +41,18 @@ namespace urchin {
         detachChild(leftButton.get());
 
         //skin information
-        auto sequenceChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "sequence", UdaAttribute("skin", skinName));
+        auto sequenceChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "sequence", UdaAttribute("skin", skinName));
 
-        auto buttonsTextSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "buttonsTextSkin", UdaAttribute(), sequenceChunk);
+        auto buttonsTextSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "buttonsTextSkin", UdaAttribute(), sequenceChunk);
         std::string buttonsTextSkin = buttonsTextSkinChunk->getStringValue();
 
-        auto valuesTextSkinChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "valuesTextSkin", UdaAttribute(), sequenceChunk);
+        auto valuesTextSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "valuesTextSkin", UdaAttribute(), sequenceChunk);
         std::string valuesTextSkin = valuesTextSkinChunk->getStringValue();
 
-        auto leftButtonTextChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "leftButtonText", UdaAttribute(), sequenceChunk);
+        auto leftButtonTextChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "leftButtonText", UdaAttribute(), sequenceChunk);
         std::string leftButtonString = leftButtonTextChunk->getStringValue();
 
-        auto rightButtonTextChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "rightButtonText", UdaAttribute(), sequenceChunk);
+        auto rightButtonTextChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "rightButtonText", UdaAttribute(), sequenceChunk);
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
         //buttons

@@ -29,9 +29,9 @@ namespace urchin {
         }
 
         //skin information
-        auto scrollbarChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "scrollbar", UdaAttribute("skin", skinName));
+        auto scrollbarChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbar", UdaAttribute("skin", skinName));
 
-        auto cursorImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageCursor", UdaAttribute(), scrollbarChunk);
+        auto cursorImageChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageCursor", UdaAttribute(), scrollbarChunk);
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
         LengthType scrollbarWidthType;
         float scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width", scrollbarWidthType);
@@ -39,7 +39,7 @@ namespace urchin {
         auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
         auto cursorWidthInPixel = scrollableWidget.widthLengthToPixel(scrollbarWidth, scrollbarWidthType, [](){return 0.0f;});
 
-        auto lineImageChunk = UISkinService::instance().getSkinReader().getUniqueChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
+        auto lineImageChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
         std::string lineImageFilename = lineImageChunk->getStringValue();
         auto imageLine = loadTexture(scrollbarChunk, "imageLine");
         if (imageCursor->getWidth() != imageLine->getWidth()) {
@@ -131,7 +131,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Scrollbar::loadTexture(const UdaChunk* scrollbarChunk, const std::string& chunkName) const {
-        auto imageElem = UISkinService::instance().getSkinReader().getUniqueChunk(true, chunkName, UdaAttribute(), scrollbarChunk);
+        auto imageElem = UISkinService::instance().getSkinReader().getFirstChunk(true, chunkName, UdaAttribute(), scrollbarChunk);
         auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
         return img->createTexture(false);
     }

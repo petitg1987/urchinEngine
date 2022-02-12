@@ -1,4 +1,3 @@
-#include <sstream>
 #include <iostream>
 #include <stdexcept>
 #include <utility>
@@ -14,8 +13,8 @@ namespace urchin {
 
     }
 
-    std::map<std::string, std::string> PropertyFileHandler::loadPropertyFile() const {
-        std::map<std::string, std::string> properties;
+    std::map<std::string, std::string, std::less<>> PropertyFileHandler::loadPropertyFile() const {
+        std::map<std::string, std::string, std::less<>> properties;
 
         std::string propertyName;
         std::string equalSign;
@@ -46,7 +45,7 @@ namespace urchin {
             }
 
             properties[propertyName] = propertyValue;
-        }while (!file.eof());
+        } while (!file.eof());
 
         return properties;
     }

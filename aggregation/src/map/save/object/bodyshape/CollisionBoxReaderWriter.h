@@ -12,7 +12,7 @@ namespace urchin {
         public:
             ~CollisionBoxReaderWriter() override = default;
 
-            CollisionShape3D* load(const UdaChunk*, const UdaParser&) const override;
+            std::unique_ptr<CollisionShape3D> load(const UdaChunk*, const UdaParser&) const override;
             void write(UdaChunk&, const CollisionShape3D&, UdaWriter&) const override;
 
         private:
