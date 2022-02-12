@@ -184,7 +184,7 @@ namespace urchin {
             this->soundFilename = filename.toUtf8().constData();
             this->soundFilenameText->setText(filename);
 
-            std::string preferredSoundPathString = FileUtil::getDirectory(soundFilename);
+            std::string preferredSoundPathString = std::string(FileUtil::getDirectory(soundFilename));
             preferredSoundPath = QString::fromStdString(preferredSoundPathString);
         }
     }

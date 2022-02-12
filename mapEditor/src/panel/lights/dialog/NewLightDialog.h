@@ -30,7 +30,7 @@ namespace urchin {
             int buildLightEntity(int);
 
             void done(int) override;
-            bool isLightEntityExist(const std::string&);
+            bool isLightEntityExist(std::string_view);
 
             const LightController* lightController;
 

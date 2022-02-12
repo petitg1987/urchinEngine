@@ -31,7 +31,7 @@ namespace urchin {
             const std::string& getRelativeWorkingDirectory() const;
 
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
-            ObjectEntity& getObjectEntity(const std::string&) const;
+            ObjectEntity& getObjectEntity(std::string_view) const;
             void findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const;
             ObjectEntity* findObjectEntityByTag(const std::string&) const;
             ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
@@ -40,17 +40,17 @@ namespace urchin {
             bool moveDownObjectEntity(ObjectEntity&);
 
             const std::list<std::unique_ptr<LightEntity>>& getLightEntities() const;
-            LightEntity& getLightEntity(const std::string&) const;
+            LightEntity& getLightEntity(std::string_view) const;
             LightEntity& addLightEntity(std::unique_ptr<LightEntity>);
             void removeLightEntity(LightEntity&);
 
             const std::list<std::unique_ptr<TerrainEntity>>& getTerrainEntities() const;
-            TerrainEntity& getTerrainEntity(const std::string&) const;
+            TerrainEntity& getTerrainEntity(std::string_view) const;
             TerrainEntity& addTerrainEntity(std::unique_ptr<TerrainEntity>);
             void removeTerrainEntity(TerrainEntity&);
 
             const std::list<std::unique_ptr<WaterEntity>>& getWaterEntities() const;
-            WaterEntity& getWaterEntity(const std::string&) const;
+            WaterEntity& getWaterEntity(std::string_view) const;
             WaterEntity& addWaterEntity(std::unique_ptr<WaterEntity>);
             void removeWaterEntity(WaterEntity&);
 
@@ -58,7 +58,7 @@ namespace urchin {
             void setSkyEntity(std::unique_ptr<SkyEntity>);
 
             const std::list<std::unique_ptr<SoundEntity>>& getSoundEntities() const;
-            SoundEntity& getSoundEntity(const std::string&) const;
+            SoundEntity& getSoundEntity(std::string_view) const;
             SoundEntity& addSoundEntity(std::unique_ptr<SoundEntity>);
             void removeSoundEntity(SoundEntity&);
 

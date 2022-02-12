@@ -10,7 +10,7 @@ namespace urchin {
 
     }
 
-    std::string LanguageTranslator::translate(const std::string& labelKey) const {
+    std::string LanguageTranslator::translate(std::string_view labelKey) const {
         return labelTranslator.translate(language, labelKey);
     }
 

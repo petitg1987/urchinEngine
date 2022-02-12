@@ -60,10 +60,10 @@ namespace urchin {
         }
     }
 
-    void Profiler::stopProfile(const std::string& nodeName) {
+    void Profiler::stopProfile(std::string_view nodeName) {
         if (isEnable) {
             if (!nodeName.empty() && currentNode->getName() != nodeName) {
-                throw std::runtime_error("Impossible to stop node '" + nodeName + "' because current node is '" + currentNode->getName() + "'");
+                throw std::runtime_error("Impossible to stop node '" + std::string(nodeName) + "' because current node is '" + currentNode->getName() + "'");
             }
 
             if (currentNode->getParent() == nullptr) {

@@ -86,7 +86,7 @@ namespace urchin {
         return std::string(stringConvert.to_bytes(allText));
     }
 
-    void TextBox::updateText(const std::string& text) {
+    void TextBox::updateText(std::string_view text) {
         allText = U32StringA(text.begin(), text.end());
         refreshText((int)allText.length(), true);
     }

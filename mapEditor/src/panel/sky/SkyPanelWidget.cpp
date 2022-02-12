@@ -157,7 +157,7 @@ namespace urchin {
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, imageFilenamePath);
             skyboxFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectory(imageFilenamePath);
+            std::string preferredPathString = std::string(FileUtil::getDirectory(imageFilenamePath));
             preferredSkyboxPath = QString::fromStdString(preferredPathString);
 
             try {

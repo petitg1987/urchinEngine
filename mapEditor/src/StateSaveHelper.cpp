@@ -20,14 +20,14 @@ namespace urchin {
     }
 
     void StateSaveHelper::saveState(const std::string& stateId, const std::string& stateValue) {
-        std::map<std::string, std::string> properties = propertyFileHandler->loadPropertyFile();
+        std::map<std::string, std::string, std::less<>> properties = propertyFileHandler->loadPropertyFile();
         properties[stateId] = stateValue;
 
         propertyFileHandler->savePropertyFile(properties);
     }
 
     std::string StateSaveHelper::retrieveState(const std::string& stateId, const std::string& defaultValue) const {
-        std::map<std::string, std::string> properties = propertyFileHandler->loadPropertyFile();
+        std::map<std::string, std::string, std::less<>> properties = propertyFileHandler->loadPropertyFile();
         return MapUtil::getWithDefault(properties, stateId, defaultValue);
     }
 

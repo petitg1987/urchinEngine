@@ -17,7 +17,7 @@ namespace urchin {
             void loadProperties(const std::string&);
             void loadProperties(const std::string&, const std::string&);
 
-            bool isExist(const std::string&) const;
+            bool isExist(std::string_view) const;
 
             unsigned int getUnsignedIntValue(std::string_view) const;
             float getFloatValue(std::string_view) const;

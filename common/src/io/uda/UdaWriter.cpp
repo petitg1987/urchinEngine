@@ -15,7 +15,7 @@ namespace urchin {
     }
 
     UdaChunk& UdaWriter::createChunk(std::string chunkName, const UdaAttribute& attribute, UdaChunk* parent) {
-        std::map<std::string, std::string> attributes;
+        std::map<std::string, std::string, std::less<>> attributes;
         if (!attribute.getAttributeName().empty()) {
             attributes.try_emplace(attribute.getAttributeName(), attribute.getAttributeValue());
         }

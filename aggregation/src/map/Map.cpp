@@ -41,13 +41,13 @@ namespace urchin {
         return objectEntities;
     }
 
-    ObjectEntity& Map::getObjectEntity(const std::string& name) const {
+    ObjectEntity& Map::getObjectEntity(std::string_view name) const {
         for (auto& objectEntity : objectEntities) {
             if (objectEntity->getName() == name) {
                 return *objectEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a object entity having name: " + name);
+        throw std::invalid_argument("Impossible to find a object entity having name: " + std::string(name));
     }
 
     void Map::findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const {
@@ -106,13 +106,13 @@ namespace urchin {
         return lightEntities;
     }
 
-    LightEntity& Map::getLightEntity(const std::string& name) const {
+    LightEntity& Map::getLightEntity(std::string_view name) const {
         for (auto& lightEntity : lightEntities) {
             if (lightEntity->getName() == name) {
                 return *lightEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a light entity having name: " + name);
+        throw std::invalid_argument("Impossible to find a light entity having name: " + std::string(name));
     }
 
     LightEntity& Map::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
@@ -129,13 +129,13 @@ namespace urchin {
         return terrainEntities;
     }
 
-    TerrainEntity& Map::getTerrainEntity(const std::string& name) const {
+    TerrainEntity& Map::getTerrainEntity(std::string_view name) const {
         for (auto& terrainEntity : terrainEntities) {
             if (terrainEntity->getName() == name) {
                 return *terrainEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a terrain entity having name: " + name);
+        throw std::invalid_argument("Impossible to find a terrain entity having name: " + std::string(name));
     }
 
     TerrainEntity& Map::addTerrainEntity(std::unique_ptr<TerrainEntity> terrainEntity) {
@@ -152,13 +152,13 @@ namespace urchin {
         return waterEntities;
     }
 
-    WaterEntity& Map::getWaterEntity(const std::string& name) const {
+    WaterEntity& Map::getWaterEntity(std::string_view name) const {
         for (auto& waterEntity : waterEntities) {
             if (waterEntity->getName() == name) {
                 return *waterEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a water entity having name: " + name);
+        throw std::invalid_argument("Impossible to find a water entity having name: " + std::string(name));
     }
 
     WaterEntity& Map::addWaterEntity(std::unique_ptr<WaterEntity> waterEntity) {
@@ -184,13 +184,13 @@ namespace urchin {
         return soundEntities;
     }
 
-    SoundEntity& Map::getSoundEntity(const std::string& name) const {
+    SoundEntity& Map::getSoundEntity(std::string_view name) const {
         for (auto& soundEntity : soundEntities) {
             if (soundEntity->getName() == name) {
                 return *soundEntity;
             }
         }
-        throw std::invalid_argument("Impossible to find a sound entity having name: " + name);
+        throw std::invalid_argument("Impossible to find a sound entity having name: " + std::string(name));
     }
 
     SoundEntity& Map::addSoundEntity(std::unique_ptr<SoundEntity> soundEntity) {

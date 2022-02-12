@@ -186,7 +186,7 @@ namespace urchin {
             ssize_t readSize = readlink("/proc/self/exe", buffer.data(), buffer.size());
             if (readSize > 0) {
                 std::string executablePath(buffer.data(), (unsigned long)readSize);
-                return FileUtil::getDirectory(executablePath);
+                return std::string(FileUtil::getDirectory(executablePath));
             }
             throw std::runtime_error("Cannot read /proc/self/exe on Linux system.");
         #endif

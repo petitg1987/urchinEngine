@@ -33,7 +33,7 @@ namespace urchin {
         }
     }
 
-    bool ConfigService::isExist(const std::string& propertyName) const {
+    bool ConfigService::isExist(std::string_view propertyName) const {
         auto it = properties.find(propertyName);
         return it != properties.end();
     }

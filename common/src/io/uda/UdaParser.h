@@ -19,7 +19,7 @@ namespace urchin {
 
         private:
             void loadFile(std::ifstream&);
-            unsigned int computeIndentLevel(const std::string&) const;
+            unsigned int computeIndentLevel(std::string_view) const;
             std::unique_ptr<UdaChunk> buildChunk(const std::string& rawContentLine, UdaChunk* parent) const;
 
             bool isNodeMatchCriteria(UdaChunk&, std::string_view, const UdaAttribute&) const;

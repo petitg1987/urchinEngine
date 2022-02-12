@@ -134,7 +134,7 @@ namespace urchin {
         }
     }
 
-    bool ValidationLayer::ignoreValidationMessage(const std::string& validationMessage) {
+    bool ValidationLayer::ignoreValidationMessage(std::string_view validationMessage) {
         return std::ranges::any_of(filterOutMessages, [&validationMessage](const auto& filterOutMessage){
             return validationMessage.find(filterOutMessage) != std::string::npos;
         });

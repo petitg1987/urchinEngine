@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    UdaChunk::UdaChunk(std::string name, std::string value, std::map<std::string, std::string> attributes, UdaChunk* parent):
+    UdaChunk::UdaChunk(std::string name, std::string value, std::map<std::string, std::string, std::less<>> attributes, UdaChunk* parent):
             name(std::move(name)),
             value(std::move(value)),
             attributes(std::move(attributes)),
@@ -17,11 +17,11 @@ namespace urchin {
         return name;
     }
 
-    const std::map<std::string, std::string>& UdaChunk::getAttributes() const {
+    const std::map<std::string, std::string, std::less<>>& UdaChunk::getAttributes() const {
         return attributes;
     }
 
-    std::string UdaChunk::getAttributeValue(const std::string& attributeName) const {
+    std::string UdaChunk::getAttributeValue(std::string_view attributeName) const {
         auto itFind = attributes.find(attributeName);
         if (itFind != attributes.end()) {
             return itFind->second;

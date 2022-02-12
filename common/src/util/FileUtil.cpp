@@ -36,11 +36,11 @@ namespace urchin {
         return info.st_size;
     }
 
-    void FileUtil::createDirectory(const std::string& directory) {
+    void FileUtil::createDirectory(std::string_view directory) {
         std::error_code errorCode;
         std::filesystem::create_directories(directory, errorCode);
         if (errorCode.value() != 0) {
-            throw UserAuthorityException("Unable to create the directory: " + directory, "Check that the application has enough right to create the directory: " + directory);
+            throw UserAuthorityException("Unable to create the directory: " + std::string(directory), "Check that the application has enough right to create the directory: " + std::string(directory));
         }
     }
 
@@ -51,7 +51,7 @@ namespace urchin {
         }
     }
 
-    void FileUtil::copyDirectoryContent(const std::string& srcDirectory, const std::string& dstDirectory) {
+    void FileUtil::copyDirectoryContent(std::string_view srcDirectory, const std::string& dstDirectory) {
         //Similar to "std::filesystem::copy(src, dst, std::filesystem::copy_options::skip_existing);" method
         //Unfortunately, the "copy" method doesn't work correctly on MSYS2: https://github.com/msys2/MSYS2-packages/issues/1937
 
@@ -59,7 +59,7 @@ namespace urchin {
         for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
             if (entry.is_regular_file()) {
                 std::string srcFile = entry.path().string();
-                std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
+                std::string dstFile = dstDirectory + std::string(FileUtil::getFileName(srcFile));
 
                 if (!isFileExist(dstFile)) {
                     copyFile(srcFile, dstFile);
@@ -99,7 +99,7 @@ namespace urchin {
         dst << src.rdbuf();
     }
 
-    void FileUtil::deleteDirectory(const std::string& directory) {
+    void FileUtil::deleteDirectory(std::string_view directory) {
         checkDirectory(directory);
         std::filesystem::remove_all(directory);
     }
@@ -107,7 +107,7 @@ namespace urchin {
     /**
      * @return File extension. If not extension found: return empty string
      */
-    std::string FileUtil::getFileExtension(const std::string& filePath) {
+    std::string_view FileUtil::getFileExtension(std::string_view filePath) {
         std::size_t extensionPos = filePath.find_last_of('.');
         if (extensionPos == std::string::npos) {
             return "";
@@ -116,7 +116,7 @@ namespace urchin {
         return filePath.substr(extensionPos + 1, filePath.size() - extensionPos);
     }
 
-    std::string FileUtil::getFileName(const std::string& filePath) {
+    std::string_view FileUtil::getFileName(std::string_view filePath) {
         std::size_t fileNamePos = filePath.find_last_of("/\\");
         if (fileNamePos == std::string::npos) {
             return filePath;
@@ -125,14 +125,14 @@ namespace urchin {
         return filePath.substr(fileNamePos + 1);
     }
 
-    std::string FileUtil::getFileNameNoExtension(const std::string& filePath) {
-        std::string fileName = getFileName(filePath);
-        std::string extension = getFileExtension(filePath);
+    std::string_view FileUtil::getFileNameNoExtension(std::string_view filePath) {
+        std::string_view fileName = getFileName(filePath);
+        std::string_view extension = getFileExtension(filePath);
 
         return fileName.substr(0, fileName.size() - 1 - extension.size());
     }
 
-    std::string FileUtil::getDirectory(const std::string& filePath) {
+    std::string_view FileUtil::getDirectory(std::string_view filePath) {
         std::size_t found = filePath.find_last_of("/\\");
         if (found == std::string::npos) {
             return "./";
@@ -193,13 +193,13 @@ namespace urchin {
         return simplifiedDirectoryPath;
     }
 
-    void FileUtil::checkDirectory(const std::string& directory) {
+    void FileUtil::checkDirectory(std::string_view directory) {
         if (directory.empty()) {
             throw std::invalid_argument("Specified directory cannot be null.");
         }
 
         if (directory.find_last_of("/\\") != directory.size() - 1) {
-            throw std::invalid_argument("A directory must end by a slash character: " + directory);
+            throw std::invalid_argument("A directory must end by a slash character: " + std::string(directory));
         }
     }
 

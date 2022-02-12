@@ -112,7 +112,7 @@ namespace urchin {
         }
     }
 
-    unsigned int UdaParser::computeIndentLevel(const std::string& lineContent) const {
+    unsigned int UdaParser::computeIndentLevel(std::string_view lineContent) const {
         unsigned int numberSpaces = 0;
         for (const char& c : lineContent) {
             if (!std::isspace(c)) {
@@ -121,7 +121,7 @@ namespace urchin {
             numberSpaces++;
         }
         if (numberSpaces % UdaChunk::INDENT_SPACES != 0) {
-            throw std::runtime_error("Line content (" + lineContent +") with wrong indentation in file: " + filenamePath);
+            throw std::runtime_error("Line content (" + std::string(lineContent) +") with wrong indentation in file: " + filenamePath);
         }
         return numberSpaces / UdaChunk::INDENT_SPACES;
     }
@@ -137,7 +137,7 @@ namespace urchin {
 
         std::string name = matches[1].str();
         std::string value = matches[3].str();
-        std::map<std::string, std::string> attributes;
+        std::map<std::string, std::string, std::less<>> attributes;
 
         std::string attributesString = matches[2].str();
         if (!attributesString.empty()) {

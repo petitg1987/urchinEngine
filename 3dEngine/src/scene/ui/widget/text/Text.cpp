@@ -115,21 +115,25 @@ namespace urchin {
     }
 
     std::string Text::evaluateText(const std::optional<LanguageTranslator>& languageTranslator) const {
-        std::string evaluatedText = inputText;
-        if (!evaluatedText.empty() && evaluatedText[0] == TRANSLATABLE_TEXT_PREFIX) {
+        std::string evaluatedText;
+        if (!inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX) {
             if (!languageTranslator.has_value()) {
                 throw std::runtime_error("Language translator missing for text: " + inputText);
             }
-            evaluatedText = languageTranslator->translate(evaluatedText.substr(1));
+            evaluatedText = languageTranslator->translate(std::string_view(inputText).substr(1));
+        } else {
+            evaluatedText = inputText;
         }
 
         for (const std::string& inputTextParameter : inputTextParameters) {
-            std::string paramValue = inputTextParameter;
-            if (!paramValue.empty() && paramValue[0] == TRANSLATABLE_TEXT_PREFIX) {
+            std::string paramValue;
+            if (!inputTextParameter.empty() && inputTextParameter[0] == TRANSLATABLE_TEXT_PREFIX) {
                 if (!languageTranslator.has_value()) {
                     throw std::runtime_error("Language translator missing for text: " + inputText);
                 }
-                paramValue = languageTranslator->translate(paramValue.substr(1));
+                paramValue = languageTranslator->translate(std::string_view(inputTextParameter).substr(1));
+            } else {
+                paramValue = inputTextParameter;
             }
 
             evaluatedText = std::regex_replace(evaluatedText, parameterRegex, paramValue, std::regex_constants::format_first_only);

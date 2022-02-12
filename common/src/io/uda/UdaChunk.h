@@ -21,12 +21,12 @@ namespace urchin {
             static constexpr char ATTRIBUTES_SEPARATOR = ';';
             static constexpr char ATTRIBUTES_ASSIGN = '=';
 
-            UdaChunk(std::string, std::string, std::map<std::string, std::string>, UdaChunk*);
+            UdaChunk(std::string, std::string, std::map<std::string, std::string, std::less<>>, UdaChunk*);
 
             const std::string& getName() const;
 
-            const std::map<std::string, std::string>& getAttributes() const;
-            std::string getAttributeValue(const std::string&) const;
+            const std::map<std::string, std::string, std::less<>>& getAttributes() const;
+            std::string getAttributeValue(std::string_view) const;
             void addAttribute(const UdaAttribute&);
 
             UdaChunk* getParent() const;
@@ -93,7 +93,7 @@ namespace urchin {
         private:
             std::string name;
             std::string value;
-            std::map<std::string, std::string> attributes;
+            std::map<std::string, std::string, std::less<>> attributes;
 
             UdaChunk* parent;
             std::vector<std::unique_ptr<UdaChunk>> children;
