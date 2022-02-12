@@ -13,7 +13,7 @@ namespace urchin {
     class CollisionSphereShape : public CollisionShape3D {
         public:
             explicit CollisionSphereShape(float);
-            CollisionSphereShape(CollisionSphereShape&&) noexcept;
+            CollisionSphereShape(CollisionSphereShape&&) noexcept = default;
             CollisionSphereShape(const CollisionSphereShape&) = delete;
             ~CollisionSphereShape() override = default;
 
@@ -33,7 +33,7 @@ namespace urchin {
             std::unique_ptr<CollisionShape3D> clone() const override;
 
         private:
-            std::unique_ptr<SphereShape<float>> sphereShape; //shape including margin
+            SphereShape<float> sphereShape; //shape including margin
     };
 
 }

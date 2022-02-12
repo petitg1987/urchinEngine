@@ -12,7 +12,7 @@ namespace urchin {
     class CollisionConeShape : public CollisionShape3D {
         public:
             CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
-            CollisionConeShape(CollisionConeShape&&) noexcept;
+            CollisionConeShape(CollisionConeShape&&) noexcept = default;
             CollisionConeShape(const CollisionConeShape&) = delete;
             ~CollisionConeShape() override = default;
 
@@ -36,7 +36,7 @@ namespace urchin {
         private:
             void computeSafeMargin();
 
-            std::unique_ptr<ConeShape<float>> coneShape; //shape including margin
+            ConeShape<float> coneShape; //shape including margin
     };
 
 }

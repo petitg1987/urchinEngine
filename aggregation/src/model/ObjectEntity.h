@@ -21,7 +21,7 @@ namespace urchin {
             Model* getModel() const;
             const std::shared_ptr<Model>& getModelPtr() const;
 
-            void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
+            void setupInteractiveBody(std::shared_ptr<RigidBody>);
             RigidBody* getRigidBody() const;
             const std::shared_ptr<RigidBody>& getRigidBodyPtr() const;
 
@@ -29,7 +29,7 @@ namespace urchin {
 
         private:
             void setup(Renderer3d&, PhysicsWorld&, AIEnvironment&);
-            void setupRigidBody(const std::shared_ptr<RigidBody>&);
+            void setupRigidBody(std::shared_ptr<RigidBody>);
             void setupAIObject();
 
             void deleteRigidBody();

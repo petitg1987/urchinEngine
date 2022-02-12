@@ -5,13 +5,8 @@ namespace urchin {
 
     CollisionConeShape::CollisionConeShape(float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
             CollisionShape3D(),
-            coneShape(std::make_unique<ConeShape<float>>(radius, height, coneOrientation)) {
+            coneShape(ConeShape<float>(radius, height, coneOrientation)) {
         computeSafeMargin();
-    }
-
-    CollisionConeShape::CollisionConeShape(CollisionConeShape&& collisionConeShape) noexcept :
-            CollisionShape3D(collisionConeShape),
-            coneShape(std::exchange(collisionConeShape.coneShape, nullptr)) {
     }
 
     void CollisionConeShape::computeSafeMargin() {
@@ -27,32 +22,32 @@ namespace urchin {
     }
 
     const ConvexShape3D<float>& CollisionConeShape::getSingleShape() const {
-        return *coneShape;
+        return coneShape;
     }
 
     float CollisionConeShape::getRadius() const {
-        return coneShape->getRadius();
+        return coneShape.getRadius();
     }
 
     float CollisionConeShape::getHeight() const {
-        return coneShape->getHeight();
+        return coneShape.getHeight();
     }
 
     ConeShape<float>::ConeOrientation CollisionConeShape::getConeOrientation() const {
-        return coneShape->getConeOrientation();
+        return coneShape.getConeOrientation();
     }
 
     std::unique_ptr<CollisionShape3D> CollisionConeShape::scale(const Vector3<float>& scale) const {
-        std::size_t heightAxis = (coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE || coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) ? 0 :
-                                 (coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE || coneShape->getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) ? 1 : 2;
+        std::size_t heightAxis = (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) ? 0 :
+                                 (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) ? 1 : 2;
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Cone cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
         float radiusScale = std::min(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3]);
-        float newRadius = std::max(0.001f, coneShape->getRadius() * radiusScale);
-        float newHeight = std::max(0.001f, coneShape->getHeight() * scale[heightAxis]);
-        return std::make_unique<CollisionConeShape>(newRadius, newHeight, coneShape->getConeOrientation());
+        float newRadius = std::max(0.001f, coneShape.getRadius() * radiusScale);
+        float newHeight = std::max(0.001f, coneShape.getHeight() * scale[heightAxis]);
+        return std::make_unique<CollisionConeShape>(newRadius, newHeight, coneShape.getConeOrientation());
     }
 
     AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform& physicsTransform) const {
@@ -96,15 +91,15 @@ namespace urchin {
     }
 
     float CollisionConeShape::getMaxDistanceToCenter() const {
-        return std::max(coneShape->getHeight() / 2.0f, coneShape->getRadius());
+        return std::max(coneShape.getHeight() / 2.0f, coneShape.getRadius());
     }
 
     float CollisionConeShape::getMinDistanceToCenter() const {
-        return std::min(coneShape->getHeight() / 2.0f, coneShape->getRadius());
+        return std::min(coneShape.getHeight() / 2.0f, coneShape.getRadius());
     }
 
     std::unique_ptr<CollisionShape3D> CollisionConeShape::clone() const {
-        return std::make_unique<CollisionConeShape>(coneShape->getRadius(), coneShape->getHeight(), coneShape->getConeOrientation());
+        return std::make_unique<CollisionConeShape>(coneShape.getRadius(), coneShape.getHeight(), coneShape.getConeOrientation());
     }
 
 }

@@ -15,10 +15,9 @@ namespace urchin {
     class CollisionTriangleShape : public CollisionShape3D {
         public:
             explicit CollisionTriangleShape(const std::array<Point3<float>, 3>&);
-            CollisionTriangleShape(TriangleShape3D<float>*, FixedSizePool<TriangleShape3D<float>>&);
-            CollisionTriangleShape(CollisionTriangleShape&&) noexcept;
+            explicit CollisionTriangleShape(TriangleShape3D<float>);
+            CollisionTriangleShape(CollisionTriangleShape&&) noexcept = default;
             CollisionTriangleShape(const CollisionTriangleShape&) = delete;
-            ~CollisionTriangleShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
             const ConvexShape3D<float>& getSingleShape() const override;
@@ -35,8 +34,7 @@ namespace urchin {
             std::unique_ptr<CollisionShape3D> clone() const override;
 
         private:
-            std::unique_ptr<TriangleShape3D<float>> triangleShape; //shape including margin
-            FixedSizePool<TriangleShape3D<float>>* triangleShapesPool;
+            TriangleShape3D<float> triangleShape; //shape including margin
     };
 
 }

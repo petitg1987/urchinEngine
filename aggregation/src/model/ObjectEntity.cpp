@@ -61,8 +61,8 @@ namespace urchin {
         return model;
     }
 
-    void ObjectEntity::setupInteractiveBody(const std::shared_ptr<RigidBody>& rigidBody) {
-        setupRigidBody(rigidBody);
+    void ObjectEntity::setupInteractiveBody(std::shared_ptr<RigidBody> rigidBody) {
+        setupRigidBody(std::move(rigidBody));
         setupAIObject();
     }
 
@@ -74,12 +74,12 @@ namespace urchin {
         return rigidBody;
     }
 
-    void ObjectEntity::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
+    void ObjectEntity::setupRigidBody(std::shared_ptr<RigidBody> rigidBody) {
         deleteRigidBody();
 
-        this->rigidBody = rigidBody;
-        if (physicsWorld && rigidBody) {
-            physicsWorld->addBody(rigidBody);
+        this->rigidBody = std::move(rigidBody);
+        if (physicsWorld && this->rigidBody) {
+            physicsWorld->addBody(this->rigidBody);
         }
     }
 

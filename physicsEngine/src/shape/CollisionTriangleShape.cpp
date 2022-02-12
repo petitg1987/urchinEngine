@@ -5,28 +5,14 @@ namespace urchin {
 
     CollisionTriangleShape::CollisionTriangleShape(const std::array<Point3<float>, 3>& points) :
             CollisionShape3D(),
-            triangleShape(std::make_unique<TriangleShape3D<float>>(points)),
-            triangleShapesPool(nullptr) {
+            triangleShape(TriangleShape3D<float>(points)) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float>* triangleShape, FixedSizePool<TriangleShape3D<float>>& triangleShapesPool) :
+    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float> triangleShape) :
             CollisionShape3D(),
-            triangleShape(std::unique_ptr<TriangleShape3D<float>>(triangleShape)),
-            triangleShapesPool(&triangleShapesPool) {
+            triangleShape(std::move(triangleShape)) {
         refreshInnerMargin(0.0f); //no margin for triangle
-    }
-
-    CollisionTriangleShape::CollisionTriangleShape(CollisionTriangleShape&& collisionTriangleShape) noexcept :
-            CollisionShape3D(collisionTriangleShape),
-            triangleShape(std::exchange(collisionTriangleShape.triangleShape, nullptr)),
-            triangleShapesPool(std::exchange(collisionTriangleShape.triangleShapesPool, nullptr)) {
-    }
-
-    CollisionTriangleShape::~CollisionTriangleShape() {
-        if (triangleShapesPool) {
-            triangleShapesPool->deallocate(triangleShape.release());
-        }
     }
 
     CollisionShape3D::ShapeType CollisionTriangleShape::getShapeType() const {
@@ -34,7 +20,7 @@ namespace urchin {
     }
 
     const ConvexShape3D<float>& CollisionTriangleShape::getSingleShape() const {
-        return *triangleShape;
+        return triangleShape;
     }
 
     std::unique_ptr<CollisionShape3D> CollisionTriangleShape::scale(const Vector3<float>&) const {
@@ -50,9 +36,9 @@ namespace urchin {
 
         void* memPtr = getObjectsPool().allocate(sizeof(CollisionTriangleObject));
         auto* collisionObjectPtr = new (memPtr) CollisionTriangleObject(getInnerMargin(),
-                physicsTransform.transform(triangleShape->getPoints()[0]),
-                physicsTransform.transform(triangleShape->getPoints()[1]),
-                physicsTransform.transform(triangleShape->getPoints()[2]));
+                physicsTransform.transform(triangleShape.getPoints()[0]),
+                physicsTransform.transform(triangleShape.getPoints()[1]),
+                physicsTransform.transform(triangleShape.getPoints()[2]));
         return std::unique_ptr<CollisionTriangleObject, ObjectDeleter>(collisionObjectPtr);
     }
 
@@ -69,7 +55,7 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionTriangleShape::clone() const {
-        return std::make_unique<CollisionTriangleShape>(triangleShape->getPoints());
+        return std::make_unique<CollisionTriangleShape>(triangleShape.getPoints());
     }
 
 }

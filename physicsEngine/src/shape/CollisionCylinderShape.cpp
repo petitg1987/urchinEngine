@@ -5,13 +5,8 @@ namespace urchin {
 
     CollisionCylinderShape::CollisionCylinderShape(float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
             CollisionShape3D(),
-            cylinderShape(std::make_unique<CylinderShape<float>>(radius, height, cylinderOrientation)) {
+            cylinderShape(CylinderShape<float>(radius, height, cylinderOrientation)) {
         computeSafeMargin();
-    }
-
-    CollisionCylinderShape::CollisionCylinderShape(CollisionCylinderShape&& collisionCylinderShape) noexcept :
-            CollisionShape3D(collisionCylinderShape),
-            cylinderShape(std::exchange(collisionCylinderShape.cylinderShape, nullptr)) {
     }
 
     void CollisionCylinderShape::computeSafeMargin() {
@@ -27,32 +22,32 @@ namespace urchin {
     }
 
     const ConvexShape3D<float>& CollisionCylinderShape::getSingleShape() const {
-        return *cylinderShape;
+        return cylinderShape;
     }
 
     float CollisionCylinderShape::getRadius() const {
-        return cylinderShape->getRadius();
+        return cylinderShape.getRadius();
     }
 
     float CollisionCylinderShape::getHeight() const {
-        return cylinderShape->getHeight();
+        return cylinderShape.getHeight();
     }
 
     CylinderShape<float>::CylinderOrientation CollisionCylinderShape::getCylinderOrientation() const {
-        return cylinderShape->getCylinderOrientation();
+        return cylinderShape.getCylinderOrientation();
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCylinderShape::scale(const Vector3<float>& scale) const {
-        std::size_t heightAxis = (cylinderShape->getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_X) ? 0 :
-                                 (cylinderShape->getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_Y) ? 1 : 2;
+        std::size_t heightAxis = (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_X) ? 0 :
+                                 (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_Y) ? 1 : 2;
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Cylinder cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
         float radiusScale = std::min(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3]);
-        float newRadius = std::max(0.001f, cylinderShape->getRadius() * radiusScale);
-        float newHeight = std::max(0.001f, cylinderShape->getHeight() * scale[heightAxis]);
-        return std::make_unique<CollisionCylinderShape>(newRadius, newHeight, cylinderShape->getCylinderOrientation());
+        float newRadius = std::max(0.001f, cylinderShape.getRadius() * radiusScale);
+        float newHeight = std::max(0.001f, cylinderShape.getHeight() * scale[heightAxis]);
+        return std::make_unique<CollisionCylinderShape>(newRadius, newHeight, cylinderShape.getCylinderOrientation());
     }
 
     AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {
@@ -91,15 +86,15 @@ namespace urchin {
     }
 
     float CollisionCylinderShape::getMaxDistanceToCenter() const {
-        return std::max(cylinderShape->getHeight() / 2.0f, cylinderShape->getRadius());
+        return std::max(cylinderShape.getHeight() / 2.0f, cylinderShape.getRadius());
     }
 
     float CollisionCylinderShape::getMinDistanceToCenter() const {
-        return std::min(cylinderShape->getHeight() / 2.0f, cylinderShape->getRadius());
+        return std::min(cylinderShape.getHeight() / 2.0f, cylinderShape.getRadius());
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCylinderShape::clone() const {
-        return std::make_unique<CollisionCylinderShape>(cylinderShape->getRadius(), cylinderShape->getHeight(), cylinderShape->getCylinderOrientation());
+        return std::make_unique<CollisionCylinderShape>(cylinderShape.getRadius(), cylinderShape.getHeight(), cylinderShape.getCylinderOrientation());
     }
 
 }

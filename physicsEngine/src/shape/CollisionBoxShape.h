@@ -13,7 +13,7 @@ namespace urchin {
     class CollisionBoxShape : public CollisionShape3D {
         public:
             explicit CollisionBoxShape(const Vector3<float>&);
-            CollisionBoxShape(CollisionBoxShape&&) noexcept;
+            CollisionBoxShape(CollisionBoxShape&&) noexcept = default;
             CollisionBoxShape(const CollisionBoxShape&) = delete;
             ~CollisionBoxShape() override = default;
 
@@ -36,7 +36,7 @@ namespace urchin {
         private:
             void computeSafeMargin();
 
-            std::unique_ptr<BoxShape<float>> boxShape; //shape including margin
+            BoxShape<float> boxShape; //shape including margin
     };
 
 }

@@ -12,7 +12,7 @@ namespace urchin {
     class CollisionCylinderShape : public CollisionShape3D {
         public:
             CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
-            CollisionCylinderShape(CollisionCylinderShape&&) noexcept;
+            CollisionCylinderShape(CollisionCylinderShape&&) noexcept = default;
             CollisionCylinderShape(const CollisionCylinderShape&) = delete;
             ~CollisionCylinderShape() override = default;
 
@@ -36,7 +36,7 @@ namespace urchin {
         private:
             void computeSafeMargin();
 
-            std::unique_ptr<CylinderShape<float>> cylinderShape; //shape including margin
+            CylinderShape<float> cylinderShape; //shape including margin
     };
 
 }

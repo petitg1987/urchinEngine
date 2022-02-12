@@ -44,7 +44,7 @@ namespace urchin {
                 Z
             };
 
-            std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
+            BoxShape<float> buildLocalAABBox() const;
             std::pair<unsigned int, unsigned int> computeStartEndIndices(float, float, Axis) const;
             void createTrianglesMatchHeight(unsigned int, unsigned int, float, float) const;
             void createCollisionTriangleShape(const Point3<float>&, const Point3<float>&, const Point3<float>&) const;
@@ -53,10 +53,9 @@ namespace urchin {
             unsigned int xLength;
             unsigned int zLength;
 
-            std::unique_ptr<BoxShape<float>> localAABBox;
+            BoxShape<float> localAABBox;
             
             mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
-            std::unique_ptr<FixedSizePool<TriangleShape3D<float>>> triangleShapesPool;
     };
 
 }

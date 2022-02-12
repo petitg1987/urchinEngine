@@ -8,13 +8,8 @@ namespace urchin {
     */
     CollisionSphereShape::CollisionSphereShape(float innerMargin) :
             CollisionShape3D(innerMargin),
-            sphereShape(std::make_unique<SphereShape<float>>(innerMargin)) {
+            sphereShape(SphereShape<float>(innerMargin)) {
 
-    }
-
-    CollisionSphereShape::CollisionSphereShape(CollisionSphereShape&& collisionSphereShape) noexcept :
-            CollisionShape3D(collisionSphereShape),
-            sphereShape(std::exchange(collisionSphereShape.sphereShape, nullptr)) {
     }
 
     CollisionShape3D::ShapeType CollisionSphereShape::getShapeType() const {
@@ -22,11 +17,11 @@ namespace urchin {
     }
 
     const ConvexShape3D<float>& CollisionSphereShape::getSingleShape() const {
-        return *sphereShape;
+        return sphereShape;
     }
 
     float CollisionSphereShape::getRadius() const {
-        return sphereShape->getRadius();
+        return sphereShape.getRadius();
     }
 
     std::unique_ptr<CollisionShape3D> CollisionSphereShape::scale(const Vector3<float>& scale) const {
@@ -35,14 +30,14 @@ namespace urchin {
         }
 
         float radiusScale = std::min(scale.X, std::min(scale.Y, scale.Z));
-        float newRadius = std::max(0.001f, sphereShape->getRadius() * radiusScale);
+        float newRadius = std::max(0.001f, sphereShape.getRadius() * radiusScale);
         return std::make_unique<CollisionSphereShape>(newRadius);
     }
 
     AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         const Point3<float>& position = physicsTransform.getPosition();
 
-        return AABBox<float>(position - sphereShape->getRadius(), position + sphereShape->getRadius());
+        return AABBox<float>(position - sphereShape.getRadius(), position + sphereShape.getRadius());
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionSphereShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
@@ -54,20 +49,20 @@ namespace urchin {
     }
 
     Vector3<float> CollisionSphereShape::computeLocalInertia(float mass) const {
-        float localInertia = (2.0f / 5.0f) * mass * sphereShape->getRadius() * sphereShape->getRadius();
+        float localInertia = (2.0f / 5.0f) * mass * sphereShape.getRadius() * sphereShape.getRadius();
         return Vector3<float>(localInertia, localInertia, localInertia);
     }
 
     float CollisionSphereShape::getMaxDistanceToCenter() const {
-        return sphereShape->getRadius();
+        return sphereShape.getRadius();
     }
 
     float CollisionSphereShape::getMinDistanceToCenter() const {
-        return sphereShape->getRadius();
+        return sphereShape.getRadius();
     }
 
     std::unique_ptr<CollisionShape3D> CollisionSphereShape::clone() const {
-        return std::make_unique<CollisionSphereShape>(sphereShape->getRadius());
+        return std::make_unique<CollisionSphereShape>(sphereShape.getRadius());
     }
 
 }

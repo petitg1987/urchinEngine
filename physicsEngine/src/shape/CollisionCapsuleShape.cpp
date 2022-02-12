@@ -5,13 +5,8 @@ namespace urchin {
 
     CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
             CollisionShape3D(),
-            capsuleShape(std::make_unique<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation)) {
+            capsuleShape(CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation)) {
         computeSafeMargin();
-    }
-
-    CollisionCapsuleShape::CollisionCapsuleShape(CollisionCapsuleShape&& collisionCapsuleShape) noexcept :
-            CollisionShape3D(collisionCapsuleShape),
-            capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr)) {
     }
 
     void CollisionCapsuleShape::computeSafeMargin() {
@@ -26,33 +21,33 @@ namespace urchin {
     }
 
     const ConvexShape3D<float>& CollisionCapsuleShape::getSingleShape() const {
-        return *capsuleShape;
+        return capsuleShape;
     }
 
     float CollisionCapsuleShape::getRadius() const {
-        return capsuleShape->getRadius();
+        return capsuleShape.getRadius();
     }
 
     float CollisionCapsuleShape::getCylinderHeight() const {
-        return capsuleShape->getCylinderHeight();
+        return capsuleShape.getCylinderHeight();
     }
 
     CapsuleShape<float>::CapsuleOrientation CollisionCapsuleShape::getCapsuleOrientation() const {
-        return capsuleShape->getCapsuleOrientation();
+        return capsuleShape.getCapsuleOrientation();
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCapsuleShape::scale(const Vector3<float>& scale) const {
-        std::size_t heightAxis = (capsuleShape->getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) ? 0 :
-                                 (capsuleShape->getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) ? 1 : 2;
+        std::size_t heightAxis = (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) ? 0 :
+                                 (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) ? 1 : 2;
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Capsule cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
 
         float radiusScale = std::min(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3]);
-        float newRadius = std::max(0.001f, capsuleShape->getRadius() * radiusScale);
-        float originalCylinderHeight = (capsuleShape->getRadius() * 2.0f) + capsuleShape->getCylinderHeight();
-        float newHeight = std::max(0.001f, (originalCylinderHeight * scale[heightAxis]) - 2.0f * (capsuleShape->getRadius() * radiusScale));
-        return std::make_unique<CollisionCapsuleShape>(newRadius, newHeight, capsuleShape->getCapsuleOrientation());
+        float newRadius = std::max(0.001f, capsuleShape.getRadius() * radiusScale);
+        float originalCylinderHeight = (capsuleShape.getRadius() * 2.0f) + capsuleShape.getCylinderHeight();
+        float newHeight = std::max(0.001f, (originalCylinderHeight * scale[heightAxis]) - 2.0f * (capsuleShape.getRadius() * radiusScale));
+        return std::make_unique<CollisionCapsuleShape>(newRadius, newHeight, capsuleShape.getCapsuleOrientation());
     }
 
     AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform& physicsTransform) const {
@@ -95,15 +90,15 @@ namespace urchin {
     }
 
     float CollisionCapsuleShape::getMaxDistanceToCenter() const {
-        return capsuleShape->getCylinderHeight() / 2.0f + capsuleShape->getRadius();
+        return capsuleShape.getCylinderHeight() / 2.0f + capsuleShape.getRadius();
     }
 
     float CollisionCapsuleShape::getMinDistanceToCenter() const {
-        return capsuleShape->getRadius();
+        return capsuleShape.getRadius();
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCapsuleShape::clone() const {
-        return std::make_unique<CollisionCapsuleShape>(capsuleShape->getRadius(), capsuleShape->getCylinderHeight(), capsuleShape->getCapsuleOrientation());
+        return std::make_unique<CollisionCapsuleShape>(capsuleShape.getRadius(), capsuleShape.getCylinderHeight(), capsuleShape.getCapsuleOrientation());
     }
 
 }

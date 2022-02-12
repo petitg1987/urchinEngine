@@ -12,7 +12,7 @@ namespace urchin {
     class CollisionCapsuleShape : public CollisionShape3D {
         public:
             CollisionCapsuleShape(float, float, CapsuleShape<float>::CapsuleOrientation);
-            CollisionCapsuleShape(CollisionCapsuleShape&&) noexcept;
+            CollisionCapsuleShape(CollisionCapsuleShape&&) noexcept = default;
             CollisionCapsuleShape(const CollisionCapsuleShape&) = delete;
             ~CollisionCapsuleShape() override = default;
 
@@ -36,7 +36,7 @@ namespace urchin {
         private:
             void computeSafeMargin();
 
-            std::unique_ptr<CapsuleShape<float>> capsuleShape; //shape including margin
+            CapsuleShape<float> capsuleShape; //shape including margin
     };
 
 }
