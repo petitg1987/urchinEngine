@@ -161,13 +161,13 @@ namespace urchin {
                     PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform() * localizedShape->transform;
                     TemporalObject temporalObject2(*localizedShape->shape, fromToObject2, fromToObject2);
 
-                    continuousCollisionTest(temporalObject1, temporalObject2, *bodyAABBoxHit, continuousCollisionResults);
+                    continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
                 }
             } else if (bodyShape.isConvex()) {
                 PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform();
                 TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
-                continuousCollisionTest(temporalObject1, temporalObject2, *bodyAABBoxHit, continuousCollisionResults);
+                continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
             } else if (bodyShape.isConcave()) {
                 const auto& concaveShape = dynamic_cast<const CollisionConcaveShape&>(bodyShape);
 
@@ -179,12 +179,12 @@ namespace urchin {
                     LineSegment3D<float> ray(fromAABBoxLocalToObject1.getMin(), toAABBoxLocalToObject1.getMin());
                     const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesHitByRay(ray);
 
-                    trianglesContinuousCollisionTest(triangles, temporalObject1, *bodyAABBoxHit, continuousCollisionResults);
+                    trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
                 } else {
                     AABBox<float> temporalAABBoxLocalToObject1 = fromAABBoxLocalToObject1.merge(toAABBoxLocalToObject1);
                     const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 
-                    trianglesContinuousCollisionTest(triangles, temporalObject1, *bodyAABBoxHit, continuousCollisionResults);
+                    trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
                 }
             } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));
@@ -197,11 +197,11 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1, AbstractBody& body2, ccd_set& continuousCollisionResults) const {
-        for (const auto& triangle : triangles) {
-            PhysicsTransform fromToObject2 = body2.getTransform();
-            TemporalObject temporalObject2(triangle, fromToObject2, fromToObject2);
+    void NarrowPhase::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>& triangles, const TemporalObject& temporalObject1, std::shared_ptr<AbstractBody> body2, ccd_set& continuousCollisionResults) const {
+        PhysicsTransform fromToObject2 = body2->getTransform();
 
+        for (const auto& triangle : triangles) {
+            TemporalObject temporalObject2(triangle, fromToObject2, fromToObject2);
             continuousCollisionTest(temporalObject1, temporalObject2, body2, continuousCollisionResults);
         }
     }
@@ -209,9 +209,9 @@ namespace urchin {
     /**
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
-    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2, AbstractBody& body2, ccd_set& continuousCollisionResults) const {
+    void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2, std::shared_ptr<AbstractBody> body2, ccd_set& continuousCollisionResults) const {
         std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> continuousCollisionResult = gjkContinuousCollisionAlgorithm
-                .calculateTimeOfImpact(temporalObject1, temporalObject2, body2);
+                .calculateTimeOfImpact(temporalObject1, temporalObject2, std::move(body2));
 
         if (continuousCollisionResult) {
             continuousCollisionResults.insert(std::move(continuousCollisionResult));

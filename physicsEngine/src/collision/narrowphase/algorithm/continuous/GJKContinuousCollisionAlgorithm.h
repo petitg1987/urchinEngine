@@ -14,7 +14,7 @@ namespace urchin {
     */
     template<class T, class U> class GJKContinuousCollisionAlgorithm {
         public:
-            std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject&, const TemporalObject&, AbstractBody&) const;
+            std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject&, const TemporalObject&, std::shared_ptr<AbstractBody>) const;
 
         private:
             Point3<T> getWorldSupportPoint(const TemporalObject&, const Vector3<T>&, const PhysicsTransform&) const;

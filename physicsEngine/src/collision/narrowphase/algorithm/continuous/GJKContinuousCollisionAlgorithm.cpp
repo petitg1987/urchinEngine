@@ -8,8 +8,8 @@
 
 namespace urchin {
 
-    template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1, const TemporalObject& object2,
-                                                                                                                                                                  AbstractBody& body2) const {
+    template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1,
+            const TemporalObject& object2, std::shared_ptr<AbstractBody> body2) const {
         T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
         Vector3<T> normalFromObject2;
         bool normalFromObject2Defined = false;
@@ -68,7 +68,7 @@ namespace urchin {
                         Point3<T> hitPointOnObject1, hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                        return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(body2, Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
+                        return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
                     } else {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR_LVL);
@@ -80,7 +80,7 @@ namespace urchin {
                     Point3<T> hitPointOnObject1, hitPointOnObject2;
                     simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                    return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(body2, normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
+                    return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
                 }
             }
         }

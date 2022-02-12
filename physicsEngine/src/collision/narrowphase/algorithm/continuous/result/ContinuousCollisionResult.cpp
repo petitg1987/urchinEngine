@@ -1,18 +1,19 @@
+#include <utility>
+
 #include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
 
 namespace urchin {
 
-    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(AbstractBody& body2, const Vector3<T>& normalFromObject2,
-            const Point3<T>& hitPointOnObject2, T timeToHit) :
-            body2(body2),
+    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(std::shared_ptr<AbstractBody> body2, const Vector3<T>& normalFromObject2, const Point3<T>& hitPointOnObject2, T timeToHit) :
+            body2(std::move(body2)),
             normalFromObject2(normalFromObject2),
             hitPointOnObject2(hitPointOnObject2),
             timeToHit(timeToHit) {
-
+        assert(this->body2);
     }
 
     template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const ContinuousCollisionResult& continuousCollisionResult) :
-            body2(continuousCollisionResult.getBody2()),
+            body2(continuousCollisionResult.body2),
             normalFromObject2(continuousCollisionResult.getNormalFromObject2()),
             hitPointOnObject2(continuousCollisionResult.getHitPointOnObject2()),
             timeToHit(continuousCollisionResult.getTimeToHit()) {
@@ -20,7 +21,7 @@ namespace urchin {
     }
 
     template<class T> AbstractBody& ContinuousCollisionResult<T>::getBody2() const {
-        return body2;
+        return *body2;
     }
 
     template<class T> const Vector3<T> &ContinuousCollisionResult<T>::getNormalFromObject2() const {

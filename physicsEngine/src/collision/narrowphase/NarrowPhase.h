@@ -36,8 +36,8 @@ namespace urchin {
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&);
             void handleContinuousCollision(AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
-            void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, AbstractBody&, ccd_set&) const;
-            void continuousCollisionTest(const TemporalObject&, const TemporalObject&, AbstractBody&, ccd_set&) const;
+            void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, std::shared_ptr<AbstractBody>, ccd_set&) const;
+            void continuousCollisionTest(const TemporalObject&, const TemporalObject&, std::shared_ptr<AbstractBody>, ccd_set&) const;
 
             const BodyContainer& bodyContainer;
             const BroadPhase& broadPhase;
