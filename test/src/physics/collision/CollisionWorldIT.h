@@ -18,6 +18,8 @@ class CollisionWorldIT : public CppUnit::TestFixture {
 
         void changeMass();
 
+        void rayTestWithRemovedBody();
+
     private:
         std::unique_ptr<urchin::BodyContainer> buildWorld(const urchin::Point3<float>&) const;
 };

@@ -11,7 +11,7 @@ namespace urchin {
 
     class RayTester : public Processable {
         public:
-            RayTester(PhysicsWorld*, const Ray<float>& ray);
+            RayTester(CollisionWorld&, const Ray<float>& ray);
 
             std::shared_ptr<const RayTestResult> getRayTestResult() const;
 

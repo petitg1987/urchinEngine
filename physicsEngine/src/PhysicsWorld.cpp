@@ -69,7 +69,7 @@ namespace urchin {
     std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float>& ray) {
         std::scoped_lock<std::mutex> lock(mutex);
 
-        auto rayTester = std::make_unique<RayTester>(this, ray);
+        auto rayTester = std::make_unique<RayTester>(getCollisionWorld(), ray);
         std::shared_ptr<const RayTestResult> rayTestResult = rayTester->getRayTestResult();
         oneShotProcessables.push_back(std::move(rayTester));
 

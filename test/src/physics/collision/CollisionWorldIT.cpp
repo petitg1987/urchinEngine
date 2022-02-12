@@ -147,6 +147,30 @@ void CollisionWorldIT::changeMass() {
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
+void CollisionWorldIT::rayTestWithRemovedBody() {
+    auto bodyContainer = buildWorld(Point3<float>(0.0f, 0.5f, 0.0f));
+    auto collisionWorld = std::make_unique<CollisionWorld>(*bodyContainer);
+    RayTester rayTester(*collisionWorld, Ray(Point3<float>(0.0f, 0.5f, -100.0f), Point3<float>(0.0f, 0.5f, 100.0f)));
+
+    auto physicsThread = std::jthread([&]() {
+        collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+        rayTester.execute(0.0f, Vector3<float>());
+
+        std::weak_ptr<AbstractBody> cubeBody = bodyContainer->getBodies()[1];
+        bodyContainer->removeBody(*cubeBody.lock());
+        collisionWorld->process(1.0f / 60.0f, Vector3<float>(0.0f, -9.81f, 0.0f));
+        AssertHelper::assertUnsignedIntEquals((unsigned int)cubeBody.use_count(), 1 /* one reference to the body remaining in the ray test result */);
+    });
+    physicsThread.join();
+
+    std::shared_ptr<const RayTestResult> rayTestResult = rayTester.getRayTestResult();
+    AssertHelper::assertTrue(rayTestResult->isResultReady());
+    AssertHelper::assertTrue(rayTestResult->hasHit());
+    AssertHelper::assertStringEquals(rayTestResult->getNearestResult().getBody2().getId(), "cube");
+    AssertHelper::assertVector3FloatEquals(rayTestResult->getNearestResult().getNormalFromObject2(), Vector3<float>(0.0f, 0.0f, -1.0f), 0.01f);
+    AssertHelper::assertPoint3FloatEquals(rayTestResult->getNearestResult().getHitPointOnObject2(), Point3<float>(0.0f, 0.5f, -0.5f), 0.01f);
+}
+
 std::unique_ptr<BodyContainer> CollisionWorldIT::buildWorld(const Point3<float>& cubePosition) const {
     auto bodyContainer = std::make_unique<BodyContainer>();
 
@@ -174,6 +198,8 @@ CppUnit::Test* CollisionWorldIT::suite() {
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changeMomentumOnInactiveBody", &CollisionWorldIT::changeMomentumOnInactiveBody));
 
     suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changeMass", &CollisionWorldIT::changeMass));
+
+    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("rayTestWithRemovedBody", &CollisionWorldIT::rayTestWithRemovedBody));
 
     return suite;
 }

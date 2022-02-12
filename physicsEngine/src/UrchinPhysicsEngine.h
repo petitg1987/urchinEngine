@@ -38,6 +38,7 @@
 #include <collision/bodystate/IslandElement.h>
 
 #include <processable/Processable.h>
+#include <processable/raytest/RayTester.h>
 #include <processable/raytest/RayTestResult.h>
 
 #include <character/CharacterController.h>

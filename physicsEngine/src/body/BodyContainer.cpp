@@ -42,16 +42,18 @@ namespace urchin {
 
                 lastUpdatedBody = bodyToRefresh.bodyToAdd;
                 notifyObservers(this, ADD_BODY);
+                lastUpdatedBody = nullptr;
             }
 
             if (bodyToRefresh.bodyToRemove) {
-                auto itFind = std::ranges::find_if(bodies, [&bodyToRefresh](const auto& o){return o.get() == bodyToRefresh.bodyToRemove;});
+                auto itFind = std::ranges::find_if(bodies, [&bodyToRefresh](const auto& o){ return o.get() == bodyToRefresh.bodyToRemove; });
                 if (itFind != bodies.end()) {
                     std::shared_ptr<AbstractBody> bodyToRemovePtr = *itFind; //keep a smart pointer on body for notify event
                     bodies.erase(itFind);
 
                     lastUpdatedBody = bodyToRemovePtr;
                     notifyObservers(this, REMOVE_BODY);
+                    lastUpdatedBody = nullptr;
                 }
             }
         }
