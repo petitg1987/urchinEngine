@@ -3,10 +3,10 @@
 #include <algorithm>
 #ifdef _WIN32
     #include <windows.h>
+    #include <VersionHelpers.h>
     #include <cstdio>
     #include <set>
     #include <intrin.h>
-    #define GetProcAddress (void *)GetProcAddress
 #else
     #include <sys/utsname.h>
     #include <sys/sysinfo.h>
@@ -24,17 +24,13 @@ namespace urchin {
 
     std::string SystemInfo::retrieveOsInfo() {
         #ifdef _WIN32
-            typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
-            unsigned long osVersion;
-            OSVERSIONINFOEXW osInfo;
-            auto* RtlGetVersion = reinterpret_cast<fRtlGetVersion*>(GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion"));
-            if (RtlGetVersion != nullptr) {
-                osInfo.dwOSVersionInfoSize = sizeof(osInfo);
-                RtlGetVersion(&osInfo);
-                osVersion = osInfo.dwMajorVersion;
-                return "Windows " + std::to_string(osVersion);
+            if (IsWindowsServer()) {
+                return "Windows server";
+            } else if (IsWindows10OrGreater()) {
+                return "Windows >= 10";
+            } else {
+                return "Windows"
             }
-            return "Windows";
         #else
             struct utsname utsName = {};
             if (!uname(&utsName)) {
@@ -105,41 +101,11 @@ namespace urchin {
 
     __attribute__((no_sanitize_address))
     std::string SystemInfo::systemHash() {
-        return retrieveCpuHash() + "-" + std::to_string(std::hash<std::string>{}(retrieveGraphicsCardNames()));
-    }
-
-    __attribute__((no_sanitize_address))
-    std::string SystemInfo::retrieveCpuHash() {
-        #ifdef _WIN32
-            int cpuInfo[4] = {0, 0, 0, 0};
-            __cpuid(cpuInfo, 0);
-            unsigned int hash = 0;
-            auto* ptr = (uint16_t*)(&cpuInfo[0]);
-            for (std::size_t i = 0; i < 8; i++) {
-                hash += ptr[i];
-            }
-            return std::to_string(hash);
-        #else
-            unsigned int cpuInfo[4] = {0, 0, 0, 0};
-            unsigned int ax = 0;
-            __asm __volatile (
-                "movl %%ebx, %%esi\n\t"
-                "cpuid\n\t"
-                "xchgl %%ebx, %%esi" :
-                "=a" (cpuInfo[0]),
-                "=S" (cpuInfo[1]),
-                "=c" (cpuInfo[2]),
-                "=d" (cpuInfo[3]) :
-                "0" (ax)
-            );
-
-            unsigned int hash = 0;
-            const unsigned int* ptr = &cpuInfo[0];
-            for (unsigned int i = 0; i < 4; i++) {
-                hash += (ptr[i] & (unsigned int)0xFFFF) + (ptr[i] >> 16u);
-            }
-            return std::to_string(hash);
-        #endif
+        std::string homeDir = homeDirectory();
+        std::string cpuCores = std::to_string(retrieveCpuCores());
+        std::string totalMemory = std::to_string(retrieveTotalMemory());
+        std::string graphicsCardNames = retrieveGraphicsCardNames();
+        return std::to_string(std::hash<std::string>{}(homeDir + cpuCores + totalMemory + graphicsCardNames));
     }
 
     std::string SystemInfo::homeDirectory() {

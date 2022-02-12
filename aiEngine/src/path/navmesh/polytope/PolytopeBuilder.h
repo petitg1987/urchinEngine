@@ -39,24 +39,24 @@ namespace urchin {
             std::vector<std::shared_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>>&,
                     const std::vector<Point3<float>>&, const NavMeshAgent&) const;
 
-            static constexpr unsigned int POINT_INDEX_TO_PLANES[6][4] = {
-                    {0, 2, 3, 1}, //right
-                    {4, 5, 7, 6}, //left
-                    {0, 1, 5, 4}, //top
-                    {3, 2, 6, 7}, //bottom
-                    {0, 4, 6, 2}, //front
-                    {1, 3, 7, 5} //back
-            };
-            static constexpr unsigned int PLANE_INDEX_TO_POINTS[8][3] = {
-                    {0, 2, 4}, //NTR
-                    {0, 2, 5}, //FTR
-                    {0, 3, 4}, //NBR
-                    {0, 3, 5}, //FBR
-                    {1, 2, 4}, //NTL
-                    {1, 2, 5}, //FTL
-                    {1, 3, 4}, //NBL
-                    {1, 3, 5} //FBL
-            };
+            static constexpr std::array<std::array<unsigned int, 4>, 6> POINT_INDEX_TO_PLANES = {{
+                {0, 2, 3, 1}, //right
+                {4, 5, 7, 6}, //left
+                {0, 1, 5, 4}, //top
+                {3, 2, 6, 7}, //bottom
+                {0, 4, 6, 2}, //front
+                {1, 3, 7, 5} //back
+            }};
+            static constexpr std::array<std::array<unsigned int, 3>, 8> PLANE_INDEX_TO_POINTS = {{
+                {0, 2, 4}, //NTR
+                {0, 2, 5}, //FTR
+                {0, 3, 4}, //NBR
+                {0, 3, 5}, //FBR
+                {1, 2, 4}, //NTL
+                {1, 2, 5}, //FTL
+                {1, 3, 4}, //NBL
+                {1, 3, 5} //FBL
+            }};
 
             PlaneSurfaceSplitService planeSurfaceSplitService;
             TerrainSplitService terrainSplitService;

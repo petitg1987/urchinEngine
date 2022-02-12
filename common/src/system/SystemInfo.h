@@ -28,8 +28,6 @@ namespace urchin {
             static std::string userLanguage();
 
         private:
-            static std::string retrieveCpuHash();
-
             static std::string getEnvVariable(const std::string&);
     };
 
