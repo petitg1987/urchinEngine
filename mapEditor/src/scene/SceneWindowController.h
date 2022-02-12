@@ -4,9 +4,9 @@
 #include <memory>
 #include <QVulkanInstance>
 
-#include <scene/SceneDisplayerWindow.h>
-
 namespace urchin {
+
+    class SceneDisplayerWindow;
 
     struct QtSurfaceCreator : public urchin::SurfaceCreator {
         explicit QtSurfaceCreator(SceneDisplayerWindow*);

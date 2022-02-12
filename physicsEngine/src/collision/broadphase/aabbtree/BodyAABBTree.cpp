@@ -7,7 +7,7 @@ namespace urchin {
 
     BodyAABBTree::BodyAABBTree() :
             AABBTree<std::shared_ptr<AbstractBody>>(ConfigService::instance().getFloatValue("broadPhase.aabbTreeFatMargin")),
-            defaultPairContainer(std::make_unique<VectorPairContainer>()),
+            defaultPairContainer(VectorPairContainer()),
             inInitializationPhase(true),
             minYBoundary(std::numeric_limits<float>::max()) {
 
@@ -47,7 +47,7 @@ namespace urchin {
     }
 
     const std::vector<std::unique_ptr<OverlappingPair>>& BodyAABBTree::getOverlappingPairs() const {
-        return defaultPairContainer->getOverlappingPairs();
+        return defaultPairContainer.getOverlappingPairs();
     }
 
     void BodyAABBTree::computeOverlappingPairs(const AABBNode<std::shared_ptr<AbstractBody>>& leafNode) {
@@ -70,7 +70,7 @@ namespace urchin {
 
     void BodyAABBTree::createOverlappingPair(BodyAABBNodeData& nodeData1, BodyAABBNodeData& nodeData2) {
         if (!nodeData1.isGhostBody() && !nodeData2.isGhostBody()) {
-            defaultPairContainer->addOverlappingPair(nodeData1.getNodeObject(), nodeData2.getNodeObject());
+            defaultPairContainer.addOverlappingPair(nodeData1.getNodeObject(), nodeData2.getNodeObject());
         } else if (nodeData1.isGhostBody() && !nodeData2.isGhostBody()) {
             nodeData1.getBodyPairContainer()->addOverlappingPair(nodeData1.getNodeObject(), nodeData2.getNodeObject());
             nodeData2.addOwnerPairContainer(nodeData1.getBodyPairContainer());
@@ -84,7 +84,7 @@ namespace urchin {
 
     void BodyAABBTree::removeOverlappingPairs(const BodyAABBNodeData& nodeData) {
         if (!nodeData.isGhostBody()) {
-            defaultPairContainer->removeOverlappingPairs(*nodeData.getNodeObject());
+            defaultPairContainer.removeOverlappingPairs(*nodeData.getNodeObject());
         } else {
             removeBodyPairContainerReferences(*nodeData.getNodeObject(), nodeData.getBodyPairContainer());
             nodeData.getBodyPairContainer()->removeOverlappingPairs(*nodeData.getNodeObject());

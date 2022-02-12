@@ -2,7 +2,6 @@
 #include <QtWidgets/QShortcut>
 
 #include <scene/SceneDisplayerWindow.h>
-#include <scene/SceneWindowController.h>
 #include <widget/controller/mouse/MouseController.h>
 
 namespace urchin {
@@ -10,7 +9,7 @@ namespace urchin {
     SceneDisplayerWindow::SceneDisplayerWindow(QWidget* parent, StatusBarController& statusBarController, std::string mapEditorPath) :
             statusBarController(statusBarController),
             mapEditorPath(std::move(mapEditorPath)),
-            sceneWindowController(std::make_unique<SceneWindowController>(this)),
+            sceneWindowController(SceneWindowController(this)),
             mouseController(MouseController(this)),
             viewProperties(),
             mouseX(0),
@@ -75,7 +74,7 @@ namespace urchin {
         closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, &sceneController, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, &sceneController, mouseController, statusBarController);
         sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize( //size is computed in pixel
                 MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),
@@ -85,7 +84,7 @@ namespace urchin {
     }
 
     void SceneDisplayerWindow::loadEmptyScene() {
-        sceneDisplayer = std::make_unique<SceneDisplayer>(*sceneWindowController, nullptr, mouseController, statusBarController);
+        sceneDisplayer = std::make_unique<SceneDisplayer>(sceneWindowController, nullptr, mouseController, statusBarController);
         sceneDisplayer->loadEmptyScene(mapEditorPath);
         sceneDisplayer->resize( //size is computed in pixel
                 MathFunction::roundToUInt((float)geometry().width() * (float)devicePixelRatio()),

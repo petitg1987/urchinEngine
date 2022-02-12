@@ -4,7 +4,7 @@
 namespace urchin {
 
     BroadPhase::BroadPhase(BodyContainer& bodyContainer) :
-            broadPhaseAlgorithm(std::make_unique<AABBTreeAlgorithm>()) {
+            broadPhaseAlgorithm(AABBTreeAlgorithm()) {
         bodyContainer.addObserver(this, BodyContainer::ADD_BODY);
         bodyContainer.addObserver(this, BodyContainer::REMOVE_BODY);
     }
@@ -33,7 +33,7 @@ namespace urchin {
     }
 
     void BroadPhase::addBody(const std::shared_ptr<AbstractBody>& body) {
-        broadPhaseAlgorithm->addBody(body);
+        broadPhaseAlgorithm.addBody(body);
     }
 
     /**
@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     void BroadPhase::removeBody(const AbstractBody& body) {
-        broadPhaseAlgorithm->removeBody(body);
+        broadPhaseAlgorithm.removeBody(body);
     }
 
     void BroadPhase::synchronizeBodies() {
@@ -68,16 +68,16 @@ namespace urchin {
 
         synchronizeBodies();
 
-        broadPhaseAlgorithm->updateBodies();
-        return broadPhaseAlgorithm->getOverlappingPairs();
+        broadPhaseAlgorithm.updateBodies();
+        return broadPhaseAlgorithm.getOverlappingPairs();
     }
 
     std::vector<std::shared_ptr<AbstractBody>> BroadPhase::rayTest(const Ray<float>& ray) const {
-        return broadPhaseAlgorithm->rayTest(ray);
+        return broadPhaseAlgorithm.rayTest(ray);
     }
 
     std::vector<std::shared_ptr<AbstractBody>> BroadPhase::bodyTest(const AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to) const {
-        return broadPhaseAlgorithm->bodyTest(body, from, to);
+        return broadPhaseAlgorithm.bodyTest(body, from, to);
     }
 
 }

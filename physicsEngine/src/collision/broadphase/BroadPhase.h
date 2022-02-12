@@ -5,6 +5,7 @@
 
 #include <collision/broadphase/BroadPhaseAlgorithm.h>
 #include <collision/broadphase/PairContainer.h>
+#include <collision/broadphase/aabbtree/AABBTreeAlgorithm.h>
 #include <collision/OverlappingPair.h>
 #include <body/model/AbstractBody.h>
 #include <body/BodyContainer.h>
@@ -34,7 +35,7 @@ namespace urchin {
             void removeBody(const AbstractBody&);
             void synchronizeBodies();
 
-            std::unique_ptr<BroadPhaseAlgorithm> broadPhaseAlgorithm;
+            AABBTreeAlgorithm broadPhaseAlgorithm;
 
             std::mutex mutex;
             std::vector<std::shared_ptr<AbstractBody>> bodiesToAdd;

@@ -6,6 +6,7 @@
 #include <collision/OverlappingPair.h>
 #include <collision/broadphase/PairContainer.h>
 #include <collision/broadphase/BroadPhaseAlgorithm.h>
+#include <collision/broadphase/VectorPairContainer.h>
 #include <collision/broadphase/aabbtree/BodyAABBNodeData.h>
 
 namespace urchin {
@@ -37,7 +38,7 @@ namespace urchin {
 
             static constexpr float BOUNDARIES_MARGIN_PERCENTAGE = 0.3f;
 
-            std::unique_ptr<PairContainer> defaultPairContainer;
+            VectorPairContainer defaultPairContainer;
 
             bool inInitializationPhase;
             float minYBoundary;

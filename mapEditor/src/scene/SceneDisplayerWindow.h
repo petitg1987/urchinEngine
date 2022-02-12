@@ -7,6 +7,7 @@
 #include <UrchinCommon.h>
 
 #include <scene/SceneDisplayer.h>
+#include <scene/SceneWindowController.h>
 #include <controller/SceneController.h>
 #include <widget/controller/statusbar/StatusBarController.h>
 
@@ -58,7 +59,7 @@ namespace urchin {
             StatusBarController& statusBarController;
             std::string mapEditorPath;
 
-            std::unique_ptr<SceneWindowController> sceneWindowController;
+            SceneWindowController sceneWindowController;
             MouseController mouseController;
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
             std::array<bool, SceneDisplayer::LAST_VIEW_PROPERTIES> viewProperties;
