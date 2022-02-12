@@ -65,8 +65,7 @@ namespace urchin {
         auto objectsChunk = udaParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
 
         for (const auto& objectChunk : objectsChunk) {
-            std::unique_ptr<ObjectEntity> objectEntity = ObjectEntityReaderWriter::load(objectChunk, udaParser);
-            map.addObjectEntity(std::move(objectEntity));
+            map.addObjectEntity(ObjectEntityReaderWriter::load(objectChunk, udaParser));
         }
         map.getRenderer3d().preWarmModels();
     }
@@ -76,8 +75,7 @@ namespace urchin {
         auto lightsChunk = udaParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
 
         for (const auto& lightChunk : lightsChunk) {
-            std::unique_ptr<LightEntity> lightEntity = LightEntityReaderWriter::load(lightChunk, udaParser);
-            map.addLightEntity(std::move(lightEntity));
+            map.addLightEntity(LightEntityReaderWriter::load(lightChunk, udaParser));
         }
     }
 
@@ -86,8 +84,7 @@ namespace urchin {
         auto terrainsChunk = udaParser.getChunks(TERRAIN_TAG, UdaAttribute(), terrainsListChunk);
 
         for (const auto& terrainChunk : terrainsChunk) {
-            std::unique_ptr<TerrainEntity> terrainEntity = TerrainEntityReaderWriter::load(terrainChunk, udaParser);
-            map.addTerrainEntity(std::move(terrainEntity));
+            map.addTerrainEntity(TerrainEntityReaderWriter::load(terrainChunk, udaParser));
         }
     }
 
@@ -96,8 +93,7 @@ namespace urchin {
         auto watersChunk = udaParser.getChunks(WATER_TAG, UdaAttribute(), watersListChunk);
 
         for (const auto& waterChunk : watersChunk) {
-            std::unique_ptr<WaterEntity> waterEntity = WaterEntityReaderWriter::load(waterChunk, udaParser);
-            map.addWaterEntity(std::move(waterEntity));
+            map.addWaterEntity(WaterEntityReaderWriter::load(waterChunk, udaParser));
         }
     }
 
@@ -112,8 +108,7 @@ namespace urchin {
         auto soundElementsChunk = udaParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
 
         for (const auto& soundElementChunk : soundElementsChunk) {
-            std::unique_ptr<SoundEntity> soundEntity = SoundEntityReaderWriter::load(soundElementChunk, udaParser);
-            map.addSoundEntity(std::move(soundEntity));
+            map.addSoundEntity(SoundEntityReaderWriter::load(soundElementChunk, udaParser));
         }
     }
 
