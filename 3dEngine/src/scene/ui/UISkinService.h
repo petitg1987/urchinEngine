@@ -23,7 +23,7 @@ namespace urchin {
             void setSkin(const std::string&);
 
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const UdaChunk*, WidgetOutline* widgetOutline = nullptr) const;
-            float loadLength(const UdaChunk*, const std::string&, LengthType&) const;
+            float loadLength(const UdaChunk*, std::string_view, LengthType&) const;
 
             const UdaParser& getSkinReader() const;
 

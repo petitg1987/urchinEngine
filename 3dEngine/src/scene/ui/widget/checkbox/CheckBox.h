@@ -20,7 +20,7 @@ namespace urchin {
         private:
             CheckBox(Position, Size, std::string);
 
-            std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
+            std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void refreshTexture();
             bool onKeyReleaseEvent(unsigned int) override;
             void switchValue();

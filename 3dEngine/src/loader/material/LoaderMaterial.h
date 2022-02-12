@@ -14,7 +14,7 @@ namespace urchin {
             std::shared_ptr<Material> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
 
         private:
-            UvScaleType toUvScaleType(const std::string&, const std::string&) const;
+            UvScaleType toUvScaleType(std::string_view, const std::string&) const;
 
             static constexpr char UV_SCALE_NONE[] = "NONE";
             static constexpr char SCALE_ON_AXIS_ALIGNED_FACES[] = "SCALE_ON_AXIS_ALIGNED_FACES";

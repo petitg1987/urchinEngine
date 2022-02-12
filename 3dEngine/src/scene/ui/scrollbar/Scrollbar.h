@@ -24,7 +24,7 @@ namespace urchin {
             int getScrollShiftY() const;
 
         private:
-            std::shared_ptr<Texture> loadTexture(const UdaChunk*, const std::string&) const;
+            std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void updateScrollingPosition(int);
             void updateScrollingPosition();
             void updateCursorPosition() const;

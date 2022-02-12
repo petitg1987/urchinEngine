@@ -119,9 +119,9 @@ namespace urchin {
     }
 
     /**
-     * @param lengthType [out] Typ of the length
+     * @param lengthType [out] Type of the length
      */
-    float UISkinService::loadLength(const UdaChunk* mainChunk, const std::string& lengthName, LengthType& lengthType) const {
+    float UISkinService::loadLength(const UdaChunk* mainChunk, std::string_view lengthName, LengthType& lengthType) const {
         auto lengthChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, lengthName, UdaAttribute(), mainChunk);
 
         std::string lengthTypeString = UISkinService::instance().getSkinReader().getFirstChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();

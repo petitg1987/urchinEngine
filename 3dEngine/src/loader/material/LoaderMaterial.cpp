@@ -92,7 +92,7 @@ namespace urchin {
         return materialBuilder->build();
     }
 
-    UvScaleType LoaderMaterial::toUvScaleType(const std::string& uvScaleValue, const std::string& filename) const {
+    UvScaleType LoaderMaterial::toUvScaleType(std::string_view uvScaleValue, const std::string& filename) const {
         if (uvScaleValue == UV_SCALE_NONE) {
             return UvScaleType::NONE;
         } else if (uvScaleValue == SCALE_ON_AXIS_ALIGNED_FACES) {
@@ -105,7 +105,7 @@ namespace urchin {
             return UvScaleType::SCALE_ON_YZ_FACES;
         }
 
-        throw std::runtime_error("Unknown UV scale value '" + uvScaleValue + "' for material: " + filename);
+        throw std::runtime_error("Unknown UV scale value '" + std::string(uvScaleValue) + "' for material: " + filename);
     }
 
 }

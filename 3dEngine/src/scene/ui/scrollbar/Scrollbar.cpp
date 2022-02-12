@@ -130,7 +130,7 @@ namespace urchin {
         return shiftPixelPositionY;
     }
 
-    std::shared_ptr<Texture> Scrollbar::loadTexture(const UdaChunk* scrollbarChunk, const std::string& chunkName) const {
+    std::shared_ptr<Texture> Scrollbar::loadTexture(const UdaChunk* scrollbarChunk, std::string_view chunkName) const {
         auto imageElem = UISkinService::instance().getSkinReader().getFirstChunk(true, chunkName, UdaAttribute(), scrollbarChunk);
         auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
         return img->createTexture(false);
