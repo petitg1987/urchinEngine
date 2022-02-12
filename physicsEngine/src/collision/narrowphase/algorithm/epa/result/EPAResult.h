@@ -8,7 +8,7 @@ namespace urchin {
 
     template<class T> class EPAResult : public AlgorithmResult {
         public:
-            virtual ~EPAResult() = default;
+            ~EPAResult() override = default;
 
             virtual bool isValidResult() const = 0;
 

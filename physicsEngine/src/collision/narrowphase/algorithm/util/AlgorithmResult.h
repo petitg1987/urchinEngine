@@ -4,7 +4,7 @@ namespace urchin {
 
     class AlgorithmResult {
         public:
-            ~AlgorithmResult() = default;
+            virtual ~AlgorithmResult() = default;
     };
 
 }

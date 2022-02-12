@@ -9,7 +9,7 @@ namespace urchin {
 
     template<class T> class GJKResult : public AlgorithmResult {
         public:
-            virtual ~GJKResult() = default;
+            ~GJKResult() override = default;
 
             virtual bool isValidResult() const = 0;
 

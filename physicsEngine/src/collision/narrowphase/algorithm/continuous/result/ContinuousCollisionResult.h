@@ -14,6 +14,7 @@ namespace urchin {
         public:
             ContinuousCollisionResult(std::shared_ptr<AbstractBody>, const Vector3<T>&, const Point3<T>&, T);
             ContinuousCollisionResult(const ContinuousCollisionResult&);
+            ~ContinuousCollisionResult() override = default;
 
             AbstractBody& getBody2() const;
 
