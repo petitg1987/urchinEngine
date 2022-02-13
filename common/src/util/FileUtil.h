@@ -14,16 +14,19 @@ namespace urchin {
             static void createDirectory(std::string_view);
             static void createEmptyFile(const std::string&);
             static void copyDirectoryContent(std::string_view, const std::string&);
+            static std::vector<std::string> getFiles(const std::string&);
             static std::vector<std::string> getFilesRecursive(const std::string&);
             static void copyFile(const std::string&, const std::string&);
             static void deleteDirectory(std::string_view);
 
-            static std::string_view getFileExtension(std::string_view);
-            static std::string_view getFileName(std::string_view);
-            static std::string_view getFileNameNoExtension(std::string_view);
-            static std::string_view getDirectory(std::string_view);
+            static std::string getFileExtension(const std::string&);
+            static std::string getFileName(const std::string&);
+            static std::string getFileNameNoExtension(const std::string&);
+            static std::string getDirectory(const std::string&);
             static std::string getRelativePath(const std::string&, const std::string&);
             static std::string simplifyDirectoryPath(const std::string&);
+
+            static std::string directorySeparator();
 
         private:
             FileUtil() = default;

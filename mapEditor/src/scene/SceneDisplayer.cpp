@@ -37,10 +37,10 @@ namespace urchin {
         SingletonContainer::destroyAllSingletons();
     }
 
-    void SceneDisplayer::loadMap(std::string_view mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
+    void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         try {
             initializeEngineResources(mapEditorPath);
-            std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(std::string(FileUtil::getDirectory(mapFilename)) + relativeWorkingDirectory);
+            std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(FileUtil::getDirectory(mapFilename) + relativeWorkingDirectory);
             FileSystem::instance().setupResourcesDirectory(mapResourcesDirectory);
 
             initializeScene(mapFilename);
@@ -64,7 +64,7 @@ namespace urchin {
         }
     }
 
-    void SceneDisplayer::loadEmptyScene(std::string_view mapEditorPath) {
+    void SceneDisplayer::loadEmptyScene(const std::string& mapEditorPath) {
         initializeEngineResources(mapEditorPath);
 
         scene = std::make_unique<Scene>(SceneWindowController::windowRequiredExtensions(), windowController.getSurfaceCreator(), windowController.getFramebufferSizeRetriever());
@@ -74,8 +74,8 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void SceneDisplayer::initializeEngineResources(std::string_view mapEditorPath) {
-        std::string mapEditorResourcesDirectory = std::string(FileUtil::getDirectory(mapEditorPath)) + "resources/";
+    void SceneDisplayer::initializeEngineResources(const std::string& mapEditorPath) {
+        std::string mapEditorResourcesDirectory = FileUtil::getDirectory(mapEditorPath) + "resources/";
 
         ConfigService::instance().loadProperties("engine.properties", mapEditorResourcesDirectory);
         ShaderConfig::instance().replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);

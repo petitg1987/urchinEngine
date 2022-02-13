@@ -9,7 +9,7 @@ using namespace urchin;
 void FileUtilTest::getDirectoryUnix() {
     std::string filenamePath = "/home/jean/binaryFile";
 
-    std::string_view result = FileUtil::getDirectory(filenamePath);
+    std::string result = FileUtil::getDirectory(filenamePath);
 
     AssertHelper::assertTrue(result == "/home/jean/");
 }
@@ -17,7 +17,7 @@ void FileUtilTest::getDirectoryUnix() {
 void FileUtilTest::getDirectoryWindows() {
     std::string filenamePath = R"(C:\home\jean\binaryFile)";
 
-    std::string_view result = FileUtil::getDirectory(filenamePath);
+    std::string result = FileUtil::getDirectory(filenamePath);
 
     AssertHelper::assertTrue(result == R"(C:\home\jean\)");
 }

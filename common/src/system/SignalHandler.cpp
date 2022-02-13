@@ -126,7 +126,7 @@ namespace urchin {
         for (int i = 1; i < traceSize; ++i) {
             Dl_info info;
             if (dladdr(traces[(std::size_t)i], &info) && info.dli_sname) {
-                std::string_view moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
+                std::string moduleName = info.dli_fname != nullptr ? FileUtil::getFileName(info.dli_fname) : "[no module]";
                 int status;
                 const char* demangledMethod = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
                 std::string methodName = status == 0 ? demangledMethod : symbols[i];

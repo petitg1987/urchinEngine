@@ -105,7 +105,7 @@ namespace urchin {
             this->heightFilename = filename.toUtf8().constData();
             this->heightFilenameText->setText(filename);
 
-            std::string preferredHeightPathString = std::string(FileUtil::getDirectory(heightFilename));
+            std::string preferredHeightPathString = FileUtil::getDirectory(heightFilename);
             preferredHeightPath = QString::fromStdString(preferredHeightPathString);
         }
     }

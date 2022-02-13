@@ -59,13 +59,25 @@ namespace urchin {
         for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
             if (entry.is_regular_file()) {
                 std::string srcFile = entry.path().string();
-                std::string dstFile = dstDirectory + std::string(FileUtil::getFileName(srcFile));
+                std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
 
                 if (!isFileExist(dstFile)) {
                     copyFile(srcFile, dstFile);
                 }
             }
         }
+    }
+
+    std::vector<std::string> FileUtil::getFiles(const std::string& directory) {
+        checkDirectory(directory);
+
+        std::vector<std::string> filenames;
+        for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+            if (entry.is_regular_file()) {
+                filenames.push_back(entry.path().string());
+            }
+        }
+        return filenames;
     }
 
     std::vector<std::string> FileUtil::getFilesRecursive(const std::string& directory) {
@@ -107,7 +119,7 @@ namespace urchin {
     /**
      * @return File extension. If not extension found: return empty string
      */
-    std::string_view FileUtil::getFileExtension(std::string_view filePath) {
+    std::string FileUtil::getFileExtension(const std::string& filePath) {
         std::size_t extensionPos = filePath.find_last_of('.');
         if (extensionPos == std::string::npos) {
             return "";
@@ -116,7 +128,7 @@ namespace urchin {
         return filePath.substr(extensionPos + 1, filePath.size() - extensionPos);
     }
 
-    std::string_view FileUtil::getFileName(std::string_view filePath) {
+    std::string FileUtil::getFileName(const std::string& filePath) {
         std::size_t fileNamePos = filePath.find_last_of("/\\");
         if (fileNamePos == std::string::npos) {
             return filePath;
@@ -125,20 +137,20 @@ namespace urchin {
         return filePath.substr(fileNamePos + 1);
     }
 
-    std::string_view FileUtil::getFileNameNoExtension(std::string_view filePath) {
-        std::string_view fileName = getFileName(filePath);
-        std::string_view extension = getFileExtension(filePath);
+    std::string FileUtil::getFileNameNoExtension(const std::string& filePath) {
+        std::string fileName = getFileName(filePath);
+        std::string extension = getFileExtension(filePath);
 
         return fileName.substr(0, fileName.size() - 1 - extension.size());
     }
 
-    std::string_view FileUtil::getDirectory(std::string_view filePath) {
+    std::string FileUtil::getDirectory(const std::string& filePath) {
         std::size_t found = filePath.find_last_of("/\\");
         if (found == std::string::npos) {
             return "./";
         }
 
-        return filePath.substr(0, found + 1);
+        return std::string(filePath.substr(0, found + 1));
     }
 
     /**
@@ -201,6 +213,14 @@ namespace urchin {
         if (directory.find_last_of("/\\") != directory.size() - 1) {
             throw std::invalid_argument("A directory must end by a slash character: " + std::string(directory));
         }
+    }
+
+    std::string FileUtil::directorySeparator() {
+        #ifdef _WIN32
+            return "\\";
+        #else
+            return "/";
+        #endif
     }
 
 }

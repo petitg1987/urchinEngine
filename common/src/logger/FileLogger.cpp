@@ -51,8 +51,8 @@ namespace urchin {
         std::string logFileContent = retrieveContent(std::numeric_limits<unsigned long>::max());
         if (!logFileContent.empty()) {
             std::string epoch = std::to_string(DateTimeUtil::currentEpoch());
-            std::string_view extension = FileUtil::getFileExtension(filename);
-            archiveFilename = filename.substr(0, filename.size() - extension.size() - 1) + "_" + epoch + "." + std::string(extension);
+            std::string extension = FileUtil::getFileExtension(filename);
+            archiveFilename = filename.substr(0, filename.size() - extension.size() - 1) + "_" + epoch + "." + extension;
 
             std::ofstream archiveStream(archiveFilename, std::ios::binary);
             if (!archiveStream.is_open()) {

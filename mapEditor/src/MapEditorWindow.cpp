@@ -271,7 +271,7 @@ namespace urchin {
         QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "UDA file (*.uda)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string filenameString = filename.toUtf8().constData();
-            std::string_view fileExtension = FileUtil::getFileExtension(filenameString);
+            std::string fileExtension = FileUtil::getFileExtension(filenameString);
             if (!StringUtil::insensitiveEquals(fileExtension, ".uda")) {
                 filenameString += ".uda";
             }
@@ -351,7 +351,7 @@ namespace urchin {
         this->mapFilename = mapFilename;
 
         if (!mapFilename.empty()) {
-            std::string preferredMapPathString = std::string(FileUtil::getDirectory(mapFilename));
+            std::string preferredMapPathString = FileUtil::getDirectory(mapFilename);
             savePreferredMapPath(preferredMapPathString);
         }
     }

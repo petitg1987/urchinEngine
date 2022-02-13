@@ -12,7 +12,7 @@ namespace urchin {
     }
 
     std::unique_ptr<ConstMeshes> ConstMeshes::fromMeshesFile(const std::string& meshFilename, std::vector<std::unique_ptr<const ConstMesh>> constMeshesVector) {
-        std::string meshName = std::string(FileUtil::getFileName(meshFilename));
+        std::string meshName = FileUtil::getFileName(meshFilename);
         return std::unique_ptr<ConstMeshes>(new ConstMeshes(meshName, std::make_optional(meshFilename), std::move(constMeshesVector)));
     }
 

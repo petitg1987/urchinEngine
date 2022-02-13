@@ -3,7 +3,6 @@
 #include <algorithm>
 #ifdef _WIN32
     #include <windows.h>
-    #include <VersionHelpers.h>
     #include <cstdio>
     #include <set>
     #include <intrin.h>
@@ -24,13 +23,7 @@ namespace urchin {
 
     std::string SystemInfo::retrieveOsInfo() {
         #ifdef _WIN32
-            if (IsWindowsServer()) {
-                return "Windows server";
-            } else if (IsWindows10OrGreater()) {
-                return "Windows >= 10";
-            } else {
-                return "Windows"
-            }
+            return "Windows";
         #else
             struct utsname utsName = {};
             if (!uname(&utsName)) {
@@ -48,7 +41,11 @@ namespace urchin {
         #else
             std::string numCpuCores = CommandExecutor::execute(R"(grep --max-count=1 "cpu cores" /proc/cpuinfo | cut -d ":" -f 2)");
             StringUtil::ltrim(numCpuCores);
-            return TypeConverter::toUnsignedInt(numCpuCores);
+            if (TypeConverter::isUnsignedInt(numCpuCores)) {
+                return TypeConverter::toUnsignedInt(numCpuCores);
+            } else {
+                return 0;
+            }
         #endif
     }
 
@@ -99,7 +96,6 @@ namespace urchin {
         return graphicsCardNamesList;
     }
 
-    __attribute__((no_sanitize_address))
     std::string SystemInfo::systemHash() {
         std::string homeDir = homeDirectory();
         std::string cpuCores = std::to_string(retrieveCpuCores());
@@ -120,12 +116,7 @@ namespace urchin {
         if (homeDirectory.empty()) {
             throw std::runtime_error("Impossible to find home directory. Please define env. variable 'HOME' or 'USERPROFILE' or 'HOMEDRIVE' + 'HOMEPATH'.");
         }
-
-        #ifdef _WIN32
-            return homeDirectory + "\\";
-        #else
-            return homeDirectory + "/";
-        #endif
+        return homeDirectory + FileUtil::directorySeparator();
     }
 
     std::string SystemInfo::userDataDirectory() {
@@ -152,7 +143,7 @@ namespace urchin {
             ssize_t readSize = readlink("/proc/self/exe", buffer.data(), buffer.size());
             if (readSize > 0) {
                 std::string executablePath(buffer.data(), (unsigned long)readSize);
-                return std::string(FileUtil::getDirectory(executablePath));
+                return FileUtil::getDirectory(executablePath);
             }
             throw std::runtime_error("Cannot read /proc/self/exe on Linux system.");
         #endif

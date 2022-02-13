@@ -99,7 +99,7 @@ namespace urchin {
         QString mapFilename = mapNameText->text();
         if (!mapFilename.isEmpty()) {
             this->mapFilename = mapFilename.toUtf8().constData();
-            std::string_view fileExtension = FileUtil::getFileExtension(this->mapFilename);
+            std::string fileExtension = FileUtil::getFileExtension(this->mapFilename);
             if (!StringUtil::insensitiveEquals(fileExtension, ".uda")) {
                 this->mapFilename += ".uda";
             }

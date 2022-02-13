@@ -376,7 +376,7 @@ namespace urchin {
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = std::string(FileUtil::getDirectory(imageFilenamePath));
+            std::string preferredPathString = FileUtil::getDirectory(imageFilenamePath);
             preferredNormalTexturePath = QString::fromStdString(preferredPathString);
 
             try {
@@ -403,7 +403,7 @@ namespace urchin {
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, tgaFilenamePath);
             this->dudvMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = std::string(FileUtil::getDirectory(tgaFilenamePath));
+            std::string preferredPathString = FileUtil::getDirectory(tgaFilenamePath);
             preferredDudvMapPath = QString::fromStdString(preferredPathString);
 
             try {

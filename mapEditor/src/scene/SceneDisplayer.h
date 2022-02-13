@@ -36,8 +36,8 @@ namespace urchin {
             SceneDisplayer(SceneWindowController&, SceneController*, MouseController&, StatusBarController&);
             ~SceneDisplayer();
 
-            void loadMap(std::string_view, const std::string&, const std::string&);
-            void loadEmptyScene(std::string_view);
+            void loadMap(const std::string&, const std::string&, const std::string&);
+            void loadEmptyScene(const std::string&);
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
             void setHighlightObjectEntity(const ObjectEntity*);
@@ -56,7 +56,7 @@ namespace urchin {
             ObjectMoveController* getObjectMoveController() const;
 
         private:
-            static void initializeEngineResources(std::string_view);
+            static void initializeEngineResources(const std::string&);
             void initializeScene(const std::string&);
 
             void refreshObjectsModel();

@@ -24,7 +24,7 @@ namespace urchin {
             currentMusicIndex(0),
             isPaused(false) {
         std::string musicsFullPathDirectory = FileSystem::instance().getResourcesDirectory() + resourcesMusicsDirectory;
-        for (const std::string& musicFullPath : FileUtil::getFilesRecursive(musicsFullPathDirectory)) {
+        for (const std::string& musicFullPath : FileUtil::getFiles(musicsFullPathDirectory)) {
             musicFilenames.push_back(FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), musicFullPath));
         }
         if (musicFilenames.empty()) {
