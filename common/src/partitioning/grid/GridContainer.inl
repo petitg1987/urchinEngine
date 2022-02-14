@@ -18,7 +18,7 @@ template<class T> bool GridContainer<T>::addItem(std::shared_ptr<T> item) {
         ItemSet<T>& setContainer = insertResult.first->second;
         const auto& insertSetResult = setContainer.insert(item);
         if (!insertSetResult.second) [[unlikely]] {
-            removeItem(item->getGridPosition());
+            assert(axisIndex == 0);
             return false;
         }
     }
