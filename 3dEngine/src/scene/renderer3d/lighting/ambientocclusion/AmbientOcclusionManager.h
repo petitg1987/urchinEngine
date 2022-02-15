@@ -24,12 +24,12 @@ namespace urchin {
                 AOTextureSize textureSize = AOTextureSize::HALF_SIZE;
                 AOTextureBits textureBits = AOTextureBits::AO_8_BITS;
                 unsigned int kernelSamples = 32;
-                float radius = 0.35f; //scope radius in units
-                float ambientOcclusionStrength = 0.10f;
+                float radius = 0.3f; //scope radius in units
+                float ambientOcclusionStrength = 0.15f;
                 float depthStartAttenuation = 0.995f;
                 float depthEndAttenuation = 0.997f;
                 unsigned int noiseTextureSize = 4;
-                float bias = 0.15f;
+                float bias = 0.05f;
                 bool isBlurActivated = true;
                 unsigned int blurSize = 7;
                 float blurSharpness = 40.0f;

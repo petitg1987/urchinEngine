@@ -175,7 +175,7 @@ void main() {
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
-            fragColor.rgb -= ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor;
+            fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor);
         }
 
         float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
