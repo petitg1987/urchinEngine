@@ -327,7 +327,7 @@ class UrchinAnimation:
         self.skeleton = skeleton
         self.bone_flags = []
         self.bone_frame_data_index = []  # stores the frame_dataIndex for each bone in the skeleton
-        self.frame_rate = 24
+        self.frame_rate = bpy.context.scene.render.fps
         self.num_frames = 0
         self.num_animated_components = 0
         for _ in self.skeleton.bones:
