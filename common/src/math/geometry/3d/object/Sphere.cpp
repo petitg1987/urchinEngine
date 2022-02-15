@@ -51,7 +51,7 @@ namespace urchin {
      */
     template<class T> bool Sphere<T>::collideWithAABBox(const AABBox<T>& bbox) const {
         T squareDistance = 0.0;
-        for (std::size_t i = 0; i < 3; i++){
+        for (std::size_t i = 0; i < 3; i++) {
             T centerAxis = centerOfMass[i];
             if (centerAxis < bbox.getMin()[i]) {
                 squareDistance += (bbox.getMin()[i] - centerAxis) * (bbox.getMin()[i] - centerAxis);
