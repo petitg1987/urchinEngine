@@ -1,4 +1,6 @@
 #include <math/geometry/3d/object/Sphere.h>
+#include <math/geometry/3d/object/AABBox.h>
+#include <math/geometry/3d/Line3D.h>
 
 namespace urchin {
 
@@ -37,21 +39,48 @@ namespace urchin {
     }
 
     /**
-    * @return True if the sphere collides or is inside this sphere
-    */
+     * @return True if the sphere collides or is inside this sphere
+     */
     template<class T> bool Sphere<T>::collideWithSphere(const Sphere<T>& sphere) const {
         T sumRadius = this->getRadius() + sphere.getRadius();
         return centerOfMass.squareDistance(sphere.getCenterOfMass()) <= (sumRadius * sumRadius);
     }
 
-    template<class T> bool Sphere<T>::collideWithAABBox(const AABBox<T>&) const {
-        //TODO impl
-        return false;
+    /**
+     * @return True if the box collides or is inside this sphere
+     */
+    template<class T> bool Sphere<T>::collideWithAABBox(const AABBox<T>& bbox) const {
+        T squareDistance = 0.0;
+        for (std::size_t i = 0; i < 3; i++){
+            T centerAxis = centerOfMass[i];
+            if (centerAxis < bbox.getMin()[i]) {
+                squareDistance += (bbox.getMin()[i] - centerAxis) * (bbox.getMin()[i] - centerAxis);
+            }
+            if (centerAxis > bbox.getMin()[i]) {
+                squareDistance += (centerAxis - bbox.getMax()[i]) * (centerAxis - bbox.getMax()[i]);
+            }
+        }
+        return squareDistance <= getRadius() * getRadius();
     }
 
-    template<class T> Point3<T> Sphere<T>::intersectPoint(const Line3D<T>&, bool&) const {
-        //TODO impl
-        return Point3<T>();
+    template<class T> Point3<T> Sphere<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {
+        Vector3<T> ab = line.getA().vector(line.getB());
+        Vector3<T> aToCenter = line.getA().vector(centerOfMass);
+        T squareRadius = getRadius() * getRadius();
+
+        const T t = aToCenter.dotProduct(ab) / ab.squareLength();
+        Point3<T> tPoint = line.getA().translate(ab * t);
+
+        T squareLengthCenterToTPoint = centerOfMass.vector(tPoint).squareLength();
+        if (squareLengthCenterToTPoint > squareRadius) {
+            hasIntersection = false;
+            return Point3<T>(0.0f, 0.0f, 0.0f);
+        }
+
+        hasIntersection = true;
+        T collisionDistance = std::sqrt(squareRadius + squareLengthCenterToTPoint);
+        T t0 = t - collisionDistance;
+        return line.getA().translate(ab * t0);
     }
 
     //explicit template

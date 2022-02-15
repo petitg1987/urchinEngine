@@ -23,7 +23,7 @@ namespace urchin {
         Vector3<T> ap = a.vector(p);
 
         const T t = ap.dotProduct(ab) / ab.squareLength();
-        return ((b - a) * t) + a;
+        return a.translate(ab * t);
     }
 
     /**
