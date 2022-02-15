@@ -9,4 +9,9 @@ class SphereTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void sphereLineIntersection();
+
+        void sphereAABBoxSideCollision();
+        void sphereAABBoxNoSideCollision();
+        void sphereAABBoxCornerCollision();
+        void sphereAABBoxNoCornerCollision();
 };

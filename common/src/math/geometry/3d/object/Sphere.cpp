@@ -56,7 +56,7 @@ namespace urchin {
             if (centerAxis < bbox.getMin()[i]) {
                 squareDistance += (bbox.getMin()[i] - centerAxis) * (bbox.getMin()[i] - centerAxis);
             }
-            if (centerAxis > bbox.getMin()[i]) {
+            if (centerAxis > bbox.getMax()[i]) {
                 squareDistance += (centerAxis - bbox.getMax()[i]) * (centerAxis - bbox.getMax()[i]);
             }
         }
