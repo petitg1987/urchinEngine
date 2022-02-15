@@ -38,7 +38,7 @@ namespace urchin {
             const Point3<T>& getMax() const;
             Point3<T> getCenterOfMass() const;
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
             std::vector<Point3<T>> getPoints() const;
             T getVolume() const;
 
@@ -51,9 +51,9 @@ namespace urchin {
             [[nodiscard]] AABBox<T> enlarge(const Vector3<T>&, const Vector3<T>&) const;
             [[nodiscard]] AABBox<T> enlarge(T, T) const;
 
-            bool collideWithPoint(const Point3<T>&) const;
-            bool collideWithAABBox(const AABBox<T>&) const;
-            bool collideWithRay(const Ray<T>&) const;
+            bool collideWithPoint(const Point3<T>&) const override;
+            bool collideWithAABBox(const AABBox<T>&) const override;
+            bool collideWithRay(const Ray<T>&) const override;
 
             const Point3<T>& operator [](std::size_t) const;
             Point3<T>& operator [](std::size_t);

@@ -23,7 +23,7 @@ namespace urchin {
             const Vector3<T>& getAxis(unsigned int) const;
 
             Point3<T> getCenter() const;
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
 
         private:
             ConeShape<T> coneShape;

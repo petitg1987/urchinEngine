@@ -44,6 +44,16 @@ namespace urchin {
         return centerOfMass.squareDistance(sphere.getCenterOfMass()) <= (sumRadius * sumRadius);
     }
 
+    template<class T> bool Sphere<T>::collideWithAABBox(const AABBox<T>&) const {
+        //TODO impl
+        return false;
+    }
+
+    template<class T> Point3<T> Sphere<T>::intersectPoint(const Line3D<T>&, bool&) const {
+        //TODO impl
+        return Point3<T>();
+    }
+
     //explicit template
     template class Sphere<float>;
     template class Sphere<double>;

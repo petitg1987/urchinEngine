@@ -20,7 +20,7 @@ namespace urchin {
             const Quaternion<T>& getOrientation() const;
             const Vector3<T>& getAxis(unsigned int) const;
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
 
         private:
             CylinderShape<T> cylinderShape;

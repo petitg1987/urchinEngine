@@ -14,7 +14,7 @@ namespace urchin {
 
             const std::array<Point3<T>, 3>& getPoints() const;
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
             Vector3<T> computeNormal() const;
             Point3<T> closestPoint(const Point3<T>&, std::array<T, 3>&) const;
             bool projectedPointInsideTriangle(const Point3<T>&) const;

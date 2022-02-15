@@ -26,7 +26,7 @@ namespace urchin {
             std::size_t addNewPoint(const Point3<T>&);
             std::size_t addNewPoint(const Point3<T>&, std::vector<std::size_t>&);
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
 
             std::unique_ptr<ConvexHull3D<T>> resize(T) const;
 

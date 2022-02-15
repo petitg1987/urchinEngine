@@ -47,9 +47,9 @@ namespace urchin {
             Frustum<T> splitFrustum(T, T) const;
             Frustum<T> cutFrustum(T) const;
 
-            bool collideWithPoint(const Point3<T>&) const;
-            bool collideWithAABBox(const AABBox<T>&) const;
-            bool collideWithSphere(const Sphere<T>&) const;
+            bool collideWithPoint(const Point3<T>&) const override;
+            bool collideWithAABBox(const AABBox<T>&) const override;
+            bool collideWithSphere(const Sphere<T>&) const override;
 
         private:
             void buildData();

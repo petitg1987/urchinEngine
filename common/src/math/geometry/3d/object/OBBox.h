@@ -34,12 +34,12 @@ namespace urchin {
             std::vector<Point3<T>> getPoints() const;
             Point3<T> getPoint(unsigned int) const;
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
             AABBox<T> toAABBox() const;
 
-            bool collideWithOBBox(const OBBox<T>&) const;
-            bool collideWithAABBox(const AABBox<T>&) const;
-            Point3<T> intersectPoint(const Line3D<T>&, bool&) const;
+            bool collideWithOBBox(const OBBox<T>&) const override;
+            bool collideWithAABBox(const AABBox<T>&) const override;
+            Point3<T> intersectPoint(const Line3D<T>&, bool&) const override;
 
         private:
             bool separatedAxisTheoremCollision(const OBBox<T>&) const;
