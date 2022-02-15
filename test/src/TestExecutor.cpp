@@ -16,6 +16,7 @@
 #include <common/math/geometry/2d/Line2DTest.h>
 #include <common/math/geometry/3d/object/AABBoxTest.h>
 #include <common/math/geometry/3d/object/OBBoxTest.h>
+#include <common/math/geometry/3d/object/SphereTest.h>
 #include <common/math/geometry/3d/object/LineSegment3DTest.h>
 #include <common/math/geometry/3d/object/Triangle3DTest.h>
 #include <common/math/geometry/3d/object/TetrahedronTest.h>
@@ -81,6 +82,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(Line2DTest::suite());
     runner.addTest(AABBoxTest::suite());
     runner.addTest(OBBoxTest::suite());
+    runner.addTest(SphereTest::suite());
     runner.addTest(LineSegment3DTest::suite());
     runner.addTest(Triangle3DTest::suite());
     runner.addTest(TetrahedronTest::suite());

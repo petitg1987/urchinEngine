@@ -5,7 +5,7 @@
 using namespace urchin;
 
 void Line3DTest::orthogonalProjection() {
-    Line3D<float> line(Point3<float>(1.0, 1.0, 0.0), Point3<float>(2.0, 1.0, 0.0));
+    Line3D<float> line(Point3<float>(0.5, 1.0, 0.0), Point3<float>(2.0, 1.0, 0.0));
     Point3<float> projectedPoint = line.orthogonalProjection(Point3<float>(3.0, 2.0, 0.0));
 
     AssertHelper::assertPoint3FloatEquals(projectedPoint, Point3<float>(3.0, 1.0, 0.0));
