@@ -10,10 +10,10 @@ namespace urchin {
         auto localizedShapesListChunk = udaParser.getFirstChunk(true, LOCALIZED_SHAPES, UdaAttribute(), mainShapeChunk);
         auto localizedShapesChunk = udaParser.getChunks(LOCALIZED_SHAPE, UdaAttribute(), localizedShapesListChunk);
 
-        std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
+        std::vector<std::unique_ptr<const LocalizedCollisionShape>> compoundShapes;
         compoundShapes.reserve(localizedShapesChunk.size());
         for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
-            std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+            std::unique_ptr<LocalizedCollisionShape> localizedShape = std::make_unique<LocalizedCollisionShape>();
 
             localizedShape->position = i;
 
@@ -34,7 +34,7 @@ namespace urchin {
         const auto& compoundShape = static_cast<const CollisionCompoundShape&>(mainCollisionShape);
 
         auto& localizedShapesListChunk = udaWriter.createChunk(LOCALIZED_SHAPES, UdaAttribute(), &mainShapeChunk);
-        const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
+        const std::vector<std::unique_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
             auto& localizedShapeChunk = udaWriter.createChunk(LOCALIZED_SHAPE, UdaAttribute(), &localizedShapesListChunk);
 

@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    CollisionCompoundShape::CollisionCompoundShape(std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedShapes) :
+    CollisionCompoundShape::CollisionCompoundShape(std::vector<std::unique_ptr<const LocalizedCollisionShape>> localizedShapes) :
             CollisionShape3D(),
             localizedShapes(std::move(localizedShapes)),
             maxDistanceToCenter(0.0f),
@@ -36,15 +36,15 @@ namespace urchin {
         throw std::runtime_error("Impossible to retrieve single convex shape for compound shape");
     }
 
-    const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& CollisionCompoundShape::getLocalizedShapes() const {
+    const std::vector<std::unique_ptr<const LocalizedCollisionShape>>& CollisionCompoundShape::getLocalizedShapes() const {
         return localizedShapes;
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCompoundShape::scale(const Vector3<float>& scale) const {
-        std::vector<std::shared_ptr<const LocalizedCollisionShape>> scaledLocalizedShapes;
+        std::vector<std::unique_ptr<const LocalizedCollisionShape>> scaledLocalizedShapes;
         scaledLocalizedShapes.reserve(localizedShapes.size());
         for (const auto& localizedShape : localizedShapes) {
-            auto scaledLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+            auto scaledLocalizedShape = std::make_unique<LocalizedCollisionShape>();
             Point3<float> scaledPosition(localizedShape->transform.getPosition().X * scale.X, localizedShape->transform.getPosition().Y * scale.Y, localizedShape->transform.getPosition().Z * scale.Z);
             scaledLocalizedShape->position = localizedShape->position;
             scaledLocalizedShape->shape = localizedShape->shape->scale(scale);
@@ -95,9 +95,9 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCompoundShape::clone() const {
-        std::vector<std::shared_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
+        std::vector<std::unique_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
         for (const auto& localizedShape : localizedShapes) {
-            auto clonedLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+            auto clonedLocalizedShape = std::make_unique<LocalizedCollisionShape>();
             clonedLocalizedShape->position = localizedShape->position;
             clonedLocalizedShape->shape = localizedShape->shape->clone();
             clonedLocalizedShape->transform = localizedShape->transform;

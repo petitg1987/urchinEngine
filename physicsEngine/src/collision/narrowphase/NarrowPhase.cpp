@@ -115,7 +115,7 @@ namespace urchin {
             const auto& bodyShape = body.getShape();
             if (bodyShape.isCompound()) {
                 const auto& compoundShape = static_cast<const CollisionCompoundShape&>(bodyShape);
-                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
+                const std::vector<std::unique_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     TemporalObject temporalObject(*localizedShape->shape, from * localizedShape->transform, to * localizedShape->transform);
                     ccdResults.merge(continuousCollisionTest(temporalObject, bodiesAABBoxHitBody));
@@ -156,7 +156,7 @@ namespace urchin {
             const auto& bodyShape = bodyAABBoxHit->getShape();
             if (bodyShape.isCompound()) {
                 const auto& compoundShape = static_cast<const CollisionCompoundShape&>(bodyShape);
-                const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
+                const std::vector<std::unique_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
                 for (const auto& localizedShape : localizedShapes) {
                     PhysicsTransform fromToObject2 = bodyAABBoxHit->getTransform() * localizedShape->transform;
                     TemporalObject temporalObject2(*localizedShape->shape, fromToObject2, fromToObject2);

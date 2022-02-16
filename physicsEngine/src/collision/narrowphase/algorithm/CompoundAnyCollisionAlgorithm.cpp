@@ -18,7 +18,7 @@ namespace urchin {
         AbstractBody& body1 = getManifoldResult().getBody1();
         AbstractBody& body2 = getManifoldResult().getBody2();
 
-        const std::vector<std::shared_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
+        const std::vector<std::unique_ptr<const LocalizedCollisionShape>>& localizedShapes = compoundShape.getLocalizedShapes();
         for (const auto& localizedShape : localizedShapes) {
             auto collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(body1, *localizedShape->shape, body2, otherShape);
 
