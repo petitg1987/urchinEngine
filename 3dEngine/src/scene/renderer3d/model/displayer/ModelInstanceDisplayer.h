@@ -65,7 +65,8 @@ namespace urchin {
                 Matrix4<float> modelMatrix;
                 Matrix4<float> normalMatrix;
             };
-            mutable std::vector<InstanceMatrix> instanceMatrices;
+            mutable std::vector<InstanceMatrix> instanceMatrices; //for DEFAULT_MODE only
+            mutable std::vector<Matrix4<float>> instanceModelMatrices; //for DEPTH_ONLY_MODE only
             mutable struct {
                 alignas(4) float encodedEmissiveFactor;
                 alignas(4) float ambientFactor;

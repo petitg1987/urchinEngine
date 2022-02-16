@@ -70,19 +70,22 @@ namespace urchin {
             const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(i);
             auto meshName = getReferenceModel().getMeshes()->getConstMeshes().getMeshesName();
 
-            InstanceMatrix identityInstanceMatrix;
-            identityInstanceMatrix.modelMatrix = Matrix4<float>();
-            identityInstanceMatrix.normalMatrix = Matrix4<float>();
-            instanceMatrices.push_back(identityInstanceMatrix);
             Matrix4<float> projectionMatrix;
             fillMaterialData(mesh);
 
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
-                    ->instanceData(instanceMatrices.size(), VariableType::TWO_MAT4, (const float*)instanceMatrices.data())
                     ->indices(constMesh.getTrianglesIndices())
                     ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                     ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
+
+            if (displayMode == DisplayMode::DEFAULT_MODE) {
+                instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
+                meshRendererBuilder->instanceData(instanceMatrices.size(), VariableType::TWO_MAT4, (const float*)instanceMatrices.data());
+            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+                instanceModelMatrices.emplace_back();
+                meshRendererBuilder->instanceData(instanceModelMatrices.size(), VariableType::MAT4, (const float*)instanceModelMatrices.data());
+            }
 
             if (customShaderVariable) {
                 customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
@@ -275,6 +278,7 @@ namespace urchin {
 
     void ModelInstanceDisplayer::resetRenderingModels() {
         instanceMatrices.clear();
+        instanceModelMatrices.clear();
     }
 
     void ModelInstanceDisplayer::registerRenderingModel(const Model& model) {
@@ -282,14 +286,18 @@ namespace urchin {
             assert(model.computeInstanceId(displayMode) == instanceId);
         #endif
 
-        InstanceMatrix instanceMatrix;
-        instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
-        instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
-        instanceMatrices.push_back(instanceMatrix);
+        if (displayMode == DisplayMode::DEFAULT_MODE) {
+            InstanceMatrix instanceMatrix;
+            instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
+            instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
+            instanceMatrices.push_back(instanceMatrix);
+        } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+            instanceModelMatrices.push_back(model.getTransform().getTransformMatrix());
+        }
     }
 
     void ModelInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const MeshFilter* meshFilter) const {
-        if (instanceMatrices.empty()) {
+        if (instanceMatrices.empty() && instanceModelMatrices.empty()) {
             return;
         }
 
@@ -300,7 +308,11 @@ namespace urchin {
                 continue;
             }
 
-            meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*)instanceMatrices.data());
+            if (displayMode == DisplayMode::DEFAULT_MODE) {
+                meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
+            } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
+                meshRenderer->updateInstanceData(instanceModelMatrices.size(), (const float*) instanceModelMatrices.data());
+            }
             meshRenderer->updateUniformData(0, &projectionViewMatrix);
             if (customShaderVariable) {
                 customShaderVariable->loadCustomShaderVariables(*meshRenderer);

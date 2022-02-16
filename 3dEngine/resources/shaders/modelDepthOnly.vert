@@ -9,7 +9,6 @@ layout(location = 0) in vec3 vertexPosition;
 
 //instance data
 layout(location = 1) in mat4 mModel; //use location 1, 2, 3 & 4
-layout(location = 5) in mat4 mNormal; //use location 5, 6, 7 & 8
 
 invariant gl_Position;
 
