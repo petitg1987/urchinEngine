@@ -34,7 +34,7 @@ namespace urchin {
             static std::unique_ptr<Model> fromMeshesFile(const std::string&);
             static std::unique_ptr<Model> fromMemory(std::unique_ptr<Meshes>);
 
-            void loadAnimation(const std::string&, const std::string&, AnimShadow = AnimShadow::AFFECT_SHADOW);
+            void loadAnimation(const std::string&, const std::string&, AnimShadowImpact = AnimShadowImpact::ALTER);
             bool hasLoadedAnimation() const;
             void animate(std::string_view, AnimRepeat, AnimStart);
             void stopAnimation(bool);

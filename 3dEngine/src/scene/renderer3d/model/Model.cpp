@@ -66,14 +66,14 @@ namespace urchin {
         return defaultModelLocalAABBox;
     }
 
-    void Model::loadAnimation(const std::string& name, const std::string& filename, AnimShadow animShadow) {
+    void Model::loadAnimation(const std::string& name, const std::string& filename, AnimShadowImpact animShadowImpact) {
         if (!meshes) {
             throw std::runtime_error("Cannot add animation on model without mesh");
         }
 
         //load and add the anim to the std::map
         auto constAnimation = ResourceRetriever::instance().getResource<ConstAnimation>(filename);
-        animations.try_emplace(name, std::make_unique<Animation>(constAnimation, *meshes, animShadow));
+        animations.try_emplace(name, std::make_unique<Animation>(constAnimation, *meshes, animShadowImpact));
         animations[name]->onMoving(transform);
 
         //both files must have the same number of bones
