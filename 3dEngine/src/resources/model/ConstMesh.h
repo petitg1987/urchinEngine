@@ -61,7 +61,7 @@ namespace urchin {
 
             std::vector<Vertex> vertices;
             std::vector<Point2<float>> uvTexture;
-            std::map<unsigned int, std::vector<unsigned int>> linkedVertices;
+            std::unordered_map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
             std::vector<unsigned int> trianglesIndices;
 

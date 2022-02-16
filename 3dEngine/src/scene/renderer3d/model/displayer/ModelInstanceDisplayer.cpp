@@ -182,7 +182,7 @@ namespace urchin {
     void ModelInstanceDisplayer::updateMesh(const Model* model) {
         if (checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
-            for (const auto& meshRenderer: meshRenderers) {
+            for (const auto& meshRenderer: meshRenderers) { //TODO only update concerned
                 const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
                 meshRenderer->updateData(0, mesh.getVertices());
                 if (displayMode == DisplayMode::DEFAULT_MODE) {

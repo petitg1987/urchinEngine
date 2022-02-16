@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Animation::Animation(std::shared_ptr<ConstAnimation> constAnimation, Meshes& meshes) :
+    Animation::Animation(std::shared_ptr<ConstAnimation> constAnimation, const Meshes& meshes) :
             constAnimation(std::move(constAnimation)),
             meshes(meshes),
             animationInformation() {

@@ -10,7 +10,7 @@ namespace urchin {
 
     class Animation {
         public:
-            Animation(std::shared_ptr<ConstAnimation>, Meshes&);
+            Animation(std::shared_ptr<ConstAnimation>, const Meshes&);
 
             const std::vector<Bone>& getSkeleton() const;
             const AABBox<float>& getFramesAABBox() const;
@@ -30,7 +30,7 @@ namespace urchin {
             void computeNextFrame();
 
             mutable std::shared_ptr<ConstAnimation> constAnimation;
-            Meshes& meshes;
+            const Meshes& meshes;
 
             AnimationInformation animationInformation;
             std::vector<Bone> skeleton;

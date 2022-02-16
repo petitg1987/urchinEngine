@@ -74,8 +74,8 @@ namespace urchin {
             normals[vertexIndex] = normals[vertexIndex].normalize();
 
             //computes tangent
-            const Vector3<float>& c1 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 0.0f, 1.0f));
-            const Vector3<float>& c2 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
+            Vector3<float> c1 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 0.0f, 1.0f));
+            Vector3<float> c2 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
             if (c1.squareLength() > c2.squareLength()) {
                 tangents[vertexIndex] = c1.normalize();
             } else {
@@ -94,9 +94,10 @@ namespace urchin {
         Vector3<float> ac = a.vector(c);
 
         Vector3<float> normal = ac.crossProduct(ab);
-        float sinAlpha = normal.length() / (ab.length() * ac.length());
-        sinAlpha = MathFunction::clamp(sinAlpha, -1.0f + std::numeric_limits<float>::epsilon(), 1.0f - std::numeric_limits<float>::epsilon()); //because of rounding error
+        float normalLength = normal.length();
+        float sinAlpha = normalLength / (ab.length() * ac.length());
+        sinAlpha = MathFunction::clamp(sinAlpha, -0.999999f, 0.999999f); //because of rounding error
 
-        return normal.normalize() * std::asin(sinAlpha);
+        return (normal / normalLength) * std::asin(sinAlpha);
     }
 }
