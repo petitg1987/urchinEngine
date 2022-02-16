@@ -33,6 +33,7 @@ namespace urchin {
             const Quaternion<T>& getOrientation() const;
             std::vector<Point3<T>> getPoints() const;
             Point3<T> getPoint(unsigned int) const;
+            Vector3<T> getVectorPoint(unsigned int) const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
             AABBox<T> toAABBox() const;

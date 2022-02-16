@@ -56,16 +56,15 @@ namespace urchin {
             normalizedDirection = direction.normalize();
         }
 
-        Point3<T> spherePosition1 = centerOfMass.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
+        Vector3<T> shiftVector = axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0);
+        Point3<T> spherePosition1 = centerOfMass.translate(shiftVector);
+        Point3<T> spherePosition2 = centerOfMass.translate(-shiftVector);
         Point3<T> supportPoint1 = spherePosition1.translate(normalizedDirection * getRadius());
-
-        Point3<T> spherePosition2 = centerOfMass.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
         Point3<T> supportPoint2 = spherePosition2.translate(normalizedDirection * getRadius());
 
         if (centerOfMass.vector(supportPoint1).squareLength() > centerOfMass.vector(supportPoint2).squareLength()) {
             return supportPoint1;
         }
-
         return supportPoint2;
     }
 

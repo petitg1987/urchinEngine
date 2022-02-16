@@ -130,20 +130,48 @@ namespace urchin {
         throw std::invalid_argument("Invalid index: " + std::to_string(index));
     }
 
+    /**
+     * Vector from center to points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
+     */
+    template<class T> Vector3<T> OBBox<T>::getVectorPoint(unsigned int index) const {
+        switch (index) {
+            case 0:
+                return axis[0] + axis[1] + axis[2];
+            case 1:
+                return axis[0] + axis[1] - axis[2];
+            case 2:
+                return axis[0] - axis[1] + axis[2];
+            case 3:
+                return axis[0] - axis[1] - axis[2];
+            case 4:
+                return -axis[0] + axis[1] + axis[2];
+            case 5:
+                return -axis[0] + axis[1] - axis[2];
+            case 6:
+                return -axis[0] - axis[1] + axis[2];
+            case 7:
+                return -axis[0] - axis[1] - axis[2];
+            default:
+                break;
+        }
+
+        throw std::invalid_argument("Invalid index: " + std::to_string(index));
+    }
+
     template<class T> Point3<T> OBBox<T>::getSupportPoint(const Vector3<T>& direction) const {
-        Point3<T> maxPoint = getPoint(0);
-        T maxPointDotDirection = maxPoint.toVector().dotProduct(direction);
+        Vector3<T> bestPointVector = getVectorPoint(0);
+        T maxDotProduct = bestPointVector.dotProduct(direction);
 
         for (unsigned int i = 1; i < 8; ++i) {
-            Point3<T> currentPoint = getPoint(i);
-            T currentPointDotDirection  = currentPoint.toVector().dotProduct(direction);
-            if (currentPointDotDirection > maxPointDotDirection) {
-                maxPointDotDirection = currentPointDotDirection;
-                maxPoint = currentPoint;
+            Vector3<T> currentPointVector = getVectorPoint(i);
+            T currentDotProduct  = currentPointVector.dotProduct(direction);
+            if (currentDotProduct > maxDotProduct) {
+                maxDotProduct = currentDotProduct;
+                bestPointVector = currentPointVector;
             }
         }
 
-        return maxPoint;
+        return centerOfMass.translate(bestPointVector);
     }
 
     template<class T> AABBox<T> OBBox<T>::toAABBox() const {
