@@ -54,7 +54,8 @@ namespace urchin {
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //bounds
-        std::vector<std::unique_ptr<AABBox<float>>> bboxes(numFrames);
+        std::vector<AABBox<float>> bboxes(numFrames);
+        bboxes.reserve(numFrames);
         FileReader::nextLine(file, buffer); //buffer = "bounds {"
         for (unsigned int i = 0; i < numFrames; i++) {
             FileReader::nextLine(file, buffer);
@@ -62,7 +63,7 @@ namespace urchin {
 
             Point3<float> min, max;
             iss >> sdata >> min.X >> min.Y >> min.Z >> sdata >> sdata >> max.X >> max.Y >> max.Z;
-            bboxes[i] = std::make_unique<AABBox<float>>(min, max);
+            bboxes.emplace_back(min, max);
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
 
@@ -143,10 +144,10 @@ namespace urchin {
                     const Bone* parentBone = &skeletonFrames[frameIndex][(std::size_t)parent];
 
                     //adds positions
-                    Point3<float> rpos = parentBone->orient.rotatePoint(animatedPos); //rotated position
-                    thisBone->pos.X = rpos.X + parentBone->pos.X;
-                    thisBone->pos.Y = rpos.Y + parentBone->pos.Y;
-                    thisBone->pos.Z = rpos.Z + parentBone->pos.Z;
+                    Point3<float> rotatedPosition = parentBone->orient.rotatePoint(animatedPos);
+                    thisBone->pos.X = rotatedPosition.X + parentBone->pos.X;
+                    thisBone->pos.Y = rotatedPosition.Y + parentBone->pos.Y;
+                    thisBone->pos.Z = rotatedPosition.Z + parentBone->pos.Z;
 
                     //concatenates rotations
                     thisBone->orient = (parentBone->orient * animatedOrient).normalize();

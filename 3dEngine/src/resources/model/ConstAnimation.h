@@ -20,7 +20,7 @@ namespace urchin {
      */
     class ConstAnimation : public Resource {
         public:
-            ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, std::vector<std::vector<Bone>>, std::vector<std::unique_ptr<AABBox<float>>>);
+            ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, std::vector<std::vector<Bone>>, std::vector<AABBox<float>>);
             ~ConstAnimation() override = default;
 
             const std::string& getAnimationFilename() const;
@@ -38,7 +38,7 @@ namespace urchin {
             const unsigned int numBones, frameRate;
             std::vector<std::vector<Bone>> skeletonFrames;
 
-            std::vector<std::unique_ptr<AABBox<float>>> localFrameBBoxes;
+            std::vector<AABBox<float>> localFrameBBoxes;
             AABBox<float> localFramesBBox;
             std::vector<AABBox<float>> localFramesSplitBBoxes;
     };

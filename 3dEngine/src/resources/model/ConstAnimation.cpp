@@ -6,15 +6,15 @@
 namespace urchin {
 
     ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones, unsigned int frameRate,
-                                   std::vector<std::vector<Bone>> skeletonFrames, std::vector<std::unique_ptr<AABBox<float>>> localFrameBBoxes) :
+                                   std::vector<std::vector<Bone>> skeletonFrames, std::vector<AABBox<float>> localFrameBBoxes) :
             animationFilename(std::move(animationFilename)),
             numBones(numBones),
             frameRate(frameRate),
             skeletonFrames(std::move(skeletonFrames)),
             localFrameBBoxes(std::move(localFrameBBoxes)) {
-        localFramesBBox = AABBox<float>(this->localFrameBBoxes[0]->getMin(), this->localFrameBBoxes[0]->getMax());
+        localFramesBBox = AABBox<float>(this->localFrameBBoxes[0].getMin(), this->localFrameBBoxes[0].getMax());
         for (unsigned int i = 0; i < numFrames; ++i) {
-            localFramesBBox = localFramesBBox.merge(*this->localFrameBBoxes[i]);
+            localFramesBBox = localFramesBBox.merge(this->localFrameBBoxes[i]);
         }
         SplitBoundingBox().split(localFramesBBox, localFramesSplitBBoxes);
     }
@@ -45,7 +45,7 @@ namespace urchin {
      */
     const AABBox<float>& ConstAnimation::getLocalFrameAABBox(unsigned int frameNumber) const {
         assert(localFrameBBoxes.size() > frameNumber);
-        return *localFrameBBoxes[frameNumber];
+        return localFrameBBoxes[frameNumber];
     }
 
     /**
