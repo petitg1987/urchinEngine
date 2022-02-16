@@ -55,7 +55,7 @@ namespace urchin {
             modelUvs.push_back(uvTexture[i]);
 
             Weight modelWeight = {};
-            modelWeight.bone = 0;
+            modelWeight.boneIndex = 0;
             modelWeight.bias = 1;
             modelWeight.pos = vertices[i];
             modelWeights.push_back(modelWeight);

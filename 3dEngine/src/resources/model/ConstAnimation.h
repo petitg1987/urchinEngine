@@ -28,6 +28,7 @@ namespace urchin {
             unsigned int getNumberBones() const;
             unsigned int getFrameRate() const;
             const Bone& getBone(unsigned int, unsigned int) const;
+            bool isAnimatedBone(unsigned int) const;
 
             const AABBox<float>& getLocalFrameAABBox(unsigned int) const;
             const AABBox<float>& getLocalFramesAABBox() const;
@@ -37,6 +38,7 @@ namespace urchin {
             std::string animationFilename;
             const unsigned int numBones, frameRate;
             std::vector<std::vector<Bone>> skeletonFrames;
+            std::vector<bool> animatedBones;
 
             std::vector<AABBox<float>> localFrameBBoxes;
             AABBox<float> localFramesBBox;

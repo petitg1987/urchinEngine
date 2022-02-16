@@ -24,6 +24,13 @@ namespace urchin {
         //compute vertices and normals based on bind-pose skeleton
         MeshService::computeVertices(*this, baseSkeleton, baseVertices);
         MeshService::computeNormalsAndTangents(*this, baseVertices, baseNormals, baseTangents);
+
+        //determine used bones
+        for (const Weight& weight : this->weights) {
+            if (std::ranges::find(usedBonesIndices, weight.boneIndex) == usedBonesIndices.end()) {
+                usedBonesIndices.push_back(weight.boneIndex);
+            }
+        }
     }
 
     const Material& ConstMesh::getInitialMaterial() const {
@@ -65,6 +72,10 @@ namespace urchin {
 
     const Weight& ConstMesh::getWeight(unsigned int index) const {
         return weights[index];
+    }
+
+    const std::vector<std::size_t>& ConstMesh::getUsedBonesIndices() const {
+        return usedBonesIndices;
     }
 
     unsigned int ConstMesh::getNumberBones() const {

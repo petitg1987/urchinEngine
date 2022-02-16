@@ -16,16 +16,16 @@ namespace urchin {
 
             //calculate final vertex to draw with weights
             for (int j = 0; j < constMesh.getStructVertex(i).weightCount; ++j) {
-                const Weight* weight = &constMesh.getWeight((unsigned int)(constMesh.getStructVertex(i).weightStart + j));
-                const Bone& bone = skeleton[(std::size_t)weight->bone];
+                const Weight& weight = constMesh.getWeight((unsigned int)(constMesh.getStructVertex(i).weightStart + j));
+                const Bone& bone = skeleton[weight.boneIndex];
 
                 //calculate transformed vertex for this weight
-                Point3<float> wv = bone.orient.rotatePoint(weight->pos);
+                Point3<float> wv = bone.orient.rotatePoint(weight.pos);
 
                 //the sum of all weight->bias should be 1.0
-                vertices[i].X += (bone.pos.X + wv.X) * weight->bias;
-                vertices[i].Y += (bone.pos.Y + wv.Y) * weight->bias;
-                vertices[i].Z += (bone.pos.Z + wv.Z) * weight->bias;
+                vertices[i].X += (bone.pos.X + wv.X) * weight.bias;
+                vertices[i].Y += (bone.pos.Y + wv.Y) * weight.bias;
+                vertices[i].Z += (bone.pos.Z + wv.Z) * weight.bias;
             }
         }
     }

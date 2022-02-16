@@ -16,7 +16,7 @@ namespace urchin {
     };
 
     struct Weight {
-        int bone; //index of the bone
+        std::size_t boneIndex;
         float bias; //contribution of the vertex weight
         Point3<float> pos; //coordinates of the vertex weight
     };
@@ -48,6 +48,7 @@ namespace urchin {
 
             unsigned int getNumberWeights() const;
             const Weight& getWeight(unsigned int) const;
+            const std::vector<std::size_t>& getUsedBonesIndices() const;
 
             unsigned int getNumberBones() const;
             const std::vector<Bone>& getBaseSkeleton() const;
@@ -66,6 +67,7 @@ namespace urchin {
             std::vector<unsigned int> trianglesIndices;
 
             std::vector<Weight> weights;
+            std::vector<std::size_t> usedBonesIndices;
 
             //mesh information in bind-pose
             std::vector<Bone> baseSkeleton; //bind-pose skeleton

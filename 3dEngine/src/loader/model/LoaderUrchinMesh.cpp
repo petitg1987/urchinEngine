@@ -22,13 +22,13 @@ namespace urchin {
         }
 
         //numBones
-        unsigned int numBones = 0;
+        std::size_t numBones = 0;
         FileReader::nextLine(file, buffer);
         iss.clear(); iss.str(buffer);
         iss >> sdata >> numBones;
 
         //numMeshes
-        unsigned int numMeshes = 0;
+        std::size_t numMeshes = 0;
         FileReader::nextLine(file, buffer);
         iss.clear(); iss.str(buffer);
         iss >> sdata >> numMeshes;
@@ -36,7 +36,7 @@ namespace urchin {
         //bones
         std::vector<Bone> baseSkeleton(numBones);
         FileReader::nextLine(file, buffer); //buffer = "joints {"
-        for (unsigned int i = 0; i < numBones; i++) {
+        for (std::size_t i = 0; i < numBones; i++) {
             FileReader::nextLine(file, buffer);
             Bone* bone = &baseSkeleton[i];
             iss.clear(); iss.str(buffer);
@@ -48,7 +48,7 @@ namespace urchin {
 
         //mesh
         std::vector<std::unique_ptr<const ConstMesh>> constMeshes;
-        for (unsigned int ii = 0; ii < numMeshes; ii++) {
+        for (std::size_t ii = 0; ii < numMeshes; ii++) {
             //material
             std::shared_ptr<Material> material;
             std::string materialFilename;
@@ -65,7 +65,7 @@ namespace urchin {
             }
 
             //numVertices
-            unsigned int numVertices = 0;
+            std::size_t numVertices = 0;
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> numVertices;
@@ -73,7 +73,7 @@ namespace urchin {
             //vertices
             std::vector<Vertex> vertices(numVertices);
             std::vector<Point2<float>> texCoords(numVertices);
-            for (unsigned int i = 0; i < numVertices; i++) {
+            for (std::size_t i = 0; i < numVertices; i++) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
                 iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> texCoords[i].X >> texCoords[i].Y
@@ -81,31 +81,31 @@ namespace urchin {
             }
 
             //numTriangles
-            unsigned int numTriangles = 0;
+            std::size_t numTriangles = 0;
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> numTriangles;
 
             //triangles indices
             std::vector<unsigned int> trianglesIndices(numTriangles * 3);
-            for (unsigned int i = 0, triVertexIndex = 0; i < numTriangles; i++, triVertexIndex += 3) {
+            for (std::size_t i = 0, triVertexIndex = 0; i < numTriangles; i++, triVertexIndex += 3) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
                 iss >> sdata >> idata >> trianglesIndices[triVertexIndex] >> trianglesIndices[triVertexIndex + 1] >> trianglesIndices[triVertexIndex + 2];
             }
 
             //numWeights
-            unsigned int numWeights = 0;
+            std::size_t numWeights = 0;
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
             iss >> sdata >> numWeights;
 
             //weights
             std::vector<Weight> weights(numWeights);
-            for (unsigned int i = 0; i < numWeights; i++) {
+            for (std::size_t i = 0; i < numWeights; i++) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> weights[i].bone >> weights[i].bias >> sdata >> weights[i].pos.X >> weights[i].pos.Y >> weights[i].pos.Z;
+                iss >> sdata >> idata >> weights[i].boneIndex >> weights[i].bias >> sdata >> weights[i].pos.X >> weights[i].pos.Y >> weights[i].pos.Z;
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
 
