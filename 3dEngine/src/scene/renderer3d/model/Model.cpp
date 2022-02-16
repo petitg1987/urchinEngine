@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <algorithm>
 
 #include <scene/renderer3d/model/Model.h>
 #include <resources/ResourceRetriever.h>
@@ -10,8 +11,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
-            bIsMeshUpdated(false) {
+            shadowClass(ShadowClass::RECEIVER_AND_CASTER) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
             meshes = std::make_unique<Meshes>(std::move(constMeshes));
@@ -25,8 +25,7 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
-            bIsMeshUpdated(false) {
+            shadowClass(ShadowClass::RECEIVER_AND_CASTER) {
         initialize();
     }
 
@@ -37,8 +36,7 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
-            shadowClass(model.getShadowClass()),
-            bIsMeshUpdated(model.isMeshUpdated()) {
+            shadowClass(model.getShadowClass()) {
         if (model.meshes) {
             meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
         }
@@ -55,6 +53,7 @@ namespace urchin {
 
     void Model::initialize() {
         if (meshes) {
+            meshesUpdated.resize(meshes->getNumberMeshes(), false);
             meshes->onMoving(transform);
         }
     }
@@ -135,8 +134,9 @@ namespace urchin {
         //apply skeleton bind pose
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
+            meshesUpdated[meshIndex] = true;
         }
-        notifyMeshUpdated();
+        notifyObservers(this, Model::MESH_UPDATED);
     }
 
     void Model::gotoAnimationFrame(std::string_view animationName, unsigned int animationFrameIndex) {
@@ -148,7 +148,7 @@ namespace urchin {
 
         if (activeAnimation->getCurrentFrame() != animationFrameIndex) {
             activeAnimation->gotoFrame(animationFrameIndex);
-            notifyMeshUpdated();
+            notifyMeshUpdatedByAnimation();
         }
     }
 
@@ -179,8 +179,11 @@ namespace urchin {
         this->notifyOctreeableMove();
     }
 
-    void Model::notifyMeshUpdated() {
-        this->bIsMeshUpdated = true;
+    void Model::notifyMeshUpdatedByAnimation() {
+        std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
+        for (std::size_t updatedMeshIndex : activeAnimation->getAnimatedMeshIndices()) {
+            meshesUpdated[updatedMeshIndex] = true;
+        }
         notifyObservers(this, Model::MESH_UPDATED);
     }
 
@@ -290,8 +293,12 @@ namespace urchin {
         return shadowClass;
     }
 
-    bool Model::isMeshUpdated() const {
-        return bIsMeshUpdated && getMeshes();
+    bool Model::hasMeshesUpdated() const {
+        return getMeshes() && std::ranges::any_of(meshesUpdated, [](bool meshUpdated){ return meshUpdated; });
+    }
+
+    bool Model::isMeshUpdated(unsigned int meshIndex) const {
+        return meshesUpdated[meshIndex];
     }
 
     void Model::updateAnimation(float dt) {
@@ -301,7 +308,7 @@ namespace urchin {
                 stopAnimationAtLastFrame = false;
             } else {
                 activeAnimation->animate(dt);
-                notifyMeshUpdated();
+                notifyMeshUpdatedByAnimation();
             }
         }
     }
@@ -310,7 +317,10 @@ namespace urchin {
         meshes->updateMesh(meshIndex, vertices);
 
         onMoving(transform);
-        notifyMeshUpdated();
+
+        std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
+        meshesUpdated[meshIndex] = true;
+        notifyObservers(this, Model::MESH_UPDATED);
     }
 
     void Model::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) {

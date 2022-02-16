@@ -60,7 +60,8 @@ namespace urchin {
 
             void setShadowClass(ShadowClass);
             ShadowClass getShadowClass() const;
-            bool isMeshUpdated() const;
+            bool hasMeshesUpdated() const;
+            bool isMeshUpdated(unsigned int) const;
 
             void updateAnimation(float);
             void updateMesh(unsigned int, const std::vector<Point3<float>>&);
@@ -73,7 +74,7 @@ namespace urchin {
             const AABBox<float> &getDefaultModelLocalAABBox() const;
             void initialize();
             void onMoving(const Transform<float>&);
-            void notifyMeshUpdated();
+            void notifyMeshUpdatedByAnimation();
 
             std::vector<AABBox<float>> defaultModelAABBoxes;
 
@@ -91,7 +92,7 @@ namespace urchin {
 
             //properties
             ShadowClass shadowClass;
-            bool bIsMeshUpdated;
+            std::vector<bool> meshesUpdated;
     };
 
 }

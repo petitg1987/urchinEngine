@@ -48,7 +48,7 @@ namespace urchin {
 
             unsigned int getNumberWeights() const;
             const Weight& getWeight(unsigned int) const;
-            const std::vector<std::size_t>& getUsedBonesIndices() const;
+            const std::vector<std::size_t>& getUsedBoneIndices() const;
 
             unsigned int getNumberBones() const;
             const std::vector<Bone>& getBaseSkeleton() const;
@@ -67,7 +67,7 @@ namespace urchin {
             std::vector<unsigned int> trianglesIndices;
 
             std::vector<Weight> weights;
-            std::vector<std::size_t> usedBonesIndices;
+            std::vector<std::size_t> usedBoneIndices;
 
             //mesh information in bind-pose
             std::vector<Bone> baseSkeleton; //bind-pose skeleton

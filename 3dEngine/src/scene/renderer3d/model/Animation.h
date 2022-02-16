@@ -20,6 +20,7 @@ namespace urchin {
             const ConstAnimation& getConstAnimation() const;
             unsigned int getCurrentFrame() const;
             float getAnimationProgression() const;
+            const std::vector<std::size_t>& getAnimatedMeshIndices() const;
 
             void animate(float);
             void gotoFrame(unsigned int);
@@ -32,6 +33,7 @@ namespace urchin {
             mutable std::shared_ptr<ConstAnimation> constAnimation;
             const Meshes& meshes;
 
+            std::vector<std::size_t> animatedMeshIndices;
             AnimationInformation animationInformation;
             std::vector<Bone> skeleton;
             AABBox<float> framesBBox;

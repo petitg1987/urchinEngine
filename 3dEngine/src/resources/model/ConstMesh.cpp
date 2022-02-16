@@ -27,8 +27,8 @@ namespace urchin {
 
         //determine used bones
         for (const Weight& weight : this->weights) {
-            if (std::ranges::find(usedBonesIndices, weight.boneIndex) == usedBonesIndices.end()) {
-                usedBonesIndices.push_back(weight.boneIndex);
+            if (std::ranges::find(usedBoneIndices, weight.boneIndex) == usedBoneIndices.end()) {
+                usedBoneIndices.push_back(weight.boneIndex);
             }
         }
     }
@@ -74,8 +74,8 @@ namespace urchin {
         return weights[index];
     }
 
-    const std::vector<std::size_t>& ConstMesh::getUsedBonesIndices() const {
-        return usedBonesIndices;
+    const std::vector<std::size_t>& ConstMesh::getUsedBoneIndices() const {
+        return usedBoneIndices;
     }
 
     unsigned int ConstMesh::getNumberBones() const {

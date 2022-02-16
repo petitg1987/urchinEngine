@@ -60,7 +60,7 @@ namespace urchin {
         return skeletonFrames[frameNumber][boneNumber];
     }
 
-    bool ConstAnimation::isAnimatedBone(unsigned int boneNumber) const {
+    bool ConstAnimation::isAnimatedBone(std::size_t boneNumber) const {
         return animatedBones[boneNumber];
     }
 
