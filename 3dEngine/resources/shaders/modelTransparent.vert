@@ -18,6 +18,7 @@ layout(location = 0) out vec3 t;
 layout(location = 1) out vec3 b;
 layout(location = 2) out vec3 n;
 layout(location = 3) out vec2 texCoordinates;
+layout(location = 4) out vec4 worldPosition;
 invariant gl_Position;
 
 void main() {
@@ -27,5 +28,6 @@ void main() {
     n = normalize(mat3(mNormal) * normal);
     b = normalize(cross(n, t));
 
-    gl_Position = postioningData.mProjectionView * mModel * vec4(vertexPosition, 1.0);
+    worldPosition =  mModel * vec4(vertexPosition, 1.0);
+    gl_Position = postioningData.mProjectionView * worldPosition;
 }

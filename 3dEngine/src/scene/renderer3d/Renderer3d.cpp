@@ -62,6 +62,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "render3dInit");
 
         //deferred rendering
+        modelSetDisplayer.setupShader("model.vert.spv", "", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer.initialize(*deferredRenderTarget);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);

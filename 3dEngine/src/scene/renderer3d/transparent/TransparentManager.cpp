@@ -80,7 +80,7 @@ namespace urchin {
         BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
 
         modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
-        modelSetDisplayer->setupShader("", "modelTransparent.frag.spv", std::move(shaderConstants));
+        modelSetDisplayer->setupShader("modelTransparent.vert.spv", "", "modelTransparent.frag.spv", std::move(shaderConstants));
         modelSetDisplayer->setupDepthOperations(true, false /* disable depth write */);
         modelSetDisplayer->setupBlendFunctions({accumulationBlend, revealBlend});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());

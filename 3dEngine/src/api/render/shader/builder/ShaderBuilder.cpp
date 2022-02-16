@@ -24,7 +24,8 @@ namespace urchin {
         shaderSources.emplace_back(Shader::FRAGMENT, readFile(shadersDirectory + fragmentShaderFilename));
 
         std::size_t shaderId = computeShaderId(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename, shaderConstants.get());
-        std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(vertexShaderFilename));
+        std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(vertexShaderFilename)) + "-"
+                + FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(fragmentShaderFilename));
         return std::make_unique<Shader>(shaderId, shaderName, shaderSources, std::move(shaderConstants));
     }
 

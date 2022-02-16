@@ -29,11 +29,9 @@ namespace urchin {
 
         if (renderTarget.isValidRenderTarget()) {
             if (displayMode == DisplayMode::DEFAULT_MODE) {
-                if (fragmentShaderName.empty()) {
-                    //use default fragment shader
-                    fragmentShaderName = "model.frag.spv";
-                }
-                modelShader = ShaderBuilder::createShader("model.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
+                assert(!vertexShaderName.empty());
+                assert(!fragmentShaderName.empty());
+                modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
             } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
                 assert(!fragmentShaderName.empty());
                 modelShader = ShaderBuilder::createShader("modelDepthOnly.vert.spv", geometryShaderName, fragmentShaderName, std::move(shaderConstants));
@@ -47,11 +45,12 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelSetDisplayer::setupShader(std::string geometryShaderName, std::string fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
+    void ModelSetDisplayer::setupShader(std::string vertexShaderName, std::string geometryShaderName, std::string fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
         }
 
+        this->vertexShaderName = std::move(vertexShaderName);
         this->geometryShaderName = std::move(geometryShaderName);
         this->fragmentShaderName = std::move(fragmentShaderName);
         this->shaderConstants = std::move(shaderConstants);

@@ -26,7 +26,7 @@ namespace urchin {
             ~ModelSetDisplayer();
 
             void initialize(RenderTarget&);
-            void setupShader(std::string, std::string, std::unique_ptr<ShaderConstants>);
+            void setupShader(std::string, std::string, std::string, std::unique_ptr<ShaderConstants>);
             void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
             void setupDepthOperations(bool, bool);
             void setupFaceCull(bool);
@@ -51,7 +51,7 @@ namespace urchin {
 
             bool isInitialized;
 
-            std::string geometryShaderName, fragmentShaderName;
+            std::string vertexShaderName, geometryShaderName, fragmentShaderName;
             std::unique_ptr<ShaderConstants> shaderConstants;
 
             DisplayMode displayMode;
