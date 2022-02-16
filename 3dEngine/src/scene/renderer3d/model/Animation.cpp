@@ -2,9 +2,10 @@
 
 namespace urchin {
 
-    Animation::Animation(std::shared_ptr<ConstAnimation> constAnimation, const Meshes& meshes) :
+    Animation::Animation(std::shared_ptr<ConstAnimation> constAnimation, const Meshes& meshes, AnimShadow animShadow) :
             constAnimation(std::move(constAnimation)),
             meshes(meshes),
+            animShadow(animShadow),
             animationInformation() {
         skeleton.resize(this->constAnimation->getNumberBones());
 
@@ -49,6 +50,10 @@ namespace urchin {
 
     const ConstAnimation& Animation::getConstAnimation() const {
         return *constAnimation;
+    }
+
+    bool Animation::isAnimationAffectShadow() const {
+        return animShadow == AnimShadow::AFFECT_SHADOW;
     }
 
     unsigned int Animation::getCurrentFrame() const {

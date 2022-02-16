@@ -66,31 +66,31 @@ namespace urchin {
         return defaultModelLocalAABBox;
     }
 
-    void Model::loadAnimation(const std::string& name, const std::string& filename) {
+    void Model::loadAnimation(const std::string& name, const std::string& filename, AnimShadow animShadow) {
         if (!meshes) {
             throw std::runtime_error("Cannot add animation on model without mesh");
         }
 
         //load and add the anim to the std::map
         auto constAnimation = ResourceRetriever::instance().getResource<ConstAnimation>(filename);
-        animations[name] = std::make_unique<Animation>(constAnimation, *meshes);
+        animations.try_emplace(name, std::make_unique<Animation>(constAnimation, *meshes, animShadow));
         animations[name]->onMoving(transform);
 
         //both files must have the same number of bones
         if (meshes->getConstMeshes().getConstMesh(0).getNumberBones() != constAnimation->getNumberBones()) {
-            throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes().getMeshesName() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
+            throw std::runtime_error("Both files have not the same number of bones. Meshes filename: " + meshes->getConstMeshes().getMeshesName() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
         }
 
-        //we just check with mesh[0] && frame[0]
+        //check with mesh[0] && frame[0]
         for (unsigned int i = 0; i < meshes->getConstMeshes().getConstMesh(0).getNumberBones(); ++i) {
             //bones must have the same parent index
             if (meshes->getConstMeshes().getConstMesh(0).getBaseBone(i).parent != constAnimation->getBone(0, i).parent) {
-                throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes().getMeshesName() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
+                throw std::runtime_error("Bones have not the same parent index. Meshes filename: " + meshes->getConstMeshes().getMeshesName() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
             }
 
             //bones must have the same name
             if (meshes->getConstMeshes().getConstMesh(0).getBaseBone(i).name != constAnimation->getBone(0, i).name) {
-                throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes().getMeshesName() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
+                throw std::runtime_error("Bones have not the same name. Meshes filename: " + meshes->getConstMeshes().getMeshesName() + ", Animation filename: " + constAnimation->getAnimationFilename() + ".");
             }
         }
     }

@@ -158,7 +158,7 @@ namespace urchin {
             this->models = models;
         } else {
             for (const auto* model : models) {
-                if (model->isMovingInOctree() || model->isAnimated()) { //TODO optimize for anim
+                if (model->isMovingInOctree() || (model->isAnimated() && model->getActiveAnimation()->isAnimationAffectShadow())) {
                     modelsRequireUpdate = true;
                     break;
                 }

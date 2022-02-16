@@ -5,12 +5,13 @@
 
 #include <resources/model/ConstAnimation.h>
 #include <scene/renderer3d/model/Meshes.h>
+#include <scene/renderer3d/model/AnimShadow.h>
 
 namespace urchin {
 
     class Animation {
         public:
-            Animation(std::shared_ptr<ConstAnimation>, const Meshes&);
+            Animation(std::shared_ptr<ConstAnimation>, const Meshes&, AnimShadow);
 
             const std::vector<Bone>& getSkeleton() const;
             const AABBox<float>& getFramesAABBox() const;
@@ -18,6 +19,7 @@ namespace urchin {
             const AABBox<float>& getLocalFramesAABBox() const;
 
             const ConstAnimation& getConstAnimation() const;
+            bool isAnimationAffectShadow() const;
             unsigned int getCurrentFrame() const;
             float getAnimationProgression() const;
             const std::vector<std::size_t>& getAnimatedMeshIndices() const;
@@ -32,6 +34,7 @@ namespace urchin {
 
             mutable std::shared_ptr<ConstAnimation> constAnimation;
             const Meshes& meshes;
+            AnimShadow animShadow;
 
             std::vector<std::size_t> animatedMeshIndices;
             AnimationInformation animationInformation;
