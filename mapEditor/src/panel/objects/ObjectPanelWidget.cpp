@@ -503,7 +503,12 @@ namespace urchin {
         this->positionY->setValue(modelTransform.getPosition().Y);
         this->positionZ->setValue(modelTransform.getPosition().Z);
 
-        Vector3<float> eulerAngle = modelTransform.getOrientation().toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
+        int orientationTypeInt = orientationType->currentData().toInt();
+        Quaternion<float>::RotationSequence rotationSequence = Quaternion<float>::RotationSequence::XYZ;
+        if (orientationTypeInt >= 0) {
+            rotationSequence = static_cast<Quaternion<float>::RotationSequence>(orientationTypeInt);
+        }
+        Vector3<float> eulerAngle = modelTransform.getOrientation().toEulerAngle(rotationSequence);
         this->eulerAxis0->setValue(AngleConverter<double>::toDegree(eulerAngle[0]));
         this->eulerAxis1->setValue(AngleConverter<double>::toDegree(eulerAngle[1]));
         this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));
