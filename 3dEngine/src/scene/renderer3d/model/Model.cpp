@@ -11,7 +11,8 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            shadowClass(ShadowClass::RECEIVER_AND_CASTER) {
+            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
+            originalMeshesUpdated(false) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
             meshes = std::make_unique<Meshes>(std::move(constMeshes));
@@ -25,7 +26,8 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            shadowClass(ShadowClass::RECEIVER_AND_CASTER) {
+            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
+            originalMeshesUpdated(false) {
         initialize();
     }
 
@@ -36,7 +38,8 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
-            shadowClass(model.getShadowClass()) {
+            shadowClass(model.getShadowClass()),
+            originalMeshesUpdated(model.isOriginalMeshesUpdated()) {
         if (model.meshes) {
             meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
         }
@@ -134,9 +137,9 @@ namespace urchin {
         //apply skeleton bind pose
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
-            meshesUpdated[meshIndex] = true;
         }
-        notifyObservers(this, Model::MESH_UPDATED);
+
+        notifyMeshUpdatedReset();
     }
 
     void Model::gotoAnimationFrame(std::string_view animationName, unsigned int animationFrameIndex) {
@@ -184,6 +187,23 @@ namespace urchin {
         for (std::size_t updatedMeshIndex : activeAnimation->getAnimatedMeshIndices()) {
             meshesUpdated[updatedMeshIndex] = true;
         }
+        originalMeshesUpdated = true;
+        notifyObservers(this, Model::MESH_UPDATED);
+    }
+
+    void Model::notifyMeshUpdatedReset() {
+        for (bool&& meshUpdated : meshesUpdated) {
+            meshUpdated = true;
+        }
+        originalMeshesUpdated = false;
+        notifyObservers(this, Model::MESH_UPDATED);
+    }
+
+    void Model::notifyMeshUpdated(unsigned int updatedMeshIndex) {
+        for (std::size_t meshIndex = 0; meshIndex < meshesUpdated.size(); ++meshIndex) {
+            meshesUpdated[meshIndex] = (meshIndex == updatedMeshIndex);
+        }
+        originalMeshesUpdated = true;
         notifyObservers(this, Model::MESH_UPDATED);
     }
 
@@ -293,8 +313,8 @@ namespace urchin {
         return shadowClass;
     }
 
-    bool Model::hasMeshesUpdated() const {
-        return getMeshes() && std::ranges::any_of(meshesUpdated, [](bool meshUpdated){ return meshUpdated; });
+    bool Model::isOriginalMeshesUpdated() const {
+        return originalMeshesUpdated;
     }
 
     bool Model::isMeshUpdated(unsigned int meshIndex) const {
@@ -317,10 +337,7 @@ namespace urchin {
         meshes->updateMesh(meshIndex, vertices);
 
         onMoving(transform);
-
-        std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
-        meshesUpdated[meshIndex] = true;
-        notifyObservers(this, Model::MESH_UPDATED);
+        notifyMeshUpdated(meshIndex);
     }
 
     void Model::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) {
