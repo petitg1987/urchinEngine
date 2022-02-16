@@ -19,7 +19,7 @@ namespace urchin {
             const AABBox<float>& getLocalFramesAABBox() const;
 
             const ConstAnimation& getConstAnimation() const;
-            bool isAnimationAffectShadow() const;
+            AnimShadowImpact getShadowImpact() const;
             unsigned int getCurrentFrame() const;
             float getAnimationProgression() const;
             const std::vector<std::size_t>& getAnimatedMeshIndices() const;

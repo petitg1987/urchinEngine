@@ -52,8 +52,8 @@ namespace urchin {
         return *constAnimation;
     }
 
-    bool Animation::isAnimationAffectShadow() const {
-        return animShadowImpact == AnimShadowImpact::ALTER;
+    AnimShadowImpact Animation::getShadowImpact() const {
+        return animShadowImpact;
     }
 
     unsigned int Animation::getCurrentFrame() const {

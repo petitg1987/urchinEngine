@@ -34,24 +34,27 @@ namespace urchin {
             for (const auto& animationChunk : animationsChunk) {
                 auto animationNameChunk = udaParser.getFirstChunk(true, NAME_TAG, UdaAttribute(), animationChunk);
                 auto animationFilenameChunk = udaParser.getFirstChunk(true, FILENAME_TAG, UdaAttribute(), animationChunk);
+                auto animationShadowImpactChunk = udaParser.getFirstChunk(true, ANIM_SHADOW_IMPACT, UdaAttribute(), animationChunk);
 
-                model.loadAnimation(animationNameChunk->getStringValue(), animationFilenameChunk->getStringValue());
+                model.loadAnimation(animationNameChunk->getStringValue(), animationFilenameChunk->getStringValue(), static_cast<AnimShadowImpact>(animationShadowImpactChunk->getIntValue()));
             }
         }
     }
 
     void ModelReaderWriter::writeAnimations(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        std::map<std::string, const ConstAnimation*> animations = model.getAnimations();
+        const std::map<std::string, std::unique_ptr<Animation>, std::less<>>& animations = model.getAnimations();
         if (!animations.empty()) {
             auto& animationsListChunk = udaWriter.createChunk(ANIMATIONS_TAG, UdaAttribute(), &modelChunk);
-            for (const auto& [animName, constAnimation] : animations) {
+            for (const auto& [animName, anim] : animations) {
                 auto& animationChunk = udaWriter.createChunk(ANIMATION_TAG, UdaAttribute(), &animationsListChunk);
 
                 auto& animationNameChunk = udaWriter.createChunk(NAME_TAG, UdaAttribute(), &animationChunk);
                 auto& animationFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &animationChunk);
+                auto& animationShadowImpactChunk = udaWriter.createChunk(ANIM_SHADOW_IMPACT, UdaAttribute(), &animationChunk);
 
                 animationNameChunk.setStringValue(animName);
-                animationFilenameChunk.setStringValue(constAnimation->getAnimationFilename());
+                animationFilenameChunk.setStringValue(anim->getConstAnimation().getAnimationFilename());
+                animationShadowImpactChunk.setIntValue((int)anim->getShadowImpact());
             }
         }
     }

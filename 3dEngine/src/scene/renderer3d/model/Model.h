@@ -34,7 +34,7 @@ namespace urchin {
             static std::unique_ptr<Model> fromMeshesFile(const std::string&);
             static std::unique_ptr<Model> fromMemory(std::unique_ptr<Meshes>);
 
-            void loadAnimation(const std::string&, const std::string&, AnimShadowImpact = AnimShadowImpact::ALTER);
+            void loadAnimation(const std::string&, const std::string&, AnimShadowImpact);
             bool hasLoadedAnimation() const;
             void animate(std::string_view, AnimRepeat, AnimStart);
             void stopAnimation(bool);
@@ -46,7 +46,7 @@ namespace urchin {
 
             const Meshes* getMeshes() const;
             const ConstMeshes* getConstMeshes() const;
-            std::map<std::string, const ConstAnimation*> getAnimations() const;
+            const std::map<std::string, std::unique_ptr<Animation>, std::less<>>& getAnimations() const;
 
             const AABBox<float>& getAABBox() const override;
             const std::vector<AABBox<float>>& getSplitAABBoxes() const;

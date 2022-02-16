@@ -27,6 +27,7 @@ namespace urchin {
             static constexpr char ANIMATIONS_TAG[] = "animations";
             static constexpr char ANIMATION_TAG[] = "animation";
             static constexpr char NAME_TAG[] = "name";
+            static constexpr char ANIM_SHADOW_IMPACT[] = "shadowImpact";
             static constexpr char TRANSFORM_TAG[] = "transform";
             static constexpr char POSITION_TAG[] = "position";
             static constexpr char SCALE_TAG[] = "scale";

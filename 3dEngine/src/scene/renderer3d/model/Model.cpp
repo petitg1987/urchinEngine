@@ -218,12 +218,8 @@ namespace urchin {
         return nullptr;
     }
 
-    std::map<std::string, const ConstAnimation*> Model::getAnimations() const {
-        std::map<std::string, const ConstAnimation*> constConstAnimations;
-        for (const auto& [animName, anim] : animations) {
-            constConstAnimations.try_emplace(animName, &anim->getConstAnimation());
-        }
-        return constConstAnimations;
+    const std::map<std::string, std::unique_ptr<Animation>, std::less<>>& Model::getAnimations() const {
+        return animations;
     }
 
     /**
