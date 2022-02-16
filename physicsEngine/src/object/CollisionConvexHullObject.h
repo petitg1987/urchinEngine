@@ -13,7 +13,8 @@ namespace urchin {
     class CollisionConvexHullObject : public CollisionConvexObject3D {
         public:
             CollisionConvexHullObject(float, const std::vector<Point3<float>>&, const std::vector<Point3<float>>&);
-            CollisionConvexHullObject(float, std::shared_ptr<ConvexHull3D<float>>, std::shared_ptr<ConvexHull3D<float>>);
+            CollisionConvexHullObject(float, std::unique_ptr<ConvexHull3D<float>>, std::unique_ptr<ConvexHull3D<float>>);
+            explicit CollisionConvexHullObject(std::unique_ptr<ConvexHull3D<float>>);
 
             ConvexHull3D<float>& getConvexHullWithoutMargin() const;
             ConvexHull3D<float>& getConvexHullWithMargin() const;
@@ -24,8 +25,8 @@ namespace urchin {
             std::string toString() const override;
 
         private:
-            std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithMargin;
-            std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithoutMargin;
+            std::unique_ptr<ConvexHull3D<float>> convexHullObjectWithMargin;
+            std::unique_ptr<ConvexHull3D<float>> convexHullObjectWithoutMargin;
     };
 
 }
