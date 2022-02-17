@@ -203,6 +203,9 @@ namespace urchin {
      */
     bool UIRenderer::adjustMouseCoordinates(const Point2<double>& mouseCoord, Point2<int>& adjustedMouseCoord) const {
         if (ui3dData) {
+            if (ui3dData->maxInteractiveDistance <= 0.0f) {
+                return false; //interaction disabled
+            }
             if (!ui3dData->camera) {
                 return false; //camera not setup yet
             }
