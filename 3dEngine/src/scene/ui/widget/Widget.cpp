@@ -62,7 +62,11 @@ namespace urchin {
         if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
-            rendererBuilder->enableTransparency({ //always active transparency to ensure that emissive factor stay unchanged (see fragment shader for more details)
+
+            //Always active transparency to ensure that emissive factor stay unchanged (see fragment shader for more details).
+            //Transparency is only working when a transparent widget is displayed above another widget.
+            //Transparency to the scene is currently not supported because the UI is written on an RGB channel (no alpha).
+            rendererBuilder->enableTransparency({
                 BlendFunction::build(BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ZERO, BlendFactor::ONE),
                 BlendFunction::buildBlendDisabled()
             });
