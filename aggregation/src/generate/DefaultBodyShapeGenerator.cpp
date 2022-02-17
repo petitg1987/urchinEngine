@@ -34,7 +34,7 @@ namespace urchin {
             auto convexHullShape = buildConvexHullShape(objectEntity.getModel());
             shape = std::make_unique<CollisionConvexHullShape>(std::move(convexHullShape));
         } else if (shapeType == CollisionShape3D::ShapeType::COMPOUND_SHAPE) {
-            std::vector<std::unique_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
+            std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
 
             auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
             boxLocalizedShape->position = 0;
