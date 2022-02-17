@@ -25,6 +25,12 @@ namespace urchin {
         }
     }
 
+    UIRenderer::~UIRenderer() {
+        if (ui3dData && ui3dData->camera) {
+            ui3dData->camera->removeObserver(this, Camera::POSITION_UPDATED);
+        }
+    }
+
     void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<unsigned int>& uiResolution,
                                const Point2<float>& uiSize, float ambient) {
         if (!widgets.empty()) {
