@@ -43,7 +43,6 @@
   * **OPTIMIZATION** (`major`): Regroup the renderers together
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
   * **IMPROVEMENT** (`medium`): Do not display UI 3d when outside the camera view
-  * **NEW FEATURE** (`medium`): Handle transparency in UI 3d fragment shader to have a text rendering more smooth
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d
   * **NEW FEATURE** (`minor`): Combo list

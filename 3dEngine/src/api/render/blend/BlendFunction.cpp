@@ -19,8 +19,8 @@ namespace urchin {
 
     /**
      * Default blend functions:
-     *     - target.rgb = src.a * src.rgb + (1 - src.a) * target.rgb
-     *     - target.a = 1 * src.a + 0 * target.a
+     *     - target.rgb = [src.a] * src.rgb + [1 - src.a] * target.rgb
+     *     - target.a = [1] * src.a + [0] * target.a
      * where "target" is the target buffer to draw on and "src" is the object/model to draw in the target buffer.
      */
     BlendFunction BlendFunction::buildDefault() {

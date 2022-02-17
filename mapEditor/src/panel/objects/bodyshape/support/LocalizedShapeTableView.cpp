@@ -100,7 +100,7 @@ namespace urchin {
     }
 
     void LocalizedShapeTableView::addLocalizedShapeInMap(const std::shared_ptr<const LocalizedCollisionShape>& localizedShape) {
-        //allow to keep pointer alive when it's stored in a QVariant
+        //allow keeping pointer alive when it's stored in a QVariant
         localizedShapesMap[localizedShape.get()] = localizedShape;
     }
 

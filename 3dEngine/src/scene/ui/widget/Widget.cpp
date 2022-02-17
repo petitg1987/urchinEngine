@@ -54,7 +54,7 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool enableTransparency) const {
+    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool hasTransparency) const {
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
@@ -62,12 +62,13 @@ namespace urchin {
         if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
-            if (enableTransparency) {
-                //transparency is currently not supported (only discard in fragment shader is supported)
-            }
+            rendererBuilder->enableTransparency({ //always active transparency to ensure that emissive factor stay unchanged (see fragment shader for more details)
+                BlendFunction::build(BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ZERO, BlendFactor::ONE),
+                BlendFunction::buildBlendDisabled()
+            });
             normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
         } else {
-            if (enableTransparency) {
+            if (hasTransparency) {
                 rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
             }
         }

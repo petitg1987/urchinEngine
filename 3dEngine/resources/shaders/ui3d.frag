@@ -14,10 +14,10 @@ layout(location = 1) out vec4 fragNormalAndAmbient;
 void main() {
     //diffuse and emissive
     vec4 color = texture(diffuseTexture, texCoordinates);
-    if (color.a < 0.2) {
+    if (color.a < 0.05) {
         discard;
     }
-    fragDiffuseAndEmissive = vec4(color.rgb, 0.0);
+    fragDiffuseAndEmissive = color; //Write color with alpha to compute the blend on the RGB channels. The alpha channel (=emissive) will stay unchanged thanks to the configured alpha blend functions.
 
     //ambient factor
     vec3 encodedNormal = (normalize(normal) + 1.0) / 2.0;
