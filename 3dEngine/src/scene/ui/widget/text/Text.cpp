@@ -67,7 +67,12 @@ namespace urchin {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the widget");
             }
-            return (unsigned int)(maxWidth / 100.0f * (float)getParentContainer()->getWidth());
+            return (unsigned int) (maxWidth / 100.0f * (float)getParentContainer()->getWidth());
+        } else if (maxWidthType == LengthType::PARENT_PERCENT) {
+            if (!getParent()) {
+                throw std::runtime_error("Missing parent on the widget");
+            }
+            return (unsigned int) (maxWidth / 100.0f * (float) getParent()->getWidth());
         }
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }

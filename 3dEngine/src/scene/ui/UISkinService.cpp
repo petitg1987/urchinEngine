@@ -131,6 +131,8 @@ namespace urchin {
             lengthType = SCREEN_PERCENT;
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "containerPercent")) {
             lengthType = CONTAINER_PERCENT;
+        } else if (StringUtil::insensitiveEquals(lengthTypeString, "parentPercent")) {
+            lengthType = PARENT_PERCENT;
         } else {
             throw std::runtime_error("Unknown length type: " + lengthTypeString);
         }

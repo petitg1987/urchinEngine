@@ -338,7 +338,9 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (widthPixel / (float)getSceneSize().X) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            return (widthPixel / (float)getParentContainer()->getWidth()) * 100.0f;
+            return (widthPixel / (float) getParentContainer()->getWidth()) * 100.0f;
+        } else if (lengthType == LengthType::PARENT_PERCENT) {
+            return (widthPixel / (float) getParent()->getWidth()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
             return widthPixel;
         }
@@ -349,7 +351,9 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (heightPixel / (float)getSceneSize().Y) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            return (heightPixel / (float)getParentContainer()->getHeight()) * 100.0f;
+            return (heightPixel / (float) getParentContainer()->getHeight()) * 100.0f;
+        } else if (lengthType == LengthType::PARENT_PERCENT) {
+            return (heightPixel / (float) getParent()->getHeight()) * 100.0f;
         } else if (lengthType == LengthType::PIXEL) {
             return heightPixel;
         }
