@@ -62,7 +62,7 @@ namespace urchin {
         textBoxRenderer = setupUiRenderer("text box", ShapeType::TRIANGLE, false)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::buildLinear())) //binding 3
+                ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
         auto cursorStartY = (float)widgetOutline.topWidth;
@@ -78,7 +78,7 @@ namespace urchin {
         cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::TRIANGLE, false)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
-                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::buildRepeatNearest())) //binding 2
+                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 2
                 ->build();
     }
 
@@ -103,13 +103,13 @@ namespace urchin {
         if (key == (int)InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::buildLinear()));
+                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
                 int localMouseX = getMouseX() - text->getGlobalPositionX();
                 computeCursorIndex(localMouseX);
             } else {
                 state = INACTIVE;
-                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildLinear()));
+                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
             }
         } else if (state == ACTIVE) {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
@@ -152,7 +152,7 @@ namespace urchin {
 
     void TextBox::onResetStateEvent() {
         state = INACTIVE;
-        textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::buildLinear()));
+        textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {

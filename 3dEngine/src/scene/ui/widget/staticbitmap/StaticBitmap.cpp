@@ -39,7 +39,7 @@ namespace urchin {
         bitmapRenderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(tex, TextureParam::buildLinear())) //binding 2 //TODO use anisotropie for 3d UI
+                ->addUniformTextureReader(TextureReader::build(tex, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 2
                 ->build();
     }
 

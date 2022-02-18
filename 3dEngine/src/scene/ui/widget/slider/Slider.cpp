@@ -68,7 +68,7 @@ namespace urchin {
         sliderRenderer = setupUiRenderer("slider", ShapeType::TRIANGLE, true)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::buildLinear())) //binding 3
+                ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 

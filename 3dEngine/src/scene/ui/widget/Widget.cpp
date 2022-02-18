@@ -90,6 +90,13 @@ namespace urchin {
         return rendererBuilder;
     }
 
+    TextureParam::Anisotropy Widget::getTextureAnisotropy() const {
+        if (uiRenderer->getUi3dData()) {
+            return TextureParam::Anisotropy::ANISOTROPY;
+        }
+        return TextureParam::Anisotropy::NO_ANISOTROPY;
+    }
+
     void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<int>& translateVector) const {
         Matrix4<float> projectionViewModelMatrix;
 
