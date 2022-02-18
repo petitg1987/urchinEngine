@@ -277,10 +277,8 @@ namespace urchin {
     bool Renderer3d::onMouseMove(double mouseX, double mouseY) {
         bool propagateEvent = true;
         if (!paused && camera) {
-            propagateEvent = camera->onMouseMove(mouseX, mouseY);
-            if (propagateEvent) {
-                propagateEvent = uiContainer.onMouseMove(mouseX, mouseY);
-            }
+            camera->onMouseMove(mouseX, mouseY); //ignore 'propagateEvent' on purpose: UI must stay aware of event even when camera move
+            propagateEvent = uiContainer.onMouseMove(mouseX, mouseY);
         }
         return propagateEvent;
     }

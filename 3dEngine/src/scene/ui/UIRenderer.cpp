@@ -92,6 +92,13 @@ namespace urchin {
         this->ui3dData->maxInteractiveDistance = maxInteractiveDistance;
     }
 
+    void UIRenderer::setPointerType(UI3dPointerType pointerType) const {
+        if (!ui3dData) {
+            throw std::runtime_error("UI renderer has not been initialized for UI 3d");
+        }
+        this->ui3dData->pointerType = pointerType;
+    }
+
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         this->uiResolution = Point2<unsigned int>(sceneWidth, sceneHeight);
 
@@ -219,7 +226,16 @@ namespace urchin {
                 return false; //camera does not face to the UI
             }
 
-            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y));
+            Point2<float> pointer;
+            if (ui3dData->pointerType == UI3dPointerType::MOUSE) {
+                pointer = Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y);
+            } else if (ui3dData->pointerType == UI3dPointerType::SCREEN_CENTER) {
+                pointer = Point2<float>((float)renderTarget.getWidth() / 2.0f, (float)renderTarget.getHeight() / 2.0f);
+            } else {
+                 throw std::runtime_error("Unknown pointer type: " + std::to_string(ui3dData->pointerType));
+            }
+
+            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>(pointer.X, pointer.Y));
             bool hasIntersection = false;
             Point3<float> uiHitPoint = ui3dData->uiPlane->intersectPoint(viewLine, hasIntersection);
             if (!hasIntersection) {
@@ -227,8 +243,8 @@ namespace urchin {
             }
 
             Point3<float> intersectionPointClipSpace = (ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint)).toPoint3();
-            float clipSpaceX = (2.0f * (float) mouseCoord.X) / ((float) renderTarget.getWidth()) - 1.0f;
-            float clipSpaceY = (2.0f * (float) mouseCoord.Y) / ((float) renderTarget.getHeight()) - 1.0f;
+            float clipSpaceX = (2.0f * pointer.X) / ((float) renderTarget.getWidth()) - 1.0f;
+            float clipSpaceY = (2.0f * pointer.Y) / ((float) renderTarget.getHeight()) - 1.0f;
             Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
 
             Matrix4<float> uiInverseMatrix = (ui3dData->camera->getProjectionViewMatrix() * ui3dData->modelMatrix).inverse();

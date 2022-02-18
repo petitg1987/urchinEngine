@@ -12,6 +12,11 @@
 
 namespace urchin {
 
+    enum UI3dPointerType {
+        MOUSE,
+        SCREEN_CENTER
+    };
+
     struct UI3dData {
         Camera* camera = nullptr;
         Matrix4<float> modelMatrix;
@@ -21,6 +26,7 @@ namespace urchin {
         Point3<float> uiPosition;
 
         float maxInteractiveDistance = 4.0f;
+        UI3dPointerType pointerType = MOUSE;
     };
 
     class UIRenderer : public Renderer, public Observer {
@@ -32,6 +38,7 @@ namespace urchin {
             void setupUi3d(Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
             void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
+            void setPointerType(UI3dPointerType) const;
 
             void onResize(unsigned int, unsigned int) override;
             void notify(Observable*, int) override;
