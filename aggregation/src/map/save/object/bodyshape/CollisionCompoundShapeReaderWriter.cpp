@@ -13,7 +13,7 @@ namespace urchin {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
         compoundShapes.reserve(localizedShapesChunk.size());
         for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
-            std::unique_ptr<LocalizedCollisionShape> localizedShape = std::make_unique<LocalizedCollisionShape>();
+            auto localizedShape = std::make_unique<LocalizedCollisionShape>();
 
             localizedShape->position = i;
 
