@@ -101,7 +101,7 @@ namespace urchin {
         Matrix4<float> projectionViewModelMatrix;
 
         if (uiRenderer->getUi3dData()) {
-            float zBias = (float)computeDepthLevel() * 0.003f;
+            float zBias = (float)computeDepthLevel() * 0.003f; //TODO change bias based on distance from camera to UI
             Matrix4<float> translateMatrix;
             translateMatrix.buildTranslation((float)translateVector.X, (float)translateVector.Y, zBias);
             projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix * translateMatrix;
