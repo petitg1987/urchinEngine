@@ -209,7 +209,7 @@ namespace urchin {
     }
 
     void Widget::updatePosition(Position position) {
-        if (dynamic_cast<Container*>(this)) {
+        if (dynamic_cast<Container*>(this)  && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
             throw std::runtime_error("Can not move a container: scissor update is not implemented");
         }
         this->position = position;
