@@ -31,6 +31,7 @@
 #include <math/algebra/Quaternion.h>
 #include <math/algebra/Transform.h>
 #include <math/algebra/MathValue.h>
+#include <math/algebra/Bezier.h>
 #include <math/geometry/2d/Line2D.h>
 #include <math/geometry/2d/IndexedTriangle2D.h>
 #include <math/geometry/2d/shape/ConvexShape2D.h>

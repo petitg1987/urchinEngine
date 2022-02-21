@@ -2,12 +2,11 @@
 
 namespace urchin {
 
-    UIAnimationTranslateLoop::UIAnimationTranslateLoop(Widget& widget, const Point2<float>& endPosition, float animationSpeed) :
+    UIAnimationTranslateLoop::UIAnimationTranslateLoop(Widget& widget, const Point2<float>& endPosition) :
             AbstractUIWidgetAnimation(widget),
             endPosition(endPosition),
-            animationSpeed(animationSpeed),
             startToEnd(true),
-            progression(0.0f) {
+            linearProgression(0.0f) {
 
     }
 
@@ -17,17 +16,19 @@ namespace urchin {
 
     void UIAnimationTranslateLoop::doAnimation(float dt) {
         if (startToEnd) {
-            progression += dt * animationSpeed;
-            if (progression > 1.0f) {
+            linearProgression += dt * getAnimationSpeed();
+            if (linearProgression > 1.0f) {
                 startToEnd = false;
             }
         } else {
-            progression -= dt * animationSpeed;
-            if (progression < 0.0f) {
+            linearProgression -= dt * getAnimationSpeed();
+            if (linearProgression < 0.0f) {
                 startToEnd = true;
             }
         }
-        updatePosition(startPosition.translate(startPosition.vector(endPosition) * progression));
+
+        float animationProgress = computeProgression(linearProgression) ;
+        updatePosition(startPosition.translate(startPosition.vector(endPosition) * animationProgress));
     }
 
     bool UIAnimationTranslateLoop::isCompleted() const {
