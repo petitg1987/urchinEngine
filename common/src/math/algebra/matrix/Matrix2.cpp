@@ -18,6 +18,11 @@ namespace urchin {
 
     }
 
+    template<class T> Matrix2<T> Matrix2<T>::buildScale(T x, T y) {
+        return Matrix2<T>(x, 0.0,
+                          0.0, y);
+    }
+
     template<class T> void Matrix2<T>::setValues(T m11, T m12,
             T m21, T m22) {
         a11 = m11; a12 = m12;
@@ -62,12 +67,7 @@ namespace urchin {
 
     template<class T> Matrix2<T> Matrix2<T>::scaled(T scaleFactorColumn0, T scaleFactorColumn1) const {
         return Matrix2<T>(a11 * scaleFactorColumn0, a12 * scaleFactorColumn1,
-                a21 * scaleFactorColumn0, a22 * scaleFactorColumn1);
-    }
-
-    template<class T> void Matrix2<T>::buildScale(T x, T y) {
-        a11 = x; a12 = 0.0;
-        a21 = 0.0; a22 = y;
+                          a21 * scaleFactorColumn0, a22 * scaleFactorColumn1);
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator +() const {
@@ -75,18 +75,18 @@ namespace urchin {
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator -() const {
-        return Matrix2<T>(    -a11, -a12,
-                -a21, -a22);
+        return Matrix2<T>(-a11, -a12,
+                          -a21, -a22);
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator +(const Matrix2<T>& m) const {
-        return Matrix2<T>(    a11 + m.a11, a12 + m.a12,
-                a21 + m.a21, a22 + m.a22);
+        return Matrix2<T>(a11 + m.a11, a12 + m.a12,
+                          a21 + m.a21, a22 + m.a22);
     }
 
     template<class T> Matrix2<T> Matrix2<T>::operator -(const Matrix2& m) const {
-        return Matrix2(    a11 - m.a11, a12 - m.a12,
-                a21 - m.a21, a22 - m.a22);
+        return Matrix2(a11 - m.a11, a12 - m.a12,
+                       a21 - m.a21, a22 - m.a22);
     }
 
     template<class T> const Matrix2<T>& Matrix2<T>::operator +=(const Matrix2<T>& m) {
@@ -157,8 +157,8 @@ namespace urchin {
     }
 
     template<class T> Matrix2<T> operator *(const Matrix2<T>& m, T t) {
-        return Matrix2<T>(    m.a11 * t, m.a12 * t,
-                m.a21 * t, m.a22 * t);
+        return Matrix2<T>(m.a11 * t, m.a12 * t,
+                          m.a21 * t, m.a22 * t);
     }
 
     template<class T> Matrix2<T> operator *(T t, const Matrix2<T>& m) {
@@ -166,8 +166,8 @@ namespace urchin {
     }
 
     template<class T> Matrix2<T> operator /(const Matrix2<T>& m, T t) {
-        return Matrix2<T>(    m.a11 / t, m.a12 / t,
-                m.a21 / t, m.a22 / t);
+        return Matrix2<T>(m.a11 / t, m.a12 / t,
+                          m.a21 / t, m.a22 / t);
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const Matrix2<T>& m) {

@@ -43,8 +43,7 @@ namespace urchin {
                     -f[0],   -f[1],   -f[2],   0,
                     0,       0,       0,       1);
 
-            Matrix4<float> eye;
-            eye.buildTranslation(lightDirection.X, lightDirection.Y, lightDirection.Z);
+            Matrix4<float> eye = Matrix4<float>::buildTranslation(lightDirection.X, lightDirection.Y, lightDirection.Z);
             this->lightViewMatrix = m * eye;
         } else {
             throw std::runtime_error("Shadow currently not supported on omnidirectional light.");

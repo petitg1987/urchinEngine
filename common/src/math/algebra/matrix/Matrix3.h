@@ -15,6 +15,12 @@ namespace urchin {
                     T m21, T m22, T m23,
                     T m31, T m32, T m33);
 
+            [[nodiscard]] static Matrix3<T> buildTranslation(T, T);
+            [[nodiscard]] static Matrix3<T> buildScale(T, T, T);
+            [[nodiscard]] static Matrix3<T> buildRotationX(T);
+            [[nodiscard]] static Matrix3<T> buildRotationY(T);
+            [[nodiscard]] static Matrix3<T> buildRotationZ(T);
+
             void setValues(T m11, T m12, T m13,
                     T m21, T m22, T m23,
                     T m31, T m32, T m33);
@@ -24,12 +30,6 @@ namespace urchin {
             [[nodiscard]] Matrix3<T> transpose() const;
             [[nodiscard]] Matrix3<T> inverse() const;
             [[nodiscard]] Matrix3<T> scaled(T, T, T) const;
-
-            void buildTranslation(T, T);
-            void buildScale(T, T, T);
-            void buildRotationX(T);
-            void buildRotationY(T);
-            void buildRotationZ(T);
 
             Matrix3<T> operator +() const;
             Matrix3<T> operator -() const;

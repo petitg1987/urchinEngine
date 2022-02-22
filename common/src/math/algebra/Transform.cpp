@@ -15,16 +15,16 @@ namespace urchin {
             qOrientation(orientation),
             vScale(scale),
             mOrientation(orientation.toMatrix4()) {
-        mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
+        mPosition = Matrix4<T>::buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
 
-        mScale.buildScale(vScale.X, vScale.Y, vScale.Z);
+        mScale = Matrix4<T>::buildScale(vScale.X, vScale.Y, vScale.Z);
         mTransform = mPosition * mOrientation * mScale;
     }
 
     template<class T> void Transform<T>::setPosition(const Point3<T>& position) {
         pPosition = position;
 
-        mPosition.buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
+        mPosition = Matrix4<T>::buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
         mTransform = mPosition * mOrientation * mScale;
     }
 
@@ -46,7 +46,7 @@ namespace urchin {
     template<class T> void Transform<T>::setScale(const Vector3<T>& scale) {
         vScale = scale;
 
-        mScale.buildScale(vScale.X, vScale.Y, vScale.Z);
+        mScale = Matrix4<T>::buildScale(vScale.X, vScale.Y, vScale.Z);
         mTransform = mPosition * mOrientation * mScale;
     }
 

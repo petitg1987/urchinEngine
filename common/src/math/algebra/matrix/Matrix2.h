@@ -15,6 +15,8 @@ namespace urchin {
             explicit Matrix2(T m11, T m12,
                     T m21, T m22);
 
+            [[nodiscard]] static Matrix2<T> buildScale(T, T);
+
             void setValues(T m11, T m12,
                     T m21, T m22);
 
@@ -23,8 +25,6 @@ namespace urchin {
             [[nodiscard]] Matrix2<T> transpose() const;
             [[nodiscard]] Matrix2<T> inverse() const;
             [[nodiscard]] Matrix2<T> scaled(T, T) const;
-
-            void buildScale(T, T);
 
             Matrix2<T> operator +() const;
             Matrix2<T> operator -() const;

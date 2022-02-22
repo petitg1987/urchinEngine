@@ -150,7 +150,7 @@ namespace urchin {
 
     void Skybox::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Point3<float>& cameraPosition) {
         assert(isInitialized);
-        translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
+        translationMatrix = Matrix4<float>::buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxProjectionViewMatrix = projectionViewMatrix * translationMatrix;
         skyboxRenderer->updateUniformData(0, &skyboxProjectionViewMatrix);
 
