@@ -29,6 +29,16 @@ namespace urchin {
         manualTriggerActions.emplace_back(ManualTriggerAction::UNPAUSE_ALL);
     }
 
+    unsigned int ManualTrigger::countSoundToPlay() const {
+        unsigned int count = 0;
+        for (auto manualTriggerAction : manualTriggerActions) {
+            if (manualTriggerAction == ManualTriggerAction::PLAY_NEW || manualTriggerAction == ManualTriggerAction::PLAY_NEW_LOOP) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     const std::vector<SoundTrigger::TriggerAction>& ManualTrigger::evaluateTrigger(const Point3<float>&) {
         triggerActions.clear();
 
