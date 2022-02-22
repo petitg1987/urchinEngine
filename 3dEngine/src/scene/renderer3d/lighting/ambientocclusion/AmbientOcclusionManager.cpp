@@ -175,7 +175,7 @@ namespace urchin {
             sample = sample.normalize();
 
             float scale = (float)i / (float)config.kernelSamples;
-            scale = MathFunction::lerp<float>(0.1f, 1.0f, scale * scale); //use square function to bring most of sample closer to center
+            scale = std::lerp(0.1f, 1.0f, scale * scale); //use square function to bring most of the samples closer to center
             sample *= scale;
             ssaoKernel[i] = sample;
         }

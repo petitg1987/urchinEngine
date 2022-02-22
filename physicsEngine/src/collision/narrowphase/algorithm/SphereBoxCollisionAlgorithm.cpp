@@ -23,9 +23,9 @@ namespace urchin {
         const Point3<float>& spherePosLocalBox = object2.getShapeWorldTransform().inverseTransform(spherePos);
 
         Point3<float> closestPointOnBox(
-                MathFunction::clamp(spherePosLocalBox.X, -box2.getHalfSize(0), box2.getHalfSize(0)),
-                MathFunction::clamp(spherePosLocalBox.Y, -box2.getHalfSize(1), box2.getHalfSize(1)),
-                MathFunction::clamp(spherePosLocalBox.Z, -box2.getHalfSize(2), box2.getHalfSize(2)) );
+                std::clamp(spherePosLocalBox.X, -box2.getHalfSize(0), box2.getHalfSize(0)),
+                std::clamp(spherePosLocalBox.Y, -box2.getHalfSize(1), box2.getHalfSize(1)),
+                std::clamp(spherePosLocalBox.Z, -box2.getHalfSize(2), box2.getHalfSize(2)) );
 
         Vector3<float> normalFromObject2 = closestPointOnBox.vector(spherePosLocalBox);
 

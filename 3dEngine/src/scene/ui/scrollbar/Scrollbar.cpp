@@ -110,7 +110,7 @@ namespace urchin {
             float scrollMoveSpeedFactor = visibleHeight / (contentHeight - visibleHeight);
             float deltaScroll = (float) offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
             scrollPercentage -= deltaScroll;
-            scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
+            scrollPercentage = std::clamp(scrollPercentage, 0.0f, 1.0f);
 
             updateScrollingPosition();
             return false;
@@ -142,7 +142,7 @@ namespace urchin {
         auto maxPositionY = (float)scrollbarLine->getGlobalPositionY() + (float)scrollbarLine->getHeight() - halfCursorHeight;
 
         scrollPercentage = ((float)positionY - minPositionY) / (maxPositionY - minPositionY);
-        scrollPercentage = MathFunction::clamp(scrollPercentage, 0.0f, 1.0f);
+        scrollPercentage = std::clamp(scrollPercentage, 0.0f, 1.0f);
 
         updateScrollingPosition();
     }

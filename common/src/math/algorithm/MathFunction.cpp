@@ -6,11 +6,6 @@
 
 namespace urchin {
 
-    template<class T> T MathFunction::clamp(T value, T minValue, T maxValue) {
-        assert((maxValue + std::numeric_limits<T>::epsilon()) > minValue);
-        return std::max(minValue, std::min(maxValue, value));
-    }
-
     /**
      * @return -1 if value is negative, 0 if value is 0, otherwise 1
      */
@@ -21,10 +16,6 @@ namespace urchin {
             return 1;
         }
         return 0;
-    }
-
-    template<class T> T MathFunction::lerp(T v0, T v1, T t) { //see https://en.wikipedia.org/wiki/Linear_interpolation
-        return ((T)1.0 - t) * v0 + t * v1;
     }
 
     template<class T> T MathFunction::max(const std::vector<T>& values) {
@@ -136,35 +127,24 @@ namespace urchin {
     }
 
     //explicit template
-    template float MathFunction::clamp<float>(float, float, float);
     template float MathFunction::sign<float>(float);
-    template float MathFunction::lerp<float>(float, float, float);
     template float MathFunction::max(const std::vector<float>&);
     template float MathFunction::roundDivision<float>(float, float);
 
-    template double MathFunction::clamp<double>(double, double, double);
     template double MathFunction::sign<double>(double);
-    template double MathFunction::lerp<double>(double, double, double);
     template double MathFunction::roundDivision<double>(double, double);
 
-    template int MathFunction::clamp<int>(int, int, int);
     template int MathFunction::sign<int>(int);
-    template int MathFunction::lerp<int>(int, int, int);
     template int MathFunction::roundDivision<int>(int, int);
 
-    template unsigned int MathFunction::clamp<unsigned int>(unsigned int, unsigned int, unsigned int);
-    template unsigned int MathFunction::lerp<unsigned int>(unsigned int, unsigned int, unsigned int);
     template unsigned int MathFunction::roundDivision<unsigned int>(unsigned int, unsigned int);
 
-    template long MathFunction::clamp<long>(long, long, long);
     template long MathFunction::sign<long>(long);
     template long MathFunction::roundDivision<long>(long, long);
 
-    template unsigned long MathFunction::clamp<unsigned long>(unsigned long, unsigned long, unsigned long);
     template unsigned long MathFunction::sign<unsigned long>(unsigned long);
     template unsigned long MathFunction::roundDivision<unsigned long>(unsigned long, unsigned long);
 
-    template long long MathFunction::clamp<long long>(long long, long long, long long);
     template long long MathFunction::sign<long long>(long long);
     template long long MathFunction::roundDivision<long long>(long long, long long);
 }

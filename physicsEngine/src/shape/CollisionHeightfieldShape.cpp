@@ -189,10 +189,10 @@ namespace urchin {
         int maxLength = axis == Axis::X ? (int)xLength - 1 : (int)zLength - 1;
 
         auto rawStartVertex = (int)((minValue + halfSize) / verticesDistance);
-        auto startVertex = (unsigned int)MathFunction::clamp(rawStartVertex, 0, maxLength);
+        auto startVertex = (unsigned int)std::clamp(rawStartVertex, 0, maxLength);
 
         auto rawEndVertex = (int)((maxValue + halfSize) / verticesDistance) + 1;
-        auto endVertex = (unsigned int)MathFunction::clamp(rawEndVertex, 0, maxLength);
+        auto endVertex = (unsigned int)std::clamp(rawEndVertex, 0, maxLength);
 
         return std::make_pair(startVertex, endVertex);
     }

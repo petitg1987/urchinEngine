@@ -139,10 +139,10 @@ namespace urchin {
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
 
         float xInterval = mesh->getVertices()[1].X - mesh->getVertices()[0].X;
-        unsigned int xIndex = MathFunction::clamp(MathFunction::roundToUInt(farLeftCoordinate.X / xInterval), 0u, mesh->getXSize() - 1);
+        unsigned int xIndex = std::clamp(MathFunction::roundToUInt(farLeftCoordinate.X / xInterval), 0u, mesh->getXSize() - 1);
 
         float zInterval = mesh->getVertices()[mesh->getXSize()].Z - mesh->getVertices()[0].Z;
-        unsigned int zIndex = MathFunction::clamp(MathFunction::roundToUInt(farLeftCoordinate.Z / zInterval), 0u, mesh->getZSize() - 1);
+        unsigned int zIndex = std::clamp(MathFunction::roundToUInt(farLeftCoordinate.Z / zInterval), 0u, mesh->getZSize() - 1);
 
         return xIndex + zIndex * mesh->getXSize();
     }

@@ -198,7 +198,7 @@ namespace urchin {
         Point3<float> targetPosition = previousBodyPosition;
         if (closeToTheGround) {
             float slopeSpeedVariation = 1.0f - (slopeInPercentage / config.getMaxSlopeInPercentage());
-            slopeSpeedVariation = MathFunction::clamp(slopeSpeedVariation, 1.0f - config.getMaxSlopeSpeedVariation(), 1.0f + config.getMaxSlopeSpeedVariation());
+            slopeSpeedVariation = std::clamp(slopeSpeedVariation, 1.0f - config.getMaxSlopeSpeedVariation(), 1.0f + config.getMaxSlopeSpeedVariation());
             targetPosition = targetPosition.translate(velocity * dt * slopeSpeedVariation);
         } else if (!gravityEnabled) {
             targetPosition = targetPosition.translate(velocity * dt);

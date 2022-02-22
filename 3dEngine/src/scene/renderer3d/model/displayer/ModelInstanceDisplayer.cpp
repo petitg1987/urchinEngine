@@ -136,7 +136,7 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::fillMaterialData(const Mesh& mesh) {
-        materialData.encodedEmissiveFactor = MathFunction::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
+        materialData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
 
