@@ -67,6 +67,9 @@ namespace urchin {
             unsigned int getHeight() const;
             Rectangle2D<int> widgetRectangle() const;
 
+            void updateScale(const Vector2<float>&);
+            const Vector2<float>& getScale() const;
+
             template<class T> int widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
             template<class T> int heightLengthToPixel(float, LengthType, const T&) const;
@@ -129,6 +132,7 @@ namespace urchin {
 
             Position position;
             Size size;
+            Vector2<float> scale;
             bool bIsVisible;
 
             int mouseX, mouseY;

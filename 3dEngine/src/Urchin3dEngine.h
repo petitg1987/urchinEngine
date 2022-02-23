@@ -39,6 +39,7 @@
 #include <scene/ui/animation/UIAnimationParallelizer.h>
 #include <scene/ui/animation/UIAnimationTranslateLoop.h>
 #include <scene/ui/animation/UIAnimationTranslate.h>
+#include <scene/ui/animation/UIAnimationZoomInOutLoop.h>
 #include <scene/ui/animation/UIAnimationDelay.h>
 
 #include <i18n/LabelTranslator.h>

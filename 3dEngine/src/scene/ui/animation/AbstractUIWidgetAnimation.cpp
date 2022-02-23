@@ -16,4 +16,8 @@ namespace urchin {
         widget.updatePosition(Position(newPosition.X, oldPosition.getXType(), newPosition.Y, oldPosition.getYType(), oldPosition.getRelativeTo(), oldPosition.getReferencePoint()));
     }
 
+    void AbstractUIWidgetAnimation::updateScale(const Vector2<float>& newScale) {
+        widget.updateScale(newScale);
+    }
+
 }

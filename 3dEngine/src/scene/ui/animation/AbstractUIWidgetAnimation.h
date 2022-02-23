@@ -13,6 +13,7 @@ namespace urchin {
         protected:
             const Widget& getWidget() const;
             void updatePosition(const Point2<float>&);
+            void updateScale(const Vector2<float>&);
 
         private:
             Widget& widget;

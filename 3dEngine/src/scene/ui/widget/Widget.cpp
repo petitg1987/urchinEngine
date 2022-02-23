@@ -13,6 +13,7 @@ namespace urchin {
             widgetState(Widget::DEFAULT),
             position(position),
             size(size),
+            scale(Vector2<float>(1.0f, 1.0f)),
             bIsVisible(true),
             mouseX(0),
             mouseY(0) {
@@ -100,20 +101,31 @@ namespace urchin {
     void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<int>& translateVector) const {
         Matrix4<float> projectionViewModelMatrix;
 
+        float zBias = 0.0f;
         if (uiRenderer->getUi3dData()) {
             float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
-            float zBias = (float)computeDepthLevel() * 0.001f * std::clamp(squareDistanceUiToCamera, 0.25f, 4.0f);
-            Matrix4<float> translateMatrix = Matrix4<float>::buildTranslation((float)translateVector.X, (float)translateVector.Y, zBias);
-            projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix * translateMatrix;
+            zBias = (float)computeDepthLevel() * 0.001f * std::clamp(squareDistanceUiToCamera, 0.25f, 4.0f);
+            projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
         } else {
-            Matrix4<float> translateMatrix = Matrix4<float>::buildTranslation((float)translateVector.X, (float)translateVector.Y, 0.0f);
             Matrix4<float> orthogonalMatrix( //orthogonal matrix with origin at top left screen
                     2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
                     0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f, 0.0f,
                     0.0f, 0.0f, 0.0f, 1.0f);
-            projectionViewModelMatrix = orthogonalMatrix * translateMatrix;
+            projectionViewModelMatrix = orthogonalMatrix;
         }
+
+        //Equivalent to 4 multiplied matrices: d * c * b * a
+        // a) Translation of widget half size to center the widget in 0,0
+        // b) Scale
+        // c) Translation rollback of 'a'
+        // d) Translation for positioning
+        Matrix4<float> translateScaleMatrix(
+                scale.X, 0.0f, 0.0f, (float)translateVector.X + (float)getWidth() / 2.0f + (-(float)getWidth() / 2.0f) * scale.X,
+                0.0f, scale.Y, 0.0f, (float)translateVector.Y + (float)getHeight() / 2.0f + (-(float)getHeight() / 2.0f) * scale.Y,
+                0.0f, 0.0, 1.0f, zBias,
+                0.0f, 0.0f, 0.0f, 1.0f);
+        projectionViewModelMatrix *= translateScaleMatrix;
 
         renderer->updateUniformData(1, &projectionViewModelMatrix);
     }
@@ -337,6 +349,14 @@ namespace urchin {
     Rectangle2D<int> Widget::widgetRectangle() const {
         return Rectangle2D<int>(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
                                 Point2<int>(getGlobalPositionX() + (int)getWidth(), getGlobalPositionY() + (int)getHeight()));
+    }
+
+    void Widget::updateScale(const Vector2<float>& scale) {
+        this->scale = scale;
+    }
+
+    const Vector2<float>& Widget::getScale() const {
+        return scale;
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {
@@ -604,7 +624,7 @@ namespace urchin {
             while (!containers.empty()) {
                 const Container* container = containers.top();
                 containers.pop();
-                if (container) {
+                if (container) { //Local variable 'container' may point to invalidated memory
                     if (!container->widgetRectangle().collideWithPoint(mouseCoordinate)) {
                         return false;
                     }
