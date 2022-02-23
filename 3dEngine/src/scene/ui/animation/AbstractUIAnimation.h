@@ -11,16 +11,18 @@ namespace urchin {
             float getAnimationSpeed() const;
 
             void animate(float);
-            virtual bool isCompleted() const = 0;
+            bool isCompleted() const;
 
         protected:
             virtual void initializeAnimation();
             virtual void doAnimation(float) = 0;
 
+            void markCompleted();
             float computeProgression(float);
 
         private:
             bool animationInitialized;
+            bool animationCompleted;
 
             float animationSpeed;
             std::unique_ptr<Bezier> bezier;

@@ -4,6 +4,7 @@ namespace urchin {
 
     AbstractUIAnimation::AbstractUIAnimation() :
             animationInitialized(false),
+            animationCompleted(false),
             animationSpeed(1.0f) {
 
     }
@@ -32,6 +33,14 @@ namespace urchin {
             }
             doAnimation(dt);
         }
+    }
+
+    bool AbstractUIAnimation::isCompleted() const {
+        return animationCompleted;
+    }
+
+    void AbstractUIAnimation::markCompleted() {
+        animationCompleted = true;
     }
 
     void AbstractUIAnimation::initializeAnimation() {

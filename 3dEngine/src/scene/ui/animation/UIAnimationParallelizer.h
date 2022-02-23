@@ -8,8 +8,8 @@ namespace urchin {
         public:
             explicit UIAnimationParallelizer(std::vector<std::unique_ptr<AbstractUIAnimation>>);
 
+        protected:
             void doAnimation(float) override;
-            bool isCompleted() const override;
 
         private:
             std::vector<std::unique_ptr<AbstractUIAnimation>> animations;

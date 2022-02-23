@@ -11,10 +11,10 @@ namespace urchin {
         for (const std::unique_ptr<AbstractUIAnimation>& animation : animations) {
             animation->animate(dt);
         }
-    }
 
-    bool UIAnimationParallelizer::isCompleted() const {
-        return std::ranges::all_of(animations, [](const auto& animation){ return animation->isCompleted(); });
+        if (std::ranges::all_of(animations, [](const auto& animation){ return animation->isCompleted(); })) {
+            markCompleted();
+        }
     }
 
 }

@@ -31,15 +31,13 @@ namespace urchin {
             }
         }
 
-        float animationProgress = computeProgression(linearProgression) ;
-        updateRotation(startRotation + (endRotation - startRotation) * animationProgress);
-    }
-
-    bool UIAnimationRotation::isCompleted() const {
-        if (maxRepeat < 0) {
-            return false;
+        if (maxRepeat >= 0 && executionCount >= maxRepeat) {
+            updateRotation((maxRepeat % 2 == 0) ? startRotation : endRotation);
+            markCompleted();
+        } else {
+            float animationProgress = computeProgression(linearProgression) ;
+            updateRotation(startRotation + (endRotation - startRotation) * animationProgress);
         }
-        return executionCount >= maxRepeat;
     }
 
 }

@@ -8,10 +8,10 @@ namespace urchin {
         public:
             explicit UIAnimationSequencer(std::vector<std::unique_ptr<AbstractUIAnimation>>);
 
-            void doAnimation(float) override;
-            bool isCompleted() const override;
-
             unsigned int getAnimationIndex() const;
+
+        protected:
+            void doAnimation(float) override;
 
         private:
             unsigned int currentAnimationIndex;

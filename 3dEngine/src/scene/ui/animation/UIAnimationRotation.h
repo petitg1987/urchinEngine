@@ -8,8 +8,6 @@ namespace urchin {
         public:
             UIAnimationRotation(Widget&, float, int = 1);
 
-            bool isCompleted() const override;
-
         protected:
             void initializeAnimation() override;
             void doAnimation(float) override;

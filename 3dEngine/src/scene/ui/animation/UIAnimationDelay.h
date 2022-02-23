@@ -8,9 +8,8 @@ namespace urchin {
         public:
             explicit UIAnimationDelay(float);
 
+        protected:
             void doAnimation(float) override;
-
-            bool isCompleted() const override;
 
         private:
             float delaySecond;

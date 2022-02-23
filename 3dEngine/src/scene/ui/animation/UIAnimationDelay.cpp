@@ -10,10 +10,10 @@ namespace urchin {
 
     void UIAnimationDelay::doAnimation(float dt) {
         elapsedTimeSecond += dt;
-    }
 
-    bool UIAnimationDelay::isCompleted() const {
-        return elapsedTimeSecond > delaySecond;
+        if (elapsedTimeSecond > delaySecond) {
+            markCompleted();
+        }
     }
 
 }

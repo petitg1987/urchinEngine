@@ -9,18 +9,17 @@ namespace urchin {
     }
 
     void UIAnimationSequencer::doAnimation(float dt) {
-        if (!isCompleted()) {
+        if (currentAnimationIndex < animations.size()) {
             const std::unique_ptr<AbstractUIAnimation>& currentAnimation = animations[currentAnimationIndex];
 
             currentAnimation->animate(dt);
             if (currentAnimation->isCompleted()) {
                 currentAnimationIndex++;
+                if (currentAnimationIndex >= animations.size()) {
+                    markCompleted();
+                }
             }
         }
-    }
-
-    bool UIAnimationSequencer::isCompleted() const {
-        return currentAnimationIndex >= animations.size();
     }
 
     unsigned int UIAnimationSequencer::getAnimationIndex() const {
