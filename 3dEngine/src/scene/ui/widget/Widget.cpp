@@ -117,7 +117,7 @@ namespace urchin {
         }
 
         //Equivalent to 4 multiplied matrices: D * C * B * A
-        // A) Translation to center the widget to the origin (transOriginX, transOriginY)
+        // A) Translation of the widget center to the origin (transOriginX, transOriginY)
         // B) Scale widget (scale.X, scale.Y)
         // C) Rotate widget (sinRotate, cosRotate)
         // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
