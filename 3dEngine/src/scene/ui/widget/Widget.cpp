@@ -105,7 +105,7 @@ namespace urchin {
         float zBias = 0.0f;
         if (uiRenderer->getUi3dData()) {
             float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
-            zBias = (float)computeDepthLevel() * 0.001f * std::clamp(squareDistanceUiToCamera, 0.25f, 4.0f);
+            zBias = (float)computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
             projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
         } else {
             Matrix4<float> orthogonalMatrix( //orthogonal matrix with origin at top left screen
