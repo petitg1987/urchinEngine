@@ -36,7 +36,7 @@ namespace urchin {
             updateRotation((maxRepeat % 2 == 0) ? startRotation : endRotation);
             markCompleted();
         } else {
-            float animationProgress = computeProgression(linearProgression) ;
+            float animationProgress = computeProgression(linearProgression);
             updateRotation(startRotation + (endRotation - startRotation) * animationProgress);
         }
     }
