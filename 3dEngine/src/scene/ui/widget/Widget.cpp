@@ -116,11 +116,11 @@ namespace urchin {
             projectionViewModelMatrix = orthogonalMatrix;
         }
 
-        //Equivalent to 4 multiplied matrices: d * c * b * a
-        // a) Translation to center the widget to the origin (transOriginX, transOriginY)
-        // b) Scale widget (scale.X, scale.Y)
-        // c) Rotate widget (sinRotate, cosRotate)
-        // d) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
+        //Equivalent to 4 multiplied matrices: D * C * B * A
+        // A) Translation to center the widget to the origin (transOriginX, transOriginY)
+        // B) Scale widget (scale.X, scale.Y)
+        // C) Rotate widget (sinRotate, cosRotate)
+        // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
         float transX = (float)translateVector.X + (float)getWidth() / 2.0f;
         float transY = (float)translateVector.Y + (float)getHeight() / 2.0f;
         float transOriginX = -(float)getWidth() / 2.0f;
