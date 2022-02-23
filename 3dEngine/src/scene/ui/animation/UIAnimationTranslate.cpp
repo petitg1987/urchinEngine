@@ -2,9 +2,12 @@
 
 namespace urchin {
 
-    UIAnimationTranslate::UIAnimationTranslate(Widget& widget, const Point2<float>& endPosition) :
+    UIAnimationTranslate::UIAnimationTranslate(Widget& widget, const Point2<float>& endPosition, int maxRepeat) :
             AbstractUIWidgetAnimation(widget),
             endPosition(endPosition),
+            maxRepeat(maxRepeat),
+            executionCount(0),
+            startToEnd(true),
             linearProgression(0.0f) {
 
     }
@@ -14,14 +17,29 @@ namespace urchin {
     }
 
     void UIAnimationTranslate::doAnimation(float dt) {
-        linearProgression += dt * getAnimationSpeed();
-        float animationProgression = computeProgression(linearProgression);
+        if (startToEnd) {
+            linearProgression += dt * getAnimationSpeed();
+            if (linearProgression > 1.0f) {
+                startToEnd = false;
+                executionCount++;
+            }
+        } else {
+            linearProgression -= dt * getAnimationSpeed();
+            if (linearProgression < 0.0f) {
+                startToEnd = true;
+                executionCount++;
+            }
+        }
 
-        updatePosition(startPosition.translate(startPosition.vector(endPosition) * animationProgression));
+        float animationProgress = computeProgression(linearProgression) ;
+        updatePosition(startPosition.translate(startPosition.vector(endPosition) * animationProgress));
     }
 
     bool UIAnimationTranslate::isCompleted() const {
-        return linearProgression > 1.0f;
+        if (maxRepeat < 0) {
+            return false;
+        }
+        return executionCount >= maxRepeat;
     }
 
 }

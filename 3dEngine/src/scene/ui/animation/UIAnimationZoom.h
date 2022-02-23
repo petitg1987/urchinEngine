@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    class UIAnimationZoomInOutLoop : public AbstractUIWidgetAnimation {
+    class UIAnimationZoom : public AbstractUIWidgetAnimation {
         public:
-            UIAnimationZoomInOutLoop(Widget&, const Vector2<float>&);
+            UIAnimationZoom(Widget&, const Vector2<float>&, int = 1);
 
             bool isCompleted() const override;
 
@@ -17,6 +17,8 @@ namespace urchin {
         private:
             Vector2<float> startScale;
             Vector2<float> endScale;
+            int maxRepeat;
+            int executionCount;
 
             bool zoomToEndSize;
             float linearProgression;

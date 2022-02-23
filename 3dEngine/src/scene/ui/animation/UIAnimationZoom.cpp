@@ -1,29 +1,33 @@
-#include <scene/ui/animation/UIAnimationZoomInOutLoop.h>
+#include <scene/ui/animation/UIAnimationZoom.h>
 
 namespace urchin {
 
-    UIAnimationZoomInOutLoop::UIAnimationZoomInOutLoop(Widget& widget, const Vector2<float>& endScale) :
+    UIAnimationZoom::UIAnimationZoom(Widget& widget, const Vector2<float>& endScale, int maxRepeat) :
             AbstractUIWidgetAnimation(widget),
             endScale(endScale),
+            maxRepeat(maxRepeat),
+            executionCount(0),
             zoomToEndSize(true),
             linearProgression(0.0f) {
 
     }
 
-    void UIAnimationZoomInOutLoop::initializeAnimation() {
+    void UIAnimationZoom::initializeAnimation() {
         startScale = getWidget().getScale();
     }
 
-    void UIAnimationZoomInOutLoop::doAnimation(float dt) {
+    void UIAnimationZoom::doAnimation(float dt) {
         if (zoomToEndSize) {
             linearProgression += dt * getAnimationSpeed();
             if (linearProgression > 1.0f) {
                 zoomToEndSize = false;
+                executionCount++;
             }
         } else {
             linearProgression -= dt * getAnimationSpeed();
             if (linearProgression < 0.0f) {
                 zoomToEndSize = true;
+                executionCount++;
             }
         }
 
@@ -31,8 +35,11 @@ namespace urchin {
         updateScale(startScale + (endScale - startScale) * animationProgress);
     }
 
-    bool UIAnimationZoomInOutLoop::isCompleted() const {
-        return false;
+    bool UIAnimationZoom::isCompleted() const {
+        if (maxRepeat < 0) {
+            return false;
+        }
+        return executionCount >= maxRepeat;
     }
 
 }

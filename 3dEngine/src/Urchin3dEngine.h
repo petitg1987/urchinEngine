@@ -37,9 +37,8 @@
 #include <scene/ui/widget/checkbox/CheckBox.h>
 #include <scene/ui/animation/UIAnimationSequencer.h>
 #include <scene/ui/animation/UIAnimationParallelizer.h>
-#include <scene/ui/animation/UIAnimationTranslateLoop.h>
 #include <scene/ui/animation/UIAnimationTranslate.h>
-#include <scene/ui/animation/UIAnimationZoomInOutLoop.h>
+#include <scene/ui/animation/UIAnimationZoom.h>
 #include <scene/ui/animation/UIAnimationDelay.h>
 
 #include <i18n/LabelTranslator.h>
