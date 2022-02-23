@@ -4,6 +4,7 @@ namespace urchin {
 
     UIAnimationRotation::UIAnimationRotation(Widget& widget, float endRotation, int maxRepeat) :
             AbstractUIWidgetAnimation(widget),
+            startRotation(0.0f),
             endRotation(endRotation),
             maxRepeat(maxRepeat),
             executionCount(0),
