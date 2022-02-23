@@ -7,7 +7,7 @@ namespace urchin {
             endPosition(endPosition),
             maxRepeat(maxRepeat),
             executionCount(0),
-            startToEnd(true),
+            toEndPosition(true),
             linearProgression(0.0f) {
 
     }
@@ -17,16 +17,16 @@ namespace urchin {
     }
 
     void UIAnimationTranslate::doAnimation(float dt) {
-        if (startToEnd) {
+        if (toEndPosition) {
             linearProgression += dt * getAnimationSpeed();
             if (linearProgression > 1.0f) {
-                startToEnd = false;
+                toEndPosition = false;
                 executionCount++;
             }
         } else {
             linearProgression -= dt * getAnimationSpeed();
             if (linearProgression < 0.0f) {
-                startToEnd = true;
+                toEndPosition = true;
                 executionCount++;
             }
         }

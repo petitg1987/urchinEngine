@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    class UIAnimationTranslate : public AbstractUIWidgetAnimation {
+    class UIAnimationRotation : public AbstractUIWidgetAnimation {
         public:
-            UIAnimationTranslate(Widget&, const Point2<float>&, int = 1);
+            UIAnimationRotation(Widget&, float, int = 1);
 
             bool isCompleted() const override;
 
@@ -15,12 +15,12 @@ namespace urchin {
             void doAnimation(float) override;
 
         private:
-            Point2<float> startPosition;
-            Point2<float> endPosition;
+            float startRotation;
+            float endRotation;
             int maxRepeat;
             int executionCount;
 
-            bool toEndPosition;
+            bool toEndRotation;
             float linearProgression;
     };
 

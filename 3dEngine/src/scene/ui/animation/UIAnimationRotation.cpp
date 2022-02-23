@@ -1,41 +1,41 @@
-#include <scene/ui/animation/UIAnimationZoom.h>
+#include <scene/ui/animation/UIAnimationRotation.h>
 
 namespace urchin {
 
-    UIAnimationZoom::UIAnimationZoom(Widget& widget, const Vector2<float>& endScale, int maxRepeat) :
+    UIAnimationRotation::UIAnimationRotation(Widget& widget, float endRotation, int maxRepeat) :
             AbstractUIWidgetAnimation(widget),
-            endScale(endScale),
+            endRotation(endRotation),
             maxRepeat(maxRepeat),
             executionCount(0),
-            toEndScale(true),
+            toEndRotation(true),
             linearProgression(0.0f) {
 
     }
 
-    void UIAnimationZoom::initializeAnimation() {
-        startScale = getWidget().getScale();
+    void UIAnimationRotation::initializeAnimation() {
+        startRotation = getWidget().getRotation();
     }
 
-    void UIAnimationZoom::doAnimation(float dt) {
-        if (toEndScale) {
+    void UIAnimationRotation::doAnimation(float dt) {
+        if (toEndRotation) {
             linearProgression += dt * getAnimationSpeed();
             if (linearProgression > 1.0f) {
-                toEndScale = false;
+                toEndRotation = false;
                 executionCount++;
             }
         } else {
             linearProgression -= dt * getAnimationSpeed();
             if (linearProgression < 0.0f) {
-                toEndScale = true;
+                toEndRotation = true;
                 executionCount++;
             }
         }
 
         float animationProgress = computeProgression(linearProgression) ;
-        updateScale(startScale + (endScale - startScale) * animationProgress);
+        updateRotation(startRotation + (endRotation - startRotation) * animationProgress);
     }
 
-    bool UIAnimationZoom::isCompleted() const {
+    bool UIAnimationRotation::isCompleted() const {
         if (maxRepeat < 0) {
             return false;
         }

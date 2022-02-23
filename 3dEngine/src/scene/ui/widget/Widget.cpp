@@ -14,6 +14,7 @@ namespace urchin {
             position(position),
             size(size),
             scale(Vector2<float>(1.0f, 1.0f)),
+            rotationZ(0.0f),
             bIsVisible(true),
             mouseX(0),
             mouseY(0) {
@@ -116,17 +117,23 @@ namespace urchin {
         }
 
         //Equivalent to 4 multiplied matrices: d * c * b * a
-        // a) Translation of widget half size to center the widget in 0,0
-        // b) Scale
-        // c) Translation rollback of 'a'
-        // d) Translation for positioning
+        // a) Translation to center the widget to the origin (transOriginX, transOriginY)
+        // b) Scale widget (scale.X, scale.Y)
+        // c) Rotate widget (sinRotate, cosRotate)
+        // d) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
+        float transX = (float)translateVector.X + (float)getWidth() / 2.0f;
+        float transY = (float)translateVector.Y + (float)getHeight() / 2.0f;
+        float transOriginX = -(float)getWidth() / 2.0f;
+        float transOriginY = -(float)getHeight() / 2.0f;
+        float sinRotate = std::sin(rotationZ);
+        float cosRotate = std::cos(rotationZ);
         Matrix4<float> translateScaleMatrix(
-                scale.X, 0.0f, 0.0f, (float)translateVector.X + (float)getWidth() / 2.0f + (-(float)getWidth() / 2.0f) * scale.X,
-                0.0f, scale.Y, 0.0f, (float)translateVector.Y + (float)getHeight() / 2.0f + (-(float)getHeight() / 2.0f) * scale.Y,
+                scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
+                scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
                 0.0f, 0.0, 1.0f, zBias,
                 0.0f, 0.0f, 0.0f, 1.0f);
-        projectionViewModelMatrix *= translateScaleMatrix;
 
+        projectionViewModelMatrix *= translateScaleMatrix;
         renderer->updateUniformData(1, &projectionViewModelMatrix);
     }
 
@@ -357,6 +364,14 @@ namespace urchin {
 
     const Vector2<float>& Widget::getScale() const {
         return scale;
+    }
+
+    void Widget::updateRotation(float rotationZ) {
+        this->rotationZ = rotationZ;
+    }
+
+    float Widget::getRotation() const {
+        return rotationZ;
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {

@@ -70,6 +70,9 @@ namespace urchin {
             void updateScale(const Vector2<float>&);
             const Vector2<float>& getScale() const;
 
+            void updateRotation(float);
+            float getRotation() const;
+
             template<class T> int widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
             template<class T> int heightLengthToPixel(float, LengthType, const T&) const;
@@ -133,6 +136,7 @@ namespace urchin {
             Position position;
             Size size;
             Vector2<float> scale;
+            float rotationZ;
             bool bIsVisible;
 
             int mouseX, mouseY;

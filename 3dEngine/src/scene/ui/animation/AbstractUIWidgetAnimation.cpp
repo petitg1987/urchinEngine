@@ -20,4 +20,8 @@ namespace urchin {
         widget.updateScale(newScale);
     }
 
+    void AbstractUIWidgetAnimation::updateRotation(float rotation) {
+        widget.updateRotation(rotation);
+    }
+
 }

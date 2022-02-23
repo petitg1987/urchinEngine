@@ -20,7 +20,7 @@ namespace urchin {
             int maxRepeat;
             int executionCount;
 
-            bool zoomToEndSize;
+            bool toEndScale;
             float linearProgression;
     };
 
