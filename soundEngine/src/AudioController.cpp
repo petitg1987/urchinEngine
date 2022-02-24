@@ -21,7 +21,7 @@ namespace urchin {
         return *soundComponent;
     }
 
-    void AudioController::pauseAll() {
+    void AudioController::pauseAll() const {
         for (const auto& audioPlayer : audioPlayers) {
             if (audioPlayer->isPlaying()) {
                 audioPlayer->pause();
@@ -29,7 +29,7 @@ namespace urchin {
         }
     }
 
-    void AudioController::unpauseAll() {
+    void AudioController::unpauseAll() const {
         for (const auto& audioPlayer : audioPlayers) {
             if (audioPlayer->isPaused()) {
                 audioPlayer->unpause();

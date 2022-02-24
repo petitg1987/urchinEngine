@@ -24,15 +24,15 @@ namespace urchin {
 
             void start();
             void interrupt();
-            void checkNoExceptionRaised();
+            void checkNoExceptionRaised() const;
 
         private:
             bool continueExecution() const;
 
             bool processTask(StreamUpdateTask&);
-            void deleteTask(StreamUpdateTask&);
+            void deleteTask(StreamUpdateTask&) const;
 
-            void fillAndPushChunk(StreamUpdateTask&, unsigned int);
+            void fillAndPushChunk(StreamUpdateTask&, unsigned int) const;
             void fillChunk(StreamUpdateTask&, unsigned int) const;
             unsigned int retrieveChunkId(StreamUpdateTask&, ALuint) const;
             void clearQueue(const StreamUpdateTask&) const;

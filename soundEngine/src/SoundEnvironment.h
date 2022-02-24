@@ -28,14 +28,14 @@ namespace urchin {
             void removeMusicLoopPlayer(const MusicLoopPlayer&);
 
             void setupSoundsVolume(Sound::SoundCategory, float);
-            void setMasterVolume(float);
+            void setMasterVolume(float) const;
             float getMasterVolume() const;
 
-            void pause();
-            void unpause();
+            void pause() const;
+            void unpause() const;
 
             void checkNoExceptionRaised();
-            void process(const Point3<float>&, const Vector3<float>&, const Vector3<float>&);
+            void process(const Point3<float>&, const Vector3<float>&, const Vector3<float>&) const;
             void process();
 
         private:

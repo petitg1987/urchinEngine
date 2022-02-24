@@ -21,8 +21,8 @@ namespace urchin {
 
             SoundComponent& getSoundComponent() const;
 
-            void pauseAll();
-            void unpauseAll();
+            void pauseAll() const;
+            void unpauseAll() const;
             std::size_t getPlayersCount() const;
 
             void process(const Point3<float>&, const std::map<Sound::SoundCategory, float>&);

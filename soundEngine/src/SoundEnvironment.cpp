@@ -67,7 +67,7 @@ namespace urchin {
     /**
      * @param masterVolume to set (0.0 for minimum volume, 1.0 for original volume). Note that volume can be higher to 1.0.
      */
-    void SoundEnvironment::setMasterVolume(float masterVolume) {
+    void SoundEnvironment::setMasterVolume(float masterVolume) const {
         alListenerf(AL_GAIN, masterVolume);
     }
 
@@ -77,13 +77,13 @@ namespace urchin {
         return masterVolume;
     }
 
-    void SoundEnvironment::pause() {
+    void SoundEnvironment::pause() const {
         for (const auto& audioController : audioControllers) {
             audioController->pauseAll();
         }
     }
 
-    void SoundEnvironment::unpause() {
+    void SoundEnvironment::unpause() const {
         for (const auto& audioController : audioControllers) {
             audioController->unpauseAll();
         }
@@ -96,7 +96,7 @@ namespace urchin {
         streamUpdateWorker.checkNoExceptionRaised();
     }
 
-    void SoundEnvironment::process(const Point3<float>& listenerPosition, const Vector3<float>& listenerFrontVector, const Vector3<float>& listenerUpVector) {
+    void SoundEnvironment::process(const Point3<float>& listenerPosition, const Vector3<float>& listenerFrontVector, const Vector3<float>& listenerUpVector) const {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);

@@ -69,11 +69,9 @@ namespace urchin {
     }
 
     void MusicLoopPlayer::refresh() {
-        if (!isPaused) {
-            if (musics[currentMusicIndex].audioController.getPlayersCount() == 0) {
-                currentMusicIndex = (currentMusicIndex + 1) % (unsigned int)musics.size();
-                musics[currentMusicIndex].soundComponent->getManualTrigger().playNew();
-            }
+        if (!isPaused && musics[currentMusicIndex].audioController.getPlayersCount() == 0) {
+            currentMusicIndex = (currentMusicIndex + 1) % (unsigned int)musics.size();
+            musics[currentMusicIndex].soundComponent->getManualTrigger().playNew();
         }
     }
 

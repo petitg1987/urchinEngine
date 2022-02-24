@@ -88,7 +88,7 @@ namespace urchin {
         streamUpdateWorkerStopper.store(true, std::memory_order_release);
     }
 
-    void StreamUpdateWorker::checkNoExceptionRaised() {
+    void StreamUpdateWorker::checkNoExceptionRaised() const {
         if (soundThreadExceptionPtr) {
             std::rethrow_exception(soundThreadExceptionPtr);
         }
@@ -146,7 +146,7 @@ namespace urchin {
         return nbQueues == 0; //task terminated ?
     }
 
-    void StreamUpdateWorker::deleteTask(StreamUpdateTask& task) {
+    void StreamUpdateWorker::deleteTask(StreamUpdateTask& task) const {
         clearQueue(task);
         alSourcei(task.getSourceId(), AL_BUFFER, 0);
 
@@ -159,7 +159,7 @@ namespace urchin {
      * Fill chunk and push it in the queue of buffers
      * @param task Task currently executed
      */
-    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask& task, unsigned int chunkId) {
+    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask& task, unsigned int chunkId) const {
         fillChunk(task, chunkId);
 
         const StreamChunk& streamChunk = task.getStreamChunk(chunkId);

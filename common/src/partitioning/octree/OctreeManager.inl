@@ -115,7 +115,7 @@ template<class T> std::shared_ptr<T> OctreeManager<T>::removeOctreeable(T* octre
     //keep size in variable because we remove references during looping
     auto refOctreeSize = (int)octreeable->getRefOctree().size();
 
-    //remove from end to start: more faster for a vector
+    //remove from end to start: it is faster for a vector
     std::shared_ptr<T> removedOctreeable(nullptr);
     for (int i = refOctreeSize - 1; i >= 0; --i) {
         removedOctreeable = octreeable->getRefOctree()[(std::size_t)i]->removeOctreeable(octreeable, true);
