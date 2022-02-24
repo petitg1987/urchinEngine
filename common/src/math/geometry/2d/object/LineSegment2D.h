@@ -31,7 +31,8 @@ namespace urchin {
         private:
             T ccw(const Point2<T>&, const Point2<T>&, const Point2<T>&) const;
 
-            Point2<T> a, b;
+            Point2<T> a;
+            Point2<T> b;
     };
 
     template<class T> std::ostream& operator <<(std::ostream&, const LineSegment2D<T>&);

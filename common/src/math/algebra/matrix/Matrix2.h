@@ -45,8 +45,10 @@ namespace urchin {
             explicit operator T*();
             explicit operator const T*() const;
 
-            T   a11, a21,
-                a12, a22;
+            T a11;
+            T a21;
+            T a12;
+            T a22;
     };
 
     template<class T> Matrix2<T> operator *(const Matrix2<T>&, T);

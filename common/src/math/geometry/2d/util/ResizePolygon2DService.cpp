@@ -13,10 +13,10 @@ namespace urchin {
             std::size_t nextI = (i + 1) % polygonPoints.size();
 
             Vector2<double> toPreviousPoint = polygonPoints[i].vector(previousPoint).template cast<double>().normalize();
-            Vector2<double> firstNormal(-toPreviousPoint.Y, toPreviousPoint.X);
+            Vector2 firstNormal(-toPreviousPoint.Y, toPreviousPoint.X);
 
             Vector2<double> fromNextPoint = polygonPoints[nextI].vector(polygonPoints[i]).template cast<double>().normalize();
-            Vector2<double> secondNormal(-fromNextPoint.Y, fromNextPoint.X);
+            Vector2 secondNormal(-fromNextPoint.Y, fromNextPoint.X);
 
             double moveLength = (double)distance / (1.0 + firstNormal.dotProduct(secondNormal));
             previousPoint = polygonPoints[i];

@@ -16,6 +16,8 @@ namespace urchin {
     template<class T> class ThreadSafeSingleton : public SingletonInterface {
         public:
             static T& instance();
+            ThreadSafeSingleton(const ThreadSafeSingleton&) = delete;
+            ThreadSafeSingleton& operator=(const ThreadSafeSingleton&) = delete;
             ~ThreadSafeSingleton() override;
 
         protected:

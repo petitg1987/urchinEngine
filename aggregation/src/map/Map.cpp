@@ -50,15 +50,15 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a object entity having name: " + std::string(name));
     }
 
-    void Map::findObjectEntitiesByTag(const std::string& tag, std::vector<ObjectEntity*>& models) const {
+    void Map::findObjectEntitiesByTag(std::string_view tag, std::vector<ObjectEntity*>& models) const {
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, models);
     }
 
-    ObjectEntity* Map::findObjectEntityByTag(const std::string& tag) const {
+    ObjectEntity* Map::findObjectEntityByTag(std::string_view tag) const {
         tmpObjectEntities.clear();
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, tmpObjectEntities);
         if (tmpObjectEntities.size() > 1) {
-            throw std::runtime_error("Impossible to find an unique object entity (" + std::to_string(tmpObjectEntities.size()) + " found) with tag: " + tag);
+            throw std::runtime_error("Impossible to find an unique object entity (" + std::to_string(tmpObjectEntities.size()) + " found) with tag: " + std::string(tag));
         }
         if (tmpObjectEntities.empty()) {
             return nullptr;

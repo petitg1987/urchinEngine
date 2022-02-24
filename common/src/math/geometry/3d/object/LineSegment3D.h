@@ -27,7 +27,8 @@ namespace urchin {
             Line3D<T> toLine() const;
 
         private:
-            Point3<T> a, b;
+            Point3<T> a;
+            Point3<T> b;
     };
 
     template<class T> std::ostream& operator <<(std::ostream&, const LineSegment3D<T>&);

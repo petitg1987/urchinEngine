@@ -12,7 +12,7 @@ namespace urchin {
         public:
             ~LoaderPNG() override = default;
 
-            std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+            std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string, std::less<>>&) override;
 
         private:
             std::vector<unsigned char> decode(const std::string&, lodepng::State&, const std::vector<unsigned char>&, unsigned int&, unsigned int&) const;

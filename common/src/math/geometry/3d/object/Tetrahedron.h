@@ -23,7 +23,10 @@ namespace urchin {
         private:
             bool pointOutsidePlane(const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&, bool) const;
 
-            Point3<T> a, b, c, d;
+            Point3<T> a;
+            Point3<T> b;
+            Point3<T> c;
+            Point3<T> d;
     };
 
 }

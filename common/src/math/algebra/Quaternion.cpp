@@ -279,7 +279,8 @@ namespace urchin {
         #endif
 
         //computes interpolation fraction, checking for quaternions almost exactly the same
-        T k0, k1;
+        T k0;
+        T k1;
 
         if (cosOmega > 0.9999) {
             //very close - just use linear interpolation, which will protect against a divide by zero

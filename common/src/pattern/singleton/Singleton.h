@@ -16,6 +16,8 @@ namespace urchin {
     template<class T> class Singleton : public SingletonInterface {
         public:
             static T& instance();
+            Singleton(const Singleton&) = delete;
+            Singleton& operator=(const Singleton&) = delete;
             ~Singleton() override;
 
         protected:

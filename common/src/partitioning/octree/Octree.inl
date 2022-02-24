@@ -25,7 +25,7 @@ template<class T> Octree<T>::Octree(const Point3<float>& position, const Vector3
         for (float xValue : splitX) {
             for (float yValue : splitY) {
                 for (float zValue : splitZ) {
-                    Point3<float> positionChild(xValue, yValue, zValue);
+                    Point3 positionChild(xValue, yValue, zValue);
                     children.push_back(std::make_unique<Octree>(positionChild, sizeChild, minSize));
                 }
             }

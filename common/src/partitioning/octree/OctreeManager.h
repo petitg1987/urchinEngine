@@ -17,6 +17,8 @@ namespace urchin {
     template<class T> class OctreeManager : public Observable, public Observer {
         public:
             explicit OctreeManager(float);
+            OctreeManager(const OctreeManager&) = delete;
+            OctreeManager& operator=(const OctreeManager&) = delete;
             ~OctreeManager() override;
 
             enum NotificationType {
@@ -50,7 +52,8 @@ namespace urchin {
             std::vector<T*> movingOctreeables;
             mutable std::vector<Octree<T>*> browseNodes;
 
-            unsigned int refreshModCount, postRefreshModCount;
+            unsigned int refreshModCount;
+            unsigned int postRefreshModCount;
     };
 
     #include "OctreeManager.inl"

@@ -24,7 +24,7 @@ namespace urchin {
         std::vector<UdaChunk*> chunks;
 
         const auto& nodes = parent ? parent->getChildren() : rootNodes;
-        for (auto& node : nodes) {
+        for (const auto& node : nodes) {
             if (isNodeMatchCriteria(*node, chunkName, attribute)) {
                 chunks.push_back(node.get());
             }
@@ -35,7 +35,7 @@ namespace urchin {
 
     UdaChunk* UdaParser::getFirstChunk(bool mandatory, std::string_view chunkName, const UdaAttribute& attribute, const UdaChunk* parent) const {
         const auto& nodes = parent ? parent->getChildren() : rootNodes;
-        for (auto& node : nodes) {
+        for (const auto& node : nodes) {
             if (isNodeMatchCriteria(*node, chunkName, attribute)) {
                 return node.get();
             }
@@ -47,7 +47,7 @@ namespace urchin {
         return nullptr;
     }
 
-    bool UdaParser::isNodeMatchCriteria(UdaChunk& node, std::string_view chunkName, const UdaAttribute& attribute) const {
+    bool UdaParser::isNodeMatchCriteria(const UdaChunk& node, std::string_view chunkName, const UdaAttribute& attribute) const {
         if (chunkName.empty() || chunkName == node.getName()) {
             if (!attribute.getAttributeName().empty()) {
                 std::string attributeValue = node.getAttributeValue(attribute.getAttributeName());

@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    std::shared_ptr<Image> LoaderTGA::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+    std::shared_ptr<Image> LoaderTGA::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
         //open file
         std::string filenamePath = FileSystem::instance().getResourcesDirectory() + filename;
         std::ifstream file(filenamePath, std::ios::in | std::ios::binary);

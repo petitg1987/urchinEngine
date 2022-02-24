@@ -32,7 +32,15 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CylinderShape<T>::toConvexObject(const Transform<T>& transform) const {
-        std::size_t heightAxis = (cylinderOrientation == CylinderOrientation::CYLINDER_X) ? 0 : (cylinderOrientation == CylinderOrientation::CYLINDER_Y) ? 1 : 2;
+        std::size_t heightAxis = 0;
+        if (cylinderOrientation == CylinderOrientation::CYLINDER_X) {
+            heightAxis = 0;
+        } else if (cylinderOrientation == CylinderOrientation::CYLINDER_Y) {
+            heightAxis = 1;
+        } else if (cylinderOrientation == CylinderOrientation::CYLINDER_Z) {
+            heightAxis = 2;
+        }
+
         if (!MathFunction::isEqual((T)transform.getScale()[(heightAxis + 1) % 3], (T)transform.getScale()[(heightAxis + 2) % 3], (T)0.01)) {
             throw std::runtime_error("Cylinder cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }

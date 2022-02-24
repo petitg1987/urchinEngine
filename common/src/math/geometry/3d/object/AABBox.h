@@ -24,9 +24,6 @@ namespace urchin {
             AABBox(const Point3<T>&, const Vector3<T>&);
             explicit AABBox(const std::vector<Point3<T>>&);
             explicit AABBox(std::span<Point3<T>>);
-            AABBox(const AABBox<T>&);
-            AABBox<T>& operator=(const AABBox<T>&);
-            AABBox<T>& operator=(AABBox<T>&&) noexcept;
 
             T getHalfSize(unsigned int) const;
             const Vector3<T>& getHalfSizes() const;
@@ -60,7 +57,8 @@ namespace urchin {
 
         private:
             BoxShape<T> boxShape;
-            Point3<T> min, max;
+            Point3<T> min;
+            Point3<T> max;
     };
 
     template<class T> AABBox<T> operator *(const Matrix4<T>&, const AABBox<T>&);

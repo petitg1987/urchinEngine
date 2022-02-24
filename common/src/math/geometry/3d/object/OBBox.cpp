@@ -235,14 +235,13 @@ namespace urchin {
         };
 
         for(std::size_t i = 0; i < faceRectangles.size(); ++i) {
-            bool hasRectangleIntersection, hasPlaneIntersection;
+            bool hasRectangleIntersection;
+            bool hasPlaneIntersection;
             Point3<T> intersectionPoint = faceRectangles[i]().intersectPoint(line, hasRectangleIntersection, hasPlaneIntersection);
             if (hasPlaneIntersection) {
-                if (hasRectangleIntersection) {
-                    if (!hasIntersection || (line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint))) {
-                        bestIntersectionPoint = intersectionPoint;
-                        hasIntersection = true;
-                    }
+                if (hasRectangleIntersection && (!hasIntersection || (line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint)))) {
+                    bestIntersectionPoint = intersectionPoint;
+                    hasIntersection = true;
                 }
             } else {
                 i++; //skip next parallel plane

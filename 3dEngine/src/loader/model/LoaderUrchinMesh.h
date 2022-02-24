@@ -11,7 +11,7 @@ namespace urchin {
         public:
             ~LoaderUrchinMesh() override = default;
 
-            std::shared_ptr<ConstMeshes> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+            std::shared_ptr<ConstMeshes> loadFromFile(const std::string&, const std::map<std::string, std::string, std::less<>>&) override;
     };
 
 }

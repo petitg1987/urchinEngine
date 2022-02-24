@@ -3,7 +3,7 @@
  * @param params Parameters required to load the resource
  * @param keepForever Indicates if resource must be keep in memory forever. This parameter can be useful when a resource is loaded / unloaded constantly over different frames.
  */
-template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string>& params, bool keepForever) {
+template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string, std::less<>>& params, bool keepForever) {
     //resource already loaded ?
     std::string resourceId = filename + "_" + MapSerializer::serialize(params);
     std::shared_ptr<T> resource = ResourceContainer::instance().getResource<T>(resourceId);

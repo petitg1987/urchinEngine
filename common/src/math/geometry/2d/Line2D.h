@@ -23,7 +23,8 @@ namespace urchin {
             Point2<T> intersectPoint(const Line2D<T>&, bool&) const;
 
         private:
-            Point2<T> a, b;
+            Point2<T> a;
+            Point2<T> b;
     };
 
     template<class T> std::ostream& operator <<(std::ostream&, const Line2D<T>&);

@@ -17,7 +17,7 @@ namespace urchin {
             void unlock(uint_fast32_t);
 
         private:
-            static std::map<std::string, std::shared_ptr<LockById>> instances;
+            static std::map<std::string, std::shared_ptr<LockById>, std::less<>> instances;
 
             std::string instanceName;
 

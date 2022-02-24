@@ -38,7 +38,10 @@ namespace urchin {
             Quaternion<T> qOrientation;
             Vector3<T> vScale;
 
-            Matrix4<T> mPosition, mOrientation, mScale, mTransform;
+            Matrix4<T> mPosition;
+            Matrix4<T> mOrientation;
+            Matrix4<T> mScale;
+            Matrix4<T> mTransform;
     };
 
 }

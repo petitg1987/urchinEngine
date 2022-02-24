@@ -32,7 +32,7 @@ namespace urchin {
         public:
             ~LoaderTGA() override = default;
 
-            std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+            std::shared_ptr<Image> loadFromFile(const std::string&, const std::map<std::string, std::string, std::less<>>&) override;
 
         private:
             void getImageInfo(const TgaHeader&, unsigned int&, unsigned int&, unsigned int&, Image::ImageFormat&) const;

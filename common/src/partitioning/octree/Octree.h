@@ -18,6 +18,8 @@ namespace urchin {
     template<class T> class Octree {
         public:
             Octree(const Point3<float>&, const Vector3<float>&, float);
+            Octree(const Octree&) = delete;
+            Octree& operator=(const Octree&) = delete;
             ~Octree();
 
             const AABBox<float>& getAABBox() const;

@@ -36,7 +36,15 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T>& transform) const {
-        std::size_t heightAxis = (capsuleOrientation == CapsuleOrientation::CAPSULE_X) ? 0 : (capsuleOrientation == CapsuleOrientation::CAPSULE_Y) ? 1 : 2;
+        std::size_t heightAxis = 0;
+        if (capsuleOrientation == CapsuleOrientation::CAPSULE_X) {
+            heightAxis = 0;
+        } else if (capsuleOrientation == CapsuleOrientation::CAPSULE_Y) {
+            heightAxis = 1;
+        } else if (capsuleOrientation == CapsuleOrientation::CAPSULE_Z) {
+            heightAxis = 2;
+        }
+
         if (!MathFunction::isEqual((T)transform.getScale()[(heightAxis + 1) % 3], (T)transform.getScale()[(heightAxis + 2) % 3], (T)0.01)) {
             throw std::runtime_error("Capsule cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }

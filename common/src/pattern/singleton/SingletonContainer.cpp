@@ -5,7 +5,7 @@
 namespace urchin {
 
     //static
-    std::map<std::string, std::unique_ptr<SingletonInterface>> SingletonContainer::singletons;
+    std::map<std::string, std::unique_ptr<SingletonInterface>, std::less<>> SingletonContainer::singletons;
 
     void SingletonContainer::registerSingleton(const std::string& name, std::unique_ptr<SingletonInterface> ptr) {
         #ifdef URCHIN_DEBUG

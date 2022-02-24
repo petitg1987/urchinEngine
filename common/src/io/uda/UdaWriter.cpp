@@ -31,7 +31,7 @@ namespace urchin {
         return *newNodePtr;
     }
 
-    void UdaWriter::saveInFile() {
+    void UdaWriter::saveInFile() const {
         std::ofstream file;
         file.open (filenamePath);
         if (!file.is_open()) {
@@ -39,7 +39,7 @@ namespace urchin {
         }
 
         std::stack<UdaChunk*> stack;
-        for (auto& rootNode : std::ranges::reverse_view(rootNodes)) {
+        for (const auto& rootNode : std::ranges::reverse_view(rootNodes)) {
             stack.push(rootNode.get());
         }
         while (!stack.empty()) {

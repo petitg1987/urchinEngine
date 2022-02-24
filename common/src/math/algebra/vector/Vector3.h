@@ -54,7 +54,9 @@ namespace urchin {
 
             template<class NEW_TYPE> Vector3<NEW_TYPE> cast() const;
 
-            T X, Y, Z;
+            T X;
+            T Y;
+            T Z;
     };
 
     template<class T> Vector3<T> operator *(const Vector3<T>&, T t);

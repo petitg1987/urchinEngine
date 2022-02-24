@@ -16,6 +16,7 @@ namespace urchin {
         public:
             Octreeable();
             Octreeable(const Octreeable<T>&);
+            Octreeable& operator=(const Octreeable&) = delete;
             ~Octreeable() override;
 
             enum NotificationType {

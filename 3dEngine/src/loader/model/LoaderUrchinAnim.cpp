@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    std::shared_ptr<ConstAnimation> LoaderUrchinAnim::loadFromFile(const std::string& filename, const std::map<std::string, std::string>&) {
+    std::shared_ptr<ConstAnimation> LoaderUrchinAnim::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
         std::istringstream iss;
         iss.imbue(std::locale::classic());
         std::string buffer;

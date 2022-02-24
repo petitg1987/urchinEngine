@@ -15,7 +15,7 @@ namespace urchin {
 
             UdaChunk& createChunk(std::string, const UdaAttribute& = UdaAttribute(), UdaChunk* = nullptr);
 
-            void saveInFile();
+            void saveInFile() const;
 
         private:
             unsigned int computeIndentLevel(const UdaChunk&) const;

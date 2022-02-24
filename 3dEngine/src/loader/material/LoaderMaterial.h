@@ -11,7 +11,7 @@ namespace urchin {
         public:
             ~LoaderMaterial() override = default;
 
-            std::shared_ptr<Material> loadFromFile(const std::string&, const std::map<std::string, std::string>&) override;
+            std::shared_ptr<Material> loadFromFile(const std::string&, const std::map<std::string, std::string, std::less<>>&) override;
 
         private:
             UvScaleType toUvScaleType(std::string_view, const std::string&) const;

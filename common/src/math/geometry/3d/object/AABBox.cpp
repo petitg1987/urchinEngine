@@ -69,28 +69,6 @@ namespace urchin {
         boxShape = BoxShape<T>(Vector3<T>((max.X - min.X) / (T)2.0, (max.Y - min.Y) / (T)2.0, (max.Z - min.Z) / (T)2.0));
     }
 
-    template<class T> AABBox<T>::AABBox(const AABBox<T>& aabbox) :
-            ConvexObject3D<T>(ConvexObjectType::AABBOX),
-            boxShape(BoxShape<T>(aabbox.getHalfSizes())),
-            min(aabbox.getMin()),
-            max(aabbox.getMax()) {
-
-    }
-
-    template<class T> AABBox<T>& AABBox<T>::operator=(const AABBox<T>& aabbox) {
-        this->boxShape = BoxShape<T>(aabbox.getHalfSizes());
-        this->min = aabbox.getMin();
-        this->max = aabbox.getMax();
-        return *this;
-    }
-
-    template<class T> AABBox<T>& AABBox<T>::operator=(AABBox<T>&& aabbox) noexcept {
-        this->boxShape = BoxShape<T>(std::move(aabbox.getHalfSizes()));
-        this->min = std::move(aabbox.getMin());
-        this->max = std::move(aabbox.getMax());
-        return *this;
-    }
-
     template<class T> T AABBox<T>::getHalfSize(unsigned int index) const {
         return boxShape.getHalfSize(index);
     }

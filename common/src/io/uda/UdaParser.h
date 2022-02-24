@@ -22,7 +22,7 @@ namespace urchin {
             unsigned int computeIndentLevel(std::string_view) const;
             std::unique_ptr<UdaChunk> buildChunk(const std::string& rawContentLine, UdaChunk* parent) const;
 
-            bool isNodeMatchCriteria(UdaChunk&, std::string_view, const UdaAttribute&) const;
+            bool isNodeMatchCriteria(const UdaChunk&, std::string_view, const UdaAttribute&) const;
             std::string getChunkDescription(const std::string&, const UdaAttribute&) const;
 
             static constexpr char NAME_REGEX[] = "([a-zA-Z]+)";

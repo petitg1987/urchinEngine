@@ -28,8 +28,8 @@ namespace urchin {
     }
 
     Rectangle2D<float> SVGLine::computeRectangle() const {
-        Point2<float> minPoint(std::min(line.getA().X, line.getB().X), std::min(line.getA().Y, line.getB().Y));
-        Point2<float> maxPoint(std::max(line.getA().X, line.getB().X), std::max(line.getA().Y, line.getB().Y));
+        Point2 minPoint(std::min(line.getA().X, line.getB().X), std::min(line.getA().Y, line.getB().Y));
+        Point2 maxPoint(std::max(line.getA().X, line.getB().X), std::max(line.getA().Y, line.getB().Y));
 
         return Rectangle2D<float>(minPoint, maxPoint);
     }

@@ -33,8 +33,8 @@ template<class T> void OctreeManager<T>::notify(Observable* observable, int noti
 
 template<class T> void OctreeManager<T>::buildOctree(std::vector<std::shared_ptr<T>>& octreeables) {
     if (!octreeables.empty()) {
-        Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-        Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+        Point3 minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+        Point3 maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 
         for (const auto& octreeable : octreeables) {
             const Point3<float>& bboxMin = octreeable->getAABBox().getMin();

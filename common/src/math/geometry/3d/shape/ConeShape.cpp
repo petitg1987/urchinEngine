@@ -32,8 +32,15 @@ namespace urchin {
     }
 
     template<class T> std::unique_ptr<ConvexObject3D<T>> ConeShape<T>::toConvexObject(const Transform<T>& transform) const {
-        std::size_t heightAxis = (coneOrientation == ConeOrientation::CONE_X_POSITIVE || coneOrientation == ConeOrientation::CONE_X_NEGATIVE) ? 0 :
-                                 (coneOrientation == ConeOrientation::CONE_Y_POSITIVE || coneOrientation == ConeOrientation::CONE_Y_NEGATIVE) ? 1 : 2;
+        std::size_t heightAxis = 0;
+        if (coneOrientation == ConeOrientation::CONE_X_POSITIVE || coneOrientation == ConeOrientation::CONE_X_NEGATIVE) {
+            heightAxis = 0;
+        } else if (coneOrientation == ConeOrientation::CONE_Y_POSITIVE || coneOrientation == ConeOrientation::CONE_Y_NEGATIVE) {
+            heightAxis = 1;
+        } else if (coneOrientation == ConeOrientation::CONE_Z_POSITIVE || coneOrientation == ConeOrientation::CONE_Z_NEGATIVE) {
+            heightAxis = 2;
+        }
+
         if (!MathFunction::isEqual((T)transform.getScale()[(heightAxis + 1) % 3], (T)transform.getScale()[(heightAxis + 2) % 3], (T)0.01)) {
             throw std::runtime_error("Cone cannot by transformed with scale: " + StringUtil::toString(transform.getScale()));
         }

@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    std::string MapSerializer::serialize(const std::map<std::string, std::string>& map) {
+    std::string MapSerializer::serialize(const std::map<std::string, std::string, std::less<>>& map) {
         std::string mapString;
         for (const auto& [key, value] : map) {
             mapString += escape(key) + DELIMITER + escape(value) + DELIMITER;
@@ -17,7 +17,7 @@ namespace urchin {
         return mapString;
     }
 
-    std::map<std::string, std::string> MapSerializer::deserialize(std::string_view mapString) {
+    std::map<std::string, std::string, std::less<>> MapSerializer::deserialize(std::string_view mapString) {
         std::vector<std::string> mapListString;
         std::vector<std::string> splitStrings = StringUtil::split(mapString, DELIMITER);
 
@@ -34,7 +34,7 @@ namespace urchin {
             appendNextElement = !updatedElem.empty() && updatedElem.back() == '\\';
         }
 
-        std::map<std::string, std::string> outputMap;
+        std::map<std::string, std::string, std::less<>> outputMap;
         assert(mapListString.size() % 2 == 0);
 
         for (std::size_t i = 0; i < mapListString.size(); i += 2) {

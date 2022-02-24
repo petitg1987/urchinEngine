@@ -5,7 +5,7 @@
 namespace urchin {
 
     //static
-    std::map<std::string, std::shared_ptr<LockById>> LockById::instances;
+    std::map<std::string, std::shared_ptr<LockById>, std::less<>> LockById::instances;
 
     LockById::LockById(std::string instanceName) :
             instanceName(std::move(instanceName)) {

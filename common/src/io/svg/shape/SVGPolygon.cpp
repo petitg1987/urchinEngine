@@ -27,8 +27,8 @@ namespace urchin {
     }
 
     Rectangle2D<float> SVGPolygon::computeRectangle() const {
-        Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-        Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+        Point2 minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+        Point2 maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 
         for (const auto& polygonPoint : polygonPoints) {
             if (polygonPoint.X < minPoint.X) {

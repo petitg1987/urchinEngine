@@ -73,7 +73,10 @@ namespace urchin {
             T& operator [](std::size_t i);
             const T& operator [](std::size_t i) const;
 
-            T X, Y, Z, W;
+            T X;
+            T Y;
+            T Z;
+            T W;
 
         private:
             Vector3<T> threeAxisEulerRotation(std::size_t, std::size_t, std::size_t) const;

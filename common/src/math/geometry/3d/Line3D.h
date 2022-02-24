@@ -18,7 +18,8 @@ namespace urchin {
             T minDistance(const Line3D<T>&) const;
 
         private:
-            Point3<T> a, b;
+            Point3<T> a;
+            Point3<T> b;
     };
 
     template<class T> std::ostream& operator <<(std::ostream&, const Line3D<T>&);

@@ -34,7 +34,7 @@ namespace urchin {
             SingletonContainer() = default;
             ~SingletonContainer() = default;
 
-            static std::map<std::string, std::unique_ptr<SingletonInterface>> singletons;
+            static std::map<std::string, std::unique_ptr<SingletonInterface>, std::less<>> singletons;
     };
 
 }
