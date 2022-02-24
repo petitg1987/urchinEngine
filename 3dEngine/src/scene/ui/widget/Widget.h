@@ -51,7 +51,7 @@ namespace urchin {
             void addEventListener(std::shared_ptr<EventListener>);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
             WidgetStates getWidgetState() const;
-            Point2<unsigned int> getSceneSize() const;
+            Point2<int> getSceneSize() const;
 
             void updatePosition(Position);
             Position getPosition() const;

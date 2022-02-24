@@ -53,7 +53,7 @@ namespace urchin {
         this->polygonMode = polygonMode;
     }
 
-    void PipelineBuilder::setupScissor(bool scissorEnabled, Vector2<int> scissorOffset, Vector2<unsigned int> scissorSize) {
+    void PipelineBuilder::setupScissor(bool scissorEnabled, Vector2<int> scissorOffset, Vector2<int> scissorSize) {
         this->scissorEnabled = scissorEnabled;
         this->scissorOffset = scissorOffset;
         this->scissorSize = scissorSize;
@@ -250,7 +250,7 @@ namespace urchin {
         VkRect2D scissor = {};
         if (scissorEnabled) {
             scissor.offset = {scissorOffset.X, scissorOffset.Y};
-            scissor.extent = {scissorSize.X, scissorSize.Y};
+            scissor.extent = {(uint32_t)scissorSize.X, (uint32_t)scissorSize.Y};
         } else {
             scissor.offset = {0, 0};
             scissor.extent = {renderTarget->getWidth(), renderTarget->getHeight()};

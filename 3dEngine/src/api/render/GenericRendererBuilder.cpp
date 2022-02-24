@@ -157,7 +157,7 @@ namespace urchin {
         return pPolygonMode;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableScissor(const Vector2<int>& scissorOffset, const Vector2<unsigned int>& scissorSize) {
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableScissor(const Vector2<int>& scissorOffset, const Vector2<int>& scissorSize) {
         scissorEnabled = true;
         this->scissorOffset = scissorOffset;
         this->scissorSize = scissorSize;
@@ -172,7 +172,7 @@ namespace urchin {
         return scissorOffset;
     }
 
-    const Vector2<unsigned int>& GenericRendererBuilder::getScissorSize() const {
+    const Vector2<int>& GenericRendererBuilder::getScissorSize() const {
         return scissorSize;
     }
 

@@ -14,7 +14,7 @@ namespace urchin {
     UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
             renderTarget(renderTarget),
             i18nService(i18nService),
-            uiResolution(renderTarget.getWidth(), renderTarget.getHeight()),
+            uiResolution((int)renderTarget.getWidth(), (int)renderTarget.getHeight()),
             rawMouseX(0.0),
             rawMouseY(0.0),
             canInteractWithUi(true) {
@@ -31,8 +31,7 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<unsigned int>& uiResolution,
-                               const Point2<float>& uiSize, float ambient) {
+    void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<int>& uiResolution, const Point2<float>& uiSize, float ambient) {
         if (!widgets.empty()) {
             throw std::runtime_error("UI renderer cannot be initialized for UI 3d because widgets already exist");
         }
@@ -67,7 +66,7 @@ namespace urchin {
             this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv", std::move(shaderConstants));
         }
 
-        onResize(uiResolution.X, uiResolution.Y);
+        onResize((unsigned int)uiResolution.X, (unsigned int)uiResolution.Y);
         if (camera) {
             onCameraProjectionUpdate(*camera);
         }
@@ -100,7 +99,7 @@ namespace urchin {
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->uiResolution = Point2<unsigned int>(sceneWidth, sceneHeight);
+        this->uiResolution = Point2<int>((int)sceneWidth, (int)sceneHeight);
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -283,7 +282,7 @@ namespace urchin {
         return i18nService;
     }
 
-    const Point2<unsigned int>& UIRenderer::getUiResolution() const {
+    const Point2<int>& UIRenderer::getUiResolution() const {
         return uiResolution;
     }
 

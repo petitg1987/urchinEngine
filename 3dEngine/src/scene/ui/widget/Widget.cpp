@@ -85,7 +85,7 @@ namespace urchin {
         const Container* parentContainer = getParentContainer();
         if (parentContainer && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
             Vector2<int> scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
-            Vector2<unsigned int> scissorSize(parentContainer->getWidth(), parentContainer->getHeight());
+            Vector2<int> scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
         }
 
@@ -218,7 +218,7 @@ namespace urchin {
         return widgetState;
     }
 
-    Point2<unsigned int> Widget::getSceneSize() const {
+    Point2<int> Widget::getSceneSize() const {
         if (!uiRenderer) {
             throw std::runtime_error("Scene size not available because the widget is not initialized");
         }

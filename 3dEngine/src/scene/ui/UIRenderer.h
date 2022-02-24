@@ -35,7 +35,7 @@ namespace urchin {
             ~UIRenderer() override;
 
             //3d specific
-            void setupUi3d(Camera*, const Transform<float>&, const Point2<unsigned int>&, const Point2<float>&, float);
+            void setupUi3d(Camera*, const Transform<float>&, const Point2<int>&, const Point2<float>&, float);
             void onCameraProjectionUpdate(Camera&);
             void setMaximumInteractiveDistance(float) const;
             void setPointerType(UI3dPointerType) const;
@@ -52,7 +52,7 @@ namespace urchin {
 
             RenderTarget& getRenderTarget() const;
             I18nService& getI18nService() const;
-            const Point2<unsigned int>& getUiResolution() const;
+            const Point2<int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
 
@@ -69,7 +69,7 @@ namespace urchin {
 
             RenderTarget& renderTarget;
             I18nService& i18nService;
-            Point2<unsigned int> uiResolution;
+            Point2<int> uiResolution;
             std::unique_ptr<Shader> uiShader;
 
             double rawMouseX, rawMouseY;
