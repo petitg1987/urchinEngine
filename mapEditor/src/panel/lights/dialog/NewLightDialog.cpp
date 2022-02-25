@@ -113,9 +113,9 @@ namespace urchin {
         }
     }
 
-    bool NewLightDialog::isLightEntityExist(std::string_view name) {
+    bool NewLightDialog::isLightEntityExist(std::string_view name) const {
         std::list<const LightEntity*> lightEntities = lightController->getLightEntities();
-        return std::ranges::any_of(lightEntities, [&name](const auto& sl){return sl->getName() == name;});
+        return std::ranges::any_of(lightEntities, [&name](const auto& sl){ return sl->getName() == name; });
     }
 
 }

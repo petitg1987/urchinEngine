@@ -276,7 +276,7 @@ namespace urchin {
         if (!disableLightEvent) {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
 
-            Point3<float> ambientColor((float)ambientR->value(), (float)ambientG->value(), (float)ambientB->value());
+            Point3 ambientColor((float)ambientR->value(), (float)ambientG->value(), (float)ambientB->value());
             bool produceShadow = produceShadowCheckBox->isChecked();
 
             lightController->updateLightGeneralProperties(lightEntity, ambientColor, produceShadow);
@@ -289,10 +289,10 @@ namespace urchin {
             const Light* light = lightEntity.getLight();
 
             if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
                 lightController->updateOmnidirectionalLightProperties(lightEntity, (float)attenuation->value(), position);
             } else if (light->getLightType() == Light::LightType::SUN) {
-                Vector3<float> direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
+                Vector3 direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
                 lightController->updateSunLightProperties(lightEntity, direction);
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string(light->getLightType()));

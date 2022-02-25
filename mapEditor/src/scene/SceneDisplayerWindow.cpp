@@ -39,7 +39,8 @@ namespace urchin {
                 break;
             } case QEvent::Resize: {
                 if (sceneDisplayer) {
-                    unsigned int width = 0, height = 0;
+                    unsigned int width = 0;
+                    unsigned int height = 0;
                     SceneWindowController(this).getFramebufferSizeRetriever()->getFramebufferSizeInPixel(width, height);
                     sceneDisplayer->resize(width, height);
                 }
@@ -109,25 +110,25 @@ namespace urchin {
         updateSceneDisplayerViewProperties();
     }
 
-    void SceneDisplayerWindow::setHighlightObjectEntity(const ObjectEntity* highlightObjectEntity) {
+    void SceneDisplayerWindow::setHighlightObjectEntity(const ObjectEntity* highlightObjectEntity) const {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightObjectEntity(highlightObjectEntity);
         }
     }
 
-    void SceneDisplayerWindow::setHighlightCompoundShapeComponent(const LocalizedCollisionShape* selectedCompoundShapeComponent) {
+    void SceneDisplayerWindow::setHighlightCompoundShapeComponent(const LocalizedCollisionShape* selectedCompoundShapeComponent) const {
         if (sceneDisplayer) {
             sceneDisplayer->getBodyShapeDisplayer()->setSelectedCompoundShapeComponent(selectedCompoundShapeComponent);
         }
     }
 
-    void SceneDisplayerWindow::setHighlightLightEntity(const LightEntity* highlightLightEntity) {
+    void SceneDisplayerWindow::setHighlightLightEntity(const LightEntity* highlightLightEntity) const {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightLightEntity(highlightLightEntity);
         }
     }
 
-    void SceneDisplayerWindow::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) {
+    void SceneDisplayerWindow::setHighlightSoundEntity(const SoundEntity* highlightSoundEntity) const {
         if (sceneDisplayer) {
             sceneDisplayer->setHighlightSoundEntity(highlightSoundEntity);
         }
@@ -210,8 +211,8 @@ namespace urchin {
 
     void SceneDisplayerWindow::mouseMoveEvent(QMouseEvent* event) {
         //mouse coordinate computed in pixel
-        this->mouseX = (double)event->x() * (double)devicePixelRatio();
-        this->mouseY = (double)event->y() * (double)devicePixelRatio();
+        this->mouseX = (double)event->x() * devicePixelRatio();
+        this->mouseY = (double)event->y() * devicePixelRatio();
 
         if (sceneDisplayer) {
             bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY);
@@ -251,24 +252,24 @@ namespace urchin {
         return lastPickedBodyId;
     }
 
-    void SceneDisplayerWindow::addObserverObjectMoveController(Observer* observer, int notificationType) {
+    void SceneDisplayerWindow::addObserverObjectMoveController(Observer* observer, int notificationType) const {
         assert(sceneDisplayer);
         sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
     }
 
-    void SceneDisplayerWindow::onCtrlXPressed() {
+    void SceneDisplayerWindow::onCtrlXPressed() const {
         if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(0);
         }
     }
 
-    void SceneDisplayerWindow::onCtrlYPressed() {
+    void SceneDisplayerWindow::onCtrlYPressed() const {
         if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(1);
         }
     }
 
-    void SceneDisplayerWindow::onCtrlZPressed() {
+    void SceneDisplayerWindow::onCtrlZPressed() const {
         if (sceneDisplayer && sceneDisplayer->getObjectMoveController()) {
             sceneDisplayer->getObjectMoveController()->onCtrlXYZ(2);
         }

@@ -8,7 +8,7 @@ namespace urchin {
     }
 
     std::unique_ptr<SoundShape> DefaultSoundShapeCreator::createDefaultSoundShape(SoundShape::ShapeType shapeType) const {
-        Point3<float> position(0.0f, 0.0f, 0.0f);
+        Point3 position(0.0f, 0.0f, 0.0f);
         float radius = 1.0f;
         if (sound.getSoundType() == Sound::SoundType::SPATIAL) {
             const auto& pointSound = static_cast<const SpatialSound&>(sound);
@@ -19,7 +19,7 @@ namespace urchin {
         if (shapeType == SoundShape::ShapeType::SPHERE_SHAPE) {
             return std::make_unique<SoundSphere>(radius, position, 0.0f);
         } else if (shapeType == SoundShape::ShapeType::BOX_SHAPE) {
-            Vector3<float> halfSizes(radius, radius, radius);
+            Vector3 halfSizes(radius, radius, radius);
             return std::make_unique<SoundBox>(halfSizes, position, Quaternion<float>::rotationY(0.0f), 0.0f);
         }
 

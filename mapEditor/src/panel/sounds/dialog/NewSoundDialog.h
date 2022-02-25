@@ -39,7 +39,7 @@ namespace urchin {
             int buildSoundEntity(int);
 
             void done(int) override;
-            bool isSoundEntityExist(std::string_view);
+            bool isSoundEntityExist(std::string_view) const;
 
             const SoundController* soundController;
 

@@ -88,9 +88,9 @@ namespace urchin {
         }
     }
 
-    bool CloneObjectDialog::isObjectEntityExist(std::string_view name) {
+    bool CloneObjectDialog::isObjectEntityExist(std::string_view name) const {
         std::list<const ObjectEntity*> objectEntities = objectController->getObjectEntities();
-        return std::ranges::any_of(objectEntities, [name](const auto& so){return so->getName() == name;});
+        return std::ranges::any_of(objectEntities, [name](const auto& so){ return so->getName() == name; });
     }
 
 }

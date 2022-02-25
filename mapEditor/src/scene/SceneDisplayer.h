@@ -45,7 +45,7 @@ namespace urchin {
             void setHighlightSoundEntity(const SoundEntity*);
 
             void paint();
-            void resize(unsigned int, unsigned int);
+            void resize(unsigned int, unsigned int) const;
 
             Scene& getScene() const;
             SceneFreeCamera* getCamera() const;

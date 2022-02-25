@@ -352,7 +352,7 @@ namespace urchin {
             if (sound.getSoundType() == Sound::GLOBAL) {
                 //nothing to update
             } else if (sound.getSoundType() == Sound::SPATIAL) {
-                Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
+                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionY->value());
                 auto inaudibleDistance = (float)this->inaudibleDistance->value();
 
                 soundController->updateSpatialSoundProperties(soundEntity, position, inaudibleDistance);

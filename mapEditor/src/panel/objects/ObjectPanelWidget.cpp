@@ -691,7 +691,7 @@ namespace urchin {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
-            Vector3<float> eulerAngle(
+            Vector3 eulerAngle(
                     AngleConverter<float>::toRadian((float)eulerAxis0->value()),
                     AngleConverter<float>::toRadian((float)eulerAxis1->value()),
                     AngleConverter<float>::toRadian((float)eulerAxis2->value())
@@ -700,7 +700,7 @@ namespace urchin {
             QVariant variant = orientationType->currentData();
             auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
-            Transform<float> newObjectEntityTransform(
+            Transform newObjectEntityTransform(
                     Point3<float>((float)positionX->value(),(float)positionY->value(),(float)positionZ->value()),
                     Quaternion<float>::fromEuler(eulerAngle, rotationSequence),
                     Vector3<float>((float)scaleX->value(), (float)scaleY->value(), (float)scaleZ->value()));
@@ -773,8 +773,8 @@ namespace urchin {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
-            Vector3<float> linearFactor((float)linearFactorX->value(), (float)linearFactorY->value(), (float)linearFactorZ->value());
-            Vector3<float> angularFactor((float)angularFactorX->value(), (float)angularFactorY->value(), (float)angularFactorZ->value());
+            Vector3 linearFactor((float)linearFactorX->value(), (float)linearFactorY->value(), (float)linearFactorZ->value());
+            Vector3 angularFactor((float)angularFactorX->value(), (float)angularFactorY->value(), (float)angularFactorZ->value());
 
             objectController->updateObjectPhysicsProperties(objectEntity, (float)mass->value(), (float)restitution->value(),
                     (float)friction->value(), (float)rollingFriction->value(), (float)linearDamping->value(), (float)angularDamping->value(),

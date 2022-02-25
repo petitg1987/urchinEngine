@@ -110,11 +110,11 @@ namespace urchin {
     }
 
     const SoundShape* SoundBoxShapeWidget::createSoundShape() const {
-        Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+        Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
 
-        Vector3<float> halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
+        Vector3 halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
 
-        Vector3<float> eulerAngle(
+        Vector3 eulerAngle(
             AngleConverter<float>::toRadian((float)eulerAxis0->value()),
             AngleConverter<float>::toRadian((float)eulerAxis1->value()),
             AngleConverter<float>::toRadian((float)eulerAxis2->value())

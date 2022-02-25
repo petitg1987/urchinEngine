@@ -207,7 +207,7 @@ namespace urchin {
             localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
             localizedShape->shape = bodyShapeWidget->moveShape();
 
-            Vector3<float> eulerAngle(
+            Vector3 eulerAngle(
                     AngleConverter<float>::toRadian((float)eulerAxis0->value()),
                     AngleConverter<float>::toRadian((float)eulerAxis1->value()),
                     AngleConverter<float>::toRadian((float)eulerAxis2->value())

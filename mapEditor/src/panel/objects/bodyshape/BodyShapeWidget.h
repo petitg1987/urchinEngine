@@ -32,9 +32,6 @@ namespace urchin {
 
             void setupShapePropertiesFrom(const CollisionShape3D&);
 
-        signals:
-            void bodyShapeChange(std::unique_ptr<const CollisionShape3D>&);
-
         public slots:
             void updateBodyShape();
 
@@ -44,6 +41,9 @@ namespace urchin {
 
             virtual void doSetupShapePropertiesFrom(const CollisionShape3D&) = 0;
             virtual std::unique_ptr<const CollisionShape3D> createBodyShape() const = 0;
+
+        signals:
+            void bodyShapeChange(std::unique_ptr<const CollisionShape3D>&);
 
         private:
             const ObjectEntity* objectEntity;

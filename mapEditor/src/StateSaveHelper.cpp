@@ -19,7 +19,7 @@ namespace urchin {
         propertyFileHandler = std::make_unique<PropertyFileHandler>(propertiesFilePath);
     }
 
-    void StateSaveHelper::saveState(const std::string& stateId, const std::string& stateValue) {
+    void StateSaveHelper::saveState(const std::string& stateId, const std::string& stateValue) const {
         std::map<std::string, std::string, std::less<>> properties = propertyFileHandler->loadPropertyFile();
         properties[stateId] = stateValue;
 

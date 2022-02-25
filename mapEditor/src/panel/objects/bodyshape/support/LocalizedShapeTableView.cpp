@@ -91,7 +91,7 @@ namespace urchin {
         return false;
     }
 
-    void LocalizedShapeTableView::selectLocalizedShape(int rowId) {
+    void LocalizedShapeTableView::selectLocalizedShape(int rowId) const {
         QModelIndex indexSelection = localizedShapesTableModel->index(rowId, 0);
         if (indexSelection.row() != -1) {
             selectionModel()->setCurrentIndex(indexSelection, QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);

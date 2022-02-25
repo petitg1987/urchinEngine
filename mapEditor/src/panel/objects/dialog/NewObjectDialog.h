@@ -27,7 +27,7 @@ namespace urchin {
             int buildObjectEntity(int);
 
             void done(int) override;
-            bool isObjectEntityExist(std::string_view);
+            bool isObjectEntityExist(std::string_view) const;
 
             const ObjectController* objectController;
 

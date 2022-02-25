@@ -428,7 +428,7 @@ namespace urchin {
         if (!disableTerrainEvent) {
             const TerrainEntity& terrainEntity = *terrainTableView->getSelectedTerrainEntity();
 
-            Point3<float> position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+            Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
             terrainController->updateTerrainGeneralProperties(terrainEntity, position, (float)ambient->value());
         }
     }
@@ -461,7 +461,7 @@ namespace urchin {
             std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
             auto numGrassInTexValue = (unsigned int)numGrassInTex->value();
-            Vector3<float> windDirection((float)windDirectionX->value(), (float)windDirectionY->value(), (float)windDirectionZ->value());
+            Vector3 windDirection((float)windDirectionX->value(), (float)windDirectionY->value(), (float)windDirectionZ->value());
             terrainController->updateTerrainGrass(terrainEntity, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
                                                        (float)grassHeight->value(), (float)grassLength->value(), windDirection, (float)windStrength->value());
         }

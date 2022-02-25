@@ -31,7 +31,7 @@ namespace urchin {
 
             int addLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>&);
             bool removeSelectedLocalizedShape();
-            void selectLocalizedShape(int);
+            void selectLocalizedShape(int) const;
 
         private:
             QStandardItemModel* localizedShapesTableModel;

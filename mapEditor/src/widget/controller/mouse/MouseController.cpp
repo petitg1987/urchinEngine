@@ -8,9 +8,9 @@ namespace urchin {
 
     }
 
-    void MouseController::moveMouse(double x, double y) {
-        int mouseXDpiAdjusted = MathFunction::roundToInt(x / (double)widget->devicePixelRatio());
-        int mouseYDpiAdjusted = MathFunction::roundToInt(y / (double)widget->devicePixelRatio());
+    void MouseController::moveMouse(double x, double y) const {
+        int mouseXDpiAdjusted = MathFunction::roundToInt(x / widget->devicePixelRatio());
+        int mouseYDpiAdjusted = MathFunction::roundToInt(y / widget->devicePixelRatio());
         QCursor::setPos(widget->mapToGlobal(QPoint(mouseXDpiAdjusted, mouseYDpiAdjusted)));
     }
 
@@ -18,7 +18,7 @@ namespace urchin {
         QPoint mousePosition = widget->mapFromGlobal(QCursor::pos());
         //mouse coordinate computed in pixel
         return Point2<double>(
-                (double)mousePosition.x() * (double)widget->devicePixelRatio(),
-                (double)mousePosition.y() * (double)widget->devicePixelRatio());
+                (double)mousePosition.x() * widget->devicePixelRatio(),
+                (double)mousePosition.y() * widget->devicePixelRatio());
     }
 }

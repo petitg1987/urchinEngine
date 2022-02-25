@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     std::unique_ptr<const CollisionShape3D> BodyBoxShapeWidget::createBodyShape() const {
-        Vector3<float> halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
+        Vector3 halfSizes((float)halfSizeX->value(), (float)halfSizeY->value(), (float)halfSizeZ->value());
         return std::make_unique<const CollisionBoxShape>(halfSizes);
     }
 }

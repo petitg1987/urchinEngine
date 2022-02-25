@@ -8,10 +8,10 @@ namespace urchin {
 
     class StatusBarStateData {
         public:
-            StatusBarStateData(const std::vector<std::string>&, StatusBarState);
+            StatusBarStateData(std::vector<std::string>, StatusBarState);
 
-            const std::vector<std::string>& getLabels();
-            StatusBarState getPreviousState();
+            const std::vector<std::string>& getLabels() const;
+            StatusBarState getPreviousState() const;
 
         private:
             std::vector<std::string> labels;

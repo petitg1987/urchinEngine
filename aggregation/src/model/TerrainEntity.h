@@ -23,7 +23,7 @@ namespace urchin {
             RigidBody* getRigidBody() const;
             void setupInteractiveBody(const std::shared_ptr<RigidBody>&);
 
-            void refresh();
+            void refresh() const;
 
         private:
             void setup(Renderer3d&, PhysicsWorld&, AIEnvironment&);

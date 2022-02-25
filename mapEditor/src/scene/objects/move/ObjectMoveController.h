@@ -38,7 +38,8 @@ namespace urchin {
             void moveObject(const Point2<float>&, const Point2<float>&);
             void updateObjectPosition(const Point3<float>&);
 
-            unsigned int sceneWidth, sceneHeight;
+            unsigned int sceneWidth;
+            unsigned int sceneHeight;
 
             ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
             Scene& scene;
@@ -50,7 +51,8 @@ namespace urchin {
             int selectedAxis;
             Point3<float> savedPosition;
 
-            double oldMouseX, oldMouseY;
+            double oldMouseX;
+            double oldMouseY;
             Matrix4<float> oldCameraViewMatrix;
     };
 

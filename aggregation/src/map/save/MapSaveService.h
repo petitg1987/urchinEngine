@@ -15,20 +15,20 @@ namespace urchin {
 
     class MapSaveService {
         public:
-            void loadMap(const std::string&, LoadMapCallback&, Map&);
+            void loadMap(const std::string&, LoadMapCallback&, Map&) const;
             void saveMap(const std::string&, const Map&) const;
 
             static std::string getRelativeWorkingDirectory(std::string);
 
         private:
-            void loadMap(Map&, const UdaChunk*, const UdaParser&, LoadMapCallback&);
-            void loadObjectEntities(Map&, const UdaChunk*, const UdaParser&);
-            void loadLightEntities(Map& p, const UdaChunk*, const UdaParser&);
-            void loadTerrainEntities(Map&, const UdaChunk*, const UdaParser&);
-            void loadWaterEntities(Map&, const UdaChunk*, const UdaParser&);
-            void loadSkyEntity(Map&, const UdaChunk*, const UdaParser&);
-            void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&);
-            void loadAIConfig(const Map&, const UdaChunk*, const UdaParser&);
+            void loadMap(Map&, const UdaChunk*, const UdaParser&, LoadMapCallback&) const;
+            void loadObjectEntities(Map&, const UdaChunk*, const UdaParser&) const;
+            void loadLightEntities(Map& p, const UdaChunk*, const UdaParser&) const;
+            void loadTerrainEntities(Map&, const UdaChunk*, const UdaParser&) const;
+            void loadWaterEntities(Map&, const UdaChunk*, const UdaParser&) const;
+            void loadSkyEntity(Map&, const UdaChunk*, const UdaParser&) const;
+            void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&) const;
+            void loadAIConfig(const Map&, const UdaChunk*, const UdaParser&) const;
 
             void writeMap(const Map&, UdaChunk&, UdaWriter&) const;
             void writeObjectEntities(const Map&, UdaChunk&, UdaWriter&) const;

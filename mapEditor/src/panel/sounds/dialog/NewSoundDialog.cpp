@@ -218,9 +218,9 @@ namespace urchin {
         }
     }
 
-    bool NewSoundDialog::isSoundEntityExist(std::string_view name) {
+    bool NewSoundDialog::isSoundEntityExist(std::string_view name) const {
         std::list<const SoundEntity*> soundEntities = soundController->getSoundEntities();
-        return std::ranges::any_of(soundEntities, [name](const auto& soundEntity){return soundEntity->getName() == name;});
+        return std::ranges::any_of(soundEntities, [name](const auto& soundEntity){ return soundEntity->getName() == name; });
     }
 
 }

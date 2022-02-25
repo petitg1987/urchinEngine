@@ -107,7 +107,7 @@ namespace urchin {
         }
     }
 
-    void TerrainEntity::refresh() {
+    void TerrainEntity::refresh() const {
         if (rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();
             terrain->setPosition(physicsTransform.getPosition());

@@ -1,17 +1,19 @@
 #include <widget/controller/statusbar/StatusBarStateData.h>
 
+#include <utility>
+
 namespace urchin {
-    StatusBarStateData::StatusBarStateData(const std::vector<std::string>& labels, StatusBarState previousState) :
-            labels(labels),
+    StatusBarStateData::StatusBarStateData(std::vector<std::string> labels, StatusBarState previousState) :
+            labels(std::move(labels)),
             previousState(previousState) {
 
     }
 
-    const std::vector<std::string>& StatusBarStateData::getLabels() {
+    const std::vector<std::string>& StatusBarStateData::getLabels() const {
         return labels;
     }
 
-    StatusBarState StatusBarStateData::getPreviousState() {
+    StatusBarState StatusBarStateData::getPreviousState() const {
         return previousState;
     }
 }

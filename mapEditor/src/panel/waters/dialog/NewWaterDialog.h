@@ -25,7 +25,7 @@ namespace urchin {
             int buildWaterEntity(int);
 
             void done(int) override;
-            bool isWaterEntityExist(std::string_view);
+            bool isWaterEntityExist(std::string_view) const;
 
             const WaterController* waterController;
 

@@ -110,7 +110,7 @@ namespace urchin {
         }
     }
 
-    void ObjectEntity::refresh() {
+    void ObjectEntity::refresh() const {
         if (rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();
             model->setTransform(Transform(physicsTransform.getPosition(), physicsTransform.getOrientation(), model->getTransform().getScale()));

@@ -34,10 +34,10 @@ namespace urchin {
             void closeMap();
 
             void setViewProperties(SceneDisplayer::ViewProperties, bool);
-            void setHighlightObjectEntity(const ObjectEntity*);
-            void setHighlightCompoundShapeComponent(const LocalizedCollisionShape*);
-            void setHighlightLightEntity(const LightEntity*);
-            void setHighlightSoundEntity(const SoundEntity*);
+            void setHighlightObjectEntity(const ObjectEntity*) const;
+            void setHighlightCompoundShapeComponent(const LocalizedCollisionShape*) const;
+            void setHighlightLightEntity(const LightEntity*) const;
+            void setHighlightSoundEntity(const SoundEntity*) const;
 
             void render();
 
@@ -49,7 +49,7 @@ namespace urchin {
 
             bool onMouseClickBodyPickup();
             const std::string& getLastPickedBodyId() const;
-            void addObserverObjectMoveController(Observer*, int);
+            void addObserverObjectMoveController(Observer*, int) const;
 
         private:
             void clearVkInstance();
@@ -64,13 +64,14 @@ namespace urchin {
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
             std::array<bool, SceneDisplayer::LAST_VIEW_PROPERTIES> viewProperties;
 
-            double mouseX, mouseY;
+            double mouseX;
+            double mouseY;
             std::string lastPickedBodyId;
 
         private slots:
-            void onCtrlXPressed();
-            void onCtrlYPressed();
-            void onCtrlZPressed();
+            void onCtrlXPressed() const;
+            void onCtrlYPressed() const;
+            void onCtrlZPressed() const;
     };
 
 }

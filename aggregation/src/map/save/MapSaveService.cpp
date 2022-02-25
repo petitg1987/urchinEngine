@@ -14,7 +14,7 @@ namespace urchin {
     /**
      * @param map [out] Map to load the entities (must be empty)
      */
-    void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, Map& map) {
+    void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, Map& map) const {
         Logger::instance().logInfo("Load map: " + filename);
         UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
 
@@ -26,7 +26,7 @@ namespace urchin {
         loadMap(map, sceneChunk, udaParser, loadMapCallback);
     }
 
-    void MapSaveService::loadMap(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) {
+    void MapSaveService::loadMap(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) const {
         if (!map.getRenderer3d().isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
@@ -60,7 +60,7 @@ namespace urchin {
         loadMapCallback.notify(LoadMapCallback::AI, LoadMapCallback::LOADED);
     }
 
-    void MapSaveService::loadObjectEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadObjectEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto objectsListChunk = udaParser.getFirstChunk(true, OBJECTS_TAG, UdaAttribute(), sceneChunk);
         auto objectsChunk = udaParser.getChunks(OBJECT_TAG, UdaAttribute(), objectsListChunk);
 
@@ -70,7 +70,7 @@ namespace urchin {
         map.getRenderer3d().preWarmModels();
     }
 
-    void MapSaveService::loadLightEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadLightEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto lightsListChunk = udaParser.getFirstChunk(true, LIGHTS_TAG, UdaAttribute(), sceneChunk);
         auto lightsChunk = udaParser.getChunks(LIGHT_TAG, UdaAttribute(), lightsListChunk);
 
@@ -79,7 +79,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::loadTerrainEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadTerrainEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto terrainsListChunk = udaParser.getFirstChunk(true, TERRAINS_TAG, UdaAttribute(), sceneChunk);
         auto terrainsChunk = udaParser.getChunks(TERRAIN_TAG, UdaAttribute(), terrainsListChunk);
 
@@ -88,7 +88,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::loadWaterEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadWaterEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto watersListChunk = udaParser.getFirstChunk(true, WATERS_TAG, UdaAttribute(), sceneChunk);
         auto watersChunk = udaParser.getChunks(WATER_TAG, UdaAttribute(), watersListChunk);
 
@@ -97,13 +97,13 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::loadSkyEntity(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadSkyEntity(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto skyChunk = udaParser.getFirstChunk(true, SKY_TAG, UdaAttribute(), sceneChunk);
 
         map.setSkyEntity(SkyEntityReaderWriter::load(skyChunk, udaParser));
     }
 
-    void MapSaveService::loadSoundEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadSoundEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto soundElementsListChunk = udaParser.getFirstChunk(true, SOUND_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
         auto soundElementsChunk = udaParser.getChunks(SOUND_ELEMENT_TAG, UdaAttribute(), soundElementsListChunk);
 
@@ -112,7 +112,7 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::loadAIConfig(const Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) {
+    void MapSaveService::loadAIConfig(const Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto aiElementsListChunk = udaParser.getFirstChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
         map.getAIEnvironment().getNavMeshGenerator().setNavMeshAgent(NavMeshAgentReaderWriter::loadNavMeshAgent(aiElementsListChunk, udaParser));
     }
