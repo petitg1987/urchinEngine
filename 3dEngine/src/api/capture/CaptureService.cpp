@@ -73,11 +73,11 @@ namespace urchin {
 
             for (unsigned int y = 0; y < dstHeight; ++y) {
                 std::size_t srcIndexY = (unsigned int)(scaleY * ((float)y + 1.0f)) - 1;
-                srcIndexY = std::clamp(srcIndexY, 0uL, srcHeight - 1uL);
+                srcIndexY = std::clamp(srcIndexY, (std::size_t)0, srcHeight - (std::size_t)1);
 
                 for (unsigned int x = 0; x < dstWidth; ++x) {
                     std::size_t srcIndexX = ((unsigned int)(scaleX * ((float)x + 1.0f)) - 1) * 4;
-                    srcIndexX = std::clamp(srcIndexX, 0uL, srcWidth * 4uL - 1uL);
+                    srcIndexX = std::clamp(srcIndexX, (std::size_t)0, srcWidth * (std::size_t)4 - (std::size_t)1);
 
                     std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
                     std::size_t dstIndex = (y * dstWidth * 4) + x * 4;
