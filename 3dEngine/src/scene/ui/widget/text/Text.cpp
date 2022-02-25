@@ -15,7 +15,7 @@ namespace urchin {
             skinName(std::move(skinName)),
             inputText(std::move(inputText)),
             inputTextParameters(std::move(inputTextParameters)),
-            parameterRegex("\\{[a-zA-Z-]+}"),
+            parameterRegex(std::regex("\\{[a-zA-Z-]+}", std::regex_constants::optimize)),
             maxWidth(100.0f),
             maxWidthType(LengthType::SCREEN_PERCENT),
             font(nullptr) {

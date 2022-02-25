@@ -127,12 +127,10 @@ namespace urchin {
     }
 
     std::unique_ptr<UdaChunk> UdaParser::buildChunk(const std::string& rawContentLine, UdaChunk* parent) const {
-        std::string wrongFormatError = "Content line (" + rawContentLine +") has wrong format in file: " + filenamePath;
-
-        static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$");
+        static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$", std::regex_constants::optimize);
         std::smatch matches;
         if (!std::regex_search(rawContentLine, matches, parseLineRegex) || matches.size() != 4) {
-            throw std::runtime_error(wrongFormatError);
+            throw std::runtime_error("Content line (" + rawContentLine +") has wrong format in file: " + filenamePath);
         }
 
         std::string name = matches[1].str();
@@ -146,7 +144,7 @@ namespace urchin {
             for (const auto& attribute: attributesVector) {
                 std::vector<std::string> attributeComponents = StringUtil::split(attribute, UdaChunk::ATTRIBUTES_ASSIGN);
                 if (attributeComponents.size() != 2) {
-                    throw std::runtime_error(wrongFormatError);
+                    throw std::runtime_error("Content line (" + rawContentLine +") has wrong format in file: " + filenamePath);
                 }
                 attributes.try_emplace(attributeComponents[0], attributeComponents[1]);
             }
