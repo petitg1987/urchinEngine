@@ -58,7 +58,7 @@ namespace urchin {
                 for (const auto& link : triangle->getLinks()) {
                     Point3<float> lineP1 = triangle->getCenterPoint();
                     Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
-                    LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
+                    LineSegment2D line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
                     SVGPolygon::SVGColor linkColor = (link->getLinkType() == NavLinkType::JUMP) ? SVGPolygon::ORANGE : SVGPolygon::BLUE;
                     auto svgLine = std::make_unique<SVGLine>(line, linkColor, 0.5f);

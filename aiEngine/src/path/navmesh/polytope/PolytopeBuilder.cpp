@@ -60,7 +60,7 @@ namespace urchin {
         auto heightfieldPointHelper = std::make_unique<const HeightfieldPointHelper<float>>(aiTerrain.getLocalVertices(), aiTerrain.getXLength());
         auto terrainNavTopography = std::make_shared<NavTerrainTopography>(std::move(heightfieldPointHelper), aiTerrain.getTransform().getPosition());
 
-        Vector3<float> approximateNormal(0.0f, 1.0f, 0.0f); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
+        Vector3 approximateNormal(0.0f, 1.0f, 0.0f); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
         Vector3<float> expandShiftVector = approximateNormal * navMeshAgent.computeExpandDistance(approximateNormal);
         std::vector<Point3<float>> expandedLocalVertices;
         expandedLocalVertices.reserve(aiTerrain.getLocalVertices().size());
@@ -98,10 +98,10 @@ namespace urchin {
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytope(std::string name, const Capsule<float>* capsule, const NavMeshAgent& navMeshAgent) const {
-        Vector3<float> boxHalfSizes(capsule->getRadius(), capsule->getRadius(), capsule->getRadius());
+        Vector3 boxHalfSizes(capsule->getRadius(), capsule->getRadius(), capsule->getRadius());
         boxHalfSizes[capsule->getCapsuleOrientation()] += capsule->getCylinderHeight() / 2.0f;
 
-        OBBox<float> capsuleBox(boxHalfSizes, capsule->getCenterOfMass(), capsule->getOrientation());
+        OBBox capsuleBox(boxHalfSizes, capsule->getCenterOfMass(), capsule->getOrientation());
         std::unique_ptr<Polytope> polytope = createExpandedPolytope(std::move(name), &capsuleBox, navMeshAgent);
         polytope->setWalkableCandidate(false);
 
@@ -109,10 +109,10 @@ namespace urchin {
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytope(std::string name, const Cone<float>* cone, const NavMeshAgent& navMeshAgent) const {
-        Vector3<float> boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
+        Vector3 boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
         boxHalfSizes[cone->getConeOrientation() / 2] = cone->getHeight() / 2.0f;
 
-        OBBox<float> coneBox(boxHalfSizes, cone->getCenter(), cone->getOrientation());
+        OBBox coneBox(boxHalfSizes, cone->getCenter(), cone->getOrientation());
         std::unique_ptr<Polytope> polytope = createExpandedPolytope(std::move(name), &coneBox, navMeshAgent);
         polytope->setWalkableCandidate(false);
 
@@ -150,10 +150,10 @@ namespace urchin {
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytope(std::string name, const Cylinder<float>* cylinder, const NavMeshAgent& navMeshAgent) const {
-        Vector3<float> boxHalfSizes(cylinder->getRadius(), cylinder->getRadius(), cylinder->getRadius());
+        Vector3 boxHalfSizes(cylinder->getRadius(), cylinder->getRadius(), cylinder->getRadius());
         boxHalfSizes[cylinder->getCylinderOrientation()] = cylinder->getHeight() / 2.0f;
 
-        OBBox<float> cylinderBox(boxHalfSizes, cylinder->getCenterOfMass(), cylinder->getOrientation());
+        OBBox cylinderBox(boxHalfSizes, cylinder->getCenterOfMass(), cylinder->getOrientation());
         std::vector<Point3<float>> sortedOriginalPoints = cylinderBox.getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
 
@@ -167,7 +167,7 @@ namespace urchin {
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytope(std::string name, const Sphere<float>* sphere, const NavMeshAgent& navMeshAgent) const {
-        OBBox<float> sphereBox(*sphere);
+        OBBox sphereBox(*sphere);
         std::unique_ptr<Polytope> polytope = createExpandedPolytope(std::move(name), &sphereBox, navMeshAgent);
         polytope->setWalkableCandidate(false);
 
@@ -199,7 +199,7 @@ namespace urchin {
     }
 
     Plane<float> PolytopeBuilder::createExpandedPlane(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3, const NavMeshAgent& navMeshAgent) const {
-        Plane<float> plane(p1, p2, p3);
+        Plane plane(p1, p2, p3);
 
         float expandDistance = navMeshAgent.computeExpandDistance(plane.getNormal());
         plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
@@ -220,7 +220,7 @@ namespace urchin {
             Vector3<float> n2CrossN3 = plane1.getNormal().crossProduct(plane2.getNormal());
             Vector3<float> n3CrossN1 = plane2.getNormal().crossProduct(plane0.getNormal());
 
-            Point3<float> newPoint(n2CrossN3 * plane0.getDistanceToOrigin());
+            Point3 newPoint(n2CrossN3 * plane0.getDistanceToOrigin());
             newPoint += Point3<float>(n3CrossN1 * plane1.getDistanceToOrigin());
             newPoint += Point3<float>(n1CrossN2 * plane2.getDistanceToOrigin());
             newPoint *= -1.0f / plane0.getNormal().dotProduct(n2CrossN3);

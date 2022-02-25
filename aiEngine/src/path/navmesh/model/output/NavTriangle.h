@@ -14,6 +14,8 @@ namespace urchin {
         public:
             NavTriangle(std::size_t, std::size_t, std::size_t);
             NavTriangle(const NavTriangle&);
+            NavTriangle& operator=(const NavTriangle&) = delete;
+            ~NavTriangle() = default;
 
             void attachNavPolygon(const std::shared_ptr<NavPolygon>&);
 

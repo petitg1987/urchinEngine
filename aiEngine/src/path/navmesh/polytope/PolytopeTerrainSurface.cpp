@@ -51,8 +51,8 @@ namespace urchin {
         Point3<float> farRightVertex = position + localVertices[xLength - 1];
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
 
-        Point2<float> minPoint(nearLeftVertex.X, -nearLeftVertex.Z);
-        Point2<float> maxPoint(farRightVertex.X, -farRightVertex.Z);
+        Point2 minPoint(nearLeftVertex.X, -nearLeftVertex.Z);
+        Point2 maxPoint(farRightVertex.X, -farRightVertex.Z);
 
         return Rectangle2D<float>(minPoint, maxPoint);
     }
@@ -87,7 +87,7 @@ namespace urchin {
     }
 
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
+        Point2 localCoordinate(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }
 

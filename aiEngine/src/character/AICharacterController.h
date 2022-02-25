@@ -29,7 +29,7 @@ namespace urchin {
             Point2<float> retrieveCharacterPosition() const;
 
             void computeSteeringVelocity(const Point2<float>&);
-            void applyVelocity();
+            void applyVelocity() const;
 
             static constexpr float CHANGE_PATH_POINT_DISTANCE = 0.4f;
 

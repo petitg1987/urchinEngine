@@ -40,7 +40,7 @@ namespace urchin {
             virtual const std::shared_ptr<const NavTopography>& getNavTopography() const = 0;
 
         private:
-            std::size_t computeSurfacePosition();
+            std::size_t computeSurfacePosition() const;
 
             PolytopeType polytopeType;
             const Polytope* polytope;

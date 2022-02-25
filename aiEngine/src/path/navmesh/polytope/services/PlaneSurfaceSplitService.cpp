@@ -28,11 +28,11 @@ namespace urchin {
 
         for (unsigned int aSample = 0; aSample < aSamples; ++aSample) {
             float aPointStartRange = (float)aSample / (float)aSamples;
-            LineSegment3D<float> aLine((1.0f - aPointStartRange) * planeSurfacePoints[0] + aPointStartRange * planeSurfacePoints[1],
-                                            (1.0f - aPointStartRange) * planeSurfacePoints[3] + aPointStartRange * planeSurfacePoints[2]);
+            LineSegment3D aLine((1.0f - aPointStartRange) * planeSurfacePoints[0] + aPointStartRange * planeSurfacePoints[1],
+                                (1.0f - aPointStartRange) * planeSurfacePoints[3] + aPointStartRange * planeSurfacePoints[2]);
             float aPointEndRange = (float)(aSample + 1) / (float)aSamples;
-            LineSegment3D<float> aNextLine((1.0f - aPointEndRange) * planeSurfacePoints[0] + aPointEndRange * planeSurfacePoints[1],
-                                            (1.0f - aPointEndRange) * planeSurfacePoints[3] + aPointEndRange * planeSurfacePoints[2]);
+            LineSegment3D aNextLine((1.0f - aPointEndRange) * planeSurfacePoints[0] + aPointEndRange * planeSurfacePoints[1],
+                                    (1.0f - aPointEndRange) * planeSurfacePoints[3] + aPointEndRange * planeSurfacePoints[2]);
 
             for (unsigned int bSample = 0; bSample < bSamples; ++bSample) {
                 float bPointStartRange = (float)bSample / (float)bSamples;

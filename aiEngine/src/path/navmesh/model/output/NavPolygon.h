@@ -13,6 +13,8 @@ namespace urchin {
         public:
             NavPolygon(std::string, std::vector<Point3<float>>&&, std::shared_ptr<const NavTopography>);
             NavPolygon(const NavPolygon&);
+            NavPolygon& operator=(const NavPolygon&) = delete;
+            ~NavPolygon() = default;
 
             const std::string& getName() const;
 
@@ -25,7 +27,7 @@ namespace urchin {
             const NavTopography* getNavTopography() const;
             const std::vector<NavPolygonEdge>& retrieveExternalEdges() const;
 
-            void removeLinksTo(const NavPolygon&);
+            void removeLinksTo(const NavPolygon&) const;
 
         private:
             std::string name;

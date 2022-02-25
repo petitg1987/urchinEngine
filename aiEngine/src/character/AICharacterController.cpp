@@ -87,8 +87,8 @@ namespace urchin {
         steeringVelocity = steeringVelocity.truncate(character->retrieveMaxVelocityInMs());
     }
 
-    void AICharacterController::applyVelocity() {
-        Vector3<float> steeringVelocity3D(steeringVelocity.X, 0.0f, steeringVelocity.Y);
+    void AICharacterController::applyVelocity() const {
+        Vector3 steeringVelocity3D(steeringVelocity.X, 0.0f, steeringVelocity.Y);
         Vector3<float> updatedVelocity = character->getVelocity() + steeringVelocity3D;
         updatedVelocity = updatedVelocity.truncate(character->retrieveMaxVelocityInMs());
 

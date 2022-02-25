@@ -11,7 +11,8 @@ namespace urchin {
         std::string name;
         Point3<float> position;
         std::vector<Point3<float>> localVertices;
-        unsigned int xLength, zLength;
+        unsigned int xLength;
+        unsigned int zLength;
     };
 
     class TerrainSplitService {

@@ -110,8 +110,7 @@ namespace urchin {
         newOrMovingNavObjectsToRefresh.insert(navObject);
 
         if (navObject->getExpandedPolytope().isWalkableCandidate()) {
-            for (std::size_t surfaceIndex = 0; surfaceIndex < navObject->getExpandedPolytope().getSurfaces().size(); ++surfaceIndex) {
-                const auto& polytopeSurface = navObject->getExpandedPolytope().getSurfaces()[surfaceIndex];
+            for (const auto& polytopeSurface : navObject->getExpandedPolytope().getSurfaces()) {
                 if (polytopeSurface->isWalkable()) {
                     navObject->addWalkableSurface(polytopeSurface);
                 }
@@ -254,7 +253,7 @@ namespace urchin {
                     float distance1 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[previousI]);
                     float distance2 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[i]);
                     if (std::signbit(distance1) != std::signbit(distance2)) {
-                        Line3D<float> polytopeEdgeLine(polytopePlaneSurface->getCcwPoints()[previousI], polytopePlaneSurface->getCcwPoints()[i]);
+                        Line3D polytopeEdgeLine(polytopePlaneSurface->getCcwPoints()[previousI], polytopePlaneSurface->getCcwPoints()[i]);
                         bool hasIntersection = false;
                         Point3<float> intersectionPoint = walkablePlane.intersectPoint(polytopeEdgeLine, hasIntersection);
                         footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
@@ -346,7 +345,7 @@ namespace urchin {
         return elevatedPoints;
     }
 
-    void NavMeshGenerator::deleteNavLinks() {
+    void NavMeshGenerator::deleteNavLinks() const {
         ScopeProfiler sp(Profiler::ai(), "delNavLinks");
 
         for (const auto& [srcNavObject, targetNavObject] : navObjectsLinksToRefresh) {
@@ -358,7 +357,7 @@ namespace urchin {
         }
     }
 
-    void NavMeshGenerator::createNavLinks() {
+    void NavMeshGenerator::createNavLinks() const {
         ScopeProfiler sp(Profiler::ai(), "creNavLinks");
 
         for (const auto& sourceNavObject : navObjectsToRefresh) {

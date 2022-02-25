@@ -61,7 +61,7 @@ namespace urchin {
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
 
-    void TriangulationAlgorithm::linkTriangles(const std::map<uint_fast64_t, std::vector<std::shared_ptr<NavTriangle>>>& edgeToTriangles) {
+    void TriangulationAlgorithm::linkTriangles(const std::map<uint_fast64_t, std::vector<std::shared_ptr<NavTriangle>>>& edgeToTriangles) const {
         for (const auto& navTriangle : navTriangles) {
             for (unsigned int i = 0; i < 3; ++i) {
                 std::size_t edgeIndex1 = i;

@@ -21,7 +21,7 @@ namespace urchin {
         this->surfacePosition = computeSurfacePosition();
     }
 
-    std::size_t PolytopeSurface::computeSurfacePosition() {
+    std::size_t PolytopeSurface::computeSurfacePosition() const {
         for (std::size_t i = 0; i < polytope->getSurfaces().size(); ++i) {
             if (polytope->getSurfaces()[i].get() == this) {
                 return i;

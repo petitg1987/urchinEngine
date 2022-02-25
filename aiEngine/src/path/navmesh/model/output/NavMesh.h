@@ -14,6 +14,8 @@ namespace urchin {
         public:
             NavMesh();
             NavMesh(const NavMesh&);
+            NavMesh& operator=(const NavMesh&) = delete;
+            ~NavMesh() = default;
 
             unsigned int getUpdateId() const;
 
@@ -21,6 +23,7 @@ namespace urchin {
             const std::vector<std::shared_ptr<NavPolygon>>& getPolygons() const;
 
             void svgMeshExport(std::string) const;
+
         private:
             unsigned int changeUpdateId();
 

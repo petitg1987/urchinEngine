@@ -64,7 +64,7 @@ namespace urchin {
         return externalEdges;
     }
 
-    void NavPolygon::removeLinksTo(const NavPolygon& navPolygon) {
+    void NavPolygon::removeLinksTo(const NavPolygon& navPolygon) const {
         for (const auto& triangle : triangles) {
             triangle->removeLinksTo(navPolygon);
         }

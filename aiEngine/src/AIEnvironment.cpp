@@ -93,7 +93,7 @@ namespace urchin {
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void AIEnvironment::checkNoExceptionRaised() {
+    void AIEnvironment::checkNoExceptionRaised() const {
         if (aiThreadExceptionPtr) {
             std::rethrow_exception(aiThreadExceptionPtr);
         }

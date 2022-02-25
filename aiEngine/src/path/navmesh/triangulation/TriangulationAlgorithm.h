@@ -29,7 +29,7 @@ namespace urchin {
 
         private:
             uint_fast64_t computeEdgeId(std::size_t, std::size_t) const;
-            void linkTriangles(const std::map<uint_fast64_t, std::vector<std::shared_ptr<NavTriangle>>>&);
+            void linkTriangles(const std::map<uint_fast64_t, std::vector<std::shared_ptr<NavTriangle>>>&) const;
 
             std::vector<std::vector<Point2<float>>> polygonPoints;
             std::vector<std::shared_ptr<NavTriangle>> navTriangles;

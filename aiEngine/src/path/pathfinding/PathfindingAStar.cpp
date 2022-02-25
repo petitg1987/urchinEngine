@@ -83,11 +83,9 @@ namespace urchin {
         float bestVerticalDistance = std::numeric_limits<float>::max();
         std::shared_ptr<NavTriangle> result = nullptr;
 
+        Point2 flattenPoint(point.X, point.Z);
         for (const auto& polygon : navMesh->getPolygons()) {
-            for (std::size_t triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex) {
-                const auto& triangle = polygon->getTriangles()[triIndex];
-                Point2<float> flattenPoint(point.X, point.Z);
-
+            for (const auto& triangle : polygon->getTriangles()) {
                 if (isPointInsideTriangle(flattenPoint, *polygon, *triangle)) {
                     float verticalDistance = point.Y - triangle->getCenterPoint().Y;
                     if (verticalDistance >= 0.0 && verticalDistance < bestVerticalDistance) {

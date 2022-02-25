@@ -17,7 +17,7 @@ namespace urchin {
 
             TerrainObstacleService(std::string name, const Point3<float>&, std::vector<Point3<float>>, unsigned int, unsigned int);
 
-            std::vector<CSGPolygon<float>> computeSelfObstacles(float);
+            std::vector<CSGPolygon<float>> computeSelfObstacles(float) const;
 
         private:
             bool isWalkableSquare(unsigned int, float) const;

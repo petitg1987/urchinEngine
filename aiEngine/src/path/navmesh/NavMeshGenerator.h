@@ -45,8 +45,8 @@ namespace urchin {
             std::shared_ptr<NavPolygon> createNavigationPolygon(const CSGPolygon<float>&, const PolytopeSurface&, bool) const;
             std::vector<Point3<float>> elevateTriangulatedPoints(const std::vector<std::vector<Point2<float>>>&, const PolytopeSurface&) const;
 
-            void deleteNavLinks();
-            void createNavLinks();
+            void deleteNavLinks() const;
+            void createNavLinks() const;
             void createNavLinks(const NavPolygonEdge&, const NavObject&) const;
 
             void updateNavMesh();
@@ -60,7 +60,8 @@ namespace urchin {
             std::atomic_bool needFullRefresh;
 
             AABBTree<std::shared_ptr<NavObject>> navigationObjects;
-            std::set<std::shared_ptr<NavObject>> newOrMovingNavObjectsToRefresh, affectedNavObjectsToRefresh;
+            std::set<std::shared_ptr<NavObject>> newOrMovingNavObjectsToRefresh;
+            std::set<std::shared_ptr<NavObject>> affectedNavObjectsToRefresh;
             std::set<std::shared_ptr<NavObject>> navObjectsToRefresh;
             std::set<std::pair<std::shared_ptr<NavObject>, std::shared_ptr<NavObject>>> navObjectsLinksToRefresh;
             std::vector<CSGPolygon<float>> walkablePolygons;
