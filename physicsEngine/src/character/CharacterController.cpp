@@ -70,14 +70,14 @@ namespace urchin {
      * Define the character orientation. This orientation has only effect when the character is not moving.
      * When the character is moving, the orientation is determined in function of the direction.
      */
-    void CharacterController::setOrientation(const Vector3<float>& viewVector) {
+    void CharacterController::setOrientation(const Vector3<float>& viewVector) const {
         //Following lines are equivalent to Camera#updateComponents() but with simplification to avoid the rotation on X/Z axis:
         // - position.Y / viewVector.Y set to 0.0
         // - up = 0.0, 1.0, 0.0
         Vector3<float> yViewVector = Vector3<float>(viewVector.X, 0.0f, viewVector.Z).normalize();
-        Matrix3<float> mView(-yViewVector.Z,    0.0f,       yViewVector.X,
-                             0.0f,              1.0f,       0.0f,
-                             -yViewVector[0],   0.0f,       -yViewVector[2]);
+        Matrix3 mView(-yViewVector.Z,    0.0f,       yViewVector.X,
+                      0.0f,              1.0f,       0.0f,
+                      -yViewVector[0],   0.0f,       -yViewVector[2]);
         Quaternion<float> yRotation = Quaternion<float>::fromRotationMatrix(mView).conjugate();
 
         Point3<float> position = ghostBody->getTransform().getPosition();
@@ -371,7 +371,7 @@ namespace urchin {
      * Compute slope based on previous body position.
      * Slope is expressed in percentage. A positive value means that character climb.
      */
-    float CharacterController::computeSlope() {
+    float CharacterController::computeSlope() const {
         Point3<float> bodyPosition = ghostBody->getTransform().getPosition();
         Point2<float> p1 = bodyPosition.toPoint2XZ();
         Point2<float> p2 = previousBodyPosition.toPoint2XZ();

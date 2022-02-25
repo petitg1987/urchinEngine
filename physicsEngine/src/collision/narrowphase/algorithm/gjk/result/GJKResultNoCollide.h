@@ -25,7 +25,8 @@ namespace urchin {
             void logInputData(std::string_view, const Simplex<T>&);
 
             T separatingDistance;
-            Point3<T> closestPointA, closestPointB;
+            Point3<T> closestPointA;
+            Point3<T> closestPointB;
 
             Simplex<T> simplex;
     };

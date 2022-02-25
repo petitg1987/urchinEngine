@@ -16,6 +16,7 @@ namespace urchin {
             explicit CollisionConvexHullShape(std::unique_ptr<ConvexHullShape3D<float>>);
             CollisionConvexHullShape(CollisionConvexHullShape&&) noexcept;
             CollisionConvexHullShape(const CollisionConvexHullShape&) = delete;
+            CollisionConvexHullShape operator=(const CollisionConvexHullShape&) = delete;
             ~CollisionConvexHullShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;

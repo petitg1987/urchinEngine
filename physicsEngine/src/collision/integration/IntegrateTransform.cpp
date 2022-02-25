@@ -33,7 +33,7 @@ namespace urchin {
         }
     }
 
-    void IntegrateTransform::handleContinuousCollision(RigidBody& body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) {
+    void IntegrateTransform::handleContinuousCollision(RigidBody& body, const PhysicsTransform& from, const PhysicsTransform& to, float dt) const {
         PhysicsTransform updatedTargetTransform = to;
 
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);

@@ -39,7 +39,8 @@ namespace urchin {
 
             float jumpSpeed;
 
-            float maxSlopeInRadian, maxSlopeInPercentage;
+            float maxSlopeInRadian;
+            float maxSlopeInPercentage;
             float maxSlopeSpeedVariation;
 
             float timeKeepMoveInAir; //in second

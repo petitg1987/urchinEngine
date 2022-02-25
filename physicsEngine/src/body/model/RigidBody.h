@@ -13,6 +13,7 @@ namespace urchin {
         public:
             RigidBody(std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             RigidBody(const RigidBody&);
+            RigidBody& operator=(const RigidBody&) = delete;
             ~RigidBody() override = default;
 
             static RigidBody* upCast(AbstractBody*);

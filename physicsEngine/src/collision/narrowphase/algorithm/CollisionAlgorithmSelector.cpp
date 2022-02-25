@@ -15,7 +15,7 @@ namespace urchin {
 
     }
 
-    void AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm) {
+    void AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm) const {
         algorithmPool->deallocate(collisionAlgorithm);
     }
 

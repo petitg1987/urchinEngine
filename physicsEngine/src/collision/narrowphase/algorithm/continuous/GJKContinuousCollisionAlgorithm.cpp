@@ -65,7 +65,8 @@ namespace urchin {
             if (closestPointSquareDistance < TERMINATION_TOLERANCE) {
                 if (simplex.getSize() == 4 && !normalFromObject2Defined) {
                     if (timeToHit == (T)0.0 && simplex.getClosestPointToOrigin() == Point3<T>((T)0.0, (T)0.0, (T)0.0)) {
-                        Point3<T> hitPointOnObject1, hitPointOnObject2;
+                        Point3<T> hitPointOnObject1;
+                        Point3<T> hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
                         return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
@@ -77,7 +78,8 @@ namespace urchin {
                 } else if (normalFromObject2Defined) {
                     normalFromObject2 = normalFromObject2.normalize();
 
-                    Point3<T> hitPointOnObject1, hitPointOnObject2;
+                    Point3<T> hitPointOnObject1;
+                    Point3<T> hitPointOnObject2;
                     simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
                     return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);

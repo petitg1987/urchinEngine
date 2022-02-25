@@ -17,7 +17,7 @@ namespace urchin {
             void process(float);
 
         private:
-            void handleContinuousCollision(RigidBody&, const PhysicsTransform&, const PhysicsTransform&, float);
+            void handleContinuousCollision(RigidBody&, const PhysicsTransform&, const PhysicsTransform&, float) const;
 
             static constexpr float MAX_LINEAR_VELOCITY_FACTOR = 0.95f;
 

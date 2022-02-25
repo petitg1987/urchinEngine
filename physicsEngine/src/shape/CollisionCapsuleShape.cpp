@@ -37,8 +37,15 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCapsuleShape::scale(const Vector3<float>& scale) const {
-        std::size_t heightAxis = (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) ? 0 :
-                                 (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) ? 1 : 2;
+        std::size_t heightAxis = 0;
+        if (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) {
+            heightAxis = 0;
+        } else if (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y) {
+            heightAxis = 1;
+        } else if (capsuleShape.getCapsuleOrientation() == CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z) {
+            heightAxis = 2;
+        }
+
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Capsule cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
@@ -51,10 +58,10 @@ namespace urchin {
     }
 
     AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
+        Vector3 boxHalfSizes(getRadius(), getRadius(), getRadius());
         boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3<float> extend(
+        Point3 extend(
                 boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
                 boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
                 boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
@@ -76,7 +83,7 @@ namespace urchin {
     }
 
     Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const { //rough local inertia computed based on box including capsule.
-        Vector3<float> boxSizes(getRadius() * 2.0f, getRadius() * 2.0f, getRadius() * 2.0f);
+        Vector3 boxSizes(getRadius() * 2.0f, getRadius() * 2.0f, getRadius() * 2.0f);
         boxSizes[getCapsuleOrientation()] += getCylinderHeight();
 
         float widthSquare = boxSizes.X * boxSizes.X;

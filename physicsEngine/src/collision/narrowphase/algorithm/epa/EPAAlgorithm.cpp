@@ -22,7 +22,8 @@ namespace urchin {
         }
 
         //2. initialize global variables
-        std::map<std::size_t, Point3<T>> supportPointsA, supportPointsB;  //first: index of point in convex hull, second: support points
+        std::map<std::size_t, Point3<T>> supportPointsA; //first: index of point in convex hull, second: support points
+        std::map<std::size_t, Point3<T>> supportPointsB; //first: index of point in convex hull, second: support points
         std::map<std::size_t, EPATriangleData<T>> trianglesData; //first: index of triangle in convex hull, second: EPA triangle data
 
         //3. create initial convex hull
@@ -296,11 +297,11 @@ namespace urchin {
             }
         }
 
-        constexpr std::size_t indices[4][3] = {{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
-        constexpr std::size_t revIndices[4][3] = {{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
-        for (std::size_t i = 0; i < 4; ++i) {
+        std::array<std::array<std::size_t, 3>, 4> indices = {{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}}};
+        std::array<std::array<std::size_t, 3>, 4> revIndices = {{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}}};
+        for (std::size_t i = 0; i < indices.size(); ++i) {
             const std::size_t pointOutsideTriangle = 6 - (indices[i][0] + indices[i][1] + indices[i][2]);
-            const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indices[i]).computeNormal(
+            const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indices[i].data()).computeNormal(
                     convexHullPoints.at(indices[i][0]).point,
                     convexHullPoints.at(indices[i][1]).point,
                     convexHullPoints.at(indices[i][2]).point);
@@ -311,14 +312,14 @@ namespace urchin {
             T dotProductTolerance = (std::nextafter(trianglePointToOutsidePointLength, std::numeric_limits<T>::max()) - trianglePointToOutsidePointLength);
 
             if (dotProduct < -dotProductTolerance) {
-                indexedTriangles.emplace(i, IndexedTriangle3D<T>(indices[i]));
-                for (std::size_t pointI = 0; pointI < 3; ++pointI) {
-                    convexHullPoints.at(indices[i][pointI]).triangleIndices.push_back(i);
+                indexedTriangles.emplace(i, IndexedTriangle3D<T>(indices[i].data()));
+                for (std::size_t index : indices[i]) {
+                    convexHullPoints.at(index).triangleIndices.push_back(i);
                 }
             } else if (dotProduct > dotProductTolerance) {
-                indexedTriangles.emplace(i, IndexedTriangle3D<T>(revIndices[i]));
-                for (std::size_t pointI = 0; pointI < 3; ++pointI) {
-                    convexHullPoints.at(revIndices[i][pointI]).triangleIndices.push_back(i);
+                indexedTriangles.emplace(i, IndexedTriangle3D<T>(revIndices[i].data()));
+                for (std::size_t revIndex : revIndices[i]) {
+                    convexHullPoints.at(revIndex).triangleIndices.push_back(i);
                 }
             } else {
                 return;

@@ -83,7 +83,7 @@ namespace urchin {
         }
     }
 
-    CommonSolvingData ConstraintSolver::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) {
+    CommonSolvingData ConstraintSolver::fillCommonSolvingData(const ManifoldResult& manifoldResult, const ManifoldContactPoint& contact) const {
         const RigidBody& body1 = RigidBody::upCast(manifoldResult.getBody1());
         const RigidBody& body2 = RigidBody::upCast(manifoldResult.getBody2());
 
@@ -144,7 +144,7 @@ namespace urchin {
     /**
      * Solve normal constraint. Normal constraint is related to non-penetration
      */
-    void ConstraintSolver::solveNormalConstraint(const ConstraintSolvingData& constraintSolvingData) {
+    void ConstraintSolver::solveNormalConstraint(const ConstraintSolvingData& constraintSolvingData) const {
         const CommonSolvingData& commonSolvingData = constraintSolvingData.getCommonData();
         const ImpulseSolvingData& impulseSolvingData = constraintSolvingData.getImpulseData();
         AccumulatedSolvingData& accumulatedSolvingData = constraintSolvingData.getAccumulatedData();
@@ -165,7 +165,7 @@ namespace urchin {
     /**
      * Solve tangent constraint. Tangent constraint is related to friction
      */
-    void ConstraintSolver::solveTangentConstraint(const ConstraintSolvingData& constraintSolvingData) {
+    void ConstraintSolver::solveTangentConstraint(const ConstraintSolvingData& constraintSolvingData) const {
         const CommonSolvingData& commonSolvingData = constraintSolvingData.getCommonData();
         const ImpulseSolvingData& impulseSolvingData = constraintSolvingData.getImpulseData();
         AccumulatedSolvingData& accumulatedSolvingData = constraintSolvingData.getAccumulatedData();

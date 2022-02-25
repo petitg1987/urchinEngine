@@ -34,8 +34,8 @@ namespace urchin {
             void processOverlappingPair(OverlappingPair&, std::vector<ManifoldResult>&);
             CollisionAlgorithm* retrieveCollisionAlgorithm(OverlappingPair&);
 
-            void processPredictiveContacts(float, std::vector<ManifoldResult>&);
-            void handleContinuousCollision(AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&);
+            void processPredictiveContacts(float, std::vector<ManifoldResult>&) const;
+            void handleContinuousCollision(AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&) const;
             void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape>&, const TemporalObject&, std::shared_ptr<AbstractBody>, ccd_set&) const;
             void continuousCollisionTest(const TemporalObject&, const TemporalObject&, std::shared_ptr<AbstractBody>, ccd_set&) const;
 

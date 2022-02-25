@@ -56,7 +56,7 @@ namespace urchin {
         integrateTransform.process(dt);
     }
 
-    const std::vector<ManifoldResult>& CollisionWorld::getLastUpdatedManifoldResults() {
+    const std::vector<ManifoldResult>& CollisionWorld::getLastUpdatedManifoldResults() const {
         return manifoldResults;
     }
 

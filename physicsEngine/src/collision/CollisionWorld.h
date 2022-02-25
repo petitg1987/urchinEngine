@@ -30,7 +30,7 @@ namespace urchin {
 
             void process(float, const Vector3<float>&);
 
-            const std::vector<ManifoldResult>& getLastUpdatedManifoldResults();
+            const std::vector<ManifoldResult>& getLastUpdatedManifoldResults() const;
 
         private:
             BodyContainer& bodyContainer;

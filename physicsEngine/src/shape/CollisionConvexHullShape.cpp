@@ -99,8 +99,8 @@ namespace urchin {
 
         if (!lastTransform.equals(physicsTransform)) {
             const Quaternion<float>& orientation = physicsTransform.getOrientation();
-            Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-            Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+            Point3 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+            Point3 max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
             const std::vector<Point3<float>>& convexHullShapePoints = convexHullShape->getPoints();
             for (const auto& convexHullShapePoint : convexHullShapePoints) {
                 const Point3<float> point = orientation.rotatePoint(convexHullShapePoint);

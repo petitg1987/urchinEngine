@@ -4,7 +4,7 @@
 
 namespace urchin {
     
-    void ObjectDeleter::operator()(CollisionConvexObject3D *const collisionAlgorithm) {
+    void ObjectDeleter::operator()(CollisionConvexObject3D *const collisionAlgorithm) const {
         CollisionConvexObjectPool::instance().getObjectsPool().deallocate(collisionAlgorithm);
     }
 

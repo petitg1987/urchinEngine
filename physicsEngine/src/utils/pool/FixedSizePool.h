@@ -14,6 +14,8 @@ namespace urchin {
     template<class BaseType> class FixedSizePool {
         public:
             FixedSizePool(const std::string&, unsigned int, unsigned int);
+            FixedSizePool(const FixedSizePool&) = delete;
+            FixedSizePool& operator=(const FixedSizePool&) = delete;
             virtual ~FixedSizePool();
 
             virtual void* allocate(unsigned int);
@@ -27,7 +29,7 @@ namespace urchin {
             unsigned int maxElements;
             unsigned int freeCount; //number of free locations
 
-            unsigned char* pool;
+            std::byte* pool;
             void* firstFree;
 
             bool fullPoolLogged;

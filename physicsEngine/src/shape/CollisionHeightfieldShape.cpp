@@ -20,8 +20,8 @@ namespace urchin {
     }
 
     BoxShape<float> CollisionHeightfieldShape::buildLocalAABBox() const {
-        Point3<float> min(vertices[0].X, std::numeric_limits<float>::max(), vertices[0].Z);
-        Point3<float> max(vertices[xLength - 1].X, -std::numeric_limits<float>::max(), vertices[vertices.size() - 1].Z);
+        Point3 min(vertices[0].X, std::numeric_limits<float>::max(), vertices[0].Z);
+        Point3 max(vertices[xLength - 1].X, -std::numeric_limits<float>::max(), vertices[vertices.size() - 1].Z);
 
         for (const auto& vertex : vertices) {
             if (min.Y > vertex.Y) {
@@ -41,7 +41,7 @@ namespace urchin {
         assert(std::abs(std::abs(min.Y) - max.Y) < 0.01f);
         assert(std::abs(std::abs(min.Z) - max.Z) < 0.01f);
 
-        Vector3<float> halfSizes((max.X - min.X) / 2.0f, (max.Y - min.Y) / 2.0f, (max.Z - min.Z) / 2.0f);
+        Vector3 halfSizes((max.X - min.X) / 2.0f, (max.Y - min.Y) / 2.0f, (max.Z - min.Z) / 2.0f);
         return BoxShape<float>(halfSizes);
     }
 
@@ -75,7 +75,7 @@ namespace urchin {
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3<float> extend(
+        Point3 extend(
                 localAABBox.getHalfSize(0) * std::abs(orientation(0)) + localAABBox.getHalfSize(1) * std::abs(orientation(3)) + localAABBox.getHalfSize(2) * std::abs(orientation(6)),
                 localAABBox.getHalfSize(0) * std::abs(orientation(1)) + localAABBox.getHalfSize(1) * std::abs(orientation(4)) + localAABBox.getHalfSize(2) * std::abs(orientation(7)),
                 localAABBox.getHalfSize(0) * std::abs(orientation(2)) + localAABBox.getHalfSize(1) * std::abs(orientation(5)) + localAABBox.getHalfSize(2) * std::abs(orientation(8))
@@ -216,7 +216,7 @@ namespace urchin {
     }
 
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float>& p1, const Point3<float>& p2, const Point3<float>& p3) const {
-        trianglesInAABBox.emplace_back(CollisionTriangleShape(TriangleShape3D<float>(p1, p2, p3)));
+        trianglesInAABBox.emplace_back(TriangleShape3D<float>(p1, p2, p3));
     }
 
 }

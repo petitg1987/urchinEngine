@@ -20,7 +20,7 @@ namespace urchin {
             unsigned int computeNumberElements(const std::vector<IslandElementLink>&, unsigned int) const;
             bool isBodyMoving(const RigidBody*) const;
 
-            void printIslands(const std::vector<IslandElementLink>&);
+            void printIslands(const std::vector<IslandElementLink>&) const;
 
             const BodyContainer& bodyContainer;
             std::vector<IslandElement*> islandElements;

@@ -31,7 +31,7 @@ namespace urchin {
             void computeOverlappingPairs(const AABBNode<std::shared_ptr<AbstractBody>>&);
             void createOverlappingPair(BodyAABBNodeData&, BodyAABBNodeData&);
             void removeOverlappingPairs(const BodyAABBNodeData&);
-            void removeBodyPairContainerReferences(const AbstractBody&, PairContainer*);
+            void removeBodyPairContainerReferences(const AbstractBody&, PairContainer*) const;
 
             void computeWorldBoundary();
             void controlBoundaries(const AABBNode<std::shared_ptr<AbstractBody>>&) const;

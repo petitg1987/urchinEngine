@@ -107,7 +107,7 @@ namespace urchin {
                  && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
     }
 
-    void BodyActiveStateUpdater::printIslands(const std::vector<IslandElementLink>& islandElementsLink) {
+    void BodyActiveStateUpdater::printIslands(const std::vector<IslandElementLink>& islandElementsLink) const {
         unsigned int islandId = 0;
         unsigned int i = 0;
         while (islandElementsLink.size()>i) { //loop on islands

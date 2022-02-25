@@ -37,7 +37,7 @@ namespace urchin {
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody;
         bodiesAABBoxHitBody.reserve(15);
 
-        Ray<float> ray(from.getPosition(), to.getPosition());
+        Ray ray(from.getPosition(), to.getPosition());
         float bodyBoundingSphereRadius = body.getShape().getMaxDistanceToCenter();
 
         const auto* bodyPtr = const_cast<AbstractBody*>(&body);

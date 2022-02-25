@@ -3,7 +3,7 @@
 
 namespace urchin {
 
-    void AlgorithmResultDeleter::operator()(AlgorithmResult *const collisionResultAlgorithm) {
+    void AlgorithmResultDeleter::operator()(AlgorithmResult *const collisionResultAlgorithm) const {
         AlgorithmResultAllocator::instance().getAlgorithmResultPool().deallocate(collisionResultAlgorithm);
     }
 

@@ -6,7 +6,7 @@ namespace urchin {
 
     class ObjectDeleter {
         public:
-            void operator()(CollisionConvexObject3D*);
+            void operator()(CollisionConvexObject3D*) const;
     };
 
 }

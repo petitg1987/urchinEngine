@@ -38,8 +38,15 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionConeShape::scale(const Vector3<float>& scale) const {
-        std::size_t heightAxis = (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) ? 0 :
-                                 (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) ? 1 : 2;
+        std::size_t heightAxis = 0;
+        if (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE) {
+            heightAxis = 0;
+        } else if (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE) {
+            heightAxis = 1;
+        } else if (coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE || coneShape.getConeOrientation() == ConeShape<float>::ConeOrientation::CONE_Z_NEGATIVE) {
+            heightAxis = 2;
+        }
+
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Cone cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
@@ -51,17 +58,17 @@ namespace urchin {
     }
 
     AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
+        Vector3 boxHalfSizes(getRadius(), getRadius(), getRadius());
         boxHalfSizes[getConeOrientation() / 2] = getHeight() / 2.0f;
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3<float> extend(
+        Point3 extend(
                 boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
                 boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
                 boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
         );
 
         const Point3<float>& centerOfMass = physicsTransform.getPosition();
-        Vector3<float> localCentralAxis(0.0f, 0.0f, 0.0f);
+        Vector3 localCentralAxis(0.0f, 0.0f, 0.0f);
         localCentralAxis[getConeOrientation() / 2] = (getConeOrientation() % 2 == 0) ? 1.0f : -1.0f;
         Vector3<float> centralAxis = physicsTransform.getOrientation().rotateVector(localCentralAxis);
         Point3<float> centerPosition = centerOfMass.translate(centralAxis * (1.0f / 4.0f) * getHeight());
@@ -84,7 +91,7 @@ namespace urchin {
     Vector3<float> CollisionConeShape::computeLocalInertia(float mass) const {
         float interiaValue = (3.0f / 20.0f) * mass * (getRadius() * getRadius() + 4.0f * getHeight() * getHeight());
 
-        Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
+        Vector3 inertia(interiaValue, interiaValue, interiaValue);
         inertia[getConeOrientation() / 2] = (3.0f / 10.0f) * mass * getRadius() * getRadius();
 
         return inertia;

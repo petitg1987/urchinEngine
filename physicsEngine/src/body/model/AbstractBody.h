@@ -27,6 +27,7 @@ namespace urchin {
 
             AbstractBody(BodyType, std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             AbstractBody(const AbstractBody&);
+            AbstractBody& operator=(const AbstractBody&) = delete;
             ~AbstractBody() override = default;
 
             void setPhysicsThreadId(std::thread::id);

@@ -16,6 +16,8 @@ namespace urchin {
             OverlappingPair(std::shared_ptr<AbstractBody>, std::shared_ptr<AbstractBody>);
             OverlappingPair(std::shared_ptr<AbstractBody>, std::shared_ptr<AbstractBody>, uint_fast64_t);
             OverlappingPair(const OverlappingPair&);
+            OverlappingPair& operator=(const OverlappingPair&) = delete;
+            ~OverlappingPair() = default;
 
             AbstractBody& getBody(unsigned int) const;
             AbstractBody& getBody1() const;

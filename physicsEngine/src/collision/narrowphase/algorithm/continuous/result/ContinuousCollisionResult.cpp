@@ -12,14 +12,6 @@ namespace urchin {
         assert(this->body2);
     }
 
-    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const ContinuousCollisionResult& continuousCollisionResult) :
-            body2(continuousCollisionResult.body2),
-            normalFromObject2(continuousCollisionResult.getNormalFromObject2()),
-            hitPointOnObject2(continuousCollisionResult.getHitPointOnObject2()),
-            timeToHit(continuousCollisionResult.getTimeToHit()) {
-
-    }
-
     template<class T> AbstractBody& ContinuousCollisionResult<T>::getBody2() const {
         return *body2;
     }

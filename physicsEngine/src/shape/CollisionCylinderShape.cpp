@@ -38,8 +38,15 @@ namespace urchin {
     }
 
     std::unique_ptr<CollisionShape3D> CollisionCylinderShape::scale(const Vector3<float>& scale) const {
-        std::size_t heightAxis = (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_X) ? 0 :
-                                 (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_Y) ? 1 : 2;
+        std::size_t heightAxis = 0;
+        if (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_X) {
+            heightAxis = 0;
+        } else if (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_Y) {
+            heightAxis = 1;
+        } else if (cylinderShape.getCylinderOrientation() == CylinderShape<float>::CylinderOrientation::CYLINDER_Z) {
+            heightAxis = 2;
+        }
+
         if (!MathFunction::isEqual(scale[(heightAxis + 1) % 3], scale[(heightAxis + 2) % 3], 0.01f)) {
             Logger::instance().logWarning("Cylinder cannot be correctly scaled with " + StringUtil::toString(scale) + ". Consider to use another shape.");
         }
@@ -51,10 +58,10 @@ namespace urchin {
     }
 
     AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform& physicsTransform) const {
-        Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
+        Vector3 boxHalfSizes(getRadius(), getRadius(), getRadius());
         boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3<float> extend(
+        Point3 extend(
                 boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
                 boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
                 boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
@@ -79,7 +86,7 @@ namespace urchin {
     Vector3<float> CollisionCylinderShape::computeLocalInertia(float mass) const {
         float inertiaValue = (1.0f / 12.0f) * mass * (3.0f * getRadius() * getRadius() + getHeight() * getHeight());
 
-        Vector3<float> inertia(inertiaValue, inertiaValue, inertiaValue);
+        Vector3 inertia(inertiaValue, inertiaValue, inertiaValue);
         inertia[getCylinderOrientation()] = 0.5f * mass * getRadius() * getRadius();
 
         return inertia;

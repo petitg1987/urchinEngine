@@ -7,12 +7,6 @@ namespace urchin {
         orientation.setIdentity();
     }
 
-    PhysicsTransform::PhysicsTransform(const PhysicsTransform& physicsTransform) :
-            position(physicsTransform.getPosition()),
-            orientation(physicsTransform.getOrientation()) {
-
-    }
-
     PhysicsTransform::PhysicsTransform(const Point3<float>& position, const Quaternion<float>& orientation) :
             position(position),
             orientation(orientation) {
@@ -25,12 +19,6 @@ namespace urchin {
         if (transform.hasScaling()) {
             throw std::runtime_error("Cannot construct physics transform from transform having a scale: " + StringUtil::toString(transform.getScale()));
         }
-    }
-
-    PhysicsTransform& PhysicsTransform::operator=(const PhysicsTransform& physicsTransform) {
-        this->position = physicsTransform.getPosition();
-        this->orientation = physicsTransform.getOrientation();
-        return *this;
     }
 
     void PhysicsTransform::setPosition(const Point3<float>& position) {

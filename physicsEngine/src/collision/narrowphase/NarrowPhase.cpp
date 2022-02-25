@@ -86,7 +86,7 @@ namespace urchin {
         return overlappingPair.getCollisionAlgorithm();
     }
 
-    void NarrowPhase::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhase::processPredictiveContacts(float dt, std::vector<ManifoldResult>& manifoldResults) const {
         ScopeProfiler sp(Profiler::physics(), "proPrediContact");
 
         for (const auto& abstractBody : bodyContainer.getBodies()) {
@@ -107,7 +107,7 @@ namespace urchin {
         }
     }
 
-    void NarrowPhase::handleContinuousCollision(AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) {
+    void NarrowPhase::handleContinuousCollision(AbstractBody& body, const PhysicsTransform& from, const PhysicsTransform& to, std::vector<ManifoldResult>& manifoldResults) const {
         std::vector<std::shared_ptr<AbstractBody>> bodiesAABBoxHitBody = broadPhase.bodyTest(body, from, to);
         if (!bodiesAABBoxHitBody.empty()) {
             ccd_set ccdResults;

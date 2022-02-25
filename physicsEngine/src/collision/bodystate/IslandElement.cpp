@@ -7,11 +7,6 @@ namespace urchin {
 
     }
 
-    IslandElement::IslandElement(const IslandElement& islandElement) :
-            islandElementId(islandElement.getIslandElementId()) {
-
-    }
-
     void IslandElement::setIslandElementId(unsigned int islandElementId) {
         this->islandElementId = islandElementId;
     }

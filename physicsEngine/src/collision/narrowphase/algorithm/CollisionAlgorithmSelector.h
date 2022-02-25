@@ -13,7 +13,7 @@ namespace urchin {
         public:
             AlgorithmDeleter() = default;
             explicit AlgorithmDeleter(std::shared_ptr<FixedSizePool<CollisionAlgorithm>>);
-            void operator()(CollisionAlgorithm*);
+            void operator()(CollisionAlgorithm*) const;
 
         private:
             std::shared_ptr<FixedSizePool<CollisionAlgorithm>> algorithmPool;

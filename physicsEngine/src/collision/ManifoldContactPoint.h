@@ -26,7 +26,8 @@ namespace urchin {
 
         private:
             Vector3<float> normalFromObject2;
-            Point3<float> pointOnObject1, pointOnObject2;
+            Point3<float> pointOnObject1;
+            Point3<float> pointOnObject2;
             Point3<float> localPointOnObject1, localPointOnObject2;
             float depth;
             bool bIsPredictive;

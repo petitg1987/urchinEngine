@@ -42,7 +42,7 @@ namespace urchin {
             void walk(const Vector3<float>&);
             void run(const Vector3<float>&);
             void verticalMove(float);
-            void setOrientation(const Vector3<float>&);
+            void setOrientation(const Vector3<float>&) const;
             void jump();
             void enableGravity(bool);
 
@@ -60,7 +60,7 @@ namespace urchin {
             void resetSignificantContactValues();
             void saveSignificantContactValues(const Vector3<float>&);
             void computeSignificantContactValues(float);
-            float computeSlope();
+            float computeSlope() const;
             void respawnBodies();
 
             static constexpr float MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND = 0.2f;

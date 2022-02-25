@@ -130,7 +130,7 @@ namespace urchin {
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void PhysicsWorld::checkNoExceptionRaised() {
+    void PhysicsWorld::checkNoExceptionRaised() const {
         if (physicsThreadExceptionPtr) {
             std::rethrow_exception(physicsThreadExceptionPtr);
         }

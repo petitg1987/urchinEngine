@@ -40,7 +40,7 @@ namespace urchin {
             void unpause();
             bool isPaused() const;
             void interrupt();
-            void checkNoExceptionRaised();
+            void checkNoExceptionRaised() const;
 
             void createCollisionVisualizer();
             const CollisionVisualizer& getCollisionVisualizer() const;

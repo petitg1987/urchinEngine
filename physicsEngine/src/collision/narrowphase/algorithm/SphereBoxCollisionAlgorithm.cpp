@@ -20,9 +20,9 @@ namespace urchin {
         //For easiest computation, we need to have box position on origin.
         //So, we transform sphere position into box local space.
         const Point3<float>& spherePos = object1.getShapeWorldTransform().getPosition();
-        const Point3<float>& spherePosLocalBox = object2.getShapeWorldTransform().inverseTransform(spherePos);
+        Point3<float> spherePosLocalBox = object2.getShapeWorldTransform().inverseTransform(spherePos);
 
-        Point3<float> closestPointOnBox(
+        Point3 closestPointOnBox(
                 std::clamp(spherePosLocalBox.X, -box2.getHalfSize(0), box2.getHalfSize(0)),
                 std::clamp(spherePosLocalBox.Y, -box2.getHalfSize(1), box2.getHalfSize(1)),
                 std::clamp(spherePosLocalBox.Z, -box2.getHalfSize(2), box2.getHalfSize(2)) );
@@ -31,16 +31,12 @@ namespace urchin {
 
         float boxSphereLength = normalFromObject2.length();
         if (boxSphereLength - getContactBreakingThreshold() < sphere1.getRadius()) { //collision detected
-
             float depth;
-
             if (boxSphereLength > std::numeric_limits<float>::epsilon()) { //sphere position is outside the box
-
                 //compute depth penetration
                 boxSphereLength = normalFromObject2.length();
                 depth = boxSphereLength - sphere1.getRadius();
             } else { //special case when sphere position is inside the box: closestPointOnBox == spherePosLocalBox
-
                 //find axis closest to sphere position
                 float minDistToAxis = box2.getHalfSize(0) - std::abs(spherePosLocalBox[0]);
                 std::size_t minAxis = 0;

@@ -19,7 +19,8 @@ namespace urchin {
             T getPenetrationDepth() const override;
 
         private:
-            Point3<T> contactPointA, contactPointB;
+            Point3<T> contactPointA;
+            Point3<T> contactPointB;
             Vector3<T> normal;
             T depth;
     };
