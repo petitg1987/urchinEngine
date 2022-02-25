@@ -65,7 +65,7 @@ void QuaternionTest::rotationFrom90AndTo135() {
 }
 
 void QuaternionTest::rotationFrom90AndTo90() {
-    Vector3<float> v90Degree(1.0f, 0.0f, 0.0f);
+    Vector3 v90Degree(1.0f, 0.0f, 0.0f);
 
     Quaternion<float> rotation = Quaternion<float>::rotationFromTo(v90Degree, v90Degree);
 
@@ -74,8 +74,8 @@ void QuaternionTest::rotationFrom90AndTo90() {
 }
 
 void QuaternionTest::rotationFromMinus90AndTo90() {
-    Vector3<float> vMinus90Degree(-1.0f, 0.0f, 0.0f);
-    Vector3<float> v90Degree(1.0f, 0.0f, 0.0f);
+    Vector3 vMinus90Degree(-1.0f, 0.0f, 0.0f);
+    Vector3 v90Degree(1.0f, 0.0f, 0.0f);
 
     Quaternion<float> rotation = Quaternion<float>::rotationFromTo(vMinus90Degree, v90Degree);
 

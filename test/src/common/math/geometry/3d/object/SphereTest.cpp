@@ -5,8 +5,8 @@
 using namespace urchin;
 
 void SphereTest::sphereLineIntersection() {
-    Sphere<float> sphere(1.5f, Point3<float>(1.0f, 1.0f, 0.0f));
-    Line3D<float> line(Point3<float>(-2.0f, 2.0f, 0.0f), Point3<float>(4.0f, 2.0f, 0.0f));
+    Sphere sphere(1.5f, Point3<float>(1.0f, 1.0f, 0.0f));
+    Line3D line(Point3<float>(-2.0f, 2.0f, 0.0f), Point3<float>(4.0f, 2.0f, 0.0f));
 
     bool hasIntersection;
     Point3<float> firstCollision = sphere.intersectPoint(line, hasIntersection);
@@ -16,8 +16,8 @@ void SphereTest::sphereLineIntersection() {
 }
 
 void SphereTest::sphereAABBoxSideCollision() {
-    Sphere<float> sphere(1.0f, Point3<float>(2.5f, 1.0f, 1.0f));
-    AABBox<float> aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
+    Sphere sphere(1.0f, Point3<float>(2.5f, 1.0f, 1.0f));
+    AABBox aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
 
     bool hasCollision = sphere.collideWithAABBox(aabBox);
 
@@ -25,8 +25,8 @@ void SphereTest::sphereAABBoxSideCollision() {
 }
 
 void SphereTest::sphereAABBoxNoSideCollision() {
-    Sphere<float> sphere(1.0f, Point3<float>(3.1f, 1.0f, 1.0f));
-    AABBox<float> aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
+    Sphere sphere(1.0f, Point3<float>(3.1f, 1.0f, 1.0f));
+    AABBox aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
 
     bool hasCollision = sphere.collideWithAABBox(aabBox);
 
@@ -34,8 +34,8 @@ void SphereTest::sphereAABBoxNoSideCollision() {
 }
 
 void SphereTest::sphereAABBoxCornerCollision() {
-    Sphere<float> sphere(1.0f, Point3<float>(2.6f, 2.6f, 1.0f));
-    AABBox<float> aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
+    Sphere sphere(1.0f, Point3<float>(2.6f, 2.6f, 1.0f));
+    AABBox aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
 
     bool hasCollision = sphere.collideWithAABBox(aabBox);
 
@@ -43,8 +43,8 @@ void SphereTest::sphereAABBoxCornerCollision() {
 }
 
 void SphereTest::sphereAABBoxNoCornerCollision() {
-    Sphere<float> sphere(1.0f, Point3<float>(2.8f, 2.8f, 1.0f));
-    AABBox<float> aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
+    Sphere sphere(1.0f, Point3<float>(2.8f, 2.8f, 1.0f));
+    AABBox aabBox(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(2.0f, 2.0f, 2.0f));
 
     bool hasCollision = sphere.collideWithAABBox(aabBox);
 

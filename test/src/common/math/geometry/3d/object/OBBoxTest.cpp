@@ -5,8 +5,8 @@
 using namespace urchin;
 
 void OBBoxTest::noIntersection() {
-    OBBox<float> oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
-    Line3D<float> line(Point3<float>(-2.0f, 4.0f, 4.0f), Point3<float>(2.0f, 1.0f, 1.0f));
+    OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
+    Line3D line(Point3<float>(-2.0f, 4.0f, 4.0f), Point3<float>(2.0f, 1.0f, 1.0f));
 
     bool hasIntersection = false;
     oBBox.intersectPoint(line, hasIntersection);
@@ -15,8 +15,8 @@ void OBBoxTest::noIntersection() {
 }
 
 void OBBoxTest::leftRightLineIntersection() {
-    OBBox<float> oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
-    Line3D<float> line(Point3<float>(-2.0f, 0.5f, 0.5f), Point3<float>(2.0f, 0.5f, 0.5f));
+    OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
+    Line3D line(Point3<float>(-2.0f, 0.5f, 0.5f), Point3<float>(2.0f, 0.5f, 0.5f));
 
     bool hasIntersection = false;
     Point3<float> intersectionPoint = oBBox.intersectPoint(line, hasIntersection);
@@ -26,8 +26,8 @@ void OBBoxTest::leftRightLineIntersection() {
 }
 
 void OBBoxTest::rightLeftLineIntersection() {
-    OBBox<float> oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
-    Line3D<float> line(Point3<float>(2.0f, 0.5f, 0.5f), Point3<float>(-2.0f, 0.5f, 0.5f));
+    OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
+    Line3D line(Point3<float>(2.0f, 0.5f, 0.5f), Point3<float>(-2.0f, 0.5f, 0.5f));
 
     bool hasIntersection = false;
     Point3<float> intersectionPoint = oBBox.intersectPoint(line, hasIntersection);
@@ -37,8 +37,8 @@ void OBBoxTest::rightLeftLineIntersection() {
 }
 
 void OBBoxTest::bottomLeftLineIntersection() {
-    OBBox<float> oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
-    Line3D<float> line(Point3<float>(0.5f, 0.0f, 0.5f), Point3<float>(0.0f, 0.5f, 0.5f));
+    OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
+    Line3D line(Point3<float>(0.5f, 0.0f, 0.5f), Point3<float>(0.0f, 0.5f, 0.5f));
 
     bool hasIntersection = false;
     Point3<float> intersectionPoint = oBBox.intersectPoint(line, hasIntersection);
@@ -48,8 +48,8 @@ void OBBoxTest::bottomLeftLineIntersection() {
 }
 
 void OBBoxTest::oBBoxObliqueIntersection() {
-    OBBox<float> oBBox(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(0.78539816339f) /* 45 degrees */);
-    Line3D<float> line(Point3<float>(0.0f, 3.0f, 0.0f), Point3<float>(0.0f, -3.0f, 0.0f));
+    OBBox oBBox(Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(0.78539816339f) /* 45 degrees */);
+    Line3D line(Point3<float>(0.0f, 3.0f, 0.0f), Point3<float>(0.0f, -3.0f, 0.0f));
 
     bool hasIntersection = false;
     Point3<float> intersectionPoint = oBBox.intersectPoint(line, hasIntersection);

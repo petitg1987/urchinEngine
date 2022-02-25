@@ -115,7 +115,8 @@ void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
     bodyAabbTree.addBody(bodyB);
     bodyAabbTree.addBody(bodyC);
 
-    std::vector<OverlappingPair> bodyBPairs, bodyCPairs;
+    std::vector<OverlappingPair> bodyBPairs;
+    std::vector<OverlappingPair> bodyCPairs;
     bodyB->getPairContainer()->retrieveCopyOverlappingPairs(bodyBPairs);
     bodyC->getPairContainer()->retrieveCopyOverlappingPairs(bodyCPairs);
     AssertHelper::assertUnsignedIntEquals(bodyAabbTree.getOverlappingPairs().size(), 0);

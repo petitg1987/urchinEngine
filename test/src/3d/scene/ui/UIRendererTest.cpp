@@ -57,7 +57,8 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
 void UIRendererTest::focusLostEvent() {
     auto uiRenderer = setupUiRenderer();
     auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
-    bool focused = false, focusLost = false;
+    bool focused = false;
+    bool focusLost = false;
     widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
     uiRenderer->addWidget(widget);
     uiRenderer->onMouseMove(50.0, 50.0);
@@ -72,7 +73,8 @@ void UIRendererTest::focusLostEvent() {
 void UIRendererTest::focusLostEventWithClick() {
     auto uiRenderer = setupUiRenderer();
     auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
-    bool focused = false, focusLost = false;
+    bool focused = false;
+    bool focusLost = false;
     widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
     uiRenderer->addWidget(widget);
     uiRenderer->onMouseMove(50.0, 50.0);

@@ -5,7 +5,7 @@
 using namespace urchin;
 
 void MapSerializerTest::emptyMap() {
-    std::map<std::string, std::string> emptyMap;
+    std::map<std::string, std::string, std::less<>> emptyMap;
     auto serializedMap = MapSerializer::serialize(emptyMap);
     auto deserializedMap = MapSerializer::deserialize(serializedMap);
 
@@ -14,7 +14,7 @@ void MapSerializerTest::emptyMap() {
 }
 
 void MapSerializerTest::simpleMap() {
-    std::map<std::string, std::string> map;
+    std::map<std::string, std::string, std::less<>> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
     auto serializedMap = MapSerializer::serialize(map);
@@ -26,7 +26,7 @@ void MapSerializerTest::simpleMap() {
 }
 
 void MapSerializerTest::trickyMapValues() {
-    std::map<std::string, std::string> map;
+    std::map<std::string, std::string, std::less<>> map;
     map["k,ey1"] = "valu\\,ne1";
     map["key2\\,"] = "valu,,e2";
     auto serializedMap = MapSerializer::serialize(map);

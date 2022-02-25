@@ -202,12 +202,12 @@ CppUnit::Test* TriangulationTest::suite() {
     return suite;
 }
 
-void TriangulationTest::assertUniqueLink(const NavTriangle& sourceTriangle, std::size_t sourceEdgeIndex, const NavTriangle& targetTriangle) {
+void TriangulationTest::assertUniqueLink(const NavTriangle& sourceTriangle, std::size_t sourceEdgeIndex, const NavTriangle& targetTriangle) const {
     AssertHelper::assertUnsignedIntEquals(sourceTriangle.getLinks().size(), 1);
     assertLink(*sourceTriangle.getLinks()[0], sourceEdgeIndex, targetTriangle);
 }
 
-void TriangulationTest::assertLink(const NavLink& link, std::size_t sourceEdgeIndex, const NavTriangle& targetTriangle) {
+void TriangulationTest::assertLink(const NavLink& link, std::size_t sourceEdgeIndex, const NavTriangle& targetTriangle) const {
     AssertHelper::assertUnsignedIntEquals(link.getSourceEdgeIndex(), sourceEdgeIndex);
     AssertHelper::assertTrue(link.getTargetTriangle().get() == &targetTriangle);
 }

@@ -7,7 +7,7 @@ using namespace urchin;
 
 void TetrahedronTest::closestPoint() {
     std::array<float, 4> barycentrics{};
-    Tetrahedron<float> tetrahedron(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 1.0f), Point3<float>(2.0f, 3.0f, 0.5f));
+    Tetrahedron tetrahedron(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 1.0f), Point3<float>(2.0f, 3.0f, 0.5f));
 
     //point in voronoi region of D
     Point3<float> closestPoint1 = tetrahedron.closestPoint(Point3<float>(2.0f, 3.0f, 0.5f), barycentrics);

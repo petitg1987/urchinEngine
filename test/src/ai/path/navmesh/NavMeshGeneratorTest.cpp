@@ -242,7 +242,7 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove() {
     AssertHelper::assertUnsignedIntEquals(countPolygonLinks(*newCube3WitLinkToCube1Polygon, *cube2AffectedByMovePolygon), 0);
 }
 
-unsigned int NavMeshGeneratorTest::countPolygonLinks(const NavPolygon& sourcePolygon, const NavPolygon& targetPolygon) {
+unsigned int NavMeshGeneratorTest::countPolygonLinks(const NavPolygon& sourcePolygon, const NavPolygon& targetPolygon) const {
     unsigned int countLinks = 0;
     for (const auto& triangle : sourcePolygon.getTriangles()) {
         for (const auto& link : triangle->getLinks()) {
@@ -254,7 +254,7 @@ unsigned int NavMeshGeneratorTest::countPolygonLinks(const NavPolygon& sourcePol
     return countLinks;
 }
 
-std::unique_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent() {
+std::unique_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent() const {
     NavMeshAgent navMeshAgent(2.0f, 0.2f);
     navMeshAgent.setJumpDistance(1.5f);
     return std::make_unique<NavMeshAgent>(navMeshAgent);

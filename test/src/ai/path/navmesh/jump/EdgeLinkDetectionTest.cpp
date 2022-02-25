@@ -7,8 +7,8 @@
 using namespace urchin;
 
 void EdgeLinkDetectionTest::testNearParallelEdges() {
-    LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
+    LineSegment3D startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -20,8 +20,8 @@ void EdgeLinkDetectionTest::testNearParallelEdges() {
 }
 
 void EdgeLinkDetectionTest::testFarParallelEdges() {
-    LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 50.0f), Point3<float>(-20.0f, 0.0f, 50.0f));
+    LineSegment3D startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(20.0f, 0.0f, 50.0f), Point3<float>(-20.0f, 0.0f, 50.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -30,8 +30,8 @@ void EdgeLinkDetectionTest::testFarParallelEdges() {
 }
 
 void EdgeLinkDetectionTest::testIdenticalEdges() {
-    LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -44,8 +44,8 @@ void EdgeLinkDetectionTest::testIdenticalEdges() {
 }
 
 void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection() {
-    LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -54,8 +54,8 @@ void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection() {
 }
 
 void EdgeLinkDetectionTest::testCollinearEdges1() {
-    LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -67,8 +67,8 @@ void EdgeLinkDetectionTest::testCollinearEdges1() {
 }
 
 void EdgeLinkDetectionTest::testCollinearEdges2() {
-    LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, -1.0f));
-    LineSegment3D<float> endEdge(Point3<float>(6.0f, 0.0f, -2.0f), Point3<float>(1.5f, 0.0f, -0.5f));
+    LineSegment3D startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, -1.0f));
+    LineSegment3D endEdge(Point3<float>(6.0f, 0.0f, -2.0f), Point3<float>(1.5f, 0.0f, -0.5f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -80,8 +80,8 @@ void EdgeLinkDetectionTest::testCollinearEdges2() {
 }
 
 void EdgeLinkDetectionTest::testCollinearEdges3() {
-    LineSegment3D<float> startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-99.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-99.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -93,8 +93,8 @@ void EdgeLinkDetectionTest::testCollinearEdges3() {
 }
 
 void EdgeLinkDetectionTest::testCollinearEdgesNoLink() {
-    LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(4.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(4.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -103,8 +103,8 @@ void EdgeLinkDetectionTest::testCollinearEdgesNoLink() {
 }
 
 void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint() {
-    LineSegment3D<float> startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -113,8 +113,8 @@ void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint() {
 }
 
 void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection() {
-    LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 0.0f, 0.0f));
+    LineSegment3D startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 0.0f, 0.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -123,8 +123,8 @@ void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection() {
 }
 
 void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection() {
-    LineSegment3D<float> startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
+    LineSegment3D startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -133,8 +133,8 @@ void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection() {
 }
 
 void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection() {
-    LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
+    LineSegment3D startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -143,8 +143,8 @@ void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection() {
 }
 
 void EdgeLinkDetectionTest::testWrongJumpEdgesDirection() {
-    LineSegment3D<float> startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
-    LineSegment3D<float> endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
+    LineSegment3D startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
+    LineSegment3D endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
@@ -153,8 +153,8 @@ void EdgeLinkDetectionTest::testWrongJumpEdgesDirection() {
 }
 
 void EdgeLinkDetectionTest::testCrossEdges() {
-    LineSegment3D<float> startEdge(Point3<float>(-20.0f, 0.0f, 20.0f), Point3<float>(20.0f, 0.0f, -20.0f));
-    LineSegment3D<float> endEdge(Point3<float>(0.0f, 0.0f, -20.0f), Point3<float>(0.0f, 0.0f, 20.0f));
+    LineSegment3D startEdge(Point3<float>(-20.0f, 0.0f, 20.0f), Point3<float>(20.0f, 0.0f, -20.0f));
+    LineSegment3D endEdge(Point3<float>(0.0f, 0.0f, -20.0f), Point3<float>(0.0f, 0.0f, 20.0f));
 
     EdgeLinkDetection edgeLinkDetection(1.5f);
     EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);

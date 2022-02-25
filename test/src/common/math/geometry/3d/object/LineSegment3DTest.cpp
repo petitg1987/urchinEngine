@@ -7,7 +7,7 @@ using namespace urchin;
 
 void LineSegment3DTest::closestPoint() {
     std::array<float, 2> barycentrics{};
-    LineSegment3D<float> lineSegment(Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(2.0f, 1.0f, 0.0f));
+    LineSegment3D lineSegment(Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(2.0f, 1.0f, 0.0f));
 
     //point outside segment (right)
     Point3<float> closestPoint1 = lineSegment.closestPoint(Point3<float>(3.0f, 2.0f, 0.0f), barycentrics);

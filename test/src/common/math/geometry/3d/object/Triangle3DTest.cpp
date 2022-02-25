@@ -7,7 +7,7 @@ using namespace urchin;
 
 void Triangle3DTest::closestPoint() {
     std::array<float, 3> barycentrics{};
-    Triangle3D<float> triangle(Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(3.0f, 1.0f, 0.0f), Point3<float>(2.0f, 3.0f, 0.0f));
+    Triangle3D triangle(Point3<float>(1.0f, 1.0f, 0.0f), Point3<float>(3.0f, 1.0f, 0.0f), Point3<float>(2.0f, 3.0f, 0.0f));
 
     //point in front of triangle
     Point3<float> closestPoint1 = triangle.closestPoint(Point3<float>(2.0f, 2.0f, 1.0f), barycentrics);

@@ -13,7 +13,7 @@ void InertiaCalculationTest::boxInertiaCalculation() {
     PhysicsTransform transformRotateXAxis90(Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationX(-MathValue::PI_FLOAT / 2.0f));
 
     Vector3<float> localInertia = boxShape.computeLocalInertia(mass);
-    Vector3<float> invLocalInertia(1.0f/localInertia.X, 1.0f/localInertia.Y, 1.0f/localInertia.Z);
+    Vector3 invLocalInertia(1.0f / localInertia.X, 1.0f / localInertia.Y, 1.0f / localInertia.Z);
 
     Matrix3<float> invWorldInertia = InertiaCalculation::computeInverseWorldInertia(invLocalInertia, transformRotateXAxis90);
 

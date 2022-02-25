@@ -14,7 +14,7 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
-    Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
+    Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
     lightSplitShadowMap.update(frustumSplit, false);
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 2);
@@ -36,7 +36,7 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
-    Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
+    Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
     lightSplitShadowMap.update(frustumSplit, false);
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 0);
@@ -56,7 +56,7 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
-    Frustum<float> frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
+    Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
     lightSplitShadowMap.update(frustumSplit, false);
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 1);

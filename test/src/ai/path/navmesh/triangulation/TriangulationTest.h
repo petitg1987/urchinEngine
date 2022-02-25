@@ -20,6 +20,6 @@ class TriangulationTest : public CppUnit::TestFixture {
         void holeInTriangle();
 
     private:
-        void assertUniqueLink(const urchin::NavTriangle&, std::size_t, const urchin::NavTriangle&);
-        void assertLink(const urchin::NavLink&, std::size_t, const urchin::NavTriangle&);
+        void assertUniqueLink(const urchin::NavTriangle&, std::size_t, const urchin::NavTriangle&) const;
+        void assertLink(const urchin::NavLink&, std::size_t, const urchin::NavTriangle&) const;
 };
