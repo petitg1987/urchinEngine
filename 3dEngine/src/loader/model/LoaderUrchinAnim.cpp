@@ -54,7 +54,7 @@ namespace urchin {
         FileReader::nextLine(file, buffer); //buffer = "}"
 
         //bounds
-        std::vector<AABBox<float>> bboxes(numFrames);
+        std::vector<AABBox<float>> bboxes;
         bboxes.reserve(numFrames);
         FileReader::nextLine(file, buffer); //buffer = "bounds {"
         for (unsigned int i = 0; i < numFrames; i++) {
