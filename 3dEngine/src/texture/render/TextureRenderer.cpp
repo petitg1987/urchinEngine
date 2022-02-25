@@ -98,7 +98,10 @@ namespace urchin {
 
         initializeShader();
 
-        float minX, maxX, minY, maxY;
+        float minX;
+        float maxX;
+        float minY;
+        float maxY;
         if (fullScreen) {
             minX = 0.0f;
             maxX = (float)sceneWidth;
@@ -193,7 +196,7 @@ namespace urchin {
         displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", "", fragShaderName, std::move(shaderConstants));
     }
 
-    void TextureRenderer::prepareRendering(unsigned int renderingOrder) {
+    void TextureRenderer::prepareRendering(unsigned int renderingOrder) const {
         if (!isInitialized) {
             throw std::runtime_error("Texture displayer must be initialized before prepare rendering.");
         }

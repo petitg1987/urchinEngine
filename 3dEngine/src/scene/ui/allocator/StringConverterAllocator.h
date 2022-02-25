@@ -15,6 +15,7 @@ namespace urchin {
             StringConverterAllocator();
             StringConverterAllocator(const StringConverterAllocator<T>&);
             template<class U> explicit StringConverterAllocator(const StringConverterAllocator<U>&);
+            StringConverterAllocator& operator=(const StringConverterAllocator&) = delete;
             ~StringConverterAllocator();
 
             T* allocate(std::size_t);

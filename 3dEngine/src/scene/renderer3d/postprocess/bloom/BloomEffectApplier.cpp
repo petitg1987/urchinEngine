@@ -81,7 +81,7 @@ namespace urchin {
             preFilterRenderTarget = std::make_unique<NullRenderTarget>(bloomStepTextures[0]->getWidth(), bloomStepTextures[0]->getHeight());
         }
 
-        Point2<float> texelSize(1.0f / (float)inputHdrTexture->getWidth(), 1.0f / (float)inputHdrTexture->getHeight());
+        Point2 texelSize(1.0f / (float)inputHdrTexture->getWidth(), 1.0f / (float)inputHdrTexture->getHeight());
         preFilterRenderer = GenericRendererBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
@@ -104,7 +104,7 @@ namespace urchin {
                 downSampleRenderTarget = std::make_unique<NullRenderTarget>(bloomStepTextures[outTexIndex]->getWidth(), bloomStepTextures[outTexIndex]->getHeight());
             }
 
-            Point2<float> texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
+            Point2 texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
             downSampleRenderers.push_back(GenericRendererBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
@@ -128,7 +128,7 @@ namespace urchin {
                 upSampleRenderTarget = std::make_unique<NullRenderTarget>(bloomStepTextures[outTexIndex]->getWidth(), bloomStepTextures[outTexIndex]->getHeight());
             }
 
-            Point2<float> texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
+            Point2 texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
             upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample " + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
@@ -207,7 +207,7 @@ namespace urchin {
         }
     }
 
-    void BloomEffectApplier::applyBloom(unsigned int renderingOrder) {
+    void BloomEffectApplier::applyBloom(unsigned int renderingOrder) const {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
         preFilterRenderTarget->render();

@@ -32,8 +32,8 @@ namespace urchin {
         for (std::size_t x = 1; x < axisSplits[0].size(); ++x) {
             for (std::size_t y = 1; y < axisSplits[1].size(); ++y) {
                 for (std::size_t z = 1; z < axisSplits[2].size(); ++z) {
-                    Point3<float> minPoint(axisSplits[0][x - 1], axisSplits[1][y - 1], axisSplits[2][z - 1]);
-                    Point3<float> maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
+                    Point3 minPoint(axisSplits[0][x - 1], axisSplits[1][y - 1], axisSplits[2][z - 1]);
+                    Point3 maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
 
                     splitBoundingBox.emplace_back(minPoint, maxPoint);
                 }

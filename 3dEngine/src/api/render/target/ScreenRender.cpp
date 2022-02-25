@@ -64,7 +64,8 @@ namespace urchin {
     }
 
     void ScreenRender::onResize() {
-        unsigned int sceneWidth, sceneHeight;
+        unsigned int sceneWidth;
+        unsigned int sceneHeight;
         GraphicService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
         if (sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows

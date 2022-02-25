@@ -23,8 +23,14 @@ namespace urchin {
             void updateCameraView(float) override;
 
         private:
-            unsigned int keyFront, keyBack, keyLeft, keyRight;
-            bool isKeyFrontPressed, isKeyBackPressed, isKeyLeftPressed, isKeyRightPressed;
+            unsigned int keyFront;
+            unsigned int keyBack;
+            unsigned int keyLeft;
+            unsigned int keyRight;
+            bool isKeyFrontPressed;
+            bool isKeyBackPressed;
+            bool isKeyLeftPressed;
+            bool isKeyRightPressed;
             float speed;
     };
 

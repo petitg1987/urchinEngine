@@ -43,7 +43,8 @@ namespace urchin {
     }
 
     void Scene::onResize() {
-        unsigned int newSceneWidth, newSceneHeight;
+        unsigned int newSceneWidth;
+        unsigned int newSceneHeight;
         framebufferSizeRetriever->getFramebufferSizeInPixel(newSceneWidth, newSceneHeight);
 
         if ((newSceneWidth > 1 && newSceneHeight > 1) && (sceneWidth != newSceneWidth || sceneHeight != newSceneHeight)) {

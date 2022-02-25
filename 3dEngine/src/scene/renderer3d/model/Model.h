@@ -31,6 +31,8 @@ namespace urchin {
             };
 
             Model(const Model&);
+            Model& operator=(const Model&) = delete;
+            ~Model() override = default;
             static std::unique_ptr<Model> fromMeshesFile(const std::string&);
             static std::unique_ptr<Model> fromMemory(std::unique_ptr<Meshes>);
 

@@ -14,7 +14,7 @@ namespace urchin {
 
             ~ResourceContainer() override;
 
-            template<class T> std::shared_ptr<T> getResource(const std::string&) const;
+            template<class T> std::shared_ptr<T> getResource(std::string_view) const;
             void addResource(const std::shared_ptr<Resource>&);
             void cleanResources();
 
@@ -24,7 +24,7 @@ namespace urchin {
             void cleanResources(bool);
 
             mutable std::mutex mutex;
-            std::map<std::string, std::shared_ptr<Resource>> resources;
+            std::map<std::string, std::shared_ptr<Resource>, std::less<>> resources;
     };
 
     #include "ResourceContainer.inl"

@@ -13,7 +13,11 @@ namespace urchin {
                 return lhs->getPipelineId() < rhs->getPipelineId();
             }
             //always render last the entities with depth test disabled to have a consistent rendering
-            return lhs->isDepthTestEnabled() > rhs->isDepthTestEnabled();
+            if (lhs->isDepthTestEnabled() && !rhs->isDepthTestEnabled()) {
+                return true;
+            } else {
+                return false;
+            }
         }
         return lhs->getRenderingOrder() < rhs->getRenderingOrder();
     }

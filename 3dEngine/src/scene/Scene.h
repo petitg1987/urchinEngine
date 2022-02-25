@@ -64,7 +64,8 @@ namespace urchin {
             //scene properties
             std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever;
             I18nService i18nService;
-            unsigned int sceneWidth, sceneHeight;
+            unsigned int sceneWidth;
+            unsigned int sceneHeight;
 
             //fps
             std::chrono::steady_clock::time_point previousTime;

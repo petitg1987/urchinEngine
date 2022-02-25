@@ -39,7 +39,7 @@ namespace urchin {
             const Point3<T>& getFrustumPoint(FrustumPoint frustumPoint) const;
             const Point3<T>& getPosition() const;
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
             T computeNearDistance() const;
             T computeFarDistance() const;
             Frustum<T> splitFrustum(T, T) const;

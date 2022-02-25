@@ -323,7 +323,7 @@ namespace urchin {
         data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
     }
 
-    void GenericRenderer::updateInstanceData(std::size_t instanceCount, const float* dataPtr) {
+    void GenericRenderer::updateInstanceData(std::size_t instanceCount, const float* dataPtr) const {
         #ifdef URCHIN_DEBUG
             assert(instanceData->getDataType() == DataType::FLOAT);
         #endif

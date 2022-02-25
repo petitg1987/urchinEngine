@@ -75,8 +75,8 @@ namespace urchin {
                     ->build();
         }
 
-        Point2<float> leftFarPoint(-xSize / 2.0f + centerPosition.X, -zSize / 2.0f + centerPosition.Z);
-        Point2<float> rightNearPoint(xSize / 2.0f + centerPosition.X, zSize / 2.0f + centerPosition.Z);
+        Point2 leftFarPoint(-xSize / 2.0f + centerPosition.X, -zSize / 2.0f + centerPosition.Z);
+        Point2 rightNearPoint(xSize / 2.0f + centerPosition.X, zSize / 2.0f + centerPosition.Z);
         waterRectangle = std::make_unique<Rectangle2D<float>>(leftFarPoint, rightNearPoint);
     }
 

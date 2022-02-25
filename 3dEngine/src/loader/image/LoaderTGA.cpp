@@ -38,7 +38,8 @@ namespace urchin {
         file.read((char*)data.data(), lengthData);
 
         //memory allocation for pixel data
-        unsigned int width = 0, height = 0;
+        unsigned int width = 0;
+        unsigned int height = 0;
         unsigned int componentsCount = 0;
         Image::ImageFormat format = Image::IMAGE_RGBA;
         getImageInfo(header, width, height, componentsCount, format);

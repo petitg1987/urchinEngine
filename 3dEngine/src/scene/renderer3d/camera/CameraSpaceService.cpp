@@ -38,7 +38,7 @@ namespace urchin {
     Vector3<float> CameraSpaceService::screenPointToDirection(const Point2<float>& screenPoint) const {
         float clipSpaceX = (2.0f * screenPoint.X) / ((float)camera.getSceneWidth()) - 1.0f;
         float clipSpaceY = (2.0f * screenPoint.Y) / ((float)camera.getSceneHeight()) - 1.0f;
-        Vector4<float> lineDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
+        Vector4 lineDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
         Vector3<float> lineDirectionEyeSpace = (camera.getProjectionInverseMatrix() * lineDirectionClipSpace).xyz();
         return (camera.getViewMatrix().toMatrix3().inverse() * lineDirectionEyeSpace).normalize();
     }

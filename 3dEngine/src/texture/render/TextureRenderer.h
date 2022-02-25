@@ -41,7 +41,7 @@ namespace urchin {
 
             void initialize(std::string, RenderTarget& renderTarget, unsigned int, unsigned int, float = 0.0f, float = 1.0f);
 
-            void prepareRendering(unsigned int);
+            void prepareRendering(unsigned int) const;
 
         private:
             struct TextureRendererShaderConst {
@@ -58,7 +58,10 @@ namespace urchin {
             TextureRenderer::CoordinateY coordinateY;
             bool fullScreen;
             bool transparencyEnabled;
-            float userMinX, userMaxX, userMinY, userMaxY;
+            float userMinX;
+            float userMaxX;
+            float userMinY;
+            float userMaxY;
 
             //visual
             std::shared_ptr<Texture> texture;

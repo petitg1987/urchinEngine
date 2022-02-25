@@ -450,13 +450,9 @@ namespace urchin {
         }
 
         //animate models
-        for (auto itModel = modelsAnimated.begin(); itModel != modelsAnimated.end();) {
-            if ((*itModel)->isAnimated()) {
-                (*itModel)->updateAnimation(dt);
-                itModel++;
-            } else {
-                itModel = modelsAnimated.erase(itModel);
-            }
+        std::erase_if(modelsAnimated, [](const Model* modelAnimated){ return !modelAnimated->isAnimated(); });
+        for (Model* modelAnimated : modelsAnimated) {
+            modelAnimated->updateAnimation(dt);
         }
 
         //update models (must be done after the animations because it can change the ModelDisplayable#computeInstanceId)

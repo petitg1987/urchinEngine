@@ -21,7 +21,7 @@ namespace urchin {
             CheckBox(Position, Size, std::string);
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
-            void refreshTexture();
+            void refreshTexture() const;
             bool onKeyReleaseEvent(unsigned int) override;
             void switchValue();
 
@@ -32,7 +32,8 @@ namespace urchin {
             bool bIsChecked;
 
             //visual
-            std::shared_ptr<Texture> texChecked, texUnchecked;
+            std::shared_ptr<Texture> texChecked;
+            std::shared_ptr<Texture> texUnchecked;
             std::unique_ptr<GenericRenderer> checkBoxRenderer;
     };
 

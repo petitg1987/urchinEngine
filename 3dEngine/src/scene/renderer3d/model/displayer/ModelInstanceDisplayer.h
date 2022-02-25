@@ -47,9 +47,9 @@ namespace urchin {
             TextureParam buildTextureParam(const Mesh&) const;
 
             bool checkUpdateAllowance(const Model*) const;
-            void updateMesh(const Model*);
+            void updateMesh(const Model*) const;
             void updateMaterial(const Model*);
-            void updateScale(const Model*);
+            void updateScale(const Model*) const;
 
             bool isInitialized;
 
@@ -73,7 +73,8 @@ namespace urchin {
             } materialData;
 
             CustomModelShaderVariable* customShaderVariable;
-            bool depthTestEnabled, depthWriteEnabled;
+            bool depthTestEnabled;
+            bool depthWriteEnabled;
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
 

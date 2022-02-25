@@ -29,7 +29,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyAntiAliasing();
+            void applyAntiAliasing() const;
 
         private:
             struct AntiAliasingShaderConst {
@@ -58,7 +58,8 @@ namespace urchin {
 
             //display
             std::unique_ptr<RenderTarget> renderTarget;
-            std::shared_ptr<Texture> inputTexture, outputTexture;
+            std::shared_ptr<Texture> inputTexture;
+            std::shared_ptr<Texture> outputTexture;
             std::unique_ptr<Shader> fxaaShader;
             Point2<float> invSceneSize;
             std::unique_ptr<GenericRenderer> renderer;

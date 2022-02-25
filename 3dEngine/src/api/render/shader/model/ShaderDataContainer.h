@@ -10,6 +10,7 @@ namespace urchin {
         public:
             ShaderDataContainer(std::size_t, const void*);
             ShaderDataContainer(const ShaderDataContainer&);
+            ShaderDataContainer& operator=(const ShaderDataContainer&) = delete;
             ~ShaderDataContainer();
 
             void updateData(const void*);

@@ -18,7 +18,8 @@ namespace urchin {
             void fillWithCaps(std::vector<Point3<float>>&, const Quaternion<float>&) const;
 
             Capsule<float> capsule;
-            unsigned int sides, slices;
+            unsigned int sides;
+            unsigned int slices;
     };
 
 }

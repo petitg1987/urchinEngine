@@ -57,7 +57,8 @@ namespace urchin {
                 ->addUniformData(sizeof(materialsStRepeat), &materialsStRepeat) //binding 2
                 ->addUniformData(sizeof(ambient), &ambient) //binding 3
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())); //binding 4 - mask texture
-        for (std::size_t i = 0; i < materials->getMaterials().size(); ++i) {
+        for (const auto& material : materials->getMaterials()) {
+            (void)material;
             terrainRendererBuilder->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())); //binding 5..8 - material texture
         }
         terrainRenderer = terrainRendererBuilder->build();
@@ -159,12 +160,12 @@ namespace urchin {
     }
 
     Point3<float> Terrain::findPointAt(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
+        Point2 localCoordinate(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
         return mesh->findPointAt(localCoordinate) + position;
     }
 
     float Terrain::findHeightAt(const Point2<float>& globalXzCoordinate) const {
-        Point2<float> localCoordinate(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
+        Point2 localCoordinate(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 

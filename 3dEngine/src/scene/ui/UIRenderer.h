@@ -72,7 +72,8 @@ namespace urchin {
             Point2<int> uiResolution;
             std::unique_ptr<Shader> uiShader;
 
-            double rawMouseX, rawMouseY;
+            double rawMouseX;
+            double rawMouseY;
             bool canInteractWithUi;
 
             std::unique_ptr<UI3dData> ui3dData;

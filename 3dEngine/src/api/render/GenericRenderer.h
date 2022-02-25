@@ -47,7 +47,7 @@ namespace urchin {
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);
             void updateData(std::size_t, const std::vector<Vector3<float>>&);
-            void updateInstanceData(std::size_t, const float*);
+            void updateInstanceData(std::size_t, const float*) const;
 
             void updateUniformData(std::size_t, const void*);
 

@@ -68,7 +68,9 @@ namespace urchin {
             OffscreenRender* lastTextureWriter;
 
             TextureType textureType;
-            unsigned int width, height, layer;
+            unsigned int width;
+            unsigned int height;
+            unsigned int layer;
             std::size_t nbImages;
             TextureFormat format;
             std::vector<std::vector<uint8_t>> dataPtr;

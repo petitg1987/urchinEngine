@@ -17,7 +17,8 @@ namespace urchin {
         unsigned char bitDepth = png[24];
         auto colorType = (LodePNGColorType)png[25];
 
-        unsigned int width, height;
+        unsigned int width;
+        unsigned int height;
         lodepng::State state = {};
 
         if (colorType == LodePNGColorType::LCT_RGB || colorType == LodePNGColorType::LCT_RGBA) {

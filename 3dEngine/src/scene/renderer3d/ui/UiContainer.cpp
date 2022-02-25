@@ -17,7 +17,7 @@ namespace urchin {
         }
     }
 
-    bool UiContainer::onKeyPress(unsigned int key) {
+    bool UiContainer::onKeyPress(unsigned int key) const {
         for (const auto& ui : uis) {
             if (!ui->onKeyPress(key)) {
                 return false;
@@ -26,7 +26,7 @@ namespace urchin {
         return true;
     }
 
-    bool UiContainer::onKeyRelease(unsigned int key) {
+    bool UiContainer::onKeyRelease(unsigned int key) const {
         for (const auto& ui : uis) {
             if (!ui->onKeyRelease(key)) {
                 return false;
@@ -35,7 +35,7 @@ namespace urchin {
         return true;
     }
 
-    bool UiContainer::onChar(char32_t unicodeCharacter) {
+    bool UiContainer::onChar(char32_t unicodeCharacter) const {
         for (const auto& ui : uis) {
             if (!ui->onChar(unicodeCharacter)) {
                 return false;
@@ -44,7 +44,7 @@ namespace urchin {
         return true;
     }
 
-    bool UiContainer::onMouseMove(double mouseX, double mouseY) {
+    bool UiContainer::onMouseMove(double mouseX, double mouseY) const {
         for (const auto& ui : uis) {
             if (!ui->onMouseMove(mouseX, mouseY)) {
                 return false;
@@ -53,7 +53,7 @@ namespace urchin {
         return true;
     }
 
-    bool UiContainer::onScroll(double offsetY) {
+    bool UiContainer::onScroll(double offsetY) const {
         for (const auto& ui : uis) {
             if (!ui->onScroll(offsetY)) {
                 return false;
@@ -73,7 +73,7 @@ namespace urchin {
         std::erase_if(uis, [&](auto& p){ return ui3dRenderer == p.get(); });
     }
 
-    void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void UiContainer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         for (const auto& ui : uis) {
             ui->prepareRendering(dt, renderingOrder, projectionViewMatrix);
         }

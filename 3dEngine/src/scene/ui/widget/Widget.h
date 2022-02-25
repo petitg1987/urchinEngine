@@ -139,7 +139,8 @@ namespace urchin {
             float rotationZ;
             bool bIsVisible;
 
-            int mouseX, mouseY;
+            int mouseX;
+            int mouseY;
     };
 
     #include "Widget.inl"

@@ -51,7 +51,8 @@ namespace urchin {
             std::shared_ptr<Texture> sourceTexture;
 
             //target texture
-            unsigned int textureWidth, textureHeight;
+            unsigned int textureWidth;
+            unsigned int textureHeight;
             TextureType textureType;
             unsigned int textureNumberLayer;
             TextureFormat textureFormat;

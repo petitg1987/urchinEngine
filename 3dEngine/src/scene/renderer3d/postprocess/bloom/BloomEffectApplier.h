@@ -29,7 +29,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyBloom(unsigned int);
+            void applyBloom(unsigned int) const;
 
         private:
             void checkConfig() const;
@@ -47,7 +47,8 @@ namespace urchin {
 
             RenderTarget& outputRenderTarget;
             Config config;
-            unsigned int sceneWidth, sceneHeight;
+            unsigned int sceneWidth;
+            unsigned int sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;
             std::vector<std::shared_ptr<Texture>> bloomStepTextures;
 

@@ -18,7 +18,7 @@ namespace urchin {
         return animationSpeed;
     }
 
-    float AbstractUIAnimation::computeProgression(float linearProgression) {
+    float AbstractUIAnimation::computeProgression(float linearProgression) const {
         if (bezier) {
             return bezier->computeProgression(linearProgression);
         }

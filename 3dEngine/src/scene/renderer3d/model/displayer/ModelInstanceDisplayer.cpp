@@ -171,18 +171,16 @@ namespace urchin {
 
     bool ModelInstanceDisplayer::checkUpdateAllowance(const Model* model) const {
         bool canUpdateDisplayer = instanceId == ModelDisplayable::INSTANCING_DENY_ID;
-        if (!canUpdateDisplayer) {
-            if (model->computeInstanceId(displayMode) == instanceId) {
-                //Update without impact on the instance ID, either:
-                // - Update has no effect. Examples: change scale from 1.0f to 1.0f, switch between two materials created programmatically and having the exact same properties.
-                // - Bug in the way the instance ID is computed
-                return true;
-            }
+        if (!canUpdateDisplayer && model->computeInstanceId(displayMode) == instanceId) {
+            //Update without impact on the instance ID, either:
+            // - Update has no effect. Examples: change scale from 1.0f to 1.0f, switch between two materials created programmatically and having the exact same properties.
+            // - Bug in the way the instance ID is computed
+            return true;
         }
         return canUpdateDisplayer;
     }
 
-    void ModelInstanceDisplayer::updateMesh(const Model* model) {
+    void ModelInstanceDisplayer::updateMesh(const Model* model) const {
         if (checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -220,7 +218,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateScale(const Model* model) {
+    void ModelInstanceDisplayer::updateScale(const Model* model) const {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {

@@ -42,7 +42,8 @@ namespace urchin {
             float visibleHeight;
             float contentHeight;
 
-            int mouseX, mouseY;
+            int mouseX;
+            int mouseY;
             enum ScrollbarStates {
                 DEFAULT,
                 CURSOR_SELECTED,

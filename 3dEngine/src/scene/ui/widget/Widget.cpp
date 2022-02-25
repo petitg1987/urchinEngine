@@ -60,7 +60,8 @@ namespace urchin {
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
-        Matrix4<float> normalMatrix, projectionViewModelMatrix;
+        Matrix4<float> normalMatrix;
+        Matrix4<float> projectionViewModelMatrix;
         if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
@@ -84,8 +85,8 @@ namespace urchin {
 
         const Container* parentContainer = getParentContainer();
         if (parentContainer && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
-            Vector2<int> scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
-            Vector2<int> scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
+            Vector2 scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
+            Vector2 scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
         }
 
@@ -108,7 +109,7 @@ namespace urchin {
             zBias = (float)computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
             projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
         } else {
-            Matrix4<float> orthogonalMatrix( //orthogonal matrix with origin at top left screen
+            Matrix4 orthogonalMatrix( //orthogonal matrix with origin at top left screen
                     2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
                     0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f, 0.0f,
@@ -270,7 +271,7 @@ namespace urchin {
             if (parent) {
                 startPosition = parent->getGlobalPositionX() - parent->getOutline().rightWidth + (int) parent->getWidth();
             } else {
-                startPosition = (int)getSceneSize().X;
+                startPosition = getSceneSize().X;
             }
         } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
                 || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP
@@ -307,7 +308,7 @@ namespace urchin {
             if (parent) {
                 startPosition = parent->getGlobalPositionY() - parent->getOutline().bottomWidth + (int) parent->getHeight();
             } else {
-                startPosition = (int)getSceneSize().Y;
+                startPosition = getSceneSize().Y;
             }
         } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
                 || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY
@@ -437,14 +438,12 @@ namespace urchin {
     bool Widget::handleWidgetKeyPress(unsigned int key) {
         bool widgetStateUpdated = false;
         if (key == (int)InputDeviceKey::MOUSE_LEFT) {
-            if (isMouseOnWidget(mouseX, mouseY)) {
-                //In some rare cases, the state could be different from FOCUS:
-                // - Widget has just been made visible and mouse has not moved yet
-                // - UIRenderer has just been enabled and mouse has not moved yet
-                if (widgetState == FOCUS) {
-                    widgetState = CLICKING;
-                    widgetStateUpdated = true;
-                }
+            //In some rare cases, the state could be different from FOCUS:
+            // - Widget has just been made visible and mouse has not moved yet
+            // - UIRenderer has just been enabled and mouse has not moved yet
+            if (isMouseOnWidget(mouseX, mouseY) && widgetState == FOCUS) {
+                widgetState = CLICKING;
+                widgetStateUpdated = true;
             }
         }
         return widgetStateUpdated;
@@ -631,7 +630,7 @@ namespace urchin {
     }
 
     bool Widget::isMouseOnWidget(int mouseX, int mouseY) const {
-        Point2<int> mouseCoordinate(mouseX, mouseY);
+        Point2 mouseCoordinate(mouseX, mouseY);
         if (widgetRectangle().collideWithPoint(mouseCoordinate)) {
             std::stack<Container*> containers;
             containers.push(getParentContainer());

@@ -76,11 +76,13 @@ namespace urchin {
 
             //scene information
             bool useNullRenderTarget;
-            float nearPlane, farPlane;
+            float nearPlane;
+            float farPlane;
 
             //config
             Config config;
-            unsigned int textureSizeX, textureSizeY;
+            unsigned int textureSizeX;
+            unsigned int textureSizeY;
 
             //frame buffer object
             std::unique_ptr<RenderTarget> renderTarget;

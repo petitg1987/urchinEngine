@@ -36,7 +36,8 @@ namespace urchin {
 
         private:
             std::string animationFilename;
-            const unsigned int numBones, frameRate;
+            const unsigned int numBones;
+            const unsigned int frameRate;
             std::vector<std::vector<Bone>> skeletonFrames;
             std::vector<bool> animatedBones;
 

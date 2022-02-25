@@ -33,7 +33,8 @@ namespace urchin {
             const std::string titleKey;
 
             //state
-            int mousePositionX, mousePositionY;
+            int mousePositionX;
+            int mousePositionY;
             enum windowStates {
                 DEFAULT,
                 MOVING,

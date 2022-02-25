@@ -18,7 +18,7 @@ namespace urchin {
             virtual void doAnimation(float) = 0;
 
             void markCompleted();
-            float computeProgression(float);
+            float computeProgression(float) const;
 
         private:
             bool animationInitialized;

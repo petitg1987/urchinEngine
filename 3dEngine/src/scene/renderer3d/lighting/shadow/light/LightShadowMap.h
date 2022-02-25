@@ -38,9 +38,9 @@ namespace urchin {
 
             const Matrix4<float>& getLightViewMatrix() const;
             unsigned int retrieveLayersToUpdate() const;
-            void removeModel(Model* model);
+            void removeModel(Model* model) const;
 
-            void renderModels(unsigned int);
+            void renderModels(unsigned int) const;
 
         private:
             void createOrUpdateShadowModelSetDisplayer(unsigned int);

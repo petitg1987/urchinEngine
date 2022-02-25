@@ -86,7 +86,7 @@ namespace urchin {
     /**
      * Build box in light space containing shadow caster and receiver (scene dependent)
      */
-    AABBox<float> LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace) {
+    AABBox<float> LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace) const {
         ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
 
         unsigned int modelsCount = 0;
@@ -110,14 +110,14 @@ namespace urchin {
             }
         }
 
-        AABBox<float> aabboxSceneDependent(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 0.0f));
+        AABBox aabboxSceneDependent(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 0.0f));
         if (modelsCount > 0) {
-            Point3<float> cutMin(
+            Point3 cutMin(
                     std::min(std::max(modelsAabbox.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
                     std::min(std::max(modelsAabbox.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
                     aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
 
-            Point3<float> cutMax(
+            Point3 cutMax(
                     std::max(std::min(modelsAabbox.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
                     std::max(std::min(modelsAabbox.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
                     std::max(std::min(modelsAabbox.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));

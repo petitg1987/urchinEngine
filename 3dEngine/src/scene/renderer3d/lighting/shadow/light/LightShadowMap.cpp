@@ -144,7 +144,7 @@ namespace urchin {
         return layersToUpdate;
     }
 
-    void LightShadowMap::removeModel(Model* model) {
+    void LightShadowMap::removeModel(Model* model) const {
         shadowModelSetDisplayer->removeModel(model);
     }
 
@@ -160,7 +160,7 @@ namespace urchin {
         return models;
     }
 
-    void LightShadowMap::renderModels(unsigned int renderingOrder) {
+    void LightShadowMap::renderModels(unsigned int renderingOrder) const {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();

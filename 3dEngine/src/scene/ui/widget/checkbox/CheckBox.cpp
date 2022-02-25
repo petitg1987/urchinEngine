@@ -52,7 +52,7 @@ namespace urchin {
         return bIsChecked;
     }
 
-    void CheckBox::refreshTexture() {
+    void CheckBox::refreshTexture() const {
         if (checkBoxRenderer) {
             if (bIsChecked) {
                 checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));

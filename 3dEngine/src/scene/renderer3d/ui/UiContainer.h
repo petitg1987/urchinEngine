@@ -14,16 +14,16 @@ namespace urchin {
 
             void onCameraProjectionUpdate(Camera&);
 
-            bool onKeyPress(unsigned int);
-            bool onKeyRelease(unsigned int);
-            bool onChar(char32_t);
-            bool onMouseMove(double, double);
-            bool onScroll(double);
+            bool onKeyPress(unsigned int) const;
+            bool onKeyRelease(unsigned int) const;
+            bool onChar(char32_t) const;
+            bool onMouseMove(double, double) const;
+            bool onScroll(double) const;
 
             UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<int>&, const Point2<float>&, float);
             void removeUI3dRenderer(const UIRenderer*);
 
-            void prepareRendering(float, unsigned int&, const Matrix4<float>&);
+            void prepareRendering(float, unsigned int&, const Matrix4<float>&) const;
 
         private:
             RenderTarget& renderTarget;

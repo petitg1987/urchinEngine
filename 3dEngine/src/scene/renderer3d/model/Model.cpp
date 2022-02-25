@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     const AABBox<float> &Model::getDefaultModelLocalAABBox() const {
-        static AABBox<float> defaultModelLocalAABBox(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+        static AABBox defaultModelLocalAABBox(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
         return defaultModelLocalAABBox;
     }
 

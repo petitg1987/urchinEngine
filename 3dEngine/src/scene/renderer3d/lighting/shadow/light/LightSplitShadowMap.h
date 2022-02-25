@@ -23,7 +23,7 @@ namespace urchin {
         private:
             AABBox<float> createSceneIndependentBox(const Frustum<float>&, const Matrix4<float>&) const;
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
-            AABBox<float> buildSceneDependentBox(const AABBox<float>&, const OBBox<float>&);
+            AABBox<float> buildSceneDependentBox(const AABBox<float>&, const OBBox<float>&) const;
             void updateShadowCasterReceiverBox(const AABBox<float>&, bool);
             bool areAlmostIdenticalAABBox(const AABBox<float>&, const AABBox<float>&) const;
             void updateModels(const std::vector<Model*>&);

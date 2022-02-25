@@ -61,7 +61,8 @@ namespace urchin {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
 
-            Point3<float> min, max;
+            Point3<float> min;
+            Point3<float> max;
             iss >> sdata >> min.X >> min.Y >> min.Z >> sdata >> sdata >> max.X >> max.Y >> max.Z;
             bboxes.emplace_back(min, max);
         }

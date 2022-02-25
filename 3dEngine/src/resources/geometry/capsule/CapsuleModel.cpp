@@ -21,7 +21,8 @@ namespace urchin {
         float angle = (2.0f * MathValue::PI_FLOAT) / (float)sides;
 
         CapsuleShape<float>::CapsuleOrientation capsuleOrientation = capsule.getCapsuleOrientation();
-        Quaternion<float> qCapsuleOrientation, qCapOrientation;
+        Quaternion<float> qCapsuleOrientation;
+        Quaternion<float> qCapOrientation;
         if (capsuleOrientation == CapsuleShape<float>::CAPSULE_X) {
             qCapsuleOrientation = Quaternion<float>::rotationY(MathValue::PI_FLOAT / 2.0f);
             qCapOrientation = Quaternion<float>::rotationZ(MathValue::PI_FLOAT / 2.0f);

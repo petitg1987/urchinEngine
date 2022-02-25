@@ -65,16 +65,22 @@ namespace urchin {
             void updateComponents();
 
             const float MOUSE_SENSITIVITY_FACTOR;
-            Matrix4<float> mView, mProjection;
+            Matrix4<float> mView;
+            Matrix4<float> mProjection;
 
             //pre-computed values
             Quaternion<float> orientation;
-            Matrix4<float> mProjectionView, mProjectionViewInverse, mProjectionInverse;
+            Matrix4<float> mProjectionView;
+            Matrix4<float> mProjectionViewInverse;
+            Matrix4<float> mProjectionInverse;
 
             Point3<float> position;
-            Vector3<float> view, up;
+            Vector3<float> view;
+            Vector3<float> up;
 
-            float horizontalFovAngle, nearPlane, farPlane;
+            float horizontalFovAngle;
+            float nearPlane;
+            float farPlane;
             Frustum<float> baseFrustum; //base frustum (without any matrix transformation)
             Frustum<float> frustum;
 
@@ -83,8 +89,10 @@ namespace urchin {
             bool useMouse; //true if the cursor is used to move the camera
             float mouseSensitivityPercentage;
             bool invertYAxis;
-            unsigned int sceneWidth, sceneHeight;
-            double previousMouseX, previousMouseY;
+            unsigned int sceneWidth;
+            unsigned int sceneHeight;
+            double previousMouseX;
+            double previousMouseY;
     };
 
 }

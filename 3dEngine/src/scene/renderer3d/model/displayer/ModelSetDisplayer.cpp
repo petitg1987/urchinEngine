@@ -95,7 +95,7 @@ namespace urchin {
         modelInstanceDisplayers.clear();
     }
 
-    void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
+    void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) const {
         modelInstanceDisplayer.removeInstanceModel(model);
         if (modelInstanceDisplayer.getInstanceCount() == 0) {
             //to do:
@@ -104,7 +104,7 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
+    void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) const {
         modelInstanceDisplayer.addInstanceModel(model);
     }
 

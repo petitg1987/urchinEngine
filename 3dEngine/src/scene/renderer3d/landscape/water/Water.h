@@ -82,12 +82,16 @@ namespace urchin {
             } waterProperties;
 
             Point3<float> centerPosition;
-            float xSize, zSize;
+            float xSize;
+            float zSize;
             std::unique_ptr<Rectangle2D<float>> waterRectangle;
 
-            std::string normalFilename, dudvFilename;
-            std::shared_ptr<Texture> normalTexture, dudvMap;
-            float sRepeat, tRepeat;
+            std::string normalFilename;
+            std::string dudvFilename;
+            std::shared_ptr<Texture> normalTexture;
+            std::shared_ptr<Texture> dudvMap;
+            float sRepeat;
+            float tRepeat;
 
             float density;
             float gradient;

@@ -46,19 +46,22 @@ namespace urchin {
         private:
             ModelInstanceDisplayer* findModelInstanceDisplayer(const Model&) const;
             void clearDisplayers();
-            void removeModelFromDisplayer(Model&, ModelInstanceDisplayer&);
-            void addModelToDisplayer(Model&, ModelInstanceDisplayer&);
+            void removeModelFromDisplayer(Model&, ModelInstanceDisplayer&) const;
+            void addModelToDisplayer(Model&, ModelInstanceDisplayer&) const;
 
             bool isInitialized;
 
-            std::string vertexShaderName, geometryShaderName, fragmentShaderName;
+            std::string vertexShaderName;
+            std::string geometryShaderName;
+            std::string fragmentShaderName;
             std::unique_ptr<ShaderConstants> shaderConstants;
 
             DisplayMode displayMode;
             std::unique_ptr<Shader> modelShader;
 
             std::unique_ptr<CustomModelShaderVariable> customShaderVariable;
-            bool depthTestEnabled, depthWriteEnabled;
+            bool depthTestEnabled;
+            bool depthWriteEnabled;
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
             std::unique_ptr<MeshFilter> meshFilter;

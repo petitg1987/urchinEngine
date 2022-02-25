@@ -46,10 +46,10 @@ namespace urchin {
 
         float xScale = uiSize.X / (float)uiResolution.X;
         float yScale = -uiSize.Y / (float)uiResolution.Y; //negate for flip on Y axis
-        Matrix4<float> uiViewMatrix(xScale, 0.0f, 0.0f, 0.0f,
-                                    0.0f, yScale, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 1.0f, 0.0f,
-                                    0.0f, 0.0f, 0.0f, 1.0f);
+        Matrix4 uiViewMatrix(xScale, 0.0f, 0.0f, 0.0f,
+                             0.0f, yScale, 0.0f, 0.0f,
+                             0.0f, 0.0f, 1.0f, 0.0f,
+                             0.0f, 0.0f, 0.0f, 1.0f);
         this->ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
 
         this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
@@ -168,16 +168,15 @@ namespace urchin {
     }
 
     bool UIRenderer::onChar(char32_t unicodeCharacter) {
-        if (canInteractWithUi) {
-            if (unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
-                && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
-                && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
-                && unicodeCharacter != 127 //ignore 'Delete' unicode
-                    ) {
-                for (long i = (long) widgets.size() - 1; i >= 0; --i) {
-                    if (!widgets[(std::size_t) i]->onChar(unicodeCharacter)) {
-                        return false;
-                    }
+        if (canInteractWithUi
+            && unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
+            && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
+            && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
+            && unicodeCharacter != 127 //ignore 'Delete' unicode
+                ) {
+            for (long i = (long) widgets.size() - 1; i >= 0; --i) {
+                if (!widgets[(std::size_t) i]->onChar(unicodeCharacter)) {
+                    return false;
                 }
             }
         }
@@ -244,7 +243,7 @@ namespace urchin {
             Point3<float> intersectionPointClipSpace = (ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint)).toPoint3();
             float clipSpaceX = (2.0f * pointer.X) / ((float) renderTarget.getWidth()) - 1.0f;
             float clipSpaceY = (2.0f * pointer.Y) / ((float) renderTarget.getHeight()) - 1.0f;
-            Point4<float> mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
+            Point4 mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);
 
             Matrix4<float> uiInverseMatrix = (ui3dData->camera->getProjectionViewMatrix() * ui3dData->modelMatrix).inverse();
             Point3<float> mouseScreen = (uiInverseMatrix * mousePos).toPoint3();

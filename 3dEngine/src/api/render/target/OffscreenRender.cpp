@@ -235,10 +235,9 @@ namespace urchin {
             outputTexture.texture->setLastTextureWriter(this);
         }
 
-        if (depthTexture && depthTexture->isWritableTexture()) {
-            if (getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT) { //currently, assume that write is not done in the external depth attachment: could be not true anymore in the future !
-                depthTexture->setLastTextureWriter(this);
-            }
+        if (depthTexture && depthTexture->isWritableTexture()
+                && getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT /* currently, assume that write is not done in the external depth attachment: could be not true anymore in the future ! */) {
+            depthTexture->setLastTextureWriter(this);
         }
     }
 

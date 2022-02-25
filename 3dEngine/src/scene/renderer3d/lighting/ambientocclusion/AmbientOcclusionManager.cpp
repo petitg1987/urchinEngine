@@ -167,7 +167,7 @@ namespace urchin {
 
         ssaoKernel.resize(config.kernelSamples);
         for (unsigned int i = 0; i < config.kernelSamples; ++i) {
-            Vector4<float> sample(
+            Vector4 sample(
                     randomFloats(generator) * 2.0f - 1.0f,
                     randomFloats(generator) * 2.0f - 1.0f,
                     randomFloats(generator),

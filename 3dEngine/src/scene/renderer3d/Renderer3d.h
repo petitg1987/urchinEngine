@@ -109,7 +109,8 @@ namespace urchin {
 
             //scene properties
             RenderTarget& finalRenderTarget;
-            unsigned int sceneWidth, sceneHeight;
+            unsigned int sceneWidth;
+            unsigned int sceneHeight;
             bool paused;
             std::shared_ptr<Camera> camera;
 
@@ -132,7 +133,9 @@ namespace urchin {
             TransparentManager transparentManager;
             ShadowManager shadowManager;
 
-            std::shared_ptr<Texture> diffuseTexture, normalAndAmbientTexture, lightingPassTexture;
+            std::shared_ptr<Texture> diffuseTexture;
+            std::shared_ptr<Texture> normalAndAmbientTexture;
+            std::shared_ptr<Texture> lightingPassTexture;
 
             //lighting pass rendering + post process
             std::unique_ptr<RenderTarget> lightingRenderTarget;

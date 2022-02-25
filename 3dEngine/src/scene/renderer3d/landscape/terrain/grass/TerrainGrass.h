@@ -93,8 +93,10 @@ namespace urchin {
             const TerrainMesh* mesh;
             Point3<float> terrainPosition;
 
-            std::shared_ptr<Texture> grassTexture, grassMaskTexture;
-            std::string grassTextureFilename, grassMaskFilename;
+            std::shared_ptr<Texture> grassTexture;
+            std::shared_ptr<Texture> grassMaskTexture;
+            std::string grassTextureFilename;
+            std::string grassMaskFilename;
             std::unique_ptr<TerrainGrassQuadtree> mainGrassQuadtree;
             mutable std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
             float grassQuantity;
