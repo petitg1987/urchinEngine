@@ -176,7 +176,7 @@ namespace urchin {
                 AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape().toAABBox(inverseTransformObject2 * temporalObject1.getTo());
 
                 if (temporalObject1.isRay()) {
-                    LineSegment3D<float> ray(fromAABBoxLocalToObject1.getMin(), toAABBoxLocalToObject1.getMin());
+                    LineSegment3D ray(fromAABBoxLocalToObject1.getMin(), toAABBoxLocalToObject1.getMin());
                     const std::vector<CollisionTriangleShape>& triangles = concaveShape.findTrianglesHitByRay(ray);
 
                     trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);

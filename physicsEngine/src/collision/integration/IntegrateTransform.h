@@ -14,7 +14,7 @@ namespace urchin {
         public:
             IntegrateTransform(const BodyContainer&, const BroadPhase&, const NarrowPhase&);
 
-            void process(float);
+            void process(float) const;
 
         private:
             void handleContinuousCollision(RigidBody&, const PhysicsTransform&, const PhysicsTransform&, float) const;

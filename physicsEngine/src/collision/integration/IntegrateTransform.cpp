@@ -14,7 +14,7 @@ namespace urchin {
     /**
      * @param dt Delta of time between two simulation steps
      */
-    void IntegrateTransform::process(float dt) {
+    void IntegrateTransform::process(float dt) const {
         for (const auto& abstractBody : bodyContainer.getBodies()) {
             RigidBody* body = RigidBody::upCast(abstractBody.get());
             if (body && body->isActive()) {
