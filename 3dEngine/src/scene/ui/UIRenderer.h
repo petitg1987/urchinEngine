@@ -55,6 +55,7 @@ namespace urchin {
             const Point2<int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
+            bool canInteractWithUi() const;
 
             void addWidget(const std::shared_ptr<Widget>&);
             void removeWidget(const Widget&);
@@ -65,6 +66,7 @@ namespace urchin {
             void prepareRendering(float, unsigned int&, const Matrix4<float>&) const;
 
         private:
+            bool onCursorMove(double, double);
             bool adjustMouseCoordinates(const Point2<double>&, Point2<int>&) const;
 
             RenderTarget& renderTarget;
@@ -74,7 +76,7 @@ namespace urchin {
 
             double rawMouseX;
             double rawMouseY;
-            bool canInteractWithUi;
+            bool bCanInteractWithUi;
 
             std::unique_ptr<UI3dData> ui3dData;
             std::vector<std::shared_ptr<Widget>> widgets;

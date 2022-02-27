@@ -17,7 +17,7 @@ namespace urchin {
             uiResolution((int)renderTarget.getWidth(), (int)renderTarget.getHeight()),
             rawMouseX(0.0),
             rawMouseY(0.0),
-            canInteractWithUi(true) {
+            bCanInteractWithUi(true) {
         if (renderTarget.isValidRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
         } else {
@@ -135,14 +135,14 @@ namespace urchin {
         } else if (dynamic_cast<Camera*>(observable)) {
             if (notificationType == Camera::POSITION_UPDATED) {
                 if (ui3dData) {
-                    onMouseMove(rawMouseX, rawMouseY);
+                    onCursorMove(rawMouseX, rawMouseY);
                 }
             }
         }
     }
 
     bool UIRenderer::onKeyPress(unsigned int key) {
-        if (canInteractWithUi) {
+        if (bCanInteractWithUi) {
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
             for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
@@ -155,7 +155,7 @@ namespace urchin {
     }
 
     bool UIRenderer::onKeyRelease(unsigned int key) {
-        if (canInteractWithUi) {
+        if (bCanInteractWithUi) {
             //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
             std::vector<std::shared_ptr<Widget>> widgetsCopy = widgets;
             for (long i = (long) widgetsCopy.size() - 1; i >= 0; --i) {
@@ -168,12 +168,12 @@ namespace urchin {
     }
 
     bool UIRenderer::onChar(char32_t unicodeCharacter) {
-        if (canInteractWithUi
+        if (bCanInteractWithUi
             && unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
             && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
             && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
             && unicodeCharacter != 127 //ignore 'Delete' unicode
-                ) {
+        ) {
             for (long i = (long) widgets.size() - 1; i >= 0; --i) {
                 if (!widgets[(std::size_t) i]->onChar(unicodeCharacter)) {
                     return false;
@@ -184,13 +184,17 @@ namespace urchin {
     }
 
     bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
+        return onCursorMove(mouseX, mouseY);
+    }
+
+    bool UIRenderer::onCursorMove(double mouseX, double mouseY) {
         this->rawMouseX = mouseX;
         this->rawMouseY = mouseY;
 
         Point2<int> adjustedMouseCoordinate;
-        canInteractWithUi = adjustMouseCoordinates(Point2<double>(mouseX, mouseY), adjustedMouseCoordinate);
+        bCanInteractWithUi = adjustMouseCoordinates(Point2<double>(mouseX, mouseY), adjustedMouseCoordinate);
 
-        if (canInteractWithUi) {
+        if (bCanInteractWithUi) {
             for (long i = (long)widgets.size() - 1; i >= 0; --i) {
                 if (!widgets[(std::size_t)i]->onMouseMove(adjustedMouseCoordinate.X, adjustedMouseCoordinate.Y)) {
                     return false;
@@ -257,7 +261,7 @@ namespace urchin {
     }
 
     bool UIRenderer::onScroll(double offsetY) {
-        if (canInteractWithUi) {
+        if (bCanInteractWithUi) {
             for (long i = (long) widgets.size() - 1; i >= 0; --i) {
                 if (!widgets[(std::size_t) i]->onScroll(offsetY)) {
                     return false;
@@ -291,6 +295,10 @@ namespace urchin {
 
     UI3dData* UIRenderer::getUi3dData() const {
         return ui3dData.get();
+    }
+
+    bool UIRenderer::canInteractWithUi() const {
+        return bCanInteractWithUi;
     }
 
     void UIRenderer::addWidget(const std::shared_ptr<Widget>& widget) {
