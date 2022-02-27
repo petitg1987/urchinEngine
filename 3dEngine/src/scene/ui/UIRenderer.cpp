@@ -251,6 +251,9 @@ namespace urchin {
 
             Matrix4<float> uiInverseMatrix = (ui3dData->camera->getProjectionViewMatrix() * ui3dData->modelMatrix).inverse();
             Point3<float> mouseScreen = (uiInverseMatrix * mousePos).toPoint3();
+            if (mouseScreen.X < 0.0f || mouseScreen.X > (float)uiResolution.X || mouseScreen.Y < 0.0f || mouseScreen.Y > (float)uiResolution.Y) {
+                return false; //cursor outside UI plane
+            }
 
             adjustedMouseCoord = Point2<int>((int)mouseScreen.X, (int)mouseScreen.Y);
             return true;
