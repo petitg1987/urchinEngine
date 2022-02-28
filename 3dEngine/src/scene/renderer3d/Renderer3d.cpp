@@ -432,7 +432,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateScene");
 
         //move the camera
-        camera->updateCameraView(dt);
+        camera->refreshCameraView(dt);
 
         //refresh models in octree
         modelOctreeManager.refreshOctreeables();

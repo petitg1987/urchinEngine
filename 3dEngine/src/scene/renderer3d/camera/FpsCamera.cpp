@@ -64,7 +64,7 @@ namespace urchin {
         return true;
     }
 
-    void FpsCamera::updateCameraView(float dt) {
+    void FpsCamera::refreshCameraView(float dt) {
         if (isKeyLeftPressed) {
             moveOnLocalXAxis(dt * speed);
         }

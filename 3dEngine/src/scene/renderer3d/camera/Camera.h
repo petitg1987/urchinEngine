@@ -52,10 +52,11 @@ namespace urchin {
             void moveOnLocalXAxis(float);
             void moveOnLocalZAxis(float);
             void rotate(const Quaternion<float>&);
+            void updateViewUp(const Vector3<float>&, const Vector3<float>&);
 
             virtual bool onKeyPress(unsigned int);
             virtual bool onKeyRelease(unsigned int);
-            virtual void updateCameraView(float) = 0;
+            virtual void refreshCameraView(float) = 0;
             virtual bool onMouseMove(double, double);
 
         private:

@@ -20,7 +20,7 @@ namespace urchin {
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;
 
-            void updateCameraView(float) override;
+            void refreshCameraView(float) override;
 
         private:
             unsigned int keyFront;

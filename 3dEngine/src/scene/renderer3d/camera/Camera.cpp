@@ -235,6 +235,12 @@ namespace urchin {
         }
     }
 
+    void Camera::updateViewUp(const Vector3<float>& view, const Vector3<float>& up) {
+        this->view = view;
+        this->up = up;
+        updateComponents();
+    }
+
     bool Camera::onKeyPress(unsigned int) {
         //do nothing
         return true;

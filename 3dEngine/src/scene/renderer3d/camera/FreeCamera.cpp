@@ -75,7 +75,7 @@ namespace urchin {
         return true;
     }
 
-    void FreeCamera::updateCameraView(float dt) {
+    void FreeCamera::refreshCameraView(float dt) {
         if (isKeyLeftPressed) {
             if (isUseMouseToMoveCamera()) {
                 moveOnLocalXAxis(dt * speed);

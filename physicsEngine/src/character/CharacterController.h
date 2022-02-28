@@ -42,9 +42,10 @@ namespace urchin {
             void walk(const Vector3<float>&);
             void run(const Vector3<float>&);
             void verticalMove(float);
-            void setOrientation(const Vector3<float>&) const;
             void jump();
             void enableGravity(bool);
+            void updateTransform(const Point3<float>&, const Vector3<float>&) const;
+            void updateOrientation(const Vector3<float>&) const;
 
             bool isOnGround() const;
             bool isGravityEnabled() const;
@@ -53,6 +54,8 @@ namespace urchin {
 
         private:
             void createBodies();
+
+            Quaternion<float> computeYRotation(const Vector3<float>&) const;
 
             void updateStep(float);
             void updateBodiesTransform(float);

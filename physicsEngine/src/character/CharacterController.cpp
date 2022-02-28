@@ -66,25 +66,6 @@ namespace urchin {
         }
     }
 
-    /**
-     * Define the character orientation. This orientation has only effect when the character is not moving.
-     * When the character is moving, the orientation is determined in function of the direction.
-     */
-    void CharacterController::setOrientation(const Vector3<float>& viewVector) const {
-        //Following lines are equivalent to Camera#updateComponents() but with simplification to avoid the rotation on X/Z axis:
-        // - position.Y / viewVector.Y set to 0.0
-        // - up = 0.0, 1.0, 0.0
-        Vector3<float> yViewVector = Vector3<float>(viewVector.X, 0.0f, viewVector.Z).normalize();
-        Matrix3 mView(-yViewVector.Z,    0.0f,       yViewVector.X,
-                      0.0f,              1.0f,       0.0f,
-                      -yViewVector[0],   0.0f,       -yViewVector[2]);
-        Quaternion<float> yRotation = Quaternion<float>::fromRotationMatrix(mView).conjugate();
-
-        Point3<float> position = ghostBody->getTransform().getPosition();
-        ghostBody->setTransform(PhysicsTransform(position, yRotation));
-        ccdGhostBody->setTransform(PhysicsTransform(position, yRotation));
-    }
-
     void CharacterController::jump() {
         if (gravityEnabled) {
             makeJump = true;
@@ -98,6 +79,36 @@ namespace urchin {
             this->makeJump = false;
             this->jumping = false;
         }
+    }
+
+    void CharacterController::updateTransform(const Point3<float>& position, const Vector3<float>& viewVector) const {
+        Quaternion<float> yRotation = computeYRotation(viewVector);
+
+        ghostBody->setTransform(PhysicsTransform(position, yRotation));
+        ccdGhostBody->setTransform(PhysicsTransform(position, yRotation));
+    }
+
+    /**
+     * Define the character orientation. This orientation has only effect when the character is not moving.
+     * When the character is moving, the orientation is determined in function of the direction.
+     */
+    void CharacterController::updateOrientation(const Vector3<float>& viewVector) const {
+        Point3<float> position = ghostBody->getTransform().getPosition();
+        Quaternion<float> yRotation = computeYRotation(viewVector);
+
+        ghostBody->setTransform(PhysicsTransform(position, yRotation));
+        ccdGhostBody->setTransform(PhysicsTransform(position, yRotation));
+    }
+
+    Quaternion<float> CharacterController::computeYRotation(const Vector3<float>& viewVector) const {
+        //Following lines are equivalent to Camera#updateComponents() but with simplification to avoid the rotation on X/Z axis:
+        // - position.Y / viewVector.Y set to 0.0
+        // - up = 0.0, 1.0, 0.0
+        Vector3<float> yViewVector = Vector3<float>(viewVector.X, 0.0f, viewVector.Z).normalize();
+        Matrix3 mView(-yViewVector.Z,    0.0f,       yViewVector.X,
+                      0.0f,              1.0f,       0.0f,
+                      -yViewVector[0],   0.0f,       -yViewVector[2]);
+        return Quaternion<float>::fromRotationMatrix(mView).conjugate();
     }
 
     bool CharacterController::isOnGround() const {
