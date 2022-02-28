@@ -23,6 +23,7 @@ namespace urchin {
             void detachChildren() override;
             void resetChildren();
 
+            bool isScrollable() const;
             int getScrollShiftY() const override;
             void onScrollableContentUpdated() const override;
 

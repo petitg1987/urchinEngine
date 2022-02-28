@@ -58,6 +58,10 @@ namespace urchin {
         }
     }
 
+    bool Container::isScrollable() const {
+        return scrollbar != nullptr;
+    }
+
     int Container::getScrollShiftY() const {
         if (scrollbar) {
             return scrollbar->getScrollShiftY();

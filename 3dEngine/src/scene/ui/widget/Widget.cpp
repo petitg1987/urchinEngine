@@ -84,7 +84,7 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
 
         const Container* parentContainer = getParentContainer();
-        if (parentContainer && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
+        if (parentContainer && parentContainer->isScrollable()) {
             Vector2 scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
             Vector2 scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
             rendererBuilder->enableScissor(scissorOffset, scissorSize);
@@ -227,7 +227,8 @@ namespace urchin {
     }
 
     void Widget::updatePosition(Position position) {
-        if (dynamic_cast<Container*>(this)  && !uiRenderer->getUi3dData() /* scissor test is not functional for UI 3d */) {
+        auto *container = dynamic_cast<Container*>(this);
+        if (container && container->isScrollable()) {
             throw std::runtime_error("Can not move a container: scissor update is not implemented");
         }
         this->position = position;
