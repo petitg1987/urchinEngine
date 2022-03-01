@@ -50,8 +50,8 @@ namespace urchin {
         throw std::invalid_argument("Impossible to find a object entity having name: " + std::string(name));
     }
 
-    void Map::findObjectEntitiesByTag(std::string_view tag, std::vector<ObjectEntity*>& models) const {
-        objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, models);
+    void Map::findObjectEntitiesByTag(std::string_view tag, std::vector<ObjectEntity*>& objects) const {
+        objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, objects);
     }
 
     ObjectEntity* Map::findObjectEntityByTag(std::string_view tag) const {
