@@ -135,7 +135,7 @@ namespace urchin {
         } else if (dynamic_cast<Camera*>(observable)) {
             if (notificationType == Camera::POSITION_UPDATED) {
                 if (ui3dData) {
-                    onCursorMove(rawMouseX, rawMouseY);
+                    onCursorMove();
                 }
             }
         }
@@ -184,15 +184,15 @@ namespace urchin {
     }
 
     bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
-        return onCursorMove(mouseX, mouseY);
-    }
-
-    bool UIRenderer::onCursorMove(double mouseX, double mouseY) {
         this->rawMouseX = mouseX;
         this->rawMouseY = mouseY;
 
+        return onCursorMove();
+    }
+
+    bool UIRenderer::onCursorMove() {
         Point2<int> adjustedMouseCoordinate;
-        bCanInteractWithUi = adjustMouseCoordinates(Point2<double>(mouseX, mouseY), adjustedMouseCoordinate);
+        bCanInteractWithUi = adjustMouseCoordinates(adjustedMouseCoordinate);
 
         if (bCanInteractWithUi) {
             for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -210,7 +210,7 @@ namespace urchin {
      * @param adjustedMouseCoord [out] Adjusted mouse coordinates
      * @return True when camera is near to UI to interact with it
      */
-    bool UIRenderer::adjustMouseCoordinates(const Point2<double>& mouseCoord, Point2<int>& adjustedMouseCoord) const {
+    bool UIRenderer::adjustMouseCoordinates(Point2<int>& adjustedMouseCoord) const {
         if (ui3dData) {
             if (ui3dData->maxInteractiveDistance <= 0.0f) {
                 return false; //interaction disabled
@@ -230,7 +230,7 @@ namespace urchin {
 
             Point2<float> pointer;
             if (ui3dData->pointerType == UI3dPointerType::MOUSE) {
-                pointer = Point2<float>((float)mouseCoord.X, (float)mouseCoord.Y);
+                pointer = Point2<float>((float)rawMouseX, (float)rawMouseY);
             } else if (ui3dData->pointerType == UI3dPointerType::SCREEN_CENTER) {
                 pointer = Point2<float>((float)renderTarget.getWidth() / 2.0f, (float)renderTarget.getHeight() / 2.0f);
             } else {
@@ -259,7 +259,7 @@ namespace urchin {
             return true;
         }
 
-        adjustedMouseCoord = Point2<int>((int)mouseCoord.X, (int)mouseCoord.Y);
+        adjustedMouseCoord = Point2<int>((int)rawMouseX, (int)rawMouseY);
         return true;
     }
 

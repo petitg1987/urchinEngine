@@ -47,6 +47,7 @@ namespace urchin {
             bool onKeyRelease(unsigned int) override;
             bool onChar(char32_t) override;
             bool onMouseMove(double, double) override;
+            bool onCursorMove();
             bool onScroll(double) override;
             void onDisable() override;
 
@@ -66,8 +67,7 @@ namespace urchin {
             void prepareRendering(float, unsigned int&, const Matrix4<float>&) const;
 
         private:
-            bool onCursorMove(double, double);
-            bool adjustMouseCoordinates(const Point2<double>&, Point2<int>&) const;
+            bool adjustMouseCoordinates(Point2<int>&) const;
 
             RenderTarget& renderTarget;
             I18nService& i18nService;
