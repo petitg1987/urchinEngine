@@ -43,6 +43,10 @@ namespace urchin {
                 ->build();
     }
 
+    WidgetType StaticBitmap::getWidgetType() const {
+        return WidgetType::STATIC_BITMAP;
+    }
+
     const std::string& StaticBitmap::getImageName() const {
         return image->getName();
     }

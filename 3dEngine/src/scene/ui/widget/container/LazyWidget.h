@@ -14,6 +14,8 @@ namespace urchin {
         public:
             static std::shared_ptr<LazyWidget> create(Widget*, Position, Size, std::function<void(LazyWidget*)>);
 
+            WidgetType getWidgetType() const override;
+
             void loadChildren();
             void unloadChildren();
 

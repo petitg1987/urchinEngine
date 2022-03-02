@@ -15,6 +15,8 @@ namespace urchin {
         public:
             static std::shared_ptr<TextBox> create(Widget*, Position, Size, std::string);
 
+            WidgetType getWidgetType() const override;
+
             std::string getText();
             void updateText(std::string_view);
 

@@ -25,6 +25,10 @@ namespace urchin {
         }
     }
 
+    WidgetType Container::getWidgetType() const {
+        return WidgetType::CONTAINER;
+    }
+
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
         if (scrollbar) {
@@ -72,7 +76,8 @@ namespace urchin {
     void Container::onScrollableContentUpdated() const {
         Rectangle2D<int> containerRectangle = widgetRectangle();
         for (const auto& child : getChildren()) {
-            if (auto* lazyWidget = dynamic_cast<LazyWidget*>(child.get())) {
+            if (child->getWidgetType() == WidgetType::LAZY_WIDGET) {
+                auto* lazyWidget = static_cast<LazyWidget*>(child.get());
                 if (containerRectangle.collideWithRectangle(child->widgetRectangle())) {
                     lazyWidget->loadChildren();
                 } else {

@@ -18,6 +18,8 @@ namespace urchin {
 
             void onResize() override;
 
+            WidgetType getWidgetType() const override;
+
             void addChild(const std::shared_ptr<Widget>&) override;
             void detachChild(Widget*) override;
             void detachChildren() override;

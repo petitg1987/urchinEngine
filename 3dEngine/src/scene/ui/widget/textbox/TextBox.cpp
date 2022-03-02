@@ -82,6 +82,10 @@ namespace urchin {
                 ->build();
     }
 
+    WidgetType TextBox::getWidgetType() const {
+        return WidgetType::TEXTBOX;
+    }
+
     std::string TextBox::getText() {
         return std::string(stringConvert.to_bytes(allText));
     }

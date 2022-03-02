@@ -55,6 +55,10 @@ namespace urchin {
                 ->build();
     }
 
+    WidgetType Window::getWidgetType() const {
+        return WidgetType::WINDOW;
+    }
+
     bool Window::onKeyPressEvent(unsigned int key) {
         bool propagateEvent = true;
         if (key == (int)InputDeviceKey::MOUSE_LEFT) {

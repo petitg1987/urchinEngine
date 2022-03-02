@@ -48,6 +48,10 @@ namespace urchin {
         refreshRenderer();
     }
 
+    WidgetType Text::getWidgetType() const {
+        return WidgetType::TEXT;
+    }
+
     void Text::setMaxWidth(float maxWidth, LengthType maxWidthType) {
         this->maxWidth = maxWidth;
         this->maxWidthType = maxWidthType;

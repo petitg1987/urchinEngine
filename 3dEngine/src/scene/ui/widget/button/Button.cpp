@@ -57,6 +57,10 @@ namespace urchin {
                 ->build();
     }
 
+    WidgetType Button::getWidgetType() const {
+        return WidgetType::BUTTON;
+    }
+
     void Button::refreshTexture() {
         auto oldTexture = currentTexture;
         if (getWidgetState() == FOCUS) {

@@ -16,6 +16,8 @@ namespace urchin {
             static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
             static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<ParameterizedText>&);
 
+            WidgetType getWidgetType() const override;
+
             void allowLoopOnValues(bool);
             bool isLoopOnValuesAllowed() const;
 

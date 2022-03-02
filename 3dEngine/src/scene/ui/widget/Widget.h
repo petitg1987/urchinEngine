@@ -5,6 +5,7 @@
 #include <optional>
 #include <UrchinCommon.h>
 
+#include <scene/ui/widget/WidgetType.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/UISkinService.h>
@@ -38,6 +39,8 @@ namespace urchin {
             bool isInitialized() const;
             virtual void onResize();
             void onCameraProjectionUpdate();
+
+            virtual WidgetType getWidgetType() const = 0;
 
             Widget* getParent() const;
             Container* getParentContainer() const;

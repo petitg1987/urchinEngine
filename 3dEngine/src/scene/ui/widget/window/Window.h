@@ -16,6 +16,8 @@ namespace urchin {
         public:
             static std::shared_ptr<Window> create(Widget*, Position, Size, std::string, std::string);
 
+            WidgetType getWidgetType() const override;
+
         protected:
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;

@@ -13,6 +13,10 @@ namespace urchin {
         return Widget::create<LazyWidget>(new LazyWidget(position, size, std::move(loadChildrenFunction)), parent);
     }
 
+    WidgetType LazyWidget::getWidgetType() const {
+        return WidgetType::LAZY_WIDGET;
+    }
+
     void LazyWidget::loadChildren() {
         if (!isLoaded) {
             loadChildrenFunction(this);

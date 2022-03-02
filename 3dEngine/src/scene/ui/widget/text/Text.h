@@ -24,6 +24,8 @@ namespace urchin {
             static std::shared_ptr<Text> create(Widget*, Position, std::string, const ParameterizedText&);
             ~Text() override;
 
+            WidgetType getWidgetType() const override;
+
             void setMaxWidth(float, LengthType);
             void updateText(std::string);
             void updateText(const ParameterizedText&);

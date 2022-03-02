@@ -159,8 +159,8 @@ namespace urchin {
     Container* Widget::getParentContainer() const {
         Widget *parent = getParent();
         while (parent != nullptr) {
-            if (auto* containerParent = dynamic_cast<Container*>(parent)) {
-                return containerParent;
+            if (parent->getWidgetType() == WidgetType::CONTAINER) {
+                return static_cast<Container*>(parent);
             }
             parent = parent->getParent();
         }
@@ -227,8 +227,7 @@ namespace urchin {
     }
 
     void Widget::updatePosition(Position position) {
-        auto *container = dynamic_cast<Container*>(this);
-        if (container && container->isScrollable()) {
+        if (this->getWidgetType() == WidgetType::CONTAINER && static_cast<Container*>(this)->isScrollable()) {
             throw std::runtime_error("Can not move a container: scissor update is not implemented");
         }
         this->position = position;

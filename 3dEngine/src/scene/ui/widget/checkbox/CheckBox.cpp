@@ -36,6 +36,10 @@ namespace urchin {
                 ->build();
     }
 
+    WidgetType CheckBox::getWidgetType() const {
+        return WidgetType::CHECKBOX;
+    }
+
     std::shared_ptr<Texture> CheckBox::loadTexture(const UdaChunk* checkBoxChunk, std::string_view chunkName) const {
         auto imageElem = UISkinService::instance().getSkinReader().getFirstChunk(true, chunkName, UdaAttribute(), checkBoxChunk);
 

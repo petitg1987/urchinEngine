@@ -77,6 +77,10 @@ namespace urchin {
         valuesText[selectedIndex]->setIsVisible(true);
     }
 
+    WidgetType Sequence::getWidgetType() const {
+        return WidgetType::SEQUENCE;
+    }
+
     void Sequence::allowLoopOnValues(bool loopOnValuesEnabled) {
         this->loopOnValuesEnabled = loopOnValuesEnabled;
     }
