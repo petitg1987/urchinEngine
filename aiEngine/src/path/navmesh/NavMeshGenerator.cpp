@@ -256,7 +256,9 @@ namespace urchin {
                         Line3D polytopeEdgeLine(polytopePlaneSurface->getCcwPoints()[previousI], polytopePlaneSurface->getCcwPoints()[i]);
                         bool hasIntersection = false;
                         Point3<float> intersectionPoint = walkablePlane.intersectPoint(polytopeEdgeLine, hasIntersection);
-                        footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
+                        if (hasIntersection) [[likely]] { //should be always true except due to rounding error
+                            footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
+                        }
                     }
                 }
             } else {
