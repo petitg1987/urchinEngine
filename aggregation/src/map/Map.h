@@ -38,6 +38,7 @@ namespace urchin {
             void removeObjectEntity(ObjectEntity&);
             bool moveUpObjectEntity(ObjectEntity&);
             bool moveDownObjectEntity(ObjectEntity&);
+            template<class Compare> void sortObjectEntity(Compare);
 
             const std::list<std::unique_ptr<LightEntity>>& getLightEntities() const;
             LightEntity& getLightEntity(std::string_view) const;
@@ -83,5 +84,7 @@ namespace urchin {
             std::unique_ptr<SkyEntity> skyEntity;
             std::list<std::unique_ptr<SoundEntity>> soundEntities;
     };
+
+    #include "Map.inl"
 
 }
