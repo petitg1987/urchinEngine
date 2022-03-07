@@ -83,11 +83,21 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
 
-        const Container* parentContainer = getParentContainer();
-        if (parentContainer && parentContainer->isScrollable()) {
-            Vector2 scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
-            Vector2 scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
-            rendererBuilder->enableScissor(scissorOffset, scissorSize);
+        const Widget *currentWidget = this;
+        bool scissorApplied = false;
+        while (currentWidget != nullptr) {
+            const Container* parentContainer = currentWidget->getParentContainer();
+            if (parentContainer && parentContainer->isScrollable()) {
+                if (scissorApplied) {
+                    throw std::runtime_error("Applied two scissors is not implemented");
+                }
+                Vector2 scissorOffset(parentContainer->getGlobalPositionX(), parentContainer->getGlobalPositionY());
+                Vector2 scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
+                rendererBuilder->enableScissor(scissorOffset, scissorSize);
+
+                scissorApplied = true;
+            }
+            currentWidget = parentContainer;
         }
 
         return rendererBuilder;
