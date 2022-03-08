@@ -46,8 +46,6 @@ namespace urchin {
         auto axisModel = std::make_shared<CylinderModel>(Cylinder<float>(radius, axeVector.length(), CylinderShape<float>::CYLINDER_X, axeCenter, axeOrientation), 10);
         axisModel->setPolygonMode(PolygonMode::FILL);
         axisModel->setAlwaysVisible(true);
-        objectMoveAxisModels.push_back(std::move(axisModel));
-
-        return *objectMoveAxisModels.back();
+        return *objectMoveAxisModels.emplace_back(std::move(axisModel));
     }
 }
