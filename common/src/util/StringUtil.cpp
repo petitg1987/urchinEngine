@@ -97,4 +97,12 @@ namespace urchin {
         return true;
     }
 
+    void StringUtil::camelToPascalCase(std::string& camelCaseStr) {
+        camelCaseStr[0] = static_cast<char>(std::toupper(camelCaseStr[0]));
+    }
+
+    void StringUtil::pascalToCamelCase(std::string& pascalCaseStr) {
+        pascalCaseStr[0] = static_cast<char>(std::tolower(pascalCaseStr[0]));
+    }
+
 }
