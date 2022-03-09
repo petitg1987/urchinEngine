@@ -51,6 +51,9 @@ namespace urchin {
             float getFloatValue() const;
             void setFloatValue(float);
 
+            double getDoubleValue() const;
+            void setDoubleValue(double);
+
             bool getBoolValue() const;
             void setBoolValue(bool);
 

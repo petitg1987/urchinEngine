@@ -94,6 +94,14 @@ namespace urchin {
         setStringValue(TypeConverter::toString(value));
     }
 
+    double UdaChunk::getDoubleValue() const {
+        return TypeConverter::toDouble(getStringValue());
+    }
+
+    void UdaChunk::setDoubleValue(double value) {
+        setStringValue(TypeConverter::toString(value));
+    }
+
     bool UdaChunk::getBoolValue() const {
         std::string value = getStringValue();
         if (value == "false") {
