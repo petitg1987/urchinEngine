@@ -623,7 +623,8 @@ namespace urchin {
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
             std::string newObjectName = cloneObjectEntityDialog.getObjectName();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getSelectedObjectEntity();
-            const ObjectEntity& newObjectEntity =  objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
+            const ObjectEntity& newObjectEntity = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
+            objectController->updateObjectEntityPosition(newObjectEntity, newObjectEntity.getModel()->getTransform().getPosition() + Point3<float>(0.5f, 0.0f, 0.0f));
 
             int row = objectTableView->addObject(newObjectEntity);
             objectTableView->selectRow(row);

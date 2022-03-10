@@ -14,8 +14,6 @@ namespace urchin {
             ObjectEntity();
             ~ObjectEntity() override;
 
-            std::unique_ptr<ObjectEntity> clone(std::string) const;
-
             void setName(std::string);
             const std::string& getName() const;
 
@@ -26,6 +24,9 @@ namespace urchin {
             void setupInteractiveBody(std::shared_ptr<RigidBody>);
             RigidBody* getRigidBody() const;
             const std::shared_ptr<RigidBody>& getRigidBodyPtr() const;
+
+            std::unique_ptr<ObjectEntity> clone(std::string) const;
+            void updatePosition(const Point3<float>&) const;
 
             void refresh() const;
 

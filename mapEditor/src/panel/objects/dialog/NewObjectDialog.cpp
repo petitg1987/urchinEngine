@@ -75,16 +75,14 @@ namespace urchin {
     int NewObjectDialog::buildObjectEntity(int result) {
         try {
             objectEntity = std::make_unique<ObjectEntity>();
-
             objectEntity->setName(objectName);
 
-            std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
             std::string relativeMeshesFilename;
             if (!meshesFilename.empty()) {
+                std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
                 relativeMeshesFilename = FileUtil::getRelativePath(resourcesDirectory, meshesFilename);
             }
-            auto model = Model::fromMeshesFile(relativeMeshesFilename);
-            objectEntity->setModel(std::move(model));
+            objectEntity->setModel(Model::fromMeshesFile(relativeMeshesFilename));
         } catch (const std::exception& e) {
             QMessageBox::critical(this, "Error", e.what());
             return QDialog::Rejected;
@@ -92,7 +90,6 @@ namespace urchin {
 
         return result;
     }
-
 
     std::unique_ptr<ObjectEntity> NewObjectDialog::moveObjectEntity() {
         return std::move(objectEntity);

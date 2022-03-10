@@ -46,15 +46,13 @@ namespace urchin {
     }
 
     ObjectEntity& ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
-        std::unique_ptr<ObjectEntity> clonedObjectEntity = toCloneObjectEntity.clone(std::move(newObjectName));
+        return addObjectEntity(toCloneObjectEntity.clone(std::move(newObjectName)));
+    }
 
-        Point3 shiftPosition(0.5f, 0.0f, 0.0f);
-        clonedObjectEntity->getModel()->setPosition(clonedObjectEntity->getModel()->getTransform().getPosition() + shiftPosition);
-        if (clonedObjectEntity->getRigidBody()) {
-            clonedObjectEntity->getRigidBody()->setTransform(PhysicsTransform(clonedObjectEntity->getModel()->getTransform().getPosition(), clonedObjectEntity->getModel()->getTransform().getOrientation()));
-        }
+    void ObjectController::updateObjectEntityPosition(const ObjectEntity& constObjectEntity, const Point3<float>& newPosition) {
+        constObjectEntity.updatePosition(newPosition);
 
-        return addObjectEntity(std::move(clonedObjectEntity));
+        markModified();
     }
 
     void ObjectController::renameObjectEntity(const ObjectEntity& constObjectEntity, std::string newObjectName) {
