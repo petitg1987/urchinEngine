@@ -28,7 +28,7 @@ namespace urchin {
             void setupShapePropertiesFrom(const SoundShape&);
 
         signals:
-            void soundShapeChange(const SoundShape*);
+            void soundShapeChange(SoundShape*);
 
         public slots:
             void updateSoundShape();
@@ -40,13 +40,13 @@ namespace urchin {
             float getMarginValue() const;
 
             virtual void doSetupShapePropertiesFrom(const SoundShape&) = 0;
-            virtual const SoundShape* createSoundShape() const = 0;
+            virtual SoundShape* createSoundShape() const = 0;
 
         private:
             QDoubleSpinBox* margin;
 
             const SoundEntity& soundEntity;
-            const SoundShape* shape;
+            SoundShape* shape;
     };
 
 }

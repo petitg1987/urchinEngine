@@ -317,7 +317,7 @@ namespace urchin {
         triggerShapeLayout->addWidget(soundShapeWidget.get());
         soundShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         soundShapeWidget->show();
-        connect(soundShapeWidget.get(), SIGNAL(soundShapeChange(const SoundShape*)), this, SLOT(soundShapeChanged(const SoundShape*)));
+        connect(soundShapeWidget.get(), SIGNAL(soundShapeChange(SoundShape*)), this, SLOT(soundShapeChanged(SoundShape*)));
 
         return *soundShapeWidget;
     }

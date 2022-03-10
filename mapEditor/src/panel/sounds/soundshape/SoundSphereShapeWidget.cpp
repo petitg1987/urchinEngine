@@ -50,7 +50,7 @@ namespace urchin {
         radius->setValue(sphereShape.getRadius());
     }
 
-    const SoundShape* SoundSphereShapeWidget::createSoundShape() const {
+    SoundShape* SoundSphereShapeWidget::createSoundShape() const {
         Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
 
         return new SoundSphere((float)radius->value(), position, getMarginValue());
