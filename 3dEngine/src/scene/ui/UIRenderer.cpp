@@ -54,11 +54,14 @@ namespace urchin {
 
         this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
-        Point4<float> topLeft = ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f);
-        Point4<float> topRight = ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, 0.0f, 0.0f, 1.0f);
-        Point4<float> bottomLeft = ui3dData->modelMatrix * Point4<float>(0.0f, (float)uiResolution.Y, 0.0f, 1.0f);
-        this->ui3dData->uiPlane = std::make_unique<Plane<float>>(topLeft.toPoint3(), bottomLeft.toPoint3(), topRight.toPoint3());
-        this->ui3dData->uiPosition = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X / 2.0f, (float)uiResolution.Y / 2.0f, 0.0f, 1.0)).toPoint3();
+        Point3<float> topLeft = (ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).toPoint3();
+        Point3<float> topRight = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, 0.0f, 0.0f, 1.0f)).toPoint3();
+        Point3<float> bottomRight = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, (float)uiResolution.Y, 0.0f, 1.0f)).toPoint3();
+        Point3<float> minPoint(std::min(topLeft.X, bottomRight.X), std::min(topLeft.Y, bottomRight.Y), std::min(topLeft.Z, bottomRight.Z));
+        Point3<float> maxPoint(std::max(topLeft.X, bottomRight.X), std::max(topLeft.Y, bottomRight.Y), std::max(topLeft.Z, bottomRight.Z));
+        this->ui3dData->uiPlane = std::make_unique<Plane<float>>(topLeft, bottomRight, topRight);
+        this->ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
+        this->ui3dData->uiAABBox = AABBox<float>(minPoint, maxPoint);
 
         if (renderTarget.isValidRenderTarget()) {
             std::vector<std::size_t> variablesSize = {sizeof(ambient)};

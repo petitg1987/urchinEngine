@@ -24,6 +24,7 @@ namespace urchin {
 
         std::unique_ptr<Plane<float>> uiPlane;
         Point3<float> uiPosition;
+        AABBox<float> uiAABBox; //TODO use it !
 
         float maxInteractiveDistance = 4.0f;
         UI3dPointerType pointerType = MOUSE;
