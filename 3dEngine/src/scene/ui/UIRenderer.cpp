@@ -224,11 +224,11 @@ namespace urchin {
             if (ui3dData->uiPosition.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) {
                 return false; //camera too far from the UI
             }
-            if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
-                return false; //camera is behind the UI
-            }
             if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) {
                 return false; //camera does not face to the UI
+            }
+            if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
+                return false; //camera is behind the UI
             }
 
             Point2<float> pointer;
@@ -340,9 +340,20 @@ namespace urchin {
     void UIRenderer::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
-        for (const auto& widget : widgets) {
-            renderingOrder++;
-            widget->prepareRendering(dt, renderingOrder, projectionViewMatrix);
+        bool isUiVisible = true;
+        if (ui3dData) {
+            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) {
+                isUiVisible = false; //camera does not face to the UI
+            } else if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
+                isUiVisible = false; //camera is behind the UI
+            }
+        }
+
+        if (isUiVisible) {
+            for (const auto& widget: widgets) {
+                renderingOrder++;
+                widget->prepareRendering(dt, renderingOrder, projectionViewMatrix);
+            }
         }
 
         //debug
