@@ -85,16 +85,12 @@ namespace urchin {
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 
-    void ObjectController::changeObjectPosition(const ObjectEntity& constObjectEntity, const Point3<float>& newPosition) {
-        constObjectEntity.updatePosition(newPosition);
-
-        markModified();
-    }
-
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity) {
         Camera* camera = getMap().getRenderer3d().getCamera();
         Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
-        changeObjectPosition(constObjectEntity, newPosition);
+        constObjectEntity.updatePosition(newPosition);
+
+        markModified();
     }
 
     void ObjectController::removeBody(const ObjectEntity& constObjectEntity) {
