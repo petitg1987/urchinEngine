@@ -17,9 +17,9 @@ namespace urchin {
 
             std::list<const ObjectEntity*> getObjectEntities() const;
             const ObjectEntity* findObjectEntityByBodyId(std::string_view) const;
-            void addObjectEntity(std::unique_ptr<ObjectEntity>);
+            ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(const ObjectEntity&);
-            void cloneObjectEntity(std::unique_ptr<ObjectEntity>, const ObjectEntity&);
+            ObjectEntity& cloneObjectEntity(std::string, const ObjectEntity&);
             void renameObjectEntity(const ObjectEntity&, std::string);
             bool moveUpObjectEntity(const ObjectEntity&);
             bool moveDownObjectEntity(const ObjectEntity&);

@@ -14,6 +14,8 @@ namespace urchin {
             ObjectEntity();
             ~ObjectEntity() override;
 
+            std::unique_ptr<ObjectEntity> clone(std::string) const;
+
             void setName(std::string);
             const std::string& getName() const;
 

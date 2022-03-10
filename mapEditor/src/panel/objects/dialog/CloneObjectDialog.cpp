@@ -12,8 +12,7 @@ namespace urchin {
             QDialog(parent),
             objectController(objectController),
             objectNameLabel(nullptr),
-            objectNameText(nullptr),
-            objectEntity(nullptr) {
+            objectNameText(nullptr) {
         this->setWindowTitle("Clone Object");
         this->resize(530, 80);
         this->setFixedSize(this->width(), this->height());
@@ -48,20 +47,8 @@ namespace urchin {
         }
     }
 
-    int CloneObjectDialog::buildObjectEntity(int result) {
-        try {
-            objectEntity = std::make_unique<ObjectEntity>();
-            objectEntity->setName(objectName);
-        } catch (const std::exception& e) {
-            QMessageBox::critical(this, "Error", e.what());
-            return QDialog::Rejected;
-        }
-
-        return result;
-    }
-
-    std::unique_ptr<ObjectEntity> CloneObjectDialog::moveObjectEntity() {
-        return std::move(objectEntity);
+    const std::string& CloneObjectDialog::getObjectName() {
+        return objectName;
     }
 
     void CloneObjectDialog::done(int r) {
@@ -80,7 +67,6 @@ namespace urchin {
             }
 
             if (!hasError) {
-                r = buildObjectEntity(r);
                 QDialog::done(r);
             }
         } else {

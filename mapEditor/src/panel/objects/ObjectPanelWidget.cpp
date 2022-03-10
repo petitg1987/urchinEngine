@@ -621,12 +621,11 @@ namespace urchin {
         cloneObjectEntityDialog.exec();
 
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
-            std::unique_ptr<ObjectEntity> newObjectEntity = cloneObjectEntityDialog.moveObjectEntity();
-            const ObjectEntity* newObjectEntityPtr = newObjectEntity.get();
+            std::string newObjectName = cloneObjectEntityDialog.getObjectName();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getSelectedObjectEntity();
-            objectController->cloneObjectEntity(std::move(newObjectEntity), toCloneObjectEntity);
+            const ObjectEntity& newObjectEntity =  objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
 
-            int row = objectTableView->addObject(*newObjectEntityPtr);
+            int row = objectTableView->addObject(newObjectEntity);
             objectTableView->selectRow(row);
         }
     }

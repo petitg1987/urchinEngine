@@ -17,13 +17,12 @@ namespace urchin {
         public:
             CloneObjectDialog(QWidget*, const ObjectController*);
 
-            std::unique_ptr<ObjectEntity> moveObjectEntity();
+            const std::string& getObjectName();
 
         private:
             void setupNameFields(QGridLayout*);
 
             void updateObjectName();
-            int buildObjectEntity(int);
 
             void done(int) override;
             bool isObjectEntityExist(std::string_view) const;
@@ -34,7 +33,6 @@ namespace urchin {
             QLineEdit* objectNameText;
 
             std::string objectName;
-            std::unique_ptr<ObjectEntity> objectEntity;
     };
 
 }

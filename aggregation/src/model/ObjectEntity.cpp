@@ -23,6 +23,22 @@ namespace urchin {
         deleteAIObjects();
     }
 
+    std::unique_ptr<ObjectEntity> ObjectEntity::clone(std::string newName) const {
+        auto newObject = std::make_unique<ObjectEntity>();
+        newObject->setName(std::move(newName));
+        newObject->setModel(std::make_unique<Model>(*getModel()));
+
+        RigidBody* toCloneRigidBody = getRigidBody();
+        if (toCloneRigidBody) {
+            auto rigidBody = std::make_unique<RigidBody>(*toCloneRigidBody);
+            rigidBody->setId(newObject->getName());
+            newObject->setupInteractiveBody(std::move(rigidBody));
+        }
+
+        newObject->addTags(getTags());
+        return newObject;
+    }
+
     void ObjectEntity::setup(Renderer3d& renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
         this->renderer3d = &renderer3d;
         this->physicsWorld = &physicsWorld;

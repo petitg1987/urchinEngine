@@ -31,10 +31,11 @@ namespace urchin {
         return nullptr;
     }
 
-    void ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
-        getMap().addObjectEntity(std::move(objectEntity));
+    ObjectEntity& ObjectController::addObjectEntity(std::unique_ptr<ObjectEntity> objectEntity) {
+        ObjectEntity& addedObjectEntity = getMap().addObjectEntity(std::move(objectEntity));
 
         markModified();
+        return addedObjectEntity;
     }
 
     void ObjectController::removeObjectEntity(const ObjectEntity& constObjectEntity) {
@@ -44,24 +45,16 @@ namespace urchin {
         markModified();
     }
 
-    void ObjectController::cloneObjectEntity(std::unique_ptr<ObjectEntity> newObjectModel, const ObjectEntity& toCloneObjectEntity) {
-        Model* toCloneModel = toCloneObjectEntity.getModel();
-        auto model = std::make_shared<Model>(*toCloneModel);
-        Point3 shiftPosition(0.5f, 0.0f, 0.0f);
-        model->setPosition(model->getTransform().getPosition() + shiftPosition);
-        newObjectModel->setModel(model);
+    ObjectEntity& ObjectController::cloneObjectEntity(std::string newObjectName, const ObjectEntity& toCloneObjectEntity) {
+        std::unique_ptr<ObjectEntity> clonedObjectEntity = toCloneObjectEntity.clone(std::move(newObjectName));
 
-        RigidBody* toCloneRigidBody = toCloneObjectEntity.getRigidBody();
-        if (toCloneRigidBody) {
-            auto rigidBody = std::make_unique<RigidBody>(*toCloneRigidBody);
-            rigidBody->setId(newObjectModel->getName());
-            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
-            newObjectModel->setupInteractiveBody(std::move(rigidBody));
+        Point3 shiftPosition(0.5f, 0.0f, 0.0f);
+        clonedObjectEntity->getModel()->setPosition(clonedObjectEntity->getModel()->getTransform().getPosition() + shiftPosition);
+        if (clonedObjectEntity->getRigidBody()) {
+            clonedObjectEntity->getRigidBody()->setTransform(PhysicsTransform(clonedObjectEntity->getModel()->getTransform().getPosition(), clonedObjectEntity->getModel()->getTransform().getOrientation()));
         }
 
-        newObjectModel->addTags(toCloneObjectEntity.getTags());
-
-        addObjectEntity(std::move(newObjectModel));
+        return addObjectEntity(std::move(clonedObjectEntity));
     }
 
     void ObjectController::renameObjectEntity(const ObjectEntity& constObjectEntity, std::string newObjectName) {
