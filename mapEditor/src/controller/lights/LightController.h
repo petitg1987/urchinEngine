@@ -17,6 +17,8 @@ namespace urchin {
             void addLightEntity(std::unique_ptr<LightEntity>);
             void removeLightEntity(const LightEntity&);
 
+            void moveLightInFrontOfCamera(const LightEntity&);
+
             const LightEntity& updateLightGeneralProperties(const LightEntity&, const Point3<float>&, bool);
             const LightEntity& updateOmnidirectionalLightProperties(const LightEntity&, float, const Point3<float>&);
             const LightEntity& updateSunLightProperties(const LightEntity&, const Vector3<float>&);

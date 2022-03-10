@@ -330,6 +330,7 @@ namespace urchin {
             std::unique_ptr<SoundEntity> soundEntity = newSoundEntityDialog.moveSoundEntity();
             const SoundEntity* soundEntityPtr = soundEntity.get();
             soundController->addSoundEntity(std::move(soundEntity));
+            soundController->moveSoundInFrontOfCamera(*soundEntityPtr);
 
             soundTableView->addSound(*soundEntityPtr);
         }
@@ -386,11 +387,11 @@ namespace urchin {
         }
     }
 
-    void SoundPanelWidget::soundShapeChanged(const SoundShape* soundShape) {
+    void SoundPanelWidget::soundShapeChanged(SoundShape* soundShape) {
         if (!disableSoundEvent) {
             const SoundEntity& soundEntity = *soundTableView->getSelectedSoundEntity();
 
-            soundController->updateSoundShape(soundEntity, std::unique_ptr<const SoundShape>(soundShape));
+            soundController->updateSoundShape(soundEntity, std::unique_ptr<SoundShape>(soundShape));
         }
     }
 }

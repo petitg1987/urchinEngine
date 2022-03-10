@@ -20,6 +20,7 @@ namespace urchin {
 
             float getRadius() const;
             Point3<float> getPosition() const;
+            void updatePosition(const Point3<float>&) override;
 
             bool pointInsidePlayShape(const Point3<float>&) const override;
             bool pointInsideStopShape(const Point3<float>&) const override;
@@ -27,8 +28,8 @@ namespace urchin {
             std::unique_ptr<SoundShape> clone() const override;
 
         private:
-            const Sphere<float> playTriggerSphere;
-            const Sphere<float> stopTriggerSphere;
+            Sphere<float> playTriggerSphere;
+            Sphere<float> stopTriggerSphere;
     };
 
 }

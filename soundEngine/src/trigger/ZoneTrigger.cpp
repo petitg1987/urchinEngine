@@ -5,7 +5,7 @@ namespace urchin {
     /**
      * @param soundShape Delimited shape which trigger the sound play
      */
-    ZoneTrigger::ZoneTrigger(PlayBehavior playBehavior, std::unique_ptr<const SoundShape> soundShape) :
+    ZoneTrigger::ZoneTrigger(PlayBehavior playBehavior, std::unique_ptr<SoundShape> soundShape) :
             SoundTrigger(SoundTrigger::ZONE_TRIGGER, playBehavior),
             soundShape(std::move(soundShape)),
             isPlaying(false) {
@@ -32,11 +32,15 @@ namespace urchin {
         return triggerActions;
     }
 
+    SoundShape& ZoneTrigger::getSoundShape() {
+        return *soundShape;
+    }
+
     const SoundShape& ZoneTrigger::getSoundShape() const {
         return *soundShape;
     }
 
-    void ZoneTrigger::setSoundShape(std::unique_ptr<const SoundShape> soundShape) {
+    void ZoneTrigger::setSoundShape(std::unique_ptr<SoundShape> soundShape) {
         this->soundShape = std::move(soundShape);
     }
 

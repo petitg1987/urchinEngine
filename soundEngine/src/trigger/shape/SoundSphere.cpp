@@ -32,6 +32,11 @@ namespace urchin {
         return playTriggerSphere.getCenterOfMass();
     }
 
+    void SoundSphere::updatePosition(const Point3<float>& position) {
+        playTriggerSphere = Sphere<float>(playTriggerSphere.getRadius(), position);
+        stopTriggerSphere = Sphere<float>(stopTriggerSphere.getRadius(), position);
+    }
+
     bool SoundSphere::pointInsidePlayShape(const Point3<float>& point) const {
         return playTriggerSphere.collideWithPoint(point);
     }

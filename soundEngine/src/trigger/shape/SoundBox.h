@@ -20,6 +20,7 @@ namespace urchin {
 
             const Vector3<float>& getHalfSizes() const;
             const Point3<float>& getCenterPosition() const;
+            void updatePosition(const Point3<float>&) override;
             const Quaternion<float>& getOrientation() const;
             const Vector3<float>& getAxis(unsigned int) const;
 
@@ -31,8 +32,8 @@ namespace urchin {
         private:
             bool pointInsideShape(const Point3<float>&, const OBBox<float>&) const;
 
-            const OBBox<float> playTriggerBox;
-            const OBBox<float> stopTriggerBox;
+            OBBox<float> playTriggerBox;
+            OBBox<float> stopTriggerBox;
     };
 
 }

@@ -32,6 +32,14 @@ namespace urchin {
         markModified();
     }
 
+    void WaterController::moveWaterInFrontOfCamera(const WaterEntity& constWaterEntity) {
+        Camera* camera = getMap().getRenderer3d().getCamera();
+        Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
+        constWaterEntity.getWater()->setCenterPosition(newPosition);
+
+        markModified();
+    }
+
     const WaterEntity& WaterController::updateWaterGeneral(const WaterEntity& constWaterEntity, const Point3<float>& centerPosition, float xSize, float zSize) {
         const WaterEntity& waterEntity = findWaterEntity(constWaterEntity);
         Water* water = waterEntity.getWater();

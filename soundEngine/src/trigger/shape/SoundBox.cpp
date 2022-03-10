@@ -32,6 +32,11 @@ namespace urchin {
         return playTriggerBox.getCenterOfMass();
     }
 
+    void SoundBox::updatePosition(const Point3<float>& position) {
+        playTriggerBox = OBBox<float>(playTriggerBox.getHalfSizes(), position, playTriggerBox.getOrientation());
+        stopTriggerBox = OBBox<float>(stopTriggerBox.getHalfSizes(), position, stopTriggerBox.getOrientation());
+    }
+
     const Quaternion<float>& SoundBox::getOrientation() const {
         return playTriggerBox.getOrientation();
     }

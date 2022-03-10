@@ -25,6 +25,16 @@ namespace urchin {
         markModified();
     }
 
+    void LightController::moveLightInFrontOfCamera(const LightEntity& constLightEntity) {
+        if (constLightEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+            Camera* camera = getMap().getRenderer3d().getCamera();
+            Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
+            static_cast<OmnidirectionalLight*>(constLightEntity.getLight())->setPosition(newPosition);
+
+            markModified();
+        }
+    }
+
     void LightController::removeLightEntity(const LightEntity& constLightEntity) {
         LightEntity& lightEntity = findLightEntity(constLightEntity);
         getMap().removeLightEntity(lightEntity);
@@ -49,10 +59,10 @@ namespace urchin {
     const LightEntity& LightController::updateOmnidirectionalLightProperties(const LightEntity& constLightEntity,
                                                                              float attenuation, const Point3<float>& position) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
-        auto* light = static_cast<OmnidirectionalLight*>(lightEntity.getLight());
+        auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(lightEntity.getLight());
 
-        light->setAttenuation(attenuation);
-        light->setPosition(position);
+        omnidirectionalLight->setAttenuation(attenuation);
+        omnidirectionalLight->setPosition(position);
 
         markModified();
         return lightEntity;
@@ -60,9 +70,9 @@ namespace urchin {
 
     const LightEntity& LightController::updateSunLightProperties(const LightEntity& constLightEntity, const Vector3<float>& direction) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
-        auto* light = static_cast<SunLight*>(lightEntity.getLight());
+        auto* sunLight = static_cast<SunLight*>(lightEntity.getLight());
 
-        light->setDirection(direction);
+        sunLight->setDirection(direction);
 
         markModified();
         return lightEntity;

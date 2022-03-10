@@ -90,7 +90,7 @@ namespace urchin {
             void updateSoundTriggerProperties();
 
             void showChangeSoundShapeDialog();
-            void soundShapeChanged(const SoundShape*);
+            void soundShapeChanged(urchin::SoundShape*);
     };
 
 }

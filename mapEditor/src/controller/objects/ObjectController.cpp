@@ -49,12 +49,6 @@ namespace urchin {
         return addObjectEntity(toCloneObjectEntity.clone(std::move(newObjectName)));
     }
 
-    void ObjectController::updateObjectEntityPosition(const ObjectEntity& constObjectEntity, const Point3<float>& newPosition) {
-        constObjectEntity.updatePosition(newPosition);
-
-        markModified();
-    }
-
     void ObjectController::renameObjectEntity(const ObjectEntity& constObjectEntity, std::string newObjectName) {
         ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         objectEntity.setName(std::move(newObjectName));
@@ -89,6 +83,18 @@ namespace urchin {
     void ObjectController::changeBodyShape(const ObjectEntity& constObjectEntity, CollisionShape3D::ShapeType shapeType) {
         std::unique_ptr<const CollisionShape3D> newCollisionShape = DefaultBodyShapeGenerator(constObjectEntity).generate(shapeType);
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
+    }
+
+    void ObjectController::changeObjectPosition(const ObjectEntity& constObjectEntity, const Point3<float>& newPosition) {
+        constObjectEntity.updatePosition(newPosition);
+
+        markModified();
+    }
+
+    void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity) {
+        Camera* camera = getMap().getRenderer3d().getCamera();
+        Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
+        changeObjectPosition(constObjectEntity, newPosition);
     }
 
     void ObjectController::removeBody(const ObjectEntity& constObjectEntity) {

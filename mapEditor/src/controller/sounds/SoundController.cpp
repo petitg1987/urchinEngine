@@ -43,13 +43,28 @@ namespace urchin {
         markModified();
     }
 
+    void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity) {
+        Camera* camera = getMap().getRenderer3d().getCamera();
+        Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
+
+        if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::SPATIAL) {
+            static_cast<SpatialSound&>(constSoundEntity.getSoundComponent()->getSound()).setPosition(newPosition);
+            markModified();
+        }
+
+        if (constSoundEntity.getSoundComponent()->getSoundTrigger().getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
+            static_cast<ZoneTrigger&>(constSoundEntity.getSoundComponent()->getSoundTrigger()).getSoundShape().updatePosition(newPosition);
+            markModified();
+        }
+    }
+
     const SoundEntity& SoundController::updateSpatialSoundProperties(const SoundEntity& constSoundEntity, const Point3<float>& position,
             float inaudibleDistance) {
         const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
-        auto& pointSound = static_cast<SpatialSound&>(soundEntity.getSoundComponent()->getSound());
+        auto& spatialSound = static_cast<SpatialSound&>(soundEntity.getSoundComponent()->getSound());
 
-        pointSound.setPosition(position);
-        pointSound.setInaudibleDistance(inaudibleDistance);
+        spatialSound.setPosition(position);
+        spatialSound.setInaudibleDistance(inaudibleDistance);
 
         markModified();
         return soundEntity;
@@ -65,7 +80,7 @@ namespace urchin {
         return soundEntity;
     }
 
-    const SoundEntity& SoundController::updateSoundShape(const SoundEntity& constSoundEntity, std::unique_ptr<const SoundShape> newSoundShape) {
+    const SoundEntity& SoundController::updateSoundShape(const SoundEntity& constSoundEntity, std::unique_ptr<SoundShape> newSoundShape) {
         const SoundEntity& soundEntity = findSoundEntity(constSoundEntity);
         ZoneTrigger& zoneTrigger = soundEntity.getSoundComponent()->getZoneTrigger();
 

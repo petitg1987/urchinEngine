@@ -258,6 +258,7 @@ namespace urchin {
             std::unique_ptr<LightEntity> lightEntity = newLightEntityDialog.moveLightEntity();
             const LightEntity* lightEntityPtr = lightEntity.get();
             lightController->addLightEntity(std::move(lightEntity));
+            lightController->moveLightInFrontOfCamera(*lightEntityPtr);
 
             lightTableView->addLight(*lightEntityPtr);
         }
