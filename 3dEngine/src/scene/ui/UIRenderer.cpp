@@ -341,12 +341,11 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "uiPreRendering");
 
         bool isUiVisible = true;
-        if (ui3dData) {
-            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) {
-                isUiVisible = false; //camera does not face to the UI
-            } else if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
-                isUiVisible = false; //camera is behind the UI
-            }
+        if (ui3dData && (
+                ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f || //camera does not face to the UI
+                ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) //camera is behind the UI
+        ) {
+            isUiVisible = false;
         }
 
         if (isUiVisible) {
