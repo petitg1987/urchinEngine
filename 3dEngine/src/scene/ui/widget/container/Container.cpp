@@ -20,10 +20,10 @@ namespace urchin {
 
     void Container::onResize() {
         Widget::onResize();
-        onScrollableWidgetsUpdated();
+        notifyChildrenUpdated();
     }
 
-    void Container::onScrollableWidgetsUpdated() {
+    void Container::notifyChildrenUpdated() {
         if (scrollbar) {
             scrollbar->onScrollableWidgetsUpdated();
         }
@@ -35,17 +35,17 @@ namespace urchin {
 
     void Container::addChild(const std::shared_ptr<Widget>& child) {
         Widget::addChild(child);
-        onScrollableWidgetsUpdated();
+        notifyChildrenUpdated();
     }
 
     void Container::detachChild(Widget* child){
         Widget::detachChild(child);
-        onScrollableWidgetsUpdated();
+        notifyChildrenUpdated();
     }
 
     void Container::detachChildren() {
         Widget::detachChildren();
-        onScrollableWidgetsUpdated();
+        notifyChildrenUpdated();
     }
 
     void Container::resetChildren() {
@@ -55,7 +55,7 @@ namespace urchin {
                 Widget::detachChild(child.get());
             }
         }
-        onScrollableWidgetsUpdated();
+        notifyChildrenUpdated();
     }
 
     bool Container::isScrollable() const {
