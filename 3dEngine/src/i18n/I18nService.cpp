@@ -24,6 +24,10 @@ namespace urchin {
         return language;
     }
 
+    LanguageTranslator I18nService::getLanguageTranslator() {
+        return LanguageTranslator(labelTranslator, language);
+    }
+
     void I18nService::add(TranslatableLabel* translatableLabel) {
         translatableLabels.insert(translatableLabel);
         refreshTranslation(translatableLabel);
@@ -34,7 +38,7 @@ namespace urchin {
     }
 
     void I18nService::refreshTranslation(TranslatableLabel* translatableLabel) {
-        translatableLabel->refreshTranslation(LanguageTranslator(labelTranslator, language));
+        translatableLabel->refreshTranslation(getLanguageTranslator());
     }
 
 }

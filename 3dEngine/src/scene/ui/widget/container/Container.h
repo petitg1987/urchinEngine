@@ -17,6 +17,7 @@ namespace urchin {
             static std::shared_ptr<Container> createScrollable(Widget*, Position, Size, std::string);
 
             void onResize() override;
+            void onScrollableWidgetsUpdated();
 
             WidgetType getWidgetType() const override;
 

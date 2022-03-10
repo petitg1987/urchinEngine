@@ -13,6 +13,8 @@ namespace urchin {
             void changeLanguage(std::string);
             const std::string& getLanguage() const;
 
+            LanguageTranslator getLanguageTranslator();
+
             void add(TranslatableLabel*);
             void remove(TranslatableLabel*);
 
