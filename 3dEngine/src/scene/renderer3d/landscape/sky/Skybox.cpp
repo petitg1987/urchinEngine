@@ -29,7 +29,7 @@ namespace urchin {
                 }
             });
         }
-        std::ranges::for_each(loadImageThreads, [](std::jthread& x){x.join();});
+        std::ranges::for_each(loadImageThreads, [](std::jthread& x){ x.join(); });
 
         //add missing default textures
         unsigned int skyboxSize = 1;
@@ -44,9 +44,9 @@ namespace urchin {
                 std::vector<unsigned char> defaultTexPixels;
                 defaultTexPixels.reserve(skyboxSize * skyboxSize * 4);
                 for (std::size_t pixelIndex = 0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex) {
-                    defaultTexPixels.push_back(150); //R
-                    defaultTexPixels.push_back(50); //G
-                    defaultTexPixels.push_back(255); //B
+                    defaultTexPixels.push_back(0); //R
+                    defaultTexPixels.push_back(0); //G
+                    defaultTexPixels.push_back(0); //B
                     defaultTexPixels.push_back(255); //A
                 }
                 skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels), false);

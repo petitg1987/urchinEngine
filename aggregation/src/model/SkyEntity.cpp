@@ -3,7 +3,9 @@
 namespace urchin {
     SkyEntity::SkyEntity() :
             renderer3d(nullptr) {
-
+        //default skybox
+        std::vector<std::string> skyboxFilenames = {"", "", "", "", "", ""};
+        skybox = std::make_unique<Skybox>(skyboxFilenames);
     }
 
     SkyEntity::~SkyEntity() {
