@@ -6,6 +6,12 @@
 
 namespace urchin {
 
+    template<class T> Plane<T>::Plane() :
+            normal(Vector3<T>(0.0, 1.0, 0.0)),
+            d(0.0) {
+
+    }
+
     /**
      * @param planeNormal Plane normal normalized
      * @param distanceToOrigin Distance to the origin. Positive if dot product between a vector from plane to origin and the normal is positive.
@@ -27,14 +33,9 @@ namespace urchin {
         buildFromNormalAndPoint(normalizedNormal, point);
     }
 
-    template<class T> Plane<T>::Plane(T a, T b, T c, T d) {
-        buildFromCoefficients(a, b, c, d);
-    }
-
     template<class T> void Plane<T>::buildFrom3Points(const Point3<T>& p1, const Point3<T>& p2, const Point3<T>& p3) {
         const Vector3<T>& aux = p2.vector(p3);
         normal = aux.crossProduct(p2.vector(p1)).normalize();
-
         d = normal.dotProduct(-Vector3<T>(p2.X, p2.Y, p2.Z));
     }
 
@@ -46,19 +47,6 @@ namespace urchin {
 
         this->normal = normalizedNormal;
         this->d = this->normal.dotProduct(-Vector3<T>(point.X, point.Y, point.Z));
-    }
-
-    /**
-     * Built a plane from coefficients
-     * @param a Coefficient A of the equation plan
-     * @param b Coefficient B of the equation plan
-     * @param c Coefficient C of the equation plan
-     * @param d Coefficient D of the equation plan
-     */
-    template<class T> void Plane<T>::buildFromCoefficients(T a, T b, T c, T d) {
-        normal.setValues(a, b, c);
-        normal = normal.normalize();
-        this->d = d;
     }
 
     template<class T> void Plane<T>::reverse() {

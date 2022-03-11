@@ -42,7 +42,7 @@ namespace urchin {
             Logger::instance().logWarning("UI size (" + StringUtil::toString(uiSize) + ") and UI resolution (" + StringUtil::toString(uiResolution) + ") have not the same proportion");
         }
 
-        this->ui3dData = std::make_unique<UI3dData>();
+        ui3dData = std::make_unique<UI3dData>();
 
         float xScale = uiSize.X / (float)uiResolution.X;
         float yScale = -uiSize.Y / (float)uiResolution.Y; //negate for flip on Y axis
@@ -50,18 +50,16 @@ namespace urchin {
                              0.0f, yScale, 0.0f, 0.0f,
                              0.0f, 0.0f, 1.0f, 0.0f,
                              0.0f, 0.0f, 0.0f, 1.0f);
-        this->ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
+        ui3dData->modelMatrix = transform.getTransformMatrix() * uiViewMatrix;
 
-        this->ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
+        ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
         Point3<float> topLeft = (ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).toPoint3();
         Point3<float> topRight = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, 0.0f, 0.0f, 1.0f)).toPoint3();
         Point3<float> bottomRight = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, (float)uiResolution.Y, 0.0f, 1.0f)).toPoint3();
-        Point3<float> minPoint(std::min(topLeft.X, bottomRight.X), std::min(topLeft.Y, bottomRight.Y), std::min(topLeft.Z, bottomRight.Z));
-        Point3<float> maxPoint(std::max(topLeft.X, bottomRight.X), std::max(topLeft.Y, bottomRight.Y), std::max(topLeft.Z, bottomRight.Z));
-        this->ui3dData->uiPlane = std::make_unique<Plane<float>>(topLeft, bottomRight, topRight);
-        this->ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
-        this->ui3dData->uiAABBox = AABBox<float>(minPoint, maxPoint);
+        ui3dData->uiPlane.buildFrom3Points(topLeft, bottomRight, topRight);
+        ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
+        ui3dData->uiSphereBounding = Sphere<float>(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
 
         if (renderTarget.isValidRenderTarget()) {
             std::vector<std::size_t> variablesSize = {sizeof(ambient)};
@@ -79,8 +77,8 @@ namespace urchin {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
-        this->ui3dData->camera = &camera;
-        this->ui3dData->camera->addObserver(this, Camera::POSITION_UPDATED);
+        ui3dData->camera = &camera;
+        ui3dData->camera->addObserver(this, Camera::POSITION_UPDATED);
 
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
             widgets[(std::size_t)i]->onCameraProjectionUpdate();
@@ -91,18 +89,18 @@ namespace urchin {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
-        this->ui3dData->maxInteractiveDistance = maxInteractiveDistance;
+        ui3dData->maxInteractiveDistance = maxInteractiveDistance;
     }
 
     void UIRenderer::setPointerType(UI3dPointerType pointerType) const {
         if (!ui3dData) {
             throw std::runtime_error("UI renderer has not been initialized for UI 3d");
         }
-        this->ui3dData->pointerType = pointerType;
+        ui3dData->pointerType = pointerType;
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        this->uiResolution = Point2<int>((int)sceneWidth, (int)sceneHeight);
+        uiResolution = Point2<int>((int)sceneWidth, (int)sceneHeight);
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -224,10 +222,10 @@ namespace urchin {
             if (ui3dData->uiPosition.squareDistance(ui3dData->camera->getPosition()) > ui3dData->maxInteractiveDistance * ui3dData->maxInteractiveDistance) {
                 return false; //camera too far from the UI
             }
-            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f) {
+            if (ui3dData->camera->getView().dotProduct(ui3dData->uiPlane.getNormal()) > 0.0f) {
                 return false; //camera does not face to the UI
             }
-            if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) {
+            if (ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane.getNormal()) < 0.0f) {
                 return false; //camera is behind the UI
             }
 
@@ -242,7 +240,7 @@ namespace urchin {
 
             Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>(pointer.X, pointer.Y));
             bool hasIntersection = false;
-            Point3<float> uiHitPoint = ui3dData->uiPlane->intersectPoint(viewLine, hasIntersection);
+            Point3<float> uiHitPoint = ui3dData->uiPlane.intersectPoint(viewLine, hasIntersection);
             if (!hasIntersection) {
                 return false; //camera is parallel to the UI plane
             }
@@ -342,8 +340,9 @@ namespace urchin {
 
         bool isUiVisible = true;
         if (ui3dData && (
-                ui3dData->camera->getView().dotProduct(ui3dData->uiPlane->getNormal()) > 0.0f || //camera does not face to the UI
-                ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane->getNormal()) < 0.0f) //camera is behind the UI
+                ui3dData->camera->getView().dotProduct(ui3dData->uiPlane.getNormal()) > 0.0f || //camera does not face to the UI
+                ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane.getNormal()) < 0.0f || //camera is behind the UI
+                !ui3dData->camera->getFrustum().collideWithSphere(ui3dData->uiSphereBounding)) //UI not in frustum
         ) {
             isUiVisible = false;
         }

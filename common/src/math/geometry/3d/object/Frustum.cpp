@@ -217,7 +217,7 @@ namespace urchin {
     * @return True if the bounding box collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T>& bbox) const {
-        for (auto& plane : planes) {
+        for (const auto& plane : planes) {
             const Vector3<T>& normal = plane.getNormal();
 
             Point3<T> nVertex(bbox.getMax());
@@ -243,7 +243,7 @@ namespace urchin {
     * @return True if the sphere collides or is inside this frustum
     */
     template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
-        return std::ranges::all_of(planes, [&sphere](const auto& plane){return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius();});
+        return std::ranges::all_of(planes, [&sphere](const auto& plane){ return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius(); });
     }
 
     template<class T> Frustum<T> operator *(const Matrix4<T>& m, const Frustum<T>& frustum) {

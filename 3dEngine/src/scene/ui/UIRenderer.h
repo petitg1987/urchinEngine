@@ -22,9 +22,9 @@ namespace urchin {
         Matrix4<float> modelMatrix;
         Matrix4<float> normalMatrix;
 
-        std::unique_ptr<Plane<float>> uiPlane;
+        Plane<float> uiPlane;
         Point3<float> uiPosition;
-        AABBox<float> uiAABBox;
+        Sphere<float> uiSphereBounding;
 
         float maxInteractiveDistance = 4.0f;
         UI3dPointerType pointerType = MOUSE;
