@@ -9,7 +9,8 @@ namespace urchin {
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
-            aiEnvironment(aiEnvironment) {
+            aiEnvironment(aiEnvironment),
+            skyEntity(std::make_unique<SkyEntity>()) {
 
     }
 

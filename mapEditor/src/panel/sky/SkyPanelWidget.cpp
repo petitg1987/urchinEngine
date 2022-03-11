@@ -151,7 +151,7 @@ namespace urchin {
     void SkyPanelWidget::showSkyboxFilenameDialog(QLineEdit* skyboxFilenameText) {
         std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
         QString directory = preferredSkyboxPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredSkyboxPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
             std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, imageFilenamePath);
