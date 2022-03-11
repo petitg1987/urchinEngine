@@ -7,14 +7,16 @@
 * Graphics API
   * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo#pSpecializationInfo) instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Update descriptor sets (GenericRenderer#updateDescriptorSets) with updated values only
-  * **OPTIMIZATION** (`major`): Create descriptor sets by binding frequency: one for global (view matrix), one for material and one per-object (model matrix) (see <https://www.youtube.com/watch?v=d5p44idnZLQ>)
+  * **OPTIMIZATION** (`major`): Improve the render binding:
+    * Solution 1 (old): create descriptor sets by binding frequency: one for global (view matrix), one for material and one per-object (model matrix) (see <https://www.youtube.com/watch?v=d5p44idnZLQ>)
+    * Solution 2 (modern): use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
   * **NEW FEATURE** (`medium`): Replace geometry shaders by instantiation
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering
-  * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering, coherent hierarchical culling revisited, software occlusion culling)
+  * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
 * Model
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
