@@ -340,7 +340,6 @@ namespace urchin {
 
         bool isUiVisible = true;
         if (ui3dData && (
-                ui3dData->camera->getView().dotProduct(ui3dData->uiPlane.getNormal()) > 0.0f || //camera does not face to the UI
                 ui3dData->uiPosition.vector(ui3dData->camera->getPosition()).dotProduct(ui3dData->uiPlane.getNormal()) < 0.0f || //camera is behind the UI
                 !ui3dData->camera->getFrustum().collideWithSphere(ui3dData->uiSphereBounding)) //UI not in frustum
         ) {
