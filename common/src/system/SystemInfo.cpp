@@ -1,15 +1,14 @@
 #include <functional>
 #include <stdexcept>
-#include <algorithm>
+#include <cmath>
 #ifdef _WIN32
     #include <windows.h>
-    #include <cstdio>
     #include <set>
-    #include <intrin.h>
 #else
     #include <sys/utsname.h>
     #include <sys/sysinfo.h>
     #include <zconf.h>
+    #include <algorithm>
     #include <system/CommandExecutor.h>
     #include <util/TypeConverter.h>
 #endif
@@ -125,7 +124,7 @@ namespace urchin {
 
     std::string SystemInfo::userDataDirectory() {
         #ifdef _WIN32
-            std::string userDataDirectory = getenv("LOCALAPPDATA");
+            std::string userDataDirectory = std::getenv("LOCALAPPDATA");
             if (!userDataDirectory.empty()) {
                 return userDataDirectory + "\\";
             }
