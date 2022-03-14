@@ -1,5 +1,7 @@
 #pragma once
 
+#include <UrchinCommon.h>
+
 namespace urchin {
 
     class AbstractUIAnimation {
