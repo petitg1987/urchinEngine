@@ -68,7 +68,7 @@ namespace urchin {
         }
     }
 
-    std::vector<std::string> FileUtil::getFiles(const std::string& directory) {
+    std::vector<std::string> FileUtil::getFiles(std::string_view directory) {
         checkDirectory(directory);
 
         std::vector<std::string> filenames;
@@ -80,7 +80,7 @@ namespace urchin {
         return filenames;
     }
 
-    std::vector<std::string> FileUtil::getFilesRecursive(const std::string& directory) {
+    std::vector<std::string> FileUtil::getFilesRecursive(std::string_view directory) {
         checkDirectory(directory);
 
         std::vector<std::string> filenames;
@@ -119,32 +119,32 @@ namespace urchin {
     /**
      * @return File extension. If not extension found: return empty string
      */
-    std::string FileUtil::getFileExtension(const std::string& filePath) {
+    std::string FileUtil::getFileExtension(std::string_view filePath) {
         std::size_t extensionPos = filePath.find_last_of('.');
         if (extensionPos == std::string::npos) {
             return "";
         }
 
-        return filePath.substr(extensionPos + 1, filePath.size() - extensionPos);
+        return std::string(filePath.substr(extensionPos + 1, filePath.size() - extensionPos));
     }
 
-    std::string FileUtil::getFileName(const std::string& filePath) {
+    std::string FileUtil::getFileName(std::string_view filePath) {
         std::size_t fileNamePos = filePath.find_last_of("/\\");
         if (fileNamePos == std::string::npos) {
-            return filePath;
+            return std::string(filePath);
         }
 
-        return filePath.substr(fileNamePos + 1);
+        return std::string(filePath.substr(fileNamePos + 1));
     }
 
-    std::string FileUtil::getFileNameNoExtension(const std::string& filePath) {
+    std::string FileUtil::getFileNameNoExtension(std::string_view filePath) {
         std::string fileName = getFileName(filePath);
         std::string extension = getFileExtension(filePath);
 
-        return fileName.substr(0, fileName.size() - 1 - extension.size());
+        return std::string(fileName.substr(0, fileName.size() - 1 - extension.size()));
     }
 
-    std::string FileUtil::getDirectory(const std::string& filePath) {
+    std::string FileUtil::getDirectory(std::string_view filePath) {
         std::size_t found = filePath.find_last_of("/\\");
         if (found == std::string::npos) {
             return "./";

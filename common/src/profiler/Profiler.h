@@ -17,7 +17,7 @@ namespace urchin {
             static Profiler& ai();
             static Profiler& sound();
 
-            void startNewProfile(const std::string&);
+            void startNewProfile(std::string_view);
             void stopProfile(std::string_view nodeName = "");
 
             void log();

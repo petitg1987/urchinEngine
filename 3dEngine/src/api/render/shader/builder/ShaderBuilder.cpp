@@ -53,8 +53,8 @@ namespace urchin {
         return buffer;
     }
 
-    std::size_t ShaderBuilder::computeShaderId(const std::string& vertexShaderFilename, const std::string& geometryShaderFilename,
-                                               const std::string& fragmentShaderFilename, const ShaderConstants* shaderConstants) {
+    std::size_t ShaderBuilder::computeShaderId(std::string_view vertexShaderFilename, std::string_view geometryShaderFilename,
+                                               std::string_view fragmentShaderFilename, const ShaderConstants* shaderConstants) {
         std::size_t shaderId = 0;
 
         HashUtil::combine(shaderId, vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename);

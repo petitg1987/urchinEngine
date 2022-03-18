@@ -133,11 +133,11 @@ namespace urchin {
         return value;
     }
 
-    bool TypeConverter::isChar(const std::string& str) {
+    bool TypeConverter::isChar(std::string_view str) {
         return str.size() == 1;
     }
 
-    char TypeConverter::toChar(const std::string& str) {
+    char TypeConverter::toChar(std::string_view str) {
         #ifdef URCHIN_DEBUG
             assert(isChar(str));
         #endif
@@ -155,67 +155,67 @@ namespace urchin {
         return str[0] != '0';
     }
 
-    Point2<float> TypeConverter::toPoint2(const std::string& str) {
+    Point2<float> TypeConverter::toPoint2(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 2);
         return Point2<float>(floatValues[0], floatValues[1]);
     }
 
-    Point2<int> TypeConverter::toPoint2Int(const std::string& str) {
+    Point2<int> TypeConverter::toPoint2Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 2);
         return Point2<int>(intValues[0], intValues[1]);
     }
 
-    Point3<float> TypeConverter::toPoint3(const std::string& str) {
+    Point3<float> TypeConverter::toPoint3(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 3);
         return Point3<float>(floatValues[0], floatValues[1], floatValues[2]);
     }
 
-    Point3<int> TypeConverter::toPoint3Int(const std::string& str) {
+    Point3<int> TypeConverter::toPoint3Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 3);
         return Point3<int>(intValues[0], intValues[1], intValues[2]);
     }
 
-    Point4<float> TypeConverter::toPoint4(const std::string& str) {
+    Point4<float> TypeConverter::toPoint4(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 4);
         return Point4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
     }
 
-    Point4<int> TypeConverter::toPoint4Int(const std::string& str) {
+    Point4<int> TypeConverter::toPoint4Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 4);
         return Point4<int>(intValues[0], intValues[1], intValues[2], intValues[3]);
     }
 
-    Vector2<float> TypeConverter::toVector2(const std::string& str) {
+    Vector2<float> TypeConverter::toVector2(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 2);
         return Vector2<float>(floatValues[0], floatValues[1]);
     }
 
-    Vector2<int> TypeConverter::toVector2Int(const std::string& str) {
+    Vector2<int> TypeConverter::toVector2Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 2);
         return Vector2<int>(intValues[0], intValues[1]);
     }
 
-    Vector3<float> TypeConverter::toVector3(const std::string& str) {
+    Vector3<float> TypeConverter::toVector3(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 3);
         return Vector3<float>(floatValues[0], floatValues[1], floatValues[2]);
     }
 
-    Vector3<int> TypeConverter::toVector3Int(const std::string& str) {
+    Vector3<int> TypeConverter::toVector3Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 3);
         return Vector3<int>(intValues[0], intValues[1], intValues[2]);
     }
 
-    Vector4<float> TypeConverter::toVector4(const std::string& str) {
+    Vector4<float> TypeConverter::toVector4(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 4);
         return Vector4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
     }
 
-    Vector4<int> TypeConverter::toVector4Int(const std::string& str) {
+    Vector4<int> TypeConverter::toVector4Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 4);
         return Vector4<int>(intValues[0], intValues[1], intValues[2], intValues[3]);
     }
 
-    Quaternion<float> TypeConverter::toQuaternion(const std::string& str) {
+    Quaternion<float> TypeConverter::toQuaternion(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 4);
         return Quaternion<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
     }

@@ -40,7 +40,7 @@ namespace urchin {
         return *profilerSound;
     }
 
-    void Profiler::startNewProfile(const std::string& nodeName) {
+    void Profiler::startNewProfile(std::string_view nodeName) {
         if (isEnable) {
             assert(nodeName.length() <= 15); //ensure to use "small string optimization"
 
@@ -49,7 +49,7 @@ namespace urchin {
             } else {
                 ProfilerNode* profilerNode = currentNode->findChildren(nodeName);
                 if (profilerNode == nullptr) {
-                    auto newProfilerNode = std::make_unique<ProfilerNode>(nodeName, currentNode);
+                    auto newProfilerNode = std::make_unique<ProfilerNode>(std::string(nodeName), currentNode);
                     profilerNode = newProfilerNode.get();
                     currentNode->addChild(std::move(newProfilerNode));
                 }
