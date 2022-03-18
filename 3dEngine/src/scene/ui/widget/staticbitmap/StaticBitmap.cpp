@@ -24,8 +24,7 @@ namespace urchin {
 
     void StaticBitmap::createOrUpdateWidget() {
         //create the texture
-        tex = image->createTexture(false);
-        tex->enableMipmap();
+        tex = image->createTexture(true);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
