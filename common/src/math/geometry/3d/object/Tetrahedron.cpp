@@ -46,12 +46,12 @@ namespace urchin {
         std::array<T, 3> triangleBarycentrics{};
         T bestSquareDist = std::numeric_limits<T>::max();
 
-        bool pointOutsideOrInPlaneABC = pointOutsidePlane(p, a, b, c, d, true);
-        bool pointOutsideOrInPlaneACD = pointOutsidePlane(p, a, c, d, b, true);
-        bool pointOutsideOrInPlaneADB = pointOutsidePlane(p, a, d, b, c, true);
-        bool pointOutsideOrInPlaneBDC = pointOutsidePlane(p, b, d, c, a, true);
+        bool pointOutsideOrInPlaneABC = (voronoiRegionMask & 1u) && pointOutsidePlane(p, a, b, c, d, true);
+        bool pointOutsideOrInPlaneACD = (voronoiRegionMask & 2u) && pointOutsidePlane(p, a, c, d, b, true);
+        bool pointOutsideOrInPlaneADB = (voronoiRegionMask & 4u) && pointOutsidePlane(p, a, d, b, c, true);
+        bool pointOutsideOrInPlaneBDC = (voronoiRegionMask & 8u) && pointOutsidePlane(p, b, d, c, a, true);
 
-        if ((voronoiRegionMask & 1u) && pointOutsideOrInPlaneABC) { //point outside face ABC: compute closest point on ABC
+        if (pointOutsideOrInPlaneABC) { //point outside face ABC: compute closest point on ABC
             Point3<T> q = Triangle3D<T>(a, b, c).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
@@ -67,7 +67,7 @@ namespace urchin {
             }
         }
 
-        if ((voronoiRegionMask & 2u) && pointOutsideOrInPlaneACD) { //point outside face ACD: compute closest point on ACD
+        if (pointOutsideOrInPlaneACD) { //point outside face ACD: compute closest point on ACD
             Point3<T> q = Triangle3D<T>(a, c, d).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
@@ -83,7 +83,7 @@ namespace urchin {
             }
         }
 
-        if ((voronoiRegionMask & 4u) && pointOutsideOrInPlaneADB) { //point outside face ADB: compute closest point on ADB
+        if (pointOutsideOrInPlaneADB) { //point outside face ADB: compute closest point on ADB
             Point3<T> q = Triangle3D<T>(a, d, b).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
@@ -99,7 +99,7 @@ namespace urchin {
             }
         }
 
-        if ((voronoiRegionMask & 8u) && pointOutsideOrInPlaneBDC) { //point outside face BDC: compute closest point on BDC
+        if (pointOutsideOrInPlaneBDC) { //point outside face BDC: compute closest point on BDC
             Point3<T> q = Triangle3D<T>(b, d, c).closestPoint(p, triangleBarycentrics);
 
             Vector3<T> pq = p.vector(q);
