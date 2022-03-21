@@ -88,7 +88,7 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
 
         shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
-        shadowModelSetDisplayer->setupShader("model.vert.spv", "modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
+        shadowModelSetDisplayer->setupShader("modelDepthOnly.vert.spv", "modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
         shadowModelSetDisplayer->initialize(*renderTarget);
         shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
     }
