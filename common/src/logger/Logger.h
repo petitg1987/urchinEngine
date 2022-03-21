@@ -31,7 +31,8 @@ namespace urchin {
             virtual void purge() const = 0;
             virtual std::string archive() const = 0;
 
-            bool hasFailure() const;
+            bool hasError() const;
+            bool hasWarningOrError() const;
 
         private:
             static Logger& defaultInstance();
@@ -40,7 +41,8 @@ namespace urchin {
 
             virtual void write(const std::string&) = 0;
 
-            bool bHasFailure;
+            bool bHasError;
+            bool bHasWarning;
             static std::unique_ptr<Logger> customInstance;
     };
 

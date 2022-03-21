@@ -10,7 +10,8 @@ namespace urchin {
     std::unique_ptr<Logger> Logger::customInstance = nullptr;
 
     Logger::Logger() :
-            bHasFailure(false) {
+            bHasError(false),
+            bHasWarning(false) {
 
     }
 
@@ -45,13 +46,19 @@ namespace urchin {
     void Logger::log(CriticalityLevel criticalityLevel, const std::string& toLog) {
         write(prefix(criticalityLevel) + toLog + "\n");
 
-        if (criticalityLevel >= WARNING_LVL) {
-            bHasFailure = true;
+        if (criticalityLevel == ERROR_LVL) {
+            bHasError = true;
+        } else if (criticalityLevel == WARNING_LVL) {
+            bHasWarning = true;
         }
     }
 
-    bool Logger::hasFailure() const {
-        return bHasFailure;
+    bool Logger::hasError() const {
+        return bHasError;
+    }
+
+    bool Logger::hasWarningOrError() const {
+        return bHasWarning || bHasError;
     }
 
     /**
