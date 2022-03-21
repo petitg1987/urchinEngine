@@ -122,6 +122,7 @@ namespace urchin {
         VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
         deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
         VkPhysicalDeviceFeatures2 deviceFeatures2{};
+        deviceFeatures2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
         deviceFeatures2.pNext = &deviceVulkan12Features;
         vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures2);
         for (const auto& requiredFeature : physicalDeviceRequiredVulkan12Features) {
