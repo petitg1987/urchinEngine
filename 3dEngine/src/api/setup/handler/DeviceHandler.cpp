@@ -33,12 +33,16 @@ namespace urchin {
             surface(nullptr),
             physicalDevice(nullptr),
             logicalDevice(nullptr) {
-        //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php):
+        //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php / https://vulkan.gpuinfo.org/listfeaturescore12.php):
         physicalDeviceRequiredFeatures = {
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"), //78.7%
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"), //99.2%
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"), //81.3%
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
+        };
+        physicalDeviceRequiredVulkan12Features = {
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceVulkan12Features, shaderOutputViewportIndex), "shader output viewport index"), //86.4%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceVulkan12Features, shaderOutputLayer), "shader output layer"), //86.4%
         };
         physicalDeviceRequiredExtensions = {
                 std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain")
@@ -105,12 +109,23 @@ namespace urchin {
         VkPhysicalDeviceProperties deviceProperties;
         vkGetPhysicalDeviceProperties(physicalDeviceToCheck, &deviceProperties);
 
+        //check required features
         VkPhysicalDeviceFeatures deviceFeatures;
         vkGetPhysicalDeviceFeatures(physicalDeviceToCheck, &deviceFeatures);
-
-        //check required features
         for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
             auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset);
+            if (!isFeatureAvailable) {
+                return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support");
+            }
+        }
+
+        VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
+        deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
+        VkPhysicalDeviceFeatures2 deviceFeatures2{};
+        deviceFeatures2.pNext = &deviceVulkan12Features;
+        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures2);
+        for (const auto& requiredFeature : physicalDeviceRequiredVulkan12Features) {
+            auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + requiredFeature.offset);
             if (!isFeatureAvailable) {
                 return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support");
             }
@@ -190,6 +205,13 @@ namespace urchin {
         createInfo.pEnabledFeatures = &deviceFeatures;
         createInfo.enabledExtensionCount = (uint32_t)physicalDeviceExtensions.size();
         createInfo.ppEnabledExtensionNames = physicalDeviceExtensions.data();
+
+        VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
+        deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
+        for (const auto& requiredFeature : physicalDeviceRequiredVulkan12Features) {
+            *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + requiredFeature.offset) = true;
+        }
+        createInfo.pNext = &deviceVulkan12Features;
 
         VkDevice device;
         VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);

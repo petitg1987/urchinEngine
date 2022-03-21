@@ -267,8 +267,10 @@ namespace urchin {
         unsigned int renderingOrder = 0;
 
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
-            lightShadowMap->renderModels(renderingOrder);
-            lightShadowMap->applyTextureFilters();
+            if (lightShadowMap->needShadowMapUpdate()) {
+                lightShadowMap->renderModels(renderingOrder);
+                lightShadowMap->applyTextureFilters();
+            }
         }
     }
 

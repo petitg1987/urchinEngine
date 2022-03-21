@@ -16,7 +16,7 @@ namespace urchin {
     GraphicService::GraphicService() :
             framebufferSizeRetriever(nullptr),
             apiGraphicInitialized(false),
-            vulkanVersion(VK_API_VERSION_1_1), //must be aligned with glslc target environment
+            vulkanVersion(VK_API_VERSION_1_2), //must be aligned with glslc target environment
             allocateCommandPool(nullptr),
             allocator(nullptr) {
 

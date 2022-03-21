@@ -50,9 +50,9 @@ namespace urchin {
         }
 
         textureRendererBuilder
-                ->addUniformData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 1
-                ->addUniformData(weightsShaderData.size() * sizeof(float), weightsShaderData.data()) //binding 2
-                ->addUniformTextureReader(sourceTextureReader); //binding 3
+                ->addUniformData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 0
+                ->addUniformData(weightsShaderData.size() * sizeof(float), weightsShaderData.data()) //binding 1
+                ->addUniformTextureReader(sourceTextureReader); //binding 2
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {

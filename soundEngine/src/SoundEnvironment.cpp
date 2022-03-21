@@ -120,7 +120,7 @@ namespace urchin {
         }
     }
 
-    void SoundEnvironment::process() {
+    void SoundEnvironment::process() const {
         process(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 1.0f, 0.0f));
     }
 

@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <utility>
+#include <bitset>
 
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
@@ -113,10 +114,8 @@ namespace urchin {
     }
 
     void LightShadowMap::applyTextureFilters() const {
-        unsigned int layersToUpdate = retrieveLayersToUpdate();
-
         for (auto& textureFilter : textureFilters) {
-            textureFilter->applyFilter((int)layersToUpdate);
+            textureFilter->applyFilter();
         }
     }
 
@@ -132,16 +131,13 @@ namespace urchin {
         return lightViewMatrix;
     }
 
-    unsigned int LightShadowMap::retrieveLayersToUpdate() const {
-        unsigned int layersToUpdate = 0;
-        unsigned int i = 0;
+    bool LightShadowMap::needShadowMapUpdate() const {
         for (const auto& lightSplitShadowMap : lightSplitShadowMaps) {
             if (lightSplitShadowMap->needShadowMapUpdate()) {
-                layersToUpdate = layersToUpdate | MathFunction::powerOfTwo(i);
+                return true;
             }
-            i++;
         }
-        return layersToUpdate;
+        return false;
     }
 
     void LightShadowMap::removeModel(Model* model) const {

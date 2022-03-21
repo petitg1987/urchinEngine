@@ -5,15 +5,15 @@ layout(constant_id = 1) const bool IS_VERTICAL_BLUR = true;
 layout(constant_id = 2) const uint KERNEL_RADIUS = 9; //must be equals to BilateralBlurFilter::KERNEL_RADIUS_SHADER_LIMIT
 layout(constant_id = 3) const float BLUR_SHARPNESS = 0.0;
 
-layout(std140, set = 0, binding = 1) uniform CameraPlanes {
+layout(std140, set = 0, binding = 0) uniform CameraPlanes {
     float nearPlane;
     float farPlane;
 } cameraPlanes;
-layout(std140, set = 0, binding = 2) uniform BlurData {
+layout(std140, set = 0, binding = 1) uniform BlurData {
     float offsets[KERNEL_RADIUS];
 } blurData;
-layout(binding = 3) uniform sampler2D tex;
-layout(binding = 4) uniform sampler2D depthTex;
+layout(binding = 2) uniform sampler2D tex;
+layout(binding = 3) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 

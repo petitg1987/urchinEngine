@@ -50,7 +50,7 @@ namespace urchin {
             textureFilterShader = ShaderBuilder::createNullShader();
         } else {
             if (textureType == TextureType::ARRAY) {
-                textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "texFilter.geom.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
+                textureFilterShader = ShaderBuilder::createShader("texFilterArray.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else if (textureType == TextureType::DEFAULT) {
                 textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else {
@@ -66,11 +66,17 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        int layersToUpdate = 0;
         auto textureRendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
-                ->addData(textureCoord)
-                ->addUniformData(sizeof(layersToUpdate), &layersToUpdate); //binding 0
+                ->addData(textureCoord);
+        if (textureType == TextureType::ARRAY) {
+            std::vector<float> textureLayerIds;
+            textureLayerIds.reserve(textureNumberLayer);
+            for (unsigned int i = 0; i < textureNumberLayer; ++i) {
+                textureLayerIds.emplace_back((float)i);
+            }
+            textureRendererBuilder->instanceData(textureLayerIds.size(), VariableType::FLOAT, (const float*)textureLayerIds.data());
+        }
         auto sourceTargetReader = TextureReader::build(sourceTexture, TextureParam::buildLinear());
         completeRenderer(textureRendererBuilder, sourceTargetReader);
 
@@ -110,17 +116,9 @@ namespace urchin {
         return *textureRenderer;
     }
 
-    /**
-     * @param layersToUpdate Specify the layers which must be affected by the filter (only for TextureFormat::ARRAY).
-     * Lowest bit represent the first layer, the second lowest bit represent the second layer, etc.
-     */
-    void TextureFilter::applyFilter(int layersToUpdate) const {
+    void TextureFilter::applyFilter() const {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
-        }
-
-        if (textureType == TextureType::ARRAY) {
-            textureRenderer->updateUniformData(0, &layersToUpdate);
         }
         renderTarget->render();
     }

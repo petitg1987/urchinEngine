@@ -17,7 +17,7 @@ namespace urchin {
     }
 
     void DownSampleFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
-        textureRendererBuilder->addUniformTextureReader(sourceTextureReader); //binding 1
+        textureRendererBuilder->addUniformTextureReader(sourceTextureReader); //binding 0
     }
 
     std::unique_ptr<ShaderConstants> DownSampleFilter::buildShaderConstants() const {

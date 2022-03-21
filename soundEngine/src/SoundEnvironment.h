@@ -36,7 +36,7 @@ namespace urchin {
 
             void checkNoExceptionRaised();
             void process(const Point3<float>&, const Vector3<float>&, const Vector3<float>&) const;
-            void process();
+            void process() const;
 
         private:
             std::vector<std::unique_ptr<AudioController>> audioControllers;

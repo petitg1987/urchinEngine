@@ -37,7 +37,7 @@ namespace urchin {
             const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
             const Matrix4<float>& getLightViewMatrix() const;
-            unsigned int retrieveLayersToUpdate() const;
+            bool needShadowMapUpdate() const;
             void removeModel(Model* model) const;
 
             void renderModels(unsigned int) const;

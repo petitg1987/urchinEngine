@@ -41,6 +41,7 @@ namespace urchin {
             VkDevice createLogicalDevice();
 
             std::vector<PhysicalDeviceFeature> physicalDeviceRequiredFeatures;
+            std::vector<PhysicalDeviceFeature> physicalDeviceRequiredVulkan12Features;
             std::vector<std::pair<const char*, std::string>> physicalDeviceRequiredExtensions;
             bool devicesInitialized;
             VkSurfaceKHR surface;

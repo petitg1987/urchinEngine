@@ -89,7 +89,10 @@ namespace urchin {
 
     VkFormat DataContainer::getVulkanFormat(unsigned int& repeatCount) const {
         if (dataType == DataType::FLOAT) {
-            if (variableType == VariableType::VEC2) {
+            if (variableType == VariableType::FLOAT) {
+                repeatCount = 1;
+                return VK_FORMAT_R32_SFLOAT;
+            } else if (variableType == VariableType::VEC2) {
                 repeatCount = 1;
                 return VK_FORMAT_R32G32_SFLOAT;
             } else if (variableType == VariableType::VEC3) {
@@ -115,7 +118,9 @@ namespace urchin {
     }
 
     unsigned int DataContainer::getVariableSize() const {
-        if (variableType == VariableType::VEC2) {
+        if (variableType == VariableType::FLOAT) {
+            return 1;
+        } else if (variableType == VariableType::VEC2) {
             return 2;
         } else if (variableType == VariableType::VEC3) {
             return 3;
