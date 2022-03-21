@@ -68,7 +68,7 @@ namespace urchin {
 
         textureSizeX = (unsigned int)(resolution.X / (float)retrieveTextureSizeFactor());
         textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
-        ambientOcclusionTexture = Texture::build(textureSizeX, textureSizeY, textureFormat, nullptr);
+        ambientOcclusionTexture = Texture::build("ambient occlusion", textureSizeX, textureSizeY, textureFormat, nullptr);
 
         if (useNullRenderTarget) {
             if (!renderTarget) {
@@ -198,7 +198,7 @@ namespace urchin {
             ssaoNoise.emplace_back(0); //z
             ssaoNoise.emplace_back(255); //w (not used)
         }
-        noiseTexture = Texture::build(config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, ssaoNoise.data());
+        noiseTexture = Texture::build("AO noise", config.noiseTextureSize, config.noiseTextureSize, TextureFormat::RGBA_8_INT, ssaoNoise.data());
     }
 
     void AmbientOcclusionManager::exportSVG(std::string filename, const std::vector<Vector4<float>>& ssaoKernel) const {

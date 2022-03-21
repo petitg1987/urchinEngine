@@ -18,13 +18,13 @@ namespace urchin {
         public:
             ~Texture();
 
-            static std::shared_ptr<Texture> build(unsigned int, unsigned int, TextureFormat, const void*);
-            static std::shared_ptr<Texture> buildArray(unsigned int, unsigned int, unsigned int, TextureFormat, const void*);
-            static std::shared_ptr<Texture> buildCubeMap(unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
+            static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void*);
+            static std::shared_ptr<Texture> buildArray(std::string, unsigned int, unsigned int, unsigned int, TextureFormat, const void*);
+            static std::shared_ptr<Texture> buildCubeMap(std::string, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
 
-            static std::shared_ptr<Texture> buildEmptyRgba();
-            static std::shared_ptr<Texture> buildEmptyGreyscale();
-            static std::shared_ptr<Texture> buildEmptyArrayRg();
+            static std::shared_ptr<Texture> buildEmptyRgba(std::string);
+            static std::shared_ptr<Texture> buildEmptyGreyscale(std::string);
+            static std::shared_ptr<Texture> buildEmptyArrayRg(std::string);
 
             void enableMipmap();
             void enableTextureWriting();
@@ -47,7 +47,7 @@ namespace urchin {
             void takeCapture(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
         private:
-            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
+            Texture(std::string, TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
 
             void cleanup();
 
@@ -62,6 +62,7 @@ namespace urchin {
             unsigned int getBytesByPixel() const;
 
             bool isInitialized;
+            std::string name;
 
             uint32_t mipLevels;
             bool writableTexture;

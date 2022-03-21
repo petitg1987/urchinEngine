@@ -12,8 +12,9 @@
 
 namespace urchin {
 
-    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
+    Texture::Texture(std::string name, TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
             isInitialized(false),
+            name(std::move(name)),
             mipLevels(1),
             writableTexture(false),
             lastTextureWriter(nullptr),
@@ -41,42 +42,42 @@ namespace urchin {
         cleanup();
     }
 
-    std::shared_ptr<Texture> Texture::build(unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr) {
+    std::shared_ptr<Texture> Texture::build(std::string name, unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr) {
         std::vector<const void*> allDataPtr(1, dataPtr);
-        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr));
+        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::DEFAULT, width, height, 1, format, allDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildArray(unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
+    std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
         assert(layer > 1);
         std::vector<const void*> allDataPtr(1, dataPtr);
-        return std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr));
+        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::ARRAY, width, height, layer, format, allDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildCubeMap(unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr) {
+    std::shared_ptr<Texture> Texture::buildCubeMap(std::string name, unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr) {
         assert(cubeDataPtr.size() == 6);
         unsigned int layerCount = 6; //in Vulkan, cube maps are considered as an image of 6 layers
-        return std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
+        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyRgba() {
+    std::shared_ptr<Texture> Texture::buildEmptyRgba(std::string name) {
         std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 255}; //pink
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
+        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyGreyscale() {
+    std::shared_ptr<Texture> Texture::buildEmptyGreyscale(std::string name) {
         std::array<uint8_t, 1> textureData = {0};
         std::vector<const void*> allDataPtr(1, textureData.data());
-        return std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr));
+        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr));
     }
 
-    std::shared_ptr<Texture> Texture::buildEmptyArrayRg() {
+    std::shared_ptr<Texture> Texture::buildEmptyArrayRg(std::string name) {
         std::array<float, 4> textureArrayData = {
                 0.0f, 0.25f,
                 0.5f, 1.0f
         };
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        return std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr));
+        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr));
     }
 
     void Texture::enableMipmap() {
@@ -222,7 +223,7 @@ namespace urchin {
         vmaUnmapMemory(allocator, stagingBufferMemory);
 
         bool isCubeMap = textureType == TextureType::CUBE_MAP;
-        textureImage = ImageHelper::createImage(width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
+        textureImage = ImageHelper::createImage(name, width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
 
         if (!isDepthFormat()) { //depth image layout transition is automatically done in render pass (see 'layout' and 'finalLayout' properties)
             transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);

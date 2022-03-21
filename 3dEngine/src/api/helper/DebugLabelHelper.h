@@ -11,12 +11,13 @@ namespace urchin {
             enum ObjectType {
                 PIPELINE,
                 RENDER_PASS,
-                SHADER
+                SHADER,
+                IMAGE
             };
 
             static void nameObject(ObjectType, void*, const std::string&);
 
-            static void beginDebugRegion(VkCommandBuffer, const std::string& label, const Vector4<float>&);
+            static void beginDebugRegion(VkCommandBuffer, const std::string&, const Vector4<float>&);
             static void endDebugRegion(VkCommandBuffer);
 
         private:

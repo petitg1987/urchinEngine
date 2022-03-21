@@ -23,7 +23,7 @@ namespace urchin {
         this->inputTexture = inputTexture;
 
         clearRenderer();
-        outputTexture = Texture::build(inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::B10G11R11_FLOAT, nullptr);
+        outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::B10G11R11_FLOAT, nullptr);
         if (useNullRenderTarget) {
             renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
         } else {

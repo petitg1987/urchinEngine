@@ -252,9 +252,9 @@ namespace urchin {
                 depthTexture = externalDepthTexture;
             } else {
                 if (getLayer() == 1) {
-                    depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+                    depthTexture = Texture::build(name + " - depth", getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
                 } else {
-                    depthTexture = Texture::buildArray(getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+                    depthTexture = Texture::buildArray(name + " - depth", getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT, nullptr);
                 }
                 depthTexture->enableTextureWriting();
                 depthTexture->initialize();

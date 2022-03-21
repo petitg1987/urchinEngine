@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     void NullRenderTarget::initialize() {
-        depthTexture = Texture::build(getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
+        depthTexture = Texture::build("null render target - depth", getWidth(), getHeight(), TextureFormat::DEPTH_32_FLOAT, nullptr);
         depthTexture->enableTextureWriting();
     }
 

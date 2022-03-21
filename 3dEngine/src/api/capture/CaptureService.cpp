@@ -22,8 +22,7 @@ namespace urchin {
 
         //create the linear tiled destination image to copy to and to read the memory from
         VmaAllocation imageMemory;
-        VkImage dstImage = ImageHelper::createImage(srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR,
-                                                    VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
+        VkImage dstImage = ImageHelper::createImage("screenshot", srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
 
         //do the actual blit from the image to our host visible destination image
         VkCommandBuffer copyCmd = CommandBufferHelper::beginSingleTimeCommands();

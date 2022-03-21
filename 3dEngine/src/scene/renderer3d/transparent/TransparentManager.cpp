@@ -46,8 +46,8 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        accumulationTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT, nullptr);
-        revealTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_8_INT, nullptr);
+        accumulationTexture = Texture::build("transparent: accumulation", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT, nullptr);
+        revealTexture = Texture::build("transparent: reveal", sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_8_INT, nullptr);
 
         if (useNullRenderTarget) {
             if (!renderTarget) {

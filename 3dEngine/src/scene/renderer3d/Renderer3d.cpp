@@ -339,8 +339,8 @@ namespace urchin {
 
     void Renderer3d::createOrUpdateLightingPass() {
         //deferred rendering
-        diffuseTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        normalAndAmbientTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        diffuseTexture = Texture::build("diffuse", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
             auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
             deferredOffscreenRenderTarget->resetOutputTextures();
@@ -350,7 +350,7 @@ namespace urchin {
         }
 
         //lighting pass rendering
-        lightingPassTexture = Texture::build(sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
+        lightingPassTexture = Texture::build("lighted scene", sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
         if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
             auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
             offscreenLightingRenderTarget->resetOutputTextures();
@@ -386,9 +386,9 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 6
                 ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 7
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 8
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale(), TextureParam::buildNearest())) //binding 9 - ambient occlusion
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba(), TextureParam::buildNearest())) //binding 10 - transparency: accumulation
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale(), TextureParam::buildNearest())) //binding 11 - transparency: reveal
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest())) //binding 9 - ambient occlusion
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba("transparent: empty accumulation"), TextureParam::buildNearest())) //binding 10 - transparency: accumulation
+                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("transparent: empty reveal"), TextureParam::buildNearest())) //binding 11 - transparency: reveal
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 12
                 ->build();
         ambientOcclusionManager.onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);

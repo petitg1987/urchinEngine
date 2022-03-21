@@ -44,7 +44,8 @@ namespace urchin {
         unsigned int textureHeight = sceneHeight / 2;
         bloomStepTextures.clear();
         for (unsigned int i = 0; i < config.maxIterations; ++i) {
-            bloomStepTextures.push_back(Texture::build(textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT, nullptr));
+            std::string bloomTextureName = "bloom " + std::to_string(textureWidth) + "x" + std::to_string(textureHeight);
+            bloomStepTextures.push_back(Texture::build(bloomTextureName, textureWidth, textureHeight, TextureFormat::B10G11R11_FLOAT, nullptr));
 
             textureWidth = textureWidth / 2;
             textureHeight = textureHeight / 2;
