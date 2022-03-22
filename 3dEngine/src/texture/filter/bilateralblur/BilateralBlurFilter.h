@@ -22,7 +22,6 @@ namespace urchin {
 
         private:
             struct BilateralBlurShaderConst {
-                uint32_t numberLayer;
                 uint32_t isVerticalBlur;
                 uint32_t kernelRadius;
                 float blurSharpness;

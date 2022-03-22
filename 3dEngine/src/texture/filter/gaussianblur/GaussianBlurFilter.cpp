@@ -9,13 +9,12 @@
 
 namespace urchin {
 
-    GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
-        TextureFilter(textureFilterBuilder),
-        blurDirection(blurDirection),
-        blurSize(textureFilterBuilder->getBlurSize()),
-        nbTextureFetch(MathFunction::ceilToUInt((float)blurSize / 2.0f)),
-        textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) { //See http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
-
+    GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection) :
+            TextureFilter(textureFilterBuilder),
+            blurDirection(blurDirection),
+            blurSize(textureFilterBuilder->getBlurSize()),
+            nbTextureFetch(MathFunction::ceilToUInt((float)blurSize / 2.0f)),
+            textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()) { //See http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
         if (blurSize <= 1) {
             throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
         } else if (blurSize % 2 == 0) {
@@ -57,11 +56,9 @@ namespace urchin {
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
         GaussianBlurShaderConst gaussianBlurData{};
-        gaussianBlurData.numberLayer = getTextureLayer();
         gaussianBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
         gaussianBlurData.nbTextureFetch = nbTextureFetch;
         std::vector<std::size_t> variablesSize = {
-                sizeof(GaussianBlurShaderConst::numberLayer),
                 sizeof(GaussianBlurShaderConst::isVerticalBlur),
                 sizeof(GaussianBlurShaderConst::nbTextureFetch)
         };

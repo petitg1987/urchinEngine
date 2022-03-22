@@ -21,7 +21,6 @@ namespace urchin {
 
         private:
             struct GaussianBlurShaderConst {
-                uint32_t numberLayer;
                 uint32_t isVerticalBlur;
                 uint32_t nbTextureFetch;
             };

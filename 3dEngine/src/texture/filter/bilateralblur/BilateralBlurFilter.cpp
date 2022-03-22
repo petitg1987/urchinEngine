@@ -33,7 +33,7 @@ namespace urchin {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = farPlane;
 
-        getTextureRenderer().updateUniformData(1, &cameraPlanes);
+        getTextureRenderer().updateUniformData(0, &cameraPlanes);
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
@@ -59,12 +59,10 @@ namespace urchin {
 
     std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {
         BilateralBlurShaderConst bilateralBlurData{};
-        bilateralBlurData.numberLayer = getTextureLayer();
         bilateralBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
         bilateralBlurData.kernelRadius = kernelRadius;
         bilateralBlurData.blurSharpness = blurSharpness;
         std::vector<std::size_t> variablesSize = {
-                sizeof(BilateralBlurShaderConst::numberLayer),
                 sizeof(BilateralBlurShaderConst::isVerticalBlur),
                 sizeof(BilateralBlurShaderConst::kernelRadius),
                 sizeof(BilateralBlurShaderConst::blurSharpness)
