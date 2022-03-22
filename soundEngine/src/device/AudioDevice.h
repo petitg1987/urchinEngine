@@ -10,7 +10,7 @@ namespace urchin {
 
             ~AudioDevice() override;
 
-            void enable(bool);
+            void enable();
 
         private:
             AudioDevice();

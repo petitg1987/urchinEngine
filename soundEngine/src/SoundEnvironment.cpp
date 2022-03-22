@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 #include <SoundEnvironment.h>
+#include <util/CheckState.h>
 
 namespace urchin {
 
@@ -10,8 +11,9 @@ namespace urchin {
             streamUpdateWorkerThread(std::jthread(&StreamUpdateWorker::start, &streamUpdateWorker)) {
         SignalHandler::instance().initialize();
 
-        AudioDevice::instance().enable(true);
+        AudioDevice::instance().enable();
         alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+        CheckState::check("set listener position to origin");
 
         soundVolumes[Sound::SoundCategory::MUSIC] = 1.0f;
         soundVolumes[Sound::SoundCategory::EFFECTS] = 1.0f;
@@ -69,11 +71,13 @@ namespace urchin {
      */
     void SoundEnvironment::setMasterVolume(float masterVolume) const {
         alListenerf(AL_GAIN, masterVolume);
+        CheckState::check("set listener gain");
     }
 
     float SoundEnvironment::getMasterVolume() const {
         float masterVolume = 0.0f;
         alGetListenerf(AL_GAIN, &masterVolume);
+        CheckState::check("get listener gain");
         return masterVolume;
     }
 
@@ -100,23 +104,23 @@ namespace urchin {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
+        CheckState::check("set listener position");
+
         struct {
             Vector3<float> frontVector;
             Vector3<float> upVector;
         } listenerOrientation = {listenerFrontVector, listenerUpVector};
         alListenerfv(AL_ORIENTATION, &listenerOrientation.frontVector.X);
+        CheckState::check("set listener orientation");
+
         alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
+        CheckState::check("set listener velocity");
 
         for (const auto& musicLoopPlayer : musicLoopPlayers) {
             musicLoopPlayer->refresh();
         }
         for (const auto& audioController : audioControllers) {
             audioController->process(listenerPosition, soundVolumes);
-        }
-
-        ALenum err;
-        while ((err = alGetError()) != AL_NO_ERROR) {
-            Logger::instance().logError("OpenAL error detected: " + std::to_string(err));
         }
     }
 
