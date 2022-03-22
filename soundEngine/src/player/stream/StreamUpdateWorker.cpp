@@ -44,7 +44,7 @@ namespace urchin {
         //create buffers/chunks
         std::vector<ALuint> bufferId(nbChunkBuffer);
         alGenBuffers((int)nbChunkBuffer, bufferId.data());
-        CheckState::check("generate buffers", nbChunkBuffer);
+        CheckState::check("generate buffers id", nbChunkBuffer);
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
         }
@@ -133,13 +133,13 @@ namespace urchin {
     bool StreamUpdateWorker::processTask(StreamUpdateTask& task) {
         ALint chunkProcessed = 0;
         alGetSourcei(task.getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
-        CheckState::check("get source buffers processed");
+        CheckState::check("get buffers processed (process)");
 
         for (int i = 0; i < chunkProcessed; ++i) {
             //pop the first unused buffer from the queue
             ALuint bufferId;
             alSourceUnqueueBuffers(task.getSourceId(), 1, &bufferId);
-            CheckState::check("source un-queue buffers (process)");
+            CheckState::check("un-queue buffers (process)");
 
             unsigned int chunkId = retrieveChunkId(task, bufferId);
             fillAndPushChunk(task, chunkId);
@@ -147,14 +147,20 @@ namespace urchin {
 
         ALint nbQueues = 0;
         alGetSourcei(task.getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
-        CheckState::check("get source buffers queued (process)");
+        CheckState::check("get buffers queued (process)");
         return nbQueues == 0; //task terminated ?
     }
 
     void StreamUpdateWorker::deleteTask(StreamUpdateTask& task) const {
+        #ifdef URCHIN_DEBUG
+            ALint state;
+            alGetSourcei(task.getSourceId(), AL_SOURCE_STATE, &state);
+            assert(state == AL_INITIAL || state == AL_STOPPED);
+        #endif
+
         clearQueue(task);
-        alSourcei(task.getSourceId(), AL_BUFFER, 0);
-        CheckState::check("set source buffer to 0");
+        alSourcei(task.getSourceId(), AL_BUFFER, AL_NONE);
+        CheckState::check("release source buffer (worker)");
 
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             alDeleteBuffers(1, &task.getStreamChunk(i).bufferId);
@@ -212,15 +218,13 @@ namespace urchin {
     }
 
     void StreamUpdateWorker::clearQueue(const StreamUpdateTask& task) const {
-        ALint nbQueues;
-        alGetSourcei(task.getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
-        CheckState::check("get source buffers queued (clean)");
+        ALint nbBuffersProcessed;
+        alGetSourcei(task.getSourceId(), AL_BUFFERS_PROCESSED, &nbBuffersProcessed);
+        CheckState::check("get buffers processed (clear)");
 
         ALuint buffer;
-        for (ALint i = 0; i < nbQueues; ++i) {
-            alSourceUnqueueBuffers(task.getSourceId(), 1, &buffer);
-            CheckState::check("source un-queue buffers (clean)");
-        }
+        alSourceUnqueueBuffers(task.getSourceId(), nbBuffersProcessed, &buffer);
+        CheckState::check("un-queue buffers (clear)");
     }
 
 }

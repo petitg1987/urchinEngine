@@ -29,6 +29,8 @@ namespace urchin {
             void applyVolume() const;
 
         private:
+            ALint getSourceState() const;
+
             const Sound& sound;
 
             ALuint sourceId;
