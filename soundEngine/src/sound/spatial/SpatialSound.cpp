@@ -22,7 +22,7 @@ namespace urchin {
         CheckState::check("set source relative to false");
 
         alSource3f(sourceId, AL_POSITION, position.X, position.Y, position.Z);
-        CheckState::check("set source position (init)");
+        CheckState::check("set source position (init)", position);
 
         //AL_INVERSE_DISTANCE_CLAMPED: sound volume/gain decrease more and more quickly with the distance.
         //Formula is (see https://www.openal.org/documentation/OpenAL_Programmers_Guide.pdf):
@@ -40,7 +40,7 @@ namespace urchin {
         }
 
         alSourcef(sourceId, AL_MAX_DISTANCE, inaudibleDistance);
-        CheckState::check("set source max distance (init)");
+        CheckState::check("set source max distance (init)", inaudibleDistance);
 
         alSourcef(sourceId, AL_REFERENCE_DISTANCE, 1.0f); //no sound volume decrease over the distance from 0.0f to AL_REFERENCE_DISTANCE
         CheckState::check("set source reference distance");
@@ -52,12 +52,12 @@ namespace urchin {
     void SpatialSound::updateSource(ALuint sourceId) {
         if (positionUpdated) {
             alSource3f(sourceId, AL_POSITION, position.X, position.Y, position.Z);
-            CheckState::check("set source position (update)");
+            CheckState::check("set source position (update)", position);
             positionUpdated = false;
         }
         if (inaudibleDistanceUpdated) {
             alSourcef(sourceId, AL_MAX_DISTANCE, inaudibleDistance);
-            CheckState::check("set source max distance (update)");
+            CheckState::check("set source max distance (update)", inaudibleDistance);
             inaudibleDistanceUpdated = false;
         }
     }

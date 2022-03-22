@@ -44,7 +44,7 @@ namespace urchin {
         //create buffers/chunks
         std::vector<ALuint> bufferId(nbChunkBuffer);
         alGenBuffers((int)nbChunkBuffer, bufferId.data());
-        CheckState::check("generate buffers");
+        CheckState::check("generate buffers", nbChunkBuffer);
         for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
             task->getStreamChunk(i).bufferId = bufferId[i];
         }
@@ -183,7 +183,7 @@ namespace urchin {
             }
 
             alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task.getSoundFileReader().getSampleRate());
-            CheckState::check("fill buffer with audio data");
+            CheckState::check("fill buffer with audio data", size);
 
             alSourceQueueBuffers(task.getSourceId(), 1, &streamChunk.bufferId);
             CheckState::check("source queue buffers");

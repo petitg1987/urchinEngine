@@ -110,8 +110,8 @@ namespace urchin {
         if (severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
             static unsigned int numErrorsLogged = 0;
             if (!ignoreValidationMessage(validationMessage) && numErrorsLogged < MAX_ERRORS_LOG) {
-                numErrorsLogged++;
                 Logger::instance().logError("Vulkan validation layer error: " + validationMessage);
+                numErrorsLogged++;
             }
         } else {
             Logger::instance().logInfo("Vulkan validation layer info: " + validationMessage);

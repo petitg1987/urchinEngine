@@ -71,7 +71,7 @@ namespace urchin {
      */
     void SoundEnvironment::setMasterVolume(float masterVolume) const {
         alListenerf(AL_GAIN, masterVolume);
-        CheckState::check("set listener gain");
+        CheckState::check("set listener gain", masterVolume);
     }
 
     float SoundEnvironment::getMasterVolume() const {
@@ -104,14 +104,14 @@ namespace urchin {
         ScopeProfiler sp(Profiler::sound(), "soundMgrProc");
 
         alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
-        CheckState::check("set listener position");
+        CheckState::check("set listener position", listenerPosition);
 
         struct {
             Vector3<float> frontVector;
             Vector3<float> upVector;
         } listenerOrientation = {listenerFrontVector, listenerUpVector};
         alListenerfv(AL_ORIENTATION, &listenerOrientation.frontVector.X);
-        CheckState::check("set listener orientation");
+        CheckState::check("set listener orientation", listenerOrientation.frontVector, listenerOrientation.upVector);
 
         alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
         CheckState::check("set listener velocity");
