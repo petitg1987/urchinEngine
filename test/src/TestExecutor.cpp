@@ -43,6 +43,7 @@
 #include <physics/collision/narrowphase/algorithm/epa/EPASphereTest.h>
 #include <physics/collision/narrowphase/algorithm/epa/EPAConvexHullTest.h>
 #include <physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h>
+#include <physics/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithmTest.h>
 #include <physics/collision/bodystate/IslandContainerTest.h>
 #include <physics/collision/CollisionWorldIT.h>
 #include <physics/character/CharacterControllerIT.h>
@@ -133,6 +134,7 @@ void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(EPASphereTest::suite());
     runner.addTest(EPAConvexHullTest::suite());
     runner.addTest(EPAConvexObjectTest::suite());
+    runner.addTest(GJKContinuousCollisionAlgorithmTest::suite());
 
     //island
     runner.addTest(IslandContainerTest::suite());

@@ -23,7 +23,7 @@ namespace urchin {
             void logMaximumIterationReach(const CollisionConvexObject3D&, const CollisionConvexObject3D&, bool) const;
 
             static constexpr unsigned int MAX_ITERATION = 20;
-            static constexpr float TERMINATION_TOLERANCE = 0.0001f;
+            static constexpr float TERMINATION_TOLERANCE = 0.00015f;
     };
 
 }

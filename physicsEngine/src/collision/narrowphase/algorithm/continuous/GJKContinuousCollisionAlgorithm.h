@@ -24,7 +24,7 @@ namespace urchin {
 
             static constexpr T SQUARE_EPSILON = std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon();
             static constexpr unsigned int MAX_ITERATION = 25;
-            static constexpr float TERMINATION_TOLERANCE = 0.0001f;
+            static constexpr float TERMINATION_TOLERANCE = 0.00015f;
     };
 
 }
