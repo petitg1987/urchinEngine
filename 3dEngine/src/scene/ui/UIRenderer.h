@@ -62,6 +62,7 @@ namespace urchin {
             void addWidget(const std::shared_ptr<Widget>&);
             void removeWidget(const Widget&);
             void removeAllWidgets();
+            bool isWidgetExist(const Widget&) const;
             const std::vector<std::shared_ptr<Widget>>& getWidgets() const;
 
             void prepareRendering(float, unsigned int&) override;

@@ -316,7 +316,7 @@ namespace urchin {
     }
 
     void UIRenderer::removeWidget(const Widget& widget) {
-        auto itFind = std::ranges::find_if(widgets, [&widget](const auto& o){return &widget == o.get();});
+        auto itFind = std::ranges::find_if(widgets, [&widget](const auto& o){ return &widget == o.get(); });
         if (itFind == widgets.end()) {
             throw std::runtime_error("The provided widget is not widget of this UI renderer");
         }
@@ -325,6 +325,10 @@ namespace urchin {
 
     void UIRenderer::removeAllWidgets() {
         widgets.clear();
+    }
+
+    bool UIRenderer::isWidgetExist(const Widget& widget) const {
+        return std::ranges::find_if(widgets, [&widget](const auto& o){ return &widget == o.get(); }) != widgets.end();
     }
 
     const std::vector<std::shared_ptr<Widget>>& UIRenderer::getWidgets() const {
