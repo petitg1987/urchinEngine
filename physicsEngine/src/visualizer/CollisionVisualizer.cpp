@@ -12,7 +12,7 @@ namespace urchin {
     }
 
     void CollisionVisualizer::notify(Observable* observable, int notificationType) {
-        if (auto* collisionWorld = dynamic_cast<CollisionWorld*>(observable)) {
+        if (const auto* collisionWorld = dynamic_cast<CollisionWorld*>(observable)) {
             if (notificationType == CollisionWorld::COLLISION_RESULT_UPDATED) {
                 std::scoped_lock<std::mutex> lock(visualizerDataMutex);
 

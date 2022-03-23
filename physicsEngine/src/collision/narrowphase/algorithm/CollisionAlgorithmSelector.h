@@ -34,7 +34,7 @@ namespace urchin {
             void initializeAlgorithmPool();
 
             std::shared_ptr<SyncFixedSizePool<CollisionAlgorithm>> algorithmPool;
-            std::unique_ptr<CollisionAlgorithmBuilder> collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
+            std::array<std::array<std::unique_ptr<CollisionAlgorithmBuilder>, CollisionShape3D::SHAPE_MAX>, CollisionShape3D::SHAPE_MAX> collisionAlgorithmBuilderMatrix;
     };
 
 }

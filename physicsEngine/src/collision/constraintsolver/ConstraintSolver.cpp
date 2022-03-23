@@ -71,7 +71,7 @@ namespace urchin {
         }
     }
 
-    void ConstraintSolver::solveConstraints() {
+    void ConstraintSolver::solveConstraints() const {
         //solve tangent constraint first because non-penetration is more important than friction
         for (auto& constraintSolvingData : constraintsSolvingData) {
             solveTangentConstraint(*constraintSolvingData);

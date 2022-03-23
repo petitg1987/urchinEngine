@@ -17,7 +17,7 @@ namespace urchin {
         public:
             CloneObjectDialog(QWidget*, const ObjectController*);
 
-            const std::string& getObjectName();
+            const std::string& getObjectName() const;
 
         private:
             void setupNameFields(QGridLayout*);

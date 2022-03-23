@@ -305,7 +305,7 @@ namespace urchin {
         specificZoneTriggerGroupBox->show();
         soundTriggerType->setText(NewSoundDialog::ZONE_TRIGGER_LABEL);
 
-        auto& soundShape = soundEntity.getSoundComponent()->getZoneTrigger().getSoundShape();
+        const auto& soundShape = soundEntity.getSoundComponent()->getZoneTrigger().getSoundShape();
         SoundShapeWidget& soundShapeWidget = retrieveSoundShapeWidget(soundShape, soundEntity);
         soundShapeWidget.setupShapePropertiesFrom(soundShape);
 

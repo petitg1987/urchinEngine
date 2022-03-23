@@ -47,7 +47,7 @@ namespace urchin {
         }
     }
 
-    const std::string& CloneObjectDialog::getObjectName() {
+    const std::string& CloneObjectDialog::getObjectName() const {
         return objectName;
     }
 
