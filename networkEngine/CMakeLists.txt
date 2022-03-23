@@ -3,6 +3,9 @@ project(urchinNetworkEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 20)
+if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"))
+    SET(CMAKE_UNITY_BUILD TRUE)
+endif()
 
 if (WIN32)
     set(CURL_LIB curl.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a idn2.a gdi32.a zstd.a ws2_32.a iconv unistring psl)
