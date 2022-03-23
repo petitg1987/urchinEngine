@@ -63,7 +63,7 @@ namespace urchin {
             SoundEntity& addSoundEntity(std::unique_ptr<SoundEntity>);
             void removeSoundEntity(SoundEntity&);
 
-            void refresh();
+            void refresh() const;
             void pause();
             void unpause();
 

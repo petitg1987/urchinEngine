@@ -29,7 +29,7 @@ namespace urchin {
         private:
             bool continueExecution() const;
 
-            bool processTask(StreamUpdateTask&);
+            bool processTask(StreamUpdateTask&) const;
             void deleteTask(StreamUpdateTask&) const;
 
             void fillAndPushChunk(StreamUpdateTask&, unsigned int) const;

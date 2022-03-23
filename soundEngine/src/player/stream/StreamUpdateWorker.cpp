@@ -130,7 +130,7 @@ namespace urchin {
         return !streamUpdateWorkerStopper.load(std::memory_order_acquire);
     }
 
-    bool StreamUpdateWorker::processTask(StreamUpdateTask& task) {
+    bool StreamUpdateWorker::processTask(StreamUpdateTask& task) const {
         ALint chunkProcessed = 0;
         alGetSourcei(task.getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
         CheckState::check("get buffers processed (process)");

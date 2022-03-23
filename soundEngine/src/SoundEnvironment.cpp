@@ -96,7 +96,7 @@ namespace urchin {
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void SoundEnvironment::checkNoExceptionRaised() {
+    void SoundEnvironment::checkNoExceptionRaised() const {
         streamUpdateWorker.checkNoExceptionRaised();
     }
 

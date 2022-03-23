@@ -201,7 +201,7 @@ namespace urchin {
     }
 
     void Map::removeSoundEntity(SoundEntity& soundEntity) {
-        soundEntities.remove_if([&soundEntity](const auto& o){return o.get()==&soundEntity;});
+        soundEntities.remove_if([&soundEntity](const auto& o){ return o.get()==&soundEntity; });
     }
 
     void Map::pause() {
@@ -218,7 +218,7 @@ namespace urchin {
         soundEnvironment.unpause();
     }
 
-    void Map::refresh() {
+    void Map::refresh() const {
         physicsWorld.checkNoExceptionRaised();
         aiEnvironment.checkNoExceptionRaised();
         soundEnvironment.checkNoExceptionRaised();
