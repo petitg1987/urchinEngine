@@ -5,13 +5,13 @@ SET_DIRECTORY_PROPERTIES(PROPERTIES CLEAN_NO_CUSTOM 1)
 set(CURL_ROOT               ${CMAKE_BINARY_DIR}/deps/curl)
 set(CURL_LIB_DIR            ${CURL_ROOT}/lib)
 set(CURL_INCLUDE_DIR        ${CURL_ROOT}/include)
-set(CURL_CONFIGURE          cd ${CURL_ROOT}/src/curl-static && ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --prefix=${CURL_ROOT} --program-suffix=custom --disable-shared --enable-static --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2)
+set(CURL_CONFIGURE          cd ${CURL_ROOT}/src/curl-static && ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --prefix=${CURL_ROOT} --program-suffix=custom --disable-shared --enable-static --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2)
 set(CURL_MAKE               cd ${CURL_ROOT}/src/curl-static && make)
 set(CURL_INSTALL            cd ${CURL_ROOT}/src/curl-static && make install)
 
 ExternalProject_Add(curl-static
-        URL                 ${CMAKE_CURRENT_SOURCE_DIR}/deps/curl/curl-7.78.0.zip
-        URL_HASH            MD5=bbe9fc18e0aef947567ce7c4084a3430
+        URL                 ${CMAKE_CURRENT_SOURCE_DIR}/deps/curl/curl-7.82.0.zip
+        URL_HASH            MD5=103a746d6b53f3ab184daa6260add764
         PREFIX              ${CURL_ROOT}
         CONFIGURE_COMMAND   ${CURL_CONFIGURE}
         BUILD_COMMAND       ${CURL_MAKE}
