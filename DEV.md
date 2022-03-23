@@ -36,9 +36,9 @@
   ```
   Pacman -S unzip openssl-devel
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
-  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-7.74.0.zip
-  unzip curl-7.74.0.zip && cd /tmp/curl/curl-7.74.0
-  ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2
+  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-7.82.0.zip
+  unzip curl-7.82.0.zip && cd /tmp/curl/curl-7.82.0
+  ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2
   make V=1
   make install #create library in /usr/local/lib/libcurl.a
   mv /mingw64/lib/libcurl.a /mingw64/lib/libcurl.a_backup #In case libcurl is installed via package "mingw-w64-x86_64-cmake"
@@ -46,7 +46,6 @@
   cp -r /usr/local/include/curl/ /mingw64/x86_64-w64-mingw32/include/
   cat /usr/local/lib/pkgconfig/libcurl.pc | grep "Libs.private" #Display required dependencies
   ```
-  * *Info*: link of the final executable fail when using more recent curl (e.g. 7.78.0) because more dependencies are required: libcrypt32, libssh2
 * Configure Clion:
   * In File > Settings... > Build, Execution, Deployment > Toolchains, Environment: C:\msys64\mingw64
 
