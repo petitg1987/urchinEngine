@@ -34,7 +34,7 @@ else()
     SET(VULKAN_LIB vulkan)
 endif()
 
-add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
+add_definitions(-fno-stack-protector -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src ../common/src /usr/include/freetype2)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.inl" "${CMAKE_CURRENT_SOURCE_DIR}/src/libs/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
