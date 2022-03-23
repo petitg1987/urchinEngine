@@ -218,13 +218,15 @@ namespace urchin {
     }
 
     void StreamUpdateWorker::clearQueue(const StreamUpdateTask& task) const {
-        ALint nbBuffersProcessed;
+        ALint nbBuffersProcessed = 0;
         alGetSourcei(task.getSourceId(), AL_BUFFERS_PROCESSED, &nbBuffersProcessed);
         CheckState::check("get buffers processed (clear)");
 
-        ALuint buffer;
-        alSourceUnqueueBuffers(task.getSourceId(), nbBuffersProcessed, &buffer);
-        CheckState::check("un-queue buffers (clear)");
+        for (int i = 0; i < nbBuffersProcessed; ++i) {
+            ALuint bufferId;
+            alSourceUnqueueBuffers(task.getSourceId(), 1, &bufferId);
+            CheckState::check("un-queue buffers (clear)");
+        }
     }
 
 }
