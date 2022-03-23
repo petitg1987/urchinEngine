@@ -34,7 +34,7 @@ namespace urchin {
             void initialize();
             void registerSignalReceptor(const std::shared_ptr<SignalReceptor>&);
 
-            void simulateError(ErrorSimulationType);
+            void simulateError(ErrorSimulationType) const;
 
         private:
             SignalHandler();

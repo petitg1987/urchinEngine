@@ -142,7 +142,7 @@ namespace urchin {
                 std::string addr2lineCmd = "addr2line -p -e " + std::string(info.dli_fname) + + " 0x" + instructionShiftHex.str();
                 std::string cmdResult = CommandExecutor::execute(addr2lineCmd + " 2> /dev/null");
                 if (cmdResult.empty() /* Command doesn't exist */ || cmdResult.find("??") != std::string::npos /* Debug symbol not found */) {
-                    ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
+                    ss << "\t[bt]\t> " << "addr2line -p -e " << FileUtil::getFileName(std::string_view(info.dli_fname)) << " 0x" << instructionShiftHex.str() << std::endl;
                 }else {
                     ss << "\t[bt]\t> " << cmdResult << std::endl;
                 }
@@ -170,7 +170,7 @@ namespace urchin {
     }
 #endif
 
-    void SignalHandler::simulateError(ErrorSimulationType errorType) {
+    void SignalHandler::simulateError(ErrorSimulationType errorType) const {
         if (SEGMENTATION_FAULT == errorType) {
             auto* p = (int*)0x999999999;
             *p = 0;
@@ -179,7 +179,7 @@ namespace urchin {
             int division = 1 / zero;
             std::cerr << division;
         } else if (EXCEPTION == errorType) {
-            throw std::runtime_error("BacktraceHandler::simulateError");
+            throw std::runtime_error("SignalHandler::simulateError");
         } else if (ASSERT == errorType) {
             assert(false);
         } else if (ILLEGAL_INSTRUCTION == errorType) {
