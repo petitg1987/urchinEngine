@@ -18,7 +18,7 @@ namespace urchin {
 
             void onResize() override;
 
-            void notifyChildrenUpdated();
+            void notifyChildrenUpdated() const;
 
             WidgetType getWidgetType() const override;
 

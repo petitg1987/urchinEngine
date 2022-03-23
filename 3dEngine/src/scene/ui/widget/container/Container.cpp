@@ -23,7 +23,7 @@ namespace urchin {
         notifyChildrenUpdated();
     }
 
-    void Container::notifyChildrenUpdated() {
+    void Container::notifyChildrenUpdated() const {
         if (scrollbar) {
             scrollbar->onScrollableWidgetsUpdated();
         }

@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <utility>
-#include <bitset>
 
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
@@ -132,12 +131,7 @@ namespace urchin {
     }
 
     bool LightShadowMap::needShadowMapUpdate() const {
-        for (const auto& lightSplitShadowMap : lightSplitShadowMaps) {
-            if (lightSplitShadowMap->needShadowMapUpdate()) {
-                return true;
-            }
-        }
-        return false;
+        return std::ranges::any_of(lightSplitShadowMaps, [](const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap){ return lightSplitShadowMap->needShadowMapUpdate(); });
     }
 
     void LightShadowMap::removeModel(Model* model) const {
