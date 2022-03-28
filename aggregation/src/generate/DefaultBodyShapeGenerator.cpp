@@ -37,7 +37,7 @@ namespace urchin {
             std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
 
             auto boxLocalizedShape = std::make_unique<LocalizedCollisionShape>();
-            boxLocalizedShape->position = 0;
+            boxLocalizedShape->shapeIndex = 0;
             boxLocalizedShape->shape = std::make_unique<const CollisionBoxShape>(modelAABBox.getHalfSizes());
             boxLocalizedShape->transform = PhysicsTransform();
             localizedCollisionShapes.push_back(std::move(boxLocalizedShape));

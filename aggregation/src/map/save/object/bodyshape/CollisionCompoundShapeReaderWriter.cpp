@@ -15,7 +15,7 @@ namespace urchin {
         for (std::size_t i = 0; i < localizedShapesChunk.size(); ++i) {
             auto localizedShape = std::make_unique<LocalizedCollisionShape>();
 
-            localizedShape->position = i;
+            localizedShape->shapeIndex = i;
 
             loadTransform(*localizedShape, localizedShapesChunk[i], udaParser);
 

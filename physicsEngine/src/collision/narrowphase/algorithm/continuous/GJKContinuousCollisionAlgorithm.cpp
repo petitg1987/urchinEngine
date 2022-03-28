@@ -69,7 +69,7 @@ namespace urchin {
                         Point3<T> hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                        return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
+                        return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), object2.getShapeIndex(), Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
                     } else {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR_LVL);
@@ -82,7 +82,7 @@ namespace urchin {
                     Point3<T> hitPointOnObject2;
                     simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                    return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
+                    return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), object2.getShapeIndex(), normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
                 }
             }
         }

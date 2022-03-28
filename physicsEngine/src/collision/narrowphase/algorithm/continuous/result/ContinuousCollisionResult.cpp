@@ -4,8 +4,10 @@
 
 namespace urchin {
 
-    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(std::shared_ptr<AbstractBody> body2, const Vector3<T>& normalFromObject2, const Point3<T>& hitPointOnObject2, T timeToHit) :
+    template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(std::shared_ptr<AbstractBody> body2, std::size_t shapeIndex, const Vector3<T>& normalFromObject2,
+                                                                              const Point3<T>& hitPointOnObject2, T timeToHit) :
             body2(std::move(body2)),
+            shapeIndex(shapeIndex),
             normalFromObject2(normalFromObject2),
             hitPointOnObject2(hitPointOnObject2),
             timeToHit(timeToHit) {
@@ -14,6 +16,10 @@ namespace urchin {
 
     template<class T> AbstractBody& ContinuousCollisionResult<T>::getBody2() const {
         return *body2;
+    }
+
+    template<class T> std::size_t ContinuousCollisionResult<T>::getShapeIndex() const {
+        return shapeIndex;
     }
 
     template<class T> const Vector3<T> &ContinuousCollisionResult<T>::getNormalFromObject2() const {

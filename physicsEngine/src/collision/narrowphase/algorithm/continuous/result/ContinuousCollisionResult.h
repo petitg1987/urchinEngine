@@ -12,9 +12,10 @@ namespace urchin {
 
     template<class T> class ContinuousCollisionResult : public AlgorithmResult {
         public:
-            ContinuousCollisionResult(std::shared_ptr<AbstractBody>, const Vector3<T>&, const Point3<T>&, T);
+            ContinuousCollisionResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<T>&, const Point3<T>&, T);
 
             AbstractBody& getBody2() const;
+            std::size_t getShapeIndex() const;
 
             const Vector3<T>& getNormalFromObject2() const;
             const Point3<T>& getHitPointOnObject2() const;
@@ -22,6 +23,7 @@ namespace urchin {
 
         private:
             std::shared_ptr<AbstractBody> body2; //own the body as this attribute can be used outside the physics thread where body could be removed
+            std::size_t shapeIndex;
 
             Vector3<T> normalFromObject2;
             Point3<T> hitPointOnObject2;

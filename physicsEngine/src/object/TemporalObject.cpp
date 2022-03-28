@@ -2,8 +2,9 @@
 
 namespace urchin {
 
-    TemporalObject::TemporalObject(const CollisionShape3D& shape, const PhysicsTransform& from, const PhysicsTransform& to) :
+    TemporalObject::TemporalObject(const CollisionShape3D& shape, std::size_t shapeIndex, const PhysicsTransform& from, const PhysicsTransform& to) :
             shape(shape),
+            shapeIndex(shapeIndex),
             localObject(shape.toConvexObject(PhysicsTransform())),
             from(from),
             to(to) {
@@ -12,6 +13,10 @@ namespace urchin {
 
     const CollisionShape3D& TemporalObject::getShape() const {
         return shape;
+    }
+
+    std::size_t TemporalObject::getShapeIndex() const {
+        return shapeIndex;
     }
 
     const CollisionConvexObject3D& TemporalObject::getLocalObject() const {

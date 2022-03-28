@@ -46,7 +46,7 @@ namespace urchin {
         for (const auto& localizedShape : localizedShapes) {
             auto scaledLocalizedShape = std::make_unique<LocalizedCollisionShape>();
             Point3 scaledPosition(localizedShape->transform.getPosition().X * scale.X, localizedShape->transform.getPosition().Y * scale.Y, localizedShape->transform.getPosition().Z * scale.Z);
-            scaledLocalizedShape->position = localizedShape->position;
+            scaledLocalizedShape->shapeIndex = localizedShape->shapeIndex;
             scaledLocalizedShape->shape = localizedShape->shape->scale(scale);
             scaledLocalizedShape->transform = PhysicsTransform(scaledPosition, localizedShape->transform.getOrientation());
 
@@ -98,7 +98,7 @@ namespace urchin {
         std::vector<std::shared_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
         for (const auto& localizedShape : localizedShapes) {
             auto clonedLocalizedShape = std::make_unique<LocalizedCollisionShape>();
-            clonedLocalizedShape->position = localizedShape->position;
+            clonedLocalizedShape->shapeIndex = localizedShape->shapeIndex;
             clonedLocalizedShape->shape = localizedShape->shape->clone();
             clonedLocalizedShape->transform = localizedShape->transform;
 

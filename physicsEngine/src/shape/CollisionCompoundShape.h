@@ -11,7 +11,7 @@
 namespace urchin {
 
     struct LocalizedCollisionShape {
-        std::size_t position;
+        std::size_t shapeIndex;
 
         std::unique_ptr<const CollisionShape3D> shape;
         PhysicsTransform transform;
