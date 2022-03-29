@@ -13,6 +13,7 @@ endif()
 
 add_definitions(-fno-stack-protector -ffast-math -Wall -Wextra -Wpedantic -Wconversion -Werror)
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../aiEngine/src ../aggregation/src)
+list(TRANSFORM URCHIN_HEADERS PREPEND ../)
 
 #QT
 find_package(Qt5Core)
@@ -21,14 +22,8 @@ find_package(Qt5Gui)
 SET(QT_LIB Qt5::Core Qt5::Widgets Qt5::Gui)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/ ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/)
+add_custom_target(mapSyncShaders ALL rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/spirv/ ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/ DEPENDS urchin3dEngine)
 add_executable(urchinMapEditor ${SOURCE_FILES})
-add_dependencies(urchinMapEditor copyShaders)
+add_dependencies(urchinMapEditor mapSyncShaders)
 target_link_libraries(urchinMapEditor ${LINK_OPT} ${QT_LIB} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinAggregation)
-target_precompile_headers(urchinMapEditor PRIVATE
-        ../common/src/UrchinCommon.h
-        ../3dEngine/src/Urchin3dEngine.h
-        ../physicsEngine/src/UrchinPhysicsEngine.h
-        ../soundEngine/src/UrchinSoundEngine.h
-        ../aiEngine/src/UrchinAIEngine.h
-        ../aggregation/src/UrchinAggregation.h)
+target_precompile_headers(urchinMapEditor PRIVATE ${URCHIN_HEADERS})

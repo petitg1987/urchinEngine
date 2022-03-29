@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <QVulkanInstance>
+#include <Urchin3dEngine.h>
 
 namespace urchin {
 
@@ -10,7 +11,7 @@ namespace urchin {
 
     struct QtSurfaceCreator : public urchin::SurfaceCreator {
         explicit QtSurfaceCreator(SceneDisplayerWindow*);
-        VkSurfaceKHR createSurface(VkInstance instance) override;
+        VkSurfaceKHR createSurface(VkInstance) override;
 
         SceneDisplayerWindow *window;
     };

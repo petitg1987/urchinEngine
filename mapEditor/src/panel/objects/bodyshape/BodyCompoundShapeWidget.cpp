@@ -204,7 +204,7 @@ namespace urchin {
 
             auto localizedShape = std::make_shared<LocalizedCollisionShape>();
 
-            localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
+            localizedShape->shapeIndex = localizedShapeTableView->getSelectedLocalizedShape()->shapeIndex;
             localizedShape->shape = bodyShapeWidget->moveShape();
 
             Vector3 eulerAngle(
@@ -232,15 +232,15 @@ namespace urchin {
             CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
             std::unique_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeGenerator(*getObjectEntity()).generate(shapeType);
 
-            std::size_t nextPosition = 0;
+            std::size_t nextShapeIndex = 0;
             for (std::size_t i = 0; i < localizedShapeTableView->getLocalizedShapes().size(); ++i) {
-                if (nextPosition <= localizedShapeTableView->getLocalizedShapes()[i]->position) {
-                    nextPosition = localizedShapeTableView->getLocalizedShapes()[i]->position + 1;
+                if (nextShapeIndex <= localizedShapeTableView->getLocalizedShapes()[i]->shapeIndex) {
+                    nextShapeIndex = localizedShapeTableView->getLocalizedShapes()[i]->shapeIndex + 1;
                 }
             }
 
             auto localizedShape = std::make_shared<LocalizedCollisionShape>();
-            localizedShape->position = nextPosition;
+            localizedShape->shapeIndex = nextShapeIndex;
             localizedShape->shape = std::move(defaultNewShape);
             localizedShape->transform = PhysicsTransform();
 

@@ -46,7 +46,7 @@ namespace urchin {
                     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = localizedShape->shape->toConvexObject(transform);
 
                     auto geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), *bodyObject);
-                    if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->position == localizedShape->position) {
+                    if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->shapeIndex == localizedShape->shapeIndex) {
                         geometryModel->setColor(1.0f, 1.0f, 1.0f);
                     } else {
                         geometryModel->setColor(0.0f, 1.0f, 0.0f);
