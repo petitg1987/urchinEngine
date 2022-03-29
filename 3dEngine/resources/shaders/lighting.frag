@@ -165,7 +165,6 @@ void main() {
 
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
     vec3 diffuse = diffuseAndEmissive.rgb;
-    float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
     float modelAmbientFactor = normalAndAmbient.a;
 
     if (modelAmbientFactor < 0.9999) { //apply lighting
@@ -178,6 +177,7 @@ void main() {
             fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor);
         }
 
+        float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
         float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
