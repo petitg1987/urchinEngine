@@ -34,8 +34,9 @@
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
   * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-* Ambient occlusion
+* Lighting
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
+  * **OPTIMIZATION** (`medium`): Use compute shaders for the bloom effect
 * Landscape
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **OPTIMIZATION** (`medium`): Do not build grass quadtree which are 100% discarded by grass mask
@@ -51,7 +52,6 @@
   * **NEW FEATURE** (`medium`): Text selection
 * Graphic effect
   * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
-  * **NEW FEATURE** (`minor`): Smoke
   * **NEW FEATURE** (`medium`): Decal (bullet impact, blood spread...)
 
 # AI engine
