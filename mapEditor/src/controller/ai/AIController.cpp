@@ -1,4 +1,3 @@
-#include <memory>
 #include <controller/ai/AIController.h>
 
 namespace urchin {
@@ -8,12 +7,15 @@ namespace urchin {
 
     }
 
-    const NavMeshAgent& AIController::getNavMeshAgent() const {
-        return getMap().getAIEnvironment()->getNavMeshGenerator().getNavMeshAgent();
+    const NavMeshAgentEntity& AIController::getNavMeshAgentEntity() const {
+        return getMap().getNavMeshAgentEntity();
     }
 
-    void AIController::updateNavMeshAgent(const NavMeshAgent& navMeshAgent) {
-        getMap().getAIEnvironment()->getNavMeshGenerator().setNavMeshAgent(std::move(navMeshAgent));
+    void AIController::updateNavMeshAgentEntity(const NavMeshAgent& navMeshAgent) {
+        auto navMeshAgentEntity = std::make_unique<NavMeshAgentEntity>();
+        navMeshAgentEntity->setNavMeshAgent(std::make_unique<NavMeshAgent>(navMeshAgent));
+        getMap().setNavMeshAgentEntity(std::move(navMeshAgentEntity));
+
         markModified();
     }
 

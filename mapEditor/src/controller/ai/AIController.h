@@ -11,8 +11,8 @@ namespace urchin {
         public:
             AIController();
 
-            const NavMeshAgent& getNavMeshAgent() const;
-            void updateNavMeshAgent(const NavMeshAgent&);
+            const NavMeshAgentEntity& getNavMeshAgentEntity() const;
+            void updateNavMeshAgentEntity(const NavMeshAgent&);
     };
 
 }

@@ -13,7 +13,7 @@ namespace urchin {
 
             const SkyEntity& getSkyEntity() const;
 
-            const SkyEntity& updateSkyEntity(const std::vector<std::string>&, float);
+            void updateSkyEntity(const std::vector<std::string>&, float);
 
         private:
             bool isSkyboxFilenamesAllEmpty(const std::vector<std::string>&) const;

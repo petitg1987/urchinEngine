@@ -8,6 +8,7 @@ namespace urchin {
     class AbstractController : public Observable {
         public:
             explicit AbstractController();
+            ~AbstractController() override = default;
 
             enum NotificationType {
                 CHANGES_DONE
