@@ -30,7 +30,7 @@ namespace urchin {
         if (map.getRenderer3d() && !map.getRenderer3d()->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
-        if (!map.getPhysicsWorld().isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
+        if (map.getPhysicsWorld() && !map.getPhysicsWorld()->isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
             throw std::runtime_error("Physics world should be paused while loading map.");
         }
         if (!map.getAIEnvironment().isPaused()) { //to avoid compute path based on a world with missing objects

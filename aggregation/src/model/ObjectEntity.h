@@ -31,7 +31,7 @@ namespace urchin {
             void refresh() const;
 
         private:
-            void setup(Renderer3d*, PhysicsWorld&, AIEnvironment&);
+            void setup(Renderer3d*, PhysicsWorld*, AIEnvironment&);
             void setupRigidBody(std::shared_ptr<RigidBody>);
             void setupAIObject();
 

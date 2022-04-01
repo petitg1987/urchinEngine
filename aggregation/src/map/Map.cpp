@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    Map::Map(Renderer3d* renderer3d, PhysicsWorld& physicsWorld, SoundEnvironment& soundEnvironment, AIEnvironment& aiEnvironment) :
+    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment& aiEnvironment) :
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
@@ -18,11 +18,11 @@ namespace urchin {
         return renderer3d;
     }
 
-    PhysicsWorld& Map::getPhysicsWorld() const {
+    PhysicsWorld* Map::getPhysicsWorld() const {
         return physicsWorld;
     }
 
-    SoundEnvironment& Map::getSoundEnvironment() const {
+    SoundEnvironment* Map::getSoundEnvironment() const {
         return soundEnvironment;
     }
 
@@ -208,24 +208,37 @@ namespace urchin {
         if (renderer3d) {
             renderer3d->pause();
         }
-        physicsWorld.pause();
+        if (physicsWorld) {
+            physicsWorld->pause();
+        }
+        if (soundEnvironment) {
+            soundEnvironment->pause();
+        }
         aiEnvironment.pause();
-        soundEnvironment.pause();
+
     }
 
     void Map::unpause() {
         if (renderer3d) {
             renderer3d->unpause();
         }
-        physicsWorld.unpause();
+        if (physicsWorld) {
+            physicsWorld->unpause();
+        }
+        if (soundEnvironment) {
+            soundEnvironment->unpause();
+        }
         aiEnvironment.unpause();
-        soundEnvironment.unpause();
     }
 
     void Map::refresh() const {
-        physicsWorld.checkNoExceptionRaised();
+        if (physicsWorld) {
+            physicsWorld->checkNoExceptionRaised();
+        }
+        if (soundEnvironment) {
+            soundEnvironment->checkNoExceptionRaised();
+        }
         aiEnvironment.checkNoExceptionRaised();
-        soundEnvironment.checkNoExceptionRaised();
 
         for (const auto& objectEntity : objectEntities) {
             objectEntity->refresh();
@@ -235,10 +248,12 @@ namespace urchin {
             terrainEntity->refresh();
         }
 
-        if (renderer3d && renderer3d->getCamera()) {
-            soundEnvironment.process(renderer3d->getCamera()->getPosition(), renderer3d->getCamera()->getView(), renderer3d->getCamera()->getUp());
-        } else {
-            soundEnvironment.process();
+        if (soundEnvironment) {
+            if (renderer3d && renderer3d->getCamera()) {
+                soundEnvironment->process(renderer3d->getCamera()->getPosition(), renderer3d->getCamera()->getView(), renderer3d->getCamera()->getUp());
+            } else {
+                soundEnvironment->process();
+            }
         }
     }
 }

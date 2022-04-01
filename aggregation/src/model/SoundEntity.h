@@ -19,7 +19,7 @@ namespace urchin {
             void setSoundComponent(const std::shared_ptr<SoundComponent>&);
 
         private:
-            void setup(SoundEnvironment&);
+            void setup(SoundEnvironment*);
 
             SoundEnvironment* soundEnvironment;
 

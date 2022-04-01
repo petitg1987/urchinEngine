@@ -21,16 +21,16 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void TerrainEntity::setup(Renderer3d* renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
+    void TerrainEntity::setup(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, AIEnvironment& aiEnvironment) {
         this->renderer3d = renderer3d;
-        this->physicsWorld = &physicsWorld;
+        this->physicsWorld = physicsWorld;
         this->aiEnvironment = &aiEnvironment;
 
         if (renderer3d) {
             renderer3d->getTerrainContainer().addTerrain(terrain);
         }
-        if (rigidBody) {
-            physicsWorld.addBody(rigidBody);
+        if (physicsWorld && rigidBody) {
+            physicsWorld->addBody(rigidBody);
         }
         if (aiTerrain) {
             aiEnvironment.addEntity(aiTerrain);
@@ -73,12 +73,12 @@ namespace urchin {
         setupAIObject();
     }
 
-    void TerrainEntity::setupRigidBody(const std::shared_ptr<RigidBody>& rigidBody) {
+    void TerrainEntity::setupRigidBody(std::shared_ptr<RigidBody> rigidBody) {
         deleteRigidBody();
 
-        this->rigidBody = rigidBody;
-        if (physicsWorld && rigidBody) {
-            physicsWorld->addBody(rigidBody);
+        this->rigidBody = std::move(rigidBody);
+        if (physicsWorld && this->rigidBody) {
+            physicsWorld->addBody(this->rigidBody);
         }
     }
 

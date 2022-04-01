@@ -15,10 +15,12 @@ namespace urchin {
         }
     }
 
-    void SoundEntity::setup(SoundEnvironment& soundEnvironment) {
-        this->soundEnvironment = &soundEnvironment;
+    void SoundEntity::setup(SoundEnvironment* soundEnvironment) {
+        this->soundEnvironment = soundEnvironment;
 
-        soundEnvironment.addSoundComponent(soundComponent);
+        if (soundEnvironment) {
+            soundEnvironment->addSoundComponent(soundComponent);
+        }
     }
 
     std::string SoundEntity::getName() const {

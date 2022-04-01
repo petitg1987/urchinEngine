@@ -20,11 +20,11 @@ namespace urchin {
 
     class Map {
         public:
-            Map(Renderer3d*, PhysicsWorld&, SoundEnvironment&, AIEnvironment&);
+            Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment&);
 
             Renderer3d* getRenderer3d() const;
-            PhysicsWorld& getPhysicsWorld() const;
-            SoundEnvironment& getSoundEnvironment() const;
+            PhysicsWorld* getPhysicsWorld() const;
+            SoundEnvironment* getSoundEnvironment() const;
             AIEnvironment& getAIEnvironment() const;
 
             void setRelativeWorkingDirectory(std::string);
@@ -69,8 +69,8 @@ namespace urchin {
 
         private:
             Renderer3d* renderer3d;
-            PhysicsWorld& physicsWorld;
-            SoundEnvironment& soundEnvironment;
+            PhysicsWorld* physicsWorld;
+            SoundEnvironment* soundEnvironment;
             AIEnvironment& aiEnvironment;
 
             std::string relativeWorkingDirectory;
