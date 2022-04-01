@@ -27,7 +27,7 @@ namespace urchin {
 
     void LightController::moveLightInFrontOfCamera(const LightEntity& constLightEntity) {
         if (constLightEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-            Camera* camera = getMap().getRenderer3d().getCamera();
+            Camera* camera = getMap().getRenderer3d()->getCamera();
             Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
             static_cast<OmnidirectionalLight*>(constLightEntity.getLight())->setPosition(newPosition);
 

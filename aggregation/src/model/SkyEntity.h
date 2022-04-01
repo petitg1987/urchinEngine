@@ -15,7 +15,7 @@ namespace urchin {
             void setSkybox(std::unique_ptr<Skybox>);
 
         private:
-            void setup(Renderer3d&);
+            void setup(Renderer3d*);
 
             Renderer3d* renderer3d;
 

@@ -5,19 +5,21 @@
 namespace urchin {
 
     LightEntity::LightEntity() :
-            lightManager(nullptr) {
+            renderer3d(nullptr) {
 
     }
 
     LightEntity::~LightEntity() {
-        if (lightManager) {
-            lightManager->removeLight(light.get());
+        if (renderer3d) {
+            renderer3d->getLightManager().removeLight(light.get());
         }
     }
 
-    void LightEntity::setup(LightManager& lightManager) {
-        this->lightManager = &lightManager;
-        lightManager.addLight(light);
+    void LightEntity::setup(Renderer3d* renderer3d) {
+        this->renderer3d = renderer3d;
+        if (renderer3d) {
+            renderer3d->getLightManager().addLight(light);
+        }
     }
 
     std::string LightEntity::getName() const {
@@ -33,9 +35,9 @@ namespace urchin {
     }
 
     void LightEntity::setLight(const std::shared_ptr<Light>& light) {
-        if (lightManager) {
-            lightManager->removeLight(this->light.get());
-            lightManager->addLight(light);
+        if (renderer3d) {
+            renderer3d->getLightManager().removeLight(this->light.get());
+            renderer3d->getLightManager().addLight(light);
         }
 
         this->light = light;

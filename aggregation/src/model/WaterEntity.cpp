@@ -15,10 +15,12 @@ namespace urchin {
         }
     }
 
-    void WaterEntity::setup(Renderer3d& renderer3d) {
-        this->renderer3d = &renderer3d;
+    void WaterEntity::setup(Renderer3d* renderer3d) {
+        this->renderer3d = renderer3d;
 
-        renderer3d.getWaterContainer().addWater(water);
+        if (renderer3d) {
+            renderer3d->getWaterContainer().addWater(water);
+        }
     }
 
     std::string WaterEntity::getName() const {

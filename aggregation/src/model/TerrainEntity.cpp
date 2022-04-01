@@ -21,12 +21,14 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void TerrainEntity::setup(Renderer3d& renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
-        this->renderer3d = &renderer3d;
+    void TerrainEntity::setup(Renderer3d* renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
+        this->renderer3d = renderer3d;
         this->physicsWorld = &physicsWorld;
         this->aiEnvironment = &aiEnvironment;
 
-        renderer3d.getTerrainContainer().addTerrain(terrain);
+        if (renderer3d) {
+            renderer3d->getTerrainContainer().addTerrain(terrain);
+        }
         if (rigidBody) {
             physicsWorld.addBody(rigidBody);
         }

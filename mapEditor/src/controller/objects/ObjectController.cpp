@@ -86,7 +86,7 @@ namespace urchin {
     }
 
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity) {
-        Camera* camera = getMap().getRenderer3d().getCamera();
+        Camera* camera = getMap().getRenderer3d()->getCamera();
         Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
         constObjectEntity.updatePosition(newPosition);
 

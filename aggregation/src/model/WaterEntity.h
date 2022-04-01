@@ -19,7 +19,7 @@ namespace urchin {
             void setWater(std::shared_ptr<Water>);
 
         private:
-            void setup(Renderer3d&);
+            void setup(Renderer3d*);
 
             Renderer3d* renderer3d;
 

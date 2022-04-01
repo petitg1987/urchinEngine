@@ -27,7 +27,7 @@ namespace urchin {
     }
 
     void MapSaveService::loadMap(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser, LoadMapCallback& loadMapCallback) const {
-        if (!map.getRenderer3d().isPaused()) { //to avoid move camera before being able to see the map
+        if (map.getRenderer3d() && !map.getRenderer3d()->isPaused()) { //to avoid move camera before being able to see the map
             throw std::runtime_error("Renderer 3d should be paused while loading map.");
         }
         if (!map.getPhysicsWorld().isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
@@ -67,7 +67,9 @@ namespace urchin {
         for (const auto& objectChunk : objectsChunk) {
             map.addObjectEntity(ObjectEntityReaderWriter::load(objectChunk, udaParser));
         }
-        map.getRenderer3d().preWarmModels();
+        if (map.getRenderer3d()) {
+            map.getRenderer3d()->preWarmModels();
+        }
     }
 
     void MapSaveService::loadLightEntities(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {

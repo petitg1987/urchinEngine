@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    Map::Map(Renderer3d& renderer3d, PhysicsWorld& physicsWorld, SoundEnvironment& soundEnvironment, AIEnvironment& aiEnvironment) :
+    Map::Map(Renderer3d* renderer3d, PhysicsWorld& physicsWorld, SoundEnvironment& soundEnvironment, AIEnvironment& aiEnvironment) :
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
@@ -14,7 +14,7 @@ namespace urchin {
 
     }
 
-    Renderer3d& Map::getRenderer3d() const {
+    Renderer3d* Map::getRenderer3d() const {
         return renderer3d;
     }
 
@@ -117,7 +117,7 @@ namespace urchin {
     }
 
     LightEntity& Map::addLightEntity(std::unique_ptr<LightEntity> lightEntity) {
-        lightEntity->setup(renderer3d.getLightManager());
+        lightEntity->setup(renderer3d);
         lightEntities.push_back(std::move(lightEntity));
         return *lightEntities.back();
     }
@@ -205,14 +205,18 @@ namespace urchin {
     }
 
     void Map::pause() {
-        renderer3d.pause();
+        if (renderer3d) {
+            renderer3d->pause();
+        }
         physicsWorld.pause();
         aiEnvironment.pause();
         soundEnvironment.pause();
     }
 
     void Map::unpause() {
-        renderer3d.unpause();
+        if (renderer3d) {
+            renderer3d->unpause();
+        }
         physicsWorld.unpause();
         aiEnvironment.unpause();
         soundEnvironment.unpause();
@@ -231,8 +235,8 @@ namespace urchin {
             terrainEntity->refresh();
         }
 
-        if (renderer3d.getCamera()) {
-            soundEnvironment.process(renderer3d.getCamera()->getPosition(), renderer3d.getCamera()->getView(), renderer3d.getCamera()->getUp());
+        if (renderer3d && renderer3d->getCamera()) {
+            soundEnvironment.process(renderer3d->getCamera()->getPosition(), renderer3d->getCamera()->getView(), renderer3d->getCamera()->getUp());
         } else {
             soundEnvironment.process();
         }

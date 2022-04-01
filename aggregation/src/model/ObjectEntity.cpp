@@ -23,12 +23,14 @@ namespace urchin {
         deleteAIObjects();
     }
 
-    void ObjectEntity::setup(Renderer3d& renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
-        this->renderer3d = &renderer3d;
+    void ObjectEntity::setup(Renderer3d* renderer3d, PhysicsWorld& physicsWorld, AIEnvironment& aiEnvironment) {
+        this->renderer3d = renderer3d;
         this->physicsWorld = &physicsWorld;
         this->aiEnvironment = &aiEnvironment;
 
-        renderer3d.addModel(model);
+        if (renderer3d) {
+            renderer3d->addModel(model);
+        }
         if (rigidBody) {
             physicsWorld.addBody(rigidBody);
         }

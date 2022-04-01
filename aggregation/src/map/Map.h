@@ -20,9 +20,9 @@ namespace urchin {
 
     class Map {
         public:
-            Map(Renderer3d&, PhysicsWorld&, SoundEnvironment&, AIEnvironment&);
+            Map(Renderer3d*, PhysicsWorld&, SoundEnvironment&, AIEnvironment&);
 
-            Renderer3d& getRenderer3d() const;
+            Renderer3d* getRenderer3d() const;
             PhysicsWorld& getPhysicsWorld() const;
             SoundEnvironment& getSoundEnvironment() const;
             AIEnvironment& getAIEnvironment() const;
@@ -68,7 +68,7 @@ namespace urchin {
             void unpause();
 
         private:
-            Renderer3d& renderer3d;
+            Renderer3d* renderer3d;
             PhysicsWorld& physicsWorld;
             SoundEnvironment& soundEnvironment;
             AIEnvironment& aiEnvironment;

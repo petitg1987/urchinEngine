@@ -14,10 +14,12 @@ namespace urchin {
         }
     }
 
-    void SkyEntity::setup(Renderer3d& renderer3d) {
-        this->renderer3d = &renderer3d;
+    void SkyEntity::setup(Renderer3d* renderer3d) {
+        this->renderer3d = renderer3d;
 
-        renderer3d.getSkyContainer().setSkybox(skybox);
+        if (renderer3d) {
+            renderer3d->getSkyContainer().setSkybox(skybox);
+        }
     }
 
     const Skybox* SkyEntity::getSkybox() const {
