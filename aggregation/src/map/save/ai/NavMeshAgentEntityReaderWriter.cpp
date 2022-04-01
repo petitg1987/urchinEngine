@@ -1,8 +1,10 @@
-#include <map/save/ai/NavMeshAgentReaderWriter.h>
+#include <map/save/ai/NavMeshAgentEntityReaderWriter.h>
 
 namespace urchin {
 
-    std::unique_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadNavMeshAgent(const UdaChunk* aiElementsListChunk, const UdaParser& udaParser) {
+    std::unique_ptr<NavMeshAgentEntity> NavMeshAgentEntityReaderWriter::load(const UdaChunk* aiElementsListChunk, const UdaParser& udaParser) {
+        auto navMeshAgentEntity = std::make_unique<NavMeshAgentEntity>();
+
         auto navMeshAgentChunk = udaParser.getFirstChunk(true, NAV_MESH_AGENT_TAG, UdaAttribute(), aiElementsListChunk);
 
         auto agentHeightChunk = udaParser.getFirstChunk(true, AGENT_HEIGHT_TAG, UdaAttribute(), navMeshAgentChunk);
@@ -18,19 +20,21 @@ namespace urchin {
         navMeshAgent->setMaxSlope(maxSlopeInRadian);
         navMeshAgent->setJumpDistance(jumpDistance);
 
-        return navMeshAgent;
+        navMeshAgentEntity->setNavMeshAgent(std::move(navMeshAgent));
+
+        return navMeshAgentEntity;
     }
 
-    void NavMeshAgentReaderWriter::writeNavMeshAgent(UdaChunk& aiElementsListChunk, const NavMeshAgent* navMeshAgent, UdaWriter& udaWriter) {
+    void NavMeshAgentEntityReaderWriter::write(UdaChunk& aiElementsListChunk, const NavMeshAgentEntity& navMeshAgentEntity, UdaWriter& udaWriter) {
         auto& navMeshAgentChunk = udaWriter.createChunk(NAV_MESH_AGENT_TAG, UdaAttribute(), &aiElementsListChunk);
 
         auto& agentHeightChunk = udaWriter.createChunk(AGENT_HEIGHT_TAG, UdaAttribute(), &navMeshAgentChunk);
-        agentHeightChunk.setFloatValue(navMeshAgent->getAgentHeight());
+        agentHeightChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getAgentHeight());
         auto& agentRadiusChunk = udaWriter.createChunk(AGENT_RADIUS_TAG, UdaAttribute(), &navMeshAgentChunk);
-        agentRadiusChunk.setFloatValue(navMeshAgent->getAgentRadius());
+        agentRadiusChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getAgentRadius());
         auto& maxSlopeInRadianChunk = udaWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, UdaAttribute(), &navMeshAgentChunk);
-        maxSlopeInRadianChunk.setFloatValue(navMeshAgent->getMaxSlope());
+        maxSlopeInRadianChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getMaxSlope());
         auto& jumpDistanceChunk = udaWriter.createChunk(JUMP_DISTANCE_TAG, UdaAttribute(), &navMeshAgentChunk);
-        jumpDistanceChunk.setFloatValue(navMeshAgent->getJumpDistance());
+        jumpDistanceChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getJumpDistance());
     }
 }

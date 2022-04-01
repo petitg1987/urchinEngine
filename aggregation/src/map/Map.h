@@ -15,17 +15,18 @@
 #include <model/WaterEntity.h>
 #include <model/SkyEntity.h>
 #include <model/SoundEntity.h>
+#include <model/NavMeshAgentEntity.h>
 
 namespace urchin {
 
     class Map {
         public:
-            Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment&);
+            Map(Renderer3d*, PhysicsWorld*, SoundEnvironment*, AIEnvironment*);
 
             Renderer3d* getRenderer3d() const;
             PhysicsWorld* getPhysicsWorld() const;
             SoundEnvironment* getSoundEnvironment() const;
-            AIEnvironment& getAIEnvironment() const;
+            AIEnvironment* getAIEnvironment() const;
 
             void setRelativeWorkingDirectory(std::string);
             const std::string& getRelativeWorkingDirectory() const;
@@ -63,6 +64,9 @@ namespace urchin {
             SoundEntity& addSoundEntity(std::unique_ptr<SoundEntity>);
             void removeSoundEntity(SoundEntity&);
 
+            const NavMeshAgentEntity& getNavMeshAgentEntity() const;
+            void setNavMeshAgentEntity(std::unique_ptr<NavMeshAgentEntity>);
+
             void refresh() const;
             void pause();
             void unpause();
@@ -71,7 +75,7 @@ namespace urchin {
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;
             SoundEnvironment* soundEnvironment;
-            AIEnvironment& aiEnvironment;
+            AIEnvironment* aiEnvironment;
 
             std::string relativeWorkingDirectory;
 
@@ -83,6 +87,7 @@ namespace urchin {
             std::list<std::unique_ptr<WaterEntity>> waterEntities;
             std::unique_ptr<SkyEntity> skyEntity;
             std::list<std::unique_ptr<SoundEntity>> soundEntities;
+            std::unique_ptr<NavMeshAgentEntity> navMeshAgentEntity;
     };
 
     #include "Map.inl"

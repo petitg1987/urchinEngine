@@ -28,7 +28,7 @@ namespace urchin {
             void loadWaterEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadSkyEntity(Map&, const UdaChunk*, const UdaParser&) const;
             void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&) const;
-            void loadAIConfig(const Map&, const UdaChunk*, const UdaParser&) const;
+            void loadAIConfig(Map&, const UdaChunk*, const UdaParser&) const;
 
             void writeMap(const Map&, UdaChunk&, UdaWriter&) const;
             void writeObjectEntities(const Map&, UdaChunk&, UdaWriter&) const;

@@ -25,7 +25,7 @@ namespace urchin {
     void AIPanelWidget::load(AIController& aiController) {
         this->aiController = &aiController;
 
-        const NavMeshAgent* navMeshAgent = this->aiController->getNavMeshAgent();
+        const NavMeshAgent& navMeshAgent = this->aiController->getNavMeshAgent();
         setupNavMeshAgentDataFrom(navMeshAgent);
     }
 
@@ -81,20 +81,20 @@ namespace urchin {
 
     void AIPanelWidget::aiChanged() {
         if (!disableAIEvent) {
-            auto navMeshAgent = std::make_unique<NavMeshAgent>((float)agentHeight->value(), (float)agentRadius->value());
-            navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));
-            navMeshAgent->setJumpDistance((float)jumpDistance->value());
+            NavMeshAgent navMeshAgent((float)agentHeight->value(), (float)agentRadius->value());
+            navMeshAgent.setMaxSlope(AngleConverter<float>::toRadian((float)maxSlope->value()));
+            navMeshAgent.setJumpDistance((float)jumpDistance->value());
 
-            aiController->updateNavMeshAgent(std::move(navMeshAgent));
+            aiController->updateNavMeshAgent(navMeshAgent);
         }
     }
 
-    void AIPanelWidget::setupNavMeshAgentDataFrom(const NavMeshAgent* navMeshAgent) {
+    void AIPanelWidget::setupNavMeshAgentDataFrom(const NavMeshAgent& navMeshAgent) {
         disableAIEvent = true;
-        agentHeight->setValue(navMeshAgent->getAgentHeight());
-        agentRadius->setValue(navMeshAgent->getAgentRadius());
-        maxSlope->setValue(AngleConverter<float>::toDegree(navMeshAgent->getMaxSlope()));
-        jumpDistance->setValue(navMeshAgent->getJumpDistance());
+        agentHeight->setValue(navMeshAgent.getAgentHeight());
+        agentRadius->setValue(navMeshAgent.getAgentRadius());
+        maxSlope->setValue(AngleConverter<float>::toDegree(navMeshAgent.getMaxSlope()));
+        jumpDistance->setValue(navMeshAgent.getJumpDistance());
         disableAIEvent = false;
     }
 

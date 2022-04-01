@@ -1,6 +1,7 @@
 #include <model/SkyEntity.h>
 
 namespace urchin {
+
     SkyEntity::SkyEntity() :
             renderer3d(nullptr) {
         //default skybox

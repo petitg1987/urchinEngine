@@ -5,12 +5,13 @@
 
 namespace urchin {
 
-    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment& aiEnvironment) :
+    Map::Map(Renderer3d* renderer3d, PhysicsWorld* physicsWorld, SoundEnvironment* soundEnvironment, AIEnvironment* aiEnvironment) :
             renderer3d(renderer3d),
             physicsWorld(physicsWorld),
             soundEnvironment(soundEnvironment),
             aiEnvironment(aiEnvironment),
-            skyEntity(std::make_unique<SkyEntity>()) {
+            skyEntity(std::make_unique<SkyEntity>()),
+            navMeshAgentEntity(std::make_unique<NavMeshAgentEntity>()) {
 
     }
 
@@ -26,7 +27,7 @@ namespace urchin {
         return soundEnvironment;
     }
 
-    AIEnvironment& Map::getAIEnvironment() const {
+    AIEnvironment* Map::getAIEnvironment() const {
         return aiEnvironment;
     }
 
@@ -204,6 +205,15 @@ namespace urchin {
         soundEntities.remove_if([&soundEntity](const auto& o){ return o.get()==&soundEntity; });
     }
 
+    const NavMeshAgentEntity& Map::getNavMeshAgentEntity() const {
+        return *navMeshAgentEntity;
+    }
+
+    void Map::setNavMeshAgentEntity(std::unique_ptr<NavMeshAgentEntity> navMeshAgentEntity) {
+        navMeshAgentEntity->setup(aiEnvironment);
+        this->navMeshAgentEntity = std::move(navMeshAgentEntity);
+    }
+
     void Map::pause() {
         if (renderer3d) {
             renderer3d->pause();
@@ -214,7 +224,9 @@ namespace urchin {
         if (soundEnvironment) {
             soundEnvironment->pause();
         }
-        aiEnvironment.pause();
+        if (aiEnvironment) {
+            aiEnvironment->pause();
+        }
 
     }
 
@@ -228,7 +240,9 @@ namespace urchin {
         if (soundEnvironment) {
             soundEnvironment->unpause();
         }
-        aiEnvironment.unpause();
+        if (aiEnvironment) {
+            aiEnvironment->unpause();
+        }
     }
 
     void Map::refresh() const {
@@ -238,7 +252,9 @@ namespace urchin {
         if (soundEnvironment) {
             soundEnvironment->checkNoExceptionRaised();
         }
-        aiEnvironment.checkNoExceptionRaised();
+        if (aiEnvironment) {
+            aiEnvironment->checkNoExceptionRaised();
+        }
 
         for (const auto& objectEntity : objectEntities) {
             objectEntity->refresh();

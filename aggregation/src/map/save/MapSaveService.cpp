@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <map/save/MapSaveService.h>
-#include <map/save/ai/NavMeshAgentReaderWriter.h>
+#include <map/save/ai/NavMeshAgentEntityReaderWriter.h>
 #include <map/save/object/ObjectEntityReaderWriter.h>
 #include <map/save/terrain/TerrainEntityReaderWriter.h>
 #include <map/save/light/LightEntityReaderWriter.h>
@@ -33,7 +33,7 @@ namespace urchin {
         if (map.getPhysicsWorld() && !map.getPhysicsWorld()->isPaused()) { //to avoid miss of collision between objects just loaded and on objects not loaded yet
             throw std::runtime_error("Physics world should be paused while loading map.");
         }
-        if (!map.getAIEnvironment().isPaused()) { //to avoid compute path based on a world with missing objects
+        if (map.getAIEnvironment() && !map.getAIEnvironment()->isPaused()) { //to avoid compute path based on a world with missing objects
             throw std::runtime_error("AI environment should be paused while loading map.");
         }
 
@@ -114,9 +114,10 @@ namespace urchin {
         }
     }
 
-    void MapSaveService::loadAIConfig(const Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
+    void MapSaveService::loadAIConfig(Map& map, const UdaChunk* sceneChunk, const UdaParser& udaParser) const {
         auto aiElementsListChunk = udaParser.getFirstChunk(true, AI_ELEMENTS_TAG, UdaAttribute(), sceneChunk);
-        map.getAIEnvironment().getNavMeshGenerator().setNavMeshAgent(NavMeshAgentReaderWriter::loadNavMeshAgent(aiElementsListChunk, udaParser));
+
+        map.setNavMeshAgentEntity(NavMeshAgentEntityReaderWriter::load(aiElementsListChunk, udaParser));
     }
 
     void MapSaveService::saveMap(const std::string& filename, const Map& map) const {
@@ -195,7 +196,8 @@ namespace urchin {
 
     void MapSaveService::writeAIConfig(const Map& map, UdaChunk& sceneChunk, UdaWriter& udaWriter) const {
         auto& aiElementsListChunk = udaWriter.createChunk(AI_ELEMENTS_TAG, UdaAttribute(), &sceneChunk);
-        NavMeshAgentReaderWriter::writeNavMeshAgent(aiElementsListChunk, map.getAIEnvironment().getNavMeshGenerator().getNavMeshAgent(), udaWriter);
+
+        NavMeshAgentEntityReaderWriter::write(aiElementsListChunk, map.getNavMeshAgentEntity(), udaWriter);
     }
 
     /**

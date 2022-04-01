@@ -2,14 +2,14 @@
 
 #include <memory>
 
-#include <UrchinAIEngine.h>
+#include <model/NavMeshAgentEntity.h>
 
 namespace urchin {
 
-    class NavMeshAgentReaderWriter {
+    class NavMeshAgentEntityReaderWriter {
         public:
-            static std::unique_ptr<NavMeshAgent> loadNavMeshAgent(const UdaChunk*, const UdaParser&);
-            static void writeNavMeshAgent(UdaChunk&, const NavMeshAgent*, UdaWriter&);
+            static std::unique_ptr<NavMeshAgentEntity> load(const UdaChunk*, const UdaParser&);
+            static void write(UdaChunk&, const NavMeshAgentEntity&, UdaWriter&);
 
         private:
             static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";

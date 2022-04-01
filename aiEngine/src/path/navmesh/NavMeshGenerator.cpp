@@ -28,10 +28,10 @@ namespace urchin {
 
     }
 
-    void NavMeshGenerator::setNavMeshAgent(std::unique_ptr<NavMeshAgent> navMeshAgent) {
+    void NavMeshGenerator::setNavMeshAgent(const NavMeshAgent& navMeshAgent) {
         std::scoped_lock<std::mutex> lock(navMeshMutex);
 
-        this->navMeshAgent = std::move(navMeshAgent);
+        this->navMeshAgent = std::make_unique<NavMeshAgent>(navMeshAgent);
         this->needFullRefresh.store(true, std::memory_order_release);
 
         float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
@@ -39,8 +39,8 @@ namespace urchin {
         this->navigationObjects.updateFatMargin(navigationObjectsMargin);
     }
 
-    const NavMeshAgent* NavMeshGenerator::getNavMeshAgent() const {
-        return navMeshAgent.get();
+    const NavMeshAgent& NavMeshGenerator::getNavMeshAgent() const {
+        return *navMeshAgent;
     }
 
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const {
@@ -70,7 +70,6 @@ namespace urchin {
     }
 
     void NavMeshGenerator::updateExpandedPolytopes(AIWorld& aiWorld) {
-        assert(navMeshAgent);
         ScopeProfiler sp(Profiler::ai(), "upExpandPoly");
 
         newOrMovingNavObjectsToRefresh.clear();
