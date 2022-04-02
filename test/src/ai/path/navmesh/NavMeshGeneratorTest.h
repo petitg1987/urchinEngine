@@ -24,5 +24,5 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture {
 
     private:
         unsigned int countPolygonLinks(const urchin::NavPolygon&, const urchin::NavPolygon&) const;
-        std::unique_ptr<urchin::NavMeshAgent> buildNavMeshAgent() const;
+        urchin::NavMeshAgent buildNavMeshAgent() const;
 };

@@ -208,9 +208,9 @@ int main(int argc, char *argv[]) {
     }
 
     std::cout << "Start running tests (unit: "<< hasUnitTests << ", integration: " << hasIntegrationTests << ", monkey: " << hasMonkeyTests << ")" << std::endl;
-    runner.run();
+    bool success = runner.run();
 
     Logger::instance().purge();
     SingletonContainer::destroyAllSingletons();
-    return 0;
+    return success ? 0 : 1;
 }

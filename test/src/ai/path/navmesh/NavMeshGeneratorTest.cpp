@@ -254,10 +254,10 @@ unsigned int NavMeshGeneratorTest::countPolygonLinks(const NavPolygon& sourcePol
     return countLinks;
 }
 
-std::unique_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent() const {
+NavMeshAgent NavMeshGeneratorTest::buildNavMeshAgent() const {
     NavMeshAgent navMeshAgent(2.0f, 0.2f);
     navMeshAgent.setJumpDistance(1.5f);
-    return std::make_unique<NavMeshAgent>(navMeshAgent);
+    return navMeshAgent;
 }
 
 CppUnit::Test* NavMeshGeneratorTest::suite() {
