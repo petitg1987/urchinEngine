@@ -78,7 +78,10 @@ namespace urchin {
 
     void OffscreenRender::cleanup() {
         assert(isInitialized);
-        vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+        VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
+        }
 
         cleanupRenderers();
 
@@ -206,7 +209,10 @@ namespace urchin {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
-        vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
+        if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
+        }
 
         updateTexturesWriter();
         updateGraphicData(0);
@@ -221,10 +227,13 @@ namespace urchin {
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = signalSemaphores.data();
 
-        vkResetFences(logicalDevice, 1, &commandBufferFence);
-        VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit draw command buffer with error code '" + std::to_string(result) + "' on render target: " + getName());
+        VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
+        if (resultResetFences != VK_SUCCESS) {
+            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName());
+        }
+        VkResult resultQueueSubmit = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
+        if (resultQueueSubmit != VK_SUCCESS) {
+            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName());
         }
 
         queueSubmitSemaphoreUsable = true;

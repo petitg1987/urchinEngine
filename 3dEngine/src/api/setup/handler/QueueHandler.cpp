@@ -59,7 +59,10 @@ namespace urchin {
 
     bool QueueHandler::isPresentationQueueFamily(uint32_t queueFamilyIndex, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) const {
         VkBool32 presentationSupport = false;
-        vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, &presentationSupport);
+        VkResult result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, &presentationSupport);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to get physics device surface with error code: " + std::to_string(result));
+        }
         return presentationSupport;
     }
 

@@ -46,7 +46,10 @@ namespace urchin {
 
     void ScreenRender::cleanup() {
         if (isInitialized) {
-            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            if (result != VK_SUCCESS) {
+                throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
+            }
 
             cleanupRenderers();
 
@@ -221,7 +224,10 @@ namespace urchin {
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'
-        vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
+        VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
+        if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
+        }
 
         VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) {
@@ -238,7 +244,10 @@ namespace urchin {
             //Fence (CPU-GPU sync) to wait if a previous frame is using this image. Useful in 2 cases:
             // 1) MAX_CONCURRENT_FRAMES > swapChainHandler.getSwapChainImages().size()
             // 2) Acquired images from swap chain are returned out-of-order
-            vkWaitForFences(logicalDevice, 1, &imagesFences[vkImageIndex], VK_TRUE, UINT64_MAX);
+            resultWaitForFences = vkWaitForFences(logicalDevice, 1, &imagesFences[vkImageIndex], VK_TRUE, UINT64_MAX);
+            if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
+                throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
+            }
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
 
@@ -251,10 +260,13 @@ namespace urchin {
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = queuePresentWaitSemaphores.data();
 
-        vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
-        VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit draw command buffer with error code '" + std::to_string(result) + "' on render target: " + getName());
+        VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
+        if (resultResetFences != VK_SUCCESS) {
+            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName());
+        }
+        VkResult resultQueueSubmit = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
+        if (resultQueueSubmit != VK_SUCCESS) {
+            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName());
         }
 
         std::array<VkSwapchainKHR, 1> swapChains = {swapChainHandler.getSwapChain()};
@@ -291,7 +303,10 @@ namespace urchin {
         for (unsigned int frameIndex = 0; frameIndex < MAX_CONCURRENT_FRAMES; ++frameIndex) {
             if (frameIndex != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
                 //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'frameIndex'
-                vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
+                VkResult result = vkWaitForFences(GraphicService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
+                if (result != VK_SUCCESS && result != VK_TIMEOUT) {
+                    throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(result) + "' on render target: " + getName());
+                }
             }
         }
     }

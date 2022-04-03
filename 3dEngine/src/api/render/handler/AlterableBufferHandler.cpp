@@ -64,7 +64,10 @@ namespace urchin {
         bool newBuffersCreated;
 
         if (isStaticBuffer) {
-            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            if (result != VK_SUCCESS) {
+                throw std::runtime_error("Failed to wait for device idle with error code: " + std::to_string(result));
+            }
 
             assert(buffers.size() == 1);
             createDynamicBuffers(dataSize, dataPtr);

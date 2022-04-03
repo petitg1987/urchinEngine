@@ -72,14 +72,20 @@ namespace urchin {
         createInfo.clipped = VK_TRUE;
         createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-        VkResult result = vkCreateSwapchainKHR(logicalDevice, &createInfo, nullptr, &swapChain);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create swap chain with error code: " + std::to_string(result));
+        VkResult resultCreate = vkCreateSwapchainKHR(logicalDevice, &createInfo, nullptr, &swapChain);
+        if (resultCreate != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create swap chain with error code: " + std::to_string(resultCreate));
         }
 
-        vkGetSwapchainImagesKHR(logicalDevice, swapChain, &imageCount, nullptr);
+        VkResult resultGetImages = vkGetSwapchainImagesKHR(logicalDevice, swapChain, &imageCount, nullptr);
+        if (resultGetImages != VK_SUCCESS && resultGetImages != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to get swap chain images with error code: " + std::to_string(resultCreate));
+        }
         swapChainImages.resize(imageCount);
-        vkGetSwapchainImagesKHR(logicalDevice, swapChain, &imageCount, swapChainImages.data());
+        resultGetImages = vkGetSwapchainImagesKHR(logicalDevice, swapChain, &imageCount, swapChainImages.data());
+        if (resultGetImages != VK_SUCCESS && resultGetImages != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to get swap chain images with error code: " + std::to_string(resultCreate));
+        }
         imageFormat = surfaceFormat.format;
         swapChainExtent = extent;
 
@@ -116,21 +122,36 @@ namespace urchin {
 
     SwapChainSupportDetails SwapChainHandler::querySwapChainSupport(VkPhysicalDevice physicalDevice) {
         SwapChainSupportDetails details;
-        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, GraphicService::getSurface(), &details.capabilities);
+        VkResult resultSurfaceCapabilities = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, GraphicService::getSurface(), &details.capabilities);
+        if (resultSurfaceCapabilities != VK_SUCCESS) {
+            throw std::runtime_error("Failed to get surface capabilities with error code: " + std::to_string(resultSurfaceCapabilities));
+        }
 
         uint32_t formatCount;
-        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicService::getSurface(), &formatCount, nullptr);
+        VkResult resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicService::getSurface(), &formatCount, nullptr);
+        if (resultSurfaceFormats != VK_SUCCESS && resultSurfaceFormats != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to get surface formats with error code: " + std::to_string(resultSurfaceFormats));
+        }
         if (formatCount != 0) {
             assert(formatCount < 9999); //format count contains wrong value when xcb library is linked statically (bug ?)
             details.formats.resize(formatCount);
-            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicService::getSurface(), &formatCount, details.formats.data());
+            resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicService::getSurface(), &formatCount, details.formats.data());
+            if (resultSurfaceFormats != VK_SUCCESS && resultSurfaceFormats != VK_INCOMPLETE) {
+                throw std::runtime_error("Failed to get surface formats with error code: " + std::to_string(resultSurfaceFormats));
+            }
         }
 
         uint32_t presentModeCount;
-        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicService::getSurface(), &presentModeCount, nullptr);
+        VkResult resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicService::getSurface(), &presentModeCount, nullptr);
+        if (resultSurfacePresentMode != VK_SUCCESS && resultSurfacePresentMode != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to get surface present modes with error code: " + std::to_string(resultSurfacePresentMode));
+        }
         if (presentModeCount != 0) {
             details.presentModes.resize(presentModeCount);
-            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicService::getSurface(), &presentModeCount, details.presentModes.data());
+            resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicService::getSurface(), &presentModeCount, details.presentModes.data());
+            if (resultSurfacePresentMode != VK_SUCCESS && resultSurfacePresentMode != VK_INCOMPLETE) {
+                throw std::runtime_error("Failed to get surface present modes with error code: " + std::to_string(resultSurfacePresentMode));
+            }
         }
 
         return details;

@@ -84,10 +84,16 @@ namespace urchin {
 
     bool ValidationLayer::checkValidationLayerSupport() const {
         uint32_t layerCount;
-        vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+        VkResult result = vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+        if (result != VK_SUCCESS && result != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to set up debug messenger with error code: " + std::to_string(result));
+        }
 
         std::vector<VkLayerProperties> availableLayers(layerCount);
-        vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+        result = vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+        if (result != VK_SUCCESS && result != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to set up debug messenger with error code: " + std::to_string(result));
+        }
 
         assert(validationLayer.size() == 1);
         return std::ranges::any_of(availableLayers, [&](const auto& layerProperties) {

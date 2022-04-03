@@ -81,13 +81,19 @@ namespace urchin {
         Logger::instance().logInfo("Find Vulkan physical device");
 
         uint32_t deviceCount = 0;
-        vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+        VkResult resultEnumDevices = vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+        if (resultEnumDevices != VK_SUCCESS && resultEnumDevices != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to enumerate physics devices with error code: " + std::to_string(resultEnumDevices));
+        }
         if (deviceCount == 0) {
             throw UserAuthorityException("Failed to find a graphic card with Vulkan support", "Upgrade your graphic drivers to support Vulkan");
         }
 
         std::vector<VkPhysicalDevice> physicalDevices(deviceCount);
-        vkEnumeratePhysicalDevices(instance, &deviceCount, physicalDevices.data());
+        resultEnumDevices = vkEnumeratePhysicalDevices(instance, &deviceCount, physicalDevices.data());
+        if (resultEnumDevices != VK_SUCCESS && resultEnumDevices != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to enumerate physics devices with error code: " + std::to_string(resultEnumDevices));
+        }
 
         std::multimap<int, PhysicalDeviceSuitability> physicalDeviceCandidates;
         for (const auto& device : physicalDevices) {
@@ -162,10 +168,16 @@ namespace urchin {
 
     bool DeviceHandler::checkPhysicalDeviceExtensionSupport(VkPhysicalDevice physicalDeviceToCheck, const char* extensionName) const {
         uint32_t extensionCount;
-        vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, nullptr);
+        VkResult resultEnumExtension = vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, nullptr);
+        if (resultEnumExtension != VK_SUCCESS && resultEnumExtension != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to enumerate device extension with error code: " + std::to_string(resultEnumExtension));
+        }
 
         std::vector<VkExtensionProperties> availableExtensions(extensionCount);
-        vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
+        resultEnumExtension = vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
+        if (resultEnumExtension != VK_SUCCESS && resultEnumExtension != VK_INCOMPLETE) {
+            throw std::runtime_error("Failed to enumerate device extension with error code: " + std::to_string(resultEnumExtension));
+        }
 
         return std::ranges::any_of(availableExtensions, [&extensionName](const auto& extension) {
             return std::strcmp(extension.extensionName, extensionName) == 0;

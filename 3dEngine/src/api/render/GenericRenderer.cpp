@@ -70,7 +70,10 @@ namespace urchin {
     void GenericRenderer::cleanup() {
         if (isInitialized) {
             if (renderTarget.isValidRenderTarget()) {
-                vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+                VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+                if (result != VK_SUCCESS) {
+                    throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
+                }
 
                 destroyDescriptorSetsAndPool();
                 destroyUniformBuffers();
@@ -362,7 +365,10 @@ namespace urchin {
             assert(uniformTextureReaders.size() > uniformTexPosition);
             assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
         #endif
-        vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+        VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
+        }
 
         textureReader->initialize();
         uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
