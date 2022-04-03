@@ -6,8 +6,8 @@
 layout(constant_id = 0) const uint QUALITY_TEXTURE_FETCH = 0;
 
 layout(std140, set = 0, binding = 0) uniform PreFilterTweak {
-    float threshold;
     vec3 softCurveParams;
+    float threshold;
 } preFilterTweak;
 layout(std140, set = 0, binding = 1) uniform Tex {
     vec2 texelSize;
