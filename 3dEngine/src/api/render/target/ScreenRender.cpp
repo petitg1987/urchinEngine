@@ -189,17 +189,17 @@ namespace urchin {
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
             VkResult imageAvailableSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]);
             if (imageAvailableSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create image available semaphore with error code: " + std::to_string(imageAvailableSemaphoreResult));
+                throw std::runtime_error("Failed to create image available semaphore with error code '" + std::to_string(imageAvailableSemaphoreResult) + "' on render target: " + getName());
             }
 
             VkResult renderFinishedSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]);
             if (renderFinishedSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create render finished semaphore with error code: " + std::to_string(renderFinishedSemaphoreResult));
+                throw std::runtime_error("Failed to create render finished semaphore with error code '" + std::to_string(renderFinishedSemaphoreResult) + "' on render target: " + getName());
             }
 
             VkResult fenceResult = vkCreateFence(logicalDevice, &fenceInfo, nullptr, &commandBufferFences[i]);
             if (fenceResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create fences with error code: " + std::to_string(fenceResult));
+                throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
             }
         }
     }
@@ -228,7 +228,7 @@ namespace urchin {
             onResize();
             return;
         } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /* Continue with suboptimal image because already acquired */) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code: " + std::to_string(resultAcquireImage));
+            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName());
         }
 
         updateGraphicData(vkImageIndex);
@@ -254,7 +254,7 @@ namespace urchin {
         vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
         VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to submit draw command buffer with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
 
         std::array<VkSwapchainKHR, 1> swapChains = {swapChainHandler.getSwapChain()};
@@ -271,7 +271,7 @@ namespace urchin {
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code: " + std::to_string(resultAcquireImage));
+            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName());
         }
 
         currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;

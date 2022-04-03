@@ -125,6 +125,10 @@ namespace urchin {
         }
     }
 
+    const std::string& Texture::getName() const {
+        return name;
+    }
+
     TextureType Texture::getTextureType() const {
         return textureType;
     }

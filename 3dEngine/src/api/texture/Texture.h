@@ -31,6 +31,7 @@ namespace urchin {
 
             void initialize();
 
+            const std::string& getName() const;
             TextureType getTextureType() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;

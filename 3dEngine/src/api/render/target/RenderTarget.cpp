@@ -58,22 +58,22 @@ namespace urchin {
     void RenderTarget::setExternalDepthTexture(const std::shared_ptr<Texture>& externalDepthTexture) {
         assert(!isInitialized);
         if (depthAttachmentType != EXTERNAL_DEPTH_ATTACHMENT) {
-            throw std::runtime_error("Can not define an external depth texture. Wrong type of depth attachment: " + std::to_string(depthAttachmentType));
+            throw std::runtime_error("Can not define an external depth texture on render target: " + getName() + ". Wrong type of depth attachment: " + std::to_string(depthAttachmentType));
         }
         this->externalDepthTexture = externalDepthTexture;
     }
 
     const std::shared_ptr<Texture>& RenderTarget::getDepthTexture() const {
         if (depthAttachmentType == NO_DEPTH_ATTACHMENT) {
-            throw std::runtime_error("Cannot retrieve depth texture on a render target created without a depth attachment");
+            throw std::runtime_error("Cannot retrieve depth texture on the render target '" + getName() + "' created without a depth attachment");
         } else if (depthAttachmentType == LOCAL_DEPTH_ATTACHMENT) {
-            throw std::runtime_error("Cannot retrieve depth texture on a render target created with a local depth attachment");
+            throw std::runtime_error("Cannot retrieve depth texture on the render target '" + getName() + "' created with a local depth attachment");
         } else if (depthAttachmentType == SHARED_DEPTH_ATTACHMENT) {
             return depthTexture;
         } else if (depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
             return externalDepthTexture;
         }
-        throw std::runtime_error("Unknown depth attachment type: " + std::to_string(depthAttachmentType));
+        throw std::runtime_error("Unknown depth attachment type '" + std::to_string(depthAttachmentType) + "' on render target: " + getName());
     }
 
     void RenderTarget::addRenderer(GenericRenderer* renderer) {
@@ -161,7 +161,7 @@ namespace urchin {
         } else if (depthAttachmentType == SHARED_DEPTH_ATTACHMENT || depthAttachmentType == EXTERNAL_DEPTH_ATTACHMENT) {
             depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         } else {
-            throw std::runtime_error("Unknown depth attachment type: " + std::to_string(depthAttachmentType));
+            throw std::runtime_error("Unknown depth attachment type '" + std::to_string(depthAttachmentType) + "' on render target: " + getName());
         }
 
         depthAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
@@ -231,7 +231,7 @@ namespace urchin {
 
         VkResult result = vkCreateRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create render pass with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create render pass with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
 
         DebugLabelHelper::nameObject(DebugLabelHelper::RENDER_PASS, renderPass, name);
@@ -281,7 +281,7 @@ namespace urchin {
         framebuffers.resize(framebuffers.size() + 1, nullptr);
         VkResult result = vkCreateFramebuffer(GraphicService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create framebuffer with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create framebuffer with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
     }
 
@@ -305,7 +305,7 @@ namespace urchin {
 
         VkResult resultCommandBuffers = vkAllocateCommandBuffers(GraphicService::instance().getDevices().getLogicalDevice(), &allocInfo, commandBuffers.data());
         if (resultCommandBuffers != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate command buffers with error code: " + std::to_string(resultCommandBuffers));
+            throw std::runtime_error("Failed to allocate command buffers with error code '" + std::to_string(resultCommandBuffers) + "' on render target: " + getName());
         }
     }
 
@@ -317,7 +317,7 @@ namespace urchin {
 
         VkResult result = vkCreateCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create command pool with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create command pool with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
     }
 
@@ -399,13 +399,13 @@ namespace urchin {
             waitCommandBuffersIdle();
             VkResult resultResetCmdPool = vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
             if (resultResetCmdPool != VK_SUCCESS) {
-                throw std::runtime_error("Failed to reset command pool with error code: " + std::to_string(resultResetCmdPool));
+                throw std::runtime_error("Failed to reset command pool with error code '" + std::to_string(resultResetCmdPool) + "' on render target: " + getName());
             }
 
             VkResult resultCmdBuffer = vkBeginCommandBuffer(commandBuffers[frameIndex], &beginInfo);
             {
                 if (resultCmdBuffer != VK_SUCCESS) {
-                    throw std::runtime_error("Failed to begin recording command buffer with error code: " + std::to_string(resultCmdBuffer));
+                    throw std::runtime_error("Failed to begin recording command buffer with error code '" + std::to_string(resultCmdBuffer) + "' on render target: " + getName());
                 }
 
                 renderPassInfo.framebuffer = framebuffers[frameIndex];
@@ -425,7 +425,7 @@ namespace urchin {
             }
             VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBuffers[frameIndex]);
             if (resultEndCmdBuffer != VK_SUCCESS) {
-                throw std::runtime_error("Failed to record command buffer with error code: " + std::to_string(resultEndCmdBuffer));
+                throw std::runtime_error("Failed to record command buffer with error code '" + std::to_string(resultEndCmdBuffer) + "' on render target: " + getName());
             }
 
             renderersDirty = false;

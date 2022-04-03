@@ -210,7 +210,7 @@ namespace urchin {
 
         VkResult result = vkCreateDescriptorPool(logicalDevice, &poolInfo, nullptr, &descriptorPool);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create descriptor pool with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create descriptor pool with error code '" + std::to_string(result) + "' on renderer: " + getName());
         }
     }
 
@@ -227,7 +227,7 @@ namespace urchin {
         descriptorSets.resize(renderTarget.getNumFramebuffer());
         VkResult result = vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate descriptor sets with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to allocate descriptor sets with error code '" + std::to_string(result) + "' on renderer: " + getName());
         }
 
         updateDescriptorSets();

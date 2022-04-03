@@ -28,11 +28,11 @@ namespace urchin {
 
         if (loadType == LoadType::LOAD_CONTENT) {
             if (!texture->isWritableTexture()) {
-                throw std::runtime_error("Texture content should already been written on the texture to load it");
+                throw std::runtime_error("Content of the texture '" + texture->getName() + "' should already been written on the texture to load it for the render target: " + getName());
             }
         } else {
             if (loadType == LoadType::LOAD_CLEAR && !clearColor.has_value()) {
-                throw std::runtime_error("Texture clear color is missing");
+                throw std::runtime_error("Clear color is missing for texture '" + texture->getName() + "' on render target: " + getName());
             }
 
             texture->enableTextureWriting();
@@ -170,14 +170,14 @@ namespace urchin {
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
         VkResult fenceResult = vkCreateFence(GraphicService::instance().getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
         if (fenceResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create fences with error code: " + std::to_string(fenceResult));
+            throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
         }
 
         VkSemaphoreCreateInfo semaphoreInfo{};
         semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
         VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
         if (semaphoreResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create semaphore with error code: " + std::to_string(semaphoreResult));
+            throw std::runtime_error("Failed to create semaphore with error code '" + std::to_string(semaphoreResult) + "' on render target: " + getName());
         }
     }
 
@@ -224,7 +224,7 @@ namespace urchin {
         vkResetFences(logicalDevice, 1, &commandBufferFence);
         VkResult result = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit draw command buffer with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to submit draw command buffer with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
 
         queueSubmitSemaphoreUsable = true;
