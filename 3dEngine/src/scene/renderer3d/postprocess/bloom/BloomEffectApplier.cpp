@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    BloomEffectApplier::BloomEffectApplier(RenderTarget& outputRenderTarget) :
+    BloomEffectApplier::BloomEffectApplier(const Config& config, RenderTarget& outputRenderTarget) :
+            config(config),
             outputRenderTarget(outputRenderTarget),
-            config({}),
             sceneWidth(0),
             sceneHeight(0),
             preFilterTweak({}) {

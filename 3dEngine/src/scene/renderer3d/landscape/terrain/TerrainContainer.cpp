@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    TerrainContainer::TerrainContainer(RenderTarget& renderTarget) :
-            renderTarget(renderTarget),
-            config({}) {
+    TerrainContainer::TerrainContainer(const Config& config, RenderTarget& renderTarget) :
+            config(config),
+            renderTarget(renderTarget) {
 
     }
 

@@ -12,8 +12,8 @@
 
 namespace urchin {
 
-    ShadowManager::ShadowManager(LightManager& lightManager, OctreeManager<Model>& modelOctreeManager) :
-            config({}),
+    ShadowManager::ShadowManager(const Config& config, LightManager& lightManager, OctreeManager<Model>& modelOctreeManager) :
+            config(config),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
             bForceUpdateAllShadowMaps(false),

@@ -8,9 +8,9 @@
 
 namespace urchin {
 
-    AntiAliasingApplier::AntiAliasingApplier(bool useNullRenderTarget) :
+    AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool useNullRenderTarget) :
             useNullRenderTarget(useNullRenderTarget),
-            config({}) {
+            config(config) {
 
     }
 

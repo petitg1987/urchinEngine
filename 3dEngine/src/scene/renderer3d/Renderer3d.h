@@ -27,12 +27,13 @@
 #include <api/render/target/OffscreenRender.h>
 #include <api/texture/Texture.h>
 #include <texture/render/TextureRenderer.h>
+#include "VisualConfig.h"
 
 namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
-            Renderer3d(RenderTarget&, I18nService&);
+            Renderer3d(RenderTarget&, const VisualConfig&, I18nService&);
             ~Renderer3d() override;
 
             //scene properties

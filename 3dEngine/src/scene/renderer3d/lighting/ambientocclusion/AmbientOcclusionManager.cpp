@@ -14,12 +14,11 @@ namespace urchin {
     //debug parameters
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
 
-    AmbientOcclusionManager::AmbientOcclusionManager(bool useNullRenderTarget) :
+    AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useNullRenderTarget) :
+            config(config),
             useNullRenderTarget(useNullRenderTarget),
             nearPlane(0.0f),
             farPlane(0.0f),
-
-            config({}),
             textureSizeX(0),
             textureSizeY(0),
 

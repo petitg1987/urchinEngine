@@ -14,7 +14,7 @@ namespace urchin {
                 float grassDisplayDistance = 100;
             };
 
-            explicit TerrainContainer(RenderTarget&);
+            TerrainContainer(const Config&, RenderTarget&);
 
             void addTerrain(const std::shared_ptr<Terrain>&);
             void removeTerrain(const Terrain&);
@@ -28,11 +28,10 @@ namespace urchin {
             void updateAllTerrainConfig() const;
             void updateTerrainConfig(Terrain&) const;
 
+            Config config;
             RenderTarget& renderTarget;
 
             std::vector<std::shared_ptr<Terrain>> terrains;
-
-            Config config;
     };
 
 }

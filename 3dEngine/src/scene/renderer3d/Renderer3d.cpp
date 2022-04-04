@@ -23,7 +23,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget, I18nService& i18nService) :
+    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget, const VisualConfig& visualConfig, I18nService& i18nService) :
             //scene properties
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
@@ -37,15 +37,15 @@ namespace urchin {
             modelOctreeManager(OctreeManager<Model>(ConfigService::instance().getFloatValue("model.octreeMinSize"))),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
-            terrainContainer(TerrainContainer(*deferredRenderTarget)),
+            terrainContainer(TerrainContainer(visualConfig.getTerrainConfig(), *deferredRenderTarget)),
             waterContainer(WaterContainer(*deferredRenderTarget)),
             uiContainer(UiContainer(*deferredRenderTarget, i18nService)),
             geometryContainer(GeometryContainer(*deferredRenderTarget)),
             skyContainer(SkyContainer(*deferredRenderTarget)),
             lightManager(LightManager()),
-            ambientOcclusionManager(AmbientOcclusionManager(!finalRenderTarget.isValidRenderTarget())),
+            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAOConfig(), !finalRenderTarget.isValidRenderTarget())),
             transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
-            shadowManager(ShadowManager(lightManager, modelOctreeManager)),
+            shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOctreeManager)),
 
             //lighting pass rendering
             lightingRenderTarget(finalRenderTarget.isValidRenderTarget() ?
@@ -53,9 +53,9 @@ namespace urchin {
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             positioningData({}),
             visualOption({}),
-            antiAliasingApplier(AntiAliasingApplier(!finalRenderTarget.isValidRenderTarget())),
+            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAAConfig(), !finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(true),
-            bloomEffectApplier(BloomEffectApplier(finalRenderTarget)),
+            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget)),
 
             //debug
             refreshDebugFramebuffers(true) {

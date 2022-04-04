@@ -20,7 +20,7 @@ namespace urchin {
                 Quality quality = AntiAliasingApplier::Quality::HIGH;
             };
 
-            explicit AntiAliasingApplier(bool);
+            AntiAliasingApplier(const Config&, bool);
             ~AntiAliasingApplier();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);

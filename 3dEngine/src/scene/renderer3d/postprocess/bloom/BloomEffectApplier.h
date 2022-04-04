@@ -21,7 +21,7 @@ namespace urchin {
                 TextureFetchQuality textureFetchQuality = BEST_QUALITY;
             };
 
-            explicit BloomEffectApplier(RenderTarget&);
+            BloomEffectApplier(const Config&, RenderTarget&);
             ~BloomEffectApplier();
 
             void onTextureUpdate(const std::shared_ptr<Texture>&);
@@ -45,8 +45,8 @@ namespace urchin {
                 float upSampleScale;
             };
 
-            RenderTarget& outputRenderTarget;
             Config config;
+            RenderTarget& outputRenderTarget;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;

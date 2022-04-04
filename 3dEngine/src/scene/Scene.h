@@ -30,7 +30,7 @@ namespace urchin {
             float getDeltaTime() const;
 
             //renderer
-            Renderer3d& newRenderer3d(bool);
+            Renderer3d& newRenderer3d(const VisualConfig&, bool);
             void enableRenderer3d(Renderer3d*);
             void removeRenderer3d(const Renderer3d*);
             Renderer3d* getActiveRenderer3d() const;
