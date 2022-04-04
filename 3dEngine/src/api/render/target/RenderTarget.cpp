@@ -354,14 +354,14 @@ namespace urchin {
 
         if (additionalCustomSemaphore) {
             queueSubmitWaitSemaphores.emplace_back(additionalCustomSemaphore);
-            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT);
         }
 
         for (auto& renderDependency : renderDependencies) {
             VkSemaphore queueSubmitSemaphore = renderDependency->retrieveQueueSubmitSemaphoreAndFlagUsed();
             if (queueSubmitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(queueSubmitSemaphore);
-                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
+                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth texture */);
             }
         }
 
