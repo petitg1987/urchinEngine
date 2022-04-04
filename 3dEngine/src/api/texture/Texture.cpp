@@ -27,6 +27,10 @@ namespace urchin {
             textureImage(nullptr),
             textureImageMemory(nullptr),
             textureImageView(nullptr) {
+        if (width == 0 || height == 0 || layer == 0) {
+            throw std::runtime_error("Invalid texture size of " + std::to_string(width) + "x" + std::to_string(height) + "x" + std::to_string(layer) + " for: " + this->name);
+        }
+
         for (const void* imageDataPtr : dataPtr) {
             if (imageDataPtr != nullptr) {
                 auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
@@ -48,7 +52,6 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
-        assert(layer > 1);
         std::vector<const void*> allDataPtr(1, dataPtr);
         return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::ARRAY, width, height, layer, format, allDataPtr));
     }

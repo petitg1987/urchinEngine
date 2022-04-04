@@ -33,7 +33,7 @@ namespace urchin {
 
     class Renderer3d : public Renderer, public Observer {
         public:
-            Renderer3d(RenderTarget&, const VisualConfig&, I18nService&);
+            Renderer3d(RenderTarget&, std::shared_ptr<Camera>, const VisualConfig&, I18nService&);
             ~Renderer3d() override;
 
             //scene properties
@@ -60,7 +60,6 @@ namespace urchin {
             void activateAntiAliasing(bool);
 
             //camera
-            void setCamera(std::shared_ptr<Camera>);
             Camera* getCamera() const;
 
             //models

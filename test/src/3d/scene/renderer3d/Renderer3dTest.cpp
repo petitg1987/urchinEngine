@@ -8,8 +8,8 @@ using namespace urchin;
 void Renderer3dTest::modelPreWarm() {
     NullRenderTarget nullRenderTarget(1920, 1080);
     I18nService nullI18nService;
-    Renderer3d renderer3D(nullRenderTarget, nullI18nService);
-    renderer3D.setCamera(std::make_shared<FreeCamera>(90.0f, 0.01f, 1000.0f));
+    auto camera = std::make_unique<FreeCamera>(90.0f, 0.01f, 1000.0f);
+    Renderer3d renderer3D(nullRenderTarget, std::move(camera), VisualConfig(), nullI18nService);
     std::shared_ptr<Model> opaqueModel = buildModel("materials/opaque.uda", "model1", Point3<float>(0.0f, 0.0f, -10.0f));
     std::shared_ptr<Model> transparentModel = buildModel("materials/transparent.uda", "model2", Point3<float>(0.0f, 0.0f, -10.0f));
     std::shared_ptr<Model> notVisibleModel = buildModel("materials/opaque.uda", "model3", Point3<float>(0.0f, 0.0f, 25.0f));

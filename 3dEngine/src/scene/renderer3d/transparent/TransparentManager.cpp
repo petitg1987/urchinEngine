@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateRendering() {
-        if (camera) {
+        if (camera && sceneWidth != 0 && sceneHeight != 0) {
             createOrUpdateTextures();
             createOrUpdateModelSetDisplayer();
         }

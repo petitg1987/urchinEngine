@@ -119,8 +119,8 @@ namespace urchin {
         fpsForDisplay = (unsigned int)STARTUP_FPS;
     }
 
-    Renderer3d& Scene::newRenderer3d(const VisualConfig& visualConfig, bool enable) {
-        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget, visualConfig, i18nService);
+    Renderer3d& Scene::newRenderer3d(std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, bool enable) {
+        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget, std::move(camera), visualConfig, i18nService);
         if (enable) {
             enableRenderer3d(renderer3d.get());
         }

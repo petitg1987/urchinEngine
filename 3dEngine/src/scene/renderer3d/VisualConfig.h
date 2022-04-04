@@ -46,9 +46,6 @@ namespace urchin {
             BloomEffectApplier::Config bloomConfig;
 
             TerrainContainer::Config terrainConfig;
-
-            //TODO add renderer3d.getCamera()->updateHorizontalFovAngle(getFieldOfView()); ?
-            //TODO add renderer3d.activateAmbientOcclusion(true) / renderer3d.activateAntiAliasing(true) /  renderer3d.activateShadow(true)
     };
 
 }

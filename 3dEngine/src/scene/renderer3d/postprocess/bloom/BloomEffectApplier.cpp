@@ -31,8 +31,6 @@ namespace urchin {
         this->sceneWidth = inputHdrTexture->getWidth();
         this->sceneHeight = inputHdrTexture->getHeight();
 
-        clearRenderers();
-
         refreshRenderers();
     }
 

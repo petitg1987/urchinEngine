@@ -17,7 +17,7 @@ namespace urchin {
         VkBuffer buffer;
         VkResult result = vmaCreateBuffer(GraphicService::instance().getAllocator(), &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create buffer with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create buffer of size '" + std::to_string(size) + "' with error code: " + std::to_string(result));
         }
 
         return buffer;

@@ -23,12 +23,13 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget, const VisualConfig& visualConfig, I18nService& i18nService) :
+    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget, std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, I18nService& i18nService) :
             //scene properties
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
             sceneHeight(finalRenderTarget.getHeight()),
             paused(true),
+            camera(std::move(camera)),
 
             //deferred rendering
             deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
@@ -61,6 +62,10 @@ namespace urchin {
             refreshDebugFramebuffers(true) {
         ScopeProfiler sp(Profiler::graphic(), "render3dInit");
 
+        //scene properties
+        this->camera->addObserver(this, Camera::PROJECTION_UPDATE);
+        this->camera->initialize(sceneWidth, sceneHeight);
+
         //deferred rendering
         modelSetDisplayer.setupShader("model.vert.spv", "", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
@@ -84,9 +89,7 @@ namespace urchin {
         this->sceneHeight = sceneHeight;
 
         //camera
-        if (camera) {
-            camera->onResize(sceneWidth, sceneHeight);
-        }
+        camera->onResize(sceneWidth, sceneHeight);
 
         createOrUpdateLightingPass();
     }
@@ -186,18 +189,6 @@ namespace urchin {
         }
     }
 
-    void Renderer3d::setCamera(std::shared_ptr<Camera> camera) {
-        if (this->camera != nullptr) {
-           throw std::runtime_error("Redefine a camera is currently not supported");
-        }
-
-        this->camera = std::move(camera);
-        if (this->camera) {
-            this->camera->addObserver(this, Camera::PROJECTION_UPDATE);
-            this->camera->initialize(sceneWidth, sceneHeight);
-        }
-    }
-
     void Renderer3d::onCameraProjectionUpdate() {
         ScopeProfiler sp(Profiler::graphic(), "render3dProjUp");
 
@@ -237,9 +228,6 @@ namespace urchin {
      * This method must be called once all the models and the camera have been setup.
      */
     void Renderer3d::preWarmModels() {
-        if (!camera) {
-            throw std::runtime_error("Camera is required to pre warm the models");
-        }
         updateScene(0.0f);
         postUpdateScene();
     }
@@ -250,7 +238,7 @@ namespace urchin {
 
     bool Renderer3d::onKeyPress(unsigned int key) {
         bool propagateEvent = true;
-        if (!paused && camera) {
+        if (!paused) {
             propagateEvent = camera->onKeyPress(key);
             if (propagateEvent) {
                 propagateEvent = uiContainer.onKeyPress(key);
@@ -261,7 +249,7 @@ namespace urchin {
 
     bool Renderer3d::onKeyRelease(unsigned int key) {
         bool propagateEvent = true;
-        if (!paused && camera) {
+        if (!paused) {
             propagateEvent = camera->onKeyRelease(key);
             if (propagateEvent) {
                 propagateEvent = uiContainer.onKeyRelease(key);
@@ -276,7 +264,7 @@ namespace urchin {
 
     bool Renderer3d::onMouseMove(double mouseX, double mouseY) {
         bool propagateEvent = true;
-        if (!paused && camera) {
+        if (!paused) {
             camera->onMouseMove(mouseX, mouseY); //ignore 'propagateEvent' on purpose: UI must stay aware of event even when camera move
             propagateEvent = uiContainer.onMouseMove(mouseX, mouseY);
         }
@@ -296,19 +284,12 @@ namespace urchin {
     }
 
     void Renderer3d::unpause() {
-        if (camera) {
-            camera->resetPreviousMousePosition();
-        }
-
+        camera->resetPreviousMousePosition();
         paused = false;
     }
 
     void Renderer3d::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
-
-        if (!camera) { //nothing to display if camera doesn't exist
-            return;
-        }
 
         updateScene(dt);
         deferredRendering(dt);
