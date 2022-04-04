@@ -7,7 +7,7 @@ using namespace urchin;
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_DISPLAY_VULKAN_INFO = false;
+    bool DEBUG_ADVANCED_VULKAN_VALIDATION = false; //TODO try with true
 
     //static
     std::vector<std::string> ValidationLayer::filterOutMessages;
@@ -41,8 +41,11 @@ namespace urchin {
             instanceCreateInfo.pNext = &instanceDebugCreateInfo;
 
             featureEnables[0] = VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT;
+            featureEnables[1] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT;
+            featureEnables[2] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT;
+            featureEnables[3] = VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT;
             features.sType = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
-            features.enabledValidationFeatureCount = 1;
+            features.enabledValidationFeatureCount = DEBUG_ADVANCED_VULKAN_VALIDATION ? (uint32_t)featureEnables.size() : 1;
             features.pEnabledValidationFeatures = featureEnables.data();
             instanceDebugCreateInfo.pNext = &features;
         } else {
@@ -104,9 +107,6 @@ namespace urchin {
     void ValidationLayer::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) const {
         createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-        if (DEBUG_DISPLAY_VULKAN_INFO) {
-            createInfo.messageSeverity |= VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
-        }
         createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
         createInfo.pfnUserCallback = debugCallback;
     }

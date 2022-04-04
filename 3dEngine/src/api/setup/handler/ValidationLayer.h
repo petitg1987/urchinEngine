@@ -35,7 +35,7 @@ namespace urchin {
             VkDebugUtilsMessengerCreateInfoEXT instanceDebugCreateInfo;
 
             VkValidationFeaturesEXT features;
-            std::array<VkValidationFeatureEnableEXT, 1> featureEnables;
+            std::array<VkValidationFeatureEnableEXT, 4> featureEnables;
     };
 
 }
