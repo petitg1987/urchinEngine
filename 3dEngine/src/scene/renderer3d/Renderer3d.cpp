@@ -43,7 +43,7 @@ namespace urchin {
             geometryContainer(GeometryContainer(*deferredRenderTarget)),
             skyContainer(SkyContainer(*deferredRenderTarget)),
             lightManager(LightManager()),
-            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAOConfig(), !finalRenderTarget.isValidRenderTarget())),
+            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), !finalRenderTarget.isValidRenderTarget())),
             transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOctreeManager)),
 
@@ -53,8 +53,8 @@ namespace urchin {
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             positioningData({}),
             visualOption({}),
-            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAAConfig(), !finalRenderTarget.isValidRenderTarget())),
-            isAntiAliasingActivated(true),
+            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), !finalRenderTarget.isValidRenderTarget())),
+            isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
             bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget)),
 
             //debug
@@ -68,8 +68,8 @@ namespace urchin {
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
-        visualOption.isShadowActivated = true;
-        visualOption.isAmbientOcclusionActivated = true;
+        visualOption.isShadowActivated = visualConfig.isShadowActivated();
+        visualOption.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
         createOrUpdateLightingPass();
     }
 
