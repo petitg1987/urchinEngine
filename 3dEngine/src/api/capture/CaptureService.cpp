@@ -25,13 +25,13 @@ namespace urchin {
         VkImage dstImage = ImageHelper::createImage("screenshot", srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
 
         //do the actual blit from the image to our host visible destination image
-        VkCommandBuffer copyCmd = CommandBufferHelper::beginSingleTimeCommands();
+        CommandBufferData copyCmdData = CommandBufferHelper::beginSingleTimeCommands("screenshot");
         {
             //transition destination image to transfer destination layout
-            cmdPipelineBarrier(dstImage, copyCmd, 0, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+            cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, 0, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
             //transition image to transfer source layout
-            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, imageLayout, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, imageLayout, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
 
             VkImageCopy imageCopyRegion{};
             imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -43,15 +43,15 @@ namespace urchin {
             imageCopyRegion.extent.depth = 1;
 
             //issue the copy command
-            vkCmdCopyImage(copyCmd, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
+            vkCmdCopyImage(copyCmdData.commandBuffer, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
 
             //transition destination image to general layout, which is the required layout for mapping the image memory later on
-            cmdPipelineBarrier(dstImage, copyCmd, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
+            cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
 
             //transition back the image after the blit is done
-            cmdPipelineBarrier(srcImage, copyCmd, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, imageLayout);
+            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, imageLayout);
         }
-        CommandBufferHelper::endSingleTimeCommands(copyCmd);
+        CommandBufferHelper::endSingleTimeCommands(copyCmdData);
 
         //get layout of the image (including row pitch)
         VkImageSubresource subResource { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0 };

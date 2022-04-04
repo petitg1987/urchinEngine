@@ -307,6 +307,10 @@ namespace urchin {
         if (resultCommandBuffers != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate command buffers with error code '" + std::to_string(resultCommandBuffers) + "' on render target: " + getName());
         }
+
+        for (std::size_t cmdBufferIndex = 0; cmdBufferIndex < commandBuffers.size(); ++cmdBufferIndex) {
+            DebugLabelHelper::nameObject(DebugLabelHelper::COMMAND_BUFFER, commandBuffers[cmdBufferIndex], getName() + "_" + std::to_string(cmdBufferIndex));
+        }
     }
 
     void RenderTarget::createCommandPool() {

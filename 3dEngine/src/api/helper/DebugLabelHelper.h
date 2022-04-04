@@ -12,10 +12,11 @@ namespace urchin {
                 PIPELINE,
                 RENDER_PASS,
                 SHADER,
-                IMAGE
+                IMAGE,
+                COMMAND_BUFFER
             };
 
-            static void nameObject(ObjectType, void*, const std::string&);
+            static void nameObject(ObjectType, void*, std::string_view);
 
             static void beginDebugRegion(VkCommandBuffer, const std::string&, const Vector4<float>&);
             static void endDebugRegion(VkCommandBuffer);

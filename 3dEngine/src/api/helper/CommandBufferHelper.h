@@ -4,10 +4,15 @@
 
 namespace urchin {
 
+    struct CommandBufferData {
+        VkCommandBuffer commandBuffer;
+        std::string_view name;
+    };
+
     class CommandBufferHelper {
         public:
-            static VkCommandBuffer beginSingleTimeCommands();
-            static void endSingleTimeCommands(VkCommandBuffer);
+            static CommandBufferData beginSingleTimeCommands(std::string_view);
+            static void endSingleTimeCommands(CommandBufferData);
     };
 
 }

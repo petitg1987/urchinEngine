@@ -145,15 +145,15 @@ namespace urchin {
     }
 
     void BufferHandler::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) const {
-        VkCommandBuffer commandBuffer = CommandBufferHelper::beginSingleTimeCommands();
+        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("copy buffer");
         {
             VkBufferCopy copyRegion{};
             copyRegion.srcOffset = 0;
             copyRegion.dstOffset = 0;
             copyRegion.size = size;
-            vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+            vkCmdCopyBuffer(commandBufferData.commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
         }
-        CommandBufferHelper::endSingleTimeCommands(commandBuffer);
+        CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }
 
     void BufferHandler::updateBuffer(const void *dataPtr) {

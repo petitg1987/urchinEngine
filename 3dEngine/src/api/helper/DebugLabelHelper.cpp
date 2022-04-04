@@ -5,13 +5,13 @@
 
 namespace urchin {
 
-    void DebugLabelHelper::nameObject(ObjectType objectType, void* object, const std::string& objectName) {
+    void DebugLabelHelper::nameObject(ObjectType objectType, void* object, std::string_view objectName) {
         if (GraphicService::instance().getValidationLayer().isValidationActive()) {
             auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
             auto pfnSetDebugUtilsObjectNameEXT = reinterpret_cast<PFN_vkSetDebugUtilsObjectNameEXT>(vkGetDeviceProcAddr(logicalDevice, "vkSetDebugUtilsObjectNameEXT"));
             auto [vkObjectType, objectTypeName] = toVkObjectType(objectType);
-            auto objectFullName = objectTypeName + objectName;
+            auto objectFullName = objectTypeName + std::string(objectName);
 
             VkDebugUtilsObjectNameInfoEXT objectNameInfo{};
             objectNameInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
@@ -52,6 +52,8 @@ namespace urchin {
             return std::make_pair(VK_OBJECT_TYPE_SHADER_MODULE, "[SHADER] ");
         } else if (objectType == IMAGE) {
             return std::make_pair(VK_OBJECT_TYPE_IMAGE, "[IMAGE] ");
+        } else if (objectType == COMMAND_BUFFER) {
+            return std::make_pair(VK_OBJECT_TYPE_COMMAND_BUFFER, "[CMD] ");
         }
         throw std::runtime_error("Unknown graphic object type: " + std::to_string(objectType));
     }
