@@ -51,7 +51,7 @@ namespace urchin {
             oldMouseX = mouseX;
             oldMouseY = mouseY;
         }
-        oldCameraViewMatrix = scene.getActiveRenderer3d()->getCamera()->getViewMatrix();
+        oldCameraViewMatrix = scene.getActiveRenderer3d()->getCamera().getViewMatrix();
 
         return propagateEvent;
     }
@@ -63,9 +63,9 @@ namespace urchin {
     }
 
     bool ObjectMoveController::isCameraMoved() const {
-        const Camera* camera = scene.getActiveRenderer3d()->getCamera();
+        const Camera& camera = scene.getActiveRenderer3d()->getCamera();
         for (unsigned int i = 0; i < 16; ++i) {
-            if (this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i)) {
+            if (this->oldCameraViewMatrix(i) != camera.getViewMatrix()(i)) {
                 return true;
             }
         }
@@ -101,7 +101,7 @@ namespace urchin {
 
     void ObjectMoveController::moveObject(const Point2<float>& oldMouseCoord, const Point2<float>& newMouseCoord) {
         Point3<float> modelPosition = selectedObjectEntity->getModel()->getTransform().getPosition();
-        CameraSpaceService cameraSpaceService(*scene.getActiveRenderer3d()->getCamera());
+        CameraSpaceService cameraSpaceService(scene.getActiveRenderer3d()->getCamera());
 
         Point3<float> startAxisWorldSpacePoint = modelPosition;
         startAxisWorldSpacePoint[(unsigned int)selectedAxis] -= 1.0f;
@@ -115,7 +115,7 @@ namespace urchin {
         Vector2<float> axisVector = startAxisPointScreenSpace.vector(endAxisPointScreenSpace);
 
         float moveFactor = axisVector.normalize().dotProduct(mouseVector);
-        float moveSpeed = scene.getActiveRenderer3d()->getCamera()->getPosition().distance(modelPosition);
+        float moveSpeed = scene.getActiveRenderer3d()->getCamera().getPosition().distance(modelPosition);
         float moveReduceFactor = 0.001f;
 
         Point3<float> newPosition = modelPosition;

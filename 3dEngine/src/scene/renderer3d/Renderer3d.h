@@ -60,7 +60,7 @@ namespace urchin {
             void activateAntiAliasing(bool);
 
             //camera
-            Camera* getCamera() const;
+            Camera& getCamera() const;
 
             //models
             void addModel(std::shared_ptr<Model>);

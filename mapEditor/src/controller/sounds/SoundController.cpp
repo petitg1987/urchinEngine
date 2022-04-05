@@ -44,8 +44,8 @@ namespace urchin {
     }
 
     void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity) {
-        const Camera* camera = getMap().getRenderer3d()->getCamera();
-        Point3<float> newPosition = camera->getPosition().translate(camera->getView() * 5.0f);
+        const Camera& camera = getMap().getRenderer3d()->getCamera();
+        Point3<float> newPosition = camera.getPosition().translate(camera.getView() * 5.0f);
 
         if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::SPATIAL) {
             static_cast<SpatialSound&>(constSoundEntity.getSoundComponent()->getSound()).setPosition(newPosition);

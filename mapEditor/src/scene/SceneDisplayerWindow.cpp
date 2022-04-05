@@ -227,8 +227,8 @@ namespace urchin {
 
         if (sceneDisplayer->getScene().getActiveRenderer3d()) {
             constexpr float PICKING_RAY_LENGTH = 100.0f;
-            const Camera* camera = sceneDisplayer->getScene().getActiveRenderer3d()->getCamera();
-            Ray<float> pickingRay = CameraSpaceService(*camera).screenPointToRay(Point2<float>((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
+            const Camera& camera = sceneDisplayer->getScene().getActiveRenderer3d()->getCamera();
+            Ray<float> pickingRay = CameraSpaceService(camera).screenPointToRay(Point2<float>((float) mouseX, (float) mouseY), PICKING_RAY_LENGTH);
             std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld().rayTest(pickingRay);
 
             while (!rayTestResult->isResultReady()) {

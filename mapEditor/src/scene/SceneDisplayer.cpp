@@ -91,8 +91,7 @@ namespace urchin {
         camera = std::make_shared<SceneFreeCamera>(90.0f, 0.1f, 2000.0f, mouseController);
         camera->setSpeed(15.0f, 2.0f);
         camera->loadCameraState(mapFilename);
-        scene->newRenderer3d(true);
-        scene->getActiveRenderer3d()->setCamera(camera);
+        scene->newRenderer3d(camera, VisualConfig(), true);
         scene->getActiveRenderer3d()->getLightManager().setGlobalAmbientColor(Point3<float>(0.05f, 0.05f, 0.05f));
 
         bodyShapeDisplayer = std::make_unique<BodyShapeDisplayer>(*scene);

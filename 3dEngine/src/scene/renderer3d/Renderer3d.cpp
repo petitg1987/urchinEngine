@@ -63,6 +63,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "render3dInit");
 
         //scene properties
+        assert(this->camera);
         this->camera->addObserver(this, Camera::PROJECTION_UPDATE);
         this->camera->initialize(sceneWidth, sceneHeight);
 
@@ -199,8 +200,8 @@ namespace urchin {
         refreshDebugFramebuffers = true;
     }
 
-    Camera* Renderer3d::getCamera() const {
-        return camera.get();
+    Camera& Renderer3d::getCamera() const {
+        return *camera;
     }
 
     void Renderer3d::addModel(std::shared_ptr<Model> model) {
@@ -420,7 +421,7 @@ namespace urchin {
 
         //determine model visible on scene
         modelsInFrustum.clear();
-        modelOctreeManager.getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
+        modelOctreeManager.getOctreeablesIn(camera->getFrustum(), modelsInFrustum);
 
         //determine visible lights on scene
         lightManager.updateVisibleLights(camera->getFrustum());
