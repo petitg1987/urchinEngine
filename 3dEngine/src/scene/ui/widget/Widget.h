@@ -29,7 +29,7 @@ namespace urchin {
                 SET_IN_FOREGROUND //Widget should be set in the foreground
             };
 
-            enum WidgetStates {
+            enum WidgetState {
                 DEFAULT,
                 CLICKING,
                 FOCUS
@@ -53,7 +53,7 @@ namespace urchin {
             void clearEventListeners();
             void addEventListener(std::shared_ptr<EventListener>);
             const std::vector<std::shared_ptr<EventListener>>& getEventListeners() const;
-            WidgetStates getWidgetState() const;
+            WidgetState getWidgetState() const;
             Point2<int> getSceneSize() const;
 
             void updatePosition(Position);
@@ -134,7 +134,7 @@ namespace urchin {
             std::vector<std::shared_ptr<Widget>> children;
 
             std::vector<std::shared_ptr<EventListener>> eventListeners;
-            WidgetStates widgetState;
+            WidgetState widgetState;
 
             Position position;
             Size size;

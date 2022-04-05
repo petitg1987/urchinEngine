@@ -225,7 +225,7 @@ namespace urchin {
         return eventListeners;
     }
 
-    Widget::WidgetStates Widget::getWidgetState() const {
+    Widget::WidgetState Widget::getWidgetState() const {
         return widgetState;
     }
 

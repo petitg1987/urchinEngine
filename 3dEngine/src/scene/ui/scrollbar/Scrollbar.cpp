@@ -106,7 +106,7 @@ namespace urchin {
     }
 
     bool Scrollbar::onScrollEvent(double offsetY) {
-        if (scrollableWidget.getWidgetState() == Widget::WidgetStates::FOCUS && isScrollbarRequired()) {
+        if (scrollableWidget.getWidgetState() == Widget::WidgetState::FOCUS && isScrollbarRequired()) {
             float scrollMoveSpeedFactor = visibleHeight / (contentHeight - visibleHeight);
             float deltaScroll = (float) offsetY * SCROLL_SPEED * scrollMoveSpeedFactor;
             scrollPercentage -= deltaScroll;
