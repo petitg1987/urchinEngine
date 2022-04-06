@@ -6,9 +6,6 @@ using namespace urchin;
 
 namespace urchin {
 
-    //debug parameters
-    bool DEBUG_ADVANCED_VULKAN_VALIDATION = false; //TODO try with true
-
     //static
     std::vector<std::string> ValidationLayer::filterOutMessages;
 
@@ -41,11 +38,11 @@ namespace urchin {
             instanceCreateInfo.pNext = &instanceDebugCreateInfo;
 
             featureEnables[0] = VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT;
-            featureEnables[1] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT;
-            featureEnables[2] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT;
-            featureEnables[3] = VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT;
+            featureEnables[1] = VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT;
+            featureEnables[2] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT;
+            featureEnables[3] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT;
             features.sType = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
-            features.enabledValidationFeatureCount = DEBUG_ADVANCED_VULKAN_VALIDATION ? (uint32_t)featureEnables.size() : 1;
+            features.enabledValidationFeatureCount = (uint32_t)featureEnables.size();
             features.pEnabledValidationFeatures = featureEnables.data();
             instanceDebugCreateInfo.pNext = &features;
         } else {
