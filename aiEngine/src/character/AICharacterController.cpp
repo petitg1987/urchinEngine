@@ -2,8 +2,8 @@
 
 namespace urchin {
 
-    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIEnvironment& aiEnvironment) :
-            character(std::move(character)),
+    AICharacterController::AICharacterController(std::unique_ptr<AICharacter> aiCharacter, AIEnvironment& aiEnvironment) :
+            aiCharacter(std::move(aiCharacter)),
             aiEnvironment(aiEnvironment),
             eventHandler(nullptr),
             nextPathPointIndex(0) { //see https://gamedevelopment.tutsplus.com/series/understanding-steering-behaviors--gamedev-12732
@@ -16,7 +16,7 @@ namespace urchin {
 
     void AICharacterController::moveTo(const Point3<float>& seekTarget) {
         stopMoving();
-        pathRequest = std::make_shared<PathRequest>(character->getPosition(), seekTarget);
+        pathRequest = std::make_shared<PathRequest>(aiCharacter->getPosition(), seekTarget);
         aiEnvironment.addPathRequest(pathRequest);
     }
 
@@ -33,7 +33,11 @@ namespace urchin {
         }
         pathPoints.clear();
 
-        character->updateVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));
+        aiCharacter->updateVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));
+    }
+
+    AICharacter& AICharacterController::getAICharacter() const {
+        return *aiCharacter;
     }
 
     std::shared_ptr<const PathRequest> AICharacterController::getPathRequest() const {
@@ -77,22 +81,22 @@ namespace urchin {
     }
 
     Point2<float> AICharacterController::retrieveCharacterPosition() const {
-        return character->getPosition().toPoint2XZ();
+        return aiCharacter->getPosition().toPoint2XZ();
     }
 
     void AICharacterController::computeSteeringVelocity(const Point2<float>& target) {
-        Vector2<float> desiredVelocity = retrieveCharacterPosition().vector(target).normalize() * character->retrieveMaxVelocityInMs();
+        Vector2<float> desiredVelocity = retrieveCharacterPosition().vector(target).normalize() * aiCharacter->retrieveMaxVelocityInMs();
 
-        steeringVelocity = desiredVelocity - character->getVelocity().xz();
-        steeringVelocity = steeringVelocity.truncate(character->retrieveMaxVelocityInMs());
+        steeringVelocity = desiredVelocity - aiCharacter->getVelocity().xz();
+        steeringVelocity = steeringVelocity.truncate(aiCharacter->retrieveMaxVelocityInMs());
     }
 
     void AICharacterController::applyVelocity() const {
         Vector3 steeringVelocity3D(steeringVelocity.X, 0.0f, steeringVelocity.Y);
-        Vector3<float> updatedVelocity = character->getVelocity() + steeringVelocity3D;
-        updatedVelocity = updatedVelocity.truncate(character->retrieveMaxVelocityInMs());
+        Vector3<float> updatedVelocity = aiCharacter->getVelocity() + steeringVelocity3D;
+        updatedVelocity = updatedVelocity.truncate(aiCharacter->retrieveMaxVelocityInMs());
 
-        character->updateVelocity(updatedVelocity);
+        aiCharacter->updateVelocity(updatedVelocity);
     }
 
 }

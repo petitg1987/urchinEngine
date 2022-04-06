@@ -36,7 +36,7 @@ namespace urchin {
     */
     class CharacterController {
         public:
-            CharacterController(std::shared_ptr<PhysicsCharacter>, CharacterControllerConfig, PhysicsWorld&);
+            CharacterController(std::unique_ptr<PhysicsCharacter>, CharacterControllerConfig, PhysicsWorld&);
             ~CharacterController();
 
             void walk(const Vector3<float>&);
@@ -47,6 +47,7 @@ namespace urchin {
             void updateTransform(const Point3<float>&, const Vector3<float>&) const;
             void updateOrientation(const Vector3<float>&) const;
 
+            PhysicsCharacter& getPhysicsCharacter() const;
             bool isOnGround() const;
             bool isGravityEnabled() const;
 
@@ -74,7 +75,7 @@ namespace urchin {
             static constexpr float MAX_DEPTH_TO_RECOVER = 0.002f;
             static constexpr float MIN_UPDATE_FREQUENCY = 30;
 
-            std::shared_ptr<PhysicsCharacter> physicsCharacter;
+            std::unique_ptr<PhysicsCharacter> physicsCharacter;
             CharacterControllerConfig config;
             PhysicsWorld& physicsWorld;
             std::vector<ManifoldResult> manifoldResults;

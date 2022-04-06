@@ -11,13 +11,14 @@ namespace urchin {
 
     class AICharacterController {
         public:
-            AICharacterController(std::shared_ptr<AICharacter>, AIEnvironment&);
+            AICharacterController(std::unique_ptr<AICharacter>, AIEnvironment&);
 
             void setupEventHandler(const std::shared_ptr<AICharacterEventHandler>&);
 
             void moveTo(const Point3<float>&);
             void stopMoving();
 
+            AICharacter& getAICharacter() const;
             std::shared_ptr<const PathRequest> getPathRequest() const;
 
             void update();
@@ -33,7 +34,7 @@ namespace urchin {
 
             static constexpr float CHANGE_PATH_POINT_DISTANCE = 0.4f;
 
-            std::shared_ptr<AICharacter> character;
+            std::unique_ptr<AICharacter> aiCharacter;
             AIEnvironment& aiEnvironment;
             std::shared_ptr<AICharacterEventHandler> eventHandler;
 

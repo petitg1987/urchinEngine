@@ -12,8 +12,8 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
     auto cubes = constructCubes(*physicsWorld, cubeHeight);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(2.4f, 5.0f, 2.4f), Quaternion<float>()));
+    auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 300; ++i) {
@@ -37,7 +37,7 @@ void CharacterControllerIT::fallingCharacterOnObjects() {
         AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Cube " + cube->getId() + " must be on the ground or above another cube. Position Y: " + std::to_string(posY));
         AssertHelper::assertTrue(!cube->isActive(), "Cube " + cube->getId() + " must become inactive.");
     }
-    float posY = character->getTransform().getPosition().Y;
+    float posY = characterController.getPhysicsCharacter().getTransform().getPosition().Y;
     float minPosY = (characterHeight / 2.0f) - 0.01f;
     float maxPosY = cubeHeight + cubeHeight + (characterHeight / 2.0f) + 0.01f;
     AssertHelper::assertTrue(posY > minPosY && posY < maxPosY,"Character must be on the ground or above one or two cubes. Position Y: " + std::to_string(posY));
@@ -53,10 +53,10 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
 
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.25f, 1.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y);
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, characterHeight / 2.0f, 0.8f), Quaternion<float>()));
     CharacterControllerConfig characterControllerConfig;
     characterControllerConfig.setWalkSpeed(5.0f);
-    auto characterController = CharacterController(character, characterControllerConfig, *physicsWorld);
+    auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
     characterController.walk(Vector3<float>(0.0f, 0.0f, -1.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
@@ -79,9 +79,9 @@ void CharacterControllerIT::characterMovingOnRemovedObjects() {
     physicsEngineThread.join();
     mainThread.join();
 
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().X, 0.0f, 0.1f);
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, 1.0f, 0.1f);
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -20.0f, 2.0f);
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().X, 0.0f, 0.1f);
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, 1.0f, 0.1f);
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Z, -20.0f, 2.0f);
 }
 
 void CharacterControllerIT::ccdFallingCharacter() {
@@ -89,8 +89,8 @@ void CharacterControllerIT::ccdFallingCharacter() {
     constructGround(*physicsWorld);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 50.0f, 0.0f), Quaternion<float>()));
-    auto characterController = CharacterController(character, CharacterControllerConfig(), *physicsWorld);
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 50.0f, 0.0f), Quaternion<float>()));
+    auto characterController = CharacterController(std::move(character), CharacterControllerConfig(), *physicsWorld);
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
         for (std::size_t i = 0; i < 250; ++i) {
@@ -107,7 +107,7 @@ void CharacterControllerIT::ccdFallingCharacter() {
     physicsEngineThread.join();
     mainThread.join();
 
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
 }
 
 void CharacterControllerIT::ccdMovingCharacter() {
@@ -116,10 +116,10 @@ void CharacterControllerIT::ccdMovingCharacter() {
     constructWall(*physicsWorld);
     auto characterShape = std::make_unique<CollisionCapsuleShape>(0.1f, 0.5f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y); //use small character to favor CCD
     float characterHeight = characterShape->getRadius() * 2.0f + characterShape->getCylinderHeight();
-    auto character = std::make_shared<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
+    auto character = std::make_unique<PhysicsCharacter>("character", 80.0f, std::move(characterShape), PhysicsTransform(Point3<float>(0.0f, 0.35f, 0.0f), Quaternion<float>()));
     CharacterControllerConfig characterControllerConfig;
     characterControllerConfig.setWalkSpeed(15.0f);
-    auto characterController = CharacterController(character, characterControllerConfig, *physicsWorld);
+    auto characterController = CharacterController(std::move(character), characterControllerConfig, *physicsWorld);
     characterController.walk(Vector3<float>(0.0f, 0.0f, -1.0f));
 
     auto physicsEngineThread = std::jthread([&physicsWorld]() {
@@ -137,8 +137,8 @@ void CharacterControllerIT::ccdMovingCharacter() {
     physicsEngineThread.join();
     mainThread.join();
 
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
-    AssertHelper::assertFloatEquals(character->getTransform().getPosition().Z, -9.75f, 0.15f);
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Y, characterHeight / 2.0f, 0.01f);
+    AssertHelper::assertFloatEquals(characterController.getPhysicsCharacter().getTransform().getPosition().Z, -9.75f, 0.15f);
 }
 
 void CharacterControllerIT::constructGround(PhysicsWorld& physicsWorld) const {

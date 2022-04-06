@@ -15,8 +15,8 @@ void UIRendererTest::focusState() {
 
     uiRenderer->onMouseMove(50.0, 50.0);
 
-    AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetStates::FOCUS);
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::FOCUS);
+    AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetState::FOCUS);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::FOCUS);
 }
 
 void UIRendererTest::noFocusStateBecauseOutsideContainer() {
@@ -27,8 +27,8 @@ void UIRendererTest::noFocusStateBecauseOutsideContainer() {
 
     uiRenderer->onMouseMove(50.0, 50.0);
 
-    AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetStates::DEFAULT);
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+    AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetState::DEFAULT);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
 }
 
 void UIRendererTest::clickingState() {
@@ -38,10 +38,10 @@ void UIRendererTest::clickingState() {
 
     uiRenderer->onMouseMove(50.0, 50.0);
     uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::CLICKING);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::CLICKING);
 
     uiRenderer->onKeyRelease((unsigned int)InputDeviceKey::MOUSE_LEFT);
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::FOCUS);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::FOCUS);
 }
 
 void UIRendererTest::noClickingStateBecauseMouseOutside() {
@@ -51,7 +51,7 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
 
     uiRenderer->onMouseMove(10.0, 10.0);
     uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
 }
 
 void UIRendererTest::focusLostEvent() {
@@ -66,7 +66,7 @@ void UIRendererTest::focusLostEvent() {
 
     uiRenderer->onMouseMove(110.0, 50.0);
 
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
     AssertHelper::assertTrue(focusLost);
 }
 
@@ -84,7 +84,7 @@ void UIRendererTest::focusLostEventWithClick() {
     uiRenderer->onMouseMove(110.0, 50.0);
     uiRenderer->onKeyRelease((unsigned int)InputDeviceKey::MOUSE_LEFT);
 
-    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetStates::DEFAULT);
+    AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
     AssertHelper::assertTrue(focusLost);
 }
 

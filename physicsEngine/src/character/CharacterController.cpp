@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    CharacterController::CharacterController(std::shared_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
+    CharacterController::CharacterController(std::unique_ptr<PhysicsCharacter> physicsCharacter, CharacterControllerConfig config, PhysicsWorld& physicsWorld) :
             physicsCharacter(std::move(physicsCharacter)),
             config(std::move(config)),
             physicsWorld(physicsWorld),
@@ -109,6 +109,10 @@ namespace urchin {
                       0.0f,              1.0f,       0.0f,
                       -yViewVector[0],   0.0f,       -yViewVector[2]);
         return Quaternion<float>::fromRotationMatrix(mView).conjugate();
+    }
+
+    PhysicsCharacter& CharacterController::getPhysicsCharacter() const {
+        return *physicsCharacter;
     }
 
     bool CharacterController::isOnGround() const {
