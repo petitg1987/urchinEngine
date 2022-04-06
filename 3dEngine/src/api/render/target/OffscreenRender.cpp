@@ -189,7 +189,7 @@ namespace urchin {
         vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
     }
 
-    VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() {
+    VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() { //TODO needed between two different render pass ?
         if (queueSubmitSemaphoreUsable) {
             //Once the queue submit semaphore has been used as a wait semaphore, it cannot be re-used in the same rendering pass.
             //Examples:

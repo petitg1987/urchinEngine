@@ -212,12 +212,19 @@ namespace urchin {
         subpass.pDepthStencilAttachment = hasDepthAttachment() ? &depthAttachmentRef : nullptr;
         subpass.inputAttachmentCount = 0;
 
-        VkSubpassDependency dependency{}; //define dependency between build-in sub-pass (VK_SUBPASS_EXTERNAL) and first sub-pass index 0
+        //TODO review
+        VkSubpassDependency dependency{};
+        //VK_SUBPASS_EXTERNAL = before draw this RenderTarget, wait for sub-pass of the previous render pass
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-        dependency.dstSubpass = 0; //index of the sub-pass
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */;
+        //0 = index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
+        dependency.dstSubpass = 0;
+        //Before move on to the current sub-pass, the previous sub-pass must have finish to render the color output attachment (VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT) and the depth buffer (VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT)
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        //The current sub-pass can be executed until the specified stage before wait the previous sub-pass reach the stage specified in 'srcStageMask'
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        //All memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
         dependency.srcAccessMask = 0;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */;
+        //All memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
         dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
 
         VkRenderPassCreateInfo renderPassInfo{};
@@ -354,14 +361,14 @@ namespace urchin {
 
         if (additionalCustomSemaphore) {
             queueSubmitWaitSemaphores.emplace_back(additionalCustomSemaphore);
-            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT);
+            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT); //TODO review ?
         }
 
         for (auto& renderDependency : renderDependencies) {
             VkSemaphore queueSubmitSemaphore = renderDependency->retrieveQueueSubmitSemaphoreAndFlagUsed();
             if (queueSubmitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(queueSubmitSemaphore);
-                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth texture */);
+                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */); //TODO review ?
             }
         }
 
