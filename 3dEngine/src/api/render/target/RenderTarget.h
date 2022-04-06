@@ -86,6 +86,7 @@ namespace urchin {
             std::string name;
             DepthAttachmentType depthAttachmentType;
             std::shared_ptr<Texture> externalDepthTexture;
+            mutable bool hadOutputToLoad; //TODO review...
             VkRenderPass renderPass;
             std::size_t renderPassCompatibilityId;
             std::vector<VkFramebuffer> framebuffers;

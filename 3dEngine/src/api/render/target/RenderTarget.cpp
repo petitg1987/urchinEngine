@@ -15,6 +15,7 @@ namespace urchin {
             isInitialized(false),
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
+            hadOutputToLoad(false),
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
@@ -187,6 +188,9 @@ namespace urchin {
         colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         colorAttachment.initialLayout = loadContent ? finalLayout : VK_IMAGE_LAYOUT_UNDEFINED;
         colorAttachment.finalLayout = finalLayout;
+
+        hadOutputToLoad = hadOutputToLoad || loadContent;
+
         return colorAttachment;
     }
 
@@ -214,18 +218,48 @@ namespace urchin {
 
         //TODO review
         VkSubpassDependency dependency{};
-        //VK_SUBPASS_EXTERNAL = before draw this RenderTarget, wait for sub-pass of the previous render pass
-        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-        //0 = index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
-        dependency.dstSubpass = 0;
-        //Before move on to the current sub-pass, the previous sub-pass must have finish to render the color output attachment (VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT) and the depth buffer (VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT)
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        //The current sub-pass can be executed until the specified stage before wait the previous sub-pass reach the stage specified in 'srcStageMask'
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        //All memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
-        dependency.srcAccessMask = 0;
-        //All memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        if (externalDepthTexture) { //TODO transparent case (done but to make more beautiful)
+            //VK_SUBPASS_EXTERNAL = before draw this RenderTarget, wait for sub-pass of the previous render pass
+            dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+            //0 = index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
+            dependency.dstSubpass = 0;
+            //Before move on to the current sub-pass, the previous sub-pass must have finish to render the color output attachment (VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT) and the depth buffer (VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT)
+            dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+            //The current sub-pass can be executed until the specified stage before wait the previous sub-pass reach the stage specified in 'srcStageMask'
+            dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+            //All memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
+            dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            //All memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
+            dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT /* TODO could be also write ?! */;
+        } else {
+            if (hadOutputToLoad) { //TODO bloom up case (done but to make more beautiful)
+                //VK_SUBPASS_EXTERNAL = before draw this RenderTarget, wait for sub-pass of the previous render pass
+                dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+                //0 = index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
+                dependency.dstSubpass = 0;
+                //Before move on to the current sub-pass, the previous sub-pass must have finish to render the color output attachment (VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT) and the depth buffer (VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT)
+                dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+                //The current sub-pass can be executed until the specified stage before wait the previous sub-pass reach the stage specified in 'srcStageMask'
+                dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+                //All memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
+                dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT /* TODO useless ? */;
+                //All memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
+                dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT; //TODO review for depth. Useless ? Required read ?
+            } else {
+                //VK_SUBPASS_EXTERNAL = before draw this RenderTarget, wait for sub-pass of the previous render pass
+                dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+                //0 = index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
+                dependency.dstSubpass = 0;
+                //Before move on to the current sub-pass, the previous sub-pass must have finish to render the color output attachment (VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT) and the depth buffer (VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT)
+                dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+                //The current sub-pass can be executed until the specified stage before wait the previous sub-pass reach the stage specified in 'srcStageMask'
+                dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+                //All memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
+                dependency.srcAccessMask = 0;
+                //All memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
+                dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            }
+        }
 
         VkRenderPassCreateInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
