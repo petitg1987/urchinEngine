@@ -6,6 +6,7 @@
 
 #include <UrchinCommon.h>
 #include <api/texture/Texture.h>
+#include <optional>
 
 namespace urchin {
 
@@ -19,6 +20,10 @@ namespace urchin {
                 LOCAL_DEPTH_ATTACHMENT, //depth attachment which cannot be used outside this render target
                 SHARED_DEPTH_ATTACHMENT, //depth attachment which can be read and write outside this render target
                 EXTERNAL_DEPTH_ATTACHMENT //existing depth attachment from another render target (must be provided via 'setExternalDepthTexture')
+            };
+            struct WaitSemaphore {
+                VkSemaphore waitSemaphore;
+                VkPipelineStageFlagBits waitDstStageMask;
             };
 
             explicit RenderTarget(std::string, DepthAttachmentType);
@@ -70,7 +75,7 @@ namespace urchin {
             void destroyCommandBuffersAndPool();
 
             std::span<OffscreenRender*> getRenderDependencies() const;
-            void configureWaitSemaphore(VkSubmitInfo&, VkSemaphore) const;
+            void configureWaitSemaphore(VkSubmitInfo&, std::optional<WaitSemaphore>) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;
@@ -86,7 +91,6 @@ namespace urchin {
             std::string name;
             DepthAttachmentType depthAttachmentType;
             std::shared_ptr<Texture> externalDepthTexture;
-            mutable bool hadOutputToLoad; //TODO review...
             VkRenderPass renderPass;
             std::size_t renderPassCompatibilityId;
             std::vector<VkFramebuffer> framebuffers;

@@ -221,7 +221,7 @@ namespace urchin {
         std::array<VkSemaphore, 1> signalSemaphores = {queueSubmitSemaphore};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        configureWaitSemaphore(submitInfo, nullptr);
+        configureWaitSemaphore(submitInfo, std::nullopt);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
         submitInfo.signalSemaphoreCount = 1;

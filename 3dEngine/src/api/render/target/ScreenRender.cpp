@@ -223,7 +223,7 @@ namespace urchin {
 
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
-        //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'
+        //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'.
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
             throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
@@ -251,10 +251,15 @@ namespace urchin {
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
 
-        std::array<VkSemaphore, 1> queuePresentWaitSemaphores = {renderFinishedSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait command buffers execution before present the image */};
+        //Semaphores (GPU-GPU sync) to wait command buffers execution before present the image.
+        std::array<VkSemaphore, 1> queuePresentWaitSemaphores = {renderFinishedSemaphores[currentFrameIndex]};
+        //Semaphores (GPU-GPU sync) to wait image available before executing command buffers.
+        //We wait at top of the pipeline because image transitions are automatically done by the built-in sub-pass dependencies.
+        //A possible alternative is to define custom sub-pass to make the transition at a later stage (more complex and more subject to error).
+        auto waitSemaphore = WaitSemaphore{imageAvailableSemaphores[currentFrameIndex], VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        configureWaitSemaphore(submitInfo, imageAvailableSemaphores[currentFrameIndex] /* semaphores (GPU-GPU sync) to wait image available before executing command buffers */);
+        configureWaitSemaphore(submitInfo, waitSemaphore);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[vkImageIndex];
         submitInfo.signalSemaphoreCount = 1;

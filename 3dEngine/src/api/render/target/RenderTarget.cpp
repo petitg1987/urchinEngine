@@ -15,7 +15,6 @@ namespace urchin {
             isInitialized(false),
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
-            hadOutputToLoad(false),
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
@@ -189,8 +188,6 @@ namespace urchin {
         colorAttachment.initialLayout = loadContent ? finalLayout : VK_IMAGE_LAYOUT_UNDEFINED;
         colorAttachment.finalLayout = finalLayout;
 
-        hadOutputToLoad = hadOutputToLoad || loadContent;
-
         return colorAttachment;
     }
 
@@ -216,35 +213,14 @@ namespace urchin {
         subpass.pDepthStencilAttachment = hasDepthAttachment() ? &depthAttachmentRef : nullptr;
         subpass.inputAttachmentCount = 0;
 
-        //TODO what about texture to load (e.g. normal texture in second pass) but not considered as attachment ?
-        VkSubpassDependency dependency{};
-        //VK_SUBPASS_EXTERNAL = before draw this RenderTarget, wait for sub-pass of the previous render pass
-        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-        //Index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
-        dependency.dstSubpass = 0;
-        //Before move on to the current sub-pass, the previous sub-pass must have finish the defined stages in this variable
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask'
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        //dependency.srcAccessMask => all memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
-        dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT; //TODO add both read to be sure ?
-        //dependency.dstAccessMask => all memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-        if (externalDepthTexture) {
-            dependency.dstAccessMask |= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
-        }
-        if (hadOutputToLoad) {
-            dependency.dstAccessMask |= VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-        }
-
         VkRenderPassCreateInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         renderPassInfo.attachmentCount = (uint32_t)attachments.size();
         renderPassInfo.pAttachments = attachments.data();
         renderPassInfo.subpassCount = 1;
         renderPassInfo.pSubpasses = &subpass;
-        renderPassInfo.dependencyCount = 1;
-        renderPassInfo.pDependencies = &dependency;
+        renderPassInfo.dependencyCount = 0; //for sake of simplicity, we rely on the two default built-in dependencies
+        renderPassInfo.pDependencies = nullptr;
 
         VkResult result = vkCreateRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {
@@ -363,22 +339,22 @@ namespace urchin {
         return renderDependencies;
     }
 
-    void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, VkSemaphore additionalCustomSemaphore) const {
+    void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
         std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
 
         queueSubmitWaitSemaphores.clear();
         queueSubmitWaitStages.clear();
 
-        if (additionalCustomSemaphore) {
-            queueSubmitWaitSemaphores.emplace_back(additionalCustomSemaphore);
-            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT); //TODO review ?
+        if (additionalSemaphore.has_value()) {
+            queueSubmitWaitSemaphores.emplace_back(additionalSemaphore->waitSemaphore);
+            queueSubmitWaitStages.emplace_back(additionalSemaphore->waitDstStageMask);
         }
 
         for (auto& renderDependency : renderDependencies) {
             VkSemaphore queueSubmitSemaphore = renderDependency->retrieveQueueSubmitSemaphoreAndFlagUsed();
             if (queueSubmitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(queueSubmitSemaphore);
-                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */); //TODO review ?
+                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
             }
         }
 
