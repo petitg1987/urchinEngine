@@ -20,7 +20,6 @@ namespace urchin {
 
             void addTask(const AudioStreamPlayer&, bool);
             void removeTask(const AudioStreamPlayer&);
-            bool isTaskExist(const AudioStreamPlayer&) const;
 
             void start();
             void interrupt();

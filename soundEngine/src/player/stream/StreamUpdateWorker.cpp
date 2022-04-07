@@ -54,32 +54,17 @@ namespace urchin {
             fillAndPushChunk(*task, i);
         }
 
-        #ifdef URCHIN_DEBUG
-            assert(!isTaskExist(audioStreamPlayer));
-        #endif
-
         std::scoped_lock<std::mutex> lock(tasksMutex);
         tasks.push_back(std::move(task));
-    }
-
-    bool StreamUpdateWorker::isTaskExist(const AudioStreamPlayer& audioStreamPlayer) const {
-        std::scoped_lock<std::mutex> lock(tasksMutex);
-
-        return std::ranges::any_of(tasks, [&audioStreamPlayer](const auto& task) {
-            return task->getSourceId() == audioStreamPlayer.getSourceId();
-        });
     }
 
     void StreamUpdateWorker::removeTask(const AudioStreamPlayer& audioStreamPlayer) {
         std::scoped_lock<std::mutex> lock(tasksMutex);
 
-        for (auto it = tasks.begin(); it != tasks.end(); ++it) {
-            if ((*it)->getSourceId() == audioStreamPlayer.getSourceId()) {
-                deleteTask(*(*it));
-                tasks.erase(it);
-
-                break;
-            }
+        auto itFind = std::ranges::find_if(tasks, [&audioStreamPlayer](const auto& task){ return task->getSourceId() == audioStreamPlayer.getSourceId(); });
+        if (itFind != tasks.end()) {
+            deleteTask(*(*itFind));
+            tasks.erase(itFind);
         }
     }
 
