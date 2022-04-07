@@ -136,7 +136,7 @@ namespace urchin {
 
         VkAttachmentReference depthAttachmentRef{};
         if (hasDepthAttachment()) {
-            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)); //TODO transition not applied at first frame: why ?
             depthAttachmentRef.attachment = attachmentIndex++;
             depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         }

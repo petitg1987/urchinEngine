@@ -270,7 +270,7 @@ namespace urchin {
                 std::vector<VkDescriptorImageInfo> imageInfosArray;
                 for (const auto& uniformTextureReader : uniformTextureReaderArray) {
                     VkDescriptorImageInfo imageInfo{};
-                    imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                    imageInfo.imageLayout = uniformTextureReader->getTexture()->isDepthFormat() ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
                     imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
                     imageInfo.sampler = uniformTextureReader->getParam().getTextureSampler();
                     imageInfosArray.emplace_back(imageInfo);

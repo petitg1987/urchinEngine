@@ -199,6 +199,10 @@ namespace urchin {
         throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
     }
 
+    bool Texture::isDepthFormat() const {
+        return format == TextureFormat::DEPTH_32_FLOAT;
+    }
+
     void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         if (hasMipmap()) {
             throw std::runtime_error("Capture texture having mipmap is not implemented");
@@ -206,10 +210,6 @@ namespace urchin {
             throw std::runtime_error("Capture texture having several layers is not implemented");
         }
         CaptureService::instance().takeCapture(filename, textureImage, getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, getWidth(), getHeight(), dstWidth, dstHeight);
-    }
-
-    bool Texture::isDepthFormat() const {
-        return format == TextureFormat::DEPTH_32_FLOAT;
     }
 
     void Texture::createTextureImage() {

@@ -44,6 +44,7 @@ namespace urchin {
             OffscreenRender* getLastTextureWriter() const;
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
+            bool isDepthFormat() const;
 
             void takeCapture(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
@@ -52,7 +53,6 @@ namespace urchin {
 
             void cleanup();
 
-            bool isDepthFormat() const;
             void createTextureImage();
             std::size_t getImageSize() const;
             VkImageUsageFlags getImageUsage() const;
