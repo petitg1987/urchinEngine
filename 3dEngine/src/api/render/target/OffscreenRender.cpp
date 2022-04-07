@@ -145,7 +145,7 @@ namespace urchin {
 
         VkAttachmentReference depthAttachmentRef{};
         if (hasDepthAttachment()) {
-            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL)); //TODO transition not applied at first frame: why ?
+            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL));
             depthAttachmentRef.attachment = attachmentIndex++;
             depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         }
@@ -198,7 +198,7 @@ namespace urchin {
         vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
     }
 
-    VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() { //TODO needed between two different render pass ?
+    VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() {
         if (queueSubmitSemaphoreUsable) {
             //Once the queue submit semaphore has been used as a wait semaphore, it cannot be re-used in the same rendering pass.
             //Examples:
