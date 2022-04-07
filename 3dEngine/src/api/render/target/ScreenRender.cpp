@@ -107,6 +107,10 @@ namespace urchin {
         return 1;
     }
 
+    std::size_t ScreenRender::hasOutputTextureWithContentToLoad() const {
+        return false;
+    }
+
     void ScreenRender::takeScreenshot(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         assert(vkImageIndex != std::numeric_limits<uint32_t>::max());
         VkImage srcImage = swapChainHandler.getSwapChainImages()[vkImageIndex];
@@ -254,9 +258,7 @@ namespace urchin {
         //Semaphores (GPU-GPU sync) to wait command buffers execution before present the image.
         std::array<VkSemaphore, 1> queuePresentWaitSemaphores = {renderFinishedSemaphores[currentFrameIndex]};
         //Semaphores (GPU-GPU sync) to wait image available before executing command buffers.
-        //We wait at top of the pipeline because image transitions are automatically done by the built-in sub-pass dependencies.
-        //A possible alternative is to define custom sub-pass to make the transition at a later stage (more complex and more subject to error).
-        auto waitSemaphore = WaitSemaphore{imageAvailableSemaphores[currentFrameIndex], VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
+        auto waitSemaphore = WaitSemaphore{imageAvailableSemaphores[currentFrameIndex], VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         configureWaitSemaphore(submitInfo, waitSemaphore);

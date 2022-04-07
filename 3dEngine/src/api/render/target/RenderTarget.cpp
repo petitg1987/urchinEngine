@@ -213,14 +213,34 @@ namespace urchin {
         subpass.pDepthStencilAttachment = hasDepthAttachment() ? &depthAttachmentRef : nullptr;
         subpass.inputAttachmentCount = 0;
 
+        VkSubpassDependency dependency{};
+        //VK_SUBPASS_EXTERNAL reference the sub-pass of the previous render pass:
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+        //Index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes:
+        dependency.dstSubpass = 0;
+        //Before move on to the current sub-pass, the previous sub-pass must have finish the defined stages in this variable:
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask':
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        //All memory access type needed by the previous sub-pass (allow the GPU to better handle image cache...)
+        dependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
+        //All memory access type needed by the current sub-pass (allow the GPU to better handle image cache...)
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        if (externalDepthTexture) {
+            dependency.dstAccessMask |= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
+        }
+        if (hasOutputTextureWithContentToLoad()) {
+            dependency.dstAccessMask |= VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+        }
+
         VkRenderPassCreateInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         renderPassInfo.attachmentCount = (uint32_t)attachments.size();
         renderPassInfo.pAttachments = attachments.data();
         renderPassInfo.subpassCount = 1;
         renderPassInfo.pSubpasses = &subpass;
-        renderPassInfo.dependencyCount = 0; //for sake of simplicity, we rely on the two default built-in dependencies
-        renderPassInfo.pDependencies = nullptr;
+        renderPassInfo.dependencyCount = 1;
+        renderPassInfo.pDependencies = &dependency;
 
         VkResult result = vkCreateRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {

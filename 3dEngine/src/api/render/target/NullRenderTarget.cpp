@@ -42,6 +42,10 @@ namespace urchin {
         return 0;
     }
 
+    std::size_t NullRenderTarget::hasOutputTextureWithContentToLoad() const {
+        return false;
+    }
+
     bool NullRenderTarget::needCommandBufferRefresh(std::size_t) const {
         return true;
     }

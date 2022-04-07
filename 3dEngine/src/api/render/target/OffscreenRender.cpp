@@ -111,6 +111,15 @@ namespace urchin {
         return outputTextures.size();
     }
 
+    std::size_t OffscreenRender::hasOutputTextureWithContentToLoad() const {
+        for (const OutputTexture& outputTexture : outputTextures) {
+            if (outputTexture.loadOperation == LoadType::LOAD_CONTENT) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     std::size_t OffscreenRender::getNumFramebuffer() const {
         return 1;
     }

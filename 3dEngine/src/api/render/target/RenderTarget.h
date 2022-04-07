@@ -1,12 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <forward_list>
+#include <optional>
 #include <vulkan/vulkan.h>
 
 #include <UrchinCommon.h>
 #include <api/texture/Texture.h>
-#include <optional>
+
 
 namespace urchin {
 
@@ -39,6 +39,7 @@ namespace urchin {
             virtual unsigned int getLayer() const = 0;
             virtual std::size_t getNumFramebuffer() const = 0;
             virtual std::size_t getNumColorAttachment() const = 0;
+            virtual std::size_t hasOutputTextureWithContentToLoad() const = 0;
             VkRenderPass getRenderPass() const;
             std::size_t getRenderPassCompatibilityId() const;
 
