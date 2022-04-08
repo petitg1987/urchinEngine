@@ -10,7 +10,8 @@ namespace urchin {
     StreamUpdateTask::StreamUpdateTask(const AudioStreamPlayer& audioStreamPlayer, unsigned int nbStreamChunks, bool playLoop) :
             audioStreamPlayer(audioStreamPlayer),
             soundFileReader(SoundFileReader(audioStreamPlayer.getSound().getFilename())),
-            playLoop(playLoop) {
+            playLoop(playLoop),
+            initialReadSamples(0) {
         this->streamChunks.resize(nbStreamChunks, {});
 
         if (soundFileReader.getNumberOfChannels() != 1 && audioStreamPlayer.getSound().getSoundType() == Sound::SoundType::SPATIAL) {
@@ -44,6 +45,17 @@ namespace urchin {
     StreamChunk& StreamUpdateTask::getStreamChunk(unsigned int chunkIndex) {
         assert(chunkIndex < streamChunks.size());
         return streamChunks[chunkIndex];
+    }
+
+    void StreamUpdateTask::setInitialReadSamples(unsigned int initialReadSamples) {
+        this->initialReadSamples = initialReadSamples;
+    }
+
+    void StreamUpdateTask::initializeReadCursor() {
+        if (initialReadSamples != 0) {
+            soundFileReader.advanceReadCursor(initialReadSamples, playLoop);
+            initialReadSamples = 0;
+        }
     }
 
 }

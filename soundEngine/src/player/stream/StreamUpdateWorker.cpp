@@ -50,13 +50,13 @@ namespace urchin {
         }
 
         //initialize buffers/chunks
-        unsigned int totalSamplesUsed = 0;
+        unsigned int totalSamplesRead = 0;
         for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
             fillChunkFromPreLoadedData(*task, chunkIndex, audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex, playLoop));
             pushChunkInQueue(*task, chunkIndex);
-            totalSamplesUsed += task->getStreamChunk(chunkIndex).numberOfSamples;
+            totalSamplesRead += task->getStreamChunk(chunkIndex).numberOfSamples;
         }
-        task->getSoundFileReader().advanceReadCursor(totalSamplesUsed, task->isPlayLoop());
+        task->setInitialReadSamples(totalSamplesRead);
 
         std::scoped_lock<std::mutex> lock(tasksMutex);
         #ifdef URCHIN_DEBUG
@@ -123,6 +123,8 @@ namespace urchin {
     }
 
     bool StreamUpdateWorker::processTask(StreamUpdateTask& task) const {
+        task.initializeReadCursor();
+
         ALint chunkProcessed = 0;
         alGetSourcei(task.getSourceId(), AL_BUFFERS_PROCESSED, &chunkProcessed);
         CheckState::check("get buffers processed (process)");

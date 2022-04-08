@@ -24,6 +24,8 @@ namespace urchin {
             std::string getSoundFilename() const;
 
             StreamChunk& getStreamChunk(unsigned int);
+            void setInitialReadSamples(unsigned int);
+            void initializeReadCursor();
 
         private:
             const AudioStreamPlayer& audioStreamPlayer;
@@ -31,6 +33,7 @@ namespace urchin {
             bool playLoop;
 
             std::vector<StreamChunk> streamChunks;
+            unsigned int initialReadSamples;
     };
 
 }

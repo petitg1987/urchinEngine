@@ -43,7 +43,7 @@ namespace urchin {
      * @param buffer [out] Buffer to fill with samples
      * @param numSamplesRead [out] Number of samples read
      */
-    void SoundFileReader::readNextChunk(std::vector<int16_t>& buffer, unsigned int& numSamplesRead, bool readLoop) const {
+    void SoundFileReader::readNextChunk(std::vector<int16_t>& buffer, unsigned int& numSamplesRead, bool readLoop) const { //slow method, must be called only in sound thread or at init
         numSamplesRead = 0;
         while (numSamplesRead < buffer.size()) {
             int bytesToRead = (int)(buffer.size() - numSamplesRead) * (int)sizeof(int16_t);
@@ -66,7 +66,7 @@ namespace urchin {
         }
     }
 
-    void SoundFileReader::advanceReadCursor(unsigned int numSamplesRead, bool advanceLoop) const {
+    void SoundFileReader::advanceReadCursor(unsigned int numSamplesRead, bool advanceLoop) const { //slow method, must be called only in sound thread or at init
         ogg_int64_t cursorPosition = ov_pcm_tell(&vorbisFile);
         cursorPosition += numSamplesRead / getNumberOfChannels();
         if (advanceLoop) {
