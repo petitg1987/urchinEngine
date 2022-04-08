@@ -57,6 +57,7 @@
 #include <ai/path/navmesh/NavMeshGeneratorTest.h>
 #include <ai/path/pathfinding/FunnelAlgorithmTest.h>
 #include <ai/path/pathfinding/PathfindingAStarTest.h>
+#include <sound/player/filereader/SoundFileReaderTest.h>
 using namespace urchin;
 
 void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
@@ -168,11 +169,16 @@ void addAiUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(PathfindingAStarTest::suite());
 }
 
+void addSoundTests(CppUnit::TextUi::TestRunner& runner) {
+    runner.addTest(SoundFileReaderTest::suite());
+}
+
 void addAllUnitTests(CppUnit::TextUi::TestRunner& runner) {
     addCommonUnitTests(runner);
     add3dUnitTests(runner);
     addPhysicsUnitTests(runner);
     addAiUnitTests(runner);
+    addSoundTests(runner);
 }
 
 void addAllIntegrationTests(CppUnit::TextUi::TestRunner& runner) {

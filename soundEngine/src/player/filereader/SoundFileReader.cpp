@@ -66,7 +66,7 @@ namespace urchin {
         }
     }
 
-    void SoundFileReader::advanceReadCursor(unsigned int numSamplesRead, bool advanceLoop) const { //TODO add unit test to compare readNextChunk/advanceReadCursor with getNumSamplesRead() (with stereo sound)
+    void SoundFileReader::advanceReadCursor(unsigned int numSamplesRead, bool advanceLoop) const {
         ogg_int64_t cursorPosition = ov_pcm_tell(&vorbisFile);
         cursorPosition += numSamplesRead / getNumberOfChannels();
         if (advanceLoop) {

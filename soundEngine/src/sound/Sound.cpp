@@ -51,7 +51,7 @@ namespace urchin {
         if (loop) {
             if (preLoadedChunks[chunkIndex].size() == chunkMaxSize) {
                 return preLoadedChunks[chunkIndex];
-            } else { //TODO test it !
+            } else {
                 std::vector<int16_t> preLoadedChunkLoop = preLoadedChunks[chunkIndex];
                 preLoadedChunkLoop.resize(chunkMaxSize);
                 std::size_t readIndex = 0;
