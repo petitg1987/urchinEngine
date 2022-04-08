@@ -28,7 +28,7 @@ namespace urchin {
             SoundCategory getSoundCategory() const;
             float getInitialVolume() const;
 
-            const std::vector<int16_t>& getPreLoadedChunk(std::size_t) const;
+            std::vector<int16_t> getPreLoadedChunk(std::size_t, bool) const;
 
         private:
             void preLoadChunks();
@@ -37,6 +37,7 @@ namespace urchin {
             SoundCategory category;
             float initialVolume;
 
+            std::size_t chunkMaxSize;
             std::vector<std::vector<int16_t>> preLoadedChunks;
     };
 

@@ -51,8 +51,8 @@ namespace urchin {
 
         //initialize buffers/chunks
         for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
-            const std::vector<int16_t>& chunkData = audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex); //TODO do it for playLoop
-            fillChunkWithPreLoadedData(*task, chunkIndex, chunkData);
+            std::vector<int16_t> chunkData = audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex, playLoop);
+            fillChunkWithPreLoadedData(*task, chunkIndex, std::move(chunkData));
             pushChunkInQueue(*task, chunkIndex);
         }
 
@@ -183,16 +183,17 @@ namespace urchin {
 
     void StreamUpdateWorker::fillChunk(StreamUpdateTask& task, unsigned int chunkIndex) const {
         StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
-        float bufferSize = (float)task.getSoundFileReader().getSampleRate() * (float)task.getSoundFileReader().getNumberOfChannels() * ((float)chunkSizeInMs / 1000.0f);
-        streamChunk.samples.resize((std::size_t)bufferSize);
+        auto chunkSize = (std::size_t)((float)task.getSoundFileReader().getSampleRate() * (float)task.getSoundFileReader().getNumberOfChannels() * ((float)chunkSizeInMs / 1000.0f));
+        streamChunk.samples.resize(chunkSize);
 
         task.getSoundFileReader().readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task.isPlayLoop());
+        streamChunk.samples.resize(streamChunk.numberOfSamples);
     }
 
-    void StreamUpdateWorker::fillChunkWithPreLoadedData(StreamUpdateTask& task, unsigned int chunkIndex, const std::vector<int16_t>& preLoadedChunkData) const {
+    void StreamUpdateWorker::fillChunkWithPreLoadedData(StreamUpdateTask& task, unsigned int chunkIndex, std::vector<int16_t> preLoadedChunkData) const {
         StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
-        streamChunk.samples = preLoadedChunkData;
-        streamChunk.numberOfSamples = (unsigned int)preLoadedChunkData.size();
+        streamChunk.samples = std::move(preLoadedChunkData);
+        streamChunk.numberOfSamples = (unsigned int)streamChunk.samples.size();
 
         task.getSoundFileReader().advanceReadCursor(streamChunk.numberOfSamples, task.isPlayLoop());
     }
