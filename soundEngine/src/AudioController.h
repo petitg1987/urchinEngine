@@ -21,8 +21,8 @@ namespace urchin {
 
             SoundComponent& getSoundComponent() const;
 
-            void pauseAll() const;
-            void unpauseAll() const;
+            void pauseAll();
+            void unpauseAll();
             std::size_t getPlayersCount() const;
 
             void process(const Point3<float>&, const std::map<Sound::SoundCategory, float>&);
@@ -33,7 +33,7 @@ namespace urchin {
             std::shared_ptr<SoundComponent> soundComponent;
             StreamUpdateWorker& streamUpdateWorker;
 
-            std::vector<std::unique_ptr<AudioPlayer>> audioPlayers;
+            std::list<AudioStreamPlayer> audioStreamPlayers;
     };
 
 }

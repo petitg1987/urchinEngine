@@ -1,7 +1,7 @@
+#include <utility>
+
 #include <AudioController.h>
 #include <player/stream/AudioStreamPlayer.h>
-
-#include <utility>
 
 namespace urchin {
 
@@ -12,8 +12,8 @@ namespace urchin {
     }
 
     AudioController::~AudioController() {
-        for (const auto& audioPlayer : audioPlayers) {
-            audioPlayer->stop();
+        for (auto& audioStreamPlayer : audioStreamPlayers) {
+            audioStreamPlayer.stop();
         }
     }
 
@@ -21,35 +21,29 @@ namespace urchin {
         return *soundComponent;
     }
 
-    void AudioController::pauseAll() const {
-        for (const auto& audioPlayer : audioPlayers) {
-            if (audioPlayer->isPlaying()) {
-                audioPlayer->pause();
+    void AudioController::pauseAll() {
+        for (auto& audioStreamPlayer : audioStreamPlayers) {
+            if (audioStreamPlayer.isPlaying()) {
+                audioStreamPlayer.pause();
             }
         }
     }
 
-    void AudioController::unpauseAll() const {
-        for (const auto& audioPlayer : audioPlayers) {
-            if (audioPlayer->isPaused()) {
-                audioPlayer->unpause();
+    void AudioController::unpauseAll() {
+        for (auto& audioStreamPlayer : audioStreamPlayers) {
+            if (audioStreamPlayer.isPaused()) {
+                audioStreamPlayer.unpause();
             }
         }
     }
 
     std::size_t AudioController::getPlayersCount() const {
-        return audioPlayers.size();
+        return audioStreamPlayers.size();
     }
 
     void AudioController::process(const Point3<float>& listenerPosition, const std::map<Sound::SoundCategory, float>& soundVolumes) {
         //remove unused players
-        for (auto it = audioPlayers.begin(); it != audioPlayers.end();) {
-            if ((*it)->isStopped()) {
-                it = audioPlayers.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        std::erase_if(audioStreamPlayers, [](const AudioStreamPlayer& stp) { return stp.isStopped(); });
 
         //trigger actions process
         const std::vector<SoundTrigger::TriggerAction>& triggerActions = soundComponent->getSoundTrigger().evaluateTrigger(listenerPosition);
@@ -58,31 +52,31 @@ namespace urchin {
         }
 
         //update audio players (sound position, volume, etc.)
-        for (const auto& audioPlayer : audioPlayers) {
-            soundComponent->getSound().updateSource(audioPlayer->getSourceId());
-            audioPlayer->changeVolume(soundVolumes.at(audioPlayer->getSound().getSoundCategory()));
+        for (auto& audioStreamPlayer : audioStreamPlayers) {
+            soundComponent->getSound().updateSource(audioStreamPlayer.getSourceId());
+            audioStreamPlayer.changeVolume(soundVolumes.at(audioStreamPlayer.getSound().getSoundCategory()));
         }
     }
 
     void AudioController::processTriggerValue(SoundTrigger::TriggerAction triggerAction) {
         if (triggerAction == SoundTrigger::PLAY_NEW) {
-            audioPlayers.push_back(std::make_unique<AudioStreamPlayer>(soundComponent->getSound(), streamUpdateWorker));
-            audioPlayers.back()->play();
+            audioStreamPlayers.emplace_back(soundComponent->getSound(), streamUpdateWorker);
+            audioStreamPlayers.back().play();
         } else if (triggerAction == SoundTrigger::PLAY_NEW_LOOP) {
-            audioPlayers.push_back(std::make_unique<AudioStreamPlayer>(soundComponent->getSound(), streamUpdateWorker));
-            audioPlayers.back()->playLoop();
+            audioStreamPlayers.emplace_back(soundComponent->getSound(), streamUpdateWorker);
+            audioStreamPlayers.back().playLoop();
         } else if (triggerAction == SoundTrigger::STOP_ALL) {
-            for (const auto& audioPlayer : audioPlayers) {
-                audioPlayer->stop();
+            for (auto& audioStreamPlayer : audioStreamPlayers) {
+                audioStreamPlayer.stop();
             }
-            audioPlayers.clear();
+            audioStreamPlayers.clear();
         } else if (triggerAction == SoundTrigger::PAUSE_ALL) {
-            for (const auto& audioPlayer : audioPlayers) {
-                audioPlayer->pause();
+            for (auto& audioStreamPlayer : audioStreamPlayers) {
+                audioStreamPlayer.pause();
             }
         } else if (triggerAction == SoundTrigger::UNPAUSE_ALL) {
-            for (const auto& audioPlayer : audioPlayers) {
-                audioPlayer->unpause();
+            for (auto& audioStreamPlayer : audioStreamPlayers) {
+                audioStreamPlayer.unpause();
             }
         }
     }
