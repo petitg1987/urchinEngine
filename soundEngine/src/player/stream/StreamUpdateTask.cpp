@@ -41,9 +41,9 @@ namespace urchin {
         return audioStreamPlayer.getSound().getFilename();
     }
 
-    StreamChunk& StreamUpdateTask::getStreamChunk(unsigned int chunkId) {
-        assert(chunkId < streamChunks.size());
-        return streamChunks[chunkId];
+    StreamChunk& StreamUpdateTask::getStreamChunk(unsigned int chunkIndex) {
+        assert(chunkIndex < streamChunks.size());
+        return streamChunks[chunkIndex];
     }
 
 }

@@ -13,7 +13,7 @@ namespace urchin {
         StreamChunk();
 
         std::vector<ALshort> samples; //samples of the chunk
-        unsigned int numberOfSamples; //number of samples. Match to samples.size() except when end of file is reached && !playLoop.
+        unsigned int numberOfSamples; //number of samples. Should match samples.size() except when the end of file is reached && !playLoop.
 
         ALuint bufferId; //OpenAL buffer ID
     };

@@ -26,14 +26,18 @@ namespace urchin {
             virtual SoundType getSoundType() const = 0;
             const std::string& getFilename() const;
             SoundCategory getSoundCategory() const;
-
             float getInitialVolume() const;
 
+            const std::vector<int16_t>& getPreLoadedChunk(std::size_t) const;
+
         private:
+            void preLoadChunks();
+
             std::string filename;
             SoundCategory category;
-
             float initialVolume;
+
+            std::vector<std::vector<int16_t>> preLoadedChunks;
     };
 
 }

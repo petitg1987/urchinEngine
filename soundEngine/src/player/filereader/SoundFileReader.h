@@ -21,6 +21,8 @@ namespace urchin {
             ~SoundFileReader();
 
             void readNextChunk(std::vector<int16_t>&, unsigned int&, bool) const;
+            void advanceReadCursor(unsigned int, bool) const;
+            unsigned int getNumSamplesRead() const;
 
             SoundFormat getFormat() const;
             unsigned int getNumberOfSamples() const;

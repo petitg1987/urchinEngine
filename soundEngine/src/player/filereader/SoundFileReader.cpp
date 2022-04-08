@@ -42,9 +42,8 @@ namespace urchin {
      * Read next chunk of the sound file to fill buffer up to his maximum capacity
      * @param buffer [out] Buffer to fill with samples
      * @param numSamplesRead [out] Number of samples read
-     * @return True when all samples are read. In case of play loop, the result is always false.
      */
-    void SoundFileReader::readNextChunk(std::vector<int16_t>& buffer, unsigned int& numSamplesRead, bool playLoop) const {
+    void SoundFileReader::readNextChunk(std::vector<int16_t>& buffer, unsigned int& numSamplesRead, bool readLoop) const {
         numSamplesRead = 0;
         while (numSamplesRead < buffer.size()) {
             int bytesToRead = (int)(buffer.size() - numSamplesRead) * (int)sizeof(int16_t);
@@ -53,7 +52,7 @@ namespace urchin {
             if (bytesRead > 0) {
                 numSamplesRead += (unsigned int)bytesRead / (unsigned int)sizeof(int16_t);
             } else if (bytesRead == 0) { //end of file
-                if (playLoop) {
+                if (readLoop) {
                     bool resetResult = ov_time_seek(&vorbisFile, 0);
                     if (resetResult != 0) {
                         logReadChunkError("Impossible to reset cursor on sound file " + filename + ": " + std::to_string(resetResult));
@@ -65,6 +64,28 @@ namespace urchin {
                 logReadChunkError("Impossible to read chunk from sound file " + filename + ": " + std::to_string(bytesRead));
             }
         }
+    }
+
+    void SoundFileReader::advanceReadCursor(unsigned int numSamplesRead, bool advanceLoop) const { //TODO add unit test to compare readNextChunk/advanceReadCursor with getNumSamplesRead() (with stereo sound)
+        ogg_int64_t cursorPosition = ov_pcm_tell(&vorbisFile);
+        cursorPosition += numSamplesRead / getNumberOfChannels();
+        if (advanceLoop) {
+            cursorPosition = cursorPosition % getNumberOfSamples();
+        }
+
+        #ifdef URCHIN_DEBUG
+            assert(cursorPosition <= getNumberOfSamples() / getNumberOfChannels());
+        #endif
+
+        bool advanceResult = ov_pcm_seek(&vorbisFile, cursorPosition);
+        if (advanceResult != 0) {
+            logReadChunkError("Impossible to advance read cursor to " + std::to_string(cursorPosition) + " on sound file " + filename + ": " + std::to_string(advanceResult));
+        }
+    }
+
+    unsigned int SoundFileReader::getNumSamplesRead() const {
+        ogg_int64_t cursorPosition = ov_pcm_tell(&vorbisFile);
+        return (unsigned int)cursorPosition * getNumberOfChannels();
     }
 
     std::size_t SoundFileReader::read(void* buffer, std::size_t elementSize, std::size_t elementCount, void* dataSource) {

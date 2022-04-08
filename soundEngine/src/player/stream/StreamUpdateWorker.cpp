@@ -45,16 +45,21 @@ namespace urchin {
         std::vector<ALuint> bufferId(nbChunkBuffer);
         alGenBuffers((int)nbChunkBuffer, bufferId.data());
         CheckState::check("generate buffers id", nbChunkBuffer);
-        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
-            task->getStreamChunk(i).bufferId = bufferId[i];
+        for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
+            task->getStreamChunk(chunkIndex).bufferId = bufferId[chunkIndex];
         }
 
         //initialize buffers/chunks
-        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
-            fillAndPushChunk(*task, i);
+        for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
+            const std::vector<int16_t>& chunkData = audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex); //TODO do it for playLoop
+            fillChunkWithPreLoadedData(*task, chunkIndex, chunkData);
+            pushChunkInQueue(*task, chunkIndex);
         }
 
         std::scoped_lock<std::mutex> lock(tasksMutex);
+        #ifdef URCHIN_DEBUG
+            assert(!std::ranges::any_of(tasks, [&audioStreamPlayer](const auto& task) { return task->getSourceId() == audioStreamPlayer.getSourceId(); }));
+        #endif
         tasks.push_back(std::move(task));
     }
 
@@ -126,8 +131,9 @@ namespace urchin {
             alSourceUnqueueBuffers(task.getSourceId(), 1, &bufferId);
             CheckState::check("un-queue buffers (process)");
 
-            unsigned int chunkId = retrieveChunkId(task, bufferId);
-            fillAndPushChunk(task, chunkId);
+            unsigned int chunkIndex = retrieveChunkIndex(task, bufferId);
+            fillChunk(task, chunkIndex);
+            pushChunkInQueue(task, chunkIndex);
         }
 
         ALint nbQueues = 0;
@@ -153,14 +159,8 @@ namespace urchin {
         }
     }
 
-    /**
-     * Fill chunk and push it in the queue of buffers
-     * @param task Task currently executed
-     */
-    void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask& task, unsigned int chunkId) const {
-        fillChunk(task, chunkId);
-
-        const StreamChunk& streamChunk = task.getStreamChunk(chunkId);
+    void StreamUpdateWorker::pushChunkInQueue(StreamUpdateTask& task, unsigned int chunkIndex) const {
+        const StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
         auto size = static_cast<ALsizei>(streamChunk.numberOfSamples * sizeof(ALushort));
         if (size > 0) {
             SoundFileReader::SoundFormat soundFormat = task.getSoundFileReader().getFormat();
@@ -181,21 +181,26 @@ namespace urchin {
         }
     }
 
-    /**
-     * @param task Task currently executed
-     */
-    void StreamUpdateWorker::fillChunk(StreamUpdateTask& task, unsigned int chunkId) const {
-        StreamChunk& streamChunk = task.getStreamChunk(chunkId);
+    void StreamUpdateWorker::fillChunk(StreamUpdateTask& task, unsigned int chunkIndex) const {
+        StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
         float bufferSize = (float)task.getSoundFileReader().getSampleRate() * (float)task.getSoundFileReader().getNumberOfChannels() * ((float)chunkSizeInMs / 1000.0f);
         streamChunk.samples.resize((std::size_t)bufferSize);
 
         task.getSoundFileReader().readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task.isPlayLoop());
     }
 
-    unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask& task, ALuint bufferId) const {
-        for (unsigned int i = 0; i < nbChunkBuffer; ++i) {
-            if (task.getStreamChunk(i).bufferId == bufferId) {
-                return i;
+    void StreamUpdateWorker::fillChunkWithPreLoadedData(StreamUpdateTask& task, unsigned int chunkIndex, const std::vector<int16_t>& preLoadedChunkData) const {
+        StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
+        streamChunk.samples = preLoadedChunkData;
+        streamChunk.numberOfSamples = (unsigned int)preLoadedChunkData.size();
+
+        task.getSoundFileReader().advanceReadCursor(streamChunk.numberOfSamples, task.isPlayLoop());
+    }
+
+    unsigned int StreamUpdateWorker::retrieveChunkIndex(StreamUpdateTask& task, ALuint bufferId) const {
+        for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
+            if (task.getStreamChunk(chunkIndex).bufferId == bufferId) {
+                return chunkIndex;
             }
         }
 
