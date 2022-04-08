@@ -50,11 +50,13 @@ namespace urchin {
         }
 
         //initialize buffers/chunks
+        unsigned int totalSamplesUsed = 0;
         for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
-            std::vector<int16_t> chunkData = audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex, playLoop);
-            fillChunkWithPreLoadedData(*task, chunkIndex, std::move(chunkData));
+            fillChunkFromPreLoadedData(*task, chunkIndex, audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex, playLoop));
             pushChunkInQueue(*task, chunkIndex);
+            totalSamplesUsed += task->getStreamChunk(chunkIndex).numberOfSamples;
         }
+        task->getSoundFileReader().advanceReadCursor(totalSamplesUsed, task->isPlayLoop());
 
         std::scoped_lock<std::mutex> lock(tasksMutex);
         #ifdef URCHIN_DEBUG
@@ -132,7 +134,7 @@ namespace urchin {
             CheckState::check("un-queue buffers (process)");
 
             unsigned int chunkIndex = retrieveChunkIndex(task, bufferId);
-            fillChunk(task, chunkIndex);
+            fillChunkFromFile(task, chunkIndex);
             pushChunkInQueue(task, chunkIndex);
         }
 
@@ -181,7 +183,7 @@ namespace urchin {
         }
     }
 
-    void StreamUpdateWorker::fillChunk(StreamUpdateTask& task, unsigned int chunkIndex) const {
+    void StreamUpdateWorker::fillChunkFromFile(StreamUpdateTask& task, unsigned int chunkIndex) const {
         StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
         auto chunkSize = (std::size_t)((float)task.getSoundFileReader().getSampleRate() * (float)task.getSoundFileReader().getNumberOfChannels() * ((float)chunkSizeInMs / 1000.0f));
         streamChunk.samples.resize(chunkSize);
@@ -190,12 +192,10 @@ namespace urchin {
         streamChunk.samples.resize(streamChunk.numberOfSamples);
     }
 
-    void StreamUpdateWorker::fillChunkWithPreLoadedData(StreamUpdateTask& task, unsigned int chunkIndex, std::vector<int16_t> preLoadedChunkData) const {
+    void StreamUpdateWorker::fillChunkFromPreLoadedData(StreamUpdateTask& task, unsigned int chunkIndex, std::vector<int16_t> preLoadedChunkData) const {
         StreamChunk& streamChunk = task.getStreamChunk(chunkIndex);
         streamChunk.samples = std::move(preLoadedChunkData);
         streamChunk.numberOfSamples = (unsigned int)streamChunk.samples.size();
-
-        task.getSoundFileReader().advanceReadCursor(streamChunk.numberOfSamples, task.isPlayLoop());
     }
 
     unsigned int StreamUpdateWorker::retrieveChunkIndex(StreamUpdateTask& task, ALuint bufferId) const {

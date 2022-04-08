@@ -31,8 +31,8 @@ namespace urchin {
             bool processTask(StreamUpdateTask&) const;
             void deleteTask(StreamUpdateTask&) const;
 
-            void fillChunk(StreamUpdateTask&, unsigned int) const;
-            void fillChunkWithPreLoadedData(StreamUpdateTask&, unsigned int, std::vector<int16_t>) const;
+            void fillChunkFromFile(StreamUpdateTask&, unsigned int) const;
+            void fillChunkFromPreLoadedData(StreamUpdateTask&, unsigned int, std::vector<int16_t>) const;
             void pushChunkInQueue(StreamUpdateTask&, unsigned int) const;
             unsigned int retrieveChunkIndex(StreamUpdateTask&, ALuint) const;
             void clearQueue(const StreamUpdateTask&) const;
