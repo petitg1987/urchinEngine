@@ -13,7 +13,7 @@ namespace urchin {
 
     StreamUpdateWorker::StreamUpdateWorker() :
             nbChunkBuffer(ConfigService::instance().getUnsignedIntValue("player.numberOfStreamBuffer")),
-            nbSecondByChunk(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInSecond")),
+            chunkSizeInMs(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInMs")),
             updateStreamBufferPauseTime((int)ConfigService::instance().getUnsignedIntValue("player.updateStreamBufferPauseTime")),
             streamUpdateWorkerStopper(false) {
         if (nbChunkBuffer <= 1) {
@@ -186,8 +186,8 @@ namespace urchin {
      */
     void StreamUpdateWorker::fillChunk(StreamUpdateTask& task, unsigned int chunkId) const {
         StreamChunk& streamChunk = task.getStreamChunk(chunkId);
-        unsigned int bufferSize = task.getSoundFileReader().getSampleRate() * task.getSoundFileReader().getNumberOfChannels() * nbSecondByChunk;
-        streamChunk.samples.resize(bufferSize);
+        float bufferSize = (float)task.getSoundFileReader().getSampleRate() * (float)task.getSoundFileReader().getNumberOfChannels() * ((float)chunkSizeInMs / 1000.0f);
+        streamChunk.samples.resize((std::size_t)bufferSize);
 
         task.getSoundFileReader().readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task.isPlayLoop());
     }

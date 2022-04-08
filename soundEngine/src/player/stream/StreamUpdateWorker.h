@@ -37,7 +37,7 @@ namespace urchin {
             void clearQueue(const StreamUpdateTask&) const;
 
             const unsigned int nbChunkBuffer;
-            const unsigned int nbSecondByChunk;
+            const unsigned int chunkSizeInMs;
             const int updateStreamBufferPauseTime;
 
             std::atomic_bool streamUpdateWorkerStopper;
