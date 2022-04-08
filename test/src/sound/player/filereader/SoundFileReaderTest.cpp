@@ -24,10 +24,10 @@ void SoundFileReaderTest::cursorAfterMove() {
     unsigned int advanceSize = 5000;
 
     soundFileReader.advanceReadCursor(advanceSize, true);
-    AssertHelper::assertUnsignedIntEquals(advanceSize, soundFileReader.getNumSamplesRead());
+    AssertHelper::assertUnsignedIntEquals(soundFileReader.getNumSamplesRead(), advanceSize);
 
     soundFileReader.advanceReadCursor(advanceSize, true);
-    AssertHelper::assertUnsignedIntEquals(advanceSize * 2, soundFileReader.getNumSamplesRead());
+    AssertHelper::assertUnsignedIntEquals(soundFileReader.getNumSamplesRead(), advanceSize * 2);
 }
 
 CppUnit::Test* SoundFileReaderTest::suite() {
