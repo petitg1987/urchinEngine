@@ -29,12 +29,12 @@ namespace urchin {
         MeshService::computeNormalsAndTangents(constMesh, vertices, normals, tangents);
     }
 
-    void Mesh::updateMaterial(const std::shared_ptr<Material>& material) {
+    void Mesh::updateMaterial(std::shared_ptr<Material> material) {
         if (this->getMaterial().getUvScale() != material->getUvScale()) {
             //not supported because it would require detecting if material UV scale changed in ModelDisplayer#notify() method
             throw std::runtime_error("Update material with a different UV scale is not supported");
         }
-        this->material = material;
+        this->material = std::move(material);
     }
 
     const std::vector<Point3<float>>& Mesh::getVertices() const {

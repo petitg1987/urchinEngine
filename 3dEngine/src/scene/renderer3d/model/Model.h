@@ -67,7 +67,7 @@ namespace urchin {
 
             void updateAnimation(float);
             void updateMesh(unsigned int, const std::vector<Point3<float>>&);
-            void updateMaterial(unsigned int, const std::shared_ptr<Material>&);
+            void updateMaterial(unsigned int, std::shared_ptr<Material>);
 
         private:
             explicit Model(const std::string&);

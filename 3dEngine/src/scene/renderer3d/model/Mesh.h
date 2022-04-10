@@ -17,7 +17,7 @@ namespace urchin {
             void updateSkeleton(const std::vector<Bone>&);
             void resetSkeleton();
             void updateVertices(const std::vector<Point3<float>>&);
-            void updateMaterial(const std::shared_ptr<Material>&);
+            void updateMaterial(std::shared_ptr<Material>);
 
             const std::vector<Point3<float>>& getVertices() const;
             const std::vector<Vector3<float>>& getNormals() const;

@@ -1,6 +1,8 @@
 #include <scene/renderer3d/model/Meshes.h>
 #include <resources/model/boundingbox/SplitBoundingBox.h>
 
+#include <utility>
+
 namespace urchin {
 
     Meshes::Meshes(std::shared_ptr<ConstMeshes> constMeshes) :
@@ -55,8 +57,8 @@ namespace urchin {
         computeLocalAABBox(true);
     }
 
-    void Meshes::updateMaterial(unsigned int meshIndex, const std::shared_ptr<Material>& material) const {
-        getMesh(meshIndex).updateMaterial(material);
+    void Meshes::updateMaterial(unsigned int meshIndex, std::shared_ptr<Material> material) const {
+        getMesh(meshIndex).updateMaterial(std::move(material));
     }
 
     void Meshes::onMoving(const Transform<float>& newTransform) {
