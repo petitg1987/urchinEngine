@@ -8,6 +8,7 @@
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#pragma GCC diagnostic ignored "-Wpedantic" //only for release
 
 //
 // Copyright (c) 2017-2022 Advanced Micro Devices, Inc. All rights reserved.
