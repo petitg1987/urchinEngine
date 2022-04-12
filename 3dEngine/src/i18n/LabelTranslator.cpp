@@ -29,7 +29,7 @@ namespace urchin {
         }
     }
 
-    void LabelTranslator::checkMissingTranslation() const {
+    void LabelTranslator::checkTranslationError() const {
         for (unsigned int i = 0; i < availableLanguages.size(); ++i) {
             std::string firstLanguage = availableLanguages[i];
             auto firstLanguageLabels = retrieveLanguageLabels(firstLanguage);
@@ -37,10 +37,30 @@ namespace urchin {
             std::string secondLanguage = availableLanguages[(i + 1) % availableLanguages.size()];
             auto secondLanguageLabels = retrieveLanguageLabels(secondLanguage);
 
-            for (const auto& [labelKey, labelValue] : firstLanguageLabels) {
-                if (!secondLanguageLabels.contains(labelKey)) {
-                    logMissingTranslation(secondLanguage, labelKey);
+            for (const auto& [firstLabelKey, firstLabelValue] : firstLanguageLabels) {
+                auto itFind = secondLanguageLabels.find(firstLabelKey);
+                if (itFind == secondLanguageLabels.end()) {
+                    Logger::instance().logError("Translation in '" + secondLanguage + "' not found for label key '" + firstLabelKey + "' but present in '" + firstLanguage + "'");
                     break;
+                } else if (i == availableLanguages.size() - 1) {
+                    break; //no need comparison between the last and the first language
+                }
+
+                std::string secondLabelValue = itFind->second;
+                if (firstLabelValue.empty() != secondLabelValue.empty()) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on emptiness for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (std::isspace(firstLabelValue[0]) != std::isspace(secondLabelValue[0])) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on first spacing letter for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (std::ispunct(firstLabelValue[0]) != std::ispunct(secondLabelValue[0])) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on first punctuation letter for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (firstLabelValue.ends_with(' ') != secondLabelValue.ends_with(' ')) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on space ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (firstLabelValue.ends_with(':') != secondLabelValue.ends_with(':')) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on colon ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (firstLabelValue.ends_with(": ") != secondLabelValue.ends_with(": ")) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on colon+space ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                }else if (std::ispunct(firstLabelValue[firstLabelValue.size() - 1]) != std::ispunct(secondLabelValue[secondLabelValue.size() - 1])) {
+                    Logger::instance().logWarning("Translation value for label '" + firstLabelKey + "' are different on punctuation ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 }
             }
         }

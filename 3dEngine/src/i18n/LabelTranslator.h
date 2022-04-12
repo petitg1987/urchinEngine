@@ -8,7 +8,7 @@ namespace urchin {
         public:
             LabelTranslator();
 
-            void checkMissingTranslation() const;
+            void checkTranslationError() const;
 
             const std::vector<std::string>& getAvailableLanguages() const;
             std::string translate(const std::string&, std::string_view);
