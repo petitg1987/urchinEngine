@@ -9,7 +9,9 @@ namespace urchin {
             DEFAULT_LANGUAGE("en"),
             language(DEFAULT_LANGUAGE),
             labelTranslator(LabelTranslator()) {
-        labelTranslator.checkTranslationError();
+        #ifdef URCHIN_DEBUG
+            labelTranslator.checkTranslationError();
+        #endif
     }
 
     void I18nService::changeLanguage(std::string language) {
