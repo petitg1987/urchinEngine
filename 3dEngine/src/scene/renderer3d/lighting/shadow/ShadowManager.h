@@ -61,7 +61,7 @@ namespace urchin {
             void removeModel(Model*) const;
 
             void forceUpdateAllShadowMaps();
-            void updateShadowMaps() const;
+            void updateShadowMaps(std::uint64_t) const;
             void loadShadowMaps(GenericRenderer&, std::size_t);
 
         private:

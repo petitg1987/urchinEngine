@@ -222,7 +222,7 @@ namespace urchin {
         }
     }
 
-    void ScreenRender::render(unsigned int renderTargetUsageCount) { //TODO review name
+    void ScreenRender::render(std::uint64_t frameIndex, unsigned int renderTargetUsageCount) { //TODO review name
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
 
         assert(renderTargetUsageCount == 0);
@@ -231,7 +231,7 @@ namespace urchin {
         //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'.
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
@@ -239,7 +239,7 @@ namespace urchin {
             onResize();
             return;
         } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /* Continue with suboptimal image because already acquired */) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         updateGraphicData(vkImageIndex);
@@ -251,7 +251,7 @@ namespace urchin {
             // 2) Acquired images from swap chain are returned out-of-order
             resultWaitForFences = vkWaitForFences(logicalDevice, 1, &imagesFences[vkImageIndex], VK_TRUE, UINT64_MAX);
             if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-                throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
             }
         }
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
@@ -262,7 +262,7 @@ namespace urchin {
         auto waitSemaphore = WaitSemaphore{imageAvailableSemaphores[currentFrameIndex], VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        configureWaitSemaphore(submitInfo, waitSemaphore);
+        configureWaitSemaphore(frameIndex, submitInfo, waitSemaphore);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[vkImageIndex];
         submitInfo.signalSemaphoreCount = 1;
@@ -270,11 +270,11 @@ namespace urchin {
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
         if (resultResetFences != VK_SUCCESS) {
-            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
         VkResult resultQueueSubmit = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         std::array<VkSwapchainKHR, 1> swapChains = {swapChainHandler.getSwapChain()};
@@ -291,7 +291,7 @@ namespace urchin {
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;

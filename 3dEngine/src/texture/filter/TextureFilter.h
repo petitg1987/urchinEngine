@@ -22,7 +22,7 @@ namespace urchin {
 
             const std::shared_ptr<Texture>& getTexture() const;
 
-            void applyFilter() const;
+            void applyFilter(std::uint64_t) const;
 
         protected:
             virtual std::string getShaderName() const = 0;

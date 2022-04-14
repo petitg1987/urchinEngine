@@ -207,15 +207,15 @@ namespace urchin {
         }
     }
 
-    void BloomEffectApplier::applyBloom(unsigned int renderingOrder) const {
+    void BloomEffectApplier::applyBloom(std::uint64_t frameIndex, unsigned int renderingOrder) const {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
-        preFilterRenderTarget->render(1); //TODO review hardcoded
+        preFilterRenderTarget->render(frameIndex, 1); //TODO review hardcoded
         for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
-            downSampleRenderTarget->render(1); //TODO review hardcoded
+            downSampleRenderTarget->render(frameIndex, 1); //TODO review hardcoded
         }
         for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
-            upSampleRenderTarget->render(1); //TODO review hardcoded
+            upSampleRenderTarget->render(frameIndex, 1); //TODO review hardcoded
         }
 
         combineRenderer->enableRenderer(renderingOrder);

@@ -112,9 +112,9 @@ namespace urchin {
         textureFilters.push_back(std::move(textureFilter));
     }
 
-    void LightShadowMap::applyTextureFilters() const {
+    void LightShadowMap::applyTextureFilters(std::uint64_t frameIndex) const {
         for (auto& textureFilter : textureFilters) {
-            textureFilter->applyFilter();
+            textureFilter->applyFilter(frameIndex);
         }
     }
 
@@ -148,11 +148,11 @@ namespace urchin {
         return models;
     }
 
-    void LightShadowMap::renderModels(unsigned int renderingOrder) const {
+    void LightShadowMap::renderModels(std::uint64_t frameIndex, unsigned int renderingOrder) const {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
-        renderTarget->render(1); //TODO review hardcoded
+        renderTarget->render(frameIndex, 1); //TODO review hardcoded
     }
 }

@@ -116,10 +116,10 @@ namespace urchin {
         return *textureRenderer;
     }
 
-    void TextureFilter::applyFilter() const {
+    void TextureFilter::applyFilter(std::uint64_t frameIndex) const {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
-        renderTarget->render(1); //TODO review hardcoded
+        renderTarget->render(frameIndex, 1); //TODO review hardcoded
     }
 }

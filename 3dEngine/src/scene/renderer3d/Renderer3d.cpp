@@ -289,16 +289,16 @@ namespace urchin {
         paused = false;
     }
 
-    void Renderer3d::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
+    void Renderer3d::prepareRendering(std::uint64_t frameIndex, float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
         updateScene(dt);
-        deferredRendering(dt);
-        lightingPassRendering();
+        deferredRendering(frameIndex, dt);
+        lightingPassRendering(frameIndex);
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.applyAntiAliasing();
+            antiAliasingApplier.applyAntiAliasing(frameIndex);
         }
-        bloomEffectApplier.applyBloom(screenRenderingOrder);
+        bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -446,12 +446,12 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, color, normal, etc. into buffers.
      */
-    void Renderer3d::deferredRendering(float dt) {
+    void Renderer3d::deferredRendering(std::uint64_t frameIndex, float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
         //deferred shadow map
         if (visualOption.isShadowActivated) {
-            shadowManager.updateShadowMaps();
+            shadowManager.updateShadowMaps(frameIndex);
         }
 
         //deferred scene (depth, color, normal, ambient...)
@@ -476,14 +476,14 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        deferredRenderTarget->render(5); //TODO review hardcoded
+        deferredRenderTarget->render(frameIndex, 5); //TODO review hardcoded
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
-            ambientOcclusionManager.updateAOTexture(*camera);
+            ambientOcclusionManager.updateAOTexture(frameIndex, *camera);
         }
 
-        transparentManager.updateTransparentTextures(*camera);
+        transparentManager.updateTransparentTextures(frameIndex, *camera);
     }
 
     void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
@@ -512,7 +512,7 @@ namespace urchin {
      * Second pass of deferred shading algorithm.
      * Compute lighting in pixel shader and render the scene to screen.
      */
-    void Renderer3d::lightingPassRendering() {
+    void Renderer3d::lightingPassRendering(std::uint64_t frameIndex) {
         ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
@@ -540,7 +540,7 @@ namespace urchin {
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        lightingRenderTarget->render(1); //TODO review hardcoded
+        lightingRenderTarget->render(frameIndex, 1); //TODO review hardcoded
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {

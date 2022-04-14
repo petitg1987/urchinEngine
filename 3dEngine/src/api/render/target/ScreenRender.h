@@ -28,7 +28,7 @@ namespace urchin {
 
             void takeScreenshot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
-            void render(unsigned int) override;
+            void render(std::uint64_t, unsigned int) override;
 
         private:
             void initializeClearValues();

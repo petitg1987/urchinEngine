@@ -268,18 +268,18 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::updateAOTexture(const Camera& camera) {
+    void AmbientOcclusionManager::updateAOTexture(std::uint64_t frameIndex, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         positioningData.viewMatrix = camera.getViewMatrix();
         renderer->updateUniformData(1, &positioningData);
 
-        renderTarget->render(1); //TODO review hardcoded
+        renderTarget->render(frameIndex, 1); //TODO review hardcoded
 
         if (config.isBlurActivated) {
-            verticalBlurFilter->applyFilter();
-            horizontalBlurFilter->applyFilter();
+            verticalBlurFilter->applyFilter(frameIndex);
+            horizontalBlurFilter->applyFilter(frameIndex);
         }
     }
 

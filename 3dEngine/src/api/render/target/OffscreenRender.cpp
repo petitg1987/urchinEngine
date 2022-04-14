@@ -9,9 +9,10 @@ namespace urchin {
 
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
+            commandBufferFence(nullptr),
             queueSubmitSemaphores({}),
-            renderTargetUsageCount(0),
-            commandBufferFence(nullptr) {
+            queueSubmitSemaphoresGenerationFrameIndex(0),
+            renderTargetUsageCount(0) {
 
     }
 
@@ -202,13 +203,18 @@ namespace urchin {
         }
     }
 
-    VkSemaphore OffscreenRender::popQueueSubmitSemaphore() {
-        assert(renderTargetUsageCount >= 1); //TODO use exception !
-        --renderTargetUsageCount;
-        return queueSubmitSemaphores[renderTargetUsageCount];
+    VkSemaphore OffscreenRender::popQueueSubmitSemaphore(std::uint64_t frameIndex) {
+        if (queueSubmitSemaphoresGenerationFrameIndex == frameIndex) {
+            assert(renderTargetUsageCount >= 1); //TODO use exception !
+            --renderTargetUsageCount;
+            return queueSubmitSemaphores[renderTargetUsageCount];
+        } else if (queueSubmitSemaphoresGenerationFrameIndex < frameIndex) { //TODO review comment: already synchronized in previous frame
+            return nullptr;
+        }
+        throw std::runtime_error(""); //TODO do it !
     }
 
-    void OffscreenRender::render(unsigned int renderTargetUsageCount) { //TODO review name
+    void OffscreenRender::render(std::uint64_t frameIndex, unsigned int renderTargetUsageCount) { //TODO review name
         ScopeProfiler sp(Profiler::graphic(), "offRender");
 
         assert(renderTargetUsageCount <= queueSubmitSemaphores.size()); //TODO use exception !
@@ -220,7 +226,7 @@ namespace urchin {
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         updateTexturesWriter();
@@ -229,19 +235,20 @@ namespace urchin {
 
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        configureWaitSemaphore(submitInfo, std::nullopt);
+        configureWaitSemaphore(frameIndex, submitInfo, std::nullopt);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
         submitInfo.signalSemaphoreCount = renderTargetUsageCount;
         submitInfo.pSignalSemaphores = queueSubmitSemaphores.data();
+        this->queueSubmitSemaphoresGenerationFrameIndex = frameIndex;
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
         if (resultResetFences != VK_SUCCESS) {
-            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
         VkResult resultQueueSubmit = vkQueueSubmit(GraphicService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
     }
 

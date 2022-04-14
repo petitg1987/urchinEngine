@@ -22,7 +22,7 @@ namespace urchin {
             void updateModels(const std::vector<Model*>&) const;
             void removeModel(Model*) const;
 
-            void updateTransparentTextures(const Camera&) const;
+            void updateTransparentTextures(std::uint64_t, const Camera&) const;
             void loadTransparentTextures(GenericRenderer&, std::size_t, std::size_t) const;
 
         private:

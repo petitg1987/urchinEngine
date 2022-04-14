@@ -359,7 +359,7 @@ namespace urchin {
         return renderDependencies;
     }
 
-    void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
+    void RenderTarget::configureWaitSemaphore(std::uint64_t frameIndex, VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
         queueSubmitWaitSemaphores.clear();
         queueSubmitWaitStages.clear();
 
@@ -370,8 +370,11 @@ namespace urchin {
 
         std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
         for (auto& renderDependency : renderDependencies) {
-            queueSubmitWaitSemaphores.emplace_back(renderDependency->popQueueSubmitSemaphore());
-            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
+            VkSemaphore waitSemaphore = renderDependency->popQueueSubmitSemaphore(frameIndex);
+            if (waitSemaphore) {
+                queueSubmitWaitSemaphores.emplace_back(waitSemaphore);
+                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
+            }
         }
 
         submitInfo.waitSemaphoreCount = (uint32_t)queueSubmitWaitSemaphores.size();

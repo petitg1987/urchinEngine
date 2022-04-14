@@ -104,13 +104,13 @@ namespace urchin {
         }
     }
 
-    void TransparentManager::updateTransparentTextures(const Camera& camera) const {
+    void TransparentManager::updateTransparentTextures(std::uint64_t frameIndex, const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
         renderTarget->disableAllRenderers();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
-        renderTarget->render(1); //TODO review hardcoded
+        renderTarget->render(frameIndex, 1); //TODO review hardcoded
     }
 
     void TransparentManager::loadTransparentTextures(GenericRenderer& lightingRenderer, std::size_t accumulationTextureUnit, std::size_t revealTextureUnit) const {

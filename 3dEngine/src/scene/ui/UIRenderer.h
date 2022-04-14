@@ -65,7 +65,7 @@ namespace urchin {
             bool isWidgetExist(const Widget&) const;
             const std::vector<std::shared_ptr<Widget>>& getWidgets() const;
 
-            void prepareRendering(float, unsigned int&) override;
+            void prepareRendering(std::uint64_t frameIndex, float, unsigned int&) override;
             void prepareRendering(float, unsigned int&, const Matrix4<float>&) const;
 
         private:

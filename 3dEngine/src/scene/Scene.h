@@ -73,6 +73,7 @@ namespace urchin {
             unsigned int fpsForDisplay;
 
             //renderer
+            std::uint64_t frameIndex;
             ScreenRender screenRenderTarget;
             std::vector<std::unique_ptr<Renderer3d>> renderers3d;
             Renderer3d* activeRenderer3d;

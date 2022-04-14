@@ -54,7 +54,7 @@ namespace urchin {
             void notifyRendererDisabled(const GenericRenderer*);
             void disableAllRenderers() const;
 
-            virtual void render(unsigned int) = 0;
+            virtual void render(std::uint64_t, unsigned int) = 0;
 
         protected:
             void initializeRenderers();
@@ -76,7 +76,7 @@ namespace urchin {
             void destroyCommandBuffersAndPool();
 
             std::span<OffscreenRender*> getRenderDependencies() const;
-            void configureWaitSemaphore(VkSubmitInfo&, std::optional<WaitSemaphore>) const;
+            void configureWaitSemaphore(std::uint64_t, VkSubmitInfo&, std::optional<WaitSemaphore>) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;
