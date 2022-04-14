@@ -153,6 +153,6 @@ namespace urchin {
 
         renderTarget->disableAllRenderers();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
-        renderTarget->render();
+        renderTarget->render(1); //TODO review hardcoded
     }
 }

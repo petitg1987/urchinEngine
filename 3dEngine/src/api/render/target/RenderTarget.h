@@ -54,7 +54,7 @@ namespace urchin {
             void notifyRendererDisabled(const GenericRenderer*);
             void disableAllRenderers() const;
 
-            virtual void render() = 0;
+            virtual void render(unsigned int) = 0;
 
         protected:
             void initializeRenderers();

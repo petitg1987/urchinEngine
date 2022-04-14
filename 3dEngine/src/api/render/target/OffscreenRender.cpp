@@ -9,8 +9,8 @@ namespace urchin {
 
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
-            queueSubmitSemaphore(nullptr),
-            queueSubmitSemaphoreUsable(false),
+            queueSubmitSemaphores({}),
+            renderTargetUsageCount(0),
             commandBufferFence(nullptr) {
 
     }
@@ -185,35 +185,35 @@ namespace urchin {
             throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
         }
 
-        VkSemaphoreCreateInfo semaphoreInfo{};
-        semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-        VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
-        if (semaphoreResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create semaphore with error code '" + std::to_string(semaphoreResult) + "' on render target: " + getName());
+        for (VkSemaphore& queueSubmitSemaphore : queueSubmitSemaphores) {
+            VkSemaphoreCreateInfo semaphoreInfo{};
+            semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+            VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
+            if (semaphoreResult != VK_SUCCESS) {
+                throw std::runtime_error("Failed to create semaphore with error code '" + std::to_string(semaphoreResult) + "' on render target: " + getName());
+            }
         }
     }
 
     void OffscreenRender::destroySyncObjects() {
         vkDestroyFence(GraphicService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
-        vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
-    }
-
-    VkSemaphore OffscreenRender::retrieveQueueSubmitSemaphoreAndFlagUsed() {
-        if (queueSubmitSemaphoreUsable) {
-            //Once the queue submit semaphore has been used as a wait semaphore, it cannot be re-used in the same rendering pass.
-            //Examples:
-            // 1) The 'deferred - first pass' pass is required for the 'ambient occlusion' pass and for the 'deferred - second pass' pass but the semaphore can be used only once. Therefore, the 'ambient occlusion' pass is the only pass which can wait for the 'deferred - first pass' pass.
-            // 2) The 'shadow map' pass is required for the 'deferred - second pass' but the semaphore can be used only once. Therefore, when shadow map is cached, the wait can be done only on the first frame where the shadow map has been written in the cache.
-            queueSubmitSemaphoreUsable = false;
-
-            return queueSubmitSemaphore;
+        for (VkSemaphore& queueSubmitSemaphore : queueSubmitSemaphores) {
+            vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
         }
-
-        return nullptr;
     }
 
-    void OffscreenRender::render() {
+    VkSemaphore OffscreenRender::popQueueSubmitSemaphore() {
+        assert(renderTargetUsageCount >= 1); //TODO use exception !
+        --renderTargetUsageCount;
+        return queueSubmitSemaphores[renderTargetUsageCount];
+    }
+
+    void OffscreenRender::render(unsigned int renderTargetUsageCount) { //TODO review name
         ScopeProfiler sp(Profiler::graphic(), "offRender");
+
+        assert(renderTargetUsageCount <= queueSubmitSemaphores.size()); //TODO use exception !
+        assert(this->renderTargetUsageCount == 0); //TODO use exception !
+        this->renderTargetUsageCount = renderTargetUsageCount;
 
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
@@ -227,14 +227,13 @@ namespace urchin {
         updateGraphicData(0);
         updateCommandBuffers(0, clearValues);
 
-        std::array<VkSemaphore, 1> signalSemaphores = {queueSubmitSemaphore};
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         configureWaitSemaphore(submitInfo, std::nullopt);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
-        submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores = signalSemaphores.data();
+        submitInfo.signalSemaphoreCount = renderTargetUsageCount;
+        submitInfo.pSignalSemaphores = queueSubmitSemaphores.data();
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
         if (resultResetFences != VK_SUCCESS) {
@@ -244,8 +243,6 @@ namespace urchin {
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName());
         }
-
-        queueSubmitSemaphoreUsable = true;
     }
 
     void OffscreenRender::updateTexturesWriter() {

@@ -240,7 +240,7 @@ namespace urchin {
                     activeRenderer->prepareRendering(dt, screenRenderingOrder);
                 }
             }
-            screenRenderTarget.render();
+            screenRenderTarget.render(0);
 
             ResourceContainer::instance().cleanResources();
         }

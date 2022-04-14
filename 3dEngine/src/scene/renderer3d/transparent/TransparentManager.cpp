@@ -110,7 +110,7 @@ namespace urchin {
 
         renderTarget->disableAllRenderers();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
-        renderTarget->render();
+        renderTarget->render(1); //TODO review hardcoded
     }
 
     void TransparentManager::loadTransparentTextures(GenericRenderer& lightingRenderer, std::size_t accumulationTextureUnit, std::size_t revealTextureUnit) const {

@@ -222,9 +222,10 @@ namespace urchin {
         }
     }
 
-    void ScreenRender::render() {
+    void ScreenRender::render(unsigned int renderTargetUsageCount) { //TODO review name
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
 
+        assert(renderTargetUsageCount == 0);
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'.

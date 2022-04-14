@@ -210,12 +210,12 @@ namespace urchin {
     void BloomEffectApplier::applyBloom(unsigned int renderingOrder) const {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
-        preFilterRenderTarget->render();
+        preFilterRenderTarget->render(1); //TODO review hardcoded
         for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
-            downSampleRenderTarget->render();
+            downSampleRenderTarget->render(1); //TODO review hardcoded
         }
         for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
-            upSampleRenderTarget->render();
+            upSampleRenderTarget->render(1); //TODO review hardcoded
         }
 
         combineRenderer->enableRenderer(renderingOrder);

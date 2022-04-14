@@ -476,7 +476,7 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        deferredRenderTarget->render();
+        deferredRenderTarget->render(5); //TODO review hardcoded
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
@@ -540,7 +540,7 @@ namespace urchin {
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        lightingRenderTarget->render();
+        lightingRenderTarget->render(1); //TODO review hardcoded
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {

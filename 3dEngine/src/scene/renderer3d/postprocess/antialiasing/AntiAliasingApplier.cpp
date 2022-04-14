@@ -116,7 +116,7 @@ namespace urchin {
     void AntiAliasingApplier::applyAntiAliasing() const {
         ScopeProfiler sp(Profiler::graphic(), "applyAA");
 
-        renderTarget->render();
+        renderTarget->render(2); //TODO review hardcoded
     }
 
 }

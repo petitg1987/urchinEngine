@@ -275,7 +275,7 @@ namespace urchin {
         positioningData.viewMatrix = camera.getViewMatrix();
         renderer->updateUniformData(1, &positioningData);
 
-        renderTarget->render();
+        renderTarget->render(1); //TODO review hardcoded
 
         if (config.isBlurActivated) {
             verticalBlurFilter->applyFilter();

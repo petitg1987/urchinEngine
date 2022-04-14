@@ -120,6 +120,6 @@ namespace urchin {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }
-        renderTarget->render();
+        renderTarget->render(1); //TODO review hardcoded
     }
 }

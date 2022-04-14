@@ -54,7 +54,7 @@ namespace urchin {
         //nothing to do
     }
 
-    void NullRenderTarget::render() {
+    void NullRenderTarget::render(unsigned int) {
         //nothing to do
     }
 }

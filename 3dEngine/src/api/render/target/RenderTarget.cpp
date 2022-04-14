@@ -346,7 +346,7 @@ namespace urchin {
         renderDependencies.clear();
         for (auto& renderer : renderers) {
             if (renderer->isEnabled()) {
-                const auto& renderTextureWriter = renderer->getTexturesWriter();
+                const std::span<OffscreenRender*>& renderTextureWriter = renderer->getTexturesWriter();
                 renderDependencies.insert(renderDependencies.end(), renderTextureWriter.begin(), renderTextureWriter.end());
             }
         }
@@ -360,8 +360,6 @@ namespace urchin {
     }
 
     void RenderTarget::configureWaitSemaphore(VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
-        std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
-
         queueSubmitWaitSemaphores.clear();
         queueSubmitWaitStages.clear();
 
@@ -370,12 +368,10 @@ namespace urchin {
             queueSubmitWaitStages.emplace_back(additionalSemaphore->waitDstStageMask);
         }
 
+        std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
         for (auto& renderDependency : renderDependencies) {
-            VkSemaphore queueSubmitSemaphore = renderDependency->retrieveQueueSubmitSemaphoreAndFlagUsed();
-            if (queueSubmitSemaphore) {
-                queueSubmitWaitSemaphores.emplace_back(queueSubmitSemaphore);
-                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
-            }
+            queueSubmitWaitSemaphores.emplace_back(renderDependency->popQueueSubmitSemaphore());
+            queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
         }
 
         submitInfo.waitSemaphoreCount = (uint32_t)queueSubmitWaitSemaphores.size();

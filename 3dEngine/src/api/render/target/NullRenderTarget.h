@@ -22,7 +22,7 @@ namespace urchin {
             std::size_t getNumColorAttachment() const override;
             std::size_t hasOutputTextureWithContentToLoad() const override;
 
-            void render() override;
+            void render(unsigned int) override;
 
         private:
             bool needCommandBufferRefresh(std::size_t) const override;

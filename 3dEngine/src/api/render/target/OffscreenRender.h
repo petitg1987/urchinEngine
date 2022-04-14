@@ -38,9 +38,9 @@ namespace urchin {
             std::size_t getNumColorAttachment() const override;
             std::size_t hasOutputTextureWithContentToLoad() const override;
 
-            VkSemaphore retrieveQueueSubmitSemaphoreAndFlagUsed();
+            VkSemaphore popQueueSubmitSemaphore();
 
-            void render() override;
+            void render(unsigned int) override;
 
         private:
             void initializeClearValues();
@@ -57,8 +57,8 @@ namespace urchin {
             std::vector<VkClearValue> clearValues;
             std::vector<OutputTexture> outputTextures;
 
-            VkSemaphore queueSubmitSemaphore;
-            bool queueSubmitSemaphoreUsable;
+            std::array<VkSemaphore, 5> queueSubmitSemaphores;
+            unsigned int renderTargetUsageCount;
             VkFence commandBufferFence;
     };
 
