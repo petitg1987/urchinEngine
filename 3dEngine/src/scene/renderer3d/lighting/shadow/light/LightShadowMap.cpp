@@ -112,6 +112,10 @@ namespace urchin {
         textureFilters.push_back(std::move(textureFilter));
     }
 
+    bool LightShadowMap::hasTextureFilter() const {
+        return !textureFilters.empty();
+    }
+
     void LightShadowMap::applyTextureFilters(std::uint64_t frameIndex, unsigned int numDependenciesToOutput) const {
         for (std::size_t i = 0; i < textureFilters.size(); ++i) {
             if (i == textureFilters.size() - 1) {
@@ -154,11 +158,11 @@ namespace urchin {
         return models;
     }
 
-    void LightShadowMap::renderModels(std::uint64_t frameIndex, unsigned int renderingOrder) const {
+    void LightShadowMap::renderModels(std::uint64_t frameIndex, unsigned int numDependenciesToRawShadowMaps, unsigned int renderingOrder) const {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllRenderers();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
-        renderTarget->render(frameIndex, 1); //TODO review hardcoded: always 1 for first shadow map filter ?
+        renderTarget->render(frameIndex, numDependenciesToRawShadowMaps);
     }
 }

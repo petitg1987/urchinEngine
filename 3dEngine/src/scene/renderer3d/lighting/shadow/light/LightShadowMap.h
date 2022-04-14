@@ -33,6 +33,7 @@ namespace urchin {
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
+            bool hasTextureFilter() const;
             void applyTextureFilters(std::uint64_t, unsigned int) const;
             const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
@@ -40,7 +41,7 @@ namespace urchin {
             bool needShadowMapUpdate() const;
             void removeModel(Model* model) const;
 
-            void renderModels(std::uint64_t, unsigned int) const;
+            void renderModels(std::uint64_t, unsigned int, unsigned int) const;
 
         private:
             void createOrUpdateShadowModelSetDisplayer(unsigned int);

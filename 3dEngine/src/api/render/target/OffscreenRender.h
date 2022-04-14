@@ -54,7 +54,7 @@ namespace urchin {
             bool needCommandBufferRefresh(std::size_t) const override;
             void waitCommandBuffersIdle() const override;
 
-            static constexpr std::size_t MAX_SUBMIT_SEMAPHORES = 5;
+            static constexpr std::size_t MAX_SUBMIT_SEMAPHORES = 15;
 
             std::vector<VkClearValue> clearValues;
             std::vector<OutputTexture> outputTextures;
