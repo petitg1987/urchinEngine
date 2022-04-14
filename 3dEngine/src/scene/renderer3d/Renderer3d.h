@@ -102,6 +102,7 @@ namespace urchin {
             void createOrUpdateLightingShader();
             void updateScene(float);
             void deferredRendering(std::uint64_t, float);
+            unsigned int computeDependenciesToFirstPassOutput() const;
             void renderDebugSceneData(GeometryContainer&);
             void lightingPassRendering(std::uint64_t);
             void renderDebugFramebuffers(unsigned int);

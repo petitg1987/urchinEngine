@@ -15,7 +15,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
     bool DEBUG_DISPLAY_COLOR_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
-    bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
+    bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false; //TODO no influence on dependencies counter: why ?
     bool DEBUG_DISPLAY_SHADOW_MAP_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
@@ -453,6 +453,9 @@ namespace urchin {
         //deferred shadow map
         if (visualOption.isShadowActivated) {
             unsigned int numDependenciesToShadowMaps = 1 /* second pass */;
+            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
+                numDependenciesToShadowMaps++; //TODO not working
+            }
             shadowManager.updateShadowMaps(frameIndex, numDependenciesToShadowMaps);
         }
 
@@ -478,20 +481,30 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        unsigned int numDependenciesToFirstPassOutput = 2 /* transparent/accum & second pass */;
-        if (visualOption.isAmbientOcclusionActivated) {
-            numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
-        }
-        deferredRenderTarget->render(frameIndex, numDependenciesToFirstPassOutput);
+        deferredRenderTarget->render(frameIndex, computeDependenciesToFirstPassOutput());
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
             unsigned int numDependenciesToAOTexture = 1 /* second pass */;
+            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
+                numDependenciesToAOTexture++;
+            }
             ambientOcclusionManager.updateAOTexture(frameIndex, numDependenciesToAOTexture, *camera);
         }
 
         unsigned int numDependenciesToTransparentTextures = 1 /* second pass */;
         transparentManager.updateTransparentTextures(frameIndex, numDependenciesToTransparentTextures, *camera);
+    }
+
+    unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
+        unsigned int numDependenciesToFirstPassOutput = 2 /* transparent/accum & second pass */;
+        if (visualOption.isAmbientOcclusionActivated) {
+            numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
+        }
+        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_COLOR_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
+            numDependenciesToFirstPassOutput++;
+        }
+        return numDependenciesToFirstPassOutput;
     }
 
     void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
@@ -599,7 +612,7 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && visualOption.isAmbientOcclusionActivated) { //TODO change the dependencies ???
+            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && visualOption.isAmbientOcclusionActivated) {
                 auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager.getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);
