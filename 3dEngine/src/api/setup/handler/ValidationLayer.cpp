@@ -20,10 +20,8 @@ namespace urchin {
 
         filterOutMessages.clear();
         filterOutMessages.emplace_back("vkQueuePresentKHR(): Returned error VK_ERROR_OUT_OF_DATE_KHR"); //error VK_ERROR_OUT_OF_DATE_KHR is handled by the application
-        filterOutMessages.emplace_back("Attempting to enable deprecated extension VK_EXT_debug_report"); //deprecated extension but still used by Renderdoc
         #ifdef URCHIN_DEBUG
             filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development
-            filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_report"); //same as previous one but deprecated and still used by Renderdoc
         #endif
     }
 
