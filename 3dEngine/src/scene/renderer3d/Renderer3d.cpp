@@ -296,11 +296,10 @@ namespace urchin {
         deferredRendering(frameIndex, dt);
         lightingPassRendering(frameIndex);
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2 /* bloom & screen target */; //TODO where is it used by screen target ?
+            unsigned int numDependenciesToAATexture = 2 /* bloom pre-filter & bloom combine (screen target) */;
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
-        unsigned int numDependenciesToBloomTexture = 1 /* screen target */;
-        bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomTexture, screenRenderingOrder);
+        bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -549,7 +548,12 @@ namespace urchin {
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        unsigned int numDependenciesToSecondPassOutput = 1 /* anti aliasing OR bloom */;
+        unsigned int numDependenciesToSecondPassOutput;
+        if (isAntiAliasingActivated) {
+            numDependenciesToSecondPassOutput = 1 /* anti aliasing */;
+        } else {
+            numDependenciesToSecondPassOutput = 2 /* bloom pre-filter && bloom combine (screen target) */;
+        }
         lightingRenderTarget->render(frameIndex, numDependenciesToSecondPassOutput);
     }
 
