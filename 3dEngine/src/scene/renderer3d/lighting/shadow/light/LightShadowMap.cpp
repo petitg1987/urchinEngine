@@ -74,13 +74,6 @@ namespace urchin {
         return nbShadowMaps;
     }
 
-    /**
-     * Returns shadow map texture (variance shadow map)
-     */
-    const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
-        return shadowMapTexture;
-    }
-
     void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
         assert(renderTarget);
         std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};

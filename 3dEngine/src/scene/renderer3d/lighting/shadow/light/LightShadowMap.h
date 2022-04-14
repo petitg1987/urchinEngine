@@ -27,7 +27,6 @@ namespace urchin {
             const OctreeManager<Model>& getModelOctreeManager() const;
             float getViewingShadowDistance() const;
             unsigned int getNumberShadowMaps() const;
-            const std::shared_ptr<Texture>& getShadowMapTexture() const;
 
             LightSplitShadowMap& addLightSplitShadowMap();
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;

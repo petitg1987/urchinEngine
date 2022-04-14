@@ -16,7 +16,6 @@ namespace urchin {
     bool DEBUG_DISPLAY_COLOR_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false; //TODO no influence on dependencies counter: why ?
-    bool DEBUG_DISPLAY_SHADOW_MAP_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
@@ -453,9 +452,6 @@ namespace urchin {
         //deferred shadow map
         if (visualOption.isShadowActivated) {
             unsigned int numDependenciesToShadowMaps = 1 /* second pass */;
-            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER) {
-                numDependenciesToShadowMaps++; //TODO not working
-            }
             shadowManager.updateShadowMaps(frameIndex, numDependenciesToShadowMaps);
         }
 
@@ -600,15 +596,6 @@ namespace urchin {
                 auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight);
-                debugFramebuffers.emplace_back(std::move(textureRenderer));
-            }
-
-            if (DEBUG_DISPLAY_SHADOW_MAP_BUFFER && visualOption.isShadowActivated && !lightManager.getSunLights().empty()) {
-                const std::shared_ptr<Light> firstLight = lightManager.getSunLights()[0]; //choose light
-                const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps - 1]
-                auto textureRenderer = std::make_unique<TextureRenderer>(shadowManager.getLightShadowMap(firstLight.get()).getShadowMapTexture(), shadowMapNumber, TextureRenderer::DEFAULT_VALUE);
-                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] shadow map", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
