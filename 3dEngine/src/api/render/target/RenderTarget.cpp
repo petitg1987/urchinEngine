@@ -370,7 +370,7 @@ namespace urchin {
 
         std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
         for (auto& renderDependency : renderDependencies) {
-            VkSemaphore waitSemaphore = renderDependency->popQueueSubmitSemaphore(frameIndex);
+            VkSemaphore waitSemaphore = renderDependency->popSubmitSemaphore(frameIndex);
             if (waitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(waitSemaphore);
                 queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);

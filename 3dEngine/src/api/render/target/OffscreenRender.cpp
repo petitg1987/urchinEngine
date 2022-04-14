@@ -10,9 +10,9 @@ namespace urchin {
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
             commandBufferFence(nullptr),
-            queueSubmitSemaphores({}),
-            queueSubmitSemaphoresGenerationFrameIndex(0),
-            renderTargetUsageCount(0) {
+            submitSemaphores({}),
+            submitSemaphoresFrameIndex(0),
+            remainingSubmitSemaphores(0) {
 
     }
 
@@ -186,10 +186,10 @@ namespace urchin {
             throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
         }
 
-        for (VkSemaphore& queueSubmitSemaphore : queueSubmitSemaphores) {
+        for (VkSemaphore& submitSemaphore : submitSemaphores) {
             VkSemaphoreCreateInfo semaphoreInfo{};
             semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-            VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &queueSubmitSemaphore);
+            VkResult semaphoreResult = vkCreateSemaphore(GraphicService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &submitSemaphore);
             if (semaphoreResult != VK_SUCCESS) {
                 throw std::runtime_error("Failed to create semaphore with error code '" + std::to_string(semaphoreResult) + "' on render target: " + getName());
             }
@@ -198,35 +198,38 @@ namespace urchin {
 
     void OffscreenRender::destroySyncObjects() {
         vkDestroyFence(GraphicService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
-        for (VkSemaphore& queueSubmitSemaphore : queueSubmitSemaphores) {
-            vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), queueSubmitSemaphore, nullptr);
+        for (VkSemaphore& submitSemaphore : submitSemaphores) {
+            vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), submitSemaphore, nullptr);
         }
     }
 
-    VkSemaphore OffscreenRender::popQueueSubmitSemaphore(std::uint64_t frameIndex) {
-        if (queueSubmitSemaphoresGenerationFrameIndex == frameIndex) {
-            assert(renderTargetUsageCount >= 1); //TODO use exception !
-            --renderTargetUsageCount;
-            return queueSubmitSemaphores[renderTargetUsageCount];
-        } else if (queueSubmitSemaphoresGenerationFrameIndex < frameIndex) { //TODO review comment: already synchronized in previous frame
+    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint64_t frameIndex) {
+        if (submitSemaphoresFrameIndex == frameIndex) {
+            if (remainingSubmitSemaphores == 0) {
+                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex));
+            }
+            return submitSemaphores[--remainingSubmitSemaphores];
+        } else if (submitSemaphoresFrameIndex < frameIndex) {
+            //This render target has been generated in a previous frame: therefore, the synchronization is already done and no need to be redone. Typical case is when the render target is cached.
             return nullptr;
         }
-        throw std::runtime_error(""); //TODO do it !
+        throw std::runtime_error("Current frame index (" + std::to_string(frameIndex) + ") cannot be lower to the submit semaphores frame index (" + std::to_string(submitSemaphoresFrameIndex) + ") on render target: " + getName() + "/" + std::to_string(frameIndex));
     }
 
-    void OffscreenRender::render(std::uint64_t frameIndex, unsigned int renderTargetUsageCount) { //TODO review name
+    void OffscreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputTextures) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
-
-        assert(renderTargetUsageCount <= queueSubmitSemaphores.size()); //TODO use exception !
-        assert(this->renderTargetUsageCount == 0); //TODO use exception !
-        this->renderTargetUsageCount = renderTargetUsageCount;
-
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
             throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+        }
+
+        if (numDependenciesToOutputTextures > MAX_SUBMIT_SEMAPHORES) {
+            throw std::runtime_error("Number of dependencies to output textures (" + std::to_string(numDependenciesToOutputTextures) + ") is higher that the maximum expected on render target: " + getName() + "/" + std::to_string(frameIndex));
+        } else if (remainingSubmitSemaphores != 0) {
+            throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         updateTexturesWriter();
@@ -238,9 +241,10 @@ namespace urchin {
         configureWaitSemaphore(frameIndex, submitInfo, std::nullopt);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
-        submitInfo.signalSemaphoreCount = renderTargetUsageCount;
-        submitInfo.pSignalSemaphores = queueSubmitSemaphores.data();
-        this->queueSubmitSemaphoresGenerationFrameIndex = frameIndex;
+        submitInfo.signalSemaphoreCount = numDependenciesToOutputTextures;
+        submitInfo.pSignalSemaphores = submitSemaphores.data();
+        remainingSubmitSemaphores = numDependenciesToOutputTextures;
+        submitSemaphoresFrameIndex = frameIndex;
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
         if (resultResetFences != VK_SUCCESS) {
