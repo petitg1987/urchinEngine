@@ -216,7 +216,7 @@ namespace urchin {
         throw std::runtime_error("Current frame index (" + std::to_string(frameIndex) + ") cannot be lower to the submit semaphores frame index (" + std::to_string(submitSemaphoresFrameIndex) + ") on render target: " + getName() + "/" + std::to_string(frameIndex));
     }
 
-    void OffscreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputTextures) {
+    void OffscreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
@@ -226,8 +226,8 @@ namespace urchin {
             throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
-        if (numDependenciesToOutputTextures > MAX_SUBMIT_SEMAPHORES) {
-            throw std::runtime_error("Number of dependencies to output textures (" + std::to_string(numDependenciesToOutputTextures) + ") is higher that the maximum expected on render target: " + getName() + "/" + std::to_string(frameIndex));
+        if (numDependenciesToOutputs > MAX_SUBMIT_SEMAPHORES) {
+            throw std::runtime_error("Number of dependencies to output (" + std::to_string(numDependenciesToOutputs) + ") is higher that the maximum expected on render target: " + getName() + "/" + std::to_string(frameIndex));
         } else if (remainingSubmitSemaphores != 0) {
             throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
@@ -241,9 +241,9 @@ namespace urchin {
         configureWaitSemaphore(frameIndex, submitInfo, std::nullopt);
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[0];
-        submitInfo.signalSemaphoreCount = numDependenciesToOutputTextures;
+        submitInfo.signalSemaphoreCount = numDependenciesToOutputs;
         submitInfo.pSignalSemaphores = submitSemaphores.data();
-        remainingSubmitSemaphores = numDependenciesToOutputTextures;
+        remainingSubmitSemaphores = numDependenciesToOutputs;
         submitSemaphoresFrameIndex = frameIndex;
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);

@@ -268,18 +268,25 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::updateAOTexture(std::uint64_t frameIndex, const Camera& camera) {
+    void AmbientOcclusionManager::updateAOTexture(std::uint64_t frameIndex, unsigned int numDependenciesToAOTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         positioningData.viewMatrix = camera.getViewMatrix();
         renderer->updateUniformData(1, &positioningData);
 
-        renderTarget->render(frameIndex, 1); //TODO review hardcoded
-
         if (config.isBlurActivated) {
-            verticalBlurFilter->applyFilter(frameIndex);
-            horizontalBlurFilter->applyFilter(frameIndex);
+            unsigned int numDependenciesToRawAOTexture = 1 /* vertical blur filter */;
+            renderTarget->render(frameIndex, numDependenciesToRawAOTexture);
+
+            unsigned int numDependenciesToVerticalBlurFilterOutputs = 1 /* horizontal blur filter */;
+            verticalBlurFilter->applyFilter(frameIndex, numDependenciesToVerticalBlurFilterOutputs);
+
+            unsigned int numDependenciesToHorizontalBlurFilterOutputs = numDependenciesToAOTexture;
+            horizontalBlurFilter->applyFilter(frameIndex, numDependenciesToHorizontalBlurFilterOutputs);
+        } else {
+            unsigned int numDependenciesToRawAOTexture = numDependenciesToAOTexture;
+            renderTarget->render(frameIndex, numDependenciesToRawAOTexture);
         }
     }
 

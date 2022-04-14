@@ -222,7 +222,7 @@ namespace urchin {
         }
     }
 
-    void ScreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputTextures) {
+    void ScreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
@@ -232,8 +232,8 @@ namespace urchin {
             throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
-        if (numDependenciesToOutputTextures != 0) {
-            throw std::runtime_error("No dependencies to output textures expected on screen render target: " + getName() + "/" + std::to_string(frameIndex));
+        if (numDependenciesToOutputs != 0) {
+            throw std::runtime_error("No dependencies to outputs expected on screen render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);

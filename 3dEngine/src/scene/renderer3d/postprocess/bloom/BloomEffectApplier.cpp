@@ -207,15 +207,25 @@ namespace urchin {
         }
     }
 
-    void BloomEffectApplier::applyBloom(std::uint64_t frameIndex, unsigned int renderingOrder) const {
+    void BloomEffectApplier::applyBloom(std::uint64_t frameIndex, unsigned int numDependenciesToBloomTexture, unsigned int renderingOrder) const {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
-        preFilterRenderTarget->render(frameIndex, 1); //TODO review hardcoded
+        unsigned int numDependenciesToPreFilterOutput = 1 /* first down sample */;
+        preFilterRenderTarget->render(frameIndex, numDependenciesToPreFilterOutput);
+
         for (const auto& downSampleRenderTarget : downSampleRenderTargets) {
-            downSampleRenderTarget->render(frameIndex, 1); //TODO review hardcoded
+            unsigned int numDependenciesToDownSampleOutput = 1 /*next down sample OR first up sample */;
+            downSampleRenderTarget->render(frameIndex, numDependenciesToDownSampleOutput);
         }
-        for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
-            upSampleRenderTarget->render(frameIndex, 1); //TODO review hardcoded
+
+        for(std::size_t i = 0; i < upSampleRenderTargets.size(); ++i) {
+            if (i == upSampleRenderTargets.size() - 1) {
+                unsigned int numDependenciesToUpSampleOutput = numDependenciesToBloomTexture;
+                upSampleRenderTargets[i]->render(frameIndex, numDependenciesToUpSampleOutput);
+            } else {
+                unsigned int numDependenciesToUpSampleOutput = 1 /* next up sample */;
+                upSampleRenderTargets[i]->render(frameIndex, numDependenciesToUpSampleOutput);
+            }
         }
 
         combineRenderer->enableRenderer(renderingOrder);

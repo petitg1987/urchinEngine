@@ -296,9 +296,11 @@ namespace urchin {
         deferredRendering(frameIndex, dt);
         lightingPassRendering(frameIndex);
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.applyAntiAliasing(frameIndex);
+            unsigned int numDependenciesToAATexture = 2 /* bloom & screen target */;
+            antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
-        bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);
+        unsigned int numDependenciesToBloomTexture = 1 /* screen target */;
+        bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomTexture, screenRenderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -451,7 +453,8 @@ namespace urchin {
 
         //deferred shadow map
         if (visualOption.isShadowActivated) {
-            shadowManager.updateShadowMaps(frameIndex);
+            unsigned int numDependenciesToShadowMaps = 1 /* second pass */;
+            shadowManager.updateShadowMaps(frameIndex, numDependenciesToShadowMaps);
         }
 
         //deferred scene (depth, color, normal, ambient...)
@@ -476,14 +479,16 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        deferredRenderTarget->render(frameIndex, 5); //TODO review hardcoded
+        deferredRenderTarget->render(frameIndex, 5); //TODO review hardcoded + /!\ if several shadow maps
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
-            ambientOcclusionManager.updateAOTexture(frameIndex, *camera);
+            unsigned int numDependenciesToAOTexture = 1 /* second pass */;
+            ambientOcclusionManager.updateAOTexture(frameIndex, numDependenciesToAOTexture, *camera);
         }
 
-        transparentManager.updateTransparentTextures(frameIndex, *camera);
+        unsigned int numDependenciesToTransparentTextures = 1 /* second pass */;
+        transparentManager.updateTransparentTextures(frameIndex, numDependenciesToTransparentTextures, *camera);
     }
 
     void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
@@ -540,7 +545,7 @@ namespace urchin {
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        lightingRenderTarget->render(frameIndex, 1); //TODO review hardcoded
+        lightingRenderTarget->render(frameIndex, 1); //TODO review hardcoded (2 when AA is disabled ? bloom & aa)
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {

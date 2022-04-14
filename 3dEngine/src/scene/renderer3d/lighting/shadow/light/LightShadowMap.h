@@ -33,7 +33,7 @@ namespace urchin {
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
-            void applyTextureFilters(std::uint64_t) const;
+            void applyTextureFilters(std::uint64_t, unsigned int) const;
             const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
             const Matrix4<float>& getLightViewMatrix() const;

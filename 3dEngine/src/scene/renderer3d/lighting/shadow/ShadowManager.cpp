@@ -262,14 +262,14 @@ namespace urchin {
         bForceUpdateAllShadowMaps = true;
     }
 
-    void ShadowManager::updateShadowMaps(std::uint64_t frameIndex) const {
+    void ShadowManager::updateShadowMaps(std::uint64_t frameIndex, unsigned int numDependenciesToShadowMaps) const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
         unsigned int renderingOrder = 0;
 
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
             if (lightShadowMap->needShadowMapUpdate()) {
                 lightShadowMap->renderModels(frameIndex, renderingOrder);
-                lightShadowMap->applyTextureFilters(frameIndex);
+                lightShadowMap->applyTextureFilters(frameIndex, numDependenciesToShadowMaps);
             }
         }
     }

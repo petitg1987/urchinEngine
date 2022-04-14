@@ -113,10 +113,10 @@ namespace urchin {
         return config;
     }
 
-    void AntiAliasingApplier::applyAntiAliasing(std::uint64_t frameIndex) const {
+    void AntiAliasingApplier::applyAntiAliasing(std::uint64_t frameIndex, unsigned int numDependenciesToAATexture) const {
         ScopeProfiler sp(Profiler::graphic(), "applyAA");
 
-        renderTarget->render(frameIndex, 2); //TODO review hardcoded
+        renderTarget->render(frameIndex, numDependenciesToAATexture);
     }
 
 }
