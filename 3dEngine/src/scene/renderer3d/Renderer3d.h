@@ -105,6 +105,7 @@ namespace urchin {
             unsigned int computeDependenciesToFirstPassOutput() const;
             void renderDebugSceneData(GeometryContainer&);
             void lightingPassRendering(std::uint64_t);
+            unsigned int computeDependenciesToSecondPassOutput() const;
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();
 
@@ -136,7 +137,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> diffuseTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::shared_ptr<Texture> lightingPassTexture;
+            std::shared_ptr<Texture> illuminatedTexture;
 
             //lighting pass rendering + post process
             std::unique_ptr<RenderTarget> lightingRenderTarget;

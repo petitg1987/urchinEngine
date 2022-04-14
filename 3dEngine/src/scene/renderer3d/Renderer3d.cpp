@@ -15,7 +15,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
     bool DEBUG_DISPLAY_COLOR_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
-    bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false; //TODO no influence on dependencies counter: why ?
+    bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
@@ -332,11 +332,11 @@ namespace urchin {
         }
 
         //lighting pass rendering
-        lightingPassTexture = Texture::build("lighted scene", sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
+        illuminatedTexture = Texture::build("illuminated scene", sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
         if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
             auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
             offscreenLightingRenderTarget->resetOutputTextures();
-            offscreenLightingRenderTarget->addOutputTexture(lightingPassTexture);
+            offscreenLightingRenderTarget->addOutputTexture(illuminatedTexture);
             offscreenLightingRenderTarget->initialize();
         }
 
@@ -378,9 +378,9 @@ namespace urchin {
 
         //post process rendering
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.onTextureUpdate(lightingPassTexture);
+            antiAliasingApplier.onTextureUpdate(illuminatedTexture);
         }
-        bloomEffectApplier.onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier.getOutputTexture() : lightingPassTexture);
+        bloomEffectApplier.onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier.getOutputTexture() : illuminatedTexture);
 
         refreshDebugFramebuffers = true;
     }
@@ -498,7 +498,7 @@ namespace urchin {
             numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
         }
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_COLOR_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER) {
-            numDependenciesToFirstPassOutput++;
+            numDependenciesToFirstPassOutput++; //bloom combine (screen target)
         }
         return numDependenciesToFirstPassOutput;
     }
@@ -557,13 +557,20 @@ namespace urchin {
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
+        lightingRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());
+    }
+
+    unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
         unsigned int numDependenciesToSecondPassOutput;
         if (isAntiAliasingActivated) {
             numDependenciesToSecondPassOutput = 1 /* anti aliasing */;
+            if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
+                numDependenciesToSecondPassOutput++; //bloom combine (screen target)
+            }
         } else {
             numDependenciesToSecondPassOutput = 2 /* bloom pre-filter && bloom combine (screen target) */;
         }
-        lightingRenderTarget->render(frameIndex, numDependenciesToSecondPassOutput);
+        return numDependenciesToSecondPassOutput;
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {
@@ -592,10 +599,10 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(lightingPassTexture, TextureRenderer::DEFAULT_VALUE);
+            if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(illuminatedTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] lighting pass texture", finalRenderTarget, sceneWidth, sceneHeight);
+                textureRenderer->initialize("[DEBUG] illuminated texture", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
