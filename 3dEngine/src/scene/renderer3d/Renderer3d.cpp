@@ -296,7 +296,7 @@ namespace urchin {
         deferredRendering(frameIndex, dt);
         lightingPassRendering(frameIndex);
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2 /* bloom & screen target */;
+            unsigned int numDependenciesToAATexture = 2 /* bloom & screen target */; //TODO where is it used by screen target ?
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
         unsigned int numDependenciesToBloomTexture = 1 /* screen target */;
@@ -479,7 +479,11 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        deferredRenderTarget->render(frameIndex, 5); //TODO review hardcoded + /!\ if several shadow maps
+        unsigned int numDependenciesToFirstPassOutput = 2 /* transparent/accum & second pass */;
+        if (visualOption.isAmbientOcclusionActivated) {
+            numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
+        }
+        deferredRenderTarget->render(frameIndex, numDependenciesToFirstPassOutput);
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
@@ -545,7 +549,8 @@ namespace urchin {
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
-        lightingRenderTarget->render(frameIndex, 1); //TODO review hardcoded (2 when AA is disabled ? bloom & aa)
+        unsigned int numDependenciesToSecondPassOutput = 1 /* anti aliasing OR bloom */;
+        lightingRenderTarget->render(frameIndex, numDependenciesToSecondPassOutput);
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {
@@ -590,7 +595,7 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && visualOption.isAmbientOcclusionActivated) {
+            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER && visualOption.isAmbientOcclusionActivated) { //TODO change the dependencies ???
                 auto textureRenderer = std::make_unique<TextureRenderer>(ambientOcclusionManager.getAmbientOcclusionTexture(), TextureRenderer::INVERSE_GRAYSCALE_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] ambient occlusion texture", finalRenderTarget, sceneWidth, sceneHeight, 0.0f, 0.05f);
