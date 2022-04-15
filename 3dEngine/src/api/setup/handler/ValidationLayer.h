@@ -12,7 +12,7 @@ namespace urchin {
             void initializeDebugMessenger(VkInstance);
             void cleanup();
 
-            bool isValidationActive() const;
+            bool getValidationLevel() const;
             std::vector<std::string> getRequiredExtensions() const;
 
         private:
@@ -28,7 +28,7 @@ namespace urchin {
             static std::vector<std::string> filterOutMessages;
             std::vector<const char*> validationLayer;
 
-            bool bIsValidationActive;
+            unsigned int validationLevel;
 
             VkInstance instance;
             VkDebugUtilsMessengerEXT debugMessenger;

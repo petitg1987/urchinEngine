@@ -11,7 +11,7 @@ namespace urchin {
 
     ValidationLayer::ValidationLayer() :
             validationLayer({"VK_LAYER_KHRONOS_validation"}),
-            bIsValidationActive(ConfigService::instance().getBoolValue("graphics.validationLayerEnable")),
+            validationLevel(ConfigService::instance().getUnsignedIntValue("graphics.apiValidationLevel")),
             instance(nullptr),
             debugMessenger(nullptr),
             instanceDebugCreateInfo({}),
@@ -20,13 +20,11 @@ namespace urchin {
 
         filterOutMessages.clear();
         filterOutMessages.emplace_back("vkQueuePresentKHR(): Returned error VK_ERROR_OUT_OF_DATE_KHR"); //error VK_ERROR_OUT_OF_DATE_KHR is handled by the application
-        #ifdef URCHIN_DEBUG
-            filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development
-        #endif
+        filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development/production
     }
 
     void ValidationLayer::initializeDebugMessengerForInstance(VkInstanceCreateInfo& instanceCreateInfo) {
-        if (bIsValidationActive) {
+        if (validationLevel >= 2) {
             if (!checkValidationLayerSupport()) {
                 throw std::runtime_error("Vulkan validation layers requested but not available");
             }
@@ -40,7 +38,11 @@ namespace urchin {
             featureEnables[2] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT;
             featureEnables[3] = VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT;
             features.sType = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
-            features.enabledValidationFeatureCount = (uint32_t)featureEnables.size();
+            if (validationLevel >= 3) {
+                features.enabledValidationFeatureCount = (uint32_t)featureEnables.size();
+            } else {
+                features.enabledValidationFeatureCount = 1;
+            }
             features.pEnabledValidationFeatures = featureEnables.data();
             instanceDebugCreateInfo.pNext = &features;
         } else {
@@ -50,7 +52,7 @@ namespace urchin {
     }
 
     void ValidationLayer::initializeDebugMessenger(VkInstance vkInstance) {
-        if (bIsValidationActive) {
+        if (validationLevel >= 2) {
             this->instance = vkInstance;
 
             VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
@@ -64,17 +66,17 @@ namespace urchin {
     }
 
     void ValidationLayer::cleanup() {
-        if (bIsValidationActive && instance) {
+        if (validationLevel >= 2 && instance) {
             destroyDebugUtilsMessengerEXT(instance);
         }
     }
 
-    bool ValidationLayer::isValidationActive() const {
-        return bIsValidationActive;
+    bool ValidationLayer::getValidationLevel() const {
+        return validationLevel;
     }
 
     std::vector<std::string> ValidationLayer::getRequiredExtensions() const {
-        if (bIsValidationActive) {
+        if (validationLevel >= 2) {
             return {VK_EXT_DEBUG_UTILS_EXTENSION_NAME};
         }
         return {};

@@ -6,7 +6,7 @@
 namespace urchin {
 
     void DebugLabelHelper::nameObject(ObjectType objectType, void* object, std::string_view objectName) {
-        if (GraphicService::instance().getValidationLayer().isValidationActive()) {
+        if (GraphicService::instance().getValidationLayer().getValidationLevel() >= 1) {
             auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 
             auto pfnSetDebugUtilsObjectNameEXT = reinterpret_cast<PFN_vkSetDebugUtilsObjectNameEXT>(vkGetDeviceProcAddr(logicalDevice, "vkSetDebugUtilsObjectNameEXT"));
@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     void DebugLabelHelper::beginDebugRegion(VkCommandBuffer commandBuffer, const std::string& labelName, const Vector4<float>& color) {
-        if (GraphicService::instance().getValidationLayer().isValidationActive()) {
+        if (GraphicService::instance().getValidationLayer().getValidationLevel() >= 1) {
             auto pfnCmdBeginDebugUtilsLabel = reinterpret_cast<PFN_vkCmdBeginDebugUtilsLabelEXT>(vkGetDeviceProcAddr(GraphicService::instance().getDevices().getLogicalDevice(), "vkCmdBeginDebugUtilsLabelEXT"));
 
             VkDebugUtilsLabelEXT markerInfo{};
@@ -36,7 +36,7 @@ namespace urchin {
     }
 
     void DebugLabelHelper::endDebugRegion(VkCommandBuffer commandBuffer) {
-        if (GraphicService::instance().getValidationLayer().isValidationActive()) {
+        if (GraphicService::instance().getValidationLayer().getValidationLevel() >= 1) {
             auto pfnCmdEndDebugUtilsLabel = reinterpret_cast<PFN_vkCmdEndDebugUtilsLabelEXT>(vkGetDeviceProcAddr(GraphicService::instance().getDevices().getLogicalDevice(), "vkCmdEndDebugUtilsLabelEXT"));
 
             pfnCmdEndDebugUtilsLabel(commandBuffer);
