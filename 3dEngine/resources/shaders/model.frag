@@ -22,7 +22,7 @@ void main() {
 
     //normal and ambient factor
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
-    vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
+    vec3 texNormal = normalize(texture(normalTex, texCoordinates).rgb * 2.0 - 1.0);
     vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(normal, materialData.ambientFactor);
 }
