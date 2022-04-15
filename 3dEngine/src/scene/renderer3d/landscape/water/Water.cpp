@@ -18,9 +18,6 @@ namespace urchin {
             gradient(0.0f) {
         waterShader = ShaderBuilder::createShader("water.vert.spv", "", "water.frag.spv");
 
-        normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255}), false).createTexture(false);
-        dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255}), false).createTexture(false);
-
         //general properties
         setCenterPosition(Point3<float>(0.0f, 0.0f, 0.0f));
         setXSize(1000.0f);
@@ -130,7 +127,9 @@ namespace urchin {
         this->normalFilename = std::move(normalFilename);
 
         if (this->normalFilename.empty()) {
-            normalTexture = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255}), false).createTexture(false);
+            Image normalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255}), false);
+            normalImage.setName("default water normal");
+            normalTexture = normalImage.createTexture(false);
         } else {
             auto normalImage = ResourceRetriever::instance().getResource<Image>(this->normalFilename);
             if (normalImage->getImageFormat() != Image::IMAGE_RGBA) {
@@ -150,7 +149,9 @@ namespace urchin {
         this->dudvFilename = std::move(dudvFilename);
 
         if (this->dudvFilename.empty()) {
-            dudvMap = Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 255, 255}), false).createTexture(false);
+            Image dudvImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 255, 255}), false);
+            dudvImage.setName("default water dudv");
+            dudvMap = dudvImage.createTexture(false);
         } else {
             auto dudvImage = ResourceRetriever::instance().getResource<Image>(this->dudvFilename);
             if (dudvImage->getImageFormat() != Image::IMAGE_RGBA) {
