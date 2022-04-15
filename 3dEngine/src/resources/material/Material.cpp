@@ -14,9 +14,8 @@ namespace urchin {
             depthTestEnabled(materialBuilder.isDepthTestEnabled()),
             depthWriteEnabled(materialBuilder.isDepthWriteEnabled()) {
         if (!this->normalTexture) {
-            Image defaultNormalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({127, 127, 255, 255}), false);
-            defaultNormalImage.setName(materialBuilder.getMaterialName() + " - default normal");
-            this->normalTexture = defaultNormalImage.createTexture(false);
+            std::vector<unsigned char> defaultNormalColor({127, 127, 255, 255});
+            this->normalTexture = Texture::build(materialBuilder.getMaterialName() + " - default normal", 1, 1, TextureFormat::RGBA_8_INT, defaultNormalColor.data());
         }
     }
 

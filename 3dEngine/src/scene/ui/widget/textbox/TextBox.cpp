@@ -46,9 +46,7 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
-        Image cursorImage(1, 1, Image::IMAGE_RGBA, std::move(cursorColor), false);
-        cursorImage.setName("cursor diffuse");
-        texCursorDiffuse = cursorImage.createTexture(false);
+        texCursorDiffuse = Texture::build("cursor diffuse", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
         refreshText((int)cursorIndex, false);
         computeCursorPosition();
 

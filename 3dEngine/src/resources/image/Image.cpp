@@ -92,7 +92,7 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<Texture> Image::createTexture(bool generateMipMap) {
+    std::shared_ptr<Texture> Image::createTexture(bool generateMipMap) { //TODO remove this method and create a texture (avoid to create texture several time from same image)
         if (getName().empty()) {
             throw std::runtime_error("Image name must be provided before create the texture");
         }

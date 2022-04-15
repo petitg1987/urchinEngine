@@ -115,9 +115,7 @@ namespace urchin {
         }
 
         //create the texture
-        Image widgetImage(width, height, rawWidgetImage->getImageFormat(), std::move(texels), rawWidgetImage->hasTransparency());
-        widgetImage.setName("9-slicing widget");
-        return widgetImage.createTexture(false);
+        return Texture::build("9-slicing widget", width, height, rawWidgetImage->retrieveTextureFormat(), texels.data());
     }
 
     /**

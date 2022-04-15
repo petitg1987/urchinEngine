@@ -118,9 +118,7 @@ namespace urchin {
             }
         }
 
-        Image alphabetImage(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels), true);
-        alphabetImage.setName(ttfFilename);
-        auto alphabetTexture = alphabetImage.createTexture(false);
+        auto alphabetTexture = Texture::build(ttfFilename, dimensionTexture, dimensionTexture, TextureFormat::RGBA_8_INT, texels.data());
 
         //clear buffers of letters
         for (std::size_t i = 0; i < Font::NUM_LETTERS; i++) {

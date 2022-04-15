@@ -254,14 +254,12 @@ namespace urchin {
         this->grassMaskFilename = std::move(grassMaskFilename);
 
         if (this->grassMaskFilename.empty()) {
-            Image grassMaskImage(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}), false);
-            grassMaskImage.setName("default grass mask");
-            grassMaskTexture = grassMaskImage.createTexture(false);
+            std::vector<unsigned char> grassMaskColor({0});
+            grassMaskTexture = Texture::build("default grass mask", 1, 1, TextureFormat::GRAYSCALE_8_INT, grassMaskColor.data());
         } else {
             auto grassMaskImage = ResourceRetriever::instance().getResource<Image>(this->grassMaskFilename);
             grassMaskTexture = grassMaskImage->createTexture(false);
         }
-
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {

@@ -10,9 +10,8 @@ namespace urchin {
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
         if (this->maskMapFilename.empty()) {
-            Image maskImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0}), true);
-            maskImage.setName("default terrain mask");
-            maskTexture = maskImage.createTexture(false);
+            std::vector<unsigned char> terrainMaskColor({255, 0, 0, 0});
+            maskTexture = Texture::build("default terrain mask", 1, 1, TextureFormat::RGBA_8_INT, terrainMaskColor.data());
         } else {
             auto maskImage = ResourceRetriever::instance().getResource<Image>(this->maskMapFilename);
             if (maskImage->getImageFormat() != Image::IMAGE_RGBA) {

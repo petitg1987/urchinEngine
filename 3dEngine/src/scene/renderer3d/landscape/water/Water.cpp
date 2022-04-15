@@ -127,9 +127,8 @@ namespace urchin {
         this->normalFilename = std::move(normalFilename);
 
         if (this->normalFilename.empty()) {
-            Image normalImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 255, 0, 255}), false);
-            normalImage.setName("default water normal");
-            normalTexture = normalImage.createTexture(false);
+            std::vector<unsigned char> waterNormalColor({0, 255, 0, 255});
+            normalTexture = Texture::build("default water normal", 1, 1, TextureFormat::RGBA_8_INT, waterNormalColor.data());
         } else {
             auto normalImage = ResourceRetriever::instance().getResource<Image>(this->normalFilename);
             if (normalImage->getImageFormat() != Image::IMAGE_RGBA) {
@@ -149,9 +148,8 @@ namespace urchin {
         this->dudvFilename = std::move(dudvFilename);
 
         if (this->dudvFilename.empty()) {
-            Image dudvImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 255, 255}), false);
-            dudvImage.setName("default water dudv");
-            dudvMap = dudvImage.createTexture(false);
+            std::vector<unsigned char> waterDudvColor({255, 0, 255, 255});
+            dudvMap = Texture::build("default water dudv", 1, 1, TextureFormat::RGBA_8_INT, waterDudvColor.data());
         } else {
             auto dudvImage = ResourceRetriever::instance().getResource<Image>(this->dudvFilename);
             if (dudvImage->getImageFormat() != Image::IMAGE_RGBA) {
