@@ -14,24 +14,19 @@ namespace urchin {
     class StaticBitmap : public Widget {
         public:
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, const std::string&);
-            static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, std::shared_ptr<Image>);
+            static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, const std::shared_ptr<Image>&);
 
             WidgetType getWidgetType() const override;
-
-            const std::string& getImageName() const;
 
         protected:
             void createOrUpdateWidget() override;
             void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
-            StaticBitmap(Position, Size, std::shared_ptr<Image>);
-
-            //properties
-            std::shared_ptr<Image> image;
+            StaticBitmap(Position, Size, std::shared_ptr<Texture>);
 
             //visual
-            std::shared_ptr<Texture> tex;
+            std::shared_ptr<Texture> texture;
             std::unique_ptr<GenericRenderer> bitmapRenderer;
     };
 

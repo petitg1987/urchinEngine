@@ -35,8 +35,6 @@ namespace urchin {
             unsigned int retrieveComponentsCount() const;
             TextureFormat retrieveTextureFormat() const;
 
-            std::shared_ptr<Texture> createTexture(bool);
-
         private:
             unsigned int width;
             unsigned int height;

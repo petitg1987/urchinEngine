@@ -2,11 +2,13 @@
 
 #include <memory>
 #include <vector>
+#include <optional>
 #include <vulkan/vulkan.h>
 #include <UrchinCommon.h>
 
 #include <api/texture/TextureType.h>
 #include <api/texture/TextureFormat.h>
+#include <resources/Resource.h>
 
 VK_DEFINE_HANDLE(VmaAllocation)
 
@@ -14,9 +16,9 @@ namespace urchin {
 
     class OffscreenRender;
 
-    class Texture {
+    class Texture : public Resource {
         public:
-            ~Texture();
+            ~Texture() override;
 
             static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void*);
             static std::shared_ptr<Texture> buildArray(std::string, unsigned int, unsigned int, unsigned int, TextureFormat, const void*);
@@ -31,25 +33,27 @@ namespace urchin {
 
             void initialize();
 
-            const std::string& getName() const;
             TextureType getTextureType() const;
             unsigned int getWidth() const;
             unsigned int getHeight() const;
             unsigned int getLayer() const;
-            bool hasMipmap() const;
-
+            TextureFormat getFormat() const;
+            bool isDepthFormat() const;
             uint32_t getMipLevels() const;
+            bool hasMipmap() const;
+            void setHasTransparency(bool);
+            bool hasTransparency() const;
             bool isWritableTexture() const;
+
             void setLastTextureWriter(OffscreenRender*);
             OffscreenRender* getLastTextureWriter() const;
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
-            bool isDepthFormat() const;
 
             void takeCapture(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
         private:
-            Texture(std::string, TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
+            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
 
             void cleanup();
 
@@ -63,11 +67,6 @@ namespace urchin {
             unsigned int getBytesByPixel() const;
 
             bool isInitialized;
-            std::string name;
-
-            uint32_t mipLevels;
-            bool writableTexture;
-            OffscreenRender* lastTextureWriter;
 
             TextureType textureType;
             unsigned int width;
@@ -76,7 +75,11 @@ namespace urchin {
             std::size_t nbImages;
             TextureFormat format;
             std::vector<std::vector<uint8_t>> dataPtr;
+            uint32_t mipLevels;
+            std::optional<bool> bHasTransparency;
+            bool writableTexture;
 
+            OffscreenRender* lastTextureWriter;
             VkImage textureImage;
             VmaAllocation textureImageMemory;
             VkImageView textureImageView;

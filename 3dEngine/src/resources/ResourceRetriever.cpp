@@ -6,6 +6,7 @@
 #include <loader/model/LoaderUrchinAnim.h>
 #include <loader/material/LoaderMaterial.h>
 #include <loader/font/LoaderTTF.h>
+#include <loader/texture/LoaderTexture.h>
 
 namespace urchin {
 
@@ -13,6 +14,8 @@ namespace urchin {
         loadersRegistry.try_emplace("tga", std::make_unique<LoaderTGA>());
         loadersRegistry.try_emplace("png", std::make_unique<LoaderPNG>());
         loadersRegistry.try_emplace("qoi", std::make_unique<LoaderQOI>());
+
+        loadersRegistry.try_emplace(typeid(Texture).name(), std::make_unique<LoaderTexture>());
 
         loadersRegistry.try_emplace(typeid(ConstMeshes).name(), std::make_unique<LoaderUrchinMesh>());
         loadersRegistry.try_emplace(typeid(ConstAnimation).name(), std::make_unique<LoaderUrchinAnim>());

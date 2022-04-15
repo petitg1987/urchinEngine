@@ -241,8 +241,7 @@ namespace urchin {
         if (this->grassTextureFilename.empty()) {
             grassTexture = nullptr;
         } else {
-            auto grassTextureImg = ResourceRetriever::instance().getResource<Image>(this->grassTextureFilename);
-            grassTexture = grassTextureImg->createTexture(true);
+            grassTexture = ResourceRetriever::instance().getResource<Texture>(this->grassTextureFilename, {{"mipMap", "1"}});
         }
     }
 
@@ -257,8 +256,7 @@ namespace urchin {
             std::vector<unsigned char> grassMaskColor({0});
             grassMaskTexture = Texture::build("default grass mask", 1, 1, TextureFormat::GRAYSCALE_8_INT, grassMaskColor.data());
         } else {
-            auto grassMaskImage = ResourceRetriever::instance().getResource<Image>(this->grassMaskFilename);
-            grassMaskTexture = grassMaskImage->createTexture(false);
+            grassMaskTexture = ResourceRetriever::instance().getResource<Texture>(this->grassMaskFilename, {{"mipMap", "0"}});
         }
     }
 

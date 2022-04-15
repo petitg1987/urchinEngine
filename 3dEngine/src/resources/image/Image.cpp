@@ -72,7 +72,7 @@ namespace urchin {
         }
     }
 
-    TextureFormat Image::retrieveTextureFormat() const {
+    TextureFormat Image::retrieveTextureFormat() const { //TODO move out from Image ?
         if (format == Image::IMAGE_GRAYSCALE) {
             if (channelPrecision == Image::CHANNEL_8) {
                 return TextureFormat::GRAYSCALE_8_INT;
@@ -92,24 +92,4 @@ namespace urchin {
         }
     }
 
-    std::shared_ptr<Texture> Image::createTexture(bool generateMipMap) { //TODO remove this method and create a texture (avoid to create texture several time from same image)
-        if (getName().empty()) {
-            throw std::runtime_error("Image name must be provided before create the texture");
-        }
-
-        std::shared_ptr<Texture> texture;
-        if (channelPrecision == Image::CHANNEL_8) {
-            texture = Texture::build(getName(), width, height, retrieveTextureFormat(), &texels8[0]);
-        }else if (channelPrecision == Image::CHANNEL_16) {
-            texture = Texture::build(getName(), width, height, retrieveTextureFormat(), &texels16[0]);
-        } else {
-            throw std::runtime_error("Unknown channel precision: " + std::to_string(channelPrecision));
-        }
-
-        if (generateMipMap) {
-            texture->enableMipmap();
-        }
-
-        return texture;
-    }
 }

@@ -29,6 +29,7 @@ namespace urchin {
             void disableCullFace();
 
             void setModelMatrix(const Matrix4<float>&);
+
         protected:
             void initialize(RenderTarget&);
             void refreshRenderer();

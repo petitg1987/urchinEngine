@@ -130,11 +130,10 @@ namespace urchin {
             std::vector<unsigned char> waterNormalColor({0, 255, 0, 255});
             normalTexture = Texture::build("default water normal", 1, 1, TextureFormat::RGBA_8_INT, waterNormalColor.data());
         } else {
-            auto normalImage = ResourceRetriever::instance().getResource<Image>(this->normalFilename);
-            if (normalImage->getImageFormat() != Image::IMAGE_RGBA) {
-                throw std::runtime_error("Water normal texture must have 4 components (RGBA). Components: " + std::to_string(normalImage->retrieveComponentsCount()));
+            normalTexture = ResourceRetriever::instance().getResource<Texture>(this->normalFilename, {{"mipMap", "1"}});
+            if (normalTexture->getFormat() != TextureFormat::RGBA_8_INT) {
+                throw std::runtime_error("Mask texture must have 4 components (RGBA). Texture format: " + std::to_string((int)normalTexture->getFormat()));
             }
-            normalTexture = normalImage->createTexture(true);
         }
 
         updateRenderer();
@@ -151,11 +150,10 @@ namespace urchin {
             std::vector<unsigned char> waterDudvColor({255, 0, 255, 255});
             dudvMap = Texture::build("default water dudv", 1, 1, TextureFormat::RGBA_8_INT, waterDudvColor.data());
         } else {
-            auto dudvImage = ResourceRetriever::instance().getResource<Image>(this->dudvFilename);
-            if (dudvImage->getImageFormat() != Image::IMAGE_RGBA) {
-                throw std::runtime_error("Water dudv map must have 4 components (RGBA). Components: " + std::to_string(dudvImage->retrieveComponentsCount()));
+            dudvMap = ResourceRetriever::instance().getResource<Texture>(this->dudvFilename, {{"mipMap", "1"}});
+            if (dudvMap->getFormat() != TextureFormat::RGBA_8_INT) {
+                throw std::runtime_error("Water dudv map must have 4 components (RGBA). Texture format: " + std::to_string((int)dudvMap->getFormat()));
             }
-            dudvMap = dudvImage->createTexture(true);
         }
 
         updateRenderer();

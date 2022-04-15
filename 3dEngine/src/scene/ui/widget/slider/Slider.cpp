@@ -78,8 +78,7 @@ namespace urchin {
 
     std::shared_ptr<Texture> Slider::loadTexture(const UdaChunk* sliderChunk, std::string_view chunkName) const {
         auto imageElem = UISkinService::instance().getSkinReader().getFirstChunk(true, chunkName, UdaAttribute(), sliderChunk);
-        auto img = ResourceRetriever::instance().getResource<Image>(imageElem->getStringValue());
-        return img->createTexture(false);
+        return ResourceRetriever::instance().getResource<Texture>(imageElem->getStringValue(), {{"mipMap", "0"}});
     }
 
     unsigned int Slider::getSelectedIndex() const {

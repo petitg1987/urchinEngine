@@ -18,9 +18,8 @@ namespace urchin {
         auto diffuseChunk = udaParser.getFirstChunk(true, "diffuse");
         auto diffuseTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), diffuseChunk);
         if (diffuseTextureChunk) {
-            auto diffuseImage = ResourceRetriever::instance().getResource<Image>(diffuseTextureChunk->getStringValue());
-            diffuseTexture = diffuseImage->createTexture(true);
-            hasTransparency = diffuseImage->hasTransparency();
+            diffuseTexture = ResourceRetriever::instance().getResource<Texture>(diffuseTextureChunk->getStringValue(), {{"mipMap", "1"}});
+            hasTransparency = diffuseTexture->hasTransparency();
         }
 
         auto diffuseColorChunk = udaParser.getFirstChunk(false, "color", UdaAttribute(), diffuseChunk);
@@ -37,9 +36,7 @@ namespace urchin {
 
             std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
                                                   (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-            Image diffuseImage(1, 1, Image::IMAGE_RGBA, std::move(rgbaColor), false);
-            diffuseImage.setName(filename + " - color diffuse");
-            diffuseTexture = diffuseImage.createTexture(false);
+            diffuseTexture = Texture::build(filename + " - color diffuse", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data());
             hasTransparency = !MathFunction::isOne(color.W);
         }
         std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, diffuseTexture, hasTransparency);
@@ -62,8 +59,8 @@ namespace urchin {
         auto normalChunk = udaParser.getFirstChunk(false, "normal");
         if (normalChunk) {
             auto normalTextureChunk = udaParser.getFirstChunk(true, "texture", UdaAttribute(), normalChunk);
-            auto normalImage = ResourceRetriever::instance().getResource<Image>(normalTextureChunk->getStringValue());
-            materialBuilder->normalTexture(normalImage->createTexture(true));
+            auto normalTexture = ResourceRetriever::instance().getResource<Texture>(normalTextureChunk->getStringValue(), {{"mipMap", "1"}});
+            materialBuilder->normalTexture(normalTexture);
         }
 
         //emissive factor

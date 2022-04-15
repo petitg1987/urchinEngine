@@ -12,23 +12,22 @@
 
 namespace urchin {
 
-    Texture::Texture(std::string name, TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
+    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
             isInitialized(false),
-            name(std::move(name)),
-            mipLevels(1),
-            writableTexture(false),
-            lastTextureWriter(nullptr),
             textureType(textureType),
             width(width),
             height(height),
             layer(layer),
             nbImages(dataPtr.size()),
             format(format),
+            mipLevels(1),
+            writableTexture(false),
+            lastTextureWriter(nullptr),
             textureImage(nullptr),
             textureImageMemory(nullptr),
             textureImageView(nullptr) {
         if (width == 0 || height == 0 || layer == 0) {
-            throw std::runtime_error("Invalid texture size of " + std::to_string(width) + "x" + std::to_string(height) + "x" + std::to_string(layer) + " for: " + this->name);
+            throw std::runtime_error("Invalid texture size of " + std::to_string(width) + "x" + std::to_string(height) + "x" + std::to_string(layer));
         }
 
         for (const void* imageDataPtr : dataPtr) {
@@ -48,30 +47,40 @@ namespace urchin {
 
     std::shared_ptr<Texture> Texture::build(std::string name, unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr) {
         std::vector<const void*> allDataPtr(1, dataPtr);
-        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::DEFAULT, width, height, 1, format, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr));
+        texture->setName(std::move(name));
+        return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
         std::vector<const void*> allDataPtr(1, dataPtr);
-        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::ARRAY, width, height, layer, format, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr));
+        texture->setName(std::move(name));
+        return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildCubeMap(std::string name, unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr) {
         assert(cubeDataPtr.size() == 6);
         unsigned int layerCount = 6; //in Vulkan, cube maps are considered as an image of 6 layers
-        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
+        texture->setName(std::move(name));
+        return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyRgba(std::string name) {
         std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 255}; //pink
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
+        texture->setName(std::move(name));
+        return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyGreyscale(std::string name) {
         std::array<uint8_t, 1> textureData = {0};
         std::vector<const void*> allDataPtr(1, textureData.data());
-        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr));
+        texture->setName(std::move(name));
+        return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyArrayRg(std::string name) {
@@ -80,7 +89,9 @@ namespace urchin {
                 0.5f, 1.0f
         };
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        return std::shared_ptr<Texture>(new Texture(std::move(name), TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr));
+        texture->setName(std::move(name));
+        return texture;
     }
 
     void Texture::enableMipmap() {
@@ -128,10 +139,6 @@ namespace urchin {
         }
     }
 
-    const std::string& Texture::getName() const {
-        return name;
-    }
-
     TextureType Texture::getTextureType() const {
         return textureType;
     }
@@ -148,12 +155,31 @@ namespace urchin {
         return layer;
     }
 
-    bool Texture::hasMipmap() const {
-        return mipLevels > 1;
+    TextureFormat Texture::getFormat() const {
+        return format;
+    }
+
+    bool Texture::isDepthFormat() const {
+        return format == TextureFormat::DEPTH_32_FLOAT;
     }
 
     uint32_t Texture::getMipLevels() const {
         return mipLevels;
+    }
+
+    bool Texture::hasMipmap() const {
+        return mipLevels > 1;
+    }
+
+    void Texture::setHasTransparency(bool bHasTransparency) {
+        this->bHasTransparency = std::make_optional<bool>(bHasTransparency);
+    }
+
+    bool Texture::hasTransparency() const {
+        if (!bHasTransparency.has_value()) {
+            throw std::runtime_error("No transparency value defined for texture: " + getName());
+        }
+        return bHasTransparency.value();
     }
 
     bool Texture::isWritableTexture() const {
@@ -199,10 +225,6 @@ namespace urchin {
         throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
     }
 
-    bool Texture::isDepthFormat() const {
-        return format == TextureFormat::DEPTH_32_FLOAT;
-    }
-
     void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         if (hasMipmap()) {
             throw std::runtime_error("Capture texture having mipmap is not implemented");
@@ -217,7 +239,7 @@ namespace urchin {
         VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();
 
         VmaAllocation stagingBufferMemory;
-        VkBuffer stagingBuffer = BufferHelper::createBuffer(name, allImagesSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
+        VkBuffer stagingBuffer = BufferHelper::createBuffer(getName(), allImagesSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
 
         void* dataDestination;
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
@@ -230,7 +252,7 @@ namespace urchin {
         vmaUnmapMemory(allocator, stagingBufferMemory);
 
         bool isCubeMap = textureType == TextureType::CUBE_MAP;
-        textureImage = ImageHelper::createImage(name, width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
+        textureImage = ImageHelper::createImage(getName(), width, height, layer, mipLevels, isCubeMap, getVkFormat(), VK_IMAGE_TILING_OPTIMAL, getImageUsage(), textureImageMemory);
 
         if (!isDepthFormat()) { //depth image layout transition is automatically done in render pass (see 'layout' and 'finalLayout' properties)
             transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);
@@ -263,7 +285,7 @@ namespace urchin {
     }
 
     void Texture::transitionImageLayout(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t layoutMipLevels) const {
-        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("layout transition for: " + name);
+        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("layout transition for: " + getName());
         {
             VkImageMemoryBarrier barrier{};
             barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -303,7 +325,7 @@ namespace urchin {
     }
 
     void Texture::copyBufferToImage(VkBuffer buffer, VkImage image) const {
-        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("copy for: " + name);
+        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("copy for: " + getName());
         {
             std::vector<VkBufferImageCopy> regions;
             regions.reserve(layer);
@@ -334,7 +356,7 @@ namespace urchin {
             throw std::runtime_error("Texture image format does not support linear blitting: " + std::to_string(imageFormat));
         }
 
-        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("mipmap for: " + name);
+        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("mipmap for: " + getName());
         {
             VkImageMemoryBarrier barrier{};
             barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
