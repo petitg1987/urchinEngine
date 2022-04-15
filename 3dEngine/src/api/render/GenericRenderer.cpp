@@ -141,12 +141,14 @@ namespace urchin {
         vertexBuffers.resize(data.size());
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             DataContainer& dataContainer = data[dataIndex];
-            vertexBuffers[dataIndex].initialize(BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
+            std::string bufferName = getName() + " - vertex" + std::to_string(dataIndex);
+            vertexBuffers[dataIndex].initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
             dataContainer.markDataAsProcessed();
         }
 
         if (instanceData) {
-            instanceVertexBuffer.initialize(BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
+            std::string bufferName = getName() + " - instance";
+            instanceVertexBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
             instanceData->markDataAsProcessed();
         }
     }
@@ -164,7 +166,8 @@ namespace urchin {
 
     void GenericRenderer::createIndexBuffer() {
         if (indices) {
-            indexBuffer.initialize(BufferHandler::INDEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
+            std::string bufferName = getName() + " - index";
+            indexBuffer.initialize(bufferName, BufferHandler::INDEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
         }
     }
 
@@ -178,7 +181,8 @@ namespace urchin {
         uniformsBuffers.resize(uniformData.size());
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
             ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
-            uniformsBuffers[dataIndex].initialize(BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            std::string bufferName = getName() + " - uniform" + std::to_string(dataIndex);
+            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
             shaderDataContainer.markDataAsProcessed();
         }
     }

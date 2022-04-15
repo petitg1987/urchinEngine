@@ -13,7 +13,8 @@ namespace urchin {
                 RENDER_PASS,
                 SHADER,
                 IMAGE,
-                COMMAND_BUFFER
+                COMMAND_BUFFER,
+                BUFFER
             };
 
             static void nameObject(ObjectType, void*, std::string_view);

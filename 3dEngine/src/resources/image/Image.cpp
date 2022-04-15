@@ -93,6 +93,10 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Image::createTexture(bool generateMipMap) {
+        if (getName().empty()) {
+            throw std::runtime_error("Image name must be provided before create the texture");
+        }
+
         std::shared_ptr<Texture> texture;
         if (channelPrecision == Image::CHANNEL_8) {
             texture = Texture::build(getName(), width, height, retrieveTextureFormat(), &texels8[0]);

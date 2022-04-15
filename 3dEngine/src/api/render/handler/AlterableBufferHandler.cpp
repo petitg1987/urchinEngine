@@ -20,10 +20,11 @@ namespace urchin {
         }
     }
 
-    void AlterableBufferHandler::initialize(BufferHandler::BufferType bufferType, BufferHandler::BufferKind initialBufferKind, std::size_t numFramebuffer,
+    void AlterableBufferHandler::initialize(std::string name, BufferHandler::BufferType bufferType, BufferHandler::BufferKind initialBufferKind, std::size_t numFramebuffer,
                                             std::size_t dataSize, const void* dataPtr) {
         assert(!isInitialized);
 
+        this->name = std::move(name);
         this->bufferType = bufferType;
         this->numFramebuffer = numFramebuffer;
 
@@ -32,7 +33,7 @@ namespace urchin {
                 throw std::runtime_error("Data must be provided at initialization to build a static buffer");
             }
             buffers.resize(1);
-            buffers[0].initialize(bufferType, initialBufferKind, dataSize, dataPtr);
+            buffers[0].initialize(this->name, bufferType, initialBufferKind, dataSize, dataPtr);
         } else if (initialBufferKind == BufferHandler::BufferKind::DYNAMIC) {
             createDynamicBuffers(dataSize, dataPtr);
         } else {
@@ -97,7 +98,7 @@ namespace urchin {
 
         buffers.resize(numFramebuffer);
         for (auto& buffer : buffers) {
-            buffer.initialize(bufferType, BufferHandler::DYNAMIC, dataSize, dataPtr);
+            buffer.initialize(name, bufferType, BufferHandler::DYNAMIC, dataSize, dataPtr);
         }
 
         isStaticBuffer = false;

@@ -22,7 +22,7 @@ namespace urchin {
             BufferHandler();
             ~BufferHandler();
 
-            void initialize(BufferType, BufferKind, std::size_t, const void* dataPtr);
+            void initialize(std::string, BufferType, BufferKind, std::size_t, const void* dataPtr);
             void cleanup();
 
             VkBuffer getBuffer() const;
@@ -38,6 +38,7 @@ namespace urchin {
             void updateBuffer(const void *);
 
             bool isInitialized;
+            std::string name;
 
             BufferType bufferType;
             std::size_t dataSize;

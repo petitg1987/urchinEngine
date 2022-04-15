@@ -217,7 +217,7 @@ namespace urchin {
         VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();
 
         VmaAllocation stagingBufferMemory;
-        VkBuffer stagingBuffer = BufferHelper::createBuffer(allImagesSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
+        VkBuffer stagingBuffer = BufferHelper::createBuffer(name, allImagesSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
 
         void* dataDestination;
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);

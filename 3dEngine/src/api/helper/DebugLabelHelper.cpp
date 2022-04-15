@@ -54,6 +54,8 @@ namespace urchin {
             return std::make_pair(VK_OBJECT_TYPE_IMAGE, "[IMAGE] ");
         } else if (objectType == COMMAND_BUFFER) {
             return std::make_pair(VK_OBJECT_TYPE_COMMAND_BUFFER, "[CMD] ");
+        } else if (objectType == BUFFER) {
+            return std::make_pair(VK_OBJECT_TYPE_BUFFER, "[BUFFER] ");
         }
         throw std::runtime_error("Unknown graphic object type: " + std::to_string(objectType));
     }

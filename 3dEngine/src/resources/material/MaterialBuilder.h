@@ -11,6 +11,8 @@ namespace urchin {
         public:
             static std::shared_ptr<MaterialBuilder> create(std::string, std::shared_ptr<Texture>, bool);
 
+            const std::string& getMaterialName() const;
+
             const std::shared_ptr<Texture>& getDiffuseTexture() const;
             bool hasTransparency() const;
 

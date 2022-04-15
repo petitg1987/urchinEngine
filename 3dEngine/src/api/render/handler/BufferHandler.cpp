@@ -27,10 +27,11 @@ namespace urchin {
         }
     }
 
-    void BufferHandler::initialize(BufferType bufferType, BufferKind initialBufferKind, std::size_t dataSize, const void* dataPtr) {
+    void BufferHandler::initialize(std::string name, BufferType bufferType, BufferKind initialBufferKind, std::size_t dataSize, const void* dataPtr) {
         assert(!isInitialized);
         assert(dataSize > 0);
 
+        this->name = std::move(name);
         this->bufferType = bufferType;
         this->bufferKind = initialBufferKind; //static buffer are automatically changed to dynamic buffer in case of update
         this->dataSize = dataSize;
@@ -107,7 +108,7 @@ namespace urchin {
             if (!dataPtr) {
                 throw std::runtime_error("Data must be provided at initialization to build a static buffer");
             }
-            stagingBuffer = BufferHelper::createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
+            stagingBuffer = BufferHelper::createBuffer(name, bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBufferMemory);
 
             void *dataDestination;
             vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
@@ -116,12 +117,12 @@ namespace urchin {
             }
             vmaUnmapMemory(allocator, stagingBufferMemory);
 
-            buffer = BufferHelper::createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageType, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, bufferMemory);
+            buffer = BufferHelper::createBuffer(name, bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | usageType, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, bufferMemory);
             copyBuffer(stagingBuffer, buffer, bufferSize);
 
             vmaDestroyBuffer(allocator, stagingBuffer, stagingBufferMemory);
         } else if (bufferKind == BufferKind::DYNAMIC) {
-            buffer = BufferHelper::createBuffer(bufferSize, usageType, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, bufferMemory);
+            buffer = BufferHelper::createBuffer(name, bufferSize, usageType, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, bufferMemory);
 
             if (dataPtr) {
                 updateBuffer(dataPtr);

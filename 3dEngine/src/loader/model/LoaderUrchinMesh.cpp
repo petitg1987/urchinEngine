@@ -59,6 +59,7 @@ namespace urchin {
             materialFilename = materialFilename.substr(1, materialFilename.length() - 2); //remove quote
             if (materialFilename.empty() || materialFilename == "default") {
                 Image defaultDiffuseImage(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({177, 106, 168, 255}), false);
+                defaultDiffuseImage.setName(filename + " - default diffuse");
                 material = MaterialBuilder::create("defaultMaterial", defaultDiffuseImage.createTexture(false), false)->build();
             } else {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});

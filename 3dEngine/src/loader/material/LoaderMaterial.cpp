@@ -38,6 +38,7 @@ namespace urchin {
             std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
                                                   (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
             Image diffuseImage(1, 1, Image::IMAGE_RGBA, std::move(rgbaColor), false);
+            diffuseImage.setName(filename + " - color diffuse");
             diffuseTexture = diffuseImage.createTexture(false);
             hasTransparency = !MathFunction::isOne(color.W);
         }

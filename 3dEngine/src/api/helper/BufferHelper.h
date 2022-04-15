@@ -8,7 +8,7 @@ namespace urchin {
 
     class BufferHelper {
         public:
-            static VkBuffer createBuffer(VkDeviceSize, VkBufferUsageFlags, VkMemoryPropertyFlags, VmaAllocation&);
+            static VkBuffer createBuffer(std::string_view, VkDeviceSize, VkBufferUsageFlags, VkMemoryPropertyFlags, VmaAllocation&);
 
         private:
             static int vulkanMemoryPropertyFlagsToVma(VkMemoryPropertyFlags);

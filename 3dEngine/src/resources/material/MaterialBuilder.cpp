@@ -29,6 +29,10 @@ namespace urchin {
         return std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(materialName), std::move(diffuseTexture), hasTransparency));
     }
 
+    const std::string& MaterialBuilder::getMaterialName() const {
+        return materialName;
+    }
+
     const std::shared_ptr<Texture>& MaterialBuilder::getDiffuseTexture() const {
         return mDiffuseTexture;
     }

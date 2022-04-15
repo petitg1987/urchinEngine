@@ -1,10 +1,11 @@
 #include <libs/vma/vk_mem_alloc.h>
 #include <api/helper/BufferHelper.h>
 #include <api/setup/GraphicService.h>
+#include <api/helper/DebugLabelHelper.h>
 
 namespace urchin {
 
-    VkBuffer BufferHelper::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VmaAllocation& allocation) {
+    VkBuffer BufferHelper::createBuffer(std::string_view bufferName, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VmaAllocation& allocation) {
         VkBufferCreateInfo bufferInfo{};
         bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
         bufferInfo.size = size;
@@ -19,6 +20,7 @@ namespace urchin {
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create buffer of size '" + std::to_string(size) + "' with error code: " + std::to_string(result));
         }
+        DebugLabelHelper::nameObject(DebugLabelHelper::BUFFER, buffer, bufferName);
 
         return buffer;
     }
