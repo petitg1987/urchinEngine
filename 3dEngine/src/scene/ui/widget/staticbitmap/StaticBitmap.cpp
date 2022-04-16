@@ -17,11 +17,17 @@ namespace urchin {
         return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
     }
 
-    //TODO should be a texture (to avoid multiple texture creation for same img)
-    //TODO alternative: change constructor to use special Size !
-    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, const std::shared_ptr<Image>& image) {
-        auto texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels().data());
-        texture->enableMipmap();
+    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, WidthSize widthSize, const std::string& filename) {
+        auto texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
+        float ratio = (float)texture->getHeight() / (float)texture->getWidth();
+        Size size(widthSize.getWidth(), widthSize.getWidthType(), ratio, RATIO_TO_WIDTH);
+        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+    }
+
+    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, HeightSize heightSize, const std::string& filename) {
+        auto texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
+        float ratio = (float)texture->getWidth() / (float)texture->getHeight();
+        Size size(ratio, RATIO_TO_HEIGHT, heightSize.getHeight(), heightSize.getHeightType());
         return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
     }
 

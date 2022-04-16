@@ -3,6 +3,8 @@
 #include <string>
 #include <memory>
 
+#include <scene/ui/widget/staticbitmap/WidthSize.h>
+#include <scene/ui/widget/staticbitmap/HeightSize.h>
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
@@ -14,7 +16,8 @@ namespace urchin {
     class StaticBitmap : public Widget {
         public:
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, const std::string&);
-            static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, const std::shared_ptr<Image>&);
+            static std::shared_ptr<StaticBitmap> create(Widget*, Position, WidthSize, const std::string&);
+            static std::shared_ptr<StaticBitmap> create(Widget*, Position, HeightSize, const std::string&);
 
             WidgetType getWidgetType() const override;
 
