@@ -22,7 +22,7 @@ namespace urchin {
         //create the textures
         std::vector<std::jthread> loadImageThreads(6);
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
-            std::string filename = filenames[i];
+            const std::string& filename = filenames[i];
             loadImageThreads[i] = std::jthread([i, filename, this]() {
                 if (!filename.empty()) {
                     skyboxImages[i] = ResourceRetriever::instance().getResource<Image>(filename);
@@ -74,8 +74,8 @@ namespace urchin {
 
     void Skybox::initialize(RenderTarget& renderTarget) {
         //texture creation
-        std::vector<const void*> cubeDataPtr = {&skyboxImages[0]->getTexels()[0], &skyboxImages[1]->getTexels()[0], &skyboxImages[2]->getTexels()[0],
-                                                &skyboxImages[3]->getTexels()[0], &skyboxImages[4]->getTexels()[0], &skyboxImages[5]->getTexels()[0] };
+        std::vector<const void*> cubeDataPtr = {skyboxImages[0]->getTexels().data(), skyboxImages[1]->getTexels().data(), skyboxImages[2]->getTexels().data(),
+                                                skyboxImages[3]->getTexels().data(), skyboxImages[4]->getTexels().data(), skyboxImages[5]->getTexels().data()};
         auto skyboxTexture = Texture::buildCubeMap("skybox", skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr);
         std::ranges::fill(skyboxImages, std::shared_ptr<Image>(nullptr));
 

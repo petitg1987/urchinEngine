@@ -323,7 +323,7 @@ namespace urchin {
         T qZ = q.Z;
         T qW = q.W;
 
-        if (cosOmega < 0.0) { //ensure to take shortest path
+        if (cosOmega < 0.0) { //ensure to take the shortest path
             qX = -qX;
             qY = -qY;
             qZ = -qZ;

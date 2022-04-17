@@ -79,7 +79,7 @@ namespace urchin {
             return;
         }
 
-        //2. keep deepest point and four points cover the biggest area
+        //2. keep the deepest point and four points cover the biggest area
         unsigned int insertionIndex;
         if (nbContactPoint == MAX_PERSISTENT_POINTS) {
             insertionIndex = computeBestInsertionIndex(localPointOnObject2);
@@ -169,7 +169,7 @@ namespace urchin {
                     contactPoints[1].getLocalPointOnObject2(), contactPoints[2].getLocalPointOnObject2());
         }
 
-        //find biggest area
+        //find the biggest area
         unsigned int insertionIndex = 0;
         float biggestArea = areas[insertionIndex];
         for (unsigned int i = 1; i < MAX_PERSISTENT_POINTS; ++i) {

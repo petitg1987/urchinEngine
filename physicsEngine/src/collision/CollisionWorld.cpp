@@ -41,7 +41,7 @@ namespace urchin {
         //integrate bodies velocities: gravity, external forces...
         integrateVelocity.process(dt, overlappingPairs, gravity);
 
-        //narrow phase: check if pair of bodies colliding and update collision constraints
+        //narrow phase: check if a pair of bodies colliding and update collision constraints
         manifoldResults.clear();
         narrowPhase.process(dt, overlappingPairs, manifoldResults);
         notifyObservers(this, COLLISION_RESULT_UPDATED);

@@ -8,7 +8,7 @@ namespace urchin {
     SVGPolygon::SVGPolygon(std::vector<Point2<float>> polygonPoints, SVGColor color, float opacity) :
             SVGShape(color, opacity),
             polygonPoints(std::move(polygonPoints)) {
-        for (auto& polygonPoint : this->polygonPoints) { //SVG Y axis is up side down
+        for (auto& polygonPoint : this->polygonPoints) { //SVG Y axis is upside down
             polygonPoint.Y = -polygonPoint.Y;
         }
     }

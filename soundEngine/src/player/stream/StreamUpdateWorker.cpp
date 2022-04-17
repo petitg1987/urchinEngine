@@ -177,7 +177,7 @@ namespace urchin {
                 throw std::runtime_error("Unknown sound format: " + std::to_string(task.getSoundFileReader().getFormat()));
             }
 
-            alBufferData(streamChunk.bufferId, format, &streamChunk.samples[0], size, (ALsizei)task.getSoundFileReader().getSampleRate());
+            alBufferData(streamChunk.bufferId, format, streamChunk.samples.data(), size, (ALsizei)task.getSoundFileReader().getSampleRate());
             CheckState::check("fill buffer with audio data", size);
 
             alSourceQueueBuffers(task.getSourceId(), 1, &streamChunk.bufferId);

@@ -240,7 +240,7 @@ namespace urchin {
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         configureWaitSemaphore(frameIndex, submitInfo, std::nullopt);
         submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = &commandBuffers[0];
+        submitInfo.pCommandBuffers = commandBuffers.data();
         submitInfo.signalSemaphoreCount = numDependenciesToOutputs;
         submitInfo.pSignalSemaphores = submitSemaphores.data();
         remainingSubmitSemaphores = numDependenciesToOutputs;

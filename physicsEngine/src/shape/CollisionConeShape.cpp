@@ -89,9 +89,9 @@ namespace urchin {
     }
 
     Vector3<float> CollisionConeShape::computeLocalInertia(float mass) const {
-        float interiaValue = (3.0f / 20.0f) * mass * (getRadius() * getRadius() + 4.0f * getHeight() * getHeight());
+        float inertiaValue = (3.0f / 20.0f) * mass * (getRadius() * getRadius() + 4.0f * getHeight() * getHeight());
 
-        Vector3 inertia(interiaValue, interiaValue, interiaValue);
+        Vector3 inertia(inertiaValue, inertiaValue, inertiaValue);
         inertia[getConeOrientation() / 2] = (3.0f / 10.0f) * mass * getRadius() * getRadius();
 
         return inertia;

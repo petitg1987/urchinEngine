@@ -106,7 +106,7 @@ namespace urchin {
         CollisionAlgorithm *collisionAlgorithmPtr;
         if (std::ranges::find(firstExpectedShapeType, shape1.getShapeType()) != firstExpectedShapeType.end()) {
             collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(false, ManifoldResult(body1, body2), *algorithmPool);
-        } else if (std::ranges::find(firstExpectedShapeType, shape2.getShapeType()) != firstExpectedShapeType.end()) { //objects must be swap to match algorithm shape types
+        } else if (std::ranges::find(firstExpectedShapeType, shape2.getShapeType()) != firstExpectedShapeType.end()) { //objects must be swapped to match algorithm shape types
             collisionAlgorithmPtr = collisionAlgorithmBuilder->createCollisionAlgorithm(true, ManifoldResult(body2, body1), *algorithmPool);
         } else {
             throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1.getShapeType())

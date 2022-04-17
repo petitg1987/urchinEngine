@@ -1,4 +1,3 @@
-#include <cmath>
 #include <cassert>
 
 #include <math/geometry/2d/object/LineSegment2D.h>

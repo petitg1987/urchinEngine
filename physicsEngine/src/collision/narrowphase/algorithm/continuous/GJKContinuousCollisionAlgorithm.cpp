@@ -33,7 +33,7 @@ namespace urchin {
             Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
             Point3<T> newPoint = supportPoint1 - supportPoint2;
 
-            Vector3<T> vClosestPoint = -direction; //vector from origin to closest point of simplex
+            Vector3<T> vClosestPoint = -direction; //vector from origin to the closest point of simplex
             T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
             if (timeToHit > 1.0) { //no hit detected between from and to transformation

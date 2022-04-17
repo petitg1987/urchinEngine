@@ -8,6 +8,11 @@ template<class T> bool AxisCompare<T>::operator() (const T& item1, const T& item
     return item1->getGridPosition()[axisIndex] < item2->getGridPosition()[axisIndex];
 }
 
+template<class T> GridContainer<T>::GridContainer() :
+        axisSortedItems({}) {
+
+}
+
 template<class T> bool GridContainer<T>::addItem(std::shared_ptr<T> item) {
     for (std::size_t axisIndex = 0; axisIndex < 3; ++axisIndex) {
         std::int64_t key = buildKey(item->getGridPosition(), axisIndex);

@@ -266,9 +266,9 @@ namespace urchin {
         writeVersion(file, TERRAIN_FRL_FILE_VERSION);
         writeHash(file, terrainHash);
 
-        file.write(reinterpret_cast<const char*>(&vertices[0]), (int)(vertices.size() * sizeof(float) * 3));
-        file.write(reinterpret_cast<const char*>(&indices[0]), (int)(indices.size() * sizeof(unsigned int)));
-        file.write(reinterpret_cast<const char*>(&normals[0]), (int)(normals.size() * sizeof(float) * 3));
+        file.write(reinterpret_cast<const char*>(vertices.data()), (int)(vertices.size() * sizeof(float) * 3));
+        file.write(reinterpret_cast<const char*>(indices.data()), (int)(indices.size() * sizeof(unsigned int)));
+        file.write(reinterpret_cast<const char*>(normals.data()), (int)(normals.size() * sizeof(float) * 3));
 
         file.close();
     }
@@ -283,13 +283,13 @@ namespace urchin {
 
     void TerrainMesh::loadTerrainMeshFile(std::ifstream& file) {
         vertices.resize(computeNumberVertices());
-        file.read(reinterpret_cast<char*>(&vertices[0]), (int)(vertices.size() * sizeof(float) * 3));
+        file.read(reinterpret_cast<char*>(vertices.data()), (int)(vertices.size() * sizeof(float) * 3));
 
         indices.resize(computeNumberIndices());
-        file.read(reinterpret_cast<char*>(&indices[0]), (int)(indices.size() * sizeof(unsigned int)));
+        file.read(reinterpret_cast<char*>(indices.data()), (int)(indices.size() * sizeof(unsigned int)));
 
         normals.resize(computeNumberNormals());
-        file.read(reinterpret_cast<char*>(&normals[0]), (int)(normals.size() * sizeof(float) * 3));
+        file.read(reinterpret_cast<char*>(normals.data()), (int)(normals.size() * sizeof(float) * 3));
 
         file.close();
     }

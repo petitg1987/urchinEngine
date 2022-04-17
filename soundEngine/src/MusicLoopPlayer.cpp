@@ -12,7 +12,7 @@ namespace urchin {
             musicFilenames(std::move(musicFilenames)),
             currentMusicIndex(0),
             isPaused(false) {
-        if (musicFilenames.empty()) {
+        if (this->musicFilenames.empty()) {
             throw std::runtime_error("At least one music is required");
         }
         initialize(musicStartIndex);

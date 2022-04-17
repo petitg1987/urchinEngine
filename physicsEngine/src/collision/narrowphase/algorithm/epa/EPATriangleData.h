@@ -17,7 +17,7 @@ namespace urchin {
             T distanceToOrigin; //minimum distance between the triangle and the origin
             Vector3<T> normal; //normal of triangle
             Point3<T> closestPointToOrigin; //point on the triangle nearest to origin
-            std::array<T, 3> barycentrics; //barycentrics of closest point to origin
+            std::array<T, 3> barycentrics; //barycentrics of the closest point to origin
 
     };
 

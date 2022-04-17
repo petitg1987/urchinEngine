@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <iostream>
-#include <numeric>
 #include <iomanip>
 #include <utility>
 

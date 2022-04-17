@@ -28,7 +28,7 @@ namespace urchin {
     struct RespawnValues {
         PhysicsTransform respawnTransform;
         PhysicsTransform nextRespawnTransform;
-        float timeElapse;
+        float timeElapse{};
     };
 
     /**

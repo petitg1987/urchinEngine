@@ -73,7 +73,7 @@ namespace urchin {
             if (!closeEnough) { //polytope can be extended in direction of normal: add a new point
                 std::vector<std::size_t> removedTriangleIndices;
                 std::size_t index = convexHullShape.addNewPoint(minkowskiDiffPoint, removedTriangleIndices);
-                if (index == 0) { //finally, polytope cannot by extended in direction of normal. Cause: numerical imprecision.
+                if (index == 0) { //finally, polytope cannot be extended in direction of normal. Cause: numerical imprecision.
                     break;
                 }
 
@@ -91,7 +91,7 @@ namespace urchin {
                 //save support points
                 supportPointsA[index] = supportPointNormal;
                 supportPointsB[index] = supportPointMinusNormal;
-            } else { //polytope cannot by extended in direction of normal: solution is found
+            } else { //polytope cannot be extended in direction of normal: solution is found
                 break;
             }
             iterationNumber++;
@@ -175,7 +175,7 @@ namespace urchin {
             const Vector3<T> lineDirection = simplex.getPoint(0).vector(simplex.getPoint(1)).normalize();
 
             //find best coordinate axis for which i-th component of 'lineDirection' has the smallest absolute value.
-            //In this way, the angle between 'lineDirection' and best coordinate axis is the largest. Thus the cross
+            //In this way, the angle between 'lineDirection' and best coordinate axis is the largest. Thus, the cross
             // product has the largest length.
             int minAxis = 0; //0 = X, 1 = Y, 2 = Z
             T minValue = std::abs(lineDirection.X);

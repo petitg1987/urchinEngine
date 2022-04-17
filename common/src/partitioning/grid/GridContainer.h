@@ -34,6 +34,8 @@ namespace urchin {
                 NEGATIVE
             };
 
+            GridContainer();
+
             bool addItem(std::shared_ptr<T>);
             std::shared_ptr<T> removeItem(const Point3<int>&);
             void updateItemPosition(T&, const Point3<int>&);
