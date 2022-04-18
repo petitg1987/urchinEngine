@@ -5,7 +5,6 @@
 #include <stdexcept>
 
 #include <texture/filter/TextureFilter.h>
-#include <texture/filter/downsample/DownSampleFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilter.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 #include <api/texture/TextureType.h>
