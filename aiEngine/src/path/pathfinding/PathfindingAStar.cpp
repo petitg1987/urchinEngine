@@ -34,7 +34,7 @@ namespace urchin {
         std::shared_ptr<PathNode> endNodePath = nullptr;
         while (!openList.empty()) {
             auto currentNodeIt = openList.begin(); //node with smallest fScore
-            std::shared_ptr<PathNode> currentNode = *currentNodeIt;
+            const std::shared_ptr<PathNode>& currentNode = *currentNodeIt;
 
             closedList.insert(&currentNode->getNavTriangle());
             openList.erase(currentNodeIt);
