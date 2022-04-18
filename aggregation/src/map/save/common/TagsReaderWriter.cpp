@@ -3,7 +3,7 @@
 namespace urchin {
 
     std::vector<std::string> TagsReaderWriter::load(const UdaChunk* tagsChunk, const UdaParser&) {
-        std::string tagsValues = tagsChunk->getStringValue();
+        const std::string& tagsValues = tagsChunk->getStringValue();
         return StringUtil::split(tagsValues, TAGS_SEPARATOR);
     }
 
