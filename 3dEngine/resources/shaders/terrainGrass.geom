@@ -25,7 +25,7 @@ layout(triangle_strip, max_vertices = 12) out;
 
 layout(location = 0) in vec3 normal[];
 
-layout(location = 0) smooth out vec2 vertexTexCoordinates;
+layout(location = 0) out vec2 vertexTexCoordinates;
 layout(location = 1) out vec3 grassNormal;
 
 float PHI = 1.61803398874989484820459 * 00000.1; //golden ratio

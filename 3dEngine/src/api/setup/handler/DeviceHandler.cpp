@@ -41,8 +41,7 @@ namespace urchin {
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
         };
         physicalDeviceRequiredVulkan12Features = {
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceVulkan12Features, shaderOutputViewportIndex), "shader output viewport index"), //86.4%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceVulkan12Features, shaderOutputLayer), "shader output layer"), //86.4%
+                // /!\ "shaderOutputLayer & "shaderOutputViewportIndex" features create a device lost error when used on Intel graphics cards (reason: unknown, test date: 18/04/2022)
         };
         physicalDeviceRequiredExtensions = {
                 std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain")

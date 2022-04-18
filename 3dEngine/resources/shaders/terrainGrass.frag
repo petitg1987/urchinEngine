@@ -8,7 +8,7 @@ layout(std140, set = 0, binding = 3) uniform Lighting {
 } lighting;
 layout(binding = 4) uniform sampler2D grassTex;
 
-layout(location = 0) smooth in vec2 vertexTexCoordinates;
+layout(location = 0) in vec2 vertexTexCoordinates;
 layout(location = 1) in vec3 grassNormal;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;

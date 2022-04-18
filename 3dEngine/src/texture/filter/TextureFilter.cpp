@@ -50,7 +50,7 @@ namespace urchin {
             textureFilterShader = ShaderBuilder::createNullShader();
         } else {
             if (textureType == TextureType::ARRAY) {
-                textureFilterShader = ShaderBuilder::createShader("texFilterArray.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
+                textureFilterShader = ShaderBuilder::createShader("texFilterArray.vert.spv", "texFilterArray.geom.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else if (textureType == TextureType::DEFAULT) {
                 textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else {
