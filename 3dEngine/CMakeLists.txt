@@ -18,9 +18,18 @@ foreach (shaderFile ${shaderFiles})
         continue()
     endif()
 
+    set(shaderStage "unknown")
+    if ("${shaderFilename}" MATCHES "vert$")
+        set(shaderStage "vertex")
+    elseif("${shaderFilename}" MATCHES "geom$")
+        set(shaderStage "geometry")
+    elseif("${shaderFilename}" MATCHES "frag$")
+        set(shaderStage "fragment")
+    endif()
+
     add_custom_command( OUTPUT ${compiledShadersDir}/${compiledShaderName}
             DEPENDS ${shadersDir}/${shaderFilename}
-            COMMAND glslc --target-env=vulkan1.2 -O -g -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})
+            COMMAND glslc --target-env=vulkan1.2 -fshader-stage=${shaderStage} -O -g -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})
     set(compiledShaderNames "${compiledShadersDir}/${compiledShaderName};${compiledShaderNames}")
 endforeach()
 add_custom_target(urchinShader ALL DEPENDS "${compiledShaderNames}")
