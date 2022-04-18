@@ -95,18 +95,6 @@ namespace urchin {
         return graphicsCardNamesList;
     }
 
-    std::string SystemInfo::systemHash() {
-        //use the rounded total memory because the total memory can vary slightly over time
-        double memoryMiB = ((double)retrieveTotalMemory()) / 1024.0 / 1024.0;
-        auto memoryMiBRounded = (uint64_t)std::lround(memoryMiB);
-
-        std::string homeDir = homeDirectory();
-        std::string cpuCores = std::to_string(retrieveCpuCores());
-        std::string totalMemory = std::to_string(memoryMiBRounded);
-        std::string graphicsCardNames = retrieveGraphicsCardNames();
-        return std::to_string(std::hash<std::string>{}(homeDir + cpuCores + totalMemory + graphicsCardNames));
-    }
-
     std::string SystemInfo::homeDirectory() {
         std::string homeDirectory = getEnvVariable("HOME");
         if (homeDirectory.empty()) {

@@ -18,8 +18,6 @@ namespace urchin {
             static uint64_t retrieveTotalMemory();
             static std::string retrieveGraphicsCardNames();
 
-            static std::string systemHash();
-
             static std::string homeDirectory();
             static std::string userDataDirectory();
             static std::string executableDirectory();

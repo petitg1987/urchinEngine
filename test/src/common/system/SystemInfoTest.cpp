@@ -30,14 +30,6 @@ void SystemInfoTest::retrieveGraphicsCardNames() {
     AssertHelper::assertTrue(!graphicsCardNames.empty(), "Graphics card name cannot be empty");
 }
 
-void SystemInfoTest::systemHash() {
-    std::string systemHash1 = SystemInfo::systemHash();
-    std::string systemHash2 = SystemInfo::systemHash();
-
-    AssertHelper::assertTrue(!systemHash1.empty(), "System hash cannot be empty");
-    AssertHelper::assertStringEquals(systemHash1, systemHash2);
-}
-
 CppUnit::Test* SystemInfoTest::suite() {
     auto* suite = new CppUnit::TestSuite("SystemInfoTest");
 
@@ -45,8 +37,6 @@ CppUnit::Test* SystemInfoTest::suite() {
     suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveCpuCores", &SystemInfoTest::retrieveCpuCores));
     suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveTotalMemory", &SystemInfoTest::retrieveTotalMemory));
     suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveGraphicsCardNames", &SystemInfoTest::retrieveGraphicsCardNames));
-
-    suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("systemHash", &SystemInfoTest::systemHash));
 
     return suite;
 }

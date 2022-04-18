@@ -11,6 +11,4 @@ class SystemInfoTest : public CppUnit::TestFixture {
         void retrieveCpuCores();
         void retrieveTotalMemory();
         void retrieveGraphicsCardNames();
-
-        void systemHash();
 };
