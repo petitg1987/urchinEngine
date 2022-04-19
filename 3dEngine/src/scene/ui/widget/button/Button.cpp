@@ -53,7 +53,7 @@ namespace urchin {
         buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE, false)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 2
+                ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 
@@ -97,7 +97,7 @@ namespace urchin {
             text->updatePosition(Position((getWidth() - text->getWidth()) / 2.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
-        updatePositioning(buttonRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        updateProperties(buttonRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         buttonRenderer->enableRenderer(renderingOrder);
     }
 

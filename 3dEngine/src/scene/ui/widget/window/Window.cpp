@@ -51,7 +51,7 @@ namespace urchin {
         windowRenderer = setupUiRenderer("window", ShapeType::TRIANGLE, false)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(TextureReader::build(texWindow, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 2
+                ->addUniformTextureReader(TextureReader::build(texWindow, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 
@@ -123,7 +123,7 @@ namespace urchin {
     }
 
     void Window::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updatePositioning(windowRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        updateProperties(windowRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         windowRenderer->enableRenderer(renderingOrder);
     }
 

@@ -15,6 +15,7 @@ namespace urchin {
             size(size),
             scale(Vector2<float>(1.0f, 1.0f)),
             rotationZ(0.0f),
+            alphaFactor(1.0f),
             bIsVisible(true),
             mouseX(0),
             mouseY(0) {
@@ -82,6 +83,7 @@ namespace urchin {
 
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
+        rendererBuilder->addUniformData(sizeof(alphaFactor), &alphaFactor); //binding 2
 
         const Widget *currentWidget = this;
         bool scissorApplied = false;
@@ -110,7 +112,7 @@ namespace urchin {
         return TextureParam::Anisotropy::NO_ANISOTROPY;
     }
 
-    void Widget::updatePositioning(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
+    void Widget::updateProperties(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
         Matrix4<float> projectionViewModelMatrix;
 
         float zBias = 0.0f;
@@ -146,6 +148,7 @@ namespace urchin {
 
         projectionViewModelMatrix *= translateScaleMatrix;
         renderer->updateUniformData(1, &projectionViewModelMatrix);
+        renderer->updateUniformData(2, &alphaFactor);
     }
 
     I18nService* Widget::getI18nService() const {
@@ -251,14 +254,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     float Widget::getPositionX() const {
-        return widthLengthToPixel(position.getX(), position.getXType(), [&](){ return (float)getPositionY(); });
+        return widthLengthToPixel(position.getX(), position.getXType(), [&](){ return getPositionY(); });
     }
 
     /**
     * @return Relative position Y of the widget
     */
     float Widget::getPositionY() const {
-        return heightLengthToPixel(position.getY(), position.getYType(), [&](){ return (float)getPositionX(); });
+        return heightLengthToPixel(position.getY(), position.getYType(), [&](){ return getPositionX(); });
     }
 
     const WidgetOutline& Widget::getOutline() const {
@@ -316,7 +319,7 @@ namespace urchin {
                 || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
                 || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //bottom
             if (parent) {
-                startPosition = parent->getGlobalPositionY() - (float)parent->getOutline().bottomWidth + (float)parent->getHeight();
+                startPosition = parent->getGlobalPositionY() - (float)parent->getOutline().bottomWidth + parent->getHeight();
             } else {
                 startPosition = (float)getSceneSize().Y;
             }
@@ -324,7 +327,7 @@ namespace urchin {
                 || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY
                 || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //center Y
             if (parent) {
-                startPosition = parent->getGlobalPositionY() + (float)parent->getOutline().topWidth + (float) parent->getHeight() / 2.0f;
+                startPosition = parent->getGlobalPositionY() + (float)parent->getOutline().topWidth + parent->getHeight() / 2.0f;
             } else {
                 startPosition = (float)getSceneSize().Y / 2.0f;
             }
@@ -335,9 +338,9 @@ namespace urchin {
         }
 
         if (position.getReferencePoint() == RefPoint::LEFT_BOTTOM || position.getReferencePoint() == RefPoint::RIGHT_BOTTOM || position.getReferencePoint() == RefPoint::CENTERX_BOTTOM) { //bottom
-            startPosition -= (float)getHeight();
+            startPosition -= getHeight();
         } else if (position.getReferencePoint() == RefPoint::CENTER_XY ||  position.getReferencePoint() == RefPoint::LEFT_CENTERY || position.getReferencePoint() == RefPoint::RIGHT_CENTERY) { //center Y
-            startPosition -= (float)getHeight() / 2.0f;
+            startPosition -= getHeight() / 2.0f;
         }
 
         return startPosition + getPositionY();
@@ -383,6 +386,14 @@ namespace urchin {
 
     float Widget::getRotation() const {
         return rotationZ;
+    }
+
+    void Widget::updateAlphaFactor(float alphaFactor) {
+        this->alphaFactor = alphaFactor;
+    }
+
+    float Widget::getAlphaFactor() const {
+        return alphaFactor;
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {

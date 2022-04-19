@@ -3,7 +3,10 @@
 
 layout(constant_id = 0) const float AMBIENT = 0.4;
 
-layout(binding = 2) uniform sampler2D diffuseTexture;
+layout(std140, set = 0, binding = 2) uniform Alpha {
+    float factor;
+} alpha;
+layout(binding = 3) uniform sampler2D diffuseTexture;
 
 layout(location = 0) in vec2 texCoordinates;
 layout(location = 1) in vec3 normal;
@@ -17,6 +20,7 @@ void main() {
     if (color.a < 0.05) {
         discard;
     }
+    color.a *= alpha.factor;
     fragDiffuseAndEmissive = color; //Write color with alpha to compute the blend on the RGB channels. The alpha channel (=emissive) will stay unchanged thanks to the configured alpha blend functions.
 
     //ambient factor

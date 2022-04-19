@@ -78,7 +78,7 @@ namespace urchin {
         cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::TRIANGLE, false)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
-                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 2
+                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 
@@ -242,14 +242,14 @@ namespace urchin {
 
     void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         //text box
-        updatePositioning(textBoxRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        updateProperties(textBoxRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         textBoxRenderer->enableRenderer(renderingOrder);
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
             renderingOrder++;
-            updatePositioning(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<float>((float)cursorPosition, 0.0f));
+            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<float>((float)cursorPosition, 0.0f));
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }

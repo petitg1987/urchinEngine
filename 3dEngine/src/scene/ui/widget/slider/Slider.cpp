@@ -169,7 +169,7 @@ namespace urchin {
     }
 
     void Slider::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updatePositioning(sliderRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        updateProperties(sliderRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         sliderRenderer->enableRenderer(renderingOrder);
     }
 

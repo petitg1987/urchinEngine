@@ -15,6 +15,7 @@ namespace urchin {
             void updatePosition(const Point2<float>&);
             void updateScale(const Vector2<float>&);
             void updateRotation(float);
+            void updateAlphaFactor(float);
 
         private:
             Widget& widget;

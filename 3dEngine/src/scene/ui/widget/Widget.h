@@ -76,6 +76,9 @@ namespace urchin {
             void updateRotation(float);
             float getRotation() const;
 
+            void updateAlphaFactor(float);
+            float getAlphaFactor() const;
+
             template<class T> float widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
             template<class T> float heightLengthToPixel(float, LengthType, const T&) const;
@@ -100,7 +103,7 @@ namespace urchin {
 
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(std::string, ShapeType, bool) const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
-            void updatePositioning(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
+            void updateProperties(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
 
             I18nService* getI18nService() const;
             UI3dData* getUi3dData() const;
@@ -140,6 +143,7 @@ namespace urchin {
             Size size;
             Vector2<float> scale;
             float rotationZ;
+            float alphaFactor;
             bool bIsVisible;
 
             int mouseX;

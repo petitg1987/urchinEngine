@@ -24,4 +24,8 @@ namespace urchin {
         widget.updateRotation(rotation);
     }
 
+    void AbstractUIWidgetAnimation::updateAlphaFactor(float alphaFactor) {
+        widget.updateAlphaFactor(alphaFactor);
+    }
+
 }
