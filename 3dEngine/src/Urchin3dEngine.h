@@ -41,6 +41,7 @@
 #include <scene/ui/animation/UIAnimationZoom.h>
 #include <scene/ui/animation/UIAnimationRotation.h>
 #include <scene/ui/animation/UIAnimationDelay.h>
+#include <scene/ui/animation/UIAnimationFade.h>
 
 #include <i18n/LabelTranslator.h>
 
