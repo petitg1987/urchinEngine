@@ -34,10 +34,10 @@ namespace urchin {
         auto textBoxChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textBox", UdaAttribute("skin", skinName));
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
-        texTextBoxDefault = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinChunkDefault, &widgetOutline);
+        texTextBoxDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &widgetOutline);
 
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), textBoxChunk);
-        texTextBoxFocus = UISkinService::instance().createWidgetTexture(getWidth(), getHeight(), skinChunkFocus);
+        texTextBoxFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
@@ -109,7 +109,7 @@ namespace urchin {
                 state = ACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
-                int localMouseX = getMouseX() - text->getGlobalPositionX();
+                int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 computeCursorIndex(localMouseX);
             } else {
                 state = INACTIVE;
@@ -242,14 +242,14 @@ namespace urchin {
 
     void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         //text box
-        updatePositioning(textBoxRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updatePositioning(textBoxRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         textBoxRenderer->enableRenderer(renderingOrder);
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
             renderingOrder++;
-            updatePositioning(cursorRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<int>((int)cursorPosition, 0));
+            updatePositioning(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<float>((float)cursorPosition, 0.0f));
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }

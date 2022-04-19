@@ -71,12 +71,12 @@ namespace urchin {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the widget");
             }
-            return (unsigned int) (maxWidth / 100.0f * (float)getParentContainer()->getWidth());
+            return (unsigned int) (maxWidth / 100.0f * getParentContainer()->getWidth());
         } else if (maxWidthType == LengthType::PARENT_PERCENT) {
             if (!getParent()) {
                 throw std::runtime_error("Missing parent on the widget");
             }
-            return (unsigned int) (maxWidth / 100.0f * (float) getParent()->getWidth());
+            return (unsigned int) (maxWidth / 100.0f * getParent()->getWidth());
         }
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
@@ -343,7 +343,7 @@ namespace urchin {
     }
 
     void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updatePositioning(textRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updatePositioning(textRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         textRenderer->enableRenderer(renderingOrder);
     }
 

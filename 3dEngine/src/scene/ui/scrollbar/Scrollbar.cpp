@@ -46,9 +46,9 @@ namespace urchin {
             throw std::runtime_error("Cursor and line images must have the same width");
         }
 
-        scrollbarLine = StaticBitmap::create(&scrollableWidget, Position((float)scrollableWidget.getWidth() - (float)cursorWidthInPixel, 0.0f, LengthType::PIXEL),
-                                             Size(scrollbarWidth, scrollbarWidthType, (float)scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
-        scrollbarCursor = StaticBitmap::create(&scrollableWidget, Position((float)scrollableWidget.getWidth() - (float)cursorWidthInPixel, 0.0f, LengthType::PIXEL),
+        scrollbarLine = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
+                                             Size(scrollbarWidth, scrollbarWidthType, scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
+        scrollbarCursor = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
                                                Size(scrollbarWidth, scrollbarWidthType, cursorImageRatio, LengthType::RATIO_TO_WIDTH), cursorImageFilename);
 
         //update scrollbar

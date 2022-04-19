@@ -6,46 +6,46 @@ template<class T> std::shared_ptr<T> Widget::create(T* widget, Widget* parent) {
     return widgetPtr;
 }
 
-template<class T> int Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const T& heightValueInPixel) const {
+template<class T> float Widget::widthLengthToPixel(float widthValue, LengthType lengthType, const T& heightValueInPixel) const {
     if (lengthType == LengthType::SCREEN_PERCENT) {
-        return MathFunction::roundToInt(widthValue / 100.0f * (float)getSceneSize().X);
+        return widthValue / 100.0f * (float)getSceneSize().X;
     } else if (lengthType == LengthType::CONTAINER_PERCENT) {
         if (!getParentContainer()) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return MathFunction::roundToInt(widthValue / 100.0f * (float) ((Widget*) getParentContainer())->getWidth());
+        return widthValue / 100.0f * ((Widget*) getParentContainer())->getWidth();
     } else if (lengthType == LengthType::PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return MathFunction::roundToInt(widthValue / 100.0f * (float) getParent()->getWidth());
+        return widthValue / 100.0f * getParent()->getWidth();
     } else if (lengthType == LengthType::RATIO_TO_HEIGHT) {
         float relativeMultiplyFactor = widthValue;
-        return MathFunction::roundToInt(heightValueInPixel() * relativeMultiplyFactor);
+        return heightValueInPixel() * relativeMultiplyFactor;
     } else if (lengthType == LengthType::PIXEL) {
-        return MathFunction::roundToInt(widthValue);
+        return widthValue;
     }
     throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
 }
 
-template<class T> int Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const T& widthValueInPixel) const {
+template<class T> float Widget::heightLengthToPixel(float heightValue, LengthType lengthType, const T& widthValueInPixel) const {
     if (lengthType == LengthType::SCREEN_PERCENT) {
-        return MathFunction::roundToInt(heightValue / 100.0f * (float) getSceneSize().Y);
+        return heightValue / 100.0f * (float) getSceneSize().Y;
     } else if (lengthType == LengthType::CONTAINER_PERCENT) {
         if (!getParentContainer()) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return MathFunction::roundToInt(heightValue / 100.0f * (float) ((Widget*) getParentContainer())->getHeight());
+        return heightValue / 100.0f * (float) ((Widget*) getParentContainer())->getHeight();
     } else if (lengthType == LengthType::PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return MathFunction::roundToInt(heightValue / 100.0f * (float) getParent()->getHeight());
+        return heightValue / 100.0f * (float) getParent()->getHeight();
     } else if (lengthType == LengthType::RATIO_TO_WIDTH) {
         float relativeMultiplyFactor = heightValue;
-        return MathFunction::roundToInt(widthValueInPixel() * relativeMultiplyFactor);
+        return widthValueInPixel() * relativeMultiplyFactor;
     } else if (lengthType == LengthType::PIXEL) {
-        return MathFunction::roundToInt(heightValue);
+        return heightValue;
     }
     throw std::runtime_error("Unknown length type: " + std::to_string(lengthType));
 }

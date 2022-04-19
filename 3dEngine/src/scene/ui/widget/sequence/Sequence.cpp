@@ -64,8 +64,8 @@ namespace urchin {
 
         rightButton = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
         setupRightButtonListeners();
-        float rightButtonXPos = (float)getWidth() - (float)rightButton->getWidth();
-        float rightButtonYPos = (float)(getHeight() - rightButton->getHeight()) / 2.0f;
+        float rightButtonXPos = getWidth() - rightButton->getWidth();
+        float rightButtonYPos = (getHeight() - rightButton->getHeight()) / 2.0f;
         rightButton->updatePosition(Position(rightButtonXPos, rightButtonYPos, LengthType::PIXEL));
 
         //values
@@ -138,8 +138,8 @@ namespace urchin {
 
     void Sequence::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) {
         //update the text position because the text size is updated when the UI language is changed
-        float posX = ((float)getWidth() - (float)valuesText[selectedIndex]->getWidth()) / 2.0f;
-        float posY = ((float)getHeight() - (float)valuesText[selectedIndex]->getHeight()) / 2.0f;
+        float posX = (getWidth() - valuesText[selectedIndex]->getWidth()) / 2.0f;
+        float posY = (getHeight() - valuesText[selectedIndex]->getHeight()) / 2.0f;
         valuesText[selectedIndex]->updatePosition(Position(posX, posY, LengthType::PIXEL));
     }
 

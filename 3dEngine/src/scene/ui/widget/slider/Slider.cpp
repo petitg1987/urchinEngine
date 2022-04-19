@@ -48,7 +48,7 @@ namespace urchin {
 
         currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
         float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
-        currentValueText->updatePosition(Position((float)getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
+        currentValueText->updatePosition(Position(getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
@@ -58,8 +58,8 @@ namespace urchin {
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), 0.0f), Point2<float>((float)getWidth(), (float)getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), (float)getHeight()), Point2<float>(0.0f, (float)getHeight())
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
         };
         std::vector<Point2<float>> textureCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
@@ -132,9 +132,9 @@ namespace urchin {
     }
 
     void Slider::updateSliderValue(int mouseX) {
-        float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
+        float sliderCursorHalfSize = cursorImage->getWidth() / 2.0f;
         float sliderCursorMinXPosition = sliderCursorHalfSize;
-        float sliderCursorMaxXPosition = (float)getWidth() - sliderCursorHalfSize;
+        float sliderCursorMaxXPosition = getWidth() - sliderCursorHalfSize;
 
         //compute index
         unsigned int oldSelectedIndex = selectedIndex;
@@ -159,17 +159,17 @@ namespace urchin {
     }
 
     void Slider::moveSliderCursor() const {
-        float sliderCursorHalfSize = (float)cursorImage->getWidth() / 2.0f;
+        float sliderCursorHalfSize = cursorImage->getWidth() / 2.0f;
         float sliderCursorMinXPosition = sliderCursorHalfSize;
-        float sliderCursorMaxXPosition = ((float)getWidth() - sliderCursorHalfSize);
+        float sliderCursorMaxXPosition = getWidth() - sliderCursorHalfSize;
 
         float sliderCursorPositionPercentage = (float)selectedIndex / ((float)values.size() - 1.0f);
         float sliderCursorXPosition = sliderCursorPositionPercentage * (sliderCursorMaxXPosition - sliderCursorMinXPosition);
-        cursorImage->updatePosition(Position(sliderCursorXPosition, (float)cursorImage->getPositionY(), LengthType::PIXEL));
+        cursorImage->updatePosition(Position(sliderCursorXPosition, cursorImage->getPositionY(), LengthType::PIXEL));
     }
 
     void Slider::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updatePositioning(sliderRenderer.get(), projectionViewMatrix, Vector2<int>(getGlobalPositionX(), getGlobalPositionY()));
+        updatePositioning(sliderRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         sliderRenderer->enableRenderer(renderingOrder);
     }
 

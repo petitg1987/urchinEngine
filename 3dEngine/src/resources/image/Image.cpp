@@ -72,7 +72,7 @@ namespace urchin {
         }
     }
 
-    TextureFormat Image::retrieveTextureFormat() const { //TODO move out from Image ?
+    TextureFormat Image::retrieveTextureFormat() const {
         if (format == Image::IMAGE_GRAYSCALE) {
             if (channelPrecision == Image::CHANNEL_8) {
                 return TextureFormat::GRAYSCALE_8_INT;

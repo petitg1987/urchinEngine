@@ -94,8 +94,8 @@ void UIRendererTest::parentPixelPosition() {
     uiRenderer->addWidget(parentWidget);
     auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
-    AssertHelper::assertIntEquals(widget->getGlobalPositionX(), 20 + 10);
-    AssertHelper::assertIntEquals(widget->getGlobalPositionY(), 20 + 10);
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionX(), 20.0f + 10.0f);
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionY(), 20.0f + 10.0f);
 }
 
 void UIRendererTest::relativeParentPixelPosition() {
@@ -104,8 +104,8 @@ void UIRendererTest::relativeParentPixelPosition() {
     uiRenderer->addWidget(parentWidget);
     auto widget = StaticBitmap::create(parentWidget.get(), Position(10.0f, 10.0f, PIXEL, RelativeTo::PARENT_RIGHT_TOP), Size(5.0f, 5.0f, PIXEL), "ui/widget/empty.png");
 
-    AssertHelper::assertIntEquals(widget->getGlobalPositionX(), 20 + 60 + 10);
-    AssertHelper::assertIntEquals(widget->getGlobalPositionY(), 20 + 10);
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionX(), 20.0f + 60.0f + 10.0f);
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionY(), 20.0f + 10.0f);
 }
 
 void UIRendererTest::screenPercentagePosition() {
@@ -113,8 +113,8 @@ void UIRendererTest::screenPercentagePosition() {
     auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, SCREEN_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
-    AssertHelper::assertIntEquals(widget->getGlobalPositionX(), (int)(1920.0f * 0.2f));
-    AssertHelper::assertIntEquals(widget->getGlobalPositionY(), (int)(1080.0f * 0.2f));
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionX(), 1920.0f * 0.2f);
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionY(), 1080.0f * 0.2f);
 }
 
 void UIRendererTest::containerPercentagePosition() {
@@ -123,8 +123,8 @@ void UIRendererTest::containerPercentagePosition() {
     uiRenderer->addWidget(container);
     auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, CONTAINER_PERCENT), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
-    AssertHelper::assertIntEquals(widget->getGlobalPositionX(), (int)(100.0f * 0.2f));
-    AssertHelper::assertIntEquals(widget->getGlobalPositionY(), (int)(100.0f * 0.2f));
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionX(), 100.0f * 0.2f);
+    AssertHelper::assertFloatEquals(widget->getGlobalPositionY(), 100.0f * 0.2f);
 }
 
 void UIRendererTest::relativeLengthSize() {
@@ -132,8 +132,8 @@ void UIRendererTest::relativeLengthSize() {
     auto widget = StaticBitmap::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(10.0f, PIXEL, 2.0f, RATIO_TO_WIDTH), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
-    AssertHelper::assertUnsignedIntEquals(widget->getWidth(), 10);
-    AssertHelper::assertUnsignedIntEquals(widget->getHeight(), 10 * 2);
+    AssertHelper::assertFloatEquals(widget->getWidth(), 10.0f);
+    AssertHelper::assertFloatEquals(widget->getHeight(), 10.0f * 2.0f);
 }
 
 void UIRendererTest::buttonRemoveParentContainer() {

@@ -58,16 +58,16 @@ namespace urchin {
 
             void updatePosition(Position);
             Position getPosition() const;
-            int getPositionX() const;
-            int getPositionY() const;
+            float getPositionX() const;
+            float getPositionY() const;
             const WidgetOutline& getOutline() const;
-            int getGlobalPositionX() const;
-            int getGlobalPositionY() const;
+            float getGlobalPositionX() const;
+            float getGlobalPositionY() const;
 
             void updateSize(Size);
             Size getSize() const;
-            unsigned int getWidth() const;
-            unsigned int getHeight() const;
+            float getWidth() const;
+            float getHeight() const;
             Rectangle2D<int> widgetRectangle() const;
 
             void updateScale(const Vector2<float>&);
@@ -76,9 +76,9 @@ namespace urchin {
             void updateRotation(float);
             float getRotation() const;
 
-            template<class T> int widthLengthToPixel(float, LengthType, const T&) const;
+            template<class T> float widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
-            template<class T> int heightLengthToPixel(float, LengthType, const T&) const;
+            template<class T> float heightLengthToPixel(float, LengthType, const T&) const;
             float heightPixelToLength(float, LengthType) const;
 
             void setIsVisible(bool);
@@ -100,7 +100,7 @@ namespace urchin {
 
             std::shared_ptr<GenericRendererBuilder> setupUiRenderer(std::string, ShapeType, bool) const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
-            void updatePositioning(GenericRenderer*, const Matrix4<float>&, const Vector2<int>&) const;
+            void updatePositioning(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
 
             I18nService* getI18nService() const;
             UI3dData* getUi3dData() const;
