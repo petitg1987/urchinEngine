@@ -131,7 +131,7 @@
     ```
 * Launch Valgrind with massif tool (replace 'myAppName'):
   ```
-  /usr/bin/valgrind --tool=massif ./myAppName --windowed --debug
+  /usr/bin/valgrind --tool=massif ./myAppName --windowed --dev
   ```
 * Execute Massif visualizer and select file produced by Valgrind
   ```
