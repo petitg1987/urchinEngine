@@ -81,7 +81,7 @@ namespace urchin {
         assert(isInitialized);
         VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
+            Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
 
         cleanupRenderers();
