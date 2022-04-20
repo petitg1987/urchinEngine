@@ -35,12 +35,12 @@ template<class T> float Widget::heightLengthToPixel(float heightValue, LengthTyp
         if (!getParentContainer()) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return heightValue / 100.0f * (float) ((Widget*) getParentContainer())->getHeight();
+        return heightValue / 100.0f * ((Widget*) getParentContainer())->getHeight();
     } else if (lengthType == LengthType::PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return heightValue / 100.0f * (float) getParent()->getHeight();
+        return heightValue / 100.0f * getParent()->getHeight();
     } else if (lengthType == LengthType::RATIO_TO_WIDTH) {
         float relativeMultiplyFactor = heightValue;
         return widthValueInPixel() * relativeMultiplyFactor;

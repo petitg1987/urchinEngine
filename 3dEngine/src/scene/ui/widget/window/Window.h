@@ -37,11 +37,12 @@ namespace urchin {
             //state
             int mousePositionX;
             int mousePositionY;
-            enum windowStates {
+            enum WindowStates {
                 DEFAULT,
                 MOVING,
                 CLOSING
-            } state;
+            };
+            WindowStates state;
 
             //visual
             std::shared_ptr<Text> title;

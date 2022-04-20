@@ -47,7 +47,8 @@ namespace urchin {
             enum ScrollbarStates {
                 DEFAULT,
                 CURSOR_SELECTED,
-            } state;
+            };
+            ScrollbarStates state;
             float scrollPercentage;
             int shiftPixelPositionY;
     };

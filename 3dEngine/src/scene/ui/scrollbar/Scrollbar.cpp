@@ -61,15 +61,15 @@ namespace urchin {
             float maxChildPositionY = 0.0f;
             for (auto& contentChild : getContentChildren()) {
                 if (contentChild->isInitialized()) {
-                    auto childMaxPositionY = (float) contentChild->getGlobalPositionY() + (float) contentChild->getHeight();
+                    auto childMaxPositionY = contentChild->getGlobalPositionY() + contentChild->getHeight();
                     if (childMaxPositionY > maxChildPositionY) {
                         maxChildPositionY = childMaxPositionY;
                     }
                 }
             }
 
-            contentHeight = maxChildPositionY - (float)scrollableWidget.getGlobalPositionY();
-            visibleHeight = (float) scrollableWidget.getHeight();
+            contentHeight = maxChildPositionY - scrollableWidget.getGlobalPositionY();
+            visibleHeight = scrollableWidget.getHeight();
 
             updateScrollingPosition();
         }
@@ -136,9 +136,9 @@ namespace urchin {
     }
 
     void Scrollbar::updateScrollingPosition(int positionY) {
-        auto halfCursorHeight = (float)scrollbarCursor->getHeight() / 2.0f;
-        auto minPositionY = (float)scrollbarLine->getGlobalPositionY() + halfCursorHeight;
-        auto maxPositionY = (float)scrollbarLine->getGlobalPositionY() + (float)scrollbarLine->getHeight() - halfCursorHeight;
+        auto halfCursorHeight = scrollbarCursor->getHeight() / 2.0f;
+        auto minPositionY = scrollbarLine->getGlobalPositionY() + halfCursorHeight;
+        auto maxPositionY = scrollbarLine->getGlobalPositionY() + scrollbarLine->getHeight() - halfCursorHeight;
 
         scrollPercentage = ((float)positionY - minPositionY) / (maxPositionY - minPositionY);
         scrollPercentage = std::clamp(scrollPercentage, 0.0f, 1.0f);
@@ -166,7 +166,7 @@ namespace urchin {
         float cursorPositionX = scrollbarCursor->getPosition().getX();
         LengthType cursorPositionXType = scrollbarCursor->getPosition().getXType();
 
-        auto cursorMaxPositionY = (float)scrollableWidget.getHeight() - (float)scrollbarCursor->getHeight();
+        float cursorMaxPositionY = scrollableWidget.getHeight() - scrollbarCursor->getHeight();
         float cursorPositionY = cursorMaxPositionY * scrollPercentage;
 
         scrollbarCursor->updatePosition(Position(cursorPositionX, cursorPositionXType, cursorPositionY, LengthType::PIXEL));

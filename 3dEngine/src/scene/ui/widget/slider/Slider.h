@@ -48,7 +48,8 @@ namespace urchin {
             enum TextBoxStates {
                 DEFAULT,
                 CURSOR_SELECTED,
-            } state;
+            };
+            TextBoxStates state;
 
             //visual
             std::shared_ptr<Text> currentValueText;

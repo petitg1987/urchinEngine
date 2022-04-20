@@ -71,7 +71,7 @@ namespace urchin {
         }
     }
 
-    bool ValidationLayer::getValidationLevel() const {
+    unsigned int ValidationLayer::getValidationLevel() const {
         return validationLevel;
     }
 

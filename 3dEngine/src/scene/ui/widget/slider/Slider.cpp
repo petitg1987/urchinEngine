@@ -47,13 +47,13 @@ namespace urchin {
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
 
         currentValueText = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[selectedIndex]);
-        float textYPosition = (float)(getHeight() - currentValueText->getHeight()) / 2.0f;
+        float textYPosition = (getHeight() - currentValueText->getHeight()) / 2.0f;
         currentValueText->updatePosition(Position(getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
-        float cursorImageWidth = ((float)getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
-        cursorImage = StaticBitmap::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), Size(cursorImageWidth, (float)getHeight(), LengthType::PIXEL), cursorImageFilename);
+        float cursorImageWidth = (getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
+        cursorImage = StaticBitmap::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), Size(cursorImageWidth, getHeight(), LengthType::PIXEL), cursorImageFilename);
         moveSliderCursor();
 
         //visual
@@ -138,7 +138,7 @@ namespace urchin {
 
         //compute index
         unsigned int oldSelectedIndex = selectedIndex;
-        float relativeMouseX = (float)mouseX - (float)getGlobalPositionX();
+        float relativeMouseX = (float)mouseX - getGlobalPositionX();
         float sliderCursorXPosition = std::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
         float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
         selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);

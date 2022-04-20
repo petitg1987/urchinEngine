@@ -59,7 +59,7 @@ namespace urchin {
         leftButton = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL, getPosition().getRelativeTo(), getPosition().getReferencePoint()), buttonsTextSkin, leftButtonString);
         setupLeftButtonListeners();
         float leftButtonXPos = 0.0f;
-        float leftButtonYPos = (float)(getHeight() - leftButton->getHeight()) / 2.0f;
+        float leftButtonYPos = (getHeight() - leftButton->getHeight()) / 2.0f;
         leftButton->updatePosition(Position(leftButtonXPos, leftButtonYPos, LengthType::PIXEL));
 
         rightButton = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), buttonsTextSkin, rightButtonString);

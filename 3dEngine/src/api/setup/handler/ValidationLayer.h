@@ -12,7 +12,7 @@ namespace urchin {
             void initializeDebugMessenger(VkInstance);
             void cleanup();
 
-            bool getValidationLevel() const;
+            unsigned int getValidationLevel() const;
             std::vector<std::string> getRequiredExtensions() const;
 
         private:

@@ -41,7 +41,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        text->updatePosition(Position(0.0f, ((float)getHeight() - (float)text->getHeight()) / 2.0f, LengthType::PIXEL));
+        text->updatePosition(Position(0.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -52,8 +52,8 @@ namespace urchin {
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), 0.0f), Point2<float>((float)getWidth(), (float)getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>((float)getWidth(), (float)getHeight()), Point2<float>(0.0f, (float)getHeight())
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
         };
         std::vector<Point2<float>> textureCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),

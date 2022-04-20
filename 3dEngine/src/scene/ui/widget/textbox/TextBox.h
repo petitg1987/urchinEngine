@@ -64,7 +64,8 @@ namespace urchin {
             enum TextBoxStates {
                 ACTIVE,
                 INACTIVE
-            } state;
+            };
+            TextBoxStates state;
 
             //visual
             std::shared_ptr<Texture> texTextBoxDefault;
