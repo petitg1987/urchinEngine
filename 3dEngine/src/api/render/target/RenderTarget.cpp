@@ -368,8 +368,7 @@ namespace urchin {
             queueSubmitWaitStages.emplace_back(additionalSemaphore->waitDstStageMask);
         }
 
-        std::span<OffscreenRender*> renderDependencies = getRenderDependencies();
-        for (auto& renderDependency : renderDependencies) {
+        for (OffscreenRender* renderDependency : getRenderDependencies()) {
             VkSemaphore waitSemaphore = renderDependency->popSubmitSemaphore(frameIndex);
             if (waitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(waitSemaphore);
