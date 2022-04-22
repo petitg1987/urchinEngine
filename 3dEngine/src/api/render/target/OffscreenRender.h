@@ -39,6 +39,7 @@ namespace urchin {
             std::size_t hasOutputTextureWithContentToLoad() const override;
 
             VkSemaphore popSubmitSemaphore(std::uint64_t);
+            void markSubmitSemaphoreUnused(std::uint64_t);
 
             void render(std::uint64_t, unsigned int) override;
 
@@ -46,8 +47,10 @@ namespace urchin {
             void initializeClearValues();
             void createRenderPass();
             void createFramebuffers();
-            void createSyncObjects();
-            void destroySyncObjects();
+            void createFence();
+            void destroyFence();
+            void createSemaphores();
+            void destroySemaphores();
 
             void updateTexturesWriter();
 
@@ -63,6 +66,7 @@ namespace urchin {
             std::array<VkSemaphore, MAX_SUBMIT_SEMAPHORES> submitSemaphores;
             std::uint64_t submitSemaphoresFrameIndex;
             unsigned int remainingSubmitSemaphores;
+            bool submitSemaphoresStale;
     };
 
 }

@@ -12,7 +12,8 @@ namespace urchin {
             commandBufferFence(nullptr),
             submitSemaphores({}),
             submitSemaphoresFrameIndex(0),
-            remainingSubmitSemaphores(0) {
+            remainingSubmitSemaphores(0),
+            submitSemaphoresStale(false) {
 
     }
 
@@ -70,7 +71,8 @@ namespace urchin {
         createFramebuffers();
         createCommandPool();
         createCommandBuffers();
-        createSyncObjects();
+        createFence();
+        createSemaphores();
 
         initializeRenderers();
 
@@ -86,7 +88,8 @@ namespace urchin {
 
         cleanupRenderers();
 
-        destroySyncObjects();
+        destroySemaphores();
+        destroyFence();
         destroyCommandBuffersAndPool();
         destroyFramebuffers();
         destroyDepthResources();
@@ -177,7 +180,7 @@ namespace urchin {
         RenderTarget::addNewFrameBuffer(attachments);
     }
 
-    void OffscreenRender::createSyncObjects() {
+    void OffscreenRender::createFence() {
         VkFenceCreateInfo fenceInfo{};
         fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
@@ -185,7 +188,13 @@ namespace urchin {
         if (fenceResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
         }
+    }
 
+    void OffscreenRender::destroyFence() {
+        vkDestroyFence(GraphicService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
+    }
+
+    void OffscreenRender::createSemaphores() {
         for (VkSemaphore& submitSemaphore : submitSemaphores) {
             VkSemaphoreCreateInfo semaphoreInfo{};
             semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -196,8 +205,7 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::destroySyncObjects() {
-        vkDestroyFence(GraphicService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
+    void OffscreenRender::destroySemaphores() {
         for (VkSemaphore& submitSemaphore : submitSemaphores) {
             vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), submitSemaphore, nullptr);
         }
@@ -209,11 +217,16 @@ namespace urchin {
                 throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex));
             }
             return submitSemaphores[--remainingSubmitSemaphores];
-        } else if (submitSemaphoresFrameIndex < frameIndex) {
-            //This render target has been generated in a previous frame: therefore, the synchronization is already done and no need to be redone. Typical case is when the render target is cached.
-            return nullptr;
         }
-        throw std::runtime_error("Current frame index (" + std::to_string(frameIndex) + ") cannot be lower to the submit semaphores frame index (" + std::to_string(submitSemaphoresFrameIndex) + ") on render target: " + getName() + "/" + std::to_string(frameIndex));
+
+        //This render target has been generated in a previous frame: therefore, the synchronization is already done and no need to be redone. Typical case is when the render target is cached.
+        assert(submitSemaphoresFrameIndex < frameIndex);
+        return nullptr;
+    }
+
+    void OffscreenRender::markSubmitSemaphoreUnused(std::uint64_t frameIndex) {
+        popSubmitSemaphore(frameIndex);
+        submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }
 
     void OffscreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputs) {
@@ -230,6 +243,11 @@ namespace urchin {
             throw std::runtime_error("Number of dependencies to output (" + std::to_string(numDependenciesToOutputs) + ") is higher that the maximum expected on render target: " + getName() + "/" + std::to_string(frameIndex));
         } else if (remainingSubmitSemaphores != 0) {
             throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameIndex));
+        } else if (submitSemaphoresStale) {
+            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            destroySemaphores();
+            createSemaphores();
+            submitSemaphoresStale = false;
         }
 
         updateTexturesWriter();
