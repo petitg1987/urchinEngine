@@ -244,7 +244,10 @@ namespace urchin {
         } else if (remainingSubmitSemaphores != 0) {
             throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameIndex));
         } else if (submitSemaphoresStale) {
-            vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            VkResult resultDeviceWait = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            if (resultDeviceWait != VK_SUCCESS) {
+                Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(resultDeviceWait) + "' on render target: " + getName());
+            }
             destroySemaphores();
             createSemaphores();
             submitSemaphoresStale = false;
