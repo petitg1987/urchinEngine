@@ -28,9 +28,9 @@ namespace urchin {
             static SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice);
 
         private:
-            static VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>&);
-            static VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>&, bool);
-            static VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR&);
+            std::pair<VkFormat, VkColorSpaceKHR> chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>&) const;
+            VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>&, bool) const;
+            VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR&) const;
 
             bool isInitialized;
 

@@ -31,7 +31,7 @@ namespace urchin {
 
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
 
-        VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
+        std::pair<VkFormat, VkColorSpaceKHR> surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
         VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes, verticalSyncEnabled);
         VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
         uint32_t imageCount = std::max(swapChainSupport.capabilities.minImageCount + 1, 3u /* triple buffering minimum */);
@@ -43,8 +43,8 @@ namespace urchin {
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
         createInfo.surface = GraphicService::getSurface();
         createInfo.minImageCount = imageCount;
-        createInfo.imageFormat = surfaceFormat.format;
-        createInfo.imageColorSpace = surfaceFormat.colorSpace;
+        createInfo.imageFormat = surfaceFormat.first;
+        createInfo.imageColorSpace = surfaceFormat.second;
         createInfo.imageExtent = extent;
         createInfo.imageArrayLayers = 1;
         createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
@@ -86,7 +86,7 @@ namespace urchin {
         if (resultGetImages != VK_SUCCESS && resultGetImages != VK_INCOMPLETE) {
             throw std::runtime_error("Failed to get swap chain images with error code: " + std::to_string(resultCreate));
         }
-        imageFormat = surfaceFormat.format;
+        imageFormat = surfaceFormat.first;
         swapChainExtent = extent;
 
         isInitialized = true;
@@ -157,16 +157,27 @@ namespace urchin {
         return details;
     }
 
-    VkSurfaceFormatKHR SwapChainHandler::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
+    std::pair<VkFormat, VkColorSpaceKHR> SwapChainHandler::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) const {
+        if (availableFormats.size() == 1 && availableFormats[0].format == VK_FORMAT_UNDEFINED) {
+            return std::make_pair(VK_FORMAT_B8G8R8A8_UNORM, availableFormats[0].colorSpace);
+        }
+
         for (const auto& availableFormat : availableFormats) {
-            if (availableFormat.format == VK_FORMAT_R8G8B8A8_UNORM && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
-                return availableFormat;
+            if (availableFormat.format == VK_FORMAT_B8G8R8A8_UNORM && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+                return std::make_pair(availableFormat.format, availableFormat.colorSpace);
             }
         }
-        return availableFormats[0];
+
+        for (const auto& availableFormat : availableFormats) {
+            if (availableFormat.format == VK_FORMAT_B8G8R8A8_UNORM) {
+                return std::make_pair(availableFormat.format, availableFormat.colorSpace);
+            }
+        }
+
+        return std::make_pair(availableFormats[0].format, availableFormats[0].colorSpace);
     }
 
-    VkPresentModeKHR SwapChainHandler::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes, bool verticalSyncEnabled) {
+    VkPresentModeKHR SwapChainHandler::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes, bool verticalSyncEnabled) const {
         if (!verticalSyncEnabled) {
             if (std::ranges::find(availablePresentModes, VK_PRESENT_MODE_MAILBOX_KHR) != availablePresentModes.end()) {
                 return VK_PRESENT_MODE_MAILBOX_KHR;
@@ -177,7 +188,7 @@ namespace urchin {
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 
-    VkExtent2D SwapChainHandler::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) {
+    VkExtent2D SwapChainHandler::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) const {
         if (capabilities.currentExtent.width != UINT32_MAX) {
             return capabilities.currentExtent;
         } else {
