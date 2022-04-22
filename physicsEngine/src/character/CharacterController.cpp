@@ -139,12 +139,7 @@ namespace urchin {
             } else {
                 static unsigned int numErrorsLogged = 0;
                 if (numErrorsLogged++ < MAX_ERRORS_LOG) {
-                    std::stringstream logStream;
-                    logStream << "Maximum of iteration reached on character update" << std::endl;
-                    logStream << " - Delta time (second): " << dt << std::endl;
-                    logStream << " - Remaining time (second): " << remainingDt << std::endl;
-                    logStream << " - Min update frequency (hz): " << MIN_UPDATE_FREQUENCY;
-                    Logger::instance().logWarning(logStream.str());
+                    Logger::instance().logWarning("Maximum of iteration reached on character update (dt: " + std::to_string(dt) + ", remaining dt: " + std::to_string(remainingDt) + ")");
                 }
                 stepDt = remainingDt;
                 remainingDt = 0.0f;

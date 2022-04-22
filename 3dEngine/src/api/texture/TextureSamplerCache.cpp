@@ -4,7 +4,7 @@ namespace urchin {
 
     TextureSamplerCache::~TextureSamplerCache() {
         if (!samplersCache.empty()) {
-            Logger::instance().logWarning("Texture sampler still used before destruction");
+            Logger::instance().logError("Texture sampler still used before destruction");
         }
     }
 
