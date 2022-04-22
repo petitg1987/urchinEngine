@@ -205,8 +205,8 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::destroySemaphores() {
-        for (VkSemaphore& submitSemaphore : submitSemaphores) {
+    void OffscreenRender::destroySemaphores() const {
+        for (const VkSemaphore& submitSemaphore : submitSemaphores) {
             vkDestroySemaphore(GraphicService::instance().getDevices().getLogicalDevice(), submitSemaphore, nullptr);
         }
     }

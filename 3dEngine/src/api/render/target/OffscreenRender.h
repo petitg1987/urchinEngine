@@ -50,7 +50,7 @@ namespace urchin {
             void createFence();
             void destroyFence();
             void createSemaphores();
-            void destroySemaphores();
+            void destroySemaphores() const;
 
             void updateTexturesWriter();
 

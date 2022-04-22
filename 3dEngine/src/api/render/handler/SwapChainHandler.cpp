@@ -31,7 +31,7 @@ namespace urchin {
 
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
 
-        std::pair<VkFormat, VkColorSpaceKHR> surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
+        const auto& [imgFormat, imgColorSpace] = chooseSwapSurfaceFormat(swapChainSupport.formats);
         VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes, verticalSyncEnabled);
         VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
         uint32_t imageCount = std::max(swapChainSupport.capabilities.minImageCount + 1, 3u /* triple buffering minimum */);
@@ -43,8 +43,8 @@ namespace urchin {
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
         createInfo.surface = GraphicService::getSurface();
         createInfo.minImageCount = imageCount;
-        createInfo.imageFormat = surfaceFormat.first;
-        createInfo.imageColorSpace = surfaceFormat.second;
+        createInfo.imageFormat = imgFormat;
+        createInfo.imageColorSpace = imgColorSpace;
         createInfo.imageExtent = extent;
         createInfo.imageArrayLayers = 1;
         createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
@@ -86,7 +86,7 @@ namespace urchin {
         if (resultGetImages != VK_SUCCESS && resultGetImages != VK_INCOMPLETE) {
             throw std::runtime_error("Failed to get swap chain images with error code: " + std::to_string(resultCreate));
         }
-        imageFormat = surfaceFormat.first;
+        imageFormat = imgFormat;
         swapChainExtent = extent;
 
         isInitialized = true;
