@@ -16,10 +16,15 @@ namespace urchin {
         const AudioController& audioController;
     };
 
+    enum class MusicPlayOrder {
+        ALPHABETIC_ORDER,
+        RANDOM_ORDER
+    };
+
     class MusicLoopPlayer {
         public:
-            explicit MusicLoopPlayer(std::vector<std::string>, unsigned int musicStartIndex = 0);
-            explicit MusicLoopPlayer(const std::string&, unsigned int musicStartIndex = 0);
+            MusicLoopPlayer(std::vector<std::string>, MusicPlayOrder);
+            MusicLoopPlayer(const std::string&, MusicPlayOrder);
             ~MusicLoopPlayer();
 
             void setup(SoundEnvironment&);
@@ -30,7 +35,7 @@ namespace urchin {
             void refresh();
 
         private:
-            void initialize(unsigned int);
+            void orderMusics(MusicPlayOrder);
 
             SoundEnvironment* soundEnvironment;
             std::vector<std::string> musicFilenames;

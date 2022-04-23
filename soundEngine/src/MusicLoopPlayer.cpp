@@ -1,4 +1,5 @@
 #include <utility>
+#include <algorithm>
 #include <random>
 
 #include <MusicLoopPlayer.h>
@@ -7,7 +8,7 @@
 
 namespace urchin {
 
-    MusicLoopPlayer::MusicLoopPlayer(std::vector<std::string> musicFilenames, unsigned int musicStartIndex) :
+    MusicLoopPlayer::MusicLoopPlayer(std::vector<std::string> musicFilenames, MusicPlayOrder playOrder) :
             soundEnvironment(nullptr),
             musicFilenames(std::move(musicFilenames)),
             currentMusicIndex(0),
@@ -15,10 +16,10 @@ namespace urchin {
         if (this->musicFilenames.empty()) {
             throw std::runtime_error("At least one music is required");
         }
-        initialize(musicStartIndex);
+        orderMusics(playOrder);
     }
 
-    MusicLoopPlayer::MusicLoopPlayer(const std::string& resourcesMusicsDirectory, unsigned int musicStartIndex) :
+    MusicLoopPlayer::MusicLoopPlayer(const std::string& resourcesMusicsDirectory, MusicPlayOrder playOrder) :
             soundEnvironment(nullptr),
             currentMusicIndex(0),
             isPaused(false) {
@@ -29,8 +30,7 @@ namespace urchin {
         if (musicFilenames.empty()) {
             throw std::runtime_error("No musics found in directory: " + musicsFullPathDirectory);
         }
-        std::ranges::sort(musicFilenames);
-        initialize(musicStartIndex);
+        orderMusics(playOrder);
     }
 
     MusicLoopPlayer::~MusicLoopPlayer() {
@@ -40,12 +40,17 @@ namespace urchin {
         musics.clear();
     }
 
-    void MusicLoopPlayer::initialize(unsigned int musicStartIndex) {
-        if (musicStartIndex == 0) {
-            currentMusicIndex = musicFilenames.size() - 1;
+    void MusicLoopPlayer::orderMusics(MusicPlayOrder playOrder) {
+        if (playOrder == MusicPlayOrder::ALPHABETIC_ORDER) {
+            std::ranges::sort(musicFilenames);
+        } else if (playOrder == MusicPlayOrder::RANDOM_ORDER) {
+            std::mt19937 rng(std::random_device{}());
+            std::shuffle(musicFilenames.begin(), musicFilenames.end(), rng);
         } else {
-            currentMusicIndex = (musicStartIndex - 1) % (unsigned int)musicFilenames.size();
+            throw std::runtime_error("Unknown music play order: " + std::to_string((int)playOrder));
         }
+
+        currentMusicIndex = musicFilenames.size() - 1;
     }
 
     void MusicLoopPlayer::setup(SoundEnvironment& soundEnvironment) {
