@@ -11,7 +11,7 @@ namespace urchin {
 
     ValidationLayer::ValidationLayer() :
             validationLayer({"VK_LAYER_KHRONOS_validation"}),
-            validationLevel(ConfigService::instance().getUnsignedIntValue("graphics.apiValidationLevel")),
+            validationLevel(ConfigService::instance().getUnsignedIntValue("graphicsDebug.apiValidationLevel")),
             instance(nullptr),
             debugMessenger(nullptr),
             instanceDebugCreateInfo({}),

@@ -40,6 +40,9 @@ namespace urchin {
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"), //81.3%
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
         };
+        if (ConfigService::instance().getBoolValue("graphicsDebug.enableRobustBufferAccess")) {
+            physicalDeviceRequiredFeatures.emplace_back(PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), "robust buffer access")); //100%
+        }
         physicalDeviceRequiredVulkan12Features = {
                 // /!\ "shaderOutputLayer & "shaderOutputViewportIndex" features create a device lost error when used on Intel graphics cards (reason: unknown, test date: 18/04/2022)
         };
@@ -124,11 +127,17 @@ namespace urchin {
             }
         }
 
+
+        VkPhysicalDeviceRobustness2FeaturesEXT a{};
+        a.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ROBUSTNESS_2_FEATURES_EXT;
+
+
         VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
         deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
         VkPhysicalDeviceFeatures2 deviceFeatures2{};
         deviceFeatures2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-        deviceFeatures2.pNext = &deviceVulkan12Features;
+        //deviceFeatures2.pNext = &deviceVulkan12Features;
+        deviceFeatures2.pNext = &a;
         vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures2);
         for (const auto& requiredFeature : physicalDeviceRequiredVulkan12Features) {
             auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + requiredFeature.offset);
