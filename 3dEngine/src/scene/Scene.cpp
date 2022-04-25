@@ -16,7 +16,7 @@ namespace urchin {
             sceneHeight(0),
             fps(0),
             fpsForDisplay(0),
-            sceneFrameIndex(0),
+            frameIndex(0),
             screenRenderTarget(ScreenRender("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderers(nullptr) {
@@ -238,13 +238,13 @@ namespace urchin {
             for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderers}) {
                 if (activeRenderer) {
                     screenRenderingOrder++;
-                    activeRenderer->prepareRendering(dt, screenRenderingOrder);
+                    activeRenderer->prepareRendering(frameIndex, dt, screenRenderingOrder);
                 }
             }
-            screenRenderTarget.render(sceneFrameIndex, 0);
+            screenRenderTarget.render(frameIndex, 0);
 
             ResourceContainer::instance().cleanResources();
-            sceneFrameIndex++;
+            frameIndex++;
         }
 
         if (DEBUG_PROFILE_FRAME_BY_FRAME) {
