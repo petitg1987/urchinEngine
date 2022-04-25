@@ -79,7 +79,7 @@ namespace urchin {
             //scene
             void pause();
             void unpause();
-            void prepareRendering(std::uint64_t, float, unsigned int&) override;
+            void prepareRendering(float, unsigned int&) override;
 
         private:
             struct LightingShaderConst {
@@ -101,10 +101,10 @@ namespace urchin {
             void createOrUpdateLightingPass();
             void createOrUpdateLightingShader();
             void updateScene(float);
-            void deferredRendering(std::uint64_t, float);
+            void deferredRendering(float);
             unsigned int computeDependenciesToFirstPassOutput() const;
             void renderDebugSceneData(GeometryContainer&);
-            void lightingPassRendering(std::uint64_t);
+            void lightingPassRendering();
             unsigned int computeDependenciesToSecondPassOutput() const;
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();
@@ -113,6 +113,7 @@ namespace urchin {
             RenderTarget& finalRenderTarget;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
+            std::uint64_t frameIndex;
             bool paused;
             std::shared_ptr<Camera> camera;
 

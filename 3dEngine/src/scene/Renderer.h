@@ -15,7 +15,7 @@ namespace urchin {
             virtual bool onScroll(double) = 0;
             virtual void onDisable() = 0;
 
-            virtual void prepareRendering(std::uint64_t, float, unsigned int&) = 0;
+            virtual void prepareRendering(float, unsigned int&) = 0;
     };
 
 }

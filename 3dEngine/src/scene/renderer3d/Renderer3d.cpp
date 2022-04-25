@@ -27,6 +27,7 @@ namespace urchin {
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
             sceneHeight(finalRenderTarget.getHeight()),
+            frameIndex(0),
             paused(true),
             camera(std::move(camera)),
 
@@ -288,12 +289,12 @@ namespace urchin {
         paused = false;
     }
 
-    void Renderer3d::prepareRendering(std::uint64_t frameIndex, float dt, unsigned int& screenRenderingOrder) {
+    void Renderer3d::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
         updateScene(dt);
-        deferredRendering(frameIndex, dt);
-        lightingPassRendering(frameIndex);
+        deferredRendering(dt);
+        lightingPassRendering();
         if (isAntiAliasingActivated) {
             unsigned int numDependenciesToAATexture = 2 /* bloom pre-filter & bloom combine (screen target) */;
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
@@ -305,6 +306,7 @@ namespace urchin {
 
         postUpdateScene();
         PipelineContainer::instance().cleanPipelines();
+        frameIndex++;
     }
 
     void Renderer3d::registerModelForAnimation(Model& model) {
@@ -446,7 +448,7 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, color, normal, etc. into buffers.
      */
-    void Renderer3d::deferredRendering(std::uint64_t frameIndex, float dt) {
+    void Renderer3d::deferredRendering(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
 
         //deferred shadow map
@@ -529,7 +531,7 @@ namespace urchin {
      * Second pass of deferred shading algorithm.
      * Compute lighting in pixel shader and render the scene to screen.
      */
-    void Renderer3d::lightingPassRendering(std::uint64_t frameIndex) {
+    void Renderer3d::lightingPassRendering() {
         ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();

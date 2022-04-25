@@ -335,7 +335,7 @@ namespace urchin {
         return widgets;
     }
 
-    void UIRenderer::prepareRendering(std::uint64_t, float dt, unsigned int& screenRenderingOrder) {
+    void UIRenderer::prepareRendering(float dt, unsigned int& screenRenderingOrder) {
         prepareRendering(dt, screenRenderingOrder, Matrix4<float>());
     }
 
