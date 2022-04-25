@@ -44,7 +44,10 @@ namespace urchin {
             physicalDeviceRequiredFeatures.emplace_back(PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), "robust buffer access")); //100%
         }
         physicalDeviceRequiredVulkan12Features = {
-                // /!\ "shaderOutputLayer & "shaderOutputViewportIndex" features create a device lost error when used on Intel graphics cards (reason: unknown, test date: 18/04/2022)
+                //About "shaderOutputLayer & "shaderOutputViewportIndex" features: a device lost error occurs on Intel GPU when gl_Layer is used in vertex shader:
+                // - Reason: unknown. Cause could be somewhere else because even without these features, the engine crashes randomly with device lost on Intel UDH Graphics 620.
+                // - Tested graphics cards: Intel Iris Plus Graphics, Intel UHD Graphics
+                // - Test date: 18/04/2022
         };
         physicalDeviceRequiredExtensions = {
                 std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain")
