@@ -132,9 +132,6 @@ namespace urchin {
 
             soundEntity->setName(soundName);
 
-            std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
-            std::string relativeSoundFilename = FileUtil::getRelativePath(resourcesDirectory, soundFilename);
-
             QVariant soundTypeVariant = soundTypeComboBox->currentData();
             auto soundType = static_cast<Sound::SoundType>(soundTypeVariant.toInt());
 
@@ -145,9 +142,9 @@ namespace urchin {
 
             std::shared_ptr<Sound> sound;
             if (soundType == Sound::GLOBAL) {
-                sound = std::make_shared<GlobalSound>(relativeSoundFilename, soundCategory, initialVolume);
+                sound = std::make_shared<GlobalSound>(soundFilename, soundCategory, initialVolume);
             } else if (soundType == Sound::SPATIAL) {
-                sound = std::make_shared<SpatialSound>(relativeSoundFilename, soundCategory, initialVolume, Point3<float>(0.0f, 0.0f, 0.0f), 10.0f);
+                sound = std::make_shared<SpatialSound>(soundFilename, soundCategory, initialVolume, Point3<float>(0.0f, 0.0f, 0.0f), 10.0f);
             } else {
                 throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
             }

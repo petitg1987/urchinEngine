@@ -32,8 +32,8 @@ namespace urchin {
     }
 
     void SoundReaderWriter::write(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
-        auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk);
-        filenameChunk.setStringValue(sound.getFilename());
+        std::string relativeSoundFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), sound.getFilename());
+        udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk).setStringValue(relativeSoundFilename);
 
         auto& initialVolumeChunk = udaWriter.createChunk(INITIAL_VOLUME_TAG, UdaAttribute(), &soundChunk);
         initialVolumeChunk.setFloatValue(sound.getInitialVolume());

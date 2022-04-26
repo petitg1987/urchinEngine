@@ -45,11 +45,10 @@ namespace urchin {
 
             initializeScene(mapFilename);
 
-            std::string relativeMapFilename = FileUtil::getRelativePath(mapResourcesDirectory, mapFilename);
             map = std::make_unique<Map>(scene->getActiveRenderer3d(), physicsWorld.get(), soundEnvironment.get(), aiEnvironment.get());
-            if (FileUtil::isFileExist(FileSystem::instance().getResourcesDirectory() + relativeMapFilename)) { //existing map
+            if (FileUtil::isFileExist(mapFilename)) { //existing map
                 LoadMapCallback nullLoadCallback;
-                MapSaveService().loadMap(relativeMapFilename, nullLoadCallback, *map);
+                MapSaveService().loadMap(mapFilename, nullLoadCallback, *map);
             } else {
                 map->setRelativeWorkingDirectory(relativeWorkingDirectory);
             }

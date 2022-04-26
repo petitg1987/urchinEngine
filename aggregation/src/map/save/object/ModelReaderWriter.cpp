@@ -20,8 +20,8 @@ namespace urchin {
         auto& meshesFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &meshesChunk);
 
         if (model.getConstMeshes()) {
-            std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
-            meshesFilenameChunk.setStringValue(FileUtil::getRelativePath(resourcesDirectory, model.getConstMeshes()->getMeshesFilename()));
+            std::string relativeFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), model.getConstMeshes()->getMeshesFilename());
+            meshesFilenameChunk.setStringValue(relativeFilename);
         }
         writeAnimations(modelChunk, model, udaWriter);
         writeTransform(modelChunk, model, udaWriter);

@@ -180,8 +180,16 @@ namespace urchin {
      * @param path Path to convert into relative path
      * @return Relative path from the reference directory
      */
-    std::string FileUtil::getRelativePath(const std::string& referenceDirectory, const std::string& path) { //TODO not working between 2 disks on Windows !
+    std::string FileUtil::getRelativePath(const std::string& referenceDirectory, const std::string& path) {
         checkDirectory(referenceDirectory);
+        if (!FileUtil::isAbsolutePath(referenceDirectory)) {
+            throw std::runtime_error("Reference directory must be absolute: " + referenceDirectory);
+        } else if (!FileUtil::isAbsolutePath(path)) {
+            throw std::runtime_error("Path directory must be absolute: " + path);
+        } else if (std::tolower(referenceDirectory[0]) != std::tolower(path[0])) {
+            //On Windows, it is not possible to get relative path from a disk (C:\) to another (D:\)
+            throw std::runtime_error("Reference directory (" + referenceDirectory + ") and path directory (" + path + ") must be one same drive");
+        }
         std::string simplifiedReferenceDirectory = simplifyDirectoryPath(referenceDirectory);
 
         //remove common directories from path

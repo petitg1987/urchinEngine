@@ -14,6 +14,7 @@ class FileUtilTest : public CppUnit::TestFixture {
 
         void relativePath();
         void relativePathEqual();
+        void relativePathOnDifferentDisk();
 
         void simplifyDirectoryPathUnix();
         void simplifyDirectoryPathWindows();
