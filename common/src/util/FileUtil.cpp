@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <filesystem>
 #include <fstream>
 #include <sys/stat.h>
 
@@ -58,7 +57,7 @@ namespace urchin {
         checkDirectory(dstDirectory);
         for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
             if (entry.is_regular_file()) {
-                std::string srcFile = entry.path().string();
+                std::string srcFile = pathToString(entry.path());
                 std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
 
                 if (!isFileExist(dstFile)) {
@@ -68,13 +67,24 @@ namespace urchin {
         }
     }
 
+    std::string FileUtil::pathToString(const std::filesystem::path& path) {
+        #ifdef _WIN32
+            //NTFS filesystem use UTF-16 encoding. Therefore, without this specific code, the application won't work correctly if it is stored in a folder with characters others than ASCII (e.g.: é).
+            auto pathU16String = path.u16string();
+            return std::string(pathU16String.begin(), pathU8String.end());
+        #else
+            auto pathU8String = path.u8string();
+            return std::string(pathU8String.begin(), pathU8String.end());
+        #endif
+    }
+
     std::vector<std::string> FileUtil::getFiles(std::string_view directory) {
         checkDirectory(directory);
 
         std::vector<std::string> filenames;
         for (const auto& entry : std::filesystem::directory_iterator(directory)) {
             if (entry.is_regular_file()) {
-                filenames.push_back(entry.path().string());
+                filenames.push_back(pathToString(entry.path()));
             }
         }
         return filenames;
@@ -91,11 +101,23 @@ namespace urchin {
     void FileUtil::getFilesRecursive(std::string_view directory, std::vector<std::string>& filenames) {
         for (const auto& entry : std::filesystem::directory_iterator(directory)) {
             if (entry.is_regular_file()) {
-                filenames.push_back(entry.path().string());
+                filenames.push_back(pathToString(entry.path()));
             } else if (entry.is_directory()) {
-                getFilesRecursive(entry.path().string(), filenames);
+                getFilesRecursive(pathToString(entry.path()), filenames);
             }
         }
+    }
+
+    std::vector<std::string> FileUtil::getDirectories(std::string_view directory) {
+        checkDirectory(directory);
+
+        std::vector<std::string> directories;
+        for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+            if (entry.is_directory()) {
+                directories.push_back(pathToString(entry.path()));
+            }
+        }
+        return directories;
     }
 
     void FileUtil::copyFile(const std::string& srcFile, const std::string& dstFile) {

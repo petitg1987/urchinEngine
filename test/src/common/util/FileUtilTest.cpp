@@ -22,7 +22,15 @@ void FileUtilTest::getDirectoryWindows() {
     AssertHelper::assertTrue(result == R"(C:\home\jean\)");
 }
 
-void FileUtilTest::relativePath() {
+void FileUtilTest::getFilesRecursiveWithSpecialChar() {
+    std::vector<std::string> files = FileUtil::getFilesRecursive(FileSystem::instance().getResourcesDirectory() + "files/");
+
+    AssertHelper::assertUnsignedIntEquals(files.size(), 1);
+    AssertHelper::assertTrue(FileUtil::isFileExist(files[0]));
+    AssertHelper::assertStringEquals(FileUtil::getFileName(files[0]), "file.txt");
+}
+
+void FileUtilTest::relativePath() { //TODO not working with absolute path !
     std::string referenceDirectory = "xxx/yyy/zzz/www/";
     std::string path = "xxx/yyy/aaa/bbb/";
 
@@ -61,6 +69,8 @@ CppUnit::Test* FileUtilTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryUnix", &FileUtilTest::getDirectoryUnix));
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryWindows", &FileUtilTest::getDirectoryWindows));
+
+    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getFilesRecursiveWithSpecialChar", &FileUtilTest::getFilesRecursiveWithSpecialChar));
 
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePath", &FileUtilTest::relativePath));
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePathEqual", &FileUtilTest::relativePathEqual));

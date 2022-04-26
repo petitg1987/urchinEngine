@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 namespace urchin {
 
@@ -16,6 +17,7 @@ namespace urchin {
             static void copyDirectoryContent(std::string_view, const std::string&);
             static std::vector<std::string> getFiles(std::string_view);
             static std::vector<std::string> getFilesRecursive(std::string_view);
+            static std::vector<std::string> getDirectories(std::string_view);
             static void copyFile(const std::string&, const std::string&);
             static void deleteDirectory(std::string_view);
 
@@ -32,6 +34,7 @@ namespace urchin {
             FileUtil() = default;
             ~FileUtil() = default;
 
+            static std::string pathToString(const std::filesystem::path&);
             static void getFilesRecursive(std::string_view, std::vector<std::string>&);
             static void checkDirectory(std::string_view);
     };
