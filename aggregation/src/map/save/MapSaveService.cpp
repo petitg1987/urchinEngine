@@ -16,7 +16,14 @@ namespace urchin {
      */
     void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, Map& map) const {
         Logger::instance().logInfo("Load map: " + filename);
-        UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
+
+        std::string mapPath;
+        if (FileUtil::isAbsolutePath(filename)) {
+            mapPath = filename;
+        } else {
+            mapPath = FileSystem::instance().getResourcesDirectory() + filename;
+        }
+        UdaParser udaParser(mapPath);
 
         const UdaChunk* configChunk = udaParser.getFirstChunk(true, CONFIG_TAG);
         const UdaChunk* workingDirChunk = udaParser.getFirstChunk(true, WORKING_DIR_TAG, UdaAttribute(), configChunk);

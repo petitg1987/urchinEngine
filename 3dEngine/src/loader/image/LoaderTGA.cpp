@@ -8,10 +8,9 @@ namespace urchin {
 
     std::shared_ptr<Image> LoaderTGA::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
         //open file
-        std::string filenamePath = FileSystem::instance().getResourcesDirectory() + filename;
-        std::ifstream file(filenamePath, std::ios::in | std::ios::binary);
+        std::ifstream file(filename, std::ios::in | std::ios::binary);
         if (!file.is_open()) {
-            throw std::invalid_argument("Unable to open file: " + filenamePath);
+            throw std::invalid_argument("Unable to open file: " + filename);
         }
 
         //get file length
@@ -117,7 +116,7 @@ namespace urchin {
 
             default:
                 //image type is not correct
-                throw std::runtime_error("Unknown TGA image type, filename: " + filenamePath + ".");
+                throw std::runtime_error("Unknown TGA image type, filename: " + filename + ".");
         }
 
         unsigned int origin = ((unsigned int)header.imageDescriptor & 0x20u) >> 5u; //0: origin bottom, 1: origin top

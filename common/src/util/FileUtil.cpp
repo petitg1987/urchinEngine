@@ -147,7 +147,7 @@ namespace urchin {
             return "";
         }
 
-        return std::string(filePath.substr(extensionPos + 1, filePath.size() - extensionPos));
+        return std::string(filePath.substr(extensionPos + 1));
     }
 
     std::string FileUtil::getFileName(std::string_view filePath) {
@@ -180,7 +180,7 @@ namespace urchin {
      * @param path Path to convert into relative path
      * @return Relative path from the reference directory
      */
-    std::string FileUtil::getRelativePath(const std::string& referenceDirectory, const std::string& path) {
+    std::string FileUtil::getRelativePath(const std::string& referenceDirectory, const std::string& path) { //TODO not working between 2 disks on Windows !
         checkDirectory(referenceDirectory);
         std::string simplifiedReferenceDirectory = simplifyDirectoryPath(referenceDirectory);
 
@@ -201,6 +201,14 @@ namespace urchin {
         }
 
         return relativePath;
+    }
+
+    bool FileUtil::isAbsolutePath(std::string_view path) {
+        #ifdef _WIN32
+            return path.size() >= 2 && path[1] == ':' && std::isalpha(path[0]);
+        #else
+            return !path.empty() && path[0] == '/';
+        #endif
     }
 
     /**

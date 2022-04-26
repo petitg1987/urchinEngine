@@ -15,24 +15,23 @@ namespace urchin {
         Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
 
         //initialize freetype
-        std::string fileFontPath = FileSystem::instance().getResourcesDirectory() + ttfFilename;
         FT_Library library;
         FT_Face face;
         if (FT_Init_FreeType(&library)) {
-            throw std::runtime_error("Error of initialization of FreeType, filename: " + fileFontPath + ".");
+            throw std::runtime_error("Error of initialization of FreeType, filename: " + ttfFilename + ".");
         }
 
-        int error = FT_New_Face(library, fileFontPath.c_str(), 0, &face);
+        int error = FT_New_Face(library, ttfFilename.c_str(), 0, &face);
         if (error != 0) {
             FT_Done_FreeType(library);
-            throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ", error id: " + std::to_string(error) + ".");
+            throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + ttfFilename + ", error id: " + std::to_string(error) + ".");
         }
 
         if (FT_Set_Pixel_Sizes(face, 0, fontSize)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
 
-            throw std::runtime_error("Error of specification of the size, filename: " + fileFontPath + ".");
+            throw std::runtime_error("Error of specification of the size, filename: " + ttfFilename + ".");
         }
 
         //filled the struct_glyph
@@ -41,12 +40,12 @@ namespace urchin {
         if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
-            throw std::runtime_error("Error with the loading of the glyph, filename: " + fileFontPath + ".");
+            throw std::runtime_error("Error with the loading of the glyph, filename: " + ttfFilename + ".");
         }
         if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL)) {
             FT_Done_Face(face);
             FT_Done_FreeType(library);
-            throw std::runtime_error("Error of render with the glyph, filename: " + fileFontPath + ".");
+            throw std::runtime_error("Error of render with the glyph, filename: " + ttfFilename + ".");
         }
         int bitmapTopA = face->glyph->bitmap_top;
 
@@ -55,13 +54,13 @@ namespace urchin {
             if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);
-                throw std::runtime_error("Error with the loading of the glyph, filename: " + fileFontPath + ".");
+                throw std::runtime_error("Error with the loading of the glyph, filename: " + ttfFilename + ".");
             }
 
             if (FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL)) {
                 FT_Done_Face(face);
                 FT_Done_FreeType(library);
-                throw std::runtime_error("Error of render with the glyph, filename: " + fileFontPath + ".");
+                throw std::runtime_error("Error of render with the glyph, filename: " + ttfFilename + ".");
             }
 
             glyph[i].shift = face->glyph->bitmap_top - bitmapTopA;

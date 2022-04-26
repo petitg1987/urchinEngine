@@ -4,8 +4,16 @@
  * @param keepForever Indicates if resource must be keep in memory forever. This parameter can be useful when a resource is loaded / unloaded constantly over different frames.
  */
 template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string, std::less<>>& params, bool keepForever) {
+    //compute resource path
+    std::string resourcePath;
+    if (FileUtil::isAbsolutePath(filename)) {
+        resourcePath = filename;
+    } else {
+        resourcePath = FileSystem::instance().getResourcesDirectory() + filename;
+    }
+
     //resource already loaded ?
-    std::string resourceId = filename + "_" + MapSerializer::serialize(params);
+    std::string resourceId = resourcePath + "_" + MapSerializer::serialize(params);
     std::shared_ptr<T> resource = ResourceContainer::instance().getResource<T>(resourceId);
     if (resource) {
         return resource;
@@ -16,16 +24,15 @@ template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::s
     auto itFind = loadersRegistry.find(resourceType);
 
     if (itFind == loadersRegistry.end()) {
-        std::string fileExtension = filename.substr(filename.find_last_of('.') + 1);
-        itFind = loadersRegistry.find(fileExtension);
+        itFind = loadersRegistry.find(FileUtil::getFileExtension(resourcePath));
 
         if (itFind == loadersRegistry.end()) {
-            throw std::runtime_error("There is not loader for this type of file. Resource type: " + resourceType + ", filename: " + filename);
+            throw std::runtime_error("There is not loader for this type of file. Resource type: " + resourceType + ", resource path: " + resourcePath);
         }
     }
 
     auto loader = static_cast<Loader<T>*>(itFind->second.get());
-    resource = loader->loadFromFile(filename, params);
+    resource = loader->loadFromFile(resourcePath, params);
     resource->setId(resourceId);
     resource->setName(filename);
     resource->setPermanent(keepForever);

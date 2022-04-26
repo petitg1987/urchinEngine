@@ -6,11 +6,10 @@
 namespace urchin {
 
     std::shared_ptr<Image> LoaderPNG::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
-        std::string filenamePath = FileSystem::instance().getResourcesDirectory() + filename;
         std::vector<unsigned char> png;
-        unsigned int errorLoad = lodepng::load_file(png, filenamePath);
+        unsigned int errorLoad = lodepng::load_file(png, filename);
         if (errorLoad != 0) {
-            throw std::invalid_argument("Cannot load the file " + filenamePath + ": " + lodepng_error_text(errorLoad));
+            throw std::invalid_argument("Cannot load the file " + filename + ": " + lodepng_error_text(errorLoad));
         }
 
         //see lodepng.cpp#lodepng_inspect:
@@ -25,7 +24,7 @@ namespace urchin {
             if (bitDepth == 8) {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_RGBA;
-                std::vector<unsigned char> pixels8Bits = decode(filenamePath, state, png, width, height);
+                std::vector<unsigned char> pixels8Bits = decode(filename, state, png, width, height);
                 bool hasTransparency = false;
                 if (colorType == LodePNGColorType::LCT_RGBA) {
                     hasTransparency = isPixelsHaveTransparency(pixels8Bits);
@@ -38,12 +37,12 @@ namespace urchin {
             if (bitDepth == 8) {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_GREY;
-                std::vector<unsigned char> pixels8Bits = decode(filenamePath, state, png, width, height);
+                std::vector<unsigned char> pixels8Bits = decode(filename, state, png, width, height);
                 return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels8Bits), false);
             } else if (bitDepth == 16) {
                 state.info_raw.bitdepth = 16;
                 state.info_raw.colortype = LCT_GREY;
-                std::vector<uint16_t> pixels16Bits = to16Bits(decode(filenamePath, state, png, width, height));
+                std::vector<uint16_t> pixels16Bits = to16Bits(decode(filename, state, png, width, height));
                 return std::make_shared<Image>(width, height, Image::IMAGE_GRAYSCALE, std::move(pixels16Bits), false);
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));

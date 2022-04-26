@@ -10,7 +10,7 @@
 namespace urchin {
 
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
-        UdaParser udaParser(FileSystem::instance().getResourcesDirectory() + filename);
+        UdaParser udaParser(filename);
 
         //diffuse texture/color
         bool hasTransparency = false;

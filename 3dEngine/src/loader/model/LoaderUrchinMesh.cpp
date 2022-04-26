@@ -15,10 +15,9 @@ namespace urchin {
         std::string sdata;
         int idata = 0;
 
-        std::string filenamePath = FileSystem::instance().getResourcesDirectory() + filename;
-        std::ifstream file(filenamePath, std::ios::in);
+        std::ifstream file(filename, std::ios::in);
         if (!file.is_open()) {
-            throw std::invalid_argument("Unable to open file: " + filenamePath);
+            throw std::invalid_argument("Unable to open file: " + filename);
         }
 
         //numBones
