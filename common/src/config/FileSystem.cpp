@@ -14,6 +14,9 @@ namespace urchin {
     }
 
     void FileSystem::setupResourcesDirectory(std::string resourcesDirectory) {
+        if (!FileUtil::isAbsolutePath(resourcesDirectory)) {
+            throw std::runtime_error("Resources directory must be defined in absolute path: " + resourcesDirectory);
+        }
         this->resourcesDirectory = std::move(resourcesDirectory);
     }
 

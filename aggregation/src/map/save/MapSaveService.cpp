@@ -17,12 +17,7 @@ namespace urchin {
     void MapSaveService::loadMap(const std::string& filename, LoadMapCallback& loadMapCallback, Map& map) const {
         Logger::instance().logInfo("Load map: " + filename);
 
-        std::string mapPath;
-        if (FileUtil::isAbsolutePath(filename)) {
-            mapPath = filename;
-        } else {
-            mapPath = FileSystem::instance().getResourcesDirectory() + filename;
-        }
+        std::string mapPath = FileUtil::isAbsolutePath(filename) ? filename : FileSystem::instance().getResourcesDirectory() + filename;
         UdaParser udaParser(mapPath);
 
         const UdaChunk* configChunk = udaParser.getFirstChunk(true, CONFIG_TAG);
@@ -128,7 +123,8 @@ namespace urchin {
     }
 
     void MapSaveService::saveMap(const std::string& filename, const Map& map) const {
-        UdaWriter udaWriter(FileSystem::instance().getResourcesDirectory() + filename);
+        std::string mapPath = FileUtil::isAbsolutePath(filename) ? filename : FileSystem::instance().getResourcesDirectory() + filename;
+        UdaWriter udaWriter(mapPath);
 
         auto& configChunk = udaWriter.createChunk(CONFIG_TAG);
         auto& workingDirChunk = udaWriter.createChunk(WORKING_DIR_TAG, UdaAttribute(), &configChunk);

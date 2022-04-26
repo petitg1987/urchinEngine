@@ -64,11 +64,7 @@ namespace urchin {
     }
 
     void SceneController::saveMapOnFile(const std::string& mapFilename) {
-        std::string tmpResourcesDirectory = FileSystem::instance().getResourcesDirectory();
-        FileSystem::instance().setupResourcesDirectory("");
         MapSaveService().saveMap(mapFilename, getMap());
-        FileSystem::instance().setupResourcesDirectory(tmpResourcesDirectory);
-
         resetModified();
     }
 

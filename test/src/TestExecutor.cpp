@@ -190,7 +190,7 @@ void addAllMonkeyTests(CppUnit::TextUi::TestRunner& runner) {
 }
 
 int main(int argc, char *argv[]) {
-    FileSystem::instance().setupResourcesDirectory("resources/");
+    FileSystem::instance().setupResourcesDirectory(SystemInfo::executableDirectory() + "resources/");
     ConfigService::instance().loadProperties("engine.properties");
     CppUnit::TextUi::TestRunner runner;
 

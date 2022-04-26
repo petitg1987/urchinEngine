@@ -5,12 +5,7 @@
  */
 template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::string& filename, const std::map<std::string, std::string, std::less<>>& params, bool keepForever) {
     //compute resource path
-    std::string resourcePath;
-    if (FileUtil::isAbsolutePath(filename)) {
-        resourcePath = filename;
-    } else {
-        resourcePath = FileSystem::instance().getResourcesDirectory() + filename;
-    }
+    std::string resourcePath = FileUtil::isAbsolutePath(filename) ? filename : FileSystem::instance().getResourcesDirectory() + filename;
 
     //resource already loaded ?
     std::string resourceId = resourcePath + "_" + MapSerializer::serialize(params);
