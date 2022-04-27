@@ -90,6 +90,8 @@ namespace urchin {
 
     void StreamUpdateWorker::start() {
         try {
+            Logger::instance().logInfo("Sound stream thread started");
+
             while (continueExecution()) {
                 {
                     std::scoped_lock<std::mutex> lock(tasksMutex);

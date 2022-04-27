@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <map>
 
 #include <logger/Logger.h>
 #include <logger/FileLogger.h>
@@ -65,9 +66,25 @@ namespace urchin {
      * @return Prefix composed of date/time and criticality
      */
     std::string Logger::prefix(CriticalityLevel criticalityLevel) const {
-        std::string result = "[" + DateTimeUtil::timePointToDateTime(std::chrono::system_clock::now(), DateTimeUtil::DATE_HOUR_MIN_SEC) + "]";
-        result += " (" + getCriticalityString(criticalityLevel) + ") ";
+        std::string result = "[" + DateTimeUtil::timePointToDateTime(std::chrono::system_clock::now(), DateTimeUtil::DATE_HOUR_MIN_SEC) + "] ";
+        result += "[thread " + std::to_string(threadIndex()) + "] ";
+        result += "(" + getCriticalityString(criticalityLevel) + ") ";
+
         return result;
+    }
+
+    std::size_t Logger::threadIndex() const {
+        static std::size_t nextIndex = 0;
+        static std::mutex mutex;
+        static std::map<std::thread::id, std::size_t> threadIds;
+
+        std::thread::id threadId = std::this_thread::get_id();
+
+        std::lock_guard<std::mutex> lock(mutex);
+        if (threadIds.find(threadId) == threadIds.end()) {
+            threadIds[threadId] = nextIndex++;
+        }
+        return threadIds[threadId];
     }
 
     std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel) const {

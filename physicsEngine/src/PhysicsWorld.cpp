@@ -138,6 +138,8 @@ namespace urchin {
 
     void PhysicsWorld::startPhysicsUpdate() {
         try {
+            Logger::instance().logInfo("Physics thread started with time step of " + std::to_string(timeStep) + " sec");
+
             float remainingTime = 0.0f;
             float maxAdditionalTimeStep = timeStep * 0.5f;
             auto frameStartTime = std::chrono::steady_clock::now();

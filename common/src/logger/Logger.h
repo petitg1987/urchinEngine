@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <memory>
+#include <thread>
 #include <iostream>
 
 namespace urchin {
@@ -37,6 +38,7 @@ namespace urchin {
         private:
             static Logger& defaultInstance();
             std::string prefix(CriticalityLevel) const;
+            std::size_t threadIndex() const;
             std::string getCriticalityString(CriticalityLevel) const;
 
             virtual void write(const std::string&) = 0;
