@@ -2,6 +2,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLabel>
 #include <QMessageBox>
+#include <UrchinAggregation.h>
 
 #include <panel/sky/SkyPanelWidget.h>
 #include <widget/style/ButtonStyleHelper.h>
@@ -154,7 +155,7 @@ namespace urchin {
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string imageFilename = filename.toUtf8().constData();
-            std::string relativeFilename = FileUtil::getRelativePath(resourcesDirectory, imageFilename);
+            std::string relativeFilename = PathUtil::computeRelativePath(resourcesDirectory, imageFilename);
             skyboxFilenameText->setText(QString::fromStdString(relativeFilename));
 
             std::string preferredPathString = FileUtil::getDirectory(imageFilename);

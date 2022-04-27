@@ -1,8 +1,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
+#include <UrchinAggregation.h>
 
-#include <UrchinCommon.h>
 #include <widget/dialog/NewDialog.h>
 #include <widget/style/LabelStyleHelper.h>
 #include <widget/style/ButtonStyleHelper.h>
@@ -128,7 +128,7 @@ namespace urchin {
 
     void NewDialog::updateRelativeWorkingDirectory() {
         if (!mapDirectory.empty() && !mapWorkingDirectory.empty()) {
-            mapRelWorkingDirectory = FileUtil::getRelativePath(mapDirectory, mapWorkingDirectory);
+            mapRelWorkingDirectory = PathUtil::computeRelativePath(mapDirectory, mapWorkingDirectory);
             mapRelWorkingDirectoryText->setText(QString::fromStdString(mapRelWorkingDirectory));
         }
     }

@@ -1,4 +1,5 @@
 #include <map/save/sound/SoundReaderWriter.h>
+#include <util/PathUtil.h>
 
 namespace urchin {
 
@@ -32,7 +33,7 @@ namespace urchin {
     }
 
     void SoundReaderWriter::write(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
-        std::string relativeSoundFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), sound.getFilename());
+        std::string relativeSoundFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), sound.getFilename());
         udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk).setStringValue(relativeSoundFilename);
 
         auto& initialVolumeChunk = udaWriter.createChunk(INITIAL_VOLUME_TAG, UdaAttribute(), &soundChunk);

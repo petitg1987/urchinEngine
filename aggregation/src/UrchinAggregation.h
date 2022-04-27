@@ -16,3 +16,5 @@
 
 #include <debug/NavMeshDisplayer.h>
 #include <debug/CollisionPointDisplayer.h>
+
+#include <util/PathUtil.h>

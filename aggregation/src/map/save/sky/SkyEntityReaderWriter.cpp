@@ -1,4 +1,5 @@
 #include <map/save/sky/SkyEntityReaderWriter.h>
+#include <util/PathUtil.h>
 
 namespace urchin {
 
@@ -34,7 +35,7 @@ namespace urchin {
 
             auto& texturesChunk = udaWriter.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
             for (const auto& filename : skyEntity.getSkybox()->getFilenames()) {
-                std::string relativeFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), filename);
+                std::string relativeFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), filename);
                 udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk).setStringValue(relativeFilename);
             }
 

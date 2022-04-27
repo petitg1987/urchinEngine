@@ -1,4 +1,5 @@
 #include <map/save/terrain/TerrainEntityReaderWriter.h>
+#include <util/PathUtil.h>
 
 namespace urchin {
 
@@ -56,13 +57,13 @@ namespace urchin {
 
     void TerrainEntityReaderWriter::writeTerrainChunk(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
         auto& meshChunk = udaWriter.createChunk(MESH_TAG, UdaAttribute(), &terrainEntityChunk);
-        std::string relativeHeightFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getMesh()->getHeightFilename());
+        std::string relativeHeightFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getMesh()->getHeightFilename());
         udaWriter.createChunk(HEIGHT_FILENAME_TAG, UdaAttribute(), &meshChunk).setStringValue(relativeHeightFilename);
         udaWriter.createChunk(XZ_SCALE_TAG, UdaAttribute(), &meshChunk).setFloatValue(terrain.getMesh()->getXZScale());
         udaWriter.createChunk(Y_SCALE_TAG, UdaAttribute(), &meshChunk).setFloatValue(terrain.getMesh()->getYScale());
 
         auto& materialChunk = udaWriter.createChunk(MATERIAL_TAG, UdaAttribute(), &terrainEntityChunk);
-        std::string relativeMaskMapFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getMaterials()->getMaskMapFilename());
+        std::string relativeMaskMapFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getMaterials()->getMaskMapFilename());
         udaWriter.createChunk(MASK_MAP_FILENAME, UdaAttribute(), &materialChunk).setStringValue(relativeMaskMapFilename);
         udaWriter.createChunk(S_REPEAT_TAG, UdaAttribute(), &materialChunk).setFloatValue(terrain.getMaterials()->getStRepeat().X);
         udaWriter.createChunk(T_REPEAT_TAG, UdaAttribute(), &materialChunk).setFloatValue(terrain.getMaterials()->getStRepeat().Y);
@@ -70,7 +71,7 @@ namespace urchin {
         unsigned int i = 0;
         for (const auto& material : terrain.getMaterials()->getMaterials()) {
             if (material != nullptr) {
-                std::string relativeMaterialFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), material->getName());
+                std::string relativeMaterialFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), material->getName());
                 udaWriter.createChunk(MATERIAL_FILENAME, UdaAttribute(INDEX_ATTR, std::to_string(i)), &materialFilenamesChunk).setStringValue(relativeMaterialFilename);
             }
             ++i;
@@ -121,10 +122,10 @@ namespace urchin {
     void TerrainEntityReaderWriter::writeGrass(UdaChunk& terrainEntityChunk, const Terrain& terrain, UdaWriter& udaWriter) {
         auto& grassChunk = udaWriter.createChunk(GRASS_TAG, UdaAttribute(), &terrainEntityChunk);
 
-        std::string relativeGrassTexFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getGrass().getGrassTexture());
+        std::string relativeGrassTexFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getGrass().getGrassTexture());
         udaWriter.createChunk(GRASS_TEXTURE_FILENAME_TAG, UdaAttribute(), &grassChunk).setStringValue(relativeGrassTexFilename);
 
-        std::string relativeGrassMaskFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getGrass().getMaskTexture());
+        std::string relativeGrassMaskFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), terrain.getGrass().getMaskTexture());
         udaWriter.createChunk(GRASS_MASK_FILENAME_TAG, UdaAttribute(), &grassChunk).setStringValue(relativeGrassMaskFilename);
 
         udaWriter.createChunk(NUM_GRASS_IN_TEX_TAG, UdaAttribute(), &grassChunk).setUnsignedIntValue(terrain.getGrass().getNumGrassInTexture());

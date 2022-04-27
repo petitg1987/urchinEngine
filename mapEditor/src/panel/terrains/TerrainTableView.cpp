@@ -1,4 +1,5 @@
 #include <QHeaderView>
+#include <UrchinAggregation.h>
 
 #include <panel/terrains/TerrainTableView.h>
 
@@ -46,7 +47,7 @@ namespace urchin {
         itemTerrainName->setEditable(false);
 
         std::string pathFilename = terrainEntity.getTerrain()->getMesh()->getHeightFilename();
-        std::string relativePathFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), pathFilename);
+        std::string relativePathFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), pathFilename);
         auto* itemHeightFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(pathFilename)));
         itemHeightFile->setToolTip(QString::fromStdString(relativePathFilename));
         itemHeightFile->setData(QVariant::fromValue(&terrainEntity), Qt::UserRole + 1);

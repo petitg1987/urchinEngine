@@ -3,7 +3,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
-#include <UrchinCommon.h>
+#include <UrchinAggregation.h>
 
 #include <panel/terrains/dialog/NewTerrainDialog.h>
 #include <widget/style/LabelStyleHelper.h>
@@ -78,7 +78,7 @@ namespace urchin {
             terrainEntity->setName(terrainName);
 
             std::string resourcesDirectory = FileSystem::instance().getResourcesDirectory();
-            std::string relativeHeightFilename = FileUtil::getRelativePath(resourcesDirectory, heightFilename);
+            std::string relativeHeightFilename = PathUtil::computeRelativePath(resourcesDirectory, heightFilename);
             std::vector<std::string> emptyMaterialFilenames;
 
             auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);

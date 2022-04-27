@@ -1,5 +1,6 @@
 #include <map/save/object/ModelReaderWriter.h>
 #include <map/save/common/OrientationReaderWriter.h>
+#include <util/PathUtil.h>
 
 namespace urchin {
 
@@ -20,7 +21,7 @@ namespace urchin {
         auto& meshesFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &meshesChunk);
 
         if (model.getConstMeshes()) {
-            std::string relativeFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), model.getConstMeshes()->getMeshesFilename());
+            std::string relativeFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), model.getConstMeshes()->getMeshesFilename());
             meshesFilenameChunk.setStringValue(relativeFilename);
         }
         writeAnimations(modelChunk, model, udaWriter);

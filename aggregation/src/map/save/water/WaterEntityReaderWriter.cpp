@@ -1,4 +1,5 @@
 #include <map/save/water/WaterEntityReaderWriter.h>
+#include <util/PathUtil.h>
 
 namespace urchin {
 
@@ -69,10 +70,10 @@ namespace urchin {
     void WaterEntityReaderWriter::writeWaterSurfaceProperties(UdaChunk& waterEntityChunk, const Water& water, UdaWriter& udaWriter) {
         udaWriter.createChunk(WATER_COLOR_TAG, UdaAttribute(), &waterEntityChunk).setVector3Value(water.getWaterColor());
 
-        std::string relativeNormalFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water.getNormalFilename());
+        std::string relativeNormalFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), water.getNormalFilename());
         udaWriter.createChunk(NORMAL_FILENAME_TAG, UdaAttribute(), &waterEntityChunk).setStringValue(relativeNormalFilename);
 
-        std::string relativeDudvFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water.getDudvFilename());
+        std::string relativeDudvFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), water.getDudvFilename());
         udaWriter.createChunk(DUDV_MAP_FILENAME_TAG, UdaAttribute(), &waterEntityChunk).setStringValue(relativeDudvFilename);
 
         udaWriter.createChunk(WAVE_SPEED_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getWaveSpeed());

@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <QMessageBox>
 #include <unistd.h>
+#include <UrchinAggregation.h>
 
 #include <scene/SceneDisplayer.h>
 #include <scene/SceneWindowController.h>
@@ -40,7 +41,7 @@ namespace urchin {
     void SceneDisplayer::loadMap(const std::string& mapEditorPath, const std::string& mapFilename, const std::string& relativeWorkingDirectory) {
         try {
             initializeEngineResources(mapEditorPath);
-            std::string mapResourcesDirectory = FileUtil::simplifyDirectoryPath(FileUtil::getDirectory(mapFilename) + relativeWorkingDirectory);
+            std::string mapResourcesDirectory = PathUtil::simplifyDirectoryPath(FileUtil::getDirectory(mapFilename) + relativeWorkingDirectory);
             FileSystem::instance().setupResourcesDirectory(mapResourcesDirectory);
 
             initializeScene(mapFilename);

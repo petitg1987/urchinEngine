@@ -1,5 +1,6 @@
 #include <QHeaderView>
 #include <QVariant>
+#include <UrchinAggregation.h>
 
 #include <panel/sounds/SoundTableView.h>
 
@@ -48,7 +49,7 @@ namespace urchin {
         itemSoundName->setEditable(false);
 
         std::string soundFilename = soundEntity.getSoundComponent()->getSound().getFilename();
-        std::string relativeSoundFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), soundFilename);
+        std::string relativeSoundFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), soundFilename);
         auto* itemSoundFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(soundFilename)));
         itemSoundFile->setToolTip(QString::fromStdString(relativeSoundFilename));
         itemSoundFile->setData(QVariant::fromValue(&soundEntity), Qt::UserRole + 1);

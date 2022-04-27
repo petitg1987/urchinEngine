@@ -1,5 +1,6 @@
 #include <QHeaderView>
 #include <QVariant>
+#include <UrchinAggregation.h>
 
 #include <panel/objects/ObjectTableView.h>
 
@@ -43,7 +44,7 @@ namespace urchin {
         std::string relativeMeshesFilename;
         if (objectEntity.getModel()->getConstMeshes()) {
             meshesName = objectEntity.getModel()->getConstMeshes()->getMeshesName();
-            relativeMeshesFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), objectEntity.getModel()->getConstMeshes()->getMeshesFilename());
+            relativeMeshesFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), objectEntity.getModel()->getConstMeshes()->getMeshesFilename());
         }
         auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
         itemMeshName->setToolTip(QString::fromStdString(relativeMeshesFilename));

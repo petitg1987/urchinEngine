@@ -2,6 +2,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
 #include <QMessageBox>
+#include <UrchinAggregation.h>
 
 #include <panel/waters/WaterPanelWidget.h>
 #include <widget/style/GroupBoxStyleHelper.h>
@@ -301,9 +302,9 @@ namespace urchin {
         this->waterColorG->setValue(water->getWaterColor().Y);
         this->waterColorB->setValue(water->getWaterColor().Z);
 
-        std::string relativeNormalTexFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water->getNormalFilename());
+        std::string relativeNormalTexFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), water->getNormalFilename());
         this->normalTextureFilenameText->setText(QString::fromStdString(relativeNormalTexFilename));
-        std::string relativeDudvMapFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water->getDudvFilename());
+        std::string relativeDudvMapFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), water->getDudvFilename());
         this->dudvMapFilenameText->setText(QString::fromStdString(relativeDudvMapFilename));
 
         this->waveSpeed->setValue(water->getWaveSpeed());
@@ -376,7 +377,7 @@ namespace urchin {
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string imageFilenamePath = filename.toUtf8().constData();
-            std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, imageFilenamePath);
+            std::string relativeTgaFilenamePath = PathUtil::computeRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
             std::string preferredPathString = FileUtil::getDirectory(imageFilenamePath);
@@ -403,7 +404,7 @@ namespace urchin {
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
             std::string filenamePath = filename.toUtf8().constData();
-            std::string relativeFilenamePath = FileUtil::getRelativePath(resourcesDirectory, filenamePath);
+            std::string relativeFilenamePath = PathUtil::computeRelativePath(resourcesDirectory, filenamePath);
             this->dudvMapFilenameText->setText(QString::fromStdString(relativeFilenamePath));
 
             std::string preferredPathString = FileUtil::getDirectory(filenamePath);
