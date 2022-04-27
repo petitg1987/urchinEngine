@@ -382,7 +382,8 @@ namespace urchin {
             auto& material = terrain->getMaterials()->getMaterials()[i];
 
             if (material != nullptr) {
-                this->materialFilenameTexts[i]->setText(QString::fromStdString(material->getName()));
+                std::string relativeMtrFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), material->getName());
+                this->materialFilenameTexts[i]->setText(QString::fromStdString(relativeMtrFilename));
             } else {
                 this->materialFilenameTexts[i]->setText("");
             }
