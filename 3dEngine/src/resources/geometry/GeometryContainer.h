@@ -16,7 +16,7 @@ namespace urchin {
             void addGeometry(std::shared_ptr<GeometryModel>);
             void removeGeometry(const GeometryModel&);
 
-            void prepareRendering(unsigned int, const Matrix4<float>&) const;
+            void prepareRendering(unsigned int&, const Matrix4<float>&) const;
 
         private:
             RenderTarget& renderTarget;
