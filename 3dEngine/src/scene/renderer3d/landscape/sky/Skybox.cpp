@@ -13,7 +13,6 @@ namespace urchin {
      */
     Skybox::Skybox(const std::vector<std::string>& filenames) :
             isInitialized(false),
-            filenames(filenames),
             offsetY(0.0f) {
         if (filenames.size() != 6) {
             throw std::invalid_argument("There is no 6 skybox filenames.");

@@ -202,12 +202,16 @@ namespace urchin {
 
     void SkyPanelWidget::setupSkyDataFrom(const Skybox* skybox) {
         disableSkyEvent = true;
-        xnSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[0]) : "");
-        xpSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[1]) : "");
-        ynSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[2]) : "");
-        ypSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[3]) : "");
-        znSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[4]) : "");
-        zpSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[5]) : "");
+        std::size_t fileIndex = 0;
+        for(QLineEdit* skyboxFilenameText : {xnSkyboxFilenameText, xpSkyboxFilenameText, ynSkyboxFilenameText, ypSkyboxFilenameText, znSkyboxFilenameText, zpSkyboxFilenameText}) {
+            if (skybox != nullptr) {
+                std::string relativeFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), skybox->getFilenames()[fileIndex]);
+                skyboxFilenameText->setText(QString::fromStdString(relativeFilename));
+            } else {
+                skyboxFilenameText->setText("");
+            }
+            fileIndex++;
+        }
         offsetY->setValue(skybox != nullptr ? skybox->getOffsetY() : 0.0f);
         disableSkyEvent = false;
     }
