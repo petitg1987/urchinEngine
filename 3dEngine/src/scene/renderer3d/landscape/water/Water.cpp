@@ -124,7 +124,11 @@ namespace urchin {
     }
 
     void Water::setNormalTexture(std::string normalFilename) {
-        this->normalFilename = std::move(normalFilename);
+        if (normalFilename.empty() || FileUtil::isAbsolutePath(normalFilename)) {
+            this->normalFilename = std::move(normalFilename);
+        } else {
+            this->normalFilename = FileSystem::instance().getResourcesDirectory() + std::move(normalFilename);
+        }
 
         if (this->normalFilename.empty()) {
             std::vector<unsigned char> waterNormalColor({0, 255, 0, 255});
@@ -144,7 +148,11 @@ namespace urchin {
     }
 
     void Water::setDudvMap(std::string dudvFilename) {
-        this->dudvFilename = std::move(dudvFilename);
+        if (dudvFilename.empty() || FileUtil::isAbsolutePath(dudvFilename)) {
+            this->dudvFilename = std::move(dudvFilename);
+        } else {
+            this->dudvFilename = FileSystem::instance().getResourcesDirectory() + std::move(dudvFilename);
+        }
 
         if (this->dudvFilename.empty()) {
             std::vector<unsigned char> waterDudvColor({255, 0, 255, 255});

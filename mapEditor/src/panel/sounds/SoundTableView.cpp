@@ -47,8 +47,10 @@ namespace urchin {
         itemSoundName->setData(QVariant::fromValue(&soundEntity), Qt::UserRole + 1);
         itemSoundName->setEditable(false);
 
-        std::string relativeSoundFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), soundEntity.getSoundComponent()->getSound().getFilename());
-        auto* itemSoundFile = new QStandardItem(QString::fromStdString(relativeSoundFilename));
+        std::string soundFilename = soundEntity.getSoundComponent()->getSound().getFilename();
+        std::string relativeSoundFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), soundFilename);
+        auto* itemSoundFile = new QStandardItem(QString::fromStdString(FileUtil::getFileName(soundFilename)));
+        itemSoundFile->setToolTip(QString::fromStdString(relativeSoundFilename));
         itemSoundFile->setData(QVariant::fromValue(&soundEntity), Qt::UserRole + 1);
         itemSoundFile->setEditable(false);
 

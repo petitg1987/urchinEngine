@@ -36,14 +36,11 @@ namespace urchin {
     }
 
     void WaterEntityReaderWriter::writeGeneralProperties(UdaChunk& waterEntityChunk, const Water& water, UdaWriter& udaWriter) {
-        auto& centerPositionChunk = udaWriter.createChunk(CENTER_POSITION_TAG, UdaAttribute(), &waterEntityChunk);
-        centerPositionChunk.setPoint3Value(water.getCenterPosition());
+        udaWriter.createChunk(CENTER_POSITION_TAG, UdaAttribute(), &waterEntityChunk).setPoint3Value(water.getCenterPosition());
 
-        auto& xSizeChunk = udaWriter.createChunk(X_SIZE_TAG, UdaAttribute(), &waterEntityChunk);
-        xSizeChunk.setFloatValue(water.getXSize());
+        udaWriter.createChunk(X_SIZE_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getXSize());
 
-        auto& zSizeChunk = udaWriter.createChunk(Z_SIZE_TAG, UdaAttribute(), &waterEntityChunk);
-        zSizeChunk.setFloatValue(water.getZSize());
+        udaWriter.createChunk(Z_SIZE_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getZSize());
     }
 
     void WaterEntityReaderWriter::loadWaterSurfaceProperties(Water& water, const UdaChunk* waterEntityChunk, const UdaParser& udaParser) {
@@ -70,26 +67,21 @@ namespace urchin {
     }
 
     void WaterEntityReaderWriter::writeWaterSurfaceProperties(UdaChunk& waterEntityChunk, const Water& water, UdaWriter& udaWriter) {
-        auto& waterColorChunk = udaWriter.createChunk(WATER_COLOR_TAG, UdaAttribute(), &waterEntityChunk);
-        waterColorChunk.setVector3Value(water.getWaterColor());
+        udaWriter.createChunk(WATER_COLOR_TAG, UdaAttribute(), &waterEntityChunk).setVector3Value(water.getWaterColor());
 
-        auto& normalFilenameChunk = udaWriter.createChunk(NORMAL_FILENAME_TAG, UdaAttribute(), &waterEntityChunk);
-        normalFilenameChunk.setStringValue(water.getNormalFilename());
+        std::string relativeNormalFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water.getNormalFilename());
+        udaWriter.createChunk(NORMAL_FILENAME_TAG, UdaAttribute(), &waterEntityChunk).setStringValue(relativeNormalFilename);
 
-        auto& dudvMapFilenameChunk = udaWriter.createChunk(DUDV_MAP_FILENAME_TAG, UdaAttribute(), &waterEntityChunk);
-        dudvMapFilenameChunk.setStringValue(water.getDudvFilename());
+        std::string relativeDudvFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water.getDudvFilename());
+        udaWriter.createChunk(DUDV_MAP_FILENAME_TAG, UdaAttribute(), &waterEntityChunk).setStringValue(relativeDudvFilename);
 
-        auto& waveSpeedChunk = udaWriter.createChunk(WAVE_SPEED_TAG, UdaAttribute(), &waterEntityChunk);
-        waveSpeedChunk.setFloatValue(water.getWaveSpeed());
+        udaWriter.createChunk(WAVE_SPEED_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getWaveSpeed());
 
-        auto& waveStrengthChunk = udaWriter.createChunk(WAVE_STRENGTH_TAG, UdaAttribute(), &waterEntityChunk);
-        waveStrengthChunk.setFloatValue(water.getWaveStrength());
+        udaWriter.createChunk(WAVE_STRENGTH_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getWaveStrength());
 
-        auto& sRepeatChunk = udaWriter.createChunk(S_REPEAT_TAG, UdaAttribute(), &waterEntityChunk);
-        sRepeatChunk.setFloatValue(water.getSRepeat());
+        udaWriter.createChunk(S_REPEAT_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getSRepeat());
 
-        auto& tRepeatChunk = udaWriter.createChunk(T_REPEAT_TAG, UdaAttribute(), &waterEntityChunk);
-        tRepeatChunk.setFloatValue(water.getTRepeat());
+        udaWriter.createChunk(T_REPEAT_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getTRepeat());
     }
 
     void WaterEntityReaderWriter::loadUnderWaterProperties(Water& water, const UdaChunk* waterEntityChunk, const UdaParser& udaParser) {
@@ -101,11 +93,9 @@ namespace urchin {
     }
 
     void WaterEntityReaderWriter::writeUnderWaterProperties(UdaChunk& waterEntityChunk, const Water& water, UdaWriter& udaWriter) {
-        auto& densityChunk = udaWriter.createChunk(DENSITY_TAG, UdaAttribute(), &waterEntityChunk);
-        densityChunk.setFloatValue(water.getDensity());
+        udaWriter.createChunk(DENSITY_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getDensity());
 
-        auto& gradientChunk = udaWriter.createChunk(GRADIENT_TAG, UdaAttribute(), &waterEntityChunk);
-        gradientChunk.setFloatValue(water.getGradient());
+        udaWriter.createChunk(GRADIENT_TAG, UdaAttribute(), &waterEntityChunk).setFloatValue(water.getGradient());
     }
 
 }

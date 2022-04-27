@@ -34,12 +34,11 @@ namespace urchin {
 
             auto& texturesChunk = udaWriter.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
             for (const auto& filename : skyEntity.getSkybox()->getFilenames()) {
-                auto& filenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk);
-                filenameChunk.setStringValue(filename);
+                std::string relativeFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), filename);
+                udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk).setStringValue(relativeFilename);
             }
 
-            auto& offsetYChunk = udaWriter.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk);
-            offsetYChunk.setFloatValue(skyEntity.getSkybox()->getOffsetY());
+            udaWriter.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk).setFloatValue(skyEntity.getSkybox()->getOffsetY());
         }
     }
 }

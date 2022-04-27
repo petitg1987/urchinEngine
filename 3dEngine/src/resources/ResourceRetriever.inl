@@ -29,7 +29,7 @@ template<class T> std::shared_ptr<T> ResourceRetriever::getResource(const std::s
     auto loader = static_cast<Loader<T>*>(itFind->second.get());
     resource = loader->loadFromFile(resourcePath, params);
     resource->setId(resourceId);
-    resource->setName(filename);
+    resource->setName(resourcePath);
     resource->setPermanent(keepForever);
 
     ResourceContainer::instance().addResource(resource);

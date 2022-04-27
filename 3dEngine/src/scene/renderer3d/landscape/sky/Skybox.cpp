@@ -18,6 +18,14 @@ namespace urchin {
         if (filenames.size() != 6) {
             throw std::invalid_argument("There is no 6 skybox filenames.");
         }
+        this->filenames.reserve(filenames.size());
+        for (const std::string& filename : filenames) {
+            if (filename.empty() || FileUtil::isAbsolutePath(filename)) {
+                this->filenames.push_back(filename);
+            } else {
+                this->filenames.push_back(FileSystem::instance().getResourcesDirectory() + filename);
+            }
+        }
 
         //create the textures
         std::vector<std::jthread> loadImageThreads(6);

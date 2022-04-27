@@ -6,9 +6,14 @@
 namespace urchin {
 
     TerrainMaterials::TerrainMaterials(std::string maskMapFilename, const std::vector<std::string>& materialFilenames, float sRepeat, float tRepeat) :
-            maskMapFilename(std::move(maskMapFilename)),
             sRepeat(sRepeat),
             tRepeat(tRepeat) {
+        if (maskMapFilename.empty() || FileUtil::isAbsolutePath(maskMapFilename)) {
+            this->maskMapFilename = std::move(maskMapFilename);
+        } else {
+            this->maskMapFilename = FileSystem::instance().getResourcesDirectory() + std::move(maskMapFilename);
+        }
+
         if (this->maskMapFilename.empty()) {
             std::vector<unsigned char> terrainMaskColor({255, 0, 0, 0});
             maskTexture = Texture::build("default terrain mask", 1, 1, TextureFormat::RGBA_8_INT, terrainMaskColor.data());

@@ -236,7 +236,11 @@ namespace urchin {
     }
 
     void TerrainGrass::setGrassTexture(std::string grassTextureFilename) {
-        this->grassTextureFilename = std::move(grassTextureFilename);
+        if (grassTextureFilename.empty() || FileUtil::isAbsolutePath(grassTextureFilename)) {
+            this->grassTextureFilename = std::move(grassTextureFilename);
+        } else {
+            this->grassTextureFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassTextureFilename);
+        }
 
         if (this->grassTextureFilename.empty()) {
             grassTexture = nullptr;
@@ -250,7 +254,11 @@ namespace urchin {
     }
 
     void TerrainGrass::setMaskTexture(std::string grassMaskFilename) {
-        this->grassMaskFilename = std::move(grassMaskFilename);
+        if (grassMaskFilename.empty() || FileUtil::isAbsolutePath(grassMaskFilename)) {
+            this->grassMaskFilename = std::move(grassMaskFilename);
+        } else {
+            this->grassMaskFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassMaskFilename);
+        }
 
         if (this->grassMaskFilename.empty()) {
             std::vector<unsigned char> grassMaskColor({0});

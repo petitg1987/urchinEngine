@@ -40,13 +40,13 @@ namespace urchin {
         objectEntityItems.push_back(itemObjectName);
 
         std::string meshesName;
-        std::string meshesFilename;
+        std::string relativeMeshesFilename;
         if (objectEntity.getModel()->getConstMeshes()) {
             meshesName = objectEntity.getModel()->getConstMeshes()->getMeshesName();
-            meshesFilename = objectEntity.getModel()->getConstMeshes()->getMeshesFilename();
+            relativeMeshesFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), objectEntity.getModel()->getConstMeshes()->getMeshesFilename());
         }
         auto* itemMeshName = new QStandardItem(QString::fromStdString(meshesName));
-        itemMeshName->setToolTip(QString::fromStdString(meshesFilename));
+        itemMeshName->setToolTip(QString::fromStdString(relativeMeshesFilename));
         itemMeshName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
         itemMeshName->setEditable(false);
         objectEntityItems.push_back(itemMeshName);

@@ -9,10 +9,10 @@ namespace urchin {
      * @param initialVolume Initial sound volume (0.0=minimum volume, 1.0=original volume). Volume can be higher to 1.0.
      */
     Sound::Sound(std::string filename, SoundCategory category, float initialVolume) :
-            filename(std::move(filename)),
             category(category),
             initialVolume(initialVolume),
             chunkMaxSize(0) {
+        this->filename = FileUtil::isAbsolutePath(filename) ? std::move(filename) : FileSystem::instance().getResourcesDirectory() + std::move(filename);
         preLoadChunks();
     }
 
