@@ -388,8 +388,10 @@ namespace urchin {
         }
 
         auto& terrainGrass = terrain->getGrass();
-        this->grassTextureFilenameText->setText(QString::fromStdString(terrainGrass.getGrassTexture()));
-        this->grassMaskFilenameText->setText(QString::fromStdString(terrainGrass.getMaskTexture()));
+        std::string relativeGrassTexFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), terrainGrass.getGrassTexture());
+        this->grassTextureFilenameText->setText(QString::fromStdString(relativeGrassTexFilename));
+        std::string relativeGrassMaskFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), terrainGrass.getMaskTexture());
+        this->grassMaskFilenameText->setText(QString::fromStdString(relativeGrassMaskFilename));
         this->numGrassInTex->setValue((int)terrainGrass.getNumGrassInTexture());
         this->grassHeight->setValue(terrainGrass.getGrassHeight());
         this->grassLength->setValue(terrainGrass.getGrassLength());

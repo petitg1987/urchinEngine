@@ -30,38 +30,6 @@ void FileUtilTest::getFilesRecursiveWithSpecialChar() {
     AssertHelper::assertStringEquals(FileUtil::getFileName(files[0]), "file.txt");
 }
 
-void FileUtilTest::relativePath() {
-    std::string referenceDirectory = "/xxx/yyy/zzz/www/";
-    std::string path = "/xxx/yyy/aaa/bbb/";
-
-    std::string result = FileUtil::getRelativePath(referenceDirectory, path);
-
-    AssertHelper::assertTrue(result == "../../aaa/bbb/");
-}
-
-void FileUtilTest::relativePathEqual() {
-    std::string referenceDirectory = "/xxx/yyy/";
-    std::string path = "/xxx/yyy/";
-
-    std::string result = FileUtil::getRelativePath(referenceDirectory, path);
-
-    AssertHelper::assertTrue(result.empty());
-}
-
-void FileUtilTest::relativePathOnDifferentDisk() {
-    std::string referenceDirectory = "C:\\xxx\\yyy";
-    std::string path = "D:\\zzz";
-
-    bool exceptionCaught = false;
-    try {
-        FileUtil::getRelativePath(referenceDirectory, path);
-    } catch (const std::exception& e) {
-        exceptionCaught = true;
-    }
-
-    AssertHelper::assertTrue(exceptionCaught);
-}
-
 void FileUtilTest::simplifyDirectoryPathUnix() {
     std::string directoryPath = "xxx/yyy/../zzz/www/../rrr/";
 
@@ -85,10 +53,6 @@ CppUnit::Test* FileUtilTest::suite() {
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryWindows", &FileUtilTest::getDirectoryWindows));
 
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getFilesRecursiveWithSpecialChar", &FileUtilTest::getFilesRecursiveWithSpecialChar));
-
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePath", &FileUtilTest::relativePath));
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePathEqual", &FileUtilTest::relativePathEqual));
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("relativePathOnDifferentDisk", &FileUtilTest::relativePathOnDifferentDisk));
 
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("simplifyDirectoryPathUnix", &FileUtilTest::simplifyDirectoryPathUnix));
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("simplifyDirectoryPathWindows", &FileUtilTest::simplifyDirectoryPathWindows));

@@ -182,7 +182,10 @@ namespace urchin {
      */
     std::string FileUtil::getRelativePath(const std::string& referenceDirectory, const std::string& path) {
         checkDirectory(referenceDirectory);
-        if (!FileUtil::isAbsolutePath(referenceDirectory)) {
+
+        if (path.empty()) {
+            return "";
+        } else if (!FileUtil::isAbsolutePath(referenceDirectory)) {
             throw std::runtime_error("Reference directory must be absolute: " + referenceDirectory);
         } else if (!FileUtil::isAbsolutePath(path)) {
             throw std::runtime_error("Path directory must be absolute: " + path);
@@ -190,9 +193,9 @@ namespace urchin {
             //On Windows, it is not possible to get relative path from a disk (C:\) to another (D:\)
             throw std::runtime_error("Reference directory (" + referenceDirectory + ") and path directory (" + path + ") must be one same drive");
         }
-        std::string simplifiedReferenceDirectory = simplifyDirectoryPath(referenceDirectory);
 
         //remove common directories from path
+        std::string simplifiedReferenceDirectory = simplifyDirectoryPath(referenceDirectory);
         unsigned int commonMaxIndex;
         for (commonMaxIndex = 0; commonMaxIndex < simplifiedReferenceDirectory.size() && commonMaxIndex < path.size(); ++commonMaxIndex) {
             if (simplifiedReferenceDirectory[commonMaxIndex] != path[commonMaxIndex]) {

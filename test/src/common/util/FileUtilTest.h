@@ -12,10 +12,6 @@ class FileUtilTest : public CppUnit::TestFixture {
 
         void getFilesRecursiveWithSpecialChar();
 
-        void relativePath();
-        void relativePathEqual();
-        void relativePathOnDifferentDisk();
-
         void simplifyDirectoryPathUnix();
         void simplifyDirectoryPathWindows();
 };
