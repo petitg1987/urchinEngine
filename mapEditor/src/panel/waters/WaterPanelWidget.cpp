@@ -301,8 +301,10 @@ namespace urchin {
         this->waterColorG->setValue(water->getWaterColor().Y);
         this->waterColorB->setValue(water->getWaterColor().Z);
 
-        this->normalTextureFilenameText->setText(QString::fromStdString(water->getNormalFilename()));
-        this->dudvMapFilenameText->setText(QString::fromStdString(water->getDudvFilename()));
+        std::string relativeNormalTexFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water->getNormalFilename());
+        this->normalTextureFilenameText->setText(QString::fromStdString(relativeNormalTexFilename));
+        std::string relativeDudvMapFilename = FileUtil::getRelativePath(FileSystem::instance().getResourcesDirectory(), water->getDudvFilename());
+        this->dudvMapFilenameText->setText(QString::fromStdString(relativeDudvMapFilename));
 
         this->waveSpeed->setValue(water->getWaveSpeed());
         this->waveStrength->setValue(water->getWaveStrength());
@@ -400,11 +402,11 @@ namespace urchin {
         QString directory = preferredDudvMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredDudvMapPath;
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png *.qoi)", nullptr, QFileDialog::DontUseNativeDialog);
         if (!filename.isNull()) {
-            std::string tgaFilenamePath = filename.toUtf8().constData();
-            std::string relativeTgaFilenamePath = FileUtil::getRelativePath(resourcesDirectory, tgaFilenamePath);
-            this->dudvMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
+            std::string filenamePath = filename.toUtf8().constData();
+            std::string relativeFilenamePath = FileUtil::getRelativePath(resourcesDirectory, filenamePath);
+            this->dudvMapFilenameText->setText(QString::fromStdString(relativeFilenamePath));
 
-            std::string preferredPathString = FileUtil::getDirectory(tgaFilenamePath);
+            std::string preferredPathString = FileUtil::getDirectory(filenamePath);
             preferredDudvMapPath = QString::fromStdString(preferredPathString);
 
             try {
