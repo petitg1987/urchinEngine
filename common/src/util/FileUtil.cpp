@@ -55,13 +55,11 @@ namespace urchin {
         //Unfortunately, the "copy" method doesn't work correctly on MSYS2: https://github.com/msys2/MSYS2-packages/issues/1937
 
         checkDirectory(dstDirectory);
-        for (const auto& entry : std::filesystem::directory_iterator(srcDirectory)) {
-            if (entry.is_regular_file()) {
-                std::string srcFile = pathToString(entry.path());
-                std::string dstFile = dstDirectory + FileUtil::getFileName(srcFile);
-
+        for (const auto& srcFileEntry : std::filesystem::directory_iterator(srcDirectory)) {
+            if (srcFileEntry.is_regular_file()) {
+                std::string dstFile = dstDirectory + FileUtil::getFileName(pathToString(srcFileEntry.path()));
                 if (!isFileExist(dstFile)) {
-                    copyFile(srcFile, dstFile);
+                    copyFile(srcFileEntry.path(), dstFile);
                 }
             }
         }
@@ -120,15 +118,15 @@ namespace urchin {
         return directories;
     }
 
-    void FileUtil::copyFile(const std::string& srcFile, const std::string& dstFile) {
+    void FileUtil::copyFile(const std::filesystem::path& srcFile, const std::filesystem::path& dstFile) {
         std::ifstream src(srcFile, std::ios::binary);
         if (!src.is_open()) {
-            throw std::runtime_error("Unable to open file: " + srcFile);
+            throw std::runtime_error("Unable to open file: " + srcFile.string());
         }
 
         std::ofstream dst(dstFile, std::ios::binary);
         if (!dst.is_open()) {
-            throw UserAuthorityException("Unable to open file: " + dstFile, "Check that the application has enough right to create the file: " + dstFile);
+            throw UserAuthorityException("Unable to open file: " + dstFile.string(), "Check that the application has enough right to create the file: " + dstFile.string());
         }
         dst << src.rdbuf();
     }

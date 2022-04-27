@@ -18,7 +18,7 @@ namespace urchin {
             static std::vector<std::string> getFiles(std::string_view);
             static std::vector<std::string> getFilesRecursive(std::string_view);
             static std::vector<std::string> getDirectories(std::string_view);
-            static void copyFile(const std::string&, const std::string&);
+            static void copyFile(const std::filesystem::path&, const std::filesystem::path&);
             static void deleteDirectory(std::string_view);
 
             static std::string getFileExtension(std::string_view);
