@@ -69,7 +69,7 @@ namespace urchin {
         #ifdef _WIN32
             //NTFS filesystem use UTF-16 encoding. Therefore, without this specific code, the application won't work correctly if it is stored in a folder with characters others than ASCII (e.g.: é).
             auto pathU16String = path.u16string();
-            return std::string(pathU16String.begin(), pathU8String.end());
+            return std::string(pathU16String.begin(), pathU16String.end());
         #else
             auto pathU8String = path.u8string();
             return std::string(pathU8String.begin(), pathU8String.end());
