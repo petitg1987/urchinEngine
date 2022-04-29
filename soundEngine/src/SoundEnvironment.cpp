@@ -23,7 +23,7 @@ namespace urchin {
         musicLoopPlayers.clear();
         audioControllers.clear();
 
-        streamUpdateWorker.interrupt();
+        streamUpdateWorker.interruptThread();
         streamUpdateWorkerThread.join();
 
         Profiler::sound().log();
@@ -91,13 +91,6 @@ namespace urchin {
         for (const auto& audioController : audioControllers) {
             audioController->unpauseAll();
         }
-    }
-
-    /**
-     * Check if thread has been stopped by an exception and rethrow exception on main thread
-     */
-    void SoundEnvironment::checkNoExceptionRaised() const {
-        streamUpdateWorker.checkNoExceptionRaised();
     }
 
     void SoundEnvironment::process(const Point3<float>& listenerPosition, const Vector3<float>& listenerFrontVector, const Vector3<float>& listenerUpVector) const {

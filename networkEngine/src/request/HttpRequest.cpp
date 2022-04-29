@@ -1,3 +1,4 @@
+#include <curl/curl.h>
 #include <utility>
 #include <iostream>
 #include <chrono>
@@ -66,7 +67,7 @@ namespace urchin {
         CURLcode res = curl_easy_perform(curl);
 
         if (res != CURLE_OK) {
-            throw RequestException("HTTP request fail on \"" + url + "\" : " + std::string(curl_easy_strerror(res)));
+            throw RequestException("HTTP request fail on \"" + url + "\" : " + std::string(curl_easy_strerror(res))); //TODO not use exception !
         } else {
             long httpCode;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);

@@ -10,34 +10,37 @@ namespace urchin {
 
         static RequestInitializer httpRequestInitializer;
         networkThread = std::make_unique<std::jthread>(&NetworkExecutor::start, this);
+
+        mainThreadId = std::this_thread::get_id();
     }
 
     NetworkExecutor::~NetworkExecutor() {
         if (networkThread) {
-            interrupt();
+            interruptThread();
             networkThread->join();
         }
     }
 
     void NetworkExecutor::syncExecute(const HttpRequest&) {
-        //TODO ...
+        #ifdef URCHIN_DEBUG
+            assert(std::this_thread::get_id() == mainThreadId); //not sure if it is mandatory but added for security
+        #endif
+
+        //TODO ... (check thread is well the main thread ?)
     }
 
     void NetworkExecutor::asyncExecute(HttpRequest) {
         //TODO ...
     }
 
-    /**
-     * Interrupt the thread
-     */
-    void NetworkExecutor::interrupt() {
+    void NetworkExecutor::interruptThread() {
         networkThreadStopper.store(true, std::memory_order_release);
     }
 
     /**
      * Check if thread has been stopped by an exception and rethrow exception on main thread
      */
-    void NetworkExecutor::checkNoExceptionRaised() const { //TODO call it
+    void NetworkExecutor::checkNoExceptionRaised() const {
         if (networkThreadExceptionPtr) {
             std::rethrow_exception(networkThreadExceptionPtr);
         }
@@ -49,7 +52,7 @@ namespace urchin {
 
             while (continueExecution()) {
                 //TODO execute async request
-                //TODO pause
+                //TODO pause or wake up ?
             }
 
             Profiler::network().log(); //log for network thread

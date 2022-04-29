@@ -8,9 +8,6 @@
 
 namespace urchin {
 
-    //static
-    std::exception_ptr StreamUpdateWorker::soundThreadExceptionPtr = nullptr;
-
     StreamUpdateWorker::StreamUpdateWorker() :
             nbChunkBuffer(ConfigService::instance().getUnsignedIntValue("player.numberOfStreamBuffer")),
             chunkSizeInMs(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInMs")),
@@ -75,17 +72,8 @@ namespace urchin {
         }
     }
 
-    /**
-     * Interrupt the thread
-     */
-    void StreamUpdateWorker::interrupt() {
+    void StreamUpdateWorker::interruptThread() {
         streamUpdateWorkerStopper.store(true, std::memory_order_release);
-    }
-
-    void StreamUpdateWorker::checkNoExceptionRaised() const {
-        if (soundThreadExceptionPtr) {
-            std::rethrow_exception(soundThreadExceptionPtr);
-        }
     }
 
     void StreamUpdateWorker::start() {
@@ -111,9 +99,9 @@ namespace urchin {
                     break;
                 }
             }
-        } catch (const std::exception&) {
-            Logger::instance().logError("Error cause sound thread crash: exception reported to main thread");
-            soundThreadExceptionPtr = std::current_exception();
+        } catch (const std::exception& e) {
+            Logger::instance().logError("Error cause sound thread crash: " + std::string(e.what()));
+            //note: do not report exception to main thread because crash of sound thread is not enough important to make the application crash
         }
     }
 

@@ -34,7 +34,6 @@ namespace urchin {
             void pause() const;
             void unpause() const;
 
-            void checkNoExceptionRaised() const;
             void process(const Point3<float>&, const Vector3<float>&, const Vector3<float>&) const;
             void process() const;
 

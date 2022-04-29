@@ -23,7 +23,7 @@ namespace urchin {
 
     PhysicsWorld::~PhysicsWorld() {
         if (physicsSimulationThread) {
-            interrupt();
+            interruptThread();
             physicsSimulationThread->join();
         }
 
@@ -120,10 +120,7 @@ namespace urchin {
         return paused;
     }
 
-    /**
-     * Interrupt the thread
-     */
-    void PhysicsWorld::interrupt() {
+    void PhysicsWorld::interruptThread() {
         physicsSimulationStopper.store(true, std::memory_order_release);
     }
 

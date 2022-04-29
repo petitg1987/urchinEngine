@@ -249,9 +249,6 @@ namespace urchin {
         if (physicsWorld) {
             physicsWorld->checkNoExceptionRaised();
         }
-        if (soundEnvironment) {
-            soundEnvironment->checkNoExceptionRaised();
-        }
         if (aiEnvironment) {
             aiEnvironment->checkNoExceptionRaised();
         }

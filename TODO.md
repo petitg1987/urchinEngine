@@ -75,8 +75,6 @@
   * **NEW FEATURE** (`major`): AICharacterController should refresh path points each time the path request is updated 
 
 # Network engine
-* Requests
-  * **NEW FEATURE** (`medium`): Make HTTP requests calls thread-safe
 
 # Physics engine
 * Broad phase

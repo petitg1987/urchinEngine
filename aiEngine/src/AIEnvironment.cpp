@@ -21,7 +21,7 @@ namespace urchin {
 
     AIEnvironment::~AIEnvironment() {
         if (aiSimulationThread) {
-            interrupt();
+            interruptThread();
             aiSimulationThread->join();
         }
 
@@ -83,10 +83,7 @@ namespace urchin {
         return paused;
     }
 
-    /**
-     * Interrupt the thread
-     */
-    void AIEnvironment::interrupt() {
+    void AIEnvironment::interruptThread() {
         aiSimulationStopper.store(true, std::memory_order_release);
     }
 

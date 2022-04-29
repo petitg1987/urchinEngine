@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include <curl/curl.h>
 
 namespace urchin {
 
@@ -17,7 +16,7 @@ namespace urchin {
         private:
             std::string executeRequest(const std::string&, const std::vector<std::string>&) const;
 
-            CURL* curl;
+            void* curl;
             std::string basePath;
     };
 

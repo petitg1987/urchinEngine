@@ -13,7 +13,7 @@ namespace urchin {
             void syncExecute(const HttpRequest&);
             void asyncExecute(HttpRequest);
 
-            void interrupt();
+            void interruptThread();
             void checkNoExceptionRaised() const;
 
         private:
@@ -23,6 +23,8 @@ namespace urchin {
             std::unique_ptr<std::jthread> networkThread;
             std::atomic_bool networkThreadStopper;
             static std::exception_ptr networkThreadExceptionPtr;
+
+            std::thread::id mainThreadId;
     };
 
 }

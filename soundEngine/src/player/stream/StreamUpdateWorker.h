@@ -22,8 +22,7 @@ namespace urchin {
             void removeTask(const AudioStreamPlayer&);
 
             void start();
-            void interrupt();
-            void checkNoExceptionRaised() const;
+            void interruptThread();
 
         private:
             bool continueExecution() const;
@@ -42,7 +41,6 @@ namespace urchin {
             const int updateStreamBufferPauseTime;
 
             std::atomic_bool streamUpdateWorkerStopper;
-            static std::exception_ptr soundThreadExceptionPtr;
             mutable std::mutex tasksMutex;
 
             std::vector<std::unique_ptr<StreamUpdateTask>> tasks;
