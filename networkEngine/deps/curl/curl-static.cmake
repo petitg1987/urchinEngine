@@ -1,6 +1,9 @@
 include(ExternalProject)
 
 SET_DIRECTORY_PROPERTIES(PROPERTIES CLEAN_NO_CUSTOM 1)
+if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo"))
+    SET(CMAKE_UNITY_BUILD TRUE)
+endif()
 
 set(CURL_ROOT               ${CMAKE_BINARY_DIR}/deps/curl)
 set(CURL_LIB_DIR            ${CURL_ROOT}/lib)

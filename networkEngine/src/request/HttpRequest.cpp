@@ -12,23 +12,8 @@ namespace urchin {
         return size * nmemb;
     }
 
-    HttpRequestInitializer::HttpRequestInitializer() {
-        static int callNumber = 0;
-        if (++callNumber > 1) {
-             throw std::runtime_error("HttpRequestInitializer constructor cannot be called several times");
-        }
-
-        curl_global_init(CURL_GLOBAL_DEFAULT); //no thread-safe: cannot be called several times
-    }
-
-    HttpRequestInitializer::~HttpRequestInitializer() {
-        curl_global_cleanup();
-    }
-
     HttpRequest::HttpRequest(std::string basePath) :
             basePath(std::move(basePath)) {
-        static HttpRequestInitializer instance;
-
         curl = curl_easy_init();
         if (!curl) {
             throw std::runtime_error("Impossible to initialize curl");
@@ -81,14 +66,12 @@ namespace urchin {
         CURLcode res = curl_easy_perform(curl);
 
         if (res != CURLE_OK) {
-            std::string error = "HTTP request fail on \"" + url + "\" : " + std::string(curl_easy_strerror(res));
-            throw RequestException(error);
+            throw RequestException("HTTP request fail on \"" + url + "\" : " + std::string(curl_easy_strerror(res)));
         } else {
             long httpCode;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
             if (httpCode >= 300) {
-                std::string error = "HTTP request fail on \"" + url + "\" with status " + std::to_string(httpCode) + ". Raw response content: " + readBuffer;
-                throw RequestException(error);
+                throw RequestException("HTTP request fail on \"" + url + "\" with status " + std::to_string(httpCode) + ". Raw response content: " + readBuffer);
             }
         }
 

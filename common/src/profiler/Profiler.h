@@ -16,6 +16,7 @@ namespace urchin {
             static Profiler& physics();
             static Profiler& ai();
             static Profiler& sound();
+            static Profiler& network();
 
             void startNewProfile(std::string_view);
             void stopProfile(std::string_view nodeName = "");

@@ -6,11 +6,6 @@
 
 namespace urchin {
 
-    struct HttpRequestInitializer {
-        HttpRequestInitializer();
-        ~HttpRequestInitializer();
-    };
-
     class HttpRequest {
         public:
             explicit HttpRequest(std::string);

@@ -40,6 +40,11 @@ namespace urchin {
         return *profilerSound;
     }
 
+    Profiler& Profiler::network() {
+        static thread_local auto profilerNetwork = std::make_unique<Profiler>("network");
+        return *profilerNetwork;
+    }
+
     void Profiler::startNewProfile(std::string_view nodeName) {
         if (isEnable) {
             assert(nodeName.length() <= 15); //ensure to use "small string optimization"
