@@ -52,6 +52,10 @@ namespace urchin {
         return WidgetType::STATIC_BITMAP;
     }
 
+    const std::string& StaticBitmap::getTextureName() const {
+        return texture->getName();
+    }
+
     void StaticBitmap::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         updateProperties(bitmapRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         bitmapRenderer->enableRenderer(renderingOrder);
