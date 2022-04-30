@@ -31,7 +31,7 @@ namespace urchin {
             std::atomic_bool networkThreadStopper;
             static std::exception_ptr networkThreadExceptionPtr;
 
-            urchin::ProdConsCircular<HttpRequest, 16> asyncRequestsQueue;
+            urchin::CircularFifo<HttpRequest, 16> asyncRequestsQueue;
             RequestExecutor asyncRequestExecutor;
             RequestExecutor syncRequestExecutor;
     };
