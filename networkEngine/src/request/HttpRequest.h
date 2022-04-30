@@ -9,6 +9,7 @@ namespace urchin {
 
     class HttpRequest {
         public:
+            HttpRequest();
             static HttpRequest newPostTextPlain(std::string, std::string, std::vector<std::string>);
             static HttpRequest newGetTextPlain(std::string, std::vector<std::string>);
 

@@ -5,6 +5,11 @@
 
 namespace urchin {
 
+    HttpRequest::HttpRequest() :
+        httpMethod(HttpMethod::GET) {
+
+    }
+
     HttpRequest::HttpRequest(HttpMethod httpMethod, std::string url, std::string body, std::vector<std::string> headers) :
             httpMethod(httpMethod),
             url(std::move(url)),

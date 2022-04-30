@@ -1,10 +1,10 @@
-template<class Element, std::size_t Size> ProdConsCircular<Element, Size>::ProdConsCircular() :
+template<class T, std::size_t Size> ProdConsCircular<T, Size>::ProdConsCircular() :
         head(0),
         tail(0) {
 
 }
 
-template<class Element, std::size_t Size> bool ProdConsCircular<Element, Size>::push(Element item) {
+template<class T, std::size_t Size> bool ProdConsCircular<T, Size>::push(T item) {
     const std::size_t currentTail = tail.load(std::memory_order_relaxed);
     const std::size_t nextTail = increment(currentTail);
 
@@ -17,7 +17,7 @@ template<class Element, std::size_t Size> bool ProdConsCircular<Element, Size>::
     return false; //queue full
 }
 
-template<class Element, std::size_t Size> bool ProdConsCircular<Element, Size>::pop(Element& item) {
+template<class T, std::size_t Size> bool ProdConsCircular<T, Size>::pop(T& item) {
     const std::size_t currentHead = head.load(std::memory_order_relaxed);
     if (currentHead == tail.load(std::memory_order_acquire)) {
         return false; //queue empty
@@ -28,6 +28,6 @@ template<class Element, std::size_t Size> bool ProdConsCircular<Element, Size>::
     return true;
 }
 
-template<class Element, std::size_t Size> std::size_t ProdConsCircular<Element, Size>::increment(std::size_t index) const {
+template<class T, std::size_t Size> std::size_t ProdConsCircular<T, Size>::increment(std::size_t index) const {
     return (index + 1) % Capacity;
 }

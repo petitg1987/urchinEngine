@@ -21,8 +21,8 @@ namespace urchin {
     }
 
     void NetworkExecutor::asyncExecute(HttpRequest httpRequest) {
-        bool queueFull = asyncRequestsQueue.push(std::move(httpRequest));
-        if (queueFull) {
+        bool pushSuccess = asyncRequestsQueue.push(std::move(httpRequest));
+        if (!pushSuccess) {
             Logger::instance().logError("Requests queue is full: cannot execute more requests");
         }
     }
