@@ -20,15 +20,18 @@ namespace urchin {
         }
     }
 
+    void NetworkExecutor::asyncExecute(HttpRequest httpRequest) {
+        bool queueFull = asyncRequestsQueue.push(std::move(httpRequest));
+        if (queueFull) {
+            Logger::instance().logError("Requests queue is full: cannot execute more requests");
+        }
+    }
+
     RequestResult NetworkExecutor::syncExecute(const HttpRequest& httpRequest) {
         #ifdef URCHIN_DEBUG
             assert(std::this_thread::get_id() == mainThreadId); //not sure if it is mandatory but added for security
         #endif
         return syncRequestExecutor.executeRequest(httpRequest);
-    }
-
-    void NetworkExecutor::asyncExecute(HttpRequest) {
-        //TODO impl
     }
 
     void NetworkExecutor::interruptThread() {
@@ -49,7 +52,10 @@ namespace urchin {
             Logger::instance().logInfo("Network thread started");
 
             while (continueExecution()) {
-                //TODO execute async request
+                HttpRequest httpRequest;
+                while (asyncRequestsQueue.pop(httpRequest)) {
+                    asyncRequestExecutor.executeRequest(httpRequest);
+                }
 
                 if (StepSleep::sleep(executionPauseTime, this)) {
                     break;

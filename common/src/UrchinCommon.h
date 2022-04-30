@@ -92,6 +92,7 @@
 #include <pattern/singleton/SingletonInterface.h>
 #include <pattern/tag/TaggableResource.h>
 #include <pattern/tag/TagHolder.h>
+#include <pattern/prodcons/ProdConsCircular.h>
 
 #include <profiler/Profiler.h>
 #include <profiler/ScopeProfiler.h>
