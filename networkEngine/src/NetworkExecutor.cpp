@@ -21,16 +21,15 @@ namespace urchin {
         }
     }
 
-    void NetworkExecutor::syncExecute(const HttpRequest&) {
+    RequestResult NetworkExecutor::syncExecute(const HttpRequest& httpRequest) {
         #ifdef URCHIN_DEBUG
             assert(std::this_thread::get_id() == mainThreadId); //not sure if it is mandatory but added for security
         #endif
-
-        //TODO ... (check thread is well the main thread ?)
+        return syncRequestExecutor.executeRequest(httpRequest);
     }
 
     void NetworkExecutor::asyncExecute(HttpRequest) {
-        //TODO ...
+        //TODO impl
     }
 
     void NetworkExecutor::interruptThread() {

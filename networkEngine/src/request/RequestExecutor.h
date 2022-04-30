@@ -1,12 +1,19 @@
 #pragma once
 
 #include <request/HttpRequest.h>
+#include <request/RequestResult.h>
 
 namespace urchin {
 
     class RequestExecutor {
         public:
-            void executeRequest(const HttpRequest&);
+            RequestExecutor();
+            ~RequestExecutor();
+
+            RequestResult executeRequest(const HttpRequest&);
+
+        private:
+            void* curl;
     };
 
 }

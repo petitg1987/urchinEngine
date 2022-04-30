@@ -3,21 +3,27 @@
 #include <string>
 #include <vector>
 
+#include <request/HttpMethod.h>
+
 namespace urchin {
 
     class HttpRequest {
         public:
-            explicit HttpRequest(std::string);
-            ~HttpRequest();
+            static HttpRequest newPostTextPlain(std::string, std::string, std::vector<std::string>);
+            static HttpRequest newGetTextPlain(std::string, std::vector<std::string>);
 
-            void postTextPlain(const std::string&, const std::string&, std::vector<std::string>) const;
-            std::string getTextPlain(const std::string&, std::vector<std::string>) const;
+            HttpMethod getHttpMethod() const;
+            const std::string& getUrl() const;
+            const std::string& getBody() const;
+            const std::vector<std::string>& getHeaders() const;
 
         private:
-            std::string executeRequest(const std::string&, const std::vector<std::string>&) const;
+            HttpRequest(HttpMethod, std::string, std::string, std::vector<std::string>);
 
-            void* curl;
-            std::string basePath;
+            HttpMethod httpMethod;
+            std::string url;
+            std::string body;
+            std::vector<std::string> headers;
     };
 
 }

@@ -2,6 +2,7 @@
 
 #include <request/RequestInitializer.h>
 #include <request/HttpRequest.h>
+#include <request/RequestExecutor.h>
 
 namespace urchin {
 
@@ -10,7 +11,7 @@ namespace urchin {
             NetworkExecutor();
             ~NetworkExecutor();
 
-            void syncExecute(const HttpRequest&);
+            RequestResult syncExecute(const HttpRequest&);
             void asyncExecute(HttpRequest);
 
             void interruptThread();
@@ -23,8 +24,9 @@ namespace urchin {
             std::unique_ptr<std::jthread> networkThread;
             std::atomic_bool networkThreadStopper;
             static std::exception_ptr networkThreadExceptionPtr;
-
             std::thread::id mainThreadId;
+
+            RequestExecutor syncRequestExecutor;
     };
 
 }
