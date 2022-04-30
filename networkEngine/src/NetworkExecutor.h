@@ -21,10 +21,12 @@ namespace urchin {
             void start();
             bool continueExecution() const;
 
+            static RequestInitializer httpRequestInitializer;
+            std::thread::id mainThreadId;
+
             std::unique_ptr<std::jthread> networkThread;
             std::atomic_bool networkThreadStopper;
             static std::exception_ptr networkThreadExceptionPtr;
-            std::thread::id mainThreadId;
 
             RequestExecutor syncRequestExecutor;
     };

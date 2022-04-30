@@ -5,13 +5,11 @@ namespace urchin {
     //static
     std::exception_ptr NetworkExecutor::networkThreadExceptionPtr = nullptr;
 
-    NetworkExecutor::NetworkExecutor() {
+    NetworkExecutor::NetworkExecutor() :
+            mainThreadId(std::this_thread::get_id()) {
         SignalHandler::instance().initialize();
 
-        static RequestInitializer httpRequestInitializer;
         networkThread = std::make_unique<std::jthread>(&NetworkExecutor::start, this);
-
-        mainThreadId = std::this_thread::get_id();
     }
 
     NetworkExecutor::~NetworkExecutor() {
