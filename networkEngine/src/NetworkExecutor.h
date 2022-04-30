@@ -8,6 +8,8 @@ namespace urchin {
 
     class NetworkExecutor {
         public:
+            friend class StepSleep;
+
             NetworkExecutor();
             ~NetworkExecutor();
 
@@ -23,6 +25,7 @@ namespace urchin {
 
             static RequestInitializer httpRequestInitializer;
             std::thread::id mainThreadId;
+            int executionPauseTime;
 
             std::unique_ptr<std::jthread> networkThread;
             std::atomic_bool networkThreadStopper;

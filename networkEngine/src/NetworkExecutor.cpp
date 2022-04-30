@@ -6,7 +6,8 @@ namespace urchin {
     std::exception_ptr NetworkExecutor::networkThreadExceptionPtr = nullptr;
 
     NetworkExecutor::NetworkExecutor() :
-            mainThreadId(std::this_thread::get_id()) {
+            mainThreadId(std::this_thread::get_id()),
+            executionPauseTime((int)ConfigService::instance().getUnsignedIntValue("network.executionPauseTime")) {
         SignalHandler::instance().initialize();
 
         networkThread = std::make_unique<std::jthread>(&NetworkExecutor::start, this);
@@ -49,7 +50,10 @@ namespace urchin {
 
             while (continueExecution()) {
                 //TODO execute async request
-                //TODO pause or wake up ?
+
+                if (StepSleep::sleep(executionPauseTime, this)) {
+                    break;
+                }
             }
 
             Profiler::network().log(); //log for network thread
