@@ -19,7 +19,8 @@ namespace urchin {
     class Model : public Octreeable<Model>, public ModelDisplayable {
         public:
             enum NotificationType {
-                MESH_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,
+                MESH_VERTICES_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,
+                MESH_UV_UPDATED,
                 MATERIAL_UPDATED,
                 SCALE_UPDATED,
                 ANIMATION_STARTED,
@@ -66,7 +67,8 @@ namespace urchin {
             bool isMeshUpdated(unsigned int) const;
 
             void updateAnimation(float);
-            void updateMesh(unsigned int, const std::vector<Point3<float>>&);
+            void updateVertices(unsigned int, const std::vector<Point3<float>>&);
+            void updateUv(unsigned int, const std::vector<Point2<float>>&);
             void updateMaterial(unsigned int, std::shared_ptr<Material>);
 
         private:
@@ -76,9 +78,10 @@ namespace urchin {
             const AABBox<float> &getDefaultModelLocalAABBox() const;
             void initialize();
             void onMoving(const Transform<float>&);
-            void notifyMeshUpdatedByAnimation();
-            void notifyMeshUpdatedReset();
-            void notifyMeshUpdated(unsigned int);
+            void notifyMeshVerticesUpdatedByAnimation();
+            void notifyMeshVerticesUpdatedReset();
+            void notifyMeshVerticesUpdated(unsigned int);
+            void notifyMeshUvUpdated(unsigned int);
 
             std::vector<AABBox<float>> defaultModelAABBoxes;
 

@@ -113,7 +113,7 @@ namespace urchin {
             if (displayMode == DisplayMode::DEFAULT_MODE) {
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
                 meshRendererBuilder
-                        ->addData(uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), mesh.getNormals(), uvScale) : constMesh.getUvTexture())
+                        ->addData(uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv())
                         ->addData(mesh.getNormals())
                         ->addData(mesh.getTangents())
                         ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
@@ -142,14 +142,14 @@ namespace urchin {
 
     std::vector<Point2<float>> ModelInstanceDisplayer::scaleUv(const std::vector<Point2<float>>& uvTexture, const std::vector<Vector3<float>>& normals, const UvScale& uvScale) const {
         assert(uvTexture.size() == normals.size());
-        std::vector<Point2<float>> scaledUvTexture;
-        scaledUvTexture.reserve(uvTexture.size());
+        std::vector<Point2<float>> scaledUv;
+        scaledUv.reserve(uvTexture.size());
 
         const Vector3<float>& modelScale = getReferenceModel().getTransform().getScale();
         for (std::size_t vertexIndex = 0; vertexIndex < uvTexture.size(); ++vertexIndex) {
-            scaledUvTexture.emplace_back(uvScale.scaleUV(uvTexture[vertexIndex], modelScale, normals[vertexIndex]));
+            scaledUv.emplace_back(uvScale.scaleUV(uvTexture[vertexIndex], modelScale, normals[vertexIndex]));
         }
-        return scaledUvTexture;
+        return scaledUv;
     }
 
     TextureParam ModelInstanceDisplayer::buildTextureParam(const Mesh& mesh) const {
@@ -159,8 +159,10 @@ namespace urchin {
 
     void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) {
         if (const auto* model = dynamic_cast<Model*>(observable)) {
-            if (notificationType == Model::MESH_UPDATED) {
-                updateMesh(model);
+            if (notificationType == Model::MESH_VERTICES_UPDATED) {
+                updateMeshVertices(model);
+            } else if (notificationType == Model::MESH_UV_UPDATED) {
+                updateMeshUv(model);
             } else if (notificationType == Model::MATERIAL_UPDATED) {
                 updateMaterial(model);
             } else if (notificationType == Model::SCALE_UPDATED) {
@@ -180,7 +182,7 @@ namespace urchin {
         return canUpdateDisplayer;
     }
 
-    void ModelInstanceDisplayer::updateMesh(const Model* model) const {
+    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) const {
         if (checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -190,6 +192,21 @@ namespace urchin {
                     if (displayMode == DisplayMode::DEFAULT_MODE) {
                         meshRenderer->updateData(2, mesh.getNormals());
                         meshRenderer->updateData(3, mesh.getTangents());
+                    }
+                }
+                meshIndex++;
+            }
+        }
+    }
+
+    void ModelInstanceDisplayer::updateMeshUv(const Model* model) const {
+        if (checkUpdateAllowance(model)) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer: meshRenderers) {
+                if (model->isMeshUpdated(meshIndex)) {
+                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                    if (displayMode == DisplayMode::DEFAULT_MODE) {
+                        meshRenderer->updateData(1, mesh.getUv());
                     }
                 }
                 meshIndex++;
@@ -222,10 +239,9 @@ namespace urchin {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
-                const ConstMesh& constMesh = model->getConstMeshes()->getConstMesh(meshIndex);
                 const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
-                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(constMesh.getUvTexture(), mesh.getNormals(), uvScale) : constMesh.getUvTexture());
+                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv());
 
                 meshIndex++;
             }
@@ -253,7 +269,8 @@ namespace urchin {
         instanceModels.push_back(&model);
         model.attachModelInstanceDisplayer(*this);
 
-        model.addObserver(this, Model::MESH_UPDATED);
+        model.addObserver(this, Model::MESH_VERTICES_UPDATED);
+        model.addObserver(this, Model::MESH_UV_UPDATED);
         model.addObserver(this, Model::MATERIAL_UPDATED);
         model.addObserver(this, Model::SCALE_UPDATED);
     }
@@ -265,9 +282,10 @@ namespace urchin {
             throw std::runtime_error("Removing the instance model fail: " + model.getConstMeshes()->getId());
         }
 
-        model.removeObserver(this, Model::MATERIAL_UPDATED);
-        model.removeObserver(this, Model::MESH_UPDATED);
         model.removeObserver(this, Model::SCALE_UPDATED);
+        model.removeObserver(this, Model::MATERIAL_UPDATED);
+        model.removeObserver(this, Model::MESH_UV_UPDATED);
+        model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
     }
 
     unsigned int ModelInstanceDisplayer::getInstanceCount() const {

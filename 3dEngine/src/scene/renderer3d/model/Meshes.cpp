@@ -57,6 +57,10 @@ namespace urchin {
         computeLocalAABBox(true);
     }
 
+    void Meshes::updateUv(unsigned int meshIndex, const std::vector<Point2<float>>& uv) const {
+        getMesh(meshIndex).updateUv(uv);
+    }
+
     void Meshes::updateMaterial(unsigned int meshIndex, std::shared_ptr<Material> material) const {
         getMesh(meshIndex).updateMaterial(std::move(material));
     }

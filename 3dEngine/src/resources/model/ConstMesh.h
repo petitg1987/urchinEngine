@@ -41,7 +41,7 @@ namespace urchin {
 
             unsigned int getNumberVertices() const;
             const Vertex& getStructVertex(unsigned int) const;
-            const std::vector<Point2<float>>& getUvTexture() const;
+            const std::vector<Point2<float>>& getUv() const;
             const std::vector<unsigned int>& getLinkedVertices(unsigned int) const;
 
             const std::vector<unsigned int>& getTrianglesIndices() const;
@@ -61,7 +61,7 @@ namespace urchin {
             std::shared_ptr<Material> initialMaterial;
 
             std::vector<Vertex> vertices;
-            std::vector<Point2<float>> uvTexture;
+            std::vector<Point2<float>> uv;
             std::unordered_map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
             std::vector<unsigned int> trianglesIndices;

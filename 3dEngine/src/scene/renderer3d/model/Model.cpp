@@ -139,7 +139,7 @@ namespace urchin {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
 
-        notifyMeshUpdatedReset();
+        notifyMeshVerticesUpdatedReset();
     }
 
     void Model::gotoAnimationFrame(std::string_view animationName, unsigned int animationFrameIndex) {
@@ -151,7 +151,7 @@ namespace urchin {
 
         if (activeAnimation->getCurrentFrame() != animationFrameIndex) {
             activeAnimation->gotoFrame(animationFrameIndex);
-            notifyMeshUpdatedByAnimation();
+            notifyMeshVerticesUpdatedByAnimation();
         }
     }
 
@@ -182,29 +182,37 @@ namespace urchin {
         this->notifyOctreeableMove();
     }
 
-    void Model::notifyMeshUpdatedByAnimation() {
+    void Model::notifyMeshVerticesUpdatedByAnimation() {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
         for (std::size_t updatedMeshIndex : activeAnimation->getAnimatedMeshIndices()) {
             meshesUpdated[updatedMeshIndex] = true;
         }
         originalMeshesUpdated = true;
-        notifyObservers(this, Model::MESH_UPDATED);
+        notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
-    void Model::notifyMeshUpdatedReset() {
+    void Model::notifyMeshVerticesUpdatedReset() {
         for (bool&& meshUpdated : meshesUpdated) {
             meshUpdated = true;
         }
         originalMeshesUpdated = false;
-        notifyObservers(this, Model::MESH_UPDATED);
+        notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
-    void Model::notifyMeshUpdated(unsigned int updatedMeshIndex) {
-        for (std::size_t meshIndex = 0; meshIndex < meshesUpdated.size(); ++meshIndex) {
-            meshesUpdated[meshIndex] = (meshIndex == updatedMeshIndex);
-        }
+    void Model::notifyMeshVerticesUpdated(unsigned int updatedMeshIndex) {
+        std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
+        meshesUpdated[updatedMeshIndex] = true;
+
         originalMeshesUpdated = true;
-        notifyObservers(this, Model::MESH_UPDATED);
+        notifyObservers(this, Model::MESH_VERTICES_UPDATED);
+    }
+
+    void Model::notifyMeshUvUpdated(unsigned int updatedMeshIndex) {
+        std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
+        meshesUpdated[updatedMeshIndex] = true;
+
+        originalMeshesUpdated = true;
+        notifyObservers(this, Model::MESH_UV_UPDATED);
     }
 
     const Meshes* Model::getMeshes() const {
@@ -324,16 +332,22 @@ namespace urchin {
                 stopAnimationAtLastFrame = false;
             } else {
                 activeAnimation->animate(dt);
-                notifyMeshUpdatedByAnimation();
+                notifyMeshVerticesUpdatedByAnimation();
             }
         }
     }
 
-    void Model::updateMesh(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {
+    void Model::updateVertices(unsigned int meshIndex, const std::vector<Point3<float>>& vertices) {
         meshes->updateMesh(meshIndex, vertices);
 
         onMoving(transform);
-        notifyMeshUpdated(meshIndex);
+        notifyMeshVerticesUpdated(meshIndex);
+    }
+
+    void Model::updateUv(unsigned int meshIndex, const std::vector<Point2<float>>& uv) {
+        meshes->updateUv(meshIndex, uv);
+
+        notifyMeshUvUpdated(meshIndex);
     }
 
     void Model::updateMaterial(unsigned int meshIndex, std::shared_ptr<Material> material) {

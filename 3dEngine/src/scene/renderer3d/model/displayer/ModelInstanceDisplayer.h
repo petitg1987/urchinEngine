@@ -47,7 +47,8 @@ namespace urchin {
             TextureParam buildTextureParam(const Mesh&) const;
 
             bool checkUpdateAllowance(const Model*) const;
-            void updateMesh(const Model*) const;
+            void updateMeshVertices(const Model*) const;
+            void updateMeshUv(const Model*) const;
             void updateMaterial(const Model*);
             void updateScale(const Model*) const;
 

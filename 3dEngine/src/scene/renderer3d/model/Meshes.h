@@ -24,6 +24,7 @@ namespace urchin {
             std::shared_ptr<ConstMeshes> copyConstMeshesRef() const;
 
             void updateMesh(unsigned int, const std::vector<Point3<float>>&);
+            void updateUv(unsigned int, const std::vector<Point2<float>>&) const;
             void updateMaterial(unsigned int, std::shared_ptr<Material>) const;
 
             void onMoving(const Transform<float>&);

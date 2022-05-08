@@ -29,6 +29,14 @@ namespace urchin {
         MeshService::computeNormalsAndTangents(constMesh, vertices, normals, tangents);
     }
 
+    void Mesh::updateUv(const std::vector<Point2<float>>& uv) {
+        if (uv.size() != constMesh.getNumberVertices()) {
+            throw std::runtime_error("New UVs quantity (" + std::to_string(uv.size()) + ") must be equals to original vertices quantity (" + std::to_string(constMesh.getNumberVertices()) + ")");
+        }
+
+        this->uv = uv;
+    }
+
     void Mesh::updateMaterial(std::shared_ptr<Material> material) {
         if (this->getMaterial().getUvScale() != material->getUvScale()) {
             //not supported because it would require detecting if material UV scale changed in ModelDisplayer#notify() method
@@ -42,6 +50,13 @@ namespace urchin {
             return constMesh.getBaseVertices();
         }
         return vertices;
+    }
+
+    const std::vector<Point2<float>>& Mesh::getUv() const {
+        if (uv.empty()) {
+            return constMesh.getUv();
+        }
+        return uv;
     }
 
     const std::vector<Vector3<float>>& Mesh::getNormals() const {
