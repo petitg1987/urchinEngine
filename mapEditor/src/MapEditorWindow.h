@@ -43,6 +43,7 @@ namespace urchin {
             QAction* saveAction;
             QAction* saveAsAction;
             QAction* closeAction;
+            QAction* reloadAction;
             std::map<SceneDisplayer::ViewProperties, QAction*> viewActions;
 
             std::string mapEditorPath;
@@ -58,6 +59,7 @@ namespace urchin {
             void executeSaveAction();
             void showSaveAsDialog();
             bool executeCloseAction();
+            bool executeReloadAction();
             void executeExitAction();
 
             void executeViewPropertiesChangeAction();

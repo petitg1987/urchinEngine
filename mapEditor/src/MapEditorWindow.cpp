@@ -24,6 +24,7 @@ namespace urchin {
             saveAction(nullptr),
             saveAsAction(nullptr),
             closeAction(nullptr),
+            reloadAction(nullptr),
             mapEditorPath(std::move(mapEditorPath)),
             sceneController(nullptr),
             sceneDisplayerWindow(nullptr),
@@ -82,6 +83,12 @@ namespace urchin {
         closeAction->setShortcut(QKeySequence("Ctrl+W"));
         fileMenu->addAction(closeAction);
         connect(closeAction, SIGNAL(triggered()), this, SLOT(executeCloseAction()));
+
+        reloadAction = new QAction("Reload", this);
+        reloadAction->setEnabled(false);
+        reloadAction->setShortcut(QKeySequence("F5"));
+        fileMenu->addAction(reloadAction);
+        connect(reloadAction, SIGNAL(triggered()), this, SLOT(executeReloadAction()));
 
         fileMenu->addSeparator();
 
@@ -303,6 +310,17 @@ namespace urchin {
         return canProceed;
     }
 
+    bool MapEditorWindow::executeReloadAction() {
+        bool canProceed = false;
+        if (checkCurrentMapSaved()) {
+            std::string relativeWorkingDirectory = MapSaveService::getRelativeWorkingDirectory(mapFilename);
+            loadMap(mapFilename, relativeWorkingDirectory);
+            canProceed = true;
+        }
+
+        return canProceed;
+    }
+
     void MapEditorWindow::executeExitAction() {
         if (executeCloseAction()) {
             QApplication::quit();
@@ -340,6 +358,7 @@ namespace urchin {
         saveAction->setEnabled(hasMapOpen);
         saveAsAction->setEnabled(hasMapOpen);
         closeAction->setEnabled(hasMapOpen);
+        reloadAction->setEnabled(hasMapOpen);
         for (const auto& [viewProperties, action] : viewActions) {
             action->setEnabled(hasMapOpen);
         }
