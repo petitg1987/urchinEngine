@@ -241,7 +241,7 @@ namespace urchin {
                     bestIntersectionPoint = intersectionPoint;
                     hasIntersection = true;
                 }
-            } else {
+            } else if (i % 2 == 0) { //condition always true (when hasPlaneIntersection=false) except when float imprecision is bad (e.g.: collision detected on left plane but no on right plane)
                 i++; //skip next parallel plane
             }
         }
