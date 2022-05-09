@@ -12,6 +12,7 @@ class OBBoxTest : public CppUnit::TestFixture {
         void leftToRightLineIntersection();
         void rightToLeftLineIntersection();
         void farToNearLineIntersection();
+        void nearToFarLineIntersection();
         void bottomRightToTopLeftLineIntersection();
         void oBBoxObliqueIntersection();
 };
