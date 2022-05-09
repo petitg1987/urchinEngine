@@ -30,22 +30,6 @@ void FileUtilTest::getFilesRecursiveWithSpecialChar() {
     AssertHelper::assertStringEquals(FileUtil::getFileName(files[0]), "file.txt");
 }
 
-void FileUtilTest::simplifyDirectoryPathUnix() {
-    std::string directoryPath = "xxx/yyy/../zzz/www/../rrr/";
-
-    std::string result = FileUtil::simplifyDirectoryPath(directoryPath);
-
-    AssertHelper::assertTrue(result == "xxx/zzz/rrr/");
-}
-
-void FileUtilTest::simplifyDirectoryPathWindows() {
-    std::string directoryPath = R"(xxx\yyy\..\zzz\www\..\rrr\)";
-
-    std::string result = FileUtil::simplifyDirectoryPath(directoryPath);
-
-    AssertHelper::assertTrue(result == R"(xxx\zzz\rrr\)");
-}
-
 CppUnit::Test* FileUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("FileUtilTest");
 
@@ -53,9 +37,6 @@ CppUnit::Test* FileUtilTest::suite() {
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryWindows", &FileUtilTest::getDirectoryWindows));
 
     suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getFilesRecursiveWithSpecialChar", &FileUtilTest::getFilesRecursiveWithSpecialChar));
-
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("simplifyDirectoryPathUnix", &FileUtilTest::simplifyDirectoryPathUnix));
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("simplifyDirectoryPathWindows", &FileUtilTest::simplifyDirectoryPathWindows));
 
     return suite;
 }

@@ -7,7 +7,7 @@
 using namespace urchin;
 
 void SoundFileReaderTest::cursorAfterRead() {
-    SoundFileReader soundFileReader("sound/sound5SecStereo.ogg");
+    SoundFileReader soundFileReader(FileSystem::instance().getResourcesDirectory() + "sound/sound5SecStereo.ogg");
     std::size_t dataSize = 5000;
 
     std::vector<int16_t> data;
@@ -20,7 +20,7 @@ void SoundFileReaderTest::cursorAfterRead() {
 }
 
 void SoundFileReaderTest::cursorAfterMove() {
-    SoundFileReader soundFileReader("sound/sound5SecStereo.ogg");
+    SoundFileReader soundFileReader(FileSystem::instance().getResourcesDirectory() + "sound/sound5SecStereo.ogg");
     unsigned int advanceSize = 5000;
 
     soundFileReader.advanceReadCursor(advanceSize, true);

@@ -14,7 +14,7 @@ void OBBoxTest::noIntersection() {
     AssertHelper::assertTrue(!hasIntersection);
 }
 
-void OBBoxTest::leftRightLineIntersection() {
+void OBBoxTest::leftToRightLineIntersection() {
     OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3<float>(-2.0f, 0.5f, 0.5f), Point3<float>(2.0f, 0.5f, 0.5f));
 
@@ -25,7 +25,7 @@ void OBBoxTest::leftRightLineIntersection() {
     AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3<float>(0.0f, 0.5f, 0.5f));
 }
 
-void OBBoxTest::rightLeftLineIntersection() {
+void OBBoxTest::rightToLeftLineIntersection() {
     OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3<float>(2.0f, 0.5f, 0.5f), Point3<float>(-2.0f, 0.5f, 0.5f));
 
@@ -36,7 +36,18 @@ void OBBoxTest::rightLeftLineIntersection() {
     AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3<float>(1.0f, 0.5f, 0.5f));
 }
 
-void OBBoxTest::bottomLeftLineIntersection() {
+void OBBoxTest::farToNearLineIntersection() { //TODO review...
+    OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
+    Line3D line(Point3<float>(0.5f, 0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+
+    bool hasIntersection = false;
+    Point3<float> intersectionPoint = oBBox.intersectPoint(line, hasIntersection);
+
+    AssertHelper::assertTrue(hasIntersection);
+    AssertHelper::assertPoint3FloatEquals(intersectionPoint, Point3<float>(0.5f, 0.5f, 0.0f));
+}
+
+void OBBoxTest::bottomRightToTopLeftLineIntersection() {
     OBBox oBBox(AABBox<float>(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 1.0f, 1.0f)));
     Line3D line(Point3<float>(0.5f, 0.0f, 0.5f), Point3<float>(0.0f, 0.5f, 0.5f));
 
@@ -62,9 +73,10 @@ CppUnit::Test* OBBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("OBBoxTest");
 
     suite->addTest(new CppUnit::TestCaller<OBBoxTest>("noIntersection", &OBBoxTest::noIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("leftRightLineIntersection", &OBBoxTest::leftRightLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("rightLeftLineIntersection", &OBBoxTest::rightLeftLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("bottomLeftLineIntersection", &OBBoxTest::bottomLeftLineIntersection));
+    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("leftToRightLineIntersection", &OBBoxTest::leftToRightLineIntersection));
+    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("rightToLeftLineIntersection", &OBBoxTest::rightToLeftLineIntersection));
+    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("farToNearLineIntersection", &OBBoxTest::farToNearLineIntersection));
+    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("bottomRightToTopLeftLineIntersection", &OBBoxTest::bottomRightToTopLeftLineIntersection));
     suite->addTest(new CppUnit::TestCaller<OBBoxTest>("oBBoxObliqueIntersection", &OBBoxTest::oBBoxObliqueIntersection));
 
     return suite;

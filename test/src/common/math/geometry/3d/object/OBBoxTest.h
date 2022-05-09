@@ -9,8 +9,9 @@ class OBBoxTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void noIntersection();
-        void leftRightLineIntersection();
-        void rightLeftLineIntersection();
-        void bottomLeftLineIntersection();
+        void leftToRightLineIntersection();
+        void rightToLeftLineIntersection();
+        void farToNearLineIntersection();
+        void bottomRightToTopLeftLineIntersection();
         void oBBoxObliqueIntersection();
 };
