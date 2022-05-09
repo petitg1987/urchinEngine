@@ -26,7 +26,7 @@ namespace urchin {
 
             void createDefaultBody(const ObjectEntity&);
             void changeBodyShape(const ObjectEntity&, CollisionShape3D::ShapeType);
-            void moveObjectInFrontOfCamera(const ObjectEntity&);
+            void moveObjectInFrontOfCamera(const ObjectEntity&, bool);
             void removeBody(const ObjectEntity&);
 
             const ObjectEntity& updateObjectTransform(const ObjectEntity&, const Transform<float>&);

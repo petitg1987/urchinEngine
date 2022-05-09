@@ -21,7 +21,8 @@ namespace urchin {
 
             virtual ShapeType getShapeType() const = 0;
 
-            virtual void updatePosition(const Point3<float>&) = 0;
+            virtual const Point3<float>& getCenterPosition() const = 0;
+            virtual void updateCenterPosition(const Point3<float>&) = 0;
 
             virtual bool pointInsidePlayShape(const Point3<float>&) const = 0;
             virtual bool pointInsideStopShape(const Point3<float>&) const = 0;

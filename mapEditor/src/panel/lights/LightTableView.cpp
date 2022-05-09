@@ -38,7 +38,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void LightTableView::addLight(const LightEntity& lightEntity) {
+    int LightTableView::addLight(const LightEntity& lightEntity) {
         auto* itemLightName = new QStandardItem(QString::fromStdString(lightEntity.getName()));
         itemLightName->setData(QVariant::fromValue(&lightEntity), Qt::UserRole + 1);
         itemLightName->setEditable(false);
@@ -48,6 +48,7 @@ namespace urchin {
         lightsListModel->setItem(nextRow, 0, itemLightName);
 
         resizeRowsToContents();
+        return nextRow;
     }
 
     bool LightTableView::removeSelectedLight() {

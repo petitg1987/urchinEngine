@@ -24,7 +24,7 @@ namespace urchin {
             bool hasLightEntitySelected() const;
             const LightEntity* getSelectedLightEntity() const;
 
-            void addLight(const LightEntity&);
+            int addLight(const LightEntity&);
             bool removeSelectedLight();
             void removeAllLights();
 

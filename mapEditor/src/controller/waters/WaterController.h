@@ -17,7 +17,7 @@ namespace urchin {
             void addWaterEntity(std::unique_ptr<WaterEntity>);
             void removeWaterEntity(const WaterEntity&);
 
-            void moveWaterInFrontOfCamera(const WaterEntity&);
+            void moveWaterInFrontOfCamera(const WaterEntity&, bool);
 
             const WaterEntity& updateWaterGeneral(const WaterEntity&, const Point3<float>&, float, float);
             const WaterEntity& updateWaterSurface(const WaterEntity&, const Vector3<float>&, std::string, std::string, float, float, float, float);

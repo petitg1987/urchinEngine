@@ -37,7 +37,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void WaterTableView::addWater(const WaterEntity& waterEntity) {
+    int WaterTableView::addWater(const WaterEntity& waterEntity) {
         auto* itemWaterName = new QStandardItem(QString::fromStdString(waterEntity.getName()));
         itemWaterName->setData(QVariant::fromValue(&waterEntity), Qt::UserRole + 1);
         itemWaterName->setEditable(false);
@@ -47,6 +47,7 @@ namespace urchin {
         watersListModel->setItem(nextRow, 0, itemWaterName);
 
         resizeRowsToContents();
+        return nextRow;
     }
 
     bool WaterTableView::removeSelectedWater() {

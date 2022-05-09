@@ -19,8 +19,8 @@ namespace urchin {
             const Sphere<float>& getStopTriggerSphere() const;
 
             float getRadius() const;
-            Point3<float> getPosition() const;
-            void updatePosition(const Point3<float>&) override;
+            const Point3<float>& getCenterPosition() const override;
+            void updateCenterPosition(const Point3<float>&) override;
 
             bool pointInsidePlayShape(const Point3<float>&) const override;
             bool pointInsideStopShape(const Point3<float>&) const override;

@@ -22,7 +22,7 @@ namespace urchin {
         return sphereShape.getRadius();
     }
 
-    template<class T> const Point3<T> &Sphere<T>::getCenterOfMass() const {
+    template<class T> const Point3<T>& Sphere<T>::getCenterOfMass() const {
         return centerOfMass;
     }
 

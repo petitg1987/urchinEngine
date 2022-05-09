@@ -18,7 +18,7 @@ namespace urchin {
             void removeSoundEntity(const SoundEntity&);
 
             void changeSoundShape(const SoundEntity&, SoundShape::ShapeType);
-            void moveSoundInFrontOfCamera(const SoundEntity&);
+            void moveSoundInFrontOfCamera(const SoundEntity&, bool);
 
             const SoundEntity& updateSpatialSoundProperties(const SoundEntity&, const Point3<float>&, float);
             const SoundEntity& updateSoundTriggerGeneralProperties(const SoundEntity&, PlayBehavior);

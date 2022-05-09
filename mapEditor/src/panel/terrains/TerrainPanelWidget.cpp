@@ -416,7 +416,8 @@ namespace urchin {
             const TerrainEntity* terrainEntityPtr = terrainEntity.get();
             terrainController->addTerrainEntity(std::move(terrainEntity));
 
-            terrainTableView->addTerrain(*terrainEntityPtr);
+            int row = terrainTableView->addTerrain(*terrainEntityPtr);
+            terrainTableView->selectRow(row);
         }
     }
 

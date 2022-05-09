@@ -24,7 +24,7 @@ namespace urchin {
             bool hasTerrainEntitySelected() const;
             const TerrainEntity* getSelectedTerrainEntity() const;
 
-            void addTerrain(const TerrainEntity&);
+            int addTerrain(const TerrainEntity&);
             bool removeSelectedTerrain();
             void removeAllTerrains();
 

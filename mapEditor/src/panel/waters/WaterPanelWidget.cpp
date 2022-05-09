@@ -327,9 +327,10 @@ namespace urchin {
             std::unique_ptr<WaterEntity> waterEntity = newWaterEntityDialog.moveWaterEntity();
             const WaterEntity* waterEntityPtr = waterEntity.get();
             waterController->addWaterEntity(std::move(waterEntity));
-            waterController->moveWaterInFrontOfCamera(*waterEntityPtr);
+            waterController->moveWaterInFrontOfCamera(*waterEntityPtr, false);
 
-            waterTableView->addWater(*waterEntityPtr);
+            int row = waterTableView->addWater(*waterEntityPtr);
+            waterTableView->selectRow(row);
         }
     }
 

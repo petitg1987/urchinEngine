@@ -24,7 +24,7 @@ namespace urchin {
             bool hasWaterEntitySelected() const;
             const WaterEntity* getSelectedWaterEntity() const;
 
-            void addWater(const WaterEntity&);
+            int addWater(const WaterEntity&);
             bool removeSelectedWater();
             void removeAllWaters();
 

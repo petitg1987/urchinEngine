@@ -41,7 +41,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void TerrainTableView::addTerrain(const TerrainEntity& terrainEntity) {
+    int TerrainTableView::addTerrain(const TerrainEntity& terrainEntity) {
         auto* itemTerrainName = new QStandardItem(QString::fromStdString(terrainEntity.getName()));
         itemTerrainName->setData(QVariant::fromValue(&terrainEntity), Qt::UserRole + 1);
         itemTerrainName->setEditable(false);
@@ -59,6 +59,7 @@ namespace urchin {
         terrainsListModel->setItem(nextRow, 1, itemHeightFile);
 
         resizeRowsToContents();
+        return nextRow;
     }
 
     bool TerrainTableView::removeSelectedTerrain() {

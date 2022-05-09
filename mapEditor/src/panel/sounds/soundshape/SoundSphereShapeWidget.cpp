@@ -43,9 +43,9 @@ namespace urchin {
     void SoundSphereShapeWidget::doSetupShapePropertiesFrom(const SoundShape& shape) {
         const auto& sphereShape = static_cast<const SoundSphere&>(shape);
 
-        positionX->setValue(sphereShape.getPosition().X);
-        positionY->setValue(sphereShape.getPosition().Y);
-        positionZ->setValue(sphereShape.getPosition().Z);
+        positionX->setValue(sphereShape.getCenterPosition().X);
+        positionY->setValue(sphereShape.getCenterPosition().Y);
+        positionZ->setValue(sphereShape.getCenterPosition().Z);
 
         radius->setValue(sphereShape.getRadius());
     }

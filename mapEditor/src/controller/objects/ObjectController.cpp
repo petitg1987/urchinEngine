@@ -3,6 +3,7 @@
 #include <utility>
 
 #include <controller/objects/ObjectController.h>
+#include <controller/EntityControllerUtil.h>
 
 namespace urchin {
 
@@ -85,9 +86,9 @@ namespace urchin {
         updateObjectPhysicsShape(constObjectEntity, std::move(newCollisionShape));
     }
 
-    void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity) {
-        const Camera& camera = getMap().getRenderer3d()->getCamera();
-        Point3<float> newPosition = camera.getPosition().translate(camera.getView() * 5.0f);
+    void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity, bool isClonedEntity) {
+        Point3<float> currentPosition = constObjectEntity.getModel()->getTransform().getPosition();
+        Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
         constObjectEntity.updatePosition(newPosition);
 
         markModified();

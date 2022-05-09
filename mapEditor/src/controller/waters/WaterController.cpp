@@ -2,6 +2,7 @@
 #include <utility>
 
 #include <controller/waters/WaterController.h>
+#include <controller/EntityControllerUtil.h>
 
 namespace urchin {
     WaterController::WaterController() :
@@ -32,9 +33,9 @@ namespace urchin {
         markModified();
     }
 
-    void WaterController::moveWaterInFrontOfCamera(const WaterEntity& constWaterEntity) {
-        const Camera& camera = getMap().getRenderer3d()->getCamera();
-        Point3<float> newPosition = camera.getPosition().translate(camera.getView() * 5.0f);
+    void WaterController::moveWaterInFrontOfCamera(const WaterEntity& constWaterEntity, bool isClonedEntity) {
+        Point3<float> currentPosition = constWaterEntity.getWater()->getCenterPosition();
+        Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
         constWaterEntity.getWater()->setCenterPosition(newPosition);
 
         markModified();

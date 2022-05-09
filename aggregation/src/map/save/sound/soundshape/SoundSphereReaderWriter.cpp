@@ -24,7 +24,7 @@ namespace urchin {
         radiusChunk.setFloatValue(sphereShape.getRadius());
 
         auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &shapeChunk);
-        positionChunk.setPoint3Value(sphereShape.getPosition());
+        positionChunk.setPoint3Value(sphereShape.getCenterPosition());
 
         auto& marginChunk = udaWriter.createChunk(MARGIN_TAG, UdaAttribute(), &shapeChunk);
         marginChunk.setFloatValue(sphereShape.getMargin());

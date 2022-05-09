@@ -43,7 +43,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void SoundTableView::addSound(const SoundEntity& soundEntity) {
+    int SoundTableView::addSound(const SoundEntity& soundEntity) {
         auto* itemSoundName = new QStandardItem(QString::fromStdString(soundEntity.getName()));
         itemSoundName->setData(QVariant::fromValue(&soundEntity), Qt::UserRole + 1);
         itemSoundName->setEditable(false);
@@ -61,6 +61,7 @@ namespace urchin {
         soundsListModel->setItem(nextRow, 1, itemSoundFile);
 
         resizeRowsToContents();
+        return nextRow;
     }
 
     bool SoundTableView::removeSelectedSound() {

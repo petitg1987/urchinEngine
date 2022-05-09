@@ -330,9 +330,10 @@ namespace urchin {
             std::unique_ptr<SoundEntity> soundEntity = newSoundEntityDialog.moveSoundEntity();
             const SoundEntity* soundEntityPtr = soundEntity.get();
             soundController->addSoundEntity(std::move(soundEntity));
-            soundController->moveSoundInFrontOfCamera(*soundEntityPtr);
+            soundController->moveSoundInFrontOfCamera(*soundEntityPtr, false);
 
-            soundTableView->addSound(*soundEntityPtr);
+            int row = soundTableView->addSound(*soundEntityPtr);
+            soundTableView->selectRow(row);
         }
     }
 

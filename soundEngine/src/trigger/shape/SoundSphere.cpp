@@ -28,11 +28,11 @@ namespace urchin {
         return playTriggerSphere.getRadius();
     }
 
-    Point3<float> SoundSphere::getPosition() const {
+    const Point3<float>& SoundSphere::getCenterPosition() const {
         return playTriggerSphere.getCenterOfMass();
     }
 
-    void SoundSphere::updatePosition(const Point3<float>& position) {
+    void SoundSphere::updateCenterPosition(const Point3<float>& position) {
         playTriggerSphere = Sphere<float>(playTriggerSphere.getRadius(), position);
         stopTriggerSphere = Sphere<float>(stopTriggerSphere.getRadius(), position);
     }
@@ -46,7 +46,7 @@ namespace urchin {
     }
 
     std::unique_ptr<SoundShape> SoundSphere::clone() const {
-        return std::make_unique<SoundSphere>(getRadius(), getPosition(), getMargin());
+        return std::make_unique<SoundSphere>(getRadius(), getCenterPosition(), getMargin());
     }
 
 }

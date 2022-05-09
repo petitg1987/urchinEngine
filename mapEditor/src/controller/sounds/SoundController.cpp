@@ -2,6 +2,7 @@
 
 #include <controller/sounds/SoundController.h>
 #include <panel/sounds/soundshape/support/DefaultSoundShapeCreator.h>
+#include <controller/EntityControllerUtil.h>
 
 namespace urchin {
 
@@ -43,17 +44,22 @@ namespace urchin {
         markModified();
     }
 
-    void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity) {
-        const Camera& camera = getMap().getRenderer3d()->getCamera();
-        Point3<float> newPosition = camera.getPosition().translate(camera.getView() * 5.0f);
-
+    void SoundController::moveSoundInFrontOfCamera(const SoundEntity& constSoundEntity, bool isClonedEntity) {
         if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::SPATIAL) {
-            static_cast<SpatialSound&>(constSoundEntity.getSoundComponent()->getSound()).setPosition(newPosition);
+            auto& spatialSound = static_cast<SpatialSound&>(constSoundEntity.getSoundComponent()->getSound());
+            Point3<float> currentPosition = spatialSound.getPosition();
+            Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+            spatialSound.setPosition(newPosition);
+
             markModified();
         }
 
         if (constSoundEntity.getSoundComponent()->getSoundTrigger().getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
-            static_cast<ZoneTrigger&>(constSoundEntity.getSoundComponent()->getSoundTrigger()).getSoundShape().updatePosition(newPosition);
+            auto& zoneTrigger = static_cast<ZoneTrigger&>(constSoundEntity.getSoundComponent()->getSoundTrigger());
+            Point3<float> currentPosition = zoneTrigger.getSoundShape().getCenterPosition();
+            Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+            zoneTrigger.getSoundShape().updateCenterPosition(newPosition);
+
             markModified();
         }
     }

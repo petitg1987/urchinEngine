@@ -19,8 +19,8 @@ namespace urchin {
             const OBBox<float>& getStopTriggerBox() const;
 
             const Vector3<float>& getHalfSizes() const;
-            const Point3<float>& getCenterPosition() const;
-            void updatePosition(const Point3<float>&) override;
+            const Point3<float>& getCenterPosition() const override;
+            void updateCenterPosition(const Point3<float>&) override;
             const Quaternion<float>& getOrientation() const;
             const Vector3<float>& getAxis(unsigned int) const;
 

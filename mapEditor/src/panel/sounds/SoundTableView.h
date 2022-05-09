@@ -24,7 +24,7 @@ namespace urchin {
             bool hasSoundEntitySelected() const;
             const SoundEntity* getSelectedSoundEntity() const;
 
-            void addSound(const SoundEntity&);
+            int addSound(const SoundEntity&);
             bool removeSelectedSound();
             void removeAllSounds();
 

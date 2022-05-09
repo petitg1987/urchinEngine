@@ -1,6 +1,7 @@
 #include <stdexcept>
 
 #include <controller/lights/LightController.h>
+#include <controller/EntityControllerUtil.h>
 
 namespace urchin {
 
@@ -25,11 +26,12 @@ namespace urchin {
         markModified();
     }
 
-    void LightController::moveLightInFrontOfCamera(const LightEntity& constLightEntity) {
+    void LightController::moveLightInFrontOfCamera(const LightEntity& constLightEntity, bool isClonedEntity) {
         if (constLightEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-            const Camera& camera = getMap().getRenderer3d()->getCamera();
-            Point3<float> newPosition = camera.getPosition().translate(camera.getView() * 5.0f);
-            static_cast<OmnidirectionalLight*>(constLightEntity.getLight())->setPosition(newPosition);
+            auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(constLightEntity.getLight());
+            Point3<float> currentPosition = omnidirectionalLight->getPosition();
+            Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+            omnidirectionalLight->setPosition(newPosition);
 
             markModified();
         }
