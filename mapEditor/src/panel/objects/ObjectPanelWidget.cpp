@@ -618,11 +618,12 @@ namespace urchin {
     }
 
     void ObjectPanelWidget::showCloneObjectDialog() {
-        CloneObjectDialog cloneObjectEntityDialog(this, objectController);
+        std::string originalName = objectTableView->getSelectedObjectEntity()->getName();
+        CloneObjectDialog cloneObjectEntityDialog(this, originalName, objectController);
         cloneObjectEntityDialog.exec();
 
         if (cloneObjectEntityDialog.result() == QDialog::Accepted) {
-            std::string newObjectName = cloneObjectEntityDialog.getObjectName();
+            const std::string& newObjectName = cloneObjectEntityDialog.getObjectName();
             const ObjectEntity& toCloneObjectEntity = *objectTableView->getSelectedObjectEntity();
             const ObjectEntity& newObjectEntity = objectController->cloneObjectEntity(newObjectName, toCloneObjectEntity);
             objectController->moveObjectInFrontOfCamera(newObjectEntity);
@@ -638,7 +639,7 @@ namespace urchin {
         renameObjectEntityDialog.exec();
 
         if (renameObjectEntityDialog.result() == QDialog::Accepted) {
-            std::string newObjectName = renameObjectEntityDialog.getObjectName();
+            const std::string& newObjectName = renameObjectEntityDialog.getObjectName();
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
             objectController->renameObjectEntity(objectEntity, newObjectName);
 

@@ -8,8 +8,9 @@
 
 namespace urchin {
 
-    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const ObjectController* objectController) :
+    CloneObjectDialog::CloneObjectDialog(QWidget* parent, std::string originalName, const ObjectController* objectController) :
             QDialog(parent),
+            originalName(std::move(originalName)),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr) {
@@ -38,6 +39,7 @@ namespace urchin {
         objectNameText = new QLineEdit();
         mainLayout->addWidget(objectNameText, 0, 1);
         objectNameText->setFixedWidth(360);
+        objectNameText->setText(QString::fromStdString(originalName));
     }
 
     void CloneObjectDialog::updateObjectName() {
