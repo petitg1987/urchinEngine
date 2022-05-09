@@ -5,12 +5,13 @@
 
 #include <panel/objects/dialog/CloneObjectDialog.h>
 #include <widget/style/LabelStyleHelper.h>
+#include <controller/EntityControllerUtil.h>
 
 namespace urchin {
 
-    CloneObjectDialog::CloneObjectDialog(QWidget* parent, std::string originalName, const ObjectController* objectController) :
+    CloneObjectDialog::CloneObjectDialog(QWidget* parent, const std::string& originalName, const ObjectController* objectController) :
             QDialog(parent),
-            originalName(std::move(originalName)),
+            proposedName(EntityControllerUtil::determineNewCloneName(originalName, objectController->getObjectEntities())),
             objectController(objectController),
             objectNameLabel(nullptr),
             objectNameText(nullptr) {
@@ -39,7 +40,7 @@ namespace urchin {
         objectNameText = new QLineEdit();
         mainLayout->addWidget(objectNameText, 0, 1);
         objectNameText->setFixedWidth(360);
-        objectNameText->setText(QString::fromStdString(originalName));
+        objectNameText->setText(QString::fromStdString(proposedName));
     }
 
     void CloneObjectDialog::updateObjectName() {

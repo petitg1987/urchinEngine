@@ -30,7 +30,7 @@ namespace urchin {
         if (constLightEntity.getLight()->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
             auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(constLightEntity.getLight());
             Point3<float> currentPosition = omnidirectionalLight->getPosition();
-            Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+            Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
             omnidirectionalLight->setPosition(newPosition);
 
             markModified();

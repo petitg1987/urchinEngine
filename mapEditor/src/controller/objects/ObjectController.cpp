@@ -88,7 +88,7 @@ namespace urchin {
 
     void ObjectController::moveObjectInFrontOfCamera(const ObjectEntity& constObjectEntity, bool isClonedEntity) {
         Point3<float> currentPosition = constObjectEntity.getModel()->getTransform().getPosition();
-        Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+        Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
         constObjectEntity.updatePosition(newPosition);
 
         markModified();

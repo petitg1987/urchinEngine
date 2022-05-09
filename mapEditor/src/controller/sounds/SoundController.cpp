@@ -48,7 +48,7 @@ namespace urchin {
         if (constSoundEntity.getSoundComponent()->getSound().getSoundType() == Sound::SoundType::SPATIAL) {
             auto& spatialSound = static_cast<SpatialSound&>(constSoundEntity.getSoundComponent()->getSound());
             Point3<float> currentPosition = spatialSound.getPosition();
-            Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+            Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
             spatialSound.setPosition(newPosition);
 
             markModified();
@@ -57,7 +57,7 @@ namespace urchin {
         if (constSoundEntity.getSoundComponent()->getSoundTrigger().getTriggerType() == SoundTrigger::TriggerType::ZONE_TRIGGER) {
             auto& zoneTrigger = static_cast<ZoneTrigger&>(constSoundEntity.getSoundComponent()->getSoundTrigger());
             Point3<float> currentPosition = zoneTrigger.getSoundShape().getCenterPosition();
-            Point3<float> newPosition = EntityControllerUtil::determineClonePosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
+            Point3<float> newPosition = EntityControllerUtil::determineNewPosition(currentPosition, isClonedEntity, getMap().getRenderer3d()->getCamera());
             zoneTrigger.getSoundShape().updateCenterPosition(newPosition);
 
             markModified();

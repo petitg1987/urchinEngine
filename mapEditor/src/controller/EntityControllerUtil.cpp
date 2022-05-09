@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    Point3<float> EntityControllerUtil::determineClonePosition(const Point3<float>& currentEntityPosition, bool isClonedEntity, const Camera& camera) {
+    Point3<float> EntityControllerUtil::determineNewPosition(const Point3<float>& currentEntityPosition, bool isClonedEntity, const Camera& camera) {
         if (!isClonedEntity) { //new entity created from scratch
             return camera.getPosition().translate(camera.getView() * 5.0f);
         }
