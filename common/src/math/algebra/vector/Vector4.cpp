@@ -1,4 +1,5 @@
 #include <math/algebra/vector/Vector4.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -144,19 +145,23 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> bool Vector4<T>::operator ==(const Vector4<T>& p) const {
-        return (X == p.X && Y == p.Y && Z == p.Z && W == p.W);
+    template<class T> bool Vector4<T>::operator ==(const Vector4<T>& v) const {
+        return (X == v.X && Y == v.Y && Z == v.Z && W == v.W);
     }
 
-    template<class T> std::partial_ordering Vector4<T>::operator <=>(const Vector4<T>& p) const {
-        if (auto cmpX = X <=> p.X; cmpX != 0) {
+    template<class T> std::partial_ordering Vector4<T>::operator <=>(const Vector4<T>& v) const {
+        if (auto cmpX = X <=> v.X; cmpX != 0) {
             return cmpX;
-        } else if (auto cmpY = Y <=> p.Y; cmpY != 0) {
+        } else if (auto cmpY = Y <=> v.Y; cmpY != 0) {
             return cmpY;
-        } else if (auto cmpZ = Z <=> p.Z; cmpZ != 0) {
+        } else if (auto cmpZ = Z <=> v.Z; cmpZ != 0) {
             return cmpZ;
         }
-        return W <=> p.W;
+        return W <=> v.W;
+    }
+
+    template<class T> bool Vector4<T>::isEqual(const Vector4<T>& v, T epsilon) const {
+        return MathFunction::isEqual(X, v.X, epsilon) && MathFunction::isEqual(Y, v.Y, epsilon) && MathFunction::isEqual(Z, v.Z, epsilon) && MathFunction::isEqual(W, v.W, epsilon);
     }
 
     template<class T> T& Vector4<T>::operator [](std::size_t i) {

@@ -40,6 +40,7 @@ namespace urchin {
 
             bool operator ==(const Vector2<T>&) const;
             std::partial_ordering operator <=>(const Vector2<T>&) const;
+            bool isEqual(const Vector2<T>&, T) const;
 
             T& operator [](std::size_t i);
             const T& operator [](std::size_t i) const;

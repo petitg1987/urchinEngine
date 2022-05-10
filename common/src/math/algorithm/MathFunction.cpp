@@ -45,28 +45,16 @@ namespace urchin {
         return result;
     }
 
-    bool MathFunction::isEqual(float value1, float value2, float tolerance) {
+    template<class T> bool MathFunction::isEqual(T value1, T value2, T tolerance) {
         return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
     }
 
-    bool MathFunction::isEqual(double value1, double value2, double tolerance) {
-        return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
+    template<class T> bool MathFunction::isZero(T value, T tolerance) {
+        return isEqual(value, (T)0.0, tolerance);
     }
 
-    bool MathFunction::isZero(float value, float tolerance) {
-        return isEqual(value, 0.0f, tolerance);
-    }
-
-    bool MathFunction::isZero(double value, double tolerance) {
-        return isEqual(value, 0.0, tolerance);
-    }
-
-    bool MathFunction::isOne(float value, float tolerance) {
-        return isEqual(value, 1.0f, tolerance);
-    }
-
-    bool MathFunction::isOne(double value, double tolerance) {
-        return isEqual(value, 1.0, tolerance);
+    template<class T> bool MathFunction::isOne(T value, T tolerance) {
+        return isEqual(value, (T)1.0, tolerance);
     }
 
     int MathFunction::roundToInt(float value) {
@@ -129,12 +117,19 @@ namespace urchin {
     //explicit template
     template float MathFunction::sign<float>(float);
     template float MathFunction::max(const std::vector<float>&);
+    template bool MathFunction::isEqual(float, float, float);
+    template bool MathFunction::isZero(float, float);
+    template bool MathFunction::isOne(float, float);
     template float MathFunction::roundDivision<float>(float, float);
 
     template double MathFunction::sign<double>(double);
+    template bool MathFunction::isEqual(double, double, double);
+    template bool MathFunction::isZero(double, double);
+    template bool MathFunction::isOne(double, double);
     template double MathFunction::roundDivision<double>(double, double);
 
     template int MathFunction::sign<int>(int);
+    template bool MathFunction::isEqual(int, int, int);
     template int MathFunction::roundDivision<int>(int, int);
 
     template unsigned int MathFunction::roundDivision<unsigned int>(unsigned int, unsigned int);
@@ -146,5 +141,6 @@ namespace urchin {
     template unsigned long MathFunction::roundDivision<unsigned long>(unsigned long, unsigned long);
 
     template long long MathFunction::sign<long long>(long long);
+    template bool MathFunction::isEqual(long long, long long, long long);
     template long long MathFunction::roundDivision<long long>(long long, long long);
 }

@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include <math/algebra/vector/Vector2.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -142,15 +143,19 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> bool Vector2<T>::operator ==(const Vector2<T>& p) const {
-        return (X == p.X && Y == p.Y);
+    template<class T> bool Vector2<T>::operator ==(const Vector2<T>& v) const {
+        return (X == v.X && Y == v.Y);
     }
 
-    template<class T> std::partial_ordering Vector2<T>::operator <=>(const Vector2<T>& p) const {
-        if (auto cmpX = X <=> p.X; cmpX != 0) {
+    template<class T> std::partial_ordering Vector2<T>::operator <=>(const Vector2<T>& v) const {
+        if (auto cmpX = X <=> v.X; cmpX != 0) {
             return cmpX;
         }
-        return Y <=> p.Y;
+        return Y <=> v.Y;
+    }
+
+    template<class T> bool Vector2<T>::isEqual(const Vector2<T>& v, T epsilon) const {
+        return MathFunction::isEqual(X, v.X, epsilon) && MathFunction::isEqual(Y, v.Y, epsilon);
     }
 
     template<class T> T& Vector2<T>::operator [](std::size_t i) {

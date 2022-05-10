@@ -1,4 +1,5 @@
 #include <math/algebra/vector/Vector3.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -165,17 +166,21 @@ namespace urchin {
         return *this;
     }
 
-    template<class T> bool Vector3<T>::operator ==(const Vector3<T>& p) const {
-        return (X == p.X && Y == p.Y && Z == p.Z);
+    template<class T> bool Vector3<T>::operator ==(const Vector3<T>& v) const {
+        return (X == v.X && Y == v.Y && Z == v.Z);
     }
 
-    template<class T> std::partial_ordering Vector3<T>::operator <=>(const Vector3<T>& p) const {
-        if (auto cmpX = X <=> p.X; cmpX != 0) {
+    template<class T> std::partial_ordering Vector3<T>::operator <=>(const Vector3<T>& v) const {
+        if (auto cmpX = X <=> v.X; cmpX != 0) {
             return cmpX;
-        } else if (auto cmpY = Y <=> p.Y; cmpY != 0) {
+        } else if (auto cmpY = Y <=> v.Y; cmpY != 0) {
             return cmpY;
         }
-        return Z <=> p.Z;
+        return Z <=> v.Z;
+    }
+
+    template<class T> bool Vector3<T>::isEqual(const Vector3<T>& v, T epsilon) const {
+        return MathFunction::isEqual(X, v.X, epsilon) && MathFunction::isEqual(Y, v.Y, epsilon) && MathFunction::isEqual(Z, v.Z, epsilon);
     }
 
     template<class T> T& Vector3<T>::operator [](std::size_t i) {

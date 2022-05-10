@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include <math/algebra/point/Point2.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -124,6 +125,10 @@ namespace urchin {
             return cmpX;
         }
         return Y <=> p.Y;
+    }
+
+    template<class T> bool Point2<T>::isEqual(const Point2<T>& p, T epsilon) const {
+        return MathFunction::isEqual(X, p.X, epsilon) && MathFunction::isEqual(Y, p.Y, epsilon);
     }
 
     template<class T> T& Point2<T>::operator [](std::size_t i) {

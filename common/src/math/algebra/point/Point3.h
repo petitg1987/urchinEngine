@@ -46,6 +46,7 @@ namespace urchin {
 
             bool operator ==(const Point3<T>&) const;
             std::partial_ordering operator <=>(const Point3<T>&) const;
+            bool isEqual(const Point3<T>&, T) const;
 
             T& operator [](std::size_t i);
             const T& operator [](std::size_t i) const;

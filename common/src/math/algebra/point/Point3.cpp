@@ -1,4 +1,5 @@
 #include <math/algebra/point/Point3.h>
+#include <math/algorithm/MathFunction.h>
 
 namespace urchin {
 
@@ -159,6 +160,10 @@ namespace urchin {
             return cmpY;
         }
         return Z <=> p.Z;
+    }
+
+    template<class T> bool Point3<T>::isEqual(const Point3<T>& p, T epsilon) const {
+        return MathFunction::isEqual(X, p.X, epsilon) && MathFunction::isEqual(Y, p.Y, epsilon) && MathFunction::isEqual(Z, p.Z, epsilon);
     }
 
     template<class T> T& Point3<T>::operator [](std::size_t i) {
