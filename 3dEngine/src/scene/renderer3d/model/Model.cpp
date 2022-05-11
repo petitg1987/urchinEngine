@@ -114,7 +114,6 @@ namespace urchin {
     void Model::stopAnimation(bool immediate) {
         if (immediate) {
             isModelAnimated = false;
-            notifyObservers(this, Model::ANIMATION_ENDED);
         } else if (isAnimated()) {
             stopAnimationAtLastFrame = true;
         }
@@ -331,6 +330,7 @@ namespace urchin {
             if (stopAnimationAtLastFrame && activeAnimation->getCurrentFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
+                notifyObservers(this, Model::ANIMATION_ENDED);
             } else {
                 activeAnimation->animate(dt);
                 notifyMeshVerticesUpdatedByAnimation();
