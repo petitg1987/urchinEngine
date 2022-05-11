@@ -114,6 +114,7 @@ namespace urchin {
     void Model::stopAnimation(bool immediate) {
         if (immediate) {
             isModelAnimated = false;
+            notifyObservers(this, Model::ANIMATION_ENDED);
         } else if (isAnimated()) {
             stopAnimationAtLastFrame = true;
         }
