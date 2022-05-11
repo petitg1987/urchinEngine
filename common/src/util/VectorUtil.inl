@@ -26,3 +26,15 @@ template<class T, class... A> std::vector<T> VectorUtil::concatenate(const std::
     (result.insert(result.end(), std::begin(vr), std::end(vr)), ...);
     return result;
 }
+
+template<class T> std::vector<T> VectorUtil::concatenate(const std::vector<T>& v1, T value) {
+    std::vector<T> result = v1;
+    result.push_back(value);
+    return result;
+}
+
+template<class T> std::vector<T*> VectorUtil::concatenate(std::span<T* const> v1, T* value) {
+    std::vector<T*> result(v1.begin(), v1.end());
+    result.push_back(value);
+    return result;
+}
