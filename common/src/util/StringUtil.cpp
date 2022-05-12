@@ -66,6 +66,16 @@ namespace urchin {
         return mergedValues;
     }
 
+    std::size_t StringUtil::countOccurrence(std::string_view str, std::string_view searchStr) {
+        std::size_t occurrences = 0;
+        std::string::size_type position = 0;
+        while ((position = str.find(searchStr, position)) != std::string::npos) {
+            ++occurrences;
+            position += searchStr.length();
+        }
+        return occurrences;
+    }
+
     void StringUtil::ltrim(std::string& str) {
         str.erase(str.begin(), std::ranges::find_if(str, [](unsigned char ch) {
             return !std::isspace(ch);

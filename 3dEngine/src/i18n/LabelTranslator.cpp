@@ -59,8 +59,12 @@ namespace urchin {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on colon ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 } else if (firstLabelValue.ends_with(": ") != secondLabelValue.ends_with(": ")) {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on colon+space ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
-                }else if (std::ispunct(firstLabelValue[firstLabelValue.size() - 1]) != std::ispunct(secondLabelValue[secondLabelValue.size() - 1])) {
+                } else if (std::ispunct(firstLabelValue[firstLabelValue.size() - 1]) != std::ispunct(secondLabelValue[secondLabelValue.size() - 1])) {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on punctuation ending for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (std::ranges::count(firstLabelValue, '\n') != std::ranges::count(secondLabelValue, '\n')) {
+                    Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on line return for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (StringUtil::countOccurrence(firstLabelValue, "\n ") != StringUtil::countOccurrence(secondLabelValue, "\n ")) {
+                    Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on line return+space for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 }
             }
         }
