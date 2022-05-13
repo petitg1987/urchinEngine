@@ -25,7 +25,7 @@ namespace urchin {
             bool isNodeMatchCriteria(const UdaChunk&, std::string_view, const UdaAttribute&) const;
             std::string getChunkDescription(const std::string&, const UdaAttribute&) const;
 
-            static constexpr char NAME_REGEX[] = "([a-zA-Z]+)";
+            static constexpr char NAME_REGEX[] = "([a-zA-Z0-9]+)";
             static constexpr char ATTRIBUTES_REGEX[] = "\\(?(.*?)\\)?";
             static constexpr char VALUE_REGEX[] = "\"?(.*?)\"?";
 
