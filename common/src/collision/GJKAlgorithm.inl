@@ -6,8 +6,8 @@ template<class T> template<class CONVEX_OBJ1, class CONVEX_OBJ2> GJKResult<T> GJ
 
     //get point which belongs to the outline of the shape (Minkowski difference)
     Vector3<T> initialDirection = Vector3<T>(1.0, 0.0, 0.0);
-    Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection.template cast<float>()).template cast<T>();
-    Point3<T> initialSupportPointB = convexObject2.getSupportPoint((-initialDirection).template cast<float>()).template cast<T>();
+    Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection).template cast<T>();
+    Point3<T> initialSupportPointB = convexObject2.getSupportPoint(-initialDirection).template cast<T>();
     Point3<T> initialPoint = initialSupportPointA - initialSupportPointB;
 
     Vector3<T> direction = (-initialPoint).toVector();
@@ -16,8 +16,8 @@ template<class T> template<class CONVEX_OBJ1, class CONVEX_OBJ2> GJKResult<T> GJ
     simplex.addPoint(initialSupportPointA, initialSupportPointB);
 
     for (unsigned int iterationNumber = 0; iterationNumber < MAX_ITERATION; ++iterationNumber) {
-        Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>()).template cast<T>();
-        Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>()).template cast<T>();
+        Point3<T> supportPointA = convexObject1.getSupportPoint(direction).template cast<T>();
+        Point3<T> supportPointB = convexObject2.getSupportPoint(-direction).template cast<T>();
         Point3<T> newPoint = supportPointA - supportPointB;
 
         Vector3<T> vClosestPoint = -direction; //vector from origin to the closest point of simplex
@@ -49,7 +49,7 @@ template<class T> template<class CONVEX_OBJ1, class CONVEX_OBJ2> void GJKAlgorit
 
     logStream << "Maximum of iteration reached on GJK algorithm (" << MAX_ITERATION << ")." << std::endl;
     logStream << " - Termination tolerance: " << TERMINATION_TOLERANCE << std::endl;
-    logStream << " - Convex object 1: " << std::endl << convexObject1.toString() << std::endl;
-    logStream << " - Convex object 2: " << std::endl << convexObject2.toString();
+    logStream << " - Convex object 1: " << std::endl << convexObject1 << std::endl;
+    logStream << " - Convex object 2: " << std::endl << convexObject2;
     Logger::instance().logWarning(logStream.str());
 }
