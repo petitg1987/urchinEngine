@@ -62,6 +62,16 @@ namespace urchin {
         return ResizeConvexHull3DService<T>::resizeConvexHull(*this, distance);
     }
 
+    template<class T> bool ConvexHull3D<T>::collideWithAABBox(const AABBox<T>& /*bbox*/) const {
+        //TODO use GJK ? axis theorem ?
+        return false;
+    }
+
+    template<class T> Point3<T> ConvexHull3D<T>::intersectPoint(const Line3D<T>& /*line*/, bool& /*hasIntersection*/) const {
+        //TODO ...
+        return Point3<T>();
+    }
+
     template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHull3D<T>& ch) {
         stream << ch.localizedConvexHullShape;
         return stream;

@@ -30,6 +30,9 @@ namespace urchin {
 
             std::unique_ptr<ConvexHull3D<T>> resize(T) const;
 
+            bool collideWithAABBox(const AABBox<T>&) const override;
+            Point3<T> intersectPoint(const Line3D<T>&, bool&) const override;
+
         private:
             ConvexHullShape3D<T> localizedConvexHullShape;
     };

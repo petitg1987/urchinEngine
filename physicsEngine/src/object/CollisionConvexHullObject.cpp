@@ -63,6 +63,10 @@ namespace urchin {
         return convexHullObjectWithoutMargin->getSupportPoint(direction);
     }
 
+    ConvexHull3D<float> CollisionConvexHullObject::retrieveConvexHull() const {
+        return ConvexHull3D<float>(*convexHullObjectWithMargin);
+    }
+
     std::string CollisionConvexHullObject::toString() const {
         std::stringstream ss;
         ss.precision(std::numeric_limits<float>::max_digits10);

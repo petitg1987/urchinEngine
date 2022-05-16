@@ -12,23 +12,23 @@ namespace urchin {
     }
 
     template<class T> bool ConvexObject3D<T>::collideWithPoint(const Point3<T>&) const {
-        throw std::runtime_error("Collision test unsupported.");
+        throw std::runtime_error("Collide with point: unsupported");
     }
 
     template<class T> bool ConvexObject3D<T>::collideWithAABBox(const AABBox<T>&) const {
-        throw std::runtime_error("Collision test unsupported.");
+        throw std::runtime_error("Collide with AABBox: unsupported");
     }
 
     template<class T> bool ConvexObject3D<T>::collideWithOBBox(const OBBox<T>&) const {
-        throw std::runtime_error("Collision test unsupported.");
+        throw std::runtime_error("Collide with OBBox: unsupported");
     }
 
     template<class T> bool ConvexObject3D<T>::collideWithSphere(const Sphere<T>&) const {
-        throw std::runtime_error("Collision test unsupported.");
+        throw std::runtime_error("Collide with sphere: unsupported");
     }
 
     template<class T>  bool ConvexObject3D<T>::collideWithRay(const Ray<T>&) const {
-        throw std::runtime_error("Collision test unsupported.");
+        throw std::runtime_error("Collide with ray: unsupported");
     }
 
     template<class T> Point3<T> ConvexObject3D<T>::intersectPoint(const Line3D<T>&, bool&) const {
