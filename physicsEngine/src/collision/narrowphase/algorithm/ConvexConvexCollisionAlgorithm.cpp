@@ -1,6 +1,7 @@
 #include <memory>
 
 #include <collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h>
+#include <collision/narrowphase/algorithm/gjk/GJKConvexObjectWrapper.h>
 #include <object/CollisionConvexObject3D.h>
 
 namespace urchin {
@@ -18,7 +19,7 @@ namespace urchin {
         std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
 
         //process GJK and EPA hybrid algorithms
-        GJKResult<double> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, false);
+        GJKResult<double> gjkResultWithoutMargin = gjkAlgorithm.processGJK(GJKConvexObjectWrapper(*convexObject1, false), GJKConvexObjectWrapper(*convexObject2, false));
 
         if (gjkResultWithoutMargin.isValidResult()) {
             if (gjkResultWithoutMargin.isCollide()) { //collision detected on reduced objects (without margins)
@@ -39,7 +40,7 @@ namespace urchin {
     }
 
     void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2) {
-        GJKResult<double> gjkResultWithMargin = gjkAlgorithm.processGJK(convexObject1, convexObject2, true);
+        GJKResult<double> gjkResultWithMargin = gjkAlgorithm.processGJK(GJKConvexObjectWrapper(convexObject1, true), GJKConvexObjectWrapper(convexObject2, true));
 
         if (gjkResultWithMargin.isValidResult() && gjkResultWithMargin.isCollide()) {
             EPAResult<double> epaResult = epaAlgorithm.processEPA(convexObject1, convexObject2, gjkResultWithMargin);
