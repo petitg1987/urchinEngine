@@ -15,7 +15,7 @@
 #include <collision/narrowphase/algorithm/epa/result/EPAResultCollide.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h>
-#include <collision/narrowphase/algorithm/gjk/result/GJKResult.h>
+#include <collision/narrowphase/algorithm/gjk/GJKResult.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 
 namespace urchin {

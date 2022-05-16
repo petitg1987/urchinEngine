@@ -32,7 +32,7 @@
 #include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResult.h>
 #include <collision/narrowphase/algorithm/gjk/GJKAlgorithm.h>
-#include <collision/narrowphase/algorithm/gjk/result/GJKResult.h>
+#include <collision/narrowphase/algorithm/gjk/GJKResult.h>
 #include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
 #include <collision/bodystate/IslandContainer.h>
 #include <collision/bodystate/IslandElement.h>

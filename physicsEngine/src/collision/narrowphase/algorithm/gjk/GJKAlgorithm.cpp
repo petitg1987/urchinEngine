@@ -2,7 +2,6 @@
 #include <cmath>
 #include <sstream>
 
-#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 #include <collision/narrowphase/algorithm/gjk/GJKAlgorithm.h>
 
 namespace urchin {
@@ -10,8 +9,7 @@ namespace urchin {
     /**
     * @param includeMargin Indicate whether algorithm operates on objects with margin
     */
-    template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D& convexObject1,
-            const CollisionConvexObject3D& convexObject2, bool includeMargin) const {
+    template<class T> GJKResult<T> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2, bool includeMargin) const {
         ScopeProfiler sp(Profiler::physics(), "processGJK");
 
         //get point which belongs to the outline of the shape (Minkowski difference)
@@ -37,10 +35,10 @@ namespace urchin {
             //check termination conditions: new point is not more extreme that existing ones OR new point already exist in simplex
             if ((closestPointSquareDistance-closestPointDotNewPoint) <= TERMINATION_TOLERANCE || simplex.isPointInSimplex(newPoint)) {
                 if (closestPointDotNewPoint <= 0.0) { //collision detected
-                    return AlgorithmResultAllocator::instance().newGJKResultCollide<T>(simplex);
+                    return GJKResult<T>::newCollideResult(simplex);
                 }
 
-                return AlgorithmResultAllocator::instance().newGJKResultNoCollide<T>(std::sqrt(closestPointSquareDistance), simplex);
+                return GJKResult<T>::newNoCollideResult(std::sqrt(closestPointSquareDistance), simplex);
             }
 
             simplex.addPoint(supportPointA, supportPointB);
@@ -50,7 +48,7 @@ namespace urchin {
 
         logMaximumIterationReach(convexObject1, convexObject2, includeMargin);
 
-        return AlgorithmResultAllocator::instance().newGJKResultInvalid<T>();
+        return GJKResult<T>::newInvalidResult();
     }
 
     template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D& convexObject1,

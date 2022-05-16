@@ -6,7 +6,7 @@
 
 class GJKTestHelper {
     public:
-        static std::shared_ptr<urchin::GJKResult<float>> executeGJK(const urchin::CollisionConvexObject3D&, const urchin::CollisionConvexObject3D&);
+        static urchin::GJKResult<float> executeGJK(const urchin::CollisionConvexObject3D&, const urchin::CollisionConvexObject3D&);
 
     private:
         GJKTestHelper() = default;

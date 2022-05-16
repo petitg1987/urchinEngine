@@ -6,9 +6,6 @@
 #include <body/model/AbstractBody.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
-#include <collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h>
-#include <collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.h>
-#include <collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultCollide.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h>
@@ -21,10 +18,6 @@ namespace urchin {
             friend class ThreadSafeSingleton<AlgorithmResultAllocator>;
 
             SyncFixedSizePool<AlgorithmResult>& getAlgorithmResultPool() const;
-
-            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultCollide(const Simplex<T>&);
-            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultInvalid();
-            template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultNoCollide(T, const Simplex<T>&);
 
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultCollide(const Point3<T>&, const Point3<T>&, const Vector3<T>&, T);
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultInvalid();
