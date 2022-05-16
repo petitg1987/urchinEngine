@@ -1,5 +1,6 @@
 #include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/object/ConvexHull3D.h>
+#include <math/geometry/3d/object/Triangle3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
 #include <collision/GJKAlgorithm.h>
 
@@ -69,9 +70,27 @@ namespace urchin {
         return gjkResult.isValidResult() && gjkResult.isCollide();
     }
 
-    template<class T> Point3<T> ConvexHull3D<T>::intersectPoint(const Line3D<T>& /*line*/, bool& /*hasIntersection*/) const {
-        //TODO ...
-        return Point3<T>();
+    template<class T> Point3<T> ConvexHull3D<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const { //TODO check it is correct + check execution time
+        Point3<T> bestIntersectionPoint(0.0f, 0.0f, 0.0f);
+        hasIntersection = false;
+
+        for (const auto& [triangleIndex, indexedTriangle] : getIndexedTriangles()) {
+            Point3<T> p1 = getPoints()[indexedTriangle.getIndex(0)];
+            Point3<T> p2 = getPoints()[indexedTriangle.getIndex(1)];
+            Point3<T> p3 = getPoints()[indexedTriangle.getIndex(2)];
+
+            bool hasPlaneInteraction;
+            Point3<T> intersectionPoint = Plane<T>(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
+            if (hasPlaneInteraction) {
+                bool hasTriangleIntersection = Triangle3D<T>(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
+                if (hasTriangleIntersection && (!hasIntersection || (line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint)))) {
+                    bestIntersectionPoint = intersectionPoint;
+                    hasIntersection = true;
+                }
+            }
+        }
+
+        return bestIntersectionPoint;
     }
 
     template<class T> std::ostream& operator <<(std::ostream& stream, const ConvexHull3D<T>& ch) {
