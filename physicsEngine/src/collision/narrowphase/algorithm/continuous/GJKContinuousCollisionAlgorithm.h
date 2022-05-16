@@ -4,7 +4,7 @@
 
 #include <body/model/AbstractBody.h>
 #include <object/TemporalObject.h>
-#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
+#include <collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h>
 #include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 
 namespace urchin {
@@ -14,7 +14,7 @@ namespace urchin {
     */
     template<class T, class U> class GJKContinuousCollisionAlgorithm {
         public:
-            std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject&, const TemporalObject&, std::shared_ptr<AbstractBody>) const;
+            ContinuousCollisionResult<U> calculateTimeOfImpact(const TemporalObject&, const TemporalObject&, std::shared_ptr<AbstractBody>) const;
 
         private:
             Point3<T> getWorldSupportPoint(const TemporalObject&, const Vector3<T>&, const PhysicsTransform&) const;

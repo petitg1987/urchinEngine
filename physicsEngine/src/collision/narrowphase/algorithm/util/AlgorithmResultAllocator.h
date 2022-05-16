@@ -9,7 +9,7 @@
 #include <collision/narrowphase/algorithm/epa/result/EPAResultCollide.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h>
 #include <collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h>
-#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
+#include <collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h>
 
 namespace urchin {
 
@@ -22,8 +22,6 @@ namespace urchin {
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultCollide(const Point3<T>&, const Point3<T>&, const Vector3<T>&, T);
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultInvalid();
             template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> newEPAResultNoCollide();
-
-            template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> newContinuousCollisionResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<T>&, const Point3<T>&, T);
 
         private:
             AlgorithmResultAllocator();

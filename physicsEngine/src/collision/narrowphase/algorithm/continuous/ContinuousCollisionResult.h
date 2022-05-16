@@ -12,7 +12,10 @@ namespace urchin {
 
     template<class T> class ContinuousCollisionResult : public AlgorithmResult {
         public:
-            ContinuousCollisionResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<T>&, const Point3<T>&, T);
+            static ContinuousCollisionResult<T> newNoResult();
+            static ContinuousCollisionResult<T> newResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<T>&, const Point3<T>&, T);
+
+            bool hasResult() const;
 
             AbstractBody& getBody2() const;
             std::size_t getShapeIndex() const;
@@ -22,6 +25,8 @@ namespace urchin {
             T getTimeToHit() const;
 
         private:
+            ContinuousCollisionResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<T>&, const Point3<T>&, T);
+
             std::shared_ptr<AbstractBody> body2; //own the body as this attribute can be used outside the physics thread where body could be removed
             std::size_t shapeIndex;
 
@@ -31,9 +36,9 @@ namespace urchin {
     };
 
     template<class T> struct ContinuousCollisionResultComparator {
-        bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>&, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>&) const;
+        bool operator()(const ContinuousCollisionResult<T>&, const ContinuousCollisionResult<T>&) const;
     };
 
-    using ccd_set = std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>>;
+    using ccd_set = std::set<ContinuousCollisionResult<float>, ContinuousCollisionResultComparator<float>>;
 
 }

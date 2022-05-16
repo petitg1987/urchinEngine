@@ -128,7 +128,7 @@ namespace urchin {
             }
 
             if (!ccdResults.empty()) {
-                const ContinuousCollisionResult<float>& firstCCDResult = *(*ccdResults.begin());
+                const ContinuousCollisionResult<float>& firstCCDResult = *ccdResults.begin();
 
                 Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult.getTimeToHit();
                 float depth = distanceVector.dotProduct(-firstCCDResult.getNormalFromObject2());
@@ -210,10 +210,9 @@ namespace urchin {
      * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
      */
     void NarrowPhase::continuousCollisionTest(const TemporalObject& temporalObject1, const TemporalObject& temporalObject2, std::shared_ptr<AbstractBody> body2, ccd_set& continuousCollisionResults) const {
-        std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> continuousCollisionResult = gjkContinuousCollisionAlgorithm
-                .calculateTimeOfImpact(temporalObject1, temporalObject2, std::move(body2));
+        ContinuousCollisionResult<float> continuousCollisionResult = gjkContinuousCollisionAlgorithm.calculateTimeOfImpact(temporalObject1, temporalObject2, std::move(body2));
 
-        if (continuousCollisionResult) {
+        if (continuousCollisionResult.hasResult()) {
             continuousCollisionResults.insert(std::move(continuousCollisionResult));
         }
     }

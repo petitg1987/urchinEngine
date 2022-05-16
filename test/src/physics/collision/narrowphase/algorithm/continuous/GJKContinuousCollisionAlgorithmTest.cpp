@@ -17,11 +17,10 @@ void GJKContinuousCollisionAlgorithmTest::rayTest() { //test created from error 
     PhysicsTransform boxTo(Point3<float>(8.625f, 1.875f, -17.25f), Quaternion<float>(0.0f, 1.0f, 0.0f, -1.62920685e-07f));
     TemporalObject boxObject(boxShape, 0, boxFrom, boxTo);
 
-    std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> continuousCollisionResult = GJKContinuousCollisionAlgorithm<double, float>()
-            .calculateTimeOfImpact(rayCastObject, boxObject, std::move(fakeBody));
+    ContinuousCollisionResult<float> continuousCollisionResult = GJKContinuousCollisionAlgorithm<double, float>().calculateTimeOfImpact(rayCastObject, boxObject, std::move(fakeBody));
 
-    AssertHelper::assertTrue(continuousCollisionResult != nullptr);
-    AssertHelper::assertFloatEquals(continuousCollisionResult->getTimeToHit(), 0.779051125f, 0.001f);
+    AssertHelper::assertTrue(continuousCollisionResult.hasResult());
+    AssertHelper::assertFloatEquals(continuousCollisionResult.getTimeToHit(), 0.779051125f, 0.001f);
 }
 
 CppUnit::Test* GJKContinuousCollisionAlgorithmTest::suite() {

@@ -36,19 +36,12 @@ namespace urchin {
         return std::unique_ptr<EPAResultNoCollide<T>, AlgorithmResultDeleter>(new(memPtr) EPAResultNoCollide<T>(), AlgorithmResultDeleter());
     }
 
-    template<class T> std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> AlgorithmResultAllocator::newContinuousCollisionResult(std::shared_ptr<AbstractBody> body2, std::size_t shapeIndex, const Vector3<T>& normalFromObject2, const Point3<T>& hitPointOnObject2, T timeToHit) {
-        void* memPtr = AlgorithmResultAllocator::instance().getAlgorithmResultPool().allocate(sizeof(ContinuousCollisionResult<T>));
-        return std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>(new(memPtr) ContinuousCollisionResult<T>(std::move(body2), shapeIndex, normalFromObject2, hitPointOnObject2, timeToHit), AlgorithmResultDeleter());
-    }
-
     //explicit template
     template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<float>&, const Point3<float>&, const Vector3<float>&, float);
     template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultInvalid();
     template class std::unique_ptr<EPAResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultNoCollide();
-    template class std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> AlgorithmResultAllocator::newContinuousCollisionResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<float>&, const Point3<float>&, float);
 
     template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultCollide(const Point3<double>&, const Point3<double>&, const Vector3<double>&, double);
     template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultInvalid();
     template class std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newEPAResultNoCollide();
-    template class std::unique_ptr<ContinuousCollisionResult<double>, AlgorithmResultDeleter> AlgorithmResultAllocator::newContinuousCollisionResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<double>&, const Point3<double>&, double);
 }

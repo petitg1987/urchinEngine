@@ -39,7 +39,7 @@ namespace urchin {
         }
 
         assert(!rayTestResults.empty());
-        return *(*rayTestResults.begin());
+        return *rayTestResults.begin();
     }
 
     const ccd_set& RayTestResult::getResults() const {

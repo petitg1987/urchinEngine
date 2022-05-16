@@ -3,13 +3,12 @@
 #include <UrchinCommon.h>
 
 #include <collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h>
-#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 #include <collision/narrowphase/algorithm/util/Simplex.h>
 
 namespace urchin {
 
-    template<class T, class U> std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1,
-            const TemporalObject& object2, std::shared_ptr<AbstractBody> body2) const {
+    template<class T, class U> ContinuousCollisionResult<U> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject& object1, const TemporalObject& object2,
+            std::shared_ptr<AbstractBody> body2) const {
         T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
         Vector3<T> normalFromObject2;
         bool normalFromObject2Defined = false;
@@ -36,14 +35,14 @@ namespace urchin {
             Vector3<T> vClosestPoint = -direction; //vector from origin to the closest point of simplex
             T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
-            if (timeToHit > 1.0) { //no hit detected between from and to transformation
-                return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
+            if (timeToHit > 1.0) { //hit not detected between from and to transformation
+                return ContinuousCollisionResult<U>::newNoResult();
             }
 
             if (closestPointDotNewPoint > 0.0) {
                 T closestPointDotRelativeMotion = vClosestPoint.dotProduct(relativeMotion);
                 if (closestPointDotRelativeMotion >= -SQUARE_EPSILON) {
-                    return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
+                    return ContinuousCollisionResult<U>::newNoResult();
                 }
 
                 timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
@@ -69,11 +68,11 @@ namespace urchin {
                         Point3<T> hitPointOnObject2;
                         simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                        return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), object2.getShapeIndex(), Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
+                        return ContinuousCollisionResult<U>::newResult(std::move(body2), object2.getShapeIndex(), Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
                     } else {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR_LVL);
-                        return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
+                        return ContinuousCollisionResult<U>::newNoResult();
                     }
                 } else if (normalFromObject2Defined) {
                     normalFromObject2 = normalFromObject2.normalize();
@@ -82,14 +81,14 @@ namespace urchin {
                     Point3<T> hitPointOnObject2;
                     simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                    return AlgorithmResultAllocator::instance().newContinuousCollisionResult<U>(std::move(body2), object2.getShapeIndex(), normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
+                    return ContinuousCollisionResult<U>::newResult(std::move(body2), object2.getShapeIndex(), normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
                 }
             }
         }
 
         std::string maxIterationReachMsg = "Maximum of iteration reached on GJK continuous collision algorithm (" + std::to_string(MAX_ITERATION) + ").";
         logInputData(object1, object2, maxIterationReachMsg, Logger::WARNING_LVL);
-        return std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter>(nullptr);
+        return ContinuousCollisionResult<U>::newNoResult();
     }
 
     template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject& object, const Vector3<T>& globalDirection, const PhysicsTransform& worldTransform) const {

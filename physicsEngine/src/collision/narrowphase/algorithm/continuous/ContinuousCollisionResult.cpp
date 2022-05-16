@@ -1,6 +1,6 @@
 #include <utility>
 
-#include <collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h>
+#include <collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h>
 
 namespace urchin {
 
@@ -11,7 +11,21 @@ namespace urchin {
             normalFromObject2(normalFromObject2),
             hitPointOnObject2(hitPointOnObject2),
             timeToHit(timeToHit) {
-        assert(this->body2);
+
+    }
+
+    template<class T> ContinuousCollisionResult<T> ContinuousCollisionResult<T>::newNoResult() {
+        return ContinuousCollisionResult<T>(nullptr, 0, Vector3<T>(), Point3<T>(), 0.0);
+    }
+
+    template<class T> ContinuousCollisionResult<T> ContinuousCollisionResult<T>::newResult(std::shared_ptr<AbstractBody> body2, std::size_t shapeIndex, const Vector3<T>& normalFromObject2,
+            const Point3<T>& hitPointOnObject2, T timeToHit) {
+        assert(body2);
+        return ContinuousCollisionResult<T>(std::move(body2), shapeIndex, normalFromObject2, hitPointOnObject2, timeToHit);
+    }
+
+    template<class T>bool ContinuousCollisionResult<T>::hasResult() const {
+        return body2 != nullptr;
     }
 
     template<class T> AbstractBody& ContinuousCollisionResult<T>::getBody2() const {
@@ -38,9 +52,8 @@ namespace urchin {
         return timeToHit;
     }
 
-    template<class T> bool ContinuousCollisionResultComparator<T>::operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>& result1,
-            const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter>& result2) const {
-        return result1->getTimeToHit() < result2->getTimeToHit();
+    template<class T> bool ContinuousCollisionResultComparator<T>::operator()(const ContinuousCollisionResult<T>& result1, const ContinuousCollisionResult<T>& result2) const {
+        return result1.getTimeToHit() < result2.getTimeToHit();
     }
 
     //explicit template
