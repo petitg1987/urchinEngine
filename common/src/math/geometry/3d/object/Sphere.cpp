@@ -83,8 +83,19 @@ namespace urchin {
         return line.getA().translate(ab * t0);
     }
 
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Sphere<T>& sphere) {
+        stream.setf(std::ios::left);
+        stream << std::setw(20) << "Shape radius: " << sphere.getRadius() << std::endl;
+        stream << std::setw(20) << "Center of mass: " << sphere.getCenterOfMass() << std::endl;
+
+        return stream;
+    }
+
     //explicit template
     template class Sphere<float>;
+    template std::ostream& operator <<<float>(std::ostream&, const Sphere<float>&);
+
     template class Sphere<double>;
+    template std::ostream& operator <<<double>(std::ostream&, const Sphere<double>&);
 
 }

@@ -1,7 +1,7 @@
 /**
 * @param includeMargin Indicate whether algorithm operates on objects with margin
 */
-template<class T> template<class CONVEX_OBJ> GJKResult<T> GJKAlgorithm<T>::processGJK(const CONVEX_OBJ& convexObject1, const CONVEX_OBJ& convexObject2) const {
+template<class T> template<class CONVEX_OBJ1, class CONVEX_OBJ2> GJKResult<T> GJKAlgorithm<T>::processGJK(const CONVEX_OBJ1& convexObject1, const CONVEX_OBJ2& convexObject2) const {
     ScopeProfiler sp(Profiler::physics(), "processGJK");
 
     //get point which belongs to the outline of the shape (Minkowski difference)
@@ -43,7 +43,7 @@ template<class T> template<class CONVEX_OBJ> GJKResult<T> GJKAlgorithm<T>::proce
     return GJKResult<T>::newInvalidResult();
 }
 
-template<class T> template<class CONVEX_OBJ> void GJKAlgorithm<T>::logMaximumIterationReach(const CONVEX_OBJ& convexObject1, const CONVEX_OBJ& convexObject2) const {
+template<class T> template<class CONVEX_OBJ1, class CONVEX_OBJ2> void GJKAlgorithm<T>::logMaximumIterationReach(const CONVEX_OBJ1& convexObject1, const CONVEX_OBJ2& convexObject2) const {
     std::stringstream logStream;
     logStream.precision(std::numeric_limits<float>::max_digits10);
 

@@ -34,4 +34,6 @@ namespace urchin {
             T baseSideCosAngle;
     };
 
+    template<class T> std::ostream& operator <<(std::ostream&, const Cone<T>&);
+
 }

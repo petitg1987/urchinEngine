@@ -1,5 +1,8 @@
 #pragma once
 
+#include <collision/GJKAlgorithm.h>
+#include <collision/GJKResult.h>
+
 #include <config/DebugCheck.h>
 #include <config/ConfigService.h>
 #include <config/FileSystem.h>

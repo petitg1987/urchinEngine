@@ -146,8 +146,20 @@ namespace urchin {
         return true;
     }
 
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Triangle3D<T>& triangle) {
+        stream.setf(std::ios::left);
+        stream << std::setw(20) << "Point 1: " << triangle.getPoints()[0] << std::endl;
+        stream << std::setw(20) << "Point 2: " << triangle.getPoints()[1] << std::endl;
+        stream << std::setw(20) << "Point 3: " << triangle.getPoints()[2] << std::endl;
+
+        return stream;
+    }
+
     //explicit template
     template class Triangle3D<float>;
+    template std::ostream& operator <<<float>(std::ostream&, const Triangle3D<float>&);
+
     template class Triangle3D<double>;
+    template std::ostream& operator <<<double>(std::ostream&, const Triangle3D<double>&);
 
 }

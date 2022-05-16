@@ -23,4 +23,6 @@ namespace urchin {
             TriangleShape3D<T> triangleShape;
     };
 
+    template<class T> std::ostream& operator <<(std::ostream&, const Triangle3D<T>&);
+
 }

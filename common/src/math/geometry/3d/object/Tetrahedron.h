@@ -15,6 +15,11 @@ namespace urchin {
         public:
             Tetrahedron(const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&);
 
+            const Point3<T>& getPointA() const;
+            const Point3<T>& getPointB() const;
+            const Point3<T>& getPointC() const;
+            const Point3<T>& getPointD() const;
+
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
             Point3<T> closestPoint(const Point3<T>&, std::array<T, 4>&, unsigned short voronoiRegionMask = 15u) const;
 
@@ -28,5 +33,7 @@ namespace urchin {
             Point3<T> c;
             Point3<T> d;
     };
+
+    template<class T> std::ostream& operator <<(std::ostream&, const Tetrahedron<T>&);
 
 }

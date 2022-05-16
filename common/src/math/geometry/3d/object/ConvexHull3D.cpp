@@ -1,5 +1,7 @@
+#include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/object/ConvexHull3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
+#include <collision/GJKAlgorithm.h>
 
 namespace urchin {
 
@@ -62,9 +64,9 @@ namespace urchin {
         return ResizeConvexHull3DService<T>::resizeConvexHull(*this, distance);
     }
 
-    template<class T> bool ConvexHull3D<T>::collideWithAABBox(const AABBox<T>& /*bbox*/) const {
-        //TODO use GJK ? axis theorem ?
-        return false;
+    template<class T> bool ConvexHull3D<T>::collideWithAABBox(const AABBox<T>& bbox) const {
+        GJKResult<T> gjkResult = GJKAlgorithm<T>().processGJK(*this, bbox);
+        return gjkResult.isValidResult() && gjkResult.isCollide();
     }
 
     template<class T> Point3<T> ConvexHull3D<T>::intersectPoint(const Line3D<T>& /*line*/, bool& /*hasIntersection*/) const {

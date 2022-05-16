@@ -1,4 +1,9 @@
-#include <collision/narrowphase/algorithm/gjk/GJKResult.h>
+#include <cassert>
+
+#include <collision/GJKResult.h>
+#include <math/algorithm/MathFunction.h>
+#include <config/DebugCheck.h>
+#include <logger/Logger.h>
 
 namespace urchin {
 
@@ -19,11 +24,11 @@ namespace urchin {
     }
 
     template<class T> GJKResult<T> GJKResult<T>::newInvalidResult() {
-        return GJKResult<T>(false, -1.0, Simplex<T>());
+        return GJKResult<T>(false, -std::numeric_limits<T>::max(), Simplex<T>());
     }
 
     template<class T> GJKResult<T> GJKResult<T>::newCollideResult(const Simplex<T>& simplex) {
-        return GJKResult<T>(true, -1.0, simplex);
+        return GJKResult<T>(true, -std::numeric_limits<T>::max(), simplex);
     }
 
     template<class T> GJKResult<T> GJKResult<T>::newNoCollideResult(T separatingDistance, const Simplex<T>& simplex) {

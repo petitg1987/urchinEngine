@@ -26,4 +26,6 @@ namespace urchin {
             Point3<T> centerOfMass;
     };
 
+    template<class T> std::ostream& operator <<(std::ostream&, const Sphere<T>&);
+
 }

@@ -12,7 +12,7 @@ namespace urchin {
     }
 
     template<class T> EPAResult<T> EPAResult<T>::newInvalidResult() {
-        return EPAResult<T>(false, Point3<T>(), Point3<T>(), Vector3<T>(), -1.0);
+        return EPAResult<T>(false, Point3<T>(), Point3<T>(), Vector3<T>(), -std::numeric_limits<T>::max());
     }
 
     template<class T> EPAResult<T> EPAResult<T>::newCollideResult(const Point3<T>& contactPointA, const Point3<T>& contactPointB, const Vector3<T>& normal, T depth) {
@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     template<class T> EPAResult<T> EPAResult<T>::newNoCollideResult() {
-        return EPAResult<T>(true, Point3<T>(), Point3<T>(), Vector3<T>(), -1.0);
+        return EPAResult<T>(true, Point3<T>(), Point3<T>(), Vector3<T>(), -std::numeric_limits<T>::max());
     }
 
     template<class T> bool EPAResult<T>::isValidResult() const {

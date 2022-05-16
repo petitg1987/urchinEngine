@@ -30,4 +30,6 @@ namespace urchin {
             std::array<Vector3<T>, 3> axis; //3 vectors of normalized axis
     };
 
+    template<class T> std::ostream& operator <<(std::ostream&, const Cylinder<T>&);
+
 }

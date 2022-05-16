@@ -12,7 +12,6 @@
 #include <object/CollisionConvexObject3D.h>
 #include <collision/narrowphase/algorithm/epa/EPATriangleData.h>
 #include <collision/narrowphase/algorithm/epa/EPAResult.h>
-#include <collision/narrowphase/algorithm/gjk/GJKResult.h>
 
 namespace urchin {
 

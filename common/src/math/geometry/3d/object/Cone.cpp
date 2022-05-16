@@ -84,8 +84,22 @@ namespace urchin {
         return bottomPosition.translate(projectedDirectionOnCircle * getRadius());
     }
 
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Cone<T>& cone) {
+        stream.setf(std::ios::left);
+        stream << std::setw(20) << "Shape radius: " << cone.getRadius() << std::endl;
+        stream << std::setw(20) << "Shape height: " << cone.getHeight() << std::endl;
+        stream << std::setw(20) << "Shape orientation: " << cone.getConeOrientation() << std::endl;
+        stream << std::setw(20) << "Center of mass: " << cone.getCenterOfMass() << std::endl;
+        stream << std::setw(20) << "Orientation: " << cone.getOrientation();
+
+        return stream;
+    }
+
     //explicit template
     template class Cone<float>;
+    template std::ostream& operator <<<float>(std::ostream&, const Cone<float>&);
+
     template class Cone<double>;
+    template std::ostream& operator <<<double>(std::ostream&, const Cone<double>&);
 
 }

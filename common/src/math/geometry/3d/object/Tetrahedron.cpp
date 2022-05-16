@@ -10,6 +10,22 @@ namespace urchin {
 
     }
 
+    template<class T> const Point3<T>& Tetrahedron<T>::getPointA() const {
+        return a;
+    }
+
+    template<class T> const Point3<T>& Tetrahedron<T>::getPointB() const {
+        return b;
+    }
+
+    template<class T> const Point3<T>& Tetrahedron<T>::getPointC() const {
+        return c;
+    }
+
+    template<class T> const Point3<T>& Tetrahedron<T>::getPointD() const {
+        return d;
+    }
+
     template<class T> Point3<T> Tetrahedron<T>::getSupportPoint(const Vector3<T>& direction) const {
         const T pointADotDirection = a.toVector().dotProduct(direction);
         const T pointBDotDirection = b.toVector().dotProduct(direction);
@@ -172,8 +188,21 @@ namespace urchin {
         return (signp * signd) < (T) 0.0;
     }
 
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Tetrahedron<T>& tetrahedron) {
+        stream.setf(std::ios::left);
+        stream << std::setw(20) << "Point A: " << tetrahedron.getPointA() << std::endl;
+        stream << std::setw(20) << "Point B: " << tetrahedron.getPointB() << std::endl;
+        stream << std::setw(20) << "Point C: " << tetrahedron.getPointC() << std::endl;
+        stream << std::setw(20) << "Point D: " << tetrahedron.getPointD() << std::endl;
+
+        return stream;
+    }
+
     //explicit template
     template class Tetrahedron<float>;
+    template std::ostream& operator <<<float>(std::ostream&, const Tetrahedron<float>&);
+
     template class Tetrahedron<double>;
+    template std::ostream& operator <<<double>(std::ostream&, const Tetrahedron<double>&);
 
 }

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <UrchinCommon.h>
-
-#include <collision/narrowphase/algorithm/util/Simplex.h>
+#include <math/geometry/3d/Simplex.h>
+#include <math/algebra/point/Point3.h>
 
 namespace urchin {
 

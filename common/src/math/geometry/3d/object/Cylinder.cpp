@@ -72,8 +72,22 @@ namespace urchin {
         return supportPoint2;
     }
 
+    template<class T> std::ostream& operator <<(std::ostream& stream, const Cylinder<T>& cylinder) {
+        stream.setf(std::ios::left);
+        stream << std::setw(20) << "Shape radius: " << cylinder.getRadius() << std::endl;
+        stream << std::setw(20) << "Shape height: " << cylinder.getHeight() << std::endl;
+        stream << std::setw(20) << "Shape orientation: " << cylinder.getCylinderOrientation() << std::endl;
+        stream << std::setw(20) << "Center of mass: " << cylinder.getCenterOfMass() << std::endl;
+        stream << std::setw(20) << "Orientation: " << cylinder.getOrientation();
+
+        return stream;
+    }
+
     //explicit template
     template class Cylinder<float>;
+    template std::ostream& operator <<<float>(std::ostream&, const Cylinder<float>&);
+
     template class Cylinder<double>;
+    template std::ostream& operator <<<double>(std::ostream&, const Cylinder<double>&);
 
 }
