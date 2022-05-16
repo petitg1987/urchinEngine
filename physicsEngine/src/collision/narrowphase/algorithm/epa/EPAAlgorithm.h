@@ -11,21 +11,17 @@
 
 #include <object/CollisionConvexObject3D.h>
 #include <collision/narrowphase/algorithm/epa/EPATriangleData.h>
-#include <collision/narrowphase/algorithm/epa/result/EPAResult.h>
-#include <collision/narrowphase/algorithm/epa/result/EPAResultCollide.h>
-#include <collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h>
-#include <collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h>
+#include <collision/narrowphase/algorithm/epa/EPAResult.h>
 #include <collision/narrowphase/algorithm/gjk/GJKResult.h>
-#include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 
 namespace urchin {
 
     template<class T> class EPAAlgorithm {
         public:
-            std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> processEPA(const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
+           EPAResult<T> processEPA(const CollisionConvexObject3D&, const CollisionConvexObject3D&, const GJKResult<T>&) const;
 
         private:
-            std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> handleSubTriangle(const CollisionConvexObject3D&, const CollisionConvexObject3D&) const;
+            EPAResult<T> handleSubTriangle(const CollisionConvexObject3D&, const CollisionConvexObject3D&) const;
 
             void determineInitialPoints(const Simplex<T>&, const CollisionConvexObject3D&, const CollisionConvexObject3D&,
                     std::map<std::size_t, ConvexHullPoint<T>>&, std::map<std::size_t, Point3<T>>&, std::map<std::size_t, Point3<T>>&) const;

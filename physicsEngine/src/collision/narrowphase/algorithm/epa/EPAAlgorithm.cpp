@@ -1,24 +1,22 @@
 #include <object/CollisionTriangleObject.h>
-#include <collision/narrowphase/algorithm/util/AlgorithmResultAllocator.h>
 #include <collision/narrowphase/algorithm/epa/EPAAlgorithm.h>
 
 namespace urchin {
 
-    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2,
-            const GJKResult<T>& gjkResult) const {
+    template<class T> EPAResult<T> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2, const GJKResult<T>& gjkResult) const {
         ScopeProfiler sp(Profiler::physics(), "processEPA");
         assert(gjkResult.isCollide());
 
         //handle sub triangle cases
-        std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
-        if (subTriangleResult) {
+        EPAResult<T> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
+        if (subTriangleResult.isValidResult()) {
             return subTriangleResult;
         }
 
         //1. check collision exist
         const Simplex<T>& simplex = gjkResult.getSimplex();
         if (simplex.getSize() == 1) { //simplex point is the origin
-            return AlgorithmResultAllocator::instance().newEPAResultNoCollide<T>();
+            return EPAResult<T>::newNoCollideResult();
         }
 
         //2. initialize global variables
@@ -36,7 +34,7 @@ namespace urchin {
         }
 
         if (indexedTriangles.size() != 4) {//due to numerical imprecision, it's impossible to create indexed triangles correctly
-            return AlgorithmResultAllocator::instance().newEPAResultInvalid<T>();
+            return EPAResult<T>::newInvalidResult();
         }
 
         ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
@@ -116,11 +114,10 @@ namespace urchin {
             }
         }
 
-        return AlgorithmResultAllocator::instance().newEPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin);
+        return EPAResult<T>::newCollideResult(contactPointA, contactPointB, normal, distanceToOrigin);
     }
 
-    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D& convexObject1,
-                                                                                       const CollisionConvexObject3D& convexObject2) const {
+    template<class T> EPAResult<T> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D& convexObject1, const CollisionConvexObject3D& convexObject2) const {
         //Handle specific case for triangles mesh. EPA algorithm is not aware of others triangles of the mesh and can lead to wrong results.
         //Example: an object is inside a triangle: EPA could found a contact point which lead to slide the object on X/Z axis. This is wrong since
         //another triangles exist on X/Z. See: EPAConvexObjectTest::overlapCapsuleAndTriangle() & EPAConvexObjectTest::overlapTriangleAndCapsule().
@@ -139,7 +136,7 @@ namespace urchin {
             otherObject = &convexObject1;
             needSwap = true;
         } else {
-            return std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter>(nullptr);
+            return EPAResult<T>::newInvalidResult();
         }
 
         Triangle3D<float> triangle = triangleObject->retrieveTriangle();
@@ -151,13 +148,13 @@ namespace urchin {
             Vector3<T> normal = contactPointOther.vector(contactPointTriangle).normalize().template cast<T>();
 
             if (needSwap) {
-                return AlgorithmResultAllocator::instance().newEPAResultCollide<T>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
+                return EPAResult<T>::newCollideResult(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
             }
 
-            return AlgorithmResultAllocator::instance().newEPAResultCollide<T>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
+            return EPAResult<T>::newCollideResult(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
         }
 
-        return std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter>(nullptr);
+        return EPAResult<T>::newInvalidResult();
     }
 
     /**
@@ -378,8 +375,8 @@ namespace urchin {
         return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
     }
 
-    template<class T> void EPAAlgorithm<T>::logInputData(std::string_view errorMessage, const CollisionConvexObject3D& convexObject1,
-            const CollisionConvexObject3D& convexObject2, const GJKResult<T>& gjkResult) const {
+    template<class T> void EPAAlgorithm<T>::logInputData(std::string_view errorMessage, const CollisionConvexObject3D& convexObject1,const CollisionConvexObject3D& convexObject2,
+            const GJKResult<T>& gjkResult) const {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 

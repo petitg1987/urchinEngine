@@ -42,12 +42,12 @@ namespace urchin {
         GJKResult<double> gjkResultWithMargin = gjkAlgorithm.processGJK(convexObject1, convexObject2, true);
 
         if (gjkResultWithMargin.isValidResult() && gjkResultWithMargin.isCollide()) {
-            std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> epaResult = epaAlgorithm.processEPA(convexObject1, convexObject2, gjkResultWithMargin);
+            EPAResult<double> epaResult = epaAlgorithm.processEPA(convexObject1, convexObject2, gjkResultWithMargin);
 
-            if (epaResult->isValidResult() && epaResult->isCollide()) { //should be always true except for problems due to float imprecision
-                const Vector3<double>& normalFromObject2 = (-epaResult->getNormal());
-                const Point3<double>& pointOnObject2 = epaResult->getContactPointB();
-                auto penetrationDepth = (float)-epaResult->getPenetrationDepth();
+            if (epaResult.isValidResult() && epaResult.isCollide()) { //should be always true except for problems due to float imprecision
+                const Vector3<double>& normalFromObject2 = (-epaResult.getNormal());
+                const Point3<double>& pointOnObject2 = epaResult.getContactPointB();
+                auto penetrationDepth = (float)-epaResult.getPenetrationDepth();
 
                 addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), penetrationDepth);
             }

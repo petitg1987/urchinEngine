@@ -4,7 +4,6 @@
 #include <UrchinCommon.h>
 
 #include <collision/narrowphase/algorithm/gjk/GJKResult.h>
-#include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 #include <object/CollisionConvexObject3D.h>
 
 namespace urchin {

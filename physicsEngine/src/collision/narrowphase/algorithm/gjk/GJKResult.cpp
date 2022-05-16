@@ -19,7 +19,7 @@ namespace urchin {
     }
 
     template<class T> GJKResult<T> GJKResult<T>::newInvalidResult() {
-        return GJKResult<T>(false, 0.0, Simplex<T>());
+        return GJKResult<T>(false, -1.0, Simplex<T>());
     }
 
     template<class T> GJKResult<T> GJKResult<T>::newCollideResult(const Simplex<T>& simplex) {

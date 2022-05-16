@@ -13,51 +13,51 @@ void EPABoxTest::identicalAABBox() {
     CollisionBoxObject aabbox1(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
     CollisionBoxObject aabbox2(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
 
-    std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(aabbox1, aabbox2);
+    EPAResult<float> resultEpa = EPATestHelper::executeEPA(aabbox1, aabbox2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 1.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 1.0f);
+    AssertHelper::assertTrue(resultEpa.isCollide());
+    AssertHelper::assertFloatEquals(resultEpa.getPenetrationDepth(), 1.0f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().vector(resultEpa.getContactPointB()).length(), 1.0f);
 }
 
 void EPABoxTest::overlapAABBox() {
     CollisionBoxObject aabbox1(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(0.5f, 0.5f, 0.5f), Quaternion<float>());
     CollisionBoxObject aabbox2(0.0f, Vector3<float>(0.5f, 0.5f, 0.5f), Point3<float>(1.1f, 0.5f, 0.5f), Quaternion<float>());
 
-    std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(aabbox1, aabbox2);
+    EPAResult<float> resultEpa = EPATestHelper::executeEPA(aabbox1, aabbox2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.4f);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f));
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.4f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 1.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 0.6f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, resultEpa->getContactPointB().Y);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::assertTrue(resultEpa.isCollide());
+    AssertHelper::assertFloatEquals(resultEpa.getPenetrationDepth(), 0.4f);
+    AssertHelper::assertVector3FloatEquals(resultEpa.getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().vector(resultEpa.getContactPointB()).length(), 0.4f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().X, 1.0f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointB().X, 0.6f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Y, resultEpa.getContactPointB().Y);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Z, resultEpa.getContactPointB().Z);
 }
 
 void EPABoxTest::identicalOBBox() {
     CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
     CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
-    std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(obbox1, obbox2);
+    EPAResult<float> resultEpa = EPATestHelper::executeEPA(obbox1, obbox2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 2.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 2.0f);
+    AssertHelper::assertTrue(resultEpa.isCollide());
+    AssertHelper::assertFloatEquals(resultEpa.getPenetrationDepth(), 2.0f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().vector(resultEpa.getContactPointB()).length(), 2.0f);
 }
 
 void EPABoxTest::overlapOnEdgeOBBox() {
     CollisionBoxObject obbox1(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
     CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.5f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
 
-    std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(obbox1, obbox2);
+    EPAResult<float> resultEpa = EPATestHelper::executeEPA(obbox1, obbox2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.23223304702f);
-    AssertHelper::assertFloatEquals(resultEpa->getNormal().X, 0.70710678118f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.23223304702f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::assertTrue(resultEpa.isCollide());
+    AssertHelper::assertFloatEquals(resultEpa.getPenetrationDepth(), 0.23223304702f);
+    AssertHelper::assertFloatEquals(resultEpa.getNormal().X, 0.70710678118f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().vector(resultEpa.getContactPointB()).length(), 0.23223304702f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Z, resultEpa.getContactPointB().Z);
 }
 
 void EPABoxTest::overlapOnCornerOBBox() {
@@ -65,33 +65,33 @@ void EPABoxTest::overlapOnCornerOBBox() {
             Quaternion<float>::fromAxisAngle(Vector3<float>(0.245f, 0.769f, -0.59f), 0.987859f));
     CollisionBoxObject obbox2(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.5f, 0.0f, 0.0f), Quaternion<float>());
 
-    std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(obbox1, obbox2);
+    EPAResult<float> resultEpa = EPATestHelper::executeEPA(obbox1, obbox2);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.23205080757f);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f));
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.23205080757f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 1.73205080757f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 1.5f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, resultEpa->getContactPointB().Y);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::assertTrue(resultEpa.isCollide());
+    AssertHelper::assertFloatEquals(resultEpa.getPenetrationDepth(), 0.23205080757f);
+    AssertHelper::assertVector3FloatEquals(resultEpa.getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().vector(resultEpa.getContactPointB()).length(), 0.23205080757f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().X, 1.73205080757f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointB().X, 1.5f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Y, resultEpa.getContactPointB().Y);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Z, resultEpa.getContactPointB().Z);
 }
 
 void EPABoxTest::overlapOBBoxAABBox() {
     CollisionBoxObject obbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(0.0f, 0.0f, 0.0f), Quaternion<float>::rotationZ(2.35619449f));
     CollisionBoxObject aabbox(0.0f, Vector3<float>(1.0f, 1.0f, 1.0f), Point3<float>(2.0f, 0.0f, 0.0f), Quaternion<float>());
 
-    std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(obbox, aabbox);
+    EPAResult<float> resultEpa = EPATestHelper::executeEPA(obbox, aabbox);
 
-    AssertHelper::assertTrue(resultEpa->isCollide());
-    AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.41421356237f);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f));
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.41421356237f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 1.41421356237f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, 0.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 1.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Y, 0.0f);
-    AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, resultEpa->getContactPointB().Z);
+    AssertHelper::assertTrue(resultEpa.isCollide());
+    AssertHelper::assertFloatEquals(resultEpa.getPenetrationDepth(), 0.41421356237f);
+    AssertHelper::assertVector3FloatEquals(resultEpa.getNormal(), Vector3<float>(1.0f, 0.0f, 0.0f));
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().vector(resultEpa.getContactPointB()).length(), 0.41421356237f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().X, 1.41421356237f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Y, 0.0f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointB().X, 1.0f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointB().Y, 0.0f);
+    AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Z, resultEpa.getContactPointB().Z);
 }
 
 CppUnit::Test* EPABoxTest::suite() {

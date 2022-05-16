@@ -5,12 +5,10 @@
 #include <UrchinCommon.h>
 
 #include <body/model/AbstractBody.h>
-#include <collision/narrowphase/algorithm/util/AlgorithmResult.h>
-#include <collision/narrowphase/algorithm/util/AlgorithmResultDeleter.h>
 
 namespace urchin {
 
-    template<class T> class ContinuousCollisionResult : public AlgorithmResult {
+    template<class T> class ContinuousCollisionResult {
         public:
             static ContinuousCollisionResult<T> newNoResult();
             static ContinuousCollisionResult<T> newResult(std::shared_ptr<AbstractBody>, std::size_t, const Vector3<T>&, const Point3<T>&, T);
