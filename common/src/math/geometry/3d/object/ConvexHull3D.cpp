@@ -70,7 +70,7 @@ namespace urchin {
         return gjkResult.isValidResult() && gjkResult.isCollide();
     }
 
-    template<class T> Point3<T> ConvexHull3D<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const { //TODO check it is correct + check execution time
+    template<class T> Point3<T> ConvexHull3D<T>::intersectPoint(const Line3D<T>& line, bool& hasIntersection) const {
         Point3<T> bestIntersectionPoint(0.0f, 0.0f, 0.0f);
         hasIntersection = false;
 

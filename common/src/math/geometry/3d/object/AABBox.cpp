@@ -23,11 +23,11 @@ namespace urchin {
         assert(min.Z <= max.Z);
     }
 
-    template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Vector3<T>& diagonal) :
+    template<class T> AABBox<T>::AABBox(const Point3<T>& min, const Vector3<T>& sizes) :
             ConvexObject3D<T>(ConvexObjectType::AABBOX),
-            boxShape(BoxShape<T>(Vector3<T>(diagonal.X / (T)2.0, diagonal.Y / (T)2.0, diagonal.Z / (T)2.0))),
+            boxShape(BoxShape<T>(Vector3<T>(sizes.X / (T)2.0, sizes.Y / (T)2.0, sizes.Z / (T)2.0))),
             min(min),
-            max(min.translate(diagonal)) {
+            max(min.translate(sizes)) {
         assert(min.X <= max.X);
         assert(min.Y <= max.Y);
         assert(min.Z <= max.Z);

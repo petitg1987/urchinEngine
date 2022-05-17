@@ -1,7 +1,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/TestResultCollector.h>
-#include <UrchinCommon.h>
 
+#include <common/collision/GJKAlgorithmTest.h>
 #include <common/io/map/MapSerializerTest.h>
 #include <common/system/SystemInfoTest.h>
 #include <common/util/StringUtilTest.h>
@@ -35,14 +35,7 @@
 #include <physics/body/BodyContainerTest.h>
 #include <physics/body/InertiaCalculationTest.h>
 #include <physics/collision/broadphase/aabbtree/BodyAABBTreeTest.h>
-#include <physics/collision/narrowphase/algorithm/gjk/GJKBoxTest.h>
-#include <physics/collision/narrowphase/algorithm/gjk/GJKConvexHullTest.h>
-#include <physics/collision/narrowphase/algorithm/gjk/GJKSphereTest.h>
-#include <physics/collision/narrowphase/algorithm/gjk/GJKConvexObjectTest.h>
-#include <physics/collision/narrowphase/algorithm/epa/EPABoxTest.h>
-#include <physics/collision/narrowphase/algorithm/epa/EPASphereTest.h>
-#include <physics/collision/narrowphase/algorithm/epa/EPAConvexHullTest.h>
-#include <physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h>
+#include <physics/collision/narrowphase/algorithm/epa/EPAAlgorithmTest.h>
 #include <physics/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithmTest.h>
 #include <physics/collision/bodystate/IslandContainerTest.h>
 #include <physics/collision/CollisionWorldIT.h>
@@ -61,6 +54,9 @@
 using namespace urchin;
 
 void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
+    //collision
+    runner.addTest(GJKAlgorithmTest::suite());
+
     //io
     runner.addTest(MapSerializerTest::suite());
 
@@ -127,14 +123,7 @@ void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {
     runner.addTest(BodyAABBTreeTest::suite());
 
     //narrow phase
-    runner.addTest(GJKSphereTest::suite());
-    runner.addTest(GJKBoxTest::suite());
-    runner.addTest(GJKConvexHullTest::suite());
-    runner.addTest(GJKConvexObjectTest::suite());
-    runner.addTest(EPABoxTest::suite());
-    runner.addTest(EPASphereTest::suite());
-    runner.addTest(EPAConvexHullTest::suite());
-    runner.addTest(EPAConvexObjectTest::suite());
+    runner.addTest(EPAAlgorithmTest::suite());
     runner.addTest(GJKContinuousCollisionAlgorithmTest::suite());
 
     //island
