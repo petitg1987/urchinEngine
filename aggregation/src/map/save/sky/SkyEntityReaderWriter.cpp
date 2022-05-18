@@ -29,17 +29,17 @@ namespace urchin {
         return skyEntity;
     }
 
-    void SkyEntityReaderWriter::write(UdaChunk& skyChunk, const SkyEntity& skyEntity, UdaWriter& udaWriter) {
+    void SkyEntityReaderWriter::write(UdaChunk& skyChunk, const SkyEntity& skyEntity, UdaParser& udaParser) {
         if (skyEntity.getSkybox() != nullptr) {
-            auto& skyboxChunk = udaWriter.createChunk(SKYBOX_TAG, UdaAttribute(), &skyChunk);
+            auto& skyboxChunk = udaParser.createChunk(SKYBOX_TAG, UdaAttribute(), &skyChunk);
 
-            auto& texturesChunk = udaWriter.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
+            auto& texturesChunk = udaParser.createChunk(TEXTURES_TAG, UdaAttribute(), &skyboxChunk);
             for (const auto& filename : skyEntity.getSkybox()->getFilenames()) {
                 std::string relativeFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), filename);
-                udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk).setStringValue(relativeFilename);
+                udaParser.createChunk(FILENAME_TAG, UdaAttribute(), &texturesChunk).setStringValue(relativeFilename);
             }
 
-            udaWriter.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk).setFloatValue(skyEntity.getSkybox()->getOffsetY());
+            udaParser.createChunk(OFFSET_Y_TAG, UdaAttribute(), &skyboxChunk).setFloatValue(skyEntity.getSkybox()->getOffsetY());
         }
     }
 }

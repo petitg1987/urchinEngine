@@ -25,16 +25,16 @@ namespace urchin {
         return navMeshAgentEntity;
     }
 
-    void NavMeshAgentEntityReaderWriter::write(UdaChunk& aiElementsListChunk, const NavMeshAgentEntity& navMeshAgentEntity, UdaWriter& udaWriter) {
-        auto& navMeshAgentChunk = udaWriter.createChunk(NAV_MESH_AGENT_TAG, UdaAttribute(), &aiElementsListChunk);
+    void NavMeshAgentEntityReaderWriter::write(UdaChunk& aiElementsListChunk, const NavMeshAgentEntity& navMeshAgentEntity, UdaParser& udaParser) {
+        auto& navMeshAgentChunk = udaParser.createChunk(NAV_MESH_AGENT_TAG, UdaAttribute(), &aiElementsListChunk);
 
-        auto& agentHeightChunk = udaWriter.createChunk(AGENT_HEIGHT_TAG, UdaAttribute(), &navMeshAgentChunk);
+        auto& agentHeightChunk = udaParser.createChunk(AGENT_HEIGHT_TAG, UdaAttribute(), &navMeshAgentChunk);
         agentHeightChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getAgentHeight());
-        auto& agentRadiusChunk = udaWriter.createChunk(AGENT_RADIUS_TAG, UdaAttribute(), &navMeshAgentChunk);
+        auto& agentRadiusChunk = udaParser.createChunk(AGENT_RADIUS_TAG, UdaAttribute(), &navMeshAgentChunk);
         agentRadiusChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getAgentRadius());
-        auto& maxSlopeInRadianChunk = udaWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, UdaAttribute(), &navMeshAgentChunk);
+        auto& maxSlopeInRadianChunk = udaParser.createChunk(MAX_SLOPE_IN_RADIAN_TAG, UdaAttribute(), &navMeshAgentChunk);
         maxSlopeInRadianChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getMaxSlope());
-        auto& jumpDistanceChunk = udaWriter.createChunk(JUMP_DISTANCE_TAG, UdaAttribute(), &navMeshAgentChunk);
+        auto& jumpDistanceChunk = udaParser.createChunk(JUMP_DISTANCE_TAG, UdaAttribute(), &navMeshAgentChunk);
         jumpDistanceChunk.setFloatValue(navMeshAgentEntity.getNavMeshAgent().getJumpDistance());
     }
 }

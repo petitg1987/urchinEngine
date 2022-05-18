@@ -16,13 +16,13 @@ namespace urchin {
         return soundEntity;
     }
 
-    void SoundEntityReaderWriter::write(UdaChunk& soundEntityChunk, const SoundEntity& soundEntity, UdaWriter& udaWriter) {
+    void SoundEntityReaderWriter::write(UdaChunk& soundEntityChunk, const SoundEntity& soundEntity, UdaParser& udaParser) {
         soundEntityChunk.addAttribute(UdaAttribute(NAME_ATTR, soundEntity.getName()));
 
-        auto& soundChunk = udaWriter.createChunk(SOUND_TAG, UdaAttribute(), &soundEntityChunk);
-        auto& soundTriggerChunk = udaWriter.createChunk(SOUND_TRIGGER_TAG, UdaAttribute(), &soundEntityChunk);
-        SoundReaderWriter::write(soundChunk, soundEntity.getSoundComponent()->getSound(), udaWriter);
-        SoundTriggerReaderWriter::write(soundTriggerChunk, soundEntity.getSoundComponent()->getSoundTrigger(), udaWriter);
+        auto& soundChunk = udaParser.createChunk(SOUND_TAG, UdaAttribute(), &soundEntityChunk);
+        auto& soundTriggerChunk = udaParser.createChunk(SOUND_TRIGGER_TAG, UdaAttribute(), &soundEntityChunk);
+        SoundReaderWriter::write(soundChunk, soundEntity.getSoundComponent()->getSound(), udaParser);
+        SoundTriggerReaderWriter::write(soundTriggerChunk, soundEntity.getSoundComponent()->getSoundTrigger(), udaParser);
     }
 
 }

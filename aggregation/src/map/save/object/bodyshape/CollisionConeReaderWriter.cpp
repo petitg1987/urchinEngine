@@ -33,12 +33,12 @@ namespace urchin {
         return std::make_unique<CollisionConeShape>(radius, height, orientation);
     }
 
-    void CollisionConeReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+    void CollisionConeReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CONE_VALUE));
 
         const auto& coneShape = static_cast<const CollisionConeShape&>(collisionShape);
 
-        auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
+        auto& orientationChunk = udaParser.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
         ConeShape<float>::ConeOrientation orientationValue = coneShape.getConeOrientation();
         if (orientationValue == ConeShape<float>::ConeOrientation::CONE_X_POSITIVE) {
             orientationChunk.setStringValue(X_POSITIVE_VALUE);
@@ -56,10 +56,10 @@ namespace urchin {
             throw std::invalid_argument("Cone orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
+        auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(coneShape.getRadius());
 
-        auto& heightChunk = udaWriter.createChunk(HEIGHT_TAG, UdaAttribute(), &shapeChunk);
+        auto& heightChunk = udaParser.createChunk(HEIGHT_TAG, UdaAttribute(), &shapeChunk);
         heightChunk.setFloatValue(coneShape.getHeight());
     }
 

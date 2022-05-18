@@ -7,7 +7,7 @@ namespace urchin {
     class SoundEntityReaderWriter {
         public:
             static std::unique_ptr<SoundEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const SoundEntity&, UdaWriter&);
+            static void write(UdaChunk&, const SoundEntity&, UdaParser&);
 
         private:
             static constexpr char NAME_ATTR[] = "name";

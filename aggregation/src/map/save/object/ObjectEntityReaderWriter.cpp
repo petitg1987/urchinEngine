@@ -28,19 +28,19 @@ namespace urchin {
         return objectEntity;
     }
 
-    void ObjectEntityReaderWriter::write(UdaChunk& objectEntityChunk, const ObjectEntity& objectEntity, UdaWriter& udaWriter) {
+    void ObjectEntityReaderWriter::write(UdaChunk& objectEntityChunk, const ObjectEntity& objectEntity, UdaParser& udaParser) {
         objectEntityChunk.addAttribute(UdaAttribute(NAME_ATTR, objectEntity.getName()));
 
-        auto& modelChunk = udaWriter.createChunk(MODEL_TAG, UdaAttribute(), &objectEntityChunk);
-        ModelReaderWriter::write(modelChunk, *objectEntity.getModel(), udaWriter);
+        auto& modelChunk = udaParser.createChunk(MODEL_TAG, UdaAttribute(), &objectEntityChunk);
+        ModelReaderWriter::write(modelChunk, *objectEntity.getModel(), udaParser);
 
         if (objectEntity.getRigidBody()) {
-            auto& physicsChunk = udaWriter.createChunk(PHYSICS_TAG, UdaAttribute(), &objectEntityChunk);
-            RigidBodyReaderWriter::write(physicsChunk, *objectEntity.getRigidBody(), udaWriter);
+            auto& physicsChunk = udaParser.createChunk(PHYSICS_TAG, UdaAttribute(), &objectEntityChunk);
+            RigidBodyReaderWriter::write(physicsChunk, *objectEntity.getRigidBody(), udaParser);
         }
 
         if (!objectEntity.getTags().empty()) {
-            auto& tagsChunk = udaWriter.createChunk(TAGS_TAG, UdaAttribute(), &objectEntityChunk);
+            auto& tagsChunk = udaParser.createChunk(TAGS_TAG, UdaAttribute(), &objectEntityChunk);
             TagsReaderWriter::write(tagsChunk, objectEntity.getTags());
         }
     }

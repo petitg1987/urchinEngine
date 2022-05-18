@@ -11,7 +11,7 @@ namespace urchin {
     class SkyEntityReaderWriter {
         public:
             static std::unique_ptr<SkyEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const SkyEntity&, UdaWriter&);
+            static void write(UdaChunk&, const SkyEntity&, UdaParser&);
 
         private:
             static constexpr char SKYBOX_TAG[] = "skybox";

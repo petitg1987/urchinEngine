@@ -21,7 +21,7 @@ namespace urchin {
         throw std::invalid_argument("Unknown sound trigger type read from map: " + soundTriggerType);
     }
 
-    void SoundTriggerReaderWriter::write(UdaChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaWriter& udaWriter) {
+    void SoundTriggerReaderWriter::write(UdaChunk& soundTriggerChunk, const SoundTrigger& soundTrigger, UdaParser& udaWriter) {
         if (soundTrigger.getTriggerType() == SoundTrigger::MANUAL_TRIGGER) {
             soundTriggerChunk.addAttribute(UdaAttribute(TYPE_ATTR, MANUAL_VALUE));
         } else if (soundTrigger.getTriggerType() == SoundTrigger::ZONE_TRIGGER) {
@@ -48,8 +48,8 @@ namespace urchin {
         throw std::invalid_argument("Unknown play behavior read from map: " + playBehaviorChunk->getStringValue());
     }
 
-    void SoundTriggerReaderWriter::writePlayBehavior(UdaChunk& soundTriggerChunk, PlayBehavior playBehavior, UdaWriter& udaWriter) {
-        auto& playBehaviorChunk = udaWriter.createChunk(PLAY_BEHAVIOR_TAG, UdaAttribute(), &soundTriggerChunk);
+    void SoundTriggerReaderWriter::writePlayBehavior(UdaChunk& soundTriggerChunk, PlayBehavior playBehavior, UdaParser& udaParser) {
+        auto& playBehaviorChunk = udaParser.createChunk(PLAY_BEHAVIOR_TAG, UdaAttribute(), &soundTriggerChunk);
         if (playBehavior == PlayBehavior::PLAY_ONCE) {
             playBehaviorChunk.setStringValue(PLAY_ONCE_VALUE);
         } else if (playBehavior == PlayBehavior::PLAY_LOOP) {

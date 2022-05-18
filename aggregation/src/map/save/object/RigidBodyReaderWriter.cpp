@@ -15,12 +15,12 @@ namespace urchin {
         return rigidBody;
     }
 
-    void RigidBodyReaderWriter::write(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaWriter& udaWriter) {
-        auto& shapeChunk = udaWriter.createChunk(SHAPE_TAG, UdaAttribute(), &physicsChunk);
+    void RigidBodyReaderWriter::write(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaParser& udaParser) {
+        auto& shapeChunk = udaParser.createChunk(SHAPE_TAG, UdaAttribute(), &physicsChunk);
         std::unique_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(rigidBody.getShape());
 
-        shapeReaderWriter->write(shapeChunk, rigidBody.getShape(), udaWriter);
-        writeBodyProperties(physicsChunk, rigidBody, udaWriter);
+        shapeReaderWriter->write(shapeChunk, rigidBody.getShape(), udaParser);
+        writeBodyProperties(physicsChunk, rigidBody, udaParser);
     }
 
     void RigidBodyReaderWriter::loadBodyProperties(RigidBody& rigidBody, const UdaChunk* physicsChunk, const UdaParser& udaParser) {
@@ -48,29 +48,29 @@ namespace urchin {
         rigidBody.setAngularFactor(angularFactorChunk->getVector3Value());
     }
 
-    void RigidBodyReaderWriter::writeBodyProperties(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaWriter& udaWriter) {
-        auto& massChunk = udaWriter.createChunk(MASS_TAG, UdaAttribute(), &physicsChunk);
+    void RigidBodyReaderWriter::writeBodyProperties(UdaChunk& physicsChunk, const RigidBody& rigidBody, UdaParser& udaParser) {
+        auto& massChunk = udaParser.createChunk(MASS_TAG, UdaAttribute(), &physicsChunk);
         massChunk.setFloatValue(rigidBody.getMass());
 
-        auto& restitutionChunk = udaWriter.createChunk(RESTITUTION_TAG, UdaAttribute(), &physicsChunk);
+        auto& restitutionChunk = udaParser.createChunk(RESTITUTION_TAG, UdaAttribute(), &physicsChunk);
         restitutionChunk.setFloatValue(rigidBody.getRestitution());
 
-        auto& frictionChunk = udaWriter.createChunk(FRICTION_TAG, UdaAttribute(), &physicsChunk);
+        auto& frictionChunk = udaParser.createChunk(FRICTION_TAG, UdaAttribute(), &physicsChunk);
         frictionChunk.setFloatValue(rigidBody.getFriction());
 
-        auto& rollingFrictionChunk = udaWriter.createChunk(ROLLING_FRICTION_TAG, UdaAttribute(), &physicsChunk);
+        auto& rollingFrictionChunk = udaParser.createChunk(ROLLING_FRICTION_TAG, UdaAttribute(), &physicsChunk);
         rollingFrictionChunk.setFloatValue(rigidBody.getRollingFriction());
 
-        auto& linearDampingChunk = udaWriter.createChunk(LINEAR_DAMPING_TAG, UdaAttribute(), &physicsChunk);
+        auto& linearDampingChunk = udaParser.createChunk(LINEAR_DAMPING_TAG, UdaAttribute(), &physicsChunk);
         linearDampingChunk.setFloatValue(rigidBody.getLinearDamping());
 
-        auto& angularDampingChunk = udaWriter.createChunk(ANGULAR_DAMPING_TAG, UdaAttribute(), &physicsChunk);
+        auto& angularDampingChunk = udaParser.createChunk(ANGULAR_DAMPING_TAG, UdaAttribute(), &physicsChunk);
         angularDampingChunk.setFloatValue(rigidBody.getAngularDamping());
 
-        auto& linearFactorChunk = udaWriter.createChunk(LINEAR_FACTOR_TAG, UdaAttribute(), &physicsChunk);
+        auto& linearFactorChunk = udaParser.createChunk(LINEAR_FACTOR_TAG, UdaAttribute(), &physicsChunk);
         linearFactorChunk.setVector3Value(rigidBody.getLinearFactor());
 
-        auto& angularFactorChunk = udaWriter.createChunk(ANGULAR_FACTOR_TAG, UdaAttribute(), &physicsChunk);
+        auto& angularFactorChunk = udaParser.createChunk(ANGULAR_FACTOR_TAG, UdaAttribute(), &physicsChunk);
         angularFactorChunk.setVector3Value(rigidBody.getAngularFactor());
     }
 }

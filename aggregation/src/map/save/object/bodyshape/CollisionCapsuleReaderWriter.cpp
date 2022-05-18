@@ -27,12 +27,12 @@ namespace urchin {
         return std::make_unique<CollisionCapsuleShape>(radius, cylinderHeight, orientation);
     }
 
-    void CollisionCapsuleReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+    void CollisionCapsuleReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
         const auto& capsuleShape = static_cast<const CollisionCapsuleShape&>(collisionShape);
 
-        auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
+        auto& orientationChunk = udaParser.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
         CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape.getCapsuleOrientation();
         if (orientationValue == CapsuleShape<float>::CapsuleOrientation::CAPSULE_X) {
             orientationChunk.setStringValue(X_VALUE);
@@ -44,10 +44,10 @@ namespace urchin {
             throw std::invalid_argument("Capsule orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
+        auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(capsuleShape.getRadius());
 
-        auto& cylinderHeightChunk = udaWriter.createChunk(CYLINDER_HEIGHT_TAG, UdaAttribute(), &shapeChunk);
+        auto& cylinderHeightChunk = udaParser.createChunk(CYLINDER_HEIGHT_TAG, UdaAttribute(), &shapeChunk);
         cylinderHeightChunk.setFloatValue(capsuleShape.getCylinderHeight());
     }
 

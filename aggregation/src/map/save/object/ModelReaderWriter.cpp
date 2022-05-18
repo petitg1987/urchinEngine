@@ -16,17 +16,17 @@ namespace urchin {
         return model;
     }
 
-    void ModelReaderWriter::write(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        auto& meshesChunk = udaWriter.createChunk(MESHES_TAG, UdaAttribute(), &modelChunk);
-        auto& meshesFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &meshesChunk);
+    void ModelReaderWriter::write(UdaChunk& modelChunk, const Model& model, UdaParser& udaParser) {
+        auto& meshesChunk = udaParser.createChunk(MESHES_TAG, UdaAttribute(), &modelChunk);
+        auto& meshesFilenameChunk = udaParser.createChunk(FILENAME_TAG, UdaAttribute(), &meshesChunk);
 
         if (model.getConstMeshes()) {
             std::string relativeFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), model.getConstMeshes()->getMeshesFilename());
             meshesFilenameChunk.setStringValue(relativeFilename);
         }
-        writeAnimations(modelChunk, model, udaWriter);
-        writeTransform(modelChunk, model, udaWriter);
-        writeProperties(modelChunk, model, udaWriter);
+        writeAnimations(modelChunk, model, udaParser);
+        writeTransform(modelChunk, model, udaParser);
+        writeProperties(modelChunk, model, udaParser);
     }
 
     void ModelReaderWriter::loadAnimations(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
@@ -43,16 +43,16 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::writeAnimations(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
+    void ModelReaderWriter::writeAnimations(UdaChunk& modelChunk, const Model& model, UdaParser& udaParser) {
         const std::map<std::string, std::unique_ptr<Animation>, std::less<>>& animations = model.getAnimations();
         if (!animations.empty()) {
-            auto& animationsListChunk = udaWriter.createChunk(ANIMATIONS_TAG, UdaAttribute(), &modelChunk);
+            auto& animationsListChunk = udaParser.createChunk(ANIMATIONS_TAG, UdaAttribute(), &modelChunk);
             for (const auto& [animName, anim] : animations) {
-                auto& animationChunk = udaWriter.createChunk(ANIMATION_TAG, UdaAttribute(), &animationsListChunk);
+                auto& animationChunk = udaParser.createChunk(ANIMATION_TAG, UdaAttribute(), &animationsListChunk);
 
-                auto& animationNameChunk = udaWriter.createChunk(NAME_TAG, UdaAttribute(), &animationChunk);
-                auto& animationFilenameChunk = udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &animationChunk);
-                auto& animationShadowImpactChunk = udaWriter.createChunk(ANIM_SHADOW_IMPACT, UdaAttribute(), &animationChunk);
+                auto& animationNameChunk = udaParser.createChunk(NAME_TAG, UdaAttribute(), &animationChunk);
+                auto& animationFilenameChunk = udaParser.createChunk(FILENAME_TAG, UdaAttribute(), &animationChunk);
+                auto& animationShadowImpactChunk = udaParser.createChunk(ANIM_SHADOW_IMPACT, UdaAttribute(), &animationChunk);
 
                 animationNameChunk.setStringValue(animName);
                 animationFilenameChunk.setStringValue(anim->getConstAnimation().getAnimationFilename());
@@ -78,15 +78,15 @@ namespace urchin {
         model.setTransform(Transform<float>(position, orientation, scale));
     }
 
-    void ModelReaderWriter::writeTransform(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        auto& transformChunk = udaWriter.createChunk(TRANSFORM_TAG, UdaAttribute(), &modelChunk);
+    void ModelReaderWriter::writeTransform(UdaChunk& modelChunk, const Model& model, UdaParser& udaParser) {
+        auto& transformChunk = udaParser.createChunk(TRANSFORM_TAG, UdaAttribute(), &modelChunk);
 
-        auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &transformChunk);
+        auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &transformChunk);
         positionChunk.setPoint3Value(model.getTransform().getPosition());
 
-        OrientationReaderWriter::write(transformChunk, model.getTransform().getOrientation(), udaWriter);
+        OrientationReaderWriter::write(transformChunk, model.getTransform().getOrientation(), udaParser);
 
-        auto& scaleChunk = udaWriter.createChunk(SCALE_TAG, UdaAttribute(), &transformChunk);
+        auto& scaleChunk = udaParser.createChunk(SCALE_TAG, UdaAttribute(), &transformChunk);
         scaleChunk.setVector3Value(model.getTransform().getScale());
     }
 
@@ -107,8 +107,8 @@ namespace urchin {
         }
     }
 
-    void ModelReaderWriter::writeProperties(UdaChunk& modelChunk, const Model& model, UdaWriter& udaWriter) {
-        auto& shadowClassChunk = udaWriter.createChunk(SHADOW_CLASS_TAG, UdaAttribute(), &modelChunk);
+    void ModelReaderWriter::writeProperties(UdaChunk& modelChunk, const Model& model, UdaParser& udaParser) {
+        auto& shadowClassChunk = udaParser.createChunk(SHADOW_CLASS_TAG, UdaAttribute(), &modelChunk);
 
         if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
             shadowClassChunk.setStringValue(RECEIVER_AND_CASTER_VALUE);

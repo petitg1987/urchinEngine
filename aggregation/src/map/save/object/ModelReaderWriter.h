@@ -10,17 +10,17 @@ namespace urchin {
     class ModelReaderWriter {
         public:
             static std::shared_ptr<Model> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const Model&, UdaWriter&);
+            static void write(UdaChunk&, const Model&, UdaParser&);
 
         private:
             static void loadAnimations(Model&, const UdaChunk*, const UdaParser&);
-            static void writeAnimations(UdaChunk&, const Model&, UdaWriter&);
+            static void writeAnimations(UdaChunk&, const Model&, UdaParser&);
 
             static void loadTransform(Model&, const UdaChunk*, const UdaParser&);
-            static void writeTransform(UdaChunk&, const Model&, UdaWriter&);
+            static void writeTransform(UdaChunk&, const Model&, UdaParser&);
 
             static void loadProperties(Model&, const UdaChunk*, const UdaParser&);
-            static void writeProperties(UdaChunk&, const Model&, UdaWriter&);
+            static void writeProperties(UdaChunk&, const Model&, UdaParser&);
 
             static constexpr char MESHES_TAG[] = "meshes";
             static constexpr char FILENAME_TAG[] = "filename";

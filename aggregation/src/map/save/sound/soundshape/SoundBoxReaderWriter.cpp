@@ -20,27 +20,27 @@ namespace urchin {
         return std::make_unique<SoundBox>(halfSizes, position, orientation, margin);
     }
 
-    void SoundBoxReaderWriter::write(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
+    void SoundBoxReaderWriter::write(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, BOX_VALUE));
 
         const auto& boxShape = static_cast<const SoundBox&>(soundShape);
 
-        auto& halfSizesChunk = udaWriter.createChunk(HALF_SIZES_TAG, UdaAttribute(), &shapeChunk);
+        auto& halfSizesChunk = udaParser.createChunk(HALF_SIZES_TAG, UdaAttribute(), &shapeChunk);
         halfSizesChunk.setVector3Value(boxShape.getHalfSizes());
 
-        auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &shapeChunk);
+        auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &shapeChunk);
         positionChunk.setPoint3Value(boxShape.getCenterPosition());
 
-        auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
-        auto& orientationAxisChunk = udaWriter.createChunk(AXIS_TAG, UdaAttribute(), &orientationChunk);
-        auto& orientationAngleChunk = udaWriter.createChunk(ANGLE_TAG, UdaAttribute(), &orientationChunk);
+        auto& orientationChunk = udaParser.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
+        auto& orientationAxisChunk = udaParser.createChunk(AXIS_TAG, UdaAttribute(), &orientationChunk);
+        auto& orientationAngleChunk = udaParser.createChunk(ANGLE_TAG, UdaAttribute(), &orientationChunk);
         Vector3<float> orientationAxis;
         float orientationAngle;
         boxShape.getOrientation().toAxisAngle(orientationAxis, orientationAngle);
         orientationAxisChunk.setVector3Value(orientationAxis);
         orientationAngleChunk.setFloatValue(orientationAngle);
 
-        auto& marginChunk = udaWriter.createChunk(MARGIN_TAG, UdaAttribute(), &shapeChunk);
+        auto& marginChunk = udaParser.createChunk(MARGIN_TAG, UdaAttribute(), &shapeChunk);
         marginChunk.setFloatValue(boxShape.getMargin());
     }
 

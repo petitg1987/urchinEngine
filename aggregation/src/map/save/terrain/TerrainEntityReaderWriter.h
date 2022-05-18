@@ -11,17 +11,17 @@ namespace urchin {
     class TerrainEntityReaderWriter {
         public:
             static std::unique_ptr<TerrainEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const TerrainEntity&, UdaWriter&);
+            static void write(UdaChunk&, const TerrainEntity&, UdaParser&);
 
         private:
             static std::unique_ptr<Terrain> buildTerrain(const UdaChunk*, const UdaParser&);
-            static void writeTerrainChunk(UdaChunk&, const Terrain&, UdaWriter&);
+            static void writeTerrainChunk(UdaChunk&, const Terrain&, UdaParser&);
 
             static void loadProperties(Terrain&, const UdaChunk*, const UdaParser&);
-            static void writeProperties(UdaChunk&, const Terrain&, UdaWriter&);
+            static void writeProperties(UdaChunk&, const Terrain&, UdaParser&);
 
             static void loadGrass(Terrain&, const UdaChunk*, const UdaParser&);
-            static void writeGrass(UdaChunk&, const Terrain&, UdaWriter&);
+            static void writeGrass(UdaChunk&, const Terrain&, UdaParser&);
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char INDEX_ATTR[] = "index";

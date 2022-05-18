@@ -9,12 +9,12 @@ namespace urchin {
         return std::make_unique<CollisionSphereShape>(radius);
     }
 
-    void CollisionSphereReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+    void CollisionSphereReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto& sphereShape = static_cast<const CollisionSphereShape&>(collisionShape);
 
-        auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
+        auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(sphereShape.getRadius());
     }
 

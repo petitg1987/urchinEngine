@@ -11,17 +11,17 @@ namespace urchin {
     class LightEntityReaderWriter {
         public:
             static std::unique_ptr<LightEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const LightEntity&, UdaWriter&);
+            static void write(UdaChunk&, const LightEntity&, UdaParser&);
 
         private:
             static std::unique_ptr<Light> buildLight(const UdaChunk*, const UdaParser&);
-            static void writeLightChunk(UdaChunk&, const Light&, UdaWriter&);
+            static void writeLightChunk(UdaChunk&, const Light&, UdaParser&);
 
             static void loadProperties(Light&, const UdaChunk*, const UdaParser&);
-            static void writeProperties(UdaChunk&, const Light&, UdaWriter&);
+            static void writeProperties(UdaChunk&, const Light&, UdaParser&);
 
             static void loadFlags(Light&, const UdaChunk*, const UdaParser&);
-            static void writeFlags(UdaChunk&, const Light&, UdaWriter&);
+            static void writeFlags(UdaChunk&, const Light&, UdaParser&);
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char TYPE_ATTR[] = "type";

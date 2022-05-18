@@ -15,18 +15,18 @@ namespace urchin {
         return std::make_unique<SoundSphere>(radius, position, margin);
     }
 
-    void SoundSphereReaderWriter::write(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaWriter& udaWriter) const {
+    void SoundSphereReaderWriter::write(UdaChunk& shapeChunk, const SoundShape& soundShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPHERE_VALUE));
 
         const auto& sphereShape = static_cast<const SoundSphere&>(soundShape);
 
-        auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
+        auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(sphereShape.getRadius());
 
-        auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &shapeChunk);
+        auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &shapeChunk);
         positionChunk.setPoint3Value(sphereShape.getCenterPosition());
 
-        auto& marginChunk = udaWriter.createChunk(MARGIN_TAG, UdaAttribute(), &shapeChunk);
+        auto& marginChunk = udaParser.createChunk(MARGIN_TAG, UdaAttribute(), &shapeChunk);
         marginChunk.setFloatValue(sphereShape.getMargin());
     }
 

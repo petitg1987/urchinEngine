@@ -9,7 +9,7 @@ namespace urchin {
     class NavMeshAgentEntityReaderWriter {
         public:
             static std::unique_ptr<NavMeshAgentEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const NavMeshAgentEntity&, UdaWriter&);
+            static void write(UdaChunk&, const NavMeshAgentEntity&, UdaParser&);
 
         private:
             static constexpr char NAV_MESH_AGENT_TAG[] = "navMeshAgent";

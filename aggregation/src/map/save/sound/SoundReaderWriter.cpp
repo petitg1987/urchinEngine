@@ -32,11 +32,11 @@ namespace urchin {
         }
     }
 
-    void SoundReaderWriter::write(UdaChunk& soundChunk, const Sound& sound, UdaWriter& udaWriter) {
+    void SoundReaderWriter::write(UdaChunk& soundChunk, const Sound& sound, UdaParser& udaParser) {
         std::string relativeSoundFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), sound.getFilename());
-        udaWriter.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk).setStringValue(relativeSoundFilename);
+        udaParser.createChunk(FILENAME_TAG, UdaAttribute(), &soundChunk).setStringValue(relativeSoundFilename);
 
-        auto& initialVolumeChunk = udaWriter.createChunk(INITIAL_VOLUME_TAG, UdaAttribute(), &soundChunk);
+        auto& initialVolumeChunk = udaParser.createChunk(INITIAL_VOLUME_TAG, UdaAttribute(), &soundChunk);
         initialVolumeChunk.setFloatValue(sound.getInitialVolume());
 
         if (sound.getSoundCategory() == Sound::SoundCategory::MUSIC) {
@@ -51,10 +51,10 @@ namespace urchin {
             const auto& spatialSound = static_cast<const SpatialSound&>(sound);
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPATIAL_VALUE));
 
-            auto& positionChunk = udaWriter.createChunk(POSITION_TAG, UdaAttribute(), &soundChunk);
+            auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &soundChunk);
             positionChunk.setPoint3Value(spatialSound.getPosition());
 
-            auto& inaudibleDistanceChunk = udaWriter.createChunk(INAUDIBLE_DISTANCE_TAG, UdaAttribute(), &soundChunk);
+            auto& inaudibleDistanceChunk = udaParser.createChunk(INAUDIBLE_DISTANCE_TAG, UdaAttribute(), &soundChunk);
             inaudibleDistanceChunk.setFloatValue(spatialSound.getInaudibleDistance());
         } else if (sound.getSoundType() == Sound::GLOBAL) {
             soundChunk.addAttribute(UdaAttribute(TYPE_ATTR, GLOBAL_VALUE));

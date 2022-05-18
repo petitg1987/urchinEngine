@@ -13,7 +13,7 @@ namespace urchin {
             ~SoundSphereReaderWriter() override = default;
 
             std::unique_ptr<SoundShape> load(const UdaChunk*, const UdaParser&) const override;
-            void write(UdaChunk&, const SoundShape&, UdaWriter&) const override;
+            void write(UdaChunk&, const SoundShape&, UdaParser&) const override;
 
         private:
             static constexpr char POSITION_TAG[] = "position";

@@ -14,7 +14,7 @@ namespace urchin {
     }
 
     void UISkinService::setSkin(const std::string& skinFilename) {
-        skinReader = std::make_unique<UdaParser>(FileSystem::instance().getResourcesDirectory() + skinFilename);
+        skinReader = std::make_unique<UdaParser>(FileSystem::instance().getResourcesDirectory() + skinFilename, UdaLoadType::LOAD_FILE);
     }
 
     std::shared_ptr<Texture> UISkinService::createWidgetTexture(unsigned int width, unsigned int height, const UdaChunk* skinChunk, WidgetOutline* widgetOutline) const {

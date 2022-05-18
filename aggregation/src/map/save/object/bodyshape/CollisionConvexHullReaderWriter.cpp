@@ -17,15 +17,15 @@ namespace urchin {
         return std::make_unique<CollisionConvexHullShape>(points);
     }
 
-    void CollisionConvexHullReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+    void CollisionConvexHullReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CONVEX_HULL_VALUE));
 
         const auto& convexHullShape = static_cast<const CollisionConvexHullShape&>(collisionShape);
 
-        auto& pointsListChunk = udaWriter.createChunk(POINTS_TAG, UdaAttribute(), &shapeChunk);
+        auto& pointsListChunk = udaParser.createChunk(POINTS_TAG, UdaAttribute(), &shapeChunk);
         const std::vector<Point3<float>>& points = convexHullShape.getPoints();
         for (const auto& point : points) {
-            auto& pointChunk = udaWriter.createChunk(POINT_TAG, UdaAttribute(), &pointsListChunk);
+            auto& pointChunk = udaParser.createChunk(POINT_TAG, UdaAttribute(), &pointsListChunk);
             pointChunk.setPoint3Value(point);
         }
     }

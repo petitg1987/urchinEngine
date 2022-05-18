@@ -11,7 +11,7 @@ namespace urchin {
     class SoundReaderWriter {
         public:
             static std::unique_ptr<Sound> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const Sound&, UdaWriter&);
+            static void write(UdaChunk&, const Sound&, UdaParser&);
 
         private:
             static constexpr char TYPE_ATTR[] = "type";

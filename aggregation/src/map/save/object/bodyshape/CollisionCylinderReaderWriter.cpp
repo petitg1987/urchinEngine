@@ -27,12 +27,12 @@ namespace urchin {
         return std::make_unique<CollisionCylinderShape>(radius, height, orientation);
     }
 
-    void CollisionCylinderReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaWriter& udaWriter) const {
+    void CollisionCylinderReaderWriter::write(UdaChunk& shapeChunk, const CollisionShape3D& collisionShape, UdaParser& udaParser) const {
         shapeChunk.addAttribute(UdaAttribute(TYPE_ATTR, CYLINDER_VALUE));
 
         const auto& cylinderShape = static_cast<const CollisionCylinderShape&>(collisionShape);
 
-        auto& orientationChunk = udaWriter.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
+        auto& orientationChunk = udaParser.createChunk(ORIENTATION_TAG, UdaAttribute(), &shapeChunk);
         CylinderShape<float>::CylinderOrientation orientationValue = cylinderShape.getCylinderOrientation();
         if (orientationValue == CylinderShape<float>::CylinderOrientation::CYLINDER_X) {
             orientationChunk.setStringValue(X_VALUE);
@@ -44,10 +44,10 @@ namespace urchin {
             throw std::invalid_argument("Cylinder orientation type unknown: " + std::to_string(orientationValue));
         }
 
-        auto& radiusChunk = udaWriter.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
+        auto& radiusChunk = udaParser.createChunk(RADIUS_TAG, UdaAttribute(), &shapeChunk);
         radiusChunk.setFloatValue(cylinderShape.getRadius());
 
-        auto& heightChunk = udaWriter.createChunk(HEIGHT_TAG, UdaAttribute(), &shapeChunk);
+        auto& heightChunk = udaParser.createChunk(HEIGHT_TAG, UdaAttribute(), &shapeChunk);
         heightChunk.setFloatValue(cylinderShape.getHeight());
     }
 

@@ -30,14 +30,14 @@ namespace urchin {
             void loadSoundEntities(Map&, const UdaChunk*, const UdaParser&) const;
             void loadAIConfig(Map&, const UdaChunk*, const UdaParser&) const;
 
-            void writeMap(const Map&, UdaChunk&, UdaWriter&) const;
-            void writeObjectEntities(const Map&, UdaChunk&, UdaWriter&) const;
-            void writeLightEntities(const Map&, UdaChunk&, UdaWriter&) const;
-            void writeTerrainEntities(const Map&, UdaChunk&, UdaWriter&) const;
-            void writeWaterEntities(const Map&, UdaChunk&, UdaWriter&) const;
-            void writeSkyEntity(const Map&, UdaChunk&, UdaWriter&) const;
-            void writeSoundEntities(const Map& , UdaChunk&, UdaWriter&) const;
-            void writeAIConfig(const Map&, UdaChunk&, UdaWriter&) const;
+            void writeMap(const Map&, UdaChunk&, UdaParser&) const;
+            void writeObjectEntities(const Map&, UdaChunk&, UdaParser&) const;
+            void writeLightEntities(const Map&, UdaChunk&, UdaParser&) const;
+            void writeTerrainEntities(const Map&, UdaChunk&, UdaParser&) const;
+            void writeWaterEntities(const Map&, UdaChunk&, UdaParser&) const;
+            void writeSkyEntity(const Map&, UdaChunk&, UdaParser&) const;
+            void writeSoundEntities(const Map& , UdaChunk&, UdaParser&) const;
+            void writeAIConfig(const Map&, UdaChunk&, UdaParser&) const;
 
             static constexpr char CONFIG_TAG[] = "config";
             static constexpr char WORKING_DIR_TAG[] = "relativeWorkingDirectory";

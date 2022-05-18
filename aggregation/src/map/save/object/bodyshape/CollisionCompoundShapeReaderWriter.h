@@ -13,11 +13,11 @@ namespace urchin {
             ~CollisionCompoundShapeReaderWriter() override = default;
 
             std::unique_ptr<CollisionShape3D> load(const UdaChunk*, const UdaParser&) const override;
-            void write(UdaChunk&, const CollisionShape3D&, UdaWriter&) const override;
+            void write(UdaChunk&, const CollisionShape3D&, UdaParser&) const override;
 
         private:
             static void loadTransform(LocalizedCollisionShape&, const UdaChunk*, const UdaParser&);
-            static void writeTransform(UdaChunk&, const LocalizedCollisionShape&, UdaWriter&);
+            static void writeTransform(UdaChunk&, const LocalizedCollisionShape&, UdaParser&);
 
             static constexpr char LOCALIZED_SHAPES[] = "localizedShapes";
             static constexpr char LOCALIZED_SHAPE[] = "localizedShape";

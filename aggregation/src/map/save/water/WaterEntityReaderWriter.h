@@ -11,17 +11,17 @@ namespace urchin {
     class WaterEntityReaderWriter {
         public:
             static std::unique_ptr<WaterEntity> load(const UdaChunk*, const UdaParser&);
-            static void write(UdaChunk&, const WaterEntity&, UdaWriter&);
+            static void write(UdaChunk&, const WaterEntity&, UdaParser&);
 
         private:
             static void loadGeneralProperties(Water&, const UdaChunk*, const UdaParser&);
-            static void writeGeneralProperties(UdaChunk&, const Water&, UdaWriter&);
+            static void writeGeneralProperties(UdaChunk&, const Water&, UdaParser&);
 
             static void loadWaterSurfaceProperties(Water&, const UdaChunk*, const UdaParser&);
-            static void writeWaterSurfaceProperties(UdaChunk&, const Water&, UdaWriter&);
+            static void writeWaterSurfaceProperties(UdaChunk&, const Water&, UdaParser&);
 
             static void loadUnderWaterProperties(Water&, const UdaChunk*, const UdaParser&);
-            static void writeUnderWaterProperties(UdaChunk&, const Water&, UdaWriter&);
+            static void writeUnderWaterProperties(UdaChunk&, const Water&, UdaParser&);
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char CENTER_POSITION_TAG[] = "centerPosition";
