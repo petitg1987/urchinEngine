@@ -236,7 +236,7 @@ namespace urchin {
             }
             const ccd_set& pickedModels = rayTestResult->getResults();
             if (!pickedModels.empty()) {
-                lastPickedBodyId = (*pickedModels.begin())->getBody2().getId();
+                lastPickedBodyId = (*pickedModels.begin()).getBody2().getId();
                 notifyObservers(this, BODY_PICKED);
                 propagateEvent = false;
             } else {
