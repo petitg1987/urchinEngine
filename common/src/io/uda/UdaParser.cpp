@@ -1,6 +1,5 @@
 #include <memory>
 #include <stdexcept>
-#include <regex>
 #include <utility>
 #include <cassert>
 
@@ -127,17 +126,36 @@ namespace urchin {
     }
 
     std::unique_ptr<UdaChunk> UdaParser::buildChunk(const std::string& rawContentLine, UdaChunk* parent) const {
-        static std::regex parseLineRegex("^" + std::string(NAME_REGEX) + " ?" + std::string(ATTRIBUTES_REGEX) + ": ?" + std::string(VALUE_REGEX) + "$", std::regex_constants::optimize);
-        std::smatch matches;
-        if (!std::regex_search(rawContentLine, matches, parseLineRegex) || matches.size() != 4) {
-            throw std::runtime_error("Content line (" + rawContentLine +") has wrong format in file: " + filenamePath);
-        }
+        std::string name;
 
-        std::string name = matches[1].str();
-        std::string value = matches[3].str();
+        bool hasAttributes = false;
+        std::string attributesString;
         std::map<std::string, std::string, std::less<>> attributes;
 
-        std::string attributesString = matches[2].str();
+        std::string value;
+
+        for (std::size_t charIndex = 0; charIndex < rawContentLine.size(); ++charIndex) {
+            if (name.empty()) {
+                if (rawContentLine[charIndex] == '(') {
+                    hasAttributes = true;
+                    name = rawContentLine.substr(0, charIndex - 1);
+                } else if (rawContentLine[charIndex] == ':') {
+                    name = rawContentLine.substr(0, charIndex);
+                }
+            } else if (hasAttributes && attributesString.empty()) {
+                if (rawContentLine[charIndex] == ')') {
+                    attributesString = rawContentLine.substr(name.size() + 2, charIndex - name.size() - 2);
+                }
+            } else {
+                std::size_t valueStartIndex = charIndex + 1 + (hasAttributes ? 2 /* skip: colon & space */ : 1 /* skip: space */);
+                std::size_t valueEndIndex = rawContentLine.size() - 1;
+                if (valueStartIndex < rawContentLine.size() && valueStartIndex < valueEndIndex) {
+                    value = rawContentLine.substr(valueStartIndex, valueEndIndex - valueStartIndex);
+                }
+                break;
+            }
+        }
+
         if (!attributesString.empty()) {
             std::vector<std::string> attributesVector = StringUtil::split(attributesString, UdaChunk::ATTRIBUTES_SEPARATOR);
 
