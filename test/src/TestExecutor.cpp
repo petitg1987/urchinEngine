@@ -3,6 +3,7 @@
 
 #include <common/collision/GJKAlgorithmTest.h>
 #include <common/io/map/MapSerializerTest.h>
+#include <common/io/uda/UdaParserTest.h>
 #include <common/system/SystemInfoTest.h>
 #include <common/util/StringUtilTest.h>
 #include <common/util/HashUtilTest.h>
@@ -59,6 +60,7 @@ void addCommonUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //io
     runner.addTest(MapSerializerTest::suite());
+    runner.addTest(UdaParserTest::suite());
 
     //system
     runner.addTest(SystemInfoTest::suite());

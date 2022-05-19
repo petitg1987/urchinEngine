@@ -191,6 +191,14 @@ namespace urchin {
         return *newNodePtr;
     }
 
+    void UdaParser::removeChunk(UdaChunk& chunk) {
+        if (chunk.getParent()) {
+            chunk.getParent()->removeChild(chunk);
+        } else {
+            std::erase_if(rootNodes, [&chunk](const std::unique_ptr<UdaChunk> &node){ return &chunk == node.get(); });
+        }
+    }
+
     void UdaParser::save() const {
         std::ofstream file;
         file.open (filenamePath);

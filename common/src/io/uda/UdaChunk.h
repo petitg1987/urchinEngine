@@ -31,6 +31,7 @@ namespace urchin {
 
             UdaChunk* getParent() const;
             UdaChunk& addChild(std::unique_ptr<UdaChunk>);
+            void removeChild(UdaChunk&);
             const std::vector<std::unique_ptr<UdaChunk>>& getChildren() const;
 
             const std::string& getStringValue() const;
