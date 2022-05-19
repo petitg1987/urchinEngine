@@ -23,6 +23,7 @@ namespace urchin {
             UdaChunk* getFirstChunk(bool, std::string_view, const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
 
             UdaChunk& createChunk(std::string, const UdaAttribute& = UdaAttribute(), UdaChunk* = nullptr);
+            UdaChunk& addChunk(const UdaChunk&, UdaChunk* = nullptr);
             void removeChunk(UdaChunk&);
             void save() const;
 

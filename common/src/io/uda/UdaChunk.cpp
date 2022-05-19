@@ -13,6 +13,17 @@ namespace urchin {
 
     }
 
+    UdaChunk::UdaChunk(const UdaChunk& chunk) :
+            name(chunk.name),
+            value(chunk.value),
+            attributes(chunk.attributes),
+            parent(nullptr) {
+        for (const std::unique_ptr<UdaChunk>& child : chunk.children) {
+            children.push_back(std::make_unique<UdaChunk>(*child));
+            children.back()->parent = this;
+        }
+    }
+
     const std::string& UdaChunk::getName() const {
         return name;
     }

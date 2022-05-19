@@ -181,14 +181,22 @@ namespace urchin {
         }
 
         auto newNode = std::make_unique<UdaChunk>(std::move(chunkName), "", attributes, parent);
-        auto newNodePtr = newNode.get();
         if (!parent) {
             rootNodes.push_back(std::move(newNode));
+            return *rootNodes.back();
         } else {
-            parent->addChild(std::move(newNode));
+            return parent->addChild(std::move(newNode));
         }
+    }
 
-        return *newNodePtr;
+    UdaChunk& UdaParser::addChunk(const UdaChunk& chunkToCopy, UdaChunk* parent) {
+        auto newNode = std::make_unique<UdaChunk>(chunkToCopy);
+        if (!parent) {
+            rootNodes.push_back(std::move(newNode));
+            return *rootNodes.back();
+        } else {
+            return parent->addChild(std::move(newNode));
+        }
     }
 
     void UdaParser::removeChunk(UdaChunk& chunk) {

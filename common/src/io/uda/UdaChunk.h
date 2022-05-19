@@ -22,6 +22,7 @@ namespace urchin {
             static constexpr char ATTRIBUTES_ASSIGN = '=';
 
             UdaChunk(std::string, std::string, std::map<std::string, std::string, std::less<>>, UdaChunk*);
+            UdaChunk(const UdaChunk&);
 
             const std::string& getName() const;
 
