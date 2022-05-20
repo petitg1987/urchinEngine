@@ -23,7 +23,9 @@ namespace urchin {
 
             UdaChunk(std::string, std::string, std::map<std::string, std::string, std::less<>>, UdaChunk*);
             UdaChunk(const UdaChunk&);
+            UdaChunk& operator=(const UdaChunk&) = delete;
             UdaChunk(UdaChunk&&) noexcept = default;
+            UdaChunk& operator=(UdaChunk&&) noexcept = delete;
 
             const std::string& getName() const;
 
@@ -33,7 +35,7 @@ namespace urchin {
 
             UdaChunk* getParent() const;
             UdaChunk& addChild(std::unique_ptr<UdaChunk>);
-            void removeChild(UdaChunk&);
+            void removeChild(const UdaChunk&);
             const std::vector<std::unique_ptr<UdaChunk>>& getChildren() const;
 
             const std::string& getStringValue() const;

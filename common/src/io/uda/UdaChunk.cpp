@@ -53,7 +53,7 @@ namespace urchin {
         return *children.back();
     }
 
-    void UdaChunk::removeChild(UdaChunk& chunk) {
+    void UdaChunk::removeChild(const UdaChunk& chunk) {
         std::erase_if(children, [&chunk](const std::unique_ptr<UdaChunk> &node){ return &chunk == node.get(); });
     }
 
