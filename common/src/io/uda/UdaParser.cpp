@@ -12,6 +12,10 @@
 
 namespace urchin {
 
+    UdaParser::UdaParser() {
+
+    }
+
     UdaParser::UdaParser(std::string filenamePath, UdaLoadType loadType) :
             filenamePath(std::move(filenamePath)) {
         if (loadType == UdaLoadType::LOAD_FILE) {
