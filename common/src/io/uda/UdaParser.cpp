@@ -12,7 +12,8 @@
 
 namespace urchin {
 
-    UdaParser::UdaParser() {
+    UdaParser::UdaParser(std::vector<std::unique_ptr<UdaChunk>> rootNodes) :
+            rootNodes(std::move(rootNodes)) {
 
     }
 

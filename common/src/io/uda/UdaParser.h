@@ -17,7 +17,8 @@ namespace urchin {
 
     class UdaParser {
         public:
-            UdaParser();
+            UdaParser() = default;
+            UdaParser(std::vector<std::unique_ptr<UdaChunk>>);
             UdaParser(std::string, UdaLoadType);
 
             std::vector<UdaChunk*> getChunks(std::string_view = "", const UdaAttribute& = UdaAttribute(), const UdaChunk* parent = nullptr) const;
