@@ -95,9 +95,8 @@ namespace urchin {
 
         Vector3<float> normal = ac.crossProduct(ab);
         float normalLength = normal.length();
-        float sinAlpha = normalLength / (ab.length() * ac.length());
-        sinAlpha = std::clamp(sinAlpha, -0.999999f, 0.999999f); //because of rounding error
+        float sinAlpha = normalLength / (ab.length() * ac.length()); //note: sinAlpha must be clamped between -0.999999f and 0.999999f in case of std::asin usage
 
-        return (normal / normalLength) * std::asin(sinAlpha);
+        return (normal / normalLength) * MathFunction::approximateAsin(sinAlpha);
     }
 }

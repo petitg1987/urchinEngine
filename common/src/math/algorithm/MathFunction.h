@@ -14,6 +14,7 @@ namespace urchin {
 
             static unsigned int powerOfTwo(unsigned int);
             static int pow(int, unsigned int);
+            static float approximateAsin(float);
 
             template<class T> static bool isEqual(T, T, T tolerance = std::numeric_limits<T>::epsilon());
             template<class T> static bool isZero(T, T tolerance = std::numeric_limits<T>::epsilon());
