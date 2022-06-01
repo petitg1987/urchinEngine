@@ -48,8 +48,7 @@ namespace urchin {
         }
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             if (filenames[i].empty()) {
-                std::vector<unsigned char> defaultTexPixels;
-                defaultTexPixels.resize(skyboxSize * skyboxSize * 4, 0);
+                std::vector<unsigned char> defaultTexPixels(skyboxSize * skyboxSize * 4, 0);
                 skyboxImages[i] = std::make_shared<Image>(skyboxSize, skyboxSize, Image::IMAGE_RGBA, std::move(defaultTexPixels), false);
             }
         }
