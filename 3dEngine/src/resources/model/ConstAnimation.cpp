@@ -55,6 +55,10 @@ namespace urchin {
         return frameRate;
     }
 
+    float ConstAnimation::getAnimationDurationInSec() const {
+        return (float)getNumberFrames() / (float)frameRate;
+    }
+
     const Bone& ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const {
         assert(skeletonFrames.size() > frameNumber);
         return skeletonFrames[frameNumber][boneNumber];

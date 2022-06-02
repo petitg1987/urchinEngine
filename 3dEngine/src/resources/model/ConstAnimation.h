@@ -27,6 +27,7 @@ namespace urchin {
             unsigned int getNumberFrames() const;
             unsigned int getNumberBones() const;
             unsigned int getFrameRate() const;
+            float getAnimationDurationInSec() const;
             const Bone& getBone(unsigned int, unsigned int) const;
             bool isAnimatedBone(std::size_t) const;
 
