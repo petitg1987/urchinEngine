@@ -202,7 +202,7 @@ namespace urchin {
     void ModelInstanceDisplayer::updateMeshUv(const Model* model) const {
         if (checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
-            for (const auto& meshRenderer: meshRenderers) {
+            for (const auto& meshRenderer : meshRenderers) {
                 if (model->isMeshUpdated(meshIndex)) {
                     const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
                     if (displayMode == DisplayMode::DEFAULT_MODE) {
@@ -217,7 +217,7 @@ namespace urchin {
     void ModelInstanceDisplayer::updateMaterial(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
-            for (const auto& meshRenderer: meshRenderers) {
+            for (const auto& meshRenderer : meshRenderers) {
                 const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
 
                 fillMaterialData(mesh);
