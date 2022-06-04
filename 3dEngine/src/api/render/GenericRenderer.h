@@ -103,6 +103,9 @@ namespace urchin {
             std::vector<AlterableBufferHandler> uniformsBuffers;
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
+            std::vector<VkWriteDescriptorSet> descriptorWrites;
+            std::vector<VkDescriptorBufferInfo> bufferInfos;
+            std::vector<VkDescriptorImageInfo> imageInfosArray;
 
             bool drawCommandsDirty;
             std::vector<bool> descriptorSetsDirty;

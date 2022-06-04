@@ -1,4 +1,5 @@
 #include <libs/vma/vk_mem_alloc.h>
+#include <numeric>
 
 #include <api/render/GenericRenderer.h>
 #include <api/helper/DebugLabelHelper.h>
@@ -248,20 +249,21 @@ namespace urchin {
         }
     }
 
-    void GenericRenderer::updateDescriptorSets(std::size_t frameIndex) { //TODO avoid allocation
-        std::vector<VkWriteDescriptorSet> descriptorWrites;
+    void GenericRenderer::updateDescriptorSets(std::size_t frameIndex) {
+        descriptorWrites.clear();
+        descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size());
         uint32_t shaderUniformBinding = 0;
 
         //uniform buffer objects
-        std::vector<VkDescriptorBufferInfo> bufferInfos;
+        bufferInfos.clear();
+        bufferInfos.reserve(uniformData.size());
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             VkDescriptorBufferInfo bufferInfo{};
             bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
             bufferInfo.offset = 0;
             bufferInfo.range = VK_WHOLE_SIZE;
             bufferInfos.emplace_back(bufferInfo);
-        }
-        for (const auto& bufferInfo : bufferInfos) {
+
             VkWriteDescriptorSet uniformDescriptorWrites{};
             uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
@@ -269,32 +271,32 @@ namespace urchin {
             uniformDescriptorWrites.dstArrayElement = 0;
             uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uniformDescriptorWrites.descriptorCount = 1;
-            uniformDescriptorWrites.pBufferInfo = &bufferInfo; //warning: bufferInfo cannot be destroyed before calling vkUpdateDescriptorSets
+            uniformDescriptorWrites.pBufferInfo = &bufferInfos.back(); //warning: bufferInfos cannot be destroyed before calling vkUpdateDescriptorSets
             descriptorWrites.emplace_back(uniformDescriptorWrites);
         }
 
         //textures
-        std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
-        for (const auto& uniformTextureReaderArray : uniformTextureReaders) {
-            std::vector<VkDescriptorImageInfo> imageInfosArray;
-            for (const auto& uniformTextureReader : uniformTextureReaderArray) {
+        imageInfosArray.clear();
+        imageInfosArray.reserve(std::accumulate(uniformTextureReaders.begin(), uniformTextureReaders.end(), 0uL, [](std::size_t sum, const auto& utr) { return sum + utr.size(); }));
+        for (const std::vector<std::shared_ptr<TextureReader>>& uniformTextureReaderArray : uniformTextureReaders) {
+            std::size_t startIndex = imageInfosArray.size();
+
+            for (const std::shared_ptr<TextureReader>& uniformTextureReader : uniformTextureReaderArray) {
                 VkDescriptorImageInfo imageInfo{};
                 imageInfo.imageLayout = uniformTextureReader->getTexture()->isDepthFormat() ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
                 imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
                 imageInfo.sampler = uniformTextureReader->getParam().getTextureSampler();
                 imageInfosArray.emplace_back(imageInfo);
             }
-            imageInfos.emplace_back(imageInfosArray);
-        }
-        for (auto& imageInfo : imageInfos) {
+
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
             textureDescriptorWrites.dstBinding = shaderUniformBinding++;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-            textureDescriptorWrites.descriptorCount = (uint32_t)imageInfo.size();
-            textureDescriptorWrites.pImageInfo = imageInfo.data(); //warning: imageInfo cannot be destroyed before calling vkUpdateDescriptorSets
+            textureDescriptorWrites.descriptorCount = (uint32_t)uniformTextureReaderArray.size();
+            textureDescriptorWrites.pImageInfo = &imageInfosArray[startIndex]; //warning: imageInfosArray cannot be destroyed before calling vkUpdateDescriptorSets
             descriptorWrites.emplace_back(textureDescriptorWrites);
         }
 
