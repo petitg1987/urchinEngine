@@ -34,7 +34,7 @@ namespace urchin {
 
             const std::string& getName() const;
             const RenderTarget& getRenderTarget() const;
-            bool isDrawCommandDirty() const;
+            bool needCommandBufferRefresh(std::size_t) const;
 
             bool isEnabled() const;
             void enableRenderer(unsigned int);
@@ -73,6 +73,7 @@ namespace urchin {
             void createDescriptorPool();
             void createDescriptorSets();
             void updateDescriptorSets();
+            void updateDescriptorSets(std::size_t);
             void destroyDescriptorSetsAndPool();
 
             void updateGraphicData(uint32_t);
@@ -103,7 +104,8 @@ namespace urchin {
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
 
-            bool drawCommandDirty;
+            bool drawCommandsDirty;
+            std::vector<bool> descriptorSetsDirty;
             std::vector<VkBuffer> rawVertexBuffers;
     };
 

@@ -23,7 +23,9 @@ namespace urchin {
             uniformTextureReaders(rendererBuilder.getUniformTextureReaders()),
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             descriptorPool(nullptr),
-            drawCommandDirty(false) {
+            drawCommandsDirty(false) {
+        descriptorSetsDirty.resize(renderTarget.getNumFramebuffer(), false);
+
         pipelineBuilder = std::make_unique<PipelineBuilder>(name);
         pipelineBuilder->setupRenderTarget(renderTarget);
         pipelineBuilder->setupShader(shader);
@@ -94,8 +96,8 @@ namespace urchin {
         return renderTarget;
     }
 
-    bool GenericRenderer::isDrawCommandDirty() const {
-        return drawCommandDirty;
+    bool GenericRenderer::needCommandBufferRefresh(std::size_t frameIndex) const {
+        return drawCommandsDirty || descriptorSetsDirty[frameIndex];
     }
 
     bool GenericRenderer::isEnabled() const {
@@ -241,62 +243,64 @@ namespace urchin {
     }
 
     void GenericRenderer::updateDescriptorSets() {
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
-
         for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {
-            std::vector<VkWriteDescriptorSet> descriptorWrites;
-            uint32_t shaderUniformBinding = 0;
+            updateDescriptorSets(frameIndex);
+        }
+    }
 
-            //uniform buffer objects
-            std::vector<VkDescriptorBufferInfo> bufferInfos;
-            for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
-                VkDescriptorBufferInfo bufferInfo{};
-                bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
-                bufferInfo.offset = 0;
-                bufferInfo.range = VK_WHOLE_SIZE;
-                bufferInfos.emplace_back(bufferInfo);
-            }
-            for (const auto& bufferInfo : bufferInfos) {
-                VkWriteDescriptorSet uniformDescriptorWrites{};
-                uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
-                uniformDescriptorWrites.dstBinding = shaderUniformBinding++;
-                uniformDescriptorWrites.dstArrayElement = 0;
-                uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-                uniformDescriptorWrites.descriptorCount = 1;
-                uniformDescriptorWrites.pBufferInfo = &bufferInfo; //warning: bufferInfo cannot be destroyed before calling vkUpdateDescriptorSets
-                descriptorWrites.emplace_back(uniformDescriptorWrites);
-            }
+    void GenericRenderer::updateDescriptorSets(std::size_t frameIndex) { //TODO avoid allocation
+        std::vector<VkWriteDescriptorSet> descriptorWrites;
+        uint32_t shaderUniformBinding = 0;
 
-            //textures
-            std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
-            for (const auto& uniformTextureReaderArray : uniformTextureReaders) {
-                std::vector<VkDescriptorImageInfo> imageInfosArray;
-                for (const auto& uniformTextureReader : uniformTextureReaderArray) {
-                    VkDescriptorImageInfo imageInfo{};
-                    imageInfo.imageLayout = uniformTextureReader->getTexture()->isDepthFormat() ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                    imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
-                    imageInfo.sampler = uniformTextureReader->getParam().getTextureSampler();
-                    imageInfosArray.emplace_back(imageInfo);
-                }
-                imageInfos.emplace_back(imageInfosArray);
-            }
-            for (auto& imageInfo : imageInfos) {
-                VkWriteDescriptorSet textureDescriptorWrites{};
-                textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
-                textureDescriptorWrites.dstBinding = shaderUniformBinding++;
-                textureDescriptorWrites.dstArrayElement = 0;
-                textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-                textureDescriptorWrites.descriptorCount = (uint32_t)imageInfo.size();
-                textureDescriptorWrites.pImageInfo = imageInfo.data(); //warning: imageInfo cannot be destroyed before calling vkUpdateDescriptorSets
-                descriptorWrites.emplace_back(textureDescriptorWrites);
-            }
-
-            vkUpdateDescriptorSets(logicalDevice, (uint32_t)(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+        //uniform buffer objects
+        std::vector<VkDescriptorBufferInfo> bufferInfos;
+        for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
+            VkDescriptorBufferInfo bufferInfo{};
+            bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
+            bufferInfo.offset = 0;
+            bufferInfo.range = VK_WHOLE_SIZE;
+            bufferInfos.emplace_back(bufferInfo);
+        }
+        for (const auto& bufferInfo : bufferInfos) {
+            VkWriteDescriptorSet uniformDescriptorWrites{};
+            uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            uniformDescriptorWrites.dstBinding = shaderUniformBinding++;
+            uniformDescriptorWrites.dstArrayElement = 0;
+            uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            uniformDescriptorWrites.descriptorCount = 1;
+            uniformDescriptorWrites.pBufferInfo = &bufferInfo; //warning: bufferInfo cannot be destroyed before calling vkUpdateDescriptorSets
+            descriptorWrites.emplace_back(uniformDescriptorWrites);
         }
 
-        drawCommandDirty = true;
+        //textures
+        std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
+        for (const auto& uniformTextureReaderArray : uniformTextureReaders) {
+            std::vector<VkDescriptorImageInfo> imageInfosArray;
+            for (const auto& uniformTextureReader : uniformTextureReaderArray) {
+                VkDescriptorImageInfo imageInfo{};
+                imageInfo.imageLayout = uniformTextureReader->getTexture()->isDepthFormat() ? VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo.imageView = uniformTextureReader->getTexture()->getImageView();
+                imageInfo.sampler = uniformTextureReader->getParam().getTextureSampler();
+                imageInfosArray.emplace_back(imageInfo);
+            }
+            imageInfos.emplace_back(imageInfosArray);
+        }
+        for (auto& imageInfo : imageInfos) {
+            VkWriteDescriptorSet textureDescriptorWrites{};
+            textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            textureDescriptorWrites.dstBinding = shaderUniformBinding++;
+            textureDescriptorWrites.dstArrayElement = 0;
+            textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            textureDescriptorWrites.descriptorCount = (uint32_t)imageInfo.size();
+            textureDescriptorWrites.pImageInfo = imageInfo.data(); //warning: imageInfo cannot be destroyed before calling vkUpdateDescriptorSets
+            descriptorWrites.emplace_back(textureDescriptorWrites);
+        }
+
+        vkUpdateDescriptorSets(GraphicService::instance().getDevices().getLogicalDevice(), (uint32_t)(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+
+        drawCommandsDirty = true;
     }
 
     void GenericRenderer::destroyDescriptorSetsAndPool() {
@@ -369,15 +373,13 @@ namespace urchin {
             assert(uniformTextureReaders.size() > uniformTexPosition);
             assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
         #endif
-        VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
-        }
 
         textureReader->initialize();
         uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
 
-        updateDescriptorSets();
+        for (auto&& descriptorSetDirty : descriptorSetsDirty) { //do not use 'bool&&' due to packing, only use 'auto&&'
+            descriptorSetDirty = true;
+        }
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
@@ -413,14 +415,14 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             if (data[dataIndex].hasNewData(frameIndex)) {
                 DataContainer& dataContainer = data[dataIndex];
-                drawCommandDirty |= vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
+                drawCommandsDirty |= vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData());
                 dataContainer.markDataAsProcessed(frameIndex);
             }
         }
 
         //update instance data
         if (instanceData && instanceData->hasNewData(frameIndex)) {
-            drawCommandDirty |= instanceVertexBuffer.updateData(frameIndex, instanceData->getBufferSize(), instanceData->getData());
+            drawCommandsDirty |= instanceVertexBuffer.updateData(frameIndex, instanceData->getBufferSize(), instanceData->getData());
             instanceData->markDataAsProcessed(frameIndex);
         }
 
@@ -428,7 +430,7 @@ namespace urchin {
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
                 const auto& dataContainer = uniformData[uniformDataIndex];
-                drawCommandDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
+                drawCommandsDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
                 uniformData[uniformDataIndex].markDataAsProcessed(frameIndex);
             }
         }
@@ -436,6 +438,11 @@ namespace urchin {
 
     std::size_t GenericRenderer::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufRender");
+
+        if (descriptorSetsDirty[frameIndex]) {
+            updateDescriptorSets(frameIndex);
+            descriptorSetsDirty[frameIndex] = false;
+        }
 
         if (boundPipelineId != pipeline->getId()) {
             vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getGraphicsPipeline());
@@ -466,7 +473,7 @@ namespace urchin {
             vkCmdDraw(commandBuffer, vertexCount, instanceCount, 0, 0);
         }
 
-        drawCommandDirty = false;
+        drawCommandsDirty = false;
         return pipeline->getId();
     }
 

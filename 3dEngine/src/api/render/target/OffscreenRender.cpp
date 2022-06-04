@@ -288,13 +288,13 @@ namespace urchin {
         }
     }
 
-    bool OffscreenRender::needCommandBufferRefresh(std::size_t /*cmdBufferIndex*/) const {
+    bool OffscreenRender::needCommandBufferRefresh(std::size_t frameIndex) const {
         if (areRenderersDirty()) {
             return true;
         }
 
-        return std::ranges::any_of(getRenderers(), [](const auto* renderer) {
-            return renderer->isEnabled() && renderer->isDrawCommandDirty();
+        return std::ranges::any_of(getRenderers(), [frameIndex](const auto* renderer) {
+            return renderer->isEnabled() && renderer->needCommandBufferRefresh(frameIndex);
         });
     }
 

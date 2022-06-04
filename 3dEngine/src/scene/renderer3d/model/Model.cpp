@@ -192,7 +192,7 @@ namespace urchin {
     }
 
     void Model::notifyMeshVerticesUpdatedReset() {
-        for (bool&& meshUpdated : meshesUpdated) {
+        for (auto&& meshUpdated : meshesUpdated) { //do not use 'bool&&' due to packing, only use 'auto&&'
             meshUpdated = true;
         }
         originalMeshesUpdated = false;
