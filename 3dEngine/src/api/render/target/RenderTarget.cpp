@@ -423,7 +423,7 @@ namespace urchin {
                 vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 {
                     std::size_t boundPipelineId = 0;
-                    for (auto& renderer: renderers) {
+                    for (GenericRenderer* renderer: renderers) {
                         if (renderer->isEnabled()) {
                             boundPipelineId = renderer->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
                         }
