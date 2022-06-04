@@ -138,8 +138,7 @@ namespace urchin {
         for (unsigned int meshIndex = 0; meshIndex < meshes->getNumberMeshes(); ++meshIndex) {
             meshes->getMesh(meshIndex).resetSkeleton();
         }
-
-        notifyMeshVerticesUpdatedReset();
+        notifyMeshVerticesUpdated();
     }
 
     void Model::gotoAnimationFrame(std::string_view animationName, unsigned int animationFrameIndex) {
@@ -191,11 +190,10 @@ namespace urchin {
         notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
-    void Model::notifyMeshVerticesUpdatedReset() {
-        for (auto&& meshUpdated : meshesUpdated) { //do not use 'bool&&' due to packing, only use 'auto&&'
-            meshUpdated = true;
-        }
-        originalMeshesUpdated = false;
+    void Model::notifyMeshVerticesUpdated() {
+        std::fill(meshesUpdated.begin(), meshesUpdated.end(), true);
+
+        originalMeshesUpdated = true;
         notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
@@ -213,6 +211,14 @@ namespace urchin {
 
         originalMeshesUpdated = true;
         notifyObservers(this, Model::MESH_UV_UPDATED);
+    }
+
+    void Model::notifyMeshMaterialUpdated(unsigned int updatedMeshIndex) {
+        std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
+        meshesUpdated[updatedMeshIndex] = true;
+
+        originalMeshesUpdated = true;
+        notifyObservers(this, Model::MATERIAL_UPDATED);
     }
 
     const Meshes* Model::getMeshes() const {
@@ -354,7 +360,7 @@ namespace urchin {
     void Model::updateMaterial(unsigned int meshIndex, std::shared_ptr<Material> material) {
         if (material.get() != &meshes->getMesh(meshIndex).getMaterial()) {
             meshes->updateMaterial(meshIndex, std::move(material));
-            notifyObservers(this, Model::MATERIAL_UPDATED);
+            notifyMeshMaterialUpdated(meshIndex);
         }
     }
 

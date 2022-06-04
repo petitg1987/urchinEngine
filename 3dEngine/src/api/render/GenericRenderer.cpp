@@ -377,9 +377,7 @@ namespace urchin {
         textureReader->initialize();
         uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
 
-        for (auto&& descriptorSetDirty : descriptorSetsDirty) { //do not use 'bool&&' due to packing, only use 'auto&&'
-            descriptorSetDirty = true;
-        }
+        std::fill(descriptorSetsDirty.begin(), descriptorSetsDirty.end(), true);
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {

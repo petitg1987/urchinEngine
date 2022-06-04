@@ -67,10 +67,10 @@ namespace urchin {
             bool isOriginalMeshesUpdated() const;
             bool isMeshUpdated(unsigned int) const;
 
-            void updateAnimation(float); //TODO should create instance not instanciable !
-            void updateVertices(unsigned int, const std::vector<Point3<float>>&); //TODO should create instance not instanciable !
-            void updateUv(unsigned int, const std::vector<Point2<float>>&); //TODO should create instance not instanciable !
-            void updateMaterial(unsigned int, std::shared_ptr<Material>); //TODO should create instance not instanciable !
+            void updateAnimation(float);
+            void updateVertices(unsigned int, const std::vector<Point3<float>>&);
+            void updateUv(unsigned int, const std::vector<Point2<float>>&);
+            void updateMaterial(unsigned int, std::shared_ptr<Material>);
 
         private:
             explicit Model(const std::string&);
@@ -80,9 +80,10 @@ namespace urchin {
             void initialize();
             void onMoving(const Transform<float>&);
             void notifyMeshVerticesUpdatedByAnimation();
-            void notifyMeshVerticesUpdatedReset();
+            void notifyMeshVerticesUpdated();
             void notifyMeshVerticesUpdated(unsigned int);
             void notifyMeshUvUpdated(unsigned int);
+            void notifyMeshMaterialUpdated(unsigned int);
 
             std::vector<AABBox<float>> defaultModelAABBoxes;
 

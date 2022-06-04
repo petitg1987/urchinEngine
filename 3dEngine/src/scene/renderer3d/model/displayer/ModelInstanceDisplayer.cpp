@@ -218,18 +218,19 @@ namespace urchin {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
-                const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                if (model->isMeshUpdated(meshIndex)) {
+                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
 
-                fillMaterialData(mesh);
-                meshRenderer->updateUniformData(1, &materialData);
+                    fillMaterialData(mesh);
+                    meshRenderer->updateUniformData(1, &materialData);
 
-                if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
-                    meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
+                    if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
+                    }
+                    if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                    }
                 }
-                if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
-                    meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
-                }
-
                 meshIndex++;
             }
         }
