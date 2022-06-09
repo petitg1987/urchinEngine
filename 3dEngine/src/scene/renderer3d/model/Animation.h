@@ -25,7 +25,7 @@ namespace urchin {
             const std::vector<std::size_t>& getAnimatedMeshIndices() const;
 
             void animate(float);
-            void gotoFrame(unsigned int);
+            bool gotoFrame(unsigned int);
 
             void onMoving(const Transform<float>&);
 

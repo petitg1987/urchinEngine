@@ -101,7 +101,7 @@ namespace urchin {
 
     void Model::animate(std::string_view animationName, AnimRepeat animLoop, AnimStart animStart) {
         activeAnimation = animations.find(animationName)->second.get();
-        if (animStart == AnimStart::AT_FIRST_FRAME && activeAnimation->getCurrentFrame() != 0) {
+        if (animStart == AnimStart::AT_FIRST_FRAME) {
             activeAnimation->gotoFrame(0);
         }
         isModelAnimated = true;
@@ -129,9 +129,7 @@ namespace urchin {
 
         //reset all animations to frame 0
         for (const auto& [animName, anim] : animations) {
-            if (anim->getCurrentFrame() != 0) {
-                anim->gotoFrame(0);
-            }
+            anim->gotoFrame(0);
         }
 
         //apply skeleton bind pose
@@ -148,8 +146,8 @@ namespace urchin {
             onMoving(transform);
         }
 
-        if (activeAnimation->getCurrentFrame() != animationFrameIndex) {
-            activeAnimation->gotoFrame(animationFrameIndex);
+        bool frameUpdated = activeAnimation->gotoFrame(animationFrameIndex);
+        if (frameUpdated) {
             notifyMeshVerticesUpdatedByAnimation();
         }
     }

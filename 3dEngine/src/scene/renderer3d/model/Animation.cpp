@@ -17,9 +17,9 @@ namespace urchin {
             }
         }
 
-        animationInformation.lastTime = 0.0f;
-        animationInformation.maxTime = 1.0f / (float)this->constAnimation->getFrameRate();
-        animationInformation.currFrame = 0;
+        animationInformation.frameElapsedTimeSec = 0.0f;
+        animationInformation.frameTotalTimeSec = 1.0f / (float)this->constAnimation->getFrameRate();
+        animationInformation.currentFrame = 0;
         computeNextFrame();
     }
 
@@ -57,12 +57,12 @@ namespace urchin {
     }
 
     unsigned int Animation::getCurrentFrame() const {
-        return animationInformation.currFrame;
+        return animationInformation.currentFrame;
     }
 
     float Animation::getAnimationProgression() const {
         auto currentFrame = (float)getCurrentFrame();
-        currentFrame += animationInformation.lastTime / animationInformation.maxTime;
+        currentFrame += animationInformation.frameElapsedTimeSec / animationInformation.frameTotalTimeSec;
         return currentFrame / ((float)getConstAnimation().getNumberFrames() - 1.0f);
     }
 
@@ -81,18 +81,18 @@ namespace urchin {
 
     void Animation::animate(float dt) {
         //calculate current and next frames
-        animationInformation.lastTime += dt;
-        if (animationInformation.lastTime >= animationInformation.maxTime) { //move to next frame
-            animationInformation.lastTime = 0.0f;
-            animationInformation.currFrame = animationInformation.nextFrame;
+        animationInformation.frameElapsedTimeSec += dt;
+        if (animationInformation.frameElapsedTimeSec >= animationInformation.frameTotalTimeSec) { //move to next frame
+            animationInformation.frameElapsedTimeSec = 0.0f;
+            animationInformation.currentFrame = animationInformation.nextFrame;
             computeNextFrame();
         }
 
         //interpolate skeletons between two frames
-        float interp = animationInformation.lastTime * (float)constAnimation->getFrameRate();
+        float interp = animationInformation.frameElapsedTimeSec * (float)constAnimation->getFrameRate();
         for (unsigned int i = 0; i < constAnimation->getNumberBones(); ++i) {
             //shortcut
-            const Bone& currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);
+            const Bone& currentFrameBone = constAnimation->getBone(animationInformation.currentFrame, i);
             const Bone& nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
 
             //copy parent index
@@ -114,22 +114,22 @@ namespace urchin {
     }
 
     void Animation::computeNextFrame() {
-        animationInformation.nextFrame = animationInformation.currFrame + 1;
+        animationInformation.nextFrame = animationInformation.currentFrame + 1;
         if (animationInformation.nextFrame >= constAnimation->getNumberFrames()) {
             animationInformation.nextFrame = 0;
         }
     }
 
-    void Animation::gotoFrame(unsigned int frame) {
+    bool Animation::gotoFrame(unsigned int frame) {
         if (frame >= constAnimation->getNumberFrames()) {
             throw std::runtime_error("Frame (" + std::to_string(frame) + ") does not exist in animation " + constAnimation->getName() + ". Total frame: " + std::to_string(constAnimation->getNumberFrames()));
-        } else if (frame == getCurrentFrame()) {
-            return;
+        } else if (frame == getCurrentFrame() && MathFunction::isZero(animationInformation.frameElapsedTimeSec, 0.001f)) {
+            return false;
         }
 
         //update animation information
-        animationInformation.lastTime = 0.0f;
-        animationInformation.currFrame = frame;
+        animationInformation.frameElapsedTimeSec = 0.0f;
+        animationInformation.currentFrame = frame;
         computeNextFrame();
 
         //update skeletons
@@ -145,6 +145,8 @@ namespace urchin {
         for (unsigned int meshIndex = 0; meshIndex < meshes.getNumberMeshes(); ++meshIndex) {
             meshes.getMesh(meshIndex).updateSkeleton(skeleton);
         }
+
+        return true;
     }
 
 }
