@@ -115,4 +115,12 @@ namespace urchin {
         pascalCaseStr[0] = static_cast<char>(std::tolower(pascalCaseStr[0]));
     }
 
+    void StringUtil::camelToKebabCase(std::string& camelCaseStr) {
+        //TODO ...
+    }
+
+    void StringUtil::kebabToCamelCase(std::string& kebabCaseStr) {
+        //TODO ...
+    }
+
 }

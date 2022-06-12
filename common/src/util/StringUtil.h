@@ -25,6 +25,8 @@ namespace urchin {
 
             static void camelToPascalCase(std::string&);
             static void pascalToCamelCase(std::string&);
+            static void camelToKebabCase(std::string&);
+            static void kebabToCamelCase(std::string&);
 
             template<class T> static std::string toString(const T&);
 
