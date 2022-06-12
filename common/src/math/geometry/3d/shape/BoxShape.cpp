@@ -54,7 +54,7 @@ namespace urchin {
             if (halfSizes[0] < halfSizes[2]) {
                 return 0;
             }
-            return 1;
+            return 2;
         } else if (halfSizes[1] < halfSizes[2]) {
             return 1;
         }
