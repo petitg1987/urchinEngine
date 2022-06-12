@@ -107,20 +107,42 @@ namespace urchin {
         return true;
     }
 
-    void StringUtil::camelToPascalCase(std::string& camelCaseStr) {
-        camelCaseStr[0] = static_cast<char>(std::toupper(camelCaseStr[0]));
+    std::string StringUtil::camelToPascalCase(const std::string& camelCaseStr) {
+        std::string pascalCaseStr = camelCaseStr;
+        pascalCaseStr[0] = static_cast<char>(std::toupper(pascalCaseStr[0]));
+        return pascalCaseStr;
     }
 
-    void StringUtil::pascalToCamelCase(std::string& pascalCaseStr) {
-        pascalCaseStr[0] = static_cast<char>(std::tolower(pascalCaseStr[0]));
+    std::string StringUtil::pascalToCamelCase(const std::string& pascalCaseStr) {
+        std::string camelCaseStr = pascalCaseStr;
+        camelCaseStr[0] = static_cast<char>(std::tolower(camelCaseStr[0]));
+        return camelCaseStr;
     }
 
-    void StringUtil::camelToKebabCase(std::string& camelCaseStr) {
-        //TODO ...
+    std::string StringUtil::camelToKebabCase(const std::string& camelCaseStr) {
+        std::string kebabCaseStr;
+        kebabCaseStr.push_back(static_cast<char>(tolower(camelCaseStr[0])));
+        for (std::size_t i = 1; i < camelCaseStr.size(); ++i) {
+            if (isupper(camelCaseStr[i]) && islower(camelCaseStr[i - 1]) && camelCaseStr[i - 1] != '-') {
+                kebabCaseStr += "-";
+            }
+            kebabCaseStr.push_back(static_cast<char>(tolower(camelCaseStr[i])));
+        }
+        return kebabCaseStr;
     }
 
-    void StringUtil::kebabToCamelCase(std::string& kebabCaseStr) {
-        //TODO ...
+    std::string StringUtil::kebabToCamelCase(const std::string& kebabCaseStr) {
+        std::string camelCaseStr;
+        camelCaseStr.push_back(static_cast<char>(tolower(kebabCaseStr[0])));
+        for (std::size_t i = 1; i < kebabCaseStr.size(); ++i) {
+            if (kebabCaseStr[i] == '-' && i + 1 < kebabCaseStr.size() && islower(kebabCaseStr[i + 1])) {
+                camelCaseStr.push_back(static_cast<char>(toupper(kebabCaseStr[i + 1])));
+                i++;
+            } else {
+                camelCaseStr.push_back(static_cast<char>(kebabCaseStr[i]));
+            }
+        }
+        return camelCaseStr;
     }
 
 }

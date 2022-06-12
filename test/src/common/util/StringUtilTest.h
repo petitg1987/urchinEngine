@@ -11,4 +11,7 @@ class StringUtilTest : public CppUnit::TestFixture {
         void splitString();
         void splitEmptyString();
         void mergeString();
+
+        void camelToKebabCase();
+        void kebabToCamelCase();
 };

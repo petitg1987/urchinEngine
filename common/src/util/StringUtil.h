@@ -23,10 +23,10 @@ namespace urchin {
 
             static bool insensitiveEquals(std::string_view, std::string_view);
 
-            static void camelToPascalCase(std::string&);
-            static void pascalToCamelCase(std::string&);
-            static void camelToKebabCase(std::string&);
-            static void kebabToCamelCase(std::string&);
+            [[nodiscard]] static std::string camelToPascalCase(const std::string&);
+            [[nodiscard]] static std::string pascalToCamelCase(const std::string&);
+            [[nodiscard]] static std::string camelToKebabCase(const std::string&);
+            [[nodiscard]] static std::string kebabToCamelCase(const std::string&);
 
             template<class T> static std::string toString(const T&);
 
