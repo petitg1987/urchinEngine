@@ -166,7 +166,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
 
     float num   = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-    denom = 3.14159265358979323 * denom * denom;
+    denom = 3.14159265358 * denom * denom;
 
     return num / denom;
 }
@@ -213,33 +213,50 @@ void main() {
             fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor);
         }
 
+        //PBR init
+        float roughness = 0.5f;
+        float metallic = 0.0f;
+
+        vec3 F0 = vec3(0.04);
+        F0 = mix(F0, diffuse, metallic);
+        vec3 Lo = vec3(0.0); //reflection equation
+
         float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
         float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
-            if (lightsData.lightsInfo[lightIndex].isExist) {
-                LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
-                vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
-                vec3 lightSpecular = vec3(0.0, 0.0, 0.0);
-
-                //light specular
-                float specularStrength = 0.4; //TODO texture param
-                float shininess = 64;
-                vec3 reflectDirection = reflect(-lightValues.vertexToLight, normal);
-                float specularValue = pow(max(dot(vertexToCameraPos, reflectDirection), 0.0), shininess);
-                lightSpecular = specularStrength * specularValue * lightsData.lightsInfo[lightIndex].lightAmbient;
-
-                float shadowAttenuation = 1.0; //1.0 = no shadow
-                if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
-                    shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
-                    shadowLightIndex++;
-                }
-
-                fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * (shadowAttenuation * (diffuse * lightValues.NdotL + lightSpecular) + ambient);
-            } else {
-                break; //no more light
+            if (!lightsData.lightsInfo[lightIndex].isExist) {
+                break;//no more light
             }
+
+            LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
+
+            float shadowAttenuation = 1.0; //1.0 = no shadow
+            if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
+                shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
+                shadowLightIndex++;
+            }
+
+            //PBR
+            vec3 H = normalize(vertexToCameraPos + lightValues.vertexToLight);
+            vec3 radiance = lightsData.lightsInfo[lightIndex].lightAmbient * lightValues.lightAttenuation;
+
+            // cook-torrance brdf
+            float NDF = DistributionGGX(normal, H, roughness);
+            float G = GeometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
+            vec3 F = fresnelSchlick(max(dot(H, vertexToCameraPos), 0.0), F0);
+
+            vec3 kS = F;
+            vec3 kD = vec3(1.0) - kS;
+            kD *= 1.0 - metallic;
+
+            vec3 numerator = NDF * G * F;
+            float denominator = 4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001;
+            vec3 specular = numerator / denominator;
+
+            Lo += shadowAttenuation * emissiveAttenuation * (kD * (diffuse) / 3.14159265358 + specular) * radiance * lightValues.NdotL;
         }
-        fragColor.rgb += diffuse * emissiveFactor;
+
+        fragColor.rgb = (modelAmbient + Lo) + (diffuse * emissiveFactor);
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgb = diffuse;
     }

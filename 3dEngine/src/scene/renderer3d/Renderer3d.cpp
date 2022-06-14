@@ -321,7 +321,7 @@ namespace urchin {
 
     void Renderer3d::createOrUpdateLightingPass() {
         //deferred rendering
-        diffuseTexture = Texture::build("diffuse", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
+        diffuseTexture = Texture::build("diffuse", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //TODO rename in albedo
         normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
             auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
