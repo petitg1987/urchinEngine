@@ -158,7 +158,7 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
     return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcDiffuse.rgba;
 }
 
-float DistributionGGX(vec3 normal, vec3 H, float roughness) {
+float distributionGGX(vec3 normal, vec3 H, float roughness) {
     float a = roughness * roughness;
     float a2 = a * a;
     float NdotH  = max(dot(normal, H), 0.0);
@@ -171,7 +171,7 @@ float DistributionGGX(vec3 normal, vec3 H, float roughness) {
     return num / denom;
 }
 
-float GeometrySchlickGGX(float NdotV, float roughness) {
+float geometrySchlickGGX(float NdotV, float roughness) {
     float r = (roughness + 1.0);
     float k = (r * r) / 8.0;
 
@@ -180,11 +180,12 @@ float GeometrySchlickGGX(float NdotV, float roughness) {
 
     return num / denom;
 }
-float GeometrySmith(vec3 normal, vec3 V, vec3 L, float roughness) {
+
+float geometrySmith(vec3 normal, vec3 V, vec3 L, float roughness) {
     float NdotV = max(dot(normal, V), 0.0);
     float NdotL = max(dot(normal, L), 0.0);
-    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+    float ggx2 = geometrySchlickGGX(NdotV, roughness);
+    float ggx1 = geometrySchlickGGX(NdotL, roughness);
 
     return ggx1 * ggx2;
 }
@@ -221,8 +222,6 @@ void main() {
         F0 = mix(F0, diffuse, metallic);
         vec3 Lo = vec3(0.0); //reflection equation
 
-        float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
-        float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (!lightsData.lightsInfo[lightIndex].isExist) {
                 break;//no more light
@@ -241,8 +240,8 @@ void main() {
             vec3 radiance = lightsData.lightsInfo[lightIndex].lightAmbient * lightValues.lightAttenuation;
 
             // cook-torrance brdf
-            float NDF = DistributionGGX(normal, H, roughness);
-            float G = GeometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
+            float NDF = distributionGGX(normal, H, roughness);
+            float G = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
             vec3 F = fresnelSchlick(max(dot(H, vertexToCameraPos), 0.0), F0);
 
             vec3 kS = F;
@@ -253,10 +252,13 @@ void main() {
             float denominator = 4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001;
             vec3 specular = numerator / denominator;
 
-            Lo += shadowAttenuation * emissiveAttenuation * (kD * (diffuse) / 3.14159265358 + specular) * radiance * lightValues.NdotL;
+            Lo += (modelAmbient * lightValues.lightAttenuation) + (shadowAttenuation * (kD * (diffuse) / 3.14159265358 + specular) * radiance * lightValues.NdotL);
         }
 
-        fragColor.rgb = (modelAmbient + Lo) + (diffuse * emissiveFactor);
+        float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
+        vec3 emissiveDiffuse = diffuse * emissiveFactor;
+
+        fragColor.rgb = Lo + emissiveDiffuse;
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgb = diffuse;
     }
