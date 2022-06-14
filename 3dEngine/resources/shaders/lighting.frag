@@ -204,7 +204,7 @@ void main() {
 
     if (modelAmbientFactor < 0.9999) { //apply lighting
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
-        vec3 normal = vec3(normalAndAmbient) * 2.0 - 1.0;
+        vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
         vec3 modelAmbient = diffuse * modelAmbientFactor;
         fragColor = vec4(lightsData.globalAmbient, 1.0);
 
@@ -222,8 +222,8 @@ void main() {
                 vec3 lightSpecular = vec3(0.0, 0.0, 0.0);
 
                 //light specular
-                float specularStrength = 1.0; //TODO texture param
-                float shininess = 32;
+                float specularStrength = 0.4; //TODO texture param
+                float shininess = 64;
                 vec3 reflectDirection = reflect(-lightValues.vertexToLight, normal);
                 float specularValue = pow(max(dot(vertexToCameraPos, reflectDirection), 0.0), shininess);
                 lightSpecular = specularStrength * specularValue * lightsData.lightsInfo[lightIndex].lightAmbient;
@@ -234,7 +234,7 @@ void main() {
                     shadowLightIndex++;
                 }
 
-                fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * (shadowAttenuation * ((diffuse + lightSpecular) * lightValues.NdotL) + ambient);
+                fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * (shadowAttenuation * (diffuse * lightValues.NdotL + lightSpecular) + ambient);
             } else {
                 break; //no more light
             }
