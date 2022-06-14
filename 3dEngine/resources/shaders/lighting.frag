@@ -158,6 +158,41 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
     return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcDiffuse.rgba;
 }
 
+float DistributionGGX(vec3 N, vec3 H, float roughness) {
+    float a      = roughness*roughness;
+    float a2     = a*a;
+    float NdotH  = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+
+    float num   = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = 3.14159265358979323 * denom * denom;
+
+    return num / denom;
+}
+
+float GeometrySchlickGGX(float NdotV, float roughness) {
+    float r = (roughness + 1.0);
+    float k = (r*r) / 8.0;
+
+    float num   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return num / denom;
+}
+float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+
+    return ggx1 * ggx2;
+}
+
+vec3 fresnelSchlick(float cosTheta, vec3 F0) {
+    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+}
+
 void main() {
     float depthValue = texture(depthTex, texCoordinates).r;
     vec4 diffuseAndEmissive = texture(colorAndEmissiveTex, texCoordinates);
@@ -168,6 +203,7 @@ void main() {
     float modelAmbientFactor = normalAndAmbient.a;
 
     if (modelAmbientFactor < 0.9999) { //apply lighting
+        vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = vec3(normalAndAmbient) * 2.0 - 1.0;
         vec3 modelAmbient = diffuse * modelAmbientFactor;
         fragColor = vec4(lightsData.globalAmbient, 1.0);
@@ -181,17 +217,24 @@ void main() {
         float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor); //disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
-                float NdotL = 0.0;
-                float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
+                LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
+                vec3 lightSpecular = vec3(0.0, 0.0, 0.0);
+
+                //specular / shininess
+                float specularStrength = 1.0; //TODO texture param
+                float shininess = 32;
+                vec3 reflectDirection = reflect(-lightValues.vertexToLight, normal);
+                float specularValue = pow(max(dot(vertexToCameraPos, reflectDirection), 0.0), shininess);
+                lightSpecular = specularStrength * specularValue * lightsData.lightsInfo[lightIndex].lightAmbient;
 
                 float shadowAttenuation = 1.0; //1.0 = no shadow
                 if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
-                    shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, NdotL);
+                    shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
                     shadowLightIndex++;
                 }
 
-                fragColor.rgb += emissiveAttenuation * lightAttenuation * (shadowAttenuation * (diffuse * NdotL) + ambient);
+                fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * (shadowAttenuation * ((diffuse + lightSpecular) * lightValues.NdotL) + ambient);
             } else {
                 break; //no more light
             }

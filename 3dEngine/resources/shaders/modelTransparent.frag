@@ -63,11 +63,10 @@ void main() {
         float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor);//disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
-                float NdotL = 0.0;
-                float lightAttenuation = computeLightAttenuation(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition), NdotL);
+                LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
 
-                fragColor.rgb += emissiveAttenuation * lightAttenuation * ((diffuse.rgb * NdotL) + ambient);
+                fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * ((diffuse.rgb * lightValues.NdotL) + ambient);
             } else {
                 break;//no more light
             }

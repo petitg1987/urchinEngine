@@ -7,22 +7,26 @@ struct LightInfo {
     vec3 lightAmbient;
 };
 
-float computeLightAttenuation(LightInfo lightInfo, vec3 normal, vec3 worldPosition, inout float NdotL) {
-    vec3 vertexToLightNormalized;
+struct LightValues {
+    vec3 vertexToLight;
     float lightAttenuation;
+    float NdotL;
+};
+
+LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosition) {
+    LightValues lightValues;
 
     if (lightInfo.hasParallelBeams) { //sun light
-        vec3 vertexToLight = -lightInfo.positionOrDirection;
-        vertexToLightNormalized = normalize(vertexToLight);
-        lightAttenuation = 1.0;
+        lightValues.vertexToLight = normalize(-lightInfo.positionOrDirection);
+        lightValues.lightAttenuation = 1.0;
     } else { //omnidirectional light
         vec3 vertexToLight = lightInfo.positionOrDirection - worldPosition;
         float dist = length(vertexToLight);
-        vertexToLightNormalized = normalize(vertexToLight);
-        lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
+        lightValues.vertexToLight = vertexToLight / dist;
+        lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
     }
 
-    NdotL = max(dot(normal, vertexToLightNormalized), 0.0);
+    lightValues.NdotL = max(dot(normal, lightValues.vertexToLight), 0.0);
 
-    return lightAttenuation;
+    return lightValues;
 }
