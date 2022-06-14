@@ -221,7 +221,7 @@ void main() {
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
                 vec3 lightSpecular = vec3(0.0, 0.0, 0.0);
 
-                //specular / shininess
+                //light specular
                 float specularStrength = 1.0; //TODO texture param
                 float shininess = 32;
                 vec3 reflectDirection = reflect(-lightValues.vertexToLight, normal);
