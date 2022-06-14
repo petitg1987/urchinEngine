@@ -90,7 +90,7 @@ float computeShadowAttenuation(float shadowMapZ, vec2 moments, float NdotL) {
     float pMax = variance / (variance + d * d);
 
     pMax = linearStep(0.75, 1.0, pMax); //reduce light bleeding where first parameter is at the graphic designer appreciation
-    return max(pMax, NdotL / 15.0f); //hijack to apply normal map in shadow
+    return max(pMax, NdotL / 6.0f); //hijack to apply normal map in shadow
 }
 
 float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
@@ -158,13 +158,13 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
     return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcDiffuse.rgba;
 }
 
-float DistributionGGX(vec3 N, vec3 H, float roughness) {
-    float a      = roughness*roughness;
-    float a2     = a*a;
-    float NdotH  = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH*NdotH;
+float DistributionGGX(vec3 normal, vec3 H, float roughness) {
+    float a = roughness * roughness;
+    float a2 = a * a;
+    float NdotH  = max(dot(normal, H), 0.0);
+    float NdotH2 = NdotH * NdotH;
 
-    float num   = a2;
+    float num = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = 3.14159265358 * denom * denom;
 
@@ -173,18 +173,18 @@ float DistributionGGX(vec3 N, vec3 H, float roughness) {
 
 float GeometrySchlickGGX(float NdotV, float roughness) {
     float r = (roughness + 1.0);
-    float k = (r*r) / 8.0;
+    float k = (r * r) / 8.0;
 
-    float num   = NdotV;
+    float num = NdotV;
     float denom = NdotV * (1.0 - k) + k;
 
     return num / denom;
 }
-float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+float GeometrySmith(vec3 normal, vec3 V, vec3 L, float roughness) {
+    float NdotV = max(dot(normal, V), 0.0);
+    float NdotL = max(dot(normal, L), 0.0);
+    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
 
     return ggx1 * ggx2;
 }

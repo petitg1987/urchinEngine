@@ -8,9 +8,16 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 * 3D Engine:
   * Graphic API: Vulkan
   * 3D models with skeleton animation & Blender exporter
-  * Materials: diffuse texture/color, specular map, transparency, normal texture, ambient, emissive, depth test/write
+  * Materials:
+    * Albedo texture or color
+    * Normal texture
+    * PBR with metal/roughness workflow
+    * Transparency
+    * Ambient
+    * Emissive
+    * Depth test/write
   * Dynamic shadow: cached parallel split shadow maps, variance shadow map, blur
-  * Dynamic lighting with deferred shading: omni-directional, directional
+  * Dynamic lighting with deferred shading: omnidirectional, directional
   * Terrain multi-layered and grass
   * Ambient occlusion (SSAO+)
   * Anti-aliasing (FXAA)
