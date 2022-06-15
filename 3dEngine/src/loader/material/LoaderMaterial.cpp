@@ -45,14 +45,6 @@ namespace urchin {
         auto repeatTexturesChunk = udaParser.getFirstChunk(false, "repeatTextures");
         if (repeatTexturesChunk && repeatTexturesChunk->getBoolValue()) {
             materialBuilder->enableRepeatTextures();
-
-        }
-
-        //UV scale
-        auto uvScaleChunk = udaParser.getFirstChunk(false, "uvScale");
-        if (uvScaleChunk) {
-            std::string scaleType = udaParser.getFirstChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
-            materialBuilder->uvScale(UvScale(toUvScaleType(scaleType, filename)));
         }
 
         //normal texture
@@ -61,6 +53,79 @@ namespace urchin {
             auto normalTextureChunk = udaParser.getFirstChunk(true, "texture", UdaAttribute(), normalChunk);
             auto normalTexture = ResourceRetriever::instance().getResource<Texture>(normalTextureChunk->getStringValue(), {{"mipMap", "1"}});
             materialBuilder->normalTexture(normalTexture);
+        }
+
+        //roughness texture/value
+        auto roughnessChunk = udaParser.getFirstChunk(false, "roughness");
+        if (roughnessChunk) {
+            std::shared_ptr<Texture> roughnessTexture;
+
+            auto roughnessTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), roughnessChunk);
+            if (roughnessTextureChunk) {
+                roughnessTexture = ResourceRetriever::instance().getResource<Texture>(roughnessTextureChunk->getStringValue());
+                if (roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_INT && roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT) {
+                    throw std::runtime_error("Material defines a roughness texture not in grayscale: " + filename);
+                }
+            }
+
+            auto roughnessValueChunk = udaParser.getFirstChunk(false, "value", UdaAttribute(), roughnessChunk);
+            if (roughnessValueChunk) {
+                if (roughnessTexture) {
+                    throw std::runtime_error("Material defines a roughness value while a roughness texture is defined: " + filename);
+                }
+
+                float roughness = roughnessValueChunk->getFloatValue();
+                if (roughness > 1.0f || roughness < 0.0f) {
+                    throw std::runtime_error("Material roughness must be in range 0.0 - 1.0: " + filename);
+                }
+
+                std::vector<unsigned char> roughnessTextureData({(unsigned char) (255.0f * roughness)});
+                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, roughnessTextureData.data());
+            }
+
+            if (roughnessTexture) {
+                materialBuilder->roughnessTexture(roughnessTexture);
+            }
+        }
+
+        //metalness texture/value
+        auto metalnessChunk = udaParser.getFirstChunk(false, "metalness");
+        if (metalnessChunk) {
+            std::shared_ptr<Texture> metalnessTexture;
+
+            auto metalnessTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), metalnessChunk);
+            if (metalnessTextureChunk) {
+                metalnessTexture = ResourceRetriever::instance().getResource<Texture>(metalnessTextureChunk->getStringValue());
+                if (metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_INT && metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT) {
+                    throw std::runtime_error("Material defines a metalness texture not in grayscale: " + filename);
+                }
+            }
+
+            auto metalnessValueChunk = udaParser.getFirstChunk(false, "value", UdaAttribute(), metalnessChunk);
+            if (metalnessValueChunk) {
+                if (metalnessTexture) {
+                    throw std::runtime_error("Material defines a metalness value while a metalness texture is defined: " + filename);
+                }
+
+                float metalness = metalnessValueChunk->getFloatValue();
+                if (metalness > 1.0f || metalness < 0.0f) {
+                    throw std::runtime_error("Material metalness must be in range 0.0 - 1.0: " + filename);
+                }
+
+                std::vector<unsigned char> metalnessTextureData({(unsigned char) (255.0f * metalness)});
+                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, metalnessTextureData.data());
+            }
+
+            if (metalnessTexture) {
+                materialBuilder->metalnessTexture(metalnessTexture);
+            }
+        }
+
+        //UV scale
+        auto uvScaleChunk = udaParser.getFirstChunk(false, "uvScale");
+        if (uvScaleChunk) {
+            std::string scaleType = udaParser.getFirstChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
+            materialBuilder->uvScale(UvScale(toUvScaleType(scaleType, filename)));
         }
 
         //emissive factor

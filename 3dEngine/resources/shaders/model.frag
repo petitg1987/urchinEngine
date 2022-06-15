@@ -7,6 +7,8 @@ layout(std140, set = 0, binding = 1) uniform MaterialData {
 } materialData;
 layout(binding = 4) uniform sampler2D diffuseTex;
 layout(binding = 5) uniform sampler2D normalTex;
+layout(binding = 6) uniform sampler2D roughnessTex;
+layout(binding = 7) uniform sampler2D metalnessTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;
@@ -15,6 +17,7 @@ layout(location = 3) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 2) out vec2 fragPbr;
 
 void main() {
     //diffuse and emissive
@@ -25,4 +28,8 @@ void main() {
     vec3 texNormal = normalize(texture(normalTex, texCoordinates).rgb * 2.0 - 1.0);
     vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(normal, materialData.ambientFactor);
+
+    //pbr
+    fragPbr.r = texture(roughnessTex, texCoordinates).r;
+    fragPbr.g = texture(metalnessTex, texCoordinates).r;
 }

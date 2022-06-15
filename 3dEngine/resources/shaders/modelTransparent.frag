@@ -25,6 +25,8 @@ layout(std140, set = 0, binding = 3) uniform LightsData {
 //texture
 layout(binding = 4) uniform sampler2D diffuseTex;
 layout(binding = 5) uniform sampler2D normalTex;
+layout(binding = 6) uniform sampler2D roughnessTex; //TODO use it ?
+layout(binding = 7) uniform sampler2D metalnessTex;
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;

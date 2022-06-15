@@ -18,6 +18,7 @@ layout(location = 1) in vec3 normal;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 2) out vec2 fragPbr;
 
 void main() {
     //diffuse
@@ -36,7 +37,10 @@ void main() {
             maskValue.a * diffuseValue4;
     fragDiffuseAndEmissive.a = 0.0;
 
-    //material
+    //normal and ambient
     vec3 texNormal = (normal + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(texNormal, lighting.ambient);
+
+    //pbr
+    fragPbr = vec2(1.0, 0.0);
 }

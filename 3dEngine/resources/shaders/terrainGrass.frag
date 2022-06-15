@@ -13,6 +13,7 @@ layout(location = 1) in vec3 grassNormal;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 2) out vec2 fragPbr;
 
 void main() {
     vec4 color = texture(grassTex, vertexTexCoordinates);
@@ -22,4 +23,7 @@ void main() {
 
     fragDiffuseAndEmissive = vec4(color.rgb, 0.0);
     fragNormalAndAmbient = vec4(grassNormal, lighting.ambient);
+
+    //pbr
+    fragPbr = vec2(1.0, 0.0);
 }

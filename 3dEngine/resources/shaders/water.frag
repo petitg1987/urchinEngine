@@ -17,6 +17,7 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 2) out vec2 fragPbr;
 
 vec3 toGlobalNormal(vec3 localNormal) {
     //Water normal is always vec3(0.0, 1.0, 0.0)
@@ -40,4 +41,7 @@ void main() {
     vec3 localNormal = texture(normalTex, normalTexCoordinates).xyz * 2.0 - 1.0;
     vec3 globalNormal = toGlobalNormal(localNormal);
     fragNormalAndAmbient = vec4((globalNormal + 1.0) / 2.0, 0.3);
+
+    //pbr
+    fragPbr = vec2(1.0, 0.0);
 }

@@ -72,6 +72,7 @@ namespace urchin {
             //Transparency to the scene is currently not supported because the UI is written on an RGB channel (no alpha).
             rendererBuilder->enableTransparency({
                 BlendFunction::build(BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ZERO, BlendFactor::ONE),
+                BlendFunction::buildBlendDisabled(),
                 BlendFunction::buildBlendDisabled()
             });
             normalMatrix = uiRenderer->getUi3dData()->normalMatrix;

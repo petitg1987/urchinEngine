@@ -46,12 +46,13 @@ layout(std140, set = 0, binding = 5) uniform Fog {
 
 //deferred textures
 layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 7) uniform sampler2D colorAndEmissiveTex; //diffuse RGB (3 * 8 bits) + emissive factor
-layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor
-layout(binding = 9) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 10) uniform sampler2D transparencyAccumulationTex; //transparency accumulation (4 * 16 bits)
-layout(binding = 11) uniform sampler2D transparencyRevealTex; //transparency reveal (1 * 8 bits)
-layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
+layout(binding = 7) uniform sampler2D colorAndEmissiveTex; //diffuse RGB (3 * 8 bits) + emissive factor (8 bits)
+layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
+layout(binding = 9) uniform sampler2D pbrTex; //roughness (8 bits) + metalness (8 bits)
+layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
+layout(binding = 11) uniform sampler2D transparencyAccumulationTex; //transparency accumulation (4 * 16 bits)
+layout(binding = 12) uniform sampler2D transparencyRevealTex; //transparency reveal (1 * 8 bits)
+layout(binding = 13) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -215,8 +216,9 @@ void main() {
         }
 
         //PBR init
-        float roughness = 0.5f;
-        float metallic = 0.0f;
+        vec2 pbrValues = texture(pbrTex, texCoordinates).rg;
+        float roughness = pbrValues.r;
+        float metallic = pbrValues.g;
 
         vec3 F0 = vec3(0.04);
         F0 = mix(F0, diffuse, metallic);

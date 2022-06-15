@@ -13,6 +13,7 @@ layout(location = 1) in vec3 normal;
 
 layout(location = 0) out vec4 fragDiffuseAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
+layout(location = 2) out vec2 fragPbr;
 
 void main() {
     //diffuse and emissive
@@ -26,4 +27,7 @@ void main() {
     //ambient factor
     vec3 encodedNormal = (normalize(normal) + 1.0) / 2.0;
     fragNormalAndAmbient = vec4(encodedNormal, AMBIENT);
+
+    //pbr
+    fragPbr = vec2(1.0, 0.0);
 }

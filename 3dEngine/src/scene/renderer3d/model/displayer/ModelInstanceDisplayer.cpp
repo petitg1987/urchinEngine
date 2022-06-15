@@ -117,7 +117,9 @@ namespace urchin {
                         ->addData(mesh.getNormals())
                         ->addData(mesh.getTangents())
                         ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
-                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))); //binding 5
+                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))) //binding 5
+                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh))) //binding 6
+                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh))); //binding 7
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
@@ -229,6 +231,12 @@ namespace urchin {
                     }
                     if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
                         meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                    }
+                    if (meshRenderer->getUniformTextureReader(2)->getTexture() != mesh.getMaterial().getRoughnessTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(2, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)));
+                    }
+                    if (meshRenderer->getUniformTextureReader(3)->getTexture() != mesh.getMaterial().getMetalnessTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(3, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
                     }
                 }
                 meshIndex++;

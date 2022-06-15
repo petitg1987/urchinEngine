@@ -23,6 +23,8 @@ namespace urchin {
             bool repeatTextures() const;
             const UvScale& getUvScale() const;
             const std::shared_ptr<Texture>& getNormalTexture() const;
+            const std::shared_ptr<Texture>& getRoughnessTexture() const;
+            const std::shared_ptr<Texture>& getMetalnessTexture() const;
 
             float getEmissiveFactor() const;
             float getAmbientFactor() const;
@@ -37,6 +39,8 @@ namespace urchin {
             bool bRepeatTextures;
             UvScale uvScale;
             std::shared_ptr<Texture> normalTexture;
+            std::shared_ptr<Texture> roughnessTexture;
+            std::shared_ptr<Texture> metalnessTexture;
 
             float emissiveFactor;
             float ambientFactor;

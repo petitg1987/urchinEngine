@@ -59,6 +59,24 @@ namespace urchin {
         return mNormalTexture;
     }
 
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::roughnessTexture(std::shared_ptr<Texture> roughnessTexture) {
+        this->mRoughnessTexture = std::move(roughnessTexture);
+        return shared_from_this();
+    }
+
+    const std::shared_ptr<Texture>& MaterialBuilder::getRoughnessTexture() const {
+        return mRoughnessTexture;
+    }
+
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::metalnessTexture(std::shared_ptr<Texture> metalnessTexture) {
+        this->mMetalnessTexture = std::move(metalnessTexture);
+        return shared_from_this();
+    }
+
+    const std::shared_ptr<Texture>& MaterialBuilder::getMetalnessTexture() const {
+        return mMetalnessTexture;
+    }
+
     std::shared_ptr<MaterialBuilder> MaterialBuilder::uvScale(const UvScale& uvScale) {
         this->mUvScale = uvScale;
         return shared_from_this();

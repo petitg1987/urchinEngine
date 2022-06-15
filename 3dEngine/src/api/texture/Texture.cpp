@@ -211,6 +211,8 @@ namespace urchin {
             return VK_FORMAT_R8_UNORM;
         } else if (format == TextureFormat::GRAYSCALE_16_FLOAT) {
             return VK_FORMAT_R16_SFLOAT;
+        } else if (format == TextureFormat::RG_8_INT) {
+            return VK_FORMAT_R8G8_UNORM;
         } else if (format == TextureFormat::RG_32_FLOAT) {
             return VK_FORMAT_R32G32_SFLOAT;
         } else if (format == TextureFormat::B10G11R11_FLOAT) {
@@ -427,7 +429,7 @@ namespace urchin {
             return 4;
         } else if (format == TextureFormat::GRAYSCALE_8_INT) {
             return 1;
-        } else if (format == TextureFormat::GRAYSCALE_16_FLOAT) {
+        } else if (format == TextureFormat::GRAYSCALE_16_FLOAT || format == TextureFormat::RG_8_INT) {
             return 2;
         } else if (format == TextureFormat::RG_32_FLOAT || format == TextureFormat::RGBA_16_FLOAT) {
             return 8;

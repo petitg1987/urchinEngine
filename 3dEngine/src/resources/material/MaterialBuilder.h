@@ -22,6 +22,12 @@ namespace urchin {
             std::shared_ptr<MaterialBuilder> normalTexture(std::shared_ptr<Texture>);
             const std::shared_ptr<Texture>& getNormalTexture() const;
 
+            std::shared_ptr<MaterialBuilder> roughnessTexture(std::shared_ptr<Texture>);
+            const std::shared_ptr<Texture>& getRoughnessTexture() const;
+
+            std::shared_ptr<MaterialBuilder> metalnessTexture(std::shared_ptr<Texture>);
+            const std::shared_ptr<Texture>& getMetalnessTexture() const;
+
             std::shared_ptr<MaterialBuilder> uvScale(const UvScale&);
             const UvScale& getUvScale() const;
 
@@ -50,6 +56,8 @@ namespace urchin {
             bool mRepeatTextures;
             UvScale mUvScale;
             std::shared_ptr<Texture> mNormalTexture;
+            std::shared_ptr<Texture> mRoughnessTexture;
+            std::shared_ptr<Texture> mMetalnessTexture;
 
             float mEmissiveFactor;
             float mAmbientFactor;
