@@ -15,7 +15,7 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
-    lightSplitShadowMap.update(frustumSplit, false);
+    lightSplitShadowMap.update(frustumSplit);
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 2);
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
@@ -37,7 +37,7 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
-    lightSplitShadowMap.update(frustumSplit, false);
+    lightSplitShadowMap.update(frustumSplit);
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 0);
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),
@@ -57,7 +57,7 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
-    lightSplitShadowMap.update(frustumSplit, false);
+    lightSplitShadowMap.update(frustumSplit);
 
     AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 1);
     AssertHelper::assertPoint3FloatEquals(lightSplitShadowMap.getShadowCasterReceiverBox().getMin(),

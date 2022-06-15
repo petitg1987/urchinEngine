@@ -1,4 +1,4 @@
 repeatTextures: "false"
-diffuse:
+albedo:
   color: "1.0 1.0 1.0 0.5"
 ambientFactor: "0.4"
