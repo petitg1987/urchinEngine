@@ -137,7 +137,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> diffuseTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::shared_ptr<Texture> pbrTexture;
+            std::shared_ptr<Texture> materialTexture;
             std::shared_ptr<Texture> illuminatedTexture;
 
             //lighting pass rendering + post process

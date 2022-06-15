@@ -48,7 +48,7 @@ layout(std140, set = 0, binding = 5) uniform Fog {
 layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
 layout(binding = 7) uniform sampler2D colorAndEmissiveTex; //diffuse RGB (3 * 8 bits) + emissive factor (8 bits)
 layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 9) uniform sampler2D pbrTex; //roughness (8 bits) + metalness (8 bits)
+layout(binding = 9) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
 layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
 layout(binding = 11) uniform sampler2D transparencyAccumulationTex; //transparency accumulation (4 * 16 bits)
 layout(binding = 12) uniform sampler2D transparencyRevealTex; //transparency reveal (1 * 8 bits)
@@ -165,7 +165,7 @@ float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
     float NdotH  = max(dot(normal, halfWay), 0.0);
     float NdotH2 = NdotH * NdotH;
     float denom = (NdotH2 * (alpha2 - 1.0) + 1.0);
-    denom = 3.14159265358 * denom * denom;
+    denom = 3.14159265 * denom * denom;
     return alpha2 / denom;
 }
 
@@ -212,7 +212,7 @@ void main() {
         }
 
         const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
-        vec2 materialValues = texture(pbrTex, texCoordinates).rg;
+        vec2 materialValues = texture(materialTex, texCoordinates).rg;
         float roughness = materialValues.r;
         float metallic = materialValues.g;
         vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, diffuse, metallic);
@@ -241,7 +241,7 @@ void main() {
             vec3 kS = fresnelFactor;
             vec3 kD = (vec3(1.0) - kS) * (1.0 - metallic);
             vec3 cookTorranceSpecular = (normalDistribution * geometryShadowing * fresnelFactor) / (4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001);
-            vec3 lambertModel = diffuse / 3.14159265358;
+            vec3 lambertModel = diffuse / 3.14159265;
             vec3 bidirectionalReflectanceDist = kD * lambertModel + cookTorranceSpecular; //note: multiply specular by kS is removed because cook-torrance already contains kS
 
             fragColor.rgb += modelAmbient * lightValues.lightAttenuation; //add ambient

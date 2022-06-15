@@ -15,7 +15,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
     bool DEBUG_DISPLAY_COLOR_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
-    bool DEBUG_DISPLAY_PBR_BUFFER = false;
+    bool DEBUG_DISPLAY_MATERIAL_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;
@@ -324,13 +324,13 @@ namespace urchin {
         //deferred rendering
         diffuseTexture = Texture::build("diffuse", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //TODO rename in albedo
         normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        pbrTexture = Texture::build("pbr", sceneWidth, sceneHeight, TextureFormat::RG_8_INT, nullptr);
+        materialTexture = Texture::build("material", sceneWidth, sceneHeight, TextureFormat::RG_8_INT, nullptr);
         if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
             auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
             deferredOffscreenRenderTarget->resetOutputTextures();
             deferredOffscreenRenderTarget->addOutputTexture(diffuseTexture);
             deferredOffscreenRenderTarget->addOutputTexture(normalAndAmbientTexture);
-            deferredOffscreenRenderTarget->addOutputTexture(pbrTexture);
+            deferredOffscreenRenderTarget->addOutputTexture(materialTexture);
             deferredOffscreenRenderTarget->initialize();
         }
 
@@ -371,7 +371,7 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 6
                 ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 7
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 8
-                ->addUniformTextureReader(TextureReader::build(pbrTexture, TextureParam::buildNearest())) //binding 9
+                ->addUniformTextureReader(TextureReader::build(materialTexture, TextureParam::buildNearest())) //binding 9
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest())) //binding 10 - ambient occlusion
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba("transparent: empty accumulation"), TextureParam::buildNearest())) //binding 11 - transparency: accumulation
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("transparent: empty reveal"), TextureParam::buildNearest())) //binding 12 - transparency: reveal
@@ -501,7 +501,7 @@ namespace urchin {
         if (visualOption.isAmbientOcclusionActivated) {
             numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
         }
-        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_COLOR_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_PBR_BUFFER) {
+        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_COLOR_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)
         }
         return numDependenciesToFirstPassOutput;
@@ -603,10 +603,10 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_PBR_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(pbrTexture, TextureRenderer::DEFAULT_VALUE);
+            if (DEBUG_DISPLAY_MATERIAL_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(materialTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::BOTTOM);
-                textureRenderer->initialize("[DEBUG] pbr texture", finalRenderTarget, sceneWidth, sceneHeight);
+                textureRenderer->initialize("[DEBUG] material texture", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
