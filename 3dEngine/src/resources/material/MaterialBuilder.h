@@ -13,7 +13,7 @@ namespace urchin {
 
             const std::string& getMaterialName() const;
 
-            const std::shared_ptr<Texture>& getDiffuseTexture() const;
+            const std::shared_ptr<Texture>& getAlbedoTexture() const;
             bool hasTransparency() const;
 
             std::shared_ptr<MaterialBuilder> enableRepeatTextures();
@@ -50,7 +50,7 @@ namespace urchin {
             static unsigned long nextId;
 
             std::string materialName;
-            std::shared_ptr<Texture> mDiffuseTexture;
+            std::shared_ptr<Texture> mAlbedoTexture;
             bool mHasTransparency;
 
             bool mRepeatTextures;

@@ -135,7 +135,7 @@ namespace urchin {
             TransparentManager transparentManager;
             ShadowManager shadowManager;
 
-            std::shared_ptr<Texture> diffuseTexture;
+            std::shared_ptr<Texture> albedoTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
             std::shared_ptr<Texture> materialTexture;
             std::shared_ptr<Texture> illuminatedTexture;

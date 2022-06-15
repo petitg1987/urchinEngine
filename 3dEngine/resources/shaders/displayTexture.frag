@@ -17,18 +17,18 @@ layout(location = 0) in vec2 texCoordinates;
 layout(location = 0) out vec4 fragColor;
 
 void main() {
-    vec4 diffuse = texture(colorTex, texCoordinates);
-    vec3 adjustedDiffuse = (diffuse.rgb - vec3(renderingData.minColorRange, renderingData.minColorRange, renderingData.minColorRange))
+    vec4 albedo = texture(colorTex, texCoordinates);
+    vec3 adjustedAlbedo = (albedo.rgb - vec3(renderingData.minColorRange, renderingData.minColorRange, renderingData.minColorRange))
             * (1.0 / (renderingData.maxColorRange - renderingData.minColorRange));
 
-    vec4 finalDiffuse;
+    vec4 finalAlbedo;
     if (IS_DEFAULT_VALUE) {
-        finalDiffuse = vec4(adjustedDiffuse, diffuse.a);
+        finalAlbedo = vec4(adjustedAlbedo, albedo.a);
     }else if (IS_GRAYSCALE_VALUE) {
-        finalDiffuse = vec4(adjustedDiffuse.r, adjustedDiffuse.r, adjustedDiffuse.r, diffuse.a);
+        finalAlbedo = vec4(adjustedAlbedo.r, adjustedAlbedo.r, adjustedAlbedo.r, albedo.a);
     }else if (IS_INVERSE_GRAYSCALE_VALUE) {
-        finalDiffuse = vec4(1.0 - adjustedDiffuse.r, 1.0 - adjustedDiffuse.r, 1.0 - adjustedDiffuse.r, diffuse.a);
+        finalAlbedo = vec4(1.0 - adjustedAlbedo.r, 1.0 - adjustedAlbedo.r, 1.0 - adjustedAlbedo.r, albedo.a);
     }
 
-    fragColor = finalDiffuse;
+    fragColor = finalAlbedo;
 }

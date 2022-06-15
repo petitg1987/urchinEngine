@@ -6,8 +6,9 @@ namespace urchin {
         /* DEFAULT_MODE provide:
             * Texturing
             * Depth information
-            * Diffuse information (output unit: 0)
-            * Normal information and ambient factor (output unit: 1) */
+            * Albedo information (output unit: 0)
+            * Normal information and ambient factor (output unit: 1)
+            * Material information: roughness & metalness (output unit: 2) */
         DEFAULT_MODE = 0,
 
         /* DEPTH_ONLY_MODE provide:

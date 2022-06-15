@@ -15,7 +15,7 @@ layout(binding = 3) uniform sampler2D dudvMap;
 
 layout(location = 0) in vec2 texCoordinates;
 
-layout(location = 0) out vec4 fragDiffuseAndEmissive;
+layout(location = 0) out vec4 fragAlbedoAndEmissive;
 layout(location = 1) out vec4 fragNormalAndAmbient;
 layout(location = 2) out vec2 fragPbr;
 
@@ -33,8 +33,8 @@ void main() {
     distortedTexCoords = texCoordinates + vec2(distortedTexCoords.x, distortedTexCoords.y * speed);
     vec2 totalDistortion = (texture(dudvMap, distortedTexCoords).rg * 2.0 - 1.0) * waterProperties.waveStrength;
 
-    //diffuse and emissive
-    fragDiffuseAndEmissive = vec4(waterProperties.color, 0.0);
+    //albedo and emissive
+    fragAlbedoAndEmissive = vec4(waterProperties.color, 0.0);
 
     //normal and ambient factor
     vec2 normalTexCoordinates = texCoordinates + totalDistortion;

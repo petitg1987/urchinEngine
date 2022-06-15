@@ -57,9 +57,9 @@ namespace urchin {
             iss >> sdata >> materialFilename;
             materialFilename = materialFilename.substr(1, materialFilename.length() - 2); //remove quote
             if (materialFilename.empty() || materialFilename == "default") {
-                std::vector<unsigned char> defaultDiffuseColor({177, 106, 168, 255});
-                auto defaultDiffuseTexture = Texture::build(filename + " - default diffuse", 1, 1, TextureFormat::RGBA_8_INT, defaultDiffuseColor.data());
-                material = MaterialBuilder::create("defaultMaterial", defaultDiffuseTexture, false)->build();
+                std::vector<unsigned char> defaultAlbedoColor({177, 106, 168, 255});
+                auto defaultAlbedoTexture = Texture::build(filename + " - default albedo", 1, 1, TextureFormat::RGBA_8_INT, defaultAlbedoColor.data());
+                material = MaterialBuilder::create("defaultMaterial", defaultAlbedoTexture, false)->build();
             } else {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
             }

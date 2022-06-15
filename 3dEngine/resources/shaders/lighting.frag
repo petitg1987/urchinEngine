@@ -46,7 +46,7 @@ layout(std140, set = 0, binding = 5) uniform Fog {
 
 //deferred textures
 layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 7) uniform sampler2D colorAndEmissiveTex; //diffuse RGB (3 * 8 bits) + emissive factor (8 bits)
+layout(binding = 7) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 bits) + emissive factor (8 bits)
 layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
 layout(binding = 9) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
 layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
@@ -141,11 +141,11 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     return mix(fog.color, baseColor, visibility);
 }
 
-vec4 addTransparentModels(vec4 srcDiffuse) {
+vec4 addTransparentModels(vec4 srcAlbedo) {
     float reveal = texture(transparencyRevealTex, texCoordinates).r; //(1 - obj1.material.alpha) * (1 - obj2.material.alpha) * ...
     if (reveal > 0.99999) {
         //fully transparent case: object fully transparent or no object
-        return srcDiffuse;
+        return srcAlbedo;
     }
 
     vec4 accumulation = texture(transparencyAccumulationTex, texCoordinates); //(obj1.material.rgb * obj1.material.a, obj1.material.a) * weight1 + ...
@@ -156,7 +156,7 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
     vec4 averageColor = vec4(vec3(accumulation.rgb / max(accumulation.a, 0.00001)), 1.0 - reveal);
 
     //apply blending manually (equivalent to: srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
-    return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcDiffuse.rgba;
+    return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcAlbedo.rgba;
 }
 
 float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
@@ -191,18 +191,18 @@ vec3 fresnelSchlick(vec3 halfWay, vec3 vertexToCameraPos, vec3 baseReflectivity)
 
 void main() {
     float depthValue = texture(depthTex, texCoordinates).r;
-    vec4 diffuseAndEmissive = texture(colorAndEmissiveTex, texCoordinates);
+    vec4 albedoAndEmissive = texture(albedoAndEmissiveTex, texCoordinates);
     vec4 normalAndAmbient = texture(normalAndAmbientTex, texCoordinates);
 
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
-    vec3 diffuse = diffuseAndEmissive.rgb;
+    vec3 albedo = albedoAndEmissive.rgb;
     float modelAmbientFactor = normalAndAmbient.a;
 
     if (modelAmbientFactor < 0.9999) { //apply lighting
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
-        vec3 modelAmbient = diffuse * modelAmbientFactor;
-        float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
+        vec3 modelAmbient = albedo * modelAmbientFactor;
+        float emissiveFactor = albedoAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
 
         fragColor = vec4(lightsData.globalAmbient, 1.0); //start with global ambient
 
@@ -215,9 +215,9 @@ void main() {
         vec2 materialValues = texture(materialTex, texCoordinates).rg;
         float roughness = materialValues.r;
         float metallic = materialValues.g;
-        vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, diffuse, metallic);
+        vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, albedo, metallic);
 
-        fragColor.rgb += diffuse * emissiveFactor; //add emissive lighting
+        fragColor.rgb += albedo * emissiveFactor; //add emissive lighting
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (!lightsData.lightsInfo[lightIndex].isExist) {
@@ -235,7 +235,7 @@ void main() {
             vec3 kS = fresnelFactor;
             vec3 kD = (vec3(1.0) - kS) * (1.0 - metallic);
             vec3 cookTorranceSpecular = (normalDistribution * geometryShadowing * fresnelFactor) / (4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001);
-            vec3 lambert = diffuse; //do not divide by PI (see https://seblagarde.wordpress.com/2012/01/08/pi-or-not-to-pi-in-game-lighting-equation/)
+            vec3 lambert = albedo; //do not divide by PI (see https://seblagarde.wordpress.com/2012/01/08/pi-or-not-to-pi-in-game-lighting-equation/)
             vec3 bidirectionalReflectanceDist = kD * lambert + cookTorranceSpecular;
 
             //shadow
@@ -249,7 +249,7 @@ void main() {
             fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
-        fragColor.rgb = diffuse;
+        fragColor.rgb = albedo;
     }
 
     fragColor = addTransparentModels(fragColor);

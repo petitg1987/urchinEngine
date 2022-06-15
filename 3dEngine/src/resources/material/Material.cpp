@@ -4,7 +4,7 @@
 namespace urchin {
 
     Material::Material(const MaterialBuilder& materialBuilder) :
-            diffuseTexture(materialBuilder.getDiffuseTexture()),
+            albedoTexture(materialBuilder.getAlbedoTexture()),
             bHasTransparency(materialBuilder.hasTransparency()),
             bRepeatTextures(materialBuilder.repeatTextures()),
             uvScale(materialBuilder.getUvScale()),
@@ -29,8 +29,8 @@ namespace urchin {
         }
     }
 
-    const std::shared_ptr<Texture>& Material::getDiffuseTexture() const {
-        return diffuseTexture;
+    const std::shared_ptr<Texture>& Material::getAlbedoTexture() const {
+        return albedoTexture;
     }
 
     bool Material::hasTransparency() const {

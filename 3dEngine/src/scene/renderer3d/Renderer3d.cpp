@@ -13,7 +13,7 @@ namespace urchin {
 
     //debug parameters
     bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
-    bool DEBUG_DISPLAY_COLOR_BUFFER = false;
+    bool DEBUG_DISPLAY_ALBEDO_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
     bool DEBUG_DISPLAY_MATERIAL_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
@@ -322,13 +322,13 @@ namespace urchin {
 
     void Renderer3d::createOrUpdateLightingPass() {
         //deferred rendering
-        diffuseTexture = Texture::build("diffuse", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr); //TODO rename in albedo
+        albedoTexture = Texture::build("albedo", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
         materialTexture = Texture::build("material", sceneWidth, sceneHeight, TextureFormat::RG_8_INT, nullptr);
         if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
             auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
             deferredOffscreenRenderTarget->resetOutputTextures();
-            deferredOffscreenRenderTarget->addOutputTexture(diffuseTexture);
+            deferredOffscreenRenderTarget->addOutputTexture(albedoTexture);
             deferredOffscreenRenderTarget->addOutputTexture(normalAndAmbientTexture);
             deferredOffscreenRenderTarget->addOutputTexture(materialTexture);
             deferredOffscreenRenderTarget->initialize();
@@ -369,7 +369,7 @@ namespace urchin {
         }
         lightingRenderer = lightingRendererBuilder
                 ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 6
-                ->addUniformTextureReader(TextureReader::build(diffuseTexture, TextureParam::buildNearest())) //binding 7
+                ->addUniformTextureReader(TextureReader::build(albedoTexture, TextureParam::buildNearest())) //binding 7
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 8
                 ->addUniformTextureReader(TextureReader::build(materialTexture, TextureParam::buildNearest())) //binding 9
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest())) //binding 10 - ambient occlusion
@@ -448,7 +448,7 @@ namespace urchin {
 
     /**
      * First pass of deferred shading algorithm.
-     * Render depth, color, normal, etc. into buffers.
+     * Render depth, albedo, normal, etc. into buffers.
      */
     void Renderer3d::deferredRendering(uint64_t frameIndex, float dt) {
         ScopeProfiler sp(Profiler::graphic(), "deferredRender");
@@ -459,7 +459,7 @@ namespace urchin {
             shadowManager.updateShadowMaps(frameIndex, numDependenciesToShadowMaps);
         }
 
-        //deferred scene (depth, color, normal, ambient...)
+        //deferred scene (depth, albedo, normal, ambient...)
         deferredRenderTarget->disableAllRenderers();
 
         unsigned int deferredRenderingOrder = 0;
@@ -501,7 +501,7 @@ namespace urchin {
         if (visualOption.isAmbientOcclusionActivated) {
             numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
         }
-        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_COLOR_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
+        if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)
         }
         return numDependenciesToFirstPassOutput;
@@ -589,10 +589,10 @@ namespace urchin {
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
-            if (DEBUG_DISPLAY_COLOR_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(diffuseTexture, TextureRenderer::DEFAULT_VALUE);
+            if (DEBUG_DISPLAY_ALBEDO_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(albedoTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::TOP);
-                textureRenderer->initialize("[DEBUG] diffuse texture", finalRenderTarget, sceneWidth, sceneHeight);
+                textureRenderer->initialize("[DEBUG] albedo texture", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 

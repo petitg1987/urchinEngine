@@ -8,9 +8,9 @@ namespace urchin {
     //static
     unsigned long MaterialBuilder::nextId = 0;
 
-    MaterialBuilder::MaterialBuilder(std::string materialName, std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) :
+    MaterialBuilder::MaterialBuilder(std::string materialName, std::shared_ptr<Texture> albedoTexture, bool hasTransparency) :
             materialName(std::move(materialName)),
-            mDiffuseTexture(std::move(diffuseTexture)),
+            mAlbedoTexture(std::move(albedoTexture)),
             mHasTransparency(hasTransparency),
             mRepeatTextures(false),
             mUvScale(UvScale(UvScaleType::NONE)),
@@ -21,20 +21,20 @@ namespace urchin {
 
     }
 
-    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(std::string materialName, std::shared_ptr<Texture> diffuseTexture, bool hasTransparency) {
-        if (!diffuseTexture) {
-            throw std::runtime_error("Diffuse texture is mandatory to build a material");
+    std::shared_ptr<MaterialBuilder> MaterialBuilder::create(std::string materialName, std::shared_ptr<Texture> albedoTexture, bool hasTransparency) {
+        if (!albedoTexture) {
+            throw std::runtime_error("Albedo texture is mandatory to build a material");
         }
 
-        return std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(materialName), std::move(diffuseTexture), hasTransparency));
+        return std::shared_ptr<MaterialBuilder>(new MaterialBuilder(std::move(materialName), std::move(albedoTexture), hasTransparency));
     }
 
     const std::string& MaterialBuilder::getMaterialName() const {
         return materialName;
     }
 
-    const std::shared_ptr<Texture>& MaterialBuilder::getDiffuseTexture() const {
-        return mDiffuseTexture;
+    const std::shared_ptr<Texture>& MaterialBuilder::getAlbedoTexture() const {
+        return mAlbedoTexture;
     }
 
     bool MaterialBuilder::hasTransparency() const {

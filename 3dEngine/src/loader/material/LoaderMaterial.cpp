@@ -12,34 +12,34 @@ namespace urchin {
     std::shared_ptr<Material> LoaderMaterial::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>&) {
         UdaParser udaParser(filename, UdaLoadType::LOAD_FILE);
 
-        //diffuse texture/color
+        //albedo texture/color
         bool hasTransparency = false;
-        std::shared_ptr<Texture> diffuseTexture;
-        auto diffuseChunk = udaParser.getFirstChunk(true, "diffuse");
-        auto diffuseTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), diffuseChunk);
-        if (diffuseTextureChunk) {
-            diffuseTexture = ResourceRetriever::instance().getResource<Texture>(diffuseTextureChunk->getStringValue(), {{"mipMap", "1"}});
-            hasTransparency = diffuseTexture->hasTransparency();
+        std::shared_ptr<Texture> albedoTexture;
+        auto albedoChunk = udaParser.getFirstChunk(true, "albedo");
+        auto albedoTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), albedoChunk);
+        if (albedoTextureChunk) {
+            albedoTexture = ResourceRetriever::instance().getResource<Texture>(albedoTextureChunk->getStringValue(), {{"mipMap", "1"}});
+            hasTransparency = albedoTexture->hasTransparency();
         }
 
-        auto diffuseColorChunk = udaParser.getFirstChunk(false, "color", UdaAttribute(), diffuseChunk);
-        if (diffuseColorChunk) {
-            if (diffuseTexture) {
-                throw std::runtime_error("Material defines a diffuse color while a diffuse texture is defined: " + filename);
+        auto albedoColorChunk = udaParser.getFirstChunk(false, "color", UdaAttribute(), albedoChunk);
+        if (albedoColorChunk) {
+            if (albedoTexture) {
+                throw std::runtime_error("Material defines an albedo while a albedo texture is defined: " + filename);
             }
 
-            Vector4<float> color = diffuseColorChunk->getVector4Value();
+            Vector4<float> color = albedoColorChunk->getVector4Value();
             if (color.X > 1.0f || color.Y > 1.0f || color.Z > 1.0f || color.W > 1.0f
                 || color.X < 0.0f || color.Y < 0.0f || color.Z < 0.0f || color.W < 0.0f) {
-                throw std::runtime_error("Material color must be in range 0.0 - 1.0: " + filename);
+                throw std::runtime_error("Material albedo must be in range 0.0 - 1.0: " + filename);
             }
 
             std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
                                                   (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-            diffuseTexture = Texture::build(filename + " - color diffuse", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data());
+            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data());
             hasTransparency = !MathFunction::isOne(color.W);
         }
-        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, diffuseTexture, hasTransparency);
+        std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, albedoTexture, hasTransparency);
 
         //repeat textures
         auto repeatTexturesChunk = udaParser.getFirstChunk(false, "repeatTextures");

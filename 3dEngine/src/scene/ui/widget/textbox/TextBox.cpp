@@ -46,7 +46,7 @@ namespace urchin {
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
-        texCursorDiffuse = Texture::build("cursor diffuse", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
+        texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
         refreshText((int)cursorIndex, false);
         computeCursorPosition();
 
@@ -78,7 +78,7 @@ namespace urchin {
         cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::TRIANGLE, false)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
-                ->addUniformTextureReader(TextureReader::build(texCursorDiffuse, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 3
+                ->addUniformTextureReader(TextureReader::build(texCursorAlbedo, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 

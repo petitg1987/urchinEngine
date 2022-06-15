@@ -116,7 +116,7 @@ namespace urchin {
                         ->addData(uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv())
                         ->addData(mesh.getNormals())
                         ->addData(mesh.getTangents())
-                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh))) //binding 4
+                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh))) //binding 4
                         ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))) //binding 5
                         ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh))) //binding 6
                         ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh))); //binding 7
@@ -226,8 +226,8 @@ namespace urchin {
                     fillMaterialData(mesh);
                     meshRenderer->updateUniformData(1, &materialData);
 
-                    if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getDiffuseTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getDiffuseTexture(), buildTextureParam(mesh)));
+                    if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getAlbedoTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)));
                     }
                     if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
                         meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
