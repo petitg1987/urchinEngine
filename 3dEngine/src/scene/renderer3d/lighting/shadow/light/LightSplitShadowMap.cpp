@@ -6,14 +6,11 @@ namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
-            updateShadowMapThreshold(ConfigService::instance().getFloatValue("shadow.updateShadowMapThreshold")),
-            useSceneDependentProjection(ConfigService::instance().getBoolValue("shadow.useSceneDependentProjection")),
-            shadowCasterReceiverBoxUpdated(false),
-            modelsRequireUpdate(false) {
+            useSceneDependentProjection(ConfigService::instance().getBoolValue("shadow.useSceneDependentProjection")){
 
     }
 
-    void LightSplitShadowMap::update(const Frustum<float>& splitFrustums, bool bForceUpdateAllShadowMaps) {
+    void LightSplitShadowMap::update(const Frustum<float>& splitFrustums) {
         AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums, lightShadowMap->getLightViewMatrix());
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
@@ -23,9 +20,9 @@ namespace urchin {
 
         if (useSceneDependentProjection) {
             AABBox<float> aabboxSceneDependent = buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace);
-            updateShadowCasterReceiverBox(aabboxSceneDependent, bForceUpdateAllShadowMaps);
+            updateShadowCasterReceiverBox(aabboxSceneDependent);
         } else {
-            updateShadowCasterReceiverBox(aabboxSceneIndependent, bForceUpdateAllShadowMaps);
+            updateShadowCasterReceiverBox(aabboxSceneIndependent);
         }
     }
 
@@ -42,10 +39,6 @@ namespace urchin {
      */
     std::span<Model* const> LightSplitShadowMap::getModels() const {
         return models;
-    }
-
-    bool LightSplitShadowMap::needShadowMapUpdate() const {
-        return shadowCasterReceiverBoxUpdated || modelsRequireUpdate;
     }
 
     /**
@@ -129,40 +122,15 @@ namespace urchin {
         return AABBox<float>(aabboxSceneDependent.getMin() - LIGHT_BOX_MARGIN, aabboxSceneDependent.getMax() + LIGHT_BOX_MARGIN);
     }
 
-    void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox, bool forceUpdateAllShadowMap) {
-        if (!forceUpdateAllShadowMap && areAlmostIdenticalAABBox(shadowCasterReceiverBox, this->shadowCasterReceiverBox)) {
-            this->shadowCasterReceiverBoxUpdated = false;
-        } else {
-            this->shadowCasterReceiverBox = shadowCasterReceiverBox;
-            this->lightProjectionMatrix = shadowCasterReceiverBox.toProjectionMatrix();
-
-            this->shadowCasterReceiverBoxUpdated = true;
-        }
-    }
-
-    bool LightSplitShadowMap::areAlmostIdenticalAABBox(const AABBox<float>& shadowCasterReceiverBox1, const AABBox<float>& shadowCasterReceiverBox2) const {
-        float updateShadowMapSquareThreshold = updateShadowMapThreshold * updateShadowMapThreshold;
-
-        return shadowCasterReceiverBox1.getMin().squareDistance(shadowCasterReceiverBox2.getMin()) < updateShadowMapSquareThreshold
-               && shadowCasterReceiverBox1.getMax().squareDistance(shadowCasterReceiverBox2.getMax()) < updateShadowMapSquareThreshold;
+    void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox) {
+        this->shadowCasterReceiverBox = shadowCasterReceiverBox;
+        this->lightProjectionMatrix = shadowCasterReceiverBox.toProjectionMatrix();
     }
 
     /**
      * @models Models visible from light in frustum split
      */
     void LightSplitShadowMap::updateModels(const std::vector<Model*>& models) {
-        modelsRequireUpdate = false;
-
-        if (models != this->models) {
-            modelsRequireUpdate = true;
-            this->models = models;
-        } else {
-            for (const auto* model : models) {
-                if (model->isMovingInOctree() || (model->isAnimated() && model->getActiveAnimation()->getShadowImpact() == AnimShadowImpact::ALTER)) {
-                    modelsRequireUpdate = true;
-                    break;
-                }
-            }
-        }
+        this->models = models;
     }
 }

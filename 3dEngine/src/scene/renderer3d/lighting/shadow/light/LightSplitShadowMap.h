@@ -13,32 +13,27 @@ namespace urchin {
 
             explicit LightSplitShadowMap(const LightShadowMap*);
 
-            void update(const Frustum<float>&, bool);
+            void update(const Frustum<float>&);
 
             const AABBox<float> &getShadowCasterReceiverBox() const;
             const Matrix4<float>& getLightProjectionMatrix() const;
             std::span<Model* const> getModels() const;
-            bool needShadowMapUpdate() const;
 
         private:
             AABBox<float> createSceneIndependentBox(const Frustum<float>&, const Matrix4<float>&) const;
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
             AABBox<float> buildSceneDependentBox(const AABBox<float>&, const OBBox<float>&) const;
-            void updateShadowCasterReceiverBox(const AABBox<float>&, bool);
-            bool areAlmostIdenticalAABBox(const AABBox<float>&, const AABBox<float>&) const;
+            void updateShadowCasterReceiverBox(const AABBox<float>&);
             void updateModels(const std::vector<Model*>&);
 
             const LightShadowMap* lightShadowMap;
             std::vector<Model*> obboxModels;
 
-            const float updateShadowMapThreshold;
             const bool useSceneDependentProjection;
             Matrix4<float> lightProjectionMatrix;
             AABBox<float> shadowCasterReceiverBox;
-            bool shadowCasterReceiverBoxUpdated;
 
             std::vector<Model*> models;
-            bool modelsRequireUpdate;
     };
 
 }

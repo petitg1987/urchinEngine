@@ -156,7 +156,6 @@ namespace urchin {
             visualOption.isShadowActivated = isShadowActivated;
 
             createOrUpdateLightingPass();
-            shadowManager.forceUpdateAllShadowMaps();
         }
     }
 

@@ -60,7 +60,6 @@ namespace urchin {
             std::span<Model* const> getVisibleModels() const;
             void removeModel(Model*) const;
 
-            void forceUpdateAllShadowMaps();
             void updateShadowMaps(std::uint64_t, unsigned int) const;
             void loadShadowMaps(GenericRenderer&, std::size_t);
 
@@ -92,7 +91,6 @@ namespace urchin {
             std::vector<Frustum<float>> splitFrustums;
             std::map<Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
-            bool bForceUpdateAllShadowMaps;
             std::array<float, SHADOW_MAPS_SHADER_LIMIT * 4> depthSplitDistance; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 
             //shadow lights information

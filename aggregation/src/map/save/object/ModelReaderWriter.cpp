@@ -36,9 +36,8 @@ namespace urchin {
             for (const auto& animationChunk : animationsChunk) {
                 auto animationNameChunk = udaParser.getFirstChunk(true, NAME_TAG, UdaAttribute(), animationChunk);
                 auto animationFilenameChunk = udaParser.getFirstChunk(true, FILENAME_TAG, UdaAttribute(), animationChunk);
-                auto animationShadowImpactChunk = udaParser.getFirstChunk(true, ANIM_SHADOW_IMPACT, UdaAttribute(), animationChunk);
 
-                model.loadAnimation(animationNameChunk->getStringValue(), animationFilenameChunk->getStringValue(), static_cast<AnimShadowImpact>(animationShadowImpactChunk->getIntValue()));
+                model.loadAnimation(animationNameChunk->getStringValue(), animationFilenameChunk->getStringValue());
             }
         }
     }
@@ -52,11 +51,9 @@ namespace urchin {
 
                 auto& animationNameChunk = udaParser.createChunk(NAME_TAG, UdaAttribute(), &animationChunk);
                 auto& animationFilenameChunk = udaParser.createChunk(FILENAME_TAG, UdaAttribute(), &animationChunk);
-                auto& animationShadowImpactChunk = udaParser.createChunk(ANIM_SHADOW_IMPACT, UdaAttribute(), &animationChunk);
 
                 animationNameChunk.setStringValue(animName);
                 animationFilenameChunk.setStringValue(anim->getConstAnimation().getAnimationFilename());
-                animationShadowImpactChunk.setIntValue((int)anim->getShadowImpact());
             }
         }
     }

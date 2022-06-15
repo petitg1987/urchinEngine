@@ -133,10 +133,6 @@ namespace urchin {
         return lightViewMatrix;
     }
 
-    bool LightShadowMap::needShadowMapUpdate() const {
-        return std::ranges::any_of(lightSplitShadowMaps, [](const std::unique_ptr<LightSplitShadowMap>& lightSplitShadowMap){ return lightSplitShadowMap->needShadowMapUpdate(); });
-    }
-
     void LightShadowMap::removeModel(Model* model) const {
         shadowModelSetDisplayer->removeModel(model);
     }

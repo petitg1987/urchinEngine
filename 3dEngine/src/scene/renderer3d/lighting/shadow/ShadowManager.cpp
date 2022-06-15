@@ -15,7 +15,6 @@ namespace urchin {
             config(config),
             lightManager(lightManager),
             modelOctreeManager(modelOctreeManager),
-            bForceUpdateAllShadowMaps(false),
             depthSplitDistance({}) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
@@ -220,13 +219,11 @@ namespace urchin {
         if (lightShadowMap.getLight().hasParallelBeams()) { //sunlight
             unsigned int i = 0;
             for (const auto& lightSplitShadowMap : lightShadowMap.getLightSplitShadowMaps()) {
-                lightSplitShadowMap->update(splitFrustums[i++], bForceUpdateAllShadowMaps);
+                lightSplitShadowMap->update(splitFrustums[i++]);
             }
         } else {
             throw std::runtime_error("Shadow not supported on omnidirectional light.");
         }
-
-        bForceUpdateAllShadowMaps = false;
     }
 
     void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
@@ -248,19 +245,11 @@ namespace urchin {
         #endif
     }
 
-    void ShadowManager::forceUpdateAllShadowMaps() {
-        bForceUpdateAllShadowMaps = true;
-    }
-
     void ShadowManager::updateShadowMaps(std::uint64_t frameIndex, unsigned int numDependenciesToShadowMaps) const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
         unsigned int renderingOrder = 0;
 
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
-            if (!lightShadowMap->needShadowMapUpdate()) {
-                continue;
-            }
-
             if (lightShadowMap->hasTextureFilter()) {
                 unsigned int numDependenciesToRawShadowMaps = 1 /* first texture filter */;
                 lightShadowMap->renderModels(frameIndex, numDependenciesToRawShadowMaps, renderingOrder);
