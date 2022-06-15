@@ -75,8 +75,8 @@ namespace urchin {
                 }
 
                 float roughness = roughnessValueChunk->getFloatValue();
-                if (roughness > 1.0f || roughness < 0.0f) {
-                    throw std::runtime_error("Material roughness must be in range 0.0 - 1.0: " + filename);
+                if (roughness > 1.0f || roughness < 0.05f) {
+                    throw std::runtime_error("Material roughness must be in range 0.05 - 1.0: " + filename);
                 }
 
                 std::vector<unsigned char> roughnessTextureData({(unsigned char) (255.0f * roughness)});

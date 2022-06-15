@@ -160,29 +160,19 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
 }
 
 float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
-    float a = roughness * roughness;
-    float a2 = a * a;
+    float alpha = roughness * roughness;
+    float alpha2 = alpha * alpha;
     float NdotH  = max(dot(normal, halfWay), 0.0);
     float NdotH2 = NdotH * NdotH;
-
-    float num = a2;
-    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    float denom = (NdotH2 * (alpha2 - 1.0) + 1.0);
     denom = 3.14159265358 * denom * denom;
-    if (denom == 0.0) { //TODO remove and add check on roughness > 0.1 ?
-        denom = 0.001f;
-    }
-
-    return num / denom;
+    return alpha2 / denom;
 }
 
 float geometrySchlickGGX(float NdotV, float roughness) {
-    float r = (roughness + 1.0);
-    float k = (r * r) / 8.0;
-
-    float num = NdotV;
-    float denom = NdotV * (1.0 - k) + k;
-
-    return num / denom;
+    float alpha = roughness * roughness;
+    float k = alpha / 2.0f;
+    return NdotV / (NdotV * (1.0 - k) + k);
 }
 
 float geometrySmith(vec3 normal, vec3 vertexToCameraPos, vec3 vertexToLight, float roughness) {
@@ -222,12 +212,12 @@ void main() {
         }
 
         const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
-        vec2 pbrValues = texture(pbrTex, texCoordinates).rg;
-        float roughness = pbrValues.r;
-        float metallic = pbrValues.g;
+        vec2 materialValues = texture(pbrTex, texCoordinates).rg;
+        float roughness = materialValues.r;
+        float metallic = materialValues.g;
         vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, diffuse, metallic);
 
-        fragColor.rgb += diffuse * emissiveFactor; //add object emissive
+        fragColor.rgb += diffuse * emissiveFactor; //add emissive lighting
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (!lightsData.lightsInfo[lightIndex].isExist) {
@@ -242,22 +232,20 @@ void main() {
                 shadowLightIndex++;
             }
 
+            //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw)
             vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightAmbient * lightValues.lightAttenuation;
-
             vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
-            float NDF = distributionGGX(normal, halfWay, roughness);
-            float G = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
-            vec3 fresnelFactor  = fresnelSchlick(halfWay, vertexToCameraPos, baseReflectivity);
+            float normalDistribution = distributionGGX(normal, halfWay, roughness);
+            float geometryShadowing = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
+            vec3 fresnelFactor = fresnelSchlick(halfWay, vertexToCameraPos, baseReflectivity);
             vec3 kS = fresnelFactor;
-            vec3 kD = vec3(1.0) - kS;
-            kD *= 1.0 - metallic;
-            vec3 numerator = NDF * G * fresnelFactor;
-            float denominator = 4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001;
-            vec3 specular = numerator / denominator;
-           //TODO float bidirectionalReflectanceDist = kD * f(diffuse) + kS * f(specular);
+            vec3 kD = (vec3(1.0) - kS) * (1.0 - metallic);
+            vec3 cookTorranceSpecular = (normalDistribution * geometryShadowing * fresnelFactor) / (4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001);
+            vec3 lambertModel = diffuse / 3.14159265358;
+            vec3 bidirectionalReflectanceDist = kD * lambertModel + cookTorranceSpecular; //note: multiply specular by kS is removed because cook-torrance already contains kS
 
             fragColor.rgb += modelAmbient * lightValues.lightAttenuation; //add ambient
-            fragColor.rgb += shadowAttenuation * ((kD * diffuse / 3.14159265358 + specular) * lightRadiance * lightValues.NdotL); //add PBR
+            fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula named F0 (see https://learnopengl.com/PBR/Theory)
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgb = diffuse;
