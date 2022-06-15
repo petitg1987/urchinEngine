@@ -64,13 +64,13 @@ namespace urchin {
     }
 
     void LightEntityReaderWriter::loadProperties(Light& light, const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
-        auto ambientColorChunk = udaParser.getFirstChunk(true, AMBIENT_COLOR_TAG, UdaAttribute(), lightEntityChunk);
-        light.setAmbientColor(ambientColorChunk->getPoint3Value());
+        auto colorChunk = udaParser.getFirstChunk(true, LIGHT_COLOR_TAG, UdaAttribute(), lightEntityChunk);
+        light.setLightColor(colorChunk->getPoint3Value());
     }
 
     void LightEntityReaderWriter::writeProperties(UdaChunk& lightEntityChunk, const Light& light, UdaParser& udaParser) {
-        auto& ambientColorChunk = udaParser.createChunk(AMBIENT_COLOR_TAG, UdaAttribute(), &lightEntityChunk);
-        ambientColorChunk.setPoint3Value(light.getAmbientColor());
+        auto& colorChunk = udaParser.createChunk(LIGHT_COLOR_TAG, UdaAttribute(), &lightEntityChunk);
+        colorChunk.setPoint3Value(light.getLightColor());
     }
 
     void LightEntityReaderWriter::loadFlags(Light& light, const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {

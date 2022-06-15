@@ -66,7 +66,7 @@ void main() {
         for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
                 LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
-                vec3 ambient = lightsData.lightsInfo[lightIndex].lightAmbient * modelAmbient;
+                vec3 ambient = lightsData.lightsInfo[lightIndex].lightColor * modelAmbient;
 
                 fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * ((diffuse.rgb * lightValues.NdotL) + ambient);
             } else {

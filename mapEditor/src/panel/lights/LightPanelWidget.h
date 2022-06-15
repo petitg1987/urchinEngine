@@ -50,9 +50,9 @@ namespace urchin {
             bool disableLightEvent;
 
             //general properties
-            QDoubleSpinBox* ambientR;
-            QDoubleSpinBox* ambientG;
-            QDoubleSpinBox* ambientB;
+            QDoubleSpinBox* colorR;
+            QDoubleSpinBox* colorG;
+            QDoubleSpinBox* colorB;
             QCheckBox* produceShadowCheckBox;
             QLabel* lightType;
 

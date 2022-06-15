@@ -14,9 +14,9 @@ namespace urchin {
             specificOmnidirectionalLightGroupBox(nullptr),
             specificSunLightGroupBox(nullptr),
             disableLightEvent(false),
-            ambientR(nullptr),
-            ambientG(nullptr),
-            ambientB(nullptr),
+            colorR(nullptr),
+            colorG(nullptr),
+            colorB(nullptr),
             produceShadowCheckBox(nullptr),
             lightType(nullptr),
             positionX(nullptr),
@@ -64,29 +64,29 @@ namespace urchin {
 
         auto* generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-        auto* ambientLabel= new QLabel("Ambient:");
+        auto* ambientLabel= new QLabel("Color:");
         generalPropertiesLayout->addWidget(ambientLabel, 0, 0);
 
-        auto* ambientLayout = new QHBoxLayout();
-        generalPropertiesLayout->addLayout(ambientLayout, 0, 1);
-        ambientR = new QDoubleSpinBox();
-        ambientLayout->addWidget(ambientR);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambientR);
-        ambientR->setMinimum(0.0);
-        ambientR->setMaximum(1.0);
-        connect(ambientR, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
-        ambientG = new QDoubleSpinBox();
-        ambientLayout->addWidget(ambientG);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambientG);
-        ambientG->setMinimum(0.0);
-        ambientG->setMaximum(1.0);
-        connect(ambientG, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
-        ambientB = new QDoubleSpinBox();
-        ambientLayout->addWidget(ambientB);
-        SpinBoxStyleHelper::applyDefaultStyleOn(ambientB);
-        ambientB->setMinimum(0.0);
-        ambientB->setMaximum(1.0);
-        connect(ambientB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
+        auto* colorLayout = new QHBoxLayout();
+        generalPropertiesLayout->addLayout(colorLayout, 0, 1);
+        colorR = new QDoubleSpinBox();
+        colorLayout->addWidget(colorR);
+        SpinBoxStyleHelper::applyDefaultStyleOn(colorR);
+        colorR->setMinimum(0.0);
+        colorR->setMaximum(1.0);
+        connect(colorR, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
+        colorG = new QDoubleSpinBox();
+        colorLayout->addWidget(colorG);
+        SpinBoxStyleHelper::applyDefaultStyleOn(colorG);
+        colorG->setMinimum(0.0);
+        colorG->setMaximum(1.0);
+        connect(colorG, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
+        colorB = new QDoubleSpinBox();
+        colorLayout->addWidget(colorB);
+        SpinBoxStyleHelper::applyDefaultStyleOn(colorB);
+        colorB->setMinimum(0.0);
+        colorB->setMaximum(1.0);
+        connect(colorB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
 
         produceShadowCheckBox = new QCheckBox("Product Shadow");
         generalPropertiesLayout->addWidget(produceShadowCheckBox, 1, 0, 1, 2);
@@ -207,9 +207,9 @@ namespace urchin {
         disableLightEvent = true;
         const Light* light = lightEntity->getLight();
 
-        this->ambientR->setValue(light->getAmbientColor().X);
-        this->ambientG->setValue(light->getAmbientColor().Y);
-        this->ambientB->setValue(light->getAmbientColor().Z);
+        this->colorR->setValue(light->getLightColor().X);
+        this->colorG->setValue(light->getLightColor().Y);
+        this->colorB->setValue(light->getLightColor().Z);
 
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
@@ -278,10 +278,10 @@ namespace urchin {
         if (!disableLightEvent) {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
 
-            Point3 ambientColor((float)ambientR->value(), (float)ambientG->value(), (float)ambientB->value());
+            Point3 lightColor((float)colorR->value(), (float)colorG->value(), (float)colorB->value());
             bool produceShadow = produceShadowCheckBox->isChecked();
 
-            lightController->updateLightGeneralProperties(lightEntity, ambientColor, produceShadow);
+            lightController->updateLightGeneralProperties(lightEntity, lightColor, produceShadow);
         }
     }
 

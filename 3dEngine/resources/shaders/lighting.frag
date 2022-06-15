@@ -226,14 +226,8 @@ void main() {
 
             LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
 
-            float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
-                shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
-                shadowLightIndex++;
-            }
-
-            //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw)
-            vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightAmbient * lightValues.lightAttenuation;
+            //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw & https://learnopengl.com/PBR/Theory)
+            vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightColor * lightValues.lightAttenuation;
             vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
             float normalDistribution = distributionGGX(normal, halfWay, roughness);
             float geometryShadowing = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
@@ -241,11 +235,18 @@ void main() {
             vec3 kS = fresnelFactor;
             vec3 kD = (vec3(1.0) - kS) * (1.0 - metallic);
             vec3 cookTorranceSpecular = (normalDistribution * geometryShadowing * fresnelFactor) / (4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001);
-            vec3 lambertModel = diffuse / 3.14159265;
-            vec3 bidirectionalReflectanceDist = kD * lambertModel + cookTorranceSpecular; //note: multiply specular by kS is removed because cook-torrance already contains kS
+            vec3 lambert = diffuse; //do not divide by PI (see https://seblagarde.wordpress.com/2012/01/08/pi-or-not-to-pi-in-game-lighting-equation/)
+            vec3 bidirectionalReflectanceDist = kD * lambert + cookTorranceSpecular;
+
+            //shadow
+            float shadowAttenuation = 1.0; //1.0 = no shadow
+            if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
+                shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
+                shadowLightIndex++;
+            }
 
             fragColor.rgb += modelAmbient * lightValues.lightAttenuation; //add ambient
-            fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula named F0 (see https://learnopengl.com/PBR/Theory)
+            fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgb = diffuse;

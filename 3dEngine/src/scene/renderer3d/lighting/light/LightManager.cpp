@@ -130,7 +130,7 @@ namespace urchin {
                 lightsData.lightsInfo[i].isExist = true;
                 lightsData.lightsInfo[i].produceShadow = light->isProduceShadow();
                 lightsData.lightsInfo[i].hasParallelBeams = light->hasParallelBeams();
-                lightsData.lightsInfo[i].lightAmbient = light->getAmbientColor();
+                lightsData.lightsInfo[i].lightColor = light->getLightColor();
 
                 if (lights[i]->getLightType() == Light::SUN) {
                     const auto* sunLight = static_cast<const SunLight*>(light);

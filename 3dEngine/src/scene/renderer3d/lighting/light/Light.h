@@ -33,13 +33,13 @@ namespace urchin {
             bool isProduceShadow() const;
 
             //properties methods
-            void setAmbientColor(const Point3<float>&); //TODO rename in lightColor
-            const Point3<float>& getAmbientColor() const;
+            void setLightColor(const Point3<float>&);
+            const Point3<float>& getLightColor() const;
 
         private:
             //general properties
             Transform<float> noTransform; //no transformation because light position is specified in global space
-            Point3<float> ambientColor;
+            Point3<float> lightColor;
 
             //shadow properties
             bool produceShadow;

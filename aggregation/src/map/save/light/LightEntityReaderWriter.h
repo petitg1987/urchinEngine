@@ -29,7 +29,7 @@ namespace urchin {
             static constexpr char SUN_VALUE[] = "SUN";
             static constexpr char DIRECTION_TAG[] = "direction";
             static constexpr char POSITION_TAG[] = "position";
-            static constexpr char AMBIENT_COLOR_TAG[] = "ambientColor";
+            static constexpr char LIGHT_COLOR_TAG[] = "lightColor";
             static constexpr char EXPONENTIAL_ATTENUATION_TAG[] = "exponentialAttenuation";
             static constexpr char PRODUCE_SHADOW_TAG[] = "produceShadow";
     };

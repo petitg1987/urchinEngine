@@ -44,12 +44,11 @@ namespace urchin {
         markModified();
     }
 
-    const LightEntity& LightController::updateLightGeneralProperties(const LightEntity& constLightEntity,
-                                                                     const Point3<float>& ambientColor, bool isProduceShadow) {
+    const LightEntity& LightController::updateLightGeneralProperties(const LightEntity& constLightEntity, const Point3<float>& lightColor, bool isProduceShadow) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
         Light* light = lightEntity.getLight();
 
-        light->setAmbientColor(ambientColor);
+        light->setLightColor(lightColor);
         if (light->isProduceShadow() != isProduceShadow) {
             light->setProduceShadow(isProduceShadow);
         }
@@ -58,8 +57,7 @@ namespace urchin {
         return lightEntity;
     }
 
-    const LightEntity& LightController::updateOmnidirectionalLightProperties(const LightEntity& constLightEntity,
-                                                                             float attenuation, const Point3<float>& position) {
+    const LightEntity& LightController::updateOmnidirectionalLightProperties(const LightEntity& constLightEntity, float attenuation, const Point3<float>& position) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
         auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(lightEntity.getLight());
 

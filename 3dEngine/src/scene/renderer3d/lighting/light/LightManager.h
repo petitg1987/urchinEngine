@@ -62,7 +62,7 @@ namespace urchin {
                 alignas(4) bool hasParallelBeams;
                 alignas(16) Vector3<float> positionOrDirection;
                 alignas(4) float exponentialAttenuation;
-                alignas(16) Point3<float> lightAmbient;
+                alignas(16) Point3<float> lightColor;
             };
 
             struct LightsData {

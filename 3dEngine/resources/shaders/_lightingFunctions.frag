@@ -4,7 +4,7 @@ struct LightInfo {
     bool hasParallelBeams;
     vec3 positionOrDirection;
     float exponentialAttenuation;
-    vec3 lightAmbient;
+    vec3 lightColor;
 };
 
 struct LightValues {

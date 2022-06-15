@@ -3,7 +3,7 @@
 namespace urchin {
 
     Light::Light() :
-            ambientColor(Point3<float>(0.0f, 0.0f, 0.0f)),
+            lightColor(Point3<float>(1.0f, 1.0f, 1.0f)),
             produceShadow(false) {
 
     }
@@ -22,12 +22,12 @@ namespace urchin {
         return produceShadow;
     }
 
-    void Light::setAmbientColor(const Point3<float>& ambientColor) {
-        this->ambientColor = ambientColor;
+    void Light::setLightColor(const Point3<float>& lightColor) {
+        this->lightColor = lightColor;
     }
 
-    const Point3<float>& Light::getAmbientColor() const {
-        return ambientColor;
+    const Point3<float>& Light::getLightColor() const {
+        return lightColor;
     }
 
 }
