@@ -159,10 +159,10 @@ vec4 addTransparentModels(vec4 srcDiffuse) {
     return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcDiffuse.rgba;
 }
 
-float distributionGGX(vec3 normal, vec3 H, float roughness) {
+float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
     float a = roughness * roughness;
     float a2 = a * a;
-    float NdotH  = max(dot(normal, H), 0.0);
+    float NdotH  = max(dot(normal, halfWay), 0.0);
     float NdotH2 = NdotH * NdotH;
 
     float num = a2;
@@ -185,17 +185,18 @@ float geometrySchlickGGX(float NdotV, float roughness) {
     return num / denom;
 }
 
-float geometrySmith(vec3 normal, vec3 V, vec3 L, float roughness) {
-    float NdotV = max(dot(normal, V), 0.0);
-    float NdotL = max(dot(normal, L), 0.0);
-    float ggx2 = geometrySchlickGGX(NdotV, roughness);
+float geometrySmith(vec3 normal, vec3 vertexToCameraPos, vec3 vertexToLight, float roughness) {
+    float NdotV = max(dot(normal, vertexToCameraPos), 0.0);
+    float NdotL = max(dot(normal, vertexToLight), 0.0);
     float ggx1 = geometrySchlickGGX(NdotL, roughness);
-
+    float ggx2 = geometrySchlickGGX(NdotV, roughness);
     return ggx1 * ggx2;
 }
 
-vec3 fresnelSchlick(float cosTheta, vec3 F0) {
-    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+vec3 fresnelSchlick(vec3 halfWay, vec3 vertexToCameraPos, vec3 baseReflectivity) {
+    //See https://en.wikipedia.org/wiki/Schlick%27s_approximation
+    float VdotH = max(dot(halfWay, vertexToCameraPos), 0.0);
+    return baseReflectivity + (1.0 - baseReflectivity) * pow(clamp(1.0 - VdotH, 0.0, 1.0), 5.0);
 }
 
 void main() {
@@ -211,21 +212,22 @@ void main() {
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
         vec3 modelAmbient = diffuse * modelAmbientFactor;
-        fragColor = vec4(lightsData.globalAmbient, 1.0);
+        float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
+
+        fragColor = vec4(lightsData.globalAmbient, 1.0); //start with global ambient
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
-            fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor);
+            fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor); //subtract ambient occlusion
         }
 
-        //PBR init
+        const vec3 dielectricSurfacesBaseReflectivity = vec3(0.04); //value is a mean of all no-metallic surfaces (plastic, water, ruby, diamond, glass...)
         vec2 pbrValues = texture(pbrTex, texCoordinates).rg;
         float roughness = pbrValues.r;
         float metallic = pbrValues.g;
+        vec3 baseReflectivity = mix(dielectricSurfacesBaseReflectivity, diffuse, metallic);
 
-        vec3 F0 = vec3(0.04);
-        F0 = mix(F0, diffuse, metallic);
-        vec3 Lo = vec3(0.0); //reflection equation
+        fragColor.rgb += diffuse * emissiveFactor; //add object emissive
 
         for (int lightIndex = 0, shadowLightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (!lightsData.lightsInfo[lightIndex].isExist) {
@@ -240,30 +242,23 @@ void main() {
                 shadowLightIndex++;
             }
 
-            //PBR
-            vec3 H = normalize(vertexToCameraPos + lightValues.vertexToLight);
-            vec3 radiance = lightsData.lightsInfo[lightIndex].lightAmbient * lightValues.lightAttenuation;
+            vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightAmbient * lightValues.lightAttenuation;
 
-            // cook-torrance brdf
-            float NDF = distributionGGX(normal, H, roughness);
+            vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
+            float NDF = distributionGGX(normal, halfWay, roughness);
             float G = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
-            vec3 F = fresnelSchlick(max(dot(H, vertexToCameraPos), 0.0), F0);
-
-            vec3 kS = F;
+            vec3 fresnelFactor  = fresnelSchlick(halfWay, vertexToCameraPos, baseReflectivity);
+            vec3 kS = fresnelFactor;
             vec3 kD = vec3(1.0) - kS;
             kD *= 1.0 - metallic;
-
-            vec3 numerator = NDF * G * F;
+            vec3 numerator = NDF * G * fresnelFactor;
             float denominator = 4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001;
             vec3 specular = numerator / denominator;
+           //TODO float bidirectionalReflectanceDist = kD * f(diffuse) + kS * f(specular);
 
-            Lo += (modelAmbient * lightValues.lightAttenuation) + (shadowAttenuation * (kD * diffuse / 3.14159265358 + specular) * radiance * lightValues.NdotL);
+            fragColor.rgb += modelAmbient * lightValues.lightAttenuation; //add ambient
+            fragColor.rgb += shadowAttenuation * ((kD * diffuse / 3.14159265358 + specular) * lightRadiance * lightValues.NdotL); //add PBR
         }
-
-        float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
-        vec3 emissiveDiffuse = diffuse * emissiveFactor;
-
-        fragColor.rgb = Lo + emissiveDiffuse;
     } else { //do not apply lighting (e.g. skybox, geometry models...)
         fragColor.rgb = diffuse;
     }
