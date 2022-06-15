@@ -168,6 +168,9 @@ float distributionGGX(vec3 normal, vec3 H, float roughness) {
     float num = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = 3.14159265358 * denom * denom;
+    if (denom == 0.0) { //TODO remove and add check on roughness > 0.1 ?
+        denom = 0.001f;
+    }
 
     return num / denom;
 }
@@ -254,7 +257,7 @@ void main() {
             float denominator = 4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001;
             vec3 specular = numerator / denominator;
 
-            Lo += (modelAmbient * lightValues.lightAttenuation) + (shadowAttenuation * (kD * (diffuse) / 3.14159265358 + specular) * radiance * lightValues.NdotL);
+            Lo += (modelAmbient * lightValues.lightAttenuation) + (shadowAttenuation * (kD * diffuse / 3.14159265358 + specular) * radiance * lightValues.NdotL);
         }
 
         float emissiveFactor = diffuseAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor

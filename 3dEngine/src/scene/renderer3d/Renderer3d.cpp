@@ -15,7 +15,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
     bool DEBUG_DISPLAY_COLOR_BUFFER = false;
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
-    bool DEBUG_DISPLAY_PBR_BUFFER = true;
+    bool DEBUG_DISPLAY_PBR_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCTREE = false;

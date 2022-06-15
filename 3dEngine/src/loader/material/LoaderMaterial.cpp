@@ -62,7 +62,7 @@ namespace urchin {
 
             auto roughnessTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), roughnessChunk);
             if (roughnessTextureChunk) {
-                roughnessTexture = ResourceRetriever::instance().getResource<Texture>(roughnessTextureChunk->getStringValue());
+                roughnessTexture = ResourceRetriever::instance().getResource<Texture>(roughnessTextureChunk->getStringValue(), {{"mipMap", "1"}});
                 if (roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_INT && roughnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT) {
                     throw std::runtime_error("Material defines a roughness texture not in grayscale: " + filename);
                 }
@@ -95,7 +95,7 @@ namespace urchin {
 
             auto metalnessTextureChunk = udaParser.getFirstChunk(false, "texture", UdaAttribute(), metalnessChunk);
             if (metalnessTextureChunk) {
-                metalnessTexture = ResourceRetriever::instance().getResource<Texture>(metalnessTextureChunk->getStringValue());
+                metalnessTexture = ResourceRetriever::instance().getResource<Texture>(metalnessTextureChunk->getStringValue(), {{"mipMap", "1"}});
                 if (metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_8_INT && metalnessTexture->getFormat() != TextureFormat::GRAYSCALE_16_FLOAT) {
                     throw std::runtime_error("Material defines a metalness texture not in grayscale: " + filename);
                 }
