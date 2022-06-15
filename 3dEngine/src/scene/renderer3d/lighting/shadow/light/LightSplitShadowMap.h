@@ -24,10 +24,8 @@ namespace urchin {
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
             AABBox<float> buildSceneDependentBox(const AABBox<float>&, const OBBox<float>&) const;
             void updateShadowCasterReceiverBox(const AABBox<float>&);
-            void updateModels(const std::vector<Model*>&);
 
             const LightShadowMap* lightShadowMap;
-            std::vector<Model*> obboxModels;
 
             const bool useSceneDependentProjection;
             Matrix4<float> lightProjectionMatrix;

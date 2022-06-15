@@ -14,9 +14,8 @@ namespace urchin {
         AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums, lightShadowMap->getLightViewMatrix());
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
-        obboxModels.clear();
-        lightShadowMap->getModelOctreeManager().getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
-        updateModels(obboxModels);
+        models.clear();
+        lightShadowMap->getModelOctreeManager().getOctreeablesIn(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
 
         if (useSceneDependentProjection) {
             AABBox<float> aabboxSceneDependent = buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace);
@@ -127,10 +126,4 @@ namespace urchin {
         this->lightProjectionMatrix = shadowCasterReceiverBox.toProjectionMatrix();
     }
 
-    /**
-     * @models Models visible from light in frustum split
-     */
-    void LightSplitShadowMap::updateModels(const std::vector<Model*>& models) {
-        this->models = models;
-    }
 }
