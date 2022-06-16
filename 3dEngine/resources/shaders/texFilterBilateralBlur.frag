@@ -25,15 +25,13 @@ float linearizeDepth(float depthValue) {
             unmapDepthValue * (cameraPlanes.farPlane - cameraPlanes.nearPlane)); //[0.0 = nearPlane, 1.0 = far plane]
 }
 
-float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inout float totalWeight) {
+float bilateralBlur(vec2 uvOffset, float r2BlurFalloff, float linearizedDepthCenterValue, inout float totalWeight) {
     float texValue = texture(tex, texCoordinates + uvOffset).r;
-    float depthValue = texture(depthTex, texCoordinates).r;
+    float depthValue = texture(depthTex, texCoordinates + uvOffset).r;
     float linearizedDepthValue = linearizeDepth(depthValue);
 
-    const float blurSigma = float(KERNEL_RADIUS) * 0.5;
-    const float blurFalloff = 1.0 / (2.0 * blurSigma * blurSigma);
-    float ddiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
-    float weight = exp2(-r * r * blurFalloff - ddiff * ddiff);
+    float zDiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
+    float weight = exp2(r2BlurFalloff - zDiff * zDiff);
 
     totalWeight += weight;
 
@@ -41,6 +39,9 @@ float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inou
 }
 
 void main() {
+    const float blurSigma = (float(KERNEL_RADIUS) + 1.0) * 0.5;
+    const float blurFalloff = 1.0 / (2.0 * blurSigma * blurSigma);
+
     float centerTexValue = texture(tex, texCoordinates).r;
     float depthCenterValue = texture(depthTex, texCoordinates).r;
     float linearizedDepthCenterValue = linearizeDepth(depthCenterValue);
@@ -48,14 +49,18 @@ void main() {
     fragColor = centerTexValue;
     float totalWeight = 1.0;
 
-    for (int i = 0; i < KERNEL_RADIUS; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, blurData.offsets[i]) : vec2(blurData.offsets[i], 0.0);
-        fragColor += bilateralBlur(uvOffset, i + 1, linearizedDepthCenterValue, totalWeight);
-    }
-
-    for (int i = 0; i < KERNEL_RADIUS; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, -blurData.offsets[i]) : vec2(-blurData.offsets[i], 0.0);
-        fragColor += bilateralBlur(uvOffset, i + 1, linearizedDepthCenterValue, totalWeight);
+    if (IS_VERTICAL_BLUR) {
+        for (int i = 0; i < KERNEL_RADIUS; ++i) {
+            float r2BlurFalloff = -float(i + 1) * float(i + 1) * blurFalloff;
+            fragColor += bilateralBlur(vec2(0.0, blurData.offsets[i]), r2BlurFalloff, linearizedDepthCenterValue, totalWeight);
+            fragColor += bilateralBlur(vec2(0.0, -blurData.offsets[i]), r2BlurFalloff, linearizedDepthCenterValue, totalWeight);
+        }
+    } else {
+        for (int i = 0; i < KERNEL_RADIUS; ++i) {
+            float r2BlurFalloff = -float(i + 1) * float(i + 1) * blurFalloff;
+            fragColor += bilateralBlur(vec2(blurData.offsets[i], 0.0), r2BlurFalloff, linearizedDepthCenterValue, totalWeight);
+            fragColor += bilateralBlur(vec2(-blurData.offsets[i], 0.0), r2BlurFalloff, linearizedDepthCenterValue, totalWeight);
+        }
     }
 
     fragColor /= totalWeight;

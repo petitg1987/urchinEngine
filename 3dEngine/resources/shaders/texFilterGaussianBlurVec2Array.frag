@@ -20,8 +20,13 @@ layout(location = 0) out vec2 fragColor;
 void main() {
     fragColor = vec2(0.0, 0.0);
 
-    for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
-        vec2 uvOffset = (IS_VERTICAL_BLUR) ? vec2(0.0, offsetsBlurData.offsets[i]) : vec2(offsetsBlurData.offsets[i], 0.0);
-        fragColor += weightsBlurData.weights[i] * texture(tex, vec3(texCoordinates.xy + uvOffset, texCoordinates.z)).rg;
+    if (IS_VERTICAL_BLUR) {
+        for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
+            fragColor += weightsBlurData.weights[i] * texture(tex, vec3(texCoordinates.x, texCoordinates.y + offsetsBlurData.offsets[i], texCoordinates.z)).rg;
+        }
+    } else {
+        for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
+            fragColor += weightsBlurData.weights[i] * texture(tex, vec3(texCoordinates.x + offsetsBlurData.offsets[i], texCoordinates.y, texCoordinates.z)).rg;
+        }
     }
 }
