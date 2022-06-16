@@ -102,6 +102,7 @@ namespace urchin {
             mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 
             std::vector<GenericRenderer*> renderers;
+            std::vector<GenericRenderer*> sortedEnabledRenderers;
             bool renderersDirty;
     };
 

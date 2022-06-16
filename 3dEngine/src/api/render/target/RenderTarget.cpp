@@ -389,7 +389,13 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
         if (needCommandBufferRefresh(frameIndex)) {
-            std::ranges::sort(renderers, GenericRendererComparator());
+            sortedEnabledRenderers.clear();
+            for (GenericRenderer* renderer: renderers) {
+                if (renderer->isEnabled()) {
+                    sortedEnabledRenderers.emplace_back(renderer);
+                }
+            }
+            std::ranges::sort(sortedEnabledRenderers, GenericRendererComparator());
 
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -423,10 +429,8 @@ namespace urchin {
                 vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 {
                     std::size_t boundPipelineId = 0;
-                    for (GenericRenderer* renderer: renderers) {
-                        if (renderer->isEnabled()) {
-                            boundPipelineId = renderer->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
-                        }
+                    for (GenericRenderer* renderer: sortedEnabledRenderers) {
+                        boundPipelineId = renderer->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
                     }
                 }
                 vkCmdEndRenderPass(commandBuffers[frameIndex]);
