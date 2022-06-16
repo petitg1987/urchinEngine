@@ -41,7 +41,7 @@ namespace urchin {
                 PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
         };
         if (ConfigService::instance().getBoolValue("graphicsDebug.enableRobustBufferAccess")) {
-            physicalDeviceRequiredFeatures.emplace_back(PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), "robust buffer access")); //100%
+            physicalDeviceRequiredFeatures.emplace_back(offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), "robust buffer access"); //100%
         }
         physicalDeviceRequiredVulkan12Features = {
                 //About "shaderOutputLayer & "shaderOutputViewportIndex" features: a device lost error occurs on Intel GPU when gl_Layer is used in vertex shader:
