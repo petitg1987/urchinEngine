@@ -25,8 +25,8 @@ layout(std140, set = 0, binding = 3) uniform LightsData {
 //texture
 layout(binding = 4) uniform sampler2D albedoTex;
 layout(binding = 5) uniform sampler2D normalTex;
-layout(binding = 6) uniform sampler2D roughnessTex; //TODO use it ?
-layout(binding = 7) uniform sampler2D metalnessTex;
+layout(binding = 6) uniform sampler2D roughnessTex; //usage of this texture not implemented
+layout(binding = 7) uniform sampler2D metalnessTex; //usage of this texture not implemented
 
 layout(location = 0) in vec3 t;
 layout(location = 1) in vec3 b;
@@ -52,6 +52,10 @@ void fillTransparentTextures(vec4 fragColor) {
 
 void main() {
     vec4 albedo = texture(albedoTex, texCoordinates);
+    if (albedo.a < 0.01) {
+        discard;
+    }
+
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
@@ -59,18 +63,17 @@ void main() {
     vec4 fragColor = vec4(0.0, 0.0, 0.0, 1.0);
     if (materialData.ambientFactor < 0.9999) { //apply lighting
         float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
-        vec3 modelAmbient = vec3(albedo) * materialData.ambientFactor;
+        vec3 modelAmbient = albedo.rgb * materialData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
 
-        float emissiveAttenuation = max(0.0, 1.0 - emissiveFactor);//disable lighting on highly emissive objects (give better results)
         for (int lightIndex = 0; lightIndex < MAX_LIGHTS; ++lightIndex) {
             if (lightsData.lightsInfo[lightIndex].isExist) {
                 LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
                 vec3 ambient = lightsData.lightsInfo[lightIndex].lightColor * modelAmbient;
 
-                fragColor.rgb += emissiveAttenuation * lightValues.lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
+                fragColor.rgb += lightValues.lightAttenuation * ((albedo.rgb * lightValues.NdotL) + ambient);
             } else {
-                break;//no more light
+                break; //no more light
             }
         }
         fragColor.rgb += albedo.rgb * emissiveFactor;
