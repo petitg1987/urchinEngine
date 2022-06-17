@@ -5,6 +5,8 @@
 
 namespace urchin {
 
+    struct ControlData;
+
     class Control {
         public:
             enum Key {
@@ -129,12 +131,15 @@ namespace urchin {
                 UNKNOWN_KEY = 9999
             };
 
-            Control();
-
             const std::map<Control::Key, std::string>& getKeysLabelMap() const;
 
         private:
-            std::map<Control::Key, std::string> keysLabelMap;
+            static ControlData controlData;
+    };
+
+    struct ControlData {
+        ControlData();
+        std::map<Control::Key, std::string> keysLabelMap;
     };
 
 }

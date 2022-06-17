@@ -2,7 +2,14 @@
 
 namespace urchin {
 
-    Control::Control() {
+    //static
+    ControlData Control::controlData;
+
+    const std::map<Control::Key, std::string>& Control::getKeysLabelMap() const {
+        return controlData.keysLabelMap;
+    }
+
+    ControlData::ControlData() {
         //keyboard
         for (unsigned int i = Control::Key::A; i <= Control::Key::Z; ++i) {
             keysLabelMap[static_cast<Control::Key>(i)] = std::string(1, static_cast<char>('A' + i));
@@ -76,10 +83,6 @@ namespace urchin {
         keysLabelMap[Control::Key::MOUSE_F5] = "Mouse F5";
 
         keysLabelMap[Control::Key::UNKNOWN_KEY] = "[UNKNOWN]";
-    }
-
-    const std::map<Control::Key, std::string>& Control::getKeysLabelMap() const {
-        return keysLabelMap;
     }
     
 }
