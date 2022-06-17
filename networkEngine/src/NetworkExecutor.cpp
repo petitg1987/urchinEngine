@@ -57,7 +57,7 @@ namespace urchin {
                     asyncRequestExecutor.executeRequest(httpRequest);
                 }
 
-                if (StepSleep::sleep(executionPauseTime, this)) {
+                if (SleepUtil::stepSleep(executionPauseTime, this)) {
                     break;
                 }
             }

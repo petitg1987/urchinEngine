@@ -8,7 +8,7 @@ namespace urchin {
 
     class NetworkExecutor {
         public:
-            friend class StepSleep;
+            friend class SleepUtil;
 
             NetworkExecutor();
             ~NetworkExecutor();

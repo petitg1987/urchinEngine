@@ -16,6 +16,7 @@ namespace urchin {
             sceneHeight(0),
             fps(0),
             fpsForDisplay(0),
+            fpsLimit(-1),
             frameIndex(0),
             screenRenderTarget(ScreenRender("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
@@ -95,26 +96,53 @@ namespace urchin {
     }
 
     float Scene::getDeltaTime() const {
-        return 1.0f / getFps();
+        return 1.0f / fps;
+    }
+
+    void Scene::setFpsLimit(int fpsLimit) {
+        this->fpsLimit = fpsLimit;
+        resetFps();
+    }
+
+    void Scene::handleFpsLimiter() {
+        if (fpsLimit > 0 && !screenRenderTarget.isVerticalSyncEnabled()) {
+            if (fpsLimitPreviousTime == MIN_TIME_POINT) {
+                fpsLimitPreviousTime = std::chrono::steady_clock::now();
+            } else {
+                auto currentTime = std::chrono::steady_clock::now();
+                auto deltaTimeInUs = (double) std::chrono::duration_cast<std::chrono::microseconds>(currentTime - fpsLimitPreviousTime).count();
+
+                double expectedDeltaInUs = (1000.0 * 1000.0) / (double)fpsLimit;
+                if (deltaTimeInUs < expectedDeltaInUs) {
+                    double waitTimeUs = expectedDeltaInUs - deltaTimeInUs;
+                    SleepUtil::preciseSleep(waitTimeUs);
+                    fpsLimitPreviousTime = std::chrono::steady_clock::now();
+                } else {
+                    fpsLimitPreviousTime = currentTime;
+                }
+            }
+        }
     }
 
     void Scene::computeFps() {
         if (previousTime == MIN_TIME_POINT) {
             previousTime = std::chrono::steady_clock::now();
-        }
-        auto currentTime = std::chrono::steady_clock::now();
-        auto deltaTimeInUs = (double)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
+        } else {
+            auto currentTime = std::chrono::steady_clock::now();
+            auto deltaTimeInUs = (double) std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count();
 
-        static int frameCount = 0;
-        frameCount++;
-        if (deltaTimeInUs / 1000.0 > FPS_REFRESH_TIME_IN_MS) {
-            fps = (float)(1000000.0 / deltaTimeInUs) * (float)frameCount;
-            previousTime = currentTime;
-            frameCount = 0;
+            static int frameCount = 0;
+            frameCount++;
+            if (deltaTimeInUs / 1000.0 > FPS_REFRESH_TIME_IN_MS) {
+                fps = (float) (1000000.0 / deltaTimeInUs) * (float) frameCount;
+                previousTime = currentTime;
+                frameCount = 0;
+            }
         }
     }
 
     void Scene::resetFps() {
+        fpsLimitPreviousTime = MIN_TIME_POINT;
         previousTime = MIN_TIME_POINT;
         fps = STARTUP_FPS;
         fpsForDisplay = (unsigned int)STARTUP_FPS;
@@ -230,6 +258,7 @@ namespace urchin {
         {
             ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");
 
+            handleFpsLimiter();
             computeFps();
             float dt = getDeltaTime();
 

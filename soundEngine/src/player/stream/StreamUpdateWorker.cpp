@@ -95,7 +95,7 @@ namespace urchin {
                     }
                 }
 
-                if (StepSleep::sleep(updateStreamBufferPauseTime, this)) {
+                if (SleepUtil::stepSleep(updateStreamBufferPauseTime, this)) {
                     break;
                 }
             }

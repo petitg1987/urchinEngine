@@ -16,8 +16,10 @@ namespace urchin {
             void initialize() override;
             void cleanup() override;
 
-            void updateVerticalSync(bool);
             void onResize();
+
+            void updateVerticalSync(bool);
+            bool isVerticalSyncEnabled() const;
 
             unsigned int getWidth() const override;
             unsigned int getHeight() const override;

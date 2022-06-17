@@ -28,6 +28,7 @@ namespace urchin {
             float getFps() const;
             unsigned int getFpsForDisplay();
             float getDeltaTime() const;
+            void setFpsLimit(int);
 
             //renderer
             Renderer3d& newRenderer3d(std::shared_ptr<Camera>, const VisualConfig&, bool);
@@ -53,11 +54,12 @@ namespace urchin {
             void display();
 
         private:
+            void handleFpsLimiter();
             void computeFps();
             void resetFps();
 
             static constexpr float STARTUP_FPS = 1000.0f; //high number of FPS to avoid pass through the ground at startup
-            static constexpr float FPS_REFRESH_TIME_IN_MS = 4.0f;
+            static constexpr float FPS_REFRESH_TIME_IN_MS = 3.0f;
             static constexpr float DISPLAY_FPS_REFRESH_TIME_IN_MS = 400.0f;
             static constexpr std::chrono::steady_clock::time_point MIN_TIME_POINT = std::chrono::steady_clock::time_point::min();
 
@@ -68,9 +70,11 @@ namespace urchin {
             unsigned int sceneHeight;
 
             //fps
+            std::chrono::steady_clock::time_point fpsLimitPreviousTime;
             std::chrono::steady_clock::time_point previousTime;
             float fps;
             unsigned int fpsForDisplay;
+            int fpsLimit;
 
             //renderer
             std::uint64_t frameIndex;

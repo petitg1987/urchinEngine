@@ -88,6 +88,10 @@ namespace urchin {
         }
     }
 
+    bool ScreenRender::isVerticalSyncEnabled() const {
+        return verticalSyncEnabled;
+    }
+
     unsigned int ScreenRender::getWidth() const {
         return swapChainHandler.getSwapChainExtent().width;
     }

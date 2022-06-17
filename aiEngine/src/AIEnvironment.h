@@ -16,7 +16,7 @@ namespace urchin {
 
     class AIEnvironment {
         public:
-            friend class StepSleep;
+            friend class SleepUtil;
 
             AIEnvironment();
             ~AIEnvironment();

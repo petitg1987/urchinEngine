@@ -1,4 +1,4 @@
-template<class T> bool StepSleep::sleep(int sleepMs, const T* threadClass) {
+template<class T> bool SleepUtil::stepSleep(int sleepMs, const T* threadClass) {
     if (sleepMs < SLEEP_STEP_TIME_MS) {
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepMs));
     } else {

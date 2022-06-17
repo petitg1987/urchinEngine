@@ -13,7 +13,7 @@ namespace urchin {
     */
     class StreamUpdateWorker {
         public:
-            friend class StepSleep;
+            friend class SleepUtil;
 
             StreamUpdateWorker();
             ~StreamUpdateWorker();

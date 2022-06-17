@@ -113,7 +113,7 @@ namespace urchin {
 
                 float remainingTime = timeStep - (float)((double)deltaTimeInUs / 1000000.0f);
                 if (remainingTime >= 0.0f) {
-                    if (StepSleep::sleep((int)(remainingTime * 1000.0f), this)) {
+                    if (SleepUtil::stepSleep((int)(remainingTime * 1000.0f), this)) {
                         break;
                     }
                     frameStartTime = std::chrono::steady_clock::now();
