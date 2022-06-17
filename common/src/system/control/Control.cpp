@@ -74,6 +74,8 @@ namespace urchin {
         keysLabelMap[Control::Key::MOUSE_F3] = "Mouse F3";
         keysLabelMap[Control::Key::MOUSE_F4] = "Mouse F4";
         keysLabelMap[Control::Key::MOUSE_F5] = "Mouse F5";
+
+        keysLabelMap[Control::Key::UNKNOWN_KEY] = "[UNKNOWN]";
     }
 
     const std::map<Control::Key, std::string>& Control::getKeysLabelMap() const {
