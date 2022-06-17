@@ -138,7 +138,7 @@ namespace urchin {
     };
 
     struct ControlData {
-        ControlData();
+        ControlData() noexcept;
         std::map<Control::Key, std::string> keysLabelMap;
     };
 

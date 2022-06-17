@@ -9,7 +9,7 @@ namespace urchin {
         return controlData.keysLabelMap;
     }
 
-    ControlData::ControlData() {
+    ControlData::ControlData() noexcept {
         //keyboard
         for (unsigned int i = Control::Key::A; i <= Control::Key::Z; ++i) {
             keysLabelMap[static_cast<Control::Key>(i)] = std::string(1, static_cast<char>('A' + i));
