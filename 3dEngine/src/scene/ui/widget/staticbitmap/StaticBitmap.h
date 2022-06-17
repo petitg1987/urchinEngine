@@ -20,6 +20,8 @@ namespace urchin {
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, HeightSize, const std::string&);
 
             WidgetType getWidgetType() const override;
+
+            void updateTexture(const std::string&);
             const std::string& getTextureName() const;
 
         protected:

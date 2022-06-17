@@ -52,6 +52,11 @@ namespace urchin {
         return WidgetType::STATIC_BITMAP;
     }
 
+    void StaticBitmap::updateTexture(const std::string& filename) {
+        texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
+        createOrUpdateWidget();
+    }
+
     const std::string& StaticBitmap::getTextureName() const {
         return texture->getName();
     }
