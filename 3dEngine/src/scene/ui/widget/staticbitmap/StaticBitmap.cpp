@@ -54,7 +54,7 @@ namespace urchin {
 
     void StaticBitmap::updateTexture(const std::string& filename) {
         texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
-        createOrUpdateWidget();
+        bitmapRenderer->updateUniformTextureReader(0, TextureReader::build(texture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     const std::string& StaticBitmap::getTextureName() const {
