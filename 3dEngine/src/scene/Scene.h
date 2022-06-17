@@ -71,7 +71,7 @@ namespace urchin {
 
             //fps
             std::chrono::steady_clock::time_point fpsLimitPreviousTime;
-            std::chrono::steady_clock::time_point previousTime;
+            std::chrono::steady_clock::time_point fpsPreviousTime;
             float fps;
             unsigned int fpsForDisplay;
             int fpsLimit;
