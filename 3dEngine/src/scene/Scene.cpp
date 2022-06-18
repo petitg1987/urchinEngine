@@ -110,12 +110,11 @@ namespace urchin {
                 fpsLimitPreviousTime = std::chrono::steady_clock::now();
             } else {
                 auto currentTime = std::chrono::steady_clock::now();
-                auto deltaTimeInUs = (double) std::chrono::duration_cast<std::chrono::microseconds>(currentTime - fpsLimitPreviousTime).count();
+                auto deltaTimeInUs = (double)std::chrono::duration_cast<std::chrono::microseconds>(currentTime - fpsLimitPreviousTime).count();
 
                 double expectedDeltaInUs = (1000.0 * 1000.0) / (double)fpsLimit;
                 if (deltaTimeInUs < expectedDeltaInUs) {
-                    double waitTimeUs = expectedDeltaInUs - deltaTimeInUs;
-                    SleepUtil::preciseSleep(waitTimeUs);
+                    SleepUtil::sleepUs(MathFunction::roundToUInt(expectedDeltaInUs - deltaTimeInUs));
                     fpsLimitPreviousTime = std::chrono::steady_clock::now();
                 } else {
                     fpsLimitPreviousTime = currentTime;

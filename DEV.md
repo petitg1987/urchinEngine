@@ -129,9 +129,9 @@
     ```
     sudo apt install valgrind massif-visualizer
     ```
-* Launch Valgrind with massif tool (replace 'myAppName'):
+* Launch Valgrind with massif tool (replace 'myAppName --dev'):
   ```
-  /usr/bin/valgrind --tool=massif ./myAppName --windowed --dev
+  /usr/bin/valgrind --tool=massif ./myAppName --dev
   ```
 * Execute Massif visualizer and select file produced by Valgrind
   ```
