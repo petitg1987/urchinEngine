@@ -139,7 +139,7 @@ namespace urchin {
                 camelCaseStr.push_back(static_cast<char>(toupper(kebabCaseStr[i + 1])));
                 i++;
             } else {
-                camelCaseStr.push_back(static_cast<char>(kebabCaseStr[i]));
+                camelCaseStr.push_back(kebabCaseStr[i]);
             }
         }
         return camelCaseStr;

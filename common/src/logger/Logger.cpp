@@ -80,8 +80,8 @@ namespace urchin {
 
         std::thread::id threadId = std::this_thread::get_id();
 
-        std::lock_guard<std::mutex> lock(mutex);
-        if (threadIds.find(threadId) == threadIds.end()) {
+        std::lock_guard lock(mutex);
+        if (!threadIds.contains(threadId)) {
             threadIds[threadId] = nextIndex++;
         }
         return threadIds[threadId];

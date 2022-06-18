@@ -204,7 +204,7 @@ namespace urchin {
         }
     }
 
-    void UdaParser::removeChunk(UdaChunk& chunk) {
+    void UdaParser::removeChunk(const UdaChunk& chunk) {
         if (chunk.getParent()) {
             chunk.getParent()->removeChild(chunk);
         } else {

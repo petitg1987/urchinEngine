@@ -114,7 +114,7 @@ namespace urchin {
 
                 double expectedDeltaInUs = (1000.0 * 1000.0) / (double)fpsLimit;
                 if (deltaTimeInUs < expectedDeltaInUs) {
-                    SleepUtil::sleepUs(MathFunction::roundToUInt(expectedDeltaInUs - deltaTimeInUs));
+                    SleepUtil::sleepUs(std::lround(expectedDeltaInUs - deltaTimeInUs));
                     fpsLimitPreviousTime = std::chrono::steady_clock::now();
                 } else {
                     fpsLimitPreviousTime = currentTime;

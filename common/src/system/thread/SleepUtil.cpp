@@ -1,5 +1,5 @@
 #ifndef _WIN32
-    #include <unistd.h>
+    #include <ctime>
 #endif
 
 #include <system/thread/SleepUtil.h>
@@ -10,7 +10,7 @@ namespace urchin {
      * Sleep the thread for a specified time in microseconds.
      * Warning: this method is very CPU intensive for OS which does not offer precise sleep method
      */
-    void SleepUtil::sleepUs(unsigned int sleepTimeUs) {
+    void SleepUtil::sleepUs(long sleepTimeUs) {
         #ifdef _WIN32
             auto startWaitTime = std::chrono::steady_clock::now();
             while (true) {
@@ -21,7 +21,8 @@ namespace urchin {
                 }
             }
         #else
-            usleep(sleepTimeUs);
+            timespec timespecVal = {.tv_sec = 0, .tv_nsec = sleepTimeUs * 1000};
+            nanosleep(&timespecVal, nullptr);
         #endif
     }
 
