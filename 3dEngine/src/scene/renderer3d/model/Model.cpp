@@ -100,7 +100,11 @@ namespace urchin {
     }
 
     void Model::animate(std::string_view animationName, AnimRepeat animLoop, AnimStart animStart) {
-        activeAnimation = animations.find(animationName)->second.get();
+        auto itAnimation = animations.find(animationName);
+        if (itAnimation == animations.end()) {
+            throw std::invalid_argument("Unable to find " + std::string(animationName) + " animation on model: " + (getConstMeshes() ? getConstMeshes()->getMeshesName() : "[null]"));
+        }
+        activeAnimation = itAnimation->second.get();
         if (animStart == AnimStart::AT_FIRST_FRAME) {
             activeAnimation->gotoFrame(0);
         }
@@ -141,7 +145,11 @@ namespace urchin {
 
     void Model::gotoAnimationFrame(std::string_view animationName, unsigned int animationFrameIndex) {
         const Animation* previousActiveAnimation = activeAnimation;
-        activeAnimation = animations.find(animationName)->second.get();
+        auto itAnimation = animations.find(animationName);
+        if (itAnimation == animations.end()) {
+            throw std::invalid_argument("Unable to find " + std::string(animationName) + " animation on model: " + (getConstMeshes() ? getConstMeshes()->getMeshesName() : "[null]"));
+        }
+        activeAnimation = itAnimation->second.get();
         if (previousActiveAnimation != activeAnimation) {
             onMoving(transform);
         }
