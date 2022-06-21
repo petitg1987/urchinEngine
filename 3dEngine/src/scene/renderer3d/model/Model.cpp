@@ -69,6 +69,8 @@ namespace urchin {
     void Model::loadAnimation(const std::string& name, const std::string& filename) {
         if (!meshes) {
             throw std::runtime_error("Cannot add animation on model without mesh");
+        } else if (animations.contains(name)) {
+            throw std::runtime_error("Animation with name " + name + " already exist on model: " + meshes->getConstMeshes().getMeshesName());
         }
 
         //load and add the anim to the std::map
