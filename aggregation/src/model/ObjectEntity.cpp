@@ -135,6 +135,13 @@ namespace urchin {
         }
     }
 
+    void ObjectEntity::updateOrientation(const Quaternion<float>& newOrientation) const {
+        model->setOrientation(newOrientation);
+        if (rigidBody) {
+            rigidBody->setTransform(PhysicsTransform(model->getTransform().getPosition(), model->getTransform().getOrientation()));
+        }
+    }
+
     void ObjectEntity::refresh() const {
         if (rigidBody && rigidBody->isActive()) {
             PhysicsTransform physicsTransform = rigidBody->getTransform();
