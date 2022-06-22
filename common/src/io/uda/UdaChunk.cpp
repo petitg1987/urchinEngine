@@ -106,7 +106,7 @@ namespace urchin {
     }
 
     void UdaChunk::setFloatValue(float value) {
-        setStringValue(TypeConverter::toString(value));
+        setStringValue(floatToString(value));
     }
 
     double UdaChunk::getDoubleValue() const {
@@ -114,7 +114,7 @@ namespace urchin {
     }
 
     void UdaChunk::setDoubleValue(double value) {
-        setStringValue(TypeConverter::toString(value));
+        setStringValue(doubleToString(value));
     }
 
     bool UdaChunk::getBoolValue() const {
@@ -150,8 +150,8 @@ namespace urchin {
 
     void UdaChunk::setPoint2Value(const Point2<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y));
     }
 
     Point2<int> UdaChunk::getPoint2IntValue() const {
@@ -170,9 +170,9 @@ namespace urchin {
 
     void UdaChunk::setPoint3Value(const Point3<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Z));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Z));
     }
 
     Point3<int> UdaChunk::getPoint3IntValue() const {
@@ -192,10 +192,10 @@ namespace urchin {
 
     void UdaChunk::setPoint4Value(const Point4<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.W));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Z) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.W));
     }
 
     Point4<int> UdaChunk::getPoint4IntValue() const {
@@ -216,8 +216,8 @@ namespace urchin {
 
     void UdaChunk::setVector2Value(const Vector2<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y));
     }
 
     Vector2<int> UdaChunk::getVector2IntValue() const {
@@ -236,9 +236,9 @@ namespace urchin {
 
     void UdaChunk::setVector3Value(const Vector3<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Z));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Z));
     }
 
     Vector3<int> UdaChunk::getVector3IntValue() const {
@@ -258,10 +258,10 @@ namespace urchin {
 
     void UdaChunk::setVector4Value(const Vector4<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.W));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Z) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.W));
     }
 
     Vector4<int> UdaChunk::getVector4IntValue() const {
@@ -282,9 +282,30 @@ namespace urchin {
 
     void UdaChunk::setQuaternionValue(const Quaternion<float>& value) {
         setStringValue(
-                TypeConverter::toString(value.X) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Y) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.Z) + TypeConverter::NUMBER_DELIMITER +
-                TypeConverter::toString(value.W));
+                floatToString(value.X) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Y) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.Z) + TypeConverter::NUMBER_DELIMITER +
+                floatToString(value.W));
+    }
+
+    std::string UdaChunk::floatToString(float value) const {
+        std::string floatStr = TypeConverter::toString(value);
+        removeTrailingZero(floatStr);
+        return floatStr;
+    }
+
+    std::string UdaChunk::doubleToString(double value) const {
+        std::string doubleStr = TypeConverter::toString(value);
+        removeTrailingZero(doubleStr);
+        return doubleStr;
+    }
+
+    void UdaChunk::removeTrailingZero(std::string& str) const {
+        if (str.find('.') != std::string::npos) {
+            str = str.substr(0, str.find_last_not_of('0') + 1);
+            if(str.find('.') == str.size() - 1) {
+                str = str.substr(0, str.size() - 1);
+            }
+        }
     }
 }

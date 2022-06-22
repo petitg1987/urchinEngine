@@ -99,6 +99,10 @@ namespace urchin {
             void setQuaternionValue(const Quaternion<float>&);
 
         private:
+            std::string floatToString(float) const;
+            std::string doubleToString(double) const;
+            void removeTrailingZero(std::string&) const;
+
             std::string name;
             std::string value;
             std::map<std::string, std::string, std::less<>> attributes;
