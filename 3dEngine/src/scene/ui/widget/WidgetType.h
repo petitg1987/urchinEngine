@@ -12,5 +12,6 @@ enum class WidgetType {
     STATIC_BITMAP,
     TEXT,
     TEXTBOX,
+    TEXTAREA,
     WINDOW
 };
