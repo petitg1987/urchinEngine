@@ -104,6 +104,10 @@ namespace urchin {
                 refreshText((int)cursorIndex - 1, false);
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
                 refreshText((int)cursorIndex + 1, false);
+            } else if (key == (int)InputDeviceKey::UP_ARROW) {
+                //TODO impl
+            } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
+                //TODO impl
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
                     U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
@@ -118,6 +122,12 @@ namespace urchin {
                     allText.append(tmpRight);
                     refreshText((int)cursorIndex, true);
                 }
+            } else if (key == (int)InputDeviceKey::ENTER || key == (int)InputDeviceKey::NUM_PAD_ENTER) {
+                U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
+                allText = allText.substr(0, (unsigned long)cursorIndex);
+                allText.append(1, '\n');
+                allText.append(tmpRight);
+                refreshText((int)cursorIndex + 1, true);
             }
         }
 

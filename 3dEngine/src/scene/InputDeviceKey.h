@@ -8,8 +8,12 @@ namespace urchin {
 
         LEFT_ARROW,
         RIGHT_ARROW,
+        UP_ARROW,
+        DOWN_ARROW,
         BACKSPACE,
-        DELETE_KEY
+        DELETE_KEY,
+        ENTER,
+        NUM_PAD_ENTER
     };
 
 }
