@@ -41,7 +41,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        text->updatePosition(Position(0.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
+        text->updatePosition(Position(0.0f, (float)TEXT_SHIFT_Y_PIXEL, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -65,8 +65,9 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
-        auto cursorStartY = (float)widgetOutline.topWidth;
-        auto cursorEndY = (float)((int)getHeight() - widgetOutline.bottomWidth);
+        auto cursorHeight = (float)text->getFont().getHeight();
+        auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)CURSOR_PADDING_PIXEL;
+        auto cursorEndY = (float)cursorStartY + cursorHeight + ((float)CURSOR_PADDING_PIXEL * 2.0f);
         std::vector<Point2<float>> cursorVertexCoord = {
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY),
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)

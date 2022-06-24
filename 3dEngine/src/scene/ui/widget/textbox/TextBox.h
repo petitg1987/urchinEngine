@@ -42,8 +42,10 @@ namespace urchin {
             void computeCursorIndex(int);
 
             //properties
+            static constexpr unsigned int TEXT_SHIFT_Y_PIXEL = 5;
             static constexpr unsigned int LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
+            static constexpr unsigned int CURSOR_PADDING_PIXEL = 4;
             static constexpr unsigned int CURSOR_WIDTH_PIXEL = 2;
             static constexpr float CURSOR_BLINK_SPEED = 2.25f;
             WStringConvertA stringConvert;
