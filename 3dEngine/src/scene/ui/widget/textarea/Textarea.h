@@ -32,7 +32,8 @@ namespace urchin {
 
             //display information
             std::shared_ptr<Text> text; //text of the text box (widget)
-            unsigned int cursorPosition; //position (in pixel) of the cursor //TODO add Y
+            unsigned int cursorIndex; //index of the cursor
+            Vector2<float> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
 
             //state

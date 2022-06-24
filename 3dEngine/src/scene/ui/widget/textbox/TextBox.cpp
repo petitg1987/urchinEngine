@@ -16,7 +16,6 @@ namespace urchin {
             maxWidthText(0),
             startTextIndex(0),
             cursorIndex(0),
-            cursorPosition(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
 
@@ -65,9 +64,8 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
-        auto cursorHeight = (float)text->getFont().getHeight();
         auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)CURSOR_PADDING_PIXEL;
-        auto cursorEndY = (float)cursorStartY + cursorHeight + ((float)CURSOR_PADDING_PIXEL * 2.0f);
+        auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)CURSOR_PADDING_PIXEL * 2.0f);
         std::vector<Point2<float>> cursorVertexCoord = {
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY),
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)
@@ -177,7 +175,7 @@ namespace urchin {
 
         //refresh start index
         computeCursorPosition();
-        if (cursorPosition > maxWidthText) {
+        if (cursorPosition.X > (float)maxWidthText) {
             startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)allText.length();
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex > 0) ? startTextIndex - LETTER_SHIFT : 0;
@@ -208,19 +206,19 @@ namespace urchin {
 
     void TextBox::computeCursorPosition() {
         const auto& font = text->getFont();
-        cursorPosition = 0;
+        cursorPosition.X = 0.0f;
 
         for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
             char32_t textLetter = allText[i];
-            cursorPosition += font.getGlyph(textLetter).width + font.getSpaceBetweenLetters();
+            cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters());
         }
 
-        if (cursorPosition > 0) {
-            cursorPosition -= font.getSpaceBetweenLetters(); //remove last space
-            cursorPosition += LETTER_AND_CURSOR_SHIFT;
+        if (cursorPosition.X > 0) {
+            cursorPosition.X -= (float)font.getSpaceBetweenLetters(); //remove last space
+            cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorPosition += (unsigned int)widgetOutline.leftWidth;
+        cursorPosition.X += (float)widgetOutline.leftWidth;
     }
 
     void TextBox::computeCursorIndex(int approximateCursorPosition) {
@@ -250,7 +248,7 @@ namespace urchin {
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
             renderingOrder++;
-            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<float>((float)cursorPosition, 0.0f));
+            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + cursorPosition);
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }

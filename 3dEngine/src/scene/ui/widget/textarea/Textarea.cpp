@@ -6,7 +6,7 @@ namespace urchin {
     Textarea::Textarea(Position position, Size size, std::string skinName) :
             Widget(position, size),
             skinName(std::move(skinName)),
-            cursorPosition(0),
+            cursorIndex(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
 
@@ -59,9 +59,8 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
-        auto cursorHeight = (float)text->getFont().getHeight();
         auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)CURSOR_PADDING_PIXEL;
-        auto cursorEndY = (float)cursorStartY + cursorHeight + ((float)CURSOR_PADDING_PIXEL * 2.0f);
+        auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)CURSOR_PADDING_PIXEL * 2.0f);
         std::vector<Point2<float>> cursorVertexCoord = {
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY),
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)
@@ -70,7 +69,7 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::TRIANGLE, false)
+        cursorRenderer = setupUiRenderer("textarea - cursor", ShapeType::TRIANGLE, false)
                 ->addData(cursorVertexCoord)
                 ->addData(cursorTextureCoord)
                 ->addUniformTextureReader(TextureReader::build(texCursorAlbedo, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 3
@@ -129,7 +128,7 @@ namespace urchin {
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
             renderingOrder++;
-            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + Vector2<float>((float)cursorPosition, 0.0f));
+            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + cursorPosition);
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }

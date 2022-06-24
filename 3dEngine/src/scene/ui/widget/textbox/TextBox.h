@@ -59,7 +59,7 @@ namespace urchin {
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
             unsigned int cursorIndex; //index of the cursor
-            unsigned int cursorPosition; //position (in pixel) of the cursor
+            Vector2<float> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
 
             //state
