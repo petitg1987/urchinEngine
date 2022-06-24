@@ -32,6 +32,7 @@
 #include <scene/ui/widget/text/Text.h>
 #include <scene/ui/widget/text/ParameterizedText.h>
 #include <scene/ui/widget/textbox/TextBox.h>
+#include <scene/ui/widget/textarea/Textarea.h>
 #include <scene/ui/widget/sequence/Sequence.h>
 #include <scene/ui/widget/slider/Slider.h>
 #include <scene/ui/widget/checkbox/CheckBox.h>
