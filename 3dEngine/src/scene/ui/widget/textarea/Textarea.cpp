@@ -6,6 +6,7 @@ namespace urchin {
     Textarea::Textarea(Position position, Size size, std::string skinName) :
             Widget(position, size),
             skinName(std::move(skinName)),
+            maxCharacter(-1),
             cursorIndex(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
@@ -20,9 +21,18 @@ namespace urchin {
         return WidgetType::TEXTAREA;
     }
 
+    std::string Textarea::getText() {
+        return std::string(stringConvert.to_bytes(allText));
+    }
+
+    void Textarea::updateText(std::string_view text) {
+        allText = U32StringA(text.begin(), text.end());
+        refreshText((int)allText.length(), true);
+    }
+
     void Textarea::createOrUpdateWidget() {
         //delete children
-        //TODO ...
+        detachChild(text.get());
 
         //skin information
         auto textBoxChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textarea", UdaAttribute("skin", skinName));
@@ -41,8 +51,8 @@ namespace urchin {
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
-//TODO        refreshText((int)cursorIndex, false);
-//TODO        computeCursorPosition();
+        refreshText((int)cursorIndex, false);
+        computeCursorPosition();
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -83,40 +93,118 @@ namespace urchin {
                 state = ACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
-               // int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
-              //  computeCursorIndex(localMouseX);
+                int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
+                computeCursorIndex(localMouseX);
             } else {
                 state = INACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
             }
         } else if (state == ACTIVE) {
-//            if (key == (int)InputDeviceKey::LEFT_ARROW) {
-//                refreshText((int)cursorIndex - 1, false);
-//            } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
-//                refreshText((int)cursorIndex + 1, false);
-//            } else if (key == (int)InputDeviceKey::BACKSPACE) {
-//                if (cursorIndex > 0) {
-//                    U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
-//                    allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
-//                    allText.append(tmpRight);
-//                    refreshText((int)cursorIndex - 1, true);
-//                }
-//            } else if (key == (int)InputDeviceKey::DELETE_KEY) {
-//                if (allText.length() > 0 && cursorIndex < allText.length()) {
-//                    U32StringA tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
-//                    allText = allText.substr(0, (unsigned long)cursorIndex);
-//                    allText.append(tmpRight);
-//                    refreshText((int)cursorIndex, true);
-//                }
-//            }
+            if (key == (int)InputDeviceKey::LEFT_ARROW) {
+                refreshText((int)cursorIndex - 1, false);
+            } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
+                refreshText((int)cursorIndex + 1, false);
+            } else if (key == (int)InputDeviceKey::BACKSPACE) {
+                if (cursorIndex > 0) {
+                    U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
+                    allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
+                    allText.append(tmpRight);
+                    refreshText((int)cursorIndex - 1, true);
+                }
+            } else if (key == (int)InputDeviceKey::DELETE_KEY) {
+                if (allText.length() > 0 && cursorIndex < allText.length()) {
+                    U32StringA tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
+                    allText = allText.substr(0, (unsigned long)cursorIndex);
+                    allText.append(tmpRight);
+                    refreshText((int)cursorIndex, true);
+                }
+            }
         }
 
+        return true;
+    }
+
+    bool Textarea::onCharEvent(char32_t unicodeCharacter) {
+        if (state == ACTIVE) {
+            if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
+                U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
+                allText = allText.substr(0, (unsigned long)cursorIndex);
+                allText.append(1, unicodeCharacter);
+                allText.append(tmpRight);
+                refreshText((int)cursorIndex + 1, true);
+            }
+            return false;
+        }
         return true;
     }
 
     void Textarea::onResetStateEvent() {
         state = INACTIVE;
         textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+    }
+
+    bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {
+        return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
+    }
+
+    bool Textarea::isMaxCharacterReach() const {
+        return maxCharacter != -1 && (int)allText.size() >= maxCharacter;
+    }
+
+    void Textarea::refreshText(int newCursorIndex, bool allTextUpdated) {
+        //refresh cursor index
+        if (    (newCursorIndex > (int)cursorIndex && cursorIndex < allText.length()) ||
+                (newCursorIndex < (int)cursorIndex && cursorIndex != 0)) {
+            cursorIndex = (unsigned int)newCursorIndex;
+        }
+
+        //re-compute cursor position
+        computeCursorPosition();
+
+        //refresh text
+        text->updateText(std::string(stringConvert.to_bytes(allText)));
+
+        //event
+        if (allTextUpdated) {
+            for (auto& eventListener : getEventListeners()) {
+                eventListener->onValueChange(this);
+            }
+        }
+    }
+
+    void Textarea::computeCursorPosition() {
+        const auto& font = text->getFont();
+        cursorPosition.X = 0.0f;
+
+        for (unsigned int i = 0; i < cursorIndex; ++i) {
+            char32_t textLetter = allText[i];
+            cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters()); //TODO review for line return
+        }
+
+        if (cursorPosition.X > 0) {
+            cursorPosition.X -= (float)font.getSpaceBetweenLetters(); //remove last space
+            cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
+        }
+
+        cursorPosition.X += (float)widgetOutline.leftWidth;
+    }
+
+    void Textarea::computeCursorIndex(int approximateCursorPosition) {
+        const auto& font = text->getFont();
+        float widthText = 0.0f;
+
+        for (cursorIndex = 0; cursorIndex < allText.length(); ++cursorIndex) {
+            char32_t textLetter = allText[cursorIndex];
+            widthText += (float)font.getGlyph(textLetter).width / 2.0f;
+            if (widthText > (float)approximateCursorPosition) {
+                break;
+            }
+
+            widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
+        }
+
+        //compute the correct cursor position
+        computeCursorPosition();
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

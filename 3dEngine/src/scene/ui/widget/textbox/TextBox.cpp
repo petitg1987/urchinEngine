@@ -11,7 +11,7 @@ namespace urchin {
     TextBox::TextBox(Position position, Size size, std::string skinName) :
             Widget(position, size),
             skinName(std::move(skinName)),
-            maxLength(-1),
+            maxCharacter(-1),
             text(nullptr),
             maxWidthText(0),
             startTextIndex(0),
@@ -98,8 +98,8 @@ namespace urchin {
         this->allowedCharacters = stringConvert.from_bytes(allowedCharacters.c_str());
     }
 
-    void TextBox::setMaxLength(unsigned int maxLength) {
-        this->maxLength = (int)maxLength;
+    void TextBox::setMaxCharacter(unsigned int maxCharacter) {
+        this->maxCharacter = (int)maxCharacter;
     }
 
     bool TextBox::onKeyPressEvent(unsigned int key) {
@@ -141,7 +141,7 @@ namespace urchin {
 
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if (isCharacterAllowed(unicodeCharacter) && !isMaxLengthReach()) {
+            if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
                 U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
                 allText = allText.substr(0, (unsigned long)cursorIndex);
                 allText.append(1, unicodeCharacter);
@@ -162,8 +162,8 @@ namespace urchin {
         return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
     }
 
-    bool TextBox::isMaxLengthReach() const {
-        return maxLength != -1 && (int)allText.size() >= maxLength;
+    bool TextBox::isMaxCharacterReach() const {
+        return maxCharacter != -1 && (int)allText.size() >= maxCharacter;
     }
 
     void TextBox::refreshText(int newCursorIndex, bool allTextUpdated) {
