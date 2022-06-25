@@ -45,7 +45,6 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        text->updatePosition(Position(0.0f, (float)TEXT_SHIFT_Y_PIXEL, LengthType::PIXEL)); //TODO why update pos ?
 //TODO        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -69,7 +68,7 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
-        auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)CURSOR_PADDING_PIXEL;
+        auto cursorStartY = (float)widgetOutline.topWidth - (float)CURSOR_PADDING_PIXEL;
         auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)CURSOR_PADDING_PIXEL * 2.0f);
         std::vector<Point2<float>> cursorVertexCoord = {
                 Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY),
@@ -183,23 +182,22 @@ namespace urchin {
         }
     }
 
-    void Textarea::computeCursorPosition() {
-        const auto& font = text->getFont();
+    void Textarea::computeCursorPosition() { //TODO remove CURSOR_PADDING_PIXEL ?
         cursorPosition.X = 0.0f;
-        cursorPosition.Y = 0.0f; //TODO use TEXT_SHIFT_Y_PIXEL ?
+        cursorPosition.Y = 0.0f;
 
         for (unsigned int i = 0; i < cursorIndex; ++i) {
             char32_t textLetter = allText[i];
             if (textLetter == '\n') {
-                cursorPosition.Y += (float)font.getSpaceBetweenLines();
+                cursorPosition.Y += (float)text->getFont().getSpaceBetweenLines();
                 cursorPosition.X = 0.0f;
             } else {
-                cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters());
+                cursorPosition.X += (float)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
             }
         }
 
         if (cursorPosition.X > 0) {
-            cursorPosition.X -= (float)font.getSpaceBetweenLetters(); //remove last space
+            cursorPosition.X -= (float)text->getFont().getSpaceBetweenLetters(); //remove last space
             cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
         }
 
@@ -208,43 +206,43 @@ namespace urchin {
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
-        const auto& font = text->getFont();
-
-        auto heightText = (float)TEXT_SHIFT_Y_PIXEL + (float)font.getSpaceBetweenLines() / 2.0f;
-        bool correctLineFound = heightText > (float)approximatePositionY;
-        float widthText = 0.0f;
+        auto currentHeight = (float)text->getFont().getSpaceBetweenLines() / 2.0f;
+        bool correctLineFound = (float)approximatePositionY < currentHeight;
+        float currentWidth = 0.0f;
 
         for (cursorIndex = 0; cursorIndex < allText.length(); ++cursorIndex) {
             char32_t textLetter = allText[cursorIndex];
 
             //find correct line
-            if (!correctLineFound && textLetter != '\n') {
-                continue;
-            } else if (textLetter == '\n') {
+            if (textLetter == '\n') {
                 if (correctLineFound) {
                     break;
                 }
-                heightText += (float)font.getSpaceBetweenLines();
-                correctLineFound = heightText > (float)approximatePositionY;
-                widthText = 0.0f;
+                currentHeight += (float)text->getFont().getSpaceBetweenLines();
+                correctLineFound = (float)approximatePositionY < currentHeight;
+            }
+            if (!correctLineFound) {
+                continue;
             }
 
             //find correct character in line
             if (textLetter != '\n') {
-                widthText += (float) font.getGlyph(textLetter).width / 2.0f;
-                if (widthText > (float)approximatePositionX) {
+                currentWidth += (float) text->getFont().getGlyph(textLetter).width / 2.0f;
+                if ((float)approximatePositionX < currentWidth) {
                     break;
                 }
-                widthText += (float) font.getGlyph(textLetter).width / 2.0f + (float) font.getSpaceBetweenLetters();
+                currentWidth += (float) text->getFont().getGlyph(textLetter).width / 2.0f + (float)text->getFont().getSpaceBetweenLetters();
+            } else {
+                currentWidth = 0.0f;
             }
         }
 
-        //compute the correct cursor position
+        //compute the exact cursor position
         computeCursorPosition();
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        //text box
+        //text area
         updateProperties(textareaRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
         textareaRenderer->enableRenderer(renderingOrder);
 

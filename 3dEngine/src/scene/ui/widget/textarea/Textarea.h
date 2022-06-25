@@ -34,7 +34,6 @@ namespace urchin {
             void computeCursorIndex(int, int);
 
             //properties
-            static constexpr unsigned int TEXT_SHIFT_Y_PIXEL = 5;
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
             static constexpr unsigned int CURSOR_PADDING_PIXEL = 4;
             static constexpr unsigned int CURSOR_WIDTH_PIXEL = 2;
