@@ -45,8 +45,8 @@ namespace urchin {
             int maxCharacter;
 
             //display information
-            std::shared_ptr<Text> text; //text of the text box (widget)
-            U32StringA allText; //text of the text box (string)
+            std::shared_ptr<Text> text; //text of the textarea (widget)
+            U32StringA allText; //text of the textarea (string) //TODO remove me !
             unsigned int cursorIndex; //index of the cursor
             Vector2<float> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;

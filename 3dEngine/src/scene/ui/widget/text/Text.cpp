@@ -155,6 +155,10 @@ namespace urchin {
         return text;
     }
 
+    const std::vector<U32StringA>& Text::getDisplayedTextLines() const {
+        return cutTextLines;
+    }
+
     void Text::refreshTranslation(const LanguageTranslator& languageTranslator) {
         text = evaluateText(std::make_optional(languageTranslator));
 
