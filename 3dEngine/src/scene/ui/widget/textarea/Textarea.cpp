@@ -45,7 +45,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        text->updatePosition(Position(0.0f, (float)TEXT_SHIFT_Y_PIXEL, LengthType::PIXEL));
+        text->updatePosition(Position(0.0f, (float)TEXT_SHIFT_Y_PIXEL, LengthType::PIXEL)); //TODO why update pos ?
 //TODO        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -94,7 +94,8 @@ namespace urchin {
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
-                computeCursorIndex(localMouseX);
+                int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
+                computeCursorIndex(localMouseX, localMouseY);
             } else {
                 state = INACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -185,10 +186,16 @@ namespace urchin {
     void Textarea::computeCursorPosition() {
         const auto& font = text->getFont();
         cursorPosition.X = 0.0f;
+        cursorPosition.Y = 0.0f; //TODO use TEXT_SHIFT_Y_PIXEL ?
 
         for (unsigned int i = 0; i < cursorIndex; ++i) {
             char32_t textLetter = allText[i];
-            cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters()); //TODO review for line return
+            if (textLetter == '\n') {
+                cursorPosition.Y += (float)font.getSpaceBetweenLines();
+                cursorPosition.X = 0.0f;
+            } else {
+                cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters());
+            }
         }
 
         if (cursorPosition.X > 0) {
@@ -196,21 +203,30 @@ namespace urchin {
             cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorPosition.X += (float)widgetOutline.leftWidth;
+        cursorPosition.X += (float)widgetOutline.leftWidth; //TODO top shift ?
     }
 
-    void Textarea::computeCursorIndex(int approximateCursorPosition) {
+    void Textarea::computeCursorIndex(int approximateCursorPositionX, int approximateCursorPositionY) { //TODO review for line + review for TEXT_SHIFT_Y_PIXEL
         const auto& font = text->getFont();
+        auto heightText = (float)TEXT_SHIFT_Y_PIXEL + (float)font.getSpaceBetweenLines() / 2.0f;
         float widthText = 0.0f;
 
         for (cursorIndex = 0; cursorIndex < allText.length(); ++cursorIndex) {
             char32_t textLetter = allText[cursorIndex];
-            widthText += (float)font.getGlyph(textLetter).width / 2.0f;
-            if (widthText > (float)approximateCursorPosition) {
+            if (textLetter == '\n') {
+                heightText += (float)font.getSpaceBetweenLines();
+                widthText = 0.0f;
+            } else {
+                widthText += (float) font.getGlyph(textLetter).width / 2.0f;
+            }
+
+            if (heightText > (float)approximateCursorPositionY && widthText > (float)approximateCursorPositionX) {
                 break;
             }
 
-            widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
+            if (textLetter != '\n') {
+                widthText += (float) font.getGlyph(textLetter).width / 2.0f + (float) font.getSpaceBetweenLetters();
+            }
         }
 
         //compute the correct cursor position

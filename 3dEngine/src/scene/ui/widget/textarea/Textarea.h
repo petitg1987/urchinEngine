@@ -31,7 +31,7 @@ namespace urchin {
 
             void refreshText(int, bool);
             void computeCursorPosition();
-            void computeCursorIndex(int);
+            void computeCursorIndex(int, int);
 
             //properties
             static constexpr unsigned int TEXT_SHIFT_Y_PIXEL = 5;

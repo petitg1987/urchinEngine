@@ -109,7 +109,8 @@ namespace urchin {
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
-                computeCursorIndex(localMouseX);
+                int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
+                computeCursorIndex(localMouseX, localMouseY);
             } else {
                 state = INACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -204,7 +205,7 @@ namespace urchin {
         }
     }
 
-    void TextBox::computeCursorPosition() {
+    void TextBox::computeCursorPosition() { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
         const auto& font = text->getFont();
         cursorPosition.X = 0.0f;
 
@@ -221,14 +222,14 @@ namespace urchin {
         cursorPosition.X += (float)widgetOutline.leftWidth;
     }
 
-    void TextBox::computeCursorIndex(int approximateCursorPosition) {
+    void TextBox::computeCursorIndex(int approximateCursorPositionX, int) { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
         const auto& font = text->getFont();
         float widthText = 0.0f;
 
         for (cursorIndex = startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
             char32_t textLetter = allText[cursorIndex];
             widthText += (float)font.getGlyph(textLetter).width / 2.0f;
-            if (widthText > (float)approximateCursorPosition) {
+            if (widthText > (float)approximateCursorPositionX) {
                 break;
             }
 
