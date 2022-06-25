@@ -105,9 +105,31 @@ namespace urchin {
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
                 refreshText((int)cursorIndex + 1, false);
             } else if (key == (int)InputDeviceKey::UP_ARROW) {
-                //TODO impl
+                bool onFirstLine = true;
+                for (int i = (int)cursorIndex - 1; i >= 0; --i) {
+                    if (allText[(std::size_t)i] == '\n') {
+                        onFirstLine = false;
+                        break;
+                    }
+                }
+                if (!onFirstLine) {
+                    cursorPosition.Y -= (float) text->getFont().getSpaceBetweenLines();
+                    computeCursorIndex((int) cursorPosition.X, (int) cursorPosition.Y);
+                    refreshText((int) cursorIndex, false);
+                }
             } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
-                //TODO impl
+                bool onLastLine = true;
+                for (int i = (int)cursorIndex; i < (int)allText.length(); ++i) {
+                    if (allText[(std::size_t)i] == '\n') {
+                        onLastLine = false;
+                        break;
+                    }
+                }
+                if (!onLastLine) {
+                    cursorPosition.Y += (float) text->getFont().getSpaceBetweenLines();
+                    computeCursorIndex((int) cursorPosition.X, (int) cursorPosition.Y);
+                    refreshText((int) cursorIndex, false);
+                }
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
                     U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
