@@ -182,7 +182,7 @@ namespace urchin {
         }
     }
 
-    void Textarea::computeCursorPosition() { //TODO remove CURSOR_PADDING_PIXEL ?
+    void Textarea::computeCursorPosition() {
         cursorPosition.X = 0.0f;
         cursorPosition.Y = 0.0f;
 
