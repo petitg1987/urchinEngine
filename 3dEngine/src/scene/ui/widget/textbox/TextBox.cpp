@@ -222,14 +222,14 @@ namespace urchin {
         cursorPosition.X += (float)widgetOutline.leftWidth;
     }
 
-    void TextBox::computeCursorIndex(int approximateCursorPositionX, int) { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
+    void TextBox::computeCursorIndex(int approximatePositionX, int) { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
         const auto& font = text->getFont();
         float widthText = 0.0f;
 
         for (cursorIndex = startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
             char32_t textLetter = allText[cursorIndex];
             widthText += (float)font.getGlyph(textLetter).width / 2.0f;
-            if (widthText > (float)approximateCursorPositionX) {
+            if (widthText > (float)approximatePositionX) {
                 break;
             }
 

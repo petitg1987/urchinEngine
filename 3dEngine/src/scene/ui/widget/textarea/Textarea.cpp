@@ -207,7 +207,7 @@ namespace urchin {
         cursorPosition.Y += (float)widgetOutline.topWidth;
     }
 
-    void Textarea::computeCursorIndex(int approximateCursorPositionX, int approximateCursorPositionY) { //TODO review for line + review for TEXT_SHIFT_Y_PIXEL
+    void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) { //TODO review for line + review for TEXT_SHIFT_Y_PIXEL
         const auto& font = text->getFont();
         auto heightText = (float)TEXT_SHIFT_Y_PIXEL + (float)font.getSpaceBetweenLines() / 2.0f;
         float widthText = 0.0f;
@@ -222,7 +222,7 @@ namespace urchin {
             }
 
             bool isEndOfLine = cursorIndex + 1 >= allText.length() || allText[cursorIndex + 1] == '\n';
-            if (heightText > (float)approximateCursorPositionY && (widthText > (float)approximateCursorPositionX || isEndOfLine)) {
+            if (heightText > (float)approximatePositionY && (widthText > (float)approximatePositionX || isEndOfLine)) {
                 break;
             }
 
