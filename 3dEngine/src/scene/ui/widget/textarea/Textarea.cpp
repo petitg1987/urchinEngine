@@ -206,7 +206,7 @@ namespace urchin {
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
-        auto currentHeight = (float)text->getFont().getSpaceBetweenLines() / 2.0f;
+        auto currentHeight = (float)text->getFont().getSpaceBetweenLines();
         bool correctLineFound = (float)approximatePositionY < currentHeight;
         float currentWidth = 0.0f;
 
