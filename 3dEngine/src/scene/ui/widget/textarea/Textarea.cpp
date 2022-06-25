@@ -207,26 +207,34 @@ namespace urchin {
         cursorPosition.Y += (float)widgetOutline.topWidth;
     }
 
-    void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) { //TODO review for line + review for TEXT_SHIFT_Y_PIXEL
+    void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
         const auto& font = text->getFont();
+
         auto heightText = (float)TEXT_SHIFT_Y_PIXEL + (float)font.getSpaceBetweenLines() / 2.0f;
+        bool correctLineFound = heightText > (float)approximatePositionY;
         float widthText = 0.0f;
 
         for (cursorIndex = 0; cursorIndex < allText.length(); ++cursorIndex) {
             char32_t textLetter = allText[cursorIndex];
-            if (textLetter == '\n') {
+
+            //find correct line
+            if (!correctLineFound && textLetter != '\n') {
+                continue;
+            } else if (textLetter == '\n') {
+                if (correctLineFound) {
+                    break;
+                }
                 heightText += (float)font.getSpaceBetweenLines();
+                correctLineFound = heightText > (float)approximatePositionY;
                 widthText = 0.0f;
-            } else {
-                widthText += (float) font.getGlyph(textLetter).width / 2.0f;
             }
 
-            bool isEndOfLine = cursorIndex + 1 >= allText.length() || allText[cursorIndex + 1] == '\n';
-            if (heightText > (float)approximatePositionY && (widthText > (float)approximatePositionX || isEndOfLine)) {
-                break;
-            }
-
+            //find correct character in line
             if (textLetter != '\n') {
+                widthText += (float) font.getGlyph(textLetter).width / 2.0f;
+                if (widthText > (float)approximatePositionX) {
+                    break;
+                }
                 widthText += (float) font.getGlyph(textLetter).width / 2.0f + (float) font.getSpaceBetweenLetters();
             }
         }
