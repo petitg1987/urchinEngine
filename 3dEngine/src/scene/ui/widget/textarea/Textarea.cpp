@@ -203,7 +203,8 @@ namespace urchin {
             cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorPosition.X += (float)widgetOutline.leftWidth; //TODO top shift ?
+        cursorPosition.X += (float)widgetOutline.leftWidth;
+        cursorPosition.Y += (float)widgetOutline.topWidth;
     }
 
     void Textarea::computeCursorIndex(int approximateCursorPositionX, int approximateCursorPositionY) { //TODO review for line + review for TEXT_SHIFT_Y_PIXEL
@@ -220,7 +221,8 @@ namespace urchin {
                 widthText += (float) font.getGlyph(textLetter).width / 2.0f;
             }
 
-            if (heightText > (float)approximateCursorPositionY && widthText > (float)approximateCursorPositionX) {
+            bool isEndOfLine = cursorIndex + 1 >= allText.length() || allText[cursorIndex + 1] == '\n';
+            if (heightText > (float)approximateCursorPositionY && (widthText > (float)approximateCursorPositionX || isEndOfLine)) {
                 break;
             }
 

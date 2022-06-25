@@ -205,7 +205,7 @@ namespace urchin {
         }
     }
 
-    void TextBox::computeCursorPosition() { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
+    void TextBox::computeCursorPosition() { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL + widgetOutline.topWidth
         const auto& font = text->getFont();
         cursorPosition.X = 0.0f;
 
