@@ -35,8 +35,9 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText();
-            void computeCursorPosition();
+            void refreshCursorPosition();
             void computeCursorIndex(int, int);
+            CursorIndex cursorIndexToTextCursorIndex() const;
 
             //properties
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor

@@ -118,30 +118,30 @@ namespace urchin {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex.column > 0) {
                     cursorIndex.column -= 1;
-                    computeCursorPosition();
+                    refreshCursorPosition();
                 } else if (cursorIndex.column == 0 && cursorIndex.line > 0) {
                     cursorIndex.line -= 1;
                     cursorIndex.column = (int)originalTextLines[(std::size_t)cursorIndex.line].length();
-                    computeCursorPosition();
+                    refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
                 if (cursorIndex.column < (int)originalTextLines[(std::size_t)cursorIndex.line].length()) {
                     cursorIndex.column += 1;
-                    computeCursorPosition();
+                    refreshCursorPosition();
                 } else if (cursorIndex.line < (int)originalTextLines.size() - 1) {
                     cursorIndex.line += 1;
                     cursorIndex.column = 0;
-                    computeCursorPosition();
+                    refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::UP_ARROW) {
                 if (cursorIndex.line > 0) {
                     computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
-                    computeCursorPosition();
+                    refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
                 if (cursorIndex.line < (int)originalTextLines.size() - 1) {
                     computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
-                    computeCursorPosition();
+                    refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex.column > 0) {
@@ -238,15 +238,17 @@ namespace urchin {
         text->updateText(StringUtil::merge(lines, '\n'));
 
         //re-compute cursor position
-        computeCursorPosition();
+        refreshCursorPosition();
     }
 
-    void Textarea::computeCursorPosition() { //TODO convert cursorIndex in originalTextLines to text
-        cursorPosition.X = 0;
-        cursorPosition.Y = (int)text->getFont().getSpaceBetweenLines() * cursorIndex.line;
+    void Textarea::refreshCursorPosition() {
+        CursorIndex textCursorIndex = cursorIndexToTextCursorIndex();
 
-        const U32StringA& currentLine = originalTextLines[(std::size_t)cursorIndex.line];
-        for (std::size_t i = 0; i < (std::size_t)cursorIndex.column; ++i) {
+        cursorPosition.X = 0;
+        cursorPosition.Y = (int)text->getFont().getSpaceBetweenLines() * textCursorIndex.line;
+
+        const U32StringA& currentLine = text->getDisplayedTextLines()[(std::size_t)textCursorIndex.line];
+        for (std::size_t i = 0; i < (std::size_t)textCursorIndex.column; ++i) {
             char32_t textLetter = currentLine[i];
             cursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
         }
@@ -258,6 +260,37 @@ namespace urchin {
 
         cursorPosition.X += widgetOutline.leftWidth;
         cursorPosition.Y += widgetOutline.topWidth;
+    }
+
+    CursorIndex Textarea::cursorIndexToTextCursorIndex() const {
+        CursorIndex textCursorIndex{0, 0};
+        for (int lineIndex = 0; lineIndex < (int)originalTextLines.size(); ++lineIndex) {
+            if (lineIndex == cursorIndex.line) {
+                int remainingColumnShift = cursorIndex.column;
+                while (true) {
+                    if ((int)text->getDisplayedTextLines()[(std::size_t)textCursorIndex.line].length() >= remainingColumnShift) {
+                        textCursorIndex.column = remainingColumnShift;
+                        return textCursorIndex;
+                    } else {
+                        remainingColumnShift -= (int)text->getDisplayedTextLines()[(std::size_t) textCursorIndex.line].length();
+                        textCursorIndex.line++;
+                    }
+                }
+            } else {
+                std::size_t lineCharactersCount = originalTextLines[(std::size_t)lineIndex].length();
+                std::size_t textLineCharactersCount = 0;
+                while (true) {
+                    textLineCharactersCount += text->getDisplayedTextLines()[(std::size_t)textCursorIndex.line].length();
+                    textCursorIndex.line++;
+
+                    if (textLineCharactersCount >= lineCharactersCount) {
+                        assert(textLineCharactersCount == lineCharactersCount);
+                        break;
+                    }
+                }
+            }
+        }
+        return textCursorIndex;
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
@@ -277,7 +310,7 @@ namespace urchin {
         }
 
         //compute the exact cursor position
-        computeCursorPosition();
+        refreshCursorPosition();
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
