@@ -272,7 +272,7 @@ namespace urchin {
                         textCursorIndex.column = remainingColumnShift;
                         return textCursorIndex;
                     } else {
-                        remainingColumnShift -= (int)text->getDisplayedTextLines()[(std::size_t) textCursorIndex.line].length();
+                        remainingColumnShift -= (int)text->getDisplayedTextLines()[(std::size_t) textCursorIndex.line].length() + 1 /* space replaced by line return */;
                         textCursorIndex.line++;
                     }
                 }
@@ -286,6 +286,8 @@ namespace urchin {
                     if (textLineCharactersCount >= lineCharactersCount) {
                         assert(textLineCharactersCount == lineCharactersCount);
                         break;
+                    } else {
+                        textLineCharactersCount += 1; //space replaced by line return
                     }
                 }
             }

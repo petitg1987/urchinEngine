@@ -241,7 +241,7 @@ namespace urchin {
             }
         }
 
-        if (startLineIndex == 0 && u32Text.length() > 0) {
+        if (startLineIndex == 0) {
             cutTextLines.emplace_back(u32Text);
         } else if ((int)u32Text.length() - (int)startLineIndex > 0) {
             cutTextLines.emplace_back(u32Text.substr(startLineIndex, u32Text.length() - startLineIndex));
@@ -280,7 +280,7 @@ namespace urchin {
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
-        for (const auto& textLine : cutTextLines) { //each line
+        for (const U32StringA& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine) { //each letter
                 auto letterShift = (float)font->getGlyph(textLetter).shift;
