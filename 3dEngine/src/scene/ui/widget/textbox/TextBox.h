@@ -54,8 +54,8 @@ namespace urchin {
             int maxCharacter;
 
             //display information
-            std::shared_ptr<Text> text; //text of the text box (widget)
-            U32StringA allText; //text of the text box (string)
+            std::shared_ptr<Text> text; //text widget of the text box
+            U32StringA originalText; //original text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
             unsigned int cursorIndex; //index of the cursor

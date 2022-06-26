@@ -6,6 +6,11 @@
 
 namespace urchin {
 
+    struct CursorIndex {
+        int line;
+        int column;
+    };
+
     class Textarea : public Widget { //TODO avoid copy/paste (code & constexpr)
         public:
             static std::shared_ptr<Textarea> create(Widget*, Position, Size, std::string);
@@ -29,7 +34,7 @@ namespace urchin {
             bool isCharacterAllowed(char32_t) const;
             bool isMaxCharacterReach() const;
 
-            void refreshText(int, bool);
+            void refreshText();
             void computeCursorPosition();
             void computeCursorIndex(int, int);
 
@@ -45,10 +50,10 @@ namespace urchin {
             int maxCharacter;
 
             //display information
-            std::shared_ptr<Text> text; //text of the textarea (widget)
-            U32StringA allText; //text of the textarea (string) //TODO remove me !
-            unsigned int cursorIndex; //index of the cursor
-            Vector2<float> cursorPosition; //position (in pixel) of the cursor
+            std::shared_ptr<Text> text; //text widget of the textarea
+            std::vector<U32StringA> originalTextLines; //original text of the textarea (text without auto line return)
+            CursorIndex cursorIndex; //index of the cursor (X=column, Y=line) in 'originalTextLines'
+            Vector2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
             float cursorBlink;
 
             //state

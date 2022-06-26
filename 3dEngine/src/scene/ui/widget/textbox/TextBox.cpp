@@ -86,12 +86,12 @@ namespace urchin {
     }
 
     std::string TextBox::getText() {
-        return std::string(stringConvert.to_bytes(allText));
+        return std::string(stringConvert.to_bytes(originalText));
     }
 
     void TextBox::updateText(std::string_view text) {
-        allText = U32StringA(text.begin(), text.end());
-        refreshText((int)allText.length(), true);
+        originalText = U32StringA(text.begin(), text.end());
+        refreshText((int)originalText.length(), true);
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
@@ -122,16 +122,16 @@ namespace urchin {
                 refreshText((int)cursorIndex + 1, false);
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
-                    U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
-                    allText = allText.substr(0, (unsigned long)(cursorIndex - 1L));
-                    allText.append(tmpRight);
+                    U32StringA tmpRight = originalText.substr((unsigned long)cursorIndex, originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, (unsigned long)(cursorIndex - 1L));
+                    originalText.append(tmpRight);
                     refreshText((int)cursorIndex - 1, true);
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
-                if (allText.length() > 0 && cursorIndex < allText.length()) {
-                    U32StringA tmpRight = allText.substr((unsigned long)(cursorIndex + 1L), allText.length() - cursorIndex);
-                    allText = allText.substr(0, (unsigned long)cursorIndex);
-                    allText.append(tmpRight);
+                if (originalText.length() > 0 && cursorIndex < originalText.length()) {
+                    U32StringA tmpRight = originalText.substr((unsigned long)(cursorIndex + 1L), originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, (unsigned long)cursorIndex);
+                    originalText.append(tmpRight);
                     refreshText((int)cursorIndex, true);
                 }
             }
@@ -143,10 +143,10 @@ namespace urchin {
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
-                U32StringA tmpRight = allText.substr((unsigned long)cursorIndex, allText.length() - cursorIndex);
-                allText = allText.substr(0, (unsigned long)cursorIndex);
-                allText.append(1, unicodeCharacter);
-                allText.append(tmpRight);
+                U32StringA tmpRight = originalText.substr((unsigned long)cursorIndex, originalText.length() - cursorIndex);
+                originalText = originalText.substr(0, (unsigned long)cursorIndex);
+                originalText.append(1, unicodeCharacter);
+                originalText.append(tmpRight);
                 refreshText((int)cursorIndex + 1, true);
             }
             return false;
@@ -164,12 +164,12 @@ namespace urchin {
     }
 
     bool TextBox::isMaxCharacterReach() const {
-        return maxCharacter != -1 && (int)allText.size() >= maxCharacter;
+        return maxCharacter != -1 && (int)originalText.size() >= maxCharacter;
     }
 
-    void TextBox::refreshText(int newCursorIndex, bool allTextUpdated) {
+    void TextBox::refreshText(int newCursorIndex, bool originalTextUpdated) {
         //refresh cursor index
-        if (    (newCursorIndex > (int)cursorIndex && cursorIndex < allText.length()) ||
+        if (    (newCursorIndex > (int)cursorIndex && cursorIndex < originalText.length()) ||
                 (newCursorIndex < (int)cursorIndex && cursorIndex != 0)) {
             cursorIndex = (unsigned int)newCursorIndex;
         }
@@ -177,7 +177,7 @@ namespace urchin {
         //refresh start index
         computeCursorPosition();
         if (cursorPosition.X > (float)maxWidthText) {
-            startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)allText.length();
+            startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)originalText.length();
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex > 0) ? startTextIndex - LETTER_SHIFT : 0;
         }
@@ -187,18 +187,18 @@ namespace urchin {
         const auto& font = text->getFont();
         unsigned int widthText = 0;
         unsigned int endTextIndex = startTextIndex;
-        for (; endTextIndex < allText.length(); ++endTextIndex) {
-            char32_t textLetter = allText[endTextIndex];
+        for (; endTextIndex < originalText.length(); ++endTextIndex) {
+            char32_t textLetter = originalText[endTextIndex];
             widthText += font.getGlyph(textLetter).width + font.getSpaceBetweenLetters();
             if (widthText > maxWidthText) {
                 break;
             }
         }
-        U32StringA textToDisplay = allText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
+        U32StringA textToDisplay = originalText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
         text->updateText(std::string(stringConvert.to_bytes(textToDisplay)));
 
         //event
-        if (allTextUpdated) {
+        if (originalTextUpdated) {
             for (auto& eventListener : getEventListeners()) {
                 eventListener->onValueChange(this);
             }
@@ -210,7 +210,7 @@ namespace urchin {
         cursorPosition.X = 0.0f;
 
         for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
-            char32_t textLetter = allText[i];
+            char32_t textLetter = originalText[i];
             cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters());
         }
 
@@ -226,8 +226,8 @@ namespace urchin {
         const auto& font = text->getFont();
         float widthText = 0.0f;
 
-        for (cursorIndex = startTextIndex; cursorIndex < allText.length(); ++cursorIndex) {
-            char32_t textLetter = allText[cursorIndex];
+        for (cursorIndex = startTextIndex; cursorIndex < originalText.length(); ++cursorIndex) {
+            char32_t textLetter = originalText[cursorIndex];
             widthText += (float)font.getGlyph(textLetter).width / 2.0f;
             if (widthText > (float)approximatePositionX) {
                 break;
