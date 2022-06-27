@@ -31,7 +31,7 @@ namespace urchin {
             void updateText(const ParameterizedText&);
 
             const std::string& getText() const;
-            const std::vector<U32StringA>& getDisplayedTextLines() const;
+            const std::vector<U32StringA>& getCutTextLines() const;
             const Font& getFont() const;
 
         protected:

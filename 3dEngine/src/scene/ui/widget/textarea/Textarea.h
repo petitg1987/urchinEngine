@@ -7,8 +7,8 @@
 namespace urchin {
 
     struct CursorIndex {
-        int line;
-        int column;
+        std::size_t line;
+        std::size_t column;
     };
 
     class Textarea : public Widget { //TODO avoid copy/paste (code & constexpr)
@@ -53,7 +53,7 @@ namespace urchin {
             //display information
             std::shared_ptr<Text> text; //text widget of the textarea
             std::vector<U32StringA> originalTextLines; //original text of the textarea (text without auto line return)
-            CursorIndex cursorIndex; //index of the cursor (X=column, Y=line) in 'originalTextLines'
+            CursorIndex cursorIndex; //index of the cursor in 'originalTextLines'
             Vector2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
             float cursorBlink;
 

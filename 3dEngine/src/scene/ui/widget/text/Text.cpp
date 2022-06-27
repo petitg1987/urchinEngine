@@ -155,7 +155,7 @@ namespace urchin {
         return text;
     }
 
-    const std::vector<U32StringA>& Text::getDisplayedTextLines() const {
+    const std::vector<U32StringA>& Text::getCutTextLines() const {
         return cutTextLines;
     }
 
