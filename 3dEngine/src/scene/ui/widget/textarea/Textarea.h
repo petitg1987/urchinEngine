@@ -3,6 +3,7 @@
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/text/Text.h>
+#include <scene/ui/widget/container/Container.h>
 
 namespace urchin {
 
@@ -52,6 +53,7 @@ namespace urchin {
             int maxCharacter;
 
             //display information
+            std::shared_ptr<Container> textContainer;
             std::shared_ptr<Text> text; //text widget of the textarea
             U32StringA originalText; //original text of the textarea
             std::size_t cursorIndex; //index of the cursor in 'originalText'

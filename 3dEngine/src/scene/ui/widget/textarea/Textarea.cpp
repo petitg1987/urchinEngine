@@ -36,7 +36,7 @@ namespace urchin {
     void Textarea::createOrUpdateWidget() {
         //delete children
         detachChild(text.get());
-        //TODO add container
+        detachChild(textContainer.get());
 
         //skin information
         auto textareaChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textarea", UdaAttribute("skin", skinName));
@@ -48,7 +48,8 @@ namespace urchin {
         texTextareaFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textareaChunk);
-        text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
+        textContainer = Container::create(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0, SCREEN_PERCENT));
+        text = Text::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
         float maxWidthText = getWidth() - (float)(widgetOutline.leftWidth + widgetOutline.rightWidth);
         text->setMaxWidth(maxWidthText, PIXEL);
 
@@ -199,7 +200,6 @@ namespace urchin {
     void Textarea::refreshCursorPosition() {
         std::size_t textCursorIndex = cursorIndexToTextCursorIndex(cursorIndex);
         std::size_t currentIndex = 0;
-        bool positionFound = false;
 
         cursorPosition.Y = 0.0f;
         for (std::size_t lineIndex = 0; lineIndex < text->getCutTextLines().size(); ++lineIndex) {
@@ -211,8 +211,8 @@ namespace urchin {
                         cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
                     }
 
-                    positionFound = true;
-                    break;
+                    cursorBlink = 0.0f;
+                    return;
                 } else {
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
                     cursorPosition.X += (int) (text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
@@ -220,15 +220,9 @@ namespace urchin {
                     currentIndex++;
                 }
             }
-            if (positionFound) {
-                break;
-            }
             cursorPosition.Y += (int)text->getFont().getSpaceBetweenLines();
         }
-
-        cursorPosition.X += widgetOutline.leftWidth;
-        cursorPosition.Y += widgetOutline.topWidth;
-        cursorBlink = 0.0f;
+        throw std::runtime_error("Cursor position not found at index " + std::to_string(textCursorIndex) + " for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
@@ -241,7 +235,7 @@ namespace urchin {
             }
 
             currentHeight += (float)text->getFont().getSpaceBetweenLines();
-            if ((float)approximatePositionY <= currentHeight) {
+            if ((float)approximatePositionY < currentHeight) {
                 float currentWidth = 0.0f;
                 for (std::size_t columnIndex = 0; columnIndex <= text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
                     if (columnIndex != 0) {
@@ -250,7 +244,7 @@ namespace urchin {
 
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
                     currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f;
-                    if ((float)approximatePositionX <= currentWidth) {
+                    if ((float)approximatePositionX < currentWidth) {
                         break;
                     }
                     currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenLetters();
@@ -311,7 +305,10 @@ namespace urchin {
         cursorBlink += dt * CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) == 0) {
             renderingOrder++;
-            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX() + (float)cursorPosition.X, getGlobalPositionY() + (float)cursorPosition.Y));
+            Vector2<float> cursorTranslate(
+                    getGlobalPositionX() + (float)widgetOutline.leftWidth + (float)cursorPosition.X,
+                    getGlobalPositionY() + (float)widgetOutline.topWidth + (float)cursorPosition.Y);
+            updateProperties(cursorRenderer.get(), projectionViewMatrix, cursorTranslate);
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }
