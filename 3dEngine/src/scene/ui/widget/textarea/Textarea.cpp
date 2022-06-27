@@ -27,8 +27,10 @@ namespace urchin {
 
     void Textarea::updateText(std::string_view text) {
         this->originalText = U32StringA(text.begin(), text.end());
-        this->cursorIndex = originalText.length();
         refreshText();
+
+        this->cursorIndex = originalText.length();
+        refreshCursorPosition();
     }
 
     void Textarea::createOrUpdateWidget() {
@@ -53,8 +55,12 @@ namespace urchin {
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
-        cursorIndex = 0;
+
+        originalText = U32StringA();
         refreshText();
+
+        cursorIndex = 0;
+        refreshCursorPosition();
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -136,6 +142,8 @@ namespace urchin {
                     U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
                     originalText = tmpLeft + tmpRight;
                     refreshText();
+
+                    refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::ENTER || key == (int)InputDeviceKey::NUM_PAD_ENTER) {
                 U32StringA tmpLeft = originalText.substr(0, cursorIndex);
@@ -186,7 +194,6 @@ namespace urchin {
 
     void Textarea::refreshText() {
         text->updateText(std::string(stringConvert.to_bytes(originalText)));
-        refreshCursorPosition();
     }
 
     void Textarea::refreshCursorPosition() {
@@ -230,22 +237,23 @@ namespace urchin {
         float currentHeight = 0.0;
         for (std::size_t lineIndex = 0; lineIndex < text->getCutTextLines().size(); ++lineIndex) {
             if (lineIndex != 0) {
-                textCursorIndex += 1; //move cursor from previous line end to beginning of current line
+                textCursorIndex++; //move cursor from previous line end to beginning of current line
             }
 
             currentHeight += (float)text->getFont().getSpaceBetweenLines();
-
             if ((float)approximatePositionY <= currentHeight) {
                 float currentWidth = 0.0f;
-                for (std::size_t columnIndex = 0; columnIndex < text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
+                for (std::size_t columnIndex = 0; columnIndex <= text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
+                    if (columnIndex != 0) {
+                        textCursorIndex++;
+                    }
+
                     char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
                     currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f;
-
                     if ((float)approximatePositionX <= currentWidth) {
                         break;
                     }
                     currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenLetters();
-                    textCursorIndex++;
                 }
                 break;
             } else {
@@ -258,11 +266,40 @@ namespace urchin {
     }
 
     std::size_t Textarea::textCursorIndexToCursorIndex(std::size_t textCursorIndex) const {
-        return textCursorIndex; //TODO impl
+        int delta = 0;
+        std::size_t currentIndex = 0;
+        for (const TextLine& lineIndex : text->getCutTextLines()) {
+            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
+                if (currentIndex == textCursorIndex) {
+                    return (std::size_t)((long)textCursorIndex + delta);
+                } else {
+                    currentIndex++;
+                }
+            }
+            if (lineIndex.cutType == TextCutType::MIDDLE_WORD) {
+                delta--;
+            }
+        }
+        throw std::runtime_error("Text cursor index " + std::to_string(textCursorIndex) + " does not exist for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
     std::size_t Textarea::cursorIndexToTextCursorIndex(std::size_t cursorIndex) const {
-        return cursorIndex; //TODO impl
+        std::size_t textDelta = 0;
+        std::size_t currentTextIndex = 0;
+        for (const TextLine& lineIndex : text->getCutTextLines()) {
+            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
+                if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
+                    //cursor cannot be at end of line when cut type is middle of word
+                    currentTextIndex++;
+                    textDelta++;
+                } else if (currentTextIndex == cursorIndex + textDelta) {
+                    return currentTextIndex;
+                } else {
+                    currentTextIndex++;
+                }
+            }
+        }
+        throw std::runtime_error("Cursor index " + std::to_string(cursorIndex) + " does not exist for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

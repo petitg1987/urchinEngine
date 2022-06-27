@@ -205,7 +205,7 @@ namespace urchin {
                 char32_t textLetter = u32Text[letterIndex];
 
                 if (textLetter == '\n') {
-                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .spaceIntoLineFeed = false});
+                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .cutType = TextCutType::CLASSIC});
                     startLineIndex = letterIndex + 1;
                     lineLength = 0;
                     lengthFromLastSpace = 0;
@@ -218,11 +218,11 @@ namespace urchin {
 
                 if (lineLength + letterLength >= getMaxWidth()) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
-                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex), .spaceIntoLineFeed = true});
+                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex), .cutType = TextCutType::WORD});
                         startLineIndex = lastSpaceIndex + 1;
                         lineLength = lengthFromLastSpace;
                     } else if ((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
-                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .spaceIntoLineFeed = false});
+                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .cutType = TextCutType::MIDDLE_WORD});
                         startLineIndex = letterIndex;
                         lineLength = letterLength;
                         lengthFromLastSpace = letterLength;
@@ -235,16 +235,16 @@ namespace urchin {
         } else {
             for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
                 if (u32Text[letterIndex] == '\n') {
-                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .spaceIntoLineFeed = false});
+                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .cutType = TextCutType::CLASSIC});
                     startLineIndex = letterIndex + 1;
                 }
             }
         }
 
         if (startLineIndex == 0) {
-            cutTextLines.emplace_back(TextLine{.text = u32Text, .spaceIntoLineFeed = false});
+            cutTextLines.emplace_back(TextLine{.text = u32Text, .cutType = TextCutType::CLASSIC});
         } else if ((int)u32Text.length() - (int)startLineIndex >= 0) {
-            cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, u32Text.length() - startLineIndex), .spaceIntoLineFeed = false});
+            cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, u32Text.length() - startLineIndex), .cutType = TextCutType::CLASSIC});
         }
     }
 

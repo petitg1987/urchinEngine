@@ -16,9 +16,15 @@
 
 namespace urchin {
 
+    enum class TextCutType {
+        CLASSIC, //text is cut because of '\n' presence or because it is the last line
+        WORD, //text is too long and is cut between two words
+        MIDDLE_WORD //text is too long and is cut at the middle of a word
+    };
+
     struct TextLine {
         U32StringA text;
-        bool spaceIntoLineFeed;
+        TextCutType cutType; //reason of line is cut at the end
     };
 
     class Text : public Widget, public TranslatableLabel {

@@ -45,7 +45,7 @@ namespace urchin {
             static constexpr unsigned int CURSOR_PADDING_PIXEL = 4;
             static constexpr unsigned int CURSOR_WIDTH_PIXEL = 2;
             static constexpr float CURSOR_BLINK_SPEED = 2.25f;
-            WStringConvertA stringConvert;
+            mutable WStringConvertA stringConvert;
             std::string skinName;
             U32StringA allowedCharacters;
             std::string inputText;
