@@ -266,13 +266,13 @@ namespace urchin {
         cursorPosition.Y += widgetOutline.topWidth;
     }
 
-    CursorIndex Textarea::cursorIndexToTextCursorIndex(const CursorIndex& originalCursorIndex) const {
+    CursorIndex Textarea::cursorIndexToTextCursorIndex(const CursorIndex& originalCursorIndex) const { //TODO avoid brute force + add unit test
         CursorIndex textCursorIndex{0, 0};
         for (std::size_t lineIndex = 0; lineIndex < originalTextLines.size(); ++lineIndex) {
             if (lineIndex == originalCursorIndex.line) {
                 std::size_t remainingColumnShift = originalCursorIndex.column;
                 while (true) {
-                    if (text->getCutTextLines()[(std::size_t)textCursorIndex.line].length() >= remainingColumnShift) {
+                    if (text->getCutTextLines()[textCursorIndex.line].length() >= remainingColumnShift) {
                         textCursorIndex.column = remainingColumnShift;
                         return textCursorIndex;
                     } else {
@@ -299,7 +299,7 @@ namespace urchin {
         return textCursorIndex;
     }
 
-    CursorIndex Textarea::textCursorIndexToCursorIndex(const CursorIndex& textCursorIndex) const {
+    CursorIndex Textarea::textCursorIndexToCursorIndex(const CursorIndex& textCursorIndex) const { //TODO avoid brute force + add unit test
         CursorIndex originalCursorIndex{};
         while (true) {
             for (std::size_t lineIndex = 0; lineIndex < originalTextLines.size(); ++lineIndex) {
@@ -307,6 +307,7 @@ namespace urchin {
 
                 for (std::size_t columnIndex = 0; columnIndex <= originalTextLines[lineIndex].length(); ++columnIndex) {
                     originalCursorIndex.column = columnIndex;
+
                     CursorIndex computedTextCursorIndex = cursorIndexToTextCursorIndex(originalCursorIndex);
                     if (computedTextCursorIndex.line == textCursorIndex.line && computedTextCursorIndex.column == textCursorIndex.column) {
                         return originalCursorIndex;
