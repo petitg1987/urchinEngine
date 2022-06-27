@@ -3,6 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <scene/ui/widget/textbox/TextBox.h>
+#include <scene/ui/widget/InputTextHelper.h>
 #include <scene/InputDeviceKey.h>
 #include <api/render/GenericRendererBuilder.h>
 
@@ -64,11 +65,11 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
-        auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)CURSOR_PADDING_PIXEL;
-        auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)CURSOR_PADDING_PIXEL * 2.0f);
+        auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL;
+        auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f);
         std::vector<Point2<float>> cursorVertexCoord = {
-                Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY),
-                Point2<float>(0.0f, cursorStartY), Point2<float>(CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)
+                Point2<float>(0.0f, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorEndY),
+                Point2<float>(0.0f, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)
         };
         std::vector<Point2<float>> cursorTextureCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
@@ -216,7 +217,7 @@ namespace urchin {
 
         if (cursorPosition.X > 0) {
             cursorPosition.X -= (float)font.getSpaceBetweenLetters(); //remove last space
-            cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
+            cursorPosition.X += InputTextHelper::LETTER_AND_CURSOR_SHIFT;
         }
 
         cursorPosition.X += (float)widgetOutline.leftWidth;
@@ -247,7 +248,7 @@ namespace urchin {
         textBoxRenderer->enableRenderer(renderingOrder);
 
         //cursor
-        cursorBlink += dt * CURSOR_BLINK_SPEED;
+        cursorBlink += dt * InputTextHelper::CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) == 0) {
             renderingOrder++;
             updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + cursorPosition);

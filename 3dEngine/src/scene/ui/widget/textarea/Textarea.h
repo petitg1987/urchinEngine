@@ -7,11 +7,6 @@
 
 namespace urchin {
 
-    struct CursorIndex {
-        std::size_t line;
-        std::size_t column;
-    };
-
     class Textarea : public Widget { //TODO avoid copy/paste (code & constexpr)
         public:
             static std::shared_ptr<Textarea> create(Widget*, Position, Size, std::string);
@@ -40,10 +35,6 @@ namespace urchin {
             void computeCursorIndex(int, int);
 
             //properties
-            static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
-            static constexpr unsigned int CURSOR_PADDING_PIXEL = 4;
-            static constexpr unsigned int CURSOR_WIDTH_PIXEL = 2;
-            static constexpr float CURSOR_BLINK_SPEED = 2.25f;
             mutable WStringConvertA stringConvert;
             std::string skinName;
             U32StringA allowedCharacters;
