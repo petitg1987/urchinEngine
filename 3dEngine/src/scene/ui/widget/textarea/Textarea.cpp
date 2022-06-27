@@ -47,8 +47,10 @@ namespace urchin {
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), textareaChunk);
         texTextareaFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
+        auto scrollbarSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbarSkin", UdaAttribute(), textareaChunk);
+        textContainer = Container::createScrollable(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0f, PARENT_PERCENT), scrollbarSkinChunk->getStringValue());
+
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textareaChunk);
-        textContainer = Container::create(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0, SCREEN_PERCENT));
         text = Text::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
         float maxWidthText = getWidth() - (float)(widgetOutline.leftWidth + widgetOutline.rightWidth);
         text->setMaxWidth(maxWidthText, PIXEL);
@@ -195,6 +197,7 @@ namespace urchin {
 
     void Textarea::refreshText() {
         text->updateText(std::string(stringConvert.to_bytes(originalText)));
+        textContainer->notifyChildrenUpdated(); //ugly
     }
 
     void Textarea::refreshCursorPosition() {
@@ -259,7 +262,7 @@ namespace urchin {
         refreshCursorPosition();
     }
 
-    std::size_t Textarea::textCursorIndexToCursorIndex(std::size_t textCursorIndex) const {
+    std::size_t Textarea::textCursorIndexToCursorIndex(std::size_t textCursorIndex) const { //TODO move in text + unit test ?
         int delta = 0;
         std::size_t currentIndex = 0;
         for (const TextLine& lineIndex : text->getCutTextLines()) {
@@ -277,7 +280,7 @@ namespace urchin {
         throw std::runtime_error("Text cursor index " + std::to_string(textCursorIndex) + " does not exist for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
-    std::size_t Textarea::cursorIndexToTextCursorIndex(std::size_t cursorIndex) const {
+    std::size_t Textarea::cursorIndexToTextCursorIndex(std::size_t cursorIndex) const { //TODO move in text + unit test ?
         std::size_t textDelta = 0;
         std::size_t currentTextIndex = 0;
         for (const TextLine& lineIndex : text->getCutTextLines()) {

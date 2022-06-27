@@ -10,15 +10,16 @@ template<class T> float Widget::widthLengthToPixel(float widthValue, LengthType 
     if (lengthType == LengthType::SCREEN_PERCENT) {
         return widthValue / 100.0f * (float)getSceneSize().X;
     } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-        if (!getParentContainer()) {
+        Widget* parentContainer = (Widget*)getParentContainer();
+        if (!parentContainer) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return widthValue / 100.0f * ((Widget*) getParentContainer())->getWidth();
+        return widthValue / 100.0f * (parentContainer->getWidth() - (float)parentContainer->getOutline().leftWidth - (float)parentContainer->getOutline().rightWidth);
     } else if (lengthType == LengthType::PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return widthValue / 100.0f * getParent()->getWidth();
+        return widthValue / 100.0f * (getParent()->getWidth() - (float)getParent()->getOutline().leftWidth - (float)getParent()->getOutline().rightWidth);
     } else if (lengthType == LengthType::RATIO_TO_HEIGHT) {
         float relativeMultiplyFactor = widthValue;
         return heightValueInPixel() * relativeMultiplyFactor;
@@ -32,15 +33,16 @@ template<class T> float Widget::heightLengthToPixel(float heightValue, LengthTyp
     if (lengthType == LengthType::SCREEN_PERCENT) {
         return heightValue / 100.0f * (float) getSceneSize().Y;
     } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-        if (!getParentContainer()) {
+        Widget* parentContainer = (Widget*)getParentContainer();
+        if (!parentContainer) {
             throw std::runtime_error("Missing parent container on the widget");
         }
-        return heightValue / 100.0f * ((Widget*) getParentContainer())->getHeight();
+        return heightValue / 100.0f * (parentContainer->getHeight() - (float)parentContainer->getOutline().topWidth - (float)parentContainer->getOutline().bottomWidth);
     } else if (lengthType == LengthType::PARENT_PERCENT) {
         if (!getParent()) {
             throw std::runtime_error("Missing parent on the widget");
         }
-        return heightValue / 100.0f * getParent()->getHeight();
+        return heightValue / 100.0f * (getParent()->getHeight() - (float)getParent()->getOutline().topWidth - (float)getParent()->getOutline().bottomWidth);
     } else if (lengthType == LengthType::RATIO_TO_WIDTH) {
         float relativeMultiplyFactor = heightValue;
         return widthValueInPixel() * relativeMultiplyFactor;
