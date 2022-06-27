@@ -328,7 +328,7 @@ namespace urchin {
             char32_t textLetter = text->getCutTextLines()[textCursorIndex.line][textCursorIndex.column];
 
             currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f;
-            if ((float) approximatePositionX < currentWidth) {
+            if ((float)approximatePositionX <= currentWidth) {
                 break;
             }
             currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenLetters();
