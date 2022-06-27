@@ -41,8 +41,10 @@ namespace urchin {
             void updateText(std::string);
             void updateText(const ParameterizedText&);
 
-            const std::string& getText() const;
+            const std::string& getBaseText() const;
             const std::vector<TextLine>& getCutTextLines() const;
+            std::size_t cutTextToBaseTextIndex(std::size_t) const;
+            std::size_t baseTextToCutTextIndex(std::size_t) const;
             const Font& getFont() const;
 
         protected:
@@ -73,7 +75,7 @@ namespace urchin {
             std::string inputText;
             std::vector<std::string> inputTextParameters;
             std::regex parameterRegex;
-            std::string text;
+            std::string baseText;
             float maxWidth;
             LengthType maxWidthType;
 

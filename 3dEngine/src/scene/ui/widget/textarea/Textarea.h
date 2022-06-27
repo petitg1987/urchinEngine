@@ -38,8 +38,6 @@ namespace urchin {
             void refreshText();
             void refreshCursorPosition();
             void computeCursorIndex(int, int);
-            std::size_t textCursorIndexToCursorIndex(std::size_t) const;
-            std::size_t cursorIndexToTextCursorIndex(std::size_t) const;
 
             //properties
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor

@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     std::string Textarea::getText() {
-        return text->getText();
+        return text->getBaseText();
     }
 
     void Textarea::updateText(std::string_view text) {
@@ -201,7 +201,7 @@ namespace urchin {
     }
 
     void Textarea::refreshCursorPosition() {
-        std::size_t textCursorIndex = cursorIndexToTextCursorIndex(cursorIndex);
+        std::size_t textCursorIndex = text->baseTextToCutTextIndex(cursorIndex);
         std::size_t currentIndex = 0;
 
         cursorPosition.Y = 0.0f;
@@ -258,45 +258,8 @@ namespace urchin {
             }
         }
 
-        cursorIndex = textCursorIndexToCursorIndex(textCursorIndex);
+        cursorIndex = text->cutTextToBaseTextIndex(textCursorIndex);
         refreshCursorPosition();
-    }
-
-    std::size_t Textarea::textCursorIndexToCursorIndex(std::size_t textCursorIndex) const { //TODO move in text + unit test ?
-        int delta = 0;
-        std::size_t currentIndex = 0;
-        for (const TextLine& lineIndex : text->getCutTextLines()) {
-            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
-                if (currentIndex == textCursorIndex) {
-                    return (std::size_t)((long)textCursorIndex + delta);
-                } else {
-                    currentIndex++;
-                }
-            }
-            if (lineIndex.cutType == TextCutType::MIDDLE_WORD) {
-                delta--;
-            }
-        }
-        throw std::runtime_error("Text cursor index " + std::to_string(textCursorIndex) + " does not exist for text: " + std::string(stringConvert.to_bytes(originalText)));
-    }
-
-    std::size_t Textarea::cursorIndexToTextCursorIndex(std::size_t cursorIndex) const { //TODO move in text + unit test ?
-        std::size_t textDelta = 0;
-        std::size_t currentTextIndex = 0;
-        for (const TextLine& lineIndex : text->getCutTextLines()) {
-            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
-                if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
-                    //cursor cannot be at end of line when cut type is middle of word
-                    currentTextIndex++;
-                    textDelta++;
-                } else if (currentTextIndex == cursorIndex + textDelta) {
-                    return currentTextIndex;
-                } else {
-                    currentTextIndex++;
-                }
-            }
-        }
-        throw std::runtime_error("Cursor index " + std::to_string(cursorIndex) + " does not exist for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

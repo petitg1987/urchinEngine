@@ -42,7 +42,7 @@ namespace urchin {
         if (hasTranslatableInput()) {
             getI18nService()->add(this);
         } else {
-            text = evaluateText(std::nullopt);
+            baseText = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
         }
         refreshRenderer();
@@ -115,7 +115,7 @@ namespace urchin {
         this->inputTextParameters = std::move(inputTextParameters);
 
         if (!hasTranslatableInput()) {
-            text = evaluateText(std::nullopt);
+            baseText = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
             refreshRendererData();
         } else {
@@ -151,16 +151,59 @@ namespace urchin {
         return evaluatedText;
     }
 
-    const std::string& Text::getText() const {
-        return text;
+    /**
+     * @return input text translated for i18n text
+     */
+    const std::string& Text::getBaseText() const {
+        return baseText;
     }
 
+    /**
+     * @return base text cut in line
+     */
     const std::vector<TextLine>& Text::getCutTextLines() const {
         return cutTextLines;
     }
 
+    std::size_t Text::cutTextToBaseTextIndex(std::size_t cutTextIndex) const { //TODO unit test ?
+        int delta = 0;
+        std::size_t currentIndex = 0;
+        for (const TextLine& lineIndex : cutTextLines) {
+            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
+                if (currentIndex == cutTextIndex) {
+                    return (std::size_t)((long)cutTextIndex + delta);
+                } else {
+                    currentIndex++;
+                }
+            }
+            if (lineIndex.cutType == TextCutType::MIDDLE_WORD) {
+                delta--;
+            }
+        }
+        throw std::runtime_error("Cut text lines index " + std::to_string(cutTextIndex) + " does not exist for text: " + baseText);
+    }
+
+    std::size_t Text::baseTextToCutTextIndex(std::size_t baseTextIndex) const { //TODO unit test ?
+        std::size_t cutTextDelta = 0;
+        std::size_t currentCutTextIndex = 0;
+        for (const TextLine& lineIndex : cutTextLines) {
+            for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
+                if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
+                    //index cannot be at end of line when cut type is middle of word
+                    currentCutTextIndex++;
+                    cutTextDelta++;
+                } else if (currentCutTextIndex == baseTextIndex + cutTextDelta) {
+                    return currentCutTextIndex;
+                } else {
+                    currentCutTextIndex++;
+                }
+            }
+        }
+        throw std::runtime_error("Base text index " + std::to_string(baseTextIndex) + " does not exist for text: " + baseText);
+    }
+
     void Text::refreshTranslation(const LanguageTranslator& languageTranslator) {
-        text = evaluateText(std::make_optional(languageTranslator));
+        baseText = evaluateText(std::make_optional(languageTranslator));
 
         refreshTextAndWidgetSize();
         refreshRendererData();
@@ -192,7 +235,7 @@ namespace urchin {
 
     void Text::cutText() {
         cutTextLines.clear();
-        U32StringA u32Text = stringConvert.from_bytes(text.c_str());
+        U32StringA u32Text = stringConvert.from_bytes(baseText.c_str());
 
         std::size_t startLineIndex = 0;
 
@@ -273,8 +316,8 @@ namespace urchin {
         //creates the vertex array and texture array
         vertexCoord.clear();
         textureCoord.clear();
-        vertexCoord.reserve(text.size() * 4);
-        textureCoord.reserve(text.size() * 4);
+        vertexCoord.reserve(baseText.size() * 4);
+        textureCoord.reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
