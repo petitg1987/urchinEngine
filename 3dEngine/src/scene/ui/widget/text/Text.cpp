@@ -243,7 +243,7 @@ namespace urchin {
 
         if (startLineIndex == 0) {
             cutTextLines.emplace_back(TextLine{.text = u32Text, .spaceIntoLineFeed = false});
-        } else if ((int)u32Text.length() - (int)startLineIndex > 0) {
+        } else if ((int)u32Text.length() - (int)startLineIndex >= 0) {
             cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, u32Text.length() - startLineIndex), .spaceIntoLineFeed = false});
         }
     }

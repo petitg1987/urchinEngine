@@ -7,10 +7,10 @@ namespace urchin {
             Widget(position, size),
             skinName(std::move(skinName)),
             maxCharacter(-1),
-            textCursorIndex({0, 0}),
+            cursorIndex(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
-        originalTextLines.emplace_back();
+
     }
 
     std::shared_ptr<Textarea> Textarea::create(Widget* parent, Position position, Size size, std::string skinName) {
@@ -25,21 +25,10 @@ namespace urchin {
         return text->getText();
     }
 
-    void Textarea::updateText(std::string_view textValue) {
-        originalTextLines.clear();
-        std::vector<std::string> lines = StringUtil::split(textValue, '\n');
-        if (!lines.empty()) {
-            for (const std::string& line: lines) {
-                originalTextLines.emplace_back(line.begin(), line.end());
-            }
-        } else {
-            originalTextLines.emplace_back();
-        }
+    void Textarea::updateText(std::string_view text) {
+        this->originalText = U32StringA(text.begin(), text.end());
+        this->cursorIndex = originalText.length();
         refreshText();
-
-        textCursorIndex.line = text->getCutTextLines().size() - 1;
-        textCursorIndex.column = text->getCutTextLines()[textCursorIndex.line].text.length();
-        refreshCursorPosition();
     }
 
     void Textarea::createOrUpdateWidget() {
@@ -64,8 +53,7 @@ namespace urchin {
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
-        textCursorIndex.line = 0;
-        textCursorIndex.column = 0;
+        cursorIndex = 0;
         refreshText();
 
         //visual
@@ -116,88 +104,47 @@ namespace urchin {
             }
         } else if (state == ACTIVE) {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
-                if (textCursorIndex.column > 0) {
-                    textCursorIndex.column -= 1;
-                    refreshCursorPosition();
-                } else if (textCursorIndex.column == 0 && textCursorIndex.line > 0) {
-                    textCursorIndex.line -= 1;
-                    textCursorIndex.column = text->getCutTextLines()[textCursorIndex.line].text.length();
+                if (cursorIndex > 0) {
+                    cursorIndex--;
                     refreshCursorPosition();
                 }
-                refreshCursorPosition();
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
-                if (textCursorIndex.column < text->getCutTextLines()[textCursorIndex.line].text.length()) {
-                    textCursorIndex.column += 1;
-                    refreshCursorPosition();
-                } else if (textCursorIndex.line < text->getCutTextLines().size() - 1) {
-                    textCursorIndex.line += 1;
-                    textCursorIndex.column = 0;
+                assert(cursorIndex <= originalText.length());
+                if (cursorIndex < originalText.length()) {
+                    cursorIndex++;
                     refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::UP_ARROW) {
-                if (textCursorIndex.line > 0) {
-                    computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
-                    refreshCursorPosition();
-                }
+                computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
+                refreshCursorPosition();
             } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
-                if (textCursorIndex.line < text->getCutTextLines().size() - 1) {
-                    computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
-                    refreshCursorPosition();
-                }
+                computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
+                refreshCursorPosition();
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
-                CursorIndex originalTextCursorIndex = textCursorIndexToTextOriginal(textCursorIndex);
-                if (originalTextCursorIndex.column > 0) {
-                    U32StringA& currentLine = originalTextLines[originalTextCursorIndex.line];
-                    U32StringA tmpLeft = currentLine.substr(0, (originalTextCursorIndex.column - 1L));
-                    U32StringA tmpRight = currentLine.substr(originalTextCursorIndex.column, currentLine.length() - originalTextCursorIndex.column);
-                    currentLine = tmpLeft + tmpRight;
+                if (cursorIndex > 0) {
+                    U32StringA tmpLeft = originalText.substr(0, cursorIndex - 1L);
+                    U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
+                    originalText = tmpLeft + tmpRight;
                     refreshText();
 
-                    originalTextCursorIndex.column -= 1;
-                    textCursorIndex = textOriginalCursorIndexToText(originalTextCursorIndex);
-                    refreshCursorPosition();
-                } else if (originalTextCursorIndex.column == 0 && originalTextCursorIndex.line > 0) {
-                    std::size_t previousLineLength = originalTextLines[originalTextCursorIndex.line - 1].length();
-                    originalTextLines[originalTextCursorIndex.line - 1] += originalTextLines[originalTextCursorIndex.line];
-                    originalTextLines.erase(originalTextLines.begin() + (long)originalTextCursorIndex.line);
-                    refreshText();
-
-                    originalTextCursorIndex.line -= 1;
-                    originalTextCursorIndex.column = previousLineLength;
-                    textCursorIndex = textOriginalCursorIndexToText(originalTextCursorIndex);
+                    cursorIndex--;
                     refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
-                CursorIndex originalTextCursorIndex = textCursorIndexToTextOriginal(textCursorIndex);
-                if (originalTextCursorIndex.column < originalTextLines[originalTextCursorIndex.line].length()) {
-                    U32StringA& currentLine = originalTextLines[originalTextCursorIndex.line];
-                    U32StringA tmpLeft = currentLine.substr(0, originalTextCursorIndex.column);
-                    U32StringA tmpRight = currentLine.substr(originalTextCursorIndex.column + 1L, currentLine.length() - originalTextCursorIndex.column);
-                    currentLine = tmpLeft + tmpRight;
+                if (cursorIndex < originalText.length()) {
+                    U32StringA tmpLeft = originalText.substr(0, cursorIndex);
+                    U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
+                    originalText = tmpLeft + tmpRight;
                     refreshText();
-
-                    textCursorIndex = textOriginalCursorIndexToText(originalTextCursorIndex);
-                    refreshCursorPosition();
-                } else if (originalTextCursorIndex.line < originalTextLines.size() - 1) {
-                    originalTextLines[originalTextCursorIndex.line] += originalTextLines[originalTextCursorIndex.line + 1];
-                    originalTextLines.erase(originalTextLines.begin() + (long)originalTextCursorIndex.line + 1);
-                    refreshText();
-
-                    textCursorIndex = textOriginalCursorIndexToText(originalTextCursorIndex);
-                    refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::ENTER || key == (int)InputDeviceKey::NUM_PAD_ENTER) {
-                CursorIndex originalTextCursorIndex = textCursorIndexToTextOriginal(textCursorIndex);
-                U32StringA& currentLine = originalTextLines[originalTextCursorIndex.line];
-                U32StringA tmpLeft = currentLine.substr(0, originalTextCursorIndex.column);
-                U32StringA tmpRight = currentLine.substr(originalTextCursorIndex.column, currentLine.length() - originalTextCursorIndex.column);
-                currentLine = tmpLeft;
-                originalTextLines.insert(originalTextLines.begin() + (long)originalTextCursorIndex.line + 1, tmpRight);
+                U32StringA tmpLeft = originalText.substr(0, cursorIndex);
+                U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
+                char32_t lineReturn = '\n';
+                originalText = tmpLeft + lineReturn + tmpRight;
                 refreshText();
 
-                originalTextCursorIndex.line += 1;
-                originalTextCursorIndex.column = 0;
-                textCursorIndex = textOriginalCursorIndexToText(originalTextCursorIndex);
+                cursorIndex++;
                 refreshCursorPosition();
             }
         }
@@ -208,15 +155,12 @@ namespace urchin {
     bool Textarea::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
-                CursorIndex originalTextCursorIndex = textCursorIndexToTextOriginal(textCursorIndex);
-                U32StringA& currentLine = originalTextLines[originalTextCursorIndex.line];
-                U32StringA tmpLeft = currentLine.substr(0, originalTextCursorIndex.column);
-                U32StringA tmpRight = currentLine.substr(originalTextCursorIndex.column, currentLine.length() - originalTextCursorIndex.column);
-                currentLine = tmpLeft + unicodeCharacter + tmpRight;
+                U32StringA tmpLeft = originalText.substr(0, cursorIndex);
+                U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
+                originalText = tmpLeft + unicodeCharacter + tmpRight;
                 refreshText();
 
-                originalTextCursorIndex.column += 1;
-                textCursorIndex = textOriginalCursorIndexToText(originalTextCursorIndex);
+                cursorIndex++;
                 refreshCursorPosition();
             }
             return false;
@@ -237,117 +181,88 @@ namespace urchin {
         if (maxCharacter == -1) {
             return false;
         }
-
-        int totalCharacters = 0;
-        for (const U32StringA& originalTextLine : originalTextLines) {
-            totalCharacters += (int)originalTextLine.length();
-        }
-        return totalCharacters >= maxCharacter;
+        return (int)originalText.length() >= maxCharacter;
     }
 
     void Textarea::refreshText() {
-        //refresh text
-        std::vector<std::string> lines;
-        lines.reserve(originalTextLines.size());
-        for (const U32StringA& originalTextLine : originalTextLines) {
-            lines.emplace_back(stringConvert.to_bytes(originalTextLine));
-        }
-        text->updateText(StringUtil::merge(lines, '\n'));
+        text->updateText(std::string(stringConvert.to_bytes(originalText)));
+        refreshCursorPosition();
     }
 
     void Textarea::refreshCursorPosition() {
-        cursorPosition.X = 0;
-        cursorPosition.Y = (int)(text->getFont().getSpaceBetweenLines() * textCursorIndex.line);
+        std::size_t textCursorIndex = cursorIndexToTextCursorIndex(cursorIndex);
+        std::size_t currentIndex = 0;
+        bool positionFound = false;
 
-        const U32StringA& currentLine = text->getCutTextLines()[(std::size_t)textCursorIndex.line].text;
-        for (std::size_t i = 0; i < (std::size_t)textCursorIndex.column; ++i) {
-            char32_t textLetter = currentLine[i];
-            cursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
-        }
+        cursorPosition.Y = 0.0f;
+        for (std::size_t lineIndex = 0; lineIndex < text->getCutTextLines().size(); ++lineIndex) {
+            cursorPosition.X = 0.0f;
+            for (std::size_t columnIndex = 0; columnIndex <= text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
+                if (currentIndex == textCursorIndex) {
+                    if (cursorPosition.X > 0) {
+                        cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
+                        cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
+                    }
 
-        if (cursorPosition.X > 0) {
-            cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
-            cursorPosition.X += LETTER_AND_CURSOR_SHIFT;
+                    positionFound = true;
+                    break;
+                } else {
+                    char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
+                    cursorPosition.X += (int) (text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
+
+                    currentIndex++;
+                }
+            }
+            if (positionFound) {
+                break;
+            }
+            cursorPosition.Y += (int)text->getFont().getSpaceBetweenLines();
         }
 
         cursorPosition.X += widgetOutline.leftWidth;
         cursorPosition.Y += widgetOutline.topWidth;
-    }
-
-    CursorIndex Textarea::textOriginalCursorIndexToText(const CursorIndex& originalCursorIndex) const { //TODO add unit test
-        CursorIndex textCursorIndex = {.line = 0, .column = 0};
-        for (std::size_t lineIndex = 0; lineIndex < originalTextLines.size(); ++lineIndex) {
-            if (lineIndex == originalCursorIndex.line) {
-                std::size_t remainingColumnShift = originalCursorIndex.column;
-                while (true) {
-                    if (text->getCutTextLines()[textCursorIndex.line].text.length() >= remainingColumnShift) {
-                        textCursorIndex.column = remainingColumnShift;
-                        return textCursorIndex;
-                    } else {
-                        remainingColumnShift -= text->getCutTextLines()[textCursorIndex.line].text.length();
-                        if (text->getCutTextLines()[textCursorIndex.line].spaceIntoLineFeed) {
-                            remainingColumnShift -= 1;
-                        }
-                        textCursorIndex.line++;
-                    }
-                }
-            } else {
-                std::size_t lineCharactersCount = originalTextLines[lineIndex].length();
-                std::size_t textLineCharactersCount = 0;
-                while (true) {
-                    textLineCharactersCount += text->getCutTextLines()[textCursorIndex.line].text.length();
-                    textCursorIndex.line++;
-
-                    if (textLineCharactersCount >= lineCharactersCount) {
-                        assert(textLineCharactersCount == lineCharactersCount);
-                        break;
-                    } else {
-                        if (text->getCutTextLines()[textCursorIndex.line].spaceIntoLineFeed) {
-                            textLineCharactersCount += 1;
-                        }
-                    }
-                }
-            }
-        }
-        return textCursorIndex;
-    }
-
-    CursorIndex Textarea::textCursorIndexToTextOriginal(const CursorIndex& textCursorIndex) const { //TODO avoid brute force + add unit test
-        CursorIndex originalCursorIndex = {.line = 0, .column = 0};
-        while (true) {
-            for (std::size_t lineIndex = 0; lineIndex < originalTextLines.size(); ++lineIndex) {
-                originalCursorIndex.line = lineIndex;
-
-                for (std::size_t columnIndex = 0; columnIndex <= originalTextLines[lineIndex].length(); ++columnIndex) {
-                    originalCursorIndex.column = columnIndex;
-
-                    CursorIndex computedTextCursorIndex = textOriginalCursorIndexToText(originalCursorIndex);
-                    if (computedTextCursorIndex.line == textCursorIndex.line && computedTextCursorIndex.column == textCursorIndex.column) {
-                        return originalCursorIndex;
-                    }
-                }
-            }
-        }
+        cursorBlink = 0.0f;
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
-        textCursorIndex.line = (std::size_t)((float)approximatePositionY / (float) text->getFont().getSpaceBetweenLines());
-        textCursorIndex.line = std::min(textCursorIndex.line, text->getCutTextLines().size() - 1);
+        std::size_t textCursorIndex = 0;
 
-        textCursorIndex.column = 0;
-        float currentWidth = 0.0f;
-        for (textCursorIndex.column = 0; textCursorIndex.column < text->getCutTextLines()[textCursorIndex.line].text.length(); ++textCursorIndex.column) {
-            char32_t textLetter = text->getCutTextLines()[textCursorIndex.line].text[textCursorIndex.column];
-
-            currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f;
-            if ((float)approximatePositionX <= currentWidth) {
-                break;
+        float currentHeight = 0.0;
+        for (std::size_t lineIndex = 0; lineIndex < text->getCutTextLines().size(); ++lineIndex) {
+            if (lineIndex != 0) {
+                textCursorIndex += 1; //move cursor from previous line end to beginning of current line
             }
-            currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenLetters();
+
+            currentHeight += (float)text->getFont().getSpaceBetweenLines();
+
+            if ((float)approximatePositionY <= currentHeight) {
+                float currentWidth = 0.0f;
+                for (std::size_t columnIndex = 0; columnIndex < text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
+                    char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f;
+
+                    if ((float)approximatePositionX <= currentWidth) {
+                        break;
+                    }
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenLetters();
+                    textCursorIndex++;
+                }
+                break;
+            } else {
+                textCursorIndex += text->getCutTextLines()[lineIndex].text.length(); //index at end of line
+            }
         }
 
-        //compute the exact cursor position
+        cursorIndex = textCursorIndexToCursorIndex(textCursorIndex);
         refreshCursorPosition();
+    }
+
+    std::size_t Textarea::textCursorIndexToCursorIndex(std::size_t textCursorIndex) const {
+        return textCursorIndex; //TODO impl
+    }
+
+    std::size_t Textarea::cursorIndexToTextCursorIndex(std::size_t cursorIndex) const {
+        return cursorIndex; //TODO impl
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
@@ -357,7 +272,7 @@ namespace urchin {
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
-        if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
+        if (state == ACTIVE && ((int)cursorBlink % 2) == 0) {
             renderingOrder++;
             updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX() + (float)cursorPosition.X, getGlobalPositionY() + (float)cursorPosition.Y));
             cursorRenderer->enableRenderer(renderingOrder);

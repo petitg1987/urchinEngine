@@ -38,7 +38,7 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText(int, bool);
-            void computeCursorPosition();
+            void refreshCursorPosition();
             void computeCursorIndex(int, int);
 
             //properties

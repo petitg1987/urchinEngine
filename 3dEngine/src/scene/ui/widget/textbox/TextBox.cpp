@@ -47,7 +47,7 @@ namespace urchin {
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
         refreshText((int)cursorIndex, false);
-        computeCursorPosition();
+        refreshCursorPosition();
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -175,13 +175,13 @@ namespace urchin {
         }
 
         //refresh start index
-        computeCursorPosition();
+        refreshCursorPosition();
         if (cursorPosition.X > (float)maxWidthText) {
             startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)originalText.length();
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex > 0) ? startTextIndex - LETTER_SHIFT : 0;
         }
-        computeCursorPosition();
+        refreshCursorPosition();
 
         //determine the text to display
         const auto& font = text->getFont();
@@ -205,7 +205,7 @@ namespace urchin {
         }
     }
 
-    void TextBox::computeCursorPosition() { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL + widgetOutline.topWidth
+    void TextBox::refreshCursorPosition() { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL + widgetOutline.topWidth
         const auto& font = text->getFont();
         cursorPosition.X = 0.0f;
 
@@ -220,6 +220,7 @@ namespace urchin {
         }
 
         cursorPosition.X += (float)widgetOutline.leftWidth;
+        cursorBlink = 0.0f;
     }
 
     void TextBox::computeCursorIndex(int approximatePositionX, int) { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
@@ -237,7 +238,7 @@ namespace urchin {
         }
 
         //compute the correct cursor position
-        computeCursorPosition();
+        refreshCursorPosition();
     }
 
     void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
@@ -247,7 +248,7 @@ namespace urchin {
 
         //cursor
         cursorBlink += dt * CURSOR_BLINK_SPEED;
-        if (state == ACTIVE && ((int)cursorBlink % 2) > 0) {
+        if (state == ACTIVE && ((int)cursorBlink % 2) == 0) {
             renderingOrder++;
             updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + cursorPosition);
             cursorRenderer->enableRenderer(renderingOrder);
