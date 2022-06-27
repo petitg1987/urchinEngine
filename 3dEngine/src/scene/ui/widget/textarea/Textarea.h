@@ -37,8 +37,8 @@ namespace urchin {
             void refreshText();
             void refreshCursorPosition();
             void computeCursorIndex(int, int);
-            CursorIndex cursorIndexToTextCursorIndex(const CursorIndex&) const;
-            CursorIndex textCursorIndexToCursorIndex(const CursorIndex&) const;
+            CursorIndex textOriginalCursorIndexToText(const CursorIndex&) const;
+            CursorIndex textCursorIndexToTextOriginal(const CursorIndex&) const;
 
             //properties
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
@@ -54,7 +54,7 @@ namespace urchin {
             //display information
             std::shared_ptr<Text> text; //text widget of the textarea
             std::vector<U32StringA> originalTextLines; //original text of the textarea (text without auto line return)
-            CursorIndex cursorIndex; //index of the cursor in 'originalTextLines'
+            CursorIndex textCursorIndex; //index of the cursor in 'text#getCutTextLines'
             Vector2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
             float cursorBlink;
 

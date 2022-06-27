@@ -16,6 +16,11 @@
 
 namespace urchin {
 
+    struct TextLine {
+        U32StringA text;
+        bool spaceIntoLineFeed;
+    };
+
     class Text : public Widget, public TranslatableLabel {
         public:
             static constexpr char TRANSLATABLE_TEXT_PREFIX = '~';
@@ -31,7 +36,7 @@ namespace urchin {
             void updateText(const ParameterizedText&);
 
             const std::string& getText() const;
-            const std::vector<U32StringA>& getCutTextLines() const;
+            const std::vector<TextLine>& getCutTextLines() const;
             const Font& getFont() const;
 
         protected:
@@ -68,7 +73,7 @@ namespace urchin {
 
             //data
             WStringConvertA stringConvert;
-            std::vector<U32StringA> cutTextLines;
+            std::vector<TextLine> cutTextLines;
             std::shared_ptr<Font> font;
 
             //visual

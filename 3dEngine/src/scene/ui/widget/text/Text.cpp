@@ -155,7 +155,7 @@ namespace urchin {
         return text;
     }
 
-    const std::vector<U32StringA>& Text::getCutTextLines() const {
+    const std::vector<TextLine>& Text::getCutTextLines() const {
         return cutTextLines;
     }
 
@@ -179,7 +179,7 @@ namespace urchin {
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
         for (const auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
-            for (char32_t textLetter : textLine) { //each letter
+            for (char32_t textLetter : textLine.text) { //each letter
                 auto letterWidth = (float)font->getGlyph(textLetter).width;
                 offsetX += letterWidth + spaceBetweenLetters;
             }
@@ -205,7 +205,7 @@ namespace urchin {
                 char32_t textLetter = u32Text[letterIndex];
 
                 if (textLetter == '\n') {
-                    cutTextLines.emplace_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .spaceIntoLineFeed = false});
                     startLineIndex = letterIndex + 1;
                     lineLength = 0;
                     lengthFromLastSpace = 0;
@@ -218,11 +218,11 @@ namespace urchin {
 
                 if (lineLength + letterLength >= getMaxWidth()) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
-                        cutTextLines.push_back(u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex));
+                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex), .spaceIntoLineFeed = true});
                         startLineIndex = lastSpaceIndex + 1;
                         lineLength = lengthFromLastSpace;
                     } else if ((int)letterIndex - (int)startLineIndex > 0) { //cut line at the middle of a word
-                        cutTextLines.push_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                        cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .spaceIntoLineFeed = false});
                         startLineIndex = letterIndex;
                         lineLength = letterLength;
                         lengthFromLastSpace = letterLength;
@@ -235,16 +235,16 @@ namespace urchin {
         } else {
             for (std::size_t letterIndex = 0; letterIndex < u32Text.length(); letterIndex++) { //each letters
                 if (u32Text[letterIndex] == '\n') {
-                    cutTextLines.emplace_back(u32Text.substr(startLineIndex, letterIndex - startLineIndex));
+                    cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, letterIndex - startLineIndex), .spaceIntoLineFeed = false});
                     startLineIndex = letterIndex + 1;
                 }
             }
         }
 
         if (startLineIndex == 0) {
-            cutTextLines.emplace_back(u32Text);
+            cutTextLines.emplace_back(TextLine{.text = u32Text, .spaceIntoLineFeed = false});
         } else if ((int)u32Text.length() - (int)startLineIndex > 0) {
-            cutTextLines.emplace_back(u32Text.substr(startLineIndex, u32Text.length() - startLineIndex));
+            cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, u32Text.length() - startLineIndex), .spaceIntoLineFeed = false});
         }
     }
 
@@ -280,9 +280,9 @@ namespace urchin {
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
-        for (const U32StringA& textLine : cutTextLines) { //each line
+        for (const TextLine& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
-            for (char32_t textLetter : textLine) { //each letter
+            for (char32_t textLetter : textLine.text) { //each letter
                 auto letterShift = (float)font->getGlyph(textLetter).shift;
                 auto letterWidth = (float)font->getGlyph(textLetter).width;
                 auto letterHeight = (float)font->getGlyph(textLetter).height;
