@@ -37,7 +37,8 @@ namespace urchin {
             void refreshText();
             void refreshCursorPosition();
             void computeCursorIndex(int, int);
-            CursorIndex cursorIndexToTextCursorIndex() const;
+            CursorIndex cursorIndexToTextCursorIndex(const CursorIndex&) const;
+            CursorIndex textCursorIndexToCursorIndex(const CursorIndex&) const;
 
             //properties
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
