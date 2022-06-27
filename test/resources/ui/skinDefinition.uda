@@ -1,3 +1,10 @@
+text (skin=test):
+  font: "ui/fonts/font.ttf"
+  color: "1.0 1.0 1.0"
+  height:
+    value: "15.0"
+    type: "screenPercent"
+
 scrollbar (skin=test):
   imageLine: "ui/widget/empty.png"
   imageCursor: "ui/widget/empty.png"

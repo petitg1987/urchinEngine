@@ -30,6 +30,7 @@
 #include <3d/scene/renderer3d/Renderer3dTest.h>
 #include <3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h>
 #include <3d/scene/ui/UIRendererTest.h>
+#include <3d/scene/ui/widget/text/TextTest.h>
 #include <physics/shape/ShapeToAABBoxTest.h>
 #include <physics/shape/ShapeToConvexObjectTest.h>
 #include <physics/object/SupportPointTest.h>
@@ -107,6 +108,7 @@ void add3dUnitTests(CppUnit::TextUi::TestRunner& runner) {
 
     //ui
     runner.addTest(UIRendererTest::suite());
+    runner.addTest(TextTest::suite());
 }
 
 void addPhysicsUnitTests(CppUnit::TextUi::TestRunner& runner) {

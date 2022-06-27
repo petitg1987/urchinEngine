@@ -165,7 +165,7 @@ namespace urchin {
         return cutTextLines;
     }
 
-    std::size_t Text::cutTextToBaseTextIndex(std::size_t cutTextIndex) const { //TODO unit test ?
+    std::size_t Text::cutTextToBaseTextIndex(std::size_t cutTextIndex) const {
         int delta = 0;
         std::size_t currentIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
@@ -183,7 +183,7 @@ namespace urchin {
         throw std::runtime_error("Cut text lines index " + std::to_string(cutTextIndex) + " does not exist for text: " + baseText);
     }
 
-    std::size_t Text::baseTextToCutTextIndex(std::size_t baseTextIndex) const { //TODO unit test ?
+    std::size_t Text::baseTextToCutTextIndex(std::size_t baseTextIndex) const {
         std::size_t cutTextDelta = 0;
         std::size_t currentCutTextIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
