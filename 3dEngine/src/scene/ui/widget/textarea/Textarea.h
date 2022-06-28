@@ -43,8 +43,9 @@ namespace urchin {
 
             //display information
             std::shared_ptr<Container> textContainer;
-            std::shared_ptr<Text> text; //text widget of the textarea
+            std::shared_ptr<Text> text;
             U32StringA originalText; //original text of the textarea
+            std::shared_ptr<StaticBitmap> cursor;
             std::size_t cursorIndex; //index of the cursor in 'originalText'
             Vector2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
             float cursorBlink;
@@ -61,7 +62,6 @@ namespace urchin {
             std::shared_ptr<Texture> texTextareaFocus;
             std::shared_ptr<Texture> texCursorAlbedo;
             std::unique_ptr<GenericRenderer> textareaRenderer;
-            std::unique_ptr<GenericRenderer> cursorRenderer;
     };
 
 }

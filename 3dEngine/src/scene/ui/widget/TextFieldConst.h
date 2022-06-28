@@ -2,7 +2,7 @@
 
 namespace urchin {
 
-    class InputTextHelper {
+    class TextFieldConst {
         public:
             static constexpr unsigned int LETTER_AND_CURSOR_SHIFT = 2; //define space between the letters and cursor
             static constexpr unsigned int CURSOR_HEIGHT_MARGIN_PIXEL = 4;

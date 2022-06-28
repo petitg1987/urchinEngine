@@ -12,6 +12,10 @@ namespace urchin {
 
     }
 
+    std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, std::shared_ptr<Texture> texture) {
+        return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+    }
+
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, const std::string& filename) {
         auto texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
         return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);

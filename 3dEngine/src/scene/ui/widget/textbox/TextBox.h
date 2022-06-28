@@ -7,6 +7,7 @@
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/widget/text/Text.h>
+#include <scene/ui/widget/staticbitmap/StaticBitmap.h>
 #include <api/render/GenericRenderer.h>
 
 namespace urchin {
@@ -49,10 +50,11 @@ namespace urchin {
             int maxCharacter;
 
             //display information
-            std::shared_ptr<Text> text; //text widget of the text box
+            std::shared_ptr<Text> text;
             U32StringA originalText; //original text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
+            std::shared_ptr<StaticBitmap> cursor;
             unsigned int cursorIndex; //index of the cursor
             Vector2<int> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
@@ -69,7 +71,6 @@ namespace urchin {
             std::shared_ptr<Texture> texTextBoxFocus;
             std::shared_ptr<Texture> texCursorAlbedo;
             std::unique_ptr<GenericRenderer> textBoxRenderer;
-            std::unique_ptr<GenericRenderer> cursorRenderer;
     };
 
 }

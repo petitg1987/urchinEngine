@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <scene/ui/widget/textbox/TextBox.h>
-#include <scene/ui/widget/InputTextHelper.h>
+#include <scene/ui/widget/TextFieldConst.h>
 #include <scene/InputDeviceKey.h>
 #include <api/render/GenericRendererBuilder.h>
 
@@ -28,6 +28,7 @@ namespace urchin {
 
     void TextBox::createOrUpdateWidget() {
         //detach children
+        detachChild(cursor.get());
         detachChild(text.get());
 
         //skin information
@@ -40,12 +41,16 @@ namespace urchin {
         texTextBoxFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
-        text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
+        text = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
+        Size cursorSize(TextFieldConst::CURSOR_WIDTH_PIXEL, (float)text->getFont().getHeight() + ((float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f), PIXEL);
+        cursor = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), cursorSize, texCursorAlbedo);
+        cursor->setIsVisible(false);
+
         refreshText(false);
         refreshCursorPosition();
 
@@ -62,22 +67,6 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
-
-        auto cursorStartY = (float)widgetOutline.topWidth - (float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL;
-        auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f);
-        std::vector<Point2<float>> cursorVertexCoord = {
-                Point2<float>(0.0f, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorEndY),
-                Point2<float>(0.0f, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorEndY), Point2<float>(0.0f, cursorEndY)
-        };
-        std::vector<Point2<float>> cursorTextureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        cursorRenderer = setupUiRenderer("text box - cursor", ShapeType::TRIANGLE, false)
-                ->addData(cursorVertexCoord)
-                ->addData(cursorTextureCoord)
-                ->addUniformTextureReader(TextureReader::build(texCursorAlbedo, TextureParam::build(TextureParam::REPEAT, TextureParam::NEAREST, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 
@@ -222,7 +211,7 @@ namespace urchin {
 
         if (cursorPosition.X > 0) {
             cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
-            cursorPosition.X += InputTextHelper::LETTER_AND_CURSOR_SHIFT;
+            cursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
         }
 
         cursorBlink = 0.0f;
@@ -252,14 +241,14 @@ namespace urchin {
         textBoxRenderer->enableRenderer(renderingOrder);
 
         //cursor
-        cursorBlink += dt * InputTextHelper::CURSOR_BLINK_SPEED;
-        if (state == ACTIVE && ((int)cursorBlink % 2) == 0) {
-            renderingOrder++;
-            Vector2<float> cursorTranslate(
-                    getGlobalPositionX() + (float)widgetOutline.leftWidth + (float)cursorPosition.X,
-                    getGlobalPositionY() + (float)widgetOutline.topWidth + (float)cursorPosition.Y);
-            updateProperties(cursorRenderer.get(), projectionViewMatrix, cursorTranslate);
-            cursorRenderer->enableRenderer(renderingOrder);
+        cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;
+        if (state == ACTIVE) {
+            if (((int)cursorBlink % 2) == 0) {
+                cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y - (float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL, PIXEL));
+                cursor->setIsVisible(true);
+            } else {
+                cursor->setIsVisible(false);
+            }
         }
     }
 
