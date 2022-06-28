@@ -22,8 +22,7 @@ namespace urchin {
             indices(rendererBuilder.getIndices()),
             uniformData(rendererBuilder.getUniformData()),
             uniformTextureReaders(rendererBuilder.getUniformTextureReaders()),
-            scissorOffset(Vector2<int>(0, 0)),
-            scissorSize(Vector2<int>((int)rendererBuilder.getRenderTarget().getWidth(), (int)rendererBuilder.getRenderTarget().getHeight())),
+            customScissor(false),
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
@@ -66,6 +65,9 @@ namespace urchin {
             createUniformBuffers();
             createDescriptorPool();
             createDescriptorSets();
+            if (!customScissor) {
+                resetScissor();
+            }
         }
 
         isInitialized = true;
@@ -405,7 +407,14 @@ namespace urchin {
         return texturesWriter;
     }
 
+    void GenericRenderer::resetScissor() {
+        this->customScissor = false;
+        this->scissorOffset = Vector2<int>(0, 0);
+        this->scissorSize = Vector2<int>((int)getRenderTarget().getWidth(), (int)getRenderTarget().getHeight());
+    }
+
     void GenericRenderer::updateScissor(Vector2<int> scissorOffset, Vector2<int> scissorSize) {
+        this->customScissor = true;
         this->scissorOffset = scissorOffset;
         this->scissorSize = scissorSize;
     }
