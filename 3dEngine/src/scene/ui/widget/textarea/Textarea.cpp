@@ -228,18 +228,18 @@ namespace urchin {
         throw std::runtime_error("Cursor position not found at index " + std::to_string(textCursorIndex) + " for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
-    void Textarea::adjustScrollToCursor() { //TODO impl
-        int cursorPosY = cursorPosition.Y + textContainer->getScrollShiftY();
+    void Textarea::adjustScrollToCursor() {
+        float cursorPosY = (float)cursorPosition.Y + (float)textContainer->getScrollShiftY();
 
-        int deltaShiftPixel = 0;
-        if (cursorPosY < (int)textContainer->getPositionY()) {
-            deltaShiftPixel = (int)textContainer->getPositionY() - cursorPosY;
-        } else if (cursorPosY > (int)(textContainer->getPositionY() + textContainer->getHeight())) {
-            deltaShiftPixel = (int)(textContainer->getPositionY() + textContainer->getHeight()) - cursorPosY;
+        float deltaScrollShiftPixel = 0.0f;
+        if (cursorPosY < textContainer->getPositionY()) {
+            deltaScrollShiftPixel = textContainer->getPositionY() - cursorPosY;
+        } else if (cursorPosY + cursor->getHeight() > (textContainer->getPositionY() + textContainer->getHeight())) {
+            deltaScrollShiftPixel = (textContainer->getPositionY() + textContainer->getHeight()) - (cursorPosY + cursor->getHeight());
         }
 
-        int shiftPixel = textContainer->getScrollShiftY() + deltaShiftPixel;
-        textContainer->updateScrollShiftY(shiftPixel);
+        int scrollShiftPixel = textContainer->getScrollShiftY() + MathFunction::roundToInt(deltaScrollShiftPixel);
+        textContainer->updateScrollShiftY(scrollShiftPixel);
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
