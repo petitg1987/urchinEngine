@@ -41,13 +41,12 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), "");
-        text->updatePosition(Position(0.0f, (float)TEXT_SHIFT_Y_PIXEL, LengthType::PIXEL));
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
-        refreshText((int)cursorIndex, false);
+        refreshText(false);
         refreshCursorPosition();
 
         //visual
@@ -65,7 +64,7 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
 
-        auto cursorStartY = (float)widgetOutline.topWidth + (float)TEXT_SHIFT_Y_PIXEL - (float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL;
+        auto cursorStartY = (float)widgetOutline.topWidth - (float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL;
         auto cursorEndY = (float)cursorStartY + (float)text->getFont().getHeight() + ((float)InputTextHelper::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f);
         std::vector<Point2<float>> cursorVertexCoord = {
                 Point2<float>(0.0f, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorStartY), Point2<float>(InputTextHelper::CURSOR_WIDTH_PIXEL, cursorEndY),
@@ -92,7 +91,8 @@ namespace urchin {
 
     void TextBox::updateText(std::string_view text) {
         originalText = U32StringA(text.begin(), text.end());
-        refreshText((int)originalText.length(), true);
+        cursorIndex = (unsigned int)originalText.length();
+        refreshText(true);
     }
 
     void TextBox::setAllowedCharacters(const std::string& allowedCharacters) {
@@ -118,26 +118,35 @@ namespace urchin {
             }
         } else if (state == ACTIVE) {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
-                refreshText((int)cursorIndex - 1, false);
+                if (cursorIndex > 0) {
+                    cursorIndex--;
+                    refreshText(false);
+                }
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
-                refreshText((int)cursorIndex + 1, false);
+                assert(cursorIndex <= originalText.length());
+                if (cursorIndex < originalText.length()) {
+                    cursorIndex++;
+                    refreshText(false);
+                }
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
                     U32StringA tmpRight = originalText.substr((unsigned long)cursorIndex, originalText.length() - cursorIndex);
                     originalText = originalText.substr(0, (unsigned long)(cursorIndex - 1L));
                     originalText.append(tmpRight);
-                    refreshText((int)cursorIndex - 1, true);
+
+                    cursorIndex--;
+                    refreshText(true);
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
-                if (originalText.length() > 0 && cursorIndex < originalText.length()) {
+                if (cursorIndex < originalText.length()) {
                     U32StringA tmpRight = originalText.substr((unsigned long)(cursorIndex + 1L), originalText.length() - cursorIndex);
                     originalText = originalText.substr(0, (unsigned long)cursorIndex);
                     originalText.append(tmpRight);
-                    refreshText((int)cursorIndex, true);
+
+                    refreshText(true);
                 }
             }
         }
-
         return true;
     }
 
@@ -148,7 +157,9 @@ namespace urchin {
                 originalText = originalText.substr(0, (unsigned long)cursorIndex);
                 originalText.append(1, unicodeCharacter);
                 originalText.append(tmpRight);
-                refreshText((int)cursorIndex + 1, true);
+
+                cursorIndex++;
+                refreshText(true);
             }
             return false;
         }
@@ -168,16 +179,10 @@ namespace urchin {
         return maxCharacter != -1 && (int)originalText.size() >= maxCharacter;
     }
 
-    void TextBox::refreshText(int newCursorIndex, bool originalTextUpdated) {
-        //refresh cursor index
-        if (    (newCursorIndex > (int)cursorIndex && cursorIndex < originalText.length()) ||
-                (newCursorIndex < (int)cursorIndex && cursorIndex != 0)) {
-            cursorIndex = (unsigned int)newCursorIndex;
-        }
-
+    void TextBox::refreshText(bool textUpdated) {
         //refresh start index
         refreshCursorPosition();
-        if (cursorPosition.X > (float)maxWidthText) {
+        if (cursorPosition.X > (int)maxWidthText) {
             startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)originalText.length();
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex > 0) ? startTextIndex - LETTER_SHIFT : 0;
@@ -199,32 +204,31 @@ namespace urchin {
         text->updateText(std::string(stringConvert.to_bytes(textToDisplay)));
 
         //event
-        if (originalTextUpdated) {
+        if (textUpdated) {
             for (auto& eventListener : getEventListeners()) {
                 eventListener->onValueChange(this);
             }
         }
     }
 
-    void TextBox::refreshCursorPosition() { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL + widgetOutline.topWidth
-        const auto& font = text->getFont();
+    void TextBox::refreshCursorPosition() {
         cursorPosition.X = 0.0f;
+        cursorPosition.Y = 0.0f;
 
         for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
             char32_t textLetter = originalText[i];
-            cursorPosition.X += (float)(font.getGlyph(textLetter).width + font.getSpaceBetweenLetters());
+            cursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
         }
 
         if (cursorPosition.X > 0) {
-            cursorPosition.X -= (float)font.getSpaceBetweenLetters(); //remove last space
+            cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
             cursorPosition.X += InputTextHelper::LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorPosition.X += (float)widgetOutline.leftWidth;
         cursorBlink = 0.0f;
     }
 
-    void TextBox::computeCursorIndex(int approximatePositionX, int) { //TODO use same method as in Textarea ? (/!\ startTextIndex) OR review for TEXT_SHIFT_Y_PIXEL
+    void TextBox::computeCursorIndex(int approximatePositionX, int) {
         const auto& font = text->getFont();
         float widthText = 0.0f;
 
@@ -251,7 +255,10 @@ namespace urchin {
         cursorBlink += dt * InputTextHelper::CURSOR_BLINK_SPEED;
         if (state == ACTIVE && ((int)cursorBlink % 2) == 0) {
             renderingOrder++;
-            updateProperties(cursorRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()) + cursorPosition);
+            Vector2<float> cursorTranslate(
+                    getGlobalPositionX() + (float)widgetOutline.leftWidth + (float)cursorPosition.X,
+                    getGlobalPositionY() + (float)widgetOutline.topWidth + (float)cursorPosition.Y);
+            updateProperties(cursorRenderer.get(), projectionViewMatrix, cursorTranslate);
             cursorRenderer->enableRenderer(renderingOrder);
         }
     }

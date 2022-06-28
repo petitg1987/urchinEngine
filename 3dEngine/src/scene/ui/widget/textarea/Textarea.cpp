@@ -28,7 +28,7 @@ namespace urchin {
 
     void Textarea::updateText(std::string_view text) {
         this->originalText = U32StringA(text.begin(), text.end());
-        refreshText();
+        refreshText(true);
 
         this->cursorIndex = originalText.length();
         refreshCursorPosition();
@@ -36,7 +36,6 @@ namespace urchin {
 
     void Textarea::createOrUpdateWidget() {
         //delete children
-        detachChild(text.get());
         detachChild(textContainer.get());
 
         //skin information
@@ -59,11 +58,7 @@ namespace urchin {
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
         texCursorAlbedo = Texture::build("cursor albedo", 1, 1, TextureFormat::RGBA_8_INT, cursorColor.data());
-
-        originalText = U32StringA();
-        refreshText();
-
-        cursorIndex = 0;
+        refreshText(false);
         refreshCursorPosition();
 
         //visual
@@ -132,45 +127,45 @@ namespace urchin {
                 refreshCursorPosition();
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
-                    U32StringA tmpLeft = originalText.substr(0, cursorIndex - 1L);
                     U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
-                    originalText = tmpLeft + tmpRight;
-                    refreshText();
+                    originalText = originalText.substr(0, cursorIndex - 1L);
+                    originalText.append(tmpRight);
+                    refreshText(true);
 
                     cursorIndex--;
                     refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
                 if (cursorIndex < originalText.length()) {
-                    U32StringA tmpLeft = originalText.substr(0, cursorIndex);
                     U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
-                    originalText = tmpLeft + tmpRight;
-                    refreshText();
+                    originalText = originalText.substr(0, cursorIndex);
+                    originalText.append(tmpRight);
+                    refreshText(true);
 
                     refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::ENTER || key == (int)InputDeviceKey::NUM_PAD_ENTER) {
-                U32StringA tmpLeft = originalText.substr(0, cursorIndex);
                 U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
-                char32_t lineReturn = '\n';
-                originalText = tmpLeft + lineReturn + tmpRight;
-                refreshText();
+                originalText = originalText.substr(0, cursorIndex);
+                originalText.append(1, '\n');
+                originalText.append(tmpRight);
+                refreshText(true);
 
                 cursorIndex++;
                 refreshCursorPosition();
             }
         }
-
         return true;
     }
 
     bool Textarea::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
-                U32StringA tmpLeft = originalText.substr(0, cursorIndex);
                 U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
-                originalText = tmpLeft + unicodeCharacter + tmpRight;
-                refreshText();
+                originalText = originalText.substr(0, cursorIndex);
+                originalText.append(1, unicodeCharacter);
+                originalText.append(tmpRight);
+                refreshText(true);
 
                 cursorIndex++;
                 refreshCursorPosition();
@@ -196,9 +191,15 @@ namespace urchin {
         return (int)originalText.length() >= maxCharacter;
     }
 
-    void Textarea::refreshText() {
+    void Textarea::refreshText(bool textUpdated) {
         text->updateText(std::string(stringConvert.to_bytes(originalText)));
         textContainer->notifyChildrenUpdated(); //ugly
+
+        if (textUpdated) {
+            for (auto& eventListener : getEventListeners()) {
+                eventListener->onValueChange(this);
+            }
+        }
     }
 
     void Textarea::refreshCursorPosition() {

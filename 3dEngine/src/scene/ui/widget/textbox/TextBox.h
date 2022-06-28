@@ -37,12 +37,11 @@ namespace urchin {
             bool isCharacterAllowed(char32_t) const;
             bool isMaxCharacterReach() const;
 
-            void refreshText(int, bool);
+            void refreshText(bool);
             void refreshCursorPosition();
             void computeCursorIndex(int, int);
 
             //properties
-            static constexpr unsigned int TEXT_SHIFT_Y_PIXEL = 5; //TODO remove ?
             static constexpr unsigned int LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
             WStringConvertA stringConvert;
             const std::string skinName;
@@ -55,7 +54,7 @@ namespace urchin {
             unsigned int maxWidthText; //maximum length of text can be displayed
             unsigned int startTextIndex; //index of the first letter to display
             unsigned int cursorIndex; //index of the cursor
-            Vector2<float> cursorPosition; //position (in pixel) of the cursor
+            Vector2<int> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
 
             //state
