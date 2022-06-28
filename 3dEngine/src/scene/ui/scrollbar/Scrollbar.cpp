@@ -57,26 +57,14 @@ namespace urchin {
     void Scrollbar::onScrollableWidgetsUpdated() {
         if (scrollableWidget.isInitialized()) {
             //compute values
-            float minChildPositionY = std::numeric_limits<float>::max();
-            float maxChildPositionY = 0.0f;
+            contentHeight = 0.0f;
             for (Widget* contentChild : getContentChildren()) {
                 if (contentChild->isInitialized()) {
-                    float childMinPositionY = contentChild->getGlobalPositionY();
-                    if (childMinPositionY < minChildPositionY) {
-                        minChildPositionY = childMinPositionY;
-                    }
-
-                    float childMaxPositionY = childMinPositionY + contentChild->getHeight();
-                    if (childMaxPositionY > maxChildPositionY) {
-                        maxChildPositionY = childMaxPositionY;
+                    float childHeight = contentChild->getPositionY() + contentChild->getHeight();
+                    if (childHeight > contentHeight) {
+                        contentHeight = childHeight;
                     }
                 }
-            }
-
-            if (minChildPositionY < maxChildPositionY) {
-                contentHeight = maxChildPositionY - minChildPositionY;
-            } else {
-                contentHeight = 0.0f;
             }
             visibleHeight = scrollableWidget.getHeight();
 
