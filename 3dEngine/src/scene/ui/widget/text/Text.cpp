@@ -69,12 +69,12 @@ namespace urchin {
             return MathFunction::roundToUInt(maxWidth / 100.0f * (float)getSceneSize().X);
         } else if (maxWidthType == LengthType::CONTAINER_PERCENT) {
             if (!getParentContainer()) {
-                throw std::runtime_error("Missing parent container on the widget");
+                throw std::runtime_error("Missing parent container on the text widget: " + baseText);
             }
             return MathFunction::roundToUInt(maxWidth / 100.0f * getParentContainer()->getWidth());
         } else if (maxWidthType == LengthType::PARENT_PERCENT) {
             if (!getParent()) {
-                throw std::runtime_error("Missing parent on the widget");
+                throw std::runtime_error("Missing parent on the text widget: " + baseText);
             }
             return MathFunction::roundToUInt(maxWidth / 100.0f * getParent()->getWidth());
         }
