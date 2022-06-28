@@ -118,26 +118,22 @@ namespace urchin {
         return Texture::build("9-slicing widget", width, height, rawWidgetImage->retrieveTextureFormat(), texels.data());
     }
 
-    /**
-     * @param lengthType [out] Type of the length
-     */
-    float UISkinService::loadLength(const UdaChunk* mainChunk, std::string_view lengthName, LengthType& lengthType) const {
+    Length UISkinService::loadLength(const UdaChunk* mainChunk, std::string_view lengthName) const {
         auto lengthChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, lengthName, UdaAttribute(), mainChunk);
+        float value = UISkinService::instance().getSkinReader().getFirstChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
 
         std::string lengthTypeString = UISkinService::instance().getSkinReader().getFirstChunk(true, "type", UdaAttribute(), lengthChunk)->getStringValue();
         if (StringUtil::insensitiveEquals(lengthTypeString, "pixel")) {
-            lengthType = PIXEL;
+            return Length{.value = value, .type = PIXEL};
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "screenPercent")) {
-            lengthType = SCREEN_PERCENT;
+            return Length{.value = value, .type = SCREEN_PERCENT};
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "containerPercent")) {
-            lengthType = CONTAINER_PERCENT;
+            return Length{.value = value, .type = CONTAINER_PERCENT};
         } else if (StringUtil::insensitiveEquals(lengthTypeString, "parentPercent")) {
-            lengthType = PARENT_PERCENT;
-        } else {
-            throw std::runtime_error("Unknown length type: " + lengthTypeString);
+            return Length{.value = value, .type = PARENT_PERCENT};
         }
 
-        return UISkinService::instance().getSkinReader().getFirstChunk(true, "value", UdaAttribute(), lengthChunk)->getFloatValue();
+        throw std::runtime_error("Unknown length type: " + lengthTypeString);
     }
 
     const UdaParser& UISkinService::getSkinReader() const {

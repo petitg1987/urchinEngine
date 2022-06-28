@@ -16,6 +16,11 @@ namespace urchin {
         int rightWidth = 0;
     };
 
+    struct Length {
+        float value;
+        LengthType type;
+    };
+
     class UISkinService : public Singleton<UISkinService> {
         public:
             friend class Singleton<UISkinService>;
@@ -23,7 +28,7 @@ namespace urchin {
             void setSkin(const std::string&);
 
             std::shared_ptr<Texture> createWidgetTexture(unsigned int, unsigned int, const UdaChunk*, WidgetOutline* widgetOutline = nullptr) const;
-            float loadLength(const UdaChunk*, std::string_view, LengthType&) const;
+            Length loadLength(const UdaChunk*, std::string_view) const;
 
             const UdaParser& getSkinReader() const;
 

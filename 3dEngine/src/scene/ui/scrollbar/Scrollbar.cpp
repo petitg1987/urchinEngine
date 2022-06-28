@@ -33,11 +33,10 @@ namespace urchin {
 
         auto cursorImageChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageCursor", UdaAttribute(), scrollbarChunk);
         std::string cursorImageFilename = cursorImageChunk->getStringValue();
-        LengthType scrollbarWidthType;
-        float scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width", scrollbarWidthType);
+        Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
         auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
         auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
-        auto cursorWidthInPixel = scrollableWidget.widthLengthToPixel(scrollbarWidth, scrollbarWidthType, [](){return 0.0f;});
+        float cursorWidthInPixel = scrollableWidget.widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [](){return 0.0f;});
 
         auto lineImageChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
         std::string lineImageFilename = lineImageChunk->getStringValue();
@@ -47,9 +46,9 @@ namespace urchin {
         }
 
         scrollbarLine = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
-                                             Size(scrollbarWidth, scrollbarWidthType, scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
+                                             Size(scrollbarWidth.value, scrollbarWidth.type, scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
         scrollbarCursor = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
-                                               Size(scrollbarWidth, scrollbarWidthType, cursorImageRatio, LengthType::RATIO_TO_WIDTH), cursorImageFilename);
+                                               Size(scrollbarWidth.value, scrollbarWidth.type, cursorImageRatio, LengthType::RATIO_TO_WIDTH), cursorImageFilename);
 
         //update scrollbar
         onScrollableWidgetsUpdated();

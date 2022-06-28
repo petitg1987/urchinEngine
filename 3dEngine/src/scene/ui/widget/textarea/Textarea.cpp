@@ -48,11 +48,15 @@ namespace urchin {
         texTextareaFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
         auto scrollbarSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbarSkin", UdaAttribute(), textareaChunk);
-        textContainer = Container::createScrollable(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0f, PARENT_PERCENT), scrollbarSkinChunk->getStringValue());
+        std::string scrollbarSkinName = scrollbarSkinChunk->getStringValue();
+        auto scrollbarChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbar", UdaAttribute("skin", scrollbarSkinName));
+        Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
+        float scrollbarWidthInPixel = widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [](){return 0.0f;});
+        textContainer = Container::createScrollable(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0f, PARENT_PERCENT), scrollbarSkinName);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textareaChunk);
         text = Text::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
-        float maxWidthText = getWidth() - (float)(widgetOutline.leftWidth + widgetOutline.rightWidth);
+        float maxWidthText = getWidth() - (float)(widgetOutline.leftWidth + widgetOutline.rightWidth) - (scrollbarWidthInPixel + 4);
         text->setMaxWidth(maxWidthText, PIXEL);
 
         Vector3<float> fontColor = text->getFont().getFontColor();

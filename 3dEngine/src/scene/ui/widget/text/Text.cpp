@@ -64,19 +64,19 @@ namespace urchin {
 
     unsigned int Text::getMaxWidth() const {
         if (maxWidthType == LengthType::PIXEL) {
-            return (unsigned int)maxWidth;
+            return MathFunction::roundToUInt(maxWidth);
         } else if (maxWidthType == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(maxWidth / 100.0f * (float)getSceneSize().X);
+            return MathFunction::roundToUInt(maxWidth / 100.0f * (float)getSceneSize().X);
         } else if (maxWidthType == LengthType::CONTAINER_PERCENT) {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the widget");
             }
-            return (unsigned int) (maxWidth / 100.0f * getParentContainer()->getWidth());
+            return MathFunction::roundToUInt(maxWidth / 100.0f * getParentContainer()->getWidth());
         } else if (maxWidthType == LengthType::PARENT_PERCENT) {
             if (!getParent()) {
                 throw std::runtime_error("Missing parent on the widget");
             }
-            return (unsigned int) (maxWidth / 100.0f * getParent()->getWidth());
+            return MathFunction::roundToUInt(maxWidth / 100.0f * getParent()->getWidth());
         }
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
@@ -302,14 +302,13 @@ namespace urchin {
     }
 
     unsigned int Text::retrieveFontHeight(const UdaChunk* textChunk) const {
-        LengthType fontHeightType;
-        float fontHeight = UISkinService::instance().loadLength(textChunk, "height", fontHeightType);
-        if (fontHeightType == LengthType::PIXEL) {
-            return (unsigned int)fontHeight;
-        } else if (fontHeightType == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(fontHeight / 100.0f * (float)getSceneSize().Y);
+        Length fontHeight = UISkinService::instance().loadLength(textChunk, "height");
+        if (fontHeight.type == LengthType::PIXEL) {
+            return (unsigned int)fontHeight.value;
+        } else if (fontHeight.type == LengthType::SCREEN_PERCENT) {
+            return (unsigned int)(fontHeight.value / 100.0f * (float)getSceneSize().Y);
         }
-        throw std::runtime_error("Unimplemented length type for font height: " + std::to_string(fontHeightType));
+        throw std::runtime_error("Unimplemented length type for font height: " + std::to_string(fontHeight.type));
     }
 
     void Text::refreshCoordinates() {
