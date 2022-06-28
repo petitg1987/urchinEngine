@@ -401,7 +401,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (widthPixel / (float)getSceneSize().X) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            Container* parentContainer = getParentContainer();
+            const Container* parentContainer = getParentContainer();
             return (widthPixel / (getParentContainer()->getWidth() - (float)parentContainer->getOutline().leftWidth - (float)parentContainer->getOutline().rightWidth)) * 100.0f;
         } else if (lengthType == LengthType::PARENT_PERCENT) {
             return (widthPixel / (getParent()->getWidth() - (float)getParent()->getOutline().leftWidth - (float)getParent()->getOutline().rightWidth)) * 100.0f;
@@ -415,7 +415,7 @@ namespace urchin {
         if (lengthType == LengthType::SCREEN_PERCENT) {
             return (heightPixel / (float)getSceneSize().Y) * 100.0f;
         } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-            Container* parentContainer = getParentContainer();
+            const Container* parentContainer = getParentContainer();
             return (heightPixel / (parentContainer->getHeight() - (float)parentContainer->getOutline().bottomWidth - (float)parentContainer->getOutline().topWidth)) * 100.0f;
         } else if (lengthType == LengthType::PARENT_PERCENT) {
             return (heightPixel / (getParent()->getHeight() - (float)getParent()->getOutline().bottomWidth - (float)getParent()->getOutline().topWidth)) * 100.0f;

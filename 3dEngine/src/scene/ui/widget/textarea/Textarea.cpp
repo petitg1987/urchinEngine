@@ -22,7 +22,7 @@ namespace urchin {
         return WidgetType::TEXTAREA;
     }
 
-    std::string Textarea::getText() {
+    std::string Textarea::getText() const {
         return text->getBaseText();
     }
 

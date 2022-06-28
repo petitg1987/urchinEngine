@@ -10,7 +10,7 @@ template<class T> float Widget::widthLengthToPixel(float widthValue, LengthType 
     if (lengthType == LengthType::SCREEN_PERCENT) {
         return widthValue / 100.0f * (float)getSceneSize().X;
     } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-        Widget* parentContainer = (Widget*)getParentContainer();
+        const auto* parentContainer = (Widget*)getParentContainer();
         if (!parentContainer) {
             throw std::runtime_error("Missing parent container on the widget");
         }
@@ -33,7 +33,7 @@ template<class T> float Widget::heightLengthToPixel(float heightValue, LengthTyp
     if (lengthType == LengthType::SCREEN_PERCENT) {
         return heightValue / 100.0f * (float) getSceneSize().Y;
     } else if (lengthType == LengthType::CONTAINER_PERCENT) {
-        Widget* parentContainer = (Widget*)getParentContainer();
+        const auto* parentContainer = (Widget*)getParentContainer();
         if (!parentContainer) {
             throw std::runtime_error("Missing parent container on the widget");
         }

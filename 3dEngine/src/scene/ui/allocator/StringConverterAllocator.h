@@ -10,7 +10,6 @@ namespace urchin {
     template<class T> class StringConverterAllocator {
         public:
             using value_type = T;
-            using char_type = T;
 
             StringConverterAllocator();
             StringConverterAllocator(const StringConverterAllocator<T>&);
