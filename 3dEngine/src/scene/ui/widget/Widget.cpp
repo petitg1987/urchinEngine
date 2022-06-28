@@ -16,6 +16,7 @@ namespace urchin {
             scale(Vector2<float>(1.0f, 1.0f)),
             rotationZ(0.0f),
             alphaFactor(1.0f),
+            scissorEnabled(false),
             bIsVisible(true),
             mouseX(0),
             mouseY(0) {
@@ -35,6 +36,7 @@ namespace urchin {
         for (const auto& child : children) {
             child->initialize(uiRenderer);
         }
+        refreshScissor(false /* children call already treated via child->initialize */);
     }
 
     bool Widget::isInitialized() const {
@@ -43,18 +45,18 @@ namespace urchin {
 
     void Widget::onResize() {
         createOrUpdateWidget();
-
         for (const auto& child : children) {
             child->onResize();
         }
+        refreshScissor(false /* children call already treated via child->onResize */);
     }
 
     void Widget::onCameraProjectionUpdate() {
         createOrUpdateWidget();
-
         for (const auto& child : children) {
             child->onCameraProjectionUpdate();
         }
+        refreshScissor(false /* children call already treated via child->onCameraProjectionUpdate */);
     }
 
     std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool hasTransparency) const {
@@ -85,23 +87,6 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
         rendererBuilder->addUniformData(sizeof(alphaFactor), &alphaFactor); //binding 2
-
-        const Widget *currentWidget = this;
-        bool scissorApplied = false;
-        while (currentWidget != nullptr) {
-            const Container* parentContainer = currentWidget->getParentContainer();
-            if (parentContainer && parentContainer->isScrollable()) {
-                if (scissorApplied) {
-                    throw std::runtime_error("Applied two scissors is not implemented");
-                }
-                Vector2 scissorOffset((int)parentContainer->getGlobalPositionX(), (int)parentContainer->getGlobalPositionY());
-                Vector2 scissorSize((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
-                rendererBuilder->enableScissor(scissorOffset, scissorSize);
-
-                scissorApplied = true;
-            }
-            currentWidget = parentContainer;
-        }
 
         return rendererBuilder;
     }
@@ -150,6 +135,9 @@ namespace urchin {
         projectionViewModelMatrix *= translateScaleMatrix;
         renderer->updateUniformData(1, &projectionViewModelMatrix);
         renderer->updateUniformData(2, &alphaFactor);
+        if (scissorEnabled) {
+            renderer->updateScissor(scissorOffset, scissorSize);
+        }
     }
 
     I18nService* Widget::getI18nService() const {
@@ -245,6 +233,10 @@ namespace urchin {
             throw std::runtime_error("Can not move a container: scissor update is not implemented");
         }
         this->position = position;
+
+        for (const auto& child : children) {
+            child->refreshScissor(true);
+        }
     }
 
     Position Widget::getPosition() const {
@@ -350,6 +342,7 @@ namespace urchin {
     void Widget::updateSize(Size size) {
         setSize(size);
         createOrUpdateWidget();
+        refreshScissor(true);
     }
 
     void Widget::setSize(Size size) {
@@ -683,6 +676,33 @@ namespace urchin {
             currentParent = currentParent->getParent();
         }
         return depthLevel;
+    }
+
+    void Widget::refreshScissor(bool refreshChildScissor) {
+        const Widget *currentWidget = this;
+        bool scissorApplied = false;
+
+        while (currentWidget != nullptr) {
+            const Container* parentContainer = currentWidget->getParentContainer();
+            if (parentContainer && parentContainer->isScrollable()) {
+                if (scissorApplied) {
+                    throw std::runtime_error("Applied two scissors is not implemented");
+                }
+
+                scissorEnabled = true;
+                scissorOffset = Vector2<int>((int)parentContainer->getGlobalPositionX(), (int)parentContainer->getGlobalPositionY());
+                scissorSize = Vector2<int>((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
+
+                scissorApplied = true;
+            }
+            currentWidget = parentContainer;
+        }
+
+        if (refreshChildScissor) {
+            for (const auto& child: children) {
+                child->refreshScissor(refreshChildScissor);
+            }
+        }
     }
 
     void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

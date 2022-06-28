@@ -58,6 +58,8 @@ namespace urchin {
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
             std::span<OffscreenRender*> getTexturesWriter() const;
 
+            void updateScissor(Vector2<int>, Vector2<int>);
+
         private:
             void initialize();
             void cleanup();
@@ -93,6 +95,8 @@ namespace urchin {
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             mutable std::vector<OffscreenRender*> texturesWriter;
+            Vector2<int> scissorOffset;
+            Vector2<int> scissorSize;
 
             bool depthTestEnabled;
             std::unique_ptr<PipelineBuilder> pipelineBuilder;

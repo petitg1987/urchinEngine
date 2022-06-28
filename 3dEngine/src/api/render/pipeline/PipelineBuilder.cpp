@@ -19,8 +19,7 @@ namespace urchin {
             depthTestEnabled(false),
             depthWriteEnabled(false),
             cullFaceEnabled(true),
-            polygonMode(PolygonMode::FILL),
-            scissorEnabled(false) {
+            polygonMode(PolygonMode::FILL) {
 
     }
 
@@ -51,12 +50,6 @@ namespace urchin {
 
     void PipelineBuilder::setupPolygonMode(PolygonMode polygonMode) {
         this->polygonMode = polygonMode;
-    }
-
-    void PipelineBuilder::setupScissor(bool scissorEnabled, Vector2<int> scissorOffset, Vector2<int> scissorSize) {
-        this->scissorEnabled = scissorEnabled;
-        this->scissorOffset = scissorOffset;
-        this->scissorSize = scissorSize;
     }
 
     void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const DataContainer* instanceData) {
@@ -120,10 +113,6 @@ namespace urchin {
 
         for (auto& bf : blendFunctions) {
             HashUtil::combine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
-        }
-
-        if (scissorEnabled) {
-            HashUtil::combine(hash, scissorOffset.X, scissorOffset.Y, scissorSize.X, scissorSize.Y);
         }
 
         HashUtil::combine(hash,
@@ -247,14 +236,9 @@ namespace urchin {
         viewport.height = (float)renderTarget->getHeight();
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
-        VkRect2D scissor = {};
-        if (scissorEnabled) {
-            scissor.offset = {scissorOffset.X, scissorOffset.Y};
-            scissor.extent = {(uint32_t)scissorSize.X, (uint32_t)scissorSize.Y};
-        } else {
-            scissor.offset = {0, 0};
-            scissor.extent = {renderTarget->getWidth(), renderTarget->getHeight()};
-        }
+        VkRect2D scissor;
+        scissor.offset = {.x = 0, .y = 0};
+        scissor.extent = {.width = renderTarget->getWidth(), .height = renderTarget->getHeight()};
         VkPipelineViewportStateCreateInfo viewportState{};
         viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
         viewportState.viewportCount = 1;
@@ -321,6 +305,13 @@ namespace urchin {
         colorBlending.blendConstants[0] = 0.0f; colorBlending.blendConstants[1] = 0.0f;
         colorBlending.blendConstants[2] = 0.0f; colorBlending.blendConstants[3] = 0.0f;
 
+        //dynamic state
+        std::vector<VkDynamicState> dynamicsStates = {VK_DYNAMIC_STATE_SCISSOR};
+        VkPipelineDynamicStateCreateInfo pipelineDynamicStateCreateInfo{};
+        pipelineDynamicStateCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+        pipelineDynamicStateCreateInfo.dynamicStateCount = (uint32_t)dynamicsStates.size();
+        pipelineDynamicStateCreateInfo.pDynamicStates = dynamicsStates.data();
+
         //pipeline layout (used to transfer uniform to shaders)
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -344,7 +335,7 @@ namespace urchin {
         pipelineInfo.pMultisampleState = &multisampling;
         pipelineInfo.pDepthStencilState = &depthStencil;
         pipelineInfo.pColorBlendState = &colorBlending;
-        pipelineInfo.pDynamicState = nullptr;
+        pipelineInfo.pDynamicState = &pipelineDynamicStateCreateInfo;
         pipelineInfo.layout = pipeline->getPipelineLayout();
         pipelineInfo.renderPass = renderTarget->getRenderPass();
         pipelineInfo.subpass = 0; //index to sub-pass

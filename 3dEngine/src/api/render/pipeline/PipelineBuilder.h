@@ -26,7 +26,6 @@ namespace urchin {
             void setupDepthOperations(bool, bool);
             void setupCallFaceOperation(bool);
             void setupPolygonMode(PolygonMode);
-            void setupScissor(bool, Vector2<int>, Vector2<int>);
             void setupData(const std::vector<DataContainer>&, const DataContainer*);
             void setupUniform(const std::vector<ShaderDataContainer>&, const std::vector<std::vector<std::shared_ptr<TextureReader>>>&);
 
@@ -56,9 +55,6 @@ namespace urchin {
             bool depthWriteEnabled;
             bool cullFaceEnabled;
             PolygonMode polygonMode;
-            bool scissorEnabled;
-            Vector2<int> scissorOffset;
-            Vector2<int> scissorSize;
     };
 
 }

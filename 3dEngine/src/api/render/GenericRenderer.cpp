@@ -22,6 +22,8 @@ namespace urchin {
             indices(rendererBuilder.getIndices()),
             uniformData(rendererBuilder.getUniformData()),
             uniformTextureReaders(rendererBuilder.getUniformTextureReaders()),
+            scissorOffset(Vector2<int>(0, 0)),
+            scissorSize(Vector2<int>((int)rendererBuilder.getRenderTarget().getWidth(), (int)rendererBuilder.getRenderTarget().getHeight())),
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
@@ -35,7 +37,6 @@ namespace urchin {
         pipelineBuilder->setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
         pipelineBuilder->setupCallFaceOperation(rendererBuilder.isCullFaceEnabled());
         pipelineBuilder->setupPolygonMode(rendererBuilder.getPolygonMode());
-        pipelineBuilder->setupScissor(rendererBuilder.isScissorEnabled(), rendererBuilder.getScissorOffset(), rendererBuilder.getScissorSize());
 
         if (renderTarget.isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
@@ -404,6 +405,11 @@ namespace urchin {
         return texturesWriter;
     }
 
+    void GenericRenderer::updateScissor(Vector2<int> scissorOffset, Vector2<int> scissorSize) {
+        this->scissorOffset = scissorOffset;
+        this->scissorSize = scissorSize;
+    }
+
     void GenericRenderer::updateGraphicData(uint32_t frameIndex) {
         //update data (vertex & vertex attributes)
         #ifdef URCHIN_DEBUG
@@ -455,6 +461,11 @@ namespace urchin {
         for (const auto& vertexBuffer : vertexBuffers) {
             rawVertexBuffers.emplace_back(vertexBuffer.getBuffer(frameIndex));
         }
+
+        VkRect2D scissor = {};
+        scissor.offset = {.x = scissorOffset.X, .y = scissorOffset.Y};
+        scissor.extent = {.width = (unsigned int)scissorSize.X, .height = (unsigned int)scissorSize.Y};
+        vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());

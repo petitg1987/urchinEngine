@@ -130,6 +130,7 @@ namespace urchin {
             bool isMouseOnWidget(int, int) const;
 
             unsigned int computeDepthLevel() const;
+            void refreshScissor(bool);
 
             UIRenderer* uiRenderer;
 
@@ -144,6 +145,9 @@ namespace urchin {
             Vector2<float> scale;
             float rotationZ;
             float alphaFactor;
+            bool scissorEnabled;
+            Vector2<int> scissorOffset;
+            Vector2<int> scissorSize;
             bool bIsVisible;
 
             int mouseX;
