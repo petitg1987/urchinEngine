@@ -369,8 +369,9 @@ namespace urchin {
     }
 
     Rectangle2D<int> Widget::widgetRectangle() const {
-        return Rectangle2D<int>(Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                                Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
+        return Rectangle2D<int>(
+                Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
     }
 
     void Widget::updateScale(const Vector2<float>& scale) {

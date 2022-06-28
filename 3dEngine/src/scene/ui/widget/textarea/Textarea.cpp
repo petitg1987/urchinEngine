@@ -8,6 +8,7 @@ namespace urchin {
             Widget(position, size),
             skinName(std::move(skinName)),
             maxCharacter(-1),
+            scrollbarWidthInPixel(0.0f),
             cursorIndex(0),
             cursorBlink(0.0f),
             state(INACTIVE) {
@@ -51,12 +52,12 @@ namespace urchin {
         std::string scrollbarSkinName = scrollbarSkinChunk->getStringValue();
         auto scrollbarChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbar", UdaAttribute("skin", scrollbarSkinName));
         Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
-        float scrollbarWidthInPixel = widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [](){return 0.0f;});
+        scrollbarWidthInPixel = widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [](){return 0.0f;}) + 4;
         textContainer = Container::createScrollable(this, Position(0.0f, 0.0f, SCREEN_PERCENT), Size(100.0f, 100.0f, PARENT_PERCENT), scrollbarSkinName);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textareaChunk);
         text = Text::create(textContainer.get(), Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
-        float maxWidthText = getWidth() - (float)(widgetOutline.leftWidth + widgetOutline.rightWidth) - (scrollbarWidthInPixel + 4);
+        float maxWidthText = getWidth() - (float)(widgetOutline.leftWidth + widgetOutline.rightWidth) - scrollbarWidthInPixel;
         text->setMaxWidth(maxWidthText, PIXEL);
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -92,9 +93,14 @@ namespace urchin {
                 state = ACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
-                int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
-                int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
-                computeCursorIndex(localMouseX, localMouseY);
+                Rectangle2D<int> textZone(
+                        Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                        Point2<int>((int)getGlobalPositionX() + (int)getWidth() - (int)scrollbarWidthInPixel, (int)getGlobalPositionY() + (int)getHeight()));
+                if (textZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                    int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
+                    int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
+                    computeCursorIndex(localMouseX, localMouseY);
+                }
             } else {
                 state = INACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -207,7 +213,7 @@ namespace urchin {
                         cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
                         cursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
                     }
-
+                    adjustScrollToCursor();
                     cursorBlink = 0.0f;
                     return;
                 } else {
@@ -220,6 +226,20 @@ namespace urchin {
             cursorPosition.Y += (int)text->getFont().getSpaceBetweenLines();
         }
         throw std::runtime_error("Cursor position not found at index " + std::to_string(textCursorIndex) + " for text: " + std::string(stringConvert.to_bytes(originalText)));
+    }
+
+    void Textarea::adjustScrollToCursor() { //TODO impl
+        int cursorPosY = cursorPosition.Y + textContainer->getScrollShiftY();
+
+        int deltaShiftPixel = 0;
+        if (cursorPosY < (int)textContainer->getPositionY()) {
+            deltaShiftPixel = (int)textContainer->getPositionY() - cursorPosY;
+        } else if (cursorPosY > (int)(textContainer->getPositionY() + textContainer->getHeight())) {
+            deltaShiftPixel = (int)(textContainer->getPositionY() + textContainer->getHeight()) - cursorPosY;
+        }
+
+        int shiftPixel = textContainer->getScrollShiftY() + deltaShiftPixel;
+        textContainer->updateScrollShiftY(shiftPixel);
     }
 
     void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {

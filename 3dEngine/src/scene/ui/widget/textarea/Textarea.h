@@ -32,6 +32,7 @@ namespace urchin {
 
             void refreshText(bool);
             void refreshCursorPosition();
+            void adjustScrollToCursor();
             void computeCursorIndex(int, int);
 
             //properties
@@ -43,6 +44,7 @@ namespace urchin {
 
             //display information
             std::shared_ptr<Container> textContainer;
+            float scrollbarWidthInPixel;
             std::shared_ptr<Text> text;
             U32StringA originalText; //original text of the textarea
             std::shared_ptr<StaticBitmap> cursor;

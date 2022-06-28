@@ -123,6 +123,14 @@ namespace urchin {
         return contentHeight > visibleHeight + 0.001f;
     }
 
+    void Scrollbar::updateScrollShiftY(int shiftPixelPositionY) {
+        if (state == DEFAULT && isScrollbarRequired()) {
+            scrollPercentage = -(float)shiftPixelPositionY / (contentHeight - visibleHeight);
+            scrollPercentage = std::clamp(scrollPercentage, 0.0f, 1.0f);
+            updateScrollingPosition();
+        }
+    }
+
     int Scrollbar::getScrollShiftY() const {
         return shiftPixelPositionY;
     }

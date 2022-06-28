@@ -21,6 +21,7 @@ namespace urchin {
             bool isScrollbarWidget(const Widget*) const;
 
             bool isScrollbarRequired() const;
+            void updateScrollShiftY(int);
             int getScrollShiftY() const;
 
         private:

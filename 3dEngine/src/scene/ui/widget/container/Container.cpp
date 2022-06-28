@@ -62,6 +62,12 @@ namespace urchin {
         return scrollbar != nullptr;
     }
 
+    void Container::updateScrollShiftY(int shiftPixelPositionY) const {
+        if (scrollbar) {
+            scrollbar->updateScrollShiftY(shiftPixelPositionY);
+        }
+    }
+
     int Container::getScrollShiftY() const {
         if (scrollbar) {
             return scrollbar->getScrollShiftY();
