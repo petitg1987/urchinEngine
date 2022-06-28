@@ -41,7 +41,7 @@ namespace urchin {
         texTextBoxFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
-        text = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), "");
+        text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY), textSkinChunk->getStringValue(), "");
         maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
@@ -244,7 +244,7 @@ namespace urchin {
         cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;
         if (state == ACTIVE) {
             if (((int)cursorBlink % 2) == 0) {
-                cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y - (float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL, PIXEL));
+                cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y - (float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
                 cursor->setIsVisible(true);
             } else {
                 cursor->setIsVisible(false);
