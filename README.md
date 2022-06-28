@@ -22,7 +22,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   * Ambient occlusion (SSAO+)
   * Anti-aliasing (FXAA)
   * Space partitioning: octree
-  * UI: text, button, window, textbox, bitmap, sequence, checkbox, slider, scrollbar
+  * UI: text, button, window, textbox, textarea, bitmap, sequence, checkbox, slider, scrollbar
   * Skybox
   * Fog
 
