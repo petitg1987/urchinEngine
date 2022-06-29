@@ -58,7 +58,7 @@ namespace urchin {
         if (scrollableWidget.isInitialized()) {
             //compute values
             contentHeight = 0.0f;
-            for (Widget* contentChild : getContentChildren()) {
+            for (const Widget* contentChild : getContentChildren()) {
                 if (contentChild->isInitialized()) {
                     float childHeight = contentChild->getPositionY() + contentChild->getHeight();
                     if (childHeight > contentHeight) {

@@ -59,7 +59,7 @@ namespace urchin {
 
             void updateText(std::string, std::vector<std::string>);
             std::string evaluateText(const std::optional<LanguageTranslator>&) const;
-            unsigned int getMaxWidth() const;
+            int getMaxWidthPixel() const;
             bool hasTranslatableInput() const;
 
             void refreshTextAndWidgetSize();

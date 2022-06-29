@@ -32,7 +32,7 @@ namespace urchin {
 
             void refreshText(bool);
             void refreshCursorPosition();
-            void adjustScrollToCursor();
+            void adjustScrollToCursor() const;
             void computeCursorIndex(int, int);
 
             //properties

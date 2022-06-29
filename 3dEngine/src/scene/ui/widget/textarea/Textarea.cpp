@@ -93,7 +93,7 @@ namespace urchin {
                 state = ACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
-                Rectangle2D<int> textZone(
+                Rectangle2D textZone(
                         Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
                         Point2<int>((int)getGlobalPositionX() + (int)getWidth() - (int)scrollbarWidthInPixel, (int)getGlobalPositionY() + (int)getHeight()));
                 if (textZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
@@ -205,9 +205,9 @@ namespace urchin {
         std::size_t currentIndex = 0;
 
         cursorPosition.Y = 0.0f;
-        for (std::size_t lineIndex = 0; lineIndex < text->getCutTextLines().size(); ++lineIndex) {
+        for (const TextLine& textLine : text->getCutTextLines()) {
             cursorPosition.X = 0.0f;
-            for (std::size_t columnIndex = 0; columnIndex <= text->getCutTextLines()[lineIndex].text.length(); ++columnIndex) {
+            for (std::size_t columnIndex = 0; columnIndex <= textLine.text.length(); ++columnIndex) {
                 if (currentIndex == textCursorIndex) {
                     if (cursorPosition.X > 0) {
                         cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
@@ -217,7 +217,7 @@ namespace urchin {
                     cursorBlink = 0.0f;
                     return;
                 } else {
-                    char32_t textLetter = text->getCutTextLines()[lineIndex].text[columnIndex];
+                    char32_t textLetter = textLine.text[columnIndex];
                     cursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
 
                     currentIndex++;
@@ -228,7 +228,7 @@ namespace urchin {
         throw std::runtime_error("Cursor position not found at index " + std::to_string(textCursorIndex) + " for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
-    void Textarea::adjustScrollToCursor() {
+    void Textarea::adjustScrollToCursor() const {
         float cursorPosY = (float)cursorPosition.Y + (float)textContainer->getScrollShiftY();
 
         float deltaScrollShiftPixel = 0.0f;

@@ -16,8 +16,8 @@ namespace urchin {
             inputText(std::move(inputText)),
             inputTextParameters(std::move(inputTextParameters)),
             parameterRegex(std::regex("\\{[a-zA-Z-]+}", std::regex_constants::optimize)),
-            maxWidth(100.0f),
-            maxWidthType(LengthType::SCREEN_PERCENT),
+            maxWidth(-1.0f),
+            maxWidthType(LengthType::PIXEL),
             font(nullptr) {
 
     }
@@ -62,21 +62,21 @@ namespace urchin {
         }
     }
 
-    unsigned int Text::getMaxWidth() const {
+    int Text::getMaxWidthPixel() const {
         if (maxWidthType == LengthType::PIXEL) {
-            return MathFunction::roundToUInt(maxWidth);
+            return MathFunction::roundToInt(maxWidth);
         } else if (maxWidthType == LengthType::SCREEN_PERCENT) {
-            return MathFunction::roundToUInt(maxWidth / 100.0f * (float)getSceneSize().X);
+            return MathFunction::roundToInt(maxWidth / 100.0f * (float)getSceneSize().X);
         } else if (maxWidthType == LengthType::CONTAINER_PERCENT) {
             if (!getParentContainer()) {
                 throw std::runtime_error("Missing parent container on the text widget: " + baseText);
             }
-            return MathFunction::roundToUInt(maxWidth / 100.0f * getParentContainer()->getWidth());
+            return MathFunction::roundToInt(maxWidth / 100.0f * getParentContainer()->getWidth());
         } else if (maxWidthType == LengthType::PARENT_PERCENT) {
             if (!getParent()) {
                 throw std::runtime_error("Missing parent on the text widget: " + baseText);
             }
-            return MathFunction::roundToUInt(maxWidth / 100.0f * getParent()->getWidth());
+            return MathFunction::roundToInt(maxWidth / 100.0f * getParent()->getWidth());
         }
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
@@ -239,7 +239,8 @@ namespace urchin {
 
         std::size_t startLineIndex = 0;
 
-        if (getMaxWidth() != 0) {
+        int maxWidthPixel = getMaxWidthPixel();
+        if (maxWidthPixel > 0) {
             std::size_t lastSpaceIndex = 0;
             unsigned int lineLength = 0;
             unsigned int lengthFromLastSpace = 0;
@@ -252,6 +253,7 @@ namespace urchin {
                     startLineIndex = letterIndex + 1;
                     lineLength = 0;
                     lengthFromLastSpace = 0;
+                    continue;
                 } else if (textLetter == ' ') {
                     lastSpaceIndex = letterIndex;
                     lengthFromLastSpace = 0;
@@ -259,7 +261,7 @@ namespace urchin {
 
                 unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
 
-                if (lineLength + letterLength >= getMaxWidth()) { //cut too long line
+                if (lineLength + letterLength >= (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
                         cutTextLines.emplace_back(TextLine{.text = u32Text.substr(startLineIndex, lastSpaceIndex - startLineIndex), .cutType = TextCutType::WORD});
                         startLineIndex = lastSpaceIndex + 1;
