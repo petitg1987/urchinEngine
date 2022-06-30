@@ -11,10 +11,10 @@
 
 namespace urchin {
 
-    ShadowManager::ShadowManager(const Config& config, LightManager& lightManager, OctreeManager<Model>& modelOctreeManager) :
+    ShadowManager::ShadowManager(const Config& config, LightManager& lightManager, ModelOcclusionCuller& modelOcclusionCuller) :
             config(config),
             lightManager(lightManager),
-            modelOctreeManager(modelOctreeManager),
+            modelOcclusionCuller(modelOcclusionCuller),
             depthSplitDistance({}) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
@@ -161,7 +161,7 @@ namespace urchin {
         Vector4 clearShadowMapColor(1.0f, 1.0f, -1.0f, -1.0f);
         shadowMapRenderTarget->addOutputTexture(shadowMapTexture, LoadType::LOAD_CLEAR, std::make_optional(clearShadowMapColor));
 
-        auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOctreeManager, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
+        auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOcclusionCuller, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
         for (unsigned int i = 0; i < config.nbShadowMaps; ++i) {
             newLightShadowMap->addLightSplitShadowMap();
         }

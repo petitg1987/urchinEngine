@@ -7,10 +7,10 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(Light& light, const OctreeManager<Model>& modelOctreeManager, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
+    LightShadowMap::LightShadowMap(Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
                                    unsigned int nbShadowMaps, std::unique_ptr<OffscreenRender> renderTarget) :
             light(light),
-            modelOctreeManager(modelOctreeManager),
+            modelOcclusionCuller(modelOcclusionCuller),
             viewingShadowDistance(viewingShadowDistance),
             nbShadowMaps(nbShadowMaps),
             renderTarget(std::move(renderTarget)),
@@ -62,8 +62,8 @@ namespace urchin {
         return light;
     }
 
-    const OctreeManager<Model>& LightShadowMap::getModelOctreeManager() const {
-        return modelOctreeManager;
+    const ModelOcclusionCuller& LightShadowMap::getModelOcclusionCuller() const {
+        return modelOcclusionCuller;
     }
 
     float LightShadowMap::getViewingShadowDistance() const {

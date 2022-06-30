@@ -10,6 +10,7 @@
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <api/render/shader/model/Shader.h>
 
@@ -38,7 +39,7 @@ namespace urchin {
                 BlurShadow blurShadow = BlurShadow::MEDIUM;
             };
 
-            ShadowManager(const Config&, LightManager&, OctreeManager<Model>&);
+            ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
             ~ShadowManager() override = default;
 
             void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
@@ -82,7 +83,7 @@ namespace urchin {
 
             //scene information
             LightManager& lightManager;
-            OctreeManager<Model>& modelOctreeManager;
+            ModelOcclusionCuller& modelOcclusionCuller;
             Matrix4<float> projectionMatrix;
             std::vector<Model*> visibleModels;
 

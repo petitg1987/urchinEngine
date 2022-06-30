@@ -6,6 +6,7 @@
 #include <UrchinCommon.h>
 
 #include <scene/Renderer.h>
+#include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
@@ -14,6 +15,7 @@
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
+#include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
 #include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
 #include <scene/renderer3d/landscape/fog/FogContainer.h>
 #include <scene/renderer3d/landscape/water/WaterContainer.h>
@@ -27,7 +29,6 @@
 #include <api/render/target/OffscreenRender.h>
 #include <api/texture/Texture.h>
 #include <texture/render/TextureRenderer.h>
-#include "VisualConfig.h"
 
 namespace urchin {
 
@@ -41,7 +42,7 @@ namespace urchin {
             void notify(Observable*, int) override;
 
             //graphics
-            const OctreeManager<Model>& getModelOctreeManager() const;
+            const ModelOcclusionCuller& getModelOcclusionCuller() const;
             const ModelSetDisplayer& getModelSetDisplayer() const;
             FogContainer& getFogContainer();
             TerrainContainer& getTerrainContainer();
@@ -118,10 +119,10 @@ namespace urchin {
 
             //deferred rendering
             std::unique_ptr<RenderTarget> deferredRenderTarget;
-            OctreeManager<Model> modelOctreeManager;
+            ModelOcclusionCuller modelOcclusionCuller;
             ModelSetDisplayer modelSetDisplayer;
             std::unordered_set<Model*> modelsAnimated;
-            std::shared_ptr<AABBoxModel> debugModelOctree;
+            std::shared_ptr<AABBoxModel> debugOcclusionCullerGeometries;
             std::vector<Model*> modelsInFrustum;
 
             FogContainer fogContainer;

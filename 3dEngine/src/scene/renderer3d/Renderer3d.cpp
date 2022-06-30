@@ -2,8 +2,7 @@
 #include <locale>
 
 #include <scene/renderer3d/Renderer3d.h>
-#include <scene/renderer3d/util/OpaqueMeshFilter.h>
-#include <scene/renderer3d/util/OctreeRenderer.h>
+#include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <api/render/GenericRendererBuilder.h>
 #include <api/render/shader/builder/ShaderBuilder.h>
 #include <api/render/pipeline/PipelineContainer.h>
@@ -18,7 +17,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_MATERIAL_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
-    bool DEBUG_DISPLAY_MODELS_OCTREE = false;
+    bool DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
@@ -35,7 +34,7 @@ namespace urchin {
             deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
-            modelOctreeManager(OctreeManager<Model>(ConfigService::instance().getFloatValue("model.octreeMinSize"))),
+            modelOcclusionCuller(ModelOcclusionCuller()),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
             terrainContainer(TerrainContainer(visualConfig.getTerrainConfig(), *deferredRenderTarget)),
@@ -46,7 +45,7 @@ namespace urchin {
             lightManager(LightManager()),
             ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), !finalRenderTarget.isValidRenderTarget())),
             transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
-            shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOctreeManager)),
+            shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
             //lighting pass rendering
             lightingRenderTarget(finalRenderTarget.isValidRenderTarget() ?
@@ -111,8 +110,8 @@ namespace urchin {
         }
     }
 
-    const OctreeManager<Model>& Renderer3d::getModelOctreeManager() const {
-        return modelOctreeManager;
+    const ModelOcclusionCuller& Renderer3d::getModelOcclusionCuller() const {
+        return modelOcclusionCuller;
     }
 
     const ModelSetDisplayer& Renderer3d::getModelSetDisplayer() const {
@@ -208,7 +207,7 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "addModel");
 
             registerModelForAnimation(*model);
-            modelOctreeManager.addOctreeable(std::move(model));
+            modelOcclusionCuller.addModel(std::move(model));
         }
     }
 
@@ -218,7 +217,7 @@ namespace urchin {
             transparentManager.removeModel(model);
             modelSetDisplayer.removeModel(model);
             unregisterModelForAnimation(*model);
-            return modelOctreeManager.removeOctreeable(model);
+            return modelOcclusionCuller.removeModel(model);
         }
         return std::shared_ptr<Model>(nullptr);
     }
@@ -419,12 +418,12 @@ namespace urchin {
         //move the camera
         camera->refreshCameraView(dt);
 
-        //refresh models in octree
-        modelOctreeManager.refreshOctreeables();
+        //refresh the model occlusion culler
+        modelOcclusionCuller.refresh();
 
         //determine model visible on scene
         modelsInFrustum.clear();
-        modelOctreeManager.getOctreeablesIn(camera->getFrustum(), modelsInFrustum);
+        modelOcclusionCuller.getModelsInFrustum(camera->getFrustum(), modelsInFrustum)
 
         //determine visible lights on scene
         lightManager.updateVisibleLights(camera->getFrustum());
@@ -507,12 +506,12 @@ namespace urchin {
     }
 
     void Renderer3d::renderDebugSceneData(GeometryContainer& geometryContainer) {
-        if (DEBUG_DISPLAY_MODELS_OCTREE) {
-            if (debugModelOctree) {
-                geometryContainer.removeGeometry(*debugModelOctree);
+        if (DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA) {
+            if (debugOcclusionCullerGeometries) {
+                geometryContainer.removeGeometry(*debugOcclusionCullerGeometries);
             }
-            debugModelOctree = OctreeRenderer::createOctreeModel(modelOctreeManager);
-            geometryContainer.addGeometry(debugModelOctree);
+            debugOcclusionCullerGeometries = modelOcclusionCuller.createDebugGeometries();
+            geometryContainer.addGeometry(debugOcclusionCullerGeometries);
         }
 
         if (DEBUG_DISPLAY_MODELS_BOUNDING_BOX) {
@@ -632,7 +631,7 @@ namespace urchin {
     void Renderer3d::postUpdateScene() {
         ScopeProfiler sp(Profiler::graphic(), "postUpdateScene");
 
-        modelOctreeManager.postRefreshOctreeables();
+        modelOcclusionCuller.postRefresh();
         lightManager.postUpdateVisibleLights();
     }
 

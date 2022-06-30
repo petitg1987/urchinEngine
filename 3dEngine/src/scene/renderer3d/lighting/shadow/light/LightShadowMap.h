@@ -8,6 +8,7 @@
 #include <api/render/target/OffscreenRender.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/model/Model.h>
+#include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <texture/filter/TextureFilter.h>
 
@@ -18,13 +19,13 @@ namespace urchin {
 
     class LightShadowMap : public Observer {
         public:
-            LightShadowMap(Light&, const OctreeManager<Model>&, float, std::shared_ptr<Texture>, unsigned int, std::unique_ptr<OffscreenRender>);
+            LightShadowMap(Light&, const ModelOcclusionCuller&, float, std::shared_ptr<Texture>, unsigned int, std::unique_ptr<OffscreenRender>);
             ~LightShadowMap() override;
 
             void notify(Observable*, int) override;
 
             const Light& getLight() const;
-            const OctreeManager<Model>& getModelOctreeManager() const;
+            const ModelOcclusionCuller& getModelOcclusionCuller() const;
             float getViewingShadowDistance() const;
             unsigned int getNumberShadowMaps() const;
 
@@ -48,7 +49,7 @@ namespace urchin {
             std::span<Model*> retrieveModels() const;
 
             Light& light;
-            const OctreeManager<Model>& modelOctreeManager;
+            const ModelOcclusionCuller& modelOcclusionCuller;
             float viewingShadowDistance;
             unsigned int nbShadowMaps;
 

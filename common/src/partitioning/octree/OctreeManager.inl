@@ -146,11 +146,11 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
 
         std::vector<std::shared_ptr<T>> removedOctreeables;
         removedOctreeables.reserve(movingOctreeables.size());
-        for (auto& movingOctreeable : movingOctreeables) {
+        for (T* movingOctreeable : movingOctreeables) {
             removedOctreeables.push_back(removeOctreeable(movingOctreeable));
         }
 
-        for (auto& movingOctreeable : removedOctreeables) {
+        for (std::shared_ptr<T>& movingOctreeable : removedOctreeables) {
             addOctreeable(movingOctreeable);
         }
     }
@@ -161,7 +161,7 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
 }
 
 template<class T> void OctreeManager<T>::postRefreshOctreeables() {
-    for (auto& movingOctreeable : movingOctreeables) {
+    for (T* movingOctreeable : movingOctreeables) {
         movingOctreeable->onMoveDone();
     }
 
