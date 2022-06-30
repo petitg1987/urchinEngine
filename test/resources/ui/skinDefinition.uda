@@ -9,8 +9,8 @@ scrollbar (skin=test):
   imageLine: "ui/widget/empty.png"
   imageCursor: "ui/widget/empty.png"
   width:
-    value: "1.75"
-    type: "screenPercent"
+    value: "10.0"
+    type: "pixel"
 
 textBox (skin=test):
   skin (type=default):
@@ -26,3 +26,19 @@ textBox (skin=test):
     part (zone=left): "1"
     part (zone=right): "1"
   textSkin: "test"
+
+textarea (skin=test):
+  skin (type=default):
+    image: "ui/widget/empty.png"
+    part (zone=top): "1"
+    part (zone=bottom): "1"
+    part (zone=left): "1"
+    part (zone=right): "1"
+  skin (type=focus):
+    image: "ui/widget/empty.png"
+    part (zone=top): "1"
+    part (zone=bottom): "1"
+    part (zone=left): "1"
+    part (zone=right): "1"
+  textSkin: "test"
+  scrollbarSkin: "test"

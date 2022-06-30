@@ -14,6 +14,7 @@ namespace urchin {
             WidgetType getWidgetType() const override;
 
             std::string getText() const;
+            const Text& getTextWidget() const;
             void updateText(std::string_view);
 
         protected:
