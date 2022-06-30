@@ -16,13 +16,11 @@ void TextBoxTest::textShift() {
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
-
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), textValue.substr(TextFieldConst::LETTER_SHIFT));
 
     for (std::size_t i = 0; i < textValue.size(); ++i) {
         uiRenderer->onKeyPress((int)InputDeviceKey::LEFT_ARROW);
     }
-
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "abcdef");
 }
 
