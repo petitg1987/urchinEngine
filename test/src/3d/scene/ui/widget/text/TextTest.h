@@ -12,6 +12,7 @@ class TextTest : public CppUnit::TestFixture {
         void twoLines();
         void cutWord();
         void cutMiddleWord();
+        void emptyLineAndCut();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();
