@@ -19,6 +19,7 @@ namespace urchin {
             WidgetType getWidgetType() const override;
 
             std::string getText();
+            const Text& getTextWidget() const;
             void updateText(std::string_view);
 
             void setAllowedCharacters(const std::string&);
@@ -43,7 +44,6 @@ namespace urchin {
             void computeCursorIndex(int, int);
 
             //properties
-            static constexpr unsigned int LETTER_SHIFT = 5; //when the text box is full of text, we shift all letters to left
             WStringConvertA stringConvert;
             const std::string skinName;
             U32StringA allowedCharacters;

@@ -78,6 +78,10 @@ namespace urchin {
         return std::string(stringConvert.to_bytes(originalText));
     }
 
+    const Text& TextBox::getTextWidget() const {
+        return *text;
+    }
+
     void TextBox::updateText(std::string_view text) {
         originalText = U32StringA(text.begin(), text.end());
         cursorIndex = (unsigned int)originalText.length();
@@ -172,9 +176,10 @@ namespace urchin {
         //refresh start index
         refreshCursorPosition();
         if (cursorPosition.X > (int)maxWidthText) {
-            startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + LETTER_SHIFT : (unsigned int)originalText.length();
+            startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + TextFieldConst::LETTER_SHIFT : (unsigned int)originalText.length();
+            startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
         } else if (cursorIndex <= startTextIndex) {
-            startTextIndex = (startTextIndex > 0) ? startTextIndex - LETTER_SHIFT : 0;
+            startTextIndex = (startTextIndex >= TextFieldConst::LETTER_SHIFT) ? startTextIndex - TextFieldConst::LETTER_SHIFT : 0;
         }
         refreshCursorPosition();
 

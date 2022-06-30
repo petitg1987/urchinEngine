@@ -28,7 +28,7 @@ void TextTest::twoLines() {
 void TextTest::cutWord() {
     auto uiRenderer = setupUiRenderer();
     auto text = Text::create(nullptr, Position(0.0f, 0.0f, PIXEL), "test", "aaa bbb");
-    text->setMaxWidth(200, PIXEL); //cut after 'aaa'
+    text->setMaxWidth(28.0f, PIXEL); //cut after 'aaa'
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 2);
@@ -51,7 +51,7 @@ void TextTest::cutWord() {
 void TextTest::cutMiddleWord() {
     auto uiRenderer = setupUiRenderer();
     auto text = Text::create(nullptr, Position(0.0f, 0.0f, PIXEL), "test", "aaabbb");
-    text->setMaxWidth(200, PIXEL); //cut after 'aaa'
+    text->setMaxWidth(28.0f, PIXEL); //cut after 'aaa'
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 2);
@@ -74,7 +74,7 @@ void TextTest::cutMiddleWord() {
 void TextTest::emptyLineAndCut() {
     auto uiRenderer = setupUiRenderer();
     auto text = Text::create(nullptr, Position(0.0f, 0.0f, PIXEL), "test", "\naaabbb");
-    text->setMaxWidth(200, PIXEL); //cut after 'aaa'
+    text->setMaxWidth(28.0f, PIXEL); //cut after 'aaa'
     uiRenderer->addWidget(text);
 
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines().size(), 3);

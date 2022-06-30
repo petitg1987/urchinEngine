@@ -318,7 +318,10 @@ namespace urchin {
             assert(data[dataIndex].getVariableType() == VariableType::VEC2);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
-        data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
+
+        if (renderTarget.isValidRenderTarget()) {
+            data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
+        }
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>>& dataPtr) {
@@ -327,7 +330,10 @@ namespace urchin {
             assert(data[dataIndex].getVariableType() == VariableType::VEC3);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
-        data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
+
+        if (renderTarget.isValidRenderTarget()) {
+            data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
+        }
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Vector3<float>>& dataPtr) {
@@ -336,25 +342,36 @@ namespace urchin {
             assert(data[dataIndex].getVariableType() == VariableType::VEC3);
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
-        data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
+
+        if (renderTarget.isValidRenderTarget()) {
+            data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
+        }
     }
 
     void GenericRenderer::updateInstanceData(std::size_t instanceCount, const float* dataPtr) const {
         #ifdef URCHIN_DEBUG
             assert(instanceData->getDataType() == DataType::FLOAT);
         #endif
-        instanceData->replaceData(instanceCount, dataPtr);
+
+        if (renderTarget.isValidRenderTarget()) {
+            instanceData->replaceData(instanceCount, dataPtr);
+        }
     }
 
     void GenericRenderer::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(uniformData.size() > uniformDataIndex);
         #endif
-        uniformData[uniformDataIndex].updateData(dataPtr);
+
+        if (renderTarget.isValidRenderTarget()) {
+            uniformData[uniformDataIndex].updateData(dataPtr);
+        }
     }
 
     void GenericRenderer::updateUniformTextureReader(std::size_t uniformTexPosition, const std::shared_ptr<TextureReader>& textureReader) {
-        updateUniformTextureReaderArray(uniformTexPosition, 0, textureReader);
+        if (renderTarget.isValidRenderTarget()) {
+            updateUniformTextureReaderArray(uniformTexPosition, 0, textureReader);
+        }
     }
 
     const std::shared_ptr<TextureReader>& GenericRenderer::getUniformTextureReader(std::size_t uniformTexPosition) const {
@@ -379,10 +396,12 @@ namespace urchin {
             assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
         #endif
 
-        textureReader->initialize();
-        uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
+        if (renderTarget.isValidRenderTarget()) {
+            textureReader->initialize();
+            uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
 
-        std::fill(descriptorSetsDirty.begin(), descriptorSetsDirty.end(), true);
+            std::fill(descriptorSetsDirty.begin(), descriptorSetsDirty.end(), true);
+        }
     }
 
     const std::vector<std::shared_ptr<TextureReader>>& GenericRenderer::getUniformTextureReaderArray(std::size_t textureIndex) const {
