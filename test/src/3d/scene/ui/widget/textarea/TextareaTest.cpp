@@ -31,6 +31,8 @@ void TextareaTest::textCut() {
 
     uiRenderer->onChar('m');
     AssertHelper::assertUnsignedIntEquals(textarea->getTextWidget().getCutTextLines().size(), 2);
+    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[0].text == WStringConvertA().from_bytes("mmm"));
+    AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[1].text == WStringConvertA().from_bytes("m"));
 }
 
 std::unique_ptr<UIRenderer> TextareaTest::setupUiRenderer() {
