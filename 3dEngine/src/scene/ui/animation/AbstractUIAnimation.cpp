@@ -9,6 +9,10 @@ namespace urchin {
 
     }
 
+    void AbstractUIAnimation::setupCompletedCallback(std::function<void()> completedCallback) {
+        this->completedCallback = std::move(completedCallback);
+    }
+
     void AbstractUIAnimation::setupAnimationSpeed(float animationSpeed, std::unique_ptr<Bezier> bezier) {
         this->animationSpeed = animationSpeed;
         this->bezier = std::move(bezier);
@@ -41,6 +45,9 @@ namespace urchin {
 
     void AbstractUIAnimation::markCompleted() {
         animationCompleted = true;
+        if (completedCallback) {
+            completedCallback();
+        }
     }
 
     void AbstractUIAnimation::initializeAnimation() {

@@ -9,6 +9,7 @@ namespace urchin {
             AbstractUIAnimation();
             virtual ~AbstractUIAnimation() = default;
 
+            void setupCompletedCallback(std::function<void()>);
             void setupAnimationSpeed(float, std::unique_ptr<Bezier> = std::unique_ptr<Bezier>(nullptr));
             float getAnimationSpeed() const;
 
@@ -28,6 +29,8 @@ namespace urchin {
 
             float animationSpeed;
             std::unique_ptr<Bezier> bezier;
+
+            std::function<void()> completedCallback;
     };
 
 }
