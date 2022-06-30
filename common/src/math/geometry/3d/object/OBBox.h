@@ -43,7 +43,7 @@ namespace urchin {
             Point3<T> intersectPoint(const Line3D<T>&, bool&) const override;
 
         private:
-            bool separatedAxisTheoremCollision(const OBBox<T>&) const;
+            template<class U> bool separatedAxisTheoremCollision(const U&) const;
             bool pointInsideSquare(const Point3<T>&, const std::array<Point3<T>, 4>&, const Vector3<T>&) const;
 
             Vector3<T> halfSizes;
@@ -58,5 +58,7 @@ namespace urchin {
     template<class T> OBBox<T> operator *(const OBBox<T>&, const Matrix4<T>&);
 
     template<class T> std::ostream& operator <<(std::ostream&, const OBBox<T>&);
+
+    #include "OBBox.inl"
 
 }

@@ -105,6 +105,11 @@ namespace urchin {
         return min.translate(boxShape.getHalfSizes());
     }
 
+    template<class T> const Vector3<T>& AABBox<T>::getNormalizedAxis(unsigned int index) const {
+        static std::array<Vector3<T>, 3> normalizedAxis = {Vector3<T>(1.0, 0.0, 0.0), Vector3<T>(0.0, 1.0, 0.0), Vector3<T>(0.0, 0.0, 1.0)};
+        return normalizedAxis[index];
+    }
+
     template<class T> Point3<T> AABBox<T>::getSupportPoint(const Vector3<T>& direction) const {
         const T signX = direction.X < 0.0 ? 0.0 : 1.0;
         const T signY = direction.Y < 0.0 ? 0.0 : 1.0;

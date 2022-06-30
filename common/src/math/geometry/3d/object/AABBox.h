@@ -34,6 +34,7 @@ namespace urchin {
             const Point3<T>& getMin() const;
             const Point3<T>& getMax() const;
             Point3<T> getCenterOfMass() const;
+            const Vector3<T>& getNormalizedAxis(unsigned int) const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
             std::vector<Point3<T>> getPoints() const;
