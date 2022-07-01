@@ -9,7 +9,6 @@
 #include <profiler/ScopeProfiler.h>
 #include <pattern/observer/Observable.h>
 #include <pattern/observer/Observer.h>
-#include <partitioning/octree/filter/OctreeableFilter.h>
 #include <partitioning/octree/filter/AcceptAllFilter.h>
 
 namespace urchin {
@@ -39,7 +38,7 @@ namespace urchin {
 
             std::vector<std::shared_ptr<T>> getAllOctreeables() const;
             void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&) const;
-            void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&, const OctreeableFilter<T>&) const;
+            template<class FILTER> void getOctreeablesIn(const ConvexObject3D<float>&, std::vector<T*>&, const FILTER&) const;
 
         private:
             void buildOctree(std::vector<std::shared_ptr<T>>&);

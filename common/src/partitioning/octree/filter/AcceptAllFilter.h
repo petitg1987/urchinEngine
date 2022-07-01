@@ -1,12 +1,10 @@
 #pragma once
 
-#include <partitioning//octree//filter/OctreeableFilter.h>
-
 namespace urchin {
 
-    template<class T> class AcceptAllFilter : public OctreeableFilter<T> {
+    template<class T> class AcceptAllFilter {
         public:
-            bool isAccepted(const T*, const ConvexObject3D<float>&) const override;
+            bool isAccepted(const T*, const ConvexObject3D<float>&) const;
     };
 
     #include "AcceptAllFilter.inl"

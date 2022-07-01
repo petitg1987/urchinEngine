@@ -6,8 +6,8 @@
 
 namespace urchin {
 
-    class ModelProduceShadowFilter : public OctreeableFilter<Model> {
+    class ModelProduceShadowFilter {
         public:
-            bool isAccepted(const Model*, const ConvexObject3D<float>&) const override;
+            bool isAccepted(const Model*, const ConvexObject3D<float>&) const;
     };
 }

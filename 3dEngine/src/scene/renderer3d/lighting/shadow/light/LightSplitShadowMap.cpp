@@ -15,7 +15,7 @@ namespace urchin {
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
         models.clear();
-        lightShadowMap->getModelOcclusionCuller().getOctreeablesIn(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
+        lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
 
         if (useSceneDependentProjection) {
             AABBox<float> aabboxSceneDependent = buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace);

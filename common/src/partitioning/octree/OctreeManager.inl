@@ -227,8 +227,7 @@ template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<f
     getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<T>());
 }
 
-template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject,
-        std::vector<T*>& visibleOctreeables, const OctreeableFilter<T>& filter) const {
+template<class T> template<class FILTER> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& visibleOctreeables, const FILTER& filter) const {
     ScopeProfiler sp(Profiler::graphic(), "getOctreeables");
 
     browseNodes.clear();

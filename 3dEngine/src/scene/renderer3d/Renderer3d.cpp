@@ -423,7 +423,7 @@ namespace urchin {
 
         //determine model visible on scene
         modelsInFrustum.clear();
-        modelOcclusionCuller.getModelsInFrustum(camera->getFrustum(), modelsInFrustum)
+        modelOcclusionCuller.getModelsInFrustum(camera->getFrustum(), modelsInFrustum);
 
         //determine visible lights on scene
         lightManager.updateVisibleLights(camera->getFrustum());

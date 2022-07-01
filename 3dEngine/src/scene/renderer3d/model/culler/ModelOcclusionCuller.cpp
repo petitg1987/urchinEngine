@@ -16,6 +16,9 @@ namespace urchin {
         return modelOctreeManager.removeOctreeable(model);
     }
 
+    /**
+     * @param modelsInFrustum [out] models in frustum
+     */
     void ModelOcclusionCuller::getModelsInFrustum(const Frustum<float>& frustum, std::vector<Model*>& modelsInFrustum) const {
         assert(modelsInFrustum.empty());
         modelOctreeManager.getOctreeablesIn(frustum, modelsInFrustum);
