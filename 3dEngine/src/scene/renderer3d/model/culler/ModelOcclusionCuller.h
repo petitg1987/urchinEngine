@@ -23,6 +23,8 @@ namespace urchin {
             void postRefresh();
 
         private:
+            std::shared_ptr<Model> removeModel(Model*, Model::CullBehavior);
+
             template<class FILTER> void addNoCullModels(std::vector<Model*>&, const FILTER&) const;
 
             OctreeManager<Model> modelOctreeManager;
