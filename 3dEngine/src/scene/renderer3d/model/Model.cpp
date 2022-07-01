@@ -189,7 +189,7 @@ namespace urchin {
         }
 
         //inform the OctreeManager that the model should be updated in the octree
-        this->notifyOctreeableMove();
+        this->notifyOctreeableMove(); //TODO review for no cull model !
     }
 
     void Model::notifyMeshVerticesUpdatedByAnimation() {
