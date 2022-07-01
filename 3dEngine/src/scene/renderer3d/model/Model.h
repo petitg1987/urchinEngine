@@ -52,6 +52,7 @@ namespace urchin {
             bool hasActiveAnimation() const;
             bool isAnimated() const;
 
+            std::string getName() const override;
             const Meshes* getMeshes() const;
             const ConstMeshes* getConstMeshes() const;
             const std::map<std::string, std::unique_ptr<Animation>, std::less<>>& getAnimations() const;

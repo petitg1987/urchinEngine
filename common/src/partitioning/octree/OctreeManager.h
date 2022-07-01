@@ -25,7 +25,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            void addOctreeable(std::shared_ptr<T>);
+            bool addOctreeable(std::shared_ptr<T>);
             std::shared_ptr<T> removeOctreeable(T*);
 
             void updateMinSize(float);
@@ -42,6 +42,8 @@ namespace urchin {
         private:
             void buildOctree(std::vector<std::shared_ptr<T>>&);
             bool resizeOctree(std::shared_ptr<T>);
+
+            static constexpr unsigned int MAX_ERRORS_LOG = 20;
 
             float overflowSize;
             float minSize;

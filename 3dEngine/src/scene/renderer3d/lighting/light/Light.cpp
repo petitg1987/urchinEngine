@@ -8,6 +8,10 @@ namespace urchin {
 
     }
 
+    std::string Light::getName() const {
+        return std::to_string(getPosition().X) + "@" + std::to_string(getPosition().Y) + "@" + std::to_string(getPosition().Z) + "_" + std::to_string((int)getLightType());
+    }
+
     const Transform<float>& Light::getTransform() const {
         return noTransform;
     }

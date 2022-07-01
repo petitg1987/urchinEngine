@@ -6,7 +6,7 @@ namespace urchin {
     ModelOcclusionCuller::ModelOcclusionCuller() :
             modelOctreeManager(OctreeManager<Model>(ConfigService::instance().getFloatValue("model.octreeMinSize"))) {
 
-    } //TODO handle flag update !
+    } //TODO handle cull flag update + add test !
 
     void ModelOcclusionCuller::addModel(std::shared_ptr<Model> model) {
         if (model->getCullBehavior() == Model::CullBehavior::CULL) {

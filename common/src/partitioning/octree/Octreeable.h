@@ -38,6 +38,7 @@ namespace urchin {
             void addRefOctree(Octree<T>*);
             void removeRefOctree(Octree<T>*);
 
+            virtual std::string getName() const = 0;
             virtual const AABBox<float>& getAABBox() const = 0;
             virtual const Transform<float>& getTransform() const = 0;
 

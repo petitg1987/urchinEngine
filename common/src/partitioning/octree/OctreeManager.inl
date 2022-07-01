@@ -82,7 +82,7 @@ template<class T> void OctreeManager<T>::buildOctree(std::vector<std::shared_ptr
     notifyObservers(this, OCTREE_BUILT);
 }
 
-template<class T> void OctreeManager<T>::addOctreeable(std::shared_ptr<T> octreeable) {
+template<class T> bool OctreeManager<T>::addOctreeable(std::shared_ptr<T> octreeable) {
     #ifdef URCHIN_DEBUG
         for (std::size_t i = 0; i < 3; ++i) {
             assert(octreeable->getAABBox().getMin()[i] != octreeable->getAABBox().getMax()[i]);
@@ -109,6 +109,7 @@ template<class T> void OctreeManager<T>::addOctreeable(std::shared_ptr<T> octree
     }
 
     octreeable->addObserver(this, T::MOVE);
+    return resized;
 }
 
 template<class T> std::shared_ptr<T> OctreeManager<T>::removeOctreeable(T* octreeable) {
@@ -151,7 +152,13 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
         }
 
         for (std::shared_ptr<T>& movingOctreeable : removedOctreeables) {
-            addOctreeable(movingOctreeable);
+            bool octreeResized = addOctreeable(movingOctreeable);
+
+            static unsigned int numErrorsLogged = 0;
+            if (octreeResized && numErrorsLogged < MAX_ERRORS_LOG) {
+                Logger::instance().logWarning("Octree resized due to a moving octreeable: " + movingOctreeable->getName());
+                numErrorsLogged++;
+            }
         }
     }
 

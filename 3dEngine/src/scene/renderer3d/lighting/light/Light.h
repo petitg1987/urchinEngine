@@ -25,6 +25,7 @@ namespace urchin {
             virtual const Point3<float>& getPosition() const = 0;
             virtual bool hasParallelBeams() const = 0;
             virtual LightType getLightType() const = 0;
+            std::string getName() const override;
             const AABBox<float>& getAABBox() const override = 0;
             const Transform<float>& getTransform() const override;
 

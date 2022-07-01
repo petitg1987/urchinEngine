@@ -188,8 +188,10 @@ namespace urchin {
             defaultModelAABBoxes[0] = Model::getDefaultModelLocalAABBox().moveAABBox(transform);
         }
 
-        //inform the OctreeManager that the model should be updated in the octree
-        this->notifyOctreeableMove(); //TODO review for no cull model !
+        if (getCullBehavior() == CullBehavior::CULL) {
+            //inform the OctreeManager that the model should be updated in the octree
+            this->notifyOctreeableMove();
+        }
     }
 
     void Model::notifyMeshVerticesUpdatedByAnimation() {
@@ -230,6 +232,13 @@ namespace urchin {
 
         originalMeshesUpdated = true;
         notifyObservers(this, Model::MATERIAL_UPDATED);
+    }
+
+    std::string Model::getName() const {
+        if (meshes) {
+            return meshes->getConstMeshes().getName();
+        }
+        return "[no meshes]";
     }
 
     const Meshes* Model::getMeshes() const {
