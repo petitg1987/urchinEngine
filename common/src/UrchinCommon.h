@@ -81,7 +81,6 @@
 #include <partitioning/octree/Octreeable.h>
 #include <partitioning/octree/OctreeManager.h>
 #include <partitioning/octree/Octree.h>
-#include <partitioning/octree/filter/AcceptAllFilter.h>
 #include <partitioning/octree/helper/OctreeableHelper.h>
 #include <partitioning/grid/GridContainer.h>
 

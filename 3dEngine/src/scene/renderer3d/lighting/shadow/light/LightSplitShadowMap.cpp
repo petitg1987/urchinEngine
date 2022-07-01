@@ -1,6 +1,5 @@
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
-#include <scene/renderer3d/lighting/shadow/filter/ModelProduceShadowFilter.h>
 
 namespace urchin {
 
@@ -15,7 +14,11 @@ namespace urchin {
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
         models.clear();
-        lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
+        lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, [](const Model *const model, const ConvexObject3D<float>&) {
+            //note: to filter by individual model (instead of all models belong to an octree): convexObject.collideWithAABBox(model->getAABBox())
+            //receiver only are required for variance shadow map to work correctly (see 8.4.5: https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-8-summed-area-variance-shadow-maps)
+            return model->getShadowClass() == Model::ShadowClass::RECEIVER_AND_CASTER || model->getShadowClass() == Model::ShadowClass::RECEIVER_ONLY;
+        });
 
         if (useSceneDependentProjection) {
             AABBox<float> aabboxSceneDependent = buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace);

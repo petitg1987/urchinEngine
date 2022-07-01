@@ -6,12 +6,12 @@
 using namespace urchin;
 
 void LightSplitShadowMapTest::modelsInFrustumSplit() {
-    auto modelOctreeManager = buildModelOctreeManager({
+    auto modelOcclusionCuller = buildModelOcclusionCuller({
         Point3<float>(1.0f, 2.0f, -3.0f),
         Point3<float>(1.0f, 2.0f, -10.0f)
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
-    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
@@ -27,13 +27,13 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
 }
 
 void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
-    auto modelOctreeManager = buildModelOctreeManager({
-        Point3<float>(1.0f, 2.0f, -110.0f), //model not visible and doesn't produce shadow in the frustum split
+    auto modelOcclusionCuller = buildModelOcclusionCuller({
+        Point3<float>(1.0f, 2.0f, -120.0f), //model not visible and doesn't produce shadow in the frustum split
         Point3<float>(-500.0f, 2.0f, -3.0f), //model not visible and too far to produce shadow in the frustum split
         Point3<float>(500.0f, 2.0f, -3.0f), //model not visible and in the wrong direction to produce shadow in the frustum split
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
-    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
@@ -49,11 +49,11 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
 }
 
 void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
-    auto modelOctreeManager = buildModelOctreeManager({
+    auto modelOcclusionCuller = buildModelOcclusionCuller({
         Point3<float>(-250.0f, 2.0f, -3.0f), //model not visible but produces shadow in the frustum split
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
-    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOctreeManager, 300.0f, nullptr, 3, nullptr);
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, nullptr, 3, nullptr);
     auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
 
     Frustum frustumSplit(90.0f, 1.0f, 0.01f, 100.0f);
@@ -68,8 +68,8 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
                                           std::numeric_limits<float>::epsilon());
 }
 
-std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeManager(const std::vector<Point3<float>> &modelPositions) {
-    auto modelOctreeManager = std::make_unique<OctreeManager<Model>>(10.0f);
+std::unique_ptr<ModelOcclusionCuller> LightSplitShadowMapTest::buildModelOcclusionCuller(const std::vector<Point3<float>> &modelPositions) {
+    auto modelOcclusionCuller = std::make_unique<ModelOcclusionCuller>();
 
     for (const auto& modelPosition : modelPositions) {
         ModelBuilder modelBuilder("materials/opaque.uda");
@@ -79,10 +79,10 @@ std::unique_ptr<OctreeManager<Model>> LightSplitShadowMapTest::buildModelOctreeM
         std::unique_ptr<Model> model = modelBuilder.newModel("modelName", vertices, triangleIndices, uvTexture);
 
         model->setPosition(modelPosition);
-        modelOctreeManager->addOctreeable(std::move(model));
+        modelOcclusionCuller->addModel(std::move(model));
     }
 
-    return modelOctreeManager;
+    return modelOcclusionCuller;
 }
 
 CppUnit::Test* LightSplitShadowMapTest::suite() {

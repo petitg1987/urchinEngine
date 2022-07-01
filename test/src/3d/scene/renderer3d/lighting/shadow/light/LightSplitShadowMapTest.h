@@ -14,5 +14,5 @@ class LightSplitShadowMapTest : public CppUnit::TestFixture {
         void modelOutsideFrustumProducingShadow();
 
     private:
-        std::unique_ptr<urchin::OctreeManager<urchin::Model>> buildModelOctreeManager(const std::vector<urchin::Point3<float>> &);
+        std::unique_ptr<urchin::ModelOcclusionCuller> buildModelOcclusionCuller(const std::vector<urchin::Point3<float>> &);
 };

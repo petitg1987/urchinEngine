@@ -224,7 +224,10 @@ template<class T> std::vector<std::shared_ptr<T>> OctreeManager<T>::getAllOctree
 }
 
 template<class T> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& octreeables) const {
-    getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<T>());
+    getOctreeablesIn(convexObject, octreeables, [](const T* const, const ConvexObject3D<float>&) {
+        //info: to filter by individual octreeables (instead of all octreeables belong to an octree): convexObject.collideWithAABBox(octreeable->getAABBox())
+        return true;
+    });
 }
 
 template<class T> template<class FILTER> void OctreeManager<T>::getOctreeablesIn(const ConvexObject3D<float>& convexObject, std::vector<T*>& visibleOctreeables, const FILTER& filter) const {
@@ -238,7 +241,7 @@ template<class T> template<class FILTER> void OctreeManager<T>::getOctreeablesIn
         if (convexObject.collideWithAABBox(octree->getAABBox())) {
             if (octree->isLeaf()) {
                 for (auto& octreeable : octree->getOctreeables()) {
-                    if (octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable.get(), convexObject)) {
+                    if (octreeable->isVisible() && !octreeable->isProcessed() && filter(octreeable.get(), convexObject)) {
                         octreeable->setProcessed(true);
                         visibleOctreeables.push_back(octreeable.get());
                     }

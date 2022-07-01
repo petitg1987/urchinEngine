@@ -9,7 +9,6 @@
 #include <profiler/ScopeProfiler.h>
 #include <pattern/observer/Observable.h>
 #include <pattern/observer/Observer.h>
-#include <partitioning/octree/filter/AcceptAllFilter.h>
 
 namespace urchin {
 
