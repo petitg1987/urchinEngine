@@ -17,7 +17,7 @@ namespace urchin {
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, [](const Model *const model, const ConvexObject3D<float>&) {
             //note: to filter by individual model (instead of all models belong to an octree): convexObject.collideWithAABBox(model->getAABBox())
             //receiver only are required for variance shadow map to work correctly (see 8.4.5: https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-8-summed-area-variance-shadow-maps)
-            return model->getShadowClass() == Model::ShadowClass::RECEIVER_AND_CASTER || model->getShadowClass() == Model::ShadowClass::RECEIVER_ONLY;
+            return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER || model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY;
         });
 
         if (useSceneDependentProjection) {
@@ -88,7 +88,7 @@ namespace urchin {
         AABBox<float> modelsAabbox = AABBox<float>::initMergeableAABBox();
 
         for (const auto& model : models) {
-            if (model->getShadowClass() == Model::RECEIVER_ONLY) {
+            if (model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY) {
                 continue;
             }
 

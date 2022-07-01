@@ -88,33 +88,54 @@ namespace urchin {
     }
 
     void ModelReaderWriter::loadProperties(Model& model, const UdaChunk* modelChunk, const UdaParser& udaParser) {
-        auto shadowClassChunk = udaParser.getFirstChunk(false, SHADOW_CLASS_TAG, UdaAttribute(), modelChunk);
-        if (shadowClassChunk) {
-            if (shadowClassChunk->getStringValue() == RECEIVER_AND_CASTER_VALUE) {
-                model.setShadowClass(Model::RECEIVER_AND_CASTER);
-            } else if (shadowClassChunk->getStringValue() == RECEIVER_ONLY_VALUE) {
-                model.setShadowClass(Model::RECEIVER_ONLY);
-            } else if (shadowClassChunk->getStringValue() == NONE_VALUE) {
-                model.setShadowClass(Model::NONE);
+        auto shadowBehaviorChunk = udaParser.getFirstChunk(false, SHADOW_BEHAVIOR_TAG, UdaAttribute(), modelChunk);
+        if (shadowBehaviorChunk) {
+            if (shadowBehaviorChunk->getStringValue() == RECEIVER_AND_CASTER_VALUE) {
+                model.setShadowBehavior(Model::ShadowBehavior::RECEIVER_AND_CASTER);
+            } else if (shadowBehaviorChunk->getStringValue() == RECEIVER_ONLY_VALUE) {
+                model.setShadowBehavior(Model::ShadowBehavior::RECEIVER_ONLY);
+            } else if (shadowBehaviorChunk->getStringValue() == NONE_VALUE) {
+                model.setShadowBehavior(Model::ShadowBehavior::NONE);
             } else {
-                throw std::runtime_error("Unknown shadow class value: " + shadowClassChunk->getStringValue());
+                throw std::runtime_error("Unknown shadow behavior value: " + shadowBehaviorChunk->getStringValue());
             }
         } else {
-            model.setShadowClass(Model::RECEIVER_AND_CASTER);
+            model.setShadowBehavior(Model::ShadowBehavior::RECEIVER_AND_CASTER);
+        }
+
+        auto cullBehaviorChunk = udaParser.getFirstChunk(false, CULL_BEHAVIOR_TAG, UdaAttribute(), modelChunk);
+        if (cullBehaviorChunk) {
+            if (cullBehaviorChunk->getStringValue() == CULL_VALUE) {
+                model.setCullBehavior(Model::CullBehavior::CULL);
+            } else if (cullBehaviorChunk->getStringValue() == NO_CULL_VALUE) {
+                model.setCullBehavior(Model::CullBehavior::NO_CULL);
+            } else {
+                throw std::runtime_error("Unknown cull behavior value: " + cullBehaviorChunk->getStringValue());
+            }
+        } else {
+            model.setCullBehavior(Model::CullBehavior::CULL);
         }
     }
 
     void ModelReaderWriter::writeProperties(UdaChunk& modelChunk, const Model& model, UdaParser& udaParser) {
-        auto& shadowClassChunk = udaParser.createChunk(SHADOW_CLASS_TAG, UdaAttribute(), &modelChunk);
+        if (model.getShadowBehavior() != Model::ShadowBehavior::RECEIVER_AND_CASTER) { //not default value
+            auto& shadowClassChunk = udaParser.createChunk(SHADOW_BEHAVIOR_TAG, UdaAttribute(), &modelChunk);
+            if (model.getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY) {
+                shadowClassChunk.setStringValue(RECEIVER_ONLY_VALUE);
+            } else if (model.getShadowBehavior() == Model::ShadowBehavior::NONE) {
+                shadowClassChunk.setStringValue(NONE_VALUE);
+            } else {
+                throw std::runtime_error("Unknown shadow class: " + std::to_string((int)model.getShadowBehavior()));
+            }
+        }
 
-        if (model.getShadowClass() == Model::RECEIVER_AND_CASTER) {
-            shadowClassChunk.setStringValue(RECEIVER_AND_CASTER_VALUE);
-        } else if (model.getShadowClass() == Model::RECEIVER_ONLY) {
-            shadowClassChunk.setStringValue(RECEIVER_ONLY_VALUE);
-        } else if (model.getShadowClass() == Model::NONE) {
-            shadowClassChunk.setStringValue(NONE_VALUE);
-        } else {
-            throw std::runtime_error("Unknown shadow class: " + std::to_string(model.getShadowClass()));
+        if (model.getCullBehavior() != Model::CullBehavior::CULL) { //not default value
+            auto& cullBehaviorChunk = udaParser.createChunk(CULL_BEHAVIOR_TAG, UdaAttribute(), &modelChunk);
+            if (model.getCullBehavior() == Model::CullBehavior::NO_CULL) {
+                cullBehaviorChunk.setStringValue(NO_CULL_VALUE);
+            } else {
+                throw std::runtime_error("Unknown cull behavior: " + std::to_string((int)model.getCullBehavior()));
+            }
         }
     }
 

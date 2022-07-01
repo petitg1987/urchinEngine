@@ -120,11 +120,12 @@ namespace urchin {
         return objectEntity;
     }
 
-    const ObjectEntity& ObjectController::updateObjectProperties(const ObjectEntity& constObjectEntity, Model::ShadowClass shadowClass) {
+    const ObjectEntity& ObjectController::updateObjectProperties(const ObjectEntity& constObjectEntity, Model::ShadowBehavior shadowBehavior, Model::CullBehavior cullBehavior) {
         const ObjectEntity& objectEntity = findObjectEntity(constObjectEntity);
         Model* model = objectEntity.getModel();
 
-        model->setShadowClass(shadowClass);
+        model->setShadowBehavior(shadowBehavior);
+        model->setCullBehavior(cullBehavior);
 
         markModified();
         return objectEntity;

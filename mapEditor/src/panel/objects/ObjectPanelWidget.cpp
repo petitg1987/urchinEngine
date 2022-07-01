@@ -31,7 +31,8 @@ namespace urchin {
             orientationType(nullptr),
             eulerAxis0(nullptr), eulerAxis1(nullptr), eulerAxis2(nullptr),
             scaleX(nullptr), scaleY(nullptr), scaleZ(nullptr),
-            shadowClass(nullptr),
+            shadowBehavior(nullptr),
+            cullBehavior(nullptr),
             tags(nullptr),
             hasRigidBody(nullptr),
             tabPhysicsRigidBody(nullptr),
@@ -225,16 +226,26 @@ namespace urchin {
         auto* propertiesLayout = new QGridLayout(propertiesGroupBox);
         propertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-        auto* shadowClassLabel = new QLabel("Shadow class:");
-        propertiesLayout->addWidget(shadowClassLabel, 0, 0);
+        auto* shadowBehaviorLabel = new QLabel("Shadow behavior:");
+        propertiesLayout->addWidget(shadowBehaviorLabel, 0, 0);
 
-        shadowClass = new QComboBox();
-        propertiesLayout->addWidget(shadowClass, 0, 1, 1, 3);
-        shadowClass->setFixedWidth(150);
-        shadowClass->addItem(RECEIVER_AND_CASTER_LABEL, QVariant(Model::ShadowClass::RECEIVER_AND_CASTER));
-        shadowClass->addItem(RECEIVER_ONLY_LABEL, QVariant(Model::ShadowClass::RECEIVER_ONLY));
-        shadowClass->addItem(NONE_LABEL, QVariant(Model::ShadowClass::NONE));
-        connect(shadowClass, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
+        shadowBehavior = new QComboBox();
+        propertiesLayout->addWidget(shadowBehavior, 0, 1, 1, 3);
+        shadowBehavior->setFixedWidth(150);
+        shadowBehavior->addItem(RECEIVER_AND_CASTER_LABEL, QVariant((int)Model::ShadowBehavior::RECEIVER_AND_CASTER));
+        shadowBehavior->addItem(RECEIVER_ONLY_LABEL, QVariant((int)Model::ShadowBehavior::RECEIVER_ONLY));
+        shadowBehavior->addItem(NONE_LABEL, QVariant((int)Model::ShadowBehavior::NONE));
+        connect(shadowBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
+
+        auto* cullBehaviorLabel = new QLabel("Cull behavior:");
+        propertiesLayout->addWidget(cullBehaviorLabel, 1, 0);
+
+        cullBehavior = new QComboBox();
+        propertiesLayout->addWidget(cullBehavior, 1, 1, 1, 3);
+        cullBehavior->setFixedWidth(150);
+        cullBehavior->addItem(CULL_LABEL, QVariant((int)Model::CullBehavior::CULL));
+        cullBehavior->addItem(NO_CULL_LABEL, QVariant((int)Model::CullBehavior::NO_CULL));
+        connect(cullBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectProperties()));
     }
 
     void ObjectPanelWidget::setupPhysicsBox(QVBoxLayout* physicsLayout) {
@@ -517,9 +528,14 @@ namespace urchin {
         this->scaleY->setValue(modelTransform.getScale().Y);
         this->scaleZ->setValue(modelTransform.getScale().Z);
 
-        int shadowClassIndex = shadowClass->findData((int)model->getShadowClass());
-        if (shadowClassIndex != -1) {
-            shadowClass->setCurrentIndex(shadowClassIndex);
+        int shadowBehaviorIndex = shadowBehavior->findData((int)model->getShadowBehavior());
+        if (shadowBehaviorIndex != -1) {
+            shadowBehavior->setCurrentIndex(shadowBehaviorIndex);
+        }
+
+        int cullBehaviorIndex = cullBehavior->findData((int)model->getCullBehavior());
+        if (cullBehaviorIndex != -1) {
+            cullBehavior->setCurrentIndex(cullBehaviorIndex);
         }
 
         setupObjectPhysicsDataFrom(objectEntity);
@@ -728,9 +744,13 @@ namespace urchin {
         if (!disableObjectEvent) {
             const ObjectEntity& objectEntity = *objectTableView->getSelectedObjectEntity();
 
-            QVariant variant = shadowClass->currentData();
-            auto shadowClassValue = static_cast<Model::ShadowClass>(variant.toInt());
-            objectController->updateObjectProperties(objectEntity, shadowClassValue);
+            QVariant shadowBehaviorVariant = shadowBehavior->currentData();
+            auto shadowBehaviorValue = static_cast<Model::ShadowBehavior>(shadowBehaviorVariant.toInt());
+
+            QVariant cullBehaviorVariant = cullBehavior->currentData();
+            auto cullBehaviorValue = static_cast<Model::CullBehavior>(cullBehaviorVariant.toInt());
+
+            objectController->updateObjectProperties(objectEntity, shadowBehaviorValue, cullBehaviorValue);
         }
     }
 

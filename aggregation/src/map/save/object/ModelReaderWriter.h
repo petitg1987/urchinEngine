@@ -30,10 +30,13 @@ namespace urchin {
             static constexpr char TRANSFORM_TAG[] = "transform";
             static constexpr char POSITION_TAG[] = "position";
             static constexpr char SCALE_TAG[] = "scale";
-            static constexpr char SHADOW_CLASS_TAG[] = "shadowClass";
+            static constexpr char SHADOW_BEHAVIOR_TAG[] = "shadowBehavior";
             static constexpr char RECEIVER_AND_CASTER_VALUE[] = "RECEIVER_AND_CASTER";
             static constexpr char RECEIVER_ONLY_VALUE[] = "RECEIVER_ONLY";
             static constexpr char NONE_VALUE[] = "NONE";
+            static constexpr char CULL_BEHAVIOR_TAG[] = "cullBehavior";
+            static constexpr char CULL_VALUE[] = "CULL";
+            static constexpr char NO_CULL_VALUE[] = "NO_CULL";
     };
 
 }

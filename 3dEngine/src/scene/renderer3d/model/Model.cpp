@@ -11,7 +11,8 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
+            shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
+            cullBehavior(CullBehavior::CULL),
             originalMeshesUpdated(false) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
@@ -26,7 +27,8 @@ namespace urchin {
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
-            shadowClass(ShadowClass::RECEIVER_AND_CASTER),
+            shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
+            cullBehavior(CullBehavior::CULL),
             originalMeshesUpdated(false) {
         initialize();
     }
@@ -38,7 +40,8 @@ namespace urchin {
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
             transform(model.getTransform()),
-            shadowClass(model.getShadowClass()),
+            shadowBehavior(model.getShadowBehavior()),
+            cullBehavior(model.getCullBehavior()),
             originalMeshesUpdated(model.isOriginalMeshesUpdated()) {
         if (model.meshes) {
             meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
@@ -320,15 +323,23 @@ namespace urchin {
         return transform;
     }
 
-    void Model::setShadowClass(ShadowClass shadowClass) {
-        this->shadowClass = shadowClass;
+    void Model::setShadowBehavior(ShadowBehavior shadowBehavior) {
+        this->shadowBehavior = shadowBehavior;
     }
 
-    Model::ShadowClass Model::getShadowClass() const {
+    Model::ShadowBehavior Model::getShadowBehavior() const {
         if (!getMeshes()) {
-            return ShadowClass::NONE;
+            return ShadowBehavior::NONE;
         }
-        return shadowClass;
+        return shadowBehavior;
+    }
+
+    void Model::setCullBehavior(CullBehavior cullBehavior) {
+        this->cullBehavior = cullBehavior;
+    }
+
+    Model::CullBehavior Model::getCullBehavior() const {
+        return cullBehavior;
     }
 
     bool Model::isOriginalMeshesUpdated() const {

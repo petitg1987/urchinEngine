@@ -26,10 +26,14 @@ namespace urchin {
                 ANIMATION_STARTED,
                 ANIMATION_ENDED
             };
-            enum ShadowClass {
+            enum class ShadowBehavior {
                 RECEIVER_AND_CASTER, //Models which can receive and cast shadow
                 RECEIVER_ONLY, //Models which only receive shadow (e.g.: ground). Can provide better shadow quality.
                 NONE //Models which does not receive and cast shadow. Can improve performance.
+            };
+            enum class CullBehavior {
+                CULL,
+                NO_CULL
             };
 
             Model(const Model&);
@@ -62,8 +66,10 @@ namespace urchin {
             void setTransform(const Transform<float>&);
             const Transform<float>& getTransform() const override;
 
-            void setShadowClass(ShadowClass);
-            ShadowClass getShadowClass() const;
+            void setShadowBehavior(ShadowBehavior);
+            ShadowBehavior getShadowBehavior() const;
+            void setCullBehavior(CullBehavior);
+            CullBehavior getCullBehavior() const;
             bool isOriginalMeshesUpdated() const;
             bool isMeshUpdated(unsigned int) const;
 
@@ -100,7 +106,8 @@ namespace urchin {
             Transform<float> transform;
 
             //properties
-            ShadowClass shadowClass;
+            ShadowBehavior shadowBehavior;
+            CullBehavior cullBehavior;
             std::vector<bool> meshesUpdated;
             bool originalMeshesUpdated;
     };

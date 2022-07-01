@@ -63,6 +63,9 @@ namespace urchin {
             static constexpr char RECEIVER_ONLY_LABEL[] = "Receiver only";
             static constexpr char NONE_LABEL[] = "None";
 
+            static constexpr char CULL_LABEL[] = "Cull";
+            static constexpr char NO_CULL_LABEL[] = "No cull";
+
             ObjectController* objectController;
 
             ObjectTableView* objectTableView;
@@ -87,7 +90,8 @@ namespace urchin {
             QDoubleSpinBox* scaleX;
             QDoubleSpinBox* scaleY;
             QDoubleSpinBox* scaleZ;
-            QComboBox* shadowClass;
+            QComboBox* shadowBehavior;
+            QComboBox* cullBehavior;
             QLineEdit* tags;
 
             //physics
