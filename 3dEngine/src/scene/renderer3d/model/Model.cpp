@@ -344,7 +344,10 @@ namespace urchin {
     }
 
     void Model::setCullBehavior(CullBehavior cullBehavior) {
-        this->cullBehavior = cullBehavior;
+        if (this->cullBehavior != cullBehavior) {
+            this->cullBehavior = cullBehavior;
+            notifyObservers(this, Model::CULL_BEHAVIOR_UPDATED);
+        }
     }
 
     Model::CullBehavior Model::getCullBehavior() const {

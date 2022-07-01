@@ -6,32 +6,49 @@ namespace urchin {
     ModelOcclusionCuller::ModelOcclusionCuller() :
             modelOctreeManager(OctreeManager<Model>(ConfigService::instance().getFloatValue("model.octreeMinSize"))) {
 
-    } //TODO handle cull flag update + add test !
+    } //TODO add test !
+
+    void ModelOcclusionCuller::notify(Observable* observable, int notificationType) {
+        if (auto* model = dynamic_cast<Model*>(observable)) {
+            if (notificationType == Model::CULL_BEHAVIOR_UPDATED) {
+                std::shared_ptr<Model> modelPtr = removeModel(model);
+                addModel(modelPtr);
+            }
+        }
+    }
 
     void ModelOcclusionCuller::addModel(std::shared_ptr<Model> model) {
+        model->addObserver(this, Model::CULL_BEHAVIOR_UPDATED);
+
         if (model->getCullBehavior() == Model::CullBehavior::CULL) {
             modelOctreeManager.addOctreeable(std::move(model));
         } else if (model->getCullBehavior() == Model::CullBehavior::NO_CULL) {
             noCullModels.push_back(std::move(model));
         } else {
-            throw std::runtime_error("Unknown cull behavior: " + std::to_string((int) model->getCullBehavior()));
+            throw std::runtime_error("Unknown cull behavior: " + std::to_string((int)model->getCullBehavior()));
         }
     }
 
     std::shared_ptr<Model> ModelOcclusionCuller::removeModel(Model* model) {
+        std::shared_ptr<Model> modelPtr = nullptr;
         if (model->getCullBehavior() == Model::CullBehavior::CULL) {
-            return modelOctreeManager.removeOctreeable(model);
+            modelPtr = modelOctreeManager.removeOctreeable(model);
         } else if (model->getCullBehavior() == Model::CullBehavior::NO_CULL) {
             for (std::size_t i = 0; i < noCullModels.size(); ++i) {
                 if (noCullModels[i].get() == model) {
-                    std::shared_ptr<Model> modelPtr = std::move(noCullModels[i]);
+                    modelPtr = std::move(noCullModels[i]);
                     VectorUtil::erase(noCullModels, i);
-                    return modelPtr;
+                    break;
                 }
             }
-            return std::shared_ptr<Model>(nullptr);
+        } else {
+            throw std::runtime_error("Unknown cull behavior: " + std::to_string((int) model->getCullBehavior()));
         }
-        throw std::runtime_error("Unknown cull behavior: " + std::to_string((int)model->getCullBehavior()));
+
+        if (modelPtr) {
+            modelPtr->removeObserver(this, Model::CULL_BEHAVIOR_UPDATED);
+        }
+        return modelPtr;
     }
 
     /**

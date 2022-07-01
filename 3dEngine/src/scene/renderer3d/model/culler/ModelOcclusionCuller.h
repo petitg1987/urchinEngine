@@ -5,9 +5,11 @@
 
 namespace urchin {
 
-    class ModelOcclusionCuller {
+    class ModelOcclusionCuller : public Observer {
         public:
             ModelOcclusionCuller();
+
+            void notify(Observable*, int) override;
 
             void addModel(std::shared_ptr<Model>);
             std::shared_ptr<Model> removeModel(Model*);

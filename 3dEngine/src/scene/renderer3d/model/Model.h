@@ -24,7 +24,8 @@ namespace urchin {
                 MATERIAL_UPDATED,
                 SCALE_UPDATED,
                 ANIMATION_STARTED,
-                ANIMATION_ENDED
+                ANIMATION_ENDED,
+                CULL_BEHAVIOR_UPDATED
             };
             enum class ShadowBehavior {
                 RECEIVER_AND_CASTER, //Models which can receive and cast shadow
