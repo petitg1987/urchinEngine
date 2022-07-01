@@ -21,7 +21,10 @@ namespace urchin {
             void postRefresh();
 
         private:
+            template<class FILTER> void addNoCullModels(std::vector<Model*>&, const FILTER&) const;
+
             OctreeManager<Model> modelOctreeManager;
+            std::vector<std::shared_ptr<Model>> noCullModels;
     };
 
     #include "ModelOcclusionCuller.inl"
