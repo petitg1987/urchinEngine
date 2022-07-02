@@ -87,29 +87,6 @@ namespace urchin {
         return getTypeSize() * getVariableSize() * dataCount;
     }
 
-    VkFormat DataContainer::getVulkanFormat(unsigned int& repeatCount) const {
-        if (dataType == DataType::FLOAT) {
-            if (variableType == VariableType::FLOAT) {
-                repeatCount = 1;
-                return VK_FORMAT_R32_SFLOAT;
-            } else if (variableType == VariableType::VEC2) {
-                repeatCount = 1;
-                return VK_FORMAT_R32G32_SFLOAT;
-            } else if (variableType == VariableType::VEC3) {
-                repeatCount = 1;
-                return VK_FORMAT_R32G32B32_SFLOAT;
-            } else if (variableType == VariableType::MAT4) {
-                repeatCount = 4;
-                return VK_FORMAT_R32G32B32A32_SFLOAT;
-            } else if (variableType == VariableType::TWO_MAT4) {
-                repeatCount = 8;
-                return VK_FORMAT_R32G32B32A32_SFLOAT;
-            }
-            throw std::runtime_error("Unknown variable type: " + std::to_string((int)variableType));
-        }
-        throw std::runtime_error("Unknown data type: " + std::to_string((int)dataType));
-    }
-
     unsigned int DataContainer::getTypeSize() const {
         if (dataType == DataType::FLOAT) {
             return sizeof(float);

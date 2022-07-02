@@ -39,6 +39,7 @@ namespace urchin {
             void createGraphicsPipeline(const std::shared_ptr<Pipeline>&);
             VkPrimitiveTopology shapeTypeToVulkanTopology() const;
             bool isShapeTypeListTopology() const;
+            VkFormat getVulkanFormat(const DataContainer&, unsigned int&) const;
 
             std::string name;
             const RenderTarget* renderTarget;

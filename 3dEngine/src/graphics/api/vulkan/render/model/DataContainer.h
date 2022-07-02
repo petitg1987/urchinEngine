@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <array>
-#include <vulkan/vulkan.h>
 
 #include <graphics/api/vulkan/render/model/DataType.h>
 #include <graphics/api/vulkan/render/model/VariableType.h>
@@ -26,8 +25,6 @@ namespace urchin {
             std::size_t getDataCount() const;
             std::size_t getDataSize() const;
             std::size_t getBufferSize() const;
-
-            VkFormat getVulkanFormat(unsigned int&) const;
 
             bool hasNewData(uint32_t) const;
             void markDataAsProcessed(uint32_t);

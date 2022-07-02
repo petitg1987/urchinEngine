@@ -102,16 +102,16 @@ namespace urchin {
 
         unsigned int repeatCount;
         HashUtil::combine(hash, data->size());
-        for (auto& singleData : *data) {
-            HashUtil::combine(hash, singleData.getVulkanFormat(repeatCount));
+        for (const DataContainer& singleData : *data) {
+            HashUtil::combine(hash, getVulkanFormat(singleData, repeatCount));
             HashUtil::combine(hash, repeatCount);
         }
         if (instanceData) {
-            HashUtil::combine(hash, instanceData->getVulkanFormat(repeatCount));
+            HashUtil::combine(hash, getVulkanFormat(*instanceData, repeatCount));
             HashUtil::combine(hash, repeatCount);
         }
 
-        for (auto& bf : blendFunctions) {
+        for (const BlendFunction& bf : blendFunctions) {
             HashUtil::combine(hash, bf.getSrcColorFactor(), bf.getDstColorFactor(), bf.getSrcAlphaFactor(), bf.getDstAlphaFactor());
         }
 
@@ -182,7 +182,7 @@ namespace urchin {
             bindingDescriptions.emplace_back(bindingDescription);
 
             unsigned int repeatCount = 0;
-            VkFormat attributeFormat = singleData.getVulkanFormat(repeatCount);
+            VkFormat attributeFormat = getVulkanFormat(singleData, repeatCount);
             for (unsigned int i = 0; i < repeatCount; ++i) {
                 VkVertexInputAttributeDescription attributeDescription{};
                 attributeDescription.binding = binding;
@@ -203,7 +203,7 @@ namespace urchin {
             bindingDescriptions.emplace_back(bindingDescription);
 
             unsigned int repeatCount = 0;
-            VkFormat attributeFormat = instanceData->getVulkanFormat(repeatCount);
+            VkFormat attributeFormat = getVulkanFormat(*instanceData, repeatCount);
             for (unsigned int i = 0; i < repeatCount; ++i) {
                 VkVertexInputAttributeDescription attributeDescription{};
                 attributeDescription.binding = binding;
@@ -368,6 +368,32 @@ namespace urchin {
             return false;
         }
         throw std::runtime_error("Unknown shape type: " + std::to_string((int)shapeType));
+    }
+
+    /**
+     * @param repeatCount [out] Number of data repetition
+     */
+    VkFormat PipelineBuilder::getVulkanFormat(const DataContainer& dataContainer, unsigned int& repeatCount) const {
+        if (dataContainer.getDataType() == DataType::FLOAT) {
+            if (dataContainer.getVariableType() == VariableType::FLOAT) {
+                repeatCount = 1;
+                return VK_FORMAT_R32_SFLOAT;
+            } else if (dataContainer.getVariableType() == VariableType::VEC2) {
+                repeatCount = 1;
+                return VK_FORMAT_R32G32_SFLOAT;
+            } else if (dataContainer.getVariableType() == VariableType::VEC3) {
+                repeatCount = 1;
+                return VK_FORMAT_R32G32B32_SFLOAT;
+            } else if (dataContainer.getVariableType() == VariableType::MAT4) {
+                repeatCount = 4;
+                return VK_FORMAT_R32G32B32A32_SFLOAT;
+            } else if (dataContainer.getVariableType() == VariableType::TWO_MAT4) {
+                repeatCount = 8;
+                return VK_FORMAT_R32G32B32A32_SFLOAT;
+            }
+            throw std::runtime_error("Unknown variable type: " + std::to_string((int)dataContainer.getVariableType()));
+        }
+        throw std::runtime_error("Unknown data type: " + std::to_string((int)dataContainer.getDataType()));
     }
 
 }
