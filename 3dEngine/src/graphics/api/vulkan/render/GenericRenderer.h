@@ -4,16 +4,16 @@
 #include <vulkan/vulkan.h>
 #include <UrchinCommon.h>
 
+#include <graphics/shader/ShaderDataContainer.h>
 #include <graphics/api/vulkan/render/handler/BufferHandler.h>
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
-#include <graphics/api/vulkan/render/model/ShapeType.h>
-#include <graphics/api/vulkan/render/model/DataType.h>
-#include <graphics/api/vulkan/render/model/VariableType.h>
-#include <graphics/api/vulkan/render/model/PolygonMode.h>
-#include <graphics/api/vulkan/render/model/DataContainer.h>
-#include <graphics/api/vulkan/render/model/IndexContainer.h>
+#include <graphics/render/data/ShapeType.h>
+#include <graphics/render/data/DataType.h>
+#include <graphics/render/data/VariableType.h>
+#include <graphics/render/data/PolygonMode.h>
+#include <graphics/render/data/DataContainer.h>
+#include <graphics/render/data/IndexContainer.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/shader/ShaderDataContainer.h>
 #include <graphics/api/vulkan/render/blend/BlendFunction.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>

@@ -3,8 +3,8 @@
 #include <cstdlib>
 #include <array>
 
-#include <graphics/api/vulkan/render/model/DataType.h>
-#include <graphics/api/vulkan/render/model/VariableType.h>
+#include <graphics/render/data/DataType.h>
+#include <graphics/render/data/VariableType.h>
 
 namespace urchin {
 

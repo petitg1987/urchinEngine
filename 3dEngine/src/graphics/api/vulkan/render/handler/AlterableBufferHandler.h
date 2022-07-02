@@ -3,7 +3,7 @@
 #include <vector>
 
 #include <graphics/api/vulkan/render/handler/BufferHandler.h>
-#include <graphics/api/vulkan/render/model/DataContainer.h>
+#include <graphics/render/data/DataContainer.h>
 
 namespace urchin {
 

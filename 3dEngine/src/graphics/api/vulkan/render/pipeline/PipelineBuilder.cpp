@@ -1,6 +1,6 @@
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
-#include <graphics/api/vulkan/render/model/PolygonMode.h>
+#include <graphics/render/data/PolygonMode.h>
 #include <graphics/api/vulkan/render/blend/BlendFunction.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 #include <graphics/api/vulkan/setup/GraphicService.h>

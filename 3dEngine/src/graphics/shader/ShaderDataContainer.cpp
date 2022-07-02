@@ -1,7 +1,6 @@
 #include <cstring>
 
-#include <graphics/api/vulkan/render/shader/ShaderDataContainer.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/shader/ShaderDataContainer.h>
 
 namespace urchin {
 

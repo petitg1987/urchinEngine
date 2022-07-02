@@ -3,14 +3,14 @@
 #include <memory>
 #include <vulkan/vulkan.h>
 
+#include <graphics/shader/ShaderDataContainer.h>
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/shader/ShaderDataContainer.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/model/DataContainer.h>
-#include <graphics/api/vulkan/render/model/ShapeType.h>
+#include <graphics/render/data/DataContainer.h>
+#include <graphics/render/data/ShapeType.h>
 #include <graphics/api/vulkan/render/blend/BlendFunction.h>
-#include <graphics/api/vulkan/render/model/PolygonMode.h>
+#include <graphics/render/data/PolygonMode.h>
 #include <graphics/api/vulkan/texture/TextureReader.h>
 
 namespace urchin {
