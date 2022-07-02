@@ -1,6 +1,7 @@
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
+#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 

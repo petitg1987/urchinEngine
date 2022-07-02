@@ -1,8 +1,9 @@
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
-#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
+#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 

@@ -3,6 +3,7 @@
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphics/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
+#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 

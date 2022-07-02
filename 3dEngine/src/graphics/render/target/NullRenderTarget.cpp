@@ -1,4 +1,4 @@
-#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
+#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 

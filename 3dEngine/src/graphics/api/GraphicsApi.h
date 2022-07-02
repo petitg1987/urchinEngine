@@ -9,7 +9,6 @@
     #include <graphics/api/vulkan/render/target/RenderTarget.h>
     #include <graphics/api/vulkan/render/target/OffscreenRender.h>
     #include <graphics/api/vulkan/render/target/ScreenRender.h>
-    #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
     #include <graphics/api/vulkan/render/shader/Shader.h>
     #include <graphics/api/vulkan/texture/Texture.h>
     #include <graphics/api/vulkan/texture/TextureParam.h>
