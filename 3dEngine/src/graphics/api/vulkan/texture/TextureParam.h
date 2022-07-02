@@ -6,6 +6,8 @@ namespace urchin {
 
     class TextureParam {
         public:
+            friend class GenericRenderer;
+
             enum ReadMode {
                 EDGE_CLAMP,
                 REPEAT
@@ -35,16 +37,16 @@ namespace urchin {
             void initialize(uint32_t);
             void cleanup();
 
-            VkSampler getTextureSampler() const;
-
             friend bool operator== (const TextureParam&, const TextureParam&);
 
         private:
             TextureParam(ReadMode, ReadQuality, Anisotropy);
 
+            VkSampler getTextureSampler() const;
             VkSamplerAddressMode getVkReadMode() const;
             VkFilter getVkReadQuality() const;
             VkSamplerMipmapMode getVkMipmapReadQuality() const;
+
             bool needAnisotropy() const;
 
             bool isInitialized;
