@@ -49,12 +49,6 @@
 
 #include <resources/ResourceRetriever.h>
 #include <resources/material/MaterialBuilder.h>
-
-#include <graphics/shader/ShaderConfig.h>
-#include <graphics/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererComparator.h>
-#include <graphics/api/GraphicsApi.h>
-
 #include <resources/geometry/GeometryModel.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
 #include <resources/geometry/capsule/CapsuleModel.h>
@@ -64,3 +58,10 @@
 #include <resources/geometry/triangles/TrianglesModel.h>
 #include <resources/geometry/sphere/SphereModel.h>
 #include <resources/geometry/convexhull/ConvexHullModel.h>
+
+#include <loader/image/LoaderPNG.h>
+
+#include <graphics/shader/ShaderConfig.h>
+#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/GenericRendererComparator.h>
+#include <graphics/api/GraphicsApi.h>

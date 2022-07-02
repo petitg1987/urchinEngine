@@ -7,10 +7,6 @@
 
 namespace urchin {
 
-    GraphicsApiService::GraphicsApiService() {
-        GraphicsSetupService::instance();
-    }
-
     void GraphicsApiService::enableUniqueSurface() {
         GraphicsSetupService::enableUniqueSurface();
     }

@@ -20,7 +20,7 @@ namespace urchin {
             void frameEnd() const;
 
         private:
-            GraphicsApiService();
+            GraphicsApiService() = default;
     };
 
 }
