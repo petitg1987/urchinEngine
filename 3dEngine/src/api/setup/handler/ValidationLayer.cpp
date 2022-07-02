@@ -77,11 +77,10 @@ namespace urchin {
     }
 
     std::vector<std::string> ValidationLayer::getRequiredExtensions() const {
-        std::vector<std::string> requiredExtensions = {VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME};
         if (validationLevel >= 2) {
-            requiredExtensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+            return {VK_EXT_DEBUG_UTILS_EXTENSION_NAME};
         }
-        return requiredExtensions;
+        return {};
     }
 
     bool ValidationLayer::checkValidationLayerSupport() const {

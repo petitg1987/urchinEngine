@@ -5,7 +5,6 @@
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <api/render/GenericRendererBuilder.h>
 #include <api/render/shader/builder/ShaderBuilder.h>
-#include <api/render/pipeline/PipelineContainer.h>
 #include <api/render/target/NullRenderTarget.h>
 
 namespace urchin {
@@ -303,7 +302,6 @@ namespace urchin {
         renderDebugFramebuffers(screenRenderingOrder);
 
         postUpdateScene();
-        PipelineContainer::instance().cleanPipelines();
     }
 
     void Renderer3d::registerModelForAnimation(Model& model) {

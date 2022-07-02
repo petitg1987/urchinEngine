@@ -5,6 +5,7 @@
 #include <libs/vma/vk_mem_alloc.h>
 #include <api/setup/handler/QueueHandler.h>
 #include <api/helper/MemoryHelper.h>
+#include <api/render/pipeline/PipelineContainer.h>
 using namespace urchin;
 
 namespace urchin {
@@ -148,6 +149,7 @@ namespace urchin {
 
     void GraphicService::frameEnd() const {
         MemoryHelper::checkMemoryUsage();
+        PipelineContainer::instance().cleanPipelines();
     }
 
     void GraphicService::createAllocateCommandPool() {
