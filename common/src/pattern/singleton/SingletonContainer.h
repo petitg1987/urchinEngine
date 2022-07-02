@@ -1,30 +1,19 @@
 #pragma once
 
 #include <string>
-#include <map>
+#include <vector>
 #include <memory>
 
 #include <pattern/singleton/SingletonInterface.h>
 
-#ifdef DWIN
-    #ifdef __cplusplus
-        extern "C" {
-    #endif
-    #ifdef DLIB
-        #define DLL_EXPORT __declspec(dllexport)
-    #else
-        #define DLL_EXPORT __declspec(dllimport)
-    #endif
-#else
-    #define DLL_EXPORT
-#endif
-
 namespace urchin {
 
-    /**
-     * Map with the singletons
-     */
-    class DLL_EXPORT SingletonContainer {
+    struct SingletonData {
+        std::string name;
+        std::unique_ptr<SingletonInterface> ptr;
+    };
+
+    class SingletonContainer {
         public:
             static void registerSingleton(const std::string&, std::unique_ptr<SingletonInterface>);
 
@@ -34,13 +23,7 @@ namespace urchin {
             SingletonContainer() = default;
             ~SingletonContainer() = default;
 
-            static std::map<std::string, std::unique_ptr<SingletonInterface>, std::less<>> singletons;
+            static std::vector<SingletonData> singletonsVector;
     };
 
 }
-
-#ifdef DWIN
-    #ifdef __cplusplus
-        }
-    #endif
-#endif

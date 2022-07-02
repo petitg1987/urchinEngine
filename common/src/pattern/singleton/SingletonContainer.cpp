@@ -1,21 +1,18 @@
-#include <cassert>
-
 #include <pattern/singleton/SingletonContainer.h>
 
 namespace urchin {
 
     //static
-    std::map<std::string, std::unique_ptr<SingletonInterface>, std::less<>> SingletonContainer::singletons;
+    std::vector<SingletonData> SingletonContainer::singletonsVector;
 
     void SingletonContainer::registerSingleton(const std::string& name, std::unique_ptr<SingletonInterface> ptr) {
-        #ifdef URCHIN_DEBUG
-            assert(singletons.find(name) == singletons.end());
-        #endif
-        singletons.try_emplace(name, std::move(ptr));
+        singletonsVector.emplace_back(SingletonData{.name = name, .ptr = std::move(ptr)});
     }
 
     void SingletonContainer::destroyAllSingletons() {
-        singletons.clear();
+        for (int i = (int)singletonsVector.size() - 1; i >= 0; --i) {
+            singletonsVector.resize((std::size_t)i); //destroy singletons in FILO
+        }
     }
 
 }
