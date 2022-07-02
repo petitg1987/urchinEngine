@@ -353,7 +353,7 @@ namespace urchin {
         return renderDependencies;
     }
 
-    void RenderTarget::configureWaitSemaphore(std::uint64_t frameIndex, VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
+    void RenderTarget::configureWaitSemaphore(std::uint32_t frameIndex, VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
         queueSubmitWaitSemaphores.clear();
         queueSubmitWaitStages.clear();
 

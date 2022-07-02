@@ -32,8 +32,10 @@ namespace urchin {
             const QueueHandler& getQueues() const;
             VkCommandPool getAllocateCommandPool() const;
             VmaAllocator getAllocator() const;
-
             const ValidationLayer& getValidationLayer() const;
+
+            void frameStart(std::uint32_t) const;
+            void frameEnd() const;
 
         private:
             GraphicService();

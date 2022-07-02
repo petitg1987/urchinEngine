@@ -4,6 +4,7 @@
 #define VMA_IMPLEMENTATION
 #include <libs/vma/vk_mem_alloc.h>
 #include <api/setup/handler/QueueHandler.h>
+#include <api/helper/MemoryHelper.h>
 using namespace urchin;
 
 namespace urchin {
@@ -140,6 +141,15 @@ namespace urchin {
         return validationLayer;
     }
 
+    void GraphicService::frameStart(std::uint32_t frameIndex) const {
+        //required for memory budget: https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/staying_within_budget.html
+        vmaSetCurrentFrameIndex(GraphicService::instance().getAllocator(), frameIndex);
+    }
+
+    void GraphicService::frameEnd() const {
+        MemoryHelper::checkMemoryUsage();
+    }
+
     void GraphicService::createAllocateCommandPool() {
         VkCommandPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -158,6 +168,7 @@ namespace urchin {
         allocatorInfo.physicalDevice = deviceHandler.getPhysicalDevice();
         allocatorInfo.device = deviceHandler.getLogicalDevice();
         allocatorInfo.instance = vkInstance;
+        allocatorInfo.flags = VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
 
         vmaCreateAllocator(&allocatorInfo, &allocator);
     }

@@ -29,7 +29,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyBloom(std::uint64_t, unsigned int) const;
+            void applyBloom(std::uint32_t, unsigned int) const;
 
         private:
             void checkConfig() const;

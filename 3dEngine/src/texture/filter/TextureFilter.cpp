@@ -116,7 +116,7 @@ namespace urchin {
         return *textureRenderer;
     }
 
-    void TextureFilter::applyFilter(std::uint64_t frameIndex, unsigned int numDependenciesToOutputTextures) const {
+    void TextureFilter::applyFilter(std::uint32_t frameIndex, unsigned int numDependenciesToOutputTextures) const {
         if (!isInitialized) {
             throw std::runtime_error("Texture filter must be initialized before apply.");
         }

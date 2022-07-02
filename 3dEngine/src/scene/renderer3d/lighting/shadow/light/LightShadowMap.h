@@ -34,13 +34,13 @@ namespace urchin {
 
             void addTextureFilter(std::unique_ptr<TextureFilter>);
             bool hasTextureFilter() const;
-            void applyTextureFilters(std::uint64_t, unsigned int) const;
+            void applyTextureFilters(std::uint32_t, unsigned int) const;
             const std::shared_ptr<Texture>& getFilteredShadowMapTexture() const;
 
             const Matrix4<float>& getLightViewMatrix() const;
             void removeModel(Model* model) const;
 
-            void renderModels(std::uint64_t, unsigned int, unsigned int) const;
+            void renderModels(std::uint32_t, unsigned int, unsigned int) const;
 
         private:
             void createOrUpdateShadowModelSetDisplayer(unsigned int);

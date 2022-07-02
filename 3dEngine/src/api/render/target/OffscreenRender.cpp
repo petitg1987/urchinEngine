@@ -211,7 +211,7 @@ namespace urchin {
         }
     }
 
-    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint64_t frameIndex) {
+    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint32_t frameIndex) {
         if (submitSemaphoresFrameIndex == frameIndex) {
             if (remainingSubmitSemaphores == 0) {
                 throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex));
@@ -224,12 +224,12 @@ namespace urchin {
         return nullptr;
     }
 
-    void OffscreenRender::markSubmitSemaphoreUnused(std::uint64_t frameIndex) {
+    void OffscreenRender::markSubmitSemaphoreUnused(std::uint32_t frameIndex) {
         popSubmitSemaphore(frameIndex);
         submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }
 
-    void OffscreenRender::render(std::uint64_t frameIndex, unsigned int numDependenciesToOutputs) {
+    void OffscreenRender::render(std::uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
 

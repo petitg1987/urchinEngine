@@ -268,7 +268,7 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::updateAOTexture(std::uint64_t frameIndex, unsigned int numDependenciesToAOTexture, const Camera& camera) {
+    void AmbientOcclusionManager::updateAOTexture(std::uint32_t frameIndex, unsigned int numDependenciesToAOTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();

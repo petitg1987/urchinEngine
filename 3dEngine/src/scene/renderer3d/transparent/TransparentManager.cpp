@@ -104,7 +104,7 @@ namespace urchin {
         }
     }
 
-    void TransparentManager::updateTransparentTextures(std::uint64_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
+    void TransparentManager::updateTransparentTextures(std::uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 

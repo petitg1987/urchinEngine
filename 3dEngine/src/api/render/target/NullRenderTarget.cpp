@@ -54,7 +54,7 @@ namespace urchin {
         //nothing to do
     }
 
-    void NullRenderTarget::render(std::uint64_t, unsigned int) {
+    void NullRenderTarget::render(std::uint32_t, unsigned int) {
         //nothing to do
     }
 }

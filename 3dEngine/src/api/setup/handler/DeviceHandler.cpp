@@ -50,7 +50,8 @@ namespace urchin {
                 // - Test date: 18/04/2022
         };
         physicalDeviceRequiredExtensions = {
-                std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain")
+                std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain"),
+                std::make_pair<const char*, std::string>(VK_EXT_MEMORY_BUDGET_EXTENSION_NAME, "memory budget")
         };
     }
 

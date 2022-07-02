@@ -61,7 +61,7 @@ namespace urchin {
             std::span<Model* const> getVisibleModels() const;
             void removeModel(Model*) const;
 
-            void updateShadowMaps(std::uint64_t, unsigned int) const;
+            void updateShadowMaps(std::uint32_t, unsigned int) const;
             void loadShadowMaps(GenericRenderer&, std::size_t);
 
         private:

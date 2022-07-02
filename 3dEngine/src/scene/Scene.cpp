@@ -257,6 +257,7 @@ namespace urchin {
         {
             ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");
 
+            GraphicService::instance().frameStart(frameIndex);
             handleFpsLimiter();
             computeFps();
             float dt = getDeltaTime();
@@ -272,6 +273,7 @@ namespace urchin {
             screenRenderTarget.render(frameIndex, 0);
 
             ResourceContainer::instance().cleanResources();
+            GraphicService::instance().frameEnd();
             frameIndex++;
         }
 

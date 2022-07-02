@@ -155,7 +155,7 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
             bool octreeResized = addOctreeable(movingOctreeable);
 
             static unsigned int numErrorsLogged = 0;
-            if (octreeResized && numErrorsLogged < MAX_ERRORS_LOG) {
+            if (octreeResized && numErrorsLogged < MAX_ERRORS_LOG) [[unlikely]] {
                 Logger::instance().logWarning("Octree resized due to a moving octreeable: " + movingOctreeable->getName());
                 numErrorsLogged++;
             }
