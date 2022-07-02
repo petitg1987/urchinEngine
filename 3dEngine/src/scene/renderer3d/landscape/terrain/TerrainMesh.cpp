@@ -2,11 +2,9 @@
 #include <functional>
 #include <fstream>
 
+#include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
 #include <resources/ResourceRetriever.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
-
-
 
 namespace urchin {
 

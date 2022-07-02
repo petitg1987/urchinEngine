@@ -8,7 +8,7 @@
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/widget/text/Text.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

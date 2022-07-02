@@ -1,6 +1,4 @@
-#include <stdexcept>
-
-#include <graphics/api/vulkan/render/blend/BlendFunction.h>
+#include <graphics/render/data/BlendFunction.h>
 
 namespace urchin {
 
@@ -31,6 +29,10 @@ namespace urchin {
         return BlendFunction(false, BlendFactor::ONE, BlendFactor::ZERO, BlendFactor::ONE, BlendFactor::ZERO);
     }
 
+    bool BlendFunction::isBlendEnabled() const {
+        return bIsBlendEnabled;
+    }
+
     BlendFactor BlendFunction::getSrcColorFactor() const {
         return srcColorFactor;
     }
@@ -45,33 +47,6 @@ namespace urchin {
 
     BlendFactor BlendFunction::getDstAlphaFactor() const {
         return dstAlphaFactor;
-    }
-
-    void BlendFunction::setupColorBlend(VkPipelineColorBlendAttachmentState& colorBlendAttachment) const {
-        colorBlendAttachment.blendEnable = bIsBlendEnabled ? VK_TRUE : VK_FALSE;
-
-        colorBlendAttachment.srcColorBlendFactor = toVkBlenderFactor(srcColorFactor);
-        colorBlendAttachment.dstColorBlendFactor = toVkBlenderFactor(dstColorFactor);
-        colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
-
-        colorBlendAttachment.srcAlphaBlendFactor = toVkBlenderFactor(srcAlphaFactor);
-        colorBlendAttachment.dstAlphaBlendFactor = toVkBlenderFactor(dstAlphaFactor);
-        colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
-    }
-
-    VkBlendFactor BlendFunction::toVkBlenderFactor(BlendFactor blendFactor) const {
-        if (blendFactor == BlendFactor::SRC_ALPHA) {
-            return VK_BLEND_FACTOR_SRC_ALPHA;
-        } else if (blendFactor == BlendFactor::ONE_MINUS_SRC_ALPHA) {
-            return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-        } else if (blendFactor == BlendFactor::ONE_MINUS_SRC_COLOR) {
-            return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
-        } else if (blendFactor == BlendFactor::ONE) {
-            return VK_BLEND_FACTOR_ONE;
-        } else if (blendFactor == BlendFactor::ZERO) {
-            return VK_BLEND_FACTOR_ZERO;
-        }
-        throw std::runtime_error("Unknown blend factor: " + std::to_string((int)blendFactor));
     }
 
 }

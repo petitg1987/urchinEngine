@@ -5,9 +5,7 @@
 #include <map>
 #include <vector>
 
-#include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

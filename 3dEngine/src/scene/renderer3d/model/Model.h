@@ -12,7 +12,7 @@
 #include <scene/renderer3d/model/displayer/ModelDisplayable.h>
 #include <resources/model/ConstMeshes.h>
 #include <resources/model/ConstAnimation.h>
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

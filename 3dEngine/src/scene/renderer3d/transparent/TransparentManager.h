@@ -5,8 +5,7 @@
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

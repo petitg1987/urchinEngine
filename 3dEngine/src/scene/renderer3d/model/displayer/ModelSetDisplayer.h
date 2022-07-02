@@ -6,8 +6,7 @@
 #include <unordered_set>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
 #include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>

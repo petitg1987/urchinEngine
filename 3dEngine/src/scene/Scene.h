@@ -7,8 +7,7 @@
 
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/ui/UIRenderer.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
-#include <graphics/api/vulkan/render/target/ScreenRender.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

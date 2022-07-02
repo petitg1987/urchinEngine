@@ -12,7 +12,7 @@
 #include <scene/ui/allocator/StringConverterAllocator.h>
 #include <i18n/TranslatableLabel.h>
 #include <resources/font/Font.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

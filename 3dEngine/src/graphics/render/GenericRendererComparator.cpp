@@ -1,5 +1,5 @@
 #include <graphics/render/GenericRendererComparator.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

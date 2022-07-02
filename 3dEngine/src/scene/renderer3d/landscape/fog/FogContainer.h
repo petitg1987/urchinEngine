@@ -3,10 +3,9 @@
 #include <stack>
 #include <memory>
 
-#include <scene/renderer3d/landscape/fog/Fog.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 #include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/api/vulkan/render/shader/Shader.h>
+#include <scene/renderer3d/landscape/fog/Fog.h>
 
 namespace urchin {
 

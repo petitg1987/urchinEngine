@@ -4,9 +4,10 @@
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 #include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/data/DataContainer.h>
-#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
+#include <graphics/texture/TextureReader.h>
 
 namespace urchin {
 

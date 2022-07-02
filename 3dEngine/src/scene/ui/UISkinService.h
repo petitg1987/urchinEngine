@@ -4,6 +4,7 @@
 #include <memory>
 #include <UrchinCommon.h>
 
+#include <graphics/api/GraphicsApi.h>
 #include <resources/image/Image.h>
 #include <scene/ui/widget/LengthType.h>
 

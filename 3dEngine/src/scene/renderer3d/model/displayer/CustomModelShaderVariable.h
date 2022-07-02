@@ -3,9 +3,8 @@
 #include <UrchinCommon.h>
 
 #include <scene/renderer3d/model/Model.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 #include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/api/vulkan/render/shader/Shader.h>
 
 namespace urchin {
 

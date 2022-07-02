@@ -5,7 +5,6 @@
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 

@@ -9,7 +9,7 @@
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
 #include <resources/image/Image.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

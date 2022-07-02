@@ -1,6 +1,6 @@
 #pragma once
 
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/landscape/sky/Skybox.h>
 

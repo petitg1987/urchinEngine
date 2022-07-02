@@ -1,6 +1,4 @@
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
-#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/shader/ShaderBuilder.h>
 

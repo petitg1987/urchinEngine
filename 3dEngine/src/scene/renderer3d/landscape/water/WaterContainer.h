@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/landscape/water/Water.h>
 #include <scene/renderer3d/landscape/fog/FogContainer.h>

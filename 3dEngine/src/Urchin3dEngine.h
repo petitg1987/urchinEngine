@@ -53,7 +53,7 @@
 #include <graphics/shader/ShaderConfig.h>
 #include <graphics/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererComparator.h>
-#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
+#include <graphics/api/GraphicsApi.h>
 
 #include <resources/geometry/GeometryModel.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>

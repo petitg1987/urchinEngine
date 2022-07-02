@@ -1,7 +1,6 @@
 #pragma once
 
-#include <vulkan/vulkan.h>
-#include <graphics/api/vulkan/render/blend/BlendFactor.h>
+#include <graphics/render/data/BlendFactor.h>
 
 namespace urchin {
 
@@ -11,17 +10,14 @@ namespace urchin {
             static BlendFunction buildDefault();
             static BlendFunction buildBlendDisabled();
 
+            bool isBlendEnabled() const;
             BlendFactor getSrcColorFactor() const;
             BlendFactor getDstColorFactor() const;
             BlendFactor getSrcAlphaFactor() const;
             BlendFactor getDstAlphaFactor() const;
 
-            void setupColorBlend(VkPipelineColorBlendAttachmentState& colorBlendAttachment) const;
-
         private:
             BlendFunction(bool, BlendFactor, BlendFactor, BlendFactor, BlendFactor);
-
-            VkBlendFactor toVkBlenderFactor(BlendFactor) const;
 
             bool bIsBlendEnabled;
 

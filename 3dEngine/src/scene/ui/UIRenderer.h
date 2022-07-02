@@ -3,8 +3,7 @@
 #include <set>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/GraphicsApi.h>
 #include <scene/Renderer.h>
 #include <scene/ui/widget/Widget.h>
 #include <scene/renderer3d/camera/CameraSpaceService.h>

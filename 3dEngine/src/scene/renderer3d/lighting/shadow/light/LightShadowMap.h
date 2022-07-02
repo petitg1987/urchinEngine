@@ -5,7 +5,7 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
+#include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>

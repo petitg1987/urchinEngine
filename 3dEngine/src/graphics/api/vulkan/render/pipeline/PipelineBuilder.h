@@ -7,13 +7,14 @@
 #include <graphics/render/data/DataContainer.h>
 #include <graphics/render/data/ShapeType.h>
 #include <graphics/render/data/PolygonMode.h>
-#include <graphics/texture/TextureReader.h>
-#include <graphics/api/vulkan/render/blend/BlendFunction.h>
+#include <graphics/render/data/BlendFunction.h>
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 
 namespace urchin {
+
+    class TextureReader;
 
     class PipelineBuilder {
         public:
@@ -39,7 +40,9 @@ namespace urchin {
             void createGraphicsPipeline(const std::shared_ptr<Pipeline>&);
             VkPrimitiveTopology shapeTypeToVulkanTopology() const;
             bool isShapeTypeListTopology() const;
+
             VkFormat getVulkanFormat(const DataContainer&, unsigned int&) const;
+            VkBlendFactor toVkBlenderFactor(BlendFactor) const;
 
             std::string name;
             const RenderTarget* renderTarget;

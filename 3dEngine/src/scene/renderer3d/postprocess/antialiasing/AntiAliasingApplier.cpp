@@ -2,8 +2,6 @@
 
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {

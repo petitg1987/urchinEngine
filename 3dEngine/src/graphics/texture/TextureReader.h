@@ -2,8 +2,7 @@
 
 #include <memory>
 
-#include <graphics/api/vulkan/texture/Texture.h>
-#include <graphics/api/vulkan/texture/TextureParam.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

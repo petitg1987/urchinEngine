@@ -3,7 +3,7 @@
 #include <memory>
 #include <resources/material/UvScale.h>
 #include <resources/material/Material.h>
-#include <graphics/api/vulkan/texture/Texture.h>
+#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

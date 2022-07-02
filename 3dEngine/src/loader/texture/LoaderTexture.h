@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <graphics/api/vulkan/texture/Texture.h>
+#include <graphics/api/GraphicsApi.h>
 #include <loader/Loader.h>
 
 namespace urchin {

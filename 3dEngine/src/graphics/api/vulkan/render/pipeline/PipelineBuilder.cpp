@@ -1,9 +1,10 @@
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
-#include <graphics/render/data/PolygonMode.h>
-#include <graphics/api/vulkan/render/blend/BlendFunction.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 #include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/render/data/PolygonMode.h>
+#include <graphics/render/data/BlendFunction.h>
+#include <graphics/texture/TextureReader.h>
 
 namespace urchin {
 
@@ -293,7 +294,16 @@ namespace urchin {
         for (std::size_t i = 0; i < renderTarget->getNumColorAttachment(); ++i) {
             VkPipelineColorBlendAttachmentState colorBlendAttachment{};
             colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-            blendFunctions[i].setupColorBlend(colorBlendAttachment);
+            colorBlendAttachment.blendEnable = blendFunctions[i].isBlendEnabled() ? VK_TRUE : VK_FALSE;
+
+            colorBlendAttachment.srcColorBlendFactor = toVkBlenderFactor(blendFunctions[i].getSrcColorFactor());
+            colorBlendAttachment.dstColorBlendFactor = toVkBlenderFactor(blendFunctions[i].getDstColorFactor());
+            colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+
+            colorBlendAttachment.srcAlphaBlendFactor = toVkBlenderFactor(blendFunctions[i].getSrcAlphaFactor());
+            colorBlendAttachment.dstAlphaBlendFactor = toVkBlenderFactor(blendFunctions[i].getDstAlphaFactor());
+            colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+
             colorBlendAttachments.push_back(colorBlendAttachment);
         }
         VkPipelineColorBlendStateCreateInfo colorBlending{};
@@ -394,6 +404,21 @@ namespace urchin {
             throw std::runtime_error("Unknown variable type: " + std::to_string((int)dataContainer.getVariableType()));
         }
         throw std::runtime_error("Unknown data type: " + std::to_string((int)dataContainer.getDataType()));
+    }
+
+    VkBlendFactor PipelineBuilder::toVkBlenderFactor(BlendFactor blendFactor) const {
+        if (blendFactor == BlendFactor::SRC_ALPHA) {
+            return VK_BLEND_FACTOR_SRC_ALPHA;
+        } else if (blendFactor == BlendFactor::ONE_MINUS_SRC_ALPHA) {
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+        } else if (blendFactor == BlendFactor::ONE_MINUS_SRC_COLOR) {
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
+        } else if (blendFactor == BlendFactor::ONE) {
+            return VK_BLEND_FACTOR_ONE;
+        } else if (blendFactor == BlendFactor::ZERO) {
+            return VK_BLEND_FACTOR_ZERO;
+        }
+        throw std::runtime_error("Unknown blend factor: " + std::to_string((int)blendFactor));
     }
 
 }

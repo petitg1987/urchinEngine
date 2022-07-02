@@ -6,8 +6,6 @@
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <texture/filter/TextureFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
-#include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
 
 namespace urchin {
 
