@@ -4,7 +4,7 @@
 #include <scene/ui/UIRenderer.h>
 #include <resources/ResourceRetriever.h>
 #include <resources/font/Font.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
 

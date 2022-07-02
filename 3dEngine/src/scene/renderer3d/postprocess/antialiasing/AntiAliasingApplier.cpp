@@ -1,10 +1,10 @@
 #include <map>
 
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
-#include <api/render/target/NullRenderTarget.h>
-#include <api/render/target/OffscreenRender.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
+#include <graphics/api/vulkan/render/target/OffscreenRender.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

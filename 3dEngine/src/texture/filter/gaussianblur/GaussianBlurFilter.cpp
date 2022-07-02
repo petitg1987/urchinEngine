@@ -5,7 +5,7 @@
 
 #include <texture/filter/gaussianblur/GaussianBlurFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

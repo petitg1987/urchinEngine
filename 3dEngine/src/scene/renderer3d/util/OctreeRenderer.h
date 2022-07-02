@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <resources/geometry/aabbox/AABBoxModel.h>
-#include <api/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
 
 namespace urchin {
 

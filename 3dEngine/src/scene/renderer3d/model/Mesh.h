@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <api/render/GenericRenderer.h>
-#include <api/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <resources/model/ConstMesh.h>
 #include <resources/geometry/sphere/SphereModel.h>
 #include <resources/geometry/GeometryContainer.h>

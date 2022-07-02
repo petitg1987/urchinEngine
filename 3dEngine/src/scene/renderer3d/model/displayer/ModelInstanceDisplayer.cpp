@@ -3,7 +3,7 @@
 #include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
 #include <resources/material/UvScale.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

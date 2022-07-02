@@ -1,9 +1,9 @@
 #include <stdexcept>
 
 #include <texture/filter/TextureFilter.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
-#include <api/render/GenericRendererBuilder.h>
-#include <api/render/target/NullRenderTarget.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 
 namespace urchin {
 

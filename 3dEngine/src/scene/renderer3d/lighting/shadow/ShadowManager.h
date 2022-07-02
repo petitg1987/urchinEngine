@@ -12,7 +12,7 @@
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <api/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/model/Shader.h>
 
 namespace urchin {
 

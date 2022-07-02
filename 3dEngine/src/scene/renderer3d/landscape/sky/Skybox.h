@@ -5,9 +5,9 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <api/render/shader/model/Shader.h>
-#include <api/render/target/RenderTarget.h>
-#include <api/render/GenericRenderer.h>
+#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <resources/image/Image.h>
 #include <scene/renderer3d/camera/Camera.h>
 

@@ -1,5 +1,5 @@
 #include <scene/renderer3d/model/Mesh.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 #include <resources/model/MeshService.h>
 
 namespace urchin {

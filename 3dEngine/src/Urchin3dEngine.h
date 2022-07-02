@@ -50,10 +50,10 @@
 #include <resources/ResourceRetriever.h>
 #include <resources/material/MaterialBuilder.h>
 
-#include <api/render/shader/config/ShaderConfig.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
-#include <api/render/GenericRendererComparator.h>
-#include <api/render/target/NullRenderTarget.h>
+#include <graphics/api/vulkan/render/shader/config/ShaderConfig.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererComparator.h>
+#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 
 #include <resources/geometry/GeometryModel.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>

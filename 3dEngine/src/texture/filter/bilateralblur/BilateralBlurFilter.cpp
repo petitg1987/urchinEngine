@@ -2,8 +2,8 @@
 
 #include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

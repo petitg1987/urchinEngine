@@ -1,11 +1,11 @@
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
-#include <api/render/GenericRendererBuilder.h>
-#include <api/render/target/OffscreenRender.h>
-#include <api/render/target/NullRenderTarget.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
-#include <api/texture/Texture.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/target/OffscreenRender.h>
+#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/texture/Texture.h>
 
 namespace urchin {
 

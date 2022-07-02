@@ -4,7 +4,7 @@
 #include <memory>
 
 #include <resources/Resource.h>
-#include <api/texture/Texture.h>
+#include <graphics/api/vulkan/texture/Texture.h>
 
 namespace urchin {
 

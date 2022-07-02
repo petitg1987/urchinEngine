@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include <api/texture/Texture.h>
-#include <api/render/target/RenderTarget.h>
-#include <api/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/texture/Texture.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/shader/model/Shader.h>
 
 namespace urchin {
 

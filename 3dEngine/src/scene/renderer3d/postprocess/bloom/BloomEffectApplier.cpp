@@ -1,8 +1,8 @@
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
-#include <api/render/target/OffscreenRender.h>
-#include <api/render/target/NullRenderTarget.h>
-#include <api/render/GenericRendererBuilder.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/target/OffscreenRender.h>
+#include <graphics/api/vulkan/render/target/NullRenderTarget.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
 

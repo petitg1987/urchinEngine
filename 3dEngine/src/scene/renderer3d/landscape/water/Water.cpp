@@ -1,7 +1,7 @@
 #include <scene/renderer3d/landscape/water/Water.h>
 #include <resources/ResourceRetriever.h>
-#include <api/render/GenericRendererBuilder.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
 

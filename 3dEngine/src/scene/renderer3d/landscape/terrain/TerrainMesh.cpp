@@ -4,7 +4,7 @@
 
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
 #include <resources/ResourceRetriever.h>
-#include <api/render/GenericRenderer.h>
+#include <graphics/api/vulkan/render/GenericRenderer.h>
 
 
 

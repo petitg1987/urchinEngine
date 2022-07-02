@@ -4,7 +4,7 @@
 #include <mutex>
 #include <UrchinCommon.h>
 
-#include <api/render/GenericRenderer.h>
+#include <graphics/api/vulkan/render/GenericRenderer.h>
 
 namespace urchin {
 

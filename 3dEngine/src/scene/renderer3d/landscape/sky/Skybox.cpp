@@ -2,9 +2,9 @@
 
 #include <scene/renderer3d/landscape/sky/Skybox.h>
 #include <resources/ResourceRetriever.h>
-#include <api/render/GenericRendererBuilder.h>
-#include <api/texture/Texture.h>
-#include <api/render/shader/builder/ShaderBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/texture/Texture.h>
+#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
 
 namespace urchin {
 

@@ -3,7 +3,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <api/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <resources/geometry/GeometryModel.h>
 #include <scene/renderer3d/camera/Camera.h>
 

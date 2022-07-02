@@ -5,8 +5,8 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <api/render/shader/model/Shader.h>
-#include <api/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <scene/renderer3d/landscape/terrain/TerrainMaterial.h>
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>

@@ -23,11 +23,11 @@
 #include <scene/renderer3d/ui/UiContainer.h>
 #include <resources/geometry/GeometryContainer.h>
 #include <resources/geometry/GeometryModel.h>
-#include <api/render/shader/model/Shader.h>
-#include <api/render/GenericRenderer.h>
-#include <api/render/target/ScreenRender.h>
-#include <api/render/target/OffscreenRender.h>
-#include <api/texture/Texture.h>
+#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/vulkan/render/target/ScreenRender.h>
+#include <graphics/api/vulkan/render/target/OffscreenRender.h>
+#include <graphics/api/vulkan/texture/Texture.h>
 #include <texture/render/TextureRenderer.h>
 
 namespace urchin {

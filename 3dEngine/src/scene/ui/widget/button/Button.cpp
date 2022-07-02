@@ -3,7 +3,7 @@
 
 #include <scene/ui/widget/button/Button.h>
 #include <scene/ui/UISkinService.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

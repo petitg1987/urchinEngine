@@ -11,8 +11,8 @@
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/EventListener.h>
 #include <i18n/I18nService.h>
-#include <api/render/target/RenderTarget.h>
-#include <api/render/GenericRendererBuilder.h>
+#include <graphics/api/vulkan/render/target/RenderTarget.h>
+#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
