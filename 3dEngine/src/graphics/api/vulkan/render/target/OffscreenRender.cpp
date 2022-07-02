@@ -115,15 +115,6 @@ namespace urchin {
         return outputTextures.size();
     }
 
-    std::size_t OffscreenRender::hasOutputTextureWithContentToLoad() const {
-        for (const OutputTexture& outputTexture : outputTextures) {
-            if (outputTexture.loadOperation == LoadType::LOAD_CONTENT) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     std::size_t OffscreenRender::getNumFramebuffer() const {
         return 1;
     }
@@ -211,24 +202,6 @@ namespace urchin {
         }
     }
 
-    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint32_t frameIndex) {
-        if (submitSemaphoresFrameIndex == frameIndex) {
-            if (remainingSubmitSemaphores == 0) {
-                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex));
-            }
-            return submitSemaphores[--remainingSubmitSemaphores];
-        }
-
-        //This render target has been generated in a previous frame: therefore, the synchronization is already done and no need to be redone. Typical case is when the render target is cached.
-        assert(submitSemaphoresFrameIndex < frameIndex);
-        return nullptr;
-    }
-
-    void OffscreenRender::markSubmitSemaphoreUnused(std::uint32_t frameIndex) {
-        popSubmitSemaphore(frameIndex);
-        submitSemaphoresStale = true; //an unused semaphore is considered as stale
-    }
-
     void OffscreenRender::render(std::uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
         auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
@@ -286,6 +259,24 @@ namespace urchin {
                 && getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT /* currently, assume that write is not done in the external depth attachment: could be not true anymore in the future ! */) {
             depthTexture->setLastTextureWriter(this);
         }
+    }
+
+    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint32_t frameIndex) {
+        if (submitSemaphoresFrameIndex == frameIndex) {
+            if (remainingSubmitSemaphores == 0) {
+                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex));
+            }
+            return submitSemaphores[--remainingSubmitSemaphores];
+        }
+
+        //This render target has been generated in a previous frame: therefore, the synchronization is already done and no need to be redone. Typical case is when the render target is cached.
+        assert(submitSemaphoresFrameIndex < frameIndex);
+        return nullptr;
+    }
+
+    void OffscreenRender::markSubmitSemaphoreUnused(std::uint32_t frameIndex) {
+        popSubmitSemaphore(frameIndex);
+        submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }
 
     bool OffscreenRender::needCommandBufferRefresh(std::size_t frameIndex) const {

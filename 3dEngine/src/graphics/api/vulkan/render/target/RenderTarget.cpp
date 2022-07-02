@@ -36,10 +36,6 @@ namespace urchin {
         return true;
     }
 
-    VkRenderPass RenderTarget::getRenderPass() const {
-        return renderPass;
-    }
-
     std::size_t RenderTarget::getRenderPassCompatibilityId() const {
         return renderPassCompatibilityId;
     }
@@ -334,6 +330,10 @@ namespace urchin {
 
     void RenderTarget::destroyCommandBuffersAndPool() {
         vkDestroyCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
+    }
+
+    VkRenderPass RenderTarget::getRenderPass() const {
+        return renderPass;
     }
 
     std::span<OffscreenRender*> RenderTarget::getRenderDependencies() const {

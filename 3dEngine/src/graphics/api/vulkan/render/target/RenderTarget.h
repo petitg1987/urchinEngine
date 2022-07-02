@@ -15,15 +15,13 @@ namespace urchin {
 
     class RenderTarget {
         public:
+            friend class PipelineBuilder;
+
             enum DepthAttachmentType {
                 NO_DEPTH_ATTACHMENT, //no depth attachment
                 LOCAL_DEPTH_ATTACHMENT, //depth attachment which cannot be used outside this render target
                 SHARED_DEPTH_ATTACHMENT, //depth attachment which can be read and write outside this render target
                 EXTERNAL_DEPTH_ATTACHMENT //existing depth attachment from another render target (must be provided via 'setExternalDepthTexture')
-            };
-            struct WaitSemaphore {
-                VkSemaphore waitSemaphore;
-                VkPipelineStageFlagBits waitDstStageMask;
             };
 
             explicit RenderTarget(std::string, DepthAttachmentType);
@@ -39,8 +37,6 @@ namespace urchin {
             virtual unsigned int getLayer() const = 0;
             virtual std::size_t getNumFramebuffer() const = 0;
             virtual std::size_t getNumColorAttachment() const = 0;
-            virtual std::size_t hasOutputTextureWithContentToLoad() const = 0;
-            VkRenderPass getRenderPass() const;
             std::size_t getRenderPassCompatibilityId() const;
 
             bool hasDepthAttachment() const;
@@ -57,6 +53,11 @@ namespace urchin {
             virtual void render(std::uint32_t, unsigned int) = 0;
 
         protected:
+            struct WaitSemaphore {
+                VkSemaphore waitSemaphore;
+                VkPipelineStageFlagBits waitDstStageMask;
+            };
+
             void initializeRenderers();
             void cleanupRenderers() const;
             std::span<GenericRenderer* const> getRenderers() const;
@@ -75,6 +76,7 @@ namespace urchin {
             void createCommandPool();
             void destroyCommandBuffersAndPool();
 
+            VkRenderPass getRenderPass() const;
             std::span<OffscreenRender*> getRenderDependencies() const;
             void configureWaitSemaphore(std::uint32_t, VkSubmitInfo&, std::optional<WaitSemaphore>) const;
 

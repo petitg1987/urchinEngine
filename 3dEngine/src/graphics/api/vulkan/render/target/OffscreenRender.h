@@ -22,6 +22,9 @@ namespace urchin {
 
     class OffscreenRender : public RenderTarget {
         public:
+            friend class RenderTarget;
+            friend class ScreenRender;
+
             explicit OffscreenRender(std::string, DepthAttachmentType);
             ~OffscreenRender() override;
 
@@ -36,10 +39,6 @@ namespace urchin {
             unsigned int getLayer() const override;
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
-            std::size_t hasOutputTextureWithContentToLoad() const override;
-
-            VkSemaphore popSubmitSemaphore(std::uint32_t);
-            void markSubmitSemaphoreUnused(std::uint32_t);
 
             void render(std::uint32_t, unsigned int) override;
 
@@ -53,6 +52,9 @@ namespace urchin {
             void destroySemaphores() const;
 
             void updateTexturesWriter();
+
+            VkSemaphore popSubmitSemaphore(std::uint32_t);
+            void markSubmitSemaphoreUnused(std::uint32_t);
 
             bool needCommandBufferRefresh(std::size_t) const override;
             void waitCommandBuffersIdle() const override;

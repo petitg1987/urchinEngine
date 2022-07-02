@@ -112,10 +112,6 @@ namespace urchin {
         return 1;
     }
 
-    std::size_t ScreenRender::hasOutputTextureWithContentToLoad() const {
-        return false;
-    }
-
     void ScreenRender::takeScreenshot(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         assert(vkImageIndex != std::numeric_limits<uint32_t>::max());
         VkImage srcImage = swapChainHandler.getSwapChainImages()[vkImageIndex];

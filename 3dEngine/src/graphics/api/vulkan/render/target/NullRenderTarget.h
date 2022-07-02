@@ -20,7 +20,6 @@ namespace urchin {
             unsigned int getLayer() const override;
             std::size_t getNumFramebuffer() const override;
             std::size_t getNumColorAttachment() const override;
-            std::size_t hasOutputTextureWithContentToLoad() const override;
 
             void render(std::uint32_t, unsigned int) override;
 
