@@ -26,7 +26,7 @@
 #include <common/math/geometry/3d/Line3DTest.h>
 #include <common/math/geometry/3d/PlaneTest.h>
 #include <common/partitioning/GridContainerTest.h>
-#include <3d/api/render/GenericRendererComparatorTest.h>
+#include <3d/graphics/render/GenericRendererComparatorTest.h>
 #include <3d/scene/renderer3d/Renderer3dTest.h>
 #include <3d/scene/renderer3d/model/culler/ModelOcclusionCullerTest.h>
 #include <3d/scene/renderer3d/lighting/shadow/light/LightSplitShadowMapTest.h>

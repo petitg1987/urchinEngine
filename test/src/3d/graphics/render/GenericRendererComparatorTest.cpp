@@ -2,7 +2,7 @@
 #include <cppunit/TestCaller.h>
 #include <Urchin3dEngine.h>
 
-#include <3d/api/render/GenericRendererComparatorTest.h>
+#include <3d/graphics/render/GenericRendererComparatorTest.h>
 #include <AssertHelper.h>
 using namespace urchin;
 
