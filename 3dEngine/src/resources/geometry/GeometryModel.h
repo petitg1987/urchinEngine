@@ -2,7 +2,7 @@
 
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 

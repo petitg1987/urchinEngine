@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include <texture/filter/TextureFilter.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderBuilder.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 

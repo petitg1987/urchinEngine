@@ -4,7 +4,7 @@
 #include <random>
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderBuilder.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>

@@ -1,4 +1,4 @@
-#include <graphics/api/vulkan/render/shader/config/ShaderConfig.h>
+#include <graphics/shader/ShaderConfig.h>
 
 namespace urchin {
 

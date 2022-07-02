@@ -3,7 +3,7 @@
 #include <set>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <scene/Renderer.h>
 #include <scene/ui/widget/Widget.h>

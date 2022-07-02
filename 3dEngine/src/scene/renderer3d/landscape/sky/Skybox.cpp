@@ -4,7 +4,7 @@
 #include <resources/ResourceRetriever.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 #include <graphics/api/vulkan/texture/Texture.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderBuilder.h>
 
 namespace urchin {
 

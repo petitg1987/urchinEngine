@@ -1,4 +1,4 @@
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/setup/GraphicService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 

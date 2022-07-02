@@ -1,5 +1,5 @@
 #include <resources/geometry/GeometryModel.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderBuilder.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 
 namespace urchin {

@@ -5,7 +5,7 @@
 #include <scene/renderer3d/model/Model.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 
 namespace urchin {
 

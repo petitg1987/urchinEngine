@@ -2,7 +2,7 @@
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderBuilder.h>
 
 namespace urchin {
 

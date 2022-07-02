@@ -8,8 +8,8 @@
 #include <graphics/api/vulkan/render/model/DataContainer.h>
 #include <graphics/api/vulkan/render/model/IndexContainer.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
-#include <graphics/api/vulkan/render/shader/model/ShaderDataContainer.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
+#include <graphics/api/vulkan/render/shader/ShaderDataContainer.h>
 #include <graphics/api/vulkan/render/blend/BlendFunction.h>
 #include <graphics/api/vulkan/texture/TextureReader.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>

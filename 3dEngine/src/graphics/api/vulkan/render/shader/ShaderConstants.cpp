@@ -1,7 +1,7 @@
 #include <cstring>
 #include <cassert>
 
-#include <graphics/api/vulkan/render/shader/model/ShaderConstants.h>
+#include <graphics/api/vulkan/render/shader/ShaderConstants.h>
 
 namespace urchin {
 

@@ -5,7 +5,7 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 
 namespace urchin {
 

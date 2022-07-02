@@ -3,7 +3,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>

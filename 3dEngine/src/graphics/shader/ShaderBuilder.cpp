@@ -2,8 +2,8 @@
 #include <fstream>
 #include <cstring>
 
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/shader/config/ShaderConfig.h>
+#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/shader/ShaderConfig.h>
 
 namespace urchin {
 

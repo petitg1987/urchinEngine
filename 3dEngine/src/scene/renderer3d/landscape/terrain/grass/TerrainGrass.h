@@ -4,7 +4,7 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/shader/model/Shader.h>
+#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrassQuadtree.h>
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>

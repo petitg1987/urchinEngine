@@ -4,7 +4,7 @@
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <graphics/api/vulkan/render/GenericRendererBuilder.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderBuilder.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 
 namespace urchin {

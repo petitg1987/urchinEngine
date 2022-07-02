@@ -50,8 +50,8 @@
 #include <resources/ResourceRetriever.h>
 #include <resources/material/MaterialBuilder.h>
 
-#include <graphics/api/vulkan/render/shader/config/ShaderConfig.h>
-#include <graphics/api/vulkan/render/shader/builder/ShaderBuilder.h>
+#include <graphics/shader/ShaderConfig.h>
+#include <graphics/shader/ShaderBuilder.h>
 #include <graphics/api/vulkan/render/GenericRendererComparator.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 
