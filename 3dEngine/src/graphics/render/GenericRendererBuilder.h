@@ -8,10 +8,10 @@
 #include <graphics/render/data/PolygonMode.h>
 #include <graphics/render/data/DataContainer.h>
 #include <graphics/render/data/IndexContainer.h>
+#include <graphics/texture/TextureReader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/blend/BlendFunction.h>
-#include <graphics/api/vulkan/texture/TextureReader.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 
 namespace urchin {

@@ -1,4 +1,4 @@
-#include <graphics/api/vulkan/texture/TextureReader.h>
+#include <graphics/texture/TextureReader.h>
 
 namespace urchin {
 

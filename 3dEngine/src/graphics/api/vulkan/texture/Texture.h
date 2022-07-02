@@ -6,8 +6,8 @@
 #include <vulkan/vulkan.h>
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/texture/TextureType.h>
-#include <graphics/api/vulkan/texture/TextureFormat.h>
+#include <graphics/texture/TextureType.h>
+#include <graphics/texture/TextureFormat.h>
 #include <resources/Resource.h>
 
 VK_DEFINE_HANDLE(VmaAllocation)
