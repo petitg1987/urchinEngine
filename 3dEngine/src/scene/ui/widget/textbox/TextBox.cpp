@@ -5,7 +5,7 @@
 #include <scene/ui/widget/textbox/TextBox.h>
 #include <scene/ui/widget/TextFieldConst.h>
 #include <scene/InputDeviceKey.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

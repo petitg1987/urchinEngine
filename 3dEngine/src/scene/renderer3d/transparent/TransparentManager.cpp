@@ -1,7 +1,7 @@
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 #include <graphics/shader/ShaderBuilder.h>

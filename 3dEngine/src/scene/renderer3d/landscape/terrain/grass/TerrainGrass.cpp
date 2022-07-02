@@ -7,7 +7,7 @@
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
 #include <resources/ResourceRetriever.h>
 #include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

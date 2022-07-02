@@ -2,7 +2,7 @@
 
 #include <texture/filter/TextureFilter.h>
 #include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 
 namespace urchin {

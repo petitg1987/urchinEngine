@@ -12,7 +12,7 @@
 #include <scene/ui/EventListener.h>
 #include <i18n/I18nService.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

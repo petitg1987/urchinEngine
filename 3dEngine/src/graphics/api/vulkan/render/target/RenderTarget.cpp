@@ -7,7 +7,7 @@
 #include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
-#include <graphics/api/vulkan/render/GenericRendererComparator.h>
+#include <graphics/render/GenericRendererComparator.h>
 
 namespace urchin {
 

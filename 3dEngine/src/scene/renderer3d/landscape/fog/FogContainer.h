@@ -5,7 +5,7 @@
 
 #include <scene/renderer3d/landscape/fog/Fog.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 
 namespace urchin {

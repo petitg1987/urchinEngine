@@ -6,7 +6,7 @@
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/UISkinService.h>
 #include <resources//ResourceRetriever.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

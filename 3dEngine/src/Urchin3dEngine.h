@@ -52,7 +52,7 @@
 
 #include <graphics/shader/ShaderConfig.h>
 #include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/GenericRendererComparator.h>
+#include <graphics/render/GenericRendererComparator.h>
 #include <graphics/api/vulkan/render/target/NullRenderTarget.h>
 
 #include <resources/geometry/GeometryModel.h>

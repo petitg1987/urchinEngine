@@ -1,4 +1,4 @@
-#include <graphics/api/vulkan/render/GenericRendererComparator.h>
+#include <graphics/render/GenericRendererComparator.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 
 namespace urchin {

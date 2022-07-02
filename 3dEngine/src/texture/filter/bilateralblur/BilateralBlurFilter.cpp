@@ -3,7 +3,7 @@
 #include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 #include <graphics/shader/ShaderBuilder.h>
-#include <graphics/api/vulkan/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
