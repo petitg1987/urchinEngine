@@ -1,7 +1,7 @@
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/render/data/PolygonMode.h>
 #include <graphics/render/data/BlendFunction.h>
 #include <graphics/texture/TextureReader.h>
@@ -126,7 +126,7 @@ namespace urchin {
     }
 
     void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) const {
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         uint32_t shaderUniformBinding = 0;
         std::vector<VkDescriptorSetLayoutBinding> bindings;
@@ -164,7 +164,7 @@ namespace urchin {
     }
 
     void PipelineBuilder::createGraphicsPipeline(const std::shared_ptr<Pipeline>& pipeline) {
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
         auto shaderStages = shader->getShaderStages();
 
         //vertex input stage

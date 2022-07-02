@@ -5643,7 +5643,7 @@ void VmaJsonWriter::ContinueString_Size(size_t n)
 {
     VMA_ASSERT(m_InsideString);
     // Fix for AppleClang incorrect type casting
-    // TODO: Change to if constexpr when C++17 used as minimal standard
+    // TO DO: Change to if constexpr when C++17 used as minimal standard
     WriteSize(n, std::is_same<size_t, uint64_t>{});
 }
 
@@ -5683,7 +5683,7 @@ void VmaJsonWriter::WriteSize(size_t n)
     VMA_ASSERT(!m_InsideString);
     BeginValue(false);
     // Fix for AppleClang incorrect type casting
-    // TODO: Change to if constexpr when C++17 used as minimal standard
+    // TO DO: Change to if constexpr when C++17 used as minimal standard
     WriteSize(n, std::is_same<size_t, uint64_t>{});
 }
 

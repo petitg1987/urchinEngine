@@ -1,6 +1,6 @@
 #include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <libs/vma/vk_mem_alloc.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/MemoryHelper.h>
 #include "DebugLabelHelper.h"
 
@@ -11,7 +11,7 @@ namespace urchin {
      */
     VkImage ImageHelper::createImage(const std::string& imageName, uint32_t width, uint32_t height, uint32_t layer, uint32_t mipLevels, bool isCubeMap, VkFormat format, VkImageTiling tiling,
                                      VkImageUsageFlags usage, VmaAllocation& imageMemory) {
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         checkFormatSupport(format, tiling, usage);
 
@@ -50,12 +50,12 @@ namespace urchin {
         allocInfo.size = memRequirements.size;
         allocInfo.memoryType = MemoryHelper::findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-        result = vmaAllocateMemoryForImage(VulkanService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo);
+        result = vmaAllocateMemoryForImage(GraphicsSetupService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
         }
 
-        result = vmaBindImageMemory(VulkanService::instance().getAllocator(), imageMemory, image);
+        result = vmaBindImageMemory(GraphicsSetupService::instance().getAllocator(), imageMemory, image);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to bind image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
         }
@@ -64,7 +64,7 @@ namespace urchin {
     }
 
     VkImageView ImageHelper::createImageView(VkImage image, VkImageViewType type, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t layerCount, uint32_t mipLevels) {
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         VkImageViewCreateInfo viewInfo{};
         viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -90,7 +90,7 @@ namespace urchin {
         VkFormatFeatureFlags features = usageFlagToFeatureFlag(usage);
 
         VkFormatProperties props;
-        vkGetPhysicalDeviceFormatProperties(VulkanService::instance().getDevices().getPhysicalDevice(), format, &props);
+        vkGetPhysicalDeviceFormatProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), format, &props);
 
         if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) != features) {
             throw std::runtime_error("Unsupported format " + std::to_string(format) + " for tiling linear and features " + std::to_string(features));

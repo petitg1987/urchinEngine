@@ -2,7 +2,7 @@
 
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/render/handler/BufferHandler.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/BufferHelper.h>
 #include <graphics/api/vulkan/helper/CommandBufferHelper.h>
 
@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     void BufferHandler::createOrRefreshBuffers(const void* dataPtr) {
-        auto allocator = VulkanService::instance().getAllocator();
+        auto allocator = GraphicsSetupService::instance().getAllocator();
         VkDeviceSize bufferSize = dataSize;
 
         deleteBuffer();
@@ -133,7 +133,7 @@ namespace urchin {
     }
 
     void BufferHandler::deleteBuffer() {
-        auto allocator = VulkanService::instance().getAllocator();
+        auto allocator = GraphicsSetupService::instance().getAllocator();
 
         if (buffer != nullptr) {
             vmaDestroyBuffer(allocator, buffer, nullptr);
@@ -159,11 +159,11 @@ namespace urchin {
 
     void BufferHandler::updateBuffer(const void *dataPtr) {
         void *dataDestination;
-        vmaMapMemory(VulkanService::instance().getAllocator(), bufferMemory, &dataDestination);
+        vmaMapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory, &dataDestination);
         {
             std::memcpy(dataDestination, dataPtr, dataSize);
         }
-        vmaUnmapMemory(VulkanService::instance().getAllocator(), bufferMemory);
+        vmaUnmapMemory(GraphicsSetupService::instance().getAllocator(), bufferMemory);
     }
 
 }

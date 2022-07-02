@@ -4,7 +4,7 @@
 
 #include <graphics/api/vulkan/render/target/ScreenRender.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <graphics/api/vulkan/capture/CaptureService.h>
@@ -47,7 +47,7 @@ namespace urchin {
 
     void ScreenRender::cleanup() {
         if (isInitialized) {
-            VkResult result = vkDeviceWaitIdle(VulkanService::instance().getDevices().getLogicalDevice());
+            VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
                 Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
             }
@@ -70,7 +70,7 @@ namespace urchin {
     void ScreenRender::onResize() {
         unsigned int sceneWidth;
         unsigned int sceneHeight;
-        VulkanService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
+        GraphicsSetupService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
         if (sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows
             cleanup();
@@ -141,7 +141,7 @@ namespace urchin {
 
     void ScreenRender::destroyImageViews() {
         for (auto imageView : swapChainImageViews) {
-            vkDestroyImageView(VulkanService::instance().getDevices().getLogicalDevice(), imageView, nullptr);
+            vkDestroyImageView(GraphicsSetupService::instance().getDevices().getLogicalDevice(), imageView, nullptr);
         }
         swapChainImageViews.clear();
     }
@@ -180,7 +180,7 @@ namespace urchin {
     }
 
     void ScreenRender::createSyncObjects() {
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         imageAvailableSemaphores.resize(MAX_CONCURRENT_FRAMES);
         renderFinishedSemaphores.resize(MAX_CONCURRENT_FRAMES);
@@ -213,7 +213,7 @@ namespace urchin {
     }
 
     void ScreenRender::destroySyncObjects() {
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         imagesFences.clear();
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
@@ -225,7 +225,7 @@ namespace urchin {
 
     void ScreenRender::render(std::uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'.
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
@@ -276,7 +276,7 @@ namespace urchin {
         if (resultResetFences != VK_SUCCESS) {
             throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
-        VkResult resultQueueSubmit = vkQueueSubmit(VulkanService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
+        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
@@ -291,7 +291,7 @@ namespace urchin {
         presentInfo.pImageIndices = &vkImageIndex;
         presentInfo.pResults = nullptr;
 
-        VkResult queuePresentResult = vkQueuePresentKHR(VulkanService::instance().getQueues().getPresentationQueue(), &presentInfo);
+        VkResult queuePresentResult = vkQueuePresentKHR(GraphicsSetupService::instance().getQueues().getPresentationQueue(), &presentInfo);
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
@@ -315,7 +315,7 @@ namespace urchin {
         for (unsigned int frameIndex = 0; frameIndex < MAX_CONCURRENT_FRAMES; ++frameIndex) {
             if (frameIndex != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
                 //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'frameIndex'
-                VkResult result = vkWaitForFences(VulkanService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
+                VkResult result = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
                 if (result != VK_SUCCESS && result != VK_TIMEOUT) {
                     throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(result) + "' on render target: " + getName());
                 }

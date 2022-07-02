@@ -2,7 +2,7 @@
 
 #include <graphics/api/vulkan/texture/TextureParam.h>
 #include <graphics/api/vulkan/texture/TextureSamplerCache.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 
 namespace urchin {
 
@@ -50,10 +50,10 @@ namespace urchin {
         textureSampler = TextureSamplerCache::instance().retrieveAndMarkUsed(samplerCacheKey);
 
         if (textureSampler == VK_NULL_HANDLE) {
-            auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+            auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
             VkPhysicalDeviceProperties properties{};
-            vkGetPhysicalDeviceProperties(VulkanService::instance().getDevices().getPhysicalDevice(), &properties);
+            vkGetPhysicalDeviceProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &properties);
 
             VkSamplerCreateInfo samplerInfo{};
             samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -89,7 +89,7 @@ namespace urchin {
 
         bool destroySampler = TextureSamplerCache::instance().markUnused(samplerCacheKey);
         if (destroySampler) {
-            auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+            auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
             vkDestroySampler(logicalDevice, textureSampler, nullptr);
         }
 

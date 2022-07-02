@@ -3,7 +3,7 @@
 
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/texture/Texture.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/BufferHelper.h>
 #include <graphics/api/vulkan/helper/CommandBufferHelper.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
@@ -128,12 +128,12 @@ namespace urchin {
 
     void Texture::cleanup() {
         if (isInitialized) {
-            auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+            auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
             vkDestroyImageView(logicalDevice, textureImageView, nullptr);
 
             vkDestroyImage(logicalDevice, textureImage, nullptr);
-            vmaFreeMemory(VulkanService::instance().getAllocator(), textureImageMemory);
+            vmaFreeMemory(GraphicsSetupService::instance().getAllocator(), textureImageMemory);
 
             isInitialized = false;
         }
@@ -192,7 +192,7 @@ namespace urchin {
     }
 
     void Texture::createTextureImage() {
-        auto allocator = VulkanService::instance().getAllocator();
+        auto allocator = GraphicsSetupService::instance().getAllocator();
         VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();
 
         VmaAllocation stagingBufferMemory;
@@ -307,7 +307,7 @@ namespace urchin {
 
     void Texture::generateMipmaps(VkImage image, VkFormat imageFormat) const {
         VkFormatProperties formatProperties;
-        vkGetPhysicalDeviceFormatProperties(VulkanService::instance().getDevices().getPhysicalDevice(), imageFormat, &formatProperties);
+        vkGetPhysicalDeviceFormatProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), imageFormat, &formatProperties);
 
         if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
             throw std::runtime_error("Texture image format does not support linear blitting: " + std::to_string(imageFormat));

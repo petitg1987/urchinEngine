@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 
 namespace urchin {
@@ -81,7 +81,7 @@ namespace urchin {
 
     void OffscreenRender::cleanup() {
         assert(isInitialized);
-        VkResult result = vkDeviceWaitIdle(VulkanService::instance().getDevices().getLogicalDevice());
+        VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
         if (result != VK_SUCCESS) {
             Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
@@ -175,21 +175,21 @@ namespace urchin {
         VkFenceCreateInfo fenceInfo{};
         fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-        VkResult fenceResult = vkCreateFence(VulkanService::instance().getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
+        VkResult fenceResult = vkCreateFence(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
         if (fenceResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
         }
     }
 
     void OffscreenRender::destroyFence() {
-        vkDestroyFence(VulkanService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
+        vkDestroyFence(GraphicsSetupService::instance().getDevices().getLogicalDevice(), commandBufferFence, nullptr);
     }
 
     void OffscreenRender::createSemaphores() {
         for (VkSemaphore& submitSemaphore : submitSemaphores) {
             VkSemaphoreCreateInfo semaphoreInfo{};
             semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-            VkResult semaphoreResult = vkCreateSemaphore(VulkanService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &submitSemaphore);
+            VkResult semaphoreResult = vkCreateSemaphore(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &submitSemaphore);
             if (semaphoreResult != VK_SUCCESS) {
                 throw std::runtime_error("Failed to create semaphore with error code '" + std::to_string(semaphoreResult) + "' on render target: " + getName());
             }
@@ -198,13 +198,13 @@ namespace urchin {
 
     void OffscreenRender::destroySemaphores() const {
         for (const VkSemaphore& submitSemaphore : submitSemaphores) {
-            vkDestroySemaphore(VulkanService::instance().getDevices().getLogicalDevice(), submitSemaphore, nullptr);
+            vkDestroySemaphore(GraphicsSetupService::instance().getDevices().getLogicalDevice(), submitSemaphore, nullptr);
         }
     }
 
     void OffscreenRender::render(std::uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
@@ -217,7 +217,7 @@ namespace urchin {
         } else if (remainingSubmitSemaphores != 0) {
             throw std::runtime_error("Not all submit semaphores (remaining: " + std::to_string(remainingSubmitSemaphores) + ") has been consumed on render target: " + getName() + "/" + std::to_string(frameIndex));
         } else if (submitSemaphoresStale) {
-            VkResult resultDeviceWait = vkDeviceWaitIdle(VulkanService::instance().getDevices().getLogicalDevice());
+            VkResult resultDeviceWait = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (resultDeviceWait != VK_SUCCESS) {
                 Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(resultDeviceWait) + "' on render target: " + getName());
             }
@@ -244,7 +244,7 @@ namespace urchin {
         if (resultResetFences != VK_SUCCESS) {
             throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
-        VkResult resultQueueSubmit = vkQueueSubmit(VulkanService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
+        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }

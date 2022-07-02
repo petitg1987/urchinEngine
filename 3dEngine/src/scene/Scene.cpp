@@ -28,7 +28,7 @@ namespace urchin {
 
         //initialize
         SignalHandler::instance().initialize();
-        VulkanService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
+        GraphicsApiService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
         screenRenderTarget.initialize();
     }
 
@@ -256,7 +256,7 @@ namespace urchin {
         {
             ScopeProfiler sp(Profiler::graphic(), "sceneDisplay");
 
-            VulkanService::instance().frameStart(frameIndex);
+            GraphicsApiService::instance().frameStart(frameIndex);
             handleFpsLimiter();
             computeFps();
             float dt = getDeltaTime();
@@ -272,7 +272,7 @@ namespace urchin {
             screenRenderTarget.render(frameIndex, 0);
 
             ResourceContainer::instance().cleanResources();
-            VulkanService::instance().frameEnd();
+            GraphicsApiService::instance().frameEnd();
             frameIndex++;
         }
 

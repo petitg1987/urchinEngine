@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
-#include <graphics/api/vulkan/setup/VulkanService.h>
+#include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/render/handler/SwapChainHandler.h>
 
 namespace urchin {
@@ -26,8 +26,8 @@ namespace urchin {
 
     void SwapChainHandler::initialize(bool verticalSyncEnabled) {
         assert(!isInitialized);
-        auto physicalDevice = VulkanService::instance().getDevices().getPhysicalDevice();
-        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto physicalDevice = GraphicsSetupService::instance().getDevices().getPhysicalDevice();
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
 
@@ -41,7 +41,7 @@ namespace urchin {
 
         VkSwapchainCreateInfoKHR createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-        createInfo.surface = VulkanService::getSurface();
+        createInfo.surface = GraphicsSetupService::getSurface();
         createInfo.minImageCount = imageCount;
         createInfo.imageFormat = imgFormat;
         createInfo.imageColorSpace = imgColorSpace;
@@ -53,8 +53,8 @@ namespace urchin {
             createInfo.imageUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
         }
 
-        std::array<uint32_t, 2> queueFamilyIndices = {VulkanService::instance().getQueues().getGraphicsQueueFamily(),
-                                                      VulkanService::instance().getQueues().getPresentationQueueFamily()};
+        std::array<uint32_t, 2> queueFamilyIndices = {GraphicsSetupService::instance().getQueues().getGraphicsQueueFamily(),
+                                                      GraphicsSetupService::instance().getQueues().getPresentationQueueFamily()};
 
         if (queueFamilyIndices[0] != queueFamilyIndices[1]) {
             createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
@@ -95,7 +95,7 @@ namespace urchin {
     void SwapChainHandler::cleanup() {
         assert(isInitialized);
 
-        vkDestroySwapchainKHR(VulkanService::instance().getDevices().getLogicalDevice(), swapChain, nullptr);
+        vkDestroySwapchainKHR(GraphicsSetupService::instance().getDevices().getLogicalDevice(), swapChain, nullptr);
 
         isInitialized = false;
     }
@@ -122,33 +122,33 @@ namespace urchin {
 
     SwapChainSupportDetails SwapChainHandler::querySwapChainSupport(VkPhysicalDevice physicalDevice) {
         SwapChainSupportDetails details;
-        VkResult resultSurfaceCapabilities = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, VulkanService::getSurface(), &details.capabilities);
+        VkResult resultSurfaceCapabilities = vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, GraphicsSetupService::getSurface(), &details.capabilities);
         if (resultSurfaceCapabilities != VK_SUCCESS) {
             throw std::runtime_error("Failed to get surface capabilities with error code: " + std::to_string(resultSurfaceCapabilities));
         }
 
         uint32_t formatCount;
-        VkResult resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, VulkanService::getSurface(), &formatCount, nullptr);
+        VkResult resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicsSetupService::getSurface(), &formatCount, nullptr);
         if (resultSurfaceFormats != VK_SUCCESS && resultSurfaceFormats != VK_INCOMPLETE) {
             throw std::runtime_error("Failed to get surface formats with error code: " + std::to_string(resultSurfaceFormats));
         }
         if (formatCount != 0) {
             assert(formatCount < 9999); //format count contains wrong value when xcb library is linked statically (bug ?)
             details.formats.resize(formatCount);
-            resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, VulkanService::getSurface(), &formatCount, details.formats.data());
+            resultSurfaceFormats = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, GraphicsSetupService::getSurface(), &formatCount, details.formats.data());
             if (resultSurfaceFormats != VK_SUCCESS && resultSurfaceFormats != VK_INCOMPLETE) {
                 throw std::runtime_error("Failed to get surface formats with error code: " + std::to_string(resultSurfaceFormats));
             }
         }
 
         uint32_t presentModeCount;
-        VkResult resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, VulkanService::getSurface(), &presentModeCount, nullptr);
+        VkResult resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicsSetupService::getSurface(), &presentModeCount, nullptr);
         if (resultSurfacePresentMode != VK_SUCCESS && resultSurfacePresentMode != VK_INCOMPLETE) {
             throw std::runtime_error("Failed to get surface present modes with error code: " + std::to_string(resultSurfacePresentMode));
         }
         if (presentModeCount != 0) {
             details.presentModes.resize(presentModeCount);
-            resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, VulkanService::getSurface(), &presentModeCount, details.presentModes.data());
+            resultSurfacePresentMode = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, GraphicsSetupService::getSurface(), &presentModeCount, details.presentModes.data());
             if (resultSurfacePresentMode != VK_SUCCESS && resultSurfacePresentMode != VK_INCOMPLETE) {
                 throw std::runtime_error("Failed to get surface present modes with error code: " + std::to_string(resultSurfacePresentMode));
             }
@@ -194,7 +194,7 @@ namespace urchin {
         } else {
             unsigned int widthInPixel;
             unsigned int heightInPixel;
-            VulkanService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
+            GraphicsSetupService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
 
             VkExtent2D actualExtent = {widthInPixel, heightInPixel};
             actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
