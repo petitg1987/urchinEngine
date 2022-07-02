@@ -3,7 +3,6 @@
 #include <memory>
 #include <map>
 #include <vector>
-#include <vulkan/vulkan.h>
 
 #include <graphics/api/GraphicsApi.h>
 

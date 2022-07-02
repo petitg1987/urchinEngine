@@ -1,9 +1,9 @@
 #include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
+#define VMA_IMPLEMENTATION
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
-#include <graphics/api/vulkan/helper/MemoryHelper.h>
 using namespace urchin;
 
 namespace urchin {
@@ -61,7 +61,7 @@ namespace urchin {
         createInstance(windowRequiredExtensions);
         validationLayer.initializeDebugMessenger(vkInstance);
         if (!surface) {
-            surface = surfaceCreator->createSurface(vkInstance);
+            surface = static_cast<VkSurfaceKHR>(surfaceCreator->createSurface(vkInstance));
         }
         deviceHandler.initializeDevices(vkInstance, surface);
         queueHandler.initializeQueueFamilies(deviceHandler.getPhysicalDevice(), surface);

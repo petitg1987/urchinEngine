@@ -3,7 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <graphics/setup/spi/FramebufferSizeRetriever.h>
-#include <graphics/api/vulkan/setup/spi/SurfaceCreator.h>
+#include <graphics/setup/spi/SurfaceCreator.h>
 
 namespace urchin {
 

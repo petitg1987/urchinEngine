@@ -5,7 +5,7 @@
 #include <vulkan/vulkan.h>
 
 #include <graphics/setup/spi/FramebufferSizeRetriever.h>
-#include <graphics/api/vulkan/setup/spi/SurfaceCreator.h>
+#include <graphics/setup/spi/SurfaceCreator.h>
 #include <graphics/api/vulkan/setup/handler/ValidationLayer.h>
 #include <graphics/api/vulkan/setup/handler/DeviceHandler.h>
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
