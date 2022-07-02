@@ -4,7 +4,7 @@
 #include <vulkan/vulkan.h>
 #include <UrchinCommon.h>
 
-#include <graphics/shader/ShaderDataContainer.h>
+#include <graphics/render/shader/ShaderDataContainer.h>
 #include <graphics/render/data/ShapeType.h>
 #include <graphics/render/data/DataType.h>
 #include <graphics/render/data/VariableType.h>

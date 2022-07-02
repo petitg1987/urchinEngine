@@ -2,8 +2,8 @@
 #include <fstream>
 #include <cstring>
 
-#include <graphics/shader/ShaderBuilder.h>
-#include <graphics/shader/ShaderConfig.h>
+#include <graphics/render/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderConfig.h>
 
 namespace urchin {
 

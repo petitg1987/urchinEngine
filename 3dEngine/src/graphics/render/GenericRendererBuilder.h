@@ -3,7 +3,7 @@
 #include <memory>
 #include <UrchinCommon.h>
 
-#include <graphics/shader/ShaderDataContainer.h>
+#include <graphics/render/shader/ShaderDataContainer.h>
 #include <graphics/render/data/ShapeType.h>
 #include <graphics/render/data/PolygonMode.h>
 #include <graphics/render/data/DataContainer.h>

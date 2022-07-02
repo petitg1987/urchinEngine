@@ -3,7 +3,7 @@
 #include <scene/renderer3d/landscape/sky/Skybox.h>
 #include <resources/ResourceRetriever.h>
 #include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderBuilder.h>
 
 namespace urchin {
 

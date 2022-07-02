@@ -1,5 +1,5 @@
 #include <scene/renderer3d/landscape/terrain/Terrain.h>
-#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {

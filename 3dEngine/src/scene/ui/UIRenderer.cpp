@@ -4,7 +4,7 @@
 #include <scene/ui/UIRenderer.h>
 #include <resources/ResourceRetriever.h>
 #include <resources/font/Font.h>
-#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderBuilder.h>
 
 namespace urchin {
 

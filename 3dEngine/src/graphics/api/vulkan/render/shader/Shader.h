@@ -5,7 +5,7 @@
 #include <memory>
 #include <vulkan/vulkan.h>
 
-#include <graphics/shader/ShaderConstants.h>
+#include <graphics/render/shader/ShaderConstants.h>
 
 namespace urchin {
 

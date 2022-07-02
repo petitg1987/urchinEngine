@@ -2,7 +2,7 @@
 
 #include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
-#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {

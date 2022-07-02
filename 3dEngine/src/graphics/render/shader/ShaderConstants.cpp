@@ -1,7 +1,7 @@
 #include <cstring>
 #include <cassert>
 
-#include <graphics/shader/ShaderConstants.h>
+#include <graphics/render/shader/ShaderConstants.h>
 
 namespace urchin {
 

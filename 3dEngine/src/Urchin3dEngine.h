@@ -61,8 +61,8 @@
 
 #include <loader/image/LoaderPNG.h>
 
-#include <graphics/shader/ShaderConfig.h>
-#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderConfig.h>
+#include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererComparator.h>
 #include <graphics/render/target/NullRenderTarget.h>
 #include <graphics/api/GraphicsApi.h>

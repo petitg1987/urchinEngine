@@ -5,7 +5,7 @@
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
-#include <graphics/shader/ShaderBuilder.h>
+#include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/target/NullRenderTarget.h>
 
