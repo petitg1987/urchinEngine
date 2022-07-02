@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cassert>
 #include <pattern/singleton/SingletonContainer.h>
 
 namespace urchin {
@@ -6,6 +8,9 @@ namespace urchin {
     std::vector<SingletonData> SingletonContainer::singletonsVector;
 
     void SingletonContainer::registerSingleton(const std::string& name, std::unique_ptr<SingletonInterface> ptr) {
+        #ifdef URCHIN_DEBUG
+            assert(std::ranges::count_if(singletonsVector, [&name](const SingletonData& sa){ return sa.name == name; }) == 0);
+        #endif
         singletonsVector.emplace_back(SingletonData{.name = name, .ptr = std::move(ptr)});
     }
 
