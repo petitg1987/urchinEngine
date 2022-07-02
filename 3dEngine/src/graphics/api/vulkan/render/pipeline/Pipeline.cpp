@@ -1,5 +1,5 @@
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 
 namespace urchin {
 
@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     Pipeline::~Pipeline() {
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
 
         vkDestroyDescriptorSetLayout(logicalDevice, mDescriptorSetLayout, nullptr);
         vkDestroyPipeline(logicalDevice, mGraphicsPipeline, nullptr);

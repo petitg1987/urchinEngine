@@ -3,7 +3,7 @@
 
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/data/DataContainer.h>
@@ -77,7 +77,7 @@ namespace urchin {
     void GenericRenderer::cleanup() {
         if (isInitialized) {
             if (renderTarget.isValidRenderTarget()) {
-                VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+                VkResult result = vkDeviceWaitIdle(VulkanService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
                     throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
                 }
@@ -202,7 +202,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorPool() {
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
 
@@ -229,7 +229,7 @@ namespace urchin {
     }
 
     void GenericRenderer::createDescriptorSets() {
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
+        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
 
         std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
@@ -304,13 +304,13 @@ namespace urchin {
             descriptorWrites.emplace_back(textureDescriptorWrites);
         }
 
-        vkUpdateDescriptorSets(GraphicService::instance().getDevices().getLogicalDevice(), (uint32_t)(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+        vkUpdateDescriptorSets(VulkanService::instance().getDevices().getLogicalDevice(), (uint32_t)(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
 
         drawCommandsDirty = true;
     }
 
     void GenericRenderer::destroyDescriptorSetsAndPool() {
-        vkDestroyDescriptorPool(GraphicService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
+        vkDestroyDescriptorPool(VulkanService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {

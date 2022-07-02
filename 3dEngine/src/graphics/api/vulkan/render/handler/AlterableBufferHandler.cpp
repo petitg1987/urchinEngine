@@ -1,7 +1,7 @@
 #include <cassert>
 
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 
 namespace urchin {
 
@@ -65,7 +65,7 @@ namespace urchin {
         bool newBuffersCreated;
 
         if (isStaticBuffer) {
-            VkResult result = vkDeviceWaitIdle(GraphicService::instance().getDevices().getLogicalDevice());
+            VkResult result = vkDeviceWaitIdle(VulkanService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
                 throw std::runtime_error("Failed to wait for device idle with error code: " + std::to_string(result));
             }

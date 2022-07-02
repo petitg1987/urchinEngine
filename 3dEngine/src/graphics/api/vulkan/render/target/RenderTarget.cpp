@@ -2,7 +2,7 @@
 #include <cassert>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
@@ -232,7 +232,7 @@ namespace urchin {
         renderPassInfo.dependencyCount = 1;
         renderPassInfo.pDependencies = &dependency;
 
-        VkResult result = vkCreateRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
+        VkResult result = vkCreateRenderPass(VulkanService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create render pass with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
@@ -241,7 +241,7 @@ namespace urchin {
     }
 
     void RenderTarget::destroyRenderPass() {
-        vkDestroyRenderPass(GraphicService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
+        vkDestroyRenderPass(VulkanService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
     }
 
     void RenderTarget::createDepthResources() {
@@ -282,7 +282,7 @@ namespace urchin {
         framebufferInfo.layers = getLayer();
 
         framebuffers.resize(framebuffers.size() + 1, nullptr);
-        VkResult result = vkCreateFramebuffer(GraphicService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);
+        VkResult result = vkCreateFramebuffer(VulkanService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create framebuffer with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
@@ -290,7 +290,7 @@ namespace urchin {
 
     void RenderTarget::destroyFramebuffers() {
         for (auto framebuffer : framebuffers) {
-            vkDestroyFramebuffer(GraphicService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
+            vkDestroyFramebuffer(VulkanService::instance().getDevices().getLogicalDevice(), framebuffer, nullptr);
         }
         framebuffers.clear();
     }
@@ -306,7 +306,7 @@ namespace urchin {
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
 
-        VkResult resultCommandBuffers = vkAllocateCommandBuffers(GraphicService::instance().getDevices().getLogicalDevice(), &allocInfo, commandBuffers.data());
+        VkResult resultCommandBuffers = vkAllocateCommandBuffers(VulkanService::instance().getDevices().getLogicalDevice(), &allocInfo, commandBuffers.data());
         if (resultCommandBuffers != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate command buffers with error code '" + std::to_string(resultCommandBuffers) + "' on render target: " + getName());
         }
@@ -319,17 +319,17 @@ namespace urchin {
     void RenderTarget::createCommandPool() {
         VkCommandPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolInfo.queueFamilyIndex = GraphicService::instance().getQueues().getGraphicsQueueFamily();
+        poolInfo.queueFamilyIndex = VulkanService::instance().getQueues().getGraphicsQueueFamily();
         poolInfo.flags = 0;
 
-        VkResult result = vkCreateCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
+        VkResult result = vkCreateCommandPool(VulkanService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create command pool with error code '" + std::to_string(result) + "' on render target: " + getName());
         }
     }
 
     void RenderTarget::destroyCommandBuffersAndPool() {
-        vkDestroyCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
+        vkDestroyCommandPool(VulkanService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
     VkRenderPass RenderTarget::getRenderPass() const {
@@ -412,7 +412,7 @@ namespace urchin {
             beginInfo.pInheritanceInfo = nullptr; //only relevant for secondary command buffers
 
             waitCommandBuffersIdle();
-            VkResult resultResetCmdPool = vkResetCommandPool(GraphicService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
+            VkResult resultResetCmdPool = vkResetCommandPool(VulkanService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
             if (resultResetCmdPool != VK_SUCCESS) {
                 throw std::runtime_error("Failed to reset command pool with error code '" + std::to_string(resultResetCmdPool) + "' on render target: " + getName());
             }

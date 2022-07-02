@@ -1,6 +1,6 @@
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 #define VMA_IMPLEMENTATION
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
@@ -11,11 +11,11 @@ using namespace urchin;
 namespace urchin {
 
     //static
-    bool GraphicService::useUniqueSurface = false;
-    VkInstance GraphicService::vkInstance = nullptr;
-    VkSurfaceKHR GraphicService::surface = nullptr;
+    bool VulkanService::useUniqueSurface = false;
+    VkInstance VulkanService::vkInstance = nullptr;
+    VkSurfaceKHR VulkanService::surface = nullptr;
 
-    GraphicService::GraphicService() :
+    VulkanService::VulkanService() :
             framebufferSizeRetriever(nullptr),
             apiGraphicInitialized(false),
             vulkanVersion(VK_API_VERSION_1_2), //must be aligned with glslc target environment
@@ -24,7 +24,7 @@ namespace urchin {
 
     }
 
-    GraphicService::~GraphicService() {
+    VulkanService::~VulkanService() {
         vmaDestroyAllocator(allocator);
         if (apiGraphicInitialized) {
             vkDestroyCommandPool(getDevices().getLogicalDevice(), allocateCommandPool, nullptr);
@@ -41,11 +41,11 @@ namespace urchin {
      * Therefore, this feature allows to reuse the same surface (and his associated instance) even after the destruction of this service.
      * When this feature is enable, the 'destroySurface' method must be explicitly called.
      */
-    void GraphicService::enableUniqueSurface() {
+    void VulkanService::enableUniqueSurface() {
         useUniqueSurface = true;
     }
 
-    void GraphicService::destroySurface() {
+    void VulkanService::destroySurface() {
         if (surface) {
             vkDestroySurfaceKHR(vkInstance, surface, nullptr);
             surface = nullptr;
@@ -57,7 +57,7 @@ namespace urchin {
         }
     }
 
-    void GraphicService::initialize(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) {
+    void VulkanService::initialize(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) {
         this->framebufferSizeRetriever = &framebufferSizeRetriever;
 
         createInstance(windowRequiredExtensions);
@@ -74,7 +74,17 @@ namespace urchin {
         apiGraphicInitialized = true;
     }
 
-    void GraphicService::createInstance(const std::vector<std::string>& windowRequiredExtensions) {
+    void VulkanService::frameStart(std::uint32_t frameIndex) const {
+        //required for memory budget: https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/staying_within_budget.html
+        vmaSetCurrentFrameIndex(VulkanService::instance().getAllocator(), frameIndex);
+    }
+
+    void VulkanService::frameEnd() const {
+        MemoryHelper::checkMemoryUsage();
+        PipelineContainer::instance().cleanPipelines();
+    }
+
+    void VulkanService::createInstance(const std::vector<std::string>& windowRequiredExtensions) {
         if (vkInstance) {
             return;
         }
@@ -109,50 +119,40 @@ namespace urchin {
         }
     }
 
-    const FramebufferSizeRetriever* GraphicService::getFramebufferSizeRetriever() const {
+    const FramebufferSizeRetriever* VulkanService::getFramebufferSizeRetriever() const {
         return framebufferSizeRetriever;
     }
 
-    VkSurfaceKHR GraphicService::getSurface() {
+    VkSurfaceKHR VulkanService::getSurface() {
         assert(surface);
         return surface;
     }
 
-    const DeviceHandler& GraphicService::getDevices() const {
+    const DeviceHandler& VulkanService::getDevices() const {
         assert(apiGraphicInitialized);
         return deviceHandler;
     }
 
-    const QueueHandler& GraphicService::getQueues() const {
+    const QueueHandler& VulkanService::getQueues() const {
         assert(apiGraphicInitialized);
         return queueHandler;
     }
 
-    VkCommandPool GraphicService::getAllocateCommandPool() const {
+    VkCommandPool VulkanService::getAllocateCommandPool() const {
         assert(apiGraphicInitialized);
         return allocateCommandPool;
     }
 
-    VmaAllocator GraphicService::getAllocator() const {
+    VmaAllocator VulkanService::getAllocator() const {
         assert(allocator);
         return allocator;
     }
 
-    const ValidationLayer& GraphicService::getValidationLayer() const {
+    const ValidationLayer& VulkanService::getValidationLayer() const {
         return validationLayer;
     }
 
-    void GraphicService::frameStart(std::uint32_t frameIndex) const {
-        //required for memory budget: https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/staying_within_budget.html
-        vmaSetCurrentFrameIndex(GraphicService::instance().getAllocator(), frameIndex);
-    }
-
-    void GraphicService::frameEnd() const {
-        MemoryHelper::checkMemoryUsage();
-        PipelineContainer::instance().cleanPipelines();
-    }
-
-    void GraphicService::createAllocateCommandPool() {
+    void VulkanService::createAllocateCommandPool() {
         VkCommandPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         poolInfo.queueFamilyIndex = queueHandler.getGraphicsQueueFamily();
@@ -164,7 +164,7 @@ namespace urchin {
         }
     }
 
-    void GraphicService::createAllocator() {
+    void VulkanService::createAllocator() {
         VmaAllocatorCreateInfo allocatorInfo = {};
         allocatorInfo.vulkanApiVersion = vulkanVersion;
         allocatorInfo.physicalDevice = deviceHandler.getPhysicalDevice();

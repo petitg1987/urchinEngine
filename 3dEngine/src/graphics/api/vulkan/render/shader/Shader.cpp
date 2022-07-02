@@ -1,5 +1,5 @@
 #include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 
 namespace urchin {
@@ -20,7 +20,7 @@ namespace urchin {
 
     Shader::~Shader() {
         for (const auto& shaderStageData : shaderStagesData) {
-            vkDestroyShaderModule(GraphicService::instance().getDevices().getLogicalDevice(), shaderStageData->shaderModule, nullptr);
+            vkDestroyShaderModule(VulkanService::instance().getDevices().getLogicalDevice(), shaderStageData->shaderModule, nullptr);
         }
     }
 
@@ -45,7 +45,7 @@ namespace urchin {
         createInfo.codeSize = shaderCode.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(shaderCode.data());
 
-        VkResult result = vkCreateShaderModule(GraphicService::instance().getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData.shaderModule);
+        VkResult result = vkCreateShaderModule(VulkanService::instance().getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData.shaderModule);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create shader module with error code: " + std::to_string(result));
         }

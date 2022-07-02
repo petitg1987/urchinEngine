@@ -15,16 +15,19 @@ VK_DEFINE_HANDLE(VmaAllocator)
 
 namespace urchin {
 
-    class GraphicService : public Singleton<GraphicService> {
+    class VulkanService : public Singleton<VulkanService> {
         public:
-            friend class Singleton<GraphicService>;
+            friend class Singleton<VulkanService>;
 
-            ~GraphicService() override;
+            ~VulkanService() override;
 
             static void enableUniqueSurface();
             static void destroySurface();
 
             void initialize(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, FramebufferSizeRetriever&);
+
+            void frameStart(std::uint32_t) const;
+            void frameEnd() const;
 
             const FramebufferSizeRetriever* getFramebufferSizeRetriever() const;
             static VkSurfaceKHR getSurface();
@@ -34,11 +37,8 @@ namespace urchin {
             VmaAllocator getAllocator() const;
             const ValidationLayer& getValidationLayer() const;
 
-            void frameStart(std::uint32_t) const;
-            void frameEnd() const;
-
         private:
-            GraphicService();
+            VulkanService();
 
             void createInstance(const std::vector<std::string>&);
 

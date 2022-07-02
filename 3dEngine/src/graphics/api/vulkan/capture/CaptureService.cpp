@@ -6,14 +6,14 @@
 #include <graphics/api/vulkan/capture/CaptureService.h>
 #include <graphics/api/vulkan/helper/CommandBufferHelper.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 
 namespace urchin {
 
     void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, VkImageLayout imageLayout,
                                      unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
-        auto logicalDevice = GraphicService::instance().getDevices().getLogicalDevice();
-        auto allocator =  GraphicService::instance().getAllocator();
+        auto logicalDevice = VulkanService::instance().getDevices().getLogicalDevice();
+        auto allocator =  VulkanService::instance().getAllocator();
 
         std::vector<unsigned char> imageData;
         unsigned int dstWidth = (width == 0) ? srcWidth : width;

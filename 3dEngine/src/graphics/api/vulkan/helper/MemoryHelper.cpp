@@ -2,13 +2,13 @@
 
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/helper/MemoryHelper.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 
 namespace urchin {
 
     uint32_t MemoryHelper::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
         VkPhysicalDeviceMemoryProperties memProperties;
-        vkGetPhysicalDeviceMemoryProperties(GraphicService::instance().getDevices().getPhysicalDevice(), &memProperties);
+        vkGetPhysicalDeviceMemoryProperties(VulkanService::instance().getDevices().getPhysicalDevice(), &memProperties);
 
         for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
             if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
@@ -21,10 +21,10 @@ namespace urchin {
 
     void MemoryHelper::checkMemoryUsage() {
         VkPhysicalDeviceMemoryProperties memProperties;
-        vkGetPhysicalDeviceMemoryProperties(GraphicService::instance().getDevices().getPhysicalDevice(), &memProperties);
+        vkGetPhysicalDeviceMemoryProperties(VulkanService::instance().getDevices().getPhysicalDevice(), &memProperties);
 
         VmaBudget budgets[VK_MAX_MEMORY_HEAPS];
-        vmaGetHeapBudgets(GraphicService::instance().getAllocator(), budgets);
+        vmaGetHeapBudgets(VulkanService::instance().getAllocator(), budgets);
 
         for (std::size_t i = 0; i < memProperties.memoryTypeCount; ++i) {
             VkMemoryPropertyFlags resizeableBarFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;

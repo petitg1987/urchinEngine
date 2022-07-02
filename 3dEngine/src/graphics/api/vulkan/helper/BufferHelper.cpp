@@ -1,6 +1,6 @@
 #include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/helper/BufferHelper.h>
-#include <graphics/api/vulkan/setup/GraphicService.h>
+#include <graphics/api/vulkan/setup/VulkanService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 
 namespace urchin {
@@ -16,7 +16,7 @@ namespace urchin {
         vmaAllocInfo.usage = static_cast<VmaMemoryUsage>(vulkanMemoryPropertyFlagsToVma(properties));
 
         VkBuffer buffer;
-        VkResult result = vmaCreateBuffer(GraphicService::instance().getAllocator(), &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr);
+        VkResult result = vmaCreateBuffer(VulkanService::instance().getAllocator(), &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create buffer of size '" + std::to_string(size) + "' with error code: " + std::to_string(result));
         }

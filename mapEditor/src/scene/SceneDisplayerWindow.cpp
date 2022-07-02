@@ -14,7 +14,7 @@ namespace urchin {
             viewProperties(),
             mouseX(0),
             mouseY(0) {
-        GraphicService::enableUniqueSurface();
+        VulkanService::enableUniqueSurface();
         setSurfaceType(QSurface::VulkanSurface);
 
         QObject::connect(new QShortcut(QKeySequence((int)Qt::CTRL + Qt::Key_X), parent), SIGNAL(activated()), this, SLOT(onCtrlXPressed()));
@@ -23,7 +23,7 @@ namespace urchin {
     }
 
     SceneDisplayerWindow::~SceneDisplayerWindow() {
-        GraphicService::destroySurface();
+        VulkanService::destroySurface();
     }
 
     void SceneDisplayerWindow::exposeEvent(QExposeEvent *) {
