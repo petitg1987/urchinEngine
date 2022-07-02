@@ -11,13 +11,16 @@ namespace urchin {
         public:
             friend class Singleton<GraphicsApiService>;
 
+            static void enableUniqueSurface();
+            static void destroySurface();
+
             void initialize(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, FramebufferSizeRetriever&);
 
             void frameStart(std::uint32_t) const;
             void frameEnd() const;
 
         private:
-            GraphicsApiService() = default;
+            GraphicsApiService();
     };
 
 }

@@ -7,6 +7,18 @@
 
 namespace urchin {
 
+    GraphicsApiService::GraphicsApiService() {
+        GraphicsSetupService::instance();
+    }
+
+    void GraphicsApiService::enableUniqueSurface() {
+        GraphicsSetupService::enableUniqueSurface();
+    }
+
+    void GraphicsApiService::destroySurface() {
+        GraphicsSetupService::destroySurface();
+    }
+
     void GraphicsApiService::initialize(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) {
         GraphicsSetupService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), framebufferSizeRetriever);
     }

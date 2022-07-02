@@ -7,8 +7,8 @@ namespace urchin {
             window(window) {
     }
 
-    VkSurfaceKHR QtSurfaceCreator::createSurface(VkInstance instance) {
-        window->setupVkInstance(instance);
+    void* QtSurfaceCreator::createSurface(void* instance) {
+        window->setupVkInstance(static_cast<VkInstance>(instance));
         return QVulkanInstance::surfaceForWindow(window);
     }
 

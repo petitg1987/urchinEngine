@@ -11,7 +11,7 @@ namespace urchin {
 
     struct QtSurfaceCreator : public urchin::SurfaceCreator {
         explicit QtSurfaceCreator(SceneDisplayerWindow*);
-        VkSurfaceKHR createSurface(VkInstance) override;
+        void* createSurface(void*) override;
 
         SceneDisplayerWindow *window;
     };
