@@ -2,8 +2,8 @@
 
 #include <UrchinCommon.h>
 
-#include <graphics/setup/spi/FramebufferSizeRetriever.h>
-#include <graphics/setup/spi/SurfaceCreator.h>
+#include <graphics/setup/FramebufferSizeRetriever.h>
+#include <graphics/setup/SurfaceCreator.h>
 
 namespace urchin {
 
