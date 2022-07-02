@@ -15,6 +15,9 @@ namespace urchin {
 
             void frameStart(std::uint32_t) const;
             void frameEnd() const;
+
+        private:
+            GraphicsApiService() = default;
     };
 
 }

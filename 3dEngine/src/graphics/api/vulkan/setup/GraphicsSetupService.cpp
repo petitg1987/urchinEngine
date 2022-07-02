@@ -1,9 +1,8 @@
 #include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#define VMA_IMPLEMENTATION
-#include <libs/vma/vk_mem_alloc.h>
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
+#include <libs/vma/vk_mem_alloc.h>
 using namespace urchin;
 
 namespace urchin {

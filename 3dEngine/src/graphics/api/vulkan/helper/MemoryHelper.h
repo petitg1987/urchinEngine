@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
-#include <libs/vma/vk_mem_alloc.h>
 
 namespace urchin {
 
