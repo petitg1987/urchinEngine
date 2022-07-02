@@ -182,51 +182,6 @@ namespace urchin {
         return bHasTransparency.value();
     }
 
-    bool Texture::isWritableTexture() const {
-        return writableTexture;
-    }
-
-    void Texture::setLastTextureWriter(OffscreenRender* lastTextureWriter) {
-        assert(writableTexture);
-        this->lastTextureWriter = lastTextureWriter;
-    }
-
-    OffscreenRender* Texture::getLastTextureWriter() const {
-        return lastTextureWriter;
-    }
-
-    VkImageView Texture::getImageView() const {
-        assert(isInitialized);
-        return textureImageView;
-    }
-
-    VkFormat Texture::getVkFormat() const {
-        //This method should only return format with a good coverage/support:
-        // - For VK_IMAGE_TILING_OPTIMAL (most of the images): http://vulkan.gpuinfo.org/listoptimaltilingformats.php
-        // - For VK_IMAGE_TILING_LINEAR (e.g. screenshot): http://vulkan.gpuinfo.org/listlineartilingformats.php
-        //Note: the columns to look at depends on ImageHelper::usageFlagToFeatureFlag (mainly: COLOR_ATTACHMENT & TRANSFER_DST)
-        if (format == TextureFormat::DEPTH_32_FLOAT) {
-            return VK_FORMAT_D32_SFLOAT;
-        } else if (format == TextureFormat::GRAYSCALE_8_INT) {
-            return VK_FORMAT_R8_UNORM;
-        } else if (format == TextureFormat::GRAYSCALE_16_FLOAT) {
-            return VK_FORMAT_R16_SFLOAT;
-        } else if (format == TextureFormat::RG_8_INT) {
-            return VK_FORMAT_R8G8_UNORM;
-        } else if (format == TextureFormat::RG_32_FLOAT) {
-            return VK_FORMAT_R32G32_SFLOAT;
-        } else if (format == TextureFormat::B10G11R11_FLOAT) {
-            return VK_FORMAT_B10G11R11_UFLOAT_PACK32;
-        } else if (format == TextureFormat::RGBA_8_INT) {
-            return VK_FORMAT_R8G8B8A8_UNORM;
-        } else if (format == TextureFormat::RGBA_16_FLOAT) {
-            return VK_FORMAT_R16G16B16A16_SFLOAT;
-        } else if (format == TextureFormat::RGBA_32_FLOAT) {
-            return VK_FORMAT_R32G32B32A32_SFLOAT;
-        }
-        throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
-    }
-
     void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         if (hasMipmap()) {
             throw std::runtime_error("Capture texture having mipmap is not implemented");
@@ -424,6 +379,19 @@ namespace urchin {
         CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }
 
+    bool Texture::isWritableTexture() const {
+        return writableTexture;
+    }
+
+    void Texture::setLastTextureWriter(OffscreenRender* lastTextureWriter) {
+        assert(writableTexture);
+        this->lastTextureWriter = lastTextureWriter;
+    }
+
+    OffscreenRender* Texture::getLastTextureWriter() const {
+        return lastTextureWriter;
+    }
+
     unsigned int Texture::getBytesByPixel() const {
         if (format == TextureFormat::DEPTH_32_FLOAT || format == TextureFormat::RGBA_8_INT || format == TextureFormat::B10G11R11_FLOAT) {
             return 4;
@@ -435,6 +403,38 @@ namespace urchin {
             return 8;
         } else if (format == TextureFormat::RGBA_32_FLOAT) {
             return 16;
+        }
+        throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
+    }
+
+    VkImageView Texture::getImageView() const {
+        assert(isInitialized);
+        return textureImageView;
+    }
+
+    VkFormat Texture::getVkFormat() const {
+        //This method should only return format with a good coverage/support:
+        // - For VK_IMAGE_TILING_OPTIMAL (most of the images): http://vulkan.gpuinfo.org/listoptimaltilingformats.php
+        // - For VK_IMAGE_TILING_LINEAR (e.g. screenshot): http://vulkan.gpuinfo.org/listlineartilingformats.php
+        //Note: the columns to look at depends on ImageHelper::usageFlagToFeatureFlag (mainly: COLOR_ATTACHMENT & TRANSFER_DST)
+        if (format == TextureFormat::DEPTH_32_FLOAT) {
+            return VK_FORMAT_D32_SFLOAT;
+        } else if (format == TextureFormat::GRAYSCALE_8_INT) {
+            return VK_FORMAT_R8_UNORM;
+        } else if (format == TextureFormat::GRAYSCALE_16_FLOAT) {
+            return VK_FORMAT_R16_SFLOAT;
+        } else if (format == TextureFormat::RG_8_INT) {
+            return VK_FORMAT_R8G8_UNORM;
+        } else if (format == TextureFormat::RG_32_FLOAT) {
+            return VK_FORMAT_R32G32_SFLOAT;
+        } else if (format == TextureFormat::B10G11R11_FLOAT) {
+            return VK_FORMAT_B10G11R11_UFLOAT_PACK32;
+        } else if (format == TextureFormat::RGBA_8_INT) {
+            return VK_FORMAT_R8G8B8A8_UNORM;
+        } else if (format == TextureFormat::RGBA_16_FLOAT) {
+            return VK_FORMAT_R16G16B16A16_SFLOAT;
+        } else if (format == TextureFormat::RGBA_32_FLOAT) {
+            return VK_FORMAT_R32G32B32A32_SFLOAT;
         }
         throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
     }

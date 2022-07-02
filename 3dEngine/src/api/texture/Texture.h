@@ -18,6 +18,11 @@ namespace urchin {
 
     class Texture : public Resource {
         public:
+            friend class GenericRenderer;
+            friend class RenderTarget;
+            friend class OffscreenRender;
+            friend class ScreenRender;
+
             ~Texture() override;
 
             static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void*);
@@ -43,12 +48,6 @@ namespace urchin {
             bool hasMipmap() const;
             void setHasTransparency(bool);
             bool hasTransparency() const;
-            bool isWritableTexture() const;
-
-            void setLastTextureWriter(OffscreenRender*);
-            OffscreenRender* getLastTextureWriter() const;
-            VkImageView getImageView() const;
-            VkFormat getVkFormat() const;
 
             void takeCapture(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
@@ -64,7 +63,13 @@ namespace urchin {
             void copyBufferToImage(VkBuffer, VkImage) const;
             void generateMipmaps(VkImage, VkFormat) const;
 
+            bool isWritableTexture() const;
+            void setLastTextureWriter(OffscreenRender*);
+            OffscreenRender* getLastTextureWriter() const;
+
             unsigned int getBytesByPixel() const;
+            VkImageView getImageView() const;
+            VkFormat getVkFormat() const;
 
             bool isInitialized;
 
