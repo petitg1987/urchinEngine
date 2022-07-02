@@ -22,18 +22,21 @@ namespace urchin {
     void MemoryHelper::checkMemoryUsage() {
         VkPhysicalDeviceMemoryProperties memProperties;
         vkGetPhysicalDeviceMemoryProperties(GraphicService::instance().getDevices().getPhysicalDevice(), &memProperties);
+
         VmaBudget budgets[VK_MAX_MEMORY_HEAPS];
         vmaGetHeapBudgets(GraphicService::instance().getAllocator(), budgets);
+
         for (std::size_t i = 0; i < memProperties.memoryTypeCount; ++i) {
-            uint32_t heapIndex = memProperties.memoryTypes[i].heapIndex;
             VkMemoryPropertyFlags resizeableBarFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
 
             if ((memProperties.memoryTypes[i].propertyFlags & resizeableBarFlags) == resizeableBarFlags) { //resizeable bar memory
+                uint32_t heapIndex = memProperties.memoryTypes[i].heapIndex;
                 double usagePercentage = (double)budgets[heapIndex].usage / (double)budgets[heapIndex].budget;
                 if (usagePercentage > CRITICAL_RESIZEABLE_BAR_MEMORY_PERCENTAGE_USAGE) [[unlikely]] {
                     logCriticalMemoryUsage("resizeable bar memory", budgets[heapIndex]);
                 }
             } else if (memProperties.memoryTypes[i].propertyFlags == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) { //VRAM
+                uint32_t heapIndex = memProperties.memoryTypes[i].heapIndex;
                 double usagePercentage = (double)budgets[heapIndex].usage / (double)budgets[heapIndex].budget;
                 if (usagePercentage > CRITICAL_VRAM_PERCENTAGE_USAGE) [[unlikely]] {
                     logCriticalMemoryUsage("VRAM", budgets[heapIndex]);
