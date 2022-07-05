@@ -9,6 +9,7 @@
 #include <profiler/ScopeProfiler.h>
 #include <pattern/observer/Observable.h>
 #include <pattern/observer/Observer.h>
+#include <util/StringUtil.h>
 
 namespace urchin {
 

@@ -156,7 +156,7 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
 
             static unsigned int numErrorsLogged = 0;
             if (octreeResized && numErrorsLogged < MAX_ERRORS_LOG) [[unlikely]] {
-                Logger::instance().logWarning("Octree resized due to a moving octreeable: " + movingOctreeable->getName());
+                Logger::instance().logWarning("Octree resized due to a moving octreeable '" + movingOctreeable->getName() + "' with AABBox: " + StringUtil::toString(movingOctreeable->getAABBox()));
                 numErrorsLogged++;
             }
         }
