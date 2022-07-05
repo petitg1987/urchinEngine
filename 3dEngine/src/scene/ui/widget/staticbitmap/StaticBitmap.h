@@ -32,6 +32,8 @@ namespace urchin {
         private:
             StaticBitmap(Position, Size, std::shared_ptr<Texture>);
 
+            static std::shared_ptr<Texture> buildTexture(const std::string&);
+
             //visual
             std::shared_ptr<Texture> texture;
             std::unique_ptr<GenericRenderer> bitmapRenderer;

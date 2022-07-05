@@ -17,22 +17,29 @@ namespace urchin {
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, Size size, const std::string& filename) {
-        auto texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
+        std::shared_ptr<Texture> texture = buildTexture(filename);
         return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, WidthSize widthSize, const std::string& filename) {
-        auto texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
+        std::shared_ptr<Texture> texture = buildTexture(filename);
         float ratio = (float)texture->getHeight() / (float)texture->getWidth();
         Size size(widthSize.getWidth(), widthSize.getWidthType(), ratio, RATIO_TO_WIDTH);
         return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
     }
 
     std::shared_ptr<StaticBitmap> StaticBitmap::create(Widget* parent, Position position, HeightSize heightSize, const std::string& filename) {
-        auto texture = ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
+        std::shared_ptr<Texture> texture = buildTexture(filename);
         float ratio = (float)texture->getWidth() / (float)texture->getHeight();
         Size size(ratio, RATIO_TO_HEIGHT, heightSize.getHeight(), heightSize.getHeightType());
         return Widget::create<StaticBitmap>(new StaticBitmap(position, size, std::move(texture)), parent);
+    }
+
+    std::shared_ptr<Texture> StaticBitmap::buildTexture(const std::string& filename) {
+        if (filename.empty()) {
+            return Texture::buildEmptyRgba("empty texture");
+        }
+        return ResourceRetriever::instance().getResource<Texture>(filename, {{"mipMap", "1"}});
     }
 
     void StaticBitmap::createOrUpdateWidget() {
