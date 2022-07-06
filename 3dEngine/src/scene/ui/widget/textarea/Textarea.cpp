@@ -11,6 +11,8 @@ namespace urchin {
             scrollbarWidthInPixel(0.0f),
             cursorIndex(0),
             cursorBlink(0.0f),
+            selectModeOn(false),
+            selectionStartIndex(0),
             state(INACTIVE) {
 
     }
@@ -103,7 +105,11 @@ namespace urchin {
                 if (textZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                     int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                     int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
-                    computeCursorIndex(localMouseX, localMouseY);
+                    cursorIndex = computeCursorIndex(localMouseX, localMouseY);
+                    refreshCursorPosition();
+
+                    selectModeOn = true;
+                    selectionStartIndex = cursorIndex;
                 }
             } else {
                 state = INACTIVE;
@@ -122,10 +128,10 @@ namespace urchin {
                     refreshCursorPosition();
                 }
             } else if (key == (int)InputDeviceKey::UP_ARROW) {
-                computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
+                cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
                 refreshCursorPosition();
             } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
-                computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
+                cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
                 refreshCursorPosition();
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
                 if (cursorIndex > 0) {
@@ -160,6 +166,16 @@ namespace urchin {
         return true;
     }
 
+    bool Textarea::onKeyReleaseEvent(unsigned int key) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+            if (selectModeOn) {
+                selectModeOn = false;
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool Textarea::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
@@ -172,6 +188,20 @@ namespace urchin {
                 cursorIndex++;
                 refreshCursorPosition();
             }
+            return false;
+        }
+        return true;
+    }
+
+    bool Textarea::onMouseMoveEvent(int mouseX, int mouseY) {
+        if (selectModeOn) {
+            int localMouseX = mouseX - MathFunction::roundToInt(text->getGlobalPositionX());
+            int localMouseY = mouseY - MathFunction::roundToInt(text->getGlobalPositionY());
+            cursorIndex = computeCursorIndex(localMouseX, localMouseY);
+            refreshCursorPosition();
+
+            //TODO display selection
+            std::cout<<"Selection from: "<<selectionStartIndex<< " : "<<cursorIndex<<std::endl;
             return false;
         }
         return true;
@@ -246,7 +276,7 @@ namespace urchin {
         textContainer->updateScrollShiftY(scrollShiftPixel);
     }
 
-    void Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) {
+    std::size_t Textarea::computeCursorIndex(int approximatePositionX, int approximatePositionY) const {
         std::size_t textCursorIndex = 0;
 
         float currentHeight = 0.0;
@@ -276,8 +306,7 @@ namespace urchin {
             }
         }
 
-        cursorIndex = text->cutTextToBaseTextIndex(textCursorIndex);
-        refreshCursorPosition();
+        return text->cutTextToBaseTextIndex(textCursorIndex);
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

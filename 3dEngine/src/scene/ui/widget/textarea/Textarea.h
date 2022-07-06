@@ -25,7 +25,9 @@ namespace urchin {
             Textarea(Position, Size, std::string);
 
             bool onKeyPressEvent(unsigned int) override;
+            bool onKeyReleaseEvent(unsigned int) override;
             bool onCharEvent(char32_t) override;
+            bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
 
             bool isCharacterAllowed(char32_t) const;
@@ -34,7 +36,7 @@ namespace urchin {
             void refreshText(bool);
             void refreshCursorPosition();
             void adjustScrollToCursor() const;
-            void computeCursorIndex(int, int);
+            std::size_t computeCursorIndex(int, int) const;
 
             //properties
             mutable WStringConvertA stringConvert;
@@ -52,6 +54,10 @@ namespace urchin {
             std::size_t cursorIndex; //index of the cursor in 'originalText'
             Vector2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
             float cursorBlink;
+
+            //selection
+            bool selectModeOn;
+            std::size_t selectionStartIndex; //index of the cursor in 'originalText'
 
             //state
             enum TextareaStates {

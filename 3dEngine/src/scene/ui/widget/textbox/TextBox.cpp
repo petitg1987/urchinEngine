@@ -104,7 +104,8 @@ namespace urchin {
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
-                computeCursorIndex(localMouseX, localMouseY);
+                cursorIndex = computeCursorIndex(localMouseX, localMouseY);
+                refreshCursorPosition();
             } else {
                 state = INACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -222,12 +223,13 @@ namespace urchin {
         cursorBlink = 0.0f;
     }
 
-    void TextBox::computeCursorIndex(int approximatePositionX, int) {
+    unsigned int TextBox::computeCursorIndex(int approximatePositionX, int) const {
         const auto& font = text->getFont();
         float widthText = 0.0f;
 
-        for (cursorIndex = startTextIndex; cursorIndex < originalText.length(); ++cursorIndex) {
-            char32_t textLetter = originalText[cursorIndex];
+        unsigned int computedCursorIndex = startTextIndex;
+        for (; computedCursorIndex < originalText.length(); ++computedCursorIndex) {
+            char32_t textLetter = originalText[computedCursorIndex];
             widthText += (float)font.getGlyph(textLetter).width / 2.0f;
             if (widthText > (float)approximatePositionX) {
                 break;
@@ -235,9 +237,7 @@ namespace urchin {
 
             widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
         }
-
-        //compute the correct cursor position
-        refreshCursorPosition();
+        return computedCursorIndex;
     }
 
     void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

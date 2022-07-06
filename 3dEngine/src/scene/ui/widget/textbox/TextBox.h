@@ -41,7 +41,7 @@ namespace urchin {
 
             void refreshText(bool);
             void refreshCursorPosition();
-            void computeCursorIndex(int, int);
+            unsigned int computeCursorIndex(int, int) const;
 
             //properties
             WStringConvertA stringConvert;

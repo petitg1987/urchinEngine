@@ -47,7 +47,6 @@
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d
   * **NEW FEATURE** (`minor`): Combo list
-  * **NEW FEATURE** (`medium`): Text selection
 * Graphic effect
   * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
   * **NEW FEATURE** (`medium`): Decal (bullet impact, blood spread...)
