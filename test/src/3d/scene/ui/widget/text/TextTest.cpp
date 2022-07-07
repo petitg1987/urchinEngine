@@ -85,7 +85,7 @@ void TextTest::cutMiddleWord() {
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(2), 3); //second char of first line
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(3, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE), 6); //first char of second line
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(3, WordCutIndexPositioning::END_OF_LINE), 3); //last char of first line
-    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(4), 6); //first char of second line
+    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(4), 6); //second char of second line
     AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(6), 6); //last char of second line
 }
 
@@ -99,6 +99,12 @@ void TextTest::emptyLineAndCut() {
     AssertHelper::assertUnsignedIntEquals(text->getCutTextLines()[0].text.length(), 0);
     AssertHelper::assertTrue(text->getCutTextLines()[1].text == WStringConvertA().from_bytes("aaa"));
     AssertHelper::assertTrue(text->getCutTextLines()[2].text == WStringConvertA().from_bytes("bbb"));
+
+    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(0), 0);
+    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(1), 4);
+    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(4, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE), 7);
+    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(4, WordCutIndexPositioning::END_OF_LINE), 4);
+    AssertHelper::assertUnsignedIntEquals(text->baseTextIndexToEndOfLineIndex(5), 7);
 }
 
 std::unique_ptr<UIRenderer> TextTest::setupUiRenderer() {
