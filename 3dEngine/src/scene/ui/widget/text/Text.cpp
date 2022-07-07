@@ -187,17 +187,20 @@ namespace urchin {
         throw std::runtime_error("Cut text lines index " + std::to_string(cutTextIndex) + " does not exist for text: " + baseText);
     }
 
-    std::size_t Text::baseTextToCutTextIndex(std::size_t baseTextIndex) const {
+    std::size_t Text::baseTextToCutTextIndex(std::size_t baseTextIndex, WordCutIndexPositioning wordCutIndexPositioning) const {
         std::size_t cutTextDelta = 0;
         std::size_t currentCutTextIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
             for (std::size_t columnIndex = 0; columnIndex <= lineIndex.text.length(); ++columnIndex) {
-                if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
-                    //index cannot be at end of line when cut type is middle of word
+                if (currentCutTextIndex == baseTextIndex + cutTextDelta) {
+                    if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD && wordCutIndexPositioning == WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) {
+                        //index cannot be at end of line when cut type is middle of word
+                        return currentCutTextIndex + 1;
+                    }
+                    return currentCutTextIndex;
+                } else if (columnIndex == lineIndex.text.length() && lineIndex.cutType == TextCutType::MIDDLE_WORD) {
                     currentCutTextIndex++;
                     cutTextDelta++;
-                } else if (currentCutTextIndex == baseTextIndex + cutTextDelta) {
-                    return currentCutTextIndex;
                 } else {
                     currentCutTextIndex++;
                 }

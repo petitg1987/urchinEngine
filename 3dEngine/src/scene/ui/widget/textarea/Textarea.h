@@ -36,7 +36,7 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText(bool);
-            Point2<int> computeCursorPosition(std::size_t);
+            Point2<int> computeCursorPosition(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE);
             void adjustScrollToCursor() const;
             std::size_t computeCursorIndex(int, int) const;
 

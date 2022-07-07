@@ -237,8 +237,8 @@ namespace urchin {
         }
     }
 
-    Point2<int> Textarea::computeCursorPosition(std::size_t cursorIdx) {
-        std::size_t textCursorIndex = text->baseTextToCutTextIndex(cursorIdx);
+    Point2<int> Textarea::computeCursorPosition(std::size_t cursorIdx, WordCutIndexPositioning wordCutIndexPositioning) {
+        std::size_t textCursorIndex = text->baseTextToCutTextIndex(cursorIdx, wordCutIndexPositioning);
         std::size_t currentIndex = 0;
 
         Point2<int> computedCursorPosition(0.0f, 0.0f);
@@ -330,7 +330,7 @@ namespace urchin {
             endOfCurrentLineIndex = std::min(endOfCurrentLineIndex, displaySelectionEndIndex);
 
             Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
-            Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
+            Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex, WordCutIndexPositioning::END_OF_LINE) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
             Position selectionPosition((float) displaySelectionStartPos.X, (float) displaySelectionStartPos.Y, PIXEL);
             Size selectionSize((float) (displaySelectionEndPos.X - displaySelectionStartPos.X), (float) (displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL);

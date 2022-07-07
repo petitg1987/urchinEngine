@@ -62,8 +62,10 @@ void TextTest::cutMiddleWord() {
 
     AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(0), 0); //first char
     AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(2), 2); //third char
-    AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(3), 4); //first char of second line
-    AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(6), 7); //last char
+    AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(3, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE), 4); //first char of second line
+    AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(3, WordCutIndexPositioning::END_OF_LINE), 3); //last char of first line
+    AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(6, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE), 7); //last char
+    AssertHelper::assertUnsignedIntEquals(text->baseTextToCutTextIndex(6, WordCutIndexPositioning::END_OF_LINE), 7); //last char
 
     AssertHelper::assertUnsignedIntEquals(text->cutTextToBaseTextIndex(0), 0); //first char
     AssertHelper::assertUnsignedIntEquals(text->cutTextToBaseTextIndex(3), 3); //first char of second line (cut text index 3 is identical to cut text index 4)

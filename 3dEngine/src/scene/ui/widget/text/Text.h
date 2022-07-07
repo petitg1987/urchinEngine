@@ -22,6 +22,13 @@ namespace urchin {
         MIDDLE_WORD //text is too long and is cut at the middle of a word
     };
 
+    enum class WordCutIndexPositioning {
+        //When a word is cut at the middle (TextCutType#MIDDLE_WORD), the index at end of line or at begin of line represents the same index in the baseText.
+        //This enum allows to define the expected index in the cut text when the index is converted from the base text
+        END_OF_LINE,
+        BEGIN_OF_NEXT_LINE
+    };
+
     struct TextLine {
         U32StringA text;
         TextCutType cutType; //reason of line is cut at the end
@@ -45,7 +52,7 @@ namespace urchin {
             const std::string& getBaseText() const;
             const std::vector<TextLine>& getCutTextLines() const;
             std::size_t cutTextToBaseTextIndex(std::size_t) const;
-            std::size_t baseTextToCutTextIndex(std::size_t) const;
+            std::size_t baseTextToCutTextIndex(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) const;
             const Font& getFont() const;
 
         protected:
