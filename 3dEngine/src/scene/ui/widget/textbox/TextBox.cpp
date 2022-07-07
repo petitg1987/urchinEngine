@@ -231,6 +231,7 @@ namespace urchin {
             startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex >= TextFieldConst::LETTER_SHIFT) ? startTextIndex - TextFieldConst::LETTER_SHIFT : 0;
+            startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
         }
         cursorPosition = computeCursorPosition(cursorIndex);
 
@@ -305,7 +306,7 @@ namespace urchin {
         Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
         selectionImg->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
-        float sizeX = std::min((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)maxWidthText - (float)displaySelectionStartPos.X); //TODO wrong !
+        float sizeX = std::min((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)maxWidthText - (float)displaySelectionStartPos.X);
         selectionImg->updateSize(Size(sizeX, (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
     }
 
@@ -313,11 +314,10 @@ namespace urchin {
         U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, (std::size_t)cursorIndex), originalText.length() - std::max(selectionStartIndex, (std::size_t)cursorIndex));
         originalText = originalText.substr(0, std::min(selectionStartIndex, (std::size_t)cursorIndex));
         originalText.append(tmpRight);
-        refreshText(true);
 
         cursorIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
         cursorPosition = computeCursorPosition(cursorIndex);
-        refreshText(false);
+        refreshText(true);
         resetSelection();
     }
 
