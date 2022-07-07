@@ -125,29 +125,37 @@ namespace urchin {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshText(false);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     refreshText(false);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
-                if (cursorIndex > 0) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                } else if (cursorIndex > 0) {
                     U32StringA tmpRight = originalText.substr((unsigned long)cursorIndex, originalText.length() - cursorIndex);
                     originalText = originalText.substr(0, (unsigned long)(cursorIndex - 1L));
                     originalText.append(tmpRight);
 
                     cursorIndex--;
                     refreshText(true);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
-                if (cursorIndex < originalText.length()) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                } else if (cursorIndex < originalText.length()) {
                     U32StringA tmpRight = originalText.substr((unsigned long)(cursorIndex + 1L), originalText.length() - cursorIndex);
                     originalText = originalText.substr(0, (unsigned long)cursorIndex);
                     originalText.append(tmpRight);
 
                     refreshText(true);
+                    resetSelection();
                 }
             }
         }
@@ -166,14 +174,22 @@ namespace urchin {
 
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
-                U32StringA tmpRight = originalText.substr((unsigned long)cursorIndex, originalText.length() - cursorIndex);
-                originalText = originalText.substr(0, (unsigned long)cursorIndex);
-                originalText.append(1, unicodeCharacter);
-                originalText.append(tmpRight);
+            if (isCharacterAllowed(unicodeCharacter)) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                }
 
-                cursorIndex++;
-                refreshText(true);
+                if (!isMaxCharacterReach()) {
+                    U32StringA tmpRight = originalText.substr((unsigned long) cursorIndex, originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, (unsigned long) cursorIndex);
+                    originalText.append(1, unicodeCharacter);
+                    originalText.append(tmpRight);
+
+                    cursorIndex++;
+                    refreshText(true);
+
+                    resetSelection();
+                }
             }
             return false;
         }
