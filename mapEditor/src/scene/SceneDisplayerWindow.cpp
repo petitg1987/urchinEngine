@@ -155,8 +155,8 @@ namespace urchin {
     void SceneDisplayerWindow::keyPressEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
             //engine
-            if (event->key() < 256) { //TODO 256 correct? (+should match with InputDeviceKey::FIRST_VALUE...) + do the same in GLFW
-                sceneDisplayer->getScene().onKeyPress((unsigned int)event->key());
+            if (event->key() < 256) {
+                sceneDisplayer->getScene().onKeyPress((unsigned int)event->key()); //TODO replace camera key by methods to call + call method for A-Z + take argument method InputDeviceKey + adapt GLFW
                 sceneDisplayer->getScene().onChar((unsigned int)event->text().toLatin1()[0]);
             } else if (event->key() == Qt::Key_Control) {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::CTRL);
