@@ -36,6 +36,7 @@ namespace urchin {
             ~Text() override;
 
             WidgetType getWidgetType() const override;
+            void updateSize(Size) override;
 
             void setMaxWidth(float, LengthType);
             void updateText(std::string);

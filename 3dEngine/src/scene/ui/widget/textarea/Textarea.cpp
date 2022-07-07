@@ -326,18 +326,35 @@ namespace urchin {
         std::size_t currentSelectionIndex = displaySelectionStartIndex;
 
         while (currentSelectionIndex < displaySelectionEndIndex) {
-            std::size_t endOfCurrentLineIndex = currentSelectionIndex + 1; //TODO compute correctly !
+            std::size_t endOfCurrentLineIndex = computeEndOfLineIndex(currentSelectionIndex);
+            std::cout<<endOfCurrentLineIndex<<std::endl;
+            endOfCurrentLineIndex = std::min(endOfCurrentLineIndex, displaySelectionEndIndex);
 
-            Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex) + Point2<int>(0, -(int) TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
-            Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex) + Point2<int>(0, (int) text->getFont().getHeight() + (int) TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
+            Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
+            Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
             Position selectionPosition((float) displaySelectionStartPos.X, (float) displaySelectionStartPos.Y, PIXEL);
             Size selectionSize((float) (displaySelectionEndPos.X - displaySelectionStartPos.X), (float) (displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL);
             std::shared_ptr<StaticBitmap> selectionImg = StaticBitmap::create(textContainer.get(), selectionPosition, selectionSize, selectionTexture);
             selectionImgs.push_back(std::move(selectionImg));
 
-            currentSelectionIndex = endOfCurrentLineIndex;
+            currentSelectionIndex = endOfCurrentLineIndex + 1;
         }
+    }
+
+    std::size_t Textarea::computeEndOfLineIndex(std::size_t originalTextIndex) const {
+        std::size_t textCurrentSelectionIndex = text->baseTextToCutTextIndex(originalTextIndex);
+        std::size_t currentIndex = 0;
+        std::size_t endOfLineDelta = 0;
+        for (const TextLine& textLine : text->getCutTextLines()) {
+            if (currentIndex + textLine.text.length() > textCurrentSelectionIndex) {
+                std::size_t textEndOfCurrentLineIndex = currentIndex + textLine.text.length();
+                endOfLineDelta = textEndOfCurrentLineIndex - textCurrentSelectionIndex;
+                break;
+            }
+            currentIndex += textLine.text.length() + 1;
+        }
+        return originalTextIndex + endOfLineDelta;
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {

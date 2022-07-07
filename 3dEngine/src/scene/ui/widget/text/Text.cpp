@@ -52,6 +52,10 @@ namespace urchin {
         return WidgetType::TEXT;
     }
 
+    void Text::updateSize(Size) {
+        throw std::runtime_error("Update size is not allowed on text: " + inputText);
+    }
+
     void Text::setMaxWidth(float maxWidth, LengthType maxWidthType) {
         this->maxWidth = maxWidth;
         this->maxWidthType = maxWidthType;
