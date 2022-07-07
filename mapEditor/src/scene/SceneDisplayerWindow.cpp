@@ -154,30 +154,55 @@ namespace urchin {
 
     void SceneDisplayerWindow::keyPressEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
-            if (event->key() < 256) {
+            //engine
+            if (event->key() < 256) { //TODO 256 correct? (+should match with InputDeviceKey::FIRST_VALUE...) + do the same in GLFW
                 sceneDisplayer->getScene().onKeyPress((unsigned int)event->key());
                 sceneDisplayer->getScene().onChar((unsigned int)event->text().toLatin1()[0]);
+            } else if (event->key() == Qt::Key_Control) {
+                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::CTRL);
             } else if (event->key() == Qt::Key_Left) {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::LEFT_ARROW);
             } else if (event->key() == Qt::Key_Right) {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::RIGHT_ARROW);
+            } else if (event->key() == Qt::Key_Up) {
+                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::UP_ARROW);
+            } else if (event->key() == Qt::Key_Down) {
+                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::DOWN_ARROW);
             } else if (event->key() == Qt::Key_Backspace) {
-                sceneDisplayer->getScene().onChar(8);
+                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::BACKSPACE);
             } else if (event->key() == Qt::Key_Delete) {
-                sceneDisplayer->getScene().onChar(127);
+                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::DELETE_KEY);
+            } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::ENTER);
             }
         }
     }
 
     void SceneDisplayerWindow::keyReleaseEvent(QKeyEvent* event) {
         if (sceneDisplayer) {
+            //engine
             if (event->key() < 256) {
                 sceneDisplayer->getScene().onKeyRelease((unsigned int)event->key());
+            } else if (event->key() == Qt::Key_Control) {
+                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::CTRL);
             } else if (event->key() == Qt::Key_Left) {
                 sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::LEFT_ARROW);
             } else if (event->key() == Qt::Key_Right) {
                 sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::RIGHT_ARROW);
-            } else if (event->key() == Qt::Key_Escape) {
+            } else if (event->key() == Qt::Key_Up) {
+                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::UP_ARROW);
+            } else if (event->key() == Qt::Key_Down) {
+                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::DOWN_ARROW);
+            } else if (event->key() == Qt::Key_Backspace) {
+                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::BACKSPACE);
+            } else if (event->key() == Qt::Key_Delete) {
+                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::DELETE_KEY);
+            } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::ENTER);
+            }
+
+            //map editor
+            if (event->key() == Qt::Key_Escape) {
                 sceneDisplayer->getObjectMoveController()->onEscapeKey();
             }
         }
@@ -185,6 +210,7 @@ namespace urchin {
 
     void SceneDisplayerWindow::mousePressEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
+            //engine
             if (event->buttons() == Qt::LeftButton) {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
             } else if (event->button() == Qt::RightButton) {

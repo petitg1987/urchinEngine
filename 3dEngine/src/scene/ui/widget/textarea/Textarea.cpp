@@ -166,7 +166,7 @@ namespace urchin {
                     cursorPosition = computeCursorPosition(cursorIndex);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::ENTER || key == (int)InputDeviceKey::NUM_PAD_ENTER) {
+            } else if (key == (int)InputDeviceKey::ENTER) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 }

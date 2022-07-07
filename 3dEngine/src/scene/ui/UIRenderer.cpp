@@ -173,6 +173,7 @@ namespace urchin {
             && unicodeCharacter > 0x00 && unicodeCharacter < 0xFF //accept 'Basic Latin' and 'Latin-1 Supplement'
             && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
             && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
+            && unicodeCharacter != 8 //ignore 'Backspace' unicode
             && unicodeCharacter != 127 //ignore 'Delete' unicode
         ) {
             for (long i = (long) widgets.size() - 1; i >= 0; --i) {
