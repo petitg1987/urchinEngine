@@ -197,16 +197,22 @@ namespace urchin {
 
     bool Textarea::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
-                U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
-                originalText = originalText.substr(0, cursorIndex);
-                originalText.append(1, unicodeCharacter);
-                originalText.append(tmpRight);
-                refreshText(true);
+            if (isCharacterAllowed(unicodeCharacter)) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                }
 
-                cursorIndex++;
-                cursorPosition = computeCursorPosition(cursorIndex);
-                resetSelection();
+                if (!isMaxCharacterReach()) {
+                    U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, cursorIndex);
+                    originalText.append(1, unicodeCharacter);
+                    originalText.append(tmpRight);
+                    refreshText(true);
+
+                    cursorIndex++;
+                    cursorPosition = computeCursorPosition(cursorIndex);
+                    resetSelection();
+                }
             }
             return false;
         }

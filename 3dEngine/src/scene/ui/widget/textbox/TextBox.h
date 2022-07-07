@@ -33,7 +33,9 @@ namespace urchin {
             TextBox(Position, Size, std::string);
 
             bool onKeyPressEvent(unsigned int) override;
+            bool onKeyReleaseEvent(unsigned int) override;
             bool onCharEvent(char32_t) override;
+            bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
 
             bool isCharacterAllowed(char32_t) const;
@@ -42,6 +44,10 @@ namespace urchin {
             void refreshText(bool);
             Point2<int> computeCursorPosition(unsigned int);
             unsigned int computeCursorIndex(int, int) const;
+
+            void resetSelection();
+            void displaySelection();
+            void deleteSelectedText();
 
             //properties
             WStringConvertA stringConvert;
@@ -58,6 +64,11 @@ namespace urchin {
             unsigned int cursorIndex; //index of the cursor
             Point2<int> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
+
+            //selection
+            bool selectModeOn;
+            std::size_t selectionStartIndex; //index of the cursor in 'originalText'
+            std::shared_ptr<StaticBitmap> selectionImg;
 
             //state
             enum TextBoxStates {

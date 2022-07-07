@@ -18,6 +18,8 @@ namespace urchin {
             startTextIndex(0),
             cursorIndex(0),
             cursorBlink(0.0f),
+            selectModeOn(false),
+            selectionStartIndex(0),
             state(INACTIVE) {
 
     }
@@ -50,6 +52,11 @@ namespace urchin {
         Size cursorSize(TextFieldConst::CURSOR_WIDTH_PIXEL, (float)text->getFont().getHeight() + ((float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2.0f), PIXEL);
         cursor = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), cursorSize, texCursorAlbedo);
         cursor->setIsVisible(false);
+
+        Vector4<float> selectionColor = UISkinService::instance().getSkinReader().getFirstChunk(true, "selectionColor", UdaAttribute(), textBoxChunk)->getVector4Value();
+        std::shared_ptr<Texture> selectionTexture = Texture::build("textSelection", 1, 1, TextureFormat::RGBA_32_FLOAT, &selectionColor);
+        selectionImg = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), Size(0.0f, 0.0f, PIXEL), selectionTexture);
+        selectionImg->setIsVisible(false);
 
         refreshText(false);
         cursorPosition = computeCursorPosition(cursorIndex);
@@ -106,9 +113,12 @@ namespace urchin {
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
                 cursorIndex = computeCursorIndex(localMouseX, localMouseY);
                 cursorPosition = computeCursorPosition(cursorIndex);
+                resetSelection();
+                selectModeOn = true;
             } else {
                 state = INACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                resetSelection();
             }
         } else if (state == ACTIVE) {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
@@ -144,6 +154,16 @@ namespace urchin {
         return true;
     }
 
+    bool TextBox::onKeyReleaseEvent(unsigned int key) {
+        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+            if (selectModeOn) {
+                selectModeOn = false;
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter) && !isMaxCharacterReach()) {
@@ -155,6 +175,19 @@ namespace urchin {
                 cursorIndex++;
                 refreshText(true);
             }
+            return false;
+        }
+        return true;
+    }
+
+    bool TextBox::onMouseMoveEvent(int mouseX, int mouseY) {
+        if (selectModeOn) {
+            int localMouseX = mouseX - MathFunction::roundToInt(text->getGlobalPositionX());
+            int localMouseY = mouseY - MathFunction::roundToInt(text->getGlobalPositionY());
+
+            cursorIndex = computeCursorIndex(localMouseX, localMouseY);
+            cursorPosition = computeCursorPosition(cursorIndex);
+            displaySelection();
             return false;
         }
         return true;
@@ -238,6 +271,35 @@ namespace urchin {
             widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
         }
         return computedCursorIndex;
+    }
+
+    void TextBox::resetSelection() {
+        selectionStartIndex = cursorIndex;
+        selectionImg->setIsVisible(false);
+    }
+
+    void TextBox::displaySelection() {
+        selectionImg->setIsVisible(true);
+
+        unsigned int displaySelectionStartIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
+        unsigned int displaySelectionEndIndex = std::max((unsigned int)selectionStartIndex, cursorIndex);
+
+        Point2<int> displaySelectionStartPos = computeCursorPosition(displaySelectionStartIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
+        Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
+
+        selectionImg->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
+        selectionImg->updateSize(Size((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
+    }
+
+    void TextBox::deleteSelectedText() {
+        U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, (std::size_t)cursorIndex), originalText.length() - std::max(selectionStartIndex, (std::size_t)cursorIndex));
+        originalText = originalText.substr(0, std::min(selectionStartIndex, (std::size_t)cursorIndex));
+        originalText.append(tmpRight);
+        refreshText(true);
+
+        cursorIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
+        cursorPosition = computeCursorPosition(cursorIndex);
+        resetSelection();
     }
 
     void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
