@@ -203,6 +203,7 @@ namespace urchin {
 
             cursorIndex = computeCursorIndex(localMouseX, localMouseY);
             cursorPosition = computeCursorPosition(cursorIndex);
+            refreshText(false);
             displaySelection();
             return false;
         }
@@ -304,7 +305,8 @@ namespace urchin {
         Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
         selectionImg->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
-        selectionImg->updateSize(Size((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
+        float sizeX = std::min((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)maxWidthText - (float)displaySelectionStartPos.X); //TODO wrong !
+        selectionImg->updateSize(Size(sizeX, (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
     }
 
     void TextBox::deleteSelectedText() {
@@ -315,6 +317,7 @@ namespace urchin {
 
         cursorIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
         cursorPosition = computeCursorPosition(cursorIndex);
+        refreshText(false);
         resetSelection();
     }
 
