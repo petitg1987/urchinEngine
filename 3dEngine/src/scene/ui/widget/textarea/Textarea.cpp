@@ -327,7 +327,6 @@ namespace urchin {
 
         while (currentSelectionIndex < displaySelectionEndIndex) {
             std::size_t endOfCurrentLineIndex = computeEndOfLineIndex(currentSelectionIndex);
-            std::cout<<endOfCurrentLineIndex<<std::endl;
             endOfCurrentLineIndex = std::min(endOfCurrentLineIndex, displaySelectionEndIndex);
 
             Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
