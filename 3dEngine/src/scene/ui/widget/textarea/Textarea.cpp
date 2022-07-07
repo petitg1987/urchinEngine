@@ -337,7 +337,7 @@ namespace urchin {
             std::shared_ptr<StaticBitmap> selectionImg = StaticBitmap::create(textContainer.get(), selectionPosition, selectionSize, selectionTexture);
             selectionImgs.push_back(std::move(selectionImg));
 
-            currentSelectionIndex = endOfCurrentLineIndex + 1;
+            currentSelectionIndex = endOfCurrentLineIndex + 1 /* for line return */;
         }
     }
 
@@ -346,12 +346,12 @@ namespace urchin {
         std::size_t currentIndex = 0;
         std::size_t endOfLineDelta = 0;
         for (const TextLine& textLine : text->getCutTextLines()) {
-            if (currentIndex + textLine.text.length() > textCurrentSelectionIndex) {
+            if (currentIndex + textLine.text.length() >= textCurrentSelectionIndex) {
                 std::size_t textEndOfCurrentLineIndex = currentIndex + textLine.text.length();
                 endOfLineDelta = textEndOfCurrentLineIndex - textCurrentSelectionIndex;
                 break;
             }
-            currentIndex += textLine.text.length() + 1;
+            currentIndex += textLine.text.length() + 1 /* for line return */;
         }
         return originalTextIndex + endOfLineDelta;
     }
