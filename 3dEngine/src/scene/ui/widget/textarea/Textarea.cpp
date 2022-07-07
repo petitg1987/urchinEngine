@@ -113,10 +113,12 @@ namespace urchin {
 
                     selectModeOn = true;
                     selectionStartIndex = cursorIndex;
+                    clearSelection();
                 }
             } else {
                 state = INACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                clearSelection();
             }
         } else if (state == ACTIVE) {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
