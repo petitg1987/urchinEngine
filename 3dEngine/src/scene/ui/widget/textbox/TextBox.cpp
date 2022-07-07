@@ -52,7 +52,7 @@ namespace urchin {
         cursor->setIsVisible(false);
 
         refreshText(false);
-        refreshCursorPosition();
+        cursorPosition = computeCursorPosition(cursorIndex);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -105,7 +105,7 @@ namespace urchin {
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
                 cursorIndex = computeCursorIndex(localMouseX, localMouseY);
-                refreshCursorPosition();
+                cursorPosition = computeCursorPosition(cursorIndex);
             } else {
                 state = INACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -175,14 +175,14 @@ namespace urchin {
 
     void TextBox::refreshText(bool textUpdated) {
         //refresh start index
-        refreshCursorPosition();
+        cursorPosition = computeCursorPosition(cursorIndex);
         if (cursorPosition.X > (int)maxWidthText) {
             startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + TextFieldConst::LETTER_SHIFT : (unsigned int)originalText.length();
             startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex >= TextFieldConst::LETTER_SHIFT) ? startTextIndex - TextFieldConst::LETTER_SHIFT : 0;
         }
-        refreshCursorPosition();
+        cursorPosition = computeCursorPosition(cursorIndex);
 
         //determine the text to display
         const auto& font = text->getFont();
@@ -206,21 +206,21 @@ namespace urchin {
         }
     }
 
-    void TextBox::refreshCursorPosition() {
-        cursorPosition.X = 0.0f;
-        cursorPosition.Y = 0.0f;
+    Point2<int> TextBox::computeCursorPosition(unsigned int cursorIdx) {
+        Point2<int> computedCursorPosition(0.0f, 0.0f);
 
-        for (unsigned int i = startTextIndex; i < cursorIndex; ++i) {
+        for (unsigned int i = startTextIndex; i < cursorIdx; ++i) {
             char32_t textLetter = originalText[i];
-            cursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
+            computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
         }
 
-        if (cursorPosition.X > 0) {
-            cursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
-            cursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
+        if (computedCursorPosition.X > 0) {
+            computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
+            computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
         }
 
         cursorBlink = 0.0f;
+        return computedCursorPosition;
     }
 
     unsigned int TextBox::computeCursorIndex(int approximatePositionX, int) const {

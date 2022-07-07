@@ -1,5 +1,7 @@
 #pragma once
 
+#include <UrchinCommon.h>
+
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/text/Text.h>
@@ -34,9 +36,12 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText(bool);
-            void refreshCursorPosition();
+            Point2<int> computeCursorPosition(std::size_t);
             void adjustScrollToCursor() const;
             std::size_t computeCursorIndex(int, int) const;
+
+            void clearSelection();
+            void displaySelection();
 
             //properties
             mutable WStringConvertA stringConvert;
@@ -52,12 +57,14 @@ namespace urchin {
             U32StringA originalText; //original text of the textarea
             std::shared_ptr<StaticBitmap> cursor;
             std::size_t cursorIndex; //index of the cursor in 'originalText'
-            Vector2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
+            Point2<int> cursorPosition; //position (in pixel) of the cursor in 'text'
             float cursorBlink;
 
             //selection
             bool selectModeOn;
             std::size_t selectionStartIndex; //index of the cursor in 'originalText'
+            std::shared_ptr<Texture> selectionTexture;
+            std::vector<std::shared_ptr<StaticBitmap>> selectionImgs;
 
             //state
             enum TextareaStates {

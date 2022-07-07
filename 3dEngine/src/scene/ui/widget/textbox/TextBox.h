@@ -40,7 +40,7 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText(bool);
-            void refreshCursorPosition();
+            Point2<int> computeCursorPosition(unsigned int);
             unsigned int computeCursorIndex(int, int) const;
 
             //properties
@@ -56,7 +56,7 @@ namespace urchin {
             unsigned int startTextIndex; //index of the first letter to display
             std::shared_ptr<StaticBitmap> cursor;
             unsigned int cursorIndex; //index of the cursor
-            Vector2<int> cursorPosition; //position (in pixel) of the cursor
+            Point2<int> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
 
             //state

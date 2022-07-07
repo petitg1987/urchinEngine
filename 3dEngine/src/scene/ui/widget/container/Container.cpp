@@ -38,7 +38,7 @@ namespace urchin {
         notifyChildrenUpdated();
     }
 
-    void Container::detachChild(Widget* child){
+    void Container::detachChild(Widget* child) {
         Widget::detachChild(child);
         notifyChildrenUpdated();
     }
