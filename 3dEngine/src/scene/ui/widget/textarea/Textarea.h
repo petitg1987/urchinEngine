@@ -42,7 +42,6 @@ namespace urchin {
 
             void clearSelection();
             void displaySelection();
-            std::size_t computeEndOfLineIndex(std::size_t) const;
 
             //properties
             mutable WStringConvertA stringConvert;

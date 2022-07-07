@@ -169,7 +169,7 @@ namespace urchin {
         return cutTextLines;
     }
 
-    std::size_t Text::cutTextToBaseTextIndex(std::size_t cutTextIndex) const {
+    std::size_t Text::cutTextIndexToBaseTextIndex(std::size_t cutTextIndex) const {
         int delta = 0;
         std::size_t currentIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
@@ -187,7 +187,7 @@ namespace urchin {
         throw std::runtime_error("Cut text lines index " + std::to_string(cutTextIndex) + " does not exist for text: " + baseText);
     }
 
-    std::size_t Text::baseTextToCutTextIndex(std::size_t baseTextIndex, WordCutIndexPositioning wordCutIndexPositioning) const {
+    std::size_t Text::baseTextIndexToCutTextIndex(std::size_t baseTextIndex, WordCutIndexPositioning wordCutIndexPositioning) const {
         std::size_t cutTextDelta = 0;
         std::size_t currentCutTextIndex = 0;
         for (const TextLine& lineIndex : cutTextLines) {
@@ -205,6 +205,22 @@ namespace urchin {
                     currentCutTextIndex++;
                 }
             }
+        }
+        throw std::runtime_error("Base text index " + std::to_string(baseTextIndex) + " does not exist for text: " + baseText);
+    }
+
+    std::size_t Text::baseTextIndexToEndOfLineIndex(std::size_t baseTextIndex, WordCutIndexPositioning wordCutIndexPositioning) const {
+        std::size_t cutTextIndex = baseTextIndexToCutTextIndex(baseTextIndex, wordCutIndexPositioning);
+
+        std::size_t currentIndex = 0;
+        for (const TextLine& textLine : cutTextLines) {
+            if (currentIndex + textLine.text.length() >= cutTextIndex) {
+                std::size_t textEndOfCurrentLineIndex = currentIndex + textLine.text.length();
+                std::size_t endOfLineDelta = textEndOfCurrentLineIndex - cutTextIndex;
+                return baseTextIndex + endOfLineDelta;
+            }
+
+            currentIndex += textLine.text.length() + 1 /* for line return */;
         }
         throw std::runtime_error("Base text index " + std::to_string(baseTextIndex) + " does not exist for text: " + baseText);
     }

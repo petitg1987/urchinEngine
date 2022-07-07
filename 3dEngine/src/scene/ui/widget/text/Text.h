@@ -51,8 +51,9 @@ namespace urchin {
 
             const std::string& getBaseText() const;
             const std::vector<TextLine>& getCutTextLines() const;
-            std::size_t cutTextToBaseTextIndex(std::size_t) const;
-            std::size_t baseTextToCutTextIndex(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) const;
+            std::size_t cutTextIndexToBaseTextIndex(std::size_t) const;
+            std::size_t baseTextIndexToCutTextIndex(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) const;
+            std::size_t baseTextIndexToEndOfLineIndex(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) const;
             const Font& getFont() const;
 
         protected:

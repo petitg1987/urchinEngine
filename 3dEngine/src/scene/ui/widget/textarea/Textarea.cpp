@@ -238,7 +238,7 @@ namespace urchin {
     }
 
     Point2<int> Textarea::computeCursorPosition(std::size_t cursorIdx, WordCutIndexPositioning wordCutIndexPositioning) {
-        std::size_t textCursorIndex = text->baseTextToCutTextIndex(cursorIdx, wordCutIndexPositioning);
+        std::size_t textCursorIndex = text->baseTextIndexToCutTextIndex(cursorIdx, wordCutIndexPositioning);
         std::size_t currentIndex = 0;
 
         Point2<int> computedCursorPosition(0.0f, 0.0f);
@@ -310,7 +310,7 @@ namespace urchin {
             }
         }
 
-        return text->cutTextToBaseTextIndex(textCursorIndex);
+        return text->cutTextIndexToBaseTextIndex(textCursorIndex);
     }
 
     void Textarea::clearSelection() {
@@ -324,12 +324,13 @@ namespace urchin {
         std::size_t displaySelectionStartIndex = std::min(selectionStartIndex, cursorIndex);
         std::size_t displaySelectionEndIndex = std::max(selectionStartIndex, cursorIndex);
         std::size_t currentSelectionIndex = displaySelectionStartIndex;
+        std::size_t lineIndex = 0;
 
         while (currentSelectionIndex < displaySelectionEndIndex) {
-            std::size_t endOfCurrentLineIndex = computeEndOfLineIndex(currentSelectionIndex);
+            std::size_t endOfCurrentLineIndex = text->baseTextIndexToEndOfLineIndex(currentSelectionIndex);
             endOfCurrentLineIndex = std::min(endOfCurrentLineIndex, displaySelectionEndIndex);
 
-            Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
+            Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
             Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex, WordCutIndexPositioning::END_OF_LINE) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
             Position selectionPosition((float) displaySelectionStartPos.X, (float) displaySelectionStartPos.Y, PIXEL);
@@ -337,23 +338,12 @@ namespace urchin {
             std::shared_ptr<StaticBitmap> selectionImg = StaticBitmap::create(textContainer.get(), selectionPosition, selectionSize, selectionTexture);
             selectionImgs.push_back(std::move(selectionImg));
 
-            currentSelectionIndex = endOfCurrentLineIndex + 1 /* for line return */;
-        }
-    }
-
-    std::size_t Textarea::computeEndOfLineIndex(std::size_t originalTextIndex) const {
-        std::size_t textCurrentSelectionIndex = text->baseTextToCutTextIndex(originalTextIndex);
-        std::size_t currentIndex = 0;
-        std::size_t endOfLineDelta = 0;
-        for (const TextLine& textLine : text->getCutTextLines()) {
-            if (currentIndex + textLine.text.length() >= textCurrentSelectionIndex) {
-                std::size_t textEndOfCurrentLineIndex = currentIndex + textLine.text.length();
-                endOfLineDelta = textEndOfCurrentLineIndex - textCurrentSelectionIndex;
-                break;
+            currentSelectionIndex = endOfCurrentLineIndex;
+            if (text->getCutTextLines()[lineIndex].cutType != TextCutType::MIDDLE_WORD) {
+                currentSelectionIndex++; //for line return
             }
-            currentIndex += textLine.text.length() + 1 /* for line return */;
+            lineIndex++;
         }
-        return originalTextIndex + endOfLineDelta;
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
