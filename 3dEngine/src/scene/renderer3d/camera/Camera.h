@@ -56,8 +56,12 @@ namespace urchin {
 
             virtual bool onKeyPress(unsigned int);
             virtual bool onKeyRelease(unsigned int);
-            virtual void refreshCameraView(float) = 0;
             virtual bool onMouseMove(double, double);
+
+            virtual void moveForward(float) = 0;
+            virtual void moveBackward(float) = 0;
+            virtual void moveLeft(float) = 0;
+            virtual void moveRight(float) = 0;
 
         private:
             void initializeOrUpdate(unsigned int, unsigned int);

@@ -64,6 +64,10 @@ namespace urchin {
             std::unique_ptr<SceneDisplayer> sceneDisplayer;
             std::array<bool, SceneDisplayer::LAST_VIEW_PROPERTIES> viewProperties;
 
+            bool forwardKeyPressed;
+            bool backwardKeyPressed;
+            bool leftKeyPressed;
+            bool rightKeyPressed;
             double mouseX;
             double mouseY;
             std::string lastPickedBodyId;

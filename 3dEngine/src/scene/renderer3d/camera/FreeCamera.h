@@ -14,23 +14,17 @@ namespace urchin {
             FreeCamera(float, float, float);
             ~FreeCamera() override = default;
 
-            void setKeys(unsigned int, unsigned int, unsigned int, unsigned int);
             void setSpeed(float, float);
 
             bool onKeyPress(unsigned int) override;
             bool onKeyRelease(unsigned int) override;
 
-            void refreshCameraView(float) override;
+            void moveForward(float) override;
+            void moveBackward(float) override;
+            void moveLeft(float) override;
+            void moveRight(float) override;
 
         private:
-            unsigned int keyFront;
-            unsigned int keyBack;
-            unsigned int keyLeft;
-            unsigned int keyRight;
-            bool isKeyFrontPressed;
-            bool isKeyBackPressed;
-            bool isKeyLeftPressed;
-            bool isKeyRightPressed;
             float speed;
             float rotateSpeed;
     };

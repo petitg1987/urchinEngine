@@ -227,7 +227,6 @@ namespace urchin {
         if (aiEnvironment) {
             aiEnvironment->pause();
         }
-
     }
 
     void Map::unpause() {

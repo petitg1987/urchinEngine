@@ -413,9 +413,6 @@ namespace urchin {
     void Renderer3d::updateScene(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "updateScene");
 
-        //move the camera
-        camera->refreshCameraView(dt);
-
         //refresh the model occlusion culler
         modelOcclusionCuller.refresh();
 

@@ -12,6 +12,10 @@ namespace urchin {
             sceneWindowController(SceneWindowController(this)),
             mouseController(MouseController(this)),
             viewProperties(),
+            forwardKeyPressed(false),
+            backwardKeyPressed(false),
+            leftKeyPressed(false),
+            rightKeyPressed(false),
             mouseX(0),
             mouseY(0) {
         GraphicsApiService::enableUniqueSurface();
@@ -147,6 +151,19 @@ namespace urchin {
             loadEmptyScene();
         }
 
+        if (forwardKeyPressed) {
+            sceneDisplayer->getCamera()->moveForward(sceneDisplayer->getScene().getDeltaTime());
+        }
+        if (backwardKeyPressed) {
+            sceneDisplayer->getCamera()->moveBackward(sceneDisplayer->getScene().getDeltaTime());
+        }
+        if (leftKeyPressed) {
+            sceneDisplayer->getCamera()->moveLeft(sceneDisplayer->getScene().getDeltaTime());
+        }
+        if (rightKeyPressed) {
+            sceneDisplayer->getCamera()->moveRight(sceneDisplayer->getScene().getDeltaTime());
+        }
+
         sceneDisplayer->paint();
 
         requestUpdate();
@@ -156,7 +173,7 @@ namespace urchin {
         if (sceneDisplayer) {
             //engine
             if (event->key() < 256) {
-                sceneDisplayer->getScene().onKeyPress((unsigned int)event->key()); //TODO replace camera key by methods to call + call method for A-Z + take argument method InputDeviceKey + adapt GLFW
+                sceneDisplayer->getScene().onKeyPress((unsigned int)event->key()); //TODO call method for A-Z + take argument method InputDeviceKey + adapt GLFW
                 sceneDisplayer->getScene().onChar((unsigned int)event->text().toLatin1()[0]);
             } else if (event->key() == Qt::Key_Control) {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::CTRL);
@@ -174,6 +191,17 @@ namespace urchin {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::DELETE_KEY);
             } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
                 sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::ENTER);
+            }
+
+            //map editor
+            if (event->key() == Qt::Key_Z) {
+                forwardKeyPressed = true;
+            } else if (event->key() == Qt::Key_S) {
+                backwardKeyPressed = true;
+            } else if (event->key() == Qt::Key_Q) {
+                leftKeyPressed = true;
+            } else if (event->key() == Qt::Key_D) {
+                rightKeyPressed = true;
             }
         }
     }
@@ -202,7 +230,15 @@ namespace urchin {
             }
 
             //map editor
-            if (event->key() == Qt::Key_Escape) {
+            if (event->key() == Qt::Key_Z) {
+                forwardKeyPressed = false;
+            } else if (event->key() == Qt::Key_S) {
+                backwardKeyPressed = false;
+            } else if (event->key() == Qt::Key_Q) {
+                leftKeyPressed = false;
+            } else if (event->key() == Qt::Key_D) {
+                rightKeyPressed = false;
+            } else if (event->key() == Qt::Key_Escape) {
                 sceneDisplayer->getObjectMoveController()->onEscapeKey();
             }
         }
