@@ -40,8 +40,10 @@ namespace urchin {
             void adjustScrollToCursor() const;
             std::size_t computeCursorIndex(int, int) const;
 
-            void clearSelection();
+            void resetSelection();
+            void resetDisplaySelection();
             void displaySelection();
+            void deleteSelectedText();
 
             //properties
             mutable WStringConvertA stringConvert;

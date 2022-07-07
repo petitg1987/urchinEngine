@@ -39,6 +39,7 @@ namespace urchin {
 
         this->cursorIndex = originalText.length();
         this->cursorPosition = computeCursorPosition(this->cursorIndex);
+        resetSelection();
     }
 
     void Textarea::createOrUpdateWidget() {
@@ -110,36 +111,40 @@ namespace urchin {
                     int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
                     cursorIndex = computeCursorIndex(localMouseX, localMouseY);
                     cursorPosition = computeCursorPosition(cursorIndex);
-
+                    resetSelection();
                     selectModeOn = true;
-                    selectionStartIndex = cursorIndex;
-                    clearSelection();
                 }
             } else {
                 state = INACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
-                clearSelection();
+                resetSelection();
             }
         } else if (state == ACTIVE) {
             if (key == (int)InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     cursorPosition = computeCursorPosition(cursorIndex);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     cursorPosition = computeCursorPosition(cursorIndex);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::UP_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
                 cursorPosition = computeCursorPosition(cursorIndex);
+                resetSelection();
             } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
                 cursorPosition = computeCursorPosition(cursorIndex);
+                resetSelection();
             } else if (key == (int)InputDeviceKey::BACKSPACE) {
-                if (cursorIndex > 0) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                } else if (cursorIndex > 0) {
                     U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
                     originalText = originalText.substr(0, cursorIndex - 1L);
                     originalText.append(tmpRight);
@@ -147,17 +152,25 @@ namespace urchin {
 
                     cursorIndex--;
                     cursorPosition = computeCursorPosition(cursorIndex);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::DELETE_KEY) {
-                if (cursorIndex < originalText.length()) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                } else if (cursorIndex < originalText.length()) {
                     U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
                     originalText = originalText.substr(0, cursorIndex);
                     originalText.append(tmpRight);
                     refreshText(true);
 
                     cursorPosition = computeCursorPosition(cursorIndex);
+                    resetSelection();
                 }
             } else if (key == (int)InputDeviceKey::ENTER || key == (int)InputDeviceKey::NUM_PAD_ENTER) {
+                if (selectionStartIndex != cursorIndex) {
+                    deleteSelectedText();
+                }
+
                 U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
                 originalText = originalText.substr(0, cursorIndex);
                 originalText.append(1, '\n');
@@ -166,6 +179,7 @@ namespace urchin {
 
                 cursorIndex++;
                 cursorPosition = computeCursorPosition(cursorIndex);
+                resetSelection();
             }
         }
         return true;
@@ -192,6 +206,7 @@ namespace urchin {
 
                 cursorIndex++;
                 cursorPosition = computeCursorPosition(cursorIndex);
+                resetSelection();
             }
             return false;
         }
@@ -205,7 +220,6 @@ namespace urchin {
 
             cursorIndex = computeCursorIndex(localMouseX, localMouseY);
             cursorPosition = computeCursorPosition(cursorIndex);
-
             displaySelection();
             return false;
         }
@@ -315,13 +329,18 @@ namespace urchin {
         return text->cutTextIndexToBaseTextIndex(textCursorIndex);
     }
 
-    void Textarea::clearSelection() {
+    void Textarea::resetSelection() {
+        selectionStartIndex = cursorIndex;
+        resetDisplaySelection();
+    }
+
+    void Textarea::resetDisplaySelection() {
         std::ranges::for_each(selectionImgs, [&](const std::shared_ptr<StaticBitmap>& selectionImg){ textContainer->detachChild(selectionImg.get()); });
         selectionImgs.clear();
     }
 
     void Textarea::displaySelection() {
-        clearSelection();
+        resetDisplaySelection();
 
         std::size_t displaySelectionStartIndex = std::min(selectionStartIndex, cursorIndex);
         std::size_t displaySelectionEndIndex = std::max(selectionStartIndex, cursorIndex);
@@ -346,6 +365,17 @@ namespace urchin {
             }
             lineIndex++;
         }
+    }
+
+    void Textarea::deleteSelectedText() {
+        U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, cursorIndex), originalText.length() - std::max(selectionStartIndex, cursorIndex));
+        originalText = originalText.substr(0, std::min(selectionStartIndex, cursorIndex));
+        originalText.append(tmpRight);
+        refreshText(true);
+
+        cursorIndex = std::min(selectionStartIndex, cursorIndex);
+        cursorPosition = computeCursorPosition(cursorIndex);
+        resetSelection();
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
