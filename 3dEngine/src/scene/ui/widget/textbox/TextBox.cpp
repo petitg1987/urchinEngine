@@ -45,7 +45,7 @@ namespace urchin {
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY), textSkinChunk->getStringValue(), "");
-        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth));
+        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth + (int)TextFieldConst::LETTER_AND_CURSOR_SHIFT + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
@@ -259,30 +259,41 @@ namespace urchin {
     }
 
     void TextBox::refreshText(bool textUpdated) {
-        //refresh start index
-        refreshCursorPosition(cursorIndex);
-        if (cursorPosition.X > (int)maxWidthText) {
-            startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + TextFieldConst::LETTER_SHIFT : (unsigned int)originalText.length();
-            startTextIndex = std::min(startTextIndex, originalText.length());
-        } else if (cursorIndex <= startTextIndex) {
-            startTextIndex = (startTextIndex >= TextFieldConst::LETTER_SHIFT) ? startTextIndex - TextFieldConst::LETTER_SHIFT : 0;
-            startTextIndex = std::min(startTextIndex, originalText.length());
-        }
         refreshCursorPosition(cursorIndex);
 
-        //determine the text to display
-        const auto& font = text->getFont();
-        unsigned int widthText = 0;
-        std::size_t endTextIndex = startTextIndex;
-        for (; endTextIndex < originalText.length(); ++endTextIndex) {
-            char32_t textLetter = originalText[endTextIndex];
-            widthText += font.getGlyph(textLetter).width + font.getSpaceBetweenLetters();
-            if (widthText > maxWidthText) {
-                break;
+        std::size_t endTextIndex;
+        if (cursorPosition.X > (int)maxWidthText) {
+            endTextIndex = std::min(cursorIndex + 1, originalText.length());
+
+            unsigned int widthText = 0;
+            for (startTextIndex = endTextIndex; true; --startTextIndex) {
+                char32_t textLetter = originalText[startTextIndex];
+                widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
+                if (widthText > maxWidthText || startTextIndex == 0) {
+                    startTextIndex++;
+                    break;
+                }
+            }
+        } else {
+            if (cursorIndex <= startTextIndex) {
+                startTextIndex = (std::size_t) std::max((int) cursorIndex - 1, 0);
+                startTextIndex = std::min(startTextIndex, originalText.length());
+            }
+
+            unsigned int widthText = 0;
+            for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
+                char32_t textLetter = originalText[endTextIndex];
+                widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
+                if (widthText > maxWidthText) {
+                    break;
+                }
             }
         }
+
         U32StringA textToDisplay = originalText.substr(startTextIndex, endTextIndex - startTextIndex);
         text->updateText(std::string(stringConvert.to_bytes(textToDisplay)));
+
+        refreshCursorPosition(cursorIndex);
 
         //event
         if (textUpdated) {
