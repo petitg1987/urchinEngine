@@ -66,7 +66,8 @@ namespace urchin {
             bool selectModeOn;
             std::size_t selectionStartIndex; //index of the cursor in 'originalText'
             std::shared_ptr<Texture> selectionTexture;
-            std::vector<std::shared_ptr<StaticBitmap>> selectionImgs;
+            std::vector<std::shared_ptr<StaticBitmap>> selectionImages;
+            bool ctrlKeyPressed;
 
             //state
             enum TextareaStates {

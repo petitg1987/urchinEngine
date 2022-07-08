@@ -23,7 +23,7 @@ namespace urchin {
     };
 
     enum class WordCutIndexPositioning {
-        //When a word is cut at the middle (TextCutType#MIDDLE_WORD), the index at end of line or at begin of line represents the same index in the baseText.
+        //When a word is cut at the middle (TextCutType#MIDDLE_WORD), the index at end of line and at begin of line represents the same index in the baseText.
         //This enum allows to define the expected index in the cut text when the index is converted from the base text
         END_OF_LINE,
         BEGIN_OF_NEXT_LINE

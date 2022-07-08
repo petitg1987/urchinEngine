@@ -13,6 +13,7 @@ namespace urchin {
             cursorBlink(0.0f),
             selectModeOn(false),
             selectionStartIndex(0),
+            ctrlKeyPressed(false),
             state(INACTIVE) {
 
     }
@@ -98,7 +99,9 @@ namespace urchin {
 
 
     bool Textarea::onKeyPressEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::CTRL) {
+            ctrlKeyPressed = true;
+        } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -120,7 +123,15 @@ namespace urchin {
                 resetSelection();
             }
         } else if (state == ACTIVE) {
-            if (key == InputDeviceKey::LEFT_ARROW) {
+            if (key == InputDeviceKey::A) {
+                if (ctrlKeyPressed) {
+                    selectionStartIndex = 0;
+                    cursorIndex = originalText.length();
+                    cursorPosition = computeCursorPosition(cursorIndex);
+                    displaySelection();
+                    //TODO refresh scroll !
+                }
+            } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     cursorPosition = computeCursorPosition(cursorIndex);
@@ -186,7 +197,9 @@ namespace urchin {
     }
 
     bool Textarea::onKeyReleaseEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::CTRL) {
+            ctrlKeyPressed = false;
+        } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (selectModeOn) {
                 selectModeOn = false;
                 return false;
@@ -341,8 +354,8 @@ namespace urchin {
     }
 
     void Textarea::resetDisplaySelection() {
-        std::ranges::for_each(selectionImgs, [&](const std::shared_ptr<StaticBitmap>& selectionImg){ textContainer->detachChild(selectionImg.get()); });
-        selectionImgs.clear();
+        std::ranges::for_each(selectionImages, [&](const std::shared_ptr<StaticBitmap>& selectionImg){ textContainer->detachChild(selectionImg.get()); });
+        selectionImages.clear();
     }
 
     void Textarea::displaySelection() {
@@ -363,7 +376,7 @@ namespace urchin {
             Position selectionPosition((float) displaySelectionStartPos.X, (float) displaySelectionStartPos.Y, PIXEL);
             Size selectionSize((float) (displaySelectionEndPos.X - displaySelectionStartPos.X), (float) (displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL);
             std::shared_ptr<StaticBitmap> selectionImg = StaticBitmap::create(textContainer.get(), selectionPosition, selectionSize, selectionTexture);
-            selectionImgs.push_back(std::move(selectionImg));
+            selectionImages.push_back(std::move(selectionImg));
 
             currentSelectionIndex = endOfCurrentLineIndex;
             if (text->getCutTextLines()[lineIndex].cutType != TextCutType::MIDDLE_WORD) {

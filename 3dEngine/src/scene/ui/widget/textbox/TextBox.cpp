@@ -20,6 +20,7 @@ namespace urchin {
             cursorBlink(0.0f),
             selectModeOn(false),
             selectionStartIndex(0),
+            ctrlKeyPressed(false),
             state(INACTIVE) {
 
     }
@@ -55,8 +56,8 @@ namespace urchin {
 
         Vector4<float> selectionColor = UISkinService::instance().getSkinReader().getFirstChunk(true, "selectionColor", UdaAttribute(), textBoxChunk)->getVector4Value();
         std::shared_ptr<Texture> selectionTexture = Texture::build("textSelection", 1, 1, TextureFormat::RGBA_32_FLOAT, &selectionColor);
-        selectionImg = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), Size(0.0f, 0.0f, PIXEL), selectionTexture);
-        selectionImg->setIsVisible(false);
+        selectionImage = StaticBitmap::create(this, Position(0.0f, 0.0f, PIXEL), Size(0.0f, 0.0f, PIXEL), selectionTexture);
+        selectionImage->setIsVisible(false);
 
         refreshText(false);
         cursorPosition = computeCursorPosition(cursorIndex);
@@ -104,7 +105,9 @@ namespace urchin {
     }
 
     bool TextBox::onKeyPressEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::CTRL) {
+            ctrlKeyPressed = true;
+        } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -121,7 +124,15 @@ namespace urchin {
                 resetSelection();
             }
         } else if (state == ACTIVE) {
-            if (key == InputDeviceKey::LEFT_ARROW) {
+            if (key == InputDeviceKey::A) {
+                if (ctrlKeyPressed) {
+                    selectionStartIndex = 0;
+                    cursorIndex = (unsigned int)originalText.length();
+                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshText(false);
+                    displaySelection();
+                }
+            } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshText(false);
@@ -163,7 +174,9 @@ namespace urchin {
     }
 
     bool TextBox::onKeyReleaseEvent(InputDeviceKey key) {
-        if (key == InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::CTRL) {
+            ctrlKeyPressed = false;
+        } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (selectModeOn) {
                 selectModeOn = false;
                 return false;
@@ -293,11 +306,11 @@ namespace urchin {
 
     void TextBox::resetSelection() {
         selectionStartIndex = cursorIndex;
-        selectionImg->setIsVisible(false);
+        selectionImage->setIsVisible(false);
     }
 
     void TextBox::displaySelection() {
-        selectionImg->setIsVisible(true);
+        selectionImage->setIsVisible(true);
 
         unsigned int displaySelectionStartIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
         unsigned int displaySelectionEndIndex = std::max((unsigned int)selectionStartIndex, cursorIndex);
@@ -305,9 +318,9 @@ namespace urchin {
         Point2<int> displaySelectionStartPos = computeCursorPosition(displaySelectionStartIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
         Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
-        selectionImg->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
+        selectionImage->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
         float sizeX = std::min((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)maxWidthText - (float)displaySelectionStartPos.X);
-        selectionImg->updateSize(Size(sizeX, (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
+        selectionImage->updateSize(Size(sizeX, (float)(displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL));
     }
 
     void TextBox::deleteSelectedText() {
