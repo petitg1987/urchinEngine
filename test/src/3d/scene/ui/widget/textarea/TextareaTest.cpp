@@ -35,6 +35,31 @@ void TextareaTest::textCut() {
     AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[1].text == WStringConvertA().from_bytes("m"));
 }
 
+void TextareaTest::textCopyPaste() {
+    auto uiRenderer = setupUiRenderer();
+    auto textarea = Textarea::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(500.0f, 100.0f, PIXEL), "test");
+    uiRenderer->addWidget(textarea);
+
+    std::string textValue = "123";
+    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over textarea
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate textarea
+    for (char textLetter : textValue) {
+        uiRenderer->onChar(static_cast<char32_t>(textLetter));
+    }
+    float endOfLinePosX = textarea->getWidth() - (float)textarea->getOutline().rightWidth - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
+    uiRenderer->onKeyPress(InputDeviceKey::CTRL);
+    uiRenderer->onKeyPress(InputDeviceKey::A); //select all
+    uiRenderer->onKeyPress(InputDeviceKey::C); //copy
+    uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
+    uiRenderer->onMouseMove(endOfLinePosX, 1.0f); //move mouse at end of first line
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //place cursor at end of first line
+    uiRenderer->onKeyPress(InputDeviceKey::CTRL);
+    uiRenderer->onKeyPress(InputDeviceKey::V); //paste
+    uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
+
+    AssertHelper::assertStringEquals(textarea->getText(), "123123");
+}
+
 std::unique_ptr<UIRenderer> TextareaTest::setupUiRenderer() {
     renderTarget = std::make_unique<NullRenderTarget>(1920, 1080);
     i18nService = std::make_unique<I18nService>();
@@ -47,6 +72,7 @@ CppUnit::Test* TextareaTest::suite() {
     auto* suite = new CppUnit::TestSuite("TextareaTest");
 
     suite->addTest(new CppUnit::TestCaller<TextareaTest>("textCut", &TextareaTest::textCut));
+    suite->addTest(new CppUnit::TestCaller<TextareaTest>("textCopyPaste", &TextareaTest::textCopyPaste));
 
     return suite;
 }

@@ -10,6 +10,7 @@ class TextareaTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void textCut();
+        void textCopyPaste();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();

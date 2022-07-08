@@ -10,6 +10,7 @@ class TextBoxTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void textShift();
+        void textSelection();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();
