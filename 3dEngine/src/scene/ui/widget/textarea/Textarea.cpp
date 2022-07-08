@@ -143,8 +143,11 @@ namespace urchin {
                     deleteSelectedText();
                 }
             } else if (key == InputDeviceKey::V) {
-                if (ctrlKeyPressed) {
-                    //TODO impl paste
+                if (ctrlKeyPressed && !getClipboard().getText().empty()) {
+                    deleteSelectedText();
+                    for (char32_t charLetter : getClipboard().getText()) {
+                        onCharEvent(charLetter);
+                    }
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {

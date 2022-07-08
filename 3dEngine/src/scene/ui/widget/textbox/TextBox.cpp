@@ -145,8 +145,11 @@ namespace urchin {
                     deleteSelectedText();
                 }
             } else if (key == InputDeviceKey::V) {
-                if (ctrlKeyPressed) {
-                    //TODO impl paste
+                if (ctrlKeyPressed && !getClipboard().getText().empty()) {
+                    deleteSelectedText();
+                    for (char32_t charLetter : getClipboard().getText()) {
+                        onCharEvent(charLetter);
+                    }
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
@@ -245,6 +248,9 @@ namespace urchin {
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {
+        if (unicodeCharacter == 10 || unicodeCharacter == 13) {
+            return false;
+        }
         return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
     }
 
