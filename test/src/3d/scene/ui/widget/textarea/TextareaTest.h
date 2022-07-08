@@ -11,6 +11,7 @@ class TextareaTest : public CppUnit::TestFixture {
 
         void textCut();
         void textCopyPaste();
+        void leftArrowWithSelection();
 
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();

@@ -60,6 +60,24 @@ void TextareaTest::textCopyPaste() {
     AssertHelper::assertStringEquals(textarea->getText(), "123123");
 }
 
+void TextareaTest::leftArrowWithSelection() {
+    auto uiRenderer = setupUiRenderer();
+    auto textarea = Textarea::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(500.0f, 100.0f, PIXEL), "test");
+    uiRenderer->addWidget(textarea);
+
+    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over textarea
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate textarea
+    uiRenderer->onChar(static_cast<char32_t>('a'));
+    uiRenderer->onChar(static_cast<char32_t>('b'));
+    uiRenderer->onKeyPress(InputDeviceKey::CTRL);
+    uiRenderer->onKeyPress(InputDeviceKey::A); //select all
+    uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
+    uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW); //cursor index at 0
+    uiRenderer->onChar(static_cast<char32_t>('c'));
+
+    AssertHelper::assertStringEquals(textarea->getText(), "cab");
+}
+
 std::unique_ptr<UIRenderer> TextareaTest::setupUiRenderer() {
     renderTarget = std::make_unique<NullRenderTarget>(1920, 1080);
     i18nService = std::make_unique<I18nService>();
@@ -73,6 +91,7 @@ CppUnit::Test* TextareaTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller<TextareaTest>("textCut", &TextareaTest::textCut));
     suite->addTest(new CppUnit::TestCaller<TextareaTest>("textCopyPaste", &TextareaTest::textCopyPaste));
+    suite->addTest(new CppUnit::TestCaller<TextareaTest>("leftArrowWithSelection", &TextareaTest::leftArrowWithSelection));
 
     return suite;
 }
