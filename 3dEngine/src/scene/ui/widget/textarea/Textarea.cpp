@@ -36,7 +36,7 @@ namespace urchin {
 
     void Textarea::updateText(std::string_view text) {
         this->originalText = U32StringA(text.begin(), text.end());
-        refreshText(true);
+        refreshText(true); //TODO refresh after move cursor to got correct scroll ?
 
         this->cursorIndex = originalText.length();
         this->cursorPosition = computeCursorPosition(this->cursorIndex);
@@ -130,7 +130,6 @@ namespace urchin {
                     cursorIndex = originalText.length();
                     cursorPosition = computeCursorPosition(cursorIndex);
                     displaySelection();
-                    //TODO refresh scroll !
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
@@ -287,7 +286,7 @@ namespace urchin {
                         computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
                         computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
                     }
-                    adjustScrollToCursor();
+                    adjustScrollToCursor(computedCursorPosition);
                     cursorBlink = 0.0f;
                     return computedCursorPosition;
                 } else {
@@ -302,8 +301,8 @@ namespace urchin {
         throw std::runtime_error("Cursor position not found at index " + std::to_string(textCursorIndex) + " for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
-    void Textarea::adjustScrollToCursor() const {
-        float cursorPosY = (float)cursorPosition.Y + (float)textContainer->getScrollShiftY();
+    void Textarea::adjustScrollToCursor(const Point2<int>& newCursorPosition) const {
+        float cursorPosY = (float)newCursorPosition.Y + (float)textContainer->getScrollShiftY();
 
         float deltaScrollShiftPixel = 0.0f;
         if (cursorPosY < textContainer->getPositionY()) {
@@ -391,7 +390,7 @@ namespace urchin {
         U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, cursorIndex), originalText.length() - std::max(selectionStartIndex, cursorIndex));
         originalText = originalText.substr(0, std::min(selectionStartIndex, cursorIndex));
         originalText.append(tmpRight);
-        refreshText(true);
+        refreshText(true); //TODO refresh after move cursor to got correct scroll ?
 
         cursorIndex = std::min(selectionStartIndex, cursorIndex);
         cursorPosition = computeCursorPosition(cursorIndex);
