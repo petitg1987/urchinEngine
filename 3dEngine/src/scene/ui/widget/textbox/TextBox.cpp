@@ -346,8 +346,8 @@ namespace urchin {
     }
 
     void TextBox::deleteSelectedText() {
-        U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, (std::size_t)cursorIndex), originalText.length() - std::max(selectionStartIndex, (std::size_t)cursorIndex));
-        originalText = originalText.substr(0, std::min(selectionStartIndex, (std::size_t)cursorIndex));
+        U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, cursorIndex), originalText.length() - std::max(selectionStartIndex, cursorIndex));
+        originalText = originalText.substr(0, std::min(selectionStartIndex, cursorIndex));
         originalText.append(tmpRight);
 
         cursorIndex = std::min(selectionStartIndex, cursorIndex);
