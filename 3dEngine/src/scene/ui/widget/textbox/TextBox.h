@@ -48,7 +48,7 @@ namespace urchin {
 
             bool hasTextSelected() const;
             void resetSelection();
-            void displaySelection();
+            void displaySelection() const;
             void deleteSelectedText();
 
             //properties

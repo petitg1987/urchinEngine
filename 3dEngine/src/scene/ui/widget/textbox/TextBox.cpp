@@ -92,7 +92,7 @@ namespace urchin {
 
     void TextBox::updateText(std::string_view text) {
         originalText = U32StringA(text.begin(), text.end());
-        cursorIndex = (unsigned int)originalText.length();
+        cursorIndex = originalText.length();
         refreshText(true);
     }
 
@@ -128,7 +128,7 @@ namespace urchin {
             if (key == InputDeviceKey::A) {
                 if (ctrlKeyPressed) {
                     selectionStartIndex = 0;
-                    cursorIndex = (unsigned int)originalText.length();
+                    cursorIndex = originalText.length();
                     refreshCursorPosition(cursorIndex);
                     refreshText(false);
                     displaySelection();
@@ -354,7 +354,7 @@ namespace urchin {
         selectionImage->setIsVisible(false);
     }
 
-    void TextBox::displaySelection() {
+    void TextBox::displaySelection() const {
         selectionImage->setIsVisible(true);
 
         std::size_t displaySelectionStartIndex = std::min(selectionStartIndex, cursorIndex);
