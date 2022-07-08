@@ -6,6 +6,9 @@ namespace urchin {
         MOUSE_LEFT = 256,
         MOUSE_RIGHT,
 
+        A,
+        C,
+        V,
         CTRL, //left or right
         LEFT_ARROW,
         RIGHT_ARROW,
