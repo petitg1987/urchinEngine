@@ -184,6 +184,8 @@ namespace urchin {
                     propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::C);
                 } else if (event->key() == Qt::Key_V) {
                     propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::V);
+                } else if (event->key() == Qt::Key_X) {
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::X);
                 } else if (event->key() == Qt::Key_Control) {
                     propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::CTRL);
                 } else if (event->key() == Qt::Key_Left) {
@@ -229,6 +231,8 @@ namespace urchin {
                 propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::C);
             } else if (event->key() == Qt::Key_V) {
                 propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::V);
+            } else if (event->key() == Qt::Key_X) {
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::X);
             } else if (event->key() == Qt::Key_Control) {
                 propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::CTRL);
             } else if (event->key() == Qt::Key_Left) {

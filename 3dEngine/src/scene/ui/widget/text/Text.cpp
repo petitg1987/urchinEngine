@@ -31,8 +31,8 @@ namespace urchin {
     }
 
     Text::~Text() {
-        if (hasTranslatableInput() && getI18nService()) {
-            getI18nService()->remove(this);
+        if (hasTranslatableInput()) {
+            getI18nService().remove(this);
         }
     }
 
@@ -40,7 +40,7 @@ namespace urchin {
         refreshFont();
 
         if (hasTranslatableInput()) {
-            getI18nService()->add(this);
+            getI18nService().add(this);
         } else {
             baseText = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
@@ -112,7 +112,7 @@ namespace urchin {
 
     void Text::updateText(std::string inputText, std::vector<std::string> inputTextParameters) {
         if (hasTranslatableInput()) {
-            getI18nService()->remove(this);
+            getI18nService().remove(this);
         }
 
         this->inputText = std::move(inputText);
@@ -123,7 +123,7 @@ namespace urchin {
             refreshTextAndWidgetSize();
             refreshRendererData();
         } else {
-            getI18nService()->add(this);
+            getI18nService().add(this);
         }
     }
 

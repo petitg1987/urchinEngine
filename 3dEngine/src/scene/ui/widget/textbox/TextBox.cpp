@@ -133,6 +133,18 @@ namespace urchin {
                     refreshText(false);
                     displaySelection();
                 }
+            } else if (key == InputDeviceKey::C) {
+                if (ctrlKeyPressed) {
+                    //TODO impl copy
+                }
+            } else if (key == InputDeviceKey::X) {
+                if (ctrlKeyPressed) {
+                    //TODO impl cut
+                }
+            } else if (key == InputDeviceKey::V) {
+                if (ctrlKeyPressed) {
+                    //TODO impl paste
+                }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;

@@ -11,6 +11,7 @@
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/EventListener.h>
+#include <scene/ui/Clipboard.h>
 #include <i18n/I18nService.h>
 #include <graphics/api/GraphicsApi.h>
 #include <graphics/render/GenericRendererBuilder.h>
@@ -106,8 +107,9 @@ namespace urchin {
             TextureParam::Anisotropy getTextureAnisotropy() const;
             void updateProperties(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
 
-            I18nService* getI18nService() const;
+            I18nService& getI18nService() const;
             UI3dData* getUi3dData() const;
+            Clipboard& getClipboard() const;
 
             virtual void createOrUpdateWidget() = 0;
             void setSize(Size);

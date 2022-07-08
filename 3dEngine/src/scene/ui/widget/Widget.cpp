@@ -140,11 +140,11 @@ namespace urchin {
         }
     }
 
-    I18nService* Widget::getI18nService() const {
+    I18nService& Widget::getI18nService() const {
         if (!uiRenderer) {
             throw std::runtime_error("Internationalization service not available because the widget is not initialized");
         }
-        return &uiRenderer->getI18nService();
+        return uiRenderer->getI18nService();
     }
 
     UI3dData* Widget::getUi3dData() const {
@@ -152,6 +152,13 @@ namespace urchin {
             throw std::runtime_error("UI 3d data not available because the widget is not initialized");
         }
         return uiRenderer->getUi3dData();
+    }
+
+    Clipboard& Widget::getClipboard() const {
+        if (!uiRenderer) {
+            throw std::runtime_error("Clipboard not available because the widget is not initialized");
+        }
+        return uiRenderer->getClipboard();
     }
 
     Widget* Widget::getParent() const {

@@ -53,6 +53,7 @@ namespace urchin {
 
             RenderTarget& getRenderTarget() const;
             I18nService& getI18nService() const;
+            Clipboard& getClipboard();
             const Point2<int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
@@ -72,6 +73,7 @@ namespace urchin {
 
             RenderTarget& renderTarget;
             I18nService& i18nService;
+            Clipboard clipboard;
             Point2<int> uiResolution;
             std::unique_ptr<Shader> uiShader;
 

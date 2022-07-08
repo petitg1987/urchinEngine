@@ -290,6 +290,10 @@ namespace urchin {
         return i18nService;
     }
 
+    Clipboard& UIRenderer::getClipboard() {
+        return clipboard;
+    }
+
     const Point2<int>& UIRenderer::getUiResolution() const {
         return uiResolution;
     }

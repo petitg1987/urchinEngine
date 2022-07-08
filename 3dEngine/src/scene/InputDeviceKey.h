@@ -8,6 +8,7 @@ namespace urchin {
         A,
         C,
         V,
+        X,
         CTRL, //left or right
         LEFT_ARROW,
         RIGHT_ARROW,
