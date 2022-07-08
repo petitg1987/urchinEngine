@@ -135,14 +135,14 @@ namespace urchin {
                 }
             } else if (key == InputDeviceKey::C) {
                 if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
-//                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
-//                    getClipboard().setText(std::move(selectedText));
+                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
+                    getClipboard().setText(std::move(selectedText));
                 }
             } else if (key == InputDeviceKey::X) {
                 if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
-//                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
-//                    getClipboard().setText(std::move(selectedText));
-//                    deleteSelectedText();
+                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
+                    getClipboard().setText(std::move(selectedText));
+                    deleteSelectedText();
                 }
             } else if (key == InputDeviceKey::V) {
                 if (ctrlKeyPressed) {
@@ -165,8 +165,8 @@ namespace urchin {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
-                    U32StringA tmpRight = originalText.substr((unsigned long)cursorIndex, originalText.length() - cursorIndex);
-                    originalText = originalText.substr(0, (unsigned long)(cursorIndex - 1L));
+                    U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, cursorIndex - 1L);
                     originalText.append(tmpRight);
 
                     cursorIndex--;
@@ -177,8 +177,8 @@ namespace urchin {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 } else if (cursorIndex < originalText.length()) {
-                    U32StringA tmpRight = originalText.substr((unsigned long)(cursorIndex + 1L), originalText.length() - cursorIndex);
-                    originalText = originalText.substr(0, (unsigned long)cursorIndex);
+                    U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, cursorIndex);
                     originalText.append(tmpRight);
 
                     refreshText(true);
@@ -209,8 +209,8 @@ namespace urchin {
                 }
 
                 if (!isMaxCharacterReach()) {
-                    U32StringA tmpRight = originalText.substr((unsigned long) cursorIndex, originalText.length() - cursorIndex);
-                    originalText = originalText.substr(0, (unsigned long) cursorIndex);
+                    U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
+                    originalText = originalText.substr(0, cursorIndex);
                     originalText.append(1, unicodeCharacter);
                     originalText.append(tmpRight);
 
@@ -257,17 +257,17 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
         if (cursorPosition.X > (int)maxWidthText) {
             startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + TextFieldConst::LETTER_SHIFT : (unsigned int)originalText.length();
-            startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
+            startTextIndex = std::min(startTextIndex, originalText.length());
         } else if (cursorIndex <= startTextIndex) {
             startTextIndex = (startTextIndex >= TextFieldConst::LETTER_SHIFT) ? startTextIndex - TextFieldConst::LETTER_SHIFT : 0;
-            startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
+            startTextIndex = std::min(startTextIndex, originalText.length());
         }
         refreshCursorPosition(cursorIndex);
 
         //determine the text to display
         const auto& font = text->getFont();
         unsigned int widthText = 0;
-        unsigned int endTextIndex = startTextIndex;
+        std::size_t endTextIndex = startTextIndex;
         for (; endTextIndex < originalText.length(); ++endTextIndex) {
             char32_t textLetter = originalText[endTextIndex];
             widthText += font.getGlyph(textLetter).width + font.getSpaceBetweenLetters();
@@ -275,7 +275,7 @@ namespace urchin {
                 break;
             }
         }
-        U32StringA textToDisplay = originalText.substr((unsigned long)startTextIndex, (unsigned long)(endTextIndex - startTextIndex));
+        U32StringA textToDisplay = originalText.substr(startTextIndex, endTextIndex - startTextIndex);
         text->updateText(std::string(stringConvert.to_bytes(textToDisplay)));
 
         //event
@@ -286,10 +286,10 @@ namespace urchin {
         }
     }
 
-    Point2<int> TextBox::computeCursorPosition(unsigned int cursorIdx) const {
+    Point2<int> TextBox::computeCursorPosition(std::size_t cursorIdx) const {
         Point2<int> computedCursorPosition(0.0f, 0.0f);
 
-        for (unsigned int i = startTextIndex; i < cursorIdx; ++i) {
+        for (std::size_t i = startTextIndex; i < cursorIdx; ++i) {
             char32_t textLetter = originalText[i];
             computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
         }
@@ -302,18 +302,18 @@ namespace urchin {
         return computedCursorPosition;
     }
 
-    void TextBox::refreshCursorPosition(unsigned int cursorIdx) {
+    void TextBox::refreshCursorPosition(std::size_t cursorIdx) {
         cursorPosition = computeCursorPosition(cursorIdx);
         cursorBlink = 0.0f;
 
         cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
     }
 
-    unsigned int TextBox::computeCursorIndex(int approximatePositionX, int) const {
+    std::size_t TextBox::computeCursorIndex(int approximatePositionX, int) const {
         const auto& font = text->getFont();
         float widthText = 0.0f;
 
-        unsigned int computedCursorIndex = startTextIndex;
+        std::size_t computedCursorIndex = startTextIndex;
         for (; computedCursorIndex < originalText.length(); ++computedCursorIndex) {
             char32_t textLetter = originalText[computedCursorIndex];
             widthText += (float)font.getGlyph(textLetter).width / 2.0f;
@@ -334,8 +334,8 @@ namespace urchin {
     void TextBox::displaySelection() {
         selectionImage->setIsVisible(true);
 
-        unsigned int displaySelectionStartIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
-        unsigned int displaySelectionEndIndex = std::max((unsigned int)selectionStartIndex, cursorIndex);
+        std::size_t displaySelectionStartIndex = std::min(selectionStartIndex, cursorIndex);
+        std::size_t displaySelectionEndIndex = std::max(selectionStartIndex, cursorIndex);
 
         Point2<int> displaySelectionStartPos = computeCursorPosition(displaySelectionStartIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
         Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
@@ -350,7 +350,7 @@ namespace urchin {
         originalText = originalText.substr(0, std::min(selectionStartIndex, (std::size_t)cursorIndex));
         originalText.append(tmpRight);
 
-        cursorIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
+        cursorIndex = std::min(selectionStartIndex, cursorIndex);
         refreshCursorPosition(cursorIndex);
         refreshText(true);
         resetSelection();

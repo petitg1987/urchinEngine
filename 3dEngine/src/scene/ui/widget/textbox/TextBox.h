@@ -42,9 +42,9 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText(bool);
-            Point2<int> computeCursorPosition(unsigned int) const;
-            void refreshCursorPosition(unsigned int);
-            unsigned int computeCursorIndex(int, int) const;
+            Point2<int> computeCursorPosition(std::size_t) const;
+            void refreshCursorPosition(std::size_t);
+            std::size_t computeCursorIndex(int, int) const;
 
             void resetSelection();
             void displaySelection();
@@ -60,9 +60,9 @@ namespace urchin {
             std::shared_ptr<Text> text;
             U32StringA originalText; //original text of the text box (string)
             unsigned int maxWidthText; //maximum length of text can be displayed
-            unsigned int startTextIndex; //index of the first letter to display
+            std::size_t startTextIndex; //index of the first letter to display
             std::shared_ptr<StaticBitmap> cursor;
-            unsigned int cursorIndex; //index of the cursor
+            std::size_t cursorIndex; //index of the cursor
             Point2<int> cursorPosition; //position (in pixel) of the cursor
             float cursorBlink;
 
