@@ -134,12 +134,15 @@ namespace urchin {
                     displaySelection();
                 }
             } else if (key == InputDeviceKey::C) {
-                if (ctrlKeyPressed) {
-                    //TODO impl copy
+                if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
+//                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
+//                    getClipboard().setText(std::move(selectedText));
                 }
             } else if (key == InputDeviceKey::X) {
-                if (ctrlKeyPressed) {
-                    //TODO impl cut
+                if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
+//                    U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
+//                    getClipboard().setText(std::move(selectedText));
+//                    deleteSelectedText();
                 }
             } else if (key == InputDeviceKey::V) {
                 if (ctrlKeyPressed) {
