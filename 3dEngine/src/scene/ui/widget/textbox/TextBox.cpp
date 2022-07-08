@@ -266,32 +266,29 @@ namespace urchin {
     void TextBox::refreshText(bool textUpdated) {
         refreshCursorPosition(cursorIndex);
 
-        std::size_t endTextIndex;
         if (cursorPosition.X > (int)maxWidthText) {
-            endTextIndex = std::min(cursorIndex + 1, originalText.length());
+            std::size_t endTextIndex = std::min(cursorIndex + 1, originalText.length());
 
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
                 char32_t textLetter = originalText[startTextIndex];
                 widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
                 if (widthText > maxWidthText || startTextIndex == 0) {
-                    startTextIndex++;
                     break;
                 }
             }
-        } else {
-            if (cursorIndex <= startTextIndex) {
-                startTextIndex = (std::size_t) std::max((int) cursorIndex - 1, 0);
-                startTextIndex = std::min(startTextIndex, originalText.length());
-            }
+        } else if (cursorIndex <= startTextIndex) {
+            startTextIndex = (std::size_t) std::max((int) cursorIndex - 1, 0);
+            startTextIndex = std::min(startTextIndex, originalText.length());
+        }
 
-            unsigned int widthText = 0;
-            for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
-                char32_t textLetter = originalText[endTextIndex];
-                widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
-                if (widthText > maxWidthText) {
-                    break;
-                }
+        unsigned int widthText = 0;
+        std::size_t endTextIndex;
+        for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
+            char32_t textLetter = originalText[endTextIndex];
+            widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
+            if (widthText > maxWidthText) {
+                break;
             }
         }
 

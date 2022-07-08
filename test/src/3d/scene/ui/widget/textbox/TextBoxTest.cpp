@@ -16,7 +16,7 @@ void TextBoxTest::textShift() {
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
-    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), textValue.substr(3));
+    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "cdefg");
 
     for (std::size_t i = 0; i < textValue.size(); ++i) {
         uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW);
@@ -44,7 +44,7 @@ void TextBoxTest::textSelection() {
     uiRenderer->onKeyPress(InputDeviceKey::CTRL);
     uiRenderer->onKeyPress(InputDeviceKey::A); //select all
     uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
-    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "6789");
+    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "56789");
 
     uiRenderer->onKeyPress(InputDeviceKey::DELETE_KEY); //delete selection
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "");
