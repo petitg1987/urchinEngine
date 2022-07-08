@@ -205,7 +205,7 @@ namespace urchin {
         VkSubpassDescription subpass{};
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         subpass.colorAttachmentCount = (uint32_t)colorAttachmentRefs.size();
-        subpass.pColorAttachments = colorAttachmentRefs.data(); //position determine index in the shader (layout(location = 0) out vec4 outColor)
+        subpass.pColorAttachments = colorAttachmentRefs.empty() ? nullptr : colorAttachmentRefs.data(); //position determine index in the shader (layout(location = 0) out vec4 outColor)
         subpass.pDepthStencilAttachment = hasDepthAttachment() ? &depthAttachmentRef : nullptr;
         subpass.inputAttachmentCount = 0;
 
@@ -226,7 +226,7 @@ namespace urchin {
         VkRenderPassCreateInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         renderPassInfo.attachmentCount = (uint32_t)attachments.size();
-        renderPassInfo.pAttachments = attachments.data();
+        renderPassInfo.pAttachments = attachments.empty() ? nullptr : attachments.data();
         renderPassInfo.subpassCount = 1;
         renderPassInfo.pSubpasses = &subpass;
         renderPassInfo.dependencyCount = 1;
@@ -276,7 +276,7 @@ namespace urchin {
         framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
         framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo
         framebufferInfo.attachmentCount = (uint32_t)attachments.size();
-        framebufferInfo.pAttachments = attachments.data();
+        framebufferInfo.pAttachments = attachments.empty() ? nullptr : attachments.data();
         framebufferInfo.width = getWidth();
         framebufferInfo.height = getHeight();
         framebufferInfo.layers = getLayer();
@@ -371,7 +371,7 @@ namespace urchin {
         }
 
         submitInfo.waitSemaphoreCount = (uint32_t)queueSubmitWaitSemaphores.size();
-        submitInfo.pWaitSemaphores = queueSubmitWaitSemaphores.data();
+        submitInfo.pWaitSemaphores = queueSubmitWaitSemaphores.empty() ? nullptr : queueSubmitWaitSemaphores.data();
         submitInfo.pWaitDstStageMask = queueSubmitWaitStages.data();
     }
 
@@ -403,8 +403,8 @@ namespace urchin {
             renderPassInfo.framebuffer = nullptr;
             renderPassInfo.renderArea.offset = {0, 0};
             renderPassInfo.renderArea.extent = {getWidth(), getHeight()};
-            renderPassInfo.clearValueCount = (uint32_t) clearValues.size();
-            renderPassInfo.pClearValues = clearValues.data();
+            renderPassInfo.clearValueCount = (uint32_t)clearValues.size();
+            renderPassInfo.pClearValues = clearValues.empty() ? nullptr : clearValues.data();
 
             VkCommandBufferBeginInfo beginInfo{};
             beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;

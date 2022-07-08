@@ -155,7 +155,7 @@ namespace urchin {
         VkDescriptorSetLayoutCreateInfo layoutInfo{};
         layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
         layoutInfo.bindingCount = (uint32_t)bindings.size();
-        layoutInfo.pBindings = bindings.data();
+        layoutInfo.pBindings = bindings.empty() ? nullptr : bindings.data();
 
         VkResult result = vkCreateDescriptorSetLayout(logicalDevice, &layoutInfo, nullptr, &pipeline->descriptorSetLayout());
         if (result != VK_SUCCESS) {
@@ -219,9 +219,9 @@ namespace urchin {
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
         vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
         vertexInputInfo.vertexBindingDescriptionCount = (uint32_t)bindingDescriptions.size();
-        vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
+        vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.empty() ? nullptr : bindingDescriptions.data();
         vertexInputInfo.vertexAttributeDescriptionCount = (uint32_t)attributeDescriptions.size();
-        vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+        vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.empty() ? nullptr : attributeDescriptions.data();
 
         //input assembly stage
         VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
@@ -311,7 +311,7 @@ namespace urchin {
         colorBlending.logicOpEnable = VK_FALSE;
         colorBlending.logicOp = VK_LOGIC_OP_COPY;
         colorBlending.attachmentCount = (uint32_t)colorBlendAttachments.size();
-        colorBlending.pAttachments = colorBlendAttachments.data();
+        colorBlending.pAttachments = colorBlendAttachments.empty() ? nullptr : colorBlendAttachments.data();
         colorBlending.blendConstants[0] = 0.0f; colorBlending.blendConstants[1] = 0.0f;
         colorBlending.blendConstants[2] = 0.0f; colorBlending.blendConstants[3] = 0.0f;
 

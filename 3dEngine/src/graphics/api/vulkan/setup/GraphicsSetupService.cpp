@@ -97,7 +97,7 @@ namespace urchin {
         instanceCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         instanceCreateInfo.pApplicationInfo = &applicationInfo;
         instanceCreateInfo.enabledExtensionCount = (uint32_t)requiredExtensions.size();
-        instanceCreateInfo.ppEnabledExtensionNames = requiredExtensions.data();
+        instanceCreateInfo.ppEnabledExtensionNames = requiredExtensions.empty() ? nullptr : requiredExtensions.data();
         validationLayer.initializeDebugMessengerForInstance(instanceCreateInfo);
 
         VkResult result = vkCreateInstance(&instanceCreateInfo, nullptr, &vkInstance);

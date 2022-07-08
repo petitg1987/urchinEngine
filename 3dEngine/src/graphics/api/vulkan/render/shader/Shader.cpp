@@ -71,8 +71,8 @@ namespace urchin {
             }
 
             shaderStageData.specializationInfo = {};
-            shaderStageData.specializationInfo.mapEntryCount = (uint32_t) shaderStageData.specializationMapEntries.size();
-            shaderStageData.specializationInfo.pMapEntries = shaderStageData.specializationMapEntries.data();
+            shaderStageData.specializationInfo.mapEntryCount = (uint32_t)shaderStageData.specializationMapEntries.size();
+            shaderStageData.specializationInfo.pMapEntries = shaderStageData.specializationMapEntries.empty() ? nullptr : shaderStageData.specializationMapEntries.data();
             shaderStageData.specializationInfo.dataSize = shaderConstants->sumVariablesSize();
             shaderStageData.specializationInfo.pData = shaderConstants->getData();
 
