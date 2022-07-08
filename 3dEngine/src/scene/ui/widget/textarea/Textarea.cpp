@@ -120,6 +120,7 @@ namespace urchin {
             } else {
                 state = INACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                cursor->setIsVisible(false);
                 resetSelection();
             }
         } else if (state == ACTIVE) {
@@ -135,15 +136,15 @@ namespace urchin {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     cursorPosition = computeCursorPosition(cursorIndex);
-                    resetSelection();
                 }
+                resetSelection();
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     cursorPosition = computeCursorPosition(cursorIndex);
-                    resetSelection();
                 }
+                resetSelection();
             } else if (key == InputDeviceKey::UP_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
                 cursorPosition = computeCursorPosition(cursorIndex);

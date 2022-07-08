@@ -121,6 +121,7 @@ namespace urchin {
             } else {
                 state = INACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                cursor->setIsVisible(false);
                 resetSelection();
             }
         } else if (state == ACTIVE) {
@@ -136,15 +137,15 @@ namespace urchin {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshText(false);
-                    resetSelection();
                 }
+                resetSelection();
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     refreshText(false);
-                    resetSelection();
                 }
+                resetSelection();
             } else if (key == InputDeviceKey::BACKSPACE) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
