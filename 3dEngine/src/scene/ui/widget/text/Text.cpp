@@ -329,9 +329,9 @@ namespace urchin {
     unsigned int Text::retrieveFontHeight(const UdaChunk* textChunk) const {
         Length fontHeight = UISkinService::instance().loadLength(textChunk, "height");
         if (fontHeight.type == LengthType::PIXEL) {
-            return (unsigned int)fontHeight.value;
+            return MathFunction::roundToUInt(fontHeight.value);
         } else if (fontHeight.type == LengthType::SCREEN_PERCENT) {
-            return (unsigned int)(fontHeight.value / 100.0f * (float)getSceneSize().Y);
+            return MathFunction::roundToUInt(fontHeight.value / 100.0f * (float)getSceneSize().Y);
         }
         throw std::runtime_error("Unimplemented length type for font height: " + std::to_string(fontHeight.type));
     }
