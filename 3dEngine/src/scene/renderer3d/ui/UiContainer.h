@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 
+#include <scene/InputDeviceKey.h>
 #include <scene/ui/UIRenderer.h>
 #include <scene/renderer3d/camera/Camera.h>
 
@@ -14,8 +15,8 @@ namespace urchin {
 
             void onCameraProjectionUpdate(Camera&);
 
-            bool onKeyPress(unsigned int) const;
-            bool onKeyRelease(unsigned int) const;
+            bool onKeyPress(InputDeviceKey) const;
+            bool onKeyRelease(InputDeviceKey) const;
             bool onChar(char32_t) const;
             bool onMouseMove(double, double) const;
             bool onScroll(double) const;

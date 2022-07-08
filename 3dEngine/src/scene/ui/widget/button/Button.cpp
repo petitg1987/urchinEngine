@@ -76,12 +76,12 @@ namespace urchin {
         }
     }
 
-    bool Button::onKeyPressEvent(unsigned int) {
+    bool Button::onKeyPressEvent(InputDeviceKey) {
         refreshTexture();
         return true;
     }
 
-    bool Button::onKeyReleaseEvent(unsigned int) {
+    bool Button::onKeyReleaseEvent(InputDeviceKey) {
         refreshTexture();
         return true;
     }

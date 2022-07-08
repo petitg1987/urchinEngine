@@ -5,6 +5,7 @@
 #include <optional>
 #include <UrchinCommon.h>
 
+#include <scene/InputDeviceKey.h>
 #include <scene/ui/widget/WidgetType.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
@@ -87,8 +88,8 @@ namespace urchin {
             void setIsVisible(bool);
             bool isVisible() const;
 
-            bool onKeyPress(unsigned int);
-            bool onKeyRelease(unsigned int);
+            bool onKeyPress(InputDeviceKey);
+            bool onKeyRelease(InputDeviceKey);
             bool onChar(char32_t);
             bool onMouseMove(int, int);
             bool onScroll(double);
@@ -111,8 +112,8 @@ namespace urchin {
             virtual void createOrUpdateWidget() = 0;
             void setSize(Size);
 
-            virtual bool onKeyPressEvent(unsigned int);
-            virtual bool onKeyReleaseEvent(unsigned int);
+            virtual bool onKeyPressEvent(InputDeviceKey);
+            virtual bool onKeyReleaseEvent(InputDeviceKey);
             virtual bool onCharEvent(char32_t);
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
@@ -123,8 +124,8 @@ namespace urchin {
             WidgetOutline widgetOutline;
 
         private:
-            bool handleWidgetKeyPress(unsigned int);
-            bool handleWidgetKeyRelease(unsigned int);
+            bool handleWidgetKeyPress(InputDeviceKey);
+            bool handleWidgetKeyRelease(InputDeviceKey);
             bool handleWidgetMouseMove(int, int);
             void handleWidgetResetState();
             bool isMouseOnWidget(int, int) const;

@@ -25,8 +25,8 @@ namespace urchin {
         private:
             Window(Position, Size, std::string, std::string);
 
-            bool onKeyPressEvent(unsigned int) override;
-            bool onKeyReleaseEvent(unsigned int) override;
+            bool onKeyPressEvent(InputDeviceKey) override;
+            bool onKeyReleaseEvent(InputDeviceKey) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
 

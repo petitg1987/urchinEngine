@@ -66,8 +66,8 @@ namespace urchin {
 
             //events
             bool isPaused() const;
-            bool onKeyPress(unsigned int) override;
-            bool onKeyRelease(unsigned int) override;
+            bool onKeyPress(InputDeviceKey) override;
+            bool onKeyRelease(InputDeviceKey) override;
             bool onChar(char32_t) override;
             bool onMouseMove(double, double) override;
             bool onScroll(double) override;

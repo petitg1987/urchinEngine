@@ -72,8 +72,8 @@ namespace urchin {
         }
     }
 
-    bool Scrollbar::onKeyPressEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool Scrollbar::onKeyPressEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (scrollbarCursor->widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
             } else if (scrollbarLine->widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
@@ -84,8 +84,8 @@ namespace urchin {
         return true;
     }
 
-    bool Scrollbar::onKeyReleaseEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool Scrollbar::onKeyReleaseEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             state = DEFAULT;
         }
         return true;

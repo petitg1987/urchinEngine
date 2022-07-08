@@ -1,5 +1,7 @@
 #pragma once
 
+#include <scene/InputDeviceKey.h>
+
 namespace urchin {
 
     class Renderer {
@@ -8,8 +10,8 @@ namespace urchin {
 
             virtual void onResize(unsigned int, unsigned int) = 0;
 
-            virtual bool onKeyPress(unsigned int) = 0;
-            virtual bool onKeyRelease(unsigned int) = 0;
+            virtual bool onKeyPress(InputDeviceKey) = 0;
+            virtual bool onKeyRelease(InputDeviceKey) = 0;
             virtual bool onChar(char32_t) = 0;
             virtual bool onMouseMove(double, double) = 0;
             virtual bool onScroll(double) = 0;

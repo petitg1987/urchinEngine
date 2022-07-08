@@ -5,6 +5,7 @@
 #include <array>
 #include <UrchinCommon.h>
 
+#include <scene/InputDeviceKey.h>
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/ui/UIRenderer.h>
 #include <graphics/api/GraphicsApi.h>
@@ -43,8 +44,8 @@ namespace urchin {
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
             //events
-            bool onKeyPress(unsigned int);
-            bool onKeyRelease(unsigned int);
+            bool onKeyPress(InputDeviceKey);
+            bool onKeyRelease(InputDeviceKey);
             bool onChar(char32_t);
             bool onMouseMove(double, double);
             bool onScroll(double);

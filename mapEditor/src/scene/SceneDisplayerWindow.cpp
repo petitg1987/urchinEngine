@@ -179,27 +179,27 @@ namespace urchin {
             }
             if (propagatePressKeyEvent) {
                 if (event->key() == Qt::Key_A) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::A); //TODO take argument method InputDeviceKey
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::A);
                 } else if (event->key() == Qt::Key_C) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::C);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::C);
                 } else if (event->key() == Qt::Key_V) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::V);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::V);
                 } else if (event->key() == Qt::Key_Control) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::CTRL);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::CTRL);
                 } else if (event->key() == Qt::Key_Left) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::LEFT_ARROW);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::LEFT_ARROW);
                 } else if (event->key() == Qt::Key_Right) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::RIGHT_ARROW);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::RIGHT_ARROW);
                 } else if (event->key() == Qt::Key_Up) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::UP_ARROW);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::UP_ARROW);
                 } else if (event->key() == Qt::Key_Down) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::DOWN_ARROW);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::DOWN_ARROW);
                 } else if (event->key() == Qt::Key_Backspace) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::BACKSPACE);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::BACKSPACE);
                 } else if (event->key() == Qt::Key_Delete) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::DELETE_KEY);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::DELETE_KEY);
                 } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress((unsigned int) InputDeviceKey::ENTER);
+                    propagatePressKeyEvent = sceneDisplayer->getScene().onKeyPress(InputDeviceKey::ENTER);
                 }
             }
 
@@ -224,27 +224,27 @@ namespace urchin {
 
             //engine
             if (event->key() == Qt::Key_A) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::A); //TODO take argument method InputDeviceKey
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::A);
             } else if (event->key() == Qt::Key_C) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::C);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::C);
             } else if (event->key() == Qt::Key_V) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::V);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::V);
             } else if (event->key() == Qt::Key_Control) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::CTRL);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::CTRL);
             } else if (event->key() == Qt::Key_Left) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::LEFT_ARROW);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::LEFT_ARROW);
             } else if (event->key() == Qt::Key_Right) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::RIGHT_ARROW);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::RIGHT_ARROW);
             } else if (event->key() == Qt::Key_Up) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::UP_ARROW);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::UP_ARROW);
             } else if (event->key() == Qt::Key_Down) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::DOWN_ARROW);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::DOWN_ARROW);
             } else if (event->key() == Qt::Key_Backspace) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::BACKSPACE);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::BACKSPACE);
             } else if (event->key() == Qt::Key_Delete) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::DELETE_KEY);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::DELETE_KEY);
             } else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::ENTER);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::ENTER);
             }
 
             //map editor
@@ -267,26 +267,35 @@ namespace urchin {
     void SceneDisplayerWindow::mousePressEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
             //engine
-            if (event->buttons() == Qt::LeftButton) {
-                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
+            if (event->button() == Qt::LeftButton) {
+                sceneDisplayer->getScene().onKeyPress(InputDeviceKey::MOUSE_LEFT);
             } else if (event->button() == Qt::RightButton) {
-                sceneDisplayer->getScene().onKeyPress((unsigned int)InputDeviceKey::MOUSE_RIGHT);
+                sceneDisplayer->getScene().onKeyPress(InputDeviceKey::MOUSE_RIGHT);
             }
         }
     }
 
     void SceneDisplayerWindow::mouseReleaseEvent(QMouseEvent* event) {
         if (sceneDisplayer) {
+            bool propagatePressKeyEvent = true;
+
+            //engine
             if (event->button() == Qt::LeftButton) {
-                bool propagateEvent = sceneDisplayer->getObjectMoveController() == nullptr || sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
-                if (propagateEvent) {
-                    propagateEvent = onMouseClickBodyPickup();
-                    if (propagateEvent) {
-                        sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::MOUSE_LEFT);
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::MOUSE_LEFT);
+            } else if (event->button() == Qt::RightButton) {
+                propagatePressKeyEvent = sceneDisplayer->getScene().onKeyRelease(InputDeviceKey::MOUSE_RIGHT);
+            }
+
+            //map editor
+            if (propagatePressKeyEvent) {
+                if (event->button() == Qt::LeftButton) {
+                    if (sceneDisplayer->getObjectMoveController()) {
+                        propagatePressKeyEvent = sceneDisplayer->getObjectMoveController()->onMouseLeftButton();
+                    }
+                    if (propagatePressKeyEvent) {
+                        onMouseClickBodyPickup();
                     }
                 }
-            } else if (event->button() == Qt::RightButton) {
-                sceneDisplayer->getScene().onKeyRelease((unsigned int)InputDeviceKey::MOUSE_RIGHT);
             }
         }
     }

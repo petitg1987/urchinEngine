@@ -27,8 +27,8 @@ namespace urchin {
 
             void refreshTexture();
 
-            bool onKeyPressEvent(unsigned int) override;
-            bool onKeyReleaseEvent(unsigned int) override;
+            bool onKeyPressEvent(InputDeviceKey) override;
+            bool onKeyReleaseEvent(InputDeviceKey) override;
             bool onMouseMoveEvent(int, int) override;
 
             //properties

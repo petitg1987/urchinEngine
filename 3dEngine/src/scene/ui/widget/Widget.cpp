@@ -430,7 +430,7 @@ namespace urchin {
         return bIsVisible;
     }
 
-    bool Widget::onKeyPress(unsigned int key) {
+    bool Widget::onKeyPress(InputDeviceKey key) {
         bool propagateEvent = true;
         if (isVisible()) {
             bool widgetStateUpdated = handleWidgetKeyPress(key);
@@ -453,9 +453,9 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::handleWidgetKeyPress(unsigned int key) {
+    bool Widget::handleWidgetKeyPress(InputDeviceKey key) {
         bool widgetStateUpdated = false;
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             //In some rare cases, the state could be different from FOCUS:
             // - Widget has just been made visible and mouse has not moved yet
             // - UIRenderer has just been enabled and mouse has not moved yet
@@ -467,11 +467,11 @@ namespace urchin {
         return widgetStateUpdated;
     }
 
-    bool Widget::onKeyPressEvent(unsigned int) {
+    bool Widget::onKeyPressEvent(InputDeviceKey) {
         return true;
     }
 
-    bool Widget::onKeyRelease(unsigned int key) {
+    bool Widget::onKeyRelease(InputDeviceKey key) {
         bool propagateEvent = true;
         if (isVisible()) {
             bool widgetStateUpdated = handleWidgetKeyRelease(key);
@@ -498,9 +498,9 @@ namespace urchin {
         return propagateEvent;
     }
 
-    bool Widget::handleWidgetKeyRelease(unsigned int key) {
+    bool Widget::handleWidgetKeyRelease(InputDeviceKey key) {
         bool widgetStateUpdated = false;
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (isMouseOnWidget(mouseX, mouseY)) {
                 if (widgetState == CLICKING) {
                     widgetState = FOCUS;
@@ -516,7 +516,7 @@ namespace urchin {
         return widgetStateUpdated;
     }
 
-    bool Widget::onKeyReleaseEvent(unsigned int) {
+    bool Widget::onKeyReleaseEvent(InputDeviceKey) {
         return true;
     }
 

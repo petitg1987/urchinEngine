@@ -2,6 +2,8 @@
 
 #include <UrchinCommon.h>
 
+#include <scene/InputDeviceKey.h>
+
 namespace urchin {
 
     class Camera : public Observable {
@@ -54,14 +56,14 @@ namespace urchin {
             void rotate(const Quaternion<float>&);
             void updateViewUp(const Vector3<float>&, const Vector3<float>&);
 
-            virtual bool onKeyPress(unsigned int);
-            virtual bool onKeyRelease(unsigned int);
+            virtual bool onKeyPress(InputDeviceKey);
+            virtual bool onKeyRelease(InputDeviceKey);
             virtual bool onMouseMove(double, double);
 
-            virtual void moveForward(float) = 0;
-            virtual void moveBackward(float) = 0;
-            virtual void moveLeft(float) = 0;
-            virtual void moveRight(float) = 0;
+            virtual void moveForward(float);
+            virtual void moveBackward(float);
+            virtual void moveLeft(float);
+            virtual void moveRight(float);
 
         private:
             void initializeOrUpdate(unsigned int, unsigned int);

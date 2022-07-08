@@ -3,9 +3,8 @@
 namespace urchin {
 
     enum class InputDeviceKey {
-        MOUSE_LEFT = 256,
+        MOUSE_LEFT,
         MOUSE_RIGHT,
-
         A,
         C,
         V,

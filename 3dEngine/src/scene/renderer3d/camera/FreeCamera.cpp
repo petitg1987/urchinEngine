@@ -17,16 +17,16 @@ namespace urchin {
         this->rotateSpeed = rotateSpeed;
     }
 
-    bool FreeCamera::onKeyPress(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_RIGHT) {
+    bool FreeCamera::onKeyPress(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_RIGHT) {
             useMouseToMoveCamera(true);
             return false;
         }
         return true;
     }
 
-    bool FreeCamera::onKeyRelease(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_RIGHT) {
+    bool FreeCamera::onKeyRelease(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_RIGHT) {
             useMouseToMoveCamera(false);
             return false;
         }

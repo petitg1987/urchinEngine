@@ -97,8 +97,8 @@ namespace urchin {
     }
 
 
-    bool Textarea::onKeyPressEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool Textarea::onKeyPressEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textareaRenderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -120,28 +120,28 @@ namespace urchin {
                 resetSelection();
             }
         } else if (state == ACTIVE) {
-            if (key == (int)InputDeviceKey::LEFT_ARROW) {
+            if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     cursorPosition = computeCursorPosition(cursorIndex);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
+            } else if (key == InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     cursorPosition = computeCursorPosition(cursorIndex);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::UP_ARROW) {
+            } else if (key == InputDeviceKey::UP_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
                 cursorPosition = computeCursorPosition(cursorIndex);
                 resetSelection();
-            } else if (key == (int)InputDeviceKey::DOWN_ARROW) {
+            } else if (key == InputDeviceKey::DOWN_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
                 cursorPosition = computeCursorPosition(cursorIndex);
                 resetSelection();
-            } else if (key == (int)InputDeviceKey::BACKSPACE) {
+            } else if (key == InputDeviceKey::BACKSPACE) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
@@ -154,7 +154,7 @@ namespace urchin {
                     cursorPosition = computeCursorPosition(cursorIndex);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::DELETE_KEY) {
+            } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 } else if (cursorIndex < originalText.length()) {
@@ -166,7 +166,7 @@ namespace urchin {
                     cursorPosition = computeCursorPosition(cursorIndex);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::ENTER) {
+            } else if (key == InputDeviceKey::ENTER) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 }
@@ -185,8 +185,8 @@ namespace urchin {
         return true;
     }
 
-    bool Textarea::onKeyReleaseEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool Textarea::onKeyReleaseEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (selectModeOn) {
                 selectModeOn = false;
                 return false;

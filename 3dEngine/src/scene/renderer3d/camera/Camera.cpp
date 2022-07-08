@@ -241,12 +241,12 @@ namespace urchin {
         updateComponents();
     }
 
-    bool Camera::onKeyPress(unsigned int) {
+    bool Camera::onKeyPress(InputDeviceKey) {
         //do nothing
         return true;
     }
 
-    bool Camera::onKeyRelease(unsigned int) {
+    bool Camera::onKeyRelease(InputDeviceKey) {
         //do nothing
         return true;
     }
@@ -304,6 +304,22 @@ namespace urchin {
         mProjectionView = mProjection * mView;
         mProjectionViewInverse = mProjectionView.inverse();
         mProjectionInverse = mProjection.inverse();
+    }
+
+    void Camera::moveForward(float) {
+        //do nothing (can be overridden)
+    }
+
+    void Camera::moveBackward(float) {
+        //do nothing (can be overridden)
+    }
+
+    void Camera::moveLeft(float) {
+        //do nothing (can be overridden)
+    }
+
+    void Camera::moveRight(float) {
+        //do nothing (can be overridden)
     }
 
 }

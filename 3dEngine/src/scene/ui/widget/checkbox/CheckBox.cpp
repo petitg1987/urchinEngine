@@ -64,7 +64,7 @@ namespace urchin {
         }
     }
 
-    bool CheckBox::onKeyReleaseEvent(unsigned int) {
+    bool CheckBox::onKeyReleaseEvent(InputDeviceKey) {
         if (getWidgetState() == FOCUS) {
             switchValue();
             return false;

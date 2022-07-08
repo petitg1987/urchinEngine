@@ -98,8 +98,8 @@ namespace urchin {
         }
     }
 
-    bool Slider::onKeyPressEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool Slider::onKeyPressEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (cursorImage->widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
                 return false;
@@ -112,8 +112,8 @@ namespace urchin {
         return true;
     }
 
-    bool Slider::onKeyReleaseEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool Slider::onKeyReleaseEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             state = DEFAULT;
         }
         return true;

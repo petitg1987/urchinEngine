@@ -207,7 +207,7 @@ namespace urchin {
         screenRenderTarget.takeScreenshot(filename, width, height);
     }
 
-    bool Scene::onKeyPress(unsigned int key) {
+    bool Scene::onKeyPress(InputDeviceKey key) {
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyPress(key)) {
                 return false;
@@ -216,7 +216,7 @@ namespace urchin {
         return true;
     }
 
-    bool Scene::onKeyRelease(unsigned int key) {
+    bool Scene::onKeyRelease(InputDeviceKey key) {
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
             if (activeRenderer && !activeRenderer->onKeyRelease(key)) {
                 return false;

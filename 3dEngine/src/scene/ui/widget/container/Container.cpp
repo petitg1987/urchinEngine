@@ -95,14 +95,14 @@ namespace urchin {
         }
     }
 
-    bool Container::onKeyPressEvent(unsigned int key) {
+    bool Container::onKeyPressEvent(InputDeviceKey key) {
         if (scrollbar) {
             return scrollbar->onKeyPressEvent(key);
         }
         return true;
     }
 
-    bool Container::onKeyReleaseEvent(unsigned int key) {
+    bool Container::onKeyReleaseEvent(InputDeviceKey key) {
         if (scrollbar) {
             return scrollbar->onKeyReleaseEvent(key);
         }

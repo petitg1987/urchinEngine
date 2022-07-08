@@ -103,8 +103,8 @@ namespace urchin {
         this->maxCharacter = (int)maxCharacter;
     }
 
-    bool TextBox::onKeyPressEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool TextBox::onKeyPressEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
@@ -121,20 +121,20 @@ namespace urchin {
                 resetSelection();
             }
         } else if (state == ACTIVE) {
-            if (key == (int)InputDeviceKey::LEFT_ARROW) {
+            if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshText(false);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::RIGHT_ARROW) {
+            } else if (key == InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     refreshText(false);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::BACKSPACE) {
+            } else if (key == InputDeviceKey::BACKSPACE) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
@@ -146,7 +146,7 @@ namespace urchin {
                     refreshText(true);
                     resetSelection();
                 }
-            } else if (key == (int)InputDeviceKey::DELETE_KEY) {
+            } else if (key == InputDeviceKey::DELETE_KEY) {
                 if (selectionStartIndex != cursorIndex) {
                     deleteSelectedText();
                 } else if (cursorIndex < originalText.length()) {
@@ -162,8 +162,8 @@ namespace urchin {
         return true;
     }
 
-    bool TextBox::onKeyReleaseEvent(unsigned int key) {
-        if (key == (int)InputDeviceKey::MOUSE_LEFT) {
+    bool TextBox::onKeyReleaseEvent(InputDeviceKey key) {
+        if (key == InputDeviceKey::MOUSE_LEFT) {
             if (selectModeOn) {
                 selectModeOn = false;
                 return false;
