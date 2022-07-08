@@ -46,6 +46,7 @@ namespace urchin {
             void refreshCursorPosition(std::size_t);
             std::size_t computeCursorIndex(int, int) const;
 
+            bool hasTextSelected() const;
             void resetSelection();
             void displaySelection();
             void deleteSelectedText();

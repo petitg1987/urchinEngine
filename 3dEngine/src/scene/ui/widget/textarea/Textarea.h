@@ -41,6 +41,7 @@ namespace urchin {
             void adjustScrollToCursor() const;
             std::size_t computeCursorIndex(int, int) const;
 
+            bool hasTextSelected() const;
             void resetSelection();
             void resetDisplaySelection();
             void displaySelection();

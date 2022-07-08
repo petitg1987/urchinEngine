@@ -132,12 +132,12 @@ namespace urchin {
                     displaySelection();
                 }
             } else if (key == InputDeviceKey::C) {
-                if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
+                if (ctrlKeyPressed && hasTextSelected()) {
                     U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(std::move(selectedText));
                 }
             } else if (key == InputDeviceKey::X) {
-                if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
+                if (ctrlKeyPressed && hasTextSelected()) {
                     U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(std::move(selectedText));
                     deleteSelectedText();
@@ -150,14 +150,19 @@ namespace urchin {
                     }
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
-                if (cursorIndex > 0) {
+                if (hasTextSelected()) {
+                    cursorIndex = std::min(cursorIndex, selectionStartIndex);
+                    refreshCursorPosition(cursorIndex);
+                } else if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshCursorPosition(cursorIndex);
                 }
                 resetSelection();
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
-                assert(cursorIndex <= originalText.length());
-                if (cursorIndex < originalText.length()) {
+                if (hasTextSelected()) {
+                    cursorIndex = std::max(cursorIndex, selectionStartIndex);
+                    refreshCursorPosition(cursorIndex);
+                } else if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     refreshCursorPosition(cursorIndex);
                 }
@@ -171,7 +176,7 @@ namespace urchin {
                 refreshCursorPosition(cursorIndex);
                 resetSelection();
             } else if (key == InputDeviceKey::BACKSPACE) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
                     U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
@@ -184,7 +189,7 @@ namespace urchin {
                     resetSelection();
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex < originalText.length()) {
                     U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
@@ -196,7 +201,7 @@ namespace urchin {
                     resetSelection();
                 }
             } else if (key == InputDeviceKey::ENTER) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 }
 
@@ -229,7 +234,7 @@ namespace urchin {
     bool Textarea::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter)) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 }
 
@@ -371,6 +376,10 @@ namespace urchin {
         }
 
         return text->cutTextIndexToBaseTextIndex(textCursorIndex);
+    }
+
+    bool Textarea::hasTextSelected() const {
+        return selectionStartIndex != cursorIndex;
     }
 
     void Textarea::resetSelection() {

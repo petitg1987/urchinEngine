@@ -134,12 +134,12 @@ namespace urchin {
                     displaySelection();
                 }
             } else if (key == InputDeviceKey::C) {
-                if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
+                if (ctrlKeyPressed && hasTextSelected()) {
                     U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(std::move(selectedText));
                 }
             } else if (key == InputDeviceKey::X) {
-                if (ctrlKeyPressed && selectionStartIndex != cursorIndex) {
+                if (ctrlKeyPressed && hasTextSelected()) {
                     U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
                     getClipboard().setText(std::move(selectedText));
                     deleteSelectedText();
@@ -152,20 +152,25 @@ namespace urchin {
                     }
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
-                if (cursorIndex > 0) {
+                if (hasTextSelected()) {
+                    cursorIndex = std::min(cursorIndex, selectionStartIndex);
+                    refreshText(false);
+                } else if (cursorIndex > 0) {
                     cursorIndex--;
                     refreshText(false);
                 }
                 resetSelection();
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
-                assert(cursorIndex <= originalText.length());
-                if (cursorIndex < originalText.length()) {
+                if (hasTextSelected()) {
+                    cursorIndex = std::max(cursorIndex, selectionStartIndex);
+                    refreshText(false);
+                } else if (cursorIndex < originalText.length()) {
                     cursorIndex++;
                     refreshText(false);
                 }
                 resetSelection();
             } else if (key == InputDeviceKey::BACKSPACE) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex > 0) {
                     U32StringA tmpRight = originalText.substr(cursorIndex, originalText.length() - cursorIndex);
@@ -177,7 +182,7 @@ namespace urchin {
                     resetSelection();
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 } else if (cursorIndex < originalText.length()) {
                     U32StringA tmpRight = originalText.substr(cursorIndex + 1L, originalText.length() - cursorIndex);
@@ -207,7 +212,7 @@ namespace urchin {
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
             if (isCharacterAllowed(unicodeCharacter)) {
-                if (selectionStartIndex != cursorIndex) {
+                if (hasTextSelected()) {
                     deleteSelectedText();
                 }
 
@@ -341,6 +346,10 @@ namespace urchin {
             widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
         }
         return computedCursorIndex;
+    }
+
+    bool TextBox::hasTextSelected() const {
+        return selectionStartIndex != cursorIndex;
     }
 
     void TextBox::resetSelection() {
