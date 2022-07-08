@@ -36,10 +36,10 @@ namespace urchin {
 
     void Textarea::updateText(std::string_view text) {
         this->originalText = U32StringA(text.begin(), text.end());
-        refreshText(true); //TODO refresh after move cursor to got correct scroll ?
+        refreshText(true);
 
         this->cursorIndex = originalText.length();
-        this->cursorPosition = computeCursorPosition(this->cursorIndex);
+        refreshCursorPosition(this->cursorIndex);
         resetSelection();
     }
 
@@ -79,7 +79,7 @@ namespace urchin {
         selectionTexture = Texture::build("textSelection", 1, 1, TextureFormat::RGBA_32_FLOAT, &selectionColor);
 
         refreshText(false);
-        cursorPosition = computeCursorPosition(cursorIndex);
+        refreshCursorPosition(cursorIndex);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -113,7 +113,7 @@ namespace urchin {
                     int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                     int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
                     cursorIndex = computeCursorIndex(localMouseX, localMouseY);
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                     resetSelection();
                     selectModeOn = true;
                 }
@@ -128,29 +128,29 @@ namespace urchin {
                 if (ctrlKeyPressed) {
                     selectionStartIndex = 0;
                     cursorIndex = originalText.length();
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                     displaySelection();
                 }
             } else if (key == InputDeviceKey::LEFT_ARROW) {
                 if (cursorIndex > 0) {
                     cursorIndex--;
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                 }
                 resetSelection();
             } else if (key == InputDeviceKey::RIGHT_ARROW) {
                 assert(cursorIndex <= originalText.length());
                 if (cursorIndex < originalText.length()) {
                     cursorIndex++;
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                 }
                 resetSelection();
             } else if (key == InputDeviceKey::UP_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y - (int)text->getFont().getSpaceBetweenLines());
-                cursorPosition = computeCursorPosition(cursorIndex);
+                refreshCursorPosition(cursorIndex);
                 resetSelection();
             } else if (key == InputDeviceKey::DOWN_ARROW) {
                 cursorIndex = computeCursorIndex(cursorPosition.X, cursorPosition.Y + (int)text->getFont().getSpaceBetweenLines());
-                cursorPosition = computeCursorPosition(cursorIndex);
+                refreshCursorPosition(cursorIndex);
                 resetSelection();
             } else if (key == InputDeviceKey::BACKSPACE) {
                 if (selectionStartIndex != cursorIndex) {
@@ -162,7 +162,7 @@ namespace urchin {
                     refreshText(true);
 
                     cursorIndex--;
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                     resetSelection();
                 }
             } else if (key == InputDeviceKey::DELETE_KEY) {
@@ -174,7 +174,7 @@ namespace urchin {
                     originalText.append(tmpRight);
                     refreshText(true);
 
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                     resetSelection();
                 }
             } else if (key == InputDeviceKey::ENTER) {
@@ -189,7 +189,7 @@ namespace urchin {
                 refreshText(true);
 
                 cursorIndex++;
-                cursorPosition = computeCursorPosition(cursorIndex);
+                refreshCursorPosition(cursorIndex);
                 resetSelection();
             }
         }
@@ -223,7 +223,7 @@ namespace urchin {
                     refreshText(true);
 
                     cursorIndex++;
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                     resetSelection();
                 }
             }
@@ -238,7 +238,7 @@ namespace urchin {
             int localMouseY = mouseY - MathFunction::roundToInt(text->getGlobalPositionY());
 
             cursorIndex = computeCursorIndex(localMouseX, localMouseY);
-            cursorPosition = computeCursorPosition(cursorIndex);
+            refreshCursorPosition(cursorIndex);
             displaySelection();
             return false;
         }
@@ -272,7 +272,7 @@ namespace urchin {
         }
     }
 
-    Point2<int> Textarea::computeCursorPosition(std::size_t cursorIdx, WordCutIndexPositioning wordCutIndexPositioning) {
+    Point2<int> Textarea::computeCursorPosition(std::size_t cursorIdx, WordCutIndexPositioning wordCutIndexPositioning) const {
         std::size_t textCursorIndex = text->baseTextIndexToCutTextIndex(cursorIdx, wordCutIndexPositioning);
         std::size_t currentIndex = 0;
 
@@ -286,8 +286,6 @@ namespace urchin {
                         computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
                         computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
                     }
-                    adjustScrollToCursor(computedCursorPosition);
-                    cursorBlink = 0.0f;
                     return computedCursorPosition;
                 } else {
                     char32_t textLetter = textLine.text[columnIndex];
@@ -301,8 +299,17 @@ namespace urchin {
         throw std::runtime_error("Cursor position not found at index " + std::to_string(textCursorIndex) + " for text: " + std::string(stringConvert.to_bytes(originalText)));
     }
 
-    void Textarea::adjustScrollToCursor(const Point2<int>& newCursorPosition) const {
-        float cursorPosY = (float)newCursorPosition.Y + (float)textContainer->getScrollShiftY();
+    void Textarea::refreshCursorPosition(std::size_t cursorIdx) {
+        cursorPosition = computeCursorPosition(cursorIdx);
+        adjustScrollToCursor();
+        cursorBlink = 0.0f;
+
+        cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y - (float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL, PIXEL));
+        textContainer->notifyChildrenUpdated(); //ugly
+    }
+
+    void Textarea::adjustScrollToCursor() const {
+        float cursorPosY = (float)cursorPosition.Y + (float)textContainer->getScrollShiftY();
 
         float deltaScrollShiftPixel = 0.0f;
         if (cursorPosY < textContainer->getPositionY()) {
@@ -390,10 +397,10 @@ namespace urchin {
         U32StringA tmpRight = originalText.substr(std::max(selectionStartIndex, cursorIndex), originalText.length() - std::max(selectionStartIndex, cursorIndex));
         originalText = originalText.substr(0, std::min(selectionStartIndex, cursorIndex));
         originalText.append(tmpRight);
-        refreshText(true); //TODO refresh after move cursor to got correct scroll ?
+        refreshText(true);
 
         cursorIndex = std::min(selectionStartIndex, cursorIndex);
-        cursorPosition = computeCursorPosition(cursorIndex);
+        refreshCursorPosition(cursorIndex);
         resetSelection();
     }
 
@@ -406,7 +413,6 @@ namespace urchin {
         cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;
         if (state == ACTIVE) {
             if (((int)cursorBlink % 2) == 0) {
-                cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y - (float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL, PIXEL));
                 cursor->setIsVisible(true);
             } else {
                 cursor->setIsVisible(false);

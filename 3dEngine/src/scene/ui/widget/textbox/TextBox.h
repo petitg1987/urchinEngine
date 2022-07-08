@@ -42,7 +42,8 @@ namespace urchin {
             bool isMaxCharacterReach() const;
 
             void refreshText(bool);
-            Point2<int> computeCursorPosition(unsigned int);
+            Point2<int> computeCursorPosition(unsigned int) const;
+            void refreshCursorPosition(unsigned int);
             unsigned int computeCursorIndex(int, int) const;
 
             void resetSelection();

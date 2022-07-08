@@ -60,7 +60,7 @@ namespace urchin {
         selectionImage->setIsVisible(false);
 
         refreshText(false);
-        cursorPosition = computeCursorPosition(cursorIndex);
+        refreshCursorPosition(cursorIndex);
 
         //visual
         std::vector<Point2<float>> vertexCoord = {
@@ -115,7 +115,7 @@ namespace urchin {
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
                 cursorIndex = computeCursorIndex(localMouseX, localMouseY);
-                cursorPosition = computeCursorPosition(cursorIndex);
+                refreshCursorPosition(cursorIndex);
                 resetSelection();
                 selectModeOn = true;
             } else {
@@ -129,7 +129,7 @@ namespace urchin {
                 if (ctrlKeyPressed) {
                     selectionStartIndex = 0;
                     cursorIndex = (unsigned int)originalText.length();
-                    cursorPosition = computeCursorPosition(cursorIndex);
+                    refreshCursorPosition(cursorIndex);
                     refreshText(false);
                     displaySelection();
                 }
@@ -216,7 +216,7 @@ namespace urchin {
             int localMouseY = mouseY - MathFunction::roundToInt(text->getGlobalPositionY());
 
             cursorIndex = computeCursorIndex(localMouseX, localMouseY);
-            cursorPosition = computeCursorPosition(cursorIndex);
+            refreshCursorPosition(cursorIndex);
             refreshText(false);
             displaySelection();
             return false;
@@ -239,7 +239,7 @@ namespace urchin {
 
     void TextBox::refreshText(bool textUpdated) {
         //refresh start index
-        cursorPosition = computeCursorPosition(cursorIndex);
+        refreshCursorPosition(cursorIndex);
         if (cursorPosition.X > (int)maxWidthText) {
             startTextIndex = (startTextIndex <= originalText.length()) ? startTextIndex + TextFieldConst::LETTER_SHIFT : (unsigned int)originalText.length();
             startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
@@ -247,7 +247,7 @@ namespace urchin {
             startTextIndex = (startTextIndex >= TextFieldConst::LETTER_SHIFT) ? startTextIndex - TextFieldConst::LETTER_SHIFT : 0;
             startTextIndex = std::min(startTextIndex, (unsigned int)originalText.length());
         }
-        cursorPosition = computeCursorPosition(cursorIndex);
+        refreshCursorPosition(cursorIndex);
 
         //determine the text to display
         const auto& font = text->getFont();
@@ -271,7 +271,7 @@ namespace urchin {
         }
     }
 
-    Point2<int> TextBox::computeCursorPosition(unsigned int cursorIdx) {
+    Point2<int> TextBox::computeCursorPosition(unsigned int cursorIdx) const {
         Point2<int> computedCursorPosition(0.0f, 0.0f);
 
         for (unsigned int i = startTextIndex; i < cursorIdx; ++i) {
@@ -284,8 +284,14 @@ namespace urchin {
             computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
         }
 
-        cursorBlink = 0.0f;
         return computedCursorPosition;
+    }
+
+    void TextBox::refreshCursorPosition(unsigned int cursorIdx) {
+        cursorPosition = computeCursorPosition(cursorIdx);
+        cursorBlink = 0.0f;
+
+        cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
     }
 
     unsigned int TextBox::computeCursorIndex(int approximatePositionX, int) const {
@@ -330,7 +336,7 @@ namespace urchin {
         originalText.append(tmpRight);
 
         cursorIndex = std::min((unsigned int)selectionStartIndex, cursorIndex);
-        cursorPosition = computeCursorPosition(cursorIndex);
+        refreshCursorPosition(cursorIndex);
         refreshText(true);
         resetSelection();
     }
@@ -344,7 +350,6 @@ namespace urchin {
         cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;
         if (state == ACTIVE) {
             if (((int)cursorBlink % 2) == 0) {
-                cursor->updatePosition(Position((float)cursorPosition.X, (float)cursorPosition.Y - (float)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
                 cursor->setIsVisible(true);
             } else {
                 cursor->setIsVisible(false);
