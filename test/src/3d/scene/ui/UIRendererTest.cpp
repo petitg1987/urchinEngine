@@ -37,10 +37,10 @@ void UIRendererTest::clickingState() {
     uiRenderer->addWidget(widget);
 
     uiRenderer->onMouseMove(50.0, 50.0);
-    uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::CLICKING);
 
-    uiRenderer->onKeyRelease((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onKeyRelease(InputDeviceKey::MOUSE_LEFT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::FOCUS);
 }
 
@@ -50,7 +50,7 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
     uiRenderer->addWidget(widget);
 
     uiRenderer->onMouseMove(10.0, 10.0);
-    uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
 }
 
@@ -80,9 +80,9 @@ void UIRendererTest::focusLostEventWithClick() {
     uiRenderer->onMouseMove(50.0, 50.0);
     assert(focused);
 
-    uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
     uiRenderer->onMouseMove(110.0, 50.0);
-    uiRenderer->onKeyRelease((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onKeyRelease(InputDeviceKey::MOUSE_LEFT);
 
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
     AssertHelper::assertTrue(focusLost);
@@ -145,7 +145,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     deleteButton.lock()->addEventListener(std::make_unique<DetachChildrenEventListener>(container.get()));
 
     uiRenderer->onMouseMove(50.0, 50.0);
-    uiRenderer->onKeyPress((unsigned int)InputDeviceKey::MOUSE_LEFT);
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
 
     AssertHelper::assertTrue(childContainer.expired());
     AssertHelper::assertTrue(deleteButton.expired());

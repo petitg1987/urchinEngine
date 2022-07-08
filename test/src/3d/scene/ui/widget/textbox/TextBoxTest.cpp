@@ -12,14 +12,14 @@ void TextBoxTest::textShift() {
 
     std::string textValue = "abcdefg"; //text box can only display 'abcdef'
     uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over text box
-    uiRenderer->onKeyPress((int)InputDeviceKey::MOUSE_LEFT); //activate text box
+    uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
-    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), textValue.substr(TextFieldConst::LETTER_SHIFT));
+    AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), textValue.substr(3));
 
     for (std::size_t i = 0; i < textValue.size(); ++i) {
-        uiRenderer->onKeyPress((int)InputDeviceKey::LEFT_ARROW);
+        uiRenderer->onKeyPress(InputDeviceKey::LEFT_ARROW);
     }
     AssertHelper::assertStringEquals(textBox->getTextWidget().getBaseText(), "abcdef");
 }
