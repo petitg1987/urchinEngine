@@ -10,8 +10,9 @@ namespace urchin {
             explicit AbstractUIWidgetAnimation(Widget&);
             ~AbstractUIWidgetAnimation() override = default;
 
-        protected:
             const Widget& getWidget() const;
+
+        protected:
             void updatePosition(const Point2<float>&);
             void updateScale(const Vector2<float>&);
             void updateRotation(float);
