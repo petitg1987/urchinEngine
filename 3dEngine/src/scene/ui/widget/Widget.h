@@ -22,7 +22,7 @@ namespace urchin {
     struct UI3dData;
     class Container;
 
-    class Widget : public Observable { //TODO urchinEngineTest: check performance warning
+    class Widget : public Observable {
         public:
             Widget(Position, Size);
             ~Widget() override;

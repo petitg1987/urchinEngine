@@ -57,17 +57,7 @@ namespace urchin {
         moveSliderCursor();
 
         //visual
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
         sliderRenderer = setupUiRenderer("slider", ShapeType::TRIANGLE, true)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
                 ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
