@@ -22,7 +22,7 @@ namespace urchin {
     struct UI3dData;
     class Container;
 
-    class Widget : public Observable {
+    class Widget : public Observable { //TODO urchinEngineTest: check performance warning
         public:
             Widget(Position, Size);
             ~Widget() override;
@@ -103,7 +103,7 @@ namespace urchin {
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
-            std::shared_ptr<GenericRendererBuilder> setupUiRenderer(std::string, ShapeType, bool) const;
+            std::shared_ptr<GenericRendererBuilder> setupUiRenderer(std::string, ShapeType, bool);
             TextureParam::Anisotropy getTextureAnisotropy() const;
             void updateProperties(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
 
@@ -112,6 +112,7 @@ namespace urchin {
             Clipboard& getClipboard() const;
 
             virtual void createOrUpdateWidget() = 0;
+            virtual void refreshCoordinates();
             void setSize(Size);
 
             virtual bool onKeyPressEvent(InputDeviceKey);
@@ -124,6 +125,11 @@ namespace urchin {
             virtual void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&);
 
             WidgetOutline widgetOutline;
+
+            //TODO review: add accessor ?
+            std::vector<Point2<float>> vertexCoord;
+            std::vector<Point2<float>> textureCoord;
+            std::unique_ptr<GenericRenderer> renderer;
 
         private:
             bool handleWidgetKeyPress(InputDeviceKey);

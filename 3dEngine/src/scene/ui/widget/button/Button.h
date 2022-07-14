@@ -43,7 +43,6 @@ namespace urchin {
             std::shared_ptr<Texture> texInfoDefault;
             std::shared_ptr<Texture> texInfoOnFocus;
             std::shared_ptr<Texture> texInfoOnClick;
-            std::unique_ptr<GenericRenderer> buttonRenderer;
     };
 
 }

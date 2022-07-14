@@ -36,7 +36,6 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Texture> texture;
-            std::unique_ptr<GenericRenderer> bitmapRenderer;
     };
 
 }

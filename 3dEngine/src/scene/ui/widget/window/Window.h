@@ -47,7 +47,6 @@ namespace urchin {
             //visual
             std::shared_ptr<Text> title;
             std::shared_ptr<Texture> texWindow;
-            std::unique_ptr<GenericRenderer> windowRenderer;
     };
 
 }

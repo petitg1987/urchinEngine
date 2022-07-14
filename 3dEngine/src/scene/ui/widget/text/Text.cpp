@@ -397,25 +397,23 @@ namespace urchin {
         refreshCoordinates();
 
         std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
-        textRenderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
+        renderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
 
     void Text::refreshRendererData() {
-        if (textRenderer != nullptr) {
+        if (renderer != nullptr) {
             refreshCoordinates();
 
-            textRenderer->updateData(0, vertexCoord);
-            textRenderer->updateData(1, textureCoord);
+            renderer->updateData(0, vertexCoord);
+            renderer->updateData(1, textureCoord);
         }
     }
 
     void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updateProperties(textRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        textRenderer->enableRenderer(renderingOrder);
+        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        renderer->enableRenderer(renderingOrder);
     }
 
 }

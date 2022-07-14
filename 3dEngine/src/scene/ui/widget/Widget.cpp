@@ -59,7 +59,7 @@ namespace urchin {
         refreshScissor(false /* children call already treated via child->onCameraProjectionUpdate */);
     }
 
-    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool hasTransparency) const {
+    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool hasTransparency) {
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
@@ -87,6 +87,10 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
         rendererBuilder->addUniformData(sizeof(alphaFactor), &alphaFactor); //binding 2
+
+        refreshCoordinates();
+        rendererBuilder->addData(vertexCoord);
+        rendererBuilder->addData(textureCoord);
 
         return rendererBuilder;
     }
@@ -347,9 +351,21 @@ namespace urchin {
     }
 
     void Widget::updateSize(Size size) {
-        setSize(size);
-        createOrUpdateWidget();
+        setSize(size); //TODO remove setSize ?
+        refreshCoordinates();
+        renderer->updateData(0, vertexCoord);
         refreshScissor(true);
+    }
+
+    void Widget::refreshCoordinates() {
+        vertexCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
+        };
+        textureCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        };
     }
 
     void Widget::setSize(Size size) {

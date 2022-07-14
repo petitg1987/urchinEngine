@@ -75,7 +75,7 @@ namespace urchin {
             void cutText();
             void refreshFont();
             unsigned int retrieveFontHeight(const UdaChunk*) const;
-            void refreshCoordinates();
+            void refreshCoordinates() override;
             void refreshRenderer();
             void refreshRendererData();
 
@@ -92,11 +92,6 @@ namespace urchin {
             WStringConvertA stringConvert;
             std::vector<TextLine> cutTextLines;
             std::shared_ptr<Font> font;
-
-            //visual
-            std::vector<Point2<float>> vertexCoord;
-            std::vector<Point2<float>> textureCoord;
-            std::unique_ptr<GenericRenderer> textRenderer;
     };
 
     constexpr auto i18n = [](const std::string& text) { return Text::TRANSLATABLE_TEXT_PREFIX + text; };

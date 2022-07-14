@@ -42,17 +42,7 @@ namespace urchin {
         }
 
         //visual
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        buttonRenderer = setupUiRenderer("button", ShapeType::TRIANGLE, false)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
+        renderer = setupUiRenderer("button", ShapeType::TRIANGLE, false)
                 ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
@@ -72,7 +62,7 @@ namespace urchin {
         }
 
         if (currentTexture != oldTexture) {
-            buttonRenderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+            renderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
         }
     }
 
@@ -97,8 +87,8 @@ namespace urchin {
             text->updatePosition(Position((getWidth() - text->getWidth()) / 2.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
-        updateProperties(buttonRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        buttonRenderer->enableRenderer(renderingOrder);
+        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        renderer->enableRenderer(renderingOrder);
     }
 
 }

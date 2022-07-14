@@ -44,17 +44,7 @@ namespace urchin {
 
     void StaticBitmap::createOrUpdateWidget() {
         //visual
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        bitmapRenderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE, true)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
+        renderer = setupUiRenderer("static bitmap", ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(texture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
@@ -65,7 +55,7 @@ namespace urchin {
 
     void StaticBitmap::updateTexture(const std::string& filename) {
         texture = buildTexture(filename);
-        bitmapRenderer->updateUniformTextureReader(0, TextureReader::build(texture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        renderer->updateUniformTextureReader(0, TextureReader::build(texture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     const std::string& StaticBitmap::getTextureName() const {
@@ -73,8 +63,8 @@ namespace urchin {
     }
 
     void StaticBitmap::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updateProperties(bitmapRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        bitmapRenderer->enableRenderer(renderingOrder);
+        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        renderer->enableRenderer(renderingOrder);
     }
 
 }

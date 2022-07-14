@@ -81,7 +81,6 @@ namespace urchin {
             std::shared_ptr<Texture> texTextareaDefault;
             std::shared_ptr<Texture> texTextareaFocus;
             std::shared_ptr<Texture> texCursorAlbedo;
-            std::unique_ptr<GenericRenderer> textareaRenderer;
     };
 
 }

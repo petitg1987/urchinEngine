@@ -63,17 +63,7 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
 
         //visual
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        textBoxRenderer = setupUiRenderer("text box", ShapeType::TRIANGLE, false)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
+        renderer = setupUiRenderer("text box", ShapeType::TRIANGLE, false)
                 ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
@@ -110,7 +100,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                renderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
@@ -120,7 +110,7 @@ namespace urchin {
                 selectModeOn = true;
             } else {
                 state = INACTIVE;
-                textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                renderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -249,7 +239,7 @@ namespace urchin {
 
     void TextBox::onResetStateEvent() {
         state = INACTIVE;
-        textBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        renderer->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {
@@ -381,8 +371,8 @@ namespace urchin {
 
     void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         //text box
-        updateProperties(textBoxRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        textBoxRenderer->enableRenderer(renderingOrder);
+        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        renderer->enableRenderer(renderingOrder);
 
         //cursor
         cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;

@@ -21,17 +21,7 @@ namespace urchin {
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
 
         //visual
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        checkBoxRenderer = setupUiRenderer("check box", ShapeType::TRIANGLE, true)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
+        renderer = setupUiRenderer("check box", ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(isChecked() ? texChecked : texUnchecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build();
     }
@@ -55,11 +45,11 @@ namespace urchin {
     }
 
     void CheckBox::refreshTexture() const {
-        if (checkBoxRenderer) {
+        if (renderer) {
             if (bIsChecked) {
-                checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                renderer->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
             } else {
-                checkBoxRenderer->updateUniformTextureReader(0, TextureReader::build(texUnchecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                renderer->updateUniformTextureReader(0, TextureReader::build(texUnchecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
             }
         }
     }
@@ -81,7 +71,7 @@ namespace urchin {
     }
 
     void CheckBox::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updateProperties(checkBoxRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        checkBoxRenderer->enableRenderer(renderingOrder);
+        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        renderer->enableRenderer(renderingOrder);
     }
 }
