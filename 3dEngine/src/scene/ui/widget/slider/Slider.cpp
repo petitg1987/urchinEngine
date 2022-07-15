@@ -7,7 +7,6 @@ namespace urchin {
 
     Slider::Slider(Position position, Size size, std::string skinName, const std::vector<ParameterizedText>& values) :
             Widget(position, size),
-            TEXT_SHIFT_LENGTH(10.0f),
             skinName(std::move(skinName)),
             values(values),
             selectedIndex(0),

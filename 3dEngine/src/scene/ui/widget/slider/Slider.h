@@ -37,7 +37,7 @@ namespace urchin {
             void moveSliderCursor() const;
 
             //display information
-            const float TEXT_SHIFT_LENGTH;
+            static constexpr float TEXT_SHIFT_LENGTH = 25.0f;
             const std::string skinName;
             const std::vector<ParameterizedText> values;
             unsigned int selectedIndex;
