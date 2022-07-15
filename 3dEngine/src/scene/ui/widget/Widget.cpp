@@ -44,7 +44,7 @@ namespace urchin {
     }
 
     void Widget::onResize() {
-        createOrUpdateWidget();
+        createOrUpdateWidget(); //TODO required ?
         for (const auto& child : children) {
             child->onResize();
         }
@@ -52,7 +52,7 @@ namespace urchin {
     }
 
     void Widget::onCameraProjectionUpdate() {
-        createOrUpdateWidget();
+        createOrUpdateWidget(); //TODO required ?
         for (const auto& child : children) {
             child->onCameraProjectionUpdate();
         }
@@ -353,7 +353,6 @@ namespace urchin {
     void Widget::updateSize(Size size) {
         setSize(size); //TODO remove setSize ?
         refreshCoordinates();
-        renderer->updateData(0, vertexCoord);
         refreshScissor(true);
     }
 
@@ -366,6 +365,10 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
+        if (renderer) {
+            renderer->updateData(0, vertexCoord);
+            renderer->updateData(1, textureCoord);
+        }
     }
 
     void Widget::setSize(Size size) {

@@ -391,11 +391,14 @@ namespace urchin {
             textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
             textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
         }
+
+        if (renderer) {
+            renderer->updateData(0, vertexCoord);
+            renderer->updateData(1, textureCoord);
+        }
     }
 
     void Text::refreshRenderer() {
-        refreshCoordinates();
-
         std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
         renderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
