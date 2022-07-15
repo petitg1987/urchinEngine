@@ -82,18 +82,30 @@ namespace urchin {
             std::string text = value;
 
             //remove parameters (nothing to translate)
-            std::regex paramRegex("\\{[a-zA-Z-]+}", std::regex_constants::optimize);
-            std::regex_replace(text, paramRegex, " ");
+            std::regex paramRegex("\\{[a-zA-Z-]+}");
+            text = std::regex_replace(text, paramRegex, " ");
+
+            //remove numbers (nothing to translate)
+            std::regex numberRegex("[0-9]+");
+            text = std::regex_replace(text, numberRegex, " ");
 
             //remove symbols
-            std::regex symbolRegex(R"(\{|\}|\(|\)|\/|<|>|-|:|_)", std::regex_constants::optimize);
-            std::regex_replace(text, symbolRegex, " ");
+            std::regex symbolRegex(R"(\{|\}|\(|\)|\/|<|>|-|:|_|,|;|\.|')");
+            text = std::regex_replace(text, symbolRegex, " ");
 
-            //handle multi-line
+            //handle multi-lines
             StringUtil::replaceAll(text, "\n", " ");
 
-            //clean double spaces
-            StringUtil::replaceAll(text, "  ", " ");
+            //remove double spaces introduced
+            for (std::size_t i = 0; i < 4; ++i) {
+                StringUtil::replaceAll(text, "  ", " ");
+            }
+
+            //remove start / end spaces
+            std::regex beginSpaceRegex("^ (.*)$");
+            text = std::regex_replace(text, beginSpaceRegex, "$1");
+            std::regex endSpaceRegex("^(.*) $");
+            text = std::regex_replace(text, endSpaceRegex, "$1");
 
             labelStatistics.wordsCount += (unsigned int)StringUtil::split(text, ' ').size();
         }

@@ -44,7 +44,7 @@ namespace urchin {
             StringUtil::ltrim(rawContentLine);
 
             if (rawContentLine.empty() || rawContentLine[0] == '#') {
-                continue; //ignore comment line
+                continue; //ignore commented line
             }
 
             if (indentLevel == 0) {

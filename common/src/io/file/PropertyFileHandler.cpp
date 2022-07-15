@@ -29,6 +29,12 @@ namespace urchin {
             std::string line;
             FileReader::nextLine(file, line);
 
+            StringUtil::ltrim(line);
+
+            if (line.empty() || line[0] == '#') {
+                continue; //ignore commented line
+            }
+
             std::string::size_type equalPosition = line.find('=');
             if (equalPosition == std::string::npos) {
                 continue;
