@@ -4,11 +4,18 @@
 
 namespace urchin {
 
+    struct LabelStatistics {
+        unsigned int labelsCount;
+        unsigned int wordsCount;
+    };
+
     class LabelTranslator {
         public:
             LabelTranslator();
 
             void checkTranslationError() const;
+
+            LabelStatistics computeStatistics(const std::string&) const;
 
             const std::vector<std::string>& getAvailableLanguages() const;
             std::string translate(const std::string&, std::string_view);

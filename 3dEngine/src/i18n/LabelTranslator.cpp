@@ -70,6 +70,15 @@ namespace urchin {
         }
     }
 
+    LabelStatistics LabelTranslator::computeStatistics(const std::string& language) const { //TODO impl
+        LabelStatistics labelStatistics{};
+        auto labels = retrieveLanguageLabels(language);
+
+        labelStatistics.labelsCount = (unsigned int)labels.size();
+
+        return labelStatistics;
+    }
+
     const std::vector<std::string>& LabelTranslator::getAvailableLanguages() const {
         return availableLanguages;
     }
