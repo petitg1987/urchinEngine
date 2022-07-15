@@ -24,6 +24,7 @@ namespace urchin {
 
             void setAllowedCharacters(const std::string&);
             void setMaxCharacter(unsigned int);
+            unsigned int getCharacterCount() const;
 
         protected:
             void createOrUpdateWidget() override;

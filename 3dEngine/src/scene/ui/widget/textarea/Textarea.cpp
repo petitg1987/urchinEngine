@@ -43,6 +43,18 @@ namespace urchin {
         resetSelection();
     }
 
+    void Textarea::setAllowedCharacters(const std::string& allowedCharacters) {
+        this->allowedCharacters = stringConvert.from_bytes(allowedCharacters.c_str());
+    }
+
+    void Textarea::setMaxCharacter(unsigned int maxCharacter) {
+        this->maxCharacter = (int)maxCharacter;
+    }
+
+    unsigned int Textarea::getCharacterCount() const {
+        return (unsigned int)originalText.length();
+    }
+
     void Textarea::createOrUpdateWidget() {
         //delete children
         detachChild(textContainer.get());
@@ -270,7 +282,7 @@ namespace urchin {
         if (maxCharacter == -1) {
             return false;
         }
-        return (int)originalText.length() >= maxCharacter;
+        return (int)getCharacterCount() >= maxCharacter;
     }
 
     void Textarea::refreshText(bool textUpdated) {

@@ -94,6 +94,10 @@ namespace urchin {
         this->maxCharacter = (int)maxCharacter;
     }
 
+    unsigned int TextBox::getCharacterCount() const {
+        return (unsigned int)originalText.length();
+    }
+
     bool TextBox::onKeyPressEvent(InputDeviceKey key) {
         if (key == InputDeviceKey::CTRL) {
             ctrlKeyPressed = true;
@@ -250,7 +254,7 @@ namespace urchin {
     }
 
     bool TextBox::isMaxCharacterReach() const {
-        return maxCharacter != -1 && (int)originalText.size() >= maxCharacter;
+        return maxCharacter != -1 && (int)getCharacterCount() >= maxCharacter;
     }
 
     void TextBox::refreshText(bool textUpdated) {
