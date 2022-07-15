@@ -125,8 +125,7 @@ namespace urchin {
             virtual bool onScrollEvent(double);
             virtual void onResetStateEvent();
 
-            void updateProperties(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
-            virtual void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&);
+            virtual void prepareWidgetRendering(float);
 
         private:
             bool handleWidgetKeyPress(InputDeviceKey);
@@ -137,6 +136,8 @@ namespace urchin {
 
             unsigned int computeDepthLevel() const;
             void refreshScissor(bool);
+
+            void updateRendererProperties(const Matrix4<float>&, const Vector2<float>&) const;
 
             UIRenderer* uiRenderer;
             int mouseX;

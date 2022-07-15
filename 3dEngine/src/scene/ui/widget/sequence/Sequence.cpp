@@ -136,7 +136,7 @@ namespace urchin {
         }
     }
 
-    void Sequence::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) {
+    void Sequence::prepareWidgetRendering(float) {
         //update the text position because the text size is updated when the UI language is changed
         float posX = (getWidth() - valuesText[selectedIndex]->getWidth()) / 2.0f;
         float posY = (getHeight() - valuesText[selectedIndex]->getHeight()) / 2.0f;

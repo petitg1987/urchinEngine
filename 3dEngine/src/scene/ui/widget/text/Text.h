@@ -61,8 +61,6 @@ namespace urchin {
 
             void refreshTranslation(const LanguageTranslator&) override;
 
-            void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
-
         private:
             Text(Position, std::string, std::string, std::vector<std::string>);
 

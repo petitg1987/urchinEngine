@@ -27,7 +27,6 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
-            void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
 
         private:
             StaticBitmap(Position, Size, std::shared_ptr<Texture>);

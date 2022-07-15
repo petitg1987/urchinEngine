@@ -81,14 +81,11 @@ namespace urchin {
         return true;
     }
 
-    void Button::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void Button::prepareWidgetRendering(float) {
         if (text) {
             //update the text position because the text size is updated when the UI language is changed
             text->updatePosition(Position((getWidth() - text->getWidth()) / 2.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
-
-        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        getRenderer()->enableRenderer(renderingOrder);
     }
 
 }

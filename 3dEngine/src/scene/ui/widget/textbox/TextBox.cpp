@@ -369,11 +369,7 @@ namespace urchin {
         resetSelection();
     }
 
-    void TextBox::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        //text box
-        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        getRenderer()->enableRenderer(renderingOrder);
-
+    void TextBox::prepareWidgetRendering(float dt) {
         //cursor
         cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;
         if (state == ACTIVE) {

@@ -708,7 +708,11 @@ namespace urchin {
 
     void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         if (isVisible()) {
-            prepareWidgetRendering(dt, renderingOrder, projectionViewMatrix);
+            updateRendererProperties(projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+            if (renderer) {
+                renderer->enableRenderer(renderingOrder);
+            }
+            prepareWidgetRendering(dt);
 
             for (const auto& child: children) {
                 renderingOrder++;
@@ -717,49 +721,51 @@ namespace urchin {
         }
     }
 
-    void Widget::updateProperties(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const { //TODO remove renderer ?
-        Matrix4<float> projectionViewModelMatrix;
+    void Widget::updateRendererProperties(const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
+        if (renderer) {
+            Matrix4<float> projectionViewModelMatrix;
 
-        float zBias = 0.0f;
-        if (uiRenderer->getUi3dData()) {
-            float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
-            zBias = (float)computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
-            projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
-        } else {
-            Matrix4 orthogonalMatrix( //orthogonal matrix with origin at top left screen
-                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
-                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
-                    0.0f, 0.0f, 1.0f, 0.0f,
+            float zBias = 0.0f;
+            if (uiRenderer->getUi3dData()) {
+                float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
+                zBias = (float) computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
+                projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
+            } else {
+                Matrix4 orthogonalMatrix( //orthogonal matrix with origin at top left screen
+                        2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
+                        0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
+                        0.0f, 0.0f, 1.0f, 0.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f);
+                projectionViewModelMatrix = orthogonalMatrix;
+            }
+
+            //Equivalent to 4 multiplied matrices: D * C * B * A
+            // A) Translation of the widget center to the origin (transOriginX, transOriginY)
+            // B) Scale widget (scale.X, scale.Y)
+            // C) Rotate widget (sinRotate, cosRotate)
+            // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
+            float transX = translateVector.X + getWidth() / 2.0f;
+            float transY = translateVector.Y + getHeight() / 2.0f;
+            float transOriginX = -getWidth() / 2.0f;
+            float transOriginY = -getHeight() / 2.0f;
+            float sinRotate = std::sin(rotationZ);
+            float cosRotate = std::cos(rotationZ);
+            Matrix4<float> translateScaleMatrix(
+                    scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
+                    scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
+                    0.0f, 0.0, 1.0f, zBias,
                     0.0f, 0.0f, 0.0f, 1.0f);
-            projectionViewModelMatrix = orthogonalMatrix;
-        }
 
-        //Equivalent to 4 multiplied matrices: D * C * B * A
-        // A) Translation of the widget center to the origin (transOriginX, transOriginY)
-        // B) Scale widget (scale.X, scale.Y)
-        // C) Rotate widget (sinRotate, cosRotate)
-        // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
-        float transX = translateVector.X + getWidth() / 2.0f;
-        float transY = translateVector.Y + getHeight() / 2.0f;
-        float transOriginX = -getWidth() / 2.0f;
-        float transOriginY = -getHeight() / 2.0f;
-        float sinRotate = std::sin(rotationZ);
-        float cosRotate = std::cos(rotationZ);
-        Matrix4<float> translateScaleMatrix(
-                scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
-                scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
-                0.0f, 0.0, 1.0f, zBias,
-                0.0f, 0.0f, 0.0f, 1.0f);
-
-        projectionViewModelMatrix *= translateScaleMatrix;
-        renderer->updateUniformData(1, &projectionViewModelMatrix);
-        renderer->updateUniformData(2, &alphaFactor);
-        if (scissorEnabled) {
-            renderer->updateScissor(scissorOffset, scissorSize);
+            projectionViewModelMatrix *= translateScaleMatrix;
+            renderer->updateUniformData(1, &projectionViewModelMatrix);
+            renderer->updateUniformData(2, &alphaFactor);
+            if (scissorEnabled) {
+                renderer->updateScissor(scissorOffset, scissorSize);
+            }
         }
     }
 
-    void Widget::prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) {
+    void Widget::prepareWidgetRendering(float) {
         //to override
     }
 

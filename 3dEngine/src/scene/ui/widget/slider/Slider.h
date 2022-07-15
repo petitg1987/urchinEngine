@@ -29,8 +29,6 @@ namespace urchin {
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
 
-            void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&) override;
-
         private:
             Slider(Position, Size, std::string, const std::vector<ParameterizedText>&);
 
