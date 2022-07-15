@@ -20,7 +20,7 @@ void TextareaTest::textCut() {
     AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[0].text == WStringConvertA().from_bytes("mmm"));
     AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[1].text == WStringConvertA().from_bytes("mmm"));
 
-    float endOfLinePosX = textarea->getWidth() - (float)textarea->getOutline().rightWidth - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
+    float endOfLinePosX = textarea->getWidth() - 1.0f /* outline right */ - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
     uiRenderer->onMouseMove(endOfLinePosX, 1.0f); //move mouse at end of first line
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //place cursor at end of first line
     for (std::size_t i = 0; i < 3; ++i) {
@@ -46,7 +46,7 @@ void TextareaTest::textCopyPaste() {
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
     }
-    float endOfLinePosX = textarea->getWidth() - (float)textarea->getOutline().rightWidth - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
+    float endOfLinePosX = textarea->getWidth() - 1.0f /* outline right */ - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
     uiRenderer->onKeyPress(InputDeviceKey::CTRL);
     uiRenderer->onKeyPress(InputDeviceKey::A); //select all
     uiRenderer->onKeyPress(InputDeviceKey::C); //copy
