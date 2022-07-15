@@ -9,6 +9,8 @@ namespace urchin {
 
     Widget::Widget(Position position, Size size) :
             uiRenderer(nullptr),
+            mouseX(0),
+            mouseY(0),
             parent(nullptr),
             widgetState(Widget::DEFAULT),
             position(position),
@@ -17,9 +19,7 @@ namespace urchin {
             rotationZ(0.0f),
             alphaFactor(1.0f),
             scissorEnabled(false),
-            bIsVisible(true),
-            mouseX(0),
-            mouseY(0) {
+            bIsVisible(true) {
 
     }
 
@@ -44,7 +44,8 @@ namespace urchin {
     }
 
     void Widget::onResize() {
-        createOrUpdateWidget(); //TODO required ?
+        createOrUpdateWidget();
+        refreshCoordinates();
         for (const auto& child : children) {
             child->onResize();
         }
@@ -52,96 +53,11 @@ namespace urchin {
     }
 
     void Widget::onCameraProjectionUpdate() {
-        createOrUpdateWidget(); //TODO required ?
+        createOrUpdateWidget();
         for (const auto& child : children) {
             child->onCameraProjectionUpdate();
         }
         refreshScissor(false /* children call already treated via child->onCameraProjectionUpdate */);
-    }
-
-    std::shared_ptr<GenericRendererBuilder> Widget::setupUiRenderer(std::string name, ShapeType shapeType, bool hasTransparency) {
-        assert(isInitialized());
-        auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
-
-        Matrix4<float> normalMatrix;
-        Matrix4<float> projectionViewModelMatrix;
-        if (uiRenderer->getUi3dData()) {
-            rendererBuilder->enableDepthTest();
-            rendererBuilder->enableDepthWrite();
-
-            //Always active transparency to ensure that emissive factor stay unchanged (see fragment shader for more details).
-            //Transparency is only working when a transparent widget is displayed above another widget.
-            //Transparency to the scene is currently not supported because the UI is written on an RGB channel (no alpha).
-            rendererBuilder->enableTransparency({
-                BlendFunction::build(BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ZERO, BlendFactor::ONE),
-                BlendFunction::buildBlendDisabled(),
-                BlendFunction::buildBlendDisabled()
-            });
-            normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
-        } else {
-            if (hasTransparency) {
-                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
-            }
-        }
-
-        rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
-        rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
-        rendererBuilder->addUniformData(sizeof(alphaFactor), &alphaFactor); //binding 2
-
-        refreshCoordinates();
-        rendererBuilder->addData(vertexCoord);
-        rendererBuilder->addData(textureCoord);
-
-        return rendererBuilder;
-    }
-
-    TextureParam::Anisotropy Widget::getTextureAnisotropy() const {
-        if (uiRenderer->getUi3dData()) {
-            return TextureParam::Anisotropy::ANISOTROPY;
-        }
-        return TextureParam::Anisotropy::NO_ANISOTROPY;
-    }
-
-    void Widget::updateProperties(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
-        Matrix4<float> projectionViewModelMatrix;
-
-        float zBias = 0.0f;
-        if (uiRenderer->getUi3dData()) {
-            float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
-            zBias = (float)computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
-            projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
-        } else {
-            Matrix4 orthogonalMatrix( //orthogonal matrix with origin at top left screen
-                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
-                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
-                    0.0f, 0.0f, 1.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-            projectionViewModelMatrix = orthogonalMatrix;
-        }
-
-        //Equivalent to 4 multiplied matrices: D * C * B * A
-        // A) Translation of the widget center to the origin (transOriginX, transOriginY)
-        // B) Scale widget (scale.X, scale.Y)
-        // C) Rotate widget (sinRotate, cosRotate)
-        // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
-        float transX = translateVector.X + getWidth() / 2.0f;
-        float transY = translateVector.Y + getHeight() / 2.0f;
-        float transOriginX = -getWidth() / 2.0f;
-        float transOriginY = -getHeight() / 2.0f;
-        float sinRotate = std::sin(rotationZ);
-        float cosRotate = std::cos(rotationZ);
-        Matrix4<float> translateScaleMatrix(
-                scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
-                scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
-                0.0f, 0.0, 1.0f, zBias,
-                0.0f, 0.0f, 0.0f, 1.0f);
-
-        projectionViewModelMatrix *= translateScaleMatrix;
-        renderer->updateUniformData(1, &projectionViewModelMatrix);
-        renderer->updateUniformData(2, &alphaFactor);
-        if (scissorEnabled) {
-            renderer->updateScissor(scissorOffset, scissorSize);
-        }
     }
 
     I18nService& Widget::getI18nService() const {
@@ -356,6 +272,42 @@ namespace urchin {
         return size;
     }
 
+    std::shared_ptr<GenericRendererBuilder> Widget::baseRendererBuilder(std::string name, ShapeType shapeType, bool hasTransparency) {
+        assert(isInitialized());
+        auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
+
+        Matrix4<float> normalMatrix;
+        Matrix4<float> projectionViewModelMatrix;
+        if (uiRenderer->getUi3dData()) {
+            rendererBuilder->enableDepthTest();
+            rendererBuilder->enableDepthWrite();
+
+            //Always active transparency to ensure that emissive factor stay unchanged (see fragment shader for more details).
+            //Transparency is only working when a transparent widget is displayed above another widget.
+            //Transparency to the scene is currently not supported because the UI is written on an RGB channel (no alpha).
+            rendererBuilder->enableTransparency({
+                    BlendFunction::build(BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ZERO, BlendFactor::ONE),
+                    BlendFunction::buildBlendDisabled(),
+                    BlendFunction::buildBlendDisabled()
+            });
+            normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
+        } else {
+            if (hasTransparency) {
+                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
+            }
+        }
+
+        rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
+        rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
+        rendererBuilder->addUniformData(sizeof(alphaFactor), &alphaFactor); //binding 2
+
+        refreshCoordinates();
+        rendererBuilder->addData(vertexCoord);
+        rendererBuilder->addData(textureCoord);
+
+        return rendererBuilder;
+    }
+
     void Widget::refreshCoordinates() {
         vertexCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
@@ -371,12 +323,35 @@ namespace urchin {
         }
     }
 
+    std::vector<Point2<float>>& Widget::getVertexCoordinates() {
+        return vertexCoord;
+    }
+
+    std::vector<Point2<float>>& Widget::getTextureCoordinates() {
+        return textureCoord;
+    }
+
+    void Widget::setupRenderer(std::unique_ptr<GenericRenderer> renderer) {
+        this->renderer = std::move(renderer);
+    }
+
+    GenericRenderer* Widget::getRenderer() const {
+        return renderer.get();
+    }
+
     WidgetOutline& Widget::getOutline() {
         return widgetOutline;
     }
 
     const WidgetOutline& Widget::getOutline() const {
         return widgetOutline;
+    }
+
+    TextureParam::Anisotropy Widget::getTextureAnisotropy() const {
+        if (uiRenderer->getUi3dData()) {
+            return TextureParam::Anisotropy::ANISOTROPY;
+        }
+        return TextureParam::Anisotropy::NO_ANISOTROPY;
     }
 
     float Widget::getWidth() const {
@@ -739,6 +714,48 @@ namespace urchin {
                 renderingOrder++;
                 child->prepareRendering(dt, renderingOrder, projectionViewMatrix);
             }
+        }
+    }
+
+    void Widget::updateProperties(GenericRenderer* renderer, const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const { //TODO remove renderer ?
+        Matrix4<float> projectionViewModelMatrix;
+
+        float zBias = 0.0f;
+        if (uiRenderer->getUi3dData()) {
+            float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
+            zBias = (float)computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
+            projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
+        } else {
+            Matrix4 orthogonalMatrix( //orthogonal matrix with origin at top left screen
+                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
+                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
+            projectionViewModelMatrix = orthogonalMatrix;
+        }
+
+        //Equivalent to 4 multiplied matrices: D * C * B * A
+        // A) Translation of the widget center to the origin (transOriginX, transOriginY)
+        // B) Scale widget (scale.X, scale.Y)
+        // C) Rotate widget (sinRotate, cosRotate)
+        // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
+        float transX = translateVector.X + getWidth() / 2.0f;
+        float transY = translateVector.Y + getHeight() / 2.0f;
+        float transOriginX = -getWidth() / 2.0f;
+        float transOriginY = -getHeight() / 2.0f;
+        float sinRotate = std::sin(rotationZ);
+        float cosRotate = std::cos(rotationZ);
+        Matrix4<float> translateScaleMatrix(
+                scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
+                scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
+                0.0f, 0.0, 1.0f, zBias,
+                0.0f, 0.0f, 0.0f, 1.0f);
+
+        projectionViewModelMatrix *= translateScaleMatrix;
+        renderer->updateUniformData(1, &projectionViewModelMatrix);
+        renderer->updateUniformData(2, &alphaFactor);
+        if (scissorEnabled) {
+            renderer->updateScissor(scissorOffset, scissorSize);
         }
     }
 

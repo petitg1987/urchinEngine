@@ -102,18 +102,21 @@ namespace urchin {
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
-            std::shared_ptr<GenericRendererBuilder> setupUiRenderer(std::string, ShapeType, bool);
-            TextureParam::Anisotropy getTextureAnisotropy() const;
-            void updateProperties(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
-
             I18nService& getI18nService() const;
             UI3dData* getUi3dData() const;
             Clipboard& getClipboard() const;
 
             virtual void createOrUpdateWidget() = 0;
+            std::shared_ptr<GenericRendererBuilder> baseRendererBuilder(std::string, ShapeType, bool);
             virtual void refreshCoordinates();
+            std::vector<Point2<float>>& getVertexCoordinates();
+            std::vector<Point2<float>>& getTextureCoordinates();
+            void setupRenderer(std::unique_ptr<GenericRenderer>);
+            GenericRenderer* getRenderer() const;
+
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;
+            TextureParam::Anisotropy getTextureAnisotropy() const;
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);
@@ -122,12 +125,8 @@ namespace urchin {
             virtual bool onScrollEvent(double);
             virtual void onResetStateEvent();
 
+            void updateProperties(GenericRenderer*, const Matrix4<float>&, const Vector2<float>&) const;
             virtual void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&);
-
-            //TODO review: add accessor ?
-            std::vector<Point2<float>> vertexCoord;
-            std::vector<Point2<float>> textureCoord;
-            std::unique_ptr<GenericRenderer> renderer;
 
         private:
             bool handleWidgetKeyPress(InputDeviceKey);
@@ -140,10 +139,15 @@ namespace urchin {
             void refreshScissor(bool);
 
             UIRenderer* uiRenderer;
-
+            int mouseX;
+            int mouseY;
             Widget* parent;
             std::vector<std::shared_ptr<Widget>> children;
             std::vector<std::shared_ptr<EventListener>> eventListeners;
+
+            std::vector<Point2<float>> vertexCoord;
+            std::vector<Point2<float>> textureCoord;
+            std::unique_ptr<GenericRenderer> renderer;
 
             WidgetOutline widgetOutline;
             WidgetState widgetState;
@@ -157,9 +161,6 @@ namespace urchin {
             Vector2<int> scissorOffset;
             Vector2<int> scissorSize;
             bool bIsVisible;
-
-            int mouseX;
-            int mouseY;
     };
 
     #include "Widget.inl"

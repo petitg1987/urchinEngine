@@ -55,7 +55,6 @@ namespace urchin {
             std::shared_ptr<Text> currentValueText;
             std::shared_ptr<StaticBitmap> cursorImage;
             std::shared_ptr<Texture> texSliderLine;
-            std::unique_ptr<GenericRenderer> sliderRenderer;
     };
 
 }

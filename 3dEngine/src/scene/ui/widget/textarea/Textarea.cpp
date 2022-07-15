@@ -82,9 +82,9 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
 
         //visual
-        renderer = setupUiRenderer("textarea", ShapeType::TRIANGLE, false)
+        setupRenderer(baseRendererBuilder("textarea", ShapeType::TRIANGLE, false)
                 ->addUniformTextureReader(TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
+                ->build());
     }
 
     bool Textarea::onKeyPressEvent(InputDeviceKey key) {
@@ -93,7 +93,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                renderer->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
                 Rectangle2D textZone(
                         Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
@@ -108,7 +108,7 @@ namespace urchin {
                 }
             } else {
                 state = INACTIVE;
-                renderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -259,7 +259,7 @@ namespace urchin {
 
     void Textarea::onResetStateEvent() {
         state = INACTIVE;
-        renderer->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {
@@ -421,9 +421,9 @@ namespace urchin {
     }
 
     void Textarea::prepareWidgetRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        //text area
-        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        renderer->enableRenderer(renderingOrder);
+        //textarea
+        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        getRenderer()->enableRenderer(renderingOrder);
 
         //cursor
         cursorBlink += dt * TextFieldConst::CURSOR_BLINK_SPEED;

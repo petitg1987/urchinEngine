@@ -57,9 +57,9 @@ namespace urchin {
         moveSliderCursor();
 
         //visual
-        sliderRenderer = setupUiRenderer("slider", ShapeType::TRIANGLE, true)
+        setupRenderer(baseRendererBuilder("slider", ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
+                ->build());
     }
 
     WidgetType Slider::getWidgetType() const {
@@ -159,8 +159,8 @@ namespace urchin {
     }
 
     void Slider::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updateProperties(sliderRenderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        sliderRenderer->enableRenderer(renderingOrder);
+        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        getRenderer()->enableRenderer(renderingOrder);
     }
 
 }

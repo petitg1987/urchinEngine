@@ -40,9 +40,9 @@ namespace urchin {
         }
 
         //visual
-        renderer = setupUiRenderer("window", ShapeType::TRIANGLE, false)
+        setupRenderer(baseRendererBuilder("window", ShapeType::TRIANGLE, false)
                 ->addUniformTextureReader(TextureReader::build(texWindow, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
+                ->build());
     }
 
     WidgetType Window::getWidgetType() const {
@@ -113,8 +113,8 @@ namespace urchin {
     }
 
     void Window::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        renderer->enableRenderer(renderingOrder);
+        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        getRenderer()->enableRenderer(renderingOrder);
     }
 
 }

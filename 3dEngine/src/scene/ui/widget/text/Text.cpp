@@ -47,9 +47,9 @@ namespace urchin {
         }
 
         std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
-        renderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
+        setupRenderer(baseRendererBuilder("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
+                ->build());
     }
 
     WidgetType Text::getWidgetType() const {
@@ -338,10 +338,10 @@ namespace urchin {
 
     void Text::refreshCoordinates() {
         //creates the vertex array and texture array
-        vertexCoord.clear();
-        textureCoord.clear();
-        vertexCoord.reserve(baseText.size() * 4);
-        textureCoord.reserve(baseText.size() * 4);
+        getVertexCoordinates().clear();
+        getTextureCoordinates().clear();
+        getVertexCoordinates().reserve(baseText.size() * 4);
+        getTextureCoordinates().reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
         auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
@@ -355,52 +355,52 @@ namespace urchin {
                 auto letterHeight = (float)font->getGlyph(textLetter).height;
                 auto letterOffsetY = offsetY - letterShift;
 
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2<float>(offsetX, letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2<float>(letterWidth + offsetX, letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
 
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
-                vertexCoord.emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2<float>(offsetX, letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
 
                 float sMin = (float)(textLetter % 16) / 16.0f;
                 float tMin = (float)(textLetter >> 4u) / 16.0f;
                 float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
                 float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
 
-                textureCoord.emplace_back(Point2<float>(sMin, tMin));
-                textureCoord.emplace_back(Point2<float>(sMax, tMin));
-                textureCoord.emplace_back(Point2<float>(sMax, tMax));
+                getTextureCoordinates().emplace_back(Point2<float>(sMin, tMin));
+                getTextureCoordinates().emplace_back(Point2<float>(sMax, tMin));
+                getTextureCoordinates().emplace_back(Point2<float>(sMax, tMax));
 
-                textureCoord.emplace_back(Point2<float>(sMin, tMin));
-                textureCoord.emplace_back(Point2<float>(sMax, tMax));
-                textureCoord.emplace_back(Point2<float>(sMin, tMax));
+                getTextureCoordinates().emplace_back(Point2<float>(sMin, tMin));
+                getTextureCoordinates().emplace_back(Point2<float>(sMax, tMax));
+                getTextureCoordinates().emplace_back(Point2<float>(sMin, tMax));
 
                 offsetX += letterWidth + spaceBetweenLetters;
             }
             offsetY += spaceBetweenLines;
         }
 
-        if (vertexCoord.empty()) {
-            vertexCoord.emplace_back(Point2<float>(0.0f ,0.0f));
-            vertexCoord.emplace_back(Point2<float>(0.0f ,0.0f));
-            vertexCoord.emplace_back(Point2<float>(0.0f ,0.0f));
+        if (getVertexCoordinates().empty()) {
+            getVertexCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
+            getVertexCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
+            getVertexCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
         }
-        if (textureCoord.empty()) {
-            textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
-            textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
-            textureCoord.emplace_back(Point2<float>(0.0f ,0.0f));
+        if (getTextureCoordinates().empty()) {
+            getTextureCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
+            getTextureCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
+            getTextureCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
         }
 
-        if (renderer) {
-            renderer->updateData(0, vertexCoord);
-            renderer->updateData(1, textureCoord);
+        if (getRenderer()) {
+            getRenderer()->updateData(0, getVertexCoordinates());
+            getRenderer()->updateData(1, getTextureCoordinates());
         }
     }
 
     void Text::prepareWidgetRendering(float, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
-        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        renderer->enableRenderer(renderingOrder);
+        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        getRenderer()->enableRenderer(renderingOrder);
     }
 
 }

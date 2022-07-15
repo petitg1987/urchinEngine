@@ -42,9 +42,9 @@ namespace urchin {
         }
 
         //visual
-        renderer = setupUiRenderer("button", ShapeType::TRIANGLE, false)
+        setupRenderer(baseRendererBuilder("button", ShapeType::TRIANGLE, false)
                 ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
+                ->build());
     }
 
     WidgetType Button::getWidgetType() const {
@@ -62,7 +62,7 @@ namespace urchin {
         }
 
         if (currentTexture != oldTexture) {
-            renderer->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+            getRenderer()->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
         }
     }
 
@@ -87,8 +87,8 @@ namespace urchin {
             text->updatePosition(Position((getWidth() - text->getWidth()) / 2.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
         }
 
-        updateProperties(renderer.get(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-        renderer->enableRenderer(renderingOrder);
+        updateProperties(getRenderer(), projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+        getRenderer()->enableRenderer(renderingOrder);
     }
 
 }
