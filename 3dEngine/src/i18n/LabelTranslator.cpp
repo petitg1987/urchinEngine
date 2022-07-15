@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <regex>
 #include <UrchinCommon.h>
 
 #include <i18n/LabelTranslator.h>
@@ -75,6 +76,27 @@ namespace urchin {
         auto labels = retrieveLanguageLabels(language);
 
         labelStatistics.labelsCount = (unsigned int)labels.size();
+        labelStatistics.wordsCount = 0;
+
+        for (const auto &[key, value] : labels) {
+            std::string text = value;
+
+            //remove parameters (nothing to translate)
+            std::regex paramRegex("\\{[a-zA-Z-]+}", std::regex_constants::optimize);
+            std::regex_replace(text, paramRegex, " ");
+
+            //remove symbols
+            std::regex symbolRegex(R"(\{|\}|\(|\)|\/|<|>|-|:|_)", std::regex_constants::optimize);
+            std::regex_replace(text, symbolRegex, " ");
+
+            //handle multi-line
+            StringUtil::replaceAll(text, "\n", " ");
+
+            //clean double spaces
+            StringUtil::replaceAll(text, "  ", " ");
+
+            labelStatistics.wordsCount += (unsigned int)StringUtil::split(text, ' ').size();
+        }
 
         return labelStatistics;
     }
