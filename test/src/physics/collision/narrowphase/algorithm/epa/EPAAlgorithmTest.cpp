@@ -164,7 +164,6 @@ void EPAAlgorithmTest::cornerInsideHexagon() {
     AssertHelper::assertFloatEquals(resultEpa.getContactPointA().Z, resultEpa.getContactPointB().Z);
 }
 
-
 void EPAAlgorithmTest::identicalSphere() {
     CollisionSphereObject sphere1(1.0f, Point3<float>(1.0f, 0.0f, 0.0f));
     CollisionSphereObject sphere2(1.0f, Point3<float>(1.0f, 0.0f, 0.0f));

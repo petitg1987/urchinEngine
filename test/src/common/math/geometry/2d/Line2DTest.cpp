@@ -4,7 +4,6 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
-
 void Line2DTest::orthogonalProjection() {
     Line2D line(Point2<float>(1.0f, 1.0f), Point2<float>(2.0f, 1.0f));
     Point2<float> projectedPoint = line.orthogonalProjection(Point2<float>(3.0f, 2.0f));

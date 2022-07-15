@@ -46,7 +46,6 @@ void FunnelAlgorithmTest::cornerPath2() {
     AssertHelper::assertPoint3FloatEquals(portals[2]->getTransitionPoint(), Point3<float>(1.0, 0.0, -1.0));
 }
 
-
 void FunnelAlgorithmTest::cornerPath3() {
     std::vector<std::unique_ptr<PathPortal>> portals;
     portals.push_back(std::make_unique<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr, false)); //start point

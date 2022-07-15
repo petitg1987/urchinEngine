@@ -36,6 +36,3 @@ namespace urchin {
     }
 
 }
-
-
-

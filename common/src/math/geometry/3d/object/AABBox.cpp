@@ -236,7 +236,6 @@ namespace urchin {
         T lengthToMinYPlane = ((*this)[ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
         T lengthToMaxYPlane = ((*this)[1 - ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
 
-
         if (lengthToMinPlane > lengthToMaxYPlane || lengthToMinYPlane > lengthToMaxPlane) {
             return false;
         }

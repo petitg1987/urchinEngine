@@ -31,6 +31,4 @@ namespace urchin {
         return MapUtil::getWithDefault(properties, stateId, defaultValue);
     }
 
-
-
 }

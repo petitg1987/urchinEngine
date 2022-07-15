@@ -87,7 +87,6 @@ namespace urchin {
                 ->build();
     }
 
-
     bool Textarea::onKeyPressEvent(InputDeviceKey key) {
         if (key == InputDeviceKey::CTRL) {
             ctrlKeyPressed = true;

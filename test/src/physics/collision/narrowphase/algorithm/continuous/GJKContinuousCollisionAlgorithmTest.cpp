@@ -5,7 +5,6 @@
 #include <physics/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithmTest.h>
 using namespace urchin;
 
-
 void GJKContinuousCollisionAlgorithmTest::rayTest() { //test created from error logs where fail occurred with MAX_ITERATION=25 / TERMINATION_TOLERANCE=0.0001f
     auto fakeBody = std::make_unique<RigidBody>("fake", PhysicsTransform(Point3<float>(), Quaternion<float>()), std::make_unique<CollisionBoxShape>(Vector3<float>(0.5f, 0.5f, 0.5f)));
     CollisionSphereShape pointShape(0.0f);

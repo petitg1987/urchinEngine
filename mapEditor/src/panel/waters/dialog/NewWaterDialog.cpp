@@ -63,7 +63,6 @@ namespace urchin {
         return result;
     }
 
-
     std::unique_ptr<WaterEntity> NewWaterDialog::moveWaterEntity() {
         return std::move(waterEntity);
     }
