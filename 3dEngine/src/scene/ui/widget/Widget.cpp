@@ -351,9 +351,13 @@ namespace urchin {
     }
 
     void Widget::updateSize(Size size) {
-        setSize(size); //TODO remove setSize ?
+        this->size = size;
         refreshCoordinates();
         refreshScissor(true);
+    }
+
+    Size Widget::getSize() const {
+        return size;
     }
 
     void Widget::refreshCoordinates() {
@@ -369,14 +373,6 @@ namespace urchin {
             renderer->updateData(0, vertexCoord);
             renderer->updateData(1, textureCoord);
         }
-    }
-
-    void Widget::setSize(Size size) {
-        this->size = size;
-    }
-
-    Size Widget::getSize() const {
-        return size;
     }
 
     float Widget::getWidth() const {

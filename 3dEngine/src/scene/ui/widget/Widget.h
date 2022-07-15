@@ -113,7 +113,6 @@ namespace urchin {
 
             virtual void createOrUpdateWidget() = 0;
             virtual void refreshCoordinates();
-            void setSize(Size);
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);

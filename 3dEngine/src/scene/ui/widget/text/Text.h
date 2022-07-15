@@ -76,8 +76,6 @@ namespace urchin {
             void refreshFont();
             unsigned int retrieveFontHeight(const UdaChunk*) const;
             void refreshCoordinates() override;
-            void refreshRenderer();
-            void refreshRendererData();
 
             //properties
             std::string skinName;

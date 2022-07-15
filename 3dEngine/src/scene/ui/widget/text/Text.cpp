@@ -45,7 +45,11 @@ namespace urchin {
             baseText = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
         }
-        refreshRenderer();
+
+        std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
+        renderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
+                ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
+                ->build();
     }
 
     WidgetType Text::getWidgetType() const {
@@ -62,7 +66,6 @@ namespace urchin {
 
         if (isInitialized()) {
             refreshTextAndWidgetSize();
-            refreshRendererData();
         }
     }
 
@@ -121,7 +124,6 @@ namespace urchin {
         if (!hasTranslatableInput()) {
             baseText = evaluateText(std::nullopt);
             refreshTextAndWidgetSize();
-            refreshRendererData();
         } else {
             getI18nService().add(this);
         }
@@ -227,9 +229,7 @@ namespace urchin {
 
     void Text::refreshTranslation(const LanguageTranslator& languageTranslator) {
         baseText = evaluateText(std::make_optional(languageTranslator));
-
         refreshTextAndWidgetSize();
-        refreshRendererData();
     }
 
     const Font& Text::getFont() const {
@@ -253,7 +253,7 @@ namespace urchin {
         }
         std::size_t numberOfInterLines = cutTextLines.empty() ? 0 : cutTextLines.size() - 1;
         auto textHeight = (float)(font->getHeight() + (numberOfInterLines * font->getSpaceBetweenLines()));
-        setSize(Size(width, textHeight, LengthType::PIXEL));
+        Widget::updateSize(Size(width, textHeight, LengthType::PIXEL));
     }
 
     void Text::cutText() {
@@ -393,22 +393,6 @@ namespace urchin {
         }
 
         if (renderer) {
-            renderer->updateData(0, vertexCoord);
-            renderer->updateData(1, textureCoord);
-        }
-    }
-
-    void Text::refreshRenderer() {
-        std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
-        renderer = setupUiRenderer("text_" + renderName, ShapeType::TRIANGLE, true)
-                ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build();
-    }
-
-    void Text::refreshRendererData() {
-        if (renderer != nullptr) {
-            refreshCoordinates();
-
             renderer->updateData(0, vertexCoord);
             renderer->updateData(1, textureCoord);
         }
