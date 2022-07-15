@@ -268,10 +268,6 @@ namespace urchin {
         return heightLengthToPixel(position.getY(), position.getYType(), [&](){ return getPositionX(); });
     }
 
-    const WidgetOutline& Widget::getOutline() const {
-        return widgetOutline;
-    }
-
     float Widget::getGlobalPositionX() const {
         float startPosition = 0;
         if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
@@ -373,6 +369,14 @@ namespace urchin {
             renderer->updateData(0, vertexCoord);
             renderer->updateData(1, textureCoord);
         }
+    }
+
+    WidgetOutline& Widget::getOutline() {
+        return widgetOutline;
+    }
+
+    const WidgetOutline& Widget::getOutline() const {
+        return widgetOutline;
     }
 
     float Widget::getWidth() const {

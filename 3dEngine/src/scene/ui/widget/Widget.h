@@ -62,7 +62,6 @@ namespace urchin {
             Position getPosition() const;
             float getPositionX() const;
             float getPositionY() const;
-            const WidgetOutline& getOutline() const;
             float getGlobalPositionX() const;
             float getGlobalPositionY() const;
 
@@ -113,6 +112,8 @@ namespace urchin {
 
             virtual void createOrUpdateWidget() = 0;
             virtual void refreshCoordinates();
+            WidgetOutline& getOutline();
+            const WidgetOutline& getOutline() const;
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);
@@ -122,8 +123,6 @@ namespace urchin {
             virtual void onResetStateEvent();
 
             virtual void prepareWidgetRendering(float, unsigned int&, const Matrix4<float>&);
-
-            WidgetOutline widgetOutline;
 
             //TODO review: add accessor ?
             std::vector<Point2<float>> vertexCoord;
@@ -144,8 +143,9 @@ namespace urchin {
 
             Widget* parent;
             std::vector<std::shared_ptr<Widget>> children;
-
             std::vector<std::shared_ptr<EventListener>> eventListeners;
+
+            WidgetOutline widgetOutline;
             WidgetState widgetState;
 
             Position position;

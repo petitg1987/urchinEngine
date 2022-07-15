@@ -38,14 +38,14 @@ namespace urchin {
         auto textBoxChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textBox", UdaAttribute("skin", skinName));
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
-        texTextBoxDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &widgetOutline);
+        texTextBoxDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
 
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), textBoxChunk);
         texTextBoxFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY), textSkinChunk->getStringValue(), "");
-        maxWidthText = (unsigned int)((int)getWidth() - (widgetOutline.leftWidth + widgetOutline.rightWidth + (int)TextFieldConst::LETTER_AND_CURSOR_SHIFT + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
+        maxWidthText = (unsigned int)((int)getWidth() - (getOutline().leftWidth + getOutline().rightWidth + (int)TextFieldConst::LETTER_AND_CURSOR_SHIFT + (int)TextFieldConst::CURSOR_WIDTH_PIXEL));
 
         Vector3<float> fontColor = text->getFont().getFontColor();
         std::vector<unsigned char> cursorColor = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255), 255};
