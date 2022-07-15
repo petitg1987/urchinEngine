@@ -71,7 +71,7 @@ namespace urchin {
         }
     }
 
-    LabelStatistics LabelTranslator::computeStatistics(const std::string& language) const { //TODO impl
+    LabelStatistics LabelTranslator::computeStatistics(const std::string& language) const {
         LabelStatistics labelStatistics{};
         auto labels = retrieveLanguageLabels(language);
 
@@ -90,14 +90,14 @@ namespace urchin {
             text = std::regex_replace(text, numberRegex, " ");
 
             //remove symbols
-            std::regex symbolRegex(R"(\{|\}|\(|\)|\/|<|>|-|:|_|,|;|\.|')");
+            std::regex symbolRegex(R"(\{|\}|\(|\)|\/|<|>|-|:|_|,|;|\.|\?|!|')");
             text = std::regex_replace(text, symbolRegex, " ");
 
             //handle multi-lines
             StringUtil::replaceAll(text, "\n", " ");
 
-            //remove double spaces introduced
-            for (std::size_t i = 0; i < 4; ++i) {
+            //remove double spaces introduced by above replacements
+            for (std::size_t i = 0; i < 6; ++i) {
                 StringUtil::replaceAll(text, "  ", " ");
             }
 
