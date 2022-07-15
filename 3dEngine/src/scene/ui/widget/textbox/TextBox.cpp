@@ -40,8 +40,12 @@ namespace urchin {
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
         texTextBoxDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
 
-        auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), textBoxChunk);
-        texTextBoxFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
+        auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(false, "skin", UdaAttribute("type", "focus"), textBoxChunk);
+        if (skinChunkFocus) {
+            texTextBoxFocus = UISkinService::instance().createWidgetTexture((unsigned int) getWidth(), (unsigned int) getHeight(), skinChunkFocus);
+        } else {
+            texTextBoxFocus = texTextBoxDefault;
+        }
 
         auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), textBoxChunk);
         text = Text::create(this, Position(0.0f, 0.0f, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY), textSkinChunk->getStringValue(), "");

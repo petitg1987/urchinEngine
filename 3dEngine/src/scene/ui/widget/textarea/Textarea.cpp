@@ -65,8 +65,12 @@ namespace urchin {
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textareaChunk);
         texTextareaDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
 
-        auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), textareaChunk);
-        texTextareaFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkFocus);
+        auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(false, "skin", UdaAttribute("type", "focus"), textareaChunk);
+        if (skinChunkFocus) {
+            texTextareaFocus = UISkinService::instance().createWidgetTexture((unsigned int) getWidth(), (unsigned int) getHeight(), skinChunkFocus);
+        } else {
+            texTextareaFocus = texTextareaDefault;
+        }
 
         auto scrollbarSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "scrollbarSkin", UdaAttribute(), textareaChunk);
         std::string scrollbarSkinName = scrollbarSkinChunk->getStringValue();
