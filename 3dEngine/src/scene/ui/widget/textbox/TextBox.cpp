@@ -214,7 +214,7 @@ namespace urchin {
 
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if (isCharacterAllowed(unicodeCharacter)) {
+            if (isCharacterAllowed(unicodeCharacter)) { //TODO should check font unicode !
                 if (hasTextSelected()) {
                     deleteSelectedText();
                 }

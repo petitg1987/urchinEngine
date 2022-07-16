@@ -7,8 +7,8 @@ namespace urchin{
 
     class ClipboardLocal : public Clipboard {
         public:
-            void setText(std::string) override;
-            const std::string& getText() const override;
+            void setText(const std::string&) override;
+            std::string getText() const override;
 
         private:
             std::string text;

@@ -283,7 +283,7 @@ namespace urchin {
         getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
-    bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {
+    bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const { //TODO should check font unicode !
         return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
     }
 

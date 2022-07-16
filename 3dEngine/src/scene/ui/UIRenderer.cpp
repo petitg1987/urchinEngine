@@ -183,7 +183,7 @@ namespace urchin {
             && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
             && unicodeCharacter != 8 //ignore 'Backspace' unicode
             && unicodeCharacter != 127 //ignore 'Delete' unicode
-        ) {
+        ) { //TODO same condition for copy/paste
             for (long i = (long) widgets.size() - 1; i >= 0; --i) {
                 if (!widgets[(std::size_t) i]->onChar(unicodeCharacter)) {
                     return false;

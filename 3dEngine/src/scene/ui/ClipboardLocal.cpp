@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    void ClipboardLocal::setText(std::string text) {
-        this->text = std::move(text);
+    void ClipboardLocal::setText(const std::string& text) {
+        this->text = text;
     }
 
-    const std::string& ClipboardLocal::getText() const {
+    std::string ClipboardLocal::getText() const {
         return text;
     }
 
