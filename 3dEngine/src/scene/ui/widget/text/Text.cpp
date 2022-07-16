@@ -242,7 +242,7 @@ namespace urchin {
 
         //compute widget size
         float width = 0.0f;
-        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
+        auto spaceBetweenLetters = (float)font->getSpaceBetweenCharacters();
         for (const auto& textLine : cutTextLines) { //each line
             float offsetX = 0.0f;
             for (char32_t textLetter : textLine.text) { //each letter
@@ -282,7 +282,7 @@ namespace urchin {
                     lengthFromLastSpace = 0;
                 }
 
-                unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenLetters();
+                unsigned int letterLength = font->getGlyph(textLetter).width + font->getSpaceBetweenCharacters();
 
                 if (lineLength + letterLength >= (unsigned int)maxWidthPixel) { //cut too long line
                     if ((int)lastSpaceIndex - (int)startLineIndex > 0) { //cut line at last space found
@@ -344,7 +344,7 @@ namespace urchin {
         getTextureCoordinates().reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
-        auto spaceBetweenLetters = (float)font->getSpaceBetweenLetters();
+        auto spaceBetweenCharacters = (float)font->getSpaceBetweenCharacters();
         auto spaceBetweenLines = (float)font->getSpaceBetweenLines();
 
         for (const TextLine& textLine : cutTextLines) { //each line
@@ -376,7 +376,7 @@ namespace urchin {
                 getTextureCoordinates().emplace_back(Point2<float>(sMax, tMax));
                 getTextureCoordinates().emplace_back(Point2<float>(sMin, tMax));
 
-                offsetX += letterWidth + spaceBetweenLetters;
+                offsetX += letterWidth + spaceBetweenCharacters;
             }
             offsetY += spaceBetweenLines;
         }

@@ -4,6 +4,7 @@
 
 #include <resources/Resource.h>
 #include <resources/image/Image.h>
+#include <resources/font/UnicodeUtil.h>
 #include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
@@ -17,10 +18,7 @@ namespace urchin {
 
     class Font : public Resource {
         public:
-            static constexpr unsigned int NUM_LETTERS = 256u; //unicode range 0000-007F (Basic Latin) + 0080-00FF (Latin-1 Supplement)
-            static constexpr unsigned int NUM_LETTERS_BY_LINE = 16u;
-
-            Font(unsigned int, const Vector3<float>&, std::shared_ptr<Texture>, std::array<Glyph, NUM_LETTERS>, unsigned int, unsigned int, unsigned int);
+            Font(unsigned int, const Vector3<float>&, std::shared_ptr<Texture>, std::array<Glyph, UnicodeUtil::NUM_CHARACTERS>, unsigned int, unsigned int, unsigned int);
             ~Font() override = default;
 
             unsigned int getFontSize() const;
@@ -29,7 +27,7 @@ namespace urchin {
             const Glyph& getGlyph(char32_t) const;
             const std::shared_ptr<Texture>& getTexture() const;
             unsigned int getDimensionTexture() const;
-            unsigned int getSpaceBetweenLetters() const;
+            unsigned int getSpaceBetweenCharacters() const;
             unsigned int getSpaceBetweenLines() const;
             unsigned int getHeight() const;
 
@@ -39,8 +37,8 @@ namespace urchin {
 
             std::shared_ptr<Texture> alphabetTexture;
 
-            std::array<Glyph, NUM_LETTERS> glyph;
-            unsigned int spaceBetweenLetters;
+            std::array<Glyph, UnicodeUtil::NUM_CHARACTERS> glyph;
+            unsigned int spaceBetweenCharacters;
             unsigned int spaceBetweenLines;
             unsigned int height;
     };

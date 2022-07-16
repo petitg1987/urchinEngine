@@ -283,7 +283,10 @@ namespace urchin {
         getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
-    bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const { //TODO should check font unicode !
+    bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {
+        if (!UnicodeUtil::isCharacterDisplayable(unicodeCharacter)) {
+            return false;
+        }
         return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
     }
 
@@ -316,13 +319,13 @@ namespace urchin {
             for (std::size_t columnIndex = 0; columnIndex <= textLine.text.length(); ++columnIndex) {
                 if (currentIndex == textCursorIndex) {
                     if (computedCursorPosition.X > 0) {
-                        computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
+                        computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenCharacters(); //remove last space
                         computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
                     }
                     return computedCursorPosition;
                 } else {
                     char32_t textLetter = textLine.text[columnIndex];
-                    computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
+                    computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters());
 
                     currentIndex++;
                 }
@@ -377,7 +380,7 @@ namespace urchin {
                     if ((float)approximatePositionX < currentWidth) {
                         break;
                     }
-                    currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenLetters();
+                    currentWidth += (float)text->getFont().getGlyph(textLetter).width / 2.0f + (float) text->getFont().getSpaceBetweenCharacters();
                 }
                 break;
             } else {

@@ -35,7 +35,7 @@ namespace urchin {
         }
 
         //filled the struct_glyph
-        std::array<Glyph, Font::NUM_LETTERS> glyph{};
+        std::array<Glyph, UnicodeUtil::NUM_CHARACTERS> glyph{};
         FT_UInt glyphIndex = FT_Get_Char_Index(face, 65);
         if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
             FT_Done_Face(face);
@@ -49,7 +49,7 @@ namespace urchin {
         }
         int bitmapTopA = face->glyph->bitmap_top;
 
-        for (std::size_t i = 0; i < Font::NUM_LETTERS;i++) {
+        for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS;i++) {
             glyphIndex = FT_Get_Char_Index(face, static_cast<FT_ULong>(i));
             if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT)) {
                 FT_Done_Face(face);
@@ -79,32 +79,32 @@ namespace urchin {
         FT_Done_Face(face);
         FT_Done_FreeType(library);
 
-        //compute space between lines, space between letters and height of letters
+        //compute space between lines, space between characters and height of characters
         unsigned int height = 0;
         for (int i = 'A'; i < 'Z'; i++) {
             height = std::max(height, glyph[(std::size_t)i].height);
         }
         unsigned int spaceBetweenLines = MathFunction::roundToUInt((float)height * 1.9f);
-        unsigned int spaceBetweenLetters = 2u;
+        unsigned int spaceBetweenCharacters = 2u;
         glyph[(int)' '].width = MathFunction::roundToUInt((float)glyph[(int)'A'].width * 0.4f);
 
-        //dimension of letters and texture
-        unsigned int dimensionLetters = 0;
-        for (unsigned int i = 0; i < Font::NUM_LETTERS; ++i) { //seek the largest letter
-            if (glyph[i].width > dimensionLetters) {
-                dimensionLetters = glyph[i].width;
+        //dimension of characters and texture
+        unsigned int dimensionCharacters = 0;
+        for (unsigned int i = 0; i < UnicodeUtil::NUM_CHARACTERS; ++i) { //seek the largest character
+            if (glyph[i].width > dimensionCharacters) {
+                dimensionCharacters = glyph[i].width;
             }
-            if (glyph[i].height > dimensionLetters) {
-                dimensionLetters = glyph[i].height;
+            if (glyph[i].height > dimensionCharacters) {
+                dimensionCharacters = glyph[i].height;
             }
         }
-        unsigned int dimensionTexture = dimensionLetters * Font::NUM_LETTERS_BY_LINE;
+        unsigned int dimensionTexture = dimensionCharacters * UnicodeUtil::NUM_CHARACTERS_BY_LINE;
 
         //texture creation
         constexpr unsigned int NUM_COLORS = 4u;
         std::vector<unsigned char> texels(dimensionTexture * dimensionTexture * NUM_COLORS, 0);
-        for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionLetters) {
-            for (unsigned int j = 0; j < dimensionTexture; j += dimensionLetters, c++) {
+        for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionCharacters) {
+            for (unsigned int j = 0; j < dimensionTexture; j += dimensionCharacters, c++) {
                 for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {
                     for (unsigned int xx = 0; xx < glyph[c].width; xx++, m++) {
                         texels[ ((i + yy) * dimensionTexture * NUM_COLORS) + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
@@ -119,12 +119,12 @@ namespace urchin {
 
         auto alphabetTexture = Texture::build(ttfFilename, dimensionTexture, dimensionTexture, TextureFormat::RGBA_8_INT, texels.data());
 
-        //clear buffers of letters
-        for (std::size_t i = 0; i < Font::NUM_LETTERS; i++) {
+        //clear buffers of characters
+        for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
             glyph[i].buf.clear();
         }
 
-        return std::make_shared<Font>(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenLetters, spaceBetweenLines, height);
+        return std::make_shared<Font>(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenCharacters, spaceBetweenLines, height);
     }
 
 }

@@ -214,7 +214,7 @@ namespace urchin {
 
     bool TextBox::onCharEvent(char32_t unicodeCharacter) {
         if (state == ACTIVE) {
-            if (isCharacterAllowed(unicodeCharacter)) { //TODO should check font unicode !
+            if (isCharacterAllowed(unicodeCharacter)) {
                 if (hasTextSelected()) {
                     deleteSelectedText();
                 }
@@ -256,7 +256,7 @@ namespace urchin {
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {
-        if (unicodeCharacter == 10 || unicodeCharacter == 13) {
+        if (!UnicodeUtil::isCharacterDisplayable(unicodeCharacter)) {
             return false;
         }
         return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
@@ -275,7 +275,7 @@ namespace urchin {
             unsigned int widthText = 0;
             for (startTextIndex = endTextIndex; true; --startTextIndex) {
                 char32_t textLetter = originalText[startTextIndex];
-                widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
+                widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters();
                 if (widthText > maxWidthText || startTextIndex == 0) {
                     break;
                 }
@@ -289,7 +289,7 @@ namespace urchin {
         std::size_t endTextIndex;
         for (endTextIndex = startTextIndex; endTextIndex < originalText.length(); ++endTextIndex) {
             char32_t textLetter = originalText[endTextIndex];
-            widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters();
+            widthText += text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters();
             if (widthText > maxWidthText) {
                 break;
             }
@@ -313,11 +313,11 @@ namespace urchin {
 
         for (std::size_t i = startTextIndex; i < cursorIdx; ++i) {
             char32_t textLetter = originalText[i];
-            computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenLetters());
+            computedCursorPosition.X += (int)(text->getFont().getGlyph(textLetter).width + text->getFont().getSpaceBetweenCharacters());
         }
 
         if (computedCursorPosition.X > 0) {
-            computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenLetters(); //remove last space
+            computedCursorPosition.X -= (int)text->getFont().getSpaceBetweenCharacters(); //remove last space
             computedCursorPosition.X += TextFieldConst::LETTER_AND_CURSOR_SHIFT;
         }
 
@@ -343,7 +343,7 @@ namespace urchin {
                 break;
             }
 
-            widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenLetters();
+            widthText += (float)font.getGlyph(textLetter).width / 2.0f + (float)font.getSpaceBetweenCharacters();
         }
         return computedCursorIndex;
     }
