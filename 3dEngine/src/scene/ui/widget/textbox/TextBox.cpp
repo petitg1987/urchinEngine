@@ -84,8 +84,8 @@ namespace urchin {
         return *text;
     }
 
-    void TextBox::updateText(std::string_view text) {
-        originalText = U32StringA(text.begin(), text.end());
+    void TextBox::updateText(const std::string& text) {
+        originalText = stringConvert.from_bytes(std::string(text).c_str());
         cursorIndex = originalText.length();
         refreshText(true);
     }
@@ -96,6 +96,10 @@ namespace urchin {
 
     void TextBox::setMaxCharacter(unsigned int maxCharacter) {
         this->maxCharacter = (int)maxCharacter;
+    }
+
+    unsigned int TextBox::getMaxCharacter() const {
+        return (unsigned int)maxCharacter;
     }
 
     unsigned int TextBox::getCharacterCount() const {
@@ -134,18 +138,19 @@ namespace urchin {
             } else if (key == InputDeviceKey::C) {
                 if (ctrlKeyPressed && hasTextSelected()) {
                     U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
-                    getClipboard().setText(std::move(selectedText));
+                    getClipboard().setText(std::string(stringConvert.to_bytes(selectedText)));
                 }
             } else if (key == InputDeviceKey::X) {
                 if (ctrlKeyPressed && hasTextSelected()) {
                     U32StringA selectedText = originalText.substr(std::min(selectionStartIndex, cursorIndex), std::max(selectionStartIndex, cursorIndex) - std::min(selectionStartIndex, cursorIndex));
-                    getClipboard().setText(std::move(selectedText));
+                    getClipboard().setText(std::string(stringConvert.to_bytes(selectedText)));
                     deleteSelectedText();
                 }
             } else if (key == InputDeviceKey::V) {
                 if (ctrlKeyPressed && !getClipboard().getText().empty()) {
                     deleteSelectedText();
-                    for (char32_t charLetter : getClipboard().getText()) {
+                    U32StringA clipboardString = stringConvert.from_bytes(getClipboard().getText().c_str());
+                    for (char32_t charLetter : clipboardString) {
                         onCharEvent(charLetter);
                     }
                 }

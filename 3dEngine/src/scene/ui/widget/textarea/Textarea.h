@@ -17,10 +17,11 @@ namespace urchin {
 
             std::string getText() const;
             const Text& getTextWidget() const;
-            void updateText(std::string_view);
+            void updateText(const std::string&);
 
             void setAllowedCharacters(const std::string&);
             void setMaxCharacter(unsigned int);
+            unsigned int getMaxCharacter() const;
             unsigned int getCharacterCount() const;
 
         protected:

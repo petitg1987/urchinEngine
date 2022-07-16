@@ -1,15 +1,14 @@
 #pragma once
 
-#include <scene/ui/allocator/StringConverterAllocator.h>
+#include <string>
 
 namespace urchin{
 
     class Clipboard {
         public:
-            void setText(U32StringA);
-            const U32StringA& getText() const;
+            virtual ~Clipboard() = default;
 
-        private:
-            U32StringA text;
+            virtual void setText(std::string) = 0;
+            virtual const std::string& getText() const = 0;
     };
 }

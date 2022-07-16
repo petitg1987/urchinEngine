@@ -14,6 +14,7 @@ namespace urchin {
     UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
             renderTarget(renderTarget),
             i18nService(i18nService),
+            clipboard(std::make_unique<ClipboardLocal>()),
             uiResolution((int)renderTarget.getWidth(), (int)renderTarget.getHeight()),
             rawMouseX(0.0),
             rawMouseY(0.0),
@@ -71,6 +72,13 @@ namespace urchin {
         if (camera) {
             onCameraProjectionUpdate(*camera);
         }
+    }
+
+    void UIRenderer::setupClipboard(std::unique_ptr<Clipboard> clipboard) {
+        if (!clipboard) {
+            throw std::runtime_error("The provided clipboard can not be null");
+        }
+        this->clipboard = std::move(clipboard);
     }
 
     void UIRenderer::onCameraProjectionUpdate(Camera& camera) {
@@ -291,7 +299,7 @@ namespace urchin {
     }
 
     Clipboard& UIRenderer::getClipboard() {
-        return clipboard;
+        return *clipboard;
     }
 
     const Point2<int>& UIRenderer::getUiResolution() const {

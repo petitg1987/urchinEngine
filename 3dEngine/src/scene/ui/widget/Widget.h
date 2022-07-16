@@ -11,7 +11,7 @@
 #include <scene/ui/widget/Size.h>
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/EventListener.h>
-#include <scene/ui/Clipboard.h>
+#include <scene/ui/ClipboardLocal.h>
 #include <i18n/I18nService.h>
 #include <graphics/api/GraphicsApi.h>
 #include <graphics/render/GenericRendererBuilder.h>

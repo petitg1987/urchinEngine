@@ -24,6 +24,7 @@
 
 #include <scene/ui/EventListener.h>
 #include <scene/ui/UIRenderer.h>
+#include <scene/ui/Clipboard.h>
 #include <scene/ui/widget/TextFieldConst.h>
 #include <scene/ui/widget/container/Container.h>
 #include <scene/ui/widget/container/LazyWidget.h>
