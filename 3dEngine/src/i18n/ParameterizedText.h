@@ -7,8 +7,10 @@
 
 namespace urchin {
 
-    class ParameterizedText { //TODO move in i18n package ?
+    class ParameterizedText {
         public:
+            static constexpr char TRANSLATABLE_TEXT_PREFIX = '~';
+
             ParameterizedText() = default;
             ParameterizedText(std::string, std::vector<std::string>);
             template<class ...T> explicit ParameterizedText(std::string, T... parameters);
@@ -22,11 +24,13 @@ namespace urchin {
             std::string translate(const std::optional<LanguageTranslator>&) const;
 
         private:
-            static std::regex parameterRegex;
+            static const std::regex PARAMETER_REGEX;
 
             std::string text;
             std::vector<std::string> parameters;
     };
+
+    constexpr auto i18n = [](const std::string& text) { return ParameterizedText::TRANSLATABLE_TEXT_PREFIX + text; };
 
     #include "ParameterizedText.inl"
 

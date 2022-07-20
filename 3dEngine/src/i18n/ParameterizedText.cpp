@@ -1,10 +1,9 @@
-#include <scene/ui/widget/text/ParameterizedText.h>
-#include <scene/ui/widget/text/Text.h>
+#include <i18n/ParameterizedText.h>
 
 namespace urchin {
 
     //static
-    std::regex ParameterizedText::parameterRegex = std::regex("\\{[a-zA-Z-]+}", std::regex_constants::optimize);
+    const std::regex ParameterizedText::PARAMETER_REGEX = std::regex("\\{[a-zA-Z-]+}", std::regex_constants::optimize);
 
     ParameterizedText::ParameterizedText(std::string text, std::vector<std::string> parameters) :
             text(std::move(text)),
@@ -29,13 +28,13 @@ namespace urchin {
     }
 
     bool ParameterizedText::hasTranslatableText() const {
-        if (!text.empty() && text[0] == Text::TRANSLATABLE_TEXT_PREFIX) {
+        if (!text.empty() && text[0] == TRANSLATABLE_TEXT_PREFIX) {
             return true;
         }
 
         if (!parameters.empty()) {
             bool hasTranslatableParameters = std::ranges::any_of(parameters, [](const std::string& parameter) {
-                return !parameter.empty() && parameter[0] == Text::TRANSLATABLE_TEXT_PREFIX;
+                return !parameter.empty() && parameter[0] == TRANSLATABLE_TEXT_PREFIX;
             });
             if (hasTranslatableParameters) {
                 return true;
@@ -48,7 +47,7 @@ namespace urchin {
     std::string ParameterizedText::translate(const std::optional<LanguageTranslator>& languageTranslator) const {
         std::string evaluatedText;
 
-        if (!text.empty() && text[0] == Text::TRANSLATABLE_TEXT_PREFIX) {
+        if (!text.empty() && text[0] == TRANSLATABLE_TEXT_PREFIX) {
             if (!languageTranslator.has_value()) {
                 throw std::runtime_error("Language translator missing for text: " + text);
             }
@@ -59,7 +58,7 @@ namespace urchin {
 
         for (const std::string& parameter : parameters) {
             std::string paramValue;
-            if (!parameter.empty() && parameter[0] == Text::TRANSLATABLE_TEXT_PREFIX) {
+            if (!parameter.empty() && parameter[0] == TRANSLATABLE_TEXT_PREFIX) {
                 if (!languageTranslator.has_value()) {
                     throw std::runtime_error("Language translator missing for text: " + text);
                 }
@@ -68,7 +67,7 @@ namespace urchin {
                 paramValue = parameter;
             }
 
-            evaluatedText = std::regex_replace(evaluatedText, parameterRegex, paramValue, std::regex_constants::format_first_only);
+            evaluatedText = std::regex_replace(evaluatedText, PARAMETER_REGEX, paramValue, std::regex_constants::format_first_only);
         }
 
         return evaluatedText;

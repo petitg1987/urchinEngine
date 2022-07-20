@@ -32,7 +32,6 @@
 #include <scene/ui/widget/button/Button.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
 #include <scene/ui/widget/text/Text.h>
-#include <scene/ui/widget/text/ParameterizedText.h>
 #include <scene/ui/widget/textbox/TextBox.h>
 #include <scene/ui/widget/textarea/Textarea.h>
 #include <scene/ui/widget/sequence/Sequence.h>
@@ -47,6 +46,7 @@
 #include <scene/ui/animation/UIAnimationFade.h>
 
 #include <i18n/LabelTranslator.h>
+#include <i18n/ParameterizedText.h>
 
 #include <resources/ResourceRetriever.h>
 #include <resources/material/MaterialBuilder.h>

@@ -8,8 +8,8 @@
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/Position.h>
-#include <scene/ui/widget/text/ParameterizedText.h>
 #include <scene/ui/allocator/StringConverterAllocator.h>
+#include <i18n/ParameterizedText.h>
 #include <i18n/TranslatableLabel.h>
 #include <resources/font/Font.h>
 #include <graphics/api/GraphicsApi.h>
@@ -36,8 +36,6 @@ namespace urchin {
 
     class Text : public Widget, public TranslatableLabel {
         public:
-            static constexpr char TRANSLATABLE_TEXT_PREFIX = '~'; //TODO move in ParameterizedText
-
             static std::shared_ptr<Text> create(Widget*, Position, std::string, std::string);
             static std::shared_ptr<Text> create(Widget*, Position, std::string, const ParameterizedText&);
             ~Text() override;
@@ -84,7 +82,5 @@ namespace urchin {
             std::vector<TextLine> cutTextLines;
             std::shared_ptr<Font> font;
     };
-
-    constexpr auto i18n = [](const std::string& text) { return Text::TRANSLATABLE_TEXT_PREFIX + text; }; //TODO move in PArameterizedText
 
 }
