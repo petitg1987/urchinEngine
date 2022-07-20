@@ -13,9 +13,7 @@ namespace urchin {
     Text::Text(Position position, std::string skinName, std::string inputText, std::vector<std::string> inputTextParameters) :
             Widget(position, Size(0, 0, LengthType::PIXEL)),
             skinName(std::move(skinName)),
-            inputText(std::move(inputText)),
-            inputTextParameters(std::move(inputTextParameters)),
-            parameterRegex(std::regex("\\{[a-zA-Z-]+}", std::regex_constants::optimize)),
+            inputText(std::move(inputText), std::move(inputTextParameters)),
             maxWidth(-1.0f),
             maxWidthType(LengthType::PIXEL),
             font(nullptr) {
@@ -31,7 +29,7 @@ namespace urchin {
     }
 
     Text::~Text() {
-        if (hasTranslatableInput()) {
+        if (inputText.hasTranslatableText()) {
             getI18nService().remove(this);
         }
     }
@@ -39,14 +37,14 @@ namespace urchin {
     void Text::createOrUpdateWidget() {
         refreshFont();
 
-        if (hasTranslatableInput()) {
+        if (inputText.hasTranslatableText()) {
             getI18nService().add(this);
         } else {
-            baseText = evaluateText(std::nullopt);
+            baseText = inputText.translate(std::nullopt);
             refreshTextAndWidgetSize();
         }
 
-        std::string renderName = inputText.substr(0, std::min((std::size_t)10, inputText.size()));
+        std::string renderName = inputText.getText().substr(0, std::min((std::size_t)10, inputText.getText().size()));
         setupRenderer(baseRendererBuilder("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build());
@@ -57,7 +55,7 @@ namespace urchin {
     }
 
     void Text::updateSize(Size) {
-        throw std::runtime_error("Update size is not allowed on text: " + inputText);
+        throw std::runtime_error("Update size is not allowed on text: " + inputText.getText());
     }
 
     void Text::setMaxWidth(float maxWidth, LengthType maxWidthType) {
@@ -88,73 +86,23 @@ namespace urchin {
         throw std::runtime_error("Unknown max width type: " + std::to_string(maxWidthType));
     }
 
-    bool Text::hasTranslatableInput() const {
-        if (!inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX) {
-            return true;
-        }
-
-        if (!inputTextParameters.empty()) {
-            bool hasTranslatableParameters = std::ranges::any_of(inputTextParameters, [](const std::string& parameter) {
-                return !parameter.empty() && parameter[0] == TRANSLATABLE_TEXT_PREFIX;
-            });
-            if (hasTranslatableParameters) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     void Text::updateText(std::string inputText) {
-        updateText(std::move(inputText), {});
+        updateText(ParameterizedText(std::move(inputText), {}));
     }
 
-    void Text::updateText(const ParameterizedText& parameterizedText) {
-        updateText(parameterizedText.getText(), parameterizedText.getParameters());
-    }
-
-    void Text::updateText(std::string inputText, std::vector<std::string> inputTextParameters) {
-        if (hasTranslatableInput()) {
+    void Text::updateText(ParameterizedText parameterizedText) {
+        if (inputText.hasTranslatableText()) {
             getI18nService().remove(this);
         }
 
-        this->inputText = std::move(inputText);
-        this->inputTextParameters = std::move(inputTextParameters);
+        inputText = std::move(parameterizedText);
 
-        if (!hasTranslatableInput()) {
-            baseText = evaluateText(std::nullopt);
+        if (!inputText.hasTranslatableText()) {
+            baseText = inputText.translate(std::nullopt);
             refreshTextAndWidgetSize();
         } else {
             getI18nService().add(this);
         }
-    }
-
-    std::string Text::evaluateText(const std::optional<LanguageTranslator>& languageTranslator) const {
-        std::string evaluatedText;
-        if (!inputText.empty() && inputText[0] == TRANSLATABLE_TEXT_PREFIX) {
-            if (!languageTranslator.has_value()) {
-                throw std::runtime_error("Language translator missing for text: " + inputText);
-            }
-            evaluatedText = languageTranslator->translate(std::string_view(inputText).substr(1));
-        } else {
-            evaluatedText = inputText;
-        }
-
-        for (const std::string& inputTextParameter : inputTextParameters) {
-            std::string paramValue;
-            if (!inputTextParameter.empty() && inputTextParameter[0] == TRANSLATABLE_TEXT_PREFIX) {
-                if (!languageTranslator.has_value()) {
-                    throw std::runtime_error("Language translator missing for text: " + inputText);
-                }
-                paramValue = languageTranslator->translate(std::string_view(inputTextParameter).substr(1));
-            } else {
-                paramValue = inputTextParameter;
-            }
-
-            evaluatedText = std::regex_replace(evaluatedText, parameterRegex, paramValue, std::regex_constants::format_first_only);
-        }
-
-        return evaluatedText;
     }
 
     /**
@@ -228,7 +176,7 @@ namespace urchin {
     }
 
     void Text::refreshTranslation(const LanguageTranslator& languageTranslator) {
-        baseText = evaluateText(std::make_optional(languageTranslator));
+        baseText = inputText.translate(std::make_optional(languageTranslator));
         refreshTextAndWidgetSize();
     }
 

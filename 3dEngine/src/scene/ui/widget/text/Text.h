@@ -36,7 +36,7 @@ namespace urchin {
 
     class Text : public Widget, public TranslatableLabel {
         public:
-            static constexpr char TRANSLATABLE_TEXT_PREFIX = '~';
+            static constexpr char TRANSLATABLE_TEXT_PREFIX = '~'; //TODO move in ParameterizedText
 
             static std::shared_ptr<Text> create(Widget*, Position, std::string, std::string);
             static std::shared_ptr<Text> create(Widget*, Position, std::string, const ParameterizedText&);
@@ -47,7 +47,7 @@ namespace urchin {
 
             void setMaxWidth(float, LengthType);
             void updateText(std::string);
-            void updateText(const ParameterizedText&);
+            void updateText(ParameterizedText);
 
             const std::string& getBaseText() const;
             const std::vector<TextLine>& getCutTextLines() const;
@@ -64,10 +64,7 @@ namespace urchin {
         private:
             Text(Position, std::string, std::string, std::vector<std::string>);
 
-            void updateText(std::string, std::vector<std::string>);
-            std::string evaluateText(const std::optional<LanguageTranslator>&) const;
             int getMaxWidthPixel() const;
-            bool hasTranslatableInput() const;
 
             void refreshTextAndWidgetSize();
             void cutText();
@@ -77,9 +74,7 @@ namespace urchin {
 
             //properties
             std::string skinName;
-            std::string inputText;
-            std::vector<std::string> inputTextParameters;
-            std::regex parameterRegex;
+            ParameterizedText inputText;
             std::string baseText;
             float maxWidth;
             LengthType maxWidthType;
@@ -90,6 +85,6 @@ namespace urchin {
             std::shared_ptr<Font> font;
     };
 
-    constexpr auto i18n = [](const std::string& text) { return Text::TRANSLATABLE_TEXT_PREFIX + text; };
+    constexpr auto i18n = [](const std::string& text) { return Text::TRANSLATABLE_TEXT_PREFIX + text; }; //TODO move in PArameterizedText
 
 }
