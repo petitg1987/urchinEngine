@@ -117,6 +117,11 @@ namespace urchin {
         return availableLanguages;
     }
 
+    const std::map<std::string, std::string, std::less<>>& LabelTranslator::getLanguageLabels(const std::string& language) {
+        loadLanguageLabels(language);
+        return loadedLanguageLabels;
+    }
+
     std::string LabelTranslator::translate(const std::string& language, std::string_view labelKey) {
         loadLanguageLabels(language);
 

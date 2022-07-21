@@ -18,6 +18,7 @@ namespace urchin {
             LabelStatistics computeStatistics(const std::string&) const;
 
             const std::vector<std::string>& getAvailableLanguages() const;
+            const std::map<std::string, std::string, std::less<>>& getLanguageLabels(const std::string&);
             std::string translate(const std::string&, std::string_view);
 
         private:
