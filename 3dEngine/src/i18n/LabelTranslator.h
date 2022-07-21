@@ -11,6 +11,8 @@ namespace urchin {
 
     class LabelTranslator {
         public:
+            static constexpr char NO_LABEL_SURROUND[] = "??";
+
             LabelTranslator();
 
             void checkTranslationError() const;

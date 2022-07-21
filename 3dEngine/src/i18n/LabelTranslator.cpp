@@ -135,7 +135,7 @@ namespace urchin {
         }
 
         logMissingTranslation(language, std::string(labelKey));
-        return "??" + std::string(labelKey) + "??";
+        return NO_LABEL_SURROUND + std::string(labelKey) + NO_LABEL_SURROUND;
     }
 
     void LabelTranslator::loadLanguageLabels(const std::string& language) {
