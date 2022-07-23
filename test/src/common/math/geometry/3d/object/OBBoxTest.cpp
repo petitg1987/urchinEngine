@@ -37,7 +37,7 @@ void OBBoxTest::rightToLeftLineIntersection() {
 }
 
 void OBBoxTest::farToNearLineIntersection() {
-    Quaternion<float> quaternionY180Degrees(0.0f, 1.0f, 0.0f, -0.00000016f /* this small number lead to a collision on the left plane but not on the right plane */);
+    Quaternion quaternionY180Degrees(0.0f, 1.0f, 0.0f, -0.00000016f /* this small number lead to a collision on the left plane but not on the right plane */);
     OBBox oBBox(Vector3<float>(3.0f, 1.125f, 0.375f), Point3<float>(-4.875f, 0.75f, -2.25f), quaternionY180Degrees);
     Line3D line(Point3<float>(-3.75f, 0.75f, -7.875f), Point3<float>(-3.75f, 0.75f, -6.875f));
 

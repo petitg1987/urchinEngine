@@ -31,7 +31,7 @@ void PathUtilTest::relativePathOnDifferentDisk() {
     bool exceptionCaught = false;
     try {
         PathUtil::computeRelativePath(referenceDirectory, path);
-    } catch (const std::exception& e) {
+    } catch (const std::exception&) {
         exceptionCaught = true;
     }
 
