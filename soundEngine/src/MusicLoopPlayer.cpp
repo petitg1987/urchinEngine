@@ -45,7 +45,7 @@ namespace urchin {
             std::ranges::sort(musicFilenames);
         } else if (playOrder == MusicPlayOrder::RANDOM_ORDER) {
             std::mt19937 rng(std::random_device{}());
-            std::shuffle(musicFilenames.begin(), musicFilenames.end(), rng);
+            std::ranges::shuffle(musicFilenames, rng);
         } else {
             throw std::runtime_error("Unknown music play order: " + std::to_string((int)playOrder));
         }
