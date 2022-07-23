@@ -23,8 +23,8 @@ namespace urchin {
         VkPhysicalDeviceMemoryProperties memProperties;
         vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
 
-        VmaBudget budgets[VK_MAX_MEMORY_HEAPS];
-        vmaGetHeapBudgets(GraphicsSetupService::instance().getAllocator(), budgets);
+        std::array<VmaBudget, VK_MAX_MEMORY_HEAPS> budgets{};
+        vmaGetHeapBudgets(GraphicsSetupService::instance().getAllocator(), budgets.data());
 
         for (std::size_t i = 0; i < memProperties.memoryTypeCount; ++i) {
             VkMemoryPropertyFlags resizeableBarFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;

@@ -13,7 +13,7 @@ namespace urchin {
 
             ParameterizedText() = default;
             ParameterizedText(std::string, std::vector<std::string>);
-            template<class ...T> explicit ParameterizedText(std::string, T... parameters);
+            template<class ...T> explicit ParameterizedText(std::string, T&&... parameters);
 
             void setText(std::string);
             const std::string& getText() const;
