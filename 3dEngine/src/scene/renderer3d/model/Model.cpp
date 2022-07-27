@@ -69,17 +69,17 @@ namespace urchin {
         return defaultModelLocalAABBox;
     }
 
-    void Model::loadAnimation(const std::string& name, const std::string& filename) {
+    void Model::loadAnimation(const std::string& animationName, const std::string& filename) {
         if (!meshes) {
             throw std::runtime_error("Cannot add animation on model without mesh");
-        } else if (animations.contains(name)) {
-            throw std::runtime_error("Animation with name " + name + " already exist on model: " + meshes->getConstMeshes().getMeshesName());
+        } else if (hasAnimationLoaded(animationName)) {
+            throw std::runtime_error("Animation with name " + animationName + " already exist on model: " + meshes->getConstMeshes().getMeshesName());
         }
 
         //load and add the anim to the std::map
         auto constAnimation = ResourceRetriever::instance().getResource<ConstAnimation>(filename);
-        animations.try_emplace(name, std::make_unique<Animation>(constAnimation, *meshes));
-        animations[name]->onMoving(transform);
+        animations.try_emplace(animationName, std::make_unique<Animation>(constAnimation, *meshes));
+        animations[animationName]->onMoving(transform);
 
         //both files must have the same number of bones
         if (meshes->getConstMeshes().getConstMesh(0).getNumberBones() != constAnimation->getNumberBones()) {
@@ -100,8 +100,8 @@ namespace urchin {
         }
     }
 
-    bool Model::hasLoadedAnimation() const {
-        return !animations.empty();
+    bool Model::hasAnimationLoaded(std::string_view animationName) const {
+        return animations.contains(animationName);
     }
 
     void Model::animate(std::string_view animationName, AnimRepeat animLoop, AnimStart animStart) {
