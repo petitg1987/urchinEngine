@@ -123,19 +123,22 @@ template<class OBJ> void AABBTree<OBJ>::replaceNode(const AABBNode<OBJ>& nodeToR
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::removeObject(AABBNodeData<OBJ>& nodeData) {
-    removeObject(nodeData.getNodeObject());
+template<class OBJ> objects_node_it<OBJ> AABBTree<OBJ>::removeObject(AABBNodeData<OBJ>& nodeData) {
+    return removeObject(nodeData.getNodeObject());
 }
 
-template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object) {
+template<class OBJ> objects_node_it<OBJ> AABBTree<OBJ>::removeObject(OBJ object) {
+    objects_node_it<OBJ> nextValidIt = objectsNode.end();
+
     auto itFind = objectsNode.find(object.get());
     if (itFind != objectsNode.end()) {
         auto nodeToRemove = itFind->second;
         preRemoveObjectCallback(*nodeToRemove);
 
-        objectsNode.erase(itFind);
+        nextValidIt = objectsNode.erase(itFind);
         removeLeafNode(*nodeToRemove);
     }
+    return nextValidIt;
 }
 
 template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ>&) {
@@ -155,10 +158,7 @@ template<class OBJ> void AABBTree<OBJ>::removeLeafNode(AABBNode<OBJ>& nodeToRemo
 }
 
 template<class OBJ> void AABBTree<OBJ>::updateObjects() {
-    for (int i = (int)objectsNode.size() - 1; i >= 0; --i) { //loop backward to remove elements
-        auto it = objectsNode.begin();
-        std::advance(it, i);
-
+    for (objects_node_it<OBJ> it = objectsNode.begin(); it != objectsNode.end();) {
         const std::shared_ptr<AABBNode<OBJ>>& leaf = it->second;
         if (leaf->getNodeData().isObjectMoving()) {
             preUpdateObjectCallback(*leaf);
@@ -168,9 +168,13 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
 
             if (!leafFatAABBox.include(objectAABBox)) {
                 std::unique_ptr<AABBNodeData<OBJ>> clonedNodeData = leaf->getNodeData().clone();
-                removeObject(leaf->getNodeData());
+                it = removeObject(leaf->getNodeData());
                 addObject(std::move(clonedNodeData));
+            } else {
+                it++;
             }
+        } else {
+            it++;
         }
     }
 }

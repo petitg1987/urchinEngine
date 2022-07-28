@@ -6,6 +6,8 @@
 
 namespace urchin {
 
+    template<class T> using objects_node_it = typename std::map<void*, std::shared_ptr<AABBNode<T>>>::iterator;
+
     template<class OBJ> class AABBTree {
         public:
             explicit AABBTree(float);
@@ -20,8 +22,8 @@ namespace urchin {
             void addObject(std::unique_ptr<AABBNodeData<OBJ>>);
             virtual void postAddObjectCallback(AABBNode<OBJ>&);
 
-            void removeObject(AABBNodeData<OBJ>&);
-            void removeObject(OBJ);
+            objects_node_it<OBJ> removeObject(AABBNodeData<OBJ>&);
+            objects_node_it<OBJ> removeObject(OBJ);
             virtual void preRemoveObjectCallback(AABBNode<OBJ>&);
 
             void updateObjects();
