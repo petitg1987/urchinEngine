@@ -159,7 +159,7 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
         auto it = objectsNode.begin();
         std::advance(it, i);
 
-        std::shared_ptr<AABBNode<OBJ>> leaf = it->second;
+        const std::shared_ptr<AABBNode<OBJ>>& leaf = it->second;
         if (leaf->getNodeData().isObjectMoving()) {
             preUpdateObjectCallback(*leaf);
 
