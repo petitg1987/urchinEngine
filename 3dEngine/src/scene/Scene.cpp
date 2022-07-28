@@ -8,7 +8,7 @@ namespace urchin {
     //debug parameters
     bool DEBUG_PROFILE_FRAME_BY_FRAME = false;
 
-    Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever) :
+    Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever, bool verticalSyncEnabled) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),
             i18nService(I18nService()),
             sceneWidth(0),
@@ -29,6 +29,7 @@ namespace urchin {
         //initialize
         SignalHandler::instance().initialize();
         GraphicsApiService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), *this->framebufferSizeRetriever);
+        screenRenderTarget.updateVerticalSync(verticalSyncEnabled);
         screenRenderTarget.initialize();
     }
 

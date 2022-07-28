@@ -14,7 +14,7 @@ namespace urchin {
 
     class Scene {
         public:
-            Scene(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, std::unique_ptr<FramebufferSizeRetriever>);
+            Scene(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, std::unique_ptr<FramebufferSizeRetriever>, bool);
             ~Scene();
 
             //scene properties

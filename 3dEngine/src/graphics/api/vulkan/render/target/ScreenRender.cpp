@@ -83,8 +83,10 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "upVertSync");
             this->verticalSyncEnabled = verticalSyncEnabled;
 
-            cleanup();
-            initialize();
+            if (isInitialized) {
+                cleanup();
+                initialize();
+            }
         }
     }
 
