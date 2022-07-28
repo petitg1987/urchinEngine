@@ -160,7 +160,7 @@ template<class OBJ> void AABBTree<OBJ>::removeLeafNode(AABBNode<OBJ>& nodeToRemo
 template<class OBJ> void AABBTree<OBJ>::updateObjects() {
     for (objects_node_it<OBJ> it = objectsNode.begin(); it != objectsNode.end();) {
         const std::shared_ptr<AABBNode<OBJ>>& leaf = it->second;
-        if (leaf->getNodeData().isObjectMoving()) {
+        if (leaf->getNodeData().isObjectMoving()) [[unlikely]] {
             preUpdateObjectCallback(*leaf);
 
             const AABBox<float>& leafFatAABBox = leaf->getAABBox();
