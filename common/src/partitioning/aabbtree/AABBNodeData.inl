@@ -3,6 +3,6 @@ template<class OBJ> AABBNodeData<OBJ>::AABBNodeData(OBJ nodeObject) :
 
 }
 
-template<class OBJ> OBJ AABBNodeData<OBJ>::getNodeObject() const {
+template<class OBJ> const OBJ& AABBNodeData<OBJ>::getNodeObject() const {
     return nodeObject;
 }

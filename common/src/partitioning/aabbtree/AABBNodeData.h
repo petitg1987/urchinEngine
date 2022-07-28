@@ -11,7 +11,7 @@ namespace urchin {
             explicit AABBNodeData(OBJ);
             virtual ~AABBNodeData() = default;
 
-            OBJ getNodeObject() const;
+            const OBJ& getNodeObject() const;
 
             virtual std::unique_ptr<AABBNodeData<OBJ>> clone() const = 0;
 

@@ -87,11 +87,11 @@ namespace urchin {
         AABBox<float> modelsAabbox = AABBox<float>::initMergeableAABBox();
 
         for (const auto& model : models) {
-            if (model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY) {
+            if (model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY) [[unlikely]] {
                 continue;
             }
 
-            if (model->getSplitAABBoxes().size() == 1) {
+            if (model->getSplitAABBoxes().size() == 1) [[likely]] {
                 modelsAabbox = modelsAabbox.merge(lightShadowMap->getLightViewMatrix() * model->getSplitAABBoxes()[0]);
                 modelsCount++;
             } else {
