@@ -72,6 +72,12 @@ namespace urchin {
         modelOctreeManager.getOctreeablesIn(frustum, modelsInFrustum, acceptAllFilter);
     }
 
+    std::vector<std::shared_ptr<Model>> ModelOcclusionCuller::getAllModels() const {
+        std::vector<std::shared_ptr<Model>> allModels = modelOctreeManager.getAllOctreeables();
+        allModels.insert(allModels.end(), noCullModels.begin(), noCullModels.end());
+        return allModels;
+    }
+
     std::unique_ptr<AABBoxModel> ModelOcclusionCuller::createDebugGeometries() {
         return OctreeRenderer::createOctreeModel(modelOctreeManager);
     }
