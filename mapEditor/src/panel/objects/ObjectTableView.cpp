@@ -36,6 +36,7 @@ namespace urchin {
         objectEntityItems.reserve(2);
 
         auto* itemObjectName = new QStandardItem(QString::fromStdString(objectEntity.getName()));
+        itemObjectName->setToolTip(QString::fromStdString(objectEntity.getName()));
         itemObjectName->setData(QVariant::fromValue(&objectEntity), Qt::UserRole + 1);
         itemObjectName->setEditable(false);
         objectEntityItems.push_back(itemObjectName);
