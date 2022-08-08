@@ -21,6 +21,10 @@ namespace urchin {
         return skybox.get();
     }
 
+    const std::shared_ptr<Skybox>& SkyContainer::getSkyboxPtr() const {
+        return skybox;
+    }
+
     void SkyContainer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix, const Point3<float>& cameraPosition) const {
         if (skybox != nullptr) {
             skybox->prepareRendering(renderingOrder, projectionViewMatrix, cameraPosition);

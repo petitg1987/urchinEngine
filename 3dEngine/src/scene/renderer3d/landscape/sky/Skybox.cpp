@@ -72,6 +72,10 @@ namespace urchin {
     }
 
     void Skybox::initialize(RenderTarget& renderTarget) {
+        if (isInitialized && &skyboxRenderer->getRenderTarget() == &renderTarget) {
+            return;
+        }
+
         //texture creation
         std::vector<const void*> cubeDataPtr = {skyboxImages[0]->getTexels().data(), skyboxImages[1]->getTexels().data(), skyboxImages[2]->getTexels().data(),
                                                 skyboxImages[3]->getTexels().data(), skyboxImages[4]->getTexels().data(), skyboxImages[5]->getTexels().data()};
