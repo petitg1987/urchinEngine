@@ -10,10 +10,9 @@ namespace urchin {
      */
     void MeshService::computeVertices(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
         //setup vertices
-        vertices.resize(constMesh.getNumberVertices());
+        vertices.clear();
+        vertices.resize(constMesh.getNumberVertices(), Point3<float>(0.0f, 0.0f, 0.0f));
         for (unsigned int i = 0; i < constMesh.getNumberVertices(); ++i) {
-            vertices[i].setNull();
-
             //calculate final vertex to draw with weights
             for (int j = 0; j < constMesh.getStructVertex(i).weightCount; ++j) {
                 const Weight& weight = constMesh.getWeight((unsigned int)(constMesh.getStructVertex(i).weightStart + j));
@@ -48,20 +47,35 @@ namespace urchin {
             unsigned int triIndex2 = constMesh.getTrianglesIndices()[triIndices + 1];
             unsigned int triIndex3 = constMesh.getTrianglesIndices()[triIndices + 2];
 
-            Vector3<float> weightedNormal1 = computeWeightedVertexNormal(triIndex1, triIndex2, triIndex3, vertices);
-            Vector3<float> weightedNormal2 = computeWeightedVertexNormal(triIndex2, triIndex3, triIndex1, vertices);
-            Vector3<float> weightedNormal3 = computeWeightedVertexNormal(triIndex3, triIndex1, triIndex2, vertices);
+            const Point3<float>& vert1 = vertices[triIndex1];
+            const Point3<float>& vert2 = vertices[triIndex2];
+            const Point3<float>& vert3 = vertices[triIndex3];
 
-            vertexNormals[triIndex1] += weightedNormal1;
-            vertexNormals[triIndex2] += weightedNormal2;
-            vertexNormals[triIndex3] += weightedNormal3;
+            Vector3<float> vert12 = vert1.vector(vert2);
+            Vector3<float> vert13 = vert1.vector(vert3);
+
+            float vert12Length = vert12.length();
+            float vert13Length = vert13.length();
+            float vert23Length = vert2.vector(vert3).length();
+
+            Vector3<float> normal = vert13.crossProduct(vert12);
+            float normalLength = normal.length();
+            Vector3<float> normalizedNormal = normal / normalLength;
+
+            //see https://stackoverflow.com/questions/18519586/calculate-normal-per-vertex-opengl
+            //note: sinAlpha must be clamped between -0.999999f and 0.999999f in case of std::asin usage
+            float sinAlpha1 = normalLength / (vert12Length * vert13Length);
+            vertexNormals[triIndex1] += normalizedNormal * MathFunction::approximateAsin(sinAlpha1);
+            float sinAlpha2 = normalLength / (vert23Length * vert12Length);
+            vertexNormals[triIndex2] += normalizedNormal * MathFunction::approximateAsin(sinAlpha2);
+            float sinAlpha3 = normalLength / (vert13Length * vert23Length);
+            vertexNormals[triIndex3] += normalizedNormal * MathFunction::approximateAsin(sinAlpha3);
         }
 
         //sum weighted normals of same vertex
-        normals.resize(constMesh.getNumberVertices());
+        normals.clear();
+        normals.resize(constMesh.getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
         for (unsigned int vertexIndex = 0; vertexIndex < constMesh.getNumberVertices(); ++vertexIndex) {
-            normals[vertexIndex].setNull();
-
             unsigned int linkedVerticesGroupId = constMesh.getStructVertex(vertexIndex).linkedVerticesGroupId;
             for (unsigned int linkedVertex : constMesh.getLinkedVertices(linkedVerticesGroupId)) {
                 normals[vertexIndex] += vertexNormals[linkedVertex];
@@ -82,21 +96,5 @@ namespace urchin {
                 tangents[vertexIndex] = c2.normalize();
             }
         }
-    }
-
-    Vector3<float> MeshService::computeWeightedVertexNormal(unsigned int triIndex1, unsigned int triIndex2, unsigned int triIndex3, const std::vector<Point3<float>>& vertices) {
-        //see https://stackoverflow.com/questions/18519586/calculate-normal-per-vertex-opengl
-        Point3<float> a = vertices[triIndex1];
-        Point3<float> b = vertices[triIndex2];
-        Point3<float> c = vertices[triIndex3];
-
-        Vector3<float> ab = a.vector(b);
-        Vector3<float> ac = a.vector(c);
-
-        Vector3<float> normal = ac.crossProduct(ab);
-        float normalLength = normal.length();
-        float sinAlpha = normalLength / (ab.length() * ac.length()); //note: sinAlpha must be clamped between -0.999999f and 0.999999f in case of std::asin usage
-
-        return (normal / normalLength) * MathFunction::approximateAsin(sinAlpha);
     }
 }

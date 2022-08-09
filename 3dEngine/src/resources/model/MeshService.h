@@ -12,9 +12,6 @@ namespace urchin {
 
             static void computeVertices(const ConstMesh&, const std::vector<Bone>&, std::vector<Point3<float>>&);
             static void computeNormalsAndTangents(const ConstMesh&, const std::vector<Point3<float>>&, std::vector<Vector3<float>>&, std::vector<Vector3<float>>&);
-
-        private:
-            static Vector3<float> computeWeightedVertexNormal(unsigned int, unsigned int, unsigned int, const std::vector<Point3<float>>&);
     };
 
 }
