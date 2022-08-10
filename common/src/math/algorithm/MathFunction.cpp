@@ -45,25 +45,6 @@ namespace urchin {
         return result;
     }
 
-    /**
-     * Return the approximate value of arc sinus. In worst case, the maximum error is < 0.22 radian (12 degrees).
-     * When the value is a little bit above 1.0 or below -1.0 due to float imprecision: the value returned is correct (for std::asin, the value returned is nan).
-     */
-    float MathFunction::approximateAsin(float x) {
-        //Use maclaurin series (formula: https://www.wolframalpha.com/input?i2d=true&i=maclaurin+series+asin%5C%2840%29x%5C%2841%29)
-        float xPow2 = x * x;
-        float xPow4 = xPow2 * xPow2;
-        float xPow7 = xPow4 * xPow2 * x;
-
-        return x
-               + (1.0f / 6.0f) * xPow2 * x
-               + (3.0f / 40.0f) * xPow4 * x
-               + (5.0f / 112.0f) * xPow7
-               + (35.0f / 1152.0f) * xPow7 * xPow2
-               + (63.0f / 2816.0f) * xPow7 * xPow4
-               + (231.0f / 13312.0f) * xPow7 * xPow4 * xPow2;
-    }
-
     template<class T> bool MathFunction::isEqual(T value1, T value2, T tolerance) {
         return value1 >= value2 - tolerance && value1 <= value2 + tolerance;
     }

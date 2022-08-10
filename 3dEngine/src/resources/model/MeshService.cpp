@@ -51,25 +51,18 @@ namespace urchin {
             const Point3<float>& vert2 = vertices[triIndex2];
             const Point3<float>& vert3 = vertices[triIndex3];
 
-            Vector3<float> vert12 = vert1.vector(vert2);
-            Vector3<float> vert13 = vert1.vector(vert3);
+            Vector3<float> vert12 = vert1.vector(vert2).normalize();
+            Vector3<float> vert13 = vert1.vector(vert3).normalize();
+            Vector3<float> vert23 = vert2.vector(vert3).normalize();
 
-            float vert12Length = vert12.length();
-            float vert13Length = vert13.length();
-            float vert23Length = vert2.vector(vert3).length();
+            float angle1 = std::acos(std::clamp(vert12.dotProduct(vert13), -0.999999f, 0.999999f));
+            float angle2 = std::acos(std::clamp(vert23.dotProduct(-vert12), -0.999999f, 0.999999f));
+            float angle3 = std::clamp(MathValue::PI_FLOAT - (angle1 + angle2), 0.0f, MathValue::PI_FLOAT);
 
-            Vector3<float> normal = vert13.crossProduct(vert12);
-            float normalLength = normal.length();
-            Vector3<float> normalizedNormal = normal / normalLength;
-
-            //see https://stackoverflow.com/questions/18519586/calculate-normal-per-vertex-opengl
-            //note: sinAlpha must be clamped between -0.999999f and 0.999999f in case of std::asin usage
-            float sinAlpha1 = normalLength / (vert12Length * vert13Length);
-            vertexNormals[triIndex1] += normalizedNormal * MathFunction::approximateAsin(sinAlpha1);
-            float sinAlpha2 = normalLength / (vert23Length * vert12Length);
-            vertexNormals[triIndex2] += normalizedNormal * MathFunction::approximateAsin(sinAlpha2);
-            float sinAlpha3 = normalLength / (vert13Length * vert23Length);
-            vertexNormals[triIndex3] += normalizedNormal * MathFunction::approximateAsin(sinAlpha3);
+            Vector3<float> normalizedNormal = vert13.crossProduct(vert12).normalize();
+            vertexNormals[triIndex1] += normalizedNormal * angle1;
+            vertexNormals[triIndex2] += normalizedNormal * angle2;
+            vertexNormals[triIndex3] += normalizedNormal * angle3;
         }
 
         //sum weighted normals of same vertex
