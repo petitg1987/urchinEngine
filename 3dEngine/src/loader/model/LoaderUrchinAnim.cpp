@@ -62,7 +62,7 @@ namespace urchin {
 
             Point3<float> min;
             Point3<float> max;
-            iss >> sdata >> min.X >> min.Y >> min.Z >> sdata >> sdata >> max.X >> max.Y >> max.Z;
+            iss >> min.X >> min.Y >> min.Z >> sdata >> max.X >> max.Y >> max.Z;
             bboxes.emplace_back(min, max);
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
@@ -73,7 +73,7 @@ namespace urchin {
         for (auto& bf : baseFrame) {
             FileReader::nextLine(file, buffer);
             iss.clear(); iss.str(buffer);
-            iss >> sdata >> bf.pos.X >> bf.pos.Y >> bf.pos.Z >> sdata >> sdata >> bf.orient.X >> bf.orient.Y >> bf.orient.Z;
+            iss >> bf.pos.X >> bf.pos.Y >> bf.pos.Z >> sdata >> bf.orient.X >> bf.orient.Y >> bf.orient.Z;
             bf.orient.computeW();
         }
         FileReader::nextLine(file, buffer); //buffer = "}"
