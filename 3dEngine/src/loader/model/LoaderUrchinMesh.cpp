@@ -63,8 +63,6 @@ namespace urchin {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
             }
 
-            auto frameStartTime = std::chrono::steady_clock::now();
-
             //numVertices
             std::size_t numVertices = 0;
             FileReader::nextLine(file, buffer);
@@ -109,12 +107,6 @@ namespace urchin {
                 iss >> sdata >> weights[i].boneIndex >> weights[i].bias >> sdata >> weights[i].pos.X >> weights[i].pos.Y >> weights[i].pos.Z;
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
-
-            auto frameEndTime = std::chrono::steady_clock::now();
-            auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-            static double a = 0.0;
-            a += (double)deltaTimeInUs / 1000.0f;
-            std::cout<<a<<std::endl;
 
             constMeshes.push_back(std::make_unique<ConstMesh>(material, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
         }
