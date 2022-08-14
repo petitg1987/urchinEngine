@@ -287,7 +287,7 @@ class Bone:
         bones[name] = self
 
     def to_urchin_mesh(self):
-        buf = "\t\"%s\"\t" % self.name
+        buf = "\t\"%s\" " % self.name
         parent_index = -1
         if self.parent:
             parent_index = self.parent.id
