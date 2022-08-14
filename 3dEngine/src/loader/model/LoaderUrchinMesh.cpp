@@ -38,7 +38,7 @@ namespace urchin {
             FileReader::nextLine(file, buffer);
             Bone* bone = &baseSkeleton[i];
             iss.clear(); iss.str(buffer);
-            iss >> bone->name >> bone->parent >> sdata >> bone->pos.X >> bone->pos.Y >> bone->pos.Z >> sdata >> sdata >> bone->orient.X >> bone->orient.Y >> bone->orient.Z;
+            iss >> bone->name >> bone->parent >> sdata >> bone->pos.X >> bone->pos.Y >> bone->pos.Z >> sdata >> bone->orient.X >> bone->orient.Y >> bone->orient.Z;
             bone->orient.computeW();
             bone->name = bone->name.substr(1, bone->name.length() - 2); //remove quote
         }
