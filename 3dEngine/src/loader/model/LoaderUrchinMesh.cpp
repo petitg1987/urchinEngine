@@ -78,7 +78,7 @@ namespace urchin {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
                 iss >> sdata >> vertices[i].linkedVerticesGroupId >> sdata >> texCoords[i].X >> texCoords[i].Y
-                        >> sdata >> sdata >> vertices[i].weightStart >> vertices[i].weightCount >> sdata;
+                        >> sdata >> vertices[i].weightStart >> vertices[i].weightCount;
             }
 
             //numTriangles
