@@ -206,8 +206,8 @@ class Vertex:
         if self.texture_coord:
             buf = buf + self.texture_coord.to_urchin_mesh()
         else:
-            buf = buf + "( 0.0 0.0 )"
-        buf = buf + " ( %i %i )" % (self.first_weight_index, len(self.influences))
+            buf = buf + "0.0 0.0 |"
+        buf = buf + " | %i %i" % (self.first_weight_index, len(self.influences))
         return buf
 
 
@@ -217,7 +217,7 @@ class TextureCoordinate:
         self.v = v
 
     def to_urchin_mesh(self):
-        buf = "( %f %f )" % (self.u, self.v)
+        buf = "| %f %f" % (self.u, self.v)
         return buf
 
 
@@ -230,7 +230,7 @@ class Weight:
         self.x, self.y, self.z = point_by_matrix((x, y, z), inv_bone_matrix)
 
     def to_urchin_mesh(self):
-        buf = "%i %f ( %f %f %f )" % (self.bone.id, self.weight, self.x, self.y, self.z)
+        buf = "%i %f | %f %f %f" % (self.bone.id, self.weight, self.x, self.y, self.z)
         return buf
 
 
@@ -294,7 +294,7 @@ class Bone:
         buf = buf + "%i " % parent_index
 
         pos1, pos2, pos3 = self.matrix.col[3][0], self.matrix.col[3][1], self.matrix.col[3][2]
-        buf = buf + "( %f %f %f ) " % (pos1, pos2, pos3)
+        buf = buf + "| %f %f %f | " % (pos1, pos2, pos3)
 
         bquat = self.matrix.to_quaternion()
         bquat.normalize()
@@ -305,7 +305,7 @@ class Bone:
             qx = -qx
             qy = -qy
             qz = -qz
-        buf = buf + "( %f %f %f )" % (qx, qy, qz)
+        buf = buf + "%f %f %f" % (qx, qy, qz)
         buf = buf + "\n"
         return buf
 
@@ -375,12 +375,12 @@ class UrchinAnimation:
 
         buf = buf + "bounds {\n"
         for b in self.bounds:
-            buf = buf + "\t( %f %f %f ) ( %f %f %f )\n" % b
+            buf = buf + "\t%f %f %f | %f %f %f\n" % b
         buf = buf + "}\n\n"
 
         buf = buf + "baseFrame {\n"
         for b in self.base_frame:
-            buf = buf + "\t( %f %f %f ) ( %f %f %f )\n" % b
+            buf = buf + "\t%f %f %f | %f %f %f\n" % b
         buf = buf + "}\n\n"
 
         for f in range(0, self.num_frames):
