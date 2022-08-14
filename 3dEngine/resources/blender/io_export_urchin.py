@@ -144,24 +144,18 @@ class SubMesh:
 
         # vertices
         buf = buf + "\tnumVerts %i\n" % (len(self.vertices))
-        vnumber = 0
         for vert in self.vertices:
-            buf = buf + "\tvert %i %s\n" % (vnumber, vert.to_urchin_mesh())
-            vnumber += 1
+            buf = buf + "\tv %s\n" % (vert.to_urchin_mesh())
 
         # faces
         buf = buf + "\n\tnumTris %i\n" % (len(self.faces))
-        facenumber = 0
         for face in self.faces:
-            buf = buf + "\ttri %i %s\n" % (facenumber, face.to_urchin_mesh())
-            facenumber += 1
+            buf = buf + "\tt %i %s\n" % (face.to_urchin_mesh())
 
         # weights
         buf = buf + "\n\tnumWeights %i\n" % (len(self.weights))
-        weightnumber = 0
         for weight in self.weights:
-            buf = buf + "\tweight %i %s\n" % (weightnumber, weight.to_urchin_mesh())
-            weightnumber += 1
+            buf = buf + "\tw %s\n" % (weight.to_urchin_mesh())
 
         return buf
 

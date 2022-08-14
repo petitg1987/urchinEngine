@@ -13,7 +13,6 @@ namespace urchin {
         iss.imbue(std::locale::classic());
         std::string buffer;
         std::string sdata;
-        int idata = 0;
 
         std::ifstream file(filename, std::ios::in);
         if (!file.is_open()) {
@@ -64,6 +63,8 @@ namespace urchin {
                 material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
             }
 
+            auto frameStartTime = std::chrono::steady_clock::now();
+
             //numVertices
             std::size_t numVertices = 0;
             FileReader::nextLine(file, buffer);
@@ -76,7 +77,7 @@ namespace urchin {
             for (std::size_t i = 0; i < numVertices; i++) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> texCoords[i].X >> texCoords[i].Y
+                iss >> sdata >> vertices[i].linkedVerticesGroupId >> sdata >> texCoords[i].X >> texCoords[i].Y
                         >> sdata >> sdata >> vertices[i].weightStart >> vertices[i].weightCount >> sdata;
             }
 
@@ -91,7 +92,7 @@ namespace urchin {
             for (std::size_t i = 0, triVertexIndex = 0; i < numTriangles; i++, triVertexIndex += 3) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> trianglesIndices[triVertexIndex] >> trianglesIndices[triVertexIndex + 1] >> trianglesIndices[triVertexIndex + 2];
+                iss >> sdata >> trianglesIndices[triVertexIndex] >> trianglesIndices[triVertexIndex + 1] >> trianglesIndices[triVertexIndex + 2];
             }
 
             //numWeights
@@ -105,9 +106,15 @@ namespace urchin {
             for (std::size_t i = 0; i < numWeights; i++) {
                 FileReader::nextLine(file, buffer);
                 iss.clear(); iss.str(buffer);
-                iss >> sdata >> idata >> weights[i].boneIndex >> weights[i].bias >> sdata >> weights[i].pos.X >> weights[i].pos.Y >> weights[i].pos.Z;
+                iss >> sdata >> weights[i].boneIndex >> weights[i].bias >> sdata >> weights[i].pos.X >> weights[i].pos.Y >> weights[i].pos.Z;
             }
             FileReader::nextLine(file, buffer); //buffer= "}"
+
+            auto frameEndTime = std::chrono::steady_clock::now();
+            auto deltaTimeInUs = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+            static double a = 0.0;
+            a += (double)deltaTimeInUs / 1000.0f;
+            std::cout<<a<<std::endl;
 
             constMeshes.push_back(std::make_unique<ConstMesh>(material, vertices, texCoords, trianglesIndices, weights, baseSkeleton));
         }
