@@ -150,7 +150,7 @@ class SubMesh:
         # faces
         buf = buf + "\n\tnumTris %i\n" % (len(self.faces))
         for face in self.faces:
-            buf = buf + "\tt %i %s\n" % (face.to_urchin_mesh())
+            buf = buf + "\tt %s\n" % (face.to_urchin_mesh())
 
         # weights
         buf = buf + "\n\tnumWeights %i\n" % (len(self.weights))
