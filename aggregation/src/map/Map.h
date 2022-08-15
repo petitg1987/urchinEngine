@@ -34,6 +34,7 @@ namespace urchin {
             const std::list<std::unique_ptr<ObjectEntity>>& getObjectEntities() const;
             ObjectEntity& getObjectEntity(std::string_view) const;
             void findObjectEntitiesByTag(std::string_view, std::vector<ObjectEntity*>&) const;
+            std::vector<ObjectEntity*> findObjectEntitiesByTag(std::string_view) const;
             ObjectEntity* findObjectEntityByTag(std::string_view) const;
             ObjectEntity& addObjectEntity(std::unique_ptr<ObjectEntity>);
             void removeObjectEntity(ObjectEntity&);

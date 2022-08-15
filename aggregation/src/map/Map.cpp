@@ -56,6 +56,12 @@ namespace urchin {
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, objects);
     }
 
+    std::vector<ObjectEntity*> Map::findObjectEntitiesByTag(std::string_view tag) const {
+        std::vector<ObjectEntity*> objects;
+        objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, objects);
+        return objects;
+    }
+
     ObjectEntity* Map::findObjectEntityByTag(std::string_view tag) const {
         tmpObjectEntities.clear();
         objectEntitiesTagHolder.findByTag<ObjectEntity*>(tag, tmpObjectEntities);
