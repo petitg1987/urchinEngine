@@ -91,7 +91,7 @@ float computeShadowAttenuation(float shadowMapZ, vec2 moments, float NdotL) {
     float pMax = variance / (variance + d * d);
 
     pMax = linearStep(0.75, 1.0, pMax); //reduce light bleeding where first parameter is at the graphic designer appreciation
-    return max(pMax, NdotL / 15.0f); //hijack to apply normal map in shadow
+    return max(pMax, NdotL / 8.0f); //hijack to apply normal map in shadow
 }
 
 float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
