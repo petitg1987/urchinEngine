@@ -126,10 +126,6 @@ namespace urchin {
             clearDepth.depthStencil = {1.0f, 0};
             clearValues.emplace_back(clearDepth);
         }
-
-        VkClearValue clearColor{};
-        clearColor.color = {{0.0f, 0.0f, 0.0f, 1.0f}};
-        clearValues.emplace_back(clearColor);
     }
 
     void ScreenRender::createImageViews() {

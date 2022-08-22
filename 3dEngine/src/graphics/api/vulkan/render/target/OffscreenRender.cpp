@@ -120,17 +120,24 @@ namespace urchin {
     }
 
     void OffscreenRender::initializeClearValues() {
-        if (hasDepthAttachment()) {
-            VkClearValue clearDepth{};
-            clearDepth.depthStencil = {1.0f, 0};
-            clearValues.emplace_back(clearDepth);
+        bool hasLoadClear = hasDepthAttachment();
+        for (const auto& outputTexture : outputTextures) {
+            hasLoadClear = hasLoadClear || outputTexture.loadOperation == LoadType::LOAD_CLEAR;
         }
 
-        for (const auto& outputTexture : outputTextures) {
-            Vector4<float> clearColorValue = outputTexture.clearColor.value_or(Vector4<float>(1.0f, 0.5f, 0.0f, 1.0) /*orange: should never be used */);
-            VkClearValue clearColor{};
-            clearColor.color = {{clearColorValue[0], clearColorValue[1], clearColorValue[2], clearColorValue[3]}};
-            clearValues.emplace_back(clearColor);
+        if (hasLoadClear) {
+            if (hasDepthAttachment()) {
+                VkClearValue clearDepth{};
+                clearDepth.depthStencil = {1.0f, 0};
+                clearValues.emplace_back(clearDepth);
+            }
+
+            for (const auto& outputTexture: outputTextures) {
+                Vector4<float> clearColorValue = outputTexture.clearColor.value_or(Vector4<float>(1.0f, 0.5f, 0.0f, 1.0) /*orange: should never be used */);
+                VkClearValue clearColor{};
+                clearColor.color = {{clearColorValue[0], clearColorValue[1], clearColorValue[2], clearColorValue[3]}};
+                clearValues.emplace_back(clearColor);
+            }
         }
     }
 
