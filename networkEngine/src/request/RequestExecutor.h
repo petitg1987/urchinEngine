@@ -13,6 +13,7 @@ namespace urchin {
             RequestResult executeRequest(const HttpRequest&);
 
         private:
+            unsigned int requestTimeoutSec;
             void* curl;
     };
 

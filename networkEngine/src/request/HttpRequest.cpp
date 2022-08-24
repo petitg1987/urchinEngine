@@ -6,7 +6,7 @@
 namespace urchin {
 
     HttpRequest::HttpRequest() :
-        httpMethod(HttpMethod::GET) {
+            httpMethod(HttpMethod::GET) {
 
     }
 

@@ -8,7 +8,8 @@ namespace urchin {
         return size * nmemb;
     }
 
-    RequestExecutor::RequestExecutor() {
+    RequestExecutor::RequestExecutor() :
+            requestTimeoutSec(ConfigService::instance().getUnsignedIntValue("http-request.timeout")) {
         curl = curl_easy_init();
         if (!curl) {
             throw std::runtime_error("Impossible to initialize curl");
@@ -27,6 +28,7 @@ namespace urchin {
         curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1); //avoid multi-thread error (see https://stackoverflow.com/questions/30098087/is-libcurl-really-thread-safe)
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, requestTimeoutSec);
 
         std::string readBuffer;
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
