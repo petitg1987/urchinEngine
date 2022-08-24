@@ -34,7 +34,7 @@ namespace urchin {
         TextCutType cutType; //reason of line is cut at the end
     };
 
-    class Text : public Widget, public TranslatableLabel {
+    class Text final : public Widget, public TranslatableLabel {
         public:
             static std::shared_ptr<Text> create(Widget*, Position, std::string, std::string);
             static std::shared_ptr<Text> create(Widget*, Position, std::string, const ParameterizedText&);

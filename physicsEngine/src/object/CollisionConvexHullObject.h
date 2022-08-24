@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class CollisionConvexHullObject : public CollisionConvexObject3D {
+    class CollisionConvexHullObject final : public CollisionConvexObject3D {
         public:
             CollisionConvexHullObject(float, const std::vector<Point3<float>>&, const std::vector<Point3<float>>&);
             CollisionConvexHullObject(float, std::unique_ptr<ConvexHull3D<float>>, std::unique_ptr<ConvexHull3D<float>>);

@@ -15,7 +15,7 @@
 
 namespace urchin {
 
-    class WaterPanelWidget : public QWidget, public Observer {
+    class WaterPanelWidget final : public QWidget, public Observer {
         Q_OBJECT
 
         public:

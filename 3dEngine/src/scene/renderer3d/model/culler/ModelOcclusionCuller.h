@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class ModelOcclusionCuller : public Observer {
+    class ModelOcclusionCuller final : public Observer {
         public:
             ModelOcclusionCuller();
 

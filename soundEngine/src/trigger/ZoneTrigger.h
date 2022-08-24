@@ -8,7 +8,7 @@ namespace urchin {
     /**
     * Trigger performed when inside a defined zone
     */
-    class ZoneTrigger : public SoundTrigger {
+    class ZoneTrigger final : public SoundTrigger {
         public:
             ZoneTrigger(PlayBehavior, std::unique_ptr<SoundShape>);
 

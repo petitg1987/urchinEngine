@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class Button : public Widget {
+    class Button final : public Widget {
         public:
             static std::shared_ptr<Button> create(Widget*, Position, Size, std::string, std::string);
 

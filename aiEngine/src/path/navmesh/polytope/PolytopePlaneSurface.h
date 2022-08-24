@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class PolytopePlaneSurface : public PolytopeSurface {
+    class PolytopePlaneSurface final : public PolytopeSurface {
         public:
             PolytopePlaneSurface(std::vector<Point3<float>>, bool);
             PolytopePlaneSurface(std::vector<Point3<float>>, const Vector3<float>&, bool);

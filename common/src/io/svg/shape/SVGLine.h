@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class SVGLine : public SVGShape {
+    class SVGLine final : public SVGShape {
         public:
             SVGLine(const LineSegment2D<float>&, SVGColor, float opacity = 1.0f);
 

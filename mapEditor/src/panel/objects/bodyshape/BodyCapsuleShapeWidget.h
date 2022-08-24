@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class BodyCapsuleShapeWidget : public BodyShapeWidget {
+    class BodyCapsuleShapeWidget final : public BodyShapeWidget {
         Q_OBJECT
 
         public:

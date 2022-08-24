@@ -16,7 +16,7 @@ namespace urchin {
 
     class OffscreenRender;
 
-    class Texture : public Resource {
+    class Texture final : public Resource {
         public:
             friend class GenericRenderer;
             friend class RenderTarget;

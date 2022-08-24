@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class LoaderUrchinMesh : public Loader<ConstMeshes> {
+    class LoaderUrchinMesh final : public Loader<ConstMeshes> {
         public:
             ~LoaderUrchinMesh() override = default;
 

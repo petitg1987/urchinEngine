@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class ConvexHullModel : public GeometryModel {
+    class ConvexHullModel final : public GeometryModel {
         public:
             explicit ConvexHullModel(ConvexHull3D<float> );
 

@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    class SceneDisplayerWindow : public QWindow, public Observable {
+    class SceneDisplayerWindow final : public QWindow, public Observable {
         Q_OBJECT
 
         public:

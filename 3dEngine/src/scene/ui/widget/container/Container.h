@@ -11,7 +11,7 @@ namespace urchin {
     /**
      * Container of widgets
      */
-    class Container : public Widget, public Scrollable {
+    class Container final : public Widget, public Scrollable {
         public:
             static std::shared_ptr<Container> create(Widget*, Position, Size);
             static std::shared_ptr<Container> createScrollable(Widget*, Position, Size, std::string);

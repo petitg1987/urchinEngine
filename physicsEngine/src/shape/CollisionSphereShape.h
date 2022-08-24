@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class CollisionSphereShape : public CollisionShape3D {
+    class CollisionSphereShape final : public CollisionShape3D {
         public:
             explicit CollisionSphereShape(float);
             CollisionSphereShape(CollisionSphereShape&&) noexcept = default;

@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class CollisionCapsuleReaderWriter : public CollisionShapeReaderWriter {
+    class CollisionCapsuleReaderWriter final : public CollisionShapeReaderWriter {
         public:
             ~CollisionCapsuleReaderWriter() override = default;
 

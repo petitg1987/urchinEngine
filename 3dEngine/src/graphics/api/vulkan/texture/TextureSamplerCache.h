@@ -16,7 +16,7 @@ namespace urchin {
     /**
      * Cache for vkSampler. Cache is required because created samplers on logical device are limited (e.g. 4000 on RTX 2080 Super)
      */
-    class TextureSamplerCache : public Singleton<TextureSamplerCache> {
+    class TextureSamplerCache final : public Singleton<TextureSamplerCache> {
         public:
             friend class Singleton<TextureSamplerCache>;
             ~TextureSamplerCache() override;

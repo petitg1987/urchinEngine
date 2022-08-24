@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class SphereBoxCollisionAlgorithm : public CollisionAlgorithm {
+    class SphereBoxCollisionAlgorithm final : public CollisionAlgorithm {
         public:
             SphereBoxCollisionAlgorithm(bool, const ManifoldResult&);
             ~SphereBoxCollisionAlgorithm() override = default;

@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class NewTerrainDialog : public QDialog {
+    class NewTerrainDialog final : public QDialog {
         Q_OBJECT
 
         public:

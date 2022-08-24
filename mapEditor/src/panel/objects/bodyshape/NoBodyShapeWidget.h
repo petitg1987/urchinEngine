@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class NoBodyShapeWidget : public BodyShapeWidget {
+    class NoBodyShapeWidget final : public BodyShapeWidget {
         Q_OBJECT
 
         public:

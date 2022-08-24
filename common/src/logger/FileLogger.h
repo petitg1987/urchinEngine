@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class FileLogger : public Logger {
+    class FileLogger final : public Logger {
         public:
             explicit FileLogger(std::string);
 

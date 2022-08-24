@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class LoaderPNG : public Loader<Image> {
+    class LoaderPNG final : public Loader<Image> {
         public:
             ~LoaderPNG() override = default;
 

@@ -20,7 +20,7 @@ namespace urchin {
         std::optional<Vector4<float>> clearColor;
     };
 
-    class OffscreenRender : public RenderTarget {
+    class OffscreenRender final : public RenderTarget {
         public:
             friend class RenderTarget;
             friend class ScreenRender;

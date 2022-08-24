@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    template<class T> class Capsule : public ConvexObject3D<T> {
+    template<class T> class Capsule final : public ConvexObject3D<T> {
         public:
             Capsule();
             Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T>&, const Quaternion<T>&);

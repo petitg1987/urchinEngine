@@ -19,7 +19,7 @@ namespace urchin {
         Quaternion<float> orient;
     };
 
-    class LoaderUrchinAnim : public Loader<ConstAnimation> {
+    class LoaderUrchinAnim final : public Loader<ConstAnimation> {
         public:
             ~LoaderUrchinAnim() override = default;
 

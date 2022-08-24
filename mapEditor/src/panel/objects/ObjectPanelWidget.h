@@ -20,7 +20,7 @@
 
 namespace urchin {
 
-    class ObjectPanelWidget : public QWidget, public Observer, public Observable {
+    class ObjectPanelWidget final : public QWidget, public Observer, public Observable {
         Q_OBJECT
 
         public:

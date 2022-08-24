@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class UserAuthorityException : public std::exception {
+    class UserAuthorityException final : public std::exception {
         public:
             UserAuthorityException(std::string, std::string);
 

@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class Window : public Widget {
+    class Window final : public Widget {
         public:
             static std::shared_ptr<Window> create(Widget*, Position, Size, std::string, std::string);
 

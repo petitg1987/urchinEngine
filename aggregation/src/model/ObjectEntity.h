@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class ObjectEntity : public TaggableResource {
+    class ObjectEntity final : public TaggableResource {
         public:
             friend class Map;
 

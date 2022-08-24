@@ -9,7 +9,7 @@ namespace urchin {
     /**
     * Sphere used to delimit the sound
     */
-    class SoundSphere : public SoundShape {
+    class SoundSphere final : public SoundShape {
         public:
             SoundSphere(float, const Point3<float>&, float);
 

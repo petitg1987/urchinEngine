@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class ChangeBodyShapeDialog : public QDialog {
+    class ChangeBodyShapeDialog final : public QDialog {
         Q_OBJECT
 
         public:

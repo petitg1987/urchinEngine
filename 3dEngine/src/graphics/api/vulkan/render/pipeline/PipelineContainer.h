@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class PipelineContainer : public Singleton<PipelineContainer> {
+    class PipelineContainer final : public Singleton<PipelineContainer> {
         public:
             friend class Singleton<PipelineContainer>;
 

@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class OmnidirectionalLight : public Light {
+    class OmnidirectionalLight final : public Light {
         public:
             explicit OmnidirectionalLight(const Point3<float>&);
 

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class AudioDevice : public Singleton<AudioDevice> {
+    class AudioDevice final : public Singleton<AudioDevice> {
         public:
             friend class Singleton<AudioDevice>;
 

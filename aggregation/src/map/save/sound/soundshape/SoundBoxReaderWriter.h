@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class SoundBoxReaderWriter : public SoundShapeReaderWriter {
+    class SoundBoxReaderWriter final : public SoundShapeReaderWriter {
         public:
             ~SoundBoxReaderWriter() override = default;
 

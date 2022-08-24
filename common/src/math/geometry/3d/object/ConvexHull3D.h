@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    template<class T> class ConvexHull3D : public ConvexObject3D<T> {
+    template<class T> class ConvexHull3D final : public ConvexObject3D<T> {
         public:
             template<class U> friend class ResizeConvexHull3DService;
             template<class V> friend std::ostream& operator<< (std::ostream&, const ConvexHull3D<V>&);

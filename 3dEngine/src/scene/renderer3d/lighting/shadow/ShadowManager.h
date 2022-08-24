@@ -19,7 +19,7 @@ namespace urchin {
     /**
     * Manager for shadow mapping (parallel-split shadow maps and variance shadow maps)
     */
-    class ShadowManager : public Observer, public Observable {
+    class ShadowManager final : public Observer, public Observable {
         public:
             enum BlurShadow {
                 NO_BLUR = 0,

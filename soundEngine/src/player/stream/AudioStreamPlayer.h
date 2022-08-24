@@ -9,7 +9,7 @@ namespace urchin {
 
     class StreamUpdateWorker;
 
-    class AudioStreamPlayer : public AudioPlayer {
+    class AudioStreamPlayer final : public AudioPlayer {
         public:
             AudioStreamPlayer(const Sound&, StreamUpdateWorker&);
             ~AudioStreamPlayer() override;

@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    class SceneController : public AbstractController {
+    class SceneController final : public AbstractController {
         public:
             SceneController();
 

@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class CollisionTriangleShape : public CollisionShape3D {
+    class CollisionTriangleShape final : public CollisionShape3D {
         public:
             explicit CollisionTriangleShape(const std::array<Point3<float>, 3>&);
             explicit CollisionTriangleShape(TriangleShape3D<float>);

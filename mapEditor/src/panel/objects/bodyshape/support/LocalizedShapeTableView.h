@@ -14,7 +14,7 @@ Q_DECLARE_METATYPE(const urchin::LocalizedCollisionShape*)
 
 namespace urchin {
 
-    class LocalizedShapeTableView : public QTableView, public Observable {
+    class LocalizedShapeTableView final : public QTableView, public Observable {
         Q_OBJECT
 
         public:

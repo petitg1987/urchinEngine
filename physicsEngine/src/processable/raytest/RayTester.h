@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class RayTester : public Processable {
+    class RayTester final : public Processable {
         public:
             RayTester(CollisionWorld&, const Ray<float>& ray);
 

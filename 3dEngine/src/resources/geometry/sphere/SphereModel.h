@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class SphereModel : public GeometryModel {
+    class SphereModel final : public GeometryModel {
         public:
             SphereModel(Sphere<float>, unsigned int);
             SphereModel(std::vector<Sphere<float>>, unsigned int);

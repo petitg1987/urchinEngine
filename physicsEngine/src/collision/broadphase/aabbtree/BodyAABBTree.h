@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class BodyAABBTree : public AABBTree<std::shared_ptr<AbstractBody>> {
+    class BodyAABBTree final : public AABBTree<std::shared_ptr<AbstractBody>> {
         public:
             BodyAABBTree();
             ~BodyAABBTree() override = default;

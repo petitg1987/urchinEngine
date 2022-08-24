@@ -15,7 +15,7 @@ namespace urchin {
     /**
     * Broad phase manager allowing to determine pairs of bodies potentially colliding
     */
-    class BroadPhase : public Observer {
+    class BroadPhase final : public Observer {
         public:
             explicit BroadPhase(BodyContainer&);
             ~BroadPhase() override;

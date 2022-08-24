@@ -13,7 +13,7 @@ namespace urchin {
     * Collision visualizer: can be used to debug problems in collision process. This class stock all data coming from collision process in
     * order to be displayed in the 3D engine
     */
-    class CollisionVisualizer : public Observer {
+    class CollisionVisualizer final : public Observer {
         public:
             explicit CollisionVisualizer(CollisionWorld&);
             ~CollisionVisualizer() override;

@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class RigidBody : public AbstractBody {
+    class RigidBody final : public AbstractBody {
         public:
             RigidBody(std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
             RigidBody(const RigidBody&);

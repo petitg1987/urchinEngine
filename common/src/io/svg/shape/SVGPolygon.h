@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class SVGPolygon : public SVGShape {
+    class SVGPolygon final : public SVGShape {
         public:
             SVGPolygon(std::vector<Point2<float>>, SVGColor, float opacity = 1.0f);
 

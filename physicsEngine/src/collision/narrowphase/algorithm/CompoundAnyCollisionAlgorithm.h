@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class CompoundAnyCollisionAlgorithm : public CollisionAlgorithm {
+    class CompoundAnyCollisionAlgorithm final : public CollisionAlgorithm {
         public:
             CompoundAnyCollisionAlgorithm(bool, const ManifoldResult&);
             ~CompoundAnyCollisionAlgorithm() override = default;

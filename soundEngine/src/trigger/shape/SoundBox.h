@@ -9,7 +9,7 @@ namespace urchin {
     /**
     * Box used to delimit the sound
     */
-    class SoundBox : public SoundShape {
+    class SoundBox final : public SoundShape {
         public:
             SoundBox(const Vector3<float>&, const Point3<float>&, const Quaternion<float>&, float);
 

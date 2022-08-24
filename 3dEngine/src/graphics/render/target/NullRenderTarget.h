@@ -7,7 +7,7 @@ namespace urchin {
     /**
      * Render target which does nothing (useful for testing)
      */
-    class NullRenderTarget : public RenderTarget {
+    class NullRenderTarget final : public RenderTarget {
         public:
             NullRenderTarget(unsigned int, unsigned int);
 

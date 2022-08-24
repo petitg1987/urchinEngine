@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class CylinderModel : public GeometryModel {
+    class CylinderModel final : public GeometryModel {
         public:
             CylinderModel(Cylinder<float>, unsigned int);
 

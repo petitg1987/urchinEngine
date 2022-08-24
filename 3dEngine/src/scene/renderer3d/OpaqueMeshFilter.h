@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class OpaqueMeshFilter : public MeshFilter {
+    class OpaqueMeshFilter final : public MeshFilter {
         public:
             bool isAccepted(const Model&) const override;
             bool isAccepted(const Mesh&) const override;

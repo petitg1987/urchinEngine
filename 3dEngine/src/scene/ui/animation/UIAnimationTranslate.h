@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class UIAnimationTranslate : public AbstractUIWidgetAnimation {
+    class UIAnimationTranslate final : public AbstractUIWidgetAnimation {
         public:
             UIAnimationTranslate(Widget&, const Point2<float>&, int = 1);
 

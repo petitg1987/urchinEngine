@@ -29,7 +29,7 @@ namespace urchin {
         UI3dPointerType pointerType = MOUSE;
     };
 
-    class UIRenderer : public Renderer, public Observer {
+    class UIRenderer final : public Renderer, public Observer {
         public:
             UIRenderer(RenderTarget&, I18nService&);
             ~UIRenderer() override;

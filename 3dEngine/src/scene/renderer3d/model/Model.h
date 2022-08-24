@@ -16,7 +16,7 @@
 
 namespace urchin {
 
-    class Model : public Octreeable<Model>, public ModelDisplayable {
+    class Model final : public Octreeable<Model>, public ModelDisplayable {
         public:
             enum NotificationType {
                 MESH_VERTICES_UPDATED = Octreeable::MAX_NOTIFICATION_TYPE,

@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    template<class T> class OctreeManager : public Observable, public Observer {
+    template<class T> class OctreeManager final : public Observable, public Observer {
         public:
             explicit OctreeManager(float);
             OctreeManager(const OctreeManager&) = delete;

@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class NewSoundDialog : public QDialog {
+    class NewSoundDialog final : public QDialog {
         Q_OBJECT
 
         public:

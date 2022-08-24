@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class SceneFreeCamera : public FreeCamera {
+    class SceneFreeCamera final : public FreeCamera {
         public:
             SceneFreeCamera(float, float, float, MouseController&);
             ~SceneFreeCamera() override = default;

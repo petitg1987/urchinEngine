@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class CapsuleModel : public GeometryModel {
+    class CapsuleModel final : public GeometryModel {
         public:
             CapsuleModel(Capsule<float>, unsigned int, unsigned int);
 

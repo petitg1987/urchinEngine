@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class CollisionHeightfieldShape : public CollisionShape3D, public CollisionConcaveShape {
+    class CollisionHeightfieldShape final : public CollisionShape3D, public CollisionConcaveShape {
         public:
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
             CollisionHeightfieldShape(CollisionHeightfieldShape&&) = delete;

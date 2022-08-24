@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class AABBTreeAlgorithm : public BroadPhaseAlgorithm {
+    class AABBTreeAlgorithm final : public BroadPhaseAlgorithm {
         public:
             AABBTreeAlgorithm();
 

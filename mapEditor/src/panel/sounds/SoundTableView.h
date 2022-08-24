@@ -11,7 +11,7 @@ Q_DECLARE_METATYPE(const urchin::SoundEntity*)
 
 namespace urchin {
 
-    class SoundTableView : public QTableView, public Observable {
+    class SoundTableView final : public QTableView, public Observable {
         Q_OBJECT
 
         public:

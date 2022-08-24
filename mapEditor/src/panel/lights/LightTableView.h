@@ -11,7 +11,7 @@ Q_DECLARE_METATYPE(const urchin::LightEntity*)
 
 namespace urchin {
 
-    class LightTableView : public QTableView, public Observable {
+    class LightTableView final : public QTableView, public Observable {
         Q_OBJECT
 
         public:

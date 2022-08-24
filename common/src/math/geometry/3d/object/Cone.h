@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    template<class T> class Cone : public ConvexObject3D<T> {
+    template<class T> class Cone final : public ConvexObject3D<T> {
         public:
             Cone();
             Cone(T, T, typename ConeShape<T>::ConeOrientation, const Point3<T>&, const Quaternion<T>&);

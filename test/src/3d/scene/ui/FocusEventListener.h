@@ -2,7 +2,7 @@
 
 #include <Urchin3dEngine.h>
 
-class FocusEventListener : public urchin::EventListener {
+class FocusEventListener final : public urchin::EventListener {
     public:
         FocusEventListener(bool&, bool&);
 

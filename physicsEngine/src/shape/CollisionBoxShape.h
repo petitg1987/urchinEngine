@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class CollisionBoxShape : public CollisionShape3D {
+    class CollisionBoxShape final : public CollisionShape3D {
         public:
             explicit CollisionBoxShape(const Vector3<float>&);
             CollisionBoxShape(CollisionBoxShape&&) noexcept = default;

@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class LoaderTexture : public Loader<Texture> {
+    class LoaderTexture final : public Loader<Texture> {
         public:
             ~LoaderTexture() override = default;
 

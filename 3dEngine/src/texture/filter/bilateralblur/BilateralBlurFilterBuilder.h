@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class BilateralBlurFilterBuilder : public TextureFilterBuilder<BilateralBlurFilterBuilder> {
+    class BilateralBlurFilterBuilder final : public TextureFilterBuilder<BilateralBlurFilterBuilder> {
         public:
             enum BlurDirection {
                 HORIZONTAL_BLUR,

@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class NewWaterDialog : public QDialog {
+    class NewWaterDialog final : public QDialog {
         Q_OBJECT
 
         public:

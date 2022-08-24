@@ -13,7 +13,7 @@
 
 namespace urchin {
 
-    class StaticBitmap : public Widget {
+    class StaticBitmap final : public Widget {
         public:
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, std::shared_ptr<Texture>);
             static std::shared_ptr<StaticBitmap> create(Widget*, Position, Size, const std::string&);

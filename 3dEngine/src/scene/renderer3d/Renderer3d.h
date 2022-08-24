@@ -28,7 +28,7 @@
 
 namespace urchin {
 
-    class Renderer3d : public Renderer, public Observer {
+    class Renderer3d final : public Renderer, public Observer {
         public:
             Renderer3d(RenderTarget&, std::shared_ptr<Camera>, const VisualConfig&, I18nService&);
             ~Renderer3d() override;

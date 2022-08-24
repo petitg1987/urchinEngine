@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    template<class T> class Triangle3D : public ConvexObject3D<T> {
+    template<class T> class Triangle3D final : public ConvexObject3D<T> {
         public:
             explicit Triangle3D(const std::array<Point3<T>, 3>&);
             Triangle3D(const Point3<T>&, const Point3<T>&, const Point3<T>&);

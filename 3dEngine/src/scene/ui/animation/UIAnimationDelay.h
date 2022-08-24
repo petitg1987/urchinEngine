@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class UIAnimationDelay : public AbstractUIAnimation {
+    class UIAnimationDelay final : public AbstractUIAnimation {
         public:
             explicit UIAnimationDelay(float);
 

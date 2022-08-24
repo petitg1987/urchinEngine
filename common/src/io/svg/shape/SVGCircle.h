@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class SVGCircle : public SVGShape {
+    class SVGCircle final : public SVGShape {
         public:
             SVGCircle(const Point2<float>&, float, SVGColor, float opacity = 1.0f);
 

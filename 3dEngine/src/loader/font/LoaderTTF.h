@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class LoaderTTF : public Loader<Font> {
+    class LoaderTTF final : public Loader<Font> {
         public:
             ~LoaderTTF() override = default;
 

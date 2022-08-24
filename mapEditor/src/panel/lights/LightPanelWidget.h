@@ -15,7 +15,7 @@
 
 namespace urchin {
 
-    class LightPanelWidget : public QWidget, public Observer {
+    class LightPanelWidget final : public QWidget, public Observer {
         Q_OBJECT
 
         public:

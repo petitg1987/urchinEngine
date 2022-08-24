@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    template<class T> class Sphere : public ConvexObject3D<T> {
+    template<class T> class Sphere final : public ConvexObject3D<T> {
         public:
             Sphere();
             Sphere(T, const Point3<T>&);

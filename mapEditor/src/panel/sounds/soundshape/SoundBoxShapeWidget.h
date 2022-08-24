@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class SoundBoxShapeWidget : public SoundShapeWidget {
+    class SoundBoxShapeWidget final : public SoundShapeWidget {
         Q_OBJECT
 
         public:

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class NavTerrainTopography : public NavTopography {
+    class NavTerrainTopography final : public NavTopography {
         public:
             NavTerrainTopography(std::unique_ptr<const HeightfieldPointHelper<float>>, const Point3<float>&);
 

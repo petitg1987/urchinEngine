@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class CloneObjectDialog : public QDialog {
+    class CloneObjectDialog final : public QDialog {
             Q_OBJECT
 
         public:

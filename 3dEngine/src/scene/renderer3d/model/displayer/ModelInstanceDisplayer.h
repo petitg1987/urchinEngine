@@ -12,7 +12,7 @@ namespace urchin {
 
     class ModelSetDisplayer;
 
-    class ModelInstanceDisplayer : public Observer {
+    class ModelInstanceDisplayer final : public Observer {
         public:
             ModelInstanceDisplayer(const ModelSetDisplayer&, DisplayMode, RenderTarget&, const Shader&);
             ~ModelInstanceDisplayer() override;

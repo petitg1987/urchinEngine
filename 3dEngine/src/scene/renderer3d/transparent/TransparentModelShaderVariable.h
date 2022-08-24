@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class TransparentModelShaderVariable : public CustomModelShaderVariable {
+    class TransparentModelShaderVariable final : public CustomModelShaderVariable {
         public:
             TransparentModelShaderVariable(float, float, LightManager&);
 

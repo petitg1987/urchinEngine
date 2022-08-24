@@ -28,7 +28,7 @@ namespace urchin {
     };
     #pragma pack(pop)
 
-    class LoaderTGA : public Loader<Image> {
+    class LoaderTGA final : public Loader<Image> {
         public:
             ~LoaderTGA() override = default;
 

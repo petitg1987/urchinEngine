@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class UIAnimationFade : public AbstractUIWidgetAnimation {
+    class UIAnimationFade final : public AbstractUIWidgetAnimation {
         public:
             UIAnimationFade(Widget&, float);
 

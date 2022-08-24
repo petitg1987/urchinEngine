@@ -11,7 +11,7 @@ Q_DECLARE_METATYPE(const urchin::WaterEntity*)
 
 namespace urchin {
 
-    class WaterTableView : public QTableView, public Observable {
+    class WaterTableView final : public QTableView, public Observable {
         Q_OBJECT
 
         public:

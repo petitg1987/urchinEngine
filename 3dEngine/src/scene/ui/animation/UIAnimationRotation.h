@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class UIAnimationRotation : public AbstractUIWidgetAnimation {
+    class UIAnimationRotation final : public AbstractUIWidgetAnimation {
         public:
             UIAnimationRotation(Widget&, float, int = 1);
 

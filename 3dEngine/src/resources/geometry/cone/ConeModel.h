@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class ConeModel : public GeometryModel {
+    class ConeModel final : public GeometryModel {
         public:
             ConeModel(Cone<float>, unsigned int);
 

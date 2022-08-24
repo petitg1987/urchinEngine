@@ -11,7 +11,7 @@ namespace urchin {
     /**
     * Load custom model shader variables for shadow model displayer
     */
-    class ShadowModelShaderVariable : public CustomModelShaderVariable {
+    class ShadowModelShaderVariable final : public CustomModelShaderVariable {
         public:
             explicit ShadowModelShaderVariable(const LightShadowMap*);
 

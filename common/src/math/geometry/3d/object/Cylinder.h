@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    template<class T> class Cylinder : public ConvexObject3D<T> {
+    template<class T> class Cylinder final : public ConvexObject3D<T> {
         public:
             Cylinder();
             Cylinder(T, T, typename CylinderShape<T>::CylinderOrientation, const Point3<T>&, const Quaternion<T>&);

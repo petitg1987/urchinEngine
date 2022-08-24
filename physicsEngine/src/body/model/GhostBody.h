@@ -10,7 +10,7 @@ namespace urchin {
     /**
     * A ghost body don't act with the physics world but it's able to known which bodies are in collision with it.
     */
-    class GhostBody : public AbstractBody {
+    class GhostBody final : public AbstractBody {
         public:
             GhostBody(std::string, const PhysicsTransform&, std::unique_ptr<const CollisionShape3D>);
 

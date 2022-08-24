@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class TrianglesModel : public GeometryModel {
+    class TrianglesModel final : public GeometryModel {
         public:
             explicit TrianglesModel(std::vector<Point3<float>>);
 

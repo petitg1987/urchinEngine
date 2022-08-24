@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class CollisionBoxObject : public CollisionConvexObject3D {
+    class CollisionBoxObject final : public CollisionConvexObject3D {
         public:
             CollisionBoxObject(float, const Vector3<float>&, const Point3<float>&, const Quaternion<float>&);
 

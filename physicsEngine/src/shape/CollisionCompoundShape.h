@@ -17,7 +17,7 @@ namespace urchin {
         PhysicsTransform transform;
     };
 
-    class CollisionCompoundShape : public CollisionShape3D {
+    class CollisionCompoundShape final : public CollisionShape3D {
         public:
             explicit CollisionCompoundShape(std::vector<std::shared_ptr<const LocalizedCollisionShape>>);
 

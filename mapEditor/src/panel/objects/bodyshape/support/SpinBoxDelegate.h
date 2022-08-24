@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class SpinBoxDelegate : public QItemDelegate {
+    class SpinBoxDelegate final : public QItemDelegate {
         Q_OBJECT
 
         public:

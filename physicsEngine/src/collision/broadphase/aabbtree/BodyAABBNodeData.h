@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class BodyAABBNodeData : public AABBNodeData<std::shared_ptr<AbstractBody>> {
+    class BodyAABBNodeData final : public AABBNodeData<std::shared_ptr<AbstractBody>> {
         public:
             explicit BodyAABBNodeData(const std::shared_ptr<AbstractBody>&);
 

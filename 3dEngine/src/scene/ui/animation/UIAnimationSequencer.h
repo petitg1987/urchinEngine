@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class UIAnimationSequencer : public AbstractUIAnimation {
+    class UIAnimationSequencer final : public AbstractUIAnimation {
         public:
             explicit UIAnimationSequencer(std::vector<std::unique_ptr<AbstractUIAnimation>>);
 

@@ -17,7 +17,7 @@
 
 namespace urchin {
 
-    class SoundPanelWidget : public QWidget, public Observer {
+    class SoundPanelWidget final : public QWidget, public Observer {
         Q_OBJECT
 
         public:

@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class AITerrain : public AIEntity {
+    class AITerrain final : public AIEntity {
         public:
             AITerrain(std::string, const Transform<float>&, bool, std::vector<Point3<float>>, unsigned int, unsigned int);
 

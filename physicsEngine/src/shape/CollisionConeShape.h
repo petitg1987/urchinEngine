@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class CollisionConeShape : public CollisionShape3D {
+    class CollisionConeShape final : public CollisionShape3D {
         public:
             CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
             CollisionConeShape(CollisionConeShape&&) noexcept = default;

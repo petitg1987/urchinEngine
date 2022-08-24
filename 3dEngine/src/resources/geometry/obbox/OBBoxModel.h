@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class OBBoxModel : public GeometryModel {
+    class OBBoxModel final : public GeometryModel {
         public:
             explicit OBBoxModel(OBBox<float> );
 

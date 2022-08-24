@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class RenameObjectDialog : public QDialog {
+    class RenameObjectDialog final : public QDialog {
         Q_OBJECT
 
         public:

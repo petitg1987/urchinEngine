@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class LoaderQOI : public Loader<Image> {
+    class LoaderQOI final : public Loader<Image> {
         public:
             ~LoaderQOI() override = default;
 

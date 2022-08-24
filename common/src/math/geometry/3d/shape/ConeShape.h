@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    template<class T> class ConeShape : public ConvexShape3D<T> {
+    template<class T> class ConeShape final : public ConvexShape3D<T> {
         public:
             enum ConeOrientation { //define direction of top
                 CONE_X_POSITIVE,

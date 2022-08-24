@@ -10,7 +10,7 @@
 
 namespace urchin {
 
-    class SoundSphereShapeWidget : public SoundShapeWidget {
+    class SoundSphereShapeWidget final : public SoundShapeWidget {
         Q_OBJECT
 
         public:

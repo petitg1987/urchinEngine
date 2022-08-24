@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class PolytopeTerrainSurface : public PolytopeSurface {
+    class PolytopeTerrainSurface final : public PolytopeSurface {
         public:
             PolytopeTerrainSurface(const Point3<float>&, std::vector<Point3<float>>, unsigned int, unsigned int,
                     const Vector3<float>&, std::vector<CSGPolygon<float>>, std::shared_ptr<const NavTopography>);

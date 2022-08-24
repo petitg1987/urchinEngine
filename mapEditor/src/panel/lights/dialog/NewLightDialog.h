@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class NewLightDialog : public QDialog {
+    class NewLightDialog final : public QDialog {
         Q_OBJECT
 
         public:

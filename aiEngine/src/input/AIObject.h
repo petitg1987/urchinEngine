@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class AIObject : public AIEntity {
+    class AIObject final : public AIEntity {
         public:
             AIObject(std::string, const Transform<float>&, bool, std::unique_ptr<AIShape>);
             AIObject(std::string, const Transform<float>&, bool, std::vector<std::unique_ptr<AIShape>>);

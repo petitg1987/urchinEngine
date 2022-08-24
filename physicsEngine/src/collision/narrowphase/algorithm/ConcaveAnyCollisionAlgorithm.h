@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class ConcaveAnyCollisionAlgorithm : public CollisionAlgorithm {
+    class ConcaveAnyCollisionAlgorithm final : public CollisionAlgorithm {
         public:
             ConcaveAnyCollisionAlgorithm(bool, const ManifoldResult&);
             ~ConcaveAnyCollisionAlgorithm() override = default;

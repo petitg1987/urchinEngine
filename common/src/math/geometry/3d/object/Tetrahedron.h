@@ -11,7 +11,7 @@ namespace urchin {
     /**
     * Represents a tetrahedron
     */
-    template<class T> class Tetrahedron : public ConvexObject3D<T> {
+    template<class T> class Tetrahedron final : public ConvexObject3D<T> {
         public:
             Tetrahedron(const Point3<T>&, const Point3<T>&, const Point3<T>&, const Point3<T>&);
 

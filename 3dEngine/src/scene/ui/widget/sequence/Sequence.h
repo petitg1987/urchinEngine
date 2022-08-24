@@ -11,7 +11,7 @@
 #include <scene/ui/EventListener.h>
 namespace urchin {
 
-    class Sequence : public Widget {
+    class Sequence final : public Widget {
         public:
             static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
             static std::shared_ptr<Sequence> create(Widget*, Position, Size, std::string, const std::vector<ParameterizedText>&);

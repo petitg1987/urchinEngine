@@ -15,7 +15,7 @@ VK_DEFINE_HANDLE(VmaAllocator)
 
 namespace urchin {
 
-    class GraphicsSetupService : public Singleton<GraphicsSetupService> {
+    class GraphicsSetupService final : public Singleton<GraphicsSetupService> {
         public:
             friend class Singleton<GraphicsSetupService>;
 

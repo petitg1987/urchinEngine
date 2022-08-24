@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class TextBox : public Widget {
+    class TextBox final : public Widget {
         public:
             static std::shared_ptr<TextBox> create(Widget*, Position, Size, std::string);
 

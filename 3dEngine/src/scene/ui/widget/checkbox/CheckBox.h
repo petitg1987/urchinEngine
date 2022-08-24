@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    class CheckBox : public Widget {
+    class CheckBox final : public Widget {
         public:
             static std::shared_ptr<CheckBox> create(Widget*, Position, Size, std::string);
 

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class UIAnimationZoom : public AbstractUIWidgetAnimation {
+    class UIAnimationZoom final : public AbstractUIWidgetAnimation {
         public:
             UIAnimationZoom(Widget&, const Vector2<float>&, int = 1);
 

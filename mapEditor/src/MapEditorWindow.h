@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class MapEditorWindow : public QMainWindow, public Observer {
+    class MapEditorWindow final : public QMainWindow, public Observer {
         Q_OBJECT
 
         public:

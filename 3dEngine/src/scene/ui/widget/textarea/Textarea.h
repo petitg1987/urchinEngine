@@ -9,7 +9,7 @@
 
 namespace urchin {
 
-    class Textarea : public Widget {
+    class Textarea final : public Widget {
         public:
             static std::shared_ptr<Textarea> create(Widget*, Position, Size, std::string);
 

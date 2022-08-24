@@ -12,7 +12,7 @@
 
 namespace urchin {
 
-    class Slider : public Widget {
+    class Slider final : public Widget {
         public:
             static std::shared_ptr<Slider> create(Widget*, Position, Size, std::string, const std::vector<std::string>&);
             static std::shared_ptr<Slider> create(Widget*, Position, Size, std::string, const std::vector<ParameterizedText>&);

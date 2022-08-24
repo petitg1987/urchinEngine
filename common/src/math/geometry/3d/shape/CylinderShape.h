@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    template<class T> class CylinderShape : public ConvexShape3D<T> {
+    template<class T> class CylinderShape final : public ConvexShape3D<T> {
         public:
             enum CylinderOrientation {
                 CYLINDER_X,

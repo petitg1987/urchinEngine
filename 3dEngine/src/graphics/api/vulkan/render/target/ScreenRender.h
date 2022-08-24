@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class ScreenRender : public RenderTarget {
+    class ScreenRender final : public RenderTarget {
         public:
             ScreenRender(std::string, DepthAttachmentType);
             ~ScreenRender() override;

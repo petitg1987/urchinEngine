@@ -16,7 +16,7 @@
 
 namespace urchin {
 
-    class TerrainPanelWidget : public QWidget, public Observer {
+    class TerrainPanelWidget final : public QWidget, public Observer {
         Q_OBJECT
 
         public:

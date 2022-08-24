@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class LoaderMaterial : public Loader<Material> {
+    class LoaderMaterial final : public Loader<Material> {
         public:
             ~LoaderMaterial() override = default;
 
