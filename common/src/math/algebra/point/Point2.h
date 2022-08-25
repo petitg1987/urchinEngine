@@ -10,11 +10,11 @@ namespace urchin {
 
     template<class T> class Point2 {
         public:
-            Point2();
-            Point2(T Xu, T Yu);
-            explicit Point2(const Vector2<T>&);
-            Point2(const Point2<T>&) = default;
-            Point2<T>& operator=(const Point2<T>&) = default;
+            Point2() noexcept;
+            Point2(T Xu, T Yu) noexcept;
+            explicit Point2(const Vector2<T>&) noexcept;
+            Point2(const Point2<T>&) noexcept = default;
+            Point2<T>& operator=(const Point2<T>&) noexcept = default;
 
             void setValues(T, T);
             void setNull();

@@ -3,32 +3,32 @@
 
 namespace urchin {
 
-    template<class T> Point4<T>::Point4() :
+    template<class T> Point4<T>::Point4() noexcept :
             X(0), Y(0), Z(0), W(1) {
 
     }
 
-    template<class T> Point4<T>::Point4(T Xu, T Yu, T Zu, T Wu) :
+    template<class T> Point4<T>::Point4(T Xu, T Yu, T Zu, T Wu) noexcept :
             X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Point2<T>& p, T Zu, T Wu) :
+    template<class T> Point4<T>::Point4(const Point2<T>& p, T Zu, T Wu) noexcept :
             X(p.X), Y(p.Y), Z(Zu), W(Wu) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Point3<T>& p, T Wu) :
+    template<class T> Point4<T>::Point4(const Point3<T>& p, T Wu) noexcept :
             X(p.X), Y(p.Y), Z(p.Z), W(Wu) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Vector3<T>& vector, T Wu) :
+    template<class T> Point4<T>::Point4(const Vector3<T>& vector, T Wu) noexcept :
             X(vector.X), Y(vector.Y), Z(vector.Z), W(Wu) {
 
     }
 
-    template<class T> Point4<T>::Point4(const Vector4<T>& vector) :
+    template<class T> Point4<T>::Point4(const Vector4<T>& vector) noexcept :
             X(vector.X), Y(vector.Y), Z(vector.Z), W(vector.W) {
 
     }

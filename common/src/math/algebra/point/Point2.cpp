@@ -5,17 +5,17 @@
 
 namespace urchin {
 
-    template<class T> Point2<T>::Point2() :
+    template<class T> Point2<T>::Point2() noexcept :
             X(0), Y(0) {
 
     }
 
-    template<class T> Point2<T>::Point2(T Xu, T Yu) :
+    template<class T> Point2<T>::Point2(T Xu, T Yu) noexcept :
             X(Xu), Y(Yu) {
 
     }
 
-    template<class T> Point2<T>::Point2(const Vector2<T>& vector) :
+    template<class T> Point2<T>::Point2(const Vector2<T>& vector) noexcept :
             X(vector.X), Y(vector.Y) {
 
     }
