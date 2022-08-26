@@ -3,17 +3,17 @@
 
 namespace urchin {
 
-    template<class T> Vector4<T>::Vector4() :
+    template<class T> Vector4<T>::Vector4() noexcept :
             X(0), Y(0), Z(0), W(1) {
 
     }
 
-    template<class T> Vector4<T>::Vector4(T Xu, T Yu, T Zu, T Wu) :
+    template<class T> Vector4<T>::Vector4(T Xu, T Yu, T Zu, T Wu) noexcept :
             X(Xu), Y(Yu), Z(Zu), W(Wu) {
 
     }
 
-    template<class T> Vector4<T>::Vector4(const Vector3<T>& v, T Wu) :
+    template<class T> Vector4<T>::Vector4(const Vector3<T>& v, T Wu) noexcept :
             X(v.X), Y(v.Y), Z(v.Z), W(Wu) {
 
     }

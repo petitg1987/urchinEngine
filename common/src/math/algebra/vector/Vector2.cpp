@@ -5,12 +5,12 @@
 
 namespace urchin {
 
-    template<class T> Vector2<T>::Vector2() :
+    template<class T> Vector2<T>::Vector2() noexcept :
             X(0), Y(0) {
 
     }
 
-    template<class T> Vector2<T>::Vector2(T Xu, T Yu) :
+    template<class T> Vector2<T>::Vector2(T Xu, T Yu) noexcept :
             X(Xu), Y(Yu) {
 
     }

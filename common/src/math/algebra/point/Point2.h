@@ -12,9 +12,9 @@ namespace urchin {
         public:
             Point2() noexcept;
             Point2(T Xu, T Yu) noexcept;
-            explicit Point2(const Vector2<T>&) noexcept;
-            Point2(const Point2<T>&) noexcept = default;
-            Point2<T>& operator=(const Point2<T>&) noexcept = default;
+            explicit Point2(const Vector2<T>&) ;
+            Point2(const Point2<T>&) = default;
+            Point2<T>& operator=(const Point2<T>&) = default;
 
             void setValues(T, T);
             void setNull();

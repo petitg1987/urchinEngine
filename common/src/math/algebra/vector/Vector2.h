@@ -9,8 +9,8 @@ namespace urchin {
 
     template<class T> class Vector2 {
         public:
-            Vector2();
-            Vector2(T Xu, T Yu);
+            Vector2() noexcept;
+            Vector2(T Xu, T Yu) noexcept;
             Vector2(const Vector2<T>&) = default;
             Vector2<T>& operator=(const Vector2<T>&) = default;
 

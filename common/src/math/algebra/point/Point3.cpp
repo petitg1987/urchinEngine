@@ -23,7 +23,7 @@ namespace urchin {
 
     }
 
-    template<class T> Point3<T>::Point3(const Vector3<T>& vector) noexcept :
+    template<class T> Point3<T>::Point3(const Vector3<T>& vector) :
             X(vector.X), Y(vector.Y), Z(vector.Z) {
 
     }

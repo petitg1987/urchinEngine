@@ -16,8 +16,8 @@ namespace urchin {
             Point3(T Xu, T Yu, T Zu) noexcept;
             explicit Point3(const Point2<T>&, T Zu = 1) noexcept;
             explicit Point3(const Vector2<T>&, T Zu = 1) noexcept;
-            explicit Point3(const Vector3<T>&) noexcept;
-            Point3(const Point3<T>&) noexcept = default;
+            explicit Point3(const Vector3<T>&);
+            Point3(const Point3<T>&) = default;
             Point3<T>& operator=(const Point3<T>&) = default;
 
             void setValues(T, T, T);
