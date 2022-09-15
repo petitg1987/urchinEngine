@@ -331,7 +331,7 @@ namespace urchin {
         }
 
         //lighting pass rendering
-        illuminatedTexture = Texture::build("illuminated scene", sceneWidth, sceneHeight, TextureFormat::B10G11R11_FLOAT, nullptr);
+        illuminatedTexture = Texture::build("illuminated scene", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT, nullptr);
         if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
             auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
             offscreenLightingRenderTarget->resetOutputTextures();

@@ -28,7 +28,7 @@ namespace urchin {
                 alignas(4) float density;
                 alignas(4) float gradient;
                 alignas(4) float maxHeight;
-                alignas(16) Vector4<float> color;
+                alignas(16) Vector3<float> color;
             } fogData;
     };
 

@@ -24,10 +24,6 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
-float fxaaLuma(vec4 rgba) {
-    return rgba.y;
-}
-
 void main() {
     //amount of sub-pixel aliasing removal (0.0 = off, 1.0 = softer)
     const float fxaaQualitySubpix = 0.8;
@@ -43,11 +39,11 @@ void main() {
     posM.y = texCoordinates.y;
 
     vec4 rgbyM = textureLod(tex, posM, 0.0);
-    float lumaM = fxaaLuma(rgbyM);
-    float lumaS = fxaaLuma(textureOffset(tex, posM, ivec2(0, 1)));
-    float lumaE = fxaaLuma(textureOffset(tex, posM, ivec2(1, 0)));
-    float lumaN = fxaaLuma(textureOffset(tex, posM, ivec2(0, -1)));
-    float lumaW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, 0)));
+    float lumaM = rgbyM.g;
+    float lumaS = textureOffset(tex, posM, ivec2(0, 1)).g;
+    float lumaE = textureOffset(tex, posM, ivec2(1, 0)).g;
+    float lumaN = textureOffset(tex, posM, ivec2(0, -1)).g;
+    float lumaW = textureOffset(tex, posM, ivec2(-1, 0)).g;
 
     float maxSM = max(lumaS, lumaM);
     float minSM = min(lumaS, lumaM);
@@ -66,10 +62,10 @@ void main() {
         return;
     }
 
-    float lumaNW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, -1)));
-    float lumaSE = fxaaLuma(textureOffset(tex, posM, ivec2(1, 1)));
-    float lumaNE = fxaaLuma(textureOffset(tex, posM, ivec2(1, -1)));
-    float lumaSW = fxaaLuma(textureOffset(tex, posM, ivec2(-1, 1)));
+    float lumaNW = textureOffset(tex, posM, ivec2(-1, -1)).g;
+    float lumaSE = textureOffset(tex, posM, ivec2(1, 1)).g;
+    float lumaNE = textureOffset(tex, posM, ivec2(1, -1)).g;
+    float lumaSW = textureOffset(tex, posM, ivec2(-1, 1)).g;
 
     float lumaNS = lumaN + lumaS;
     float lumaWE = lumaW + lumaE;
@@ -136,9 +132,9 @@ void main() {
     posP.y = posB.y + offNP.y * FXAA_QUALITY_P0;
 
     float subpixD = ((-2.0) * subpixC) + 3.0;
-    float lumaEndN = fxaaLuma(textureLod(tex, posN, 0.0));
+    float lumaEndN = textureLod(tex, posN, 0.0).g;
     float subpixE = subpixC * subpixC;
-    float lumaEndP = fxaaLuma(textureLod(tex, posP, 0.0));
+    float lumaEndP = textureLod(tex, posP, 0.0).g;
 
     if (!pairN) {
         lumaNN = lumaSS;
@@ -163,9 +159,9 @@ void main() {
 
     if ((!doneN) || (!doneP)) {
         if (!doneN)
-            lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+            lumaEndN = textureLod(tex, posN.xy, 0.0).g;
         if (!doneP)
-            lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+            lumaEndP = textureLod(tex, posP.xy, 0.0).g;
         if (!doneN)
             lumaEndN = lumaEndN - halfLumaNN;
         if (!doneP)
@@ -183,9 +179,9 @@ void main() {
 
         if ((!doneN) || (!doneP)) {
             if (!doneN)
-                lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                lumaEndN = textureLod(tex, posN.xy, 0.0).g;
             if (!doneP)
-                lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                lumaEndP = textureLod(tex, posP.xy, 0.0).g;
             if (!doneN)
                 lumaEndN = lumaEndN - halfLumaNN;
             if (!doneP)
@@ -203,9 +199,9 @@ void main() {
 
             if ((!doneN) || (!doneP)) {
                 if (!doneN)
-                    lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                    lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                 if (!doneP)
-                    lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                    lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                 if (!doneN)
                     lumaEndN = lumaEndN - halfLumaNN;
                 if (!doneP)
@@ -223,9 +219,9 @@ void main() {
 
                 if ((!doneN) || (!doneP)) {
                     if (!doneN)
-                        lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                        lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                     if (!doneP)
-                        lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                        lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                     if (!doneN)
                         lumaEndN = lumaEndN - halfLumaNN;
                     if (!doneP)
@@ -244,9 +240,9 @@ void main() {
                     if (FXAA_QUALITY_PS > 6) {
                         if ((!doneN) || (!doneP)) {
                             if (!doneN)
-                                lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                                lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                             if (!doneP)
-                                lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                                lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                             if (!doneN)
                                 lumaEndN = lumaEndN - halfLumaNN;
                             if (!doneP)
@@ -264,9 +260,9 @@ void main() {
 
                             if ((!doneN) || (!doneP)) {
                                 if (!doneN)
-                                    lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                                    lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                                 if (!doneP)
-                                    lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                                    lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                                 if (!doneN)
                                     lumaEndN = lumaEndN - halfLumaNN;
                                 if (!doneP)
@@ -285,9 +281,9 @@ void main() {
                                 if (FXAA_QUALITY_PS > 8) {
                                     if ((!doneN) || (!doneP)) {
                                         if (!doneN)
-                                        lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                                        lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                                         if (!doneP)
-                                        lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                                        lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                                         if (!doneN)
                                         lumaEndN = lumaEndN - halfLumaNN;
                                         if (!doneP)
@@ -305,9 +301,9 @@ void main() {
 
                                         if ((!doneN) || (!doneP)) {
                                             if (!doneN)
-                                            lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                                            lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                                             if (!doneP)
-                                            lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                                            lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                                             if (!doneN)
                                             lumaEndN = lumaEndN - halfLumaNN;
                                             if (!doneP)
@@ -325,9 +321,9 @@ void main() {
 
                                             if ((!doneN) || (!doneP)) {
                                                 if (!doneN)
-                                                lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                                                lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                                                 if (!doneP)
-                                                lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                                                lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                                                 if (!doneN)
                                                 lumaEndN = lumaEndN - halfLumaNN;
                                                 if (!doneP)
@@ -345,9 +341,9 @@ void main() {
 
                                                 if ((!doneN) || (!doneP)) {
                                                     if (!doneN)
-                                                    lumaEndN = fxaaLuma(textureLod(tex, posN.xy, 0.0));
+                                                    lumaEndN = textureLod(tex, posN.xy, 0.0).g;
                                                     if (!doneP)
-                                                    lumaEndP = fxaaLuma(textureLod(tex, posP.xy, 0.0));
+                                                    lumaEndP = textureLod(tex, posP.xy, 0.0).g;
                                                     if (!doneN)
                                                     lumaEndN = lumaEndN - halfLumaNN;
                                                     if (!doneP)

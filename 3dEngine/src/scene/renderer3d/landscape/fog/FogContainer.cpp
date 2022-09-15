@@ -35,7 +35,7 @@ namespace urchin {
             fogData.density = fogs.top()->getDensity();
             fogData.gradient = fogs.top()->getGradient();
             fogData.maxHeight = fogs.top()->getMaxHeight();
-            fogData.color = Vector4<float>(fogs.top()->getColor(), 1.0f);
+            fogData.color = fogs.top()->getColor();
         }
 
         lightingRenderer.updateUniformData(fogUniformIndex, &fogData);

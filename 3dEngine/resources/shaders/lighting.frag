@@ -41,7 +41,7 @@ layout(std140, set = 0, binding = 5) uniform Fog {
     float density;
     float gradient;
     float maxHeight;
-    vec4 color;
+    vec3 color;
 } fog;
 
 //deferred textures
@@ -124,7 +124,7 @@ float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 posi
     return shadowAttenuation;
 }
 
-vec4 addFog(vec4 baseColor, vec4 position) {
+vec3 addFog(vec3 baseColor, vec4 position) {
     if (!fog.hasFog || positioningData.viewPosition.y > fog.maxHeight) {
         return baseColor;
     }
@@ -141,7 +141,7 @@ vec4 addFog(vec4 baseColor, vec4 position) {
     return mix(fog.color, baseColor, visibility);
 }
 
-vec4 addTransparentModels(vec4 srcAlbedo) {
+vec3 addTransparentModels(vec3 srcAlbedo) {
     float reveal = texture(transparencyRevealTex, texCoordinates).r; //(1 - obj1.material.alpha) * (1 - obj2.material.alpha) * ...
     if (reveal > 0.99999) {
         //fully transparent case: object fully transparent or no object
@@ -156,7 +156,7 @@ vec4 addTransparentModels(vec4 srcAlbedo) {
     vec4 averageColor = vec4(vec3(accumulation.rgb / max(accumulation.a, 0.00001)), 1.0 - reveal);
 
     //apply blending manually (equivalent to: srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
-    return averageColor.a * averageColor.rgba + (1 - averageColor.a) * srcAlbedo.rgba;
+    return averageColor.a * averageColor.rgb + (1 - averageColor.a) * srcAlbedo.rgb;
 }
 
 float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
@@ -252,8 +252,8 @@ void main() {
         fragColor.rgb = albedo;
     }
 
-    fragColor = addTransparentModels(fragColor);
-    fragColor = addFog(fragColor, worldPosition);
+    fragColor.rgb = addTransparentModels(fragColor.rgb);
+    fragColor.rgb = addFog(fragColor.rgb, worldPosition);
 
     //DEBUG: add color to shadow map splits
     /* const float colorValue = 0.25;
