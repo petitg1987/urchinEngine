@@ -34,13 +34,17 @@ namespace urchin {
         return light.get();
     }
 
-    void LightEntity::setLight(const std::shared_ptr<Light>& light) {
+    std::shared_ptr<Light>& LightEntity::getLightPtr() {
+        return light;
+    }
+
+    void LightEntity::setLight(std::shared_ptr<Light> light) {
         if (renderer3d) {
             renderer3d->getLightManager().removeLight(this->light.get());
             renderer3d->getLightManager().addLight(light);
         }
 
-        this->light = light;
+        this->light = std::move(light);
     }
 
 }

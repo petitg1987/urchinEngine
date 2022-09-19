@@ -16,7 +16,8 @@ namespace urchin {
             void setName(std::string);
 
             Light* getLight() const;
-            void setLight(const std::shared_ptr<Light>&);
+            std::shared_ptr<Light>& getLightPtr();
+            void setLight(std::shared_ptr<Light>);
 
         private:
             void setup(Renderer3d*);
