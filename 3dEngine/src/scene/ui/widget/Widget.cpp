@@ -441,7 +441,7 @@ namespace urchin {
 
     bool Widget::onKeyPress(InputDeviceKey key) {
         bool propagateEvent = true;
-        if (isVisible()) {
+        if (isInitialized() && isVisible()) {
             bool widgetStateUpdated = handleWidgetKeyPress(key);
             propagateEvent = onKeyPressEvent(key);
 
@@ -482,7 +482,7 @@ namespace urchin {
 
     bool Widget::onKeyRelease(InputDeviceKey key) {
         bool propagateEvent = true;
-        if (isVisible()) {
+        if (isInitialized() && isVisible()) {
             bool widgetStateUpdated = handleWidgetKeyRelease(key);
             propagateEvent = onKeyReleaseEvent(key);
 
@@ -531,7 +531,7 @@ namespace urchin {
 
     bool Widget::onChar(char32_t unicodeCharacter) {
         bool propagateEvent = true;
-        if (isVisible()) {
+        if (isInitialized() && isVisible()) {
             propagateEvent = onCharEvent(unicodeCharacter);
 
             for (const auto& child : children) {
@@ -552,7 +552,7 @@ namespace urchin {
         this->mouseY = mouseY;
 
         bool propagateEvent = true;
-        if (isVisible()) {
+        if (isInitialized() && isVisible()) {
             bool widgetStateUpdated = handleWidgetMouseMove(mouseX, mouseY);
             propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
@@ -595,7 +595,7 @@ namespace urchin {
 
     bool Widget::onScroll(double offsetY) {
         bool propagateEvent = true;
-        if (isVisible()) {
+        if (isInitialized() && isVisible()) {
             propagateEvent = onScrollEvent(offsetY);
 
             for (const auto& child : children) {

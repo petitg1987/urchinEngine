@@ -30,9 +30,7 @@ namespace urchin {
         if (ui3dData && ui3dData->camera) {
             ui3dData->camera->removeObserver(this, Camera::POSITION_UPDATED);
         }
-        for (const auto& widget : widgets) {
-            widget->uninitialize();
-        }
+        removeAllWidgets();
     }
 
     void UIRenderer::setupUi3d(Camera* camera, const Transform<float>& transform, const Point2<int>& uiResolution, const Point2<float>& uiSize, float ambient) {
@@ -330,10 +328,14 @@ namespace urchin {
         if (itFind == widgets.end()) {
             throw std::runtime_error("The provided widget is not widget of this UI renderer");
         }
+        (*itFind)->uninitialize();
         widgets.erase(itFind);
     }
 
     void UIRenderer::removeAllWidgets() {
+        for (const auto& widget : widgets) {
+            widget->uninitialize();
+        }
         widgets.clear();
     }
 

@@ -30,7 +30,9 @@ namespace urchin {
 
     Text::~Text() {
         if (isInitialized()) { //two cases of not initialized: the text has not been added to an UIRenderer or the UIRenderer has been removed before the text
-            uninitialize();
+            if (inputText.hasTranslatableText()) {
+                getI18nService().remove(this);
+            }
         }
     }
 
@@ -51,6 +53,7 @@ namespace urchin {
     }
 
     void Text::uninitialize() {
+        assert(isInitialized());
         if (inputText.hasTranslatableText()) {
             getI18nService().remove(this);
         }
