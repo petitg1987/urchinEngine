@@ -38,6 +38,7 @@ namespace urchin {
             };
 
             void initialize(UIRenderer&);
+            virtual void uninitialize();
             bool isInitialized() const;
             virtual void onResize();
             void onCameraProjectionUpdate();

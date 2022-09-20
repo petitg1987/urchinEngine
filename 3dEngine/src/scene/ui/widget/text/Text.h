@@ -56,6 +56,7 @@ namespace urchin {
 
         protected:
             void createOrUpdateWidget() override;
+            void uninitialize() override;
 
             void refreshTranslation(const LanguageTranslator&) override;
 

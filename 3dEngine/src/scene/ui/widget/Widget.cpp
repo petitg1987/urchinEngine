@@ -39,6 +39,14 @@ namespace urchin {
         refreshScissor(false /* children call already treated via child->initialize */);
     }
 
+    void Widget::uninitialize() {
+        this->uiRenderer = nullptr;
+
+        for (const auto& child : children) {
+            child->uninitialize();
+        }
+    }
+
     bool Widget::isInitialized() const {
         return uiRenderer != nullptr;
     }

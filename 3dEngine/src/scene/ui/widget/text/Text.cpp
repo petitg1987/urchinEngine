@@ -29,8 +29,8 @@ namespace urchin {
     }
 
     Text::~Text() {
-        if (inputText.hasTranslatableText()) {
-            getI18nService().remove(this);
+        if (isInitialized()) { //two cases of not initialized: the text has not been added to an UIRenderer or the UIRenderer has been removed before the text
+            uninitialize();
         }
     }
 
@@ -48,6 +48,13 @@ namespace urchin {
         setupRenderer(baseRendererBuilder("text_" + renderName, ShapeType::TRIANGLE, true)
                 ->addUniformTextureReader(TextureReader::build(font->getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
                 ->build());
+    }
+
+    void Text::uninitialize() {
+        if (inputText.hasTranslatableText()) {
+            getI18nService().remove(this);
+        }
+        Widget::uninitialize();
     }
 
     WidgetType Text::getWidgetType() const {
