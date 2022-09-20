@@ -145,7 +145,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     deleteButton.lock()->addEventListener(std::make_unique<DetachChildrenEventListener>(container.get()));
     std::weak_ptr<Text> text = Text::create(deleteButton.lock().get(), Position(0.0f, 0.0f, PIXEL), "test", i18n("my.text"));
     Text* textPTr = text.lock().get();
-    AssertHelper::assertTrue(uiRenderer->getI18nService().isLabelExist(textPTr));
+    AssertHelper::assertTrue(uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 
     uiRenderer->onMouseMove(50.0, 50.0);
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
@@ -153,7 +153,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     AssertHelper::assertTrue(childContainer.expired());
     AssertHelper::assertTrue(deleteButton.expired());
     AssertHelper::assertTrue(text.expired());
-    AssertHelper::assertTrue(!uiRenderer->getI18nService().isLabelExist(textPTr));
+    AssertHelper::assertTrue(!uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 }
 
 void UIRendererTest::containerWithLazyWidgets() {
