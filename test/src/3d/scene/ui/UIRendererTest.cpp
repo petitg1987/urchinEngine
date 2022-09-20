@@ -156,6 +156,20 @@ void UIRendererTest::buttonRemoveParentContainer() {
     AssertHelper::assertTrue(!uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 }
 
+void UIRendererTest::removeUIRendererBeforeWidget() {
+    std::unique_ptr<UIRenderer> uiRenderer = setupUiRenderer();
+    I18nService& i18nService = uiRenderer->getI18nService();
+    std::shared_ptr<Text> text = Text::create(nullptr, Position(0.0f, 0.0f, PIXEL), "test", i18n("my.text"));
+    uiRenderer->addWidget(text);
+    AssertHelper::assertTrue(text->isInitialized());
+    AssertHelper::assertTrue(i18nService.isTranslatableLabelExist(text.get()));
+
+    uiRenderer.reset(nullptr);
+
+    AssertHelper::assertTrue(!text->isInitialized());
+    AssertHelper::assertTrue(!i18nService.isTranslatableLabelExist(text.get()));
+}
+
 void UIRendererTest::containerWithLazyWidgets() {
     auto uiRenderer = setupUiRenderer();
     auto container = Container::createScrollable(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "test");
@@ -213,8 +227,9 @@ CppUnit::Test* UIRendererTest::suite() {
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("containerPercentagePosition", &UIRendererTest::containerPercentagePosition));
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("relativeLengthSize", &UIRendererTest::relativeLengthSize));
 
-    //event listener
+    //remove tests
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("buttonRemoveParentContainer", &UIRendererTest::buttonRemoveParentContainer));
+    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("removeUIRendererBeforeWidget", &UIRendererTest::removeUIRendererBeforeWidget));
 
     //lazy loading
     suite->addTest(new CppUnit::TestCaller<UIRendererTest>("containerWithLazyWidgets", &UIRendererTest::containerWithLazyWidgets));

@@ -23,6 +23,7 @@ class UIRendererTest : public CppUnit::TestFixture {
         void relativeLengthSize();
 
         void buttonRemoveParentContainer();
+        void removeUIRendererBeforeWidget();
 
         void containerWithLazyWidgets();
 
