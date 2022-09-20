@@ -49,8 +49,10 @@ namespace urchin {
             LightManager& getLightManager();
             ShadowManager& getShadowManager();
             void activateShadow(bool);
+            bool isShadowActivated() const;
             AmbientOcclusionManager& getAmbientOcclusionManager();
             void activateAmbientOcclusion(bool);
+            bool isAmbientOcclusionActivated() const;
             TransparentManager& getTransparentManager();
             AntiAliasingApplier& getAntiAliasingApplier();
             BloomEffectApplier& getBloomEffectApplier();

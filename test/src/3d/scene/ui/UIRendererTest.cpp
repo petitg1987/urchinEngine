@@ -143,12 +143,17 @@ void UIRendererTest::buttonRemoveParentContainer() {
     std::weak_ptr<Container> childContainer = Container::create(container.get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
     std::weak_ptr<StaticBitmap> deleteButton = StaticBitmap::create(childContainer.lock().get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
     deleteButton.lock()->addEventListener(std::make_unique<DetachChildrenEventListener>(container.get()));
+    std::weak_ptr<Text> text = Text::create(deleteButton.lock().get(), Position(0.0f, 0.0f, PIXEL), "test", i18n("my.text"));
+    Text* textPTr = text.lock().get();
+    AssertHelper::assertTrue(uiRenderer->getI18nService().isLabelExist(textPTr));
 
     uiRenderer->onMouseMove(50.0, 50.0);
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
 
     AssertHelper::assertTrue(childContainer.expired());
     AssertHelper::assertTrue(deleteButton.expired());
+    AssertHelper::assertTrue(text.expired());
+    AssertHelper::assertTrue(!uiRenderer->getI18nService().isLabelExist(textPTr));
 }
 
 void UIRendererTest::containerWithLazyWidgets() {

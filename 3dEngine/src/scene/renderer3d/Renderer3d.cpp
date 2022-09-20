@@ -157,6 +157,10 @@ namespace urchin {
         }
     }
 
+    bool Renderer3d::isShadowActivated() const {
+        return visualOption.isShadowActivated;
+    }
+
     AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() {
         return ambientOcclusionManager;
     }
@@ -166,6 +170,10 @@ namespace urchin {
             visualOption.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
             createOrUpdateLightingPass();
         }
+    }
+
+    bool Renderer3d::isAmbientOcclusionActivated() const {
+        return visualOption.isAmbientOcclusionActivated;
     }
 
     TransparentManager& Renderer3d::getTransparentManager() {
