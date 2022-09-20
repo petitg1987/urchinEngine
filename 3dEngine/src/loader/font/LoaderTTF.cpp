@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <cstring>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <UrchinCommon.h>
@@ -13,6 +14,7 @@ namespace urchin {
         assert(params.find("fontColor") != params.end());
         unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("fontSize")->second);
         Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
+        std::array<unsigned char, 3> fontColor255 = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};
 
         //initialize freetype
         FT_Library library;
@@ -105,14 +107,17 @@ namespace urchin {
         std::vector<unsigned char> texels(dimensionTexture * dimensionTexture * NUM_COLORS, 0);
         for (unsigned int i = 0, c = 0; i < dimensionTexture; i += dimensionCharacters) {
             for (unsigned int j = 0; j < dimensionTexture; j += dimensionCharacters, c++) {
-                for (unsigned int yy = 0, m = 0; yy < glyph[c].height; yy++) {
-                    std::size_t initIndex = (i + yy) * dimensionTexture * NUM_COLORS;
-                    for (unsigned int xx = 0; xx < glyph[c].width; xx++, m++) {
-                        texels[initIndex + ((j + xx) * NUM_COLORS) + 0] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.X * 255) : 0;
-                        texels[initIndex + ((j + xx) * NUM_COLORS) + 1] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Y * 255) : 0;
-                        texels[initIndex + ((j + xx) * NUM_COLORS) + 2] = (glyph[c].buf[m] > 0) ? static_cast<unsigned char>(fontColor.Z * 255) : 0;
 
-                        texels[initIndex + ((j + xx) * NUM_COLORS) + 3] = glyph[c].buf[m];
+                const Glyph& currentGlyph = glyph[c];
+                for (unsigned int yy = 0, m = 0; yy < currentGlyph.height; yy++) {
+                    std::size_t baseYIndex = (i + yy) * dimensionTexture * NUM_COLORS;
+                    for (unsigned int xx = 0; xx < currentGlyph.width; xx++, m++) {
+                        std::size_t baseIndex = baseYIndex + ((j + xx) * NUM_COLORS);
+
+                        if (currentGlyph.buf[m] > 0) {
+                            std::memcpy(&texels[baseIndex], fontColor255.data(), 3 * sizeof(unsigned char));
+                        }
+                        texels[baseIndex + 3] = currentGlyph.buf[m];
                     }
                 }
             }
@@ -123,6 +128,7 @@ namespace urchin {
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {
             glyph[i].buf.clear();
+            glyph[i].buf.shrink_to_fit();
         }
 
         return std::make_shared<Font>(fontSize, fontColor, alphabetTexture, glyph, spaceBetweenCharacters, spaceBetweenLines, height);
