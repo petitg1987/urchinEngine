@@ -46,8 +46,20 @@ namespace urchin {
             propertyValue = line.substr(equalPosition + 1);
             StringUtil::trim(propertyValue);
             StringUtil::replaceAll(propertyValue, "\\n", "\n");
-            if (propertyValue.size() > 1 && propertyValue[0] == '"' && propertyValue[propertyValue.size() - 1] == '"') { //quoted string value
-                propertyValue = propertyValue.substr(1, propertyValue.size() - 2);
+            if (!propertyValue.empty() && propertyValue[0] == '"') { //quoted value
+                std::size_t endQuotePosition = 0;
+                for (std::size_t i = 1; i < propertyValue.size(); ++i) {
+                    if (propertyValue[i] == '"') {
+                        if (i < propertyValue.size() - 1 && propertyValue[i + 1] == '"') {
+                            ++i; //quote escaped with double quote
+                        } else {
+                            endQuotePosition = i;
+                            break;
+                        }
+                    }
+                }
+                propertyValue = propertyValue.substr(1, (endQuotePosition == 0) ? 0 : endQuotePosition - 1);
+                StringUtil::replaceAll(propertyValue, "\"\"", "\"");
             }
 
             properties[propertyName] = propertyValue;
