@@ -15,7 +15,7 @@ void BodyAABBTreeTest::twoBodiesPairedAndRemove() {
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA);
     bodyAabbTree.addBody(bodyB);
-    auto bodyANodeData = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
+    const auto& bodyANodeData = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
 
     AssertHelper::assertUnsignedIntEquals(bodyAabbTree.getOverlappingPairs().size(), 1);
     AssertHelper::assertStringEquals(bodyAabbTree.getOverlappingPairs()[0]->getBody1().getId(), "bodyB");
@@ -56,8 +56,8 @@ void BodyAABBTreeTest::oneGhostBodyAndRemove(bool removeGhostBody) {
     BodyAABBTree bodyAabbTree;
     bodyAabbTree.addBody(bodyA);
     bodyAabbTree.addBody(bodyB);
-    auto bodyANodeData = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
-    auto bodyBNodeData = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyB.get()));
+    const auto& bodyANodeData = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
+    const auto& bodyBNodeData = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyB.get()));
 
     AssertHelper::assertUnsignedIntEquals(bodyAabbTree.getOverlappingPairs().size(), 0);
     std::vector<OverlappingPair> bodyBPairs;
@@ -71,7 +71,7 @@ void BodyAABBTreeTest::oneGhostBodyAndRemove(bool removeGhostBody) {
     //remove a body test:
     if (removeGhostBody) {
         bodyAabbTree.removeBody(*bodyB);
-        auto bodyANodeDataAfterRemove = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
+        const auto& bodyANodeDataAfterRemove = static_cast<BodyAABBNodeData&>(bodyAabbTree.getNodeData(bodyA.get()));
         std::vector<OverlappingPair> bodyBPairs;
         bodyB->getPairContainer()->retrieveCopyOverlappingPairs(bodyBPairs);
         AssertHelper::assertTrue(bodyBPairs.empty());
