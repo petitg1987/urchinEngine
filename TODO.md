@@ -56,6 +56,7 @@
 * Navigation mesh
   * **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
   * **BUG** (`major`): Surrounded faces are not walkable (NavMeshGeneratorTest#surroundedWalkableFace)
+  * **BUG** (`major`): Union of room walls create wrong polygons (PolygonsUnionTest#roomPolygonsUnion)
   * **BUG** (`medium`): Jump links visualization are not exact
   * **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
   * **NEW FEATURE** (`major`): Add possibility to exclude dynamic objects from navigation mesh

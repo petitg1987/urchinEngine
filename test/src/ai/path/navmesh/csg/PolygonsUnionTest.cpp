@@ -369,6 +369,29 @@ void PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon() {
                                                                            Point2<float>(1.0f, 3.0f), Point2<float>(1.4f, 1.4f), Point2<float>(3.0f, 1.0f)});
 }
 
+void PolygonsUnionTest::roomPolygonsUnion() {
+    std::vector<Point2<float>> frontLeftWallPolyPoints = {Point2<float>(-11.875f, -0.875f), Point2<float>(-9.875f, -0.875f), Point2<float>(-9.875f, -2.125f), Point2<float>(-11.875f, -2.125f)};
+    std::vector<Point2<float>> frontDoorPolyPoints = {Point2<float>(-10.375f, -1.14999998f), Point2<float>(-7.625f, -1.14999998f), Point2<float>(-7.625f, -1.85000002f), Point2<float>(-10.375f, -1.85000002f)};
+    std::vector<Point2<float>> rightWallPolyPoints = {Point2<float>(-7.37499905f, 2.875f), Point2<float>(-6.12499905f, 2.87499952f), Point2<float>(-6.12500048f, -1.37500238f), Point2<float>(-7.37500048f, -1.37500191f)};
+    std::vector<Point2<float>> frontRightWallPolyPoints = {Point2<float>(-8.125f, -0.875f), Point2<float>(-6.125f, -0.875f), Point2<float>(-6.125f, -2.125f), Point2<float>(-8.125f, -2.125f)};
+    std::vector<Point2<float>> backWallPolyPoints = {Point2<float>(-11.125001f, 3.625f), Point2<float>(-6.87499905f, 3.625f), Point2<float>(-6.87499905f, 2.375f), Point2<float>(-11.125001f, 2.375f)};
+    std::vector<Point2<float>> leftWallPolyPoints = {Point2<float>(-11.8749971f, 2.87500024f), Point2<float>(-10.6249971f, 2.87499976f), Point2<float>(-10.625f, -1.37500238f), Point2<float>(-11.875f, -1.37500191f)};
+    std::vector<Point2<float>> leftCornerWallPolyPoints = {Point2<float>(-12.0602951f, 3.73862982f), Point2<float>(-11.7788267f, 4.02009869f), Point2<float>(-10.624999f, 4.12500286f), Point2<float>(-12.375001f, 2.37499976f)};
+
+    std::vector<CSGPolygon<float>> allPolygons = {
+            CSGPolygon<float>("frontLeftWall", std::move(frontLeftWallPolyPoints)),
+            CSGPolygon<float>("frontDoor", std::move(frontDoorPolyPoints)),
+            CSGPolygon<float>("rightWall", std::move(rightWallPolyPoints)),
+            CSGPolygon<float>("frontRightWall", std::move(frontRightWallPolyPoints)),
+            CSGPolygon<float>("backWall", std::move(backWallPolyPoints)),
+            CSGPolygon<float>("leftWall", std::move(leftWallPolyPoints)),
+            CSGPolygon<float>("leftCornerWall", std::move(leftCornerWallPolyPoints))
+    };
+    PolygonsUnion<float>::instance().unionPolygons(allPolygons); //TO DO: bug to fix (make crash commented line in CSGPolygon#CSGPolygon())
+
+    //no crash check
+}
+
 CppUnit::Test* PolygonsUnionTest::suite() {
     auto* suite = new CppUnit::TestSuite("PolygonsUnionTest");
 
@@ -403,6 +426,8 @@ CppUnit::Test* PolygonsUnionTest::suite() {
 
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("threePolygonsUnion", &PolygonsUnionTest::threePolygonsUnion));
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAndSeparatePolygon", &PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon));
+
+    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("roomPolygonsUnion", &PolygonsUnionTest::roomPolygonsUnion));
 
     return suite;
 }
