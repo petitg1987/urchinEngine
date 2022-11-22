@@ -60,7 +60,7 @@ namespace urchin {
                 auto defaultAlbedoTexture = Texture::build(filename + " - default albedo", 1, 1, TextureFormat::RGBA_8_INT, defaultAlbedoColor.data());
                 material = MaterialBuilder::create("defaultMaterial", defaultAlbedoTexture, false)->build();
             } else {
-                material = ResourceRetriever::instance().getResource<Material>(materialFilename, {});
+                material = ResourceRetriever::instance().getResource<Material>(materialFilename);
             }
 
             //numVertices

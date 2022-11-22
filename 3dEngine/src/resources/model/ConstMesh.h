@@ -37,7 +37,7 @@ namespace urchin {
             ConstMesh(std::shared_ptr<Material>, const std::vector<Vertex>&, std::vector<Point2<float>>,
                     std::vector<unsigned int>, std::vector<Weight>, const std::vector<Bone>&);
 
-            const Material& getInitialMaterial() const;
+            const std::shared_ptr<Material>& getInitialMaterialPtr() const;
 
             unsigned int getNumberVertices() const;
             const Vertex& getStructVertex(unsigned int) const;

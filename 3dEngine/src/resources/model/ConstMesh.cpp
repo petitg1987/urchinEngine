@@ -33,8 +33,8 @@ namespace urchin {
         }
     }
 
-    const Material& ConstMesh::getInitialMaterial() const {
-        return *initialMaterial;
+    const std::shared_ptr<Material>& ConstMesh::getInitialMaterialPtr() const {
+        return initialMaterial;
     }
 
     unsigned int ConstMesh::getNumberVertices() const {

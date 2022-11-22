@@ -390,7 +390,10 @@ namespace urchin {
     }
 
     void Model::updateMaterial(unsigned int meshIndex, std::shared_ptr<Material> material) {
-        if (material.get() != &meshes->getMesh(meshIndex).getMaterial()) {
+        if (material.get() != meshes->getMesh(meshIndex).getMaterialPtr().get()) {
+            #ifdef URCHIN_DEBUG
+                assert(material->getId() != meshes->getMesh(meshIndex).getMaterial().getId());
+            #endif
             meshes->updateMaterial(meshIndex, std::move(material));
             notifyMeshMaterialUpdated(meshIndex);
         }

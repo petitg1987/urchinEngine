@@ -6,7 +6,7 @@ namespace urchin {
 
     Mesh::Mesh(const ConstMesh& constMesh) :
             constMesh(constMesh),
-            material(std::make_shared<Material>(constMesh.getInitialMaterial())) {
+            material(constMesh.getInitialMaterialPtr()) {
 
     }
 
