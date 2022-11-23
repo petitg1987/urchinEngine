@@ -7,6 +7,7 @@ namespace urchin {
     class Resource {
         public:
             Resource();
+            Resource(const Resource&) = delete; //Resources are immutable and cannot be copied. This deletion guarantee that comparison of shared_ptr<Resource> compares identical resources.
             virtual ~Resource() = default;
 
             const std::string& getId() const;

@@ -24,7 +24,7 @@ namespace urchin {
             };
 
             ~TextureParam();
-            TextureParam(TextureParam&&) = default;
+            TextureParam(TextureParam&&) noexcept = default;
             TextureParam(const TextureParam&) = delete; //delete copy constructor to avoid handling of TextureSamplerCache#SharedSampler#useCount
             TextureParam& operator=(const TextureParam&) = delete; //delete assign operator to avoid handling of TextureSamplerCache#SharedSampler#useCount
 
