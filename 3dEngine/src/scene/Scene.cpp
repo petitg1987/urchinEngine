@@ -19,7 +19,8 @@ namespace urchin {
             frameIndex(0),
             screenRenderTarget(ScreenRender("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
-            activeUiRenderers(nullptr) {
+            activeUiRenderers(nullptr),
+            gammaFactor(1.0f) {
         //scene properties
         this->framebufferSizeRetriever->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
@@ -148,7 +149,7 @@ namespace urchin {
     }
 
     Renderer3d& Scene::newRenderer3d(std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, bool enable) {
-        auto renderer3d = std::make_unique<Renderer3d>(screenRenderTarget, std::move(camera), visualConfig, i18nService);
+        auto renderer3d = std::make_unique<Renderer3d>(gammaFactor, screenRenderTarget, std::move(camera), visualConfig, i18nService);
         if (enable) {
             enableRenderer3d(renderer3d.get());
         }
@@ -177,7 +178,7 @@ namespace urchin {
     }
 
     UIRenderer& Scene::newUIRenderer(bool enable) {
-        auto uiRenderer = std::make_unique<UIRenderer>(screenRenderTarget, i18nService);
+        auto uiRenderer = std::make_unique<UIRenderer>(gammaFactor, screenRenderTarget, i18nService);
         if (enable) {
             enableUIRenderer(uiRenderer.get());
         }
@@ -202,6 +203,17 @@ namespace urchin {
 
     UIRenderer* Scene::getActiveUIRenderer() const {
         return activeUiRenderers;
+    }
+
+    void Scene::updateGammaFactor(float gammaFactor) {
+        this->gammaFactor = gammaFactor;
+
+        for (const auto& renderer3d : renderers3d) {
+            renderer3d->onGammaFactorUpdate(gammaFactor);
+        }
+        for (const auto& uiRenderer : uiRenderers) {
+            uiRenderer->onGammaFactorUpdate(gammaFactor);
+        }
     }
 
     void Scene::takeScreenShot(const std::string& filename, unsigned int width, unsigned int height) const {

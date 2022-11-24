@@ -41,6 +41,7 @@ namespace urchin {
             void removeUIRenderer(const UIRenderer*);
             UIRenderer* getActiveUIRenderer() const;
 
+            void updateGammaFactor(float);
             void takeScreenShot(const std::string&, unsigned int = 0, unsigned int = 0) const;
 
             //events
@@ -83,6 +84,7 @@ namespace urchin {
             Renderer3d* activeRenderer3d;
             std::vector<std::unique_ptr<UIRenderer>> uiRenderers;
             UIRenderer* activeUiRenderers;
+            float gammaFactor;
     };
 
 }

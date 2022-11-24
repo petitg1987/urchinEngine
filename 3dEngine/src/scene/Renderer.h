@@ -6,9 +6,14 @@ namespace urchin {
 
     class Renderer {
         public:
+            explicit Renderer(float);
             virtual ~Renderer() = default;
 
             virtual void onResize(unsigned int, unsigned int) = 0;
+
+            void onGammaFactorUpdate(float);
+            virtual void applyUpdatedGammaFactor() = 0;
+            float getGammaFactor() const;
 
             virtual bool onKeyPress(InputDeviceKey) = 0;
             virtual bool onKeyRelease(InputDeviceKey) = 0;
@@ -18,6 +23,9 @@ namespace urchin {
             virtual void onDisable() = 0;
 
             virtual void prepareRendering(std::uint32_t, float, unsigned int&) = 0;
+
+        private:
+            float gammaFactor;
     };
 
 }

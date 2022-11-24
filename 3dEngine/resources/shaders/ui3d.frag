@@ -3,9 +3,10 @@
 
 layout(constant_id = 0) const float AMBIENT = 0.4;
 
-layout(std140, set = 0, binding = 2) uniform Alpha {
-    float factor;
-} alpha;
+layout(std140, set = 0, binding = 2) uniform ColorParams {
+    float alphaFactor;
+    float gammaFactor;
+} colorParams;
 layout(binding = 3) uniform sampler2D albedoTex;
 
 layout(location = 0) in vec2 texCoordinates;
@@ -21,7 +22,7 @@ void main() {
     if (color.a < 0.05) {
         discard;
     }
-    color.a *= alpha.factor;
+    color.a *= colorParams.alphaFactor;
     fragAlbedoAndEmissive = color; //Write color with alpha to compute the blend on the RGB channels. The alpha channel (=emissive) will stay unchanged thanks to the configured alpha blend functions.
 
     //ambient factor

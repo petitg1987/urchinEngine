@@ -31,7 +31,7 @@ namespace urchin {
 
     class UIRenderer final : public Renderer, public Observer {
         public:
-            UIRenderer(RenderTarget&, I18nService&);
+            UIRenderer(float, RenderTarget&, I18nService&);
             ~UIRenderer() override;
 
             //3d specific
@@ -59,6 +59,8 @@ namespace urchin {
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
             bool canInteractWithUi() const;
+
+            void applyUpdatedGammaFactor() override;
 
             void addWidget(const std::shared_ptr<Widget>&);
             void removeWidget(const Widget&);

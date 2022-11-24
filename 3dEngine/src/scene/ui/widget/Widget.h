@@ -78,6 +78,7 @@ namespace urchin {
             void updateRotation(float);
             float getRotation() const;
 
+            void applyUpdatedGammaFactor();
             void updateAlphaFactor(float);
             float getAlphaFactor() const;
 
@@ -158,7 +159,10 @@ namespace urchin {
             Size size;
             Vector2<float> scale;
             float rotationZ;
-            float alphaFactor;
+            struct ColorParams {
+                alignas(4) float alphaFactor;
+                alignas(4) float gammaFactor;
+            } colorParams;
             bool scissorEnabled;
             Vector2<int> scissorOffset;
             Vector2<int> scissorSize;

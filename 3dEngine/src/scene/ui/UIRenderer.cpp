@@ -11,7 +11,8 @@ namespace urchin {
     //debug parameters
     bool DEBUG_DISPLAY_FONT_TEXTURE = false;
 
-    UIRenderer::UIRenderer(RenderTarget& renderTarget, I18nService& i18nService) :
+    UIRenderer::UIRenderer(float gammaFactor, RenderTarget& renderTarget, I18nService& i18nService) :
+            Renderer(gammaFactor),
             renderTarget(renderTarget),
             i18nService(i18nService),
             clipboard(std::make_unique<ClipboardLocal>()),
@@ -311,6 +312,12 @@ namespace urchin {
 
     bool UIRenderer::canInteractWithUi() const {
         return bCanInteractWithUi;
+    }
+
+    void UIRenderer::applyUpdatedGammaFactor() {
+        for (const auto& widget : widgets) {
+            widget->applyUpdatedGammaFactor();
+        }
     }
 
     void UIRenderer::addWidget(const std::shared_ptr<Widget>& widget) {

@@ -17,7 +17,7 @@ namespace urchin {
             size(size),
             scale(Vector2<float>(1.0f, 1.0f)),
             rotationZ(0.0f),
-            alphaFactor(1.0f),
+            colorParams(ColorParams{.alphaFactor = 1.0f, .gammaFactor = 1.0f}),
             scissorEnabled(false),
             bIsVisible(true) {
 
@@ -307,7 +307,9 @@ namespace urchin {
 
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
-        rendererBuilder->addUniformData(sizeof(alphaFactor), &alphaFactor); //binding 2
+
+        colorParams.gammaFactor = uiRenderer->getGammaFactor();
+        rendererBuilder->addUniformData(sizeof(colorParams), &colorParams); //binding 2
 
         refreshCoordinates();
         rendererBuilder->addData(vertexCoord);
@@ -397,15 +399,26 @@ namespace urchin {
         return rotationZ;
     }
 
-    void Widget::updateAlphaFactor(float alphaFactor) {
-        this->alphaFactor = alphaFactor;
+    void Widget::applyUpdatedGammaFactor() {
+        this->colorParams.gammaFactor = uiRenderer->getGammaFactor();
         if (renderer) {
-            renderer->updateUniformData(2, &alphaFactor);
+            renderer->updateUniformData(2, &colorParams);
+        }
+
+        for (const auto& child : children) {
+            child->applyUpdatedGammaFactor();
+        }
+    }
+
+    void Widget::updateAlphaFactor(float alphaFactor) {
+        this->colorParams.alphaFactor = alphaFactor;
+        if (renderer) {
+            renderer->updateUniformData(2, &colorParams);
         }
     }
 
     float Widget::getAlphaFactor() const {
-        return alphaFactor;
+        return colorParams.alphaFactor;
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {

@@ -21,7 +21,9 @@ namespace urchin {
     bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
     bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
 
-    Renderer3d::Renderer3d(RenderTarget& finalRenderTarget, std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, I18nService& i18nService) :
+    Renderer3d::Renderer3d(float gammaFactor, RenderTarget& finalRenderTarget, std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, I18nService& i18nService) :
+            Renderer(gammaFactor),
+
             //scene properties
             finalRenderTarget(finalRenderTarget),
             sceneWidth(finalRenderTarget.getWidth()),
@@ -193,6 +195,10 @@ namespace urchin {
             this->isAntiAliasingActivated = isAntiAliasingActivated;
             createOrUpdateLightingPass();
         }
+    }
+
+    void Renderer3d::applyUpdatedGammaFactor() {
+        //TODO apply getGammaFactor()
     }
 
     void Renderer3d::onCameraProjectionUpdate() {

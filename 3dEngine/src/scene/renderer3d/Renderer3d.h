@@ -30,7 +30,7 @@ namespace urchin {
 
     class Renderer3d final : public Renderer, public Observer {
         public:
-            Renderer3d(RenderTarget&, std::shared_ptr<Camera>, const VisualConfig&, I18nService&);
+            Renderer3d(float, RenderTarget&, std::shared_ptr<Camera>, const VisualConfig&, I18nService&);
             ~Renderer3d() override;
 
             //scene properties
@@ -57,6 +57,7 @@ namespace urchin {
             AntiAliasingApplier& getAntiAliasingApplier();
             BloomEffectApplier& getBloomEffectApplier();
             void activateAntiAliasing(bool);
+            void applyUpdatedGammaFactor() override;
 
             //camera
             Camera& getCamera() const;
