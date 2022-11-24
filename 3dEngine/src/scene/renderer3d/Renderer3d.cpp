@@ -56,7 +56,7 @@ namespace urchin {
             visualOption({}),
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), !finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
-            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget)),
+            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget, getGammaFactor())),
 
             //debug
             refreshDebugFramebuffers(true) {
@@ -198,7 +198,7 @@ namespace urchin {
     }
 
     void Renderer3d::applyUpdatedGammaFactor() {
-        //TODO apply getGammaFactor()
+        bloomEffectApplier.onGammaFactorUpdate(getGammaFactor());
     }
 
     void Renderer3d::onCameraProjectionUpdate() {

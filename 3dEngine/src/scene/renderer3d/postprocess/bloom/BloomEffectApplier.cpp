@@ -5,20 +5,19 @@
 
 namespace urchin {
 
-    BloomEffectApplier::BloomEffectApplier(const Config& config, RenderTarget& outputRenderTarget) :
+    BloomEffectApplier::BloomEffectApplier(const Config& config, RenderTarget& outputRenderTarget, float gammaFactor) :
             config(config),
             outputRenderTarget(outputRenderTarget),
             sceneWidth(0),
             sceneHeight(0),
-            preFilterTweak({}) {
+            preFilterTweak({}),
+            gammaFactor(gammaFactor) {
         float filterSoftCurve = ConfigService::instance().getFloatValue("bloom.filterSoftCurve");
         float threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
         preFilterTweak.softCurveParams.X = threshold - filterSoftCurve;
         preFilterTweak.softCurveParams.Y = 2.0f * filterSoftCurve;
         preFilterTweak.softCurveParams.Z = 0.25f / std::max(filterSoftCurve, 0.0001f);
         preFilterTweak.threshold = threshold;
-
-        exposureFactor = ConfigService::instance().getFloatValue("bloom.exposureFactor");
     }
 
     BloomEffectApplier::~BloomEffectApplier() {
@@ -31,6 +30,14 @@ namespace urchin {
         this->sceneHeight = inputHdrTexture->getHeight();
 
         refreshRenderers();
+    }
+
+    void BloomEffectApplier::onGammaFactorUpdate(float gammaFactor) {
+        this->gammaFactor = gammaFactor;
+
+        if (combineRenderer) {
+            combineRenderer->updateUniformData(1, &gammaFactor);
+        }
     }
 
     void BloomEffectApplier::refreshRenderers() {
@@ -145,7 +152,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
-                ->addUniformData(sizeof(exposureFactor), &exposureFactor) //binding 1
+                ->addUniformData(sizeof(gammaFactor), &gammaFactor) //binding 1
                 ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 2
                 ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 3
                 ->build();
