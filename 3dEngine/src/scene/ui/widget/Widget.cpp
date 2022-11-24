@@ -284,10 +284,6 @@ namespace urchin {
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
-        if (scissorEnabled) {
-            rendererBuilder->setScissor(scissorOffset, scissorSize);
-        }
-
         Matrix4<float> normalMatrix;
         Matrix4<float> projectionViewModelMatrix;
         if (uiRenderer->getUi3dData()) {
@@ -316,6 +312,11 @@ namespace urchin {
         refreshCoordinates();
         rendererBuilder->addData(vertexCoord);
         rendererBuilder->addData(textureCoord);
+
+        refreshScissor(true);
+        if (scissorEnabled) {
+            rendererBuilder->setScissor(scissorOffset, scissorSize);
+        }
 
         return rendererBuilder;
     }
