@@ -28,9 +28,8 @@ namespace urchin {
             static int ceilToInt(double);
             static unsigned int ceilToUInt(double);
             static int floorToInt(float);
-            static unsigned int floorToUInt(float);
+            //info: do not create 'unsigned int floorToUInt(float/double)': too risky with -epsilon values
             static int floorToInt(double);
-            static unsigned int floorToUInt(double);
             template<class T> static T roundDivision(T, T);
     };
 

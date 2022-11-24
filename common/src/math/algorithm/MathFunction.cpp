@@ -93,16 +93,8 @@ namespace urchin {
         return (int)std::floor(value);
     }
 
-    unsigned int MathFunction::floorToUInt(float value) {
-        return (unsigned int)std::floor(value);
-    }
-
     int MathFunction::floorToInt(double value) {
         return (int)std::floor(value);
-    }
-
-    unsigned int MathFunction::floorToUInt(double value) {
-        return (unsigned int)std::floor(value);
     }
 
     /**

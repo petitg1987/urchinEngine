@@ -130,8 +130,8 @@ namespace urchin {
         float relativeMouseX = (float)mouseX - getGlobalPositionX();
         float sliderCursorXPosition = std::clamp(relativeMouseX, sliderCursorMinXPosition, sliderCursorMaxXPosition);
         float valuePercentage = 1.0f - ((sliderCursorMaxXPosition - sliderCursorXPosition) / (sliderCursorMaxXPosition - sliderCursorMinXPosition));
-        selectedIndex = MathFunction::floorToUInt((float)values.size() * valuePercentage);
-        selectedIndex = std::clamp(selectedIndex, 0u, (unsigned int)values.size() - 1u);
+        int rawSelectedIndex = MathFunction::floorToInt((float)values.size() * valuePercentage);
+        selectedIndex = (unsigned int)std::clamp(rawSelectedIndex, 0, (int)values.size() - 1);
 
         //move cursor
         moveSliderCursor();

@@ -80,8 +80,8 @@ namespace urchin {
 
         //X lines collision
         if (!isParallelToXAxis(pathLine, PARALLEL_EPSILON)) {
-            unsigned int xStartIndex = std::clamp(MathFunction::floorToUInt((float)std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
-            unsigned int xEndIndex = std::clamp(MathFunction::ceilToUInt((float)std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0u, heightfieldXSize - 1);
+            auto xStartIndex = (unsigned int)std::clamp(MathFunction::floorToInt((float)std::min(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0, (int)heightfieldXSize - 1);
+            auto xEndIndex = (unsigned int)std::clamp(MathFunction::ceilToInt((float)std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / (float)xInterval), 0, (int)heightfieldXSize - 1);
             pathPoints.reserve(pathPoints.size() + (xEndIndex - xStartIndex) + 1);
 
             unsigned int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
@@ -96,8 +96,8 @@ namespace urchin {
 
         //Z lines collision
         if (!isParallelToZAxis(pathLine, PARALLEL_EPSILON)) {
-            unsigned int zStartIndex = std::clamp(MathFunction::floorToUInt((float)std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
-            unsigned int zEndIndex = std::clamp(MathFunction::ceilToUInt((float)std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0u, heightfieldZSize - 1);
+            auto zStartIndex = (unsigned int)std::clamp(MathFunction::floorToInt((float)std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0, (int)heightfieldZSize - 1);
+            auto zEndIndex = (unsigned int)std::clamp(MathFunction::ceilToInt((float)std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / (float)zInterval), 0, (int)heightfieldZSize - 1);
             pathPoints.reserve(pathPoints.size() + (zEndIndex - zStartIndex) + 1);
 
             unsigned int xLastIndex = heightfieldXSize - 1;
