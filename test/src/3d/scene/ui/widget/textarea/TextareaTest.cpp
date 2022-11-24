@@ -83,7 +83,7 @@ std::unique_ptr<UIRenderer> TextareaTest::setupUiRenderer() {
     i18nService = std::make_unique<I18nService>();
     UISkinService::instance().setSkin("ui/skinDefinition.uda");
 
-    return std::make_unique<UIRenderer>(*renderTarget, *i18nService);
+    return std::make_unique<UIRenderer>(1.0f, *renderTarget, *i18nService);
 }
 
 CppUnit::Test* TextareaTest::suite() {
