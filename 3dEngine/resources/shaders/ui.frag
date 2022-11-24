@@ -16,5 +16,5 @@ layout(location = 0) out vec4 fragColor;
 void main() {
     fragColor = texture(albedoTex, texCoordinates);
     fragColor.a *= colorParams.alphaFactor;
-    fragColor = applyGammaCorrection(fragColor, colorParams.gammaFactor);
+    fragColor.rgb *= colorParams.gammaFactor;
 }

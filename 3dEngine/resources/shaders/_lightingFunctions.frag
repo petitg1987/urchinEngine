@@ -30,7 +30,3 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
 
     return lightValues;
 }
-
-vec4 applyGammaCorrection(vec4 color, float gammaFactor) {
-    return vec4(color.rgb * gammaFactor, color.a);
-}

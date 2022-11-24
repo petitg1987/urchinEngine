@@ -23,6 +23,7 @@ void main() {
         discard;
     }
     color.a *= colorParams.alphaFactor;
+    color.rgb *= colorParams.gammaFactor;
     fragAlbedoAndEmissive = color; //Write color with alpha to compute the blend on the RGB channels. The alpha channel (=emissive) will stay unchanged thanks to the configured alpha blend functions.
 
     //ambient factor
