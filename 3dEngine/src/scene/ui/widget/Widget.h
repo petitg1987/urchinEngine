@@ -138,7 +138,7 @@ namespace urchin {
             unsigned int computeDepthLevel() const;
             void refreshScissor(bool);
 
-            void updateRendererProperties(const Matrix4<float>&, const Vector2<float>&) const;
+            void updateProjectViewModelMatrix(const Matrix4<float>&, const Vector2<float>&) const;
 
             UIRenderer* uiRenderer;
             int mouseX;

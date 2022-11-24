@@ -9,6 +9,9 @@ namespace urchin {
             renderTarget(renderTarget),
             shader(shader),
             shapeType(shapeType),
+            customScissor(false),
+            scissorOffset(Vector2<int>(0, 0)),
+            scissorSize(Vector2<int>((int)renderTarget.getWidth(), (int)renderTarget.getHeight())),
             depthTestEnabled(false),
             depthWriteEnabled(false),
             cullFaceEnabled(true),
@@ -118,6 +121,24 @@ namespace urchin {
 
     const std::vector<BlendFunction>& GenericRendererBuilder::getBlendFunctions() const {
         return blendFunctions;
+    }
+
+    void GenericRendererBuilder::setScissor(const Vector2<int>& scissorOffset, const Vector2<int>& scissorSize) {
+        this->customScissor = true;
+        this->scissorOffset = scissorOffset;
+        this->scissorSize = scissorSize;
+    }
+
+    bool GenericRendererBuilder::hasCustomScissor() const {
+        return customScissor;
+    }
+
+    const Vector2<int>& GenericRendererBuilder::getScissorOffset() const {
+        return scissorOffset;
+    }
+
+    const Vector2<int>& GenericRendererBuilder::getScissorSize() const {
+        return scissorSize;
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableDepthTest() {

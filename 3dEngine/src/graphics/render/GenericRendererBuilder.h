@@ -42,6 +42,11 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> enableTransparency(const std::vector<BlendFunction>&);
             const std::vector<BlendFunction>& getBlendFunctions() const;
 
+            void setScissor(const Vector2<int>&, const Vector2<int>&);
+            bool hasCustomScissor() const;
+            const Vector2<int>& getScissorOffset() const;
+            const Vector2<int>& getScissorSize() const;
+
             std::shared_ptr<GenericRendererBuilder> enableDepthTest();
             bool isDepthTestEnabled() const;
             std::shared_ptr<GenericRendererBuilder> enableDepthWrite();
@@ -69,6 +74,9 @@ namespace urchin {
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             std::vector<BlendFunction> blendFunctions;
+            bool customScissor;
+            Vector2<int> scissorOffset;
+            Vector2<int> scissorSize;
             bool depthTestEnabled;
             bool depthWriteEnabled;
             bool cullFaceEnabled;

@@ -23,7 +23,9 @@ namespace urchin {
             indices(rendererBuilder.getIndices()),
             uniformData(rendererBuilder.getUniformData()),
             uniformTextureReaders(rendererBuilder.getUniformTextureReaders()),
-            customScissor(false),
+            customScissor(rendererBuilder.hasCustomScissor()),
+            scissorOffset(rendererBuilder.getScissorOffset()),
+            scissorSize(rendererBuilder.getScissorSize()),
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {

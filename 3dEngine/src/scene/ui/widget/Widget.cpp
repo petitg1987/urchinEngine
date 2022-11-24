@@ -284,6 +284,10 @@ namespace urchin {
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
+        if (scissorEnabled) {
+            rendererBuilder->setScissor(scissorOffset, scissorSize);
+        }
+
         Matrix4<float> normalMatrix;
         Matrix4<float> projectionViewModelMatrix;
         if (uiRenderer->getUi3dData()) {
@@ -394,6 +398,9 @@ namespace urchin {
 
     void Widget::updateAlphaFactor(float alphaFactor) {
         this->alphaFactor = alphaFactor;
+        if (renderer) {
+            renderer->updateUniformData(2, &alphaFactor);
+        }
     }
 
     float Widget::getAlphaFactor() const {
@@ -707,6 +714,10 @@ namespace urchin {
             currentWidget = parentContainer;
         }
 
+        if (renderer && scissorEnabled) {
+            renderer->updateScissor(scissorOffset, scissorSize);
+        }
+
         if (refreshChildScissor) {
             for (const auto& child: children) {
                 child->refreshScissor(refreshChildScissor);
@@ -716,7 +727,7 @@ namespace urchin {
 
     void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         if (isVisible()) {
-            updateRendererProperties(projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
+            updateProjectViewModelMatrix(projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
             if (renderer) {
                 renderer->enableRenderer(renderingOrder);
             }
@@ -729,7 +740,7 @@ namespace urchin {
         }
     }
 
-    void Widget::updateRendererProperties(const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
+    void Widget::updateProjectViewModelMatrix(const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
         if (renderer) {
             Matrix4<float> projectionViewModelMatrix;
 
@@ -766,10 +777,6 @@ namespace urchin {
 
             projectionViewModelMatrix *= translateScaleMatrix;
             renderer->updateUniformData(1, &projectionViewModelMatrix);
-            renderer->updateUniformData(2, &alphaFactor);
-            if (scissorEnabled) {
-                renderer->updateScissor(scissorOffset, scissorSize);
-            }
         }
     }
 
