@@ -13,12 +13,13 @@ set(CURL_MAKE               cd ${CURL_ROOT}/src/curl-static && make)
 set(CURL_INSTALL            cd ${CURL_ROOT}/src/curl-static && make install)
 
 ExternalProject_Add(curl-static
-        URL                 ${CMAKE_CURRENT_SOURCE_DIR}/deps/curl/curl-7.82.0.zip
-        URL_HASH            MD5=103a746d6b53f3ab184daa6260add764
-        PREFIX              ${CURL_ROOT}
-        CONFIGURE_COMMAND   ${CURL_CONFIGURE}
-        BUILD_COMMAND       ${CURL_MAKE}
-        INSTALL_COMMAND     ${CURL_INSTALL})
+        URL                         ${CMAKE_CURRENT_SOURCE_DIR}/deps/curl/curl-7.82.0.zip
+        URL_HASH                    MD5=103a746d6b53f3ab184daa6260add764
+        DOWNLOAD_EXTRACT_TIMESTAMP  true
+        PREFIX                      ${CURL_ROOT}
+        CONFIGURE_COMMAND           ${CURL_CONFIGURE}
+        BUILD_COMMAND               ${CURL_MAKE}
+        INSTALL_COMMAND             ${CURL_INSTALL})
 
 #Dependencies: ${CMAKE_BINARY_DIR}/deps/curl/lib/pkgconfig/libcurl.pc (see Libs.private)
 
