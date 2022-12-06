@@ -54,17 +54,15 @@ namespace urchin {
             std::size_t baseTextIndexToEndOfLineIndex(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) const;
             const Font& getFont() const;
 
-        protected:
-            void createOrUpdateWidget() override;
-            void uninitialize() override;
-
-            void refreshTranslation(const LanguageTranslator&) override;
-
         private:
             Text(Position, std::string, std::string, std::vector<std::string>);
 
+            void createOrUpdateWidget() override;
+            void uninitialize() override;
+
             int getMaxWidthPixel() const;
 
+            void refreshTranslation(const LanguageTranslator&) override;
             void refreshTextAndWidgetSize();
             void cutText();
             void refreshFont();

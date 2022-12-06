@@ -288,7 +288,7 @@ namespace urchin {
         model.detachModelInstanceDisplayer(*this);
         std::size_t erasedCount = std::erase_if(instanceModels, [&model](const Model* m) {return m == &model;});
         if (erasedCount != 1) {
-            throw std::runtime_error("Removing the instance model fail: " + model.getConstMeshes()->getId());
+            Logger::instance().logError("Removing the instance model fail: " + model.getConstMeshes()->getId());
         }
 
         model.removeObserver(this, Model::SCALE_UPDATED);

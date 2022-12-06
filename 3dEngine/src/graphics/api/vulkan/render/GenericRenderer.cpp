@@ -81,14 +81,14 @@ namespace urchin {
             if (renderTarget.isValidRenderTarget()) {
                 VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
-                    throw std::runtime_error("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
+                    Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
+                } else {
+                    destroyDescriptorSetsAndPool();
+                    destroyUniformBuffers();
+                    destroyIndexBuffer();
+                    destroyVertexBuffers();
+                    destroyPipeline();
                 }
-
-                destroyDescriptorSetsAndPool();
-                destroyUniformBuffers();
-                destroyIndexBuffer();
-                destroyVertexBuffers();
-                destroyPipeline();
             }
 
             isInitialized = false;

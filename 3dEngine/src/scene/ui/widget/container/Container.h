@@ -32,7 +32,7 @@ namespace urchin {
             int getScrollShiftY() const override;
             void onScrollableContentUpdated() const override;
 
-        protected:
+        private:
             Container(Position, Size, std::string);
 
             void createOrUpdateWidget() override;
@@ -41,7 +41,6 @@ namespace urchin {
             bool onMouseMoveEvent(int, int) override;
             bool onScrollEvent(double) override;
 
-        private:
             std::unique_ptr<Scrollbar> scrollbar;
     };
 

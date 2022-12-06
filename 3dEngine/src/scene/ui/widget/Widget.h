@@ -162,7 +162,8 @@ namespace urchin {
             struct ColorParams {
                 alignas(4) float alphaFactor;
                 alignas(4) float gammaFactor;
-            } colorParams;
+            };
+            ColorParams colorParams;
             bool scissorEnabled;
             Vector2<int> scissorOffset;
             Vector2<int> scissorSize;
