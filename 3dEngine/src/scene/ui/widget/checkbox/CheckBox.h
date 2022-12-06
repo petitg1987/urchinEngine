@@ -15,11 +15,10 @@ namespace urchin {
             void setChecked(bool);
             bool isChecked() const;
 
-        protected:
-            void createOrUpdateWidget() override;
-
         private:
             CheckBox(Position, Size, std::string);
+
+            void createOrUpdateWidget() override;
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void refreshTexture() const;

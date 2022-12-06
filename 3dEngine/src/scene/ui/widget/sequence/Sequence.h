@@ -27,12 +27,11 @@ namespace urchin {
             void setLeftButtonEventListener(std::shared_ptr<EventListener>);
             void setRightButtonEventListener(std::shared_ptr<EventListener>);
 
-        protected:
-            void createOrUpdateWidget() override;
-            void prepareWidgetRendering(float) override;
-
         private:
             Sequence(Position, Size, std::string, const std::vector<ParameterizedText>&);
+
+            void createOrUpdateWidget() override;
+            void prepareWidgetRendering(float) override;
 
             void setupLeftButtonListeners();
             void setupRightButtonListeners();

@@ -18,12 +18,11 @@ namespace urchin {
 
             WidgetType getWidgetType() const override;
 
-        protected:
-            void createOrUpdateWidget() override;
-            void prepareWidgetRendering(float) override;
-
         private:
             Button(Position, Size, std::string, std::string);
+
+            void createOrUpdateWidget() override;
+            void prepareWidgetRendering(float) override;
 
             void refreshTexture();
 

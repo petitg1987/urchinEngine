@@ -24,12 +24,11 @@ namespace urchin {
             unsigned int getMaxCharacter() const;
             unsigned int getCharacterCount() const;
 
-        protected:
-            void createOrUpdateWidget() override;
-            void prepareWidgetRendering(float) override;
-
         private:
             Textarea(Position, Size, std::string);
+
+            void createOrUpdateWidget() override;
+            void prepareWidgetRendering(float) override;
 
             bool onKeyPressEvent(InputDeviceKey) override;
             bool onKeyReleaseEvent(InputDeviceKey) override;

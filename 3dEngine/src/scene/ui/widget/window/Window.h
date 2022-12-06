@@ -18,11 +18,10 @@ namespace urchin {
 
             WidgetType getWidgetType() const override;
 
-        protected:
-            void createOrUpdateWidget() override;
-
         private:
             Window(Position, Size, std::string, std::string);
+
+            void createOrUpdateWidget() override;
 
             bool onKeyPressEvent(InputDeviceKey) override;
             bool onKeyReleaseEvent(InputDeviceKey) override;

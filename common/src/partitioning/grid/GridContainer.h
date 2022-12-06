@@ -34,7 +34,7 @@ namespace urchin {
                 NEGATIVE
             };
 
-            GridContainer();
+            GridContainer() = default;
 
             bool addItem(std::shared_ptr<T>);
             std::shared_ptr<T> removeItem(const Point3<int>&);
@@ -51,7 +51,7 @@ namespace urchin {
             std::int64_t buildKey(const Point3<int>&, std::size_t) const;
             typename ItemSet<T>::iterator findInItemSet(const ItemSet<T>&, const Point3<int>&, std::size_t) const;
 
-            std::unordered_map<std::int64_t, ItemSet<T>> axisSortedItems[3];
+            std::unordered_map<std::int64_t, ItemSet<T>> axisSortedItems[3] = {};
     };
 
     #include "GridContainer.inl"

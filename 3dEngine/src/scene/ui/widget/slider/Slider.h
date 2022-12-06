@@ -22,15 +22,15 @@ namespace urchin {
             unsigned int getSelectedIndex() const;
             void setSelectedIndex(unsigned int);
 
-        protected:
+        private:
+            Slider(Position, Size, std::string, const std::vector<ParameterizedText>&);
+
             void createOrUpdateWidget() override;
+
             bool onKeyPressEvent(InputDeviceKey) override;
             bool onKeyReleaseEvent(InputDeviceKey) override;
             bool onMouseMoveEvent(int, int) override;
             void onResetStateEvent() override;
-
-        private:
-            Slider(Position, Size, std::string, const std::vector<ParameterizedText>&);
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void updateSliderValue(int);

@@ -23,6 +23,7 @@ namespace urchin {
 
             UdaChunk(std::string, std::string, std::map<std::string, std::string, std::less<>>, UdaChunk*);
             UdaChunk(const UdaChunk&);
+            ~UdaChunk() = default;
             UdaChunk& operator=(const UdaChunk&) = delete;
             UdaChunk(UdaChunk&&) noexcept = default;
             UdaChunk& operator=(UdaChunk&&) noexcept = delete;

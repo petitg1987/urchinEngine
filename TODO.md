@@ -111,4 +111,5 @@
   * **NEW FEATURE** (`medium`): Make objects without physics selectable with left click
   * **NEW FEATURE** (`medium`): Display box around objects which don't have mesh (allow to select them easily with left click)
 * UI
+  * **BUG** (`medium`): When moving the mouse to move an object: the object can sometimes move in the wrong direction
   * **NEW FEATURE** (`minor`): Allow undoing the actions
