@@ -13,7 +13,7 @@ namespace urchin {
             stopAnimationAtLastFrame(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
             cullBehavior(CullBehavior::CULL),
-            originalMeshesUpdated(false) {
+            originalVerticesOrUvUpdated(false) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
             meshes = std::make_unique<Meshes>(std::move(constMeshes));
@@ -29,7 +29,7 @@ namespace urchin {
             stopAnimationAtLastFrame(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
             cullBehavior(CullBehavior::CULL),
-            originalMeshesUpdated(false) {
+            originalVerticesOrUvUpdated(false) {
         initialize();
     }
 
@@ -42,7 +42,7 @@ namespace urchin {
             transform(model.getTransform()),
             shadowBehavior(model.getShadowBehavior()),
             cullBehavior(model.getCullBehavior()),
-            originalMeshesUpdated(model.isOriginalMeshesUpdated()) {
+            originalVerticesOrUvUpdated(model.isOriginalVerticesOrUvUpdated()) {
         if (model.meshes) {
             meshes = std::make_unique<Meshes>(model.meshes->copyConstMeshesRef());
         }
@@ -200,14 +200,14 @@ namespace urchin {
         for (std::size_t updatedMeshIndex : activeAnimation->getAnimatedMeshIndices()) {
             meshesUpdated[updatedMeshIndex] = true;
         }
-        originalMeshesUpdated = true;
+        originalVerticesOrUvUpdated = true;
         notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
     void Model::notifyMeshVerticesUpdated() {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), true);
 
-        originalMeshesUpdated = true;
+        originalVerticesOrUvUpdated = true;
         notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
@@ -215,7 +215,7 @@ namespace urchin {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
         meshesUpdated[updatedMeshIndex] = true;
 
-        originalMeshesUpdated = true;
+        originalVerticesOrUvUpdated = true;
         notifyObservers(this, Model::MESH_VERTICES_UPDATED);
     }
 
@@ -223,7 +223,7 @@ namespace urchin {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
         meshesUpdated[updatedMeshIndex] = true;
 
-        originalMeshesUpdated = true;
+        originalVerticesOrUvUpdated = true;
         notifyObservers(this, Model::MESH_UV_UPDATED);
     }
 
@@ -231,7 +231,6 @@ namespace urchin {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
         meshesUpdated[updatedMeshIndex] = true;
 
-        originalMeshesUpdated = true;
         notifyObservers(this, Model::MATERIAL_UPDATED);
     }
 
@@ -355,8 +354,8 @@ namespace urchin {
         return cullBehavior;
     }
 
-    bool Model::isOriginalMeshesUpdated() const {
-        return originalMeshesUpdated;
+    bool Model::isOriginalVerticesOrUvUpdated() const {
+        return originalVerticesOrUvUpdated;
     }
 
     bool Model::isMeshUpdated(unsigned int meshIndex) const {

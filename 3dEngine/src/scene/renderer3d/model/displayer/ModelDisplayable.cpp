@@ -26,8 +26,10 @@ namespace urchin {
     std::size_t ModelDisplayable::computeInstanceId(DisplayMode displayMode) const {
         const auto* model = static_cast<const Model*>(this);
 
-        if (!model->getMeshes() || model->isOriginalMeshesUpdated()) {
-            return INSTANCING_DENY_ID; //no instancing on models animated or where mesh is manually updated
+        if (!model->getMeshes() || model->isOriginalVerticesOrUvUpdated()) {
+            //Currently, the instance hash is computed on the getConstMeshes() and not on the getMesh() for the vertices/UV.
+            //Therefore, it is not possible to identify when instancing is required on mesh where the vertices/UV have been updated (manually or by an animation).
+            return INSTANCING_DENY_ID; //no instancing
         }
 
         std::size_t instanceHash = model->getConstMeshes()->retrieveHashId();

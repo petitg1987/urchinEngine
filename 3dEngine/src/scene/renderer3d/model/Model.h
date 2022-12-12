@@ -72,7 +72,7 @@ namespace urchin {
             ShadowBehavior getShadowBehavior() const;
             void setCullBehavior(CullBehavior);
             CullBehavior getCullBehavior() const;
-            bool isOriginalMeshesUpdated() const;
+            bool isOriginalVerticesOrUvUpdated() const;
             bool isMeshUpdated(unsigned int) const;
 
             void updateAnimation(float);
@@ -111,7 +111,7 @@ namespace urchin {
             ShadowBehavior shadowBehavior;
             CullBehavior cullBehavior;
             std::vector<bool> meshesUpdated;
-            bool originalMeshesUpdated;
+            bool originalVerticesOrUvUpdated;
     };
 
 }
