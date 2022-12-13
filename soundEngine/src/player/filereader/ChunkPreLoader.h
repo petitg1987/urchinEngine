@@ -11,13 +11,13 @@ namespace urchin {
         public:
             ChunkPreLoader();
 
-            const PreLoadedChunks& preLoad(const std::string&);
+            PreLoadedChunks preLoad(const std::string&);
 
         private:
             unsigned int nbChunkBuffer;
             unsigned int chunkSizeInMs;
 
-            std::map<std::string, PreLoadedChunks, std::less<>> chunksCache;
+            LRUCache<std::string, PreLoadedChunks> chunksCache;
     };
 
 }

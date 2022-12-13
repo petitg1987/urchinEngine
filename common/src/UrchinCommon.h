@@ -93,6 +93,7 @@
 #include <pattern/tag/TaggableResource.h>
 #include <pattern/tag/TagHolder.h>
 #include <pattern/queue/CircularFifo.h>
+#include <pattern/cache/LRUCache.h>
 
 #include <profiler/Profiler.h>
 #include <profiler/ScopeProfiler.h>

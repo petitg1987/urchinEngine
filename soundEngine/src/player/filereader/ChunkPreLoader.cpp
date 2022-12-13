@@ -5,14 +5,15 @@ namespace urchin {
 
     ChunkPreLoader::ChunkPreLoader() :
             nbChunkBuffer(ConfigService::instance().getUnsignedIntValue("player.numberOfStreamBuffer")),
-            chunkSizeInMs(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInMs")) {
+            chunkSizeInMs(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInMs")),
+            chunksCache(50) /* TODO avoid hardcoded value */ {
 
     }
 
-    const PreLoadedChunks& ChunkPreLoader::preLoad(const std::string& filename) { //TODO clean cache
-        auto itFind = chunksCache.find(filename);
-        if (itFind != chunksCache.end()) {
-            return itFind->second;
+    PreLoadedChunks ChunkPreLoader::preLoad(const std::string& filename) {
+        std::optional<PreLoadedChunks> chunkCached = chunksCache.get(filename);
+        if (chunkCached) {
+            return chunkCached.value();
         }
 
         SoundFileReader soundFileReader(filename);
@@ -29,8 +30,8 @@ namespace urchin {
             preLoadedChunks.chunks[chunkIndex].resize(numSamplesRead);
         }
 
-        auto itInsert = chunksCache.try_emplace(filename, std::move(preLoadedChunks));
-        return itInsert.first->second;
+        chunksCache.put(filename, preLoadedChunks);
+        return preLoadedChunks;
     }
 
 }
