@@ -29,7 +29,7 @@ namespace urchin {
             preLoadedChunks.chunks[chunkIndex].resize(numSamplesRead);
         }
 
-        auto itInsert = chunksCache.try_emplace(filename, preLoadedChunks);
+        auto itInsert = chunksCache.try_emplace(filename, std::move(preLoadedChunks));
         return itInsert.first->second;
     }
 
