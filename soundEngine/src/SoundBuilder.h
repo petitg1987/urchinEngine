@@ -2,6 +2,7 @@
 
 #include <SoundComponent.h>
 #include <trigger/ZoneTrigger.h>
+#include <player/filereader/ChunkPreLoader.h>
 
 namespace urchin {
 
@@ -31,6 +32,7 @@ namespace urchin {
             std::shared_ptr<SoundComponent> buildSoundComponent(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
 
             SoundEnvironment& soundEnvironment;
+            ChunkPreLoader chunkPreLoader;
     };
 
 }

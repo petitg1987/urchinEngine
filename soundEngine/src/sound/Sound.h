@@ -3,6 +3,8 @@
 #include <string>
 #include <AL/al.h>
 
+#include <player/filereader/ChunkPreLoader.h>
+
 namespace urchin {
 
     class Sound {
@@ -20,7 +22,7 @@ namespace urchin {
             explicit Sound(std::string, SoundCategory, float);
             virtual ~Sound() = default;
 
-            void preLoadChunks();
+            void preLoadChunks(ChunkPreLoader&);
             bool hasPreLoadedChunks() const;
             std::vector<int16_t> getPreLoadedChunk(std::size_t, bool) const;
 
@@ -33,13 +35,11 @@ namespace urchin {
             float getInitialVolume() const;
 
         private:
-
             std::string filename;
             SoundCategory category;
             float initialVolume;
 
-            std::size_t chunkMaxSize;
-            std::vector<std::vector<int16_t>> preLoadedChunks;
+            PreLoadedChunks preLoadedChunks;
     };
 
 }
