@@ -39,7 +39,8 @@ namespace urchin {
             SoundCategory category;
             float initialVolume;
 
-            PreLoadedChunks preLoadedChunks;
+            std::vector<std::vector<int16_t>> preLoadedChunks;
+            std::size_t chunkMaxSize = 0;
     };
 
 }

@@ -15,31 +15,33 @@ namespace urchin {
     }
 
     void Sound::preLoadChunks(ChunkPreLoader& chunkPreLoader) {
-        preLoadedChunks = chunkPreLoader.preLoad(filename);
+        const PreLoadedChunks& plc = chunkPreLoader.preLoad(filename);
+        preLoadedChunks = plc.chunks;
+        chunkMaxSize = plc.chunkMaxSize;
     }
 
     bool Sound::hasPreLoadedChunks() const {
-        return !preLoadedChunks.chunks.empty();
+        return !preLoadedChunks.empty();
     }
 
     std::vector<int16_t> Sound::getPreLoadedChunk(std::size_t chunkIndex, bool loop) const {
-        assert(chunkIndex < preLoadedChunks.chunks.size());
+        assert(chunkIndex < preLoadedChunks.size());
         if (loop) {
-            if (preLoadedChunks.chunks[chunkIndex].size() == preLoadedChunks.chunkMaxSize) {
-                return preLoadedChunks.chunks[chunkIndex];
+            if (preLoadedChunks[chunkIndex].size() == chunkMaxSize) {
+                return preLoadedChunks[chunkIndex];
             } else {
-                std::vector<int16_t> preLoadedChunkLoop = preLoadedChunks.chunks[chunkIndex];
-                preLoadedChunkLoop.resize(preLoadedChunks.chunkMaxSize);
+                std::vector<int16_t> preLoadedChunkLoop = preLoadedChunks[chunkIndex];
+                preLoadedChunkLoop.resize(chunkMaxSize);
                 std::size_t readIndex = 0;
-                for (std::size_t writeIndex = preLoadedChunks.chunks[chunkIndex].size(); writeIndex < preLoadedChunkLoop.size(); ++writeIndex) {
-                    preLoadedChunkLoop[writeIndex] = preLoadedChunks.chunks[0][readIndex];
+                for (std::size_t writeIndex = preLoadedChunks[chunkIndex].size(); writeIndex < preLoadedChunkLoop.size(); ++writeIndex) {
+                    preLoadedChunkLoop[writeIndex] = preLoadedChunks[0][readIndex];
                     readIndex++;
-                    readIndex = readIndex % preLoadedChunks.chunks[0].size();
+                    readIndex = readIndex % preLoadedChunks[0].size();
                 }
                 return preLoadedChunkLoop;
             }
         } else {
-            return preLoadedChunks.chunks[chunkIndex];
+            return preLoadedChunks[chunkIndex];
         }
     }
 

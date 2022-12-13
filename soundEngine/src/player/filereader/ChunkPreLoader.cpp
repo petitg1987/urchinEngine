@@ -9,7 +9,12 @@ namespace urchin {
 
     }
 
-    PreLoadedChunks ChunkPreLoader::preLoad(const std::string& filename) const { //TODO add cache !
+    const PreLoadedChunks& ChunkPreLoader::preLoad(const std::string& filename) { //TODO clean cache
+        auto itFind = chunksCache.find(filename);
+        if (itFind != chunksCache.end()) {
+            return itFind->second;
+        }
+
         SoundFileReader soundFileReader(filename);
 
         PreLoadedChunks preLoadedChunks;
@@ -24,7 +29,8 @@ namespace urchin {
             preLoadedChunks.chunks[chunkIndex].resize(numSamplesRead);
         }
 
-        return preLoadedChunks;
+        auto itInsert = chunksCache.try_emplace(filename, preLoadedChunks);
+        return itInsert.first->second;
     }
 
 }
