@@ -47,13 +47,20 @@ namespace urchin {
         }
 
         //initialize buffers/chunks
-        unsigned int totalSamplesRead = 0;
-        for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
-            fillChunkFromPreLoadedData(*task, chunkIndex, audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex, playLoop));
-            pushChunkInQueue(*task, chunkIndex);
-            totalSamplesRead += task->getStreamChunk(chunkIndex).numberOfSamples;
+        if (audioStreamPlayer.getSound().hasPreLoadedChunks()) {
+            unsigned int totalSamplesRead = 0;
+            for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
+                fillChunkFromPreLoadedData(*task, chunkIndex, audioStreamPlayer.getSound().getPreLoadedChunk(chunkIndex, playLoop));
+                pushChunkInQueue(*task, chunkIndex);
+                totalSamplesRead += task->getStreamChunk(chunkIndex).numberOfSamples;
+            }
+            task->setInitialReadSamples(totalSamplesRead);
+        } else {
+            for (unsigned int chunkIndex = 0; chunkIndex < nbChunkBuffer; ++chunkIndex) {
+                fillChunkFromFile(*task, chunkIndex);
+                pushChunkInQueue(*task, chunkIndex);
+            }
         }
-        task->setInitialReadSamples(totalSamplesRead);
 
         std::scoped_lock<std::mutex> lock(tasksMutex);
         #ifdef URCHIN_DEBUG

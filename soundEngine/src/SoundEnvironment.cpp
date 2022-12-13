@@ -7,6 +7,7 @@
 namespace urchin {
 
     SoundEnvironment::SoundEnvironment() :
+            soundBuilder(SoundBuilder(*this)),
             streamUpdateWorker(StreamUpdateWorker()),
             streamUpdateWorkerThread(std::jthread(&StreamUpdateWorker::start, &streamUpdateWorker)) {
         SignalHandler::instance().initialize();
@@ -27,6 +28,10 @@ namespace urchin {
         streamUpdateWorkerThread.join();
 
         Profiler::sound().log();
+    }
+
+    SoundBuilder& SoundEnvironment::getSoundBuilder() {
+        return soundBuilder;
     }
 
     void SoundEnvironment::addSoundComponent(std::shared_ptr<SoundComponent> soundComponent) {

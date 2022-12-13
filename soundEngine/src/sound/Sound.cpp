@@ -34,16 +34,8 @@ namespace urchin {
         }
     }
 
-    const std::string& Sound::getFilename() const {
-        return filename;
-    }
-
-    Sound::SoundCategory Sound::getSoundCategory() const {
-        return category;
-    }
-
-    float Sound::getInitialVolume() const {
-        return initialVolume;
+    bool Sound::hasPreLoadedChunks() const {
+        return !preLoadedChunks.empty();
     }
 
     std::vector<int16_t> Sound::getPreLoadedChunk(std::size_t chunkIndex, bool loop) const {
@@ -65,6 +57,18 @@ namespace urchin {
         } else {
             return preLoadedChunks[chunkIndex];
         }
+    }
+
+    const std::string& Sound::getFilename() const {
+        return filename;
+    }
+
+    Sound::SoundCategory Sound::getSoundCategory() const {
+        return category;
+    }
+
+    float Sound::getInitialVolume() const {
+        return initialVolume;
     }
 
 }

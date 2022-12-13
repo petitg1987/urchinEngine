@@ -12,6 +12,7 @@
 #include <player/stream/StreamUpdateWorker.h>
 #include <SoundComponent.h>
 #include <MusicLoopPlayer.h>
+#include "SoundBuilder.h"
 
 namespace urchin {
 
@@ -20,6 +21,7 @@ namespace urchin {
             SoundEnvironment();
             ~SoundEnvironment();
 
+            SoundBuilder& getSoundBuilder();
             void addSoundComponent(std::shared_ptr<SoundComponent>);
             void removeSoundComponent(const SoundComponent&);
             const AudioController& getAudioController(const SoundComponent&) const;
@@ -38,6 +40,8 @@ namespace urchin {
             void process() const;
 
         private:
+            SoundBuilder soundBuilder;
+
             std::vector<std::unique_ptr<AudioController>> audioControllers;
             std::vector<std::shared_ptr<MusicLoopPlayer>> musicLoopPlayers;
             std::map<Sound::SoundCategory, float> soundVolumes;

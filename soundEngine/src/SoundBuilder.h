@@ -1,10 +1,11 @@
 #pragma once
 
-#include <SoundEnvironment.h>
 #include <SoundComponent.h>
 #include <trigger/ZoneTrigger.h>
 
 namespace urchin {
+
+    class SoundEnvironment;
 
     class SoundBuilder {
         public:

@@ -1,4 +1,5 @@
 #include <SoundBuilder.h>
+#include <SoundEnvironment.h>
 #include <sound/global/GlobalSound.h>
 #include <sound/spatial/SpatialSound.h>
 #include <trigger/ManualTrigger.h>
