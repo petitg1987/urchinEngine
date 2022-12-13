@@ -6,7 +6,7 @@ namespace urchin {
     ChunkPreLoader::ChunkPreLoader() :
             nbChunkBuffer(ConfigService::instance().getUnsignedIntValue("player.numberOfStreamBuffer")),
             chunkSizeInMs(ConfigService::instance().getUnsignedIntValue("player.streamChunkSizeInMs")),
-            chunksCache(50) /* TODO avoid hardcoded value */ {
+            chunksCache(ConfigService::instance().getUnsignedIntValue("player.preLoadedChunksCacheSize")) {
 
     }
 
