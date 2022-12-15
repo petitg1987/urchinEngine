@@ -10,8 +10,7 @@
 
 namespace urchin {
 
-    void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, VkImageLayout imageLayout,
-                                     unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
+    void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
         auto allocator =  GraphicsSetupService::instance().getAllocator();
 
@@ -31,7 +30,7 @@ namespace urchin {
             cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, 0, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
             //transition image to transfer source layout
-            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_MEMORY_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, imageLayout, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_NONE_KHR, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
 
             VkImageCopy imageCopyRegion{};
             imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -49,7 +48,7 @@ namespace urchin {
             cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
 
             //transition back the image after the blit is done
-            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, imageLayout);
+            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_NONE_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
         }
         CommandBufferHelper::endSingleTimeCommands(copyCmdData);
 

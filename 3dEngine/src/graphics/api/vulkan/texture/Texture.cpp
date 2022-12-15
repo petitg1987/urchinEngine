@@ -7,7 +7,6 @@
 #include <graphics/api/vulkan/helper/BufferHelper.h>
 #include <graphics/api/vulkan/helper/CommandBufferHelper.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <graphics/api/vulkan/capture/CaptureService.h>
 #include <pattern/singleton/Singleton.h>
 
 namespace urchin {
@@ -180,15 +179,6 @@ namespace urchin {
             throw std::runtime_error("No transparency value defined for texture: " + getName());
         }
         return bHasTransparency.value();
-    }
-
-    void Texture::takeCapture(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
-        if (hasMipmap()) {
-            throw std::runtime_error("Capture texture having mipmap is not implemented");
-        } else if (layer != 1) {
-            throw std::runtime_error("Capture texture having several layers is not implemented");
-        }
-        CaptureService::instance().takeCapture(filename, textureImage, getVkFormat(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, getWidth(), getHeight(), dstWidth, dstHeight);
     }
 
     void Texture::createTextureImage() {

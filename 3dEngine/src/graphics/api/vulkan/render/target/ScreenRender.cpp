@@ -117,7 +117,7 @@ namespace urchin {
     void ScreenRender::takeScreenshot(const std::string& filename, unsigned int dstWidth, unsigned int dstHeight) const {
         assert(vkImageIndex != std::numeric_limits<uint32_t>::max());
         VkImage srcImage = swapChainHandler.getSwapChainImages()[vkImageIndex];
-        CaptureService::instance().takeCapture(filename, srcImage, swapChainHandler.getImageFormat(), VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, getWidth(), getHeight(), dstWidth, dstHeight);
+        CaptureService::instance().takeCapture(filename, srcImage, swapChainHandler.getImageFormat(), getWidth(), getHeight(), dstWidth, dstHeight);
     }
 
     void ScreenRender::initializeClearValues() {

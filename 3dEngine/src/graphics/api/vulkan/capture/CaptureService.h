@@ -10,7 +10,7 @@ namespace urchin {
         public:
             friend class Singleton<CaptureService>;
 
-            void takeCapture(const std::string&, VkImage, VkFormat, VkImageLayout, unsigned int, unsigned int, unsigned int = 0, unsigned int = 0) const;
+            void takeCapture(const std::string&, VkImage, VkFormat, unsigned int, unsigned int, unsigned int = 0, unsigned int = 0) const;
 
         private:
             CaptureService() = default;
