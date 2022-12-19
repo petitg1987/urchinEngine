@@ -256,7 +256,7 @@ namespace urchin {
                         bool hasIntersection = false;
                         Point3<float> intersectionPoint = walkablePlane.intersectPoint(polytopeEdgeLine, hasIntersection);
                         if (hasIntersection) [[likely]] { //should be always true except due to rounding error
-                            footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
+                            footprintPoints.emplace_back(intersectionPoint.X, -intersectionPoint.Z);
                         }
                     }
                 }

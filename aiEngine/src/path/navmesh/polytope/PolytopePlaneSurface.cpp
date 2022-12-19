@@ -35,8 +35,8 @@ namespace urchin {
     void PolytopePlaneSurface::buildOutlineCwPoints() {
         outlineCwPoints.reserve(ccwPoints.size());
 
-        for (auto& ccwPoint : std::ranges::reverse_view(ccwPoints)) {
-            outlineCwPoints.emplace_back(Point2<float>(ccwPoint.X, -ccwPoint.Z));
+        for (auto& ccwPoint : ccwPoints | std::views::reverse) {
+            outlineCwPoints.emplace_back(ccwPoint.X, -ccwPoint.Z);
         }
     }
 

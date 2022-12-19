@@ -220,7 +220,7 @@ namespace urchin {
         }
 
         std::stack<UdaChunk*> stack;
-        for (const auto& rootNode : std::ranges::reverse_view(rootNodes)) {
+        for (const auto& rootNode : rootNodes | std::views::reverse) {
             stack.push(rootNode.get());
         }
         while (!stack.empty()) {
@@ -232,9 +232,8 @@ namespace urchin {
 
             file << indent << buildRawContentLine(*node) << '\n';
 
-            const auto& children = node->getChildren();
-            for (const auto& it : std::ranges::reverse_view(children)) {
-                stack.push(it.get());
+            for (const auto& child : node->getChildren() | std::views::reverse) {
+                stack.push(child.get());
             }
         }
 
