@@ -230,7 +230,7 @@ namespace urchin {
             unsigned int indentLevel = computeIndentLevel(*node);
             std::string indent(indentLevel * UdaChunk::INDENT_SPACES, ' ');
 
-            file << indent << buildRawContentLine(*node) << std::endl;
+            file << indent << buildRawContentLine(*node) << '\n';
 
             const auto& children = node->getChildren();
             for (const auto& it : std::ranges::reverse_view(children)) {
@@ -252,27 +252,32 @@ namespace urchin {
     }
 
     std::string UdaParser::buildRawContentLine(const UdaChunk& udaChunk) const {
-        std::string rawAttributes;
+        std::string rawContentLine = udaChunk.getName();
+        rawContentLine.reserve(50); //estimated memory size
+
         if (!udaChunk.getAttributes().empty()) {
-            rawAttributes.append(" (");
+            rawContentLine.append(" (");
             auto& attributes = udaChunk.getAttributes();
             for (auto it = attributes.begin(); it != attributes.end(); ++it) {
                 if (it != attributes.begin()) {
-                    rawAttributes += UdaChunk::ATTRIBUTES_SEPARATOR;
+                    rawContentLine += UdaChunk::ATTRIBUTES_SEPARATOR;
                 }
-                rawAttributes.append(it->first);
-                rawAttributes += UdaChunk::ATTRIBUTES_ASSIGN;
-                rawAttributes.append(it->second);
+                rawContentLine.append(it->first);
+                rawContentLine += UdaChunk::ATTRIBUTES_ASSIGN;
+                rawContentLine.append(it->second);
             }
-            rawAttributes.append(")");
+            rawContentLine.append("):");
+        } else {
+            rawContentLine.append(":");
         }
 
-        std::string rawValue;
         if (!udaChunk.getStringValue().empty()) {
-            rawValue = " \"" + udaChunk.getStringValue() + "\"";
+            rawContentLine.append(" \"");
+            rawContentLine.append(udaChunk.getStringValue());
+            rawContentLine.append("\"");
         }
 
-        return udaChunk.getName() + rawAttributes + ":" + rawValue;
+        return rawContentLine;
     }
 
 }
