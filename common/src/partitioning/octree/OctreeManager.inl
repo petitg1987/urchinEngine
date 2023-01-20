@@ -113,6 +113,10 @@ template<class T> bool OctreeManager<T>::addOctreeable(std::shared_ptr<T> octree
 }
 
 template<class T> std::shared_ptr<T> OctreeManager<T>::removeOctreeable(T* octreeable) {
+    return removeOctreeable(octreeable, true);
+}
+
+template<class T> std::shared_ptr<T> OctreeManager<T>::removeOctreeable(T* octreeable, bool cleanMoving) {
     //keep size in variable because we remove references during looping
     auto refOctreeSize = (int)octreeable->getRefOctree().size();
 
@@ -123,6 +127,10 @@ template<class T> std::shared_ptr<T> OctreeManager<T>::removeOctreeable(T* octre
     }
 
     octreeable->removeObserver(this, T::MOVE);
+    if (cleanMoving) {
+        std::erase(movingOctreeables, octreeable);
+    }
+
     return removedOctreeable;
 }
 
@@ -148,7 +156,7 @@ template<class T> void OctreeManager<T>::refreshOctreeables() {
         std::vector<std::shared_ptr<T>> removedOctreeables;
         removedOctreeables.reserve(movingOctreeables.size());
         for (T* movingOctreeable : movingOctreeables) {
-            removedOctreeables.push_back(removeOctreeable(movingOctreeable));
+            removedOctreeables.push_back(removeOctreeable(movingOctreeable, false));
         }
 
         for (std::shared_ptr<T>& movingOctreeable : removedOctreeables) {
