@@ -118,7 +118,7 @@ namespace urchin {
             }
             return homeDirectory() + R"(AppData\Local\)";
         #else
-            return homeDirectory();
+            return homeDirectory() + ".local" + FileUtil::directorySeparator() + "share" + FileUtil::directorySeparator();
         #endif
     }
 

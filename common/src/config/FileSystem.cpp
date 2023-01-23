@@ -36,7 +36,7 @@ namespace urchin {
         #ifdef _WIN32
             return "UrchinEngine";
         #else
-            return ".urchin-engine";
+            return "urchin-engine";
         #endif
     }
 
