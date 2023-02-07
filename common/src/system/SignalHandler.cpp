@@ -81,7 +81,7 @@ namespace urchin {
             IMAGEHLP_LINE line;
             line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
             if (SymGetLineFromAddr(process, frame.AddrPC.Offset, &offset, &line)) {
-                file = line.FileName ? FileUtil::getFilename(line.FileName) : "[FileNotFound]";
+                file = line.FileName ? FileUtil::getFileName(line.FileName) : "[FileNotFound]";
                 lineNumber = line.LineNumber;
             }
 
