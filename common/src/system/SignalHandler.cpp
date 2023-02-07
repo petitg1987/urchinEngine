@@ -66,9 +66,26 @@ namespace urchin {
                 moduleName = FileUtil::getFileName(moduleBuffer);
             }
 
-            void* instructionOffset = (char*)(frame.AddrPC.Offset - moduleBase - 1); //see https://stackoverflow.com/a/63841497
+            std::string methodName;
+            char symbolBuffer[sizeof(IMAGEHLP_SYMBOL) + 255];
+            PIMAGEHLP_SYMBOL symbol = (PIMAGEHLP_SYMBOL)symbolBuffer;
+            symbol->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL) + 255;
+            symbol->MaxNameLength = 254;
+            if (SymGetSymFromAddr(process, frame.AddrPC.Offset, NULL, symbol)) {
+                methodName = symbol->Name;
+            }
 
-            ss << "\t[bt] [" << moduleName << "]" << " (./addr2line-pdb.exe -e " << moduleName << " " << instructionOffset << ")" << std::endl;
+            std::string file;
+            unsigned int lineNumber;
+            DWORD offset = 0;
+            IMAGEHLP_LINE line;
+            line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
+            if (SymGetLineFromAddr(process, frame.AddrPC.Offset, &offset, &line)) {
+                file = line.FileName ? FileUtil::getFilename(line.FileName) : "[FileNotFound]";
+                lineNumber = line.LineNumber;
+            }
+
+            ss << "\t[bt]\t> " << file << "#" << methodName << ":" << lineNumber << std::endl;
 
             if (++stackCount > 250) { //avoid infinite loop in case of stack overflow error
                 break;
