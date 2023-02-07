@@ -85,7 +85,7 @@ namespace urchin {
                 lineNumber = line.LineNumber;
             }
 
-            ss << "\t[bt]\t> " << file << "#" << methodName << ":" << lineNumber << std::endl;
+            ss << "\t[bt]\t> [" << moduleName << "] " << file << "#" << methodName << ":" << lineNumber << std::endl;
 
             if (++stackCount > 250) { //avoid infinite loop in case of stack overflow error
                 break;
