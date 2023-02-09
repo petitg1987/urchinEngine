@@ -66,6 +66,10 @@ namespace urchin {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on line return for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 } else if (StringUtil::countOccurrence(firstLabelValue, "\n ") != StringUtil::countOccurrence(secondLabelValue, "\n ")) {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on line return+space for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (std::ranges::count(firstLabelValue, '(') != std::ranges::count(secondLabelValue, '(')) {
+                    Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on open parentheses for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (std::ranges::count(firstLabelValue, ')') != std::ranges::count(secondLabelValue, ')')) {
+                    Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on close parentheses for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 }
             }
         }
