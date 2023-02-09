@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <scene/ui/allocator/StringConverterAllocator.h>
+
 namespace urchin {
 
     struct LabelStatistics {
@@ -30,6 +32,8 @@ namespace urchin {
             std::map<std::string, std::string, std::less<>> retrieveLanguageLabels(const std::string&) const;
             void logMissingLanguage(const std::string&) const;
             void logMissingTranslation(const std::string&, const std::string&) const;
+
+            bool isFirstLetterUpper(WStringConvertA&, std::string_view) const;
 
             const std::string FILE_PREFIX;
             const std::string FILE_POSTFIX;

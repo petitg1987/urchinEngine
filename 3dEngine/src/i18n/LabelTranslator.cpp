@@ -31,6 +31,7 @@ namespace urchin {
     }
 
     void LabelTranslator::checkTranslationError() const {
+        WStringConvertA stringConvert;
         for (unsigned int i = 0; i < availableLanguages.size(); ++i) {
             std::string firstLanguage = availableLanguages[i];
             auto firstLanguageLabels = retrieveLanguageLabels(firstLanguage);
@@ -70,9 +71,28 @@ namespace urchin {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on open parentheses for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 } else if (std::ranges::count(firstLabelValue, ')') != std::ranges::count(secondLabelValue, ')')) {
                     Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on close parentheses for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
+                } else if (isFirstLetterUpper(stringConvert, firstLabelValue) != isFirstLetterUpper(stringConvert, secondLabelValue)) {
+                    Logger::instance().logError("Translation value for label '" + firstLabelKey + "' are different on first capital letter for languages '" + firstLanguage + "' and '" + secondLanguage + "'");
                 }
             }
         }
+    }
+
+    bool LabelTranslator::isFirstLetterUpper(WStringConvertA& stringConvert, std::string_view sentence) const {
+        U32StringA sentence32 = stringConvert.from_bytes(std::string(sentence).c_str());
+        for (char32_t char32 : sentence32) {
+            if (char32 == L'À' || char32 == L'Ç' || char32 == L'É' || char32 == L'È' || char32 == L'Ê' || char32 == L'Ù') {
+                return true;
+            }
+
+            if (char32 <= std::numeric_limits<char>::max()) {
+                char char8 = static_cast<char>(char32);
+                if (std::isalpha(char8)) {
+                    return std::isupper(char8);
+                }
+            }
+        }
+        return false;
     }
 
     LabelStatistics LabelTranslator::computeStatistics(const std::string& language) const {
