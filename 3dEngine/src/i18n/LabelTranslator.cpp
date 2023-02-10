@@ -81,7 +81,7 @@ namespace urchin {
     bool LabelTranslator::isFirstLetterUpper(WStringConvertA& stringConvert, std::string_view sentence) const {
         U32StringA sentence32 = stringConvert.from_bytes(std::string(sentence).c_str());
         for (char32_t char32 : sentence32) {
-            if (char32 == L'À' || char32 == L'Ç' || char32 == L'É' || char32 == L'È' || char32 == L'Ê' || char32 == L'Ù') {
+            if (char32 == L'À' || char32 == L'Ç' || char32 == L'É' || char32 == L'È' || char32 == L'Ê' || char32 == L'Ù' || char32 == L'Á') {
                 return true;
             }
 
