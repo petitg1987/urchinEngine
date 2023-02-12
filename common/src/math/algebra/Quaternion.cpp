@@ -518,6 +518,32 @@ namespace urchin {
         return (X == q.X && Y == q.Y && Z == q.Z && W == q.W);
     }
 
+    /**
+     * @return true when orientations are the same. A rotation of 90° and -270° are equals orientation
+     */
+    template<class T> bool Quaternion<T>::isEqualOrientation(const Quaternion<T>& q, T epislon) const {
+        //only normalized quaternion can be compared
+        #ifdef URCHIN_DEBUG
+            const T normValue = norm();
+            assert(normValue >= (T)0.999);
+            assert(normValue <= (T)1.001);
+        #endif
+        return std::abs(this->dotProduct(q)) >= (T)1 - epislon;
+    }
+
+    /**
+     * @return true when rotations are the same. A rotation of 90° and -270° are not equals rotation
+     */
+    template<class T> bool Quaternion<T>::isEqualRotation(const Quaternion<T>& q, T epislon) const {
+        //only normalized quaternion can be compared
+        #ifdef URCHIN_DEBUG
+            const T normValue = norm();
+            assert(normValue >= (T)0.999);
+            assert(normValue <= (T)1.001);
+        #endif
+        return this->dotProduct(q) >= (T)1 - epislon;
+    }
+
     template<class T> T& Quaternion<T>::operator [](std::size_t i) {
         return (&X)[i];
     }

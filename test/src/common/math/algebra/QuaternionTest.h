@@ -40,4 +40,6 @@ class QuaternionTest : public CppUnit::TestFixture {
         void lerpShortestPath();
 
         void toAxisAngle90();
+
+        void equalOrientationAndRotation();
 };

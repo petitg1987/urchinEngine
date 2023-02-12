@@ -69,6 +69,8 @@ namespace urchin {
             const Quaternion<T>& operator *=(T);
 
             bool operator ==(const Quaternion<T>&) const;
+            bool isEqualOrientation(const Quaternion<T>&, T) const;
+            bool isEqualRotation(const Quaternion<T>&, T) const;
 
             T& operator [](std::size_t i);
             const T& operator [](std::size_t i) const;
