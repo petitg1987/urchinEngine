@@ -53,7 +53,12 @@ namespace urchin {
 
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
-            Logger::instance().logError("HTTP request fail on '" + httpRequest.getUrl() + "' : " + std::string(curl_easy_strerror(res)));
+            std::string failMessage = "HTTP request fail on '" + httpRequest.getUrl() + "' : " + std::string(curl_easy_strerror(res));
+            if (res == CURLE_OPERATION_TIMEDOUT /* too slow connection */ || res == CURLE_COULDNT_RESOLVE_HOST /* no connection */) {
+                Logger::instance().logWarning(failMessage);
+            } else {
+                Logger::instance().logError(failMessage);
+            }
             return RequestResult{.success = false, .responseContent = ""};
         } else {
             long httpCode;
