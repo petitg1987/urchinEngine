@@ -37,9 +37,8 @@ namespace urchin {
             CheckState::checkContext(device, "destroy context");
         }
 
-        if (device) {
-            alcCloseDevice(device);
-            CheckState::checkContext(device, "destroy context");
+        if (device && !alcCloseDevice(device)) {
+            Logger::instance().logWarning("Failed to close OpenAL device");
         }
     }
 
