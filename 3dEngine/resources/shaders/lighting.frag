@@ -196,13 +196,13 @@ void main() {
 
     vec4 worldPosition = fetchWorldPosition(texCoordinates, depthValue);
     vec3 albedo = albedoAndEmissive.rgb;
+    float emissiveFactor = albedoAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
     float modelAmbientFactor = normalAndAmbient.a;
 
     if (modelAmbientFactor < 0.9999) { //apply lighting
         vec3 vertexToCameraPos = normalize(positioningData.viewPosition - vec3(worldPosition));
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
         vec3 modelAmbient = albedo * modelAmbientFactor;
-        float emissiveFactor = albedoAndEmissive.a * MAX_EMISSIVE_FACTOR; //unpack emissive factor
 
         fragColor = vec4(lightsData.globalAmbient, 1.0); //start with global ambient
 
@@ -249,7 +249,7 @@ void main() {
             fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
-        fragColor.rgb = albedo;
+        fragColor.rgb = albedo * (1.0 + emissiveFactor); //albedo + add emissive lighting
     }
 
     fragColor.rgb = addTransparentModels(fragColor.rgb);

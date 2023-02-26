@@ -59,10 +59,10 @@ void main() {
     mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
     vec3 texNormal = normalize(vec3(texture(normalTex, texCoordinates)) * 2.0 - 1.0);
     vec3 normal = tbnMatrix * texNormal;
+    float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
 
     vec4 fragColor = vec4(0.0, 0.0, 0.0, 1.0);
     if (materialData.ambientFactor < 0.9999) { //apply lighting
-        float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
         vec3 modelAmbient = albedo.rgb * materialData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
 
@@ -78,7 +78,7 @@ void main() {
         }
         fragColor.rgb += albedo.rgb * emissiveFactor;
     } else { //do not apply lighting
-        fragColor = albedo;
+        fragColor = vec4(albedo.rgb * (1.0 + emissiveFactor), albedo.a); //albedo + add emissive lighting
     }
 
     fillTransparentTextures(fragColor);
