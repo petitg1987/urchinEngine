@@ -19,8 +19,6 @@ namespace urchin {
             useNullRenderTarget(useNullRenderTarget),
             nearPlane(0.0f),
             farPlane(0.0f),
-            textureSizeX(0),
-            textureSizeY(0),
 
             positioningData({}),
 
@@ -36,7 +34,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::onTextureUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
-        this->resolution = Vector2<float>((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
+        this->sceneResolution = Vector2<float>((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
         this->depthTexture = depthTexture;
         this->normalAndAmbientTexture = normalAndAmbientTexture;
 
@@ -65,13 +63,13 @@ namespace urchin {
             throw std::runtime_error("Unknown ambient occlusion texture bits: " + std::to_string(config.textureBits));
         }
 
-        textureSizeX = (unsigned int)(resolution.X / (float)retrieveTextureSizeFactor());
-        textureSizeY = (unsigned int)(resolution.Y / (float)retrieveTextureSizeFactor());
+        auto textureSizeX = (unsigned int)(sceneResolution.X / (float)retrieveTextureSizeFactor());
+        auto textureSizeY = (unsigned int)(sceneResolution.Y / (float)retrieveTextureSizeFactor());
         ambientOcclusionTexture = Texture::build("ambient occlusion", textureSizeX, textureSizeY, textureFormat, nullptr);
 
         if (useNullRenderTarget) {
             if (!renderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>((unsigned int)resolution.X, (unsigned int)resolution.Y);
+                renderTarget = std::make_unique<NullRenderTarget>((unsigned int)sceneResolution.X, (unsigned int)sceneResolution.Y);
             }
         } else {
             if (renderTarget) {
@@ -125,13 +123,14 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
+        Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
         renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(sizeof(projection), &projection) //binding 0
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
                 ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
-                ->addUniformData(sizeof(resolution), &resolution) //binding 3
+                ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
                 ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
                 ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
@@ -139,8 +138,8 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.depthStartAttenuation,
-                                                config.depthEndAttenuation, config.noiseTextureSize, config.bias};
+        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.distanceStartAttenuation,
+                                                config.distanceEndAttenuation, config.noiseTextureSize, config.bias};
         std::vector<std::size_t> variablesSize = {
                 sizeof(AmbientOcclusionShaderConst::kernelSamples),
                 sizeof(AmbientOcclusionShaderConst::radius),
@@ -225,8 +224,8 @@ namespace urchin {
                 this->config.kernelSamples != config.kernelSamples ||
                 this->config.radius != config.radius ||
                 this->config.ambientOcclusionStrength != config.ambientOcclusionStrength ||
-                this->config.depthStartAttenuation != config.depthStartAttenuation ||
-                this->config.depthEndAttenuation != config.depthEndAttenuation ||
+                this->config.distanceStartAttenuation != config.distanceStartAttenuation ||
+                this->config.distanceEndAttenuation != config.distanceEndAttenuation ||
                 this->config.noiseTextureSize != config.noiseTextureSize ||
                 this->config.bias != config.bias ||
                 this->config.isBlurActivated != config.isBlurActivated ||

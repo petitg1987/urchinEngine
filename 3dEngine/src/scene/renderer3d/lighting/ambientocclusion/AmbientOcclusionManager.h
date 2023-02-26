@@ -23,11 +23,11 @@ namespace urchin {
                 AOTextureSize textureSize = AOTextureSize::HALF_SIZE;
                 AOTextureBits textureBits = AOTextureBits::AO_8_BITS;
                 unsigned int kernelSamples = 32;
-                float radius = 0.25f; //scope radius in units
-                float ambientOcclusionStrength = 0.12f;
-                float depthStartAttenuation = 0.995f;
-                float depthEndAttenuation = 0.997f;
-                unsigned int noiseTextureSize = 4;
+                float radius = 0.15f; //scope radius in units
+                float ambientOcclusionStrength = 0.25f;
+                float distanceStartAttenuation = 11.0f; //distance in units
+                float distanceEndAttenuation = 12.0f; //distance in units
+                unsigned int noiseTextureSize = 64;
                 float bias = 0.05f;
                 bool isBlurActivated = true;
                 unsigned int blurSize = 7;
@@ -78,8 +78,6 @@ namespace urchin {
             bool useNullRenderTarget;
             float nearPlane;
             float farPlane;
-            unsigned int textureSizeX;
-            unsigned int textureSizeY;
 
             //frame buffer object
             std::unique_ptr<RenderTarget> renderTarget;
@@ -97,7 +95,7 @@ namespace urchin {
                 alignas(16) Matrix4<float> viewMatrix;
             } positioningData;
             std::vector<Vector4<float>> ssaoKernel;
-            Vector2<float> resolution;
+            Vector2<float> sceneResolution;
 
             //visual data
             std::shared_ptr<Texture> depthTexture;

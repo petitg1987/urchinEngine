@@ -4,8 +4,8 @@
 layout(constant_id = 0) const uint KERNEL_SAMPLES = 64; //must be equals to AmbientOcclusionManager::KERNEL_SAMPLES_SHADER_LIMIT
 layout(constant_id = 1) const float RADIUS = 0.0;
 layout(constant_id = 2) const float AO_STRENGTH = 0.0;
-layout(constant_id = 3) const float DEPTH_START_ATTENUATION = 0.0;
-layout(constant_id = 4) const float DEPTH_END_ATTENUATION = 0.0;
+layout(constant_id = 3) const float DISTANCE_START_ATTENUATION = 0.0;
+layout(constant_id = 4) const float DISTANCE_END_ATTENUATION = 0.0;
 layout(constant_id = 5) const uint NOISE_TEXTURE_SIZE = 0;
 layout(constant_id = 6) const float BIAS = 0.0;
 
@@ -21,7 +21,7 @@ layout(std140, set = 0, binding = 2) uniform KernelData {
     vec4 samples[KERNEL_SAMPLES];
 } kernelData;
 layout(std140, set = 0, binding = 3) uniform Scene {
-    vec2 resolution;
+    vec2 aoResolution;
 } scene;
 layout(binding = 4) uniform sampler2D depthTex;
 layout(binding = 5) uniform sampler2D normalAndAmbientTex;
@@ -63,17 +63,19 @@ void main() {
     }
 
     float depthValue = texture(depthTex, texCoordinates).r;
+    float distance = abs(fetchEyePosition(texCoordinates, depthValue).z);
+
     float distanceReduceFactor = 1.0;
-    if (depthValue > DEPTH_END_ATTENUATION) {
+    if (distance > DISTANCE_END_ATTENUATION) {
         fragColor = 0.0;
-        return;
-    }else if (depthValue > DEPTH_START_ATTENUATION) {
-        distanceReduceFactor = (DEPTH_END_ATTENUATION - depthValue) / (DEPTH_END_ATTENUATION - DEPTH_START_ATTENUATION);
+        return ;
+    } else if (distance > DISTANCE_START_ATTENUATION) {
+        distanceReduceFactor = (DISTANCE_END_ATTENUATION - distance) / (DISTANCE_END_ATTENUATION - DISTANCE_START_ATTENUATION);
     }
 
     vec3 position = fetchPosition(texCoordinates, depthValue);
     vec3 normal = normalAndAmbient.xyz * 2.0 - 1.0;
-    vec2 noiseScale = vec2(scene.resolution.x / NOISE_TEXTURE_SIZE, scene.resolution.y / NOISE_TEXTURE_SIZE);
+    vec2 noiseScale = vec2(scene.aoResolution.x / NOISE_TEXTURE_SIZE, scene.aoResolution.y / NOISE_TEXTURE_SIZE);
     vec3 randomVector = normalize(texture(noiseTex, texCoordinates * noiseScale).xyz * 2.0 - 1.0);
 
     vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
