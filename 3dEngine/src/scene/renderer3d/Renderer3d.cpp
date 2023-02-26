@@ -506,7 +506,11 @@ namespace urchin {
     unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
         unsigned int numDependenciesToFirstPassOutput = 2 /* transparent/accum & second pass */;
         if (visualOption.isAmbientOcclusionActivated) {
-            numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
+            if (ambientOcclusionManager.getConfig().isBlurActivated) {
+                numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
+            } else {
+                numDependenciesToFirstPassOutput += 1 /* AO raw texture */;
+            }
         }
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)
