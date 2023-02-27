@@ -31,7 +31,7 @@ namespace urchin {
                 }
                 return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits), hasTransparency);
             } else {
-                throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
+                throw std::invalid_argument("Unsupported number of bits for PNG image: " + std::to_string(bitDepth));
             }
         } else if (colorType == LodePNGColorType::LCT_GREY) {
             if (bitDepth == 8) {
