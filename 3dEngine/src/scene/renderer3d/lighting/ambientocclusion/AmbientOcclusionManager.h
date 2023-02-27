@@ -28,7 +28,7 @@ namespace urchin {
                 float distanceStartAttenuation = 11.0f; //distance in units
                 float distanceEndAttenuation = 12.0f; //distance in units
                 unsigned int noiseTextureSize = 64;
-                float bias = 0.02f;
+                float bias = 0.04f;
                 bool isBlurActivated = true;
                 unsigned int blurSize = 7;
                 float blurSharpness = 40.0f;
