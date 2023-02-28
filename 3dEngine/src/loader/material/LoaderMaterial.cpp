@@ -124,8 +124,19 @@ namespace urchin {
         //UV scale
         auto uvScaleChunk = udaParser.getFirstChunk(false, "uvScale");
         if (uvScaleChunk) {
-            std::string scaleType = udaParser.getFirstChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
-            materialBuilder->uvScale(UvScale(toUvScaleType(scaleType, filename)));
+            std::string scaleTypeValue = udaParser.getFirstChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
+            UvScaleType uvScaleType = toUvScaleType(scaleTypeValue, filename);
+
+            MeshScaleAxis uMeshScaleAxis = MeshScaleAxis::NONE;
+            MeshScaleAxis vMeshScaleAxis = MeshScaleAxis::NONE;
+            if (uvScaleType == UvScaleType::SCALE_ON_MESH_SCALE) {
+                std::string uMeshScaleAxisValue = udaParser.getFirstChunk(true, "uMeshScaleAxis", UdaAttribute(), uvScaleChunk)->getStringValue();
+                uMeshScaleAxis = toMeshScaleAxis(uMeshScaleAxisValue, filename);
+                std::string vScaleMeshValue = udaParser.getFirstChunk(true, "vMeshScaleAxis", UdaAttribute(), uvScaleChunk)->getStringValue();
+                vMeshScaleAxis = toMeshScaleAxis(vScaleMeshValue, filename);
+            }
+
+            materialBuilder->uvScale(UvScale(uvScaleType, uMeshScaleAxis, vMeshScaleAxis));
         }
 
         //emissive factor
@@ -155,20 +166,36 @@ namespace urchin {
         return materialBuilder->build();
     }
 
-    UvScaleType LoaderMaterial::toUvScaleType(std::string_view uvScaleValue, const std::string& filename) const {
-        if (uvScaleValue == UV_SCALE_NONE) {
+    UvScaleType LoaderMaterial::toUvScaleType(std::string_view scaleTypeValue, const std::string& filename) const {
+        if (scaleTypeValue == UV_SCALE_NONE) {
             return UvScaleType::NONE;
-        } else if (uvScaleValue == SCALE_ON_AXIS_ALIGNED_FACES) {
+        } else if (scaleTypeValue == SCALE_ON_AXIS_ALIGNED_FACES) {
             return UvScaleType::SCALE_ON_AXIS_ALIGNED_FACES;
-        } else if (uvScaleValue == SCALE_ON_XY_FACES) {
+        } else if (scaleTypeValue == SCALE_ON_XY_FACES) {
             return UvScaleType::SCALE_ON_XY_FACES;
-        } else if (uvScaleValue == SCALE_ON_XZ_FACES) {
+        } else if (scaleTypeValue == SCALE_ON_XZ_FACES) {
             return UvScaleType::SCALE_ON_XZ_FACES;
-        } else if (uvScaleValue == SCALE_ON_YZ_FACES) {
+        } else if (scaleTypeValue == SCALE_ON_YZ_FACES) {
             return UvScaleType::SCALE_ON_YZ_FACES;
+        } else if (scaleTypeValue == SCALE_ON_MESH_SCALE) {
+            return UvScaleType::SCALE_ON_MESH_SCALE;
         }
 
-        throw std::runtime_error("Unknown UV scale value '" + std::string(uvScaleValue) + "' for material: " + filename);
+        throw std::runtime_error("Unknown UV scale value '" + std::string(scaleTypeValue) + "' for material: " + filename);
+    }
+
+    MeshScaleAxis LoaderMaterial::toMeshScaleAxis(std::string_view meshScaleAxisValue, const std::string& filename) const {
+         if (meshScaleAxisValue == MESH_SCALE_AXIS_X) {
+            return MeshScaleAxis::X;
+        } else if (meshScaleAxisValue == MESH_SCALE_AXIS_Y) {
+            return MeshScaleAxis::Y;
+        } else if (meshScaleAxisValue == MESH_SCALE_AXIS_Z) {
+            return MeshScaleAxis::Z;
+        } else if (meshScaleAxisValue == MESH_SCALE_AXIS_NONE) {
+            return MeshScaleAxis::NONE;
+        }
+
+        throw std::runtime_error("Unknown mesh scale axis value '" + std::string(meshScaleAxisValue) + "' for material: " + filename);
     }
 
 }

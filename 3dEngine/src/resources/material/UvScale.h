@@ -1,15 +1,15 @@
 #pragma once
 
 #include <resources/material/UvScaleType.h>
+#include <resources/material/MeshScaleAxis.h>
 
 namespace urchin {
 
     class UvScale {
         public:
-            explicit UvScale(UvScaleType);
+            explicit UvScale(UvScaleType, MeshScaleAxis = MeshScaleAxis::NONE, MeshScaleAxis = MeshScaleAxis::NONE);
 
             bool hasScaling() const;
-            UvScaleType getScaleType() const;
 
             Point2<float> scaleUV(const Point2<float>&, const Vector3<float>&, const Vector3<float>&) const;
 
@@ -18,6 +18,8 @@ namespace urchin {
 
         private:
             UvScaleType scaleType;
+            MeshScaleAxis uMeshScaleAxis;
+            MeshScaleAxis vMeshScaleAxis;
     };
 
 }
