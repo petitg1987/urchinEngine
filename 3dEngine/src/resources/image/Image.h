@@ -15,8 +15,8 @@ namespace urchin {
                 IMAGE_GRAYSCALE
             };
             enum ChannelPrecision {
-                CHANNEL_8,
-                CHANNEL_16
+                CHANNEL_8_INT,
+                CHANNEL_16_INT
             };
 
             Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char>&&, bool);

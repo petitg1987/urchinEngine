@@ -17,15 +17,15 @@ namespace urchin {
             depthWriteEnabled(materialBuilder.isDepthWriteEnabled()) {
         if (!this->normalTexture) {
             std::vector<unsigned char> defaultNormalColor({127, 127, 255, 255});
-            this->normalTexture = Texture::build(materialBuilder.getMaterialName() + " - default normal", 1, 1, TextureFormat::RGBA_8_INT, defaultNormalColor.data());
+            this->normalTexture = Texture::build(materialBuilder.getMaterialName() + " - default normal", 1, 1, TextureFormat::RGBA_8_INT, defaultNormalColor.data(), TextureDataType::INT_8);
         }
         if (!this->roughnessTexture) {
             std::vector<unsigned char> defaultRoughnessValue({255});
-            this->roughnessTexture = Texture::build(materialBuilder.getMaterialName() + " - default roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultRoughnessValue.data());
+            this->roughnessTexture = Texture::build(materialBuilder.getMaterialName() + " - default roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultRoughnessValue.data(), TextureDataType::INT_8);
         }
         if (!this->metalnessTexture) {
             std::vector<unsigned char> defaultMetalnessValue({0});
-            this->metalnessTexture = Texture::build(materialBuilder.getMaterialName() + " - default metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultMetalnessValue.data());
+            this->metalnessTexture = Texture::build(materialBuilder.getMaterialName() + " - default metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultMetalnessValue.data(), TextureDataType::INT_8);
         }
     }
 

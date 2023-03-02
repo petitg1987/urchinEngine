@@ -36,7 +36,7 @@ namespace urchin {
 
             std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
                                                   (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
-            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data());
+            albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data(), TextureDataType::INT_8);
             hasTransparency = !MathFunction::isOne(color.W);
         }
         std::shared_ptr<MaterialBuilder> materialBuilder = MaterialBuilder::create(filename, albedoTexture, hasTransparency);
@@ -80,7 +80,7 @@ namespace urchin {
                 }
 
                 std::vector<unsigned char> roughnessTextureData({(unsigned char) (255.0f * roughness)});
-                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, roughnessTextureData.data());
+                roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, roughnessTextureData.data(), TextureDataType::INT_8);
             }
 
             if (roughnessTexture) {
@@ -113,7 +113,7 @@ namespace urchin {
                 }
 
                 std::vector<unsigned char> metalnessTextureData({(unsigned char) (255.0f * metalness)});
-                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, metalnessTextureData.data());
+                metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, metalnessTextureData.data(), TextureDataType::INT_8);
             }
 
             if (metalnessTexture) {

@@ -123,7 +123,7 @@ namespace urchin {
             }
         }
 
-        auto alphabetTexture = Texture::build(ttfFilename, dimensionTexture, dimensionTexture, TextureFormat::RGBA_8_INT, texels.data());
+        auto alphabetTexture = Texture::build(ttfFilename, dimensionTexture, dimensionTexture, TextureFormat::RGBA_8_INT, texels.data(), TextureDataType::INT_8);
 
         //clear buffers of characters
         for (std::size_t i = 0; i < UnicodeUtil::NUM_CHARACTERS; i++) {

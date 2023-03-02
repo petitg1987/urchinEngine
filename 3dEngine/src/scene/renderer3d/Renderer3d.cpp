@@ -332,9 +332,9 @@ namespace urchin {
 
     void Renderer3d::createOrUpdateLightingPass() {
         //deferred rendering
-        albedoTexture = Texture::build("albedo", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT, nullptr);
-        materialTexture = Texture::build("material", sceneWidth, sceneHeight, TextureFormat::RG_8_INT, nullptr);
+        albedoTexture = Texture::build("albedo", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT);
+        normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT);
+        materialTexture = Texture::build("material", sceneWidth, sceneHeight, TextureFormat::RG_8_INT);
         if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
             auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
             deferredOffscreenRenderTarget->resetOutputTextures();
@@ -345,7 +345,7 @@ namespace urchin {
         }
 
         //lighting pass rendering
-        illuminatedTexture = Texture::build("illuminated scene", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT, nullptr);
+        illuminatedTexture = Texture::build("illuminated scene", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT);
         if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
             auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
             offscreenLightingRenderTarget->resetOutputTextures();

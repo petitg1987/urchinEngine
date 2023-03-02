@@ -12,10 +12,10 @@ namespace urchin {
         auto image = ResourceRetriever::instance().getResource<Image>(filename);
 
         std::shared_ptr<Texture> texture;
-        if (image->getChannelPrecision() == Image::CHANNEL_8) {
-            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels().data());
-        }else if (image->getChannelPrecision() == Image::CHANNEL_16) {
-            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels16Bits().data());
+        if (image->getChannelPrecision() == Image::CHANNEL_8_INT) {
+            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels().data(), TextureDataType::INT_8);
+        }else if (image->getChannelPrecision() == Image::CHANNEL_16_INT) {
+            texture = Texture::build(image->getName(), image->getWidth(), image->getHeight(), image->retrieveTextureFormat(), image->getTexels16Bits().data(), TextureDataType::INT_16);
         } else {
             throw std::runtime_error("Unknown channel precision: " + std::to_string(image->getChannelPrecision()));
         }

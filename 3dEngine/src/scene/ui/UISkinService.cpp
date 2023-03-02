@@ -119,7 +119,7 @@ namespace urchin {
         }
 
         //create the texture
-        return Texture::build("9-slicing widget", width, height, rawWidgetImage->retrieveTextureFormat(), texels.data());
+        return Texture::build("9-slicing widget", width, height, rawWidgetImage->retrieveTextureFormat(), texels.data(), TextureDataType::INT_8);
     }
 
     Length UISkinService::loadLength(const UdaChunk* mainChunk, std::string_view lengthName) const {

@@ -16,6 +16,14 @@ namespace urchin {
 
     class OffscreenRender;
 
+    enum class TextureDataType {
+        NULL_PTR,
+        INT_8,
+        INT_16,
+        FLOAT_16,
+        FLOAT_32
+    };
+
     class Texture final : public Resource {
         public:
             friend class GenericRenderer;
@@ -25,9 +33,9 @@ namespace urchin {
 
             ~Texture() override;
 
-            static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void*);
-            static std::shared_ptr<Texture> buildArray(std::string, unsigned int, unsigned int, unsigned int, TextureFormat, const void*);
-            static std::shared_ptr<Texture> buildCubeMap(std::string, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
+            static std::shared_ptr<Texture> build(std::string, unsigned int, unsigned int, TextureFormat, const void* = nullptr, TextureDataType = TextureDataType::NULL_PTR);
+            static std::shared_ptr<Texture> buildArray(std::string, unsigned int, unsigned int, unsigned int, TextureFormat, const void* = nullptr, TextureDataType = TextureDataType::NULL_PTR);
+            static std::shared_ptr<Texture> buildCubeMap(std::string, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, TextureDataType);
 
             static std::shared_ptr<Texture> buildEmptyRgba(std::string);
             static std::shared_ptr<Texture> buildEmptyGreyscale(std::string);
@@ -50,7 +58,7 @@ namespace urchin {
             bool hasTransparency() const;
 
         private:
-            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&);
+            Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, TextureDataType);
 
             void cleanup();
 

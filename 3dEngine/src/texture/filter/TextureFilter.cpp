@@ -26,9 +26,9 @@ namespace urchin {
 
     void TextureFilter::initializeTexture() {
         if (textureType == TextureType::DEFAULT) {
-            texture = Texture::build(name, textureWidth, textureHeight, textureFormat, nullptr);
+            texture = Texture::build(name, textureWidth, textureHeight, textureFormat);
         } else if (textureType == TextureType::ARRAY) {
-            texture = Texture::buildArray(name, textureWidth, textureHeight, textureNumberLayer, textureFormat, nullptr);
+            texture = Texture::buildArray(name, textureWidth, textureHeight, textureNumberLayer, textureFormat);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
         }

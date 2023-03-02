@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr) :
+    Texture::Texture(TextureType textureType, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const std::vector<const void*>& dataPtr, TextureDataType dataType) :
             isInitialized(false),
             textureType(textureType),
             width(width),
@@ -31,8 +31,12 @@ namespace urchin {
 
         for (const void* imageDataPtr : dataPtr) {
             if (imageDataPtr != nullptr) {
-                auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
-                this->dataPtr.emplace_back(imageDataCharPtr, imageDataCharPtr + getImageSize());
+                if (dataType == TextureDataType::INT_16 && format == TextureFormat::GRAYSCALE_16_FLOAT) {
+                    throw std::runtime_error("Conversion of input data (int 16 bits) into texture data (float 16 bits) not implemented");
+                } else {
+                    auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
+                    this->dataPtr.emplace_back(imageDataCharPtr, imageDataCharPtr + getImageSize());
+                }
             } else {
                 std::vector<uint8_t> emptyData(0);
                 this->dataPtr.emplace_back(emptyData);
@@ -44,24 +48,24 @@ namespace urchin {
         cleanup();
     }
 
-    std::shared_ptr<Texture> Texture::build(std::string name, unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr) {
+    std::shared_ptr<Texture> Texture::build(std::string name, unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr, TextureDataType textureDataType) {
         std::vector<const void*> allDataPtr(1, dataPtr);
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
 
-    std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr) {
+    std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr, TextureDataType textureDataType) {
         std::vector<const void*> allDataPtr(1, dataPtr);
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
 
-    std::shared_ptr<Texture> Texture::buildCubeMap(std::string name, unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr) {
+    std::shared_ptr<Texture> Texture::buildCubeMap(std::string name, unsigned int width, unsigned int height, TextureFormat format, const std::vector<const void*>& cubeDataPtr, TextureDataType textureDataType) {
         assert(cubeDataPtr.size() == 6);
         unsigned int layerCount = 6; //in Vulkan, cube maps are considered as an image of 6 layers
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::CUBE_MAP, width, height, layerCount, format, cubeDataPtr, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
@@ -69,7 +73,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyRgba(std::string name) {
         std::array<uint8_t, 4> textureArrayData = {255, 20, 147, 255}; //pink
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::RGBA_8_INT, allDataPtr, TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
@@ -77,7 +81,7 @@ namespace urchin {
     std::shared_ptr<Texture> Texture::buildEmptyGreyscale(std::string name) {
         std::array<uint8_t, 1> textureData = {0};
         std::vector<const void*> allDataPtr(1, textureData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, 1, 1, 1, TextureFormat::GRAYSCALE_8_INT, allDataPtr, TextureDataType::INT_8));
         texture->setName(std::move(name));
         return texture;
     }
@@ -88,7 +92,7 @@ namespace urchin {
                 0.5f, 1.0f
         };
         std::vector<const void*> allDataPtr(1, textureArrayData.data());
-        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr));
+        auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, 1, 1, 2, TextureFormat::RG_32_FLOAT, allDataPtr, TextureDataType::FLOAT_32));
         texture->setName(std::move(name));
         return texture;
     }
@@ -192,8 +196,8 @@ namespace urchin {
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
         {
             for (unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
-                void* dataDestinationI = static_cast<uint8_t*>(dataDestination) + (imageIndex * getImageSize());
-                std::memcpy(dataDestinationI, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
+                void* dataDestinationStartIndex = static_cast<uint8_t*>(dataDestination) + (imageIndex * getImageSize());
+                std::memcpy(dataDestinationStartIndex, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
         }
         vmaUnmapMemory(allocator, stagingBufferMemory);

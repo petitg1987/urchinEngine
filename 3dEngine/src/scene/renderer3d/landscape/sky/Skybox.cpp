@@ -79,7 +79,7 @@ namespace urchin {
         //texture creation
         std::vector<const void*> cubeDataPtr = {skyboxImages[0]->getTexels().data(), skyboxImages[1]->getTexels().data(), skyboxImages[2]->getTexels().data(),
                                                 skyboxImages[3]->getTexels().data(), skyboxImages[4]->getTexels().data(), skyboxImages[5]->getTexels().data()};
-        auto skyboxTexture = Texture::buildCubeMap("skybox", skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr);
+        auto skyboxTexture = Texture::buildCubeMap("skybox", skyboxImages[0]->getWidth(), skyboxImages[0]->getHeight(), skyboxImages[0]->retrieveTextureFormat(), cubeDataPtr, TextureDataType::INT_8);
         std::ranges::fill(skyboxImages, std::shared_ptr<Image>(nullptr));
 
         //visual

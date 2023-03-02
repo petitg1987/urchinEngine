@@ -8,7 +8,7 @@ namespace urchin {
             width(width),
             height(height),
             format(format),
-            channelPrecision(ChannelPrecision::CHANNEL_8),
+            channelPrecision(ChannelPrecision::CHANNEL_8_INT),
             texels8(std::move(texels8)),
             bHasTransparency(hasTransparency) {
 
@@ -18,7 +18,7 @@ namespace urchin {
             width(width),
             height(height),
             format(format),
-            channelPrecision(ChannelPrecision::CHANNEL_16),
+            channelPrecision(ChannelPrecision::CHANNEL_16_INT),
             texels16(std::move(texels16)),
             bHasTransparency(hasTransparency) {
 
@@ -45,14 +45,14 @@ namespace urchin {
     }
 
     const std::vector<unsigned char>& Image::getTexels() const {
-        if (channelPrecision != ChannelPrecision::CHANNEL_8) {
+        if (channelPrecision != ChannelPrecision::CHANNEL_8_INT) {
             throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
         }
         return texels8;
     }
 
     const std::vector<uint16_t>& Image::getTexels16Bits() const {
-        if (channelPrecision != ChannelPrecision::CHANNEL_16) {
+        if (channelPrecision != ChannelPrecision::CHANNEL_16_INT) {
             throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
         }
         return texels16;
@@ -74,15 +74,15 @@ namespace urchin {
 
     TextureFormat Image::retrieveTextureFormat() const {
         if (format == Image::IMAGE_GRAYSCALE) {
-            if (channelPrecision == Image::CHANNEL_8) {
+            if (channelPrecision == Image::CHANNEL_8_INT) {
                 return TextureFormat::GRAYSCALE_8_INT;
-            } else if (channelPrecision == Image::CHANNEL_16) {
+            } else if (channelPrecision == Image::CHANNEL_16_INT) {
                 return TextureFormat::GRAYSCALE_16_FLOAT;
             } else {
                 throw std::runtime_error("Unknown channel precision: " + std::to_string(channelPrecision));
             }
         } else if (format == Image::IMAGE_RGBA) {
-            if (channelPrecision == Image::CHANNEL_8) {
+            if (channelPrecision == Image::CHANNEL_8_INT) {
                 return TextureFormat::RGBA_8_INT;
             } else {
                 throw std::invalid_argument("Unsupported channel precision for RGBA format: " + std::to_string(channelPrecision));
