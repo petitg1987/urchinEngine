@@ -145,8 +145,8 @@ namespace urchin {
                     lightsData.lightsInfo[i].position = spotLight->getPosition();
                     lightsData.lightsInfo[i].direction = spotLight->getDirections()[0];
                     lightsData.lightsInfo[i].exponentialAttenuation = spotLight->getExponentialAttenuation();
-                    lightsData.lightsInfo[i].innerCutOff = 0.0f; //TODO !
-                    lightsData.lightsInfo[i].outerCutOff = 0.0f; //TODO !
+                    lightsData.lightsInfo[i].innerCutOff = spotLight->getInnerCutOff();
+                    lightsData.lightsInfo[i].outerCutOff = spotLight->getOuterCutOff();
                 } else {
                     throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string((int)light->getLightType()));
                 }

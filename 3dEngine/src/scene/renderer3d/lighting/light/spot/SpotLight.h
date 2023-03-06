@@ -16,6 +16,9 @@ namespace urchin {
             const Point3<float>& getPosition() const override;
             void setDirection(const Vector3<float>&);
             const std::vector<Vector3<float>>& getDirections() const override;
+            void setCutOffDegree(float, float);
+            float getInnerCutOff() const;
+            float getOuterCutOff() const;
             LightType getLightType() const override;
             const AABBox<float>& getAABBox() const override;
 
@@ -33,6 +36,8 @@ namespace urchin {
             //general properties
             Point3<float> position;
             std::vector<Vector3<float>> directions;
+            float innerCutOff;
+            float outerCutOff;
 
             //attenuation properties
             float exponentialAttenuation;

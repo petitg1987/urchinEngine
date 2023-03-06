@@ -11,6 +11,7 @@
 #include <scene/renderer3d/model/builder/ModelBuilder.h>
 #include <scene/renderer3d/lighting/light/sun/SunLight.h>
 #include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
+#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>

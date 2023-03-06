@@ -75,7 +75,7 @@ namespace urchin {
     void OmnidirectionalLight::computeScope() {
         float radius = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
         sphereScope = std::make_unique<Sphere<float>>(radius, getPosition());
-        bboxScope = std::make_unique<AABBox<float>>(getPosition()-radius, getPosition()+radius);
+        bboxScope = std::make_unique<AABBox<float>>(getPosition() - radius, getPosition() + radius);
 
         notifyOctreeableMove();
     }

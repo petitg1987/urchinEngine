@@ -23,6 +23,10 @@ namespace urchin {
                 auto geometryModel = std::make_unique<SphereModel>(omnidirectionalLight->getSphereScope(), 25);
                 geometryModel->setColor(1.0f, 0.0f, 0.0f);
                 lightScopeModels.push_back(std::move(geometryModel));
+            } else if (const auto* spotLight = dynamic_cast<const SpotLight*>(light)) {
+                auto geometryModel = std::make_unique<ConeModel>(spotLight->getConeScope(), 25);
+                geometryModel->setColor(1.0f, 0.0f, 0.0f);
+                lightScopeModels.push_back(std::move(geometryModel));
             }
 
             for (const auto& lightScopeModel : lightScopeModels) {
