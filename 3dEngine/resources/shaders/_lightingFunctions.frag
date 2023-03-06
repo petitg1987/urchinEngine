@@ -5,6 +5,8 @@ struct LightInfo {
     vec3 direction;
     vec3 position;
     float exponentialAttenuation;
+    float innerCutOff;
+    float outerCutOff;
     vec3 lightColor;
 };
 
@@ -25,6 +27,9 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
         float dist = length(vertexToLight);
         lightValues.vertexToLight = vertexToLight / dist;
         lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
+    } else if (lightInfo.lightType == 2) { //spot light
+        vec3 vertexToLight = lightInfo.position - worldPosition;
+        //TODO impl
     }
 
     lightValues.NdotL = max(dot(normal, lightValues.vertexToLight), 0.0);

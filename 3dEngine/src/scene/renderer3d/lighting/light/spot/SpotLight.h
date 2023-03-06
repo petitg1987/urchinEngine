@@ -7,13 +7,14 @@
 
 namespace urchin {
 
-    class OmnidirectionalLight final : public Light {
+    class SpotLight final : public Light {
         public:
-            explicit OmnidirectionalLight(const Point3<float>&);
+            explicit SpotLight(const Point3<float>&, const Vector3<float>&, float, float);
 
             //general methods
             void setPosition(const Point3<float>&);
             const Point3<float>& getPosition() const override;
+            void setDirection(const Vector3<float>&);
             const std::vector<Vector3<float>>& getDirections() const override;
             LightType getLightType() const override;
             const AABBox<float>& getAABBox() const override;
@@ -22,7 +23,7 @@ namespace urchin {
             void setAttenuation(float);
             float getExponentialAttenuation() const;
             const AABBox<float>& getAABBoxScope() const;
-            const Sphere<float>& getSphereScope() const;
+            const Cone<float>& getConeScope() const;
 
         private:
             void computeScope();
@@ -35,7 +36,7 @@ namespace urchin {
 
             //attenuation properties
             float exponentialAttenuation;
-            std::unique_ptr<Sphere<float>> sphereScope;
+            std::unique_ptr<Cone<float>> coneScope;
             std::unique_ptr<AABBox<float>> bboxScope;
     };
 

@@ -19,7 +19,7 @@ Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
     * Emissive
     * Depth test/write
   * Dynamic shadow: cached parallel split shadow maps, variance shadow map, blur
-  * Dynamic lighting with deferred shading: omnidirectional, directional
+  * Dynamic lighting with deferred shading: directional, omnidirectional, spot
   * Terrain multi-layered and grass
   * Ambient occlusion (SSAO+)
   * Anti-aliasing (FXAA)

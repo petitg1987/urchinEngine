@@ -3,6 +3,7 @@
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/lighting/light/sun/SunLight.h>
 #include <scene/renderer3d/lighting/light/omnidirectional/OmnidirectionalLight.h>
+#include <scene/renderer3d/lighting/light/spot/SpotLight.h>
 #include <scene/renderer3d/util/OctreeRenderer.h>
 
 namespace urchin {
@@ -137,8 +138,15 @@ namespace urchin {
                     lightsData.lightsInfo[i].direction = sunLight->getDirections()[0];
                 } else if (lights[i]->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                     const auto* omnidirectionalLight = static_cast<const OmnidirectionalLight*>(light);
-                    lightsData.lightsInfo[i].position = omnidirectionalLight->getPosition().toVector();
+                    lightsData.lightsInfo[i].position = omnidirectionalLight->getPosition();
                     lightsData.lightsInfo[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
+                } else if (lights[i]->getLightType() == Light::LightType::SPOT) {
+                    const auto* spotLight = static_cast<const SpotLight*>(light);
+                    lightsData.lightsInfo[i].position = spotLight->getPosition();
+                    lightsData.lightsInfo[i].direction = spotLight->getDirections()[0];
+                    lightsData.lightsInfo[i].exponentialAttenuation = spotLight->getExponentialAttenuation();
+                    lightsData.lightsInfo[i].innerCutOff = 0.0f; //TODO !
+                    lightsData.lightsInfo[i].outerCutOff = 0.0f; //TODO !
                 } else {
                     throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string((int)light->getLightType()));
                 }

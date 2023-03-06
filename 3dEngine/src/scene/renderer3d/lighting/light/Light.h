@@ -13,6 +13,7 @@ namespace urchin {
             enum class LightType {
                 SUN = 0,
                 OMNIDIRECTIONAL = 1,
+                SPOT = 2
             };
 
             enum NotificationType {
