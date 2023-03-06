@@ -214,7 +214,7 @@ namespace urchin {
     void ShadowManager::updateLightSplitsShadowMap(const LightShadowMap& lightShadowMap) {
         ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
 
-        if (lightShadowMap.getLight().hasParallelBeams()) { //sunlight
+        if (lightShadowMap.getLight().getLightType() == Light::LightType::SUN) {
             unsigned int i = 0;
             for (const auto& lightSplitShadowMap : lightShadowMap.getLightSplitShadowMaps()) {
                 lightSplitShadowMap->update(splitFrustums[i++]);

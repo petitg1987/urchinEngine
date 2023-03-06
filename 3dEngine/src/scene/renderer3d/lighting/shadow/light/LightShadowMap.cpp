@@ -31,7 +31,7 @@ namespace urchin {
     }
 
     void LightShadowMap::updateLightViewMatrix() {
-        if (light.hasParallelBeams()) { //sunlight
+        if (light.getLightType() == Light::LightType::SUN) {
             Vector3<float> lightDirection = light.getDirections()[0];
 
             const Vector3<float>& f = lightDirection.normalize();

@@ -220,7 +220,7 @@ namespace urchin {
             setupSunLightDataFrom(static_cast<const SunLight*>(light));
             this->produceShadowCheckBox->setDisabled(false);
         } else {
-            throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string(light->getLightType()));
+            throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string((int)light->getLightType()));
         }
 
         disableLightEvent = false;
@@ -290,14 +290,14 @@ namespace urchin {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
             const Light* light = lightEntity.getLight();
 
-            if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-                lightController->updateOmnidirectionalLightProperties(lightEntity, (float)attenuation->value(), position);
-            } else if (light->getLightType() == Light::LightType::SUN) {
+            if (light->getLightType() == Light::LightType::SUN) {
                 Vector3 direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
                 lightController->updateSunLightProperties(lightEntity, direction);
+            } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+                lightController->updateOmnidirectionalLightProperties(lightEntity, (float)attenuation->value(), position);
             } else {
-                throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string(light->getLightType()));
+                throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string((int)light->getLightType()));
             }
         }
     }

@@ -25,11 +25,7 @@ namespace urchin {
     }
 
     Light::LightType SunLight::getLightType() const {
-        return SUN;
-    }
-
-    bool SunLight::hasParallelBeams() const {
-        return true;
+        return Light::LightType::SUN;
     }
 
     const AABBox<float>& SunLight::getAABBox() const {

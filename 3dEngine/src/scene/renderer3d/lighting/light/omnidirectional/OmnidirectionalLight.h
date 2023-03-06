@@ -16,7 +16,6 @@ namespace urchin {
             const Point3<float>& getPosition() const override;
             const std::vector<Vector3<float>>& getDirections() const override;
             LightType getLightType() const override;
-            bool hasParallelBeams() const override;
             const AABBox<float>& getAABBox() const override;
 
             //attenuation methods

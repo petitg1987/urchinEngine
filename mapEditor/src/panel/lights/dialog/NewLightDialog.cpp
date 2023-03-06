@@ -52,8 +52,8 @@ namespace urchin {
         lightTypeComboBox = new QComboBox();
         mainLayout->addWidget(lightTypeComboBox, 1, 1);
         lightTypeComboBox->setFixedWidth(150);
-        lightTypeComboBox->addItem(OMNIDIRECTIONAL_LIGHT_LABEL, QVariant(Light::LightType::OMNIDIRECTIONAL));
-        lightTypeComboBox->addItem(SUN_LIGHT_LABEL, QVariant(Light::LightType::SUN));
+        lightTypeComboBox->addItem(OMNIDIRECTIONAL_LIGHT_LABEL, QVariant((int)Light::LightType::OMNIDIRECTIONAL));
+        lightTypeComboBox->addItem(SUN_LIGHT_LABEL, QVariant((int)Light::LightType::SUN));
     }
 
     void NewLightDialog::updateLightName() {
@@ -72,12 +72,12 @@ namespace urchin {
         auto lightType = static_cast<Light::LightType>(variant.toInt());
 
         std::shared_ptr<Light> light;
-        if (lightType == Light::OMNIDIRECTIONAL) {
-            light = std::make_shared<OmnidirectionalLight>(Point3<float>(0.0f, 0.0f, 0.0f));
-        } else if (lightType == Light::SUN) {
+         if (lightType == Light::LightType::SUN) {
             light = std::make_shared<SunLight>(Vector3<float>(1.0f, -1.0f, 0.0f));
+        } else if (lightType == Light::LightType::OMNIDIRECTIONAL) {
+            light = std::make_shared<OmnidirectionalLight>(Point3<float>(0.0f, 0.0f, 0.0f));
         } else {
-            throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));
+            throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string((int)lightType));
         }
 
         lightEntity->setLight(light);

@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void LightEntityReaderWriter::writeLightChunk(UdaChunk& lightEntityChunk, const Light& light, UdaParser& udaParser) {
-        if (light.getLightType() == Light::OMNIDIRECTIONAL) {
+        if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
             const auto& omnidirectionalLight = static_cast<const OmnidirectionalLight&>(light);
             lightEntityChunk.addAttribute(UdaAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
@@ -52,14 +52,14 @@ namespace urchin {
 
             auto& exponentialAttenuationChunk = udaParser.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightEntityChunk);
             exponentialAttenuationChunk.setFloatValue(omnidirectionalLight.getExponentialAttenuation());
-        } else if (light.getLightType() == Light::SUN) {
+        } else if (light.getLightType() == Light::LightType::SUN) {
             const auto& sunLight = static_cast<const SunLight&>(light);
             lightEntityChunk.addAttribute(UdaAttribute(TYPE_ATTR, SUN_VALUE));
 
             auto& directionChunk = udaParser.createChunk(DIRECTION_TAG, UdaAttribute(), &lightEntityChunk);
             directionChunk.setVector3Value(sunLight.getDirections()[0]);
         } else {
-            throw std::invalid_argument("Unknown light type to write in map: " + std::to_string(light.getLightType()));
+            throw std::invalid_argument("Unknown light type to write in map: " + std::to_string((int)light.getLightType()));
         }
     }
 

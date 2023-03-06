@@ -39,11 +39,7 @@ namespace urchin {
     }
 
     Light::LightType OmnidirectionalLight::getLightType() const {
-        return OMNIDIRECTIONAL;
-    }
-
-    bool OmnidirectionalLight::hasParallelBeams() const {
-        return false;
+        return Light::LightType::OMNIDIRECTIONAL;
     }
 
     const AABBox<float>& OmnidirectionalLight::getAABBox() const {

@@ -57,7 +57,7 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "addLight");
 
             Light* lightPtr = light.get();
-            if (light->hasParallelBeams()) {
+            if (light->getLightType() == Light::LightType::SUN) {
                 sunLights.push_back(std::move(light));
             } else {
                 lightOctreeManager.addOctreeable(std::move(light));
@@ -70,7 +70,7 @@ namespace urchin {
     std::shared_ptr<Light> LightManager::removeLight(Light* light) {
         std::shared_ptr<Light> removedLight;
         if (light) {
-            if (light->hasParallelBeams()) {
+            if (light->getLightType() == Light::LightType::SUN) {
                 for (auto it = sunLights.begin(); it != sunLights.end(); ++it) {
                     if (it->get() == light) {
                         removedLight = std::move(*it);
@@ -129,18 +129,18 @@ namespace urchin {
 
                 lightsData.lightsInfo[i].isExist = true;
                 lightsData.lightsInfo[i].produceShadow = light->isProduceShadow();
-                lightsData.lightsInfo[i].hasParallelBeams = light->hasParallelBeams();
+                lightsData.lightsInfo[i].lightType = (int)light->getLightType();
                 lightsData.lightsInfo[i].lightColor = light->getLightColor();
 
-                if (lights[i]->getLightType() == Light::SUN) {
+                if (lights[i]->getLightType() == Light::LightType::SUN) {
                     const auto* sunLight = static_cast<const SunLight*>(light);
-                    lightsData.lightsInfo[i].positionOrDirection = sunLight->getDirections()[0];
-                } else if (lights[i]->getLightType() == Light::OMNIDIRECTIONAL) {
+                    lightsData.lightsInfo[i].direction = sunLight->getDirections()[0];
+                } else if (lights[i]->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                     const auto* omnidirectionalLight = static_cast<const OmnidirectionalLight*>(light);
-                    lightsData.lightsInfo[i].positionOrDirection = omnidirectionalLight->getPosition().toVector();
+                    lightsData.lightsInfo[i].position = omnidirectionalLight->getPosition().toVector();
                     lightsData.lightsInfo[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
                 } else {
-                    throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string(light->getLightType()));
+                    throw std::invalid_argument("Unknown light type to load shader variables: " + std::to_string((int)light->getLightType()));
                 }
             } else {
                 lightsData.lightsInfo[i].isExist = false;
