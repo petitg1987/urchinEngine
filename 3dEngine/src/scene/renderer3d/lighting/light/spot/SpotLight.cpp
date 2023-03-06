@@ -114,7 +114,7 @@ namespace urchin {
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (radius * (3.0f / 4.0f)));
         float radiusCone = 5.0f; //TODO compute
         Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]);
-        coneScope = std::make_unique<Cone<float>>(radiusCone, radius, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation);
+        coneScope = std::make_unique<Cone<float>>(radiusCone, radius, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation.normalize());
 
         float halfRadius = radius / 2.0f;
         Point3<float> sphereCenter = getPosition().translate(directions[0] * halfRadius);
