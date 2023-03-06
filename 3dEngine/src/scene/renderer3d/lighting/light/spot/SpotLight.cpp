@@ -42,10 +42,10 @@ namespace urchin {
     }
 
     void SpotLight::setAngles(float innerAngleDegree, float outerAngleDegree) {
-        if (innerAngleDegree > 90.0f) {
-            throw std::out_of_range("Inner angle for a spot light must be below 90°: " + std::to_string(innerAngleDegree));
-        } else if (outerAngleDegree > 90.0f) {
-            throw std::out_of_range("Outer angle for a spot light must be below 90°: " + std::to_string(outerAngleDegree));
+        if (innerAngleDegree > MAX_ANGLE_DEGREE) {
+            throw std::out_of_range("Inner angle for a spot light must be below 89°: " + std::to_string(innerAngleDegree));
+        } else if (outerAngleDegree > MAX_ANGLE_DEGREE) {
+            throw std::out_of_range("Outer angle for a spot light must be below 89°: " + std::to_string(outerAngleDegree));
         }
 
         if (innerAngleDegree > outerAngleDegree) {
@@ -109,16 +109,17 @@ namespace urchin {
      * Computes the cone scope representing light affectation zone
      */
     void SpotLight::computeScope() {
-        float radius = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+        float coneHeight = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
 
-        Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (radius * (3.0f / 4.0f)));
-        float radiusCone = 5.0f; //TODO compute
+        Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
+        float outerAngleRadian = std::acos(outerCutOff);
+        float coneRadius = coneHeight * std::tan(outerAngleRadian);
         Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]);
-        coneScope = std::make_unique<Cone<float>>(radiusCone, radius, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation.normalize());
+        coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation.normalize());
 
-        float halfRadius = radius / 2.0f;
-        Point3<float> sphereCenter = getPosition().translate(directions[0] * halfRadius);
-        bboxScope = std::make_unique<AABBox<float>>(sphereCenter - halfRadius, sphereCenter + halfRadius);
+        float halfHeight = coneHeight / 2.0f;
+        Point3<float> sphereCenter = getPosition().translate(directions[0] * halfHeight);
+        bboxScope = std::make_unique<AABBox<float>>(sphereCenter - halfHeight, sphereCenter + halfHeight);
 
         notifyOctreeableMove();
     }

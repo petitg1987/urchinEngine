@@ -228,7 +228,7 @@ namespace urchin {
         spotLightLayout->addWidget(spotInnerAngle, 2, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(spotInnerAngle);
         spotInnerAngle->setMinimum(1.0);
-        spotInnerAngle->setMaximum(90.0);
+        spotInnerAngle->setMaximum(SpotLight::MAX_ANGLE_DEGREE);
         spotInnerAngle->setSingleStep(1.0);
         connect(spotInnerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
@@ -239,7 +239,7 @@ namespace urchin {
         spotLightLayout->addWidget(spotOuterAngle, 3, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(spotOuterAngle);
         spotOuterAngle->setMinimum(1.0);
-        spotOuterAngle->setMaximum(90.0);
+        spotOuterAngle->setMaximum(SpotLight::MAX_ANGLE_DEGREE);
         spotOuterAngle->setSingleStep(1.0);
         connect(spotOuterAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
