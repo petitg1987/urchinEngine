@@ -17,6 +17,7 @@ namespace urchin {
         public:
             static constexpr char SUN_LIGHT_LABEL[] = "Sun";
             static constexpr char OMNIDIRECTIONAL_LIGHT_LABEL[] = "Omnidirectional";
+            static constexpr char SPOT_LIGHT_LABEL[] = "Spot";
 
             NewLightDialog(QWidget*, const LightController*);
 

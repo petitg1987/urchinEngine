@@ -29,13 +29,15 @@ namespace urchin {
 
         private:
             void setupGeneralPropertiesBox(QVBoxLayout*);
-            void setupSpecificOmnidirectionalLightBox(QVBoxLayout*);
             void setupSpecificSunLightBox(QVBoxLayout*);
+            void setupSpecificOmnidirectionalLightBox(QVBoxLayout*);
+            void setupSpecificSpotLightBox(QVBoxLayout*);
 
             void notify(Observable*, int) override;
             void setupLightDataFrom(const LightEntity*);
-            void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*);
             void setupSunLightDataFrom(const SunLight*);
+            void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight*);
+            void setupSpotLightDataFrom(const SpotLight*);
 
             LightController* lightController;
 
@@ -44,8 +46,9 @@ namespace urchin {
             QPushButton* removeLightButton;
 
             QGroupBox* generalPropertiesGroupBox;
-            QGroupBox* specificOmnidirectionalLightGroupBox;
             QGroupBox* specificSunLightGroupBox;
+            QGroupBox* specificOmnidirectionalLightGroupBox;
+            QGroupBox* specificSpotLightGroupBox;
 
             bool disableLightEvent;
 
@@ -64,6 +67,8 @@ namespace urchin {
             QDoubleSpinBox* directionX;
             QDoubleSpinBox* directionY;
             QDoubleSpinBox* directionZ;
+            QDoubleSpinBox* innerAngle;
+            QDoubleSpinBox* outerAngle;
 
         private slots:
             void showAddLightDialog();

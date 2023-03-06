@@ -16,8 +16,10 @@ namespace urchin {
             const Point3<float>& getPosition() const override;
             void setDirection(const Vector3<float>&);
             const std::vector<Vector3<float>>& getDirections() const override;
-            void setCutOffDegree(float, float);
+            void setAngles(float, float);
+            float computeInnerAngle() const;
             float getInnerCutOff() const;
+            float computeOuterAngle() const;
             float getOuterCutOff() const;
             LightType getLightType() const override;
             const AABBox<float>& getAABBox() const override;

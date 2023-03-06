@@ -11,8 +11,9 @@ namespace urchin {
     LightPanelWidget::LightPanelWidget() :
             lightController(nullptr),
             generalPropertiesGroupBox(nullptr),
-            specificOmnidirectionalLightGroupBox(nullptr),
             specificSunLightGroupBox(nullptr),
+            specificOmnidirectionalLightGroupBox(nullptr),
+            specificSpotLightGroupBox(nullptr),
             disableLightEvent(false),
             colorR(nullptr),
             colorG(nullptr),
@@ -25,7 +26,9 @@ namespace urchin {
             attenuation(nullptr),
             directionX(nullptr),
             directionY(nullptr),
-            directionZ(nullptr) {
+            directionZ(nullptr),
+            innerAngle(nullptr),
+            outerAngle(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -51,8 +54,9 @@ namespace urchin {
         connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeSelectedLight()));
 
         setupGeneralPropertiesBox(mainLayout);
-        setupSpecificOmnidirectionalLightBox(mainLayout);
         setupSpecificSunLightBox(mainLayout);
+        setupSpecificOmnidirectionalLightBox(mainLayout);
+        setupSpecificSpotLightBox(mainLayout);
     }
 
     void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout* mainLayout) {
@@ -99,6 +103,34 @@ namespace urchin {
         generalPropertiesLayout->addWidget(lightType, 2, 1);
     }
 
+    void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
+        specificSunLightGroupBox = new QGroupBox("Sun Light");
+        mainLayout->addWidget(specificSunLightGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
+        specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        specificSunLightGroupBox->hide();
+
+        auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
+
+        auto* directionLabel= new QLabel("Direction:");
+        sunLightLayout->addWidget(directionLabel, 0, 0);
+
+        auto* directionLayout = new QHBoxLayout();
+        sunLightLayout->addLayout(directionLayout, 0, 1);
+        directionX = new QDoubleSpinBox();
+        directionLayout->addWidget(directionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(directionX);
+        connect(directionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        directionY = new QDoubleSpinBox();
+        directionLayout->addWidget(directionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(directionY);
+        connect(directionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        directionZ = new QDoubleSpinBox();
+        directionLayout->addWidget(directionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(directionZ);
+        connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+    }
+
     void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout* mainLayout) {
         specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
         mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
@@ -137,20 +169,38 @@ namespace urchin {
         connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
-    void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
-        specificSunLightGroupBox = new QGroupBox("Sun Light");
-        mainLayout->addWidget(specificSunLightGroupBox);
-        GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
-        specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        specificSunLightGroupBox->hide();
+    void LightPanelWidget::setupSpecificSpotLightBox(QVBoxLayout* mainLayout) {
+        specificSpotLightGroupBox = new QGroupBox("Spot Light");
+        mainLayout->addWidget(specificSpotLightGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(specificSpotLightGroupBox);
+        specificSpotLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        specificSpotLightGroupBox->hide();
 
-        auto* sunLightLayout = new QGridLayout(specificSunLightGroupBox);
+        auto* spotLightLayout = new QGridLayout(specificSpotLightGroupBox);
+
+        auto* positionLabel= new QLabel("Position:");
+        spotLightLayout->addWidget(positionLabel, 0, 0);
+
+        auto* positionLayout = new QHBoxLayout();
+        spotLightLayout->addLayout(positionLayout, 0, 1);
+        positionX = new QDoubleSpinBox();
+        positionLayout->addWidget(positionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+        connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        positionY = new QDoubleSpinBox();
+        positionLayout->addWidget(positionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+        connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        positionZ = new QDoubleSpinBox();
+        positionLayout->addWidget(positionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+        connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* directionLabel= new QLabel("Direction:");
-        sunLightLayout->addWidget(directionLabel, 0, 0);
+        spotLightLayout->addWidget(directionLabel, 1, 0);
 
         auto* directionLayout = new QHBoxLayout();
-        sunLightLayout->addLayout(directionLayout, 0, 1);
+        spotLightLayout->addLayout(directionLayout, 1, 1);
         directionX = new QDoubleSpinBox();
         directionLayout->addWidget(directionX);
         SpinBoxStyleHelper::applyDefaultStyleOn(directionX);
@@ -163,6 +213,38 @@ namespace urchin {
         directionLayout->addWidget(directionZ);
         SpinBoxStyleHelper::applyDefaultStyleOn(directionZ);
         connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+
+        auto* innerAngleLabel= new QLabel("Inner angle (°):");
+        spotLightLayout->addWidget(innerAngleLabel, 2, 0);
+
+        innerAngle = new QDoubleSpinBox();
+        spotLightLayout->addWidget(innerAngle, 2, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(innerAngle);
+        innerAngle->setMinimum(0.01);
+        innerAngle->setMaximum(90.0);
+        innerAngle->setSingleStep(1.0);
+        connect(innerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+
+        auto* outerAngleLabel= new QLabel("Outer angle (°):");
+        spotLightLayout->addWidget(outerAngleLabel, 3, 0);
+
+        outerAngle = new QDoubleSpinBox();
+        spotLightLayout->addWidget(outerAngle, 3, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(outerAngle);
+        outerAngle->setMinimum(0.01);
+        outerAngle->setMaximum(90.0);
+        outerAngle->setSingleStep(1.0);
+        connect(outerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+
+        auto* attenuationLabel= new QLabel("Expo. Att.:");
+        spotLightLayout->addWidget(attenuationLabel, 4, 0);
+
+        attenuation = new QDoubleSpinBox();
+        spotLightLayout->addWidget(attenuation, 4, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(attenuation);
+        attenuation->setMinimum(0.01);
+        attenuation->setSingleStep(0.05);
+        connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
     LightTableView* LightPanelWidget::getLightTableView() const {
@@ -198,6 +280,7 @@ namespace urchin {
                     generalPropertiesGroupBox->hide();
                     specificSunLightGroupBox->hide();
                     specificOmnidirectionalLightGroupBox->hide();
+                    specificSpotLightGroupBox->hide();
                 }
             }
         }
@@ -213,12 +296,15 @@ namespace urchin {
 
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
-        if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-            setupOmnidirectionalLightDataFrom(static_cast<const OmnidirectionalLight*>(light));
-            this->produceShadowCheckBox->setDisabled(true);
-        } else if (light->getLightType() == Light::LightType::SUN) {
+        if (light->getLightType() == Light::LightType::SUN) {
             setupSunLightDataFrom(static_cast<const SunLight*>(light));
             this->produceShadowCheckBox->setDisabled(false);
+        } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+            setupOmnidirectionalLightDataFrom(static_cast<const OmnidirectionalLight*>(light));
+            this->produceShadowCheckBox->setDisabled(true);
+        } else if (light->getLightType() == Light::LightType::SPOT) {
+            setupSpotLightDataFrom(static_cast<const SpotLight*>(light));
+            this->produceShadowCheckBox->setDisabled(true);
         } else {
             throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string((int)light->getLightType()));
         }
@@ -226,9 +312,22 @@ namespace urchin {
         disableLightEvent = false;
     }
 
+    void LightPanelWidget::setupSunLightDataFrom(const SunLight* light) {
+        specificSunLightGroupBox->show();
+        specificOmnidirectionalLightGroupBox->hide();
+        specificSpotLightGroupBox->hide();
+
+        lightType->setText(NewLightDialog::SUN_LIGHT_LABEL);
+
+        this->directionX->setValue(light->getDirections()[0].X);
+        this->directionY->setValue(light->getDirections()[0].Y);
+        this->directionZ->setValue(light->getDirections()[0].Z);
+    }
+
     void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight* light) {
-        specificOmnidirectionalLightGroupBox->show();
         specificSunLightGroupBox->hide();
+        specificOmnidirectionalLightGroupBox->show();
+        specificSpotLightGroupBox->hide();
 
         lightType->setText(NewLightDialog::OMNIDIRECTIONAL_LIGHT_LABEL);
 
@@ -239,15 +338,25 @@ namespace urchin {
         this->attenuation->setValue(light->getExponentialAttenuation());
     }
 
-    void LightPanelWidget::setupSunLightDataFrom(const SunLight* light) {
-        specificSunLightGroupBox->show();
+    void LightPanelWidget::setupSpotLightDataFrom(const SpotLight* light) {
+        specificSunLightGroupBox->hide();
         specificOmnidirectionalLightGroupBox->hide();
+        specificSpotLightGroupBox->show();
 
-        lightType->setText(NewLightDialog::SUN_LIGHT_LABEL);
+        lightType->setText(NewLightDialog::SPOT_LIGHT_LABEL);
+
+        this->positionX->setValue(light->getPosition().X);
+        this->positionY->setValue(light->getPosition().Y);
+        this->positionZ->setValue(light->getPosition().Z);
 
         this->directionX->setValue(light->getDirections()[0].X);
         this->directionY->setValue(light->getDirections()[0].Y);
         this->directionZ->setValue(light->getDirections()[0].Z);
+
+        this->innerAngle->setValue(light->computeInnerAngle());
+        this->outerAngle->setValue(light->computeOuterAngle());
+
+        this->attenuation->setValue(light->getExponentialAttenuation());
     }
 
     void LightPanelWidget::showAddLightDialog() {
@@ -296,6 +405,10 @@ namespace urchin {
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
                 Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
                 lightController->updateOmnidirectionalLightProperties(lightEntity, (float)attenuation->value(), position);
+            } else if (light->getLightType() == Light::LightType::SPOT) {
+                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
+                Vector3 direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
+                lightController->updateSpotLightProperties(lightEntity, (float)attenuation->value(), position, direction, (float)innerAngle->value(), (float)outerAngle->value());
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string((int)light->getLightType()));
             }

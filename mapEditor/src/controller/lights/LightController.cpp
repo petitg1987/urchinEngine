@@ -57,6 +57,16 @@ namespace urchin {
         return lightEntity;
     }
 
+    const LightEntity& LightController::updateSunLightProperties(const LightEntity& constLightEntity, const Vector3<float>& direction) {
+        const LightEntity& lightEntity = findLightEntity(constLightEntity);
+        auto* sunLight = static_cast<SunLight*>(lightEntity.getLight());
+
+        sunLight->setDirection(direction);
+
+        markModified();
+        return lightEntity;
+    }
+
     const LightEntity& LightController::updateOmnidirectionalLightProperties(const LightEntity& constLightEntity, float attenuation, const Point3<float>& position) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
         auto* omnidirectionalLight = static_cast<OmnidirectionalLight*>(lightEntity.getLight());
@@ -68,11 +78,15 @@ namespace urchin {
         return lightEntity;
     }
 
-    const LightEntity& LightController::updateSunLightProperties(const LightEntity& constLightEntity, const Vector3<float>& direction) {
+    const LightEntity& LightController::updateSpotLightProperties(const LightEntity& constLightEntity, float attenuation, const Point3<float>& position, const Vector3<float>& direction,
+                                                                  float innerAngleDegree, float outerAngleDegree) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
-        auto* sunLight = static_cast<SunLight*>(lightEntity.getLight());
+        auto* spotLight = static_cast<SpotLight*>(lightEntity.getLight());
 
-        sunLight->setDirection(direction);
+        spotLight->setAttenuation(attenuation);
+        spotLight->setPosition(position);
+        spotLight->setDirection(direction);
+        spotLight->setAngles(innerAngleDegree, outerAngleDegree);
 
         markModified();
         return lightEntity;

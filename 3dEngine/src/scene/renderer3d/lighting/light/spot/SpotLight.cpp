@@ -11,7 +11,7 @@ namespace urchin {
             coneScope(nullptr),
             bboxScope(nullptr) {
         directions.emplace_back(direction.normalize());
-        setCutOffDegree(innerAngleDegree, outerAngleDegree);
+        setAngles(innerAngleDegree, outerAngleDegree);
 
         computeScope();
     }
@@ -41,23 +41,33 @@ namespace urchin {
         return directions;
     }
 
-    void SpotLight::setCutOffDegree(float innerAngleDegree, float outerAngleDegree) {
-        if (innerAngleDegree >= 90.0f) {
+    void SpotLight::setAngles(float innerAngleDegree, float outerAngleDegree) {
+        if (innerAngleDegree > 90.0f) {
             throw std::out_of_range("Inner angle for a spot light must be below 90°: " + std::to_string(innerAngleDegree));
-        } else if (outerAngleDegree >= 90.0f) {
+        } else if (outerAngleDegree > 90.0f) {
             throw std::out_of_range("Outer angle for a spot light must be below 90°: " + std::to_string(outerAngleDegree));
-        } else if (outerAngleDegree < innerAngleDegree) {
-            throw std::runtime_error("Outer angle (" + std::to_string(outerAngleDegree) + ") must be greater or equal to the inner angle (" + std::to_string(innerAngleDegree) + ") for a spot light");
         }
 
-        this->innerCutOff = std::cos(AngleConverter<float>::toRadian(innerAngleDegree));
-        this->outerCutOff = std::cos(AngleConverter<float>::toRadian(outerAngleDegree));
+        if (innerAngleDegree > outerAngleDegree) {
+            innerAngleDegree = outerAngleDegree;
+        }
+
+        innerCutOff = std::cos(AngleConverter<float>::toRadian(innerAngleDegree));
+        outerCutOff = std::cos(AngleConverter<float>::toRadian(outerAngleDegree));
 
         computeScope();
     }
 
+    float SpotLight::computeInnerAngle() const {
+        return AngleConverter<float>::toDegree(std::acos(innerCutOff));
+    }
+
     float SpotLight::getInnerCutOff() const {
         return innerCutOff;
+    }
+
+    float SpotLight::computeOuterAngle() const {
+        return AngleConverter<float>::toDegree(std::acos(outerCutOff));
     }
 
     float SpotLight::getOuterCutOff() const {
