@@ -25,10 +25,13 @@ namespace urchin {
 
             static constexpr char NAME_ATTR[] = "name";
             static constexpr char TYPE_ATTR[] = "type";
-            static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";
             static constexpr char SUN_VALUE[] = "SUN";
+            static constexpr char OMNIDIRECTIONAL_VALUE[] = "OMNIDIRECTIONAL";
+            static constexpr char SPOT_VALUE[] = "SPOT";
             static constexpr char DIRECTION_TAG[] = "direction";
             static constexpr char POSITION_TAG[] = "position";
+            static constexpr char INNER_ANGLE_TAG[] = "innerAngle";
+            static constexpr char OUTER_ANGLE_TAG[] = "outerAngle";
             static constexpr char LIGHT_COLOR_TAG[] = "lightColor";
             static constexpr char EXPONENTIAL_ATTENUATION_TAG[] = "exponentialAttenuation";
             static constexpr char PRODUCE_SHADOW_TAG[] = "produceShadow";

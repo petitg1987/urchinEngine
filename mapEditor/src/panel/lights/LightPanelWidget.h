@@ -60,15 +60,22 @@ namespace urchin {
             QLabel* lightType;
 
             //specific properties
-            QDoubleSpinBox* positionX;
-            QDoubleSpinBox* positionY;
-            QDoubleSpinBox* positionZ;
-            QDoubleSpinBox* attenuation;
-            QDoubleSpinBox* directionX;
-            QDoubleSpinBox* directionY;
-            QDoubleSpinBox* directionZ;
-            QDoubleSpinBox* innerAngle;
-            QDoubleSpinBox* outerAngle;
+            QDoubleSpinBox* sunDirectionX;
+            QDoubleSpinBox* sunDirectionY;
+            QDoubleSpinBox* sunDirectionZ;
+            QDoubleSpinBox* omniPositionX;
+            QDoubleSpinBox* omniPositionY;
+            QDoubleSpinBox* omniPositionZ;
+            QDoubleSpinBox* omniAttenuation;
+            QDoubleSpinBox* spotDirectionX;
+            QDoubleSpinBox* spotDirectionY;
+            QDoubleSpinBox* spotDirectionZ;
+            QDoubleSpinBox* spotPositionX;
+            QDoubleSpinBox* spotPositionY;
+            QDoubleSpinBox* spotPositionZ;
+            QDoubleSpinBox* spotAttenuation;
+            QDoubleSpinBox* spotInnerAngle;
+            QDoubleSpinBox* spotOuterAngle;
 
         private slots:
             void showAddLightDialog();

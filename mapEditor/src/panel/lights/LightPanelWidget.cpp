@@ -20,15 +20,22 @@ namespace urchin {
             colorB(nullptr),
             produceShadowCheckBox(nullptr),
             lightType(nullptr),
-            positionX(nullptr),
-            positionY(nullptr),
-            positionZ(nullptr),
-            attenuation(nullptr),
-            directionX(nullptr),
-            directionY(nullptr),
-            directionZ(nullptr),
-            innerAngle(nullptr),
-            outerAngle(nullptr) {
+            sunDirectionX(nullptr),
+            sunDirectionY(nullptr),
+            sunDirectionZ(nullptr),
+            omniPositionX(nullptr),
+            omniPositionY(nullptr),
+            omniPositionZ(nullptr),
+            omniAttenuation(nullptr),
+            spotDirectionX(nullptr),
+            spotDirectionY(nullptr),
+            spotDirectionZ(nullptr),
+            spotPositionX(nullptr),
+            spotPositionY(nullptr),
+            spotPositionZ(nullptr),
+            spotAttenuation(nullptr),
+            spotInnerAngle(nullptr),
+            spotOuterAngle(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
         mainLayout->setContentsMargins(1, 1, 1, 1);
@@ -117,18 +124,18 @@ namespace urchin {
 
         auto* directionLayout = new QHBoxLayout();
         sunLightLayout->addLayout(directionLayout, 0, 1);
-        directionX = new QDoubleSpinBox();
-        directionLayout->addWidget(directionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionX);
-        connect(directionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        directionY = new QDoubleSpinBox();
-        directionLayout->addWidget(directionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionY);
-        connect(directionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        directionZ = new QDoubleSpinBox();
-        directionLayout->addWidget(directionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionZ);
-        connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        sunDirectionX = new QDoubleSpinBox();
+        directionLayout->addWidget(sunDirectionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(sunDirectionX);
+        connect(sunDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        sunDirectionY = new QDoubleSpinBox();
+        directionLayout->addWidget(sunDirectionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(sunDirectionY);
+        connect(sunDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        sunDirectionZ = new QDoubleSpinBox();
+        directionLayout->addWidget(sunDirectionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(sunDirectionZ);
+        connect(sunDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
     void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout* mainLayout) {
@@ -145,28 +152,28 @@ namespace urchin {
 
         auto* positionLayout = new QHBoxLayout();
         omniLightLayout->addLayout(positionLayout, 0, 1);
-        positionX = new QDoubleSpinBox();
-        positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
-        connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        positionY = new QDoubleSpinBox();
-        positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
-        connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        positionZ = new QDoubleSpinBox();
-        positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
-        connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        omniPositionX = new QDoubleSpinBox();
+        positionLayout->addWidget(omniPositionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionX);
+        connect(omniPositionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        omniPositionY = new QDoubleSpinBox();
+        positionLayout->addWidget(omniPositionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionY);
+        connect(omniPositionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        omniPositionZ = new QDoubleSpinBox();
+        positionLayout->addWidget(omniPositionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(omniPositionZ);
+        connect(omniPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* attenuationLabel= new QLabel("Expo. Att.:");
         omniLightLayout->addWidget(attenuationLabel, 1, 0);
 
-        attenuation = new QDoubleSpinBox();
-        omniLightLayout->addWidget(attenuation, 1, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(attenuation);
-        attenuation->setMinimum(0.01);
-        attenuation->setSingleStep(0.05);
-        connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        omniAttenuation = new QDoubleSpinBox();
+        omniLightLayout->addWidget(omniAttenuation, 1, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(omniAttenuation);
+        omniAttenuation->setMinimum(0.01);
+        omniAttenuation->setSingleStep(0.05);
+        connect(omniAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
     void LightPanelWidget::setupSpecificSpotLightBox(QVBoxLayout* mainLayout) {
@@ -183,68 +190,68 @@ namespace urchin {
 
         auto* positionLayout = new QHBoxLayout();
         spotLightLayout->addLayout(positionLayout, 0, 1);
-        positionX = new QDoubleSpinBox();
-        positionLayout->addWidget(positionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
-        connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        positionY = new QDoubleSpinBox();
-        positionLayout->addWidget(positionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
-        connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        positionZ = new QDoubleSpinBox();
-        positionLayout->addWidget(positionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
-        connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotPositionX = new QDoubleSpinBox();
+        positionLayout->addWidget(spotPositionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionX);
+        connect(spotPositionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotPositionY = new QDoubleSpinBox();
+        positionLayout->addWidget(spotPositionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionY);
+        connect(spotPositionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotPositionZ = new QDoubleSpinBox();
+        positionLayout->addWidget(spotPositionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotPositionZ);
+        connect(spotPositionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* directionLabel= new QLabel("Direction:");
         spotLightLayout->addWidget(directionLabel, 1, 0);
 
         auto* directionLayout = new QHBoxLayout();
         spotLightLayout->addLayout(directionLayout, 1, 1);
-        directionX = new QDoubleSpinBox();
-        directionLayout->addWidget(directionX);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionX);
-        connect(directionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        directionY = new QDoubleSpinBox();
-        directionLayout->addWidget(directionY);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionY);
-        connect(directionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-        directionZ = new QDoubleSpinBox();
-        directionLayout->addWidget(directionZ);
-        SpinBoxStyleHelper::applyDefaultStyleOn(directionZ);
-        connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotDirectionX = new QDoubleSpinBox();
+        directionLayout->addWidget(spotDirectionX);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionX);
+        connect(spotDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotDirectionY = new QDoubleSpinBox();
+        directionLayout->addWidget(spotDirectionY);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionY);
+        connect(spotDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotDirectionZ = new QDoubleSpinBox();
+        directionLayout->addWidget(spotDirectionZ);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotDirectionZ);
+        connect(spotDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* innerAngleLabel= new QLabel("Inner angle (°):");
         spotLightLayout->addWidget(innerAngleLabel, 2, 0);
 
-        innerAngle = new QDoubleSpinBox();
-        spotLightLayout->addWidget(innerAngle, 2, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(innerAngle);
-        innerAngle->setMinimum(0.01);
-        innerAngle->setMaximum(90.0);
-        innerAngle->setSingleStep(1.0);
-        connect(innerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotInnerAngle = new QDoubleSpinBox();
+        spotLightLayout->addWidget(spotInnerAngle, 2, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotInnerAngle);
+        spotInnerAngle->setMinimum(1.0);
+        spotInnerAngle->setMaximum(90.0);
+        spotInnerAngle->setSingleStep(1.0);
+        connect(spotInnerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* outerAngleLabel= new QLabel("Outer angle (°):");
         spotLightLayout->addWidget(outerAngleLabel, 3, 0);
 
-        outerAngle = new QDoubleSpinBox();
-        spotLightLayout->addWidget(outerAngle, 3, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(outerAngle);
-        outerAngle->setMinimum(0.01);
-        outerAngle->setMaximum(90.0);
-        outerAngle->setSingleStep(1.0);
-        connect(outerAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotOuterAngle = new QDoubleSpinBox();
+        spotLightLayout->addWidget(spotOuterAngle, 3, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotOuterAngle);
+        spotOuterAngle->setMinimum(1.0);
+        spotOuterAngle->setMaximum(90.0);
+        spotOuterAngle->setSingleStep(1.0);
+        connect(spotOuterAngle, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
         auto* attenuationLabel= new QLabel("Expo. Att.:");
         spotLightLayout->addWidget(attenuationLabel, 4, 0);
 
-        attenuation = new QDoubleSpinBox();
-        spotLightLayout->addWidget(attenuation, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(attenuation);
-        attenuation->setMinimum(0.01);
-        attenuation->setSingleStep(0.05);
-        connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
+        spotAttenuation = new QDoubleSpinBox();
+        spotLightLayout->addWidget(spotAttenuation, 4, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(spotAttenuation);
+        spotAttenuation->setMinimum(0.01);
+        spotAttenuation->setSingleStep(0.05);
+        connect(spotAttenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
     }
 
     LightTableView* LightPanelWidget::getLightTableView() const {
@@ -319,9 +326,9 @@ namespace urchin {
 
         lightType->setText(NewLightDialog::SUN_LIGHT_LABEL);
 
-        this->directionX->setValue(light->getDirections()[0].X);
-        this->directionY->setValue(light->getDirections()[0].Y);
-        this->directionZ->setValue(light->getDirections()[0].Z);
+        this->sunDirectionX->setValue(light->getDirections()[0].X);
+        this->sunDirectionY->setValue(light->getDirections()[0].Y);
+        this->sunDirectionZ->setValue(light->getDirections()[0].Z);
     }
 
     void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight* light) {
@@ -331,11 +338,11 @@ namespace urchin {
 
         lightType->setText(NewLightDialog::OMNIDIRECTIONAL_LIGHT_LABEL);
 
-        this->positionX->setValue(light->getPosition().X);
-        this->positionY->setValue(light->getPosition().Y);
-        this->positionZ->setValue(light->getPosition().Z);
+        this->omniPositionX->setValue(light->getPosition().X);
+        this->omniPositionY->setValue(light->getPosition().Y);
+        this->omniPositionZ->setValue(light->getPosition().Z);
 
-        this->attenuation->setValue(light->getExponentialAttenuation());
+        this->omniAttenuation->setValue(light->getExponentialAttenuation());
     }
 
     void LightPanelWidget::setupSpotLightDataFrom(const SpotLight* light) {
@@ -345,18 +352,18 @@ namespace urchin {
 
         lightType->setText(NewLightDialog::SPOT_LIGHT_LABEL);
 
-        this->positionX->setValue(light->getPosition().X);
-        this->positionY->setValue(light->getPosition().Y);
-        this->positionZ->setValue(light->getPosition().Z);
+        this->spotPositionX->setValue(light->getPosition().X);
+        this->spotPositionY->setValue(light->getPosition().Y);
+        this->spotPositionZ->setValue(light->getPosition().Z);
 
-        this->directionX->setValue(light->getDirections()[0].X);
-        this->directionY->setValue(light->getDirections()[0].Y);
-        this->directionZ->setValue(light->getDirections()[0].Z);
+        this->spotDirectionX->setValue(light->getDirections()[0].X);
+        this->spotDirectionY->setValue(light->getDirections()[0].Y);
+        this->spotDirectionZ->setValue(light->getDirections()[0].Z);
 
-        this->innerAngle->setValue(light->computeInnerAngle());
-        this->outerAngle->setValue(light->computeOuterAngle());
+        this->spotInnerAngle->setValue(light->computeInnerAngle());
+        this->spotOuterAngle->setValue(light->computeOuterAngle());
 
-        this->attenuation->setValue(light->getExponentialAttenuation());
+        this->spotAttenuation->setValue(light->getExponentialAttenuation());
     }
 
     void LightPanelWidget::showAddLightDialog() {
@@ -400,15 +407,15 @@ namespace urchin {
             const Light* light = lightEntity.getLight();
 
             if (light->getLightType() == Light::LightType::SUN) {
-                Vector3 direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
+                Vector3 direction((float)sunDirectionX->value(), (float)sunDirectionY->value(), (float)sunDirectionZ->value());
                 lightController->updateSunLightProperties(lightEntity, direction);
             } else if (light->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-                lightController->updateOmnidirectionalLightProperties(lightEntity, (float)attenuation->value(), position);
+                Point3 position((float)omniPositionX->value(), (float)omniPositionY->value(), (float)omniPositionZ->value());
+                lightController->updateOmnidirectionalLightProperties(lightEntity, (float)omniAttenuation->value(), position);
             } else if (light->getLightType() == Light::LightType::SPOT) {
-                Point3 position((float)positionX->value(), (float)positionY->value(), (float)positionZ->value());
-                Vector3 direction((float)directionX->value(), (float)directionY->value(), (float)directionZ->value());
-                lightController->updateSpotLightProperties(lightEntity, (float)attenuation->value(), position, direction, (float)innerAngle->value(), (float)outerAngle->value());
+                Point3 position((float)spotPositionX->value(), (float)spotPositionY->value(), (float)spotPositionZ->value());
+                Vector3 direction((float)spotDirectionX->value(), (float)spotDirectionY->value(), (float)spotDirectionZ->value());
+                lightController->updateSpotLightProperties(lightEntity, (float)spotAttenuation->value(), position, direction, (float)spotInnerAngle->value(), (float)spotOuterAngle->value());
             } else {
                 throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string((int)light->getLightType()));
             }

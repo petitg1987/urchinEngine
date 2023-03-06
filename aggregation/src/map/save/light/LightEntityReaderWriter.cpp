@@ -25,7 +25,11 @@ namespace urchin {
 
     std::unique_ptr<Light> LightEntityReaderWriter::buildLight(const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
         std::string lightType = lightEntityChunk->getAttributeValue(TYPE_ATTR);
-        if (lightType == OMNIDIRECTIONAL_VALUE) {
+        if (lightType == SUN_VALUE) {
+            auto directionChunk = udaParser.getFirstChunk(true, DIRECTION_TAG, UdaAttribute(), lightEntityChunk);
+
+            return std::make_unique<SunLight>(directionChunk->getVector3Value());
+        } else if (lightType == OMNIDIRECTIONAL_VALUE) {
             auto positionChunk = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), lightEntityChunk);
             auto omnidirectional = std::make_unique<OmnidirectionalLight>(positionChunk->getPoint3Value());
 
@@ -33,17 +37,30 @@ namespace urchin {
             omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
 
             return omnidirectional;
-        } else if (lightType == SUN_VALUE) {
+        } else if (lightType == SPOT_VALUE) {
+            auto positionChunk = udaParser.getFirstChunk(true, POSITION_TAG, UdaAttribute(), lightEntityChunk);
             auto directionChunk = udaParser.getFirstChunk(true, DIRECTION_TAG, UdaAttribute(), lightEntityChunk);
+            auto innerAngleChunk = udaParser.getFirstChunk(true, INNER_ANGLE_TAG, UdaAttribute(), lightEntityChunk);
+            auto outerAngleChunk = udaParser.getFirstChunk(true, OUTER_ANGLE_TAG, UdaAttribute(), lightEntityChunk);
+            auto spot = std::make_unique<SpotLight>(positionChunk->getPoint3Value(), directionChunk->getVector3Value(), innerAngleChunk->getFloatValue(), outerAngleChunk->getFloatValue());
 
-            return std::make_unique<SunLight>(directionChunk->getVector3Value());
+            auto exponentialAttenuationChunk = udaParser.getFirstChunk(true, EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), lightEntityChunk);
+            spot->setAttenuation(exponentialAttenuationChunk->getFloatValue());
+
+            return spot;
         }
 
         throw std::invalid_argument("Unknown light type read from map: " + lightType);
     }
 
     void LightEntityReaderWriter::writeLightChunk(UdaChunk& lightEntityChunk, const Light& light, UdaParser& udaParser) {
-        if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
+        if (light.getLightType() == Light::LightType::SUN) {
+            const auto& sunLight = static_cast<const SunLight&>(light);
+            lightEntityChunk.addAttribute(UdaAttribute(TYPE_ATTR, SUN_VALUE));
+
+            auto& directionChunk = udaParser.createChunk(DIRECTION_TAG, UdaAttribute(), &lightEntityChunk);
+            directionChunk.setVector3Value(sunLight.getDirections()[0]);
+        } else if (light.getLightType() == Light::LightType::OMNIDIRECTIONAL) {
             const auto& omnidirectionalLight = static_cast<const OmnidirectionalLight&>(light);
             lightEntityChunk.addAttribute(UdaAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
@@ -52,13 +69,25 @@ namespace urchin {
 
             auto& exponentialAttenuationChunk = udaParser.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightEntityChunk);
             exponentialAttenuationChunk.setFloatValue(omnidirectionalLight.getExponentialAttenuation());
-        } else if (light.getLightType() == Light::LightType::SUN) {
-            const auto& sunLight = static_cast<const SunLight&>(light);
-            lightEntityChunk.addAttribute(UdaAttribute(TYPE_ATTR, SUN_VALUE));
+        } else if (light.getLightType() == Light::LightType::SPOT) {
+            const auto& spotLight = static_cast<const SpotLight&>(light);
+            lightEntityChunk.addAttribute(UdaAttribute(TYPE_ATTR, SPOT_VALUE));
+
+            auto& positionChunk = udaParser.createChunk(POSITION_TAG, UdaAttribute(), &lightEntityChunk);
+            positionChunk.setPoint3Value(spotLight.getPosition());
 
             auto& directionChunk = udaParser.createChunk(DIRECTION_TAG, UdaAttribute(), &lightEntityChunk);
-            directionChunk.setVector3Value(sunLight.getDirections()[0]);
-        } else {
+            directionChunk.setVector3Value(spotLight.getDirections()[0]);
+
+            auto& innerAngleChunk = udaParser.createChunk(INNER_ANGLE_TAG, UdaAttribute(), &lightEntityChunk);
+            innerAngleChunk.setFloatValue(spotLight.computeInnerAngle());
+
+            auto& outerAngleChunk = udaParser.createChunk(OUTER_ANGLE_TAG, UdaAttribute(), &lightEntityChunk);
+            outerAngleChunk.setFloatValue(spotLight.computeOuterAngle());
+
+            auto& exponentialAttenuationChunk = udaParser.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightEntityChunk);
+            exponentialAttenuationChunk.setFloatValue(spotLight.getExponentialAttenuation());
+        } else  {
             throw std::invalid_argument("Unknown light type to write in map: " + std::to_string((int)light.getLightType()));
         }
     }
