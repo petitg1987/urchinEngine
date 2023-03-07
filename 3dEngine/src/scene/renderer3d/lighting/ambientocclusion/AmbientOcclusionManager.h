@@ -24,7 +24,7 @@ namespace urchin {
                 AOTextureBits textureBits = AOTextureBits::AO_8_BITS;
                 unsigned int kernelSamples = 32;
                 float radius = 0.15f; //scope radius in units
-                float ambientOcclusionStrength = 0.20f;
+                float ambientOcclusionStrength = 0.18f;
                 float distanceStartAttenuation = 11.0f; //distance in units
                 float distanceEndAttenuation = 12.0f; //distance in units
                 unsigned int noiseTextureSize = 64;
