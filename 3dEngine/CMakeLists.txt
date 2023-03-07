@@ -13,6 +13,12 @@ set(compiledShadersDir "${shadersDir}/spirv")
 file(GLOB shaderFiles "${shadersDir}/*.*")
 foreach (shaderFile ${shaderFiles})
     get_filename_component(shaderFilename ${shaderFile} NAME)
+    if ("${shaderFilename}" MATCHES "^_.*")
+        set(commonShaderFiles "${shadersDir}/${shaderFilename};${commonShaderFiles}")
+    endif()
+endforeach()
+foreach (shaderFile ${shaderFiles})
+    get_filename_component(shaderFilename ${shaderFile} NAME)
     set(compiledShaderName "${shaderFilename}.spv")
     if ("${shaderFilename}" MATCHES "^_.*")
         continue()
@@ -28,7 +34,7 @@ foreach (shaderFile ${shaderFiles})
     endif()
 
     add_custom_command( OUTPUT ${compiledShadersDir}/${compiledShaderName}
-            DEPENDS ${shadersDir}/${shaderFilename}
+            DEPENDS "${shadersDir}/${shaderFilename};${commonShaderFiles}"
             COMMAND glslc --target-env=vulkan1.2 -fshader-stage=${shaderStage} -O -g -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})
     set(compiledShaderNames "${compiledShadersDir}/${compiledShaderName};${compiledShaderNames}")
 endforeach()

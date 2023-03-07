@@ -30,9 +30,12 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
     } else if (lightInfo.lightType == 2) { //spot light
         vec3 vertexToLight = lightInfo.position - worldPosition;
         float dist = length(vertexToLight);
+        float theta = dot(normalize(vertexToLight), -lightInfo.direction);
+        float epsilon   = lightInfo.innerCutOff - lightInfo.outerCutOff;
+        float intensity = clamp((theta - lightInfo.outerCutOff) / epsilon, 0.0, 1.0);
         lightValues.vertexToLight = vertexToLight / dist;
         lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
-        //TODO impl
+        lightValues.lightAttenuation *= intensity;
     }
 
     lightValues.NdotL = max(dot(normal, lightValues.vertexToLight), 0.0);
