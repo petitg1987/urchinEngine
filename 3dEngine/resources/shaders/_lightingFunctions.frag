@@ -34,8 +34,7 @@ LightValues computeLightValues(LightInfo lightInfo, vec3 normal, vec3 worldPosit
         float epsilon = lightInfo.innerCutOff - lightInfo.outerCutOff;
         float intensity = clamp((theta - lightInfo.outerCutOff) / epsilon, 0.0, 1.0);
         lightValues.vertexToLight = vertexToLight / dist;
-        lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation);
-        lightValues.lightAttenuation *= intensity;
+        lightValues.lightAttenuation = exp(-dist * lightInfo.exponentialAttenuation) * intensity;
     }
 
     lightValues.NdotL = max(dot(normal, lightValues.vertexToLight), 0.0);
