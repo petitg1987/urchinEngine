@@ -113,7 +113,7 @@ namespace urchin {
      * Computes the cone scope representing light affectation zone
      */
     void SpotLight::computeScope() {
-        float coneHeight = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+        float coneHeight = -std::log(Light::ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
         float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
