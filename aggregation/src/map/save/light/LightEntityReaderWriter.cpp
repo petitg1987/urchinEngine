@@ -80,10 +80,10 @@ namespace urchin {
             directionChunk.setVector3Value(spotLight.getDirections()[0]);
 
             auto& innerAngleChunk = udaParser.createChunk(INNER_ANGLE_TAG, UdaAttribute(), &lightEntityChunk);
-            innerAngleChunk.setFloatValue(spotLight.computeInnerAngle());
+            innerAngleChunk.setFloatValue(spotLight.getInnerAngle());
 
             auto& outerAngleChunk = udaParser.createChunk(OUTER_ANGLE_TAG, UdaAttribute(), &lightEntityChunk);
-            outerAngleChunk.setFloatValue(spotLight.computeOuterAngle());
+            outerAngleChunk.setFloatValue(spotLight.getOuterAngle());
 
             auto& exponentialAttenuationChunk = udaParser.createChunk(EXPONENTIAL_ATTENUATION_TAG, UdaAttribute(), &lightEntityChunk);
             exponentialAttenuationChunk.setFloatValue(spotLight.getExponentialAttenuation());

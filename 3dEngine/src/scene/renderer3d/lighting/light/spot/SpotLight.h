@@ -19,10 +19,10 @@ namespace urchin {
             void setDirection(const Vector3<float>&);
             const std::vector<Vector3<float>>& getDirections() const override;
             void setAngles(float, float);
-            float computeInnerAngle() const;
-            float getInnerCutOff() const;
-            float computeOuterAngle() const;
-            float getOuterCutOff() const;
+            float getInnerAngle() const;
+            float getInnerCosAngle() const;
+            float getOuterAngle() const;
+            float getOuterCosAngle() const;
             LightType getLightType() const override;
             const AABBox<float>& getAABBox() const override;
 
@@ -40,8 +40,10 @@ namespace urchin {
             //general properties
             Point3<float> position;
             std::vector<Vector3<float>> directions;
-            float innerCutOff;
-            float outerCutOff;
+            float innerAngleInDegrees;
+            float innerCosAngle;
+            float outerAngleInDegrees;
+            float outerCosAngle;
 
             //attenuation properties
             float exponentialAttenuation;

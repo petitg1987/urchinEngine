@@ -360,8 +360,8 @@ namespace urchin {
         this->spotDirectionY->setValue(light->getDirections()[0].Y);
         this->spotDirectionZ->setValue(light->getDirections()[0].Z);
 
-        this->spotInnerAngle->setValue(light->computeInnerAngle());
-        this->spotOuterAngle->setValue(light->computeOuterAngle());
+        this->spotInnerAngle->setValue(light->getInnerAngle());
+        this->spotOuterAngle->setValue(light->getOuterAngle());
 
         this->spotAttenuation->setValue(light->getExponentialAttenuation());
     }

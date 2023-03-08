@@ -79,14 +79,14 @@ namespace urchin {
     }
 
     const LightEntity& LightController::updateSpotLightProperties(const LightEntity& constLightEntity, float attenuation, const Point3<float>& position, const Vector3<float>& direction,
-                                                                  float innerAngleDegree, float outerAngleDegree) {
+                                                                  float innerAngleInDegrees, float outerAngleInDegrees) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
         auto* spotLight = static_cast<SpotLight*>(lightEntity.getLight());
 
         spotLight->setAttenuation(attenuation);
         spotLight->setPosition(position);
         spotLight->setDirection(direction);
-        spotLight->setAngles(innerAngleDegree, outerAngleDegree);
+        spotLight->setAngles(innerAngleInDegrees, outerAngleInDegrees);
 
         markModified();
         return lightEntity;

@@ -2,16 +2,18 @@
 
 namespace urchin {
 
-    SpotLight::SpotLight(const Point3<float>& position, const Vector3<float>& direction, float innerAngleDegree, float outerAngleDegree) :
+    SpotLight::SpotLight(const Point3<float>& position, const Vector3<float>& direction, float innerAngleInDegrees, float outerAngleInDegrees) :
             Light(),
             position(position),
-            innerCutOff(0.0f),
-            outerCutOff(0.0f),
+            innerAngleInDegrees(0.0f),
+            innerCosAngle(0.0f),
+            outerAngleInDegrees(0.0f),
+            outerCosAngle(0.0f),
             exponentialAttenuation(0.1f),
             coneScope(nullptr),
             bboxScope(nullptr) {
         directions.emplace_back(direction.normalize());
-        setAngles(innerAngleDegree, outerAngleDegree);
+        setAngles(innerAngleInDegrees, outerAngleInDegrees);
 
         computeScope();
     }
@@ -41,37 +43,39 @@ namespace urchin {
         return directions;
     }
 
-    void SpotLight::setAngles(float innerAngleDegree, float outerAngleDegree) {
-        if (innerAngleDegree > MAX_ANGLE_DEGREE) {
-            throw std::out_of_range("Inner angle for a spot light must be below 89°: " + std::to_string(innerAngleDegree));
-        } else if (outerAngleDegree > MAX_ANGLE_DEGREE) {
-            throw std::out_of_range("Outer angle for a spot light must be below 89°: " + std::to_string(outerAngleDegree));
+    void SpotLight::setAngles(float innerAngleInDegrees, float outerAngleInDegrees) {
+        if (innerAngleInDegrees > MAX_ANGLE_DEGREE) {
+            throw std::out_of_range("Inner angle for a spot light must be below 89°: " + std::to_string(innerAngleInDegrees));
+        } else if (outerAngleInDegrees > MAX_ANGLE_DEGREE) {
+            throw std::out_of_range("Outer angle for a spot light must be below 89°: " + std::to_string(outerAngleInDegrees));
         }
 
-        if (innerAngleDegree > outerAngleDegree) {
-            innerAngleDegree = outerAngleDegree;
+        if (innerAngleInDegrees > outerAngleInDegrees) {
+            innerAngleInDegrees = outerAngleInDegrees;
         }
 
-        innerCutOff = std::cos(AngleConverter<float>::toRadian(innerAngleDegree));
-        outerCutOff = std::cos(AngleConverter<float>::toRadian(outerAngleDegree));
+        this->innerAngleInDegrees = innerAngleInDegrees;
+        this->innerCosAngle = std::cos(AngleConverter<float>::toRadian(innerAngleInDegrees));
+        this->outerAngleInDegrees = outerAngleInDegrees;
+        this->outerCosAngle = std::cos(AngleConverter<float>::toRadian(outerAngleInDegrees));
 
         computeScope();
     }
 
-    float SpotLight::computeInnerAngle() const {
-        return AngleConverter<float>::toDegree(std::acos(innerCutOff));
+    float SpotLight::getInnerAngle() const {
+        return innerAngleInDegrees;
     }
 
-    float SpotLight::getInnerCutOff() const {
-        return innerCutOff;
+    float SpotLight::getInnerCosAngle() const {
+        return innerCosAngle;
     }
 
-    float SpotLight::computeOuterAngle() const {
-        return AngleConverter<float>::toDegree(std::acos(outerCutOff));
+    float SpotLight::getOuterAngle() const {
+        return outerAngleInDegrees;
     }
 
-    float SpotLight::getOuterCutOff() const {
-        return outerCutOff;
+    float SpotLight::getOuterCosAngle() const {
+        return outerCosAngle;
     }
 
     Light::LightType SpotLight::getLightType() const {
@@ -112,8 +116,7 @@ namespace urchin {
         float coneHeight = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
 
         Point3<float> coneCenterOfMass = getPosition().translate(directions[0] * (coneHeight * (3.0f / 4.0f)));
-        float outerAngleRadian = std::acos(outerCutOff);
-        float coneRadius = coneHeight * std::tan(outerAngleRadian);
+        float coneRadius = coneHeight * std::tan(AngleConverter<float>::toRadian(outerAngleInDegrees));
         Quaternion<float> orientation = Quaternion<float>::rotationFromTo(Vector3(0.0f, -1.0f, 0.0f), directions[0]);
         coneScope = std::make_unique<Cone<float>>(coneRadius, coneHeight, ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE, coneCenterOfMass, orientation.normalize());
 
