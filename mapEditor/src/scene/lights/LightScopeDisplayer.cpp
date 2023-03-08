@@ -20,13 +20,21 @@ namespace urchin {
             const Light* light = lightEntity->getLight();
 
             if (const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light)) {
-                auto geometryModel = std::make_unique<SphereModel>(omnidirectionalLight->getSphereScope(), 25);
-                geometryModel->setColor(1.0f, 0.0f, 0.0f);
-                lightScopeModels.push_back(std::move(geometryModel));
+                auto sphereModel = std::make_unique<SphereModel>(omnidirectionalLight->getSphereScope(), 25);
+                sphereModel->setColor(1.0f, 0.0f, 0.0f);
+                lightScopeModels.push_back(std::move(sphereModel));
+
+                auto boundingBoxModel = std::make_unique<AABBoxModel>(omnidirectionalLight->getAABBox());
+                boundingBoxModel->setColor(1.0f, 0.5f, 0.0f);
+                lightScopeModels.push_back(std::move(boundingBoxModel));
             } else if (const auto* spotLight = dynamic_cast<const SpotLight*>(light)) {
-                auto geometryModel = std::make_unique<ConeModel>(spotLight->getConeScope(), 25);
-                geometryModel->setColor(1.0f, 0.0f, 0.0f);
-                lightScopeModels.push_back(std::move(geometryModel));
+                auto coneModel = std::make_unique<ConeModel>(spotLight->getConeScope(), 25);
+                coneModel->setColor(1.0f, 0.0f, 0.0f);
+                lightScopeModels.push_back(std::move(coneModel));
+
+                auto boundingBoxModel = std::make_unique<AABBoxModel>(spotLight->getAABBox());
+                boundingBoxModel->setColor(1.0f, 0.5f, 0.0f);
+                lightScopeModels.push_back(std::move(boundingBoxModel));
             }
 
             for (const auto& lightScopeModel : lightScopeModels) {
