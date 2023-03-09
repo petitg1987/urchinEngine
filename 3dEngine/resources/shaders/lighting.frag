@@ -82,16 +82,14 @@ float computeShadowAttenuation(float shadowMapZ, vec2 moments, float NdotL) {
     float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
     float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
     float shadowMapZBias = shadowMapZ - bias;
-    if (shadowMapZBias <= moments.x) {
+    if (shadowMapZBias <= moments.x) { //is in hard/full shadow
         return 1.0; //no attentuation / no shadow
     }
 
     float variance = moments.y - (moments.x * moments.x);
     float d = shadowMapZBias - moments.x;
     float pMax = variance / (variance + d * d);
-
-    pMax = linearStep(0.75, 1.0, pMax); //reduce light bleeding where first parameter is at the graphic designer appreciation
-    return max(pMax, NdotL / 5.0f); //hijack to apply normal map in shadow
+    return linearStep(0.75, 1.0, pMax); //reduce light bleeding where first parameter is at the graphic designer appreciation
 }
 
 float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
