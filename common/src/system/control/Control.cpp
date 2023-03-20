@@ -42,7 +42,7 @@ namespace urchin {
         keysLabelMap[Control::Key::RIGHT_BRACKET] = "]";
         keysLabelMap[Control::Key::PERIOD] = ".";
         keysLabelMap[Control::Key::GRAVE_ACCENT] = '`';
-        keysLabelMap[Control::Key::ESCAPE] = "Escape";
+        keysLabelMap[Control::Key::ESCAPE] = "Esc";
         keysLabelMap[Control::Key::SPACE] = "Space";
         keysLabelMap[Control::Key::CTRL_LEFT] = "Ctrl L";
         keysLabelMap[Control::Key::CTRL_RIGHT] = "Ctrl R";
