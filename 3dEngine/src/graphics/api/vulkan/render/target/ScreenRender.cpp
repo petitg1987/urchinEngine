@@ -293,7 +293,7 @@ namespace urchin {
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::to_string(queuePresentResult) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;
