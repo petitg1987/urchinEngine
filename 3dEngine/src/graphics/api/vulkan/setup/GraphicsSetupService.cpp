@@ -76,7 +76,7 @@ namespace urchin {
             return;
         }
 
-        Logger::instance().logInfo("Create Vulkan instance");
+        Logger::instance().logInfo("Create Vulkan instance with window required extensions: " + StringUtil::merge(windowRequiredExtensions, ','));
 
         VkApplicationInfo applicationInfo{};
         applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -89,7 +89,7 @@ namespace urchin {
         std::vector<std::string> requiredExtensionsString = VectorUtil::concatenate(windowRequiredExtensions, validationLayer.getRequiredExtensions());
         std::vector<const char*> requiredExtensions;
         requiredExtensions.reserve(requiredExtensionsString.size());
-        for (std::string const& requiredExtensionString : requiredExtensionsString) {
+        for (const std::string& requiredExtensionString : requiredExtensionsString) {
             requiredExtensions.emplace_back(requiredExtensionString.data());
         }
 
