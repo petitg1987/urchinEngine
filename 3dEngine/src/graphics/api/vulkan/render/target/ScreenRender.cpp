@@ -292,6 +292,12 @@ namespace urchin {
         VkResult queuePresentResult = vkQueuePresentKHR(GraphicsSetupService::instance().getQueues().getPresentationQueue(), &presentInfo);
         if (queuePresentResult == VK_ERROR_OUT_OF_DATE_KHR || queuePresentResult == VK_SUBOPTIMAL_KHR) {
             onResize();
+        } else if (queuePresentResult == VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT) { //shouldn't happen but the error has appeared before on some AMD GPUs
+            static unsigned int numErrorsLogged = 0;
+            if (numErrorsLogged++ < MAX_ERRORS_LOG) {
+                Logger::instance().logError("Error when queuing an image for presentation: VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT");
+            }
+            onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::to_string(queuePresentResult) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
