@@ -313,26 +313,26 @@ namespace urchin {
                 auto letterHeight = (float)font->getGlyph(textLetter).height;
                 auto letterOffsetY = offsetY - letterShift;
 
-                getVertexCoordinates().emplace_back(Point2<float>(offsetX, letterOffsetY));
-                getVertexCoordinates().emplace_back(Point2<float>(letterWidth + offsetX, letterOffsetY));
-                getVertexCoordinates().emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2(offsetX, letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2(letterWidth + offsetX, letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2(letterWidth + offsetX, letterHeight + letterOffsetY));
 
-                getVertexCoordinates().emplace_back(Point2<float>(offsetX, letterOffsetY));
-                getVertexCoordinates().emplace_back(Point2<float>(letterWidth + offsetX, letterHeight + letterOffsetY));
-                getVertexCoordinates().emplace_back(Point2<float>(offsetX, letterHeight + letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2(offsetX, letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2(letterWidth + offsetX, letterHeight + letterOffsetY));
+                getVertexCoordinates().emplace_back(Point2(offsetX, letterHeight + letterOffsetY));
 
                 float sMin = (float)(textLetter % 16) / 16.0f;
                 float tMin = (float)(textLetter >> 4u) / 16.0f;
                 float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
                 float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
 
-                getTextureCoordinates().emplace_back(Point2<float>(sMin, tMin));
-                getTextureCoordinates().emplace_back(Point2<float>(sMax, tMin));
-                getTextureCoordinates().emplace_back(Point2<float>(sMax, tMax));
+                getTextureCoordinates().emplace_back(Point2(sMin, tMin));
+                getTextureCoordinates().emplace_back(Point2(sMax, tMin));
+                getTextureCoordinates().emplace_back(Point2(sMax, tMax));
 
-                getTextureCoordinates().emplace_back(Point2<float>(sMin, tMin));
-                getTextureCoordinates().emplace_back(Point2<float>(sMax, tMax));
-                getTextureCoordinates().emplace_back(Point2<float>(sMin, tMax));
+                getTextureCoordinates().emplace_back(Point2(sMin, tMin));
+                getTextureCoordinates().emplace_back(Point2(sMax, tMax));
+                getTextureCoordinates().emplace_back(Point2(sMin, tMax));
 
                 offsetX += letterWidth + spaceBetweenCharacters;
             }
@@ -340,14 +340,14 @@ namespace urchin {
         }
 
         if (getVertexCoordinates().empty()) {
-            getVertexCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
-            getVertexCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
-            getVertexCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
+            getVertexCoordinates().emplace_back(Point2(0.0f ,0.0f));
+            getVertexCoordinates().emplace_back(Point2(0.0f ,0.0f));
+            getVertexCoordinates().emplace_back(Point2(0.0f ,0.0f));
         }
         if (getTextureCoordinates().empty()) {
-            getTextureCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
-            getTextureCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
-            getTextureCoordinates().emplace_back(Point2<float>(0.0f ,0.0f));
+            getTextureCoordinates().emplace_back(Point2(0.0f ,0.0f));
+            getTextureCoordinates().emplace_back(Point2(0.0f ,0.0f));
+            getTextureCoordinates().emplace_back(Point2(0.0f ,0.0f));
         }
 
         if (getRenderer()) {
