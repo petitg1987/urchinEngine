@@ -262,8 +262,8 @@ namespace urchin {
             }
 
             Vector2<float> mouseDirection;
-            mouseDirection.X = (float)(previousMouseX - mouseX) * MOUSE_SENSITIVITY_FACTOR * mouseSensitivityPercentage;
-            mouseDirection.Y = (float)(previousMouseY - mouseY) * MOUSE_SENSITIVITY_FACTOR * mouseSensitivityPercentage;
+            mouseDirection.X = (float)((previousMouseX - mouseX) * (double)MOUSE_SENSITIVITY_FACTOR * (double)mouseSensitivityPercentage);
+            mouseDirection.Y = (float)((previousMouseY - mouseY) * (double)MOUSE_SENSITIVITY_FACTOR * (double)mouseSensitivityPercentage);
             if (invertYAxis) {
                 mouseDirection.Y = - mouseDirection.Y;
             }
