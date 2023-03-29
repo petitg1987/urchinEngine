@@ -44,8 +44,8 @@ namespace urchin {
             Matrix4<T> toProjectionMatrix() const;
             bool include(const AABBox<T>&) const;
             static AABBox<T> initMergeableAABBox();
-            AABBox<T> merge(const AABBox<T>&) const;
-            AABBox<T> cutTo(const AABBox<T>&) const;
+            [[nodiscard]] AABBox<T> merge(const AABBox<T>&) const;
+            [[nodiscard]] AABBox<T> cutTo(const AABBox<T>&) const;
             [[nodiscard]] AABBox<T> enlarge(const Vector3<T>&, const Vector3<T>&) const;
             [[nodiscard]] AABBox<T> enlarge(T, T) const;
 
