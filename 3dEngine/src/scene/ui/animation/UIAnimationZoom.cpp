@@ -20,12 +20,14 @@ namespace urchin {
         if (toEndScale) {
             linearProgression += dt * getAnimationSpeed();
             if (linearProgression > 1.0f) {
+                linearProgression = 1.0f;
                 toEndScale = false;
                 executionCount++;
             }
         } else {
             linearProgression -= dt * getAnimationSpeed();
             if (linearProgression < 0.0f) {
+                linearProgression = 0.0f;
                 toEndScale = true;
                 executionCount++;
             }

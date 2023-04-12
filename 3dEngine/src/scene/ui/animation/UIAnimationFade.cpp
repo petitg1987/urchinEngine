@@ -17,6 +17,7 @@ namespace urchin {
     void UIAnimationFade::doAnimation(float dt) {
         linearProgression += dt * getAnimationSpeed();
         if (linearProgression > 1.0f) {
+            linearProgression = 1.0f;
             updateAlphaFactor(endFadeValue);
             markCompleted();
         } else {
