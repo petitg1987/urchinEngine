@@ -46,7 +46,7 @@
   * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
 * UI
-  * **OPTIMIZATION** (`medium`): Regroup the renderers together
+  * **OPTIMIZATION** (`medium`): Regroup the renderers together (require a pool of textures which can be accessed by index using Vulkan Descriptor Indexing)
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d
