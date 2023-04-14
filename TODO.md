@@ -19,6 +19,8 @@
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
   * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#detachModelFromDisplayer() for models not displayed for a long time
+  * **OPTIMIZATION** (`medium`): Make UV coordinates part of the instancing
+    * Tips: avoid to send full UV coordinates at each frame by using a Vulkan Descriptor Indexing to access to an array of UV by index
   * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
   * **OPTIMIZATION** (`medium`): Models LOD
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
