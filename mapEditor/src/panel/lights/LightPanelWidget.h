@@ -56,6 +56,7 @@ namespace urchin {
             QDoubleSpinBox* colorR;
             QDoubleSpinBox* colorG;
             QDoubleSpinBox* colorB;
+            QCheckBox* enablePbrCheckBox;
             QCheckBox* produceShadowCheckBox;
             QLabel* lightType;
 

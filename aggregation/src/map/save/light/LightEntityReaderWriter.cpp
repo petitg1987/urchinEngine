@@ -103,11 +103,17 @@ namespace urchin {
     }
 
     void LightEntityReaderWriter::loadFlags(Light& light, const UdaChunk* lightEntityChunk, const UdaParser& udaParser) {
+        auto pbrEnabledChunk = udaParser.getFirstChunk(true, PBR_ENABLED_TAG, UdaAttribute(), lightEntityChunk);
+        light.setPbrEnabled(pbrEnabledChunk->getBoolValue());
+
         auto produceShadowChunk = udaParser.getFirstChunk(true, PRODUCE_SHADOW_TAG, UdaAttribute(), lightEntityChunk);
         light.setProduceShadow(produceShadowChunk->getBoolValue());
     }
 
     void LightEntityReaderWriter::writeFlags(UdaChunk& lightEntityChunk, const Light& light, UdaParser& udaParser) {
+        auto& pbrEnabledChunk = udaParser.createChunk(PBR_ENABLED_TAG, UdaAttribute(), &lightEntityChunk);
+        pbrEnabledChunk.setBoolValue(light.isPbrEnabled());
+
         auto& produceShadowChunk = udaParser.createChunk(PRODUCE_SHADOW_TAG, UdaAttribute(), &lightEntityChunk);
         produceShadowChunk.setBoolValue(light.isProduceShadow());
     }

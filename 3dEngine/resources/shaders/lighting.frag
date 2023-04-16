@@ -225,21 +225,26 @@ void main() {
 
             LightValues lightValues = computeLightValues(lightsData.lightsInfo[lightIndex], normal, vec3(worldPosition));
 
-            //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw & https://learnopengl.com/PBR/Theory)
             vec3 lightRadiance = lightsData.lightsInfo[lightIndex].lightColor * lightValues.lightAttenuation;
-            vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
-            float normalDistribution = distributionGGX(normal, halfWay, roughness);
-            float geometryShadowing = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
-            vec3 fresnelFactor = fresnelSchlick(halfWay, vertexToCameraPos, baseReflectivity);
-            vec3 kS = fresnelFactor;
-            vec3 kD = (vec3(1.0) - kS) * (1.0 - metallic);
-            vec3 cookTorranceSpecular = (normalDistribution * geometryShadowing * fresnelFactor) / (4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001);
-            vec3 lambert = albedo; //do not divide by PI (see https://seblagarde.wordpress.com/2012/01/08/pi-or-not-to-pi-in-game-lighting-equation/)
-            vec3 bidirectionalReflectanceDist = kD * lambert + cookTorranceSpecular;
+            vec3 bidirectionalReflectanceDist;
+            if ((lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PBR_ENABLED) != 0) {
+                //PBR formulas (see https://www.youtube.com/watch?v=RRE-F57fbXw & https://learnopengl.com/PBR/Theory)
+                vec3 halfWay = normalize(vertexToCameraPos + lightValues.vertexToLight);
+                float normalDistribution = distributionGGX(normal, halfWay, roughness);
+                float geometryShadowing = geometrySmith(normal, vertexToCameraPos, lightValues.vertexToLight, roughness);
+                vec3 fresnelFactor = fresnelSchlick(halfWay, vertexToCameraPos, baseReflectivity);
+                vec3 kS = fresnelFactor;
+                vec3 kD = (vec3(1.0) - kS) * (1.0 - metallic);
+                vec3 cookTorranceSpecular = (normalDistribution * geometryShadowing * fresnelFactor) / (4.0 * max(dot(normal, vertexToCameraPos), 0.0) * lightValues.NdotL + 0.0001);
+                vec3 lambert = albedo;//do not divide by PI (see https://seblagarde.wordpress.com/2012/01/08/pi-or-not-to-pi-in-game-lighting-equation/)
+                bidirectionalReflectanceDist = kD * lambert + cookTorranceSpecular;
+            } else {
+                bidirectionalReflectanceDist = albedo;
+            }
 
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (visualOption.hasShadow && lightsData.lightsInfo[lightIndex].produceShadow) {
+            if (visualOption.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
                 shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
                 shadowLightIndex++;
             }

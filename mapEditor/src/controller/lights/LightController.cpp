@@ -44,11 +44,12 @@ namespace urchin {
         markModified();
     }
 
-    const LightEntity& LightController::updateLightGeneralProperties(const LightEntity& constLightEntity, const Point3<float>& lightColor, bool isProduceShadow) {
+    const LightEntity& LightController::updateLightGeneralProperties(const LightEntity& constLightEntity, const Point3<float>& lightColor, bool enablePbr, bool isProduceShadow) {
         const LightEntity& lightEntity = findLightEntity(constLightEntity);
         Light* light = lightEntity.getLight();
 
         light->setLightColor(lightColor);
+        light->setPbrEnabled(enablePbr);
         if (light->isProduceShadow() != isProduceShadow) {
             light->setProduceShadow(isProduceShadow);
         }

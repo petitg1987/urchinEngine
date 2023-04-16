@@ -129,7 +129,9 @@ namespace urchin {
                 const Light* light = lights[i];
 
                 lightsData.lightsInfo[i].isExist = true;
-                lightsData.lightsInfo[i].produceShadow = light->isProduceShadow();
+                lightsData.lightsInfo[i].lightFlags =
+                        (light->isProduceShadow() ? Light::LIGHT_FLAG_PRODUCE_SHADOW : 0) |
+                        (light->isPbrEnabled() ? Light::LIGHT_FLAG_PBR_ENABLED : 0);
                 lightsData.lightsInfo[i].lightType = (int)light->getLightType();
                 lightsData.lightsInfo[i].lightColor = light->getLightColor();
 

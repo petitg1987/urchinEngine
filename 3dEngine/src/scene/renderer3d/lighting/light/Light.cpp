@@ -4,6 +4,7 @@ namespace urchin {
 
     Light::Light() :
             lightColor(Point3<float>(1.0f, 1.0f, 1.0f)),
+            pbrEnabled(true),
             produceShadow(false) {
 
     }
@@ -16,6 +17,22 @@ namespace urchin {
         return noTransform;
     }
 
+    void Light::setLightColor(const Point3<float>& lightColor) {
+        this->lightColor = lightColor;
+    }
+
+    const Point3<float>& Light::getLightColor() const {
+        return lightColor;
+    }
+
+    void Light::setPbrEnabled(bool pbrEnabled) {
+        this->pbrEnabled = pbrEnabled;
+    }
+
+    bool Light::isPbrEnabled() const {
+        return pbrEnabled;
+    }
+
     void Light::setProduceShadow(bool produceShadow) {
         this->produceShadow = produceShadow;
 
@@ -24,14 +41,6 @@ namespace urchin {
 
     bool Light::isProduceShadow() const {
         return produceShadow;
-    }
-
-    void Light::setLightColor(const Point3<float>& lightColor) {
-        this->lightColor = lightColor;
-    }
-
-    const Point3<float>& Light::getLightColor() const {
-        return lightColor;
     }
 
 }

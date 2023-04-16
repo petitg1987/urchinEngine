@@ -18,6 +18,7 @@ namespace urchin {
             colorR(nullptr),
             colorG(nullptr),
             colorB(nullptr),
+            enablePbrCheckBox(nullptr),
             produceShadowCheckBox(nullptr),
             lightType(nullptr),
             sunDirectionX(nullptr),
@@ -99,15 +100,19 @@ namespace urchin {
         colorB->setMaximum(1.0);
         connect(colorB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
 
+        enablePbrCheckBox = new QCheckBox("Enable PBR");
+        generalPropertiesLayout->addWidget(enablePbrCheckBox, 1, 0, 1, 2);
+        connect(enablePbrCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
+
         produceShadowCheckBox = new QCheckBox("Product Shadow");
-        generalPropertiesLayout->addWidget(produceShadowCheckBox, 1, 0, 1, 2);
+        generalPropertiesLayout->addWidget(produceShadowCheckBox, 2, 0, 1, 2);
         connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
 
         auto* lightTypeLabel= new QLabel("Light Type:");
-        generalPropertiesLayout->addWidget(lightTypeLabel, 2, 0);
+        generalPropertiesLayout->addWidget(lightTypeLabel, 3, 0);
 
         lightType = new QLabel();
-        generalPropertiesLayout->addWidget(lightType, 2, 1);
+        generalPropertiesLayout->addWidget(lightType, 3, 1);
     }
 
     void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout* mainLayout) {
@@ -301,6 +306,7 @@ namespace urchin {
         this->colorG->setValue(light->getLightColor().Y);
         this->colorB->setValue(light->getLightColor().Z);
 
+        this->enablePbrCheckBox->setChecked(light->isPbrEnabled());
         this->produceShadowCheckBox->setChecked(light->isProduceShadow());
 
         if (light->getLightType() == Light::LightType::SUN) {
@@ -395,9 +401,10 @@ namespace urchin {
             const LightEntity& lightEntity = *lightTableView->getSelectedLightEntity();
 
             Point3 lightColor((float)colorR->value(), (float)colorG->value(), (float)colorB->value());
+            bool enablePbr = enablePbrCheckBox->isChecked();
             bool produceShadow = produceShadowCheckBox->isChecked();
 
-            lightController->updateLightGeneralProperties(lightEntity, lightColor, produceShadow);
+            lightController->updateLightGeneralProperties(lightEntity, lightColor, enablePbr, produceShadow);
         }
     }
 

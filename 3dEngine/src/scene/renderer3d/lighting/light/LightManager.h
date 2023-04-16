@@ -57,7 +57,7 @@ namespace urchin {
 
             struct LightInfo {
                 alignas(4) bool isExist;
-                alignas(4) bool produceShadow;
+                alignas(4) int lightFlags;
                 alignas(4) int lightType;
                 alignas(16) Vector3<float> direction;
                 alignas(16) Point3<float> position;
