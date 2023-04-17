@@ -1,5 +1,6 @@
 #include <cstring>
 #include <cassert>
+#include <vulkan/vk_enum_string_helper.h>
 #include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/setup/handler/DeviceHandler.h>
@@ -89,7 +90,7 @@ namespace urchin {
         uint32_t deviceCount = 0;
         VkResult resultEnumDevices = vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
         if (resultEnumDevices != VK_SUCCESS && resultEnumDevices != VK_INCOMPLETE) {
-            throw std::runtime_error("Failed to enumerate physics devices with error code: " + std::to_string(resultEnumDevices));
+            throw std::runtime_error("Failed to enumerate physics devices with error code: " + std::string(string_VkResult(resultEnumDevices)));
         }
         if (deviceCount == 0) {
             throw UserAuthorityException("Failed to find a graphic card with Vulkan support", "Upgrade your graphic drivers to support Vulkan");
@@ -176,13 +177,13 @@ namespace urchin {
         uint32_t extensionCount;
         VkResult resultEnumExtension = vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, nullptr);
         if (resultEnumExtension != VK_SUCCESS && resultEnumExtension != VK_INCOMPLETE) {
-            throw std::runtime_error("Failed to enumerate device extension with error code: " + std::to_string(resultEnumExtension));
+            throw std::runtime_error("Failed to enumerate device extension with error code: " + std::string(string_VkResult(resultEnumExtension)));
         }
 
         std::vector<VkExtensionProperties> availableExtensions(extensionCount);
         resultEnumExtension = vkEnumerateDeviceExtensionProperties(physicalDeviceToCheck, nullptr, &extensionCount, availableExtensions.data());
         if (resultEnumExtension != VK_SUCCESS && resultEnumExtension != VK_INCOMPLETE) {
-            throw std::runtime_error("Failed to enumerate device extension with error code: " + std::to_string(resultEnumExtension));
+            throw std::runtime_error("Failed to enumerate device extension with error code: " + std::string(string_VkResult(resultEnumExtension)));
         }
 
         return std::ranges::any_of(availableExtensions, [&extensionName](const auto& extension) {
@@ -235,7 +236,7 @@ namespace urchin {
         VkDevice device;
         VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create logical device with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create logical device with error code: " + std::string(string_VkResult(result)));
         }
         return device;
     }

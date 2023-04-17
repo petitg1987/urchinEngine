@@ -1,6 +1,8 @@
+#include <vulkan/vk_enum_string_helper.h>
+
 #include <graphics/api/vulkan/helper/CommandBufferHelper.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include "DebugLabelHelper.h"
+#include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 
 namespace urchin {
 
@@ -14,7 +16,7 @@ namespace urchin {
         VkCommandBuffer commandBuffer;
         VkResult resultAllocCmdBuffers = vkAllocateCommandBuffers(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &allocInfo, &commandBuffer);
         if (resultAllocCmdBuffers != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate command buffers with error code '" + std::to_string(resultAllocCmdBuffers) + "' on " + std::string(name));
+            throw std::runtime_error("Failed to allocate command buffers with error code '" + std::string(string_VkResult(resultAllocCmdBuffers)) + "' on " + std::string(name));
         }
 
         VkCommandBufferBeginInfo beginInfo{};
@@ -23,7 +25,7 @@ namespace urchin {
 
         VkResult resultBeginCmdBuffer = vkBeginCommandBuffer(commandBuffer, &beginInfo);
         if (resultBeginCmdBuffer != VK_SUCCESS) {
-            throw std::runtime_error("Failed to begin command buffer with error code '" + std::to_string(resultBeginCmdBuffer) + "' on " + std::string(name));
+            throw std::runtime_error("Failed to begin command buffer with error code '" + std::string(string_VkResult(resultBeginCmdBuffer)) + "' on " + std::string(name));
         }
 
         DebugLabelHelper::nameObject(DebugLabelHelper::COMMAND_BUFFER, commandBuffer, name);
@@ -34,7 +36,7 @@ namespace urchin {
     void CommandBufferHelper::endSingleTimeCommands(CommandBufferData commandBufferData) {
         VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBufferData.commandBuffer);
         if (resultEndCmdBuffer != VK_SUCCESS) {
-            throw std::runtime_error("Failed to end command buffer with error code '" + std::to_string(resultEndCmdBuffer) + "' on " + std::string(commandBufferData.name));
+            throw std::runtime_error("Failed to end command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on " + std::string(commandBufferData.name));
         }
 
         VkSubmitInfo submitInfo{};
@@ -44,11 +46,11 @@ namespace urchin {
 
         VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, VK_NULL_HANDLE);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on " + std::string(commandBufferData.name));
+            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on " + std::string(commandBufferData.name));
         }
         VkResult queueWaitIdle = vkQueueWaitIdle(GraphicsSetupService::instance().getQueues().getGraphicsQueue()); //use VkFence instead of vkQueueWaitIdle when multiple simultaneous transfers are required
         if (queueWaitIdle != VK_SUCCESS) {
-            throw std::runtime_error("Failed to wait for queue idle with error code '" + std::to_string(queueWaitIdle) + "' on " + std::string(commandBufferData.name));
+            throw std::runtime_error("Failed to wait for queue idle with error code '" + std::string(string_VkResult(queueWaitIdle)) + "' on " + std::string(commandBufferData.name));
         }
 
         vkFreeCommandBuffers(GraphicsSetupService::instance().getDevices().getLogicalDevice(), GraphicsSetupService::instance().getAllocateCommandPool(), 1, &commandBufferData.commandBuffer);

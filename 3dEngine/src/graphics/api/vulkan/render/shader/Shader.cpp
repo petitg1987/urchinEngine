@@ -1,3 +1,5 @@
+#include <vulkan/vk_enum_string_helper.h>
+
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
@@ -47,7 +49,7 @@ namespace urchin {
 
         VkResult result = vkCreateShaderModule(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &createInfo, nullptr, &shaderStageData.shaderModule);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create shader module with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create shader module with error code: " + std::string(string_VkResult(result)));
         }
 
         DebugLabelHelper::nameObject(DebugLabelHelper::SHADER, shaderStageData.shaderModule, shaderName);

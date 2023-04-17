@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <vulkan/vk_enum_string_helper.h>
 
 #include <graphics/api/vulkan/texture/TextureParam.h>
 #include <graphics/api/vulkan/texture/TextureSamplerCache.h>
@@ -75,7 +76,7 @@ namespace urchin {
 
             VkResult result = vkCreateSampler(logicalDevice, &samplerInfo, nullptr, &textureSampler);
             if (result != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create texture sampler with error code: " + std::to_string(result));
+                throw std::runtime_error("Failed to create texture sampler with error code: " + std::string(string_VkResult(result)));
             }
 
             TextureSamplerCache::instance().registerTextureSampler(samplerCacheKey, textureSampler);

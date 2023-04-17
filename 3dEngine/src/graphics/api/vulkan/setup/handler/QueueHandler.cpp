@@ -1,5 +1,6 @@
 #include <vector>
 #include <cassert>
+#include <vulkan/vk_enum_string_helper.h>
 
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
 
@@ -61,7 +62,7 @@ namespace urchin {
         VkBool32 presentationSupport = false;
         VkResult result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, &presentationSupport);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to get physics device surface with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to get physics device surface with error code: " + std::string(string_VkResult(result)));
         }
         return presentationSupport;
     }

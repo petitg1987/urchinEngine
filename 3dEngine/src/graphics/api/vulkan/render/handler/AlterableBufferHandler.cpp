@@ -1,3 +1,4 @@
+#include <vulkan/vk_enum_string_helper.h>
 #include <cassert>
 
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
@@ -67,7 +68,7 @@ namespace urchin {
         if (isStaticBuffer) {
             VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
-                throw std::runtime_error("Failed to wait for device idle with error code: " + std::to_string(result));
+                throw std::runtime_error("Failed to wait for device idle with error code: " + std::string(string_VkResult(result)));
             }
 
             assert(buffers.size() == 1);

@@ -1,4 +1,6 @@
+#include <vulkan/vk_enum_string_helper.h>
 #include <libs/vma/vk_mem_alloc.h>
+
 #include <graphics/api/vulkan/helper/BufferHelper.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
@@ -18,7 +20,7 @@ namespace urchin {
         VkBuffer buffer;
         VkResult result = vmaCreateBuffer(GraphicsSetupService::instance().getAllocator(), &bufferInfo, &vmaAllocInfo, &buffer, &allocation, nullptr);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create buffer of size '" + std::to_string(size) + "' with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create buffer of size '" + std::to_string(size) + "' with error code: " + std::string(string_VkResult(result)));
         }
         DebugLabelHelper::nameObject(DebugLabelHelper::BUFFER, buffer, bufferName);
 

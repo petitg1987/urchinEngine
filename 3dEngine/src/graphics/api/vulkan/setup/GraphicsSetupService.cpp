@@ -1,3 +1,4 @@
+#include <vulkan/vk_enum_string_helper.h>
 #include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
@@ -102,7 +103,7 @@ namespace urchin {
 
         VkResult result = vkCreateInstance(&instanceCreateInfo, nullptr, &vkInstance);
         if (result != VK_SUCCESS) {
-            throw UserAuthorityException("Failed to create Vulkan instance with error code: " + std::to_string(result), "Upgrade your graphic drivers to support better Vulkan");
+            throw UserAuthorityException("Failed to create Vulkan instance with error code: " + std::string(string_VkResult(result)), "Upgrade your graphic drivers to support better Vulkan");
         }
     }
 
@@ -147,7 +148,7 @@ namespace urchin {
 
         VkResult result = vkCreateCommandPool(deviceHandler.getLogicalDevice(), &poolInfo, nullptr, &allocateCommandPool);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create command pool with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create command pool with error code: " + std::string(string_VkResult(result)));
         }
     }
 

@@ -1,6 +1,7 @@
-#include <graphics/api/vulkan/render/target/OffscreenRender.h>
-
+#include <vulkan/vk_enum_string_helper.h>
 #include <utility>
+
+#include <graphics/api/vulkan/render/target/OffscreenRender.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
@@ -83,7 +84,7 @@ namespace urchin {
         assert(isInitialized);
         VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
         if (result != VK_SUCCESS) {
-            Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
+            Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
         }
 
         cleanupRenderers();
@@ -184,7 +185,7 @@ namespace urchin {
         fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
         VkResult fenceResult = vkCreateFence(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &fenceInfo, nullptr, &commandBufferFence);
         if (fenceResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to create fences with error code '" + std::string(string_VkResult(fenceResult)) + "' on render target: " + getName());
         }
     }
 
@@ -198,7 +199,7 @@ namespace urchin {
             semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
             VkResult semaphoreResult = vkCreateSemaphore(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &semaphoreInfo, nullptr, &submitSemaphore);
             if (semaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create semaphore with error code '" + std::to_string(semaphoreResult) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to create semaphore with error code '" + std::string(string_VkResult(semaphoreResult)) + "' on render target: " + getName());
             }
         }
     }
@@ -216,7 +217,7 @@ namespace urchin {
         //fence (CPU-GPU sync) to wait completion of vkQueueSubmit
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFence, VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         if (numDependenciesToOutputs > MAX_SUBMIT_SEMAPHORES) {
@@ -226,7 +227,7 @@ namespace urchin {
         } else if (submitSemaphoresStale) {
             VkResult resultDeviceWait = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (resultDeviceWait != VK_SUCCESS) {
-                Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(resultDeviceWait) + "' on render target: " + getName());
+                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(resultDeviceWait)) + "' on render target: " + getName());
             }
             destroySemaphores();
             createSemaphores();
@@ -249,11 +250,11 @@ namespace urchin {
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
         if (resultResetFences != VK_SUCCESS) {
-            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
         VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
     }
 

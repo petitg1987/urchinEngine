@@ -1,3 +1,5 @@
+#include <vulkan/vk_enum_string_helper.h>
+
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
@@ -159,7 +161,7 @@ namespace urchin {
 
         VkResult result = vkCreateDescriptorSetLayout(logicalDevice, &layoutInfo, nullptr, &pipeline->descriptorSetLayout());
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create descriptor set layout with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create descriptor set layout with error code: " + std::string(string_VkResult(result)));
         }
     }
 
@@ -331,7 +333,7 @@ namespace urchin {
         pipelineLayoutInfo.pPushConstantRanges = nullptr;
         VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout());
         if (pipelineLayoutResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create pipeline layout with error code: " + std::to_string(pipelineLayoutResult));
+            throw std::runtime_error("Failed to create pipeline layout with error code: " + std::string(string_VkResult(pipelineLayoutResult)));
         }
 
         VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -354,7 +356,7 @@ namespace urchin {
 
         VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->graphicsPipeline());
         if (pipelinesResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::to_string(pipelinesResult));
+            throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
         }
 
         DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->graphicsPipeline(), name);

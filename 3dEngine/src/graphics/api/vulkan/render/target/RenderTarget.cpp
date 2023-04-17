@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <vulkan/vk_enum_string_helper.h>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
@@ -234,7 +235,7 @@ namespace urchin {
 
         VkResult result = vkCreateRenderPass(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create render pass with error code '" + std::to_string(result) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to create render pass with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
         }
 
         DebugLabelHelper::nameObject(DebugLabelHelper::RENDER_PASS, renderPass, name);
@@ -284,7 +285,7 @@ namespace urchin {
         framebuffers.resize(framebuffers.size() + 1, nullptr);
         VkResult result = vkCreateFramebuffer(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &framebufferInfo, nullptr, &framebuffers[framebuffers.size() - 1]);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create framebuffer with error code '" + std::to_string(result) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to create framebuffer with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
         }
     }
 
@@ -308,7 +309,7 @@ namespace urchin {
 
         VkResult resultCommandBuffers = vkAllocateCommandBuffers(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &allocInfo, commandBuffers.data());
         if (resultCommandBuffers != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate command buffers with error code '" + std::to_string(resultCommandBuffers) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to allocate command buffers with error code '" + std::string(string_VkResult(resultCommandBuffers)) + "' on render target: " + getName());
         }
 
         for (std::size_t cmdBufferIndex = 0; cmdBufferIndex < commandBuffers.size(); ++cmdBufferIndex) {
@@ -324,7 +325,7 @@ namespace urchin {
 
         VkResult result = vkCreateCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create command pool with error code '" + std::to_string(result) + "' on render target: " + getName());
+            throw std::runtime_error("Failed to create command pool with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
         }
     }
 
@@ -414,13 +415,13 @@ namespace urchin {
             waitCommandBuffersIdle();
             VkResult resultResetCmdPool = vkResetCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), commandPool, VK_COMMAND_POOL_RESET_RELEASE_RESOURCES_BIT);
             if (resultResetCmdPool != VK_SUCCESS) {
-                throw std::runtime_error("Failed to reset command pool with error code '" + std::to_string(resultResetCmdPool) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to reset command pool with error code '" + std::string(string_VkResult(resultResetCmdPool)) + "' on render target: " + getName());
             }
 
             VkResult resultCmdBuffer = vkBeginCommandBuffer(commandBuffers[frameIndex], &beginInfo);
             {
                 if (resultCmdBuffer != VK_SUCCESS) {
-                    throw std::runtime_error("Failed to begin recording command buffer with error code '" + std::to_string(resultCmdBuffer) + "' on render target: " + getName());
+                    throw std::runtime_error("Failed to begin recording command buffer with error code '" + std::string(string_VkResult(resultCmdBuffer)) + "' on render target: " + getName());
                 }
 
                 renderPassInfo.framebuffer = framebuffers[frameIndex];
@@ -438,7 +439,7 @@ namespace urchin {
             }
             VkResult resultEndCmdBuffer = vkEndCommandBuffer(commandBuffers[frameIndex]);
             if (resultEndCmdBuffer != VK_SUCCESS) {
-                throw std::runtime_error("Failed to record command buffer with error code '" + std::to_string(resultEndCmdBuffer) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to record command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on render target: " + getName());
             }
 
             renderersDirty = false;

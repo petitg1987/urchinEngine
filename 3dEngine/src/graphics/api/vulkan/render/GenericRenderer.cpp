@@ -1,3 +1,4 @@
+#include <vulkan/vk_enum_string_helper.h>
 #include <libs/vma/vk_mem_alloc.h>
 #include <numeric>
 
@@ -81,7 +82,7 @@ namespace urchin {
             if (renderTarget.isValidRenderTarget()) {
                 VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
-                    Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on renderer: " + getName());
+                    Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
                 } else {
                     destroyDescriptorSetsAndPool();
                     destroyUniformBuffers();
@@ -226,7 +227,7 @@ namespace urchin {
 
         VkResult result = vkCreateDescriptorPool(logicalDevice, &poolInfo, nullptr, &descriptorPool);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create descriptor pool with error code '" + std::to_string(result) + "' on renderer: " + getName());
+            throw std::runtime_error("Failed to create descriptor pool with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
         }
     }
 
@@ -243,7 +244,7 @@ namespace urchin {
         descriptorSets.resize(renderTarget.getNumFramebuffer());
         VkResult result = vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate descriptor sets with error code '" + std::to_string(result) + "' on renderer: " + getName());
+            throw std::runtime_error("Failed to allocate descriptor sets with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
         }
 
         updateDescriptorSets();

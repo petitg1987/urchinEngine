@@ -1,8 +1,10 @@
-#include <graphics/api/vulkan/helper/ImageHelper.h>
+#include <vulkan/vk_enum_string_helper.h>
 #include <libs/vma/vk_mem_alloc.h>
+
+#include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/MemoryHelper.h>
-#include "DebugLabelHelper.h"
+#include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 
 namespace urchin {
 
@@ -35,7 +37,7 @@ namespace urchin {
         VkImage image;
         VkResult result = vkCreateImage(logicalDevice, &imageInfo, nullptr, &image);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::string(string_VkFormat(format)) + " with error code: " + std::string(string_VkResult(result)));
         }
         DebugLabelHelper::nameObject(DebugLabelHelper::IMAGE, image, imageName);
 
@@ -52,12 +54,12 @@ namespace urchin {
 
         result = vmaAllocateMemoryForImage(GraphicsSetupService::instance().getAllocator(), image, &allocCreateInfo, &imageMemory, &allocInfo);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to allocate image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to allocate image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::string(string_VkFormat(format)) + " with error code: " + std::to_string(result));
         }
 
         result = vmaBindImageMemory(GraphicsSetupService::instance().getAllocator(), imageMemory, image);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to bind image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::to_string(format) + " with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to bind image memory for image " + imageName + " of size " + std::to_string(width) + "x" + std::to_string(height) + " and format " + std::string(string_VkFormat(format)) + " with error code: " + std::to_string(result));
         }
 
         return image;
@@ -80,7 +82,7 @@ namespace urchin {
         VkImageView imageView;
         VkResult result = vkCreateImageView(logicalDevice, &viewInfo, nullptr, &imageView);
         if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create image view (format: " + std::to_string(format) + ") with error code: " + std::to_string(result));
+            throw std::runtime_error("Failed to create image view (format: " + std::string(string_VkFormat(format)) + ") with error code: " + std::string(string_VkResult(result)));
         }
 
         return imageView;

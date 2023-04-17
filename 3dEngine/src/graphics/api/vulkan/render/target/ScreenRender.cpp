@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <utility>
 #include <thread>
+#include <vulkan/vk_enum_string_helper.h>
 
 #include <graphics/api/vulkan/render/target/ScreenRender.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
@@ -49,7 +50,7 @@ namespace urchin {
         if (isInitialized) {
             VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
-                Logger::instance().logError("Failed to wait for device idle with error code '" + std::to_string(result) + "' on render target: " + getName());
+                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
             }
 
             cleanupRenderers();
@@ -195,17 +196,17 @@ namespace urchin {
         for (std::size_t i = 0; i < MAX_CONCURRENT_FRAMES; i++) {
             VkResult imageAvailableSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]);
             if (imageAvailableSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create image available semaphore with error code '" + std::to_string(imageAvailableSemaphoreResult) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to create image available semaphore with error code '" + std::string(string_VkResult(imageAvailableSemaphoreResult)) + "' on render target: " + getName());
             }
 
             VkResult renderFinishedSemaphoreResult = vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]);
             if (renderFinishedSemaphoreResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create render finished semaphore with error code '" + std::to_string(renderFinishedSemaphoreResult) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to create render finished semaphore with error code '" + std::string(string_VkResult(renderFinishedSemaphoreResult)) + "' on render target: " + getName());
             }
 
             VkResult fenceResult = vkCreateFence(logicalDevice, &fenceInfo, nullptr, &commandBufferFences[i]);
             if (fenceResult != VK_SUCCESS) {
-                throw std::runtime_error("Failed to create fences with error code '" + std::to_string(fenceResult) + "' on render target: " + getName());
+                throw std::runtime_error("Failed to create fences with error code '" + std::string(string_VkResult(fenceResult)) + "' on render target: " + getName());
             }
         }
     }
@@ -228,7 +229,7 @@ namespace urchin {
         //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'.
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
-            throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(resultWaitForFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         if (numDependenciesToOutputs != 0) {
@@ -241,7 +242,7 @@ namespace urchin {
             std::ranges::for_each(getRenderDependencies(), [frameIndex](OffscreenRender* rd){ rd->markSubmitSemaphoreUnused(frameIndex); });
             return;
         } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /* Continue with suboptimal image because already acquired */) {
-            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::to_string(resultAcquireImage) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::string(string_VkResult(resultAcquireImage)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         updateGraphicData(vkImageIndex);
@@ -272,11 +273,11 @@ namespace urchin {
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
         if (resultResetFences != VK_SUCCESS) {
-            throw std::runtime_error("Failed to reset fences with error code '" + std::to_string(resultResetFences) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
         VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (resultQueueSubmit != VK_SUCCESS) {
-            throw std::runtime_error("Failed to submit queue with error code '" + std::to_string(resultQueueSubmit) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         std::array<VkSwapchainKHR, 1> swapChains = {swapChainHandler.getSwapChain()};
@@ -299,7 +300,7 @@ namespace urchin {
             }
             onResize();
         } else if (queuePresentResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::to_string(queuePresentResult) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
+            throw std::runtime_error("Failed to queue an image for presentation with error code '" + std::string(string_VkResult(queuePresentResult)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
         currentFrameIndex = (currentFrameIndex + 1) % MAX_CONCURRENT_FRAMES;
@@ -321,7 +322,7 @@ namespace urchin {
                 //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'frameIndex'
                 VkResult result = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
                 if (result != VK_SUCCESS && result != VK_TIMEOUT) {
-                    throw std::runtime_error("Failed to wait for fence with error code '" + std::to_string(result) + "' on render target: " + getName());
+                    throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
                 }
             }
         }
