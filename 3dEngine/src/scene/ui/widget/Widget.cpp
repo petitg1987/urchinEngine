@@ -280,7 +280,7 @@ namespace urchin {
         return size;
     }
 
-    std::shared_ptr<GenericRendererBuilder> Widget::baseRendererBuilder(std::string name, ShapeType shapeType, bool hasTransparency) {
+    std::shared_ptr<GenericRendererBuilder> Widget::baseRendererBuilder(std::string name, ShapeType shapeType, bool hasTransparency) { //TODO remove (moved in WidgetInstanceDisplayer)
         assert(isInitialized());
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
 
@@ -684,6 +684,10 @@ namespace urchin {
         return mouseY;
     }
 
+    bool Widget::isScissorEnabled() const {
+        return scissorEnabled;
+    }
+
     bool Widget::isMouseOnWidget(int mouseX, int mouseY) const {
         Point2 mouseCoordinate(mouseX, mouseY);
         if (widgetRectangle().collideWithPoint(mouseCoordinate)) {
@@ -748,46 +752,13 @@ namespace urchin {
 
     void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         if (isVisible()) {
-            updateProjectViewModelMatrix(projectionViewMatrix, Vector2<float>(getGlobalPositionX(), getGlobalPositionY()));
-            if (renderer) {
-                renderer->enableRenderer(renderingOrder);
-            }
+            //TODO call widgetInstanceDisplayer->prepareRendering() instead of below method
             prepareWidgetRendering(dt);
 
             for (const auto& child: children) {
                 renderingOrder++;
                 child->prepareRendering(dt, renderingOrder, projectionViewMatrix);
             }
-        }
-    }
-
-    void Widget::updateProjectViewModelMatrix(const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
-        if (renderer) {
-            float zBias = 0.0f;
-            if (uiRenderer->getUi3dData()) {
-                float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
-                zBias = (float) computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
-                Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
-                renderer->updateUniformData(1, &uiProjectionViewMatrix);
-            }
-
-            //Equivalent to 4 multiplied matrices: D * C * B * A
-            // A) Translation of the widget center to the origin (transOriginX, transOriginY)
-            // B) Scale widget (scale.X, scale.Y)
-            // C) Rotate widget (sinRotate, cosRotate)
-            // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
-            float transX = translateVector.X + getWidth() / 2.0f;
-            float transY = translateVector.Y + getHeight() / 2.0f;
-            float transOriginX = -getWidth() / 2.0f;
-            float transOriginY = -getHeight() / 2.0f;
-            float sinRotate = std::sin(rotationZ);
-            float cosRotate = std::cos(rotationZ);
-            Matrix4<float> modelMatrix(
-                    scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
-                    scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
-                    0.0f, 0.0, 1.0f, zBias,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-            renderer->updateInstanceData(1, (const float*)&modelMatrix);
         }
     }
 

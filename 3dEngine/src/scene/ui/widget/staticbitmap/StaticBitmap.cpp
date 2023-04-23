@@ -49,6 +49,12 @@ namespace urchin {
                 ->build());
     }
 
+    std::size_t StaticBitmap::getImplementationInstanceId() const {
+        std::size_t implementationInstanceId = 0;
+        HashUtil::combine(implementationInstanceId, texture->getId());
+        return implementationInstanceId;
+    }
+
     WidgetType StaticBitmap::getWidgetType() const {
         return WidgetType::STATIC_BITMAP;
     }

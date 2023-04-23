@@ -12,6 +12,7 @@
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/EventListener.h>
 #include <scene/ui/ClipboardLocal.h>
+#include <scene/ui/displayer/WidgetDisplayable.h>
 #include <i18n/I18nService.h>
 #include <graphics/api/GraphicsApi.h>
 #include <graphics/render/GenericRendererBuilder.h>
@@ -22,7 +23,7 @@ namespace urchin {
     struct UI3dData;
     class Container;
 
-    class Widget : public Observable {
+    class Widget : public Observable, public WidgetDisplayable {
         public:
             Widget(Position, Size);
             ~Widget() override;
@@ -98,6 +99,7 @@ namespace urchin {
             void onResetState();
             int getMouseX() const;
             int getMouseY() const;
+            bool isScissorEnabled() const;
 
             void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 
@@ -138,8 +140,6 @@ namespace urchin {
 
             unsigned int computeDepthLevel() const;
             void refreshScissor(bool);
-
-            void updateProjectViewModelMatrix(const Matrix4<float>&, const Vector2<float>&) const;
 
             UIRenderer* uiRenderer;
             int mouseX;
