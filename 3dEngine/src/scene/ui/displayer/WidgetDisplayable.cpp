@@ -25,22 +25,16 @@ namespace urchin {
     std::size_t WidgetDisplayable::computeInstanceId() const {
         const auto* widget = static_cast<const Widget*>(this);
 
-        if (widget->isScissorEnabled()) {
+        std::size_t instanceId = getImplementationInstanceId();
+        if (instanceId == INSTANCING_DENY_ID || widget->isScissorEnabled()) {
             return INSTANCING_DENY_ID; //no instancing
         }
 
-        std::size_t implementationInstanceId = getImplementationInstanceId();
-        if (implementationInstanceId == INSTANCING_DENY_ID) {
-            return INSTANCING_DENY_ID; //no instancing
-        }
+        //same instance ID only when vertex coordinates are identical
+        HashUtil::combine(instanceId, widget->getWidth(), widget->getHeight());
 
-        std::size_t instanceId = implementationInstanceId;
-
-        //add ID for vertexCoord
+        //same instance ID only when depth level (UI 3d) and UI renderer are identical
         HashUtil::combine(instanceId, widget->getParent());
-        HashUtil::combine(instanceId, widget->getSize().getHeight(), widget->getSize().getHeightType(), widget->getSize().getWidth(), widget->getSize().getWidthType());
-
-        //TODO add id for uiRenderer ?
 
         return instanceId;
     }

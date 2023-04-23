@@ -19,6 +19,7 @@ namespace urchin {
 
         private:
             Widget& getReferenceWidget() const;
+            unsigned int computeDepthLevel(Widget&) const;
 
             bool isInitialized;
 
@@ -28,6 +29,8 @@ namespace urchin {
             UIRenderer& uiRenderer;
             RenderTarget& renderTarget;
             const Shader& shader;
+
+            mutable std::vector<Matrix4<float>> instanceModelMatrices;
 
             std::unique_ptr<GenericRenderer> renderer;
     };

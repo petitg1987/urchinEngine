@@ -45,6 +45,7 @@ namespace urchin {
             void onCameraProjectionUpdate();
 
             virtual WidgetType getWidgetType() const = 0;
+            const UIRenderer& getUiRenderer() const;
 
             Widget* getParent() const;
             Container* getParentContainer() const;
@@ -138,7 +139,6 @@ namespace urchin {
             void handleWidgetResetState();
             bool isMouseOnWidget(int, int) const;
 
-            unsigned int computeDepthLevel() const;
             void refreshScissor(bool);
 
             UIRenderer* uiRenderer;
