@@ -8,4 +8,5 @@ class HashUtilTest : public CppUnit::TestFixture {
         static CppUnit::Test* suite();
 
         void hashBool();
+        void hashFloat();
 };
