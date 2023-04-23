@@ -182,14 +182,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     float Widget::getPositionX() const {
-        return widthLengthToPixel(position.getX(), position.getXType(), [&](){ return getPositionY(); });
+        return widthLengthToPixel(position.getX(), position.getXType(), [this](){ return getPositionY(); });
     }
 
     /**
     * @return Relative position Y of the widget
     */
     float Widget::getPositionY() const {
-        return heightLengthToPixel(position.getY(), position.getYType(), [&](){ return getPositionX(); });
+        return heightLengthToPixel(position.getY(), position.getYType(), [this](){ return getPositionX(); });
     }
 
     float Widget::getGlobalPositionX() const {
@@ -286,6 +286,7 @@ namespace urchin {
 
         Matrix4<float> normalMatrix;
         Matrix4<float> projectionViewModelMatrix;
+        Matrix4<float> modelMatrix;
         if (uiRenderer->getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
@@ -303,6 +304,11 @@ namespace urchin {
             if (hasTransparency) {
                 rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
             }
+            projectionViewModelMatrix = Matrix4<float>( //orthogonal matrix with origin at top left screen
+                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
+                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
         }
 
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
@@ -314,6 +320,7 @@ namespace urchin {
         refreshCoordinates();
         rendererBuilder->addData(vertexCoord);
         rendererBuilder->addData(textureCoord);
+        rendererBuilder->instanceData(1, VariableType::MAT4, (const float*)&modelMatrix);
 
         refreshScissor(true);
         if (scissorEnabled) {
@@ -370,11 +377,11 @@ namespace urchin {
     }
 
     float Widget::getWidth() const {
-        return widthLengthToPixel(size.getWidth(), size.getWidthType(), [&](){ return getHeight(); });
+        return widthLengthToPixel(size.getWidth(), size.getWidthType(), [this](){ return getHeight(); });
     }
 
     float Widget::getHeight() const {
-        return heightLengthToPixel(size.getHeight(), size.getHeightType(), [&](){ return getWidth(); });
+        return heightLengthToPixel(size.getHeight(), size.getHeightType(), [this](){ return getWidth(); });
     }
 
     Rectangle2D<int> Widget::widgetRectangle() const {
@@ -756,20 +763,12 @@ namespace urchin {
 
     void Widget::updateProjectViewModelMatrix(const Matrix4<float>& projectionViewMatrix, const Vector2<float>& translateVector) const {
         if (renderer) {
-            Matrix4<float> projectionViewModelMatrix;
-
             float zBias = 0.0f;
             if (uiRenderer->getUi3dData()) {
                 float squareDistanceUiToCamera = uiRenderer->getUi3dData()->uiPosition.squareDistance(uiRenderer->getUi3dData()->camera->getPosition());
                 zBias = (float) computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
-                projectionViewModelMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
-            } else {
-                Matrix4 orthogonalMatrix( //orthogonal matrix with origin at top left screen
-                        2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
-                        0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
-                        0.0f, 0.0f, 1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f, 1.0f);
-                projectionViewModelMatrix = orthogonalMatrix;
+                Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer->getUi3dData()->modelMatrix;
+                renderer->updateUniformData(1, &uiProjectionViewMatrix);
             }
 
             //Equivalent to 4 multiplied matrices: D * C * B * A
@@ -783,14 +782,12 @@ namespace urchin {
             float transOriginY = -getHeight() / 2.0f;
             float sinRotate = std::sin(rotationZ);
             float cosRotate = std::cos(rotationZ);
-            Matrix4<float> translateScaleMatrix(
+            Matrix4<float> modelMatrix(
                     scale.X * cosRotate, scale.Y * -sinRotate, 0.0f, transX + (transOriginX * scale.X * cosRotate) + (transOriginY * scale.Y * -sinRotate),
                     scale.X * sinRotate, scale.Y * cosRotate, 0.0f, transY + (transOriginX * scale.X * sinRotate) + (transOriginY * scale.Y * cosRotate),
                     0.0f, 0.0, 1.0f, zBias,
                     0.0f, 0.0f, 0.0f, 1.0f);
-
-            projectionViewModelMatrix *= translateScaleMatrix;
-            renderer->updateUniformData(1, &projectionViewModelMatrix);
+            renderer->updateInstanceData(1, (const float*)&modelMatrix);
         }
     }
 
