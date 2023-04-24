@@ -1,5 +1,6 @@
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/ui/UIRenderer.h>
+#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 

@@ -15,8 +15,6 @@
 #include <scene/ui/ClipboardLocal.h>
 #include <scene/ui/displayer/WidgetDisplayable.h>
 #include <i18n/I18nService.h>
-#include <graphics/api/GraphicsApi.h>
-#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
