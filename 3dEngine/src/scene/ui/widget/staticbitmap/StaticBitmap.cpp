@@ -62,7 +62,7 @@ namespace urchin {
 
     void StaticBitmap::updateTexture(const std::string& filename) {
         texture = buildTexture(filename);
-        getDisplayer()->updateTexture(texture); //TODO /!\ instancing different
+        getDisplayer()->updateTexture(texture);
     }
 
     const std::string& StaticBitmap::getTextureName() const {

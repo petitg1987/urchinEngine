@@ -7,7 +7,7 @@ namespace urchin {
     class WidgetInstanceDisplayer : public Observer {
         public:
             explicit WidgetInstanceDisplayer(const UIRenderer&);
-            ~WidgetInstanceDisplayer();
+            ~WidgetInstanceDisplayer() override;
 
             void initialize(std::shared_ptr<Texture>);
             void updateTexture(std::shared_ptr<Texture>);

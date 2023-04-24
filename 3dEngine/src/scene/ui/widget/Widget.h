@@ -32,6 +32,7 @@ namespace urchin {
             enum NotificationType {
                 SET_IN_FOREGROUND, //Widget should be set in the foreground
                 SIZE_UPDATED,
+                POSITION_UPDATED,
                 COLOR_PARAMS_UPDATED
             };
 
@@ -126,6 +127,8 @@ namespace urchin {
 
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;
+
+            void onPositionUpdated();
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);

@@ -36,7 +36,6 @@ namespace urchin {
         for (const auto& child : children) {
             child->initialize(uiRenderer);
         }
-        //TODO remove: refreshScissor(false /* children call already treated via child->initialize */);
     }
 
     void Widget::uninitialize() {
@@ -168,14 +167,15 @@ namespace urchin {
     }
 
     void Widget::updatePosition(Position position) {
-        if (this->getWidgetType() == WidgetType::CONTAINER && static_cast<Container*>(this)->isScrollable()) {
-            throw std::runtime_error("Can not move a container: scissor update is not implemented");
-        }
         this->position = position;
+        onPositionUpdated();
+    }
 
-//TODO        for (const auto& child : children) {
-//            child->refreshScissor(true);
-//        }
+    void Widget::onPositionUpdated() {
+        notifyObservers(this, POSITION_UPDATED);
+        for (const auto& child : children) {
+            child->onPositionUpdated();
+        }
     }
 
     Position Widget::getPosition() const {

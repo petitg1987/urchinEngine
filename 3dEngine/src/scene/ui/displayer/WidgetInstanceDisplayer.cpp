@@ -76,8 +76,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void WidgetInstanceDisplayer::updateTexture(std::shared_ptr<Texture> texture) {
-        //TODO add debug instanceID check still valid !?
+    void WidgetInstanceDisplayer::updateTexture(std::shared_ptr<Texture> texture) { //TODO /!\ if updated => new instance ?
         renderer->updateUniformTextureReader(0, TextureReader::build(std::move(texture), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
@@ -85,6 +84,8 @@ namespace urchin {
         if (dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::SIZE_UPDATED) {
                 updateCoordinates();
+                updateScissor();
+            } else if (notificationType == Widget::POSITION_UPDATED) {
                 updateScissor();
             } else if (notificationType == Widget::COLOR_PARAMS_UPDATED) {
                 updateColorParameters();
@@ -132,6 +133,7 @@ namespace urchin {
         widget.attachWidgetInstanceDisplayer(*this);
 
         widget.addObserver(this, Widget::SIZE_UPDATED);
+        widget.addObserver(this, Widget::POSITION_UPDATED);
         widget.addObserver(this, Widget::COLOR_PARAMS_UPDATED);
     }
 
@@ -142,15 +144,16 @@ namespace urchin {
             Logger::instance().logError("Removing the instance widget fail");
         }
 
-        widget.removeObserver(this, Widget::SIZE_UPDATED);
         widget.removeObserver(this, Widget::COLOR_PARAMS_UPDATED);
+        widget.removeObserver(this, Widget::POSITION_UPDATED);
+        widget.removeObserver(this, Widget::SIZE_UPDATED);
     }
 
     unsigned int WidgetInstanceDisplayer::getInstanceCount() const {
         return (unsigned int)instanceWidgets.size();
     }
 
-    void WidgetInstanceDisplayer::updateScissor() { //TODO call at ?
+    void WidgetInstanceDisplayer::updateScissor() {
         std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
         if (scissor.has_value()) {
             renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
@@ -158,12 +161,12 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::updateCoordinates() {
-        renderer->updateData(0, getReferenceWidget().retrieveVertexCoordinates()); //TODO /!\ if updated => new instance
+        renderer->updateData(0, getReferenceWidget().retrieveVertexCoordinates()); //TODO /!\ if updated => new instance ?
         renderer->updateData(1, getReferenceWidget().retrieveTextureCoordinates());
     }
 
     void WidgetInstanceDisplayer::updateColorParameters() {
-        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor(); //TODO /!\ if updated => new instance
+        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor(); //TODO /!\ if updated => new instance ?
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
         renderer->updateUniformData(2, &colorParams);
     }
