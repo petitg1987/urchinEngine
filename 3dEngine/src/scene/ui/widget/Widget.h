@@ -125,7 +125,7 @@ namespace urchin {
             void updateTexture(std::shared_ptr<Texture>);
             std::vector<Point2<float>>& getVertexCoord();
             std::vector<Point2<float>>& getTextureCoord();
-            void onPositionUpdated();
+
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;
 
@@ -144,6 +144,8 @@ namespace urchin {
             bool handleWidgetMouseMove(int, int);
             void handleWidgetResetState();
             bool isMouseOnWidget(int, int) const;
+
+            void onPositionUpdated();
 
             UIRenderer* uiRenderer;
             int mouseX;

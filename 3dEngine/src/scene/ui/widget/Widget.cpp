@@ -171,6 +171,13 @@ namespace urchin {
         onPositionUpdated();
     }
 
+    void Widget::onPositionUpdated() {
+        notifyObservers(this, POSITION_UPDATED);
+        for (const auto& child : children) {
+            child->onPositionUpdated();
+        }
+    }
+
     Position Widget::getPosition() const {
         return position;
     }
@@ -296,13 +303,6 @@ namespace urchin {
 
     std::vector<Point2<float>>& Widget::getTextureCoord() {
         return textureCoord;
-    }
-
-    void Widget::onPositionUpdated() {
-        notifyObservers(this, POSITION_UPDATED);
-        for (const auto& child : children) {
-            child->onPositionUpdated();
-        }
     }
 
     WidgetOutline& Widget::getOutline() {
