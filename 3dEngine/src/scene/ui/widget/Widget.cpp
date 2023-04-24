@@ -276,7 +276,7 @@ namespace urchin {
 
     void Widget::updateSize(Size size) {
         this->size = size;
-        //TODO event for refresh coord & scissor
+        notifyObservers(this, SIZE_UPDATED);
     }
 
     Size Widget::getSize() const {
@@ -330,7 +330,7 @@ namespace urchin {
     }
 
     void Widget::applyUpdatedGammaFactor() {
-        //TODO notif update and handle notif in WidgetInstanceDisplayer to rerfresh colorParams
+        notifyObservers(this, COLOR_PARAMS_UPDATED);
 
         for (const auto& child : children) {
             child->applyUpdatedGammaFactor();
@@ -339,7 +339,7 @@ namespace urchin {
 
     void Widget::updateAlphaFactor(float alphaFactor) {
         this->alphaFactor = alphaFactor;
-        //TODO notif update and handle notif in WidgetInstanceDisplayer to rerfresh colorParams
+        notifyObservers(this, COLOR_PARAMS_UPDATED);
     }
 
     float Widget::getAlphaFactor() const {

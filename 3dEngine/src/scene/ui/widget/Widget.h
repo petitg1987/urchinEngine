@@ -30,7 +30,9 @@ namespace urchin {
             ~Widget() override;
 
             enum NotificationType {
-                SET_IN_FOREGROUND //Widget should be set in the foreground
+                SET_IN_FOREGROUND, //Widget should be set in the foreground
+                SIZE_UPDATED,
+                COLOR_PARAMS_UPDATED
             };
 
             enum WidgetState {

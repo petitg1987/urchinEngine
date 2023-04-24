@@ -54,17 +54,17 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
 
-        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor(); //TODO /!\ if updated => new instance
+        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
         rendererBuilder->addUniformData(sizeof(colorParams), &colorParams); //binding 2
 
-        rendererBuilder->addData(getReferenceWidget().retrieveVertexCoordinates()); //TODO update on updateSize => new instance
-        rendererBuilder->addData(getReferenceWidget().retrieveTextureCoordinates()); //TODO update on updateSize => new instance
+        rendererBuilder->addData(getReferenceWidget().retrieveVertexCoordinates());
+        rendererBuilder->addData(getReferenceWidget().retrieveTextureCoordinates());
 
         instanceModelMatrices.emplace_back();
         rendererBuilder->instanceData(instanceModelMatrices.size(), VariableType::MAT4, (const float*)instanceModelMatrices.data());
 
-        std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor(); //TODO update at init (when parent is known) & onResize &
+        std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
         if (scissor.has_value()) {
             rendererBuilder->setScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
@@ -79,6 +79,17 @@ namespace urchin {
     void WidgetInstanceDisplayer::updateTexture(std::shared_ptr<Texture> texture) {
         //TODO add debug instanceID check still valid !?
         renderer->updateUniformTextureReader(0, TextureReader::build(std::move(texture), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+    }
+
+    void WidgetInstanceDisplayer::notify(Observable* observable, int notificationType) {
+        if (dynamic_cast<Widget*>(observable)) {
+            if (notificationType == Widget::SIZE_UPDATED) {
+                updateCoordinates();
+                updateScissor();
+            } else if (notificationType == Widget::COLOR_PARAMS_UPDATED) {
+                updateColorParameters();
+            }
+        }
     }
 
     Widget& WidgetInstanceDisplayer::getReferenceWidget() const {
@@ -120,10 +131,8 @@ namespace urchin {
         instanceWidgets.push_back(&widget);
         widget.attachWidgetInstanceDisplayer(*this);
 
-//TODO        model.addObserver(this, Model::MESH_VERTICES_UPDATED);
-//        model.addObserver(this, Model::MESH_UV_UPDATED);
-//        model.addObserver(this, Model::MATERIAL_UPDATED);
-//        model.addObserver(this, Model::SCALE_UPDATED);
+        widget.addObserver(this, Widget::SIZE_UPDATED);
+        widget.addObserver(this, Widget::COLOR_PARAMS_UPDATED);
     }
 
     void WidgetInstanceDisplayer::removeInstanceWidget(Widget& widget) {
@@ -133,14 +142,30 @@ namespace urchin {
             Logger::instance().logError("Removing the instance widget fail");
         }
 
-//TODO        model.removeObserver(this, Model::SCALE_UPDATED);
-//        model.removeObserver(this, Model::MATERIAL_UPDATED);
-//        model.removeObserver(this, Model::MESH_UV_UPDATED);
-//        model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
+        widget.removeObserver(this, Widget::SIZE_UPDATED);
+        widget.removeObserver(this, Widget::COLOR_PARAMS_UPDATED);
     }
 
     unsigned int WidgetInstanceDisplayer::getInstanceCount() const {
         return (unsigned int)instanceWidgets.size();
+    }
+
+    void WidgetInstanceDisplayer::updateScissor() { //TODO call at ?
+        std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
+        if (scissor.has_value()) {
+            renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
+        }
+    }
+
+    void WidgetInstanceDisplayer::updateCoordinates() {
+        renderer->updateData(0, getReferenceWidget().retrieveVertexCoordinates()); //TODO /!\ if updated => new instance
+        renderer->updateData(1, getReferenceWidget().retrieveTextureCoordinates());
+    }
+
+    void WidgetInstanceDisplayer::updateColorParameters() {
+        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor(); //TODO /!\ if updated => new instance
+        colorParams.gammaFactor = uiRenderer.getGammaFactor();
+        renderer->updateUniformData(2, &colorParams);
     }
 
     void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {

@@ -4,13 +4,14 @@
 
 namespace urchin {
 
-    class WidgetInstanceDisplayer {
+    class WidgetInstanceDisplayer : public Observer {
         public:
             explicit WidgetInstanceDisplayer(const UIRenderer&);
             ~WidgetInstanceDisplayer();
 
             void initialize(std::shared_ptr<Texture>);
             void updateTexture(std::shared_ptr<Texture>);
+            void notify(Observable*, int) override;
 
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);
@@ -22,6 +23,10 @@ namespace urchin {
             Widget& getReferenceWidget() const;
             unsigned int computeDepthLevel(Widget&) const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
+
+            void updateScissor();
+            void updateCoordinates();
+            void updateColorParameters();
 
             bool isInitialized;
 
