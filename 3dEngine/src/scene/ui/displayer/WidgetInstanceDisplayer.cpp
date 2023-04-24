@@ -119,7 +119,6 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::addInstanceWidget(Widget& widget) {
-        //TODO assert uiRenderer are equals between this class and the widget
         if (instanceWidgets.empty()) {
             instanceId = widget.computeInstanceId();
         } else {
