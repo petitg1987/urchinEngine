@@ -69,6 +69,7 @@ namespace urchin {
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textareaChunk);
         texTextareaDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
+        updateTexture(texTextareaDefault);
 
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(false, "skin", UdaAttribute("type", "focus"), textareaChunk);
         if (skinChunkFocus) {
@@ -105,7 +106,6 @@ namespace urchin {
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(texTextareaDefault);
         setupDisplayer(std::move(displayer));
     }
 
@@ -115,7 +115,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                getDisplayer()->updateTexture(texTextareaFocus);
+                updateTexture(texTextareaFocus);
 
                 Rectangle2D textZone(
                         Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
@@ -130,7 +130,7 @@ namespace urchin {
                 }
             } else {
                 state = INACTIVE;
-                getDisplayer()->updateTexture(texTextareaDefault);
+                updateTexture(texTextareaDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -282,7 +282,7 @@ namespace urchin {
 
     void Textarea::onResetStateEvent() {
         state = INACTIVE;
-        getDisplayer()->updateTexture(texTextareaDefault);
+        updateTexture(texTextareaDefault);
     }
 
     bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {

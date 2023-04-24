@@ -20,11 +20,11 @@ namespace urchin {
         auto checkBoxChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "checkBox", UdaAttribute("skin", skinName));
         texChecked = loadTexture(checkBoxChunk, "imageChecked");
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
+        updateTexture(isChecked() ? texChecked : texUnchecked);
 
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(isChecked() ? texChecked : texUnchecked);
         setupDisplayer(std::move(displayer));
     }
 
@@ -46,12 +46,12 @@ namespace urchin {
         return bIsChecked;
     }
 
-    void CheckBox::refreshTexture() const {
+    void CheckBox::refreshTexture() {
         if (getDisplayer()) {
             if (bIsChecked) {
-                getDisplayer()->updateTexture(texChecked);
+                updateTexture(texChecked);
             } else {
-                getDisplayer()->updateTexture(texUnchecked);
+                updateTexture(texUnchecked);
             }
         }
     }

@@ -31,6 +31,7 @@ namespace urchin {
 
             enum NotificationType {
                 SET_IN_FOREGROUND, //Widget should be set in the foreground
+                TEXTURE_UPDATED,
                 SIZE_UPDATED,
                 POSITION_UPDATED,
                 COLOR_PARAMS_UPDATED
@@ -87,8 +88,9 @@ namespace urchin {
             void updateAlphaFactor(float);
             float getAlphaFactor() const;
 
-            virtual std::vector<Point2<float>>& retrieveVertexCoordinates() const;
-            virtual std::vector<Point2<float>>& retrieveTextureCoordinates() const;
+            const std::shared_ptr<Texture>& getTexture() const;
+            virtual std::vector<Point2<float>>& retrieveVertexCoordinates();
+            virtual std::vector<Point2<float>>& retrieveTextureCoordinates();
             std::optional<Scissor> retrieveScissor() const;
 
             template<class T> float widthLengthToPixel(float, LengthType, const T&) const;
@@ -111,9 +113,6 @@ namespace urchin {
             void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 
         protected:
-            mutable std::vector<Point2<float>> vertexCoord;
-            mutable std::vector<Point2<float>> textureCoord;
-
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
             const UIRenderer& getUiRenderer() const;
@@ -125,10 +124,12 @@ namespace urchin {
             void setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer>);
             WidgetInstanceDisplayer* getDisplayer() const;
 
+            void updateTexture(std::shared_ptr<Texture>);
+            std::vector<Point2<float>>& getVertexCoord();
+            std::vector<Point2<float>>& getTextureCoord();
+            void onPositionUpdated();
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;
-
-            void onPositionUpdated();
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);
@@ -153,6 +154,9 @@ namespace urchin {
             std::vector<std::shared_ptr<Widget>> children;
             std::vector<std::shared_ptr<EventListener>> eventListeners;
 
+            std::shared_ptr<Texture> texture;
+            std::vector<Point2<float>> vertexCoord;
+            std::vector<Point2<float>> textureCoord;
             std::unique_ptr<WidgetInstanceDisplayer> displayer;
 
             WidgetOutline widgetOutline;

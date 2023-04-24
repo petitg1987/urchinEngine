@@ -171,13 +171,6 @@ namespace urchin {
         onPositionUpdated();
     }
 
-    void Widget::onPositionUpdated() {
-        notifyObservers(this, POSITION_UPDATED);
-        for (const auto& child : children) {
-            child->onPositionUpdated();
-        }
-    }
-
     Position Widget::getPosition() const {
         return position;
     }
@@ -285,10 +278,31 @@ namespace urchin {
 
     void Widget::setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer> displayer) {
         this->displayer = std::move(displayer);
+        this->displayer->initialize();
     }
 
     WidgetInstanceDisplayer* Widget::getDisplayer() const {
         return this->displayer.get();
+    }
+
+    void Widget::updateTexture(std::shared_ptr<Texture> texture) {
+        this->texture = std::move(texture);
+        notifyObservers(this, TEXTURE_UPDATED);
+    }
+
+    std::vector<Point2<float>>& Widget::getVertexCoord() {
+        return vertexCoord;
+    }
+
+    std::vector<Point2<float>>& Widget::getTextureCoord() {
+        return textureCoord;
+    }
+
+    void Widget::onPositionUpdated() {
+        notifyObservers(this, POSITION_UPDATED);
+        for (const auto& child : children) {
+            child->onPositionUpdated();
+        }
     }
 
     WidgetOutline& Widget::getOutline() {
@@ -346,7 +360,11 @@ namespace urchin {
         return alphaFactor;
     }
 
-    std::vector<Point2<float>>& Widget::retrieveVertexCoordinates() const {
+    const std::shared_ptr<Texture>& Widget::getTexture() const {
+        return texture;
+    }
+
+    std::vector<Point2<float>>& Widget::retrieveVertexCoordinates() {
         vertexCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
                 Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
@@ -354,7 +372,7 @@ namespace urchin {
         return vertexCoord;
     }
 
-    std::vector<Point2<float>>& Widget::retrieveTextureCoordinates() const {
+    std::vector<Point2<float>>& Widget::retrieveTextureCoordinates() {
         textureCoord = {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)

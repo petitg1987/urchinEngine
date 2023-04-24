@@ -51,6 +51,7 @@ namespace urchin {
         currentValueText->updatePosition(Position(getWidth() + TEXT_SHIFT_LENGTH, textYPosition, LengthType::PIXEL));
 
         texSliderLine = loadTexture(sliderChunk, "imageLine");
+        updateTexture(texSliderLine);
         auto imageCursor = loadTexture(sliderChunk, "imageCursor");
         float cursorImageWidth = (getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
         cursorImage = StaticBitmap::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), Size(cursorImageWidth, getHeight(), LengthType::PIXEL), cursorImageFilename);
@@ -59,7 +60,6 @@ namespace urchin {
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(texSliderLine);
         setupDisplayer(std::move(displayer));
     }
 

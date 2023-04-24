@@ -18,7 +18,7 @@ namespace urchin {
         }
     }
 
-    void WidgetInstanceDisplayer::initialize(std::shared_ptr<Texture> texture) {
+    void WidgetInstanceDisplayer::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Widget displayer is already initialized");
         } else if (instanceWidgets.empty()) {
@@ -69,20 +69,18 @@ namespace urchin {
             rendererBuilder->setScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
 
-        rendererBuilder->addUniformTextureReader(TextureReader::build(std::move(texture), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))); //binding 3
+        rendererBuilder->addUniformTextureReader(TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))); //binding 3
 
         renderer = rendererBuilder->build();
 
         isInitialized = true;
     }
 
-    void WidgetInstanceDisplayer::updateTexture(std::shared_ptr<Texture> texture) { //TODO /!\ if updated => new instance ?
-        renderer->updateUniformTextureReader(0, TextureReader::build(std::move(texture), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
-    }
-
     void WidgetInstanceDisplayer::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<Widget*>(observable)) {
-            if (notificationType == Widget::SIZE_UPDATED) {
+            if (notificationType == Widget::TEXTURE_UPDATED) {
+                updateTexture();
+            } else if (notificationType == Widget::SIZE_UPDATED) {
                 updateCoordinates();
                 updateScissor();
             } else if (notificationType == Widget::POSITION_UPDATED) {
@@ -152,6 +150,10 @@ namespace urchin {
         return (unsigned int)instanceWidgets.size();
     }
 
+    void WidgetInstanceDisplayer::updateTexture() {
+        renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+    }
+
     void WidgetInstanceDisplayer::updateScissor() {
         std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
         if (scissor.has_value()) {
@@ -160,12 +162,12 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::updateCoordinates() {
-        renderer->updateData(0, getReferenceWidget().retrieveVertexCoordinates()); //TODO /!\ if updated => new instance ?
+        renderer->updateData(0, getReferenceWidget().retrieveVertexCoordinates());
         renderer->updateData(1, getReferenceWidget().retrieveTextureCoordinates());
     }
 
     void WidgetInstanceDisplayer::updateColorParameters() {
-        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor(); //TODO /!\ if updated => new instance ?
+        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
         renderer->updateUniformData(2, &colorParams);
     }

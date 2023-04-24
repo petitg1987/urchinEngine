@@ -32,6 +32,7 @@ namespace urchin {
 
         auto skinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute(), windowChunk);
         texWindow = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunk, &getOutline());
+        updateTexture(texWindow);
 
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), windowChunk);
@@ -42,7 +43,6 @@ namespace urchin {
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(texWindow);
         setupDisplayer(std::move(displayer));
     }
 

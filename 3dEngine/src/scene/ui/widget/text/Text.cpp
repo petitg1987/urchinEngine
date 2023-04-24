@@ -48,7 +48,6 @@ namespace urchin {
 
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(font->getTexture());
         setupDisplayer(std::move(displayer));
     }
 
@@ -194,9 +193,9 @@ namespace urchin {
         return *font;
     }
 
-    std::vector<Point2<float>>& Text::retrieveVertexCoordinates() const {
-        vertexCoord.clear();
-        vertexCoord.reserve(baseText.size() * 4);
+    std::vector<Point2<float>>& Text::retrieveVertexCoordinates() {
+        getVertexCoord().clear();
+        getVertexCoord().reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
         auto spaceBetweenCharacters = (float)font->getSpaceBetweenCharacters();
@@ -210,31 +209,31 @@ namespace urchin {
                 auto letterHeight = (float)font->getGlyph(textLetter).height;
                 auto letterOffsetY = offsetY - letterShift;
 
-                vertexCoord.emplace_back(offsetX, letterOffsetY);
-                vertexCoord.emplace_back(letterWidth + offsetX, letterOffsetY);
-                vertexCoord.emplace_back(letterWidth + offsetX, letterHeight + letterOffsetY);
+                getVertexCoord().emplace_back(offsetX, letterOffsetY);
+                getVertexCoord().emplace_back(letterWidth + offsetX, letterOffsetY);
+                getVertexCoord().emplace_back(letterWidth + offsetX, letterHeight + letterOffsetY);
 
-                vertexCoord.emplace_back(offsetX, letterOffsetY);
-                vertexCoord.emplace_back(letterWidth + offsetX, letterHeight + letterOffsetY);
-                vertexCoord.emplace_back(offsetX, letterHeight + letterOffsetY);
+                getVertexCoord().emplace_back(offsetX, letterOffsetY);
+                getVertexCoord().emplace_back(letterWidth + offsetX, letterHeight + letterOffsetY);
+                getVertexCoord().emplace_back(offsetX, letterHeight + letterOffsetY);
 
                 offsetX += letterWidth + spaceBetweenCharacters;
             }
             offsetY += spaceBetweenLines;
         }
 
-        if (vertexCoord.empty()) {
-            vertexCoord.emplace_back(0.0f ,0.0f);
-            vertexCoord.emplace_back(0.0f ,0.0f);
-            vertexCoord.emplace_back(0.0f ,0.0f);
+        if (getVertexCoord().empty()) {
+            getVertexCoord().emplace_back(0.0f ,0.0f);
+            getVertexCoord().emplace_back(0.0f ,0.0f);
+            getVertexCoord().emplace_back(0.0f ,0.0f);
         }
 
-        return vertexCoord;
+        return getVertexCoord();
     }
 
-    std::vector<Point2<float>>& Text::retrieveTextureCoordinates() const {
-        textureCoord.clear();
-        textureCoord.reserve(baseText.size() * 4);
+    std::vector<Point2<float>>& Text::retrieveTextureCoordinates() {
+        getTextureCoord().clear();
+        getTextureCoord().reserve(baseText.size() * 4);
 
         for (const TextLine& textLine : cutTextLines) { //each line
             for (char32_t textLetter : textLine.text) { //each letter
@@ -246,23 +245,23 @@ namespace urchin {
                 float sMax = sMin + (letterWidth / (float)font->getDimensionTexture());
                 float tMax = tMin + (letterHeight / (float)font->getDimensionTexture());
 
-                textureCoord.emplace_back(sMin, tMin);
-                textureCoord.emplace_back(sMax, tMin);
-                textureCoord.emplace_back(sMax, tMax);
+                getTextureCoord().emplace_back(sMin, tMin);
+                getTextureCoord().emplace_back(sMax, tMin);
+                getTextureCoord().emplace_back(sMax, tMax);
 
-                textureCoord.emplace_back(sMin, tMin);
-                textureCoord.emplace_back(sMax, tMax);
-                textureCoord.emplace_back(sMin, tMax);
+                getTextureCoord().emplace_back(sMin, tMin);
+                getTextureCoord().emplace_back(sMax, tMax);
+                getTextureCoord().emplace_back(sMin, tMax);
             }
         }
 
-        if (textureCoord.empty()) {
-            textureCoord.emplace_back(0.0f ,0.0f);
-            textureCoord.emplace_back(0.0f ,0.0f);
-            textureCoord.emplace_back(0.0f ,0.0f);
+        if (getTextureCoord().empty()) {
+            getTextureCoord().emplace_back(0.0f ,0.0f);
+            getTextureCoord().emplace_back(0.0f ,0.0f);
+            getTextureCoord().emplace_back(0.0f ,0.0f);
         }
 
-        return textureCoord;
+        return getTextureCoord();
     }
 
     void Text::refreshTextAndWidgetSize() {
@@ -353,6 +352,7 @@ namespace urchin {
 
         std::map<std::string, std::string, std::less<>> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
         font = ResourceRetriever::instance().getResource<Font>(ttfFilename, fontParams);
+        updateTexture(font->getTexture());
     }
 
     unsigned int Text::retrieveFontHeight(const UdaChunk* textChunk) const {

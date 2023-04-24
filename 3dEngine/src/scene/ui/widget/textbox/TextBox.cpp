@@ -39,6 +39,7 @@ namespace urchin {
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
         texTextBoxDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
+        updateTexture(texTextBoxDefault);
 
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(false, "skin", UdaAttribute("type", "focus"), textBoxChunk);
         if (skinChunkFocus) {
@@ -69,7 +70,6 @@ namespace urchin {
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(texTextBoxDefault);
         setupDisplayer(std::move(displayer));
     }
 
@@ -113,7 +113,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                getDisplayer()->updateTexture(texTextBoxFocus);
+                updateTexture(texTextBoxFocus);
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
@@ -123,7 +123,7 @@ namespace urchin {
                 selectModeOn = true;
             } else {
                 state = INACTIVE;
-                getDisplayer()->updateTexture(texTextBoxDefault);
+                updateTexture(texTextBoxDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -253,7 +253,7 @@ namespace urchin {
 
     void TextBox::onResetStateEvent() {
         state = INACTIVE;
-        getDisplayer()->updateTexture(texTextBoxDefault);
+        updateTexture(texTextBoxDefault);
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {

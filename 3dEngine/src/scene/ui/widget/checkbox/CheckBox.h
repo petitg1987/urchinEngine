@@ -21,7 +21,7 @@ namespace urchin {
             void createOrUpdateWidget() override;
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
-            void refreshTexture() const;
+            void refreshTexture();
             bool onKeyReleaseEvent(InputDeviceKey) override;
             void switchValue();
 

@@ -28,7 +28,7 @@ namespace urchin {
 
         auto skinDefaultChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), buttonChunk);
         texInfoDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinDefaultChunk);
-        currentTexture = texInfoDefault;
+        updateTexture(texInfoDefault);
 
         auto skinFocusChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), buttonChunk);
         texInfoOnFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinFocusChunk);
@@ -44,7 +44,6 @@ namespace urchin {
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(currentTexture);
         setupDisplayer(std::move(displayer));
     }
 
@@ -53,17 +52,18 @@ namespace urchin {
     }
 
     void Button::refreshTexture() {
-        auto oldTexture = currentTexture;
         if (getWidgetState() == FOCUS) {
-            currentTexture = texInfoOnFocus;
+            if (getTexture().get() != texInfoOnFocus.get()) {
+                updateTexture(texInfoOnFocus);
+            }
         } else if (getWidgetState() == CLICKING) {
-            currentTexture = texInfoOnClick;
+            if (getTexture().get() != texInfoOnClick.get()) {
+                updateTexture(texInfoOnClick);
+            }
         } else {
-            currentTexture = texInfoDefault;
-        }
-
-        if (currentTexture != oldTexture) {
-            getDisplayer()->updateTexture(currentTexture);
+            if (getTexture().get() != texInfoDefault.get()) {
+                updateTexture(texInfoDefault);
+            }
         }
     }
 

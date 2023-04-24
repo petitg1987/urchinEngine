@@ -54,8 +54,8 @@ namespace urchin {
             std::size_t baseTextIndexToEndOfLineIndex(std::size_t, WordCutIndexPositioning = WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) const;
             const Font& getFont() const;
 
-            std::vector<Point2<float>>& retrieveVertexCoordinates() const override;
-            std::vector<Point2<float>>& retrieveTextureCoordinates() const override;
+            std::vector<Point2<float>>& retrieveVertexCoordinates() override;
+            std::vector<Point2<float>>& retrieveTextureCoordinates() override;
 
         private:
             Text(Position, std::string, std::string, std::vector<std::string>);

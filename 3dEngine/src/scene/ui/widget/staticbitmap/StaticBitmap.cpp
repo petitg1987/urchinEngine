@@ -43,10 +43,11 @@ namespace urchin {
     }
 
     void StaticBitmap::createOrUpdateWidget() {
+        Widget::updateTexture(texture);
+
         //visual
         std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
         displayer->addInstanceWidget(*this);
-        displayer->initialize(texture);
         setupDisplayer(std::move(displayer));
     }
 
@@ -62,7 +63,7 @@ namespace urchin {
 
     void StaticBitmap::updateTexture(const std::string& filename) {
         texture = buildTexture(filename);
-        getDisplayer()->updateTexture(texture);
+        Widget::updateTexture(texture);
     }
 
     const std::string& StaticBitmap::getTextureName() const {
