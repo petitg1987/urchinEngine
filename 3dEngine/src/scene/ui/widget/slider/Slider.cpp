@@ -1,5 +1,6 @@
 #include <scene/ui/widget/slider/Slider.h>
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/InputDeviceKey.h>
 #include <resources/ResourceRetriever.h>
 
@@ -56,9 +57,10 @@ namespace urchin {
         moveSliderCursor();
 
         //visual
-        setupRenderer(baseRendererBuilder("slider", ShapeType::TRIANGLE, true)
-                ->addUniformTextureReader(TextureReader::build(texSliderLine, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(texSliderLine);
+        setupDisplayer(std::move(displayer));
     }
 
     WidgetType Slider::getWidgetType() const {

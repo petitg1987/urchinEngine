@@ -4,8 +4,8 @@
 
 #include <scene/ui/widget/textbox/TextBox.h>
 #include <scene/ui/widget/TextFieldConst.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/InputDeviceKey.h>
-#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
@@ -67,9 +67,10 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
 
         //visual
-        setupRenderer(baseRendererBuilder("text box", ShapeType::TRIANGLE, false)
-                ->addUniformTextureReader(TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(texTextBoxDefault);
+        setupDisplayer(std::move(displayer));
     }
 
     WidgetType TextBox::getWidgetType() const {
@@ -112,7 +113,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextBoxFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getDisplayer()->updateTexture(texTextBoxFocus);
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
@@ -122,7 +123,7 @@ namespace urchin {
                 selectModeOn = true;
             } else {
                 state = INACTIVE;
-                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getDisplayer()->updateTexture(texTextBoxDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -252,7 +253,7 @@ namespace urchin {
 
     void TextBox::onResetStateEvent() {
         state = INACTIVE;
-        getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextBoxDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        getDisplayer()->updateTexture(texTextBoxDefault);
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {

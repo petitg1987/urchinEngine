@@ -3,12 +3,11 @@
 
 namespace urchin {
 
-    WidgetInstanceDisplayer::WidgetInstanceDisplayer(UIRenderer& uiRenderer, RenderTarget& renderTarget, const Shader& shader) :
+    WidgetInstanceDisplayer::WidgetInstanceDisplayer(const UIRenderer& uiRenderer) :
             isInitialized(false),
             instanceId(WidgetDisplayable::INSTANCING_DENY_ID),
             uiRenderer(uiRenderer),
-            renderTarget(renderTarget),
-            shader(shader) {
+            colorParams({}) {
 
     }
 
@@ -19,18 +18,17 @@ namespace urchin {
         }
     }
 
-    void WidgetInstanceDisplayer::initialize() {
+    void WidgetInstanceDisplayer::initialize(std::shared_ptr<Texture> texture) {
         if (isInitialized) {
             throw std::runtime_error("Widget displayer is already initialized");
         } else if (instanceWidgets.empty()) {
             throw std::runtime_error("At least one instance widget must be added before initialization");
         }
 
-        auto rendererBuilder = GenericRendererBuilder::create("widget_" + std::to_string((int)getReferenceWidget().getWidgetType()), renderTarget, shader, ShapeType::TRIANGLE);
+        auto rendererBuilder = GenericRendererBuilder::create("widget_" + std::to_string((int)getReferenceWidget().getWidgetType()), uiRenderer.getRenderTarget(), uiRenderer.getShader(), ShapeType::TRIANGLE);
 
         Matrix4<float> normalMatrix;
         Matrix4<float> projectionViewModelMatrix;
-        Matrix4<float> modelMatrix;
         if (uiRenderer.getUi3dData()) {
             rendererBuilder->enableDepthTest();
             rendererBuilder->enableDepthWrite();
@@ -45,9 +43,7 @@ namespace urchin {
             });
             normalMatrix = uiRenderer.getUi3dData()->normalMatrix;
         } else {
-            if (hasTransparency) {
-                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
-            }
+            rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
             projectionViewModelMatrix = Matrix4<float>( //orthogonal matrix with origin at top left screen
                     2.0f / (float) uiRenderer.getUiResolution().X, 0.0f, -1.0f, 0.0f,
                     0.0f, 2.0f / (float) uiRenderer.getUiResolution().Y, -1.0f, 0.0f,
@@ -58,24 +54,31 @@ namespace urchin {
         rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
         rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
 
+        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor(); //TODO /!\ if updated => new instance
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
         rendererBuilder->addUniformData(sizeof(colorParams), &colorParams); //binding 2
 
-        refreshCoordinates();
-        rendererBuilder->addData(vertexCoord);
-        rendererBuilder->addData(textureCoord);
-        rendererBuilder->instanceData(1, VariableType::MAT4, (const float*)&modelMatrix); //TODO how many instance ?
+        rendererBuilder->addData(getReferenceWidget().retrieveVertexCoordinates()); //TODO update on updateSize => new instance
+        rendererBuilder->addData(getReferenceWidget().retrieveTextureCoordinates()); //TODO update on updateSize => new instance
 
-        refreshScissor(true);
-        if (scissorEnabled) {
-            rendererBuilder->setScissor(scissorOffset, scissorSize);
+        instanceModelMatrices.emplace_back();
+        rendererBuilder->instanceData(instanceModelMatrices.size(), VariableType::MAT4, (const float*)instanceModelMatrices.data());
+
+        std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor(); //TODO update at init (when parent is known) & onResize &
+        if (scissor.has_value()) {
+            rendererBuilder->setScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
 
-        //TODO add stuff specific to widget implementation (e.g. texture)
+        rendererBuilder->addUniformTextureReader(TextureReader::build(std::move(texture), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))); //binding 3
 
         renderer = rendererBuilder->build();
 
         isInitialized = true;
+    }
+
+    void WidgetInstanceDisplayer::updateTexture(std::shared_ptr<Texture> texture) {
+        //TODO add debug instanceID check still valid !?
+        renderer->updateUniformTextureReader(0, TextureReader::build(std::move(texture), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     Widget& WidgetInstanceDisplayer::getReferenceWidget() const {
@@ -94,6 +97,13 @@ namespace urchin {
             currentParent = currentParent->getParent();
         }
         return depthLevel;
+    }
+
+    TextureParam::Anisotropy WidgetInstanceDisplayer::getTextureAnisotropy() const {
+        if (uiRenderer.getUi3dData()) {
+            return TextureParam::Anisotropy::ANISOTROPY;
+        }
+        return TextureParam::Anisotropy::NO_ANISOTROPY;
     }
 
     void WidgetInstanceDisplayer::addInstanceWidget(Widget& widget) {
@@ -149,9 +159,8 @@ namespace urchin {
             // B) Scale widget (scale.X, scale.Y)
             // C) Rotate widget (sinRotate, cosRotate)
             // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
-            Vector2<float> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
-            float transX = translateVector.X + widget->getWidth() / 2.0f;
-            float transY = translateVector.Y + widget->getHeight() / 2.0f;
+            float transX = widget->getGlobalPositionX() + widget->getWidth() / 2.0f;
+            float transY = widget->getGlobalPositionY() + widget->getHeight() / 2.0f;
             float transOriginX = -widget->getWidth() / 2.0f;
             float transOriginY = -widget->getHeight() / 2.0f;
             float sinRotate = std::sin(widget->getRotation());

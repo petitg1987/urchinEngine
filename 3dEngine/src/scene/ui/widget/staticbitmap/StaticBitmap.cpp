@@ -1,8 +1,8 @@
 #include <utility>
 
 #include <scene/ui/widget/staticbitmap/StaticBitmap.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <resources/ResourceRetriever.h>
-#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
@@ -44,9 +44,10 @@ namespace urchin {
 
     void StaticBitmap::createOrUpdateWidget() {
         //visual
-        setupRenderer(baseRendererBuilder("static bitmap", ShapeType::TRIANGLE, true)
-                ->addUniformTextureReader(TextureReader::build(texture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(texture);
+        setupDisplayer(std::move(displayer));
     }
 
     std::size_t StaticBitmap::getImplementationInstanceId() const {
@@ -61,7 +62,7 @@ namespace urchin {
 
     void StaticBitmap::updateTexture(const std::string& filename) {
         texture = buildTexture(filename);
-        getRenderer()->updateUniformTextureReader(0, TextureReader::build(texture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        getDisplayer()->updateTexture(texture); //TODO /!\ instancing different
     }
 
     const std::string& StaticBitmap::getTextureName() const {

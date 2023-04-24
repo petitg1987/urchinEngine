@@ -1,5 +1,6 @@
 #include <scene/ui/widget/textarea/Textarea.h>
 #include <scene/ui/widget/TextFieldConst.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/InputDeviceKey.h>
 
 namespace urchin {
@@ -102,9 +103,10 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
 
         //visual
-        setupRenderer(baseRendererBuilder("textarea", ShapeType::TRIANGLE, false)
-                ->addUniformTextureReader(TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(texTextareaDefault);
+        setupDisplayer(std::move(displayer));
     }
 
     bool Textarea::onKeyPressEvent(InputDeviceKey key) {
@@ -113,7 +115,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaFocus, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getDisplayer()->updateTexture(texTextareaFocus);
 
                 Rectangle2D textZone(
                         Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
@@ -128,7 +130,7 @@ namespace urchin {
                 }
             } else {
                 state = INACTIVE;
-                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getDisplayer()->updateTexture(texTextareaDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -280,7 +282,7 @@ namespace urchin {
 
     void Textarea::onResetStateEvent() {
         state = INACTIVE;
-        getRenderer()->updateUniformTextureReader(0, TextureReader::build(texTextareaDefault, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        getDisplayer()->updateTexture(texTextareaDefault);
     }
 
     bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {

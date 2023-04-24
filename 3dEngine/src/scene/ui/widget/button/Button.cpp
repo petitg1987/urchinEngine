@@ -3,7 +3,7 @@
 
 #include <scene/ui/widget/button/Button.h>
 #include <scene/ui/UISkinService.h>
-#include <graphics/render/GenericRendererBuilder.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 
 namespace urchin {
 
@@ -42,9 +42,10 @@ namespace urchin {
         }
 
         //visual
-        setupRenderer(baseRendererBuilder("button", ShapeType::TRIANGLE, false)
-                ->addUniformTextureReader(TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(currentTexture);
+        setupDisplayer(std::move(displayer));
     }
 
     WidgetType Button::getWidgetType() const {
@@ -62,7 +63,7 @@ namespace urchin {
         }
 
         if (currentTexture != oldTexture) {
-            getRenderer()->updateUniformTextureReader(0, TextureReader::build(currentTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+            getDisplayer()->updateTexture(currentTexture);
         }
     }
 

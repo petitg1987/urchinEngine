@@ -9,6 +9,7 @@
 #include <scene/ui/widget/WidgetType.h>
 #include <scene/ui/widget/Position.h>
 #include <scene/ui/widget/Size.h>
+#include <scene/ui/widget/Scissor.h>
 #include <scene/ui/UISkinService.h>
 #include <scene/ui/EventListener.h>
 #include <scene/ui/ClipboardLocal.h>
@@ -45,7 +46,6 @@ namespace urchin {
             void onCameraProjectionUpdate();
 
             virtual WidgetType getWidgetType() const = 0;
-            const UIRenderer& getUiRenderer() const;
 
             Widget* getParent() const;
             Container* getParentContainer() const;
@@ -84,6 +84,10 @@ namespace urchin {
             void updateAlphaFactor(float);
             float getAlphaFactor() const;
 
+            virtual std::vector<Point2<float>>& retrieveVertexCoordinates() const;
+            virtual std::vector<Point2<float>>& retrieveTextureCoordinates() const;
+            std::optional<Scissor> retrieveScissor() const;
+
             template<class T> float widthLengthToPixel(float, LengthType, const T&) const;
             float widthPixelToLength(float, LengthType) const;
             template<class T> float heightLengthToPixel(float, LengthType, const T&) const;
@@ -100,28 +104,26 @@ namespace urchin {
             void onResetState();
             int getMouseX() const;
             int getMouseY() const;
-            bool isScissorEnabled() const;
 
             void prepareRendering(float, unsigned int&, const Matrix4<float>&);
 
         protected:
+            mutable std::vector<Point2<float>> vertexCoord;
+            mutable std::vector<Point2<float>> textureCoord;
+
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
 
+            const UIRenderer& getUiRenderer() const;
             I18nService& getI18nService() const;
             UI3dData* getUi3dData() const;
             Clipboard& getClipboard() const;
 
             virtual void createOrUpdateWidget() = 0;
-            std::shared_ptr<GenericRendererBuilder> baseRendererBuilder(std::string, ShapeType, bool);
-            virtual void refreshCoordinates();
-            std::vector<Point2<float>>& getVertexCoordinates();
-            std::vector<Point2<float>>& getTextureCoordinates();
-            void setupRenderer(std::unique_ptr<GenericRenderer>);
-            GenericRenderer* getRenderer() const;
+            void setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer>);
+            WidgetInstanceDisplayer* getDisplayer() const;
 
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;
-            TextureParam::Anisotropy getTextureAnisotropy() const;
 
             virtual bool onKeyPressEvent(InputDeviceKey);
             virtual bool onKeyReleaseEvent(InputDeviceKey);
@@ -139,8 +141,6 @@ namespace urchin {
             void handleWidgetResetState();
             bool isMouseOnWidget(int, int) const;
 
-            void refreshScissor(bool);
-
             UIRenderer* uiRenderer;
             int mouseX;
             int mouseY;
@@ -148,9 +148,7 @@ namespace urchin {
             std::vector<std::shared_ptr<Widget>> children;
             std::vector<std::shared_ptr<EventListener>> eventListeners;
 
-            std::vector<Point2<float>> vertexCoord;
-            std::vector<Point2<float>> textureCoord;
-            std::unique_ptr<GenericRenderer> renderer;
+            std::unique_ptr<WidgetInstanceDisplayer> displayer;
 
             WidgetOutline widgetOutline;
             WidgetState widgetState;
@@ -159,14 +157,7 @@ namespace urchin {
             Size size;
             Vector2<float> scale;
             float rotationZ;
-            struct ColorParams {
-                alignas(4) float alphaFactor;
-                alignas(4) float gammaFactor;
-            };
-            ColorParams colorParams;
-            bool scissorEnabled;
-            Vector2<int> scissorOffset;
-            Vector2<int> scissorSize;
+            float alphaFactor;
             bool bIsVisible;
     };
 

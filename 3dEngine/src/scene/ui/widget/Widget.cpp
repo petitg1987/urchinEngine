@@ -2,6 +2,7 @@
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/container/Container.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/ui/UIRenderer.h>
 #include <scene/InputDeviceKey.h>
 
@@ -17,8 +18,7 @@ namespace urchin {
             size(size),
             scale(Vector2<float>(1.0f, 1.0f)),
             rotationZ(0.0f),
-            colorParams(ColorParams{.alphaFactor = 1.0f, .gammaFactor = 1.0f}),
-            scissorEnabled(false),
+            alphaFactor(1.0f),
             bIsVisible(true) {
 
     }
@@ -36,7 +36,7 @@ namespace urchin {
         for (const auto& child : children) {
             child->initialize(uiRenderer);
         }
-        refreshScissor(false /* children call already treated via child->initialize */);
+        //TODO remove: refreshScissor(false /* children call already treated via child->initialize */);
     }
 
     void Widget::uninitialize() {
@@ -53,11 +53,9 @@ namespace urchin {
 
     void Widget::onResize() {
         createOrUpdateWidget();
-        refreshCoordinates();
         for (const auto& child : children) {
             child->onResize();
         }
-        refreshScissor(false /* children call already treated via child->onResize */);
     }
 
     void Widget::onCameraProjectionUpdate() {
@@ -65,7 +63,13 @@ namespace urchin {
         for (const auto& child : children) {
             child->onCameraProjectionUpdate();
         }
-        refreshScissor(false /* children call already treated via child->onCameraProjectionUpdate */);
+    }
+
+    const UIRenderer& Widget::getUiRenderer() const {
+        if (!uiRenderer) {
+            throw std::runtime_error("UI renderer not available because the widget is not initialized");
+        }
+        return *uiRenderer;
     }
 
     I18nService& Widget::getI18nService() const {
@@ -169,9 +173,9 @@ namespace urchin {
         }
         this->position = position;
 
-        for (const auto& child : children) {
-            child->refreshScissor(true);
-        }
+//TODO        for (const auto& child : children) {
+//            child->refreshScissor(true);
+//        }
     }
 
     Position Widget::getPosition() const {
@@ -272,93 +276,19 @@ namespace urchin {
 
     void Widget::updateSize(Size size) {
         this->size = size;
-        refreshCoordinates();
-        refreshScissor(true);
+        //TODO event for refresh coord & scissor
     }
 
     Size Widget::getSize() const {
         return size;
     }
 
-    std::shared_ptr<GenericRendererBuilder> Widget::baseRendererBuilder(std::string name, ShapeType shapeType, bool hasTransparency) { //TODO remove (moved in WidgetInstanceDisplayer)
-        assert(isInitialized());
-        auto rendererBuilder = GenericRendererBuilder::create(std::move(name), uiRenderer->getRenderTarget(), uiRenderer->getShader(), shapeType);
-
-        Matrix4<float> normalMatrix;
-        Matrix4<float> projectionViewModelMatrix;
-        Matrix4<float> modelMatrix;
-        if (uiRenderer->getUi3dData()) {
-            rendererBuilder->enableDepthTest();
-            rendererBuilder->enableDepthWrite();
-
-            //Always active transparency to ensure that emissive factor stay unchanged (see fragment shader for more details).
-            //Transparency is only working when a transparent widget is displayed above another widget.
-            //Transparency to the scene is currently not supported because the UI is written on an RGB channel (no alpha).
-            rendererBuilder->enableTransparency({
-                    BlendFunction::build(BlendFactor::SRC_ALPHA, BlendFactor::ONE_MINUS_SRC_ALPHA, BlendFactor::ZERO, BlendFactor::ONE),
-                    BlendFunction::buildBlendDisabled(),
-                    BlendFunction::buildBlendDisabled()
-            });
-            normalMatrix = uiRenderer->getUi3dData()->normalMatrix;
-        } else {
-            if (hasTransparency) {
-                rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
-            }
-            projectionViewModelMatrix = Matrix4<float>( //orthogonal matrix with origin at top left screen
-                    2.0f / (float) uiRenderer->getUiResolution().X, 0.0f, -1.0f, 0.0f,
-                    0.0f, 2.0f / (float) uiRenderer->getUiResolution().Y, -1.0f, 0.0f,
-                    0.0f, 0.0f, 1.0f, 0.0f,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-        }
-
-        rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
-        rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
-
-        colorParams.gammaFactor = uiRenderer->getGammaFactor();
-        rendererBuilder->addUniformData(sizeof(colorParams), &colorParams); //binding 2
-
-        refreshCoordinates();
-        rendererBuilder->addData(vertexCoord);
-        rendererBuilder->addData(textureCoord);
-        rendererBuilder->instanceData(1, VariableType::MAT4, (const float*)&modelMatrix);
-
-        refreshScissor(true);
-        if (scissorEnabled) {
-            rendererBuilder->setScissor(scissorOffset, scissorSize);
-        }
-
-        return rendererBuilder;
+    void Widget::setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer> displayer) {
+        this->displayer = std::move(displayer);
     }
 
-    void Widget::refreshCoordinates() {
-        vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        if (renderer) {
-            renderer->updateData(0, vertexCoord);
-            renderer->updateData(1, textureCoord);
-        }
-    }
-
-    std::vector<Point2<float>>& Widget::getVertexCoordinates() {
-        return vertexCoord;
-    }
-
-    std::vector<Point2<float>>& Widget::getTextureCoordinates() {
-        return textureCoord;
-    }
-
-    void Widget::setupRenderer(std::unique_ptr<GenericRenderer> renderer) {
-        this->renderer = std::move(renderer);
-    }
-
-    GenericRenderer* Widget::getRenderer() const {
-        return renderer.get();
+    WidgetInstanceDisplayer* Widget::getDisplayer() const {
+        return this->displayer.get();
     }
 
     WidgetOutline& Widget::getOutline() {
@@ -367,13 +297,6 @@ namespace urchin {
 
     const WidgetOutline& Widget::getOutline() const {
         return widgetOutline;
-    }
-
-    TextureParam::Anisotropy Widget::getTextureAnisotropy() const {
-        if (uiRenderer->getUi3dData()) {
-            return TextureParam::Anisotropy::ANISOTROPY;
-        }
-        return TextureParam::Anisotropy::NO_ANISOTROPY;
     }
 
     float Widget::getWidth() const {
@@ -407,10 +330,7 @@ namespace urchin {
     }
 
     void Widget::applyUpdatedGammaFactor() {
-        this->colorParams.gammaFactor = uiRenderer->getGammaFactor();
-        if (renderer) {
-            renderer->updateUniformData(2, &colorParams);
-        }
+        //TODO notif update and handle notif in WidgetInstanceDisplayer to rerfresh colorParams
 
         for (const auto& child : children) {
             child->applyUpdatedGammaFactor();
@@ -418,14 +338,52 @@ namespace urchin {
     }
 
     void Widget::updateAlphaFactor(float alphaFactor) {
-        this->colorParams.alphaFactor = alphaFactor;
-        if (renderer) {
-            renderer->updateUniformData(2, &colorParams);
-        }
+        this->alphaFactor = alphaFactor;
+        //TODO notif update and handle notif in WidgetInstanceDisplayer to rerfresh colorParams
     }
 
     float Widget::getAlphaFactor() const {
-        return colorParams.alphaFactor;
+        return alphaFactor;
+    }
+
+    std::vector<Point2<float>>& Widget::retrieveVertexCoordinates() const {
+        vertexCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
+                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
+        };
+        return vertexCoord;
+    }
+
+    std::vector<Point2<float>>& Widget::retrieveTextureCoordinates() const {
+        textureCoord = {
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        };
+        return textureCoord;
+    }
+
+    std::optional<Scissor> Widget::retrieveScissor() const {
+        const Widget *currentWidget = this;
+        const Widget *scissorContainer = nullptr;
+
+        while (currentWidget != nullptr) {
+            const Container* parentContainer = currentWidget->getParentContainer();
+            if (parentContainer && parentContainer->isScrollable()) {
+                if (scissorContainer) {
+                    throw std::runtime_error("Applied two scissors is not implemented");
+                }
+                scissorContainer = parentContainer;
+            }
+            currentWidget = parentContainer;
+        }
+
+        if (scissorContainer) {
+            return Scissor(
+                    Vector2<int>((int)scissorContainer->getGlobalPositionX(), (int)scissorContainer->getGlobalPositionY()),
+                    Vector2<int>((int)scissorContainer->getWidth(), (int)scissorContainer->getHeight())
+            );
+        }
+        return std::nullopt;
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {
@@ -684,10 +642,6 @@ namespace urchin {
         return mouseY;
     }
 
-    bool Widget::isScissorEnabled() const {
-        return scissorEnabled;
-    }
-
     bool Widget::isMouseOnWidget(int mouseX, int mouseY) const {
         Point2 mouseCoordinate(mouseX, mouseY);
         if (widgetRectangle().collideWithPoint(mouseCoordinate)) {
@@ -709,40 +663,11 @@ namespace urchin {
         return false;
     }
 
-    void Widget::refreshScissor(bool refreshChildScissor) {
-        const Widget *currentWidget = this;
-        bool scissorApplied = false;
-
-        while (currentWidget != nullptr) {
-            const Container* parentContainer = currentWidget->getParentContainer();
-            if (parentContainer && parentContainer->isScrollable()) {
-                if (scissorApplied) {
-                    throw std::runtime_error("Applied two scissors is not implemented");
-                }
-
-                scissorEnabled = true;
-                scissorOffset = Vector2<int>((int)parentContainer->getGlobalPositionX(), (int)parentContainer->getGlobalPositionY());
-                scissorSize = Vector2<int>((int)parentContainer->getWidth(), (int)parentContainer->getHeight());
-
-                scissorApplied = true;
-            }
-            currentWidget = parentContainer;
-        }
-
-        if (renderer && scissorEnabled) {
-            renderer->updateScissor(scissorOffset, scissorSize);
-        }
-
-        if (refreshChildScissor) {
-            for (const auto& child: children) {
-                child->refreshScissor(refreshChildScissor);
-            }
-        }
-    }
-
     void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         if (isVisible()) {
-            //TODO call widgetInstanceDisplayer->prepareRendering() instead of below method
+            if (displayer) {
+                displayer->prepareRendering(renderingOrder, projectionViewMatrix);
+            }
             prepareWidgetRendering(dt);
 
             for (const auto& child: children) {

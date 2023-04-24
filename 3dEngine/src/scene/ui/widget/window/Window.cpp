@@ -3,8 +3,8 @@
 #include <UrchinCommon.h>
 
 #include <scene/ui/widget/window/Window.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/InputDeviceKey.h>
-#include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
@@ -40,9 +40,10 @@ namespace urchin {
         }
 
         //visual
-        setupRenderer(baseRendererBuilder("window", ShapeType::TRIANGLE, false)
-                ->addUniformTextureReader(TextureReader::build(texWindow, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(texWindow);
+        setupDisplayer(std::move(displayer));
     }
 
     WidgetType Window::getWidgetType() const {

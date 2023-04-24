@@ -1,4 +1,5 @@
 #include <scene/ui/widget/checkbox/CheckBox.h>
+#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <resources/ResourceRetriever.h>
 
 namespace urchin {
@@ -21,9 +22,10 @@ namespace urchin {
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
 
         //visual
-        setupRenderer(baseRendererBuilder("check box", ShapeType::TRIANGLE, true)
-                ->addUniformTextureReader(TextureReader::build(isChecked() ? texChecked : texUnchecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))) //binding 3
-                ->build());
+        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
+        displayer->addInstanceWidget(*this);
+        displayer->initialize(isChecked() ? texChecked : texUnchecked);
+        setupDisplayer(std::move(displayer));
     }
 
     WidgetType CheckBox::getWidgetType() const {
@@ -45,11 +47,11 @@ namespace urchin {
     }
 
     void CheckBox::refreshTexture() const {
-        if (getRenderer()) {
+        if (getDisplayer()) {
             if (bIsChecked) {
-                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texChecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getDisplayer()->updateTexture(texChecked);
             } else {
-                getRenderer()->updateUniformTextureReader(0, TextureReader::build(texUnchecked, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+                getDisplayer()->updateTexture(texUnchecked);
             }
         }
     }

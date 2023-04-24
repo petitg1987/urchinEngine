@@ -26,7 +26,7 @@ namespace urchin {
         const auto* widget = static_cast<const Widget*>(this);
 
         std::size_t instanceId = getImplementationInstanceId();
-        if (instanceId == INSTANCING_DENY_ID || widget->isScissorEnabled()) {
+        if (instanceId == INSTANCING_DENY_ID || widget->retrieveScissor().has_value()) {
             return INSTANCING_DENY_ID; //no instancing
         }
 
