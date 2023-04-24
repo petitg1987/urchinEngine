@@ -42,10 +42,9 @@ namespace urchin {
     void WidgetSetDisplayer::updateWidgets(std::span<Widget* const> widgets) {
         ScopeProfiler sp(Profiler::graphic(), "updateWidgets");
 
-        this->widgets.clear();
+        this->widgets.assign(widgets.begin(), widgets.end());
 
         for (Widget* widget : widgets) {
-            this->widgets.push_back(widget); //TODO copy all in widgets directly
             std::size_t widgetInstanceId = widget->computeInstanceId();
 
             WidgetInstanceDisplayer* currentWidgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
@@ -66,6 +65,7 @@ namespace urchin {
             } else {
                 const auto& itFind = widgetInstanceDisplayers.find(widgetInstanceId);
                 if (itFind != widgetInstanceDisplayers.end()) {
+std::cout<<widget->getTexture()->getId()<<std::endl; //TODO remove
                     addWidgetToDisplayer(*widget, *itFind->second);
                     continue; //a matching widget instance displayer has been found for the widget
                 }
@@ -98,14 +98,16 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 
         activeWidgetDisplayers.clear();
+        activeWidgetDisplayersOrdered.clear();
         for (const Widget* widget : widgets) {
             WidgetInstanceDisplayer* widgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
             if (activeWidgetDisplayers.insert(widgetInstanceDisplayer).second) {
+                activeWidgetDisplayersOrdered.push_back(widgetInstanceDisplayer);
                 widgetInstanceDisplayer->resetRenderingWidgets();
             }
             widgetInstanceDisplayer->registerRenderingWidget(*widget);
         }
-        for (const WidgetInstanceDisplayer* activeWidgetDisplayer : activeWidgetDisplayers) {
+        for (const WidgetInstanceDisplayer* activeWidgetDisplayer : activeWidgetDisplayersOrdered) {
             renderingOrder++;
             activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
