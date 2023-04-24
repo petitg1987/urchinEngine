@@ -358,6 +358,8 @@ namespace urchin {
 
     void Widget::retrieveVertexCoordinates(std::vector<Point2<float>>& vertexCoord) {
         assert(vertexCoord.empty());
+        vertexCoord.reserve(6);
+
         vertexCoord.emplace_back(0.0f, 0.0f);
         vertexCoord.emplace_back(getWidth(), 0.0f);
         vertexCoord.emplace_back(getWidth(), getHeight());
@@ -369,6 +371,8 @@ namespace urchin {
 
     void Widget::retrieveTextureCoordinates(std::vector<Point2<float>>& textureCoord) {
         assert(textureCoord.empty());
+        textureCoord.reserve(6);
+
         textureCoord.emplace_back(0.0f, 0.0f);
         textureCoord.emplace_back(1.0f, 0.0f);
         textureCoord.emplace_back(1.0f, 1.0f);

@@ -194,6 +194,7 @@ namespace urchin {
     }
 
      void Text::retrieveVertexCoordinates(std::vector<Point2<float>>& vertexCoord) {
+        assert(vertexCoord.empty());
         vertexCoord.reserve(baseText.size() * 4);
 
         float offsetY = 0.0f;
