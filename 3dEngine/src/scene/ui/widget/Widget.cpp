@@ -113,6 +113,16 @@ namespace urchin {
         return nullptr;
     }
 
+    unsigned int Widget::computeDepthLevel() const {
+        unsigned int depthLevel = 0;
+        const Widget* currentParent = getParent();
+        while (currentParent != nullptr) {
+            depthLevel++;
+            currentParent = currentParent->getParent();
+        }
+        return depthLevel;
+    }
+
     bool Widget::isUi3D() const {
        return getUi3dData() != nullptr;
     }

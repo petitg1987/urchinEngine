@@ -27,7 +27,6 @@ namespace urchin {
 
         private:
             Widget& getReferenceWidget() const;
-            unsigned int computeDepthLevel(Widget&) const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
 
             bool checkUpdateAllowance(const Widget*) const;

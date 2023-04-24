@@ -380,7 +380,7 @@ namespace urchin {
         if (isUiVisible) {
             widgetsToRender.clear();
             for (const auto& widget: widgets) {
-                widget->preRenderingSetup(dt, widgetsToRender); //TODO should be first al widget of level 1, then level 2, etc.
+                widget->preRenderingSetup(dt, widgetsToRender); //TODO should be first al widget of level 1, then level 2, etc. + remove renderingOrder at each widget ?
             }
 
             widgetSetDisplayer->updateWidgets(widgetsToRender);

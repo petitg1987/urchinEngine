@@ -116,16 +116,6 @@ namespace urchin {
         return *instanceWidgets[0];
     }
 
-    unsigned int WidgetInstanceDisplayer::computeDepthLevel(Widget& widget) const {
-        unsigned int depthLevel = 0;
-        const Widget* currentParent = widget.getParent();
-        while (currentParent != nullptr) {
-            depthLevel++;
-            currentParent = currentParent->getParent();
-        }
-        return depthLevel;
-    }
-
     TextureParam::Anisotropy WidgetInstanceDisplayer::getTextureAnisotropy() const {
         if (uiRenderer.getUi3dData()) {
             return TextureParam::Anisotropy::ANISOTROPY;
@@ -225,7 +215,7 @@ namespace urchin {
         float zBias = 0.0f;
         if (uiRenderer.getUi3dData()) {
             float squareDistanceUiToCamera = uiRenderer.getUi3dData()->uiPosition.squareDistance(uiRenderer.getUi3dData()->camera->getPosition());
-            zBias = (float)computeDepthLevel(getReferenceWidget()) * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
+            zBias = (float)getReferenceWidget().computeDepthLevel() * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
         }
 
         //Equivalent to 4 multiplied matrices: D * C * B * A
