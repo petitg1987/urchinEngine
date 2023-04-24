@@ -107,6 +107,10 @@ namespace urchin {
         return nullptr;
     }
 
+    bool Widget::isUi3D() const {
+       return getUi3dData() != nullptr;
+    }
+
     void Widget::addChild(const std::shared_ptr<Widget>& childWidget) {
         if (childWidget->getParent()) {
             throw std::runtime_error("Cannot add a widget which already have a parent");
@@ -397,7 +401,7 @@ namespace urchin {
             currentWidget = parentContainer;
         }
 
-        if (scissorContainer) {
+        if (scissorContainer) [[unlikely]] {
             return Scissor(
                     Vector2<int>((int)scissorContainer->getGlobalPositionX(), (int)scissorContainer->getGlobalPositionY()),
                     Vector2<int>((int)scissorContainer->getWidth(), (int)scissorContainer->getHeight())

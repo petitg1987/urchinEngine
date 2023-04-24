@@ -33,8 +33,10 @@ namespace urchin {
         //same instance ID only when vertex coordinates are identical
         HashUtil::combine(instanceId, widget->getWidth(), widget->getHeight());
 
-        //same instance ID only when depth level (UI 3d) and UI renderer are identical
-        HashUtil::combine(instanceId, widget->getParent());
+        //same instance ID only when depth level (UI 3d) are identical
+        if (widget->isUi3D()) {
+            HashUtil::combine(instanceId, widget->getParent());
+        }
 
         return instanceId;
     }
