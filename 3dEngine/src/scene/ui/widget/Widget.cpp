@@ -287,15 +287,6 @@ namespace urchin {
         return size;
     }
 
-    void Widget::setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer> displayer) {
-        this->displayer = std::move(displayer);
-        this->displayer->initialize();
-    }
-
-    WidgetInstanceDisplayer* Widget::getDisplayer() const {
-        return this->displayer.get();
-    }
-
     void Widget::updateTexture(std::shared_ptr<Texture> texture) {
         this->texture = std::move(texture);
         notifyObservers(this, TEXTURE_UPDATED);
@@ -687,16 +678,16 @@ namespace urchin {
         return false;
     }
 
-    void Widget::prepareRendering(float dt, unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void Widget::preRenderingSetup(float dt, std::vector<Widget*>& widgetsToRender) {
         if (isVisible()) {
-            if (displayer) {
-                displayer->prepareRendering(renderingOrder, projectionViewMatrix);
-            }
             prepareWidgetRendering(dt);
 
+            if (getWidgetType() != WidgetType::CONTAINER && getWidgetType() != WidgetType::SEQUENCE) {
+                widgetsToRender.push_back(this);
+            }
+
             for (const auto& child: children) {
-                renderingOrder++;
-                child->prepareRendering(dt, renderingOrder, projectionViewMatrix);
+                child->preRenderingSetup(dt, widgetsToRender);
             }
         }
     }

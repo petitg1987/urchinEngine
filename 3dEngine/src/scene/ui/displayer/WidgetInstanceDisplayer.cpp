@@ -80,21 +80,22 @@ namespace urchin {
         rendererBuilder->addUniformTextureReader(TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))); //binding 3
 
         renderer = rendererBuilder->build();
+        renderer->disableRenderer(); //TODO remove and call this method earlier !
 
         isInitialized = true;
     }
 
     void WidgetInstanceDisplayer::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<Widget*>(observable)) {
+        if (const auto* widget = dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::TEXTURE_UPDATED) {
-                updateTexture();
+                updateTexture(widget);
             } else if (notificationType == Widget::SIZE_UPDATED) {
-                updateCoordinates();
-                updateScissor();
+                updateCoordinates(widget);
+                updateScissor(widget);
             } else if (notificationType == Widget::POSITION_UPDATED) {
-                updateScissor();
+                updateScissor(widget);
             } else if (notificationType == Widget::COLOR_PARAMS_UPDATED) {
-                updateColorParameters();
+                updateColorParameters(widget);
             }
         }
     }
@@ -166,31 +167,50 @@ namespace urchin {
         return (unsigned int)instanceWidgets.size();
     }
 
-    void WidgetInstanceDisplayer::updateTexture() {
-        renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+    bool WidgetInstanceDisplayer::checkUpdateAllowance(const Widget* widget) const {
+        bool canUpdateDisplayer = instanceId == WidgetDisplayable::INSTANCING_DENY_ID;
+        if (!canUpdateDisplayer && widget->computeInstanceId() == instanceId) {
+            //Update without impact on the instance ID, either:
+            // - Update has no effect. Example: change size from 1.0f to 1.0f
+            // - Bug in the way the instance ID is computed
+            return true;
+        }
+        return canUpdateDisplayer;
     }
 
-    void WidgetInstanceDisplayer::updateScissor() {
-        std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
-        if (scissor.has_value()) {
-            renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
+    void WidgetInstanceDisplayer::updateTexture(const Widget* widget) {
+        if (checkUpdateAllowance(widget)) {
+            renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
         }
     }
 
-    void WidgetInstanceDisplayer::updateCoordinates() {
-        coordinates.clear();
-        getReferenceWidget().retrieveVertexCoordinates(coordinates);
-        renderer->updateData(0, coordinates);
-
-        coordinates.clear();
-        getReferenceWidget().retrieveTextureCoordinates(coordinates);
-        renderer->updateData(1, coordinates);
+    void WidgetInstanceDisplayer::updateScissor(const Widget* widget) {
+        if (checkUpdateAllowance(widget)) {
+            std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
+            if (scissor.has_value()) {
+                renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
+            }
+        }
     }
 
-    void WidgetInstanceDisplayer::updateColorParameters() {
-        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
-        colorParams.gammaFactor = uiRenderer.getGammaFactor();
-        renderer->updateUniformData(2, &colorParams);
+    void WidgetInstanceDisplayer::updateCoordinates(const Widget* widget) {
+        if (checkUpdateAllowance(widget)) {
+            coordinates.clear();
+            getReferenceWidget().retrieveVertexCoordinates(coordinates);
+            renderer->updateData(0, coordinates);
+
+            coordinates.clear();
+            getReferenceWidget().retrieveTextureCoordinates(coordinates);
+            renderer->updateData(1, coordinates);
+        }
+    }
+
+    void WidgetInstanceDisplayer::updateColorParameters(const Widget* widget) {
+        if (checkUpdateAllowance(widget)) {
+            colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
+            colorParams.gammaFactor = uiRenderer.getGammaFactor();
+            renderer->updateUniformData(2, &colorParams);
+        }
     }
 
     void WidgetInstanceDisplayer::resetRenderingWidgets() {

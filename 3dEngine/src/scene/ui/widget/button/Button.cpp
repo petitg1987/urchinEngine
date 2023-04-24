@@ -40,11 +40,6 @@ namespace urchin {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), buttonChunk);
             text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), i18n(buttonText));
         }
-
-        //visual
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     WidgetType Button::getWidgetType() const {

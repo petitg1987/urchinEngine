@@ -109,7 +109,7 @@ namespace urchin {
             int getMouseX() const;
             int getMouseY() const;
 
-            void prepareRendering(float, unsigned int&, const Matrix4<float>&);
+            void preRenderingSetup(float, std::vector<Widget*>&);
 
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
@@ -120,8 +120,6 @@ namespace urchin {
             Clipboard& getClipboard() const;
 
             virtual void createOrUpdateWidget() = 0;
-            void setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer>);
-            WidgetInstanceDisplayer* getDisplayer() const;
             void updateTexture(std::shared_ptr<Texture>);
 
             WidgetOutline& getOutline();
@@ -153,7 +151,6 @@ namespace urchin {
             std::vector<std::shared_ptr<EventListener>> eventListeners;
 
             std::shared_ptr<Texture> texture;
-            std::unique_ptr<WidgetInstanceDisplayer> displayer;
 
             WidgetOutline widgetOutline;
             WidgetState widgetState;

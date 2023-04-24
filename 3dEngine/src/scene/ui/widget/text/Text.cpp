@@ -45,10 +45,6 @@ namespace urchin {
             baseText = inputText.translate(std::nullopt);
             refreshTextAndWidgetSize();
         }
-
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     void Text::uninitialize() {

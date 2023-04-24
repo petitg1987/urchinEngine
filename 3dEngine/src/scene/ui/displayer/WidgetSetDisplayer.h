@@ -16,7 +16,7 @@ namespace urchin {
             void updateWidgets(std::span<Widget* const>);
             void removeWidget(Widget*);
 
-            void prepareRendering(unsigned int, const Matrix4<float>&);
+            void prepareRendering(unsigned int&, const Matrix4<float>&);
 
         private:
             WidgetInstanceDisplayer* findWidgetInstanceDisplayer(const Widget&) const;
@@ -27,7 +27,7 @@ namespace urchin {
             const UIRenderer& uiRenderer;
 
             std::vector<Widget*> widgets;
-            std::unordered_set<WidgetInstanceDisplayer*> activeWidgetDisplayers;
+            std::set<WidgetInstanceDisplayer*> activeWidgetDisplayers; //use ordered collection because render order is important
             std::unordered_map<Widget*, std::unique_ptr<WidgetInstanceDisplayer>> widgetDisplayers;
             std::unordered_map<std::size_t, std::unique_ptr<WidgetInstanceDisplayer>> widgetInstanceDisplayers;
     };

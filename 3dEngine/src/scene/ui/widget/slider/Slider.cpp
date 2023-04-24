@@ -56,11 +56,6 @@ namespace urchin {
         float cursorImageWidth = (getHeight() / (float)imageCursor->getHeight()) * (float)imageCursor->getWidth();
         cursorImage = StaticBitmap::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), Size(cursorImageWidth, getHeight(), LengthType::PIXEL), cursorImageFilename);
         moveSliderCursor();
-
-        //visual
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     WidgetType Slider::getWidgetType() const {

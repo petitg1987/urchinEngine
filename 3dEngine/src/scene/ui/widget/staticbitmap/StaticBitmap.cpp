@@ -44,11 +44,6 @@ namespace urchin {
 
     void StaticBitmap::createOrUpdateWidget() {
         Widget::updateTexture(texture);
-
-        //visual
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     std::size_t StaticBitmap::getImplementationInstanceId() const {

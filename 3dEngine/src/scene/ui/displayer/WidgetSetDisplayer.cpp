@@ -94,7 +94,7 @@ namespace urchin {
         }
     }
 
-    void WidgetSetDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) {
+    void WidgetSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 
         activeWidgetDisplayers.clear();
@@ -106,6 +106,7 @@ namespace urchin {
             widgetInstanceDisplayer->registerRenderingWidget(*widget);
         }
         for (const WidgetInstanceDisplayer* activeWidgetDisplayer : activeWidgetDisplayers) {
+            renderingOrder++;
             activeWidgetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
     }

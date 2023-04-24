@@ -21,11 +21,6 @@ namespace urchin {
         texChecked = loadTexture(checkBoxChunk, "imageChecked");
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
         updateTexture(isChecked() ? texChecked : texUnchecked);
-
-        //visual
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     WidgetType CheckBox::getWidgetType() const {
@@ -47,12 +42,10 @@ namespace urchin {
     }
 
     void CheckBox::refreshTexture() {
-        if (getDisplayer()) {
-            if (bIsChecked) {
-                updateTexture(texChecked);
-            } else {
-                updateTexture(texUnchecked);
-            }
+        if (bIsChecked) {
+            updateTexture(texChecked);
+        } else {
+            updateTexture(texUnchecked);
         }
     }
 

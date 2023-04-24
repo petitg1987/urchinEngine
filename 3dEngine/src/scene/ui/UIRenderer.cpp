@@ -2,6 +2,7 @@
 #include <utility>
 
 #include <scene/ui/UIRenderer.h>
+#include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <resources/ResourceRetriever.h>
 #include <resources/font/Font.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -19,7 +20,8 @@ namespace urchin {
             uiResolution((int)renderTarget.getWidth(), (int)renderTarget.getHeight()),
             rawMouseX(0.0),
             rawMouseY(0.0),
-            bCanInteractWithUi(true) {
+            bCanInteractWithUi(true),
+            widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)) {
         if (renderTarget.isValidRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
         } else {
@@ -370,10 +372,13 @@ namespace urchin {
         }
 
         if (isUiVisible) {
+            widgetsToRender.clear();
             for (const auto& widget: widgets) {
-                renderingOrder++;
-                widget->prepareRendering(dt, renderingOrder, projectionViewMatrix);
+                widget->preRenderingSetup(dt, widgetsToRender);
             }
+
+            widgetSetDisplayer->updateWidgets(widgetsToRender);
+            widgetSetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
 
         //debug

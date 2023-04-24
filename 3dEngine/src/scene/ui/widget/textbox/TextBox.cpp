@@ -66,11 +66,6 @@ namespace urchin {
 
         refreshText(false);
         refreshCursorPosition(cursorIndex);
-
-        //visual
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     WidgetType TextBox::getWidgetType() const {

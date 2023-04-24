@@ -39,11 +39,6 @@ namespace urchin {
             title = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), i18n(titleKey));
             title->updatePosition(Position(0.0f, -((float)getOutline().topWidth + title->getHeight()) / 2.0f, LengthType::PIXEL));
         }
-
-        //visual
-        std::unique_ptr<WidgetInstanceDisplayer> displayer = std::make_unique<WidgetInstanceDisplayer>(getUiRenderer());
-        displayer->addInstanceWidget(*this);
-        setupDisplayer(std::move(displayer));
     }
 
     WidgetType Window::getWidgetType() const {

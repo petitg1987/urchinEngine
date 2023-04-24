@@ -30,10 +30,11 @@ namespace urchin {
             unsigned int computeDepthLevel(Widget&) const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
 
-            void updateTexture();
-            void updateScissor();
-            void updateCoordinates();
-            void updateColorParameters();
+            bool checkUpdateAllowance(const Widget*) const;
+            void updateTexture(const Widget*);
+            void updateScissor(const Widget*);
+            void updateCoordinates(const Widget*);
+            void updateColorParameters(const Widget*);
 
             bool isInitialized;
 
