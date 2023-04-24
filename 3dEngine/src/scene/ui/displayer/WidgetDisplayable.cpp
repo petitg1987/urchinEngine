@@ -35,7 +35,7 @@ namespace urchin {
 
         //same instance ID only when depth level (UI 3d) are identical
         if (widget->isUi3D()) {
-            HashUtil::combine(instanceId, widget->getParent());
+            //HashUtil::combine(instanceId, widget->getParent()); //TODO parent & level are different => update
         }
 
         return instanceId;
