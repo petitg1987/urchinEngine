@@ -35,6 +35,7 @@ namespace urchin {
 
             const UIRenderer& uiRenderer;
 
+            std::vector<Point2<float>> coordinates;
             struct ColorParams {
                 alignas(4) float alphaFactor;
                 alignas(4) float gammaFactor;

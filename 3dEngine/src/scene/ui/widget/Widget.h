@@ -87,8 +87,8 @@ namespace urchin {
             float getAlphaFactor() const;
 
             const std::shared_ptr<Texture>& getTexture() const;
-            virtual std::vector<Point2<float>>& retrieveVertexCoordinates();
-            virtual std::vector<Point2<float>>& retrieveTextureCoordinates();
+            virtual void retrieveVertexCoordinates(std::vector<Point2<float>>&);
+            virtual void retrieveTextureCoordinates(std::vector<Point2<float>>&);
             std::optional<Scissor> retrieveScissor() const;
 
             template<class T> float widthLengthToPixel(float, LengthType, const T&) const;
@@ -121,10 +121,7 @@ namespace urchin {
             virtual void createOrUpdateWidget() = 0;
             void setupDisplayer(std::unique_ptr<WidgetInstanceDisplayer>);
             WidgetInstanceDisplayer* getDisplayer() const;
-
             void updateTexture(std::shared_ptr<Texture>);
-            std::vector<Point2<float>>& getVertexCoord();
-            std::vector<Point2<float>>& getTextureCoord();
 
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;
@@ -155,8 +152,6 @@ namespace urchin {
             std::vector<std::shared_ptr<EventListener>> eventListeners;
 
             std::shared_ptr<Texture> texture;
-            std::vector<Point2<float>> vertexCoord;
-            std::vector<Point2<float>> textureCoord;
             std::unique_ptr<WidgetInstanceDisplayer> displayer;
 
             WidgetOutline widgetOutline;

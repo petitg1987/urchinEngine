@@ -59,8 +59,13 @@ namespace urchin {
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
         rendererBuilder->addUniformData(sizeof(colorParams), &colorParams); //binding 2
 
-        rendererBuilder->addData(getReferenceWidget().retrieveVertexCoordinates());
-        rendererBuilder->addData(getReferenceWidget().retrieveTextureCoordinates());
+        coordinates.clear();
+        getReferenceWidget().retrieveVertexCoordinates(coordinates);
+        rendererBuilder->addData(coordinates);
+
+        coordinates.clear();
+        getReferenceWidget().retrieveTextureCoordinates(coordinates);
+        rendererBuilder->addData(coordinates);
 
         instanceModelMatrices.emplace_back();
         rendererBuilder->instanceData(instanceModelMatrices.size(), VariableType::MAT4, (const float*)instanceModelMatrices.data());
@@ -163,8 +168,13 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::updateCoordinates() {
-        renderer->updateData(0, getReferenceWidget().retrieveVertexCoordinates());
-        renderer->updateData(1, getReferenceWidget().retrieveTextureCoordinates());
+        coordinates.clear();
+        getReferenceWidget().retrieveVertexCoordinates(coordinates);
+        renderer->updateData(0, coordinates);
+
+        coordinates.clear();
+        getReferenceWidget().retrieveTextureCoordinates(coordinates);
+        renderer->updateData(1, coordinates);
     }
 
     void WidgetInstanceDisplayer::updateColorParameters() {

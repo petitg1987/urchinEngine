@@ -297,14 +297,6 @@ namespace urchin {
         notifyObservers(this, TEXTURE_UPDATED);
     }
 
-    std::vector<Point2<float>>& Widget::getVertexCoord() {
-        return vertexCoord;
-    }
-
-    std::vector<Point2<float>>& Widget::getTextureCoord() {
-        return textureCoord;
-    }
-
     WidgetOutline& Widget::getOutline() {
         return widgetOutline;
     }
@@ -364,20 +356,26 @@ namespace urchin {
         return texture;
     }
 
-    std::vector<Point2<float>>& Widget::retrieveVertexCoordinates() {
-        vertexCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), 0.0f), Point2<float>(getWidth(), getHeight()),
-                Point2<float>(0.0f, 0.0f), Point2<float>(getWidth(), getHeight()), Point2<float>(0.0f, getHeight())
-        };
-        return vertexCoord;
+    void Widget::retrieveVertexCoordinates(std::vector<Point2<float>>& vertexCoord) {
+        assert(vertexCoord.empty());
+        vertexCoord.emplace_back(0.0f, 0.0f);
+        vertexCoord.emplace_back(getWidth(), 0.0f);
+        vertexCoord.emplace_back(getWidth(), getHeight());
+
+        vertexCoord.emplace_back(0.0f, 0.0f);
+        vertexCoord.emplace_back(getWidth(), getHeight());
+        vertexCoord.emplace_back(0.0f, getHeight());
     }
 
-    std::vector<Point2<float>>& Widget::retrieveTextureCoordinates() {
-        textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        return textureCoord;
+    void Widget::retrieveTextureCoordinates(std::vector<Point2<float>>& textureCoord) {
+        assert(textureCoord.empty());
+        textureCoord.emplace_back(0.0f, 0.0f);
+        textureCoord.emplace_back(1.0f, 0.0f);
+        textureCoord.emplace_back(1.0f, 1.0f);
+
+        textureCoord.emplace_back(0.0f, 0.0f);
+        textureCoord.emplace_back(1.0f, 1.0f);
+        textureCoord.emplace_back(0.0f, 1.0f);
     }
 
     std::optional<Scissor> Widget::retrieveScissor() const {
