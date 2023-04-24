@@ -1,11 +1,13 @@
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
+#include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/UIRenderer.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    WidgetInstanceDisplayer::WidgetInstanceDisplayer(const UIRenderer& uiRenderer) :
+    WidgetInstanceDisplayer::WidgetInstanceDisplayer(const WidgetSetDisplayer& widgetSetDisplayer, const UIRenderer& uiRenderer) :
             isInitialized(false),
+            widgetSetDisplayer(widgetSetDisplayer),
             instanceId(WidgetDisplayable::INSTANCING_DENY_ID),
             uiRenderer(uiRenderer),
             colorParams({}) {
@@ -97,6 +99,14 @@ namespace urchin {
         }
     }
 
+    const WidgetSetDisplayer& WidgetInstanceDisplayer::getWidgetSetDisplayer() const {
+        return widgetSetDisplayer;
+    }
+
+    std::size_t WidgetInstanceDisplayer::getInstanceId() const {
+        return instanceId;
+    }
+
     Widget& WidgetInstanceDisplayer::getReferenceWidget() const {
         //A reference widget is a widget which can be used to represent all instance widgets.
         if (instanceWidgets.empty()) {
@@ -183,36 +193,47 @@ namespace urchin {
         renderer->updateUniformData(2, &colorParams);
     }
 
-    void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
+    void WidgetInstanceDisplayer::resetRenderingWidgets() {
+        instanceModelMatrices.clear();
+    }
+
+    void WidgetInstanceDisplayer::registerRenderingWidget(const Widget& widget) {
+        #ifdef URCHIN_DEBUG
+            assert(widget.computeInstanceId() == instanceId);
+        #endif
+
         float zBias = 0.0f;
         if (uiRenderer.getUi3dData()) {
             float squareDistanceUiToCamera = uiRenderer.getUi3dData()->uiPosition.squareDistance(uiRenderer.getUi3dData()->camera->getPosition());
             zBias = (float)computeDepthLevel(getReferenceWidget()) * 0.0003f * std::clamp(squareDistanceUiToCamera, 0.5f, 6.0f);
+        }
+
+        //Equivalent to 4 multiplied matrices: D * C * B * A
+        // A) Translation of the widget center to the origin (transOriginX, transOriginY)
+        // B) Scale widget (scale.X, scale.Y)
+        // C) Rotate widget (sinRotate, cosRotate)
+        // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
+        float transX = widget.getGlobalPositionX() + widget.getWidth() / 2.0f;
+        float transY = widget.getGlobalPositionY() + widget.getHeight() / 2.0f;
+        float transOriginX = -widget.getWidth() / 2.0f;
+        float transOriginY = -widget.getHeight() / 2.0f;
+        float sinRotate = std::sin(widget.getRotation());
+        float cosRotate = std::cos(widget.getRotation());
+        Matrix4<float> modelMatrix(
+                widget.getScale().X * cosRotate, widget.getScale().Y * -sinRotate, 0.0f, transX + (transOriginX * widget.getScale().X * cosRotate) + (transOriginY * widget.getScale().Y * -sinRotate),
+                widget.getScale().X * sinRotate, widget.getScale().Y * cosRotate, 0.0f, transY + (transOriginX * widget.getScale().X * sinRotate) + (transOriginY * widget.getScale().Y * cosRotate),
+                0.0f, 0.0, 1.0f, zBias,
+                0.0f, 0.0f, 0.0f, 1.0f);
+        instanceModelMatrices.emplace_back(modelMatrix);
+    }
+
+    void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
+        if (uiRenderer.getUi3dData()) {
             Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer.getUi3dData()->modelMatrix;
             renderer->updateUniformData(1, &uiProjectionViewMatrix);
         }
 
-        instanceModelMatrices.clear();
-        for (const Widget* widget : instanceWidgets) {
-            //Equivalent to 4 multiplied matrices: D * C * B * A
-            // A) Translation of the widget center to the origin (transOriginX, transOriginY)
-            // B) Scale widget (scale.X, scale.Y)
-            // C) Rotate widget (sinRotate, cosRotate)
-            // D) Translation rollback of "a" + translation for positioning (transX, transY, zBias)
-            float transX = widget->getGlobalPositionX() + widget->getWidth() / 2.0f;
-            float transY = widget->getGlobalPositionY() + widget->getHeight() / 2.0f;
-            float transOriginX = -widget->getWidth() / 2.0f;
-            float transOriginY = -widget->getHeight() / 2.0f;
-            float sinRotate = std::sin(widget->getRotation());
-            float cosRotate = std::cos(widget->getRotation());
-            Matrix4<float> modelMatrix(
-                    widget->getScale().X * cosRotate, widget->getScale().Y * -sinRotate, 0.0f, transX + (transOriginX * widget->getScale().X * cosRotate) + (transOriginY * widget->getScale().Y * -sinRotate),
-                    widget->getScale().X * sinRotate, widget->getScale().Y * cosRotate, 0.0f, transY + (transOriginX * widget->getScale().X * sinRotate) + (transOriginY * widget->getScale().Y * cosRotate),
-                    0.0f, 0.0, 1.0f, zBias,
-                    0.0f, 0.0f, 0.0f, 1.0f);
-            instanceModelMatrices.emplace_back(modelMatrix);
-        }
-        renderer->updateInstanceData(getInstanceCount(), (const float*)instanceModelMatrices.data());
+        renderer->updateInstanceData(instanceModelMatrices.size(), (const float*)instanceModelMatrices.data());
 
         renderer->enableRenderer(renderingOrder);
     }

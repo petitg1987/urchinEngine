@@ -18,7 +18,7 @@
 * Model
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
-  * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#detachModelFromDisplayer() for models not displayed for a long time
+  * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
   * **OPTIMIZATION** (`medium`): Make UV coordinates part of the instancing
     * Tips: avoid to send full UV coordinates at each frame by using a Vulkan Descriptor Indexing to access to an array of UV by index
   * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
@@ -46,6 +46,7 @@
   * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
 * UI
+  * **OPTIMIZATION** (`major`): Remove the WidgetInstanceDisplayer in WidgetSetDisplayer#removeWidgetFromDisplayer() for widgets not displayed for a long time
   * **IMPROVEMENT** (`medium`): Add missing characters dynamically in the atlas texture(s)
   * **IMPROVEMENT** (`medium`): Dynamic scaling of characters (see <https://github.com/Chlumsky/msdfgen> or distance field font)
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d

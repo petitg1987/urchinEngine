@@ -4,18 +4,25 @@
 
 namespace urchin {
 
+    class WidgetSetDisplayer;
+
     class WidgetInstanceDisplayer : public Observer {
         public:
-            explicit WidgetInstanceDisplayer(const UIRenderer&);
+            explicit WidgetInstanceDisplayer(const WidgetSetDisplayer&, const UIRenderer&);
             ~WidgetInstanceDisplayer() override;
 
             void initialize();
             void notify(Observable*, int) override;
 
+            const WidgetSetDisplayer& getWidgetSetDisplayer() const;
+            std::size_t getInstanceId() const;
+
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);
             unsigned int getInstanceCount() const;
 
+            void resetRenderingWidgets();
+            void registerRenderingWidget(const Widget&);
             void prepareRendering(unsigned int, const Matrix4<float>&) const;
 
         private:
@@ -30,6 +37,7 @@ namespace urchin {
 
             bool isInitialized;
 
+            const WidgetSetDisplayer& widgetSetDisplayer;
             std::vector<Widget*> instanceWidgets;
             std::size_t instanceId;
 
