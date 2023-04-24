@@ -316,6 +316,10 @@ namespace urchin {
         return bCanInteractWithUi;
     }
 
+    WidgetSetDisplayer& UIRenderer::getWidgetSetDisplayer() const {
+        return *widgetSetDisplayer;
+    }
+
     void UIRenderer::applyUpdatedGammaFactor() {
         for (const auto& widget : widgets) {
             widget->applyUpdatedGammaFactor();
@@ -338,12 +342,14 @@ namespace urchin {
             throw std::runtime_error("The provided widget is not widget of this UI renderer");
         }
         (*itFind)->uninitialize();
+        widgetSetDisplayer->removeWidget((*itFind).get());
         widgets.erase(itFind);
     }
 
     void UIRenderer::removeAllWidgets() {
         for (const auto& widget : widgets) {
             widget->uninitialize();
+            widgetSetDisplayer->removeWidget(widget.get());
         }
         widgets.clear();
     }

@@ -3,6 +3,7 @@
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/container/Container.h>
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
+#include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/UIRenderer.h>
 #include <scene/InputDeviceKey.h>
 
@@ -39,6 +40,11 @@ namespace urchin {
     }
 
     void Widget::uninitialize() {
+        if (this->uiRenderer) { //TODO review ? not beautiful
+            for (const auto& child : children) {
+                this->uiRenderer->getWidgetSetDisplayer().removeWidget(child.get());
+            }
+        }
         this->uiRenderer = nullptr;
 
         for (const auto& child : children) {
@@ -135,6 +141,9 @@ namespace urchin {
                 throw std::runtime_error("The provided child widget is not a child of this widget");
             }
 
+            if (uiRenderer) {
+                uiRenderer->getWidgetSetDisplayer().removeWidget(childWidget);
+            }
             childWidget->parent = nullptr;
             children.erase(itFind);
         }
@@ -142,6 +151,9 @@ namespace urchin {
 
     void Widget::detachChildren() {
         for (auto it = children.begin(); it != children.end();) {
+            if (uiRenderer) {
+                uiRenderer->getWidgetSetDisplayer().removeWidget((*it).get());
+            }
             (*it)->parent = nullptr;
             it = children.erase(it);
         }
@@ -682,7 +694,7 @@ namespace urchin {
         if (isVisible()) {
             prepareWidgetRendering(dt);
 
-            if (getWidgetType() != WidgetType::CONTAINER && getWidgetType() != WidgetType::SEQUENCE) {
+            if (getWidgetType() != WidgetType::CONTAINER && getWidgetType() != WidgetType::SEQUENCE) { //TODO change this condition ?
                 widgetsToRender.push_back(this);
             }
 

@@ -61,6 +61,7 @@ namespace urchin {
             Shader& getShader() const;
             UI3dData* getUi3dData() const;
             bool canInteractWithUi() const;
+            WidgetSetDisplayer& getWidgetSetDisplayer() const;
 
             void applyUpdatedGammaFactor() override;
 
