@@ -380,6 +380,7 @@ namespace urchin {
             widgetsToRender.clear();
             prepareWidgets(dt, widgets);
             widgetSetDisplayer->updateWidgets(widgetsToRender);
+
             widgetSetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
 
@@ -390,7 +391,14 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const { //TODO add test
+    /**
+     * Widgets to render must be rendered in depth order. In others words, all widgets of depth 1 must be rendered and than all widgets of depth 2, etc.
+     * Note that only widgets of same depth can benefit from instancing.
+     *
+     * One exception exists for window because all its children must be rendered after all widgets of another window if that other window is on the background.
+     * Note that there is not instancing for the widgets which belong to different windows (even if they have the same depth).
+     */
+    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const {
         std::queue<Widget*> widgetsQueue;
 
         for (const auto& widget : rootWidgets) {

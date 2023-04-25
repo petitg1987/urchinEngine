@@ -15,6 +15,7 @@ namespace urchin {
 
             void updateWidgets(std::span<Widget* const>);
             void removeWidget(Widget*);
+            const std::vector<Widget*>& getWidgets() const;
 
             void prepareRendering(unsigned int&, const Matrix4<float>&);
 

@@ -93,6 +93,10 @@ namespace urchin {
         }
     }
 
+    const std::vector<Widget*>& WidgetSetDisplayer::getWidgets() const {
+        return widgets;
+    }
+
     void WidgetSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix) {
         ScopeProfiler sp(Profiler::graphic(), "widgetPreRender");
 

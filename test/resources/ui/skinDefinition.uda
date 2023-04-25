@@ -44,3 +44,12 @@ textarea (skin=test):
   textSkin: "test"
   scrollbarSkin: "test"
   selectionColor: "0.5 0.5 0.5 0.5"
+
+window (skin=test):
+  skin:
+    image: "ui/widget/empty.png"
+    part (zone=top): "1"
+    part (zone=bottom): "1"
+    part (zone=left): "1"
+    part (zone=right): "1"
+  textSkin: "test"

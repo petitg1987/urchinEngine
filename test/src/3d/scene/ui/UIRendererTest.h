@@ -27,6 +27,8 @@ class UIRendererTest : public CppUnit::TestFixture {
 
         void containerWithLazyWidgets();
 
+        void windowChildRenderingOrder();
+
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();
 
