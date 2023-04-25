@@ -379,7 +379,8 @@ namespace urchin {
         }
 
         if (isUiVisible) {
-            prepareWidgets(dt);
+            widgetsToRender.clear();
+            prepareWidgets(dt, widgets);
             widgetSetDisplayer->updateWidgets(widgetsToRender);
             widgetSetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
@@ -391,15 +392,15 @@ namespace urchin {
         }
     }
 
-    void UIRenderer::prepareWidgets(float dt) const {
+    void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const { //TODO add test
         std::queue<Widget*> widgetsQueue; //TODO handle memory dyn allocation
-        for (const auto& widget : widgets) { //TODO try loop in reverse
+
+        for (const auto& widget : rootWidgets) { //TODO try loop in reverse
             if (widget->isVisible()) {
                 widgetsQueue.push(widget.get());
             }
         }
 
-        widgetsToRender.clear();
         while (!widgetsQueue.empty()) {
             Widget* widget = widgetsQueue.front();
             widgetsQueue.pop();
@@ -409,9 +410,13 @@ namespace urchin {
                 widgetsToRender.push_back(widget);
             }
 
-            for (const auto& widgetChild: widget->getChildren()) { //TODO try loop in reverse
-                if (widgetChild->isVisible()) {
-                    widgetsQueue.push(widgetChild.get());
+            if (widget->getWidgetType() == WidgetType::WINDOW) [[unlikely]] {
+                prepareWidgets(dt, widget->getChildren());
+            } else {
+                for (const auto& widgetChild: widget->getChildren()) { //TODO try loop in reverse
+                    if (widgetChild->isVisible()) {
+                        widgetsQueue.push(widgetChild.get());
+                    }
                 }
             }
         }

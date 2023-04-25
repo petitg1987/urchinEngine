@@ -31,10 +31,19 @@ namespace urchin {
         }
 
         //same instance ID only when vertex coordinates are identical
+        //reason: size is not part of instance parameters
         HashUtil::combine(instanceId, widget->getWidth(), widget->getHeight());
 
         //same instance ID only when depth level are identical
+        //reason: 2 widgets cannot be instanced when they have different depth to avoid incorrect displaying
         HashUtil::combine(instanceId, widget->computeDepthLevel());
+
+        //same instance ID only when widget have same window or no window
+        //reason: 2 widgets cannot be instanced when they belong on 2 different windows because windows can overlap each other and therefore cannot be displayed at same time
+        Window *window = widget->getParentWindow();
+        if (window) {
+            HashUtil::combine(instanceId, window);
+        }
 
         return instanceId;
     }

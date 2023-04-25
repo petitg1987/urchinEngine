@@ -2,6 +2,7 @@
 
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/container/Container.h>
+#include <scene/ui/widget/window/Window.h>
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/UIRenderer.h>
@@ -107,6 +108,17 @@ namespace urchin {
         while (parent != nullptr) {
             if (parent->getWidgetType() == WidgetType::CONTAINER) {
                 return static_cast<Container*>(parent);
+            }
+            parent = parent->getParent();
+        }
+        return nullptr;
+    }
+
+    Window* Widget::getParentWindow() const {
+        Widget *parent = getParent();
+        while (parent != nullptr) {
+            if (parent->getWidgetType() == WidgetType::WINDOW) {
+                return static_cast<Window*>(parent);
             }
             parent = parent->getParent();
         }

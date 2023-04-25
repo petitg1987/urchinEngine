@@ -21,6 +21,7 @@ namespace urchin {
     class UIRenderer;
     struct UI3dData;
     class Container;
+    class Window;
 
     class Widget : public Observable, public WidgetDisplayable {
         public:
@@ -51,6 +52,7 @@ namespace urchin {
 
             Widget* getParent() const;
             Container* getParentContainer() const;
+            Window* getParentWindow() const;
             unsigned int computeDepthLevel() const;
             bool isUi3D() const;
             virtual bool requireRenderer() const;

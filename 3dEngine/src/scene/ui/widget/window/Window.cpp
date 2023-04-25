@@ -68,7 +68,7 @@ namespace urchin {
             }
 
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
-                notifyObservers(this, SET_IN_FOREGROUND); //TODO no work with instancing
+                notifyObservers(this, SET_IN_FOREGROUND);
                 propagateEvent = false;
             }
         }

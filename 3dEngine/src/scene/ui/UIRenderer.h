@@ -76,7 +76,7 @@ namespace urchin {
 
         private:
             bool adjustMouseCoordinates(Point2<int>&) const;
-            void prepareWidgets(float) const;
+            void prepareWidgets(float, const std::vector<std::shared_ptr<Widget>>&) const;
 
             RenderTarget& renderTarget;
             I18nService& i18nService;
