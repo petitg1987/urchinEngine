@@ -68,6 +68,10 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
     }
 
+    bool TextBox::requireRenderer() const {
+        return true;
+    }
+
     WidgetType TextBox::getWidgetType() const {
         return WidgetType::TEXTBOX;
     }

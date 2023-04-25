@@ -405,7 +405,7 @@ namespace urchin {
             widgetsQueue.pop();
 
             widget->prepareWidgetRendering(dt);
-            if (widget->isDisplayable()) {
+            if (widget->requireRenderer()) {
                 widgetsToRender.push_back(widget);
             }
 

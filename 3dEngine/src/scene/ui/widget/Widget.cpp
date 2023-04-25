@@ -127,9 +127,8 @@ namespace urchin {
        return getUi3dData() != nullptr;
     }
 
-    bool Widget::isDisplayable() const {
-        WidgetType type = getWidgetType();
-        return type != WidgetType::CONTAINER && type != WidgetType::SEQUENCE;
+    bool Widget::requireRenderer() const {
+        return false;
     }
 
     void Widget::addChild(const std::shared_ptr<Widget>& childWidget) {

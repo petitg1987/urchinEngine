@@ -31,6 +31,7 @@ namespace urchin {
             TextBox(Position, Size, std::string);
 
             void createOrUpdateWidget() override;
+            bool requireRenderer() const override;
             void prepareWidgetRendering(float) override;
 
             bool onKeyPressEvent(InputDeviceKey) override;

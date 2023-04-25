@@ -22,6 +22,7 @@ namespace urchin {
             Window(Position, Size, std::string, std::string);
 
             void createOrUpdateWidget() override;
+            bool requireRenderer() const override;
 
             bool onKeyPressEvent(InputDeviceKey) override;
             bool onKeyReleaseEvent(InputDeviceKey) override;

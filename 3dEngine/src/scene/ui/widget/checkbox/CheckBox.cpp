@@ -23,6 +23,10 @@ namespace urchin {
         updateTexture(isChecked() ? texChecked : texUnchecked);
     }
 
+    bool CheckBox::requireRenderer() const {
+        return true;
+    }
+
     WidgetType CheckBox::getWidgetType() const {
         return WidgetType::CHECKBOX;
     }

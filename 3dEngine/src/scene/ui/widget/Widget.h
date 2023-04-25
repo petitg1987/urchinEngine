@@ -53,7 +53,7 @@ namespace urchin {
             Container* getParentContainer() const;
             unsigned int computeDepthLevel() const;
             bool isUi3D() const;
-            bool isDisplayable() const;
+            virtual bool requireRenderer() const;
 
             virtual void addChild(const std::shared_ptr<Widget>&);
             const std::vector<std::shared_ptr<Widget>>& getChildren() const;

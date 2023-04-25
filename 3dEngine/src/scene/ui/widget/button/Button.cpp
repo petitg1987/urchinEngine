@@ -42,6 +42,10 @@ namespace urchin {
         }
     }
 
+    bool Button::requireRenderer() const {
+        return true;
+    }
+
     WidgetType Button::getWidgetType() const {
         return WidgetType::BUTTON;
     }

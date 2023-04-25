@@ -61,6 +61,7 @@ namespace urchin {
             Text(Position, std::string, std::string, std::vector<std::string>);
 
             void createOrUpdateWidget() override;
+            bool requireRenderer() const override;
             void uninitialize() override;
 
             int getMaxWidthPixel() const;

@@ -58,6 +58,10 @@ namespace urchin {
         moveSliderCursor();
     }
 
+    bool Slider::requireRenderer() const {
+        return true;
+    }
+
     WidgetType Slider::getWidgetType() const {
         return WidgetType::SLIDER;
     }

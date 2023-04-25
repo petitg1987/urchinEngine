@@ -47,6 +47,10 @@ namespace urchin {
         }
     }
 
+    bool Text::requireRenderer() const {
+        return true;
+    }
+
     void Text::uninitialize() {
         assert(isInitialized());
         if (inputText.hasTranslatableText()) {

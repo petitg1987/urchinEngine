@@ -104,6 +104,10 @@ namespace urchin {
         refreshCursorPosition(cursorIndex);
     }
 
+    bool Textarea::requireRenderer() const {
+        return true;
+    }
+
     bool Textarea::onKeyPressEvent(InputDeviceKey key) {
         if (key == InputDeviceKey::CTRL) {
             ctrlKeyPressed = true;

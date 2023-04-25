@@ -19,6 +19,7 @@ namespace urchin {
             CheckBox(Position, Size, std::string);
 
             void createOrUpdateWidget() override;
+            bool requireRenderer() const override;
 
             std::shared_ptr<Texture> loadTexture(const UdaChunk*, std::string_view) const;
             void refreshTexture();

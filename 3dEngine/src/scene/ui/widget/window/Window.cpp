@@ -41,6 +41,10 @@ namespace urchin {
         }
     }
 
+    bool Window::requireRenderer() const {
+        return true;
+    }
+
     WidgetType Window::getWidgetType() const {
         return WidgetType::WINDOW;
     }

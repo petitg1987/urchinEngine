@@ -22,6 +22,7 @@ namespace urchin {
             Button(Position, Size, std::string, std::string);
 
             void createOrUpdateWidget() override;
+            bool requireRenderer() const override;
             void prepareWidgetRendering(float) override;
 
             void refreshTexture();
