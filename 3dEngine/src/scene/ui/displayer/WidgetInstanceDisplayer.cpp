@@ -80,7 +80,6 @@ namespace urchin {
         rendererBuilder->addUniformTextureReader(TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))); //binding 3
 
         renderer = rendererBuilder->build();
-        renderer->disableRenderer(); //TODO remove and call this method earlier !
 
         isInitialized = true;
     }
@@ -246,7 +245,6 @@ namespace urchin {
         }
 
         renderer->updateInstanceData(instanceModelMatrices.size(), (const float*)instanceModelMatrices.data());
-
         renderer->enableRenderer(renderingOrder);
     }
 

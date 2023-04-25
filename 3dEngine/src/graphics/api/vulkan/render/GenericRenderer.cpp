@@ -113,14 +113,12 @@ namespace urchin {
     }
 
     void GenericRenderer::enableRenderer(unsigned int renderingOrder) {
-        assert(!bIsEnabled);
         this->bIsEnabled = true;
         this->renderingOrder = renderingOrder;
         renderTarget.notifyRendererEnabled(this);
     }
 
     void GenericRenderer::disableRenderer() {
-        assert(bIsEnabled);
         bIsEnabled = false;
         renderTarget.notifyRendererDisabled(this);
     }
