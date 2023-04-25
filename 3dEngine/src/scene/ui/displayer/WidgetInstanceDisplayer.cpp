@@ -136,6 +136,7 @@ namespace urchin {
         instanceWidgets.push_back(&widget);
         widget.attachWidgetInstanceDisplayer(*this);
 
+        widget.addObserver(this, Widget::TEXTURE_UPDATED);
         widget.addObserver(this, Widget::SIZE_UPDATED);
         widget.addObserver(this, Widget::POSITION_UPDATED);
         widget.addObserver(this, Widget::COLOR_PARAMS_UPDATED);
@@ -151,6 +152,7 @@ namespace urchin {
         widget.removeObserver(this, Widget::COLOR_PARAMS_UPDATED);
         widget.removeObserver(this, Widget::POSITION_UPDATED);
         widget.removeObserver(this, Widget::SIZE_UPDATED);
+        widget.removeObserver(this, Widget::TEXTURE_UPDATED);
     }
 
     unsigned int WidgetInstanceDisplayer::getInstanceCount() const {
