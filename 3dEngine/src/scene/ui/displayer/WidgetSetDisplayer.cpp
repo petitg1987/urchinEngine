@@ -65,7 +65,6 @@ namespace urchin {
             } else {
                 const auto& itFind = widgetInstanceDisplayers.find(widgetInstanceId);
                 if (itFind != widgetInstanceDisplayers.end()) {
-std::cout<<widget->getTexture()->getId()<<std::endl; //TODO remove
                     addWidgetToDisplayer(*widget, *itFind->second);
                     continue; //a matching widget instance displayer has been found for the widget
                 }
