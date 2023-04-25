@@ -35,6 +35,8 @@ namespace urchin {
             }
             buffers.resize(1);
             buffers[0].initialize(this->name, bufferType, initialBufferKind, dataSize, dataPtr);
+
+            isStaticBuffer = true;
         } else if (initialBufferKind == BufferHandler::BufferKind::DYNAMIC) {
             createDynamicBuffers(dataSize, dataPtr);
         } else {
