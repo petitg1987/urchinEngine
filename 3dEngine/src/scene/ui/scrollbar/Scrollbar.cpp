@@ -23,8 +23,7 @@ namespace urchin {
 
     void Scrollbar::initializeOrUpdate() {
         //detach children
-        if (scrollbarCursor && scrollbarCursor->getParent() == &scrollableWidget) {
-            scrollableWidget.detachChild(scrollbarCursor.get());
+        if (scrollbarLine && scrollbarLine->getParent() == &scrollableWidget) {
             scrollableWidget.detachChild(scrollbarLine.get());
         }
 
@@ -47,7 +46,7 @@ namespace urchin {
 
         scrollbarLine = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
                                              Size(scrollbarWidth.value, scrollbarWidth.type, scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
-        scrollbarCursor = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
+        scrollbarCursor = StaticBitmap::create(scrollbarLine.get(), Position(0.0f, 0.0f, LengthType::PIXEL),
                                                Size(scrollbarWidth.value, scrollbarWidth.type, cursorImageRatio, LengthType::RATIO_TO_WIDTH), cursorImageFilename);
 
         //update scrollbar
@@ -154,7 +153,6 @@ namespace urchin {
     void Scrollbar::updateScrollingPosition() {
         if (scrollbarLine && scrollbarCursor) {
             scrollbarLine->setIsVisible(isScrollbarRequired());
-            scrollbarCursor->setIsVisible(isScrollbarRequired());
 
             if (isScrollbarRequired()) {
                 updateCursorPosition();
@@ -180,9 +178,8 @@ namespace urchin {
     void Scrollbar::computeShiftPositionY() {
         shiftPixelPositionY = -(int)((contentHeight - visibleHeight) * scrollPercentage);
 
-        //compensate the shift applied on all children (including scrollbarLine & scrollbarCursor)
+        //compensate the shift applied on all children (include scrollbarLine and its child, the cursor)
         scrollbarLine->updatePosition(Position(scrollbarLine->getPosition().getX(), 0.0f - (float)shiftPixelPositionY, LengthType::PIXEL));
-        scrollbarCursor->updatePosition(Position(scrollbarCursor->getPosition().getX(), scrollbarCursor->getPosition().getY() - (float)shiftPixelPositionY, LengthType::PIXEL));
     }
 
     std::vector<Widget*> Scrollbar::getContentChildren() const {
