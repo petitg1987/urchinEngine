@@ -41,10 +41,8 @@ namespace urchin {
     }
 
     void Widget::uninitialize() {
-        if (this->uiRenderer) { //TODO review ? not beautiful
-            for (const auto& child : children) {
-                this->uiRenderer->getWidgetSetDisplayer().removeWidget(child.get());
-            }
+        if (this->uiRenderer) {
+            this->uiRenderer->getWidgetSetDisplayer().removeWidget(this);
         }
         this->uiRenderer = nullptr;
 
