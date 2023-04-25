@@ -392,8 +392,8 @@ namespace urchin {
     }
 
     void UIRenderer::prepareWidgets(float dt) const {
-        std::queue<Widget*> widgetsQueue;
-        for (const auto& widget: widgets) {
+        std::queue<Widget*> widgetsQueue; //TODO handle memory dyn allocation
+        for (const auto& widget : widgets) { //TODO try loop in reverse
             if (widget->isVisible()) {
                 widgetsQueue.push(widget.get());
             }
@@ -409,7 +409,7 @@ namespace urchin {
                 widgetsToRender.push_back(widget);
             }
 
-            for (const auto& widgetChild: widget->getChildren()) {
+            for (const auto& widgetChild: widget->getChildren()) { //TODO try loop in reverse
                 if (widgetChild->isVisible()) {
                     widgetsQueue.push(widgetChild.get());
                 }
