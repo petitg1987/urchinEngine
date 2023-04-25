@@ -76,6 +76,7 @@ namespace urchin {
 
         private:
             bool adjustMouseCoordinates(Point2<int>&) const;
+            void prepareWidgets(float) const;
 
             RenderTarget& renderTarget;
             I18nService& i18nService;

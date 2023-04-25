@@ -127,6 +127,11 @@ namespace urchin {
        return getUi3dData() != nullptr;
     }
 
+    bool Widget::isDisplayable() const {
+        WidgetType type = getWidgetType();
+        return type != WidgetType::CONTAINER && type != WidgetType::SEQUENCE;
+    }
+
     void Widget::addChild(const std::shared_ptr<Widget>& childWidget) {
         if (childWidget->getParent()) {
             throw std::runtime_error("Cannot add a widget which already have a parent");
@@ -698,20 +703,6 @@ namespace urchin {
             return true;
         }
         return false;
-    }
-
-    void Widget::preRenderingSetup(float dt, std::vector<Widget*>& widgetsToRender) {
-        if (isVisible()) {
-            prepareWidgetRendering(dt);
-
-            if (getWidgetType() != WidgetType::CONTAINER && getWidgetType() != WidgetType::SEQUENCE) { //TODO change this condition ?
-                widgetsToRender.push_back(this);
-            }
-
-            for (const auto& child: children) {
-                child->preRenderingSetup(dt, widgetsToRender);
-            }
-        }
     }
 
     void Widget::prepareWidgetRendering(float) {

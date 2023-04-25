@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <utility>
+#include <queue>
 
 #include <scene/ui/UIRenderer.h>
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
@@ -378,11 +379,7 @@ namespace urchin {
         }
 
         if (isUiVisible) {
-            widgetsToRender.clear();
-            for (const auto& widget: widgets) {
-                widget->preRenderingSetup(dt, widgetsToRender); //TODO should be first al widget of level 1, then level 2, etc. + remove renderingOrder at each widget ?
-            }
-
+            prepareWidgets(dt);
             widgetSetDisplayer->updateWidgets(widgetsToRender);
             widgetSetDisplayer->prepareRendering(renderingOrder, projectionViewMatrix);
         }
@@ -391,6 +388,32 @@ namespace urchin {
         if (debugFont) {
             renderingOrder++;
             debugFont->prepareRendering(renderingOrder);
+        }
+    }
+
+    void UIRenderer::prepareWidgets(float dt) const {
+        std::queue<Widget*> widgetsQueue;
+        for (const auto& widget: widgets) {
+            if (widget->isVisible()) {
+                widgetsQueue.push(widget.get());
+            }
+        }
+
+        widgetsToRender.clear();
+        while (!widgetsQueue.empty()) {
+            Widget* widget = widgetsQueue.front();
+            widgetsQueue.pop();
+
+            widget->prepareWidgetRendering(dt);
+            if (widget->isDisplayable()) {
+                widgetsToRender.push_back(widget);
+            }
+
+            for (const auto& widgetChild: widget->getChildren()) {
+                if (widgetChild->isVisible()) {
+                    widgetsQueue.push(widgetChild.get());
+                }
+            }
         }
     }
 

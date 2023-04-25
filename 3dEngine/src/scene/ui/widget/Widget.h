@@ -53,6 +53,7 @@ namespace urchin {
             Container* getParentContainer() const;
             unsigned int computeDepthLevel() const;
             bool isUi3D() const;
+            bool isDisplayable() const;
 
             virtual void addChild(const std::shared_ptr<Widget>&);
             const std::vector<std::shared_ptr<Widget>>& getChildren() const;
@@ -110,7 +111,7 @@ namespace urchin {
             int getMouseX() const;
             int getMouseY() const;
 
-            void preRenderingSetup(float, std::vector<Widget*>&);
+            virtual void prepareWidgetRendering(float);
 
         protected:
             template<class T> static std::shared_ptr<T> create(T*, Widget*);
@@ -132,8 +133,6 @@ namespace urchin {
             virtual bool onMouseMoveEvent(int, int);
             virtual bool onScrollEvent(double);
             virtual void onResetStateEvent();
-
-            virtual void prepareWidgetRendering(float);
 
         private:
             bool handleWidgetKeyPress(InputDeviceKey);
