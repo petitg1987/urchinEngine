@@ -391,7 +391,7 @@ namespace urchin {
     }
 
     void UIRenderer::prepareWidgets(float dt, const std::vector<std::shared_ptr<Widget>>& rootWidgets) const { //TODO add test
-        std::queue<Widget*> widgetsQueue; //TODO handle memory dyn allocation
+        std::queue<Widget*> widgetsQueue;
 
         for (const auto& widget : rootWidgets) {
             if (widget->isVisible()) {
