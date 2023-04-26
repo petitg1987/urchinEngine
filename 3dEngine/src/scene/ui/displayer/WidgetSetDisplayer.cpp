@@ -12,6 +12,26 @@ namespace urchin {
         clearDisplayers();
     }
 
+    void WidgetSetDisplayer::onUiRendererSizeUpdated() {
+        for (const auto& [widget, displayer] : widgetDisplayers) {
+            displayer->onUiRendererSizeUpdated();
+        }
+
+        for (const auto& [instanceId, displayer] : widgetInstanceDisplayers) {
+            displayer->onUiRendererSizeUpdated();
+        }
+    }
+
+    void WidgetSetDisplayer::onGammaFactorUpdated() {
+        for (const auto& [widget, displayer] : widgetDisplayers) {
+            displayer->onGammaFactorUpdated();
+        }
+
+        for (const auto& [instanceId, displayer] : widgetInstanceDisplayers) {
+            displayer->onGammaFactorUpdated();
+        }
+    }
+
     WidgetInstanceDisplayer* WidgetSetDisplayer::findWidgetInstanceDisplayer(const Widget& widget) const {
         for (WidgetInstanceDisplayer* widgetInstanceDisplayer : widget.getWidgetInstanceDisplayers()) {
             if (&widgetInstanceDisplayer->getWidgetSetDisplayer() == this) {

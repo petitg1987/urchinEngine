@@ -366,17 +366,9 @@ namespace urchin {
         return rotationZ;
     }
 
-    void Widget::applyUpdatedGammaFactor() {
-        notifyObservers(this, COLOR_PARAMS_UPDATED);
-
-        for (const auto& child : children) {
-            child->applyUpdatedGammaFactor();
-        }
-    }
-
     void Widget::updateAlphaFactor(float alphaFactor) {
         this->alphaFactor = alphaFactor;
-        notifyObservers(this, COLOR_PARAMS_UPDATED);
+        notifyObservers(this, ALPHA_FACTOR_UPDATED);
     }
 
     float Widget::getAlphaFactor() const {

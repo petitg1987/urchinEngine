@@ -14,6 +14,9 @@ namespace urchin {
             void initialize();
             void notify(Observable*, int) override;
 
+            void onUiRendererSizeUpdated();
+            void onGammaFactorUpdated();
+
             const WidgetSetDisplayer& getWidgetSetDisplayer() const;
             std::size_t getInstanceId() const;
 
@@ -33,7 +36,7 @@ namespace urchin {
             void updateTexture(const Widget*);
             void updateScissor(const Widget*);
             void updateCoordinates(const Widget*);
-            void updateColorParameters(const Widget*);
+            void updateAlphaFactor(const Widget*);
 
             bool isInitialized;
 

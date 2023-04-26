@@ -93,10 +93,26 @@ namespace urchin {
                 updateScissor(widget);
             } else if (notificationType == Widget::POSITION_UPDATED) {
                 updateScissor(widget);
-            } else if (notificationType == Widget::COLOR_PARAMS_UPDATED) {
-                updateColorParameters(widget);
+            } else if (notificationType == Widget::ALPHA_FACTOR_UPDATED) {
+                updateAlphaFactor(widget);
             }
         }
+    }
+
+    void WidgetInstanceDisplayer::onUiRendererSizeUpdated() {
+        if (!uiRenderer.getUi3dData()) {
+            Matrix4<float> projectionViewModelMatrix( //orthogonal matrix with origin at top left screen
+                    2.0f / (float) uiRenderer.getUiResolution().X, 0.0f, -1.0f, 0.0f,
+                    0.0f, 2.0f / (float) uiRenderer.getUiResolution().Y, -1.0f, 0.0f,
+                    0.0f, 0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, 0.0f, 1.0f);
+            renderer->updateUniformData(1, &projectionViewModelMatrix);
+        }
+    }
+
+    void WidgetInstanceDisplayer::onGammaFactorUpdated() {
+        colorParams.gammaFactor = uiRenderer.getGammaFactor();
+        renderer->updateUniformData(2, &colorParams);
     }
 
     const WidgetSetDisplayer& WidgetInstanceDisplayer::getWidgetSetDisplayer() const {
@@ -138,7 +154,7 @@ namespace urchin {
         widget.addObserver(this, Widget::TEXTURE_UPDATED);
         widget.addObserver(this, Widget::SIZE_UPDATED);
         widget.addObserver(this, Widget::POSITION_UPDATED);
-        widget.addObserver(this, Widget::COLOR_PARAMS_UPDATED);
+        widget.addObserver(this, Widget::ALPHA_FACTOR_UPDATED);
     }
 
     void WidgetInstanceDisplayer::removeInstanceWidget(Widget& widget) {
@@ -148,7 +164,7 @@ namespace urchin {
             Logger::instance().logError("Removing the instance widget fail");
         }
 
-        widget.removeObserver(this, Widget::COLOR_PARAMS_UPDATED);
+        widget.removeObserver(this, Widget::ALPHA_FACTOR_UPDATED);
         widget.removeObserver(this, Widget::POSITION_UPDATED);
         widget.removeObserver(this, Widget::SIZE_UPDATED);
         widget.removeObserver(this, Widget::TEXTURE_UPDATED);
@@ -196,10 +212,9 @@ namespace urchin {
         }
     }
 
-    void WidgetInstanceDisplayer::updateColorParameters(const Widget* widget) {
+    void WidgetInstanceDisplayer::updateAlphaFactor(const Widget* widget) {
         if (checkUpdateAllowance(widget)) {
             colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
-            colorParams.gammaFactor = uiRenderer.getGammaFactor();
             renderer->updateUniformData(2, &colorParams);
         }
     }

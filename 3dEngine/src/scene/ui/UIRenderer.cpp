@@ -114,6 +114,7 @@ namespace urchin {
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
         uiResolution = Point2<int>((int)sceneWidth, (int)sceneHeight);
+        widgetSetDisplayer->onUiRendererSizeUpdated();
 
         //widgets resize
         for (long i = (long)widgets.size() - 1; i >= 0; --i) {
@@ -322,9 +323,7 @@ namespace urchin {
     }
 
     void UIRenderer::applyUpdatedGammaFactor() {
-        for (const auto& widget : widgets) {
-            widget->applyUpdatedGammaFactor();
-        }
+        widgetSetDisplayer->onGammaFactorUpdated();
     }
 
     void UIRenderer::addWidget(const std::shared_ptr<Widget>& widget) {

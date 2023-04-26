@@ -30,12 +30,12 @@ namespace urchin {
             return INSTANCING_DENY_ID; //no instancing
         }
 
-        //same instance ID only when vertex coordinates are identical
-        //reason: size is not part of instance parameters
-        HashUtil::combine(instanceId, widget->getWidth(), widget->getHeight());
+        //same instance ID only when vertex coordinates and alpha color are identical
+        //reason: size is not part of the instanced data
+        HashUtil::combine(instanceId, widget->getWidth(), widget->getHeight(), widget->getAlphaFactor());
 
         //same instance ID only when depth level are identical
-        //reason: 2 widgets cannot be instanced when they have different depth to avoid incorrect displaying
+        //reason: 2 widgets cannot be instanced when they have different depth to avoid incorrect displaying (z-depth problem)
         HashUtil::combine(instanceId, widget->computeDepthLevel());
 
         //same instance ID only when widget have same window or no window

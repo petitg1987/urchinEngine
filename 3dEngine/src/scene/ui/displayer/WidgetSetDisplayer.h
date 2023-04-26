@@ -13,6 +13,9 @@ namespace urchin {
             explicit WidgetSetDisplayer(const UIRenderer&);
             ~WidgetSetDisplayer();
 
+            void onUiRendererSizeUpdated();
+            void onGammaFactorUpdated();
+
             void updateWidgets(std::span<Widget* const>);
             void removeWidget(Widget*);
             const std::vector<Widget*>& getWidgets() const;

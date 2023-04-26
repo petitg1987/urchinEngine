@@ -33,7 +33,7 @@ namespace urchin {
                 TEXTURE_UPDATED,
                 SIZE_UPDATED,
                 POSITION_UPDATED,
-                COLOR_PARAMS_UPDATED
+                ALPHA_FACTOR_UPDATED
             };
 
             enum WidgetState {
@@ -87,7 +87,6 @@ namespace urchin {
             void updateRotation(float);
             float getRotation() const;
 
-            void applyUpdatedGammaFactor();
             void updateAlphaFactor(float);
             float getAlphaFactor() const;
 
