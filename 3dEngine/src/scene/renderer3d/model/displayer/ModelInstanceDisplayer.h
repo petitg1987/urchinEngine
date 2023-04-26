@@ -12,10 +12,10 @@ namespace urchin {
 
     class ModelSetDisplayer;
 
-    class ModelInstanceDisplayer final : public Observer {
+    class ModelInstanceDisplayer {
         public:
             ModelInstanceDisplayer(const ModelSetDisplayer&, DisplayMode, RenderTarget&, const Shader&);
-            ~ModelInstanceDisplayer() override;
+            ~ModelInstanceDisplayer();
 
             void setupCustomShaderVariable(CustomModelShaderVariable*);
             void setupDepthOperations(bool, bool);
@@ -23,10 +23,15 @@ namespace urchin {
             void setupBlendFunctions(const std::vector<BlendFunction>&);
 
             void initialize();
-            void notify(Observable*, int) override;
+
+            void updateMeshVertices(std::size_t, const Model*);
+            void updateMeshUv(std::size_t, const Model*);
+            void updateMaterial(std::size_t, const Model*);
+            void updateScale(std::size_t);
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             std::size_t getInstanceId() const;
+            const std::vector<Model*>& getInstanceModels() const;
 
             void addInstanceModel(Model&);
             void removeInstanceModel(Model&);
@@ -45,12 +50,6 @@ namespace urchin {
             void fillMaterialData(const Mesh&);
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
-
-            bool checkUpdateAllowance() const;
-            void updateMeshVertices(const Model*) const;
-            void updateMeshUv(const Model*) const;
-            void updateMaterial(const Model*);
-            void updateScale() const;
 
             bool isInitialized;
 

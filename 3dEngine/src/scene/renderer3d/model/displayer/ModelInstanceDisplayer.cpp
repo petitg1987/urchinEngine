@@ -128,6 +128,82 @@ namespace urchin {
         isInitialized = true;
     }
 
+    void ModelInstanceDisplayer::updateMeshVertices(std::size_t instanceId, const Model* model) {
+        this->instanceId = instanceId;
+
+        unsigned int meshIndex = 0;
+        for (const auto& meshRenderer: meshRenderers) {
+            if (model->isMeshUpdated(meshIndex)) {
+                const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
+                meshRenderer->updateData(0, mesh.getVertices());
+                if (displayMode == DisplayMode::DEFAULT_MODE) {
+                    meshRenderer->updateData(2, mesh.getNormals());
+                    meshRenderer->updateData(3, mesh.getTangents());
+                }
+            }
+            meshIndex++;
+        }
+    }
+
+    void ModelInstanceDisplayer::updateMeshUv(std::size_t instanceId, const Model* model) {
+        this->instanceId = instanceId;
+
+        unsigned int meshIndex = 0;
+        for (const auto& meshRenderer : meshRenderers) {
+            if (model->isMeshUpdated(meshIndex)) {
+                const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
+                if (displayMode == DisplayMode::DEFAULT_MODE) {
+                    meshRenderer->updateData(1, mesh.getUv());
+                }
+            }
+            meshIndex++;
+        }
+    }
+
+    void ModelInstanceDisplayer::updateMaterial(std::size_t instanceId, const Model* model) {
+        this->instanceId = instanceId;
+
+        if (displayMode == DisplayMode::DEFAULT_MODE) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer : meshRenderers) {
+                if (model->isMeshUpdated(meshIndex)) {
+                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
+                    fillMaterialData(mesh);
+                    meshRenderer->updateUniformData(1, &materialData);
+
+                    if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getAlbedoTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)));
+                    }
+                    if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                    }
+                    if (meshRenderer->getUniformTextureReader(2)->getTexture() != mesh.getMaterial().getRoughnessTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(2, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)));
+                    }
+                    if (meshRenderer->getUniformTextureReader(3)->getTexture() != mesh.getMaterial().getMetalnessTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(3, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
+                    }
+                }
+                meshIndex++;
+            }
+        }
+    }
+
+    void ModelInstanceDisplayer::updateScale(std::size_t instanceId) {
+        this->instanceId = instanceId;
+
+        if (displayMode == DisplayMode::DEFAULT_MODE) {
+            unsigned int meshIndex = 0;
+            for (const auto& meshRenderer: meshRenderers) {
+                const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
+                const UvScale& uvScale = mesh.getMaterial().getUvScale();
+                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv());
+
+                meshIndex++;
+            }
+        }
+    }
+
     Model& ModelInstanceDisplayer::getReferenceModel() const {
         //A reference model is a model which can be used to represent all instance models.
         //For unique properties (e.g. Model#getTransform()#getPosition()): do not use the reference model.
@@ -159,102 +235,16 @@ namespace urchin {
         return TextureParam::build(textureReadMode, TextureParam::LINEAR, TextureParam::ANISOTROPY);
     }
 
-    void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) {
-        if (const Model* model = dynamic_cast<Model*>(observable)) {
-            if (notificationType == Model::MESH_VERTICES_UPDATED) {
-                updateMeshVertices(model);
-            } else if (notificationType == Model::MESH_UV_UPDATED) {
-                updateMeshUv(model);
-            } else if (notificationType == Model::MATERIAL_UPDATED) {
-                updateMaterial(model);
-            } else if (notificationType == Model::SCALE_UPDATED) {
-                updateScale();
-            }
-        }
-    }
-
-    bool ModelInstanceDisplayer::checkUpdateAllowance() const {
-        return instanceId == ModelDisplayable::INSTANCING_DENY_ID;
-    }
-
-    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) const {
-        if (checkUpdateAllowance()) {
-            unsigned int meshIndex = 0;
-            for (const auto& meshRenderer: meshRenderers) {
-                if (model->isMeshUpdated(meshIndex)) {
-                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-                    meshRenderer->updateData(0, mesh.getVertices());
-                    if (displayMode == DisplayMode::DEFAULT_MODE) {
-                        meshRenderer->updateData(2, mesh.getNormals());
-                        meshRenderer->updateData(3, mesh.getTangents());
-                    }
-                }
-                meshIndex++;
-            }
-        }
-    }
-
-    void ModelInstanceDisplayer::updateMeshUv(const Model* model) const {
-        if (checkUpdateAllowance()) {
-            unsigned int meshIndex = 0;
-            for (const auto& meshRenderer : meshRenderers) {
-                if (model->isMeshUpdated(meshIndex)) {
-                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-                    if (displayMode == DisplayMode::DEFAULT_MODE) {
-                        meshRenderer->updateData(1, mesh.getUv());
-                    }
-                }
-                meshIndex++;
-            }
-        }
-    }
-
-    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
-        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance()) {
-            unsigned int meshIndex = 0;
-            for (const auto& meshRenderer : meshRenderers) {
-                if (model->isMeshUpdated(meshIndex)) {
-                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-                    fillMaterialData(mesh);
-                    meshRenderer->updateUniformData(1, &materialData);
-
-                    if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getAlbedoTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)));
-                    }
-                    if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
-                    }
-                    if (meshRenderer->getUniformTextureReader(2)->getTexture() != mesh.getMaterial().getRoughnessTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(2, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)));
-                    }
-                    if (meshRenderer->getUniformTextureReader(3)->getTexture() != mesh.getMaterial().getMetalnessTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(3, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
-                    }
-                }
-                meshIndex++;
-            }
-        }
-    }
-
-    void ModelInstanceDisplayer::updateScale() const {
-        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance()) {
-            unsigned int meshIndex = 0;
-            for (const auto& meshRenderer: meshRenderers) {
-                const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-                const UvScale& uvScale = mesh.getMaterial().getUvScale();
-                meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv());
-
-                meshIndex++;
-            }
-        }
-    }
-
     const ModelSetDisplayer& ModelInstanceDisplayer::getModelSetDisplayer() const {
         return modelSetDisplayer;
     }
 
     std::size_t ModelInstanceDisplayer::getInstanceId() const {
         return instanceId;
+    }
+
+    const std::vector<Model*>& ModelInstanceDisplayer::getInstanceModels() const {
+        return instanceModels;
     }
 
     void ModelInstanceDisplayer::addInstanceModel(Model& model) {
@@ -269,11 +259,6 @@ namespace urchin {
 
         instanceModels.push_back(&model);
         model.attachModelInstanceDisplayer(*this);
-
-        model.addObserver(this, Model::MESH_VERTICES_UPDATED);
-        model.addObserver(this, Model::MESH_UV_UPDATED);
-        model.addObserver(this, Model::MATERIAL_UPDATED);
-        model.addObserver(this, Model::SCALE_UPDATED);
     }
 
     void ModelInstanceDisplayer::removeInstanceModel(Model& model) {
@@ -282,11 +267,6 @@ namespace urchin {
         if (erasedCount != 1) {
             Logger::instance().logError("Removing the instance model fail: " + model.getConstMeshes()->getId());
         }
-
-        model.removeObserver(this, Model::SCALE_UPDATED);
-        model.removeObserver(this, Model::MATERIAL_UPDATED);
-        model.removeObserver(this, Model::MESH_UV_UPDATED);
-        model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
     }
 
     unsigned int ModelInstanceDisplayer::getInstanceCount() const {

@@ -85,19 +85,38 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void WidgetInstanceDisplayer::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<Widget*>(observable)) {
-            if (notificationType == Widget::TEXTURE_UPDATED) {
-                updateTexture();
-            } else if (notificationType == Widget::SIZE_UPDATED) {
-                updateCoordinates();
-                updateScissor();
-            } else if (notificationType == Widget::POSITION_UPDATED) {
-                updateScissor();
-            } else if (notificationType == Widget::ALPHA_FACTOR_UPDATED) {
-                updateAlphaFactor();
-            }
+    void WidgetInstanceDisplayer::updateTexture(std::size_t instanceId) {
+        this->instanceId = instanceId;
+
+        renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+    }
+
+    void WidgetInstanceDisplayer::updateScissor(std::size_t instanceId) {
+        this->instanceId = instanceId;
+
+        std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
+        if (scissor.has_value()) {
+            renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
+    }
+
+    void WidgetInstanceDisplayer::updateCoordinates(std::size_t instanceId) {
+        this->instanceId = instanceId;
+
+        coordinates.clear();
+        getReferenceWidget().retrieveVertexCoordinates(coordinates);
+        renderer->updateData(0, coordinates);
+
+        coordinates.clear();
+        getReferenceWidget().retrieveTextureCoordinates(coordinates);
+        renderer->updateData(1, coordinates);
+    }
+
+    void WidgetInstanceDisplayer::updateAlphaFactor(std::size_t instanceId) {
+        this->instanceId = instanceId;
+
+        colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
+        renderer->updateUniformData(2, &colorParams);
     }
 
     void WidgetInstanceDisplayer::onUiRendererSizeUpdated() {
@@ -122,6 +141,10 @@ namespace urchin {
 
     std::size_t WidgetInstanceDisplayer::getInstanceId() const {
         return instanceId;
+    }
+
+    const std::vector<Widget*>& WidgetInstanceDisplayer::getInstanceWidgets() const {
+        return instanceWidgets;
     }
 
     Widget& WidgetInstanceDisplayer::getReferenceWidget() const {
@@ -151,11 +174,6 @@ namespace urchin {
 
         instanceWidgets.push_back(&widget);
         widget.attachWidgetInstanceDisplayer(*this);
-
-        widget.addObserver(this, Widget::TEXTURE_UPDATED);
-        widget.addObserver(this, Widget::SIZE_UPDATED);
-        widget.addObserver(this, Widget::POSITION_UPDATED);
-        widget.addObserver(this, Widget::ALPHA_FACTOR_UPDATED);
     }
 
     void WidgetInstanceDisplayer::removeInstanceWidget(Widget& widget) {
@@ -164,53 +182,10 @@ namespace urchin {
         if (erasedCount != 1) {
             Logger::instance().logError("Removing the instance widget fail");
         }
-
-        widget.removeObserver(this, Widget::ALPHA_FACTOR_UPDATED);
-        widget.removeObserver(this, Widget::POSITION_UPDATED);
-        widget.removeObserver(this, Widget::SIZE_UPDATED);
-        widget.removeObserver(this, Widget::TEXTURE_UPDATED);
     }
 
     unsigned int WidgetInstanceDisplayer::getInstanceCount() const {
         return (unsigned int)instanceWidgets.size();
-    }
-
-    bool WidgetInstanceDisplayer::checkUpdateAllowance() const {
-        return instanceId == WidgetDisplayable::INSTANCING_DENY_ID;
-    }
-
-    void WidgetInstanceDisplayer::updateTexture() {
-        if (checkUpdateAllowance()) {
-            renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
-        }
-    }
-
-    void WidgetInstanceDisplayer::updateScissor() {
-        if (checkUpdateAllowance()) {
-            std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
-            if (scissor.has_value()) {
-                renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
-            }
-        }
-    }
-
-    void WidgetInstanceDisplayer::updateCoordinates() {
-        if (checkUpdateAllowance()) {
-            coordinates.clear();
-            getReferenceWidget().retrieveVertexCoordinates(coordinates);
-            renderer->updateData(0, coordinates);
-
-            coordinates.clear();
-            getReferenceWidget().retrieveTextureCoordinates(coordinates);
-            renderer->updateData(1, coordinates);
-        }
-    }
-
-    void WidgetInstanceDisplayer::updateAlphaFactor() {
-        if (checkUpdateAllowance()) {
-            colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
-            renderer->updateUniformData(2, &colorParams);
-        }
     }
 
     void WidgetInstanceDisplayer::resetRenderingWidgets() {

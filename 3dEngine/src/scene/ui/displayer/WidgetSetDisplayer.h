@@ -8,13 +8,14 @@
 
 namespace urchin {
 
-    class WidgetSetDisplayer {
+    class WidgetSetDisplayer final : public Observer {
         public:
             explicit WidgetSetDisplayer(const UIRenderer&);
-            ~WidgetSetDisplayer();
+            ~WidgetSetDisplayer() override;
 
             void onUiRendererSizeUpdated();
             void onGammaFactorUpdated();
+            void notify(Observable*, int) override;
 
             void updateWidgets(std::span<Widget* const>);
             void removeWidget(Widget*);
@@ -25,8 +26,11 @@ namespace urchin {
         private:
             WidgetInstanceDisplayer* findWidgetInstanceDisplayer(const Widget&) const;
             void clearDisplayers();
-            void removeWidgetFromDisplayer(Widget&, WidgetInstanceDisplayer&) const;
-            void addWidgetToDisplayer(Widget&, WidgetInstanceDisplayer&) const;
+            void removeWidgetFromDisplayer(Widget&, WidgetInstanceDisplayer&);
+            void addWidgetToDisplayer(Widget&, WidgetInstanceDisplayer&);
+
+            void observeWidgetUpdate(Widget&);
+            void unobserveWidgetUpdate(Widget&);
 
             const UIRenderer& uiRenderer;
 

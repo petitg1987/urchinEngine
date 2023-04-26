@@ -32,6 +32,38 @@ namespace urchin {
         }
     }
 
+    void WidgetSetDisplayer::notify(Observable* observable, int notificationType) {
+        if (const Widget* widget = dynamic_cast<Widget*>(observable)) {
+            WidgetInstanceDisplayer* displayer = findWidgetInstanceDisplayer(*widget);
+            if (!displayer) {
+                return;
+            }
+
+            bool canUpdateDisplayer = false;
+            std::size_t newWidgetInstanceId = widget->computeInstanceId();
+            if (newWidgetInstanceId != WidgetDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != WidgetDisplayable::INSTANCING_DENY_ID) {
+                bool updateNotAffectInstanceId = newWidgetInstanceId == displayer->getInstanceId(); //case: update scale from 1.0 to 1.0, etc.
+                bool displayerUpdatable = displayer->getInstanceCount() <= 1 && !widgetInstanceDisplayers.contains(newWidgetInstanceId); //displayer is not shared and there isn't other displayer matching the new instance ID
+                canUpdateDisplayer = updateNotAffectInstanceId || displayerUpdatable;
+            } else if (newWidgetInstanceId == WidgetDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() == WidgetDisplayable::INSTANCING_DENY_ID) {
+                canUpdateDisplayer = true;
+            }
+
+            if (canUpdateDisplayer) {
+                if (notificationType == Widget::TEXTURE_UPDATED) {
+                    displayer->updateTexture(newWidgetInstanceId);
+                } else if (notificationType == Widget::SIZE_UPDATED) {
+                    displayer->updateCoordinates(newWidgetInstanceId);
+                    displayer->updateScissor(newWidgetInstanceId);
+                } else if (notificationType == Widget::POSITION_UPDATED) {
+                    displayer->updateScissor(newWidgetInstanceId);
+                } else if (notificationType == Widget::ALPHA_FACTOR_UPDATED) {
+                    displayer->updateAlphaFactor(newWidgetInstanceId);
+                }
+            }
+        }
+    }
+
     WidgetInstanceDisplayer* WidgetSetDisplayer::findWidgetInstanceDisplayer(const Widget& widget) const {
         for (WidgetInstanceDisplayer* widgetInstanceDisplayer : widget.getWidgetInstanceDisplayers()) {
             if (&widgetInstanceDisplayer->getWidgetSetDisplayer() == this) {
@@ -42,12 +74,23 @@ namespace urchin {
     }
 
     void WidgetSetDisplayer::clearDisplayers() {
+        for (const auto& [widget, displayer] : widgetDisplayers) {
+            unobserveWidgetUpdate(*widget);
+        }
         widgetDisplayers.clear();
+
+        for (const auto& [instanceId, displayer] : widgetInstanceDisplayers) {
+            for (Widget* widget : displayer->getInstanceWidgets()) {
+                unobserveWidgetUpdate(*widget);
+            }
+        }
         widgetInstanceDisplayers.clear();
     }
 
-    void WidgetSetDisplayer::removeWidgetFromDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) const {
+    void WidgetSetDisplayer::removeWidgetFromDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) {
         widgetInstanceDisplayer.removeInstanceWidget(widget);
+        unobserveWidgetUpdate(widget);
+
         if (widgetInstanceDisplayer.getInstanceCount() == 0) {
             //to do:
             // - remove the displayer based on strategy to define (unused for x seconds, too much unused displayers, etc.)
@@ -55,8 +98,23 @@ namespace urchin {
         }
     }
 
-    void WidgetSetDisplayer::addWidgetToDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) const {
+    void WidgetSetDisplayer::addWidgetToDisplayer(Widget& widget, WidgetInstanceDisplayer& widgetInstanceDisplayer) {
         widgetInstanceDisplayer.addInstanceWidget(widget);
+        observeWidgetUpdate(widget);
+    }
+
+    void WidgetSetDisplayer::observeWidgetUpdate(Widget& widget) {
+        widget.addObserver(this, Widget::TEXTURE_UPDATED);
+        widget.addObserver(this, Widget::SIZE_UPDATED);
+        widget.addObserver(this, Widget::POSITION_UPDATED);
+        widget.addObserver(this, Widget::ALPHA_FACTOR_UPDATED);
+    }
+
+    void WidgetSetDisplayer::unobserveWidgetUpdate(Widget& widget) {
+        widget.removeObserver(this, Widget::ALPHA_FACTOR_UPDATED);
+        widget.removeObserver(this, Widget::POSITION_UPDATED);
+        widget.removeObserver(this, Widget::SIZE_UPDATED);
+        widget.removeObserver(this, Widget::TEXTURE_UPDATED);
     }
 
     void WidgetSetDisplayer::updateWidgets(std::span<Widget* const> widgets) {

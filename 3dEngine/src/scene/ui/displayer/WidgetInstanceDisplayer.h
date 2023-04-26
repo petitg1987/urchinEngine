@@ -6,19 +6,23 @@ namespace urchin {
 
     class WidgetSetDisplayer;
 
-    class WidgetInstanceDisplayer : public Observer {
+    class WidgetInstanceDisplayer {
         public:
             explicit WidgetInstanceDisplayer(const WidgetSetDisplayer&, const UIRenderer&);
-            ~WidgetInstanceDisplayer() override;
+            ~WidgetInstanceDisplayer();
 
             void initialize();
-            void notify(Observable*, int) override;
 
             void onUiRendererSizeUpdated();
             void onGammaFactorUpdated();
+            void updateTexture(std::size_t);
+            void updateScissor(std::size_t);
+            void updateCoordinates(std::size_t);
+            void updateAlphaFactor(std::size_t);
 
             const WidgetSetDisplayer& getWidgetSetDisplayer() const;
             std::size_t getInstanceId() const;
+            const std::vector<Widget*>& getInstanceWidgets() const;
 
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);
@@ -31,12 +35,6 @@ namespace urchin {
         private:
             Widget& getReferenceWidget() const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
-
-            bool checkUpdateAllowance() const;
-            void updateTexture();
-            void updateScissor();
-            void updateCoordinates();
-            void updateAlphaFactor();
 
             bool isInitialized;
 

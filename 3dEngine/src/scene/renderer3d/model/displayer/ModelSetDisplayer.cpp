@@ -74,6 +74,37 @@ namespace urchin {
         this->meshFilter = std::move(meshFilter);
     }
 
+    void ModelSetDisplayer::notify(Observable* observable, int notificationType) {
+        if (const Model* model = dynamic_cast<Model*>(observable)) {
+            ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
+            if (!displayer) {
+                return;
+            }
+
+            bool canUpdateDisplayer = false;
+            std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
+            if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
+                bool updateNotAffectInstanceId = newModelInstanceId == displayer->getInstanceId(); //case: update scale from 1.0 to 1.0, etc.
+                bool displayerUpdatable = displayer->getInstanceCount() <= 1 && !modelInstanceDisplayers.contains(newModelInstanceId); //displayer is not shared and there isn't other displayer matching the new instance ID
+                canUpdateDisplayer = updateNotAffectInstanceId || displayerUpdatable;
+            } else if (newModelInstanceId == ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() == ModelDisplayable::INSTANCING_DENY_ID) {
+                canUpdateDisplayer = true;
+            }
+
+            if (canUpdateDisplayer) {
+                if (notificationType == Model::MESH_VERTICES_UPDATED) {
+                    displayer->updateMeshVertices(newModelInstanceId, model);
+                } else if (notificationType == Model::MESH_UV_UPDATED) {
+                    displayer->updateMeshUv(newModelInstanceId, model);
+                } else if (notificationType == Model::MATERIAL_UPDATED) {
+                    displayer->updateMaterial(newModelInstanceId, model);
+                } else if (notificationType == Model::SCALE_UPDATED) {
+                    displayer->updateScale(newModelInstanceId);
+                }
+            }
+        }
+    }
+
     ModelInstanceDisplayer* ModelSetDisplayer::findModelInstanceDisplayer(const Model& model) const {
         for (ModelInstanceDisplayer* modelInstanceDisplayer : model.getModelInstanceDisplayers()) {
             if (&modelInstanceDisplayer->getModelSetDisplayer() == this) {
@@ -84,12 +115,23 @@ namespace urchin {
     }
 
     void ModelSetDisplayer::clearDisplayers() {
+        for (const auto& [model, displayer] : modelDisplayers) {
+            unobserveModelUpdate(*model);
+        }
         modelDisplayers.clear();
+
+        for (const auto& [instanceId, displayer] : modelInstanceDisplayers) {
+            for (Model* model : displayer->getInstanceModels()) {
+                unobserveModelUpdate(*model);
+            }
+        }
         modelInstanceDisplayers.clear();
     }
 
-    void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) const {
+    void ModelSetDisplayer::removeModelFromDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
         modelInstanceDisplayer.removeInstanceModel(model);
+        unobserveModelUpdate(model);
+
         if (modelInstanceDisplayer.getInstanceCount() == 0) {
             //to do:
             // - remove the displayer based on strategy to define (unused for x seconds, too much unused displayers, etc.)
@@ -97,8 +139,23 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) const {
+    void ModelSetDisplayer::addModelToDisplayer(Model& model, ModelInstanceDisplayer& modelInstanceDisplayer) {
         modelInstanceDisplayer.addInstanceModel(model);
+        observeModelUpdate(model);
+    }
+
+    void ModelSetDisplayer::observeModelUpdate(Model& model) {
+        model.addObserver(this, Model::MESH_VERTICES_UPDATED);
+        model.addObserver(this, Model::MESH_UV_UPDATED);
+        model.addObserver(this, Model::MATERIAL_UPDATED);
+        model.addObserver(this, Model::SCALE_UPDATED);
+    }
+
+    void ModelSetDisplayer::unobserveModelUpdate(Model& model) {
+        model.removeObserver(this, Model::SCALE_UPDATED);
+        model.removeObserver(this, Model::MATERIAL_UPDATED);
+        model.removeObserver(this, Model::MESH_UV_UPDATED);
+        model.removeObserver(this, Model::MESH_VERTICES_UPDATED);
     }
 
     void ModelSetDisplayer::updateModels(std::span<Model* const> models) {
