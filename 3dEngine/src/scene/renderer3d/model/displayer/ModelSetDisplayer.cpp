@@ -114,7 +114,6 @@ namespace urchin {
 
                 ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
                 if (currentModelInstanceDisplayer) {
-                    currentModelInstanceDisplayer->refreshInstanceId(modelInstanceId);
                     if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
                         continue; //the model displayer attached to the model is still valid
                     }

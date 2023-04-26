@@ -160,13 +160,13 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<Model*>(observable)) {
+        if (const Model* model = dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_VERTICES_UPDATED) {
-                updateMeshVertices();
+                updateMeshVertices(model);
             } else if (notificationType == Model::MESH_UV_UPDATED) {
-                updateMeshUv();
+                updateMeshUv(model);
             } else if (notificationType == Model::MATERIAL_UPDATED) {
-                updateMaterial();
+                updateMaterial(model);
             } else if (notificationType == Model::SCALE_UPDATED) {
                 updateScale();
             }
@@ -174,14 +174,14 @@ namespace urchin {
     }
 
     bool ModelInstanceDisplayer::checkUpdateAllowance() const {
-        return instanceId == ModelDisplayable::INSTANCING_DENY_ID || instanceModels.size() == 1;
+        return instanceId == ModelDisplayable::INSTANCING_DENY_ID;
     }
 
-    void ModelInstanceDisplayer::updateMeshVertices() const {
+    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) const {
         if (checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
-                if (getReferenceModel().isMeshUpdated(meshIndex)) { //TODO strange !!!
+                if (model->isMeshUpdated(meshIndex)) {
                     const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, mesh.getVertices());
                     if (displayMode == DisplayMode::DEFAULT_MODE) {
@@ -194,11 +194,11 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMeshUv() const {
+    void ModelInstanceDisplayer::updateMeshUv(const Model* model) const {
         if (checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
-                if (getReferenceModel().isMeshUpdated(meshIndex)) { //TODO strange !!!
+                if (model->isMeshUpdated(meshIndex)) {
                     const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                     if (displayMode == DisplayMode::DEFAULT_MODE) {
                         meshRenderer->updateData(1, mesh.getUv());
@@ -209,13 +209,12 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMaterial() {
+    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
-                if (getReferenceModel().isMeshUpdated(meshIndex)) { //TODO strange !!!
+                if (model->isMeshUpdated(meshIndex)) {
                     const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-
                     fillMaterialData(mesh);
                     meshRenderer->updateUniformData(1, &materialData);
 
@@ -258,22 +257,13 @@ namespace urchin {
         return instanceId;
     }
 
-    void ModelInstanceDisplayer::refreshInstanceId(std::size_t instanceId) {
-        if (checkUpdateAllowance()) {
-            #ifdef APP_DEBUG
-                assert(instanceId == getReferenceModel().computeInstanceId(displayMode));
-            #endif
-            this->instanceId = instanceId;
-        }
-    }
-
     void ModelInstanceDisplayer::addInstanceModel(Model& model) {
         if (instanceModels.empty()) {
             instanceId = model.computeInstanceId(displayMode);
         } else {
             #ifdef URCHIN_DEBUG
                 assert(instanceId != ModelDisplayable::INSTANCING_DENY_ID);
-                assert(instanceId == model.computeInstanceId(displayMode)); //TODO fix crash (+ same in widget)
+                assert(instanceId == model.computeInstanceId(displayMode));
             #endif
         }
 

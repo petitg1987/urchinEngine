@@ -124,15 +124,6 @@ namespace urchin {
         return instanceId;
     }
 
-    void WidgetInstanceDisplayer::refreshInstanceId(std::size_t instanceId) {
-        if (checkUpdateAllowance()) {
-            #ifdef APP_DEBUG
-                assert(instanceId == getReferenceWidget().computeInstanceId());
-            #endif
-            this->instanceId = instanceId;
-        }
-    }
-
     Widget& WidgetInstanceDisplayer::getReferenceWidget() const {
         //A reference widget is a widget which can be used to represent all instance widgets.
         if (instanceWidgets.empty()) {
@@ -185,7 +176,7 @@ namespace urchin {
     }
 
     bool WidgetInstanceDisplayer::checkUpdateAllowance() const {
-        return instanceId == WidgetDisplayable::INSTANCING_DENY_ID || instanceWidgets.size() == 1;
+        return instanceId == WidgetDisplayable::INSTANCING_DENY_ID;
     }
 
     void WidgetInstanceDisplayer::updateTexture() {
