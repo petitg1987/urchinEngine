@@ -114,6 +114,10 @@ namespace urchin {
         }
     }
 
+    const ParameterizedText& Text::getInputText() const {
+        return inputText;
+    }
+
     /**
      * @return input text translated for i18n text
      */

@@ -65,6 +65,9 @@ namespace urchin {
     }
 
     WidgetInstanceDisplayer* WidgetSetDisplayer::findWidgetInstanceDisplayer(const Widget& widget) const {
+        #ifdef APP_DEBUG
+            assert(widget.getWidgetInstanceDisplayers().size() <= 1); //currently only one WidgetSetDisplayer exists for a widget, and it is stored in UIRenderer
+        #endif
         for (WidgetInstanceDisplayer* widgetInstanceDisplayer : widget.getWidgetInstanceDisplayers()) {
             if (&widgetInstanceDisplayer->getWidgetSetDisplayer() == this) {
                 return widgetInstanceDisplayer;

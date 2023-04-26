@@ -49,6 +49,7 @@ namespace urchin {
             void onCameraProjectionUpdate();
 
             virtual WidgetType getWidgetType() const = 0;
+            std::string getName() const;
 
             Widget* getParent() const;
             Container* getParentContainer() const;

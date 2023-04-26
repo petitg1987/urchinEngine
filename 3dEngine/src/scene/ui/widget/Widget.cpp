@@ -3,6 +3,7 @@
 #include <scene/ui/widget/Widget.h>
 #include <scene/ui/widget/container/Container.h>
 #include <scene/ui/widget/window/Window.h>
+#include <scene/ui/widget/WidgetTypeUtil.h>
 #include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/UIRenderer.h>
@@ -95,6 +96,18 @@ namespace urchin {
             throw std::runtime_error("Clipboard not available because the widget is not initialized");
         }
         return uiRenderer->getClipboard();
+    }
+
+    std::string Widget::getName() const {
+        WidgetType widgetType = getWidgetType();
+        std::string name = WidgetTypeUtil::toWidgetTypeString(widgetType);
+        if (widgetType == WidgetType::TEXT) {
+            std::string inputText = static_cast<const Text*>(this)->getInputText().getText();
+            name += "_" + inputText.substr(0, std::min((std::size_t)10, inputText.size()));
+        } else if (getTexture()) {
+            name += "_" + FileUtil::getFileNameNoExtension(getTexture()->getName());
+        }
+        return name;
     }
 
     Widget* Widget::getParent() const {

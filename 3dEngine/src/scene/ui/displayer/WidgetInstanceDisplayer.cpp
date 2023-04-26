@@ -28,8 +28,7 @@ namespace urchin {
             throw std::runtime_error("At least one instance widget must be added before initialization");
         }
 
-        //TODO improve name !
-        auto rendererBuilder = GenericRendererBuilder::create("widget_" + std::to_string((int)getReferenceWidget().getWidgetType()), uiRenderer.getRenderTarget(), uiRenderer.getShader(), ShapeType::TRIANGLE);
+        auto rendererBuilder = GenericRendererBuilder::create(getReferenceWidget().getName(), uiRenderer.getRenderTarget(), uiRenderer.getShader(), ShapeType::TRIANGLE);
 
         Matrix4<float> normalMatrix;
         Matrix4<float> projectionViewModelMatrix;

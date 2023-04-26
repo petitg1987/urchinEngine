@@ -47,6 +47,7 @@ namespace urchin {
             void updateText(std::string);
             void updateText(ParameterizedText);
 
+            const ParameterizedText& getInputText() const;
             const std::string& getBaseText() const;
             const std::vector<TextLine>& getCutTextLines() const;
             std::size_t cutTextIndexToBaseTextIndex(std::size_t) const;
