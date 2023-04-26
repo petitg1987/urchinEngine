@@ -69,6 +69,7 @@ namespace urchin {
 
             WidgetInstanceDisplayer* currentWidgetInstanceDisplayer = findWidgetInstanceDisplayer(*widget);
             if (currentWidgetInstanceDisplayer) {
+                currentWidgetInstanceDisplayer->refreshInstanceId(widgetInstanceId);
                 if (currentWidgetInstanceDisplayer->getInstanceId() == widgetInstanceId) {
                     continue; //the widget displayer attached to the widget is still valid
                 }

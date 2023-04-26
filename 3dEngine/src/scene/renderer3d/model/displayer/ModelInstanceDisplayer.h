@@ -27,6 +27,7 @@ namespace urchin {
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             std::size_t getInstanceId() const;
+            void refreshInstanceId(std::size_t);
 
             void addInstanceModel(Model&);
             void removeInstanceModel(Model&);
@@ -46,11 +47,11 @@ namespace urchin {
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
-            bool checkUpdateAllowance(const Model*) const;
-            void updateMeshVertices(const Model*) const;
-            void updateMeshUv(const Model*) const;
-            void updateMaterial(const Model*);
-            void updateScale(const Model*) const;
+            bool checkUpdateAllowance() const;
+            void updateMeshVertices() const;
+            void updateMeshUv() const;
+            void updateMaterial();
+            void updateScale() const;
 
             bool isInitialized;
 

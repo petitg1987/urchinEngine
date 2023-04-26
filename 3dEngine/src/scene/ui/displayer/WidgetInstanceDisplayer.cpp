@@ -28,6 +28,7 @@ namespace urchin {
             throw std::runtime_error("At least one instance widget must be added before initialization");
         }
 
+        //TODO improve name !
         auto rendererBuilder = GenericRendererBuilder::create("widget_" + std::to_string((int)getReferenceWidget().getWidgetType()), uiRenderer.getRenderTarget(), uiRenderer.getShader(), ShapeType::TRIANGLE);
 
         Matrix4<float> normalMatrix;
@@ -85,16 +86,16 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::notify(Observable* observable, int notificationType) {
-        if (const auto* widget = dynamic_cast<Widget*>(observable)) {
+        if (dynamic_cast<Widget*>(observable)) {
             if (notificationType == Widget::TEXTURE_UPDATED) {
-                updateTexture(widget);
+                updateTexture();
             } else if (notificationType == Widget::SIZE_UPDATED) {
-                updateCoordinates(widget);
-                updateScissor(widget);
+                updateCoordinates();
+                updateScissor();
             } else if (notificationType == Widget::POSITION_UPDATED) {
-                updateScissor(widget);
+                updateScissor();
             } else if (notificationType == Widget::ALPHA_FACTOR_UPDATED) {
-                updateAlphaFactor(widget);
+                updateAlphaFactor();
             }
         }
     }
@@ -121,6 +122,15 @@ namespace urchin {
 
     std::size_t WidgetInstanceDisplayer::getInstanceId() const {
         return instanceId;
+    }
+
+    void WidgetInstanceDisplayer::refreshInstanceId(std::size_t instanceId) {
+        if (checkUpdateAllowance()) {
+            #ifdef APP_DEBUG
+                assert(instanceId == getReferenceWidget().computeInstanceId());
+            #endif
+            this->instanceId = instanceId;
+        }
     }
 
     Widget& WidgetInstanceDisplayer::getReferenceWidget() const {
@@ -174,25 +184,18 @@ namespace urchin {
         return (unsigned int)instanceWidgets.size();
     }
 
-    bool WidgetInstanceDisplayer::checkUpdateAllowance(const Widget* widget) const {
-        bool canUpdateDisplayer = instanceId == WidgetDisplayable::INSTANCING_DENY_ID;
-        if (!canUpdateDisplayer && widget->computeInstanceId() == instanceId) {
-            //Update without impact on the instance ID, either:
-            // - Update has no effect. Example: change size from 1.0f to 1.0f
-            // - Bug in the way the instance ID is computed
-            return true;
-        }
-        return canUpdateDisplayer;
+    bool WidgetInstanceDisplayer::checkUpdateAllowance() const {
+        return instanceId == WidgetDisplayable::INSTANCING_DENY_ID || instanceWidgets.size() == 1;
     }
 
-    void WidgetInstanceDisplayer::updateTexture(const Widget* widget) {
-        if (checkUpdateAllowance(widget)) {
+    void WidgetInstanceDisplayer::updateTexture() {
+        if (checkUpdateAllowance()) {
             renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
         }
     }
 
-    void WidgetInstanceDisplayer::updateScissor(const Widget* widget) {
-        if (checkUpdateAllowance(widget)) {
+    void WidgetInstanceDisplayer::updateScissor() {
+        if (checkUpdateAllowance()) {
             std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
             if (scissor.has_value()) {
                 renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
@@ -200,8 +203,8 @@ namespace urchin {
         }
     }
 
-    void WidgetInstanceDisplayer::updateCoordinates(const Widget* widget) {
-        if (checkUpdateAllowance(widget)) {
+    void WidgetInstanceDisplayer::updateCoordinates() {
+        if (checkUpdateAllowance()) {
             coordinates.clear();
             getReferenceWidget().retrieveVertexCoordinates(coordinates);
             renderer->updateData(0, coordinates);
@@ -212,8 +215,8 @@ namespace urchin {
         }
     }
 
-    void WidgetInstanceDisplayer::updateAlphaFactor(const Widget* widget) {
-        if (checkUpdateAllowance(widget)) {
+    void WidgetInstanceDisplayer::updateAlphaFactor() {
+        if (checkUpdateAllowance()) {
             colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
             renderer->updateUniformData(2, &colorParams);
         }

@@ -160,36 +160,29 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::notify(Observable* observable, int notificationType) {
-        if (const auto* model = dynamic_cast<Model*>(observable)) {
+        if (dynamic_cast<Model*>(observable)) {
             if (notificationType == Model::MESH_VERTICES_UPDATED) {
-                updateMeshVertices(model);
+                updateMeshVertices();
             } else if (notificationType == Model::MESH_UV_UPDATED) {
-                updateMeshUv(model);
+                updateMeshUv();
             } else if (notificationType == Model::MATERIAL_UPDATED) {
-                updateMaterial(model);
+                updateMaterial();
             } else if (notificationType == Model::SCALE_UPDATED) {
-                updateScale(model);
+                updateScale();
             }
         }
     }
 
-    bool ModelInstanceDisplayer::checkUpdateAllowance(const Model* model) const {
-        bool canUpdateDisplayer = instanceId == ModelDisplayable::INSTANCING_DENY_ID;
-        if (!canUpdateDisplayer && model->computeInstanceId(displayMode) == instanceId) {
-            //Update without impact on the instance ID, either:
-            // - Update has no effect. Examples: change scale from 1.0f to 1.0f, switch between two materials created programmatically and having the exact same properties.
-            // - Bug in the way the instance ID is computed
-            return true;
-        }
-        return canUpdateDisplayer;
+    bool ModelInstanceDisplayer::checkUpdateAllowance() const {
+        return instanceId == ModelDisplayable::INSTANCING_DENY_ID || instanceModels.size() == 1;
     }
 
-    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) const {
-        if (checkUpdateAllowance(model)) {
+    void ModelInstanceDisplayer::updateMeshVertices() const {
+        if (checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
-                if (model->isMeshUpdated(meshIndex)) {
-                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                if (getReferenceModel().isMeshUpdated(meshIndex)) { //TODO strange !!!
+                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                     meshRenderer->updateData(0, mesh.getVertices());
                     if (displayMode == DisplayMode::DEFAULT_MODE) {
                         meshRenderer->updateData(2, mesh.getNormals());
@@ -201,12 +194,12 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMeshUv(const Model* model) const {
-        if (checkUpdateAllowance(model)) {
+    void ModelInstanceDisplayer::updateMeshUv() const {
+        if (checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
-                if (model->isMeshUpdated(meshIndex)) {
-                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                if (getReferenceModel().isMeshUpdated(meshIndex)) { //TODO strange !!!
+                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                     if (displayMode == DisplayMode::DEFAULT_MODE) {
                         meshRenderer->updateData(1, mesh.getUv());
                     }
@@ -216,12 +209,12 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
-        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
+    void ModelInstanceDisplayer::updateMaterial() {
+        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
-                if (model->isMeshUpdated(meshIndex)) {
-                    const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                if (getReferenceModel().isMeshUpdated(meshIndex)) { //TODO strange !!!
+                    const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
 
                     fillMaterialData(mesh);
                     meshRenderer->updateUniformData(1, &materialData);
@@ -244,11 +237,11 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateScale(const Model* model) const {
-        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance(model)) {
+    void ModelInstanceDisplayer::updateScale() const {
+        if (displayMode == DisplayMode::DEFAULT_MODE && checkUpdateAllowance()) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
-                const Mesh& mesh = model->getMeshes()->getMesh(meshIndex);
+                const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
                 meshRenderer->updateData(1, uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv());
 
@@ -265,13 +258,22 @@ namespace urchin {
         return instanceId;
     }
 
+    void ModelInstanceDisplayer::refreshInstanceId(std::size_t instanceId) {
+        if (checkUpdateAllowance()) {
+            #ifdef APP_DEBUG
+                assert(instanceId == getReferenceModel().computeInstanceId(displayMode));
+            #endif
+            this->instanceId = instanceId;
+        }
+    }
+
     void ModelInstanceDisplayer::addInstanceModel(Model& model) {
         if (instanceModels.empty()) {
             instanceId = model.computeInstanceId(displayMode);
         } else {
             #ifdef URCHIN_DEBUG
                 assert(instanceId != ModelDisplayable::INSTANCING_DENY_ID);
-                assert(instanceId == model.computeInstanceId(displayMode));
+                assert(instanceId == model.computeInstanceId(displayMode)); //TODO fix crash (+ same in widget)
             #endif
         }
 

@@ -19,6 +19,7 @@ namespace urchin {
 
             const WidgetSetDisplayer& getWidgetSetDisplayer() const;
             std::size_t getInstanceId() const;
+            void refreshInstanceId(std::size_t);
 
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);
@@ -32,11 +33,11 @@ namespace urchin {
             Widget& getReferenceWidget() const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
 
-            bool checkUpdateAllowance(const Widget*) const;
-            void updateTexture(const Widget*);
-            void updateScissor(const Widget*);
-            void updateCoordinates(const Widget*);
-            void updateAlphaFactor(const Widget*);
+            bool checkUpdateAllowance() const;
+            void updateTexture();
+            void updateScissor();
+            void updateCoordinates();
+            void updateAlphaFactor();
 
             bool isInitialized;
 
