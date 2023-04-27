@@ -22,8 +22,7 @@ namespace urchin {
         }
 
         //compute vertices and normals based on bind-pose skeleton
-        MeshService::computeVertices(*this, baseSkeleton, baseVertices);
-        MeshService::computeNormalsAndTangents(*this, baseSkeleton, baseVertices, baseNormals, baseTangents);
+        MeshService::computeVerticesNormalsTangents(*this, baseSkeleton, baseVertices, baseNormals, baseTangents);
 
         //determine used bones
         for (const Weight& weight : this->weights) {

@@ -7,55 +7,26 @@ namespace urchin {
 
     /**
      * @param vertices [out] Computed vertices based on the skeleton
-     */
-    void MeshService::computeVertices(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
-        if (!constMesh.getBaseVertices().empty()) {
-            if (!isAnimated(constMesh, skeleton)) {
-                vertices = constMesh.getBaseVertices();
-                return;
-            }
-        }
-
-        //setup vertices
-        vertices.clear();
-        vertices.resize(constMesh.getNumberVertices(), Point3<float>(0.0f, 0.0f, 0.0f));
-        for (unsigned int i = 0; i < constMesh.getNumberVertices(); ++i) {
-            //calculate final vertex to draw with weights
-            for (int j = 0; j < constMesh.getStructVertex(i).weightCount; ++j) {
-                const Weight& weight = constMesh.getWeight((unsigned int)(constMesh.getStructVertex(i).weightStart + j));
-                const Bone& bone = skeleton[weight.boneIndex];
-
-                #ifdef URCHIN_DEBUG
-                    assert(constMesh.getStructVertex(i).weightCount != 1 || MathFunction::isEqual(weight.bias, 1.0f, 0.001f));
-                #endif
-
-                //calculate transformed vertex for this weight
-                Point3<float> wv = bone.orient.rotatePoint(weight.pos);
-
-                //the sum of all weight->bias should be 1.0
-                vertices[i].X += (bone.pos.X + wv.X) * weight.bias;
-                vertices[i].Y += (bone.pos.Y + wv.Y) * weight.bias;
-                vertices[i].Z += (bone.pos.Z + wv.Z) * weight.bias;
-            }
-        }
-    }
-
-    /**
-     * @param skeleton Skeleton which can be empty when not provided
      * @param normals [out] Computed weighted normals for vertices
      * @param tangents [out] Computed tangents for vertices
      */
-    void MeshService::computeNormalsAndTangents(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, const std::vector<Point3<float>>& vertices,
-                                                std::vector<Vector3<float>>& normals, std::vector<Vector3<float>>& tangents) {
+    void MeshService::computeVerticesNormalsTangents(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices,
+                                                     std::vector<Vector3<float>>& normals, std::vector<Vector3<float>>& tangents) {
 
-        if (!skeleton.empty() && !constMesh.getBaseNormals().empty() && !constMesh.getBaseTangents().empty()) {
-            if (!isAnimated(constMesh, skeleton)) {
+        if (!constMesh.getBaseVertices().empty() && !constMesh.getBaseNormals().empty() && !constMesh.getBaseTangents().empty()) {
+            bool isAnimated = std::ranges::any_of(constMesh.getUsedBoneIndices(), [&](const std::size_t boneIndex) { return !skeleton[boneIndex].sameAsBasePose; });
+            if (!isAnimated) {
+                vertices = constMesh.getBaseVertices();
                 normals = constMesh.getBaseNormals();
                 tangents = constMesh.getBaseTangents();
                 return;
             }
+        }
 
-            if (constMesh.getUsedBoneIndices().size() == 1) { //TODO only work if vertices are baseVertices !
+        computeVertices(constMesh, skeleton, vertices);
+
+        if (!constMesh.getBaseNormals().empty() && !constMesh.getBaseTangents().empty()) {
+            if (constMesh.getUsedBoneIndices().size() == 1) {
                 normals.clear();
                 for (const Vector3<float>& normal : constMesh.getBaseNormals()) {
                     normals.push_back(skeleton[0].orient.rotateVector(normal));
@@ -68,6 +39,14 @@ namespace urchin {
             }
         }
 
+        computeNormalsTangents(constMesh, vertices, normals, tangents);
+    }
+
+    /**
+     * @param normals [out] Computed weighted normals for vertices
+     * @param tangents [out] Computed tangents for vertices
+     */
+    void MeshService::computeNormalsTangents(const ConstMesh& constMesh, const std::vector<Point3<float>>& vertices, std::vector<Vector3<float>>& normals, std::vector<Vector3<float>>& tangents) {
         //compute weighted normals
         static std::vector<Vector3<float>> vertexNormals;
         vertexNormals.clear();
@@ -124,7 +103,27 @@ namespace urchin {
         }
     }
 
-    bool MeshService::isAnimated(const ConstMesh& constMesh, const std::vector<Bone>& skeleton) {
-        return std::ranges::any_of(constMesh.getUsedBoneIndices(), [&](const std::size_t boneIndex) { return !skeleton[boneIndex].sameAsBasePose; });
+    void MeshService::computeVertices(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
+        vertices.clear();
+        vertices.resize(constMesh.getNumberVertices(), Point3<float>(0.0f, 0.0f, 0.0f));
+        for (unsigned int i = 0; i < constMesh.getNumberVertices(); ++i) {
+            //calculate final vertex to draw with weights
+            for (int j = 0; j < constMesh.getStructVertex(i).weightCount; ++j) {
+                const Weight& weight = constMesh.getWeight((unsigned int)(constMesh.getStructVertex(i).weightStart + j));
+                const Bone& bone = skeleton[weight.boneIndex];
+
+                #ifdef URCHIN_DEBUG
+                    assert(constMesh.getStructVertex(i).weightCount != 1 || MathFunction::isEqual(weight.bias, 1.0f, 0.001f));
+                #endif
+
+                //calculate transformed vertex for this weight
+                Point3<float> wv = bone.orient.rotatePoint(weight.pos);
+
+                //the sum of all weight->bias should be 1.0
+                vertices[i].X += (bone.pos.X + wv.X) * weight.bias;
+                vertices[i].Y += (bone.pos.Y + wv.Y) * weight.bias;
+                vertices[i].Z += (bone.pos.Z + wv.Z) * weight.bias;
+            }
+        }
     }
 }

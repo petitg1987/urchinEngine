@@ -11,13 +11,13 @@ namespace urchin {
     }
 
     void Mesh::updateSkeleton(const std::vector<Bone>& skeleton) {
-        MeshService::computeVertices(constMesh, skeleton, vertices);
-        MeshService::computeNormalsAndTangents(constMesh, skeleton, vertices, normals, tangents);
+        MeshService::computeVerticesNormalsTangents(constMesh, skeleton, vertices, normals, tangents);
     }
 
     void Mesh::resetSkeleton() {
-        MeshService::computeVertices(constMesh, constMesh.getBaseSkeleton(), vertices);
-        MeshService::computeNormalsAndTangents(constMesh, constMesh.getBaseSkeleton(), vertices, normals, tangents);
+        vertices = constMesh.getBaseVertices();
+        normals = constMesh.getBaseNormals();
+        tangents = constMesh.getBaseTangents();
     }
 
     void Mesh::updateVertices(const std::vector<Point3<float>>& vertices) {
@@ -26,7 +26,7 @@ namespace urchin {
         }
 
         this->vertices = vertices;
-        MeshService::computeNormalsAndTangents(constMesh, {}, vertices, normals, tangents);
+        MeshService::computeNormalsTangents(constMesh, vertices, normals, tangents);
     }
 
     void Mesh::updateUv(const std::vector<Point2<float>>& uv) {

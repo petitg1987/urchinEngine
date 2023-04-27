@@ -10,11 +10,11 @@ namespace urchin {
         public:
             MeshService() = delete;
 
-            static void computeVertices(const ConstMesh&, const std::vector<Bone>&, std::vector<Point3<float>>&);
-            static void computeNormalsAndTangents(const ConstMesh&, const std::vector<Bone>&, const std::vector<Point3<float>>&, std::vector<Vector3<float>>&, std::vector<Vector3<float>>&);
+            static void computeVerticesNormalsTangents(const ConstMesh&, const std::vector<Bone>&, std::vector<Point3<float>>&, std::vector<Vector3<float>>&, std::vector<Vector3<float>>&);
+            static void computeNormalsTangents(const ConstMesh&, const std::vector<Point3<float>>&, std::vector<Vector3<float>>&, std::vector<Vector3<float>>&);
 
         private:
-            static bool isAnimated(const ConstMesh&, const std::vector<Bone>&);
+            static void computeVertices(const ConstMesh&, const std::vector<Bone>&, std::vector<Point3<float>>&);
     };
 
 }
