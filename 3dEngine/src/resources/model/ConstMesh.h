@@ -26,6 +26,7 @@ namespace urchin {
         int parent;
         Point3<float> pos;
         Quaternion<float> orient;
+        bool sameAsBasePose;
     };
 
     /**

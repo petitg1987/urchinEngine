@@ -91,11 +91,11 @@ namespace urchin {
 
             //build frame skeleton from the collected data
             for (unsigned int i = 0; i < numBones; ++i) {
-                const BaseFrameBone* baseBone = &baseFrame[i];
+                const BaseFrameBone& baseBone = baseFrame[i];
                 std::size_t j = 0;
 
-                Point3<float> animatedPos = baseBone->pos;
-                Quaternion<float> animatedOrient = baseBone->orient;
+                Point3<float> animatedPos = baseBone.pos;
+                Quaternion<float> animatedOrient = baseBone.orient;
 
                 if ((boneInfos[i].flags) & 1u) { //Tx
                     animatedPos.X = animFrameData[(std::size_t)boneInfos[i].startIndex + j];
@@ -151,6 +151,12 @@ namespace urchin {
 
                     //concatenates rotations
                     thisBone->orient = (parentBone->orient * animatedOrient).normalize();
+                }
+
+                if (thisBone->pos.isEqual(baseBone.pos, 0.0001f) && thisBone->orient.isEqualOrientation(baseBone.orient, 0.0001f)) {
+                    thisBone->sameAsBasePose = true;
+                } else {
+                    thisBone->sameAsBasePose = false;
                 }
             }
 

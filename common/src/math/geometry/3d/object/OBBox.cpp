@@ -217,6 +217,8 @@ namespace urchin {
             return true;
         }
 
+        //TODO take max => no touching => no collision
+
         return separatedAxisTheoremCollision(bbox);
     }
 

@@ -338,6 +338,8 @@ class UrchinAnimation:
                     self.num_frames = len(self.frame_data[bone.id])
 
                 (x, y, z), (qw, qx, qy, qz) = self.frame_data[bone.id][0]
+                if qw > 0:
+                    qx, qy, qz = -qx, -qy, -qz
                 self.base_frame[bone.id] = (x, y, z, qx, qy, qz)
                 self.bone_frame_data_index[bone.id] = current_frame_data_index
                 self.bone_flags[bone.id] = 63
@@ -350,9 +352,7 @@ class UrchinAnimation:
                 qy = rot.y
                 qz = rot.z
                 if rot.w > 0:
-                    qx = -qx
-                    qy = -qy
-                    qz = -qz
+                    qx, qy, qz = -qx, -qy, -qz
                 self.base_frame.col[bone.id] = (bone.matrix.col[3][0], bone.matrix.col[3][1], bone.matrix.col[3][2], qx, qy, qz)
 
         buf = "numFrames %i\n" % self.num_frames

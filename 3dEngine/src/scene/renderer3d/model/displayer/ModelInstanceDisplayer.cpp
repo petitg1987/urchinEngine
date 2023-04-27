@@ -253,7 +253,7 @@ namespace urchin {
         } else {
             #ifdef URCHIN_DEBUG
                 assert(instanceId != ModelDisplayable::INSTANCING_DENY_ID);
-                assert(instanceId == model.computeInstanceId(displayMode));
+                assert(instanceId == model.computeInstanceId(displayMode)); //TODO crash with extra level !
             #endif
         }
 

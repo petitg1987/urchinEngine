@@ -90,16 +90,21 @@ namespace urchin {
             const Bone& currentFrameBone = constAnimation->getBone(animationInformation.currentFrame, i);
             const Bone& nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
 
-            //copy parent index
-            skeleton[i].parent = currentFrameBone.parent;
+            if (currentFrameBone.sameAsBasePose && nextFrameBone.sameAsBasePose) {
+                skeleton[i] = currentFrameBone;
+            } else {
+                //copy parent index
+                skeleton[i].parent = currentFrameBone.parent;
+                skeleton[i].sameAsBasePose = false;
 
-            //linear interpolation for position
-            skeleton[i].pos.X = currentFrameBone.pos.X + interp * (nextFrameBone.pos.X - currentFrameBone.pos.X);
-            skeleton[i].pos.Y = currentFrameBone.pos.Y + interp * (nextFrameBone.pos.Y - currentFrameBone.pos.Y);
-            skeleton[i].pos.Z = currentFrameBone.pos.Z + interp * (nextFrameBone.pos.Z - currentFrameBone.pos.Z);
+                //linear interpolation for position
+                skeleton[i].pos.X = currentFrameBone.pos.X + interp * (nextFrameBone.pos.X - currentFrameBone.pos.X);
+                skeleton[i].pos.Y = currentFrameBone.pos.Y + interp * (nextFrameBone.pos.Y - currentFrameBone.pos.Y);
+                skeleton[i].pos.Z = currentFrameBone.pos.Z + interp * (nextFrameBone.pos.Z - currentFrameBone.pos.Z);
 
-            //spherical linear interpolation for orientation
-            skeleton[i].orient = currentFrameBone.orient.slerp(nextFrameBone.orient, interp);
+                //spherical linear interpolation for orientation
+                skeleton[i].orient = currentFrameBone.orient.slerp(nextFrameBone.orient, interp);
+            }
         }
 
         //update the mesh (vertex, normals...)
