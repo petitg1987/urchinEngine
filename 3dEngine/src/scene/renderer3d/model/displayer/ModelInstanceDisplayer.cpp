@@ -128,9 +128,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelInstanceDisplayer::updateMeshVertices(std::size_t instanceId, const Model* model) {
-        this->instanceId = instanceId;
-
+    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) {
         unsigned int meshIndex = 0;
         for (const auto& meshRenderer: meshRenderers) {
             if (model->isMeshUpdated(meshIndex)) {
@@ -145,9 +143,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMeshUv(std::size_t instanceId, const Model* model) {
-        this->instanceId = instanceId;
-
+    void ModelInstanceDisplayer::updateMeshUv(const Model* model) {
         unsigned int meshIndex = 0;
         for (const auto& meshRenderer : meshRenderers) {
             if (model->isMeshUpdated(meshIndex)) {
@@ -160,9 +156,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMaterial(std::size_t instanceId, const Model* model) {
-        this->instanceId = instanceId;
-
+    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
         if (displayMode == DisplayMode::DEFAULT_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
@@ -189,9 +183,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateScale(std::size_t instanceId) {
-        this->instanceId = instanceId;
-
+    void ModelInstanceDisplayer::updateScale() {
         if (displayMode == DisplayMode::DEFAULT_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -241,6 +233,10 @@ namespace urchin {
 
     std::size_t ModelInstanceDisplayer::getInstanceId() const {
         return instanceId;
+    }
+
+    void ModelInstanceDisplayer::updateInstanceId(std::size_t instanceId) {
+        this->instanceId = instanceId;
     }
 
     const std::vector<Model*>& ModelInstanceDisplayer::getInstanceModels() const {

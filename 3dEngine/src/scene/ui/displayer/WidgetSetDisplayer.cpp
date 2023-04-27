@@ -42,23 +42,32 @@ namespace urchin {
             bool canUpdateDisplayer = false;
             std::size_t newWidgetInstanceId = widget->computeInstanceId();
             if (newWidgetInstanceId != WidgetDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != WidgetDisplayable::INSTANCING_DENY_ID) {
-                bool updateNotAffectInstanceId = newWidgetInstanceId == displayer->getInstanceId(); //case: update scale from 1.0 to 1.0, etc.
-                bool displayerUpdatable = displayer->getInstanceCount() <= 1 && !widgetInstanceDisplayers.contains(newWidgetInstanceId); //displayer is not shared and there isn't other displayer matching the new instance ID
-                canUpdateDisplayer = updateNotAffectInstanceId || displayerUpdatable;
+                if (displayer->getInstanceCount() <= 1 && !widgetInstanceDisplayers.contains(newWidgetInstanceId)) {
+                    //case: displayer is not shared and there isn't other displayer matching the new instance ID
+                    canUpdateDisplayer = true;
+
+                    auto displayerNodeHandler = widgetInstanceDisplayers.extract(displayer->getInstanceId());
+                    displayerNodeHandler.mapped()->updateInstanceId(newWidgetInstanceId);
+                    displayerNodeHandler.key() = newWidgetInstanceId;
+                    widgetInstanceDisplayers.insert(std::move(displayerNodeHandler));
+                } else if (newWidgetInstanceId == displayer->getInstanceId()) {
+                    //case: update scale from 1.0 to 1.0, etc.
+                    canUpdateDisplayer = true;
+                }
             } else if (newWidgetInstanceId == WidgetDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() == WidgetDisplayable::INSTANCING_DENY_ID) {
                 canUpdateDisplayer = true;
             }
 
             if (canUpdateDisplayer) {
                 if (notificationType == Widget::TEXTURE_UPDATED) {
-                    displayer->updateTexture(newWidgetInstanceId);
+                    displayer->updateTexture();
                 } else if (notificationType == Widget::SIZE_UPDATED) {
-                    displayer->updateCoordinates(newWidgetInstanceId);
-                    displayer->updateScissor(newWidgetInstanceId);
+                    displayer->updateCoordinates();
+                    displayer->updateScissor();
                 } else if (notificationType == Widget::POSITION_UPDATED) {
-                    displayer->updateScissor(newWidgetInstanceId);
+                    displayer->updateScissor();
                 } else if (notificationType == Widget::ALPHA_FACTOR_UPDATED) {
-                    displayer->updateAlphaFactor(newWidgetInstanceId);
+                    displayer->updateAlphaFactor();
                 }
             }
         }

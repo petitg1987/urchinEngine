@@ -84,24 +84,18 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void WidgetInstanceDisplayer::updateTexture(std::size_t instanceId) {
-        this->instanceId = instanceId;
-
+    void WidgetInstanceDisplayer::updateTexture() {
         renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
-    void WidgetInstanceDisplayer::updateScissor(std::size_t instanceId) {
-        this->instanceId = instanceId;
-
+    void WidgetInstanceDisplayer::updateScissor() {
         std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
         if (scissor.has_value()) {
             renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
     }
 
-    void WidgetInstanceDisplayer::updateCoordinates(std::size_t instanceId) {
-        this->instanceId = instanceId;
-
+    void WidgetInstanceDisplayer::updateCoordinates() {
         coordinates.clear();
         getReferenceWidget().retrieveVertexCoordinates(coordinates);
         renderer->updateData(0, coordinates);
@@ -111,9 +105,7 @@ namespace urchin {
         renderer->updateData(1, coordinates);
     }
 
-    void WidgetInstanceDisplayer::updateAlphaFactor(std::size_t instanceId) {
-        this->instanceId = instanceId;
-
+    void WidgetInstanceDisplayer::updateAlphaFactor() {
         colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
         renderer->updateUniformData(2, &colorParams);
     }
@@ -140,6 +132,10 @@ namespace urchin {
 
     std::size_t WidgetInstanceDisplayer::getInstanceId() const {
         return instanceId;
+    }
+
+    void WidgetInstanceDisplayer::updateInstanceId(std::size_t instanceId) {
+        this->instanceId = instanceId;
     }
 
     const std::vector<Widget*>& WidgetInstanceDisplayer::getInstanceWidgets() const {

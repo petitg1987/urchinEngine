@@ -15,13 +15,14 @@ namespace urchin {
 
             void onUiRendererSizeUpdated();
             void onGammaFactorUpdated();
-            void updateTexture(std::size_t);
-            void updateScissor(std::size_t);
-            void updateCoordinates(std::size_t);
-            void updateAlphaFactor(std::size_t);
+            void updateTexture();
+            void updateScissor();
+            void updateCoordinates();
+            void updateAlphaFactor();
 
             const WidgetSetDisplayer& getWidgetSetDisplayer() const;
             std::size_t getInstanceId() const;
+            void updateInstanceId(std::size_t);
             const std::vector<Widget*>& getInstanceWidgets() const;
 
             void addInstanceWidget(Widget&);

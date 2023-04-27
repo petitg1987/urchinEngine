@@ -84,22 +84,31 @@ namespace urchin {
             bool canUpdateDisplayer = false;
             std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
             if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
-                bool updateNotAffectInstanceId = newModelInstanceId == displayer->getInstanceId(); //case: update scale from 1.0 to 1.0, etc.
-                bool displayerUpdatable = displayer->getInstanceCount() <= 1 && !modelInstanceDisplayers.contains(newModelInstanceId); //displayer is not shared and there isn't other displayer matching the new instance ID
-                canUpdateDisplayer = updateNotAffectInstanceId || displayerUpdatable;
+                if (displayer->getInstanceCount() <= 1 && !modelInstanceDisplayers.contains(newModelInstanceId)) {
+                    //case: displayer is not shared and there isn't other displayer matching the new instance ID
+                    canUpdateDisplayer = true;
+
+                    auto displayerNodeHandler = modelInstanceDisplayers.extract(displayer->getInstanceId());
+                    displayerNodeHandler.mapped()->updateInstanceId(newModelInstanceId);
+                    displayerNodeHandler.key() = newModelInstanceId;
+                    modelInstanceDisplayers.insert(std::move(displayerNodeHandler));
+                } else if (newModelInstanceId == displayer->getInstanceId()) {
+                    //case: update scale from 1.0 to 1.0, etc.
+                    canUpdateDisplayer = true;
+                }
             } else if (newModelInstanceId == ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() == ModelDisplayable::INSTANCING_DENY_ID) {
                 canUpdateDisplayer = true;
             }
 
             if (canUpdateDisplayer) {
                 if (notificationType == Model::MESH_VERTICES_UPDATED) {
-                    displayer->updateMeshVertices(newModelInstanceId, model);
+                    displayer->updateMeshVertices(model);
                 } else if (notificationType == Model::MESH_UV_UPDATED) {
-                    displayer->updateMeshUv(newModelInstanceId, model);
+                    displayer->updateMeshUv(model);
                 } else if (notificationType == Model::MATERIAL_UPDATED) {
-                    displayer->updateMaterial(newModelInstanceId, model);
+                    displayer->updateMaterial(model);
                 } else if (notificationType == Model::SCALE_UPDATED) {
-                    displayer->updateScale(newModelInstanceId);
+                    displayer->updateScale();
                 }
             }
         }

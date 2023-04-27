@@ -24,13 +24,14 @@ namespace urchin {
 
             void initialize();
 
-            void updateMeshVertices(std::size_t, const Model*);
-            void updateMeshUv(std::size_t, const Model*);
-            void updateMaterial(std::size_t, const Model*);
-            void updateScale(std::size_t);
+            void updateMeshVertices(const Model*);
+            void updateMeshUv(const Model*);
+            void updateMaterial(const Model*);
+            void updateScale();
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             std::size_t getInstanceId() const;
+            void updateInstanceId(std::size_t);
             const std::vector<Model*>& getInstanceModels() const;
 
             void addInstanceModel(Model&);
