@@ -1,5 +1,3 @@
-#include <limits>
-
 #include <resources/model/MeshService.h>
 #include <resources/model/ConstAnimation.h>
 
