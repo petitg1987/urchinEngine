@@ -34,8 +34,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "widgetInit");
 
         this->uiRenderer = &uiRenderer;
-
         createOrUpdateWidget();
+
         for (const auto& child : children) {
             child->initialize(uiRenderer);
         }
@@ -58,6 +58,8 @@ namespace urchin {
 
     void Widget::onResize() {
         createOrUpdateWidget();
+        notifyObservers(this, SIZE_UPDATED);
+
         for (const auto& child : children) {
             child->onResize();
         }
@@ -65,6 +67,7 @@ namespace urchin {
 
     void Widget::onCameraProjectionUpdate() {
         createOrUpdateWidget();
+
         for (const auto& child : children) {
             child->onCameraProjectionUpdate();
         }
