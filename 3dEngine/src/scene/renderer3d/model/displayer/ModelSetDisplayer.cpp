@@ -89,6 +89,7 @@ namespace urchin {
                     canUpdateDisplayer = true;
 
                     auto displayerNodeHandler = modelInstanceDisplayers.extract(displayer->getInstanceId());
+                    assert(displayerNodeHandler.mapped().get() == displayer);
                     displayerNodeHandler.mapped()->updateInstanceId(newModelInstanceId);
                     displayerNodeHandler.key() = newModelInstanceId;
                     modelInstanceDisplayers.insert(std::move(displayerNodeHandler));
