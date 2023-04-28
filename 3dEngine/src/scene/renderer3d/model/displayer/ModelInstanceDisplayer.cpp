@@ -128,7 +128,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) {
+    void ModelInstanceDisplayer::updateMeshVertices(const Model* model) const {
         unsigned int meshIndex = 0;
         for (const auto& meshRenderer: meshRenderers) {
             if (model->isMeshUpdated(meshIndex)) {
@@ -143,7 +143,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMeshUv(const Model* model) {
+    void ModelInstanceDisplayer::updateMeshUv(const Model* model) const {
         unsigned int meshIndex = 0;
         for (const auto& meshRenderer : meshRenderers) {
             if (model->isMeshUpdated(meshIndex)) {
@@ -156,7 +156,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateMaterial(const Model* model) {
+    void ModelInstanceDisplayer::updateMaterial(const Model* model) const {
         if (displayMode == DisplayMode::DEFAULT_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
@@ -183,7 +183,7 @@ namespace urchin {
         }
     }
 
-    void ModelInstanceDisplayer::updateScale() {
+    void ModelInstanceDisplayer::updateScale() const {
         if (displayMode == DisplayMode::DEFAULT_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
@@ -205,7 +205,7 @@ namespace urchin {
         return *instanceModels[0];
     }
 
-    void ModelInstanceDisplayer::fillMaterialData(const Mesh& mesh) {
+    void ModelInstanceDisplayer::fillMaterialData(const Mesh& mesh) const {
         materialData.encodedEmissiveFactor = std::clamp(mesh.getMaterial().getEmissiveFactor() / Material::MAX_EMISSIVE_FACTOR, 0.0f, 1.0f);
         materialData.ambientFactor = mesh.getMaterial().getAmbientFactor();
     }
@@ -239,7 +239,7 @@ namespace urchin {
         this->instanceId = instanceId;
     }
 
-    const std::vector<Model*>& ModelInstanceDisplayer::getInstanceModels() const {
+    std::span<Model* const> ModelInstanceDisplayer::getInstanceModels() const {
         return instanceModels;
     }
 
@@ -249,7 +249,7 @@ namespace urchin {
         } else {
             #ifdef URCHIN_DEBUG
                 assert(instanceId != ModelDisplayable::INSTANCING_DENY_ID);
-                assert(instanceId == model.computeInstanceId(displayMode)); //TODO crash with extra level !
+                assert(instanceId == model.computeInstanceId(displayMode));
             #endif
         }
 

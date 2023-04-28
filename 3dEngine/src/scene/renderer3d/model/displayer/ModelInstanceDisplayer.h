@@ -24,15 +24,15 @@ namespace urchin {
 
             void initialize();
 
-            void updateMeshVertices(const Model*);
-            void updateMeshUv(const Model*);
-            void updateMaterial(const Model*);
-            void updateScale();
+            void updateMeshVertices(const Model*) const;
+            void updateMeshUv(const Model*) const;
+            void updateMaterial(const Model*) const;
+            void updateScale() const;
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             std::size_t getInstanceId() const;
             void updateInstanceId(std::size_t);
-            const std::vector<Model*>& getInstanceModels() const;
+            std::span<Model* const> getInstanceModels() const;
 
             void addInstanceModel(Model&);
             void removeInstanceModel(Model&);
@@ -48,7 +48,7 @@ namespace urchin {
         private:
             Model& getReferenceModel() const;
 
-            void fillMaterialData(const Mesh&);
+            void fillMaterialData(const Mesh&) const;
             std::vector<Point2<float>> scaleUv(const std::vector<Point2<float>>&, const std::vector<Vector3<float>>&, const UvScale&) const;
             TextureParam buildTextureParam(const Mesh&) const;
 
