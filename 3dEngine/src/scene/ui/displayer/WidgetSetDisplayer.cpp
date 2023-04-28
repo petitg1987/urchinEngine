@@ -12,7 +12,7 @@ namespace urchin {
         clearDisplayers();
     }
 
-    void WidgetSetDisplayer::onUiRendererSizeUpdated() {
+    void WidgetSetDisplayer::onUiRendererSizeUpdated() const {
         for (const auto& [widget, displayer] : widgetDisplayers) {
             displayer->onUiRendererSizeUpdated();
         }
@@ -22,7 +22,7 @@ namespace urchin {
         }
     }
 
-    void WidgetSetDisplayer::onGammaFactorUpdated() {
+    void WidgetSetDisplayer::onGammaFactorUpdated() const {
         for (const auto& [widget, displayer] : widgetDisplayers) {
             displayer->onGammaFactorUpdated();
         }
@@ -184,7 +184,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<Widget*>& WidgetSetDisplayer::getWidgets() const {
+    std::span<Widget* const> WidgetSetDisplayer::getWidgets() const {
         return widgets;
     }
 

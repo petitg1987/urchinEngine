@@ -23,7 +23,7 @@ namespace urchin {
             const WidgetSetDisplayer& getWidgetSetDisplayer() const;
             std::size_t getInstanceId() const;
             void updateInstanceId(std::size_t);
-            const std::vector<Widget*>& getInstanceWidgets() const;
+            std::span<Widget* const> getInstanceWidgets() const;
 
             void addInstanceWidget(Widget&);
             void removeInstanceWidget(Widget&);

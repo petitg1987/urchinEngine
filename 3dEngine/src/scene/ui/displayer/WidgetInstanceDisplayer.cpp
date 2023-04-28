@@ -112,7 +112,7 @@ namespace urchin {
 
     void WidgetInstanceDisplayer::onUiRendererSizeUpdated() {
         if (!uiRenderer.getUi3dData()) {
-            Matrix4<float> projectionViewModelMatrix( //orthogonal matrix with origin at top left screen
+            Matrix4 projectionViewModelMatrix( //orthogonal matrix with origin at top left screen
                     2.0f / (float) uiRenderer.getUiResolution().X, 0.0f, -1.0f, 0.0f,
                     0.0f, 2.0f / (float) uiRenderer.getUiResolution().Y, -1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f, 0.0f,
@@ -138,7 +138,7 @@ namespace urchin {
         this->instanceId = instanceId;
     }
 
-    const std::vector<Widget*>& WidgetInstanceDisplayer::getInstanceWidgets() const {
+    std::span<Widget* const> WidgetInstanceDisplayer::getInstanceWidgets() const {
         return instanceWidgets;
     }
 
@@ -209,12 +209,11 @@ namespace urchin {
         float transOriginY = -widget.getHeight() / 2.0f;
         float sinRotate = std::sin(widget.getRotation());
         float cosRotate = std::cos(widget.getRotation());
-        Matrix4<float> modelMatrix(
+        instanceModelMatrices.emplace_back(Matrix4<float>(
                 widget.getScale().X * cosRotate, widget.getScale().Y * -sinRotate, 0.0f, transX + (transOriginX * widget.getScale().X * cosRotate) + (transOriginY * widget.getScale().Y * -sinRotate),
                 widget.getScale().X * sinRotate, widget.getScale().Y * cosRotate, 0.0f, transY + (transOriginX * widget.getScale().X * sinRotate) + (transOriginY * widget.getScale().Y * cosRotate),
                 0.0f, 0.0, 1.0f, zBias,
-                0.0f, 0.0f, 0.0f, 1.0f);
-        instanceModelMatrices.emplace_back(modelMatrix);
+                0.0f, 0.0f, 0.0f, 1.0f));
     }
 
     void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {

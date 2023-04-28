@@ -13,13 +13,13 @@ namespace urchin {
             explicit WidgetSetDisplayer(const UIRenderer&);
             ~WidgetSetDisplayer() override;
 
-            void onUiRendererSizeUpdated();
-            void onGammaFactorUpdated();
+            void onUiRendererSizeUpdated()  const;
+            void onGammaFactorUpdated() const;
             void notify(Observable*, int) override;
 
             void updateWidgets(std::span<Widget* const>);
             void removeWidget(Widget*);
-            const std::vector<Widget*>& getWidgets() const;
+            std::span<Widget* const> getWidgets() const;
 
             void prepareRendering(unsigned int&, const Matrix4<float>&);
 

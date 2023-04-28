@@ -60,7 +60,7 @@ namespace urchin {
         return WidgetType::STATIC_BITMAP;
     }
 
-    void StaticBitmap::updateTexture(const std::string& filename) {
+    void StaticBitmap::updateTexture(const std::string& filename) { //TODO bad
         texture = buildTexture(filename);
         Widget::updateTexture(texture);
     }
