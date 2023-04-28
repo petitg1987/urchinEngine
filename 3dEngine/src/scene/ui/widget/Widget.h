@@ -124,7 +124,7 @@ namespace urchin {
             Clipboard& getClipboard() const;
 
             virtual void createOrUpdateWidget() = 0;
-            void updateTexture(std::shared_ptr<Texture>);
+            void changeTexture(std::shared_ptr<Texture>);
 
             WidgetOutline& getOutline();
             const WidgetOutline& getOutline() const;

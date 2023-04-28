@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void StaticBitmap::createOrUpdateWidget() {
-        Widget::updateTexture(texture);
+        changeTexture(texture);
     }
 
     bool StaticBitmap::requireRenderer() const {
@@ -60,9 +60,9 @@ namespace urchin {
         return WidgetType::STATIC_BITMAP;
     }
 
-    void StaticBitmap::updateTexture(const std::string& filename) { //TODO bad
+    void StaticBitmap::updateTexture(const std::string& filename) {
         texture = buildTexture(filename);
-        Widget::updateTexture(texture);
+        changeTexture(texture);
     }
 
     const std::string& StaticBitmap::getTextureName() const {

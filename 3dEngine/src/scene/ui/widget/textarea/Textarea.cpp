@@ -69,7 +69,7 @@ namespace urchin {
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textareaChunk);
         texTextareaDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
-        updateTexture(texTextareaDefault);
+        changeTexture(texTextareaDefault);
 
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(false, "skin", UdaAttribute("type", "focus"), textareaChunk);
         if (skinChunkFocus) {
@@ -114,7 +114,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                updateTexture(texTextareaFocus);
+                changeTexture(texTextareaFocus);
 
                 Rectangle2D textZone(
                         Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
@@ -129,7 +129,7 @@ namespace urchin {
                 }
             } else {
                 state = INACTIVE;
-                updateTexture(texTextareaDefault);
+                changeTexture(texTextareaDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -281,7 +281,7 @@ namespace urchin {
 
     void Textarea::onResetStateEvent() {
         state = INACTIVE;
-        updateTexture(texTextareaDefault);
+        changeTexture(texTextareaDefault);
     }
 
     bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {

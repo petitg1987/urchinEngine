@@ -39,7 +39,7 @@ namespace urchin {
 
         auto skinChunkDefault = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), textBoxChunk);
         texTextBoxDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunkDefault, &getOutline());
-        updateTexture(texTextBoxDefault);
+        changeTexture(texTextBoxDefault);
 
         auto skinChunkFocus = UISkinService::instance().getSkinReader().getFirstChunk(false, "skin", UdaAttribute("type", "focus"), textBoxChunk);
         if (skinChunkFocus) {
@@ -112,7 +112,7 @@ namespace urchin {
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
             if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
-                updateTexture(texTextBoxFocus);
+                changeTexture(texTextBoxFocus);
 
                 int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                 int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
@@ -122,7 +122,7 @@ namespace urchin {
                 selectModeOn = true;
             } else {
                 state = INACTIVE;
-                updateTexture(texTextBoxDefault);
+                changeTexture(texTextBoxDefault);
                 cursor->setIsVisible(false);
                 resetSelection();
             }
@@ -252,7 +252,7 @@ namespace urchin {
 
     void TextBox::onResetStateEvent() {
         state = INACTIVE;
-        updateTexture(texTextBoxDefault);
+        changeTexture(texTextBoxDefault);
     }
 
     bool TextBox::isCharacterAllowed(char32_t unicodeCharacter) const {

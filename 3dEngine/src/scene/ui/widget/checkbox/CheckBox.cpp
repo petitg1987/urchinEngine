@@ -20,7 +20,7 @@ namespace urchin {
         auto checkBoxChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "checkBox", UdaAttribute("skin", skinName));
         texChecked = loadTexture(checkBoxChunk, "imageChecked");
         texUnchecked = loadTexture(checkBoxChunk, "imageUnchecked");
-        updateTexture(isChecked() ? texChecked : texUnchecked);
+        changeTexture(isChecked() ? texChecked : texUnchecked);
     }
 
     bool CheckBox::requireRenderer() const {
@@ -47,9 +47,9 @@ namespace urchin {
 
     void CheckBox::refreshTexture() {
         if (bIsChecked) {
-            updateTexture(texChecked);
+            changeTexture(texChecked);
         } else {
-            updateTexture(texUnchecked);
+            changeTexture(texUnchecked);
         }
     }
 

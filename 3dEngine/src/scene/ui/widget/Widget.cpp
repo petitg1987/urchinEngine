@@ -339,7 +339,7 @@ namespace urchin {
         return size;
     }
 
-    void Widget::updateTexture(std::shared_ptr<Texture> texture) {
+    void Widget::changeTexture(std::shared_ptr<Texture> texture) {
         this->texture = std::move(texture);
         notifyObservers(this, TEXTURE_UPDATED);
     }

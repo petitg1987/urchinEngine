@@ -352,7 +352,7 @@ namespace urchin {
 
         std::map<std::string, std::string, std::less<>> fontParams = {{"fontSize", std::to_string(fontHeight)}, {"fontColor", fontColor}};
         font = ResourceRetriever::instance().getResource<Font>(ttfFilename, fontParams);
-        updateTexture(font->getTexture());
+        changeTexture(font->getTexture());
     }
 
     unsigned int Text::retrieveFontHeight(const UdaChunk* textChunk) const {

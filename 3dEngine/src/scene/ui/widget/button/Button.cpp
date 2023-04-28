@@ -28,7 +28,7 @@ namespace urchin {
 
         auto skinDefaultChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "default"), buttonChunk);
         texInfoDefault = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinDefaultChunk);
-        updateTexture(texInfoDefault);
+        changeTexture(texInfoDefault);
 
         auto skinFocusChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute("type", "focus"), buttonChunk);
         texInfoOnFocus = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinFocusChunk);
@@ -53,15 +53,15 @@ namespace urchin {
     void Button::refreshTexture() {
         if (getWidgetState() == FOCUS) {
             if (getTexture().get() != texInfoOnFocus.get()) {
-                updateTexture(texInfoOnFocus);
+                changeTexture(texInfoOnFocus);
             }
         } else if (getWidgetState() == CLICKING) {
             if (getTexture().get() != texInfoOnClick.get()) {
-                updateTexture(texInfoOnClick);
+                changeTexture(texInfoOnClick);
             }
         } else {
             if (getTexture().get() != texInfoDefault.get()) {
-                updateTexture(texInfoDefault);
+                changeTexture(texInfoDefault);
             }
         }
     }

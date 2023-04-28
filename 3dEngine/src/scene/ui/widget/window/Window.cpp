@@ -32,7 +32,7 @@ namespace urchin {
 
         auto skinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "skin", UdaAttribute(), windowChunk);
         texWindow = UISkinService::instance().createWidgetTexture((unsigned int)getWidth(), (unsigned int)getHeight(), skinChunk, &getOutline());
-        updateTexture(texWindow);
+        changeTexture(texWindow);
 
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), windowChunk);
