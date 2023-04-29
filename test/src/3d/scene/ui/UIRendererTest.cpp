@@ -218,7 +218,7 @@ void UIRendererTest::windowChildRenderingOrder() {
     unsigned int renderingOrder = 0;
     uiRenderer->prepareRendering(1.0f / 60.0f, renderingOrder, Matrix4<float>());
 
-    const std::vector<Widget*>& sortedWidgetsToRender = uiRenderer->getWidgetSetDisplayer().getWidgets();
+    std::span<Widget* const> sortedWidgetsToRender = uiRenderer->getWidgetSetDisplayer().getWidgets();
     AssertHelper::assertUnsignedIntEquals(sortedWidgetsToRender.size(), 8);
     AssertHelper::assertTrue(sortedWidgetsToRender[0] == win1.get());
     AssertHelper::assertTrue(sortedWidgetsToRender[2] == widgetWin1Lvl1.get());
