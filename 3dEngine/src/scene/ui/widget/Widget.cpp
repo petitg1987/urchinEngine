@@ -128,15 +128,20 @@ namespace urchin {
         return nullptr;
     }
 
-    Window* Widget::getParentWindow() const {
-        Widget *parent = getParent();
-        while (parent != nullptr) {
-            if (parent->getWidgetType() == WidgetType::WINDOW) {
-                return static_cast<Window*>(parent);
+    bool Widget::isRootWidget() const {
+        return getParent() == nullptr || getWidgetType() == WidgetType::WINDOW;
+    }
+
+    const Widget* Widget::getParentRootWidget() const {
+        const Widget* currentWidget = this;
+        do {
+            if (currentWidget->isRootWidget()) {
+                return currentWidget;
             }
-            parent = parent->getParent();
-        }
-        return nullptr;
+            currentWidget = currentWidget->getParent();
+        } while (currentWidget != nullptr);
+
+        throw std::runtime_error("Root widget not found on: " + getName());
     }
 
     unsigned int Widget::computeDepthLevel() const {

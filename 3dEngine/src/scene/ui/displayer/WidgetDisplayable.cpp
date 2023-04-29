@@ -38,12 +38,9 @@ namespace urchin {
         //reason: 2 widgets cannot be instanced when they have different depth to avoid incorrect displaying (z-depth problem)
         HashUtil::combine(instanceId, widget->computeDepthLevel());
 
-        //same instance ID only when widget have same window or no window
-        //reason: 2 widgets cannot be instanced when they belong on 2 different windows because windows can overlap each other and therefore cannot be displayed at same time
-        Window *window = widget->getParentWindow();
-        if (window) {
-            HashUtil::combine(instanceId, window);
-        }
+        //same instance ID only when widget have same root widget
+        //reason: 2 widgets cannot be instanced when they belong on 2 different root/windows because root/windows can overlap each other and therefore cannot be displayed at same time with instancing
+        HashUtil::combine(instanceId, widget->getParentRootWidget());
 
         return instanceId;
     }

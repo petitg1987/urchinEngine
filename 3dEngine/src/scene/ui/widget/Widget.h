@@ -53,7 +53,8 @@ namespace urchin {
 
             Widget* getParent() const;
             Container* getParentContainer() const;
-            Window* getParentWindow() const;
+            bool isRootWidget() const;
+            const Widget* getParentRootWidget() const;
             unsigned int computeDepthLevel() const;
             bool isUi3D() const;
             virtual bool requireRenderer() const;
