@@ -672,7 +672,9 @@ namespace urchin {
             handleWidgetResetState();
             onResetStateEvent();
 
-            for (const auto& child : children) {
+            //keep a temporary copy of the widgets in case the underlying action goal is to destroy the widgets
+            std::vector<std::shared_ptr<Widget>> childrenCopy = children;
+            for (const auto& child : childrenCopy) {
                 child->onResetState();
             }
         }
