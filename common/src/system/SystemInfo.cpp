@@ -11,6 +11,7 @@
     #include <algorithm>
     #include <system/CommandExecutor.h>
     #include <util/TypeConverter.h>
+    #include <gnu/libc-version.h>
 #endif
 
 #include <system/SystemInfo.h>
@@ -93,6 +94,14 @@ namespace urchin {
             graphicsCardNamesList = graphicsCardNamesList.substr(0, graphicsCardNamesList.size() - 2);
         }
         return graphicsCardNamesList;
+    }
+
+    std::string SystemInfo::retrieveLibcVersion() {
+        #ifdef _WIN32
+            return "[libgcc_s_seh-1.dll]"
+        #else
+            return std::string(gnu_get_libc_version());
+        #endif
     }
 
     std::string SystemInfo::homeDirectory() {

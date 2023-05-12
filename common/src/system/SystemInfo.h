@@ -17,6 +17,7 @@ namespace urchin {
             static unsigned int retrieveCpuCores();
             static uint64_t retrieveTotalMemory();
             static std::string retrieveGraphicsCardNames();
+            static std::string retrieveLibcVersion();
 
             static std::string homeDirectory();
             static std::string userDataDirectory();
