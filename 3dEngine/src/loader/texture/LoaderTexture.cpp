@@ -6,8 +6,21 @@
 namespace urchin {
 
     std::shared_ptr<Texture> LoaderTexture::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>& params) {
-        assert(params.find("mipMap") != params.end());
-        unsigned int generateMipMap = TypeConverter::toBool(params.find("mipMap")->second);
+        if (filename == DEFAULT_TEXTURE_FILENAME) {
+            std::string defaultTextureType = params.at("textureType");
+            if (defaultTextureType == "normal") {
+                std::vector<unsigned char> defaultNormalColor({127, 127, 255, 255});
+                return Texture::build("defaultNormal", 1, 1, TextureFormat::RGBA_8_INT, defaultNormalColor.data(), TextureDataType::INT_8);
+            } else if (defaultTextureType == "roughness") {
+                std::vector<unsigned char> defaultRoughnessValue({255});
+                return Texture::build("defaultRoughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultRoughnessValue.data(), TextureDataType::INT_8);
+            } else if (defaultTextureType == "metalness") {
+                std::vector<unsigned char> defaultMetalnessValue({0});
+                return Texture::build("defaultMetalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, defaultMetalnessValue.data(), TextureDataType::INT_8);
+            } else {
+                 throw std::runtime_error("Unknown default texture type: " + defaultTextureType);
+            }
+        }
 
         auto image = ResourceRetriever::instance().getResource<Image>(filename);
 
@@ -21,6 +34,7 @@ namespace urchin {
         }
 
         texture->setHasTransparency(image->hasTransparency());
+        unsigned int generateMipMap = TypeConverter::toBool(params.at("mipMap"));
         if (generateMipMap) {
             texture->enableMipmap();
         }
