@@ -18,12 +18,16 @@ namespace urchin {
 
     class ResourceRetriever : public ThreadSafeSingleton<ResourceRetriever> {
         public:
+            static constexpr char SPECIAL_FILENAME_PREFIX = '#';
+
             friend class ThreadSafeSingleton<ResourceRetriever>;
 
             template<class T> std::shared_ptr<T> getResource(const std::string&, const std::map<std::string, std::string, std::less<>>& = {}, bool = false);
 
         private:
             ResourceRetriever();
+
+            bool isFullPath(const std::string&) const;
 
             std::map<std::string, std::unique_ptr<LoaderInterface>, std::less<>> loadersRegistry;
     };

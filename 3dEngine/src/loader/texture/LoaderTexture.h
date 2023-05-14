@@ -4,12 +4,13 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <loader/Loader.h>
+#include <resources/ResourceRetriever.h>
 
 namespace urchin {
 
     class LoaderTexture final : public Loader<Texture> {
         public:
-            static constexpr char DEFAULT_TEXTURE_FILENAME[] = "/#DEFAULT_TEXTURE#";
+            static const std::string DEFAULT_TEXTURE_FILENAME;
 
             ~LoaderTexture() override = default;
 

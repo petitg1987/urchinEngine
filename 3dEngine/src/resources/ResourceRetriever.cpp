@@ -25,4 +25,11 @@ namespace urchin {
         loadersRegistry.try_emplace(typeid(Font).name(), std::make_unique<LoaderTTF>());
     }
 
+    bool ResourceRetriever::isFullPath(const std::string& filename) const {
+        if (FileUtil::isAbsolutePath(filename)) {
+            return true;
+        }
+        return !filename.empty() && filename[0] == SPECIAL_FILENAME_PREFIX;
+    }
+
 }

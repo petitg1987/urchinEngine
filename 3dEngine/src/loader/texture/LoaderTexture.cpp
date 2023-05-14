@@ -5,6 +5,9 @@
 
 namespace urchin {
 
+    //static
+    const std::string LoaderTexture::DEFAULT_TEXTURE_FILENAME = std::string(1, ResourceRetriever::SPECIAL_FILENAME_PREFIX) + "DEFAULT_TEXTURE";
+
     std::shared_ptr<Texture> LoaderTexture::loadFromFile(const std::string& filename, const std::map<std::string, std::string, std::less<>>& params) {
         if (filename == DEFAULT_TEXTURE_FILENAME) {
             std::string defaultTextureType = params.at("textureType");
