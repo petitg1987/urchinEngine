@@ -98,7 +98,7 @@ namespace urchin {
 
     std::string SystemInfo::retrieveLibcVersion() {
         #ifdef _WIN32
-            return "[libgcc_s_seh-1.dll]"
+            return "[libgcc_s_seh-1.dll]";
         #else
             return std::string(gnu_get_libc_version());
         #endif
