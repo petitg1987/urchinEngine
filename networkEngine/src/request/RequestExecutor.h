@@ -10,10 +10,10 @@ namespace urchin {
             RequestExecutor();
             ~RequestExecutor();
 
-            RequestResult executeRequest(const HttpRequest&);
+            RequestResult executeRequest(const HttpRequest&, unsigned int = 0);
 
         private:
-            unsigned int requestTimeoutSec;
+            unsigned int defaultRequestTimeoutSec;
             void* curl;
     };
 

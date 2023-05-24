@@ -14,7 +14,7 @@ namespace urchin {
             ~NetworkExecutor();
 
             void asyncExecute(HttpRequest);
-            RequestResult syncExecute(const HttpRequest&);
+            RequestResult syncExecute(const HttpRequest&, unsigned int = 0);
 
             void interruptThread();
             void checkNoExceptionRaised() const;
