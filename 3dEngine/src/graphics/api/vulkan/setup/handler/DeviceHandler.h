@@ -33,6 +33,8 @@ namespace urchin {
             VkPhysicalDevice getPhysicalDevice() const;
             VkDevice getLogicalDevice() const;
 
+            bool isMemoryBudgetExtEnabled() const;
+
         private:
             VkPhysicalDevice findPhysicalDevice(VkInstance instance);
             PhysicalDeviceSuitability retrievePhysicalDeviceSuitability(VkPhysicalDevice);
@@ -43,6 +45,8 @@ namespace urchin {
             std::vector<PhysicalDeviceFeature> physicalDeviceRequiredFeatures;
             std::vector<PhysicalDeviceFeature> physicalDeviceRequiredVulkan12Features;
             std::vector<std::pair<const char*, std::string>> physicalDeviceRequiredExtensions;
+            std::vector<std::pair<const char*, std::string>> physicalDeviceOptionalExtensions;
+            std::map<VkPhysicalDevice, std::vector<const char*>> physicalDeviceOptionalExtensionsSupported;
             bool devicesInitialized;
             VkSurfaceKHR surface;
 

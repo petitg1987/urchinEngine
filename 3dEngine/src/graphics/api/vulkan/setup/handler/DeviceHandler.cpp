@@ -52,6 +52,8 @@ namespace urchin {
         };
         physicalDeviceRequiredExtensions = {
                 std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain"),
+        };
+        physicalDeviceOptionalExtensions = {
                 std::make_pair<const char*, std::string>(VK_EXT_MEMORY_BUDGET_EXTENSION_NAME, "memory budget")
         };
     }
@@ -79,6 +81,12 @@ namespace urchin {
     VkDevice DeviceHandler::getLogicalDevice() const {
         assert(devicesInitialized);
         return logicalDevice;
+    }
+
+    bool DeviceHandler::isMemoryBudgetExtEnabled() const {
+        assert(devicesInitialized);
+        const std::vector<const char*>& deviceSupportedExtensions = physicalDeviceOptionalExtensionsSupported.find(physicalDevice)->second;
+        return std::ranges::find(deviceSupportedExtensions, VK_EXT_MEMORY_BUDGET_EXTENSION_NAME) != deviceSupportedExtensions.end();
     }
 
     /**
@@ -152,10 +160,12 @@ namespace urchin {
             }
         }
 
-        //check swap chain is adequate
-        SwapChainSupportDetails swapChainSupport = SwapChainHandler::querySwapChainSupport(physicalDeviceToCheck);
-        if (swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
-            return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing adequate swap chain support");
+        //check optional extensions
+        for (const auto& [extensionName, extensionDescription] : physicalDeviceOptionalExtensions) {
+            if (checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, extensionName)) {
+                std::vector<const char*> emptyExt;
+                physicalDeviceOptionalExtensionsSupported.try_emplace(physicalDeviceToCheck, emptyExt).first->second.emplace_back(extensionName);
+            }
         }
 
         //check required queue families
@@ -163,6 +173,12 @@ namespace urchin {
         queueFamilyHandler.initializeQueueFamilies(physicalDeviceToCheck, surface);
         if (!queueFamilyHandler.isAllQueueFamiliesFound()) {
             return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing a queue family support");
+        }
+
+        //check swap chain is adequate
+        SwapChainSupportDetails swapChainSupport = SwapChainHandler::querySwapChainSupport(physicalDeviceToCheck);
+        if (swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
+            return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing adequate swap chain support");
         }
 
         int score = 0;
@@ -217,7 +233,21 @@ namespace urchin {
         }
 
         std::vector<const char*> physicalDeviceExtensions;
-        std::ranges::for_each(physicalDeviceRequiredExtensions, [&](std::pair<const char*, std::string>& ext) {physicalDeviceExtensions.emplace_back(ext.first);});
+        std::ranges::for_each(physicalDeviceRequiredExtensions, [&physicalDeviceExtensions](std::pair<const char*, std::string>& ext) {
+            physicalDeviceExtensions.emplace_back(ext.first);
+        });
+        std::ranges::for_each(physicalDeviceOptionalExtensions, [this, &physicalDeviceExtensions](std::pair<const char*, std::string>& ext) {
+            const std::vector<const char*>& deviceSupportedExtensions = physicalDeviceOptionalExtensionsSupported.find(physicalDevice)->second;
+            if (std::ranges::find(deviceSupportedExtensions, ext.first) != deviceSupportedExtensions.end()) {
+                physicalDeviceExtensions.emplace_back(ext.first);
+            } else {
+                const char* extensionName = ext.first;
+                auto extDescriptionIt = std::ranges::find_if(physicalDeviceOptionalExtensions, [extensionName](const std::pair<const char*, std::string>& ext){ return ext.first == extensionName; });
+                if (extDescriptionIt != physicalDeviceOptionalExtensions.end()) { //should be always true
+                    Logger::instance().logInfo("Creating logical device without optional extension: " + extDescriptionIt->second);
+                }
+            }
+        });
         VkDeviceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
