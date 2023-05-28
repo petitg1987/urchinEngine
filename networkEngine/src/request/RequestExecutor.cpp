@@ -9,7 +9,11 @@ namespace urchin {
     }
 
     RequestExecutor::RequestExecutor() :
-            defaultRequestTimeoutSec(ConfigService::instance().getUnsignedIntValue("http-request.timeout")) {
+            defaultRequestTimeoutSec(10) {
+        if (ConfigService::instance().isExist("http-request.timeout")) {
+            defaultRequestTimeoutSec = ConfigService::instance().getUnsignedIntValue("http-request.timeout");
+        }
+
         curl = curl_easy_init();
         if (!curl) {
             throw std::runtime_error("Impossible to initialize curl");
