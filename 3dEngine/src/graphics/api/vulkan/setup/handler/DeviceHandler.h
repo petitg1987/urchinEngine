@@ -33,7 +33,7 @@ namespace urchin {
             VkPhysicalDevice getPhysicalDevice() const;
             VkDevice getLogicalDevice() const;
 
-            bool isMemoryBudgetExtEnabled() const;
+            bool isMemoryBudgetExtSupported() const;
 
         private:
             VkPhysicalDevice findPhysicalDevice(VkInstance instance);

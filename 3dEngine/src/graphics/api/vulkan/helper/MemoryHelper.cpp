@@ -20,7 +20,7 @@ namespace urchin {
     }
 
     void MemoryHelper::checkMemoryUsage() {
-        if (GraphicsSetupService::instance().getDevices().isMemoryBudgetExtEnabled()) {
+        if (GraphicsSetupService::instance().getDevices().isMemoryBudgetExtSupported()) {
             VkPhysicalDeviceMemoryProperties memProperties;
             vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
 

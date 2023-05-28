@@ -159,7 +159,7 @@ namespace urchin {
         allocatorInfo.device = deviceHandler.getLogicalDevice();
         allocatorInfo.instance = vkInstance;
         allocatorInfo.flags = 0;
-        if (deviceHandler.isMemoryBudgetExtEnabled()) {
+        if (deviceHandler.isMemoryBudgetExtSupported()) {
             allocatorInfo.flags |= VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
         }
 

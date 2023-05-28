@@ -83,10 +83,10 @@ namespace urchin {
         return logicalDevice;
     }
 
-    bool DeviceHandler::isMemoryBudgetExtEnabled() const {
+    bool DeviceHandler::isMemoryBudgetExtSupported() const {
         assert(devicesInitialized);
-        const std::vector<const char*>& deviceSupportedExtensions = physicalDeviceOptionalExtensionsSupported.find(physicalDevice)->second;
-        return std::ranges::find(deviceSupportedExtensions, VK_EXT_MEMORY_BUDGET_EXTENSION_NAME) != deviceSupportedExtensions.end();
+        auto itPhysicsDeviceOptionalExt = physicalDeviceOptionalExtensionsSupported.find(physicalDevice);
+        return itPhysicsDeviceOptionalExt != physicalDeviceOptionalExtensionsSupported.end() && std::ranges::find(itPhysicsDeviceOptionalExt->second, VK_EXT_MEMORY_BUDGET_EXTENSION_NAME) != itPhysicsDeviceOptionalExt->second.end();
     }
 
     /**
@@ -237,12 +237,12 @@ namespace urchin {
             physicalDeviceExtensions.emplace_back(ext.first);
         });
         std::ranges::for_each(physicalDeviceOptionalExtensions, [this, &physicalDeviceExtensions](std::pair<const char*, std::string>& ext) {
-            const std::vector<const char*>& deviceSupportedExtensions = physicalDeviceOptionalExtensionsSupported.find(physicalDevice)->second;
-            if (std::ranges::find(deviceSupportedExtensions, ext.first) != deviceSupportedExtensions.end()) {
+            auto itPhysicsDeviceOptionalExt = physicalDeviceOptionalExtensionsSupported.find(physicalDevice);
+            if (itPhysicsDeviceOptionalExt != physicalDeviceOptionalExtensionsSupported.end() && std::ranges::find(itPhysicsDeviceOptionalExt->second, ext.first) != itPhysicsDeviceOptionalExt->second.end()) {
                 physicalDeviceExtensions.emplace_back(ext.first);
             } else {
                 const char* extensionName = ext.first;
-                auto extDescriptionIt = std::ranges::find_if(physicalDeviceOptionalExtensions, [extensionName](const std::pair<const char*, std::string>& ext){ return ext.first == extensionName; });
+                auto extDescriptionIt = std::ranges::find_if(physicalDeviceOptionalExtensions, [extensionName](const std::pair<const char*, std::string>& ext) { return ext.first == extensionName; });
                 if (extDescriptionIt != physicalDeviceOptionalExtensions.end()) { //should be always true
                     Logger::instance().logInfo("Creating logical device without optional extension: " + extDescriptionIt->second);
                 }
