@@ -17,8 +17,7 @@ namespace urchin {
             uint32_t getGraphicsAndComputeQueueFamily() const;
             uint32_t getPresentationQueueFamily() const;
 
-            VkQueue getGraphicsQueue() const;
-            VkQueue getComputeQueue() const;
+            VkQueue getGraphicsAndComputeQueue() const;
             VkQueue getPresentationQueue() const;
 
         private:
@@ -30,8 +29,7 @@ namespace urchin {
             std::optional<uint32_t> presentationQueueFamily;
 
             bool queuesInitialized;
-            VkQueue graphicsQueue;
-            VkQueue computeQueue;
+            VkQueue graphicsAndComputeQueue;
             VkQueue presentationQueue;
 
 

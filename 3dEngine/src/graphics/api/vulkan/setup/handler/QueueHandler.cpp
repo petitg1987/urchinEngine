@@ -9,8 +9,7 @@ namespace urchin {
     QueueHandler::QueueHandler() :
             queueFamiliesInitialized(false),
             queuesInitialized(false),
-            graphicsQueue(nullptr),
-            computeQueue(nullptr),
+            graphicsAndComputeQueue(nullptr),
             presentationQueue(nullptr) {
 
     }
@@ -69,8 +68,7 @@ namespace urchin {
     }
 
     void QueueHandler::initializeQueues(VkDevice logicalDevice) {
-        vkGetDeviceQueue(logicalDevice, graphicsAndComputeQueueFamily.value(), 0, &graphicsQueue);
-        vkGetDeviceQueue(logicalDevice, graphicsAndComputeQueueFamily.value(), 0, &computeQueue);
+        vkGetDeviceQueue(logicalDevice, graphicsAndComputeQueueFamily.value(), 0, &graphicsAndComputeQueue);
         vkGetDeviceQueue(logicalDevice, presentationQueueFamily.value(), 0, &presentationQueue);
 
         queuesInitialized = true;
@@ -90,14 +88,9 @@ namespace urchin {
         return presentationQueueFamily.value();
     }
 
-    VkQueue QueueHandler::getGraphicsQueue() const {
+    VkQueue QueueHandler::getGraphicsAndComputeQueue() const {
         assert(queuesInitialized);
-        return graphicsQueue;
-    }
-
-    VkQueue QueueHandler::getComputeQueue() const {
-        assert(queuesInitialized);
-        return computeQueue;
+        return graphicsAndComputeQueue;
     }
 
     VkQueue QueueHandler::getPresentationQueue() const {

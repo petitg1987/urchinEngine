@@ -44,11 +44,11 @@ namespace urchin {
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBufferData.commandBuffer;
 
-        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, VK_NULL_HANDLE);
+        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, VK_NULL_HANDLE);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on " + std::string(commandBufferData.name));
         }
-        VkResult queueWaitIdle = vkQueueWaitIdle(GraphicsSetupService::instance().getQueues().getGraphicsQueue()); //use VkFence instead of vkQueueWaitIdle when multiple simultaneous transfers are required
+        VkResult queueWaitIdle = vkQueueWaitIdle(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue()); //use VkFence instead of vkQueueWaitIdle when multiple simultaneous transfers are required
         if (queueWaitIdle != VK_SUCCESS) {
             throw std::runtime_error("Failed to wait for queue idle with error code '" + std::string(string_VkResult(queueWaitIdle)) + "' on " + std::string(commandBufferData.name));
         }

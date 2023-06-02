@@ -252,7 +252,7 @@ namespace urchin {
         if (resultResetFences != VK_SUCCESS) {
             throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
-        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsQueue(), 1, &submitInfo, commandBufferFence);
+        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFence);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
