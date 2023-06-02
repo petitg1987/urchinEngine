@@ -31,6 +31,8 @@ foreach (shaderFile ${shaderFiles})
         set(shaderStage "geometry")
     elseif("${shaderFilename}" MATCHES "frag$")
         set(shaderStage "fragment")
+    elseif("${shaderFilename}" MATCHES "comp$")
+        set(shaderStage "compute")
     endif()
 
     add_custom_command( OUTPUT ${compiledShadersDir}/${compiledShaderName}

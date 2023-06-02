@@ -22,7 +22,8 @@ namespace urchin {
             enum ShaderType {
                 VERTEX,
                 GEOMETRY,
-                FRAGMENT
+                FRAGMENT,
+                COMPUTE
             };
 
             Shader(std::size_t, std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&, std::unique_ptr<ShaderConstants>);

@@ -97,6 +97,8 @@ namespace urchin {
             return VK_SHADER_STAGE_GEOMETRY_BIT;
         } else if (shaderType == Shader::ShaderType::FRAGMENT) {
             return VK_SHADER_STAGE_FRAGMENT_BIT;
+        } else if (shaderType == Shader::ShaderType::COMPUTE) {
+            return VK_SHADER_STAGE_COMPUTE_BIT;
         }
         throw std::invalid_argument("Unknown shader type: " + std::to_string(shaderType));
     }
