@@ -10,6 +10,7 @@ namespace urchin {
             queueFamiliesInitialized(false),
             queuesInitialized(false),
             graphicsQueue(nullptr),
+            computeQueue(nullptr),
             presentationQueue(nullptr) {
 
     }
@@ -21,11 +22,11 @@ namespace urchin {
         std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
 
-        //try to find a unique queue family for graphic and presentation: better for performance
+        //try to find a unique queue family for graphic/compute and presentation: better for performance
         uint32_t i = 0;
         for (const auto& queueFamily : queueFamilies) {
-            if (isGraphicsQueueFamily(queueFamily) && isPresentationQueueFamily(i, physicalDevice, surface)) {
-                graphicsQueueFamily = i;
+            if (isGraphicsAndComputeQueueFamily(queueFamily) && isPresentationQueueFamily(i, physicalDevice, surface)) {
+                graphicsAndComputeQueueFamily = i;
                 presentationQueueFamily = i;
                 assert(isAllQueueFamiliesFound());
                 break;
@@ -37,8 +38,8 @@ namespace urchin {
         if (!isAllQueueFamiliesFound()) {
             i = 0;
             for (const auto& queueFamily : queueFamilies) {
-                if (isGraphicsQueueFamily(queueFamily)) {
-                    graphicsQueueFamily = i;
+                if (isGraphicsAndComputeQueueFamily(queueFamily)) {
+                    graphicsAndComputeQueueFamily = i;
                 }
                 if (isPresentationQueueFamily(i, physicalDevice, surface)) {
                     presentationQueueFamily = i;
@@ -54,8 +55,8 @@ namespace urchin {
         queueFamiliesInitialized = true;
     }
 
-    bool QueueHandler::isGraphicsQueueFamily(VkQueueFamilyProperties queueFamily) const {
-        return queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT;
+    bool QueueHandler::isGraphicsAndComputeQueueFamily(VkQueueFamilyProperties queueFamily) const {
+        return queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT && queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT;
     }
 
     bool QueueHandler::isPresentationQueueFamily(uint32_t queueFamilyIndex, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) const {
@@ -68,19 +69,20 @@ namespace urchin {
     }
 
     void QueueHandler::initializeQueues(VkDevice logicalDevice) {
-        vkGetDeviceQueue(logicalDevice, graphicsQueueFamily.value(), 0, &graphicsQueue);
+        vkGetDeviceQueue(logicalDevice, graphicsAndComputeQueueFamily.value(), 0, &graphicsQueue);
+        vkGetDeviceQueue(logicalDevice, graphicsAndComputeQueueFamily.value(), 0, &computeQueue);
         vkGetDeviceQueue(logicalDevice, presentationQueueFamily.value(), 0, &presentationQueue);
 
         queuesInitialized = true;
     }
 
     bool QueueHandler::isAllQueueFamiliesFound() const {
-        return graphicsQueueFamily.has_value() && presentationQueueFamily.has_value();
+        return graphicsAndComputeQueueFamily.has_value() && presentationQueueFamily.has_value();
     }
 
-    uint32_t QueueHandler::getGraphicsQueueFamily() const {
+    uint32_t QueueHandler::getGraphicsAndComputeQueueFamily() const {
         assert(queueFamiliesInitialized);
-        return graphicsQueueFamily.value();
+        return graphicsAndComputeQueueFamily.value();
     }
 
     uint32_t QueueHandler::getPresentationQueueFamily() const {
@@ -91,6 +93,11 @@ namespace urchin {
     VkQueue QueueHandler::getGraphicsQueue() const {
         assert(queuesInitialized);
         return graphicsQueue;
+    }
+
+    VkQueue QueueHandler::getComputeQueue() const {
+        assert(queuesInitialized);
+        return computeQueue;
     }
 
     VkQueue QueueHandler::getPresentationQueue() const {

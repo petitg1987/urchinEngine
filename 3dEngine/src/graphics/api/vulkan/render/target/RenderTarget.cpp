@@ -320,7 +320,7 @@ namespace urchin {
     void RenderTarget::createCommandPool() {
         VkCommandPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolInfo.queueFamilyIndex = GraphicsSetupService::instance().getQueues().getGraphicsQueueFamily();
+        poolInfo.queueFamilyIndex = GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueueFamily();
         poolInfo.flags = 0;
 
         VkResult result = vkCreateCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);

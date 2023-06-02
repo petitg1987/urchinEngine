@@ -214,7 +214,7 @@ namespace urchin {
         queueFamilyHandler.initializeQueueFamilies(physicalDevice, surface);
 
         std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-        std::set<uint32_t> uniqueQueueFamilies = {queueFamilyHandler.getGraphicsQueueFamily(), queueFamilyHandler.getPresentationQueueFamily()};
+        std::set<uint32_t> uniqueQueueFamilies = {queueFamilyHandler.getGraphicsAndComputeQueueFamily(), queueFamilyHandler.getPresentationQueueFamily()};
 
         float queuePriority = 1.0f;
         for (uint32_t queueFamily : uniqueQueueFamilies) {

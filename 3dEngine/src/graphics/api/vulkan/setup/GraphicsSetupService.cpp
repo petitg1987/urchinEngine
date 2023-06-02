@@ -143,7 +143,7 @@ namespace urchin {
     void GraphicsSetupService::createAllocateCommandPool() {
         VkCommandPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolInfo.queueFamilyIndex = queueHandler.getGraphicsQueueFamily();
+        poolInfo.queueFamilyIndex = queueHandler.getGraphicsAndComputeQueueFamily();
         poolInfo.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
 
         VkResult result = vkCreateCommandPool(deviceHandler.getLogicalDevice(), &poolInfo, nullptr, &allocateCommandPool);
