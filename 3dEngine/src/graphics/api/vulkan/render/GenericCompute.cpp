@@ -24,6 +24,14 @@ namespace urchin {
                 }
             }
         }
+
+        initialize();
+    }
+
+    GenericCompute::~GenericCompute() {
+        cleanup();
+        uniformTextureReaders.clear();
+        //TODO renderTarget.removeRenderer(this);
     }
 
     void GenericCompute::initialize() {
@@ -36,7 +44,26 @@ namespace urchin {
     }
 
     void GenericCompute::cleanup() {
-        //TODO impl
+        if (isInitialized) {
+            if (renderTarget.isValidRenderTarget()) {
+                VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
+                if (result != VK_SUCCESS) {
+                    Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
+                } else {
+                    destroyPipeline();
+                }
+            }
+
+            isInitialized = false;
+        }
+    }
+
+    const std::string& GenericCompute::getName() const {
+        return name;
+    }
+
+    const RenderTarget& GenericCompute::getRenderTarget() const {
+        return renderTarget;
     }
 
     void GenericCompute::createPipeline() {
@@ -70,8 +97,9 @@ namespace urchin {
         pipelineLayoutInfo.setLayoutCount = 1;
         pipelineLayoutInfo.pSetLayouts = &computeDescriptorSetLayout;
 
-        if (vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &computePipelineLayout) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create compute pipeline layout!");
+        VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &computePipelineLayout);
+        if (pipelineLayoutResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create pipeline layout with error code: " + std::string(string_VkResult(pipelineLayoutResult)));
         }
 
         VkComputePipelineCreateInfo pipelineInfo{};
@@ -83,6 +111,14 @@ namespace urchin {
         if (pipelinesResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create compute pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
         }
+    }
+
+    void GenericCompute::destroyPipeline() {
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
+
+        vkDestroyDescriptorSetLayout(logicalDevice, computeDescriptorSetLayout, nullptr);
+        vkDestroyPipeline(logicalDevice, computePipeline, nullptr);
+        vkDestroyPipelineLayout(logicalDevice, computePipelineLayout, nullptr);
     }
 
 }

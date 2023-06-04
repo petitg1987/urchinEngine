@@ -11,12 +11,17 @@ namespace urchin {
     class GenericCompute {
         public:
             explicit GenericCompute(const GenericComputeBuilder&);
+            ~GenericCompute();
+
+            const std::string& getName() const;
+            const RenderTarget& getRenderTarget() const;
 
         private:
             void initialize();
             void cleanup();
 
             void createPipeline();
+            void destroyPipeline();
 
             bool isInitialized;
             bool bIsEnabled;
@@ -30,7 +35,7 @@ namespace urchin {
 
             VkDescriptorSetLayout computeDescriptorSetLayout;
             VkPipelineLayout computePipelineLayout;
-            VkPipeline computePipeline;
+            VkPipeline computePipeline; //TODO use Pipeline object ?
     };
 
 }
