@@ -55,7 +55,7 @@ namespace urchin {
     GenericRenderer::~GenericRenderer() {
         cleanup();
         uniformTextureReaders.clear();
-        renderTarget.removeRenderer(this);
+        renderTarget.removeProcessor(this);
     }
 
     void GenericRenderer::initialize() {
@@ -115,12 +115,12 @@ namespace urchin {
     void GenericRenderer::enableRenderer(unsigned int renderingOrder) {
         this->bIsEnabled = true;
         this->renderingOrder = renderingOrder;
-        renderTarget.notifyRendererEnabled(this);
+        renderTarget.notifyProcessorEnabled(this);
     }
 
     void GenericRenderer::disableRenderer() {
         bIsEnabled = false;
-        renderTarget.notifyRendererDisabled(this);
+        renderTarget.notifyProcessorDisabled(this);
     }
 
     unsigned int GenericRenderer::getRenderingOrder() const {

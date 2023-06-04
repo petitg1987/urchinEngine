@@ -150,7 +150,7 @@ namespace urchin {
     void LightShadowMap::renderModels(std::uint32_t frameIndex, unsigned int numDependenciesToRawShadowMaps, unsigned int renderingOrder) const {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
-        renderTarget->disableAllRenderers();
+        renderTarget->disableAllProcessors();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
         renderTarget->render(frameIndex, numDependenciesToRawShadowMaps);
     }

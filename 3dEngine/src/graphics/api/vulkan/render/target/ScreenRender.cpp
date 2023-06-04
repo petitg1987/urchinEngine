@@ -41,7 +41,7 @@ namespace urchin {
         createCommandBuffers();
         createSyncObjects();
 
-        initializeRenderers();
+        initializeProcessors();
 
         isInitialized = true;
     }
@@ -53,7 +53,7 @@ namespace urchin {
                 Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
             }
 
-            cleanupRenderers();
+            cleanupProcessors();
 
             destroySyncObjects();
             destroyCommandBuffersAndPool();

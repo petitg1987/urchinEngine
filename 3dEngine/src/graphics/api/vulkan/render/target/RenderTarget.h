@@ -7,10 +7,9 @@
 #include <UrchinCommon.h>
 #include <graphics/api/vulkan/texture/Texture.h>
 
-
 namespace urchin {
 
-    class GenericRenderer;
+    class PipelineProcessor;
     class OffscreenRender;
 
     class RenderTarget {
@@ -44,11 +43,11 @@ namespace urchin {
             void setExternalDepthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
-            void addRenderer(GenericRenderer*);
-            void removeRenderer(const GenericRenderer*);
-            void notifyRendererEnabled(const GenericRenderer*);
-            void notifyRendererDisabled(const GenericRenderer*);
-            void disableAllRenderers() const;
+            void addProcessor(PipelineProcessor*);
+            void removeProcessor(const PipelineProcessor*);
+            void notifyProcessorEnabled(const PipelineProcessor*);
+            void notifyProcessorDisabled(const PipelineProcessor*);
+            void disableAllProcessors() const;
 
             virtual void render(std::uint32_t, unsigned int) = 0;
 
@@ -58,11 +57,11 @@ namespace urchin {
                 VkPipelineStageFlagBits waitDstStageMask;
             };
 
-            void initializeRenderers();
-            void cleanupRenderers() const;
-            std::span<GenericRenderer* const> getRenderers() const;
-            bool hasRenderer() const;
-            bool areRenderersDirty() const;
+            void initializeProcessors();
+            void cleanupProcessors() const;
+            std::span<PipelineProcessor* const> getProcessors() const;
+            bool hasProcessor() const;
+            bool areProcessorsDirty() const;
 
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
             VkAttachmentDescription buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
@@ -103,9 +102,9 @@ namespace urchin {
             mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
             mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 
-            std::vector<GenericRenderer*> renderers;
-            std::vector<GenericRenderer*> sortedEnabledRenderers;
-            bool renderersDirty;
+            std::vector<PipelineProcessor*> processors;
+            std::vector<PipelineProcessor*> sortedEnabledProcessors;
+            bool processorsDirty;
     };
 
 }

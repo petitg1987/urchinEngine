@@ -3,7 +3,7 @@
 #include <graphics/api/vulkan/render/GenericCompute.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/render/GenericComputeBuilder.h>
-#include <pattern/singleton/Singleton.h>
+#include <graphics/texture/TextureReader.h>
 
 namespace urchin {
 
@@ -15,7 +15,10 @@ namespace urchin {
             renderTarget(computeBuilder.getRenderTarget()),
             shader(computeBuilder.getShader()),
             uniformTextureReaders(computeBuilder.getUniformTextureReaders()),
-            computePipeline(nullptr) {
+            computeDescriptorSetLayout(nullptr),
+            computePipelineLayout(nullptr),
+            computePipeline(nullptr),
+            drawCommandsDirty(false) {
 
         if (renderTarget.isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
@@ -31,7 +34,7 @@ namespace urchin {
     GenericCompute::~GenericCompute() {
         cleanup();
         uniformTextureReaders.clear();
-        //TODO renderTarget.removeRenderer(this);
+        renderTarget.removeProcessor(this);
     }
 
     void GenericCompute::initialize() {
@@ -64,6 +67,42 @@ namespace urchin {
 
     const RenderTarget& GenericCompute::getRenderTarget() const {
         return renderTarget;
+    }
+
+
+    bool GenericCompute::needCommandBufferRefresh(std::size_t) const {
+        return drawCommandsDirty; //TODO || descriptorSetsDirty[frameIndex];
+    }
+
+    bool GenericCompute::isEnabled() const {
+        return bIsEnabled;
+    }
+
+    void GenericCompute::enableRenderer(unsigned int renderingOrder) {
+        this->bIsEnabled = true;
+        this->renderingOrder = renderingOrder;
+        renderTarget.notifyProcessorEnabled(this);
+    }
+
+    void GenericCompute::disableRenderer() {
+        bIsEnabled = false;
+        renderTarget.notifyProcessorDisabled(this);
+    }
+
+    unsigned int GenericCompute::getRenderingOrder() const {
+        return renderingOrder;
+    }
+
+    bool GenericCompute::isDepthTestEnabled() const {
+        return false;
+    }
+
+    std::size_t GenericCompute::getPipelineId() const {
+        return 123897456; //TODO pipeline->getId();
+    }
+
+    std::span<OffscreenRender*> GenericCompute::getTexturesWriter() const {
+        return {}; //TODO impl...
     }
 
     void GenericCompute::createPipeline() {
@@ -119,6 +158,17 @@ namespace urchin {
         vkDestroyDescriptorSetLayout(logicalDevice, computeDescriptorSetLayout, nullptr);
         vkDestroyPipeline(logicalDevice, computePipeline, nullptr);
         vkDestroyPipelineLayout(logicalDevice, computePipelineLayout, nullptr);
+    }
+
+    void GenericCompute::updateGraphicData(uint32_t) {
+
+    }
+
+    std::size_t GenericCompute::updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) {
+        ScopeProfiler sp(Profiler::graphic(), "upCmdBufComp");
+
+        drawCommandsDirty = false;
+        return 123897456; //TODO ...
     }
 
 }

@@ -1,3 +1,5 @@
+#include <utility>
+
 #include <graphics/render/GenericComputeBuilder.h>
 
 namespace urchin {
@@ -36,7 +38,7 @@ namespace urchin {
 
     std::unique_ptr<GenericCompute> GenericComputeBuilder::build() {
         auto renderer = std::make_unique<GenericCompute>(*this);
-        //TODO renderTarget.addRenderer(renderer.get());
+        renderTarget.addProcessor(renderer.get());
         return renderer;
     }
 

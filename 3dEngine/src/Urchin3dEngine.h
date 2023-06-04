@@ -65,6 +65,6 @@
 
 #include <graphics/render/shader/ShaderConfig.h>
 #include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererComparator.h>
+#include <graphics/render/PipelineProcessorComparator.h>
 #include <graphics/render/target/NullRenderTarget.h>
 #include <graphics/api/GraphicsApi.h>

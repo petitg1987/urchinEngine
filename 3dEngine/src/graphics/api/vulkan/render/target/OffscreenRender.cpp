@@ -75,7 +75,7 @@ namespace urchin {
         createFence();
         createSemaphores();
 
-        initializeRenderers();
+        initializeProcessors();
 
         isInitialized = true;
     }
@@ -87,7 +87,7 @@ namespace urchin {
             Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
         }
 
-        cleanupRenderers();
+        cleanupProcessors();
 
         destroySemaphores();
         destroyFence();
@@ -288,11 +288,11 @@ namespace urchin {
     }
 
     bool OffscreenRender::needCommandBufferRefresh(std::size_t frameIndex) const {
-        if (areRenderersDirty()) {
+        if (areProcessorsDirty()) {
             return true;
         }
 
-        return std::ranges::any_of(getRenderers(), [frameIndex](const auto* renderer) {
+        return std::ranges::any_of(getProcessors(), [frameIndex](const auto* renderer) {
             return renderer->isEnabled() && renderer->needCommandBufferRefresh(frameIndex);
         });
     }

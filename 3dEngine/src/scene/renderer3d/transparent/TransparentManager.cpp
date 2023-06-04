@@ -106,7 +106,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
-        renderTarget->disableAllRenderers();
+        renderTarget->disableAllProcessors();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
         renderTarget->render(frameIndex, numDependenciesToTransparentTextures);
     }

@@ -27,7 +27,7 @@ void GenericRendererComparatorTest::depthTestOrdering() {
     std::unique_ptr<GenericRenderer> r4 = GenericRendererBuilder::create("r4", nullRenderTarget, *shader, ShapeType::TRIANGLE)->enableDepthTest()->build();
     renderers.push_back(r4.get());
 
-    std::ranges::sort(renderers, GenericRendererComparator());
+    std::ranges::sort(renderers, PipelineProcessorComparator());
 
     AssertHelper::assertStringEquals(renderers[0]->getName(), "r4"); //rendering order: 0, depth test
     AssertHelper::assertStringEquals(renderers[1]->getName(), "r3"); //rendering order: 0, no depth test

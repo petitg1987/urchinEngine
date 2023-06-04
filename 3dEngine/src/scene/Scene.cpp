@@ -275,7 +275,7 @@ namespace urchin {
             float dt = getDeltaTime();
 
             unsigned int screenRenderingOrder = 0;
-            screenRenderTarget.disableAllRenderers();
+            screenRenderTarget.disableAllProcessors();
             for (auto* activeRenderer: std::initializer_list<Renderer *>{activeRenderer3d, activeUiRenderers}) {
                 if (activeRenderer) {
                     screenRenderingOrder++;

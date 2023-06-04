@@ -1,9 +1,9 @@
-#include <graphics/render/GenericRendererComparator.h>
+#include <graphics/render/PipelineProcessorComparator.h>
 #include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 
-    bool GenericRendererComparator::operator()(const GenericRenderer* lhs, const GenericRenderer* rhs) const {
+    bool PipelineProcessorComparator::operator()(const PipelineProcessor* lhs, const PipelineProcessor* rhs) const {
         if (lhs->getRenderingOrder() == rhs->getRenderingOrder()) {
             if (lhs->isDepthTestEnabled() == rhs->isDepthTestEnabled()) {
                 if (lhs->getPipelineId() == rhs->getPipelineId()) {

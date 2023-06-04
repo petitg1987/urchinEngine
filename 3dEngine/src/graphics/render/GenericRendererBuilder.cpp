@@ -179,7 +179,7 @@ namespace urchin {
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {
         auto renderer = std::make_unique<GenericRenderer>(*this);
-        renderTarget.addRenderer(renderer.get());
+        renderTarget.addProcessor(renderer.get());
         return renderer;
     }
 

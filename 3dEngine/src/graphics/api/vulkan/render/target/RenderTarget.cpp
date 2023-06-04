@@ -6,9 +6,9 @@
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <graphics/api/vulkan/render/GenericRenderer.h>
+#include <graphics/api/vulkan/render/PipelineProcessor.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
-#include <graphics/render/GenericRendererComparator.h>
+#include <graphics/render/PipelineProcessorComparator.h>
 
 namespace urchin {
 
@@ -19,14 +19,14 @@ namespace urchin {
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
-            renderersDirty(false) {
+            processorsDirty(false) {
         Logger::instance().logInfo("Create render target: " + this->name);
     }
 
     RenderTarget::~RenderTarget() {
-        //Renderers must be destroyed before its render target.
-        //Indeed, the renderers' destructor will fail to unlink render target and the renderer.
-        assert(renderers.empty());
+        //Processors must be destroyed before its render target.
+        //Indeed, the processors' destructor will fail to unlink render target and the processor.
+        assert(processors.empty());
     }
 
     std::string RenderTarget::getName() const {
@@ -73,70 +73,70 @@ namespace urchin {
         throw std::runtime_error("Unknown depth attachment type '" + std::to_string(depthAttachmentType) + "' on render target: " + getName());
     }
 
-    void RenderTarget::addRenderer(GenericRenderer* renderer) {
+    void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
-            assert(&renderer->getRenderTarget() == this);
-            for (const auto* r : renderers) {
-                assert(r != renderer);
+            assert(&processor->getRenderTarget() == this);
+            for (const auto* p : processors) {
+                assert(p != processor);
             }
         #endif
 
-        renderers.emplace_back(renderer);
-        renderersDirty = true;
+        processors.emplace_back(processor);
+        processorsDirty = true;
     }
 
-    void RenderTarget::removeRenderer(const GenericRenderer* renderer) {
-        std::erase(renderers, renderer);
-        renderersDirty = true;
+    void RenderTarget::removeProcessor(const PipelineProcessor* processor) {
+        std::erase(processors, processor);
+        processorsDirty = true;
     }
 
-    void RenderTarget::notifyRendererEnabled(const GenericRenderer* renderer) {
-        if (!renderer->isEnabled()) {
+    void RenderTarget::notifyProcessorEnabled(const PipelineProcessor* processor) {
+        if (!processor->isEnabled()) {
             assert(false);
         }
-        renderersDirty = true;
+        processorsDirty = true;
     }
 
-    void RenderTarget::notifyRendererDisabled(const GenericRenderer* renderer) {
-        if (renderer->isEnabled()) {
+    void RenderTarget::notifyProcessorDisabled(const PipelineProcessor* processor) {
+        if (processor->isEnabled()) {
             assert(false);
         }
-        renderersDirty = true;
+        processorsDirty = true;
     }
 
-    void RenderTarget::disableAllRenderers() const {
-        for (auto& renderer: renderers) {
-            if (renderer->isEnabled()) {
-                renderer->disableRenderer();
+    void RenderTarget::disableAllProcessors() const {
+        for (auto& processor : processors) {
+            if (processor->isEnabled()) {
+                processor->disableRenderer();
             }
         }
     }
 
-    void RenderTarget::initializeRenderers() {
-        for (auto& renderer: renderers) {
-            renderer->initialize();
+    void RenderTarget::initializeProcessors() {
+        for (auto& processor : processors) {
+            processor->initialize();
         }
-        renderersDirty = true;
+        processorsDirty = true;
     }
 
-    void RenderTarget::cleanupRenderers() const {
-        for (auto& renderer: renderers) {
-            renderer->cleanup();
+    void RenderTarget::cleanupProcessors() const {
+        for (auto& processor : processors) {
+            processor->cleanup();
         }
     }
 
-    std::span<GenericRenderer* const> RenderTarget::getRenderers() const {
-        return renderers;
+    std::span<PipelineProcessor* const> RenderTarget::getProcessors() const {
+        return processors;
     }
 
-    bool RenderTarget::hasRenderer() const {
-        return std::ranges::any_of(renderers, [](const auto* renderer) {
+    bool RenderTarget::hasProcessor() const {
+        return std::ranges::any_of(processors, [](const auto* renderer) {
             return renderer->isEnabled();
         });
     }
 
-    bool RenderTarget::areRenderersDirty() const {
-        return renderersDirty;
+    bool RenderTarget::areProcessorsDirty() const {
+        return processorsDirty;
     }
 
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
@@ -338,10 +338,10 @@ namespace urchin {
     }
 
     std::span<OffscreenRender*> RenderTarget::getRenderDependencies() const {
-        renderDependencies.clear();
-        for (auto& renderer : renderers) {
-            if (renderer->isEnabled()) {
-                const std::span<OffscreenRender*>& renderTextureWriter = renderer->getTexturesWriter();
+        renderDependencies.clear(); //TODO rename render to processor ?
+        for (auto& processor : processors) {
+            if (processor->isEnabled()) {
+                const std::span<OffscreenRender*>& renderTextureWriter = processor->getTexturesWriter();
                 renderDependencies.insert(renderDependencies.end(), renderTextureWriter.begin(), renderTextureWriter.end());
             }
         }
@@ -379,9 +379,9 @@ namespace urchin {
     void RenderTarget::updateGraphicData(uint32_t frameIndex) const {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
-        for (auto& renderer : renderers) {
-            if (renderer->isEnabled()) {
-                renderer->updateGraphicData(frameIndex);
+        for (auto& processor : processors) {
+            if (processor->isEnabled()) {
+                processor->updateGraphicData(frameIndex);
             }
         }
     }
@@ -390,13 +390,13 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufTarget");
 
         if (needCommandBufferRefresh(frameIndex)) {
-            sortedEnabledRenderers.clear();
-            for (GenericRenderer* renderer: renderers) {
-                if (renderer->isEnabled()) {
-                    sortedEnabledRenderers.emplace_back(renderer);
+            sortedEnabledProcessors.clear();
+            for (PipelineProcessor* processor: processors) {
+                if (processor->isEnabled()) {
+                    sortedEnabledProcessors.emplace_back(processor);
                 }
             }
-            std::ranges::sort(sortedEnabledRenderers, GenericRendererComparator());
+            std::ranges::sort(sortedEnabledProcessors, PipelineProcessorComparator());
 
             VkRenderPassBeginInfo renderPassInfo{};
             renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -430,8 +430,8 @@ namespace urchin {
                 vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 {
                     std::size_t boundPipelineId = 0;
-                    for (GenericRenderer* renderer: sortedEnabledRenderers) {
-                        boundPipelineId = renderer->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
+                    for (PipelineProcessor* processor: sortedEnabledProcessors) {
+                        boundPipelineId = processor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
                     }
                 }
                 vkCmdEndRenderPass(commandBuffers[frameIndex]);
@@ -442,7 +442,7 @@ namespace urchin {
                 throw std::runtime_error("Failed to record command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on render target: " + getName());
             }
 
-            renderersDirty = false;
+            processorsDirty = false;
         }
     }
 

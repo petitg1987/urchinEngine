@@ -467,7 +467,7 @@ namespace urchin {
         }
 
         //deferred scene (depth, albedo, normal, ambient...)
-        deferredRenderTarget->disableAllRenderers();
+        deferredRenderTarget->disableAllProcessors();
 
         unsigned int deferredRenderingOrder = 0;
         skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());

@@ -18,31 +18,31 @@
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
+#include <graphics/api/vulkan/render/PipelineProcessor.h>
 
 namespace urchin {
 
     class GenericRendererBuilder;
     class TextureReader;
 
-    class GenericRenderer {
+    class GenericRenderer : public PipelineProcessor {
         public:
-            friend class RenderTarget;
             static constexpr uint32_t PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
 
             explicit GenericRenderer(const GenericRendererBuilder&);
             ~GenericRenderer();
 
-            const std::string& getName() const;
-            const RenderTarget& getRenderTarget() const;
-            bool needCommandBufferRefresh(std::size_t) const;
+            const std::string& getName() const override;
+            const RenderTarget& getRenderTarget() const override;
+            bool needCommandBufferRefresh(std::size_t) const override;
 
-            bool isEnabled() const;
-            void enableRenderer(unsigned int);
-            void disableRenderer();
+            bool isEnabled() const override;
+            void enableRenderer(unsigned int) override;
+            void disableRenderer() override;
 
-            unsigned int getRenderingOrder() const;
-            bool isDepthTestEnabled() const;
-            std::size_t getPipelineId() const;
+            unsigned int getRenderingOrder() const override;
+            bool isDepthTestEnabled() const override;
+            std::size_t getPipelineId() const override;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);
@@ -56,14 +56,14 @@ namespace urchin {
             const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t, std::size_t) const;
             void updateUniformTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
-            std::span<OffscreenRender*> getTexturesWriter() const;
+            std::span<OffscreenRender*> getTexturesWriter() const override;
 
             void resetScissor();
             void updateScissor(Vector2<int>, Vector2<int>);
 
         private:
-            void initialize();
-            void cleanup();
+            void initialize() override;
+            void cleanup() override;
 
             void createPipeline();
             void destroyPipeline();
@@ -79,8 +79,8 @@ namespace urchin {
             void updateDescriptorSets(std::size_t);
             void destroyDescriptorSetsAndPool();
 
-            void updateGraphicData(uint32_t);
-            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
+            void updateGraphicData(uint32_t) override;
+            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
 
             bool isInitialized;
             bool bIsEnabled;
