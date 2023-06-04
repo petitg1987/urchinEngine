@@ -90,7 +90,7 @@ namespace urchin {
 
         std::shared_ptr<Pipeline> pipeline = PipelineContainer::instance().getPipeline(pipelineHash);
         if (!pipeline) {
-            pipeline = std::make_shared<Pipeline>(pipelineHash, name);
+            pipeline = std::make_shared<Pipeline>(pipelineType, pipelineHash, name);
 
             createDescriptorSetLayout(pipeline);
             if (pipelineType == PipelineType::GRAPHICS) {

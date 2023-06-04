@@ -16,11 +16,6 @@ namespace urchin {
 
     class TextureReader;
 
-    enum PipelineType {
-        GRAPHICS,
-        COMPUTE
-    };
-
     class PipelineBuilder {
         public:
             explicit PipelineBuilder(PipelineType, std::string);

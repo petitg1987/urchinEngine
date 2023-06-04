@@ -16,7 +16,6 @@
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/pipeline/Pipeline.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 
@@ -32,11 +31,11 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder&);
             ~GenericRenderer() override;
 
-            bool isCompute() const override;
             bool needCommandBufferRefresh(std::size_t) const override;
 
             bool isDepthTestEnabled() const override;
             std::size_t getPipelineId() const override;
+            PipelineType getPipelineType() const override;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);

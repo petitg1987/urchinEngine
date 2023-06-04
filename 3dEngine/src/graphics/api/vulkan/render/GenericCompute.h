@@ -3,7 +3,6 @@
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 #include <graphics/api/vulkan/render/handler/BufferHandler.h>
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
-#include <graphics/api/vulkan/render/pipeline/Pipeline.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 
 namespace urchin {
@@ -16,11 +15,11 @@ namespace urchin {
             explicit GenericCompute(const GenericComputeBuilder&);
             ~GenericCompute() override;
 
-            bool isCompute() const override;
             bool needCommandBufferRefresh(std::size_t) const override;
 
             bool isDepthTestEnabled() const override;
             std::size_t getPipelineId() const override;
+            PipelineType getPipelineType() const override;
 
             std::span<OffscreenRender*> getTexturesWriter() const override;
 

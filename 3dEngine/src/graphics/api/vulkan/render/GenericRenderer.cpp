@@ -92,10 +92,6 @@ namespace urchin {
         }
     }
 
-    bool GenericRenderer::isCompute() const {
-        return false;
-    }
-
     bool GenericRenderer::needCommandBufferRefresh(std::size_t frameIndex) const {
         return drawCommandsDirty || descriptorSetsDirty[frameIndex];
     }
@@ -106,6 +102,10 @@ namespace urchin {
 
     std::size_t GenericRenderer::getPipelineId() const {
         return pipeline->getId();
+    }
+
+    PipelineType GenericRenderer::getPipelineType() const {
+        return pipeline->getType();
     }
 
     void GenericRenderer::createPipeline() {

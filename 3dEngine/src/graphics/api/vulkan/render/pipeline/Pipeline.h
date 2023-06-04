@@ -5,11 +5,17 @@
 
 namespace urchin {
 
+    enum PipelineType {
+        GRAPHICS,
+        COMPUTE
+    };
+
     class Pipeline {
         public:
-            Pipeline(std::size_t, std::string);
+            Pipeline(PipelineType, std::size_t, std::string);
             ~Pipeline();
 
+            PipelineType getType() const;
             std::size_t getId() const;
             const std::string& getName() const;
 
@@ -23,6 +29,7 @@ namespace urchin {
             const VkPipeline& getPipeline() const;
 
         private:
+            PipelineType type;
             std::size_t id;
             std::string name;
 

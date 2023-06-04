@@ -69,10 +69,6 @@ namespace urchin {
         }
     }
 
-    bool GenericCompute::isCompute() const {
-        return true;
-    }
-
     bool GenericCompute::needCommandBufferRefresh(std::size_t frameIndex) const {
         return drawCommandsDirty || descriptorSetsDirty[frameIndex];
     }
@@ -83,6 +79,10 @@ namespace urchin {
 
     std::size_t GenericCompute::getPipelineId() const {
         return pipeline->getId();
+    }
+
+    PipelineType GenericCompute::getPipelineType() const {
+        return pipeline->getType();
     }
 
     std::span<OffscreenRender*> GenericCompute::getTexturesWriter() const {

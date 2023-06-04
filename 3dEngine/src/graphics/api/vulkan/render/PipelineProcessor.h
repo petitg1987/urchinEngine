@@ -2,6 +2,7 @@
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
+#include <graphics/api/vulkan/render/pipeline/Pipeline.h>
 
 namespace urchin {
 
@@ -12,7 +13,6 @@ namespace urchin {
             PipelineProcessor(std::string, RenderTarget&, const Shader&);
             virtual ~PipelineProcessor() = default;
 
-            virtual bool isCompute() const = 0;
             const std::string& getName() const;
             const RenderTarget& getRenderTarget() const;
             const Shader& getShader() const;
@@ -25,6 +25,7 @@ namespace urchin {
 
             virtual bool isDepthTestEnabled() const = 0;
             virtual std::size_t getPipelineId() const = 0;
+            virtual PipelineType getPipelineType() const = 0;
 
             virtual std::span<OffscreenRender*> getTexturesWriter() const = 0;
 

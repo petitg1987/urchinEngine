@@ -76,7 +76,7 @@ namespace urchin {
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
             assert(&processor->getRenderTarget() == this);
-            assert(processors.empty() || processors[0]->isCompute() == processor->isCompute());
+            assert(processors.empty() || processors[0]->getPipelineType() == processor->getPipelineType());
             for (const auto* p : processors) {
                 assert(p != processor);
             }
@@ -428,14 +428,14 @@ namespace urchin {
                 renderPassInfo.framebuffer = framebuffers[frameIndex];
 
                 DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-                if (sortedEnabledProcessors.empty() || !sortedEnabledProcessors[0]->isCompute()) {
+                if (sortedEnabledProcessors.empty() || sortedEnabledProcessors[0]->getPipelineType() == PipelineType::GRAPHICS) {
                     vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 }
                 std::size_t boundPipelineId = 0;
                 for (PipelineProcessor* processor: sortedEnabledProcessors) {
                     boundPipelineId = processor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
                 }
-                if (sortedEnabledProcessors.empty() || !sortedEnabledProcessors[0]->isCompute()) {
+                if (sortedEnabledProcessors.empty() || sortedEnabledProcessors[0]->getPipelineType() == PipelineType::GRAPHICS) {
                     vkCmdEndRenderPass(commandBuffers[frameIndex]);
                 }
                 DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);
