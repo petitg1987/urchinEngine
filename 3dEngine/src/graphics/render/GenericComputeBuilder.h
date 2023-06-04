@@ -14,6 +14,9 @@ namespace urchin {
             RenderTarget& getRenderTarget() const;
             const Shader& getShader() const;
 
+            std::shared_ptr<GenericComputeBuilder> addUniformData(std::size_t, const void*);
+            const std::vector<ShaderDataContainer>& getUniformData() const;
+
             std::shared_ptr<GenericComputeBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
             const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
@@ -26,6 +29,7 @@ namespace urchin {
             RenderTarget& renderTarget;
             const Shader& shader;
 
+            std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
     };
 

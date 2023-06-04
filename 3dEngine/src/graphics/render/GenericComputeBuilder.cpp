@@ -27,6 +27,26 @@ namespace urchin {
         return shader;
     }
 
+    /**
+     * @param dataPtr Shader data pointer. Data must be memory aligned with "alignas(N)" expression using std140 alignment:
+     *   - N=4 for scalar
+     *   - N=8 for Vector2
+     *   - N=16 for Point3, Point4, Vector3, Vector4, Matrix3 (not working ?), Matrix4
+     *   - N=16 for embedded struct
+     *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
+     */
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformData(std::size_t dataSize, const void* dataPtr) {
+        if (!uniformTextureReaders.empty()) {
+            throw std::runtime_error("Adding uniform data after uniform texture is discouraged. Uniform binding ID start first with all data and then with all textures.");
+        }
+        uniformData.emplace_back(dataSize, dataPtr);
+        return shared_from_this();
+    }
+
+    const std::vector<ShaderDataContainer>& GenericComputeBuilder::getUniformData() const {
+        return uniformData;
+    }
+
     std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureReader(const std::shared_ptr<TextureReader>& textureReader) {
         uniformTextureReaders.push_back({textureReader});
         return shared_from_this();

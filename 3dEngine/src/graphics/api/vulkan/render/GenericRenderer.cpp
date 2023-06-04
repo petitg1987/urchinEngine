@@ -32,13 +32,13 @@ namespace urchin {
             drawCommandsDirty(false) {
         descriptorSetsDirty.resize(renderTarget.getNumFramebuffer(), false);
 
-        pipelineBuilder = std::make_unique<PipelineBuilder>(name);
+        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, name);
         pipelineBuilder->setupRenderTarget(renderTarget);
         pipelineBuilder->setupShader(shader);
         pipelineBuilder->setupShapeType(rendererBuilder.getShapeType());
         pipelineBuilder->setupBlendFunctions(rendererBuilder.getBlendFunctions());
         pipelineBuilder->setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
-        pipelineBuilder->setupCallFaceOperation(rendererBuilder.isCullFaceEnabled());
+        pipelineBuilder->setupCullFaceOperation(rendererBuilder.isCullFaceEnabled());
         pipelineBuilder->setupPolygonMode(rendererBuilder.getPolygonMode());
 
         if (renderTarget.isValidRenderTarget()) {
@@ -469,9 +469,9 @@ namespace urchin {
         //update shader uniforms
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
-                const auto& dataContainer = uniformData[uniformDataIndex];
+                auto& dataContainer = uniformData[uniformDataIndex];
                 drawCommandsDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
-                uniformData[uniformDataIndex].markDataAsProcessed(frameIndex);
+                dataContainer.markDataAsProcessed(frameIndex);
             }
         }
     }
@@ -485,7 +485,7 @@ namespace urchin {
         }
 
         if (boundPipelineId != pipeline->getId()) {
-            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getGraphicsPipeline());
+            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipeline());
         }
 
         std::array<VkDeviceSize, 20> offsets = {0};

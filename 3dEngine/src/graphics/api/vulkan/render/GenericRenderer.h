@@ -25,12 +25,12 @@ namespace urchin {
     class GenericRendererBuilder;
     class TextureReader;
 
-    class GenericRenderer : public PipelineProcessor {
+    class GenericRenderer final : public PipelineProcessor {
         public:
             static constexpr uint32_t PRIMITIVE_RESTART_INDEX_VALUE = 0xFFFFFFFF;
 
             explicit GenericRenderer(const GenericRendererBuilder&);
-            ~GenericRenderer();
+            ~GenericRenderer() override;
 
             bool isCompute() const override;
             const std::string& getName() const override;

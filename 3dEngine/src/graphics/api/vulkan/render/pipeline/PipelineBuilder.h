@@ -16,16 +16,21 @@ namespace urchin {
 
     class TextureReader;
 
+    enum PipelineType {
+        GRAPHICS,
+        COMPUTE
+    };
+
     class PipelineBuilder {
         public:
-            explicit PipelineBuilder(std::string);
+            explicit PipelineBuilder(PipelineType, std::string);
 
             void setupRenderTarget(const RenderTarget&);
             void setupShader(const Shader&);
             void setupShapeType(const ShapeType&);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupDepthOperations(bool, bool);
-            void setupCallFaceOperation(bool);
+            void setupCullFaceOperation(bool);
             void setupPolygonMode(PolygonMode);
             void setupData(const std::vector<DataContainer>&, const DataContainer*);
             void setupUniform(const std::vector<ShaderDataContainer>&, const std::vector<std::vector<std::shared_ptr<TextureReader>>>&);
@@ -40,10 +45,12 @@ namespace urchin {
             void createGraphicsPipeline(const std::shared_ptr<Pipeline>&);
             VkPrimitiveTopology shapeTypeToVulkanTopology() const;
             bool isShapeTypeListTopology() const;
+            void createComputePipeline(const std::shared_ptr<Pipeline>&);
 
             VkFormat getVulkanFormat(const DataContainer&, unsigned int&) const;
             VkBlendFactor toVkBlenderFactor(BlendFactor) const;
 
+            PipelineType pipelineType;
             std::string name;
             const RenderTarget* renderTarget;
             const Shader* shader;

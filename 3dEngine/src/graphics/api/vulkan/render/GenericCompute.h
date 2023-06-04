@@ -3,16 +3,20 @@
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
+#include <graphics/api/vulkan/render/handler/BufferHandler.h>
+#include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
+#include <graphics/api/vulkan/render/pipeline/Pipeline.h>
+#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 
 namespace urchin {
 
     class GenericComputeBuilder;
     class TextureReader;
 
-    class GenericCompute : public PipelineProcessor {
+    class GenericCompute final : public PipelineProcessor {
         public:
             explicit GenericCompute(const GenericComputeBuilder&);
-            ~GenericCompute();
+            ~GenericCompute() override;
 
             bool isCompute() const override;
             const std::string& getName() const override;
@@ -35,6 +39,8 @@ namespace urchin {
 
             void createPipeline();
             void destroyPipeline();
+            void createUniformBuffers();
+            void destroyUniformBuffers();
             void createDescriptorPool();
             void createDescriptorSets();
             void updateDescriptorSets();
@@ -52,12 +58,13 @@ namespace urchin {
             RenderTarget& renderTarget;
             const Shader& shader;
 
+            std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             mutable std::vector<OffscreenRender*> texturesWriter;
 
-            VkDescriptorSetLayout computeDescriptorSetLayout;
-            VkPipelineLayout computePipelineLayout;
-            VkPipeline computePipeline; //TODO use Pipeline object ?
+            std::unique_ptr<PipelineBuilder> pipelineBuilder;
+            std::shared_ptr<Pipeline> pipeline;
+            std::vector<AlterableBufferHandler> uniformsBuffers;
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
             std::vector<VkWriteDescriptorSet> descriptorWrites;

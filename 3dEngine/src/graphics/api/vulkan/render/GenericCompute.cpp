@@ -15,13 +15,15 @@ namespace urchin {
             name(computeBuilder.getName()),
             renderTarget(computeBuilder.getRenderTarget()),
             shader(computeBuilder.getShader()),
+            uniformData(computeBuilder.getUniformData()),
             uniformTextureReaders(computeBuilder.getUniformTextureReaders()),
-            computeDescriptorSetLayout(nullptr),
-            computePipelineLayout(nullptr),
-            computePipeline(nullptr),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
         descriptorSetsDirty.resize(renderTarget.getNumFramebuffer(), false);
+
+        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, name);
+        pipelineBuilder->setupRenderTarget(renderTarget);
+        pipelineBuilder->setupShader(shader);
 
         if (renderTarget.isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
@@ -46,6 +48,7 @@ namespace urchin {
 
         if (renderTarget.isValidRenderTarget()) {
             createPipeline();
+            createUniformBuffers();
             createDescriptorPool();
             createDescriptorSets();
         }
@@ -61,6 +64,7 @@ namespace urchin {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
                 } else {
                     destroyDescriptorSetsAndPool();
+                    destroyUniformBuffers();
                     destroyPipeline();
                 }
             }
@@ -80,7 +84,6 @@ namespace urchin {
     const RenderTarget& GenericCompute::getRenderTarget() const {
         return renderTarget;
     }
-
 
     bool GenericCompute::needCommandBufferRefresh(std::size_t frameIndex) const {
         return drawCommandsDirty || descriptorSetsDirty[frameIndex];
@@ -110,7 +113,7 @@ namespace urchin {
     }
 
     std::size_t GenericCompute::getPipelineId() const {
-        return 123897456; //TODO pipeline->getId();
+        return pipeline->getId();
     }
 
     std::span<OffscreenRender*> GenericCompute::getTexturesWriter() const {
@@ -129,58 +132,29 @@ namespace urchin {
     }
 
     void GenericCompute::createPipeline() {
-        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
-
-        uint32_t shaderUniformBinding = 0;
-        std::vector<VkDescriptorSetLayoutBinding> bindings;
-
-        for (auto& uniformTextureReader : uniformTextureReaders) {
-            VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-            samplerLayoutBinding.binding = shaderUniformBinding++;
-            samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
-            samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER; //TODO or VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER ?
-            samplerLayoutBinding.pImmutableSamplers = nullptr;
-            samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
-            bindings.emplace_back(samplerLayoutBinding);
-        }
-
-        VkDescriptorSetLayoutCreateInfo layoutInfo{};
-        layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-        layoutInfo.bindingCount = (uint32_t)bindings.size();
-        layoutInfo.pBindings = bindings.empty() ? nullptr : bindings.data();
-
-        VkResult result = vkCreateDescriptorSetLayout(logicalDevice, &layoutInfo, nullptr, &computeDescriptorSetLayout);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create descriptor set layout with error code: " + std::string(string_VkResult(result)));
-        }
-
-        VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-        pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-        pipelineLayoutInfo.setLayoutCount = 1;
-        pipelineLayoutInfo.pSetLayouts = &computeDescriptorSetLayout;
-
-        VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &computePipelineLayout);
-        if (pipelineLayoutResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create pipeline layout with error code: " + std::string(string_VkResult(pipelineLayoutResult)));
-        }
-
-        VkComputePipelineCreateInfo pipelineInfo{};
-        pipelineInfo.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
-        pipelineInfo.layout = computePipelineLayout;
-        pipelineInfo.stage = shader.getShaderStages()[0];
-
-        VkResult pipelinesResult = vkCreateComputePipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &computePipeline);
-        if (pipelinesResult != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create compute pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
-        }
+        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders);
+        pipeline = pipelineBuilder->buildPipeline();
     }
 
     void GenericCompute::destroyPipeline() {
-        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
+        pipeline = nullptr;
+    }
 
-        vkDestroyDescriptorSetLayout(logicalDevice, computeDescriptorSetLayout, nullptr);
-        vkDestroyPipeline(logicalDevice, computePipeline, nullptr);
-        vkDestroyPipelineLayout(logicalDevice, computePipelineLayout, nullptr);
+    void GenericCompute::createUniformBuffers() {
+        uniformsBuffers.resize(uniformData.size());
+        for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
+            ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
+            std::string bufferName = getName() + " - uniform" + std::to_string(dataIndex);
+            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            shaderDataContainer.markDataAsProcessed();
+        }
+    }
+
+    void GenericCompute::destroyUniformBuffers() {
+        for (auto& uniformsBuffer : uniformsBuffers) {
+            uniformsBuffer.cleanup();
+        }
+        uniformsBuffers.clear();
     }
 
     void GenericCompute::createDescriptorPool() {
@@ -209,7 +183,7 @@ namespace urchin {
     void GenericCompute::createDescriptorSets() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), computeDescriptorSetLayout);
+        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
@@ -271,29 +245,35 @@ namespace urchin {
         vkDestroyDescriptorPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 
-    void GenericCompute::updateGraphicData(uint32_t) {
-
+    void GenericCompute::updateGraphicData(uint32_t frameIndex) {
+        //update shader uniforms
+        for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
+            if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
+                auto& dataContainer = uniformData[uniformDataIndex];
+                drawCommandsDirty |= uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData());
+                dataContainer.markDataAsProcessed(frameIndex);
+            }
+        }
     }
 
     std::size_t GenericCompute::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufComp");
 
-        //TODO impl (priority)
         if (descriptorSetsDirty[frameIndex]) {
             updateDescriptorSets(frameIndex);
             descriptorSetsDirty[frameIndex] = false;
         }
 
-        if (boundPipelineId != 123897456) { //TODO ...
-            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, computePipeline);
+        if (boundPipelineId != pipeline->getId()) {
+            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline->getPipeline());
         }
 
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, computePipelineLayout, 0, 1, &descriptorSets[frameIndex], 0, nullptr);
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
 
         vkCmdDispatch(commandBuffer, renderTarget.getWidth() / 16, renderTarget.getHeight() / 16, 1); //TODO 16 must match with code in compute shader
 
         drawCommandsDirty = false;
-        return 123897456; //TODO ...
+        return pipeline->getId();
     }
 
 }

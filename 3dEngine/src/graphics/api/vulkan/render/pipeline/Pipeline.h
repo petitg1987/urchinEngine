@@ -19,8 +19,8 @@ namespace urchin {
             VkPipelineLayout& pipelineLayout();
             const VkPipelineLayout& getPipelineLayout() const;
 
-            VkPipeline& graphicsPipeline();
-            const VkPipeline& getGraphicsPipeline() const;
+            VkPipeline& pipeline();
+            const VkPipeline& getPipeline() const;
 
         private:
             std::size_t id;
@@ -28,7 +28,7 @@ namespace urchin {
 
             VkDescriptorSetLayout mDescriptorSetLayout;
             VkPipelineLayout mPipelineLayout;
-            VkPipeline mGraphicsPipeline;
+            VkPipeline mPipeline;
     };
 
 }

@@ -10,7 +10,8 @@
 
 namespace urchin {
 
-    PipelineBuilder::PipelineBuilder(std::string name) :
+    PipelineBuilder::PipelineBuilder(PipelineType pipelineType, std::string name) :
+            pipelineType(pipelineType),
             name(std::move(name)),
             renderTarget(nullptr),
             shader(nullptr),
@@ -35,27 +36,45 @@ namespace urchin {
     }
 
     void PipelineBuilder::setupShapeType(const ShapeType& shapeType) {
+        if (pipelineType != PipelineType::GRAPHICS) {
+            throw std::runtime_error("Shape type only exist on graphics pipeline");
+        }
         this->shapeType = shapeType;
     }
 
     void PipelineBuilder::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
+        if (pipelineType != PipelineType::GRAPHICS) {
+            throw std::runtime_error("Blend functions only exist on graphics pipeline");
+        }
         this->blendFunctions = blendFunctions;
     }
 
     void PipelineBuilder::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
+        if (pipelineType != PipelineType::GRAPHICS) {
+            throw std::runtime_error("Depth operations only exist on graphics pipeline");
+        }
         this->depthTestEnabled = depthTestEnabled;
         this->depthWriteEnabled = depthWriteEnabled;
     }
 
-    void PipelineBuilder::setupCallFaceOperation(bool cullFaceEnabled) {
+    void PipelineBuilder::setupCullFaceOperation(bool cullFaceEnabled) {
+        if (pipelineType != PipelineType::GRAPHICS) {
+            throw std::runtime_error("Cull face operation only exist on graphics pipeline");
+        }
         this->cullFaceEnabled = cullFaceEnabled;
     }
 
     void PipelineBuilder::setupPolygonMode(PolygonMode polygonMode) {
+        if (pipelineType != PipelineType::GRAPHICS) {
+            throw std::runtime_error("Polygon mode only exist on graphics pipeline");
+        }
         this->polygonMode = polygonMode;
     }
 
     void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const DataContainer* instanceData) {
+        if (pipelineType != PipelineType::GRAPHICS) {
+            throw std::runtime_error("Data only exist on graphics pipeline");
+        }
         this->data = &data;
         this->instanceData = instanceData;
     }
@@ -74,7 +93,11 @@ namespace urchin {
             pipeline = std::make_shared<Pipeline>(pipelineHash, name);
 
             createDescriptorSetLayout(pipeline);
-            createGraphicsPipeline(pipeline);
+            if (pipelineType == PipelineType::GRAPHICS) {
+                createGraphicsPipeline(pipeline);
+            } else if (pipelineType == PipelineType::COMPUTE) {
+                createComputePipeline(pipeline);
+            }
 
             PipelineContainer::instance().addPipeline(pipeline);
         }
@@ -87,16 +110,18 @@ namespace urchin {
             throw std::runtime_error("Render target not setup on pipeline");
         } else if (!shader) {
             throw std::runtime_error("Shader not setup on pipeline");
-        } else if (!data || data->empty()) {
-            throw std::runtime_error("Data not setup on pipeline");
-        } else if (!uniformData) {
+        } if (!uniformData) {
             throw std::runtime_error("Uniform data not setup on pipeline");
         } else if (!uniformTextureReaders) {
             throw std::runtime_error("Uniform texture readers not setup on pipeline");
         }
 
-        if ((depthTestEnabled || depthWriteEnabled) && !renderTarget->hasDepthAttachment()) {
-            throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
+        if (pipelineType == PipelineType::GRAPHICS) {
+            if (!data || data->empty()) {
+                throw std::runtime_error("Data not setup on pipeline");
+            }else if ((depthTestEnabled || depthWriteEnabled) && !renderTarget->hasDepthAttachment()) {
+                throw std::runtime_error("Depth operations are enabled but there is no depth attachment on the render target");
+            }
         }
     }
 
@@ -104,10 +129,12 @@ namespace urchin {
         std::size_t hash = 0;
 
         unsigned int repeatCount;
-        HashUtil::combine(hash, data->size());
-        for (const DataContainer& singleData : *data) {
-            HashUtil::combine(hash, getVulkanFormat(singleData, repeatCount));
-            HashUtil::combine(hash, repeatCount);
+        if (data) {
+            HashUtil::combine(hash, data->size());
+            for (const DataContainer& singleData: *data) {
+                HashUtil::combine(hash, getVulkanFormat(singleData, repeatCount));
+                HashUtil::combine(hash, repeatCount);
+            }
         }
         if (instanceData) {
             HashUtil::combine(hash, getVulkanFormat(*instanceData, repeatCount));
@@ -133,13 +160,20 @@ namespace urchin {
         uint32_t shaderUniformBinding = 0;
         std::vector<VkDescriptorSetLayoutBinding> bindings;
 
+        VkShaderStageFlags stageFlags = 0;
+        if (pipelineType == PipelineType::GRAPHICS) {
+            stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+        } else if (pipelineType == PipelineType::COMPUTE) {
+            stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
+        }
+
         for (auto& uniformSingleData : *uniformData) {
             std::ignore = uniformSingleData;
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
             uboLayoutBinding.binding = shaderUniformBinding++;
             uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uboLayoutBinding.descriptorCount = 1;
-            uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+            uboLayoutBinding.stageFlags = stageFlags;
             uboLayoutBinding.pImmutableSamplers = nullptr;
             bindings.emplace_back(uboLayoutBinding);
         }
@@ -150,7 +184,7 @@ namespace urchin {
             samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             samplerLayoutBinding.pImmutableSamplers = nullptr;
-            samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+            samplerLayoutBinding.stageFlags = stageFlags;
             bindings.emplace_back(samplerLayoutBinding);
         }
 
@@ -354,12 +388,12 @@ namespace urchin {
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; //can be used to switch optimally between similar pipeline
         pipelineInfo.basePipelineIndex = -1;
 
-        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->graphicsPipeline());
+        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->pipeline());
         if (pipelinesResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
         }
 
-        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->graphicsPipeline(), name);
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->pipeline(), name);
     }
 
     VkPrimitiveTopology PipelineBuilder::shapeTypeToVulkanTopology() const {
@@ -421,6 +455,32 @@ namespace urchin {
             return VK_BLEND_FACTOR_ZERO;
         }
         throw std::runtime_error("Unknown blend factor: " + std::to_string((int)blendFactor));
+    }
+
+    void PipelineBuilder::createComputePipeline(const std::shared_ptr<Pipeline>& pipeline) {
+        auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
+
+        VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+        pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+        pipelineLayoutInfo.setLayoutCount = 1;
+        pipelineLayoutInfo.pSetLayouts = &pipeline->descriptorSetLayout();
+
+        VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout());
+        if (pipelineLayoutResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create pipeline layout with error code: " + std::string(string_VkResult(pipelineLayoutResult)));
+        }
+
+        VkComputePipelineCreateInfo pipelineInfo{};
+        pipelineInfo.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
+        pipelineInfo.layout = pipeline->getPipelineLayout();
+        pipelineInfo.stage = shader->getShaderStages()[0];
+
+        VkResult pipelinesResult = vkCreateComputePipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->pipeline());
+        if (pipelinesResult != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create compute pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
+        }
+
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->pipeline(), name);
     }
 
 }

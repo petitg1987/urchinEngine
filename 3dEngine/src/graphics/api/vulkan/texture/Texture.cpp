@@ -223,7 +223,7 @@ namespace urchin {
         return width * height * getBytesByPixel() * (layer / nbImages);
     }
 
-    VkImageUsageFlags Texture::getImageUsage() const {
+    VkImageUsageFlags Texture::getImageUsage() const { //TODO review for compute
         VkImageUsageFlags usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
         usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT; //for mipmap (if exist) and capture
 

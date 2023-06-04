@@ -8,7 +8,7 @@ namespace urchin {
             name(std::move(name)),
             mDescriptorSetLayout(nullptr),
             mPipelineLayout(nullptr),
-            mGraphicsPipeline(nullptr) {
+            mPipeline(nullptr) {
 
     }
 
@@ -16,7 +16,7 @@ namespace urchin {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         vkDestroyDescriptorSetLayout(logicalDevice, mDescriptorSetLayout, nullptr);
-        vkDestroyPipeline(logicalDevice, mGraphicsPipeline, nullptr);
+        vkDestroyPipeline(logicalDevice, mPipeline, nullptr);
         vkDestroyPipelineLayout(logicalDevice, mPipelineLayout, nullptr);
     }
 
@@ -44,12 +44,12 @@ namespace urchin {
         return mPipelineLayout;
     }
 
-    VkPipeline& Pipeline::graphicsPipeline() {
-        return mGraphicsPipeline;
+    VkPipeline& Pipeline::pipeline() {
+        return mPipeline;
     }
 
-    const VkPipeline& Pipeline::getGraphicsPipeline() const {
-        return mGraphicsPipeline;
+    const VkPipeline& Pipeline::getPipeline() const {
+        return mPipeline;
     }
 
 }
