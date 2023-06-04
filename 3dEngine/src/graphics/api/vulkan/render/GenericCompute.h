@@ -1,7 +1,5 @@
 #pragma once
 
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 #include <graphics/api/vulkan/render/handler/BufferHandler.h>
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
@@ -19,15 +17,8 @@ namespace urchin {
             ~GenericCompute() override;
 
             bool isCompute() const override;
-            const std::string& getName() const override;
-            const RenderTarget& getRenderTarget() const override;
             bool needCommandBufferRefresh(std::size_t) const override;
 
-            bool isEnabled() const override;
-            void enableRenderer(unsigned int) override;
-            void disableRenderer() override;
-
-            unsigned int getRenderingOrder() const override;
             bool isDepthTestEnabled() const override;
             std::size_t getPipelineId() const override;
 
@@ -51,12 +42,6 @@ namespace urchin {
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
 
             bool isInitialized;
-            bool bIsEnabled;
-            unsigned int renderingOrder; //TODO rename executionOrder
-
-            std::string name;
-            RenderTarget& renderTarget;
-            const Shader& shader;
 
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;

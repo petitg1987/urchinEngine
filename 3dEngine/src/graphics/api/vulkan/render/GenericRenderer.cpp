@@ -13,12 +13,8 @@
 namespace urchin {
 
     GenericRenderer::GenericRenderer(const GenericRendererBuilder& rendererBuilder) :
+            PipelineProcessor(rendererBuilder.getName(), rendererBuilder.getRenderTarget(), rendererBuilder.getShader()),
             isInitialized(false),
-            bIsEnabled(true),
-            renderingOrder(0),
-            name(rendererBuilder.getName()),
-            renderTarget(rendererBuilder.getRenderTarget()),
-            shader(rendererBuilder.getShader()),
             data(rendererBuilder.getData()),
             instanceData(rendererBuilder.getInstanceData()),
             indices(rendererBuilder.getIndices()),
@@ -30,18 +26,18 @@ namespace urchin {
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
-        descriptorSetsDirty.resize(renderTarget.getNumFramebuffer(), false);
+        descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
-        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, name);
-        pipelineBuilder->setupRenderTarget(renderTarget);
-        pipelineBuilder->setupShader(shader);
+        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, getName());
+        pipelineBuilder->setupRenderTarget(getRenderTarget());
+        pipelineBuilder->setupShader(getShader());
         pipelineBuilder->setupShapeType(rendererBuilder.getShapeType());
         pipelineBuilder->setupBlendFunctions(rendererBuilder.getBlendFunctions());
         pipelineBuilder->setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
         pipelineBuilder->setupCullFaceOperation(rendererBuilder.isCullFaceEnabled());
         pipelineBuilder->setupPolygonMode(rendererBuilder.getPolygonMode());
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
                 for (const auto& uniformTextureReader: uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
@@ -55,14 +51,14 @@ namespace urchin {
     GenericRenderer::~GenericRenderer() {
         cleanup();
         uniformTextureReaders.clear();
-        renderTarget.removeProcessor(this);
+        renderTarget().removeProcessor(this);
     }
 
     void GenericRenderer::initialize() {
         ScopeProfiler sp(Profiler::graphic(), "genRenderInit");
         assert(!isInitialized);
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             createPipeline();
             createVertexBuffers();
             createIndexBuffer();
@@ -79,7 +75,7 @@ namespace urchin {
 
     void GenericRenderer::cleanup() {
         if (isInitialized) {
-            if (renderTarget.isValidRenderTarget()) {
+            if (getRenderTarget().isValidRenderTarget()) {
                 VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
@@ -100,35 +96,8 @@ namespace urchin {
         return false;
     }
 
-    const std::string& GenericRenderer::getName() const {
-        return name;
-    }
-
-    const RenderTarget& GenericRenderer::getRenderTarget() const {
-        return renderTarget;
-    }
-
     bool GenericRenderer::needCommandBufferRefresh(std::size_t frameIndex) const {
         return drawCommandsDirty || descriptorSetsDirty[frameIndex];
-    }
-
-    bool GenericRenderer::isEnabled() const {
-        return bIsEnabled;
-    }
-
-    void GenericRenderer::enableRenderer(unsigned int renderingOrder) {
-        this->bIsEnabled = true;
-        this->renderingOrder = renderingOrder;
-        renderTarget.notifyProcessorEnabled(this);
-    }
-
-    void GenericRenderer::disableRenderer() {
-        bIsEnabled = false;
-        renderTarget.notifyProcessorDisabled(this);
-    }
-
-    unsigned int GenericRenderer::getRenderingOrder() const {
-        return renderingOrder;
     }
 
     bool GenericRenderer::isDepthTestEnabled() const {
@@ -154,13 +123,13 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             DataContainer& dataContainer = data[dataIndex];
             std::string bufferName = getName() + " - vertex" + std::to_string(dataIndex);
-            vertexBuffers[dataIndex].initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
+            vertexBuffers[dataIndex].initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
             dataContainer.markDataAsProcessed();
         }
 
         if (instanceData) {
             std::string bufferName = getName() + " - instance";
-            instanceVertexBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
+            instanceVertexBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
             instanceData->markDataAsProcessed();
         }
     }
@@ -179,7 +148,7 @@ namespace urchin {
     void GenericRenderer::createIndexBuffer() {
         if (indices) {
             std::string bufferName = getName() + " - index";
-            indexBuffer.initialize(bufferName, BufferHandler::INDEX, BufferHandler::STATIC, renderTarget.getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
+            indexBuffer.initialize(bufferName, BufferHandler::INDEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), indices->getBufferSize(), indices->getIndices());
         }
     }
 
@@ -194,7 +163,7 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
             ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
             std::string bufferName = getName() + " - uniform" + std::to_string(dataIndex);
-            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
             shaderDataContainer.markDataAsProcessed();
         }
     }
@@ -211,13 +180,13 @@ namespace urchin {
 
         std::array<VkDescriptorPoolSize, 2> poolSizes{};
 
-        int uboDescriptorCount = std::max(1, (int)renderTarget.getNumFramebuffer() * (int)uniformData.size());
+        int uboDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)uniformData.size());
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
         poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
 
         int uniformTexReadersCount = 0;
         std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.size();});
-        int textureDescriptorCount = std::max(1, (int)renderTarget.getNumFramebuffer() * uniformTexReadersCount);
+        int textureDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
 
@@ -225,7 +194,7 @@ namespace urchin {
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = (uint32_t)poolSizes.size();
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = (uint32_t)renderTarget.getNumFramebuffer();
+        poolInfo.maxSets = (uint32_t)getRenderTarget().getNumFramebuffer();
 
         VkResult result = vkCreateDescriptorPool(logicalDevice, &poolInfo, nullptr, &descriptorPool);
         if (result != VK_SUCCESS) {
@@ -236,14 +205,14 @@ namespace urchin {
     void GenericRenderer::createDescriptorSets() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->getDescriptorSetLayout());
+        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), pipeline->getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
-        allocInfo.descriptorSetCount = (uint32_t)renderTarget.getNumFramebuffer();
+        allocInfo.descriptorSetCount = (uint32_t)getRenderTarget().getNumFramebuffer();
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets.resize(renderTarget.getNumFramebuffer());
+        descriptorSets.resize(getRenderTarget().getNumFramebuffer());
         VkResult result = vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate descriptor sets with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
@@ -253,7 +222,7 @@ namespace urchin {
     }
 
     void GenericRenderer::updateDescriptorSets() {
-        for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {
+        for (std::size_t frameIndex = 0; frameIndex < getRenderTarget().getNumFramebuffer(); frameIndex++) {
             updateDescriptorSets(frameIndex);
         }
     }
@@ -325,7 +294,7 @@ namespace urchin {
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
         }
     }
@@ -337,7 +306,7 @@ namespace urchin {
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
         }
     }
@@ -349,7 +318,7 @@ namespace urchin {
             assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
         }
     }
@@ -359,7 +328,7 @@ namespace urchin {
             assert(instanceData->getDataType() == DataType::FLOAT);
         #endif
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             instanceData->replaceData(instanceCount, dataPtr);
         }
     }
@@ -369,13 +338,13 @@ namespace urchin {
             assert(uniformData.size() > uniformDataIndex);
         #endif
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             uniformData[uniformDataIndex].updateData(dataPtr);
         }
     }
 
     void GenericRenderer::updateUniformTextureReader(std::size_t uniformTexPosition, const std::shared_ptr<TextureReader>& textureReader) {
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             updateUniformTextureReaderArray(uniformTexPosition, 0, textureReader);
         }
     }
@@ -402,7 +371,7 @@ namespace urchin {
             assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
         #endif
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             textureReader->initialize();
             uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
 

@@ -9,23 +9,19 @@
 namespace urchin {
 
     GenericCompute::GenericCompute(const GenericComputeBuilder& computeBuilder) :
+            PipelineProcessor(computeBuilder.getName(), computeBuilder.getRenderTarget(), computeBuilder.getShader()),
             isInitialized(false),
-            bIsEnabled(true),
-            renderingOrder(0),
-            name(computeBuilder.getName()),
-            renderTarget(computeBuilder.getRenderTarget()),
-            shader(computeBuilder.getShader()),
             uniformData(computeBuilder.getUniformData()),
             uniformTextureReaders(computeBuilder.getUniformTextureReaders()),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
-        descriptorSetsDirty.resize(renderTarget.getNumFramebuffer(), false);
+        descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
-        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, name);
-        pipelineBuilder->setupRenderTarget(renderTarget);
-        pipelineBuilder->setupShader(shader);
+        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, getName());
+        pipelineBuilder->setupRenderTarget(getRenderTarget());
+        pipelineBuilder->setupShader(getShader());
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
                 for (const auto& uniformTextureReader: uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
@@ -39,14 +35,14 @@ namespace urchin {
     GenericCompute::~GenericCompute() {
         cleanup();
         uniformTextureReaders.clear();
-        renderTarget.removeProcessor(this);
+        renderTarget().removeProcessor(this);
     }
 
     void GenericCompute::initialize() {
         ScopeProfiler sp(Profiler::graphic(), "genCompInit");
         assert(!isInitialized);
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (getRenderTarget().isValidRenderTarget()) {
             createPipeline();
             createUniformBuffers();
             createDescriptorPool();
@@ -58,7 +54,7 @@ namespace urchin {
 
     void GenericCompute::cleanup() {
         if (isInitialized) {
-            if (renderTarget.isValidRenderTarget()) {
+            if (getRenderTarget().isValidRenderTarget()) {
                 VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
@@ -77,35 +73,8 @@ namespace urchin {
         return true;
     }
 
-    const std::string& GenericCompute::getName() const {
-        return name;
-    }
-
-    const RenderTarget& GenericCompute::getRenderTarget() const {
-        return renderTarget;
-    }
-
     bool GenericCompute::needCommandBufferRefresh(std::size_t frameIndex) const {
         return drawCommandsDirty || descriptorSetsDirty[frameIndex];
-    }
-
-    bool GenericCompute::isEnabled() const {
-        return bIsEnabled;
-    }
-
-    void GenericCompute::enableRenderer(unsigned int renderingOrder) {
-        this->bIsEnabled = true;
-        this->renderingOrder = renderingOrder;
-        renderTarget.notifyProcessorEnabled(this);
-    }
-
-    void GenericCompute::disableRenderer() {
-        bIsEnabled = false;
-        renderTarget.notifyProcessorDisabled(this);
-    }
-
-    unsigned int GenericCompute::getRenderingOrder() const {
-        return renderingOrder;
     }
 
     bool GenericCompute::isDepthTestEnabled() const {
@@ -145,7 +114,7 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
             ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
             std::string bufferName = getName() + " - uniform" + std::to_string(dataIndex);
-            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, renderTarget.getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
             shaderDataContainer.markDataAsProcessed();
         }
     }
@@ -164,7 +133,7 @@ namespace urchin {
 
         int uniformTexReadersCount = 0;
         std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.size();});
-        int textureDescriptorCount = std::max(1, (int)renderTarget.getNumFramebuffer() * uniformTexReadersCount);
+        int textureDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[0].descriptorCount = (uint32_t)textureDescriptorCount;
 
@@ -172,7 +141,7 @@ namespace urchin {
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
         poolInfo.poolSizeCount = (uint32_t)poolSizes.size();
         poolInfo.pPoolSizes = poolSizes.data();
-        poolInfo.maxSets = (uint32_t)renderTarget.getNumFramebuffer();
+        poolInfo.maxSets = (uint32_t)getRenderTarget().getNumFramebuffer();
 
         VkResult result = vkCreateDescriptorPool(logicalDevice, &poolInfo, nullptr, &descriptorPool);
         if (result != VK_SUCCESS) {
@@ -183,14 +152,14 @@ namespace urchin {
     void GenericCompute::createDescriptorSets() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(renderTarget.getNumFramebuffer(), pipeline->getDescriptorSetLayout());
+        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), pipeline->getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
-        allocInfo.descriptorSetCount = (uint32_t)renderTarget.getNumFramebuffer();
+        allocInfo.descriptorSetCount = (uint32_t)getRenderTarget().getNumFramebuffer();
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets.resize(renderTarget.getNumFramebuffer());
+        descriptorSets.resize(getRenderTarget().getNumFramebuffer());
         VkResult result = vkAllocateDescriptorSets(logicalDevice, &allocInfo, descriptorSets.data());
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to allocate descriptor sets with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
@@ -199,9 +168,8 @@ namespace urchin {
         updateDescriptorSets();
     }
 
-
     void GenericCompute::updateDescriptorSets() {
-        for (std::size_t frameIndex = 0; frameIndex < renderTarget.getNumFramebuffer(); frameIndex++) {
+        for (std::size_t frameIndex = 0; frameIndex < getRenderTarget().getNumFramebuffer(); frameIndex++) {
             updateDescriptorSets(frameIndex);
         }
     }
@@ -270,7 +238,7 @@ namespace urchin {
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
 
-        vkCmdDispatch(commandBuffer, renderTarget.getWidth() / 16, renderTarget.getHeight() / 16, 1); //TODO 16 must match with code in compute shader
+        vkCmdDispatch(commandBuffer, getRenderTarget().getWidth() / 16, getRenderTarget().getHeight() / 16, 1); //TODO 16 must match with code in compute shader + attention to AO size !
 
         drawCommandsDirty = false;
         return pipeline->getId();

@@ -33,15 +33,8 @@ namespace urchin {
             ~GenericRenderer() override;
 
             bool isCompute() const override;
-            const std::string& getName() const override;
-            const RenderTarget& getRenderTarget() const override;
             bool needCommandBufferRefresh(std::size_t) const override;
 
-            bool isEnabled() const override;
-            void enableRenderer(unsigned int) override;
-            void disableRenderer() override;
-
-            unsigned int getRenderingOrder() const override;
             bool isDepthTestEnabled() const override;
             std::size_t getPipelineId() const override;
 
@@ -84,12 +77,6 @@ namespace urchin {
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
 
             bool isInitialized;
-            bool bIsEnabled;
-            unsigned int renderingOrder;
-
-            std::string name;
-            RenderTarget& renderTarget;
-            const Shader& shader;
 
             std::vector<DataContainer> data;
             std::shared_ptr<DataContainer> instanceData;
