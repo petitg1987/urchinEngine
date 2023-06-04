@@ -3,6 +3,7 @@
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/GenericCompute.h>
+#include <graphics/texture/TextureReader.h>
 namespace urchin {
 
     class GenericComputeBuilder : public std::enable_shared_from_this<GenericComputeBuilder> {
@@ -13,6 +14,9 @@ namespace urchin {
             RenderTarget& getRenderTarget() const;
             const Shader& getShader() const;
 
+            std::shared_ptr<GenericComputeBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
+            const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
+
             std::unique_ptr<GenericCompute> build();
 
         private:
@@ -21,6 +25,8 @@ namespace urchin {
             std::string name;
             RenderTarget& renderTarget;
             const Shader& shader;
+
+            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
     };
 
 }

@@ -2,6 +2,7 @@
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
+#include <graphics/texture/TextureReader.h>
 
 namespace urchin {
 
@@ -25,6 +26,10 @@ namespace urchin {
             RenderTarget& renderTarget;
             const Shader& shader;
 
+            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+
+            VkDescriptorSetLayout computeDescriptorSetLayout;
+            VkPipelineLayout computePipelineLayout;
             VkPipeline computePipeline;
     };
 
