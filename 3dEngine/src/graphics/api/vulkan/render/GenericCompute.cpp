@@ -69,6 +69,10 @@ namespace urchin {
         }
     }
 
+    bool GenericCompute::isCompute() const {
+        return true;
+    }
+
     const std::string& GenericCompute::getName() const {
         return name;
     }
@@ -110,7 +114,18 @@ namespace urchin {
     }
 
     std::span<OffscreenRender*> GenericCompute::getTexturesWriter() const {
-        return {}; //TODO impl...
+        texturesWriter.clear();
+
+        for (auto& uniformTextureReaderArray : uniformTextureReaders) {
+            for (auto& uniformTextureReader : uniformTextureReaderArray) {
+                auto lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
+                if (lastTextureWriter) {
+                    texturesWriter.emplace_back(lastTextureWriter);
+                }
+            }
+        }
+
+        return texturesWriter;
     }
 
     void GenericCompute::createPipeline() {

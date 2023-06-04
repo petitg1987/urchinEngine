@@ -96,6 +96,10 @@ namespace urchin {
         }
     }
 
+    bool GenericRenderer::isCompute() const {
+        return false;
+    }
+
     const std::string& GenericRenderer::getName() const {
         return name;
     }

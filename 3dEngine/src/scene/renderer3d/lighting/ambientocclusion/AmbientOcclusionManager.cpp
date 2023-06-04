@@ -116,29 +116,31 @@ namespace urchin {
 
         createOrUpdateAOShader();
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
-        };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-        };
-        Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
-        renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
-                ->addData(vertexCoord)
-                ->addData(textureCoord)
-                ->addUniformData(sizeof(projection), &projection) //binding 0
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
-                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
-                ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
-                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
-                ->build();
+//        std::vector<Point2<float>> vertexCoord = {
+//                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
+//                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+//        };
+//        std::vector<Point2<float>> textureCoord = {
+//                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+//                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+//        };
+//        Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
+//        renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
+//                ->addData(vertexCoord)
+//                ->addData(textureCoord)
+//                ->addUniformData(sizeof(projection), &projection) //binding 0
+//                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+//                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
+//                ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
+//                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
+//                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
+//                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
+//                ->build();
 
         compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionCompShader)
                 ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 1
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 2
+                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 3
                 ->build();
     }
 
@@ -279,7 +281,9 @@ namespace urchin {
 
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         positioningData.viewMatrix = camera.getViewMatrix();
-        renderer->updateUniformData(1, &positioningData);
+        if (renderer) {
+            renderer->updateUniformData(1, &positioningData);
+        }
 
         if (config.isBlurActivated) {
             unsigned int numDependenciesToRawAOTexture = 1 /* vertical blur filter */;

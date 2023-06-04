@@ -10,6 +10,7 @@ namespace urchin {
 
             virtual ~PipelineProcessor() = default;
 
+            virtual bool isCompute() const = 0;
             virtual const std::string& getName() const = 0;
             virtual const RenderTarget& getRenderTarget() const = 0;
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;

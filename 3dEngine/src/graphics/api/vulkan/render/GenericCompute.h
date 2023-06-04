@@ -14,6 +14,7 @@ namespace urchin {
             explicit GenericCompute(const GenericComputeBuilder&);
             ~GenericCompute();
 
+            bool isCompute() const override;
             const std::string& getName() const override;
             const RenderTarget& getRenderTarget() const override;
             bool needCommandBufferRefresh(std::size_t) const override;
@@ -45,13 +46,14 @@ namespace urchin {
 
             bool isInitialized;
             bool bIsEnabled;
-            unsigned int renderingOrder;
+            unsigned int renderingOrder; //TODO rename executionOrder
 
             std::string name;
             RenderTarget& renderTarget;
             const Shader& shader;
 
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            mutable std::vector<OffscreenRender*> texturesWriter;
 
             VkDescriptorSetLayout computeDescriptorSetLayout;
             VkPipelineLayout computePipelineLayout;

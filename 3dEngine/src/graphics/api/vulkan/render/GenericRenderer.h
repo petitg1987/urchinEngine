@@ -32,6 +32,7 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder&);
             ~GenericRenderer();
 
+            bool isCompute() const override;
             const std::string& getName() const override;
             const RenderTarget& getRenderTarget() const override;
             bool needCommandBufferRefresh(std::size_t) const override;
