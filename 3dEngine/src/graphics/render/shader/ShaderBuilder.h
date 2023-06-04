@@ -13,6 +13,9 @@ namespace urchin {
             static std::unique_ptr<Shader> createShader(const std::string&, const std::string&, const std::string&);
             static std::unique_ptr<Shader> createShader(const std::string&, const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
 
+            static std::unique_ptr<Shader> createComputeShader(const std::string&);
+            static std::unique_ptr<Shader> createComputeShader(const std::string&, std::unique_ptr<ShaderConstants>);
+
             static std::unique_ptr<Shader> createNullShader();
 
         private:

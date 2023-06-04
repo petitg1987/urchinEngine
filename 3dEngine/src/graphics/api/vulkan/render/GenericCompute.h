@@ -34,6 +34,11 @@ namespace urchin {
 
             void createPipeline();
             void destroyPipeline();
+            void createDescriptorPool();
+            void createDescriptorSets();
+            void updateDescriptorSets();
+            void updateDescriptorSets(std::size_t);
+            void destroyDescriptorSetsAndPool();
 
             void updateGraphicData(uint32_t) override;
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
@@ -51,8 +56,13 @@ namespace urchin {
             VkDescriptorSetLayout computeDescriptorSetLayout;
             VkPipelineLayout computePipelineLayout;
             VkPipeline computePipeline; //TODO use Pipeline object ?
+            VkDescriptorPool descriptorPool;
+            std::vector<VkDescriptorSet> descriptorSets;
+            std::vector<VkWriteDescriptorSet> descriptorWrites;
+            std::vector<VkDescriptorImageInfo> imageInfosArray;
 
             bool drawCommandsDirty;
+            std::vector<bool> descriptorSetsDirty;
     };
 
 }

@@ -7,6 +7,7 @@
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
+#include <graphics/render/GenericComputeBuilder.h>
 #include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
@@ -135,6 +136,10 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
                 ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
                 ->build();
+
+        compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionCompShader)
+                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 1
+                ->build();
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
@@ -153,8 +158,10 @@ namespace urchin {
 
         if (renderTarget->isValidRenderTarget()) {
             ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
+            ambientOcclusionCompShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants));
         } else {
             ambientOcclusionShader = ShaderBuilder::createNullShader();
+            ambientOcclusionCompShader = ShaderBuilder::createNullShader();
         }
     }
 

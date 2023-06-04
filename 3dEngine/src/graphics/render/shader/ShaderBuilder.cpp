@@ -29,6 +29,17 @@ namespace urchin {
         return std::make_unique<Shader>(shaderId, shaderName, shaderSources, std::move(shaderConstants));
     }
 
+    std::unique_ptr<Shader> ShaderBuilder::createComputeShader(const std::string& computeShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
+        std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
+        std::string shadersDirectory = ShaderConfig::instance().getShadersDirectory();
+
+        shaderSources.emplace_back(Shader::COMPUTE, readFile(shadersDirectory + computeShaderFilename));
+
+        std::size_t shaderId = computeShaderId(computeShaderFilename, "", "", shaderConstants.get());
+        std::string shaderName = FileUtil::getFileNameNoExtension(FileUtil::getFileNameNoExtension(computeShaderFilename));
+        return std::make_unique<Shader>(shaderId, shaderName, shaderSources, std::move(shaderConstants));
+    }
+
     /**
      * Shader which does nothing (useful for testing)
      */

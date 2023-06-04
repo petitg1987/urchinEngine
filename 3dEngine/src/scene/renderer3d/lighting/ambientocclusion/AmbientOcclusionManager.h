@@ -84,7 +84,8 @@ namespace urchin {
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader
-            std::unique_ptr<Shader> ambientOcclusionShader;
+            std::unique_ptr<Shader> ambientOcclusionShader; //TODO remove
+            std::unique_ptr<Shader> ambientOcclusionCompShader;
             std::shared_ptr<Texture> noiseTexture;
             struct {
                 alignas(16) Matrix4<float> inverseProjectionMatrix;
@@ -100,7 +101,8 @@ namespace urchin {
             //visual data
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::unique_ptr<GenericRenderer> renderer;
+            std::unique_ptr<GenericRenderer> renderer; //TODO remove
+            std::unique_ptr<GenericCompute> compute;
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
             std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;
