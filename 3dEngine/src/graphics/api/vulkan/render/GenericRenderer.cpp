@@ -51,7 +51,6 @@ namespace urchin {
     GenericRenderer::~GenericRenderer() {
         cleanup();
         uniformTextureReaders.clear();
-        renderTarget().removeProcessor(this);
     }
 
     void GenericRenderer::initialize() {

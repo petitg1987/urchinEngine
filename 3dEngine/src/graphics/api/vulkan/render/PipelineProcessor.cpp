@@ -4,28 +4,28 @@
 namespace urchin {
 
     PipelineProcessor::PipelineProcessor(std::string name, RenderTarget& renderTarget, const Shader& shader) :
-            mName(std::move(name)),
-            mRenderTarget(renderTarget),
-            mShader(shader),
+            name(std::move(name)),
+            renderTarget(renderTarget),
+            shader(shader),
             bIsEnabled(true),
             renderingOrder(0) {
 
     }
 
+    PipelineProcessor::~PipelineProcessor() {
+        renderTarget.removeProcessor(this);
+    }
+
     const std::string& PipelineProcessor::getName() const {
-        return mName;
+        return name;
     }
 
     const RenderTarget& PipelineProcessor::getRenderTarget() const {
-        return mRenderTarget;
-    }
-
-    RenderTarget& PipelineProcessor::renderTarget() {
-        return mRenderTarget;
+        return renderTarget;
     }
 
     const Shader& PipelineProcessor::getShader() const {
-        return mShader;
+        return shader;
     }
 
     bool PipelineProcessor::isEnabled() const {
@@ -35,12 +35,12 @@ namespace urchin {
     void PipelineProcessor::enableRenderer(unsigned int renderingOrder) {
         this->bIsEnabled = true;
         this->renderingOrder = renderingOrder;
-        mRenderTarget.notifyProcessorEnabled(this);
+        renderTarget.notifyProcessorEnabled(this);
     }
 
     void PipelineProcessor::disableRenderer() {
         bIsEnabled = false;
-        mRenderTarget.notifyProcessorDisabled(this);
+        renderTarget.notifyProcessorDisabled(this);
     }
 
     unsigned int PipelineProcessor::getRenderingOrder() const {

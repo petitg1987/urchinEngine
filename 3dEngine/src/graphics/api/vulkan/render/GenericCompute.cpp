@@ -35,7 +35,6 @@ namespace urchin {
     GenericCompute::~GenericCompute() {
         cleanup();
         uniformTextureReaders.clear();
-        renderTarget().removeProcessor(this);
     }
 
     void GenericCompute::initialize() {

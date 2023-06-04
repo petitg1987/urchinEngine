@@ -11,7 +11,7 @@ namespace urchin {
             friend class RenderTarget;
 
             PipelineProcessor(std::string, RenderTarget&, const Shader&);
-            virtual ~PipelineProcessor() = default;
+            virtual ~PipelineProcessor();
 
             const std::string& getName() const;
             const RenderTarget& getRenderTarget() const;
@@ -29,9 +29,6 @@ namespace urchin {
 
             virtual std::span<OffscreenRender*> getTexturesWriter() const = 0;
 
-        protected:
-            RenderTarget& renderTarget();
-
         private:
             virtual void initialize() = 0;
             virtual void cleanup() = 0;
@@ -39,9 +36,9 @@ namespace urchin {
             virtual void updateGraphicData(uint32_t) = 0;
             virtual std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) = 0;
 
-            std::string mName;
-            RenderTarget& mRenderTarget;
-            const Shader& mShader;
+            std::string name;
+            RenderTarget& renderTarget;
+            const Shader& shader;
 
             bool bIsEnabled;
             unsigned int renderingOrder;
