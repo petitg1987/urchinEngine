@@ -24,11 +24,11 @@ layout(std140, set = 0, binding = 3) uniform Scene {
     vec2 aoResolution;
 } scene;
 layout (binding = 4, r32f) uniform readonly image2D depthTex;
-layout (binding = 5, rgba8ui) uniform readonly uimage2D normalAndAmbientTex;
-layout (binding = 6, rgba8ui) uniform readonly uimage2D noiseTex;
+layout (binding = 5, rgba8) uniform readonly image2D normalAndAmbientTex;
+layout (binding = 6, rgba8) uniform readonly image2D noiseTex;
 layout (binding = 7, r8) uniform writeonly image2D outputImage;
 
 void main() {
     vec4 pixel = imageLoad(normalAndAmbientTex, ivec2(gl_GlobalInvocationID.xy)).rgba;
-    imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(0.2));
+    imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), pixel);
 }
