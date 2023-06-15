@@ -61,6 +61,11 @@ namespace urchin {
         }
     }
 
+    std::shared_ptr<Texture>& OffscreenRender::getOutputTexture(std::size_t index) {
+        assert(outputTextures.size() > index);
+        return outputTextures[index].texture;
+    }
+
     void OffscreenRender::initialize() {
         ScopeProfiler sp(Profiler::graphic(), "offRenderInit");
         assert(!isInitialized);

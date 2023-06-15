@@ -46,6 +46,7 @@ namespace urchin {
 
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::vector<std::shared_ptr<Texture>> uniformTextureOutputs;
             mutable std::vector<OffscreenRender*> texturesWriter;
 
             std::unique_ptr<PipelineBuilder> pipelineBuilder;
@@ -56,6 +57,7 @@ namespace urchin {
             std::vector<VkWriteDescriptorSet> descriptorWrites;
             std::vector<VkDescriptorBufferInfo> bufferInfos;
             std::vector<VkDescriptorImageInfo> imageInfosArray;
+            std::vector<VkDescriptorImageInfo> imageOutputInfosArray;
 
             bool drawCommandsDirty;
             std::vector<bool> descriptorSetsDirty;

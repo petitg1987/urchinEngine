@@ -56,6 +56,15 @@ namespace urchin {
         return uniformTextureReaders;
     }
 
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureOutput(const std::shared_ptr<Texture>& textureOutput) {
+        uniformTextureOutputs.push_back(textureOutput);
+        return shared_from_this();
+    }
+
+    const std::vector<std::shared_ptr<Texture>>& GenericComputeBuilder::getUniformTextureOutputs() const {
+        return uniformTextureOutputs;
+    }
+
     std::unique_ptr<GenericCompute> GenericComputeBuilder::build() {
         auto renderer = std::make_unique<GenericCompute>(*this);
         renderTarget.addProcessor(renderer.get());

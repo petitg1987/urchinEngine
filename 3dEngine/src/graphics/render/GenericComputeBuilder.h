@@ -20,6 +20,9 @@ namespace urchin {
             std::shared_ptr<GenericComputeBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
             const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
+            std::shared_ptr<GenericComputeBuilder> addUniformTextureOutput(const std::shared_ptr<Texture>&);
+            const std::vector<std::shared_ptr<Texture>>& getUniformTextureOutputs() const;
+
             std::unique_ptr<GenericCompute> build();
 
         private:
@@ -31,6 +34,7 @@ namespace urchin {
 
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::vector<std::shared_ptr<Texture>> uniformTextureOutputs;
     };
 
 }

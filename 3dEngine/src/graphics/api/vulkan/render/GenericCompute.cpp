@@ -13,6 +13,7 @@ namespace urchin {
             isInitialized(false),
             uniformData(computeBuilder.getUniformData()),
             uniformTextureReaders(computeBuilder.getUniformTextureReaders()),
+            uniformTextureOutputs(computeBuilder.getUniformTextureOutputs()),
             descriptorPool(nullptr),
             drawCommandsDirty(false) {
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
@@ -26,6 +27,9 @@ namespace urchin {
                 for (const auto& uniformTextureReader: uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
                 }
+            }
+            for (const auto& uniformTextureOutput: uniformTextureOutputs) {
+                uniformTextureOutput->initialize();
             }
         }
 
@@ -110,7 +114,7 @@ namespace urchin {
     }
 
     void GenericCompute::createPipeline() {
-        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders);
+        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders, uniformTextureOutputs);
         pipeline = pipelineBuilder->buildPipeline();
     }
 
@@ -138,7 +142,7 @@ namespace urchin {
     void GenericCompute::createDescriptorPool() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::array<VkDescriptorPoolSize, 2> poolSizes{};
+        std::array<VkDescriptorPoolSize, 3> poolSizes{};
 
         int uboDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)uniformData.size());
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -149,6 +153,10 @@ namespace urchin {
         int textureDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
+
+        int uniformTexOutputsCount = std::max(1, (int)uniformTextureOutputs.size());
+        poolSizes[2].type = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
+        poolSizes[2].descriptorCount = (uint32_t)uniformTexOutputsCount;
 
         VkDescriptorPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -189,7 +197,7 @@ namespace urchin {
 
     void GenericCompute::updateDescriptorSets(std::size_t frameIndex) {
         descriptorWrites.clear();
-        descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size());
+        descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size() + uniformTextureOutputs.size());
         uint32_t shaderUniformBinding = 0;
 
         //uniform buffer objects
@@ -235,6 +243,29 @@ namespace urchin {
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             textureDescriptorWrites.descriptorCount = (uint32_t)uniformTextureReaderArray.size();
             textureDescriptorWrites.pImageInfo = &imageInfosArray[startIndex]; //warning: imageInfosArray cannot be destroyed before calling vkUpdateDescriptorSets
+            descriptorWrites.emplace_back(textureDescriptorWrites);
+        }
+
+        //texture outputs
+        imageOutputInfosArray.clear();
+        imageOutputInfosArray.reserve(uniformTextureOutputs.size());
+        for (const std::shared_ptr<Texture>& uniformTextureOutput : uniformTextureOutputs) {
+            std::size_t startIndex = imageOutputInfosArray.size();
+
+            VkDescriptorImageInfo imageInfo{};
+            imageInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL; //TODO not sure about that !
+            imageInfo.imageView = uniformTextureOutput->getImageView();
+            //TODO imageInfo.sampler = uniformTextureOutput->getParam().getTextureSampler();
+            imageOutputInfosArray.emplace_back(imageInfo);
+
+            VkWriteDescriptorSet textureDescriptorWrites{};
+            textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            textureDescriptorWrites.dstBinding = shaderUniformBinding++;
+            textureDescriptorWrites.dstArrayElement = 0;
+            textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
+            textureDescriptorWrites.descriptorCount = (uint32_t)1;
+            textureDescriptorWrites.pImageInfo = &imageOutputInfosArray[startIndex]; //warning: imageInfosArray cannot be destroyed before calling vkUpdateDescriptorSets
             descriptorWrites.emplace_back(textureDescriptorWrites);
         }
 

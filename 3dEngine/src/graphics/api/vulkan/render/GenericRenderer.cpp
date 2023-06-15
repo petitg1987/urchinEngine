@@ -109,7 +109,7 @@ namespace urchin {
 
     void GenericRenderer::createPipeline() {
         pipelineBuilder->setupData(data, instanceData.get());
-        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders);
+        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders, {});
         pipeline = pipelineBuilder->buildPipeline();
     }
 

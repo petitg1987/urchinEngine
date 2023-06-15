@@ -30,6 +30,7 @@ namespace urchin {
 
             void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, std::optional<Vector4<float>> = std::nullopt);
             void resetOutputTextures();
+            std::shared_ptr<Texture>& getOutputTexture(std::size_t);
 
             void initialize() override;
             void cleanup() override;
