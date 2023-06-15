@@ -21,6 +21,8 @@ namespace urchin {
             std::size_t getPipelineId() const override;
             PipelineType getPipelineType() const override;
 
+            void updateUniformData(std::size_t, const void*);
+
             std::span<OffscreenRender*> getTexturesWriter() const override;
 
         private:
@@ -52,6 +54,7 @@ namespace urchin {
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
             std::vector<VkWriteDescriptorSet> descriptorWrites;
+            std::vector<VkDescriptorBufferInfo> bufferInfos;
             std::vector<VkDescriptorImageInfo> imageInfosArray;
 
             bool drawCommandsDirty;

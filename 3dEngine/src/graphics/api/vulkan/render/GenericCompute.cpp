@@ -84,6 +84,16 @@ namespace urchin {
         return pipeline->getType();
     }
 
+    void GenericCompute::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(uniformData.size() > uniformDataIndex);
+        #endif
+
+        if (getRenderTarget().isValidRenderTarget()) {
+            uniformData[uniformDataIndex].updateData(dataPtr);
+        }
+    }
+
     std::span<OffscreenRender*> GenericCompute::getTexturesWriter() const {
         texturesWriter.clear();
 
@@ -128,13 +138,17 @@ namespace urchin {
     void GenericCompute::createDescriptorPool() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::array<VkDescriptorPoolSize, 1> poolSizes{};
+        std::array<VkDescriptorPoolSize, 2> poolSizes{};
+
+        int uboDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * (int)uniformData.size());
+        poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
 
         int uniformTexReadersCount = 0;
         std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.size();});
         int textureDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * uniformTexReadersCount);
-        poolSizes[0].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        poolSizes[0].descriptorCount = (uint32_t)textureDescriptorCount;
+        poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
 
         VkDescriptorPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -175,8 +189,29 @@ namespace urchin {
 
     void GenericCompute::updateDescriptorSets(std::size_t frameIndex) {
         descriptorWrites.clear();
-        descriptorWrites.reserve(uniformTextureReaders.size());
+        descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size());
         uint32_t shaderUniformBinding = 0;
+
+        //uniform buffer objects
+        bufferInfos.clear();
+        bufferInfos.reserve(uniformData.size());
+        for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
+            VkDescriptorBufferInfo bufferInfo{};
+            bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
+            bufferInfo.offset = 0;
+            bufferInfo.range = VK_WHOLE_SIZE;
+            bufferInfos.emplace_back(bufferInfo);
+
+            VkWriteDescriptorSet uniformDescriptorWrites{};
+            uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
+            uniformDescriptorWrites.dstBinding = shaderUniformBinding++;
+            uniformDescriptorWrites.dstArrayElement = 0;
+            uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            uniformDescriptorWrites.descriptorCount = 1;
+            uniformDescriptorWrites.pBufferInfo = &bufferInfos.back(); //warning: bufferInfos cannot be destroyed before calling vkUpdateDescriptorSets
+            descriptorWrites.emplace_back(uniformDescriptorWrites);
+        }
 
         //textures
         imageInfosArray.clear();
