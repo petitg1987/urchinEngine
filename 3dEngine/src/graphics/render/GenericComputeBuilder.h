@@ -1,8 +1,6 @@
 #pragma once
 
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/GenericCompute.h>
+#include <graphics/api/GraphicsApi.h>
 #include <graphics/texture/TextureReader.h>
 namespace urchin {
 

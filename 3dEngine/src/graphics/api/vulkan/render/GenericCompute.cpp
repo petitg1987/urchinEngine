@@ -18,9 +18,9 @@ namespace urchin {
             drawCommandsDirty(false) {
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
-        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, getName());
-        pipelineBuilder->setupRenderTarget(getRenderTarget());
-        pipelineBuilder->setupShader(getShader());
+        setupPipelineBuilder(std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, getName()));
+        getPipelineBuilder().setupRenderTarget(getRenderTarget());
+        getPipelineBuilder().setupShader(getShader());
 
         if (getRenderTarget().isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
@@ -80,14 +80,6 @@ namespace urchin {
         return false;
     }
 
-    std::size_t GenericCompute::getPipelineId() const {
-        return pipeline->getId();
-    }
-
-    PipelineType GenericCompute::getPipelineType() const {
-        return pipeline->getType();
-    }
-
     void GenericCompute::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(uniformData.size() > uniformDataIndex);
@@ -114,12 +106,8 @@ namespace urchin {
     }
 
     void GenericCompute::createPipeline() {
-        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders, uniformTextureOutputs);
-        pipeline = pipelineBuilder->buildPipeline();
-    }
-
-    void GenericCompute::destroyPipeline() {
-        pipeline = nullptr;
+        getPipelineBuilder().setupUniform(uniformData, uniformTextureReaders, uniformTextureOutputs);
+        PipelineProcessor::createPipeline();
     }
 
     void GenericCompute::createUniformBuffers() {
@@ -173,7 +161,7 @@ namespace urchin {
     void GenericCompute::createDescriptorSets() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), pipeline->getDescriptorSetLayout());
+        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), getPipeline().getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
@@ -303,16 +291,16 @@ namespace urchin {
             descriptorSetsDirty[frameIndex] = false;
         }
 
-        if (boundPipelineId != pipeline->getId()) {
-            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline->getPipeline());
+        if (boundPipelineId != getPipeline().getId()) {
+            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getVkPipeline());
         }
 
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
 
         vkCmdDispatch(commandBuffer, getRenderTarget().getWidth() / 16, getRenderTarget().getHeight() / 16, 1); //TODO 16 must match with code in compute shader + attention to AO size !
 
         drawCommandsDirty = false;
-        return pipeline->getId();
+        return getPipeline().getId();
     }
 
 }

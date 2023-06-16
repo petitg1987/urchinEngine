@@ -28,14 +28,14 @@ namespace urchin {
             drawCommandsDirty(false) {
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
-        pipelineBuilder = std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, getName());
-        pipelineBuilder->setupRenderTarget(getRenderTarget());
-        pipelineBuilder->setupShader(getShader());
-        pipelineBuilder->setupShapeType(rendererBuilder.getShapeType());
-        pipelineBuilder->setupBlendFunctions(rendererBuilder.getBlendFunctions());
-        pipelineBuilder->setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
-        pipelineBuilder->setupCullFaceOperation(rendererBuilder.isCullFaceEnabled());
-        pipelineBuilder->setupPolygonMode(rendererBuilder.getPolygonMode());
+        setupPipelineBuilder(std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, getName()));
+        getPipelineBuilder().setupRenderTarget(getRenderTarget());
+        getPipelineBuilder().setupShader(getShader());
+        getPipelineBuilder().setupShapeType(rendererBuilder.getShapeType());
+        getPipelineBuilder().setupBlendFunctions(rendererBuilder.getBlendFunctions());
+        getPipelineBuilder().setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
+        getPipelineBuilder().setupCullFaceOperation(rendererBuilder.isCullFaceEnabled());
+        getPipelineBuilder().setupPolygonMode(rendererBuilder.getPolygonMode());
 
         if (getRenderTarget().isValidRenderTarget()) {
             for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
@@ -99,22 +99,10 @@ namespace urchin {
         return depthTestEnabled;
     }
 
-    std::size_t GenericRenderer::getPipelineId() const {
-        return pipeline->getId();
-    }
-
-    PipelineType GenericRenderer::getPipelineType() const {
-        return pipeline->getType();
-    }
-
     void GenericRenderer::createPipeline() {
-        pipelineBuilder->setupData(data, instanceData.get());
-        pipelineBuilder->setupUniform(uniformData, uniformTextureReaders, {});
-        pipeline = pipelineBuilder->buildPipeline();
-    }
-
-    void GenericRenderer::destroyPipeline() {
-        pipeline = nullptr;
+        getPipelineBuilder().setupData(data, instanceData.get());
+        getPipelineBuilder().setupUniform(uniformData, uniformTextureReaders, {});
+        PipelineProcessor::createPipeline();
     }
 
     void GenericRenderer::createVertexBuffers() {
@@ -204,7 +192,7 @@ namespace urchin {
     void GenericRenderer::createDescriptorSets() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), pipeline->getDescriptorSetLayout());
+        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), getPipeline().getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
@@ -458,8 +446,8 @@ namespace urchin {
             descriptorSetsDirty[frameIndex] = false;
         }
 
-        if (boundPipelineId != pipeline->getId()) {
-            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipeline());
+        if (boundPipelineId != getPipeline().getId()) {
+            vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, getPipeline().getVkPipeline());
         }
 
         std::array<VkDeviceSize, 20> offsets = {0};
@@ -475,7 +463,7 @@ namespace urchin {
         scissor.extent = {.width = (unsigned int)scissorSize.X, .height = (unsigned int)scissorSize.Y};
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline->getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, getPipeline().getPipelineLayout(), 0, 1, &descriptorSets[frameIndex], 0, nullptr);
         vkCmdBindVertexBuffers(commandBuffer, 0, (uint32_t)data.size(), rawVertexBuffers.data(), offsets.data());
         uint32_t instanceCount = 1;
         if (instanceData) {
@@ -493,7 +481,7 @@ namespace urchin {
         }
 
         drawCommandsDirty = false;
-        return pipeline->getId();
+        return getPipeline().getId();
     }
 
 }

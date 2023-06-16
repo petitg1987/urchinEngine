@@ -3,7 +3,6 @@
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 #include <graphics/api/vulkan/render/handler/BufferHandler.h>
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
-#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 
 namespace urchin {
 
@@ -18,8 +17,6 @@ namespace urchin {
             bool needCommandBufferRefresh(std::size_t) const override;
 
             bool isDepthTestEnabled() const override;
-            std::size_t getPipelineId() const override;
-            PipelineType getPipelineType() const override;
 
             void updateUniformData(std::size_t, const void*);
 
@@ -29,8 +26,7 @@ namespace urchin {
             void initialize() override;
             void cleanup() override;
 
-            void createPipeline();
-            void destroyPipeline();
+            void createPipeline() override;
             void createUniformBuffers();
             void destroyUniformBuffers();
             void createDescriptorPool();
@@ -49,8 +45,6 @@ namespace urchin {
             std::vector<std::shared_ptr<Texture>> uniformTextureOutputs;
             mutable std::vector<OffscreenRender*> texturesWriter;
 
-            std::unique_ptr<PipelineBuilder> pipelineBuilder;
-            std::shared_ptr<Pipeline> pipeline;
             std::vector<AlterableBufferHandler> uniformsBuffers;
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;

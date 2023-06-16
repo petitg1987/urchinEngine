@@ -46,4 +46,35 @@ namespace urchin {
     unsigned int PipelineProcessor::getRenderingOrder() const {
         return renderingOrder;
     }
+
+    void PipelineProcessor::setupPipelineBuilder(std::unique_ptr<PipelineBuilder> pipelineBuilder) {
+        assert(!this->pipelineBuilder);
+        this->pipelineBuilder = std::move(pipelineBuilder);
+    }
+
+    PipelineBuilder& PipelineProcessor::getPipelineBuilder() const {
+        assert(this->pipelineBuilder);
+        return *pipelineBuilder;
+    }
+
+    void PipelineProcessor::createPipeline() {
+        assert(pipelineBuilder);
+        pipeline = pipelineBuilder->buildPipeline();
+    }
+
+    void PipelineProcessor::destroyPipeline() {
+        pipeline = nullptr;
+    }
+
+    Pipeline& PipelineProcessor::getPipeline() const {
+        return *pipeline;
+    }
+
+    std::size_t PipelineProcessor::getPipelineId() const {
+        return pipeline->getId();
+    }
+
+    PipelineType PipelineProcessor::getPipelineType() const {
+        return pipeline->getType();
+    }
 }

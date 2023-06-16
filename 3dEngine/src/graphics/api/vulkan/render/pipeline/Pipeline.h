@@ -25,8 +25,8 @@ namespace urchin {
             VkPipelineLayout& pipelineLayout();
             const VkPipelineLayout& getPipelineLayout() const;
 
-            VkPipeline& pipeline();
-            const VkPipeline& getPipeline() const;
+            VkPipeline& vkPipeline();
+            const VkPipeline& getVkPipeline() const;
 
         private:
             PipelineType type;

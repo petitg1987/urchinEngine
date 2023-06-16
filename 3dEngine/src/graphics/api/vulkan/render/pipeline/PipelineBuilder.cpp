@@ -403,12 +403,12 @@ namespace urchin {
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; //can be used to switch optimally between similar pipeline
         pipelineInfo.basePipelineIndex = -1;
 
-        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->pipeline());
+        VkResult pipelinesResult = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->vkPipeline());
         if (pipelinesResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create graphics pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
         }
 
-        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->pipeline(), name);
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->vkPipeline(), name);
     }
 
     VkPrimitiveTopology PipelineBuilder::shapeTypeToVulkanTopology() const {
@@ -490,12 +490,12 @@ namespace urchin {
         pipelineInfo.layout = pipeline->getPipelineLayout();
         pipelineInfo.stage = shader->getShaderStages()[0];
 
-        VkResult pipelinesResult = vkCreateComputePipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->pipeline());
+        VkResult pipelinesResult = vkCreateComputePipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline->vkPipeline());
         if (pipelinesResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create compute pipeline with error code: " + std::string(string_VkResult(pipelinesResult)));
         }
 
-        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->pipeline(), name);
+        DebugLabelHelper::nameObject(DebugLabelHelper::PIPELINE, pipeline->vkPipeline(), name);
     }
 
 }

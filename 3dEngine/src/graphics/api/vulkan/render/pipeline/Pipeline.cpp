@@ -49,11 +49,11 @@ namespace urchin {
         return mPipelineLayout;
     }
 
-    VkPipeline& Pipeline::pipeline() {
+    VkPipeline& Pipeline::vkPipeline() {
         return mPipeline;
     }
 
-    const VkPipeline& Pipeline::getPipeline() const {
+    const VkPipeline& Pipeline::getVkPipeline() const {
         return mPipeline;
     }
 

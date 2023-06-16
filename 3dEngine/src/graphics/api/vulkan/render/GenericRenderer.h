@@ -16,7 +16,6 @@
 #include <graphics/api/vulkan/render/handler/AlterableBufferHandler.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 
 namespace urchin {
@@ -34,8 +33,6 @@ namespace urchin {
             bool needCommandBufferRefresh(std::size_t) const override;
 
             bool isDepthTestEnabled() const override;
-            std::size_t getPipelineId() const override;
-            PipelineType getPipelineType() const override;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);
             void updateData(std::size_t, const std::vector<Point3<float>>&);
@@ -58,8 +55,7 @@ namespace urchin {
             void initialize() override;
             void cleanup() override;
 
-            void createPipeline();
-            void destroyPipeline();
+            void createPipeline() override;
             void createVertexBuffers();
             void destroyVertexBuffers();
             void createIndexBuffer();
@@ -88,8 +84,6 @@ namespace urchin {
             Vector2<int> scissorSize;
 
             bool depthTestEnabled;
-            std::unique_ptr<PipelineBuilder> pipelineBuilder;
-            std::shared_ptr<Pipeline> pipeline;
             std::vector<AlterableBufferHandler> vertexBuffers;
             AlterableBufferHandler instanceVertexBuffer;
             AlterableBufferHandler indexBuffer;

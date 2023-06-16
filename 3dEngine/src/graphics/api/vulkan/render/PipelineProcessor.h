@@ -3,6 +3,7 @@
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>
+#include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 
 namespace urchin {
 
@@ -24,10 +25,17 @@ namespace urchin {
             unsigned int getRenderingOrder() const;
 
             virtual bool isDepthTestEnabled() const = 0;
-            virtual std::size_t getPipelineId() const = 0;
-            virtual PipelineType getPipelineType() const = 0;
+            std::size_t getPipelineId() const;
+            PipelineType getPipelineType() const;
 
             virtual std::span<OffscreenRender*> getTexturesWriter() const = 0;
+
+        protected:
+            void setupPipelineBuilder(std::unique_ptr<PipelineBuilder>);
+            PipelineBuilder& getPipelineBuilder() const;
+            virtual void createPipeline();
+            void destroyPipeline();
+            Pipeline& getPipeline() const;
 
         private:
             virtual void initialize() = 0;
@@ -42,6 +50,9 @@ namespace urchin {
 
             bool bIsEnabled;
             unsigned int renderingOrder;
+
+            std::unique_ptr<PipelineBuilder> pipelineBuilder;
+            std::shared_ptr<Pipeline> pipeline;
     };
 
 }
