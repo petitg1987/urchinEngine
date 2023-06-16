@@ -432,8 +432,8 @@ namespace urchin {
                     vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 }
                 std::size_t boundPipelineId = 0;
-                for (PipelineProcessor* processor: sortedEnabledProcessors) {
-                    boundPipelineId = processor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
+                for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) {
+                    boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
                 }
                 if (sortedEnabledProcessors.empty() || sortedEnabledProcessors[0]->getPipelineType() == PipelineType::GRAPHICS) {
                     vkCmdEndRenderPass(commandBuffers[frameIndex]);

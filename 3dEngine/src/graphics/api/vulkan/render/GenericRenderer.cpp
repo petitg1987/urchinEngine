@@ -384,7 +384,7 @@ namespace urchin {
 
         for (auto& uniformTextureReaderArray : uniformTextureReaders) {
             for (auto& uniformTextureReader : uniformTextureReaderArray) {
-                auto lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
+                auto* lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
                 if (lastTextureWriter) {
                     texturesWriter.emplace_back(lastTextureWriter);
                 }
