@@ -261,7 +261,7 @@ namespace urchin {
             VkDescriptorImageInfo imageInfo{};
             imageInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
             imageInfo.imageView = uniformTextureOutput->getImageView();
-            //TODO imageInfo.sampler = uniformTextureOutput->getParam().getTextureSampler();
+            imageInfo.sampler = VK_NULL_HANDLE;
             imageOutputInfosArray.emplace_back(imageInfo);
 
             VkWriteDescriptorSet textureDescriptorWrites{};
