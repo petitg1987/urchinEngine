@@ -187,6 +187,10 @@ namespace urchin {
         return bHasTransparency.value();
     }
 
+    OutputUsage Texture::getOutputUsage() const {
+        return outputUsage;
+    }
+
     void Texture::createTextureImage() {
         auto allocator = GraphicsSetupService::instance().getAllocator();
         VkDeviceSize allImagesSize = getImageSize() * dataPtr.size();

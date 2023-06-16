@@ -62,6 +62,7 @@ namespace urchin {
             bool hasMipmap() const;
             void setHasTransparency(bool);
             bool hasTransparency() const;
+            OutputUsage getOutputUsage() const;
 
         private:
             Texture(TextureType textureType, unsigned int, unsigned int, unsigned int, TextureFormat, const std::vector<const void*>&, TextureDataType);
