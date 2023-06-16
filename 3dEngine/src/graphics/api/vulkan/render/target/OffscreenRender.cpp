@@ -26,7 +26,7 @@ namespace urchin {
         resetOutputTextures();
     }
 
-    void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor) {
+    void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor, OutputUsage outputUsage) {
         assert(!isInitialized);
 
         if (loadType == LoadType::LOAD_CONTENT) {
@@ -38,11 +38,11 @@ namespace urchin {
                 throw std::runtime_error("Clear color is missing for texture '" + texture->getName() + "' on render target: " + getName());
             }
 
-            texture->enableTextureWriting();
+            texture->enableTextureWriting(outputUsage);
             texture->initialize();
         }
 
-        outputTextures.emplace_back(OutputTexture{texture, loadType, clearColor});
+        outputTextures.emplace_back(OutputTexture{texture, loadType, clearColor, outputUsage});
     }
 
     void OffscreenRender::resetOutputTextures() {
@@ -162,7 +162,8 @@ namespace urchin {
         for (const auto& outputTexture : outputTextures) {
             bool clearOnLoad = outputTexture.clearColor.has_value();
             bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
-            attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+            VkImageLayout finalLayout = outputTexture.outputUsage == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL; //TODO correct to use general for compute ?
+            attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, finalLayout));
             VkAttachmentReference colorAttachmentRef{};
             colorAttachmentRef.attachment = attachmentIndex++;
             colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;

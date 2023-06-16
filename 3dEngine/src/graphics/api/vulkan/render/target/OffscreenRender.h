@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    enum LoadType {
+    enum class LoadType {
         NO_LOAD, //texture content is not loaded (default)
         LOAD_CLEAR, //texture content is cleared at pipeline start
         LOAD_CONTENT //texture content is loaded at pipeline start. Use case: blending must be applied on an existing texture having content
@@ -18,6 +18,7 @@ namespace urchin {
         std::shared_ptr<Texture> texture;
         LoadType loadOperation;
         std::optional<Vector4<float>> clearColor;
+        OutputUsage outputUsage;
     };
 
     class OffscreenRender final : public RenderTarget {
@@ -28,7 +29,7 @@ namespace urchin {
             explicit OffscreenRender(std::string, DepthAttachmentType);
             ~OffscreenRender() override;
 
-            void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, std::optional<Vector4<float>> = std::nullopt);
+            void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, std::optional<Vector4<float>> = std::nullopt, OutputUsage = OutputUsage::GRAPHICS);
             void resetOutputTextures();
             std::shared_ptr<Texture>& getOutputTexture(std::size_t);
 

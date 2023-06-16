@@ -21,6 +21,7 @@ namespace urchin {
             format(format),
             mipLevels(1),
             writableTexture(false),
+            outputUsage(OutputUsage::GRAPHICS),
             lastTextureWriter(nullptr),
             textureImage(nullptr),
             textureImageMemory(nullptr),
@@ -102,9 +103,10 @@ namespace urchin {
         mipLevels = (uint32_t)(std::floor(std::log2(std::max(width, height)))) + 1;
     }
 
-    void Texture::enableTextureWriting() {
+    void Texture::enableTextureWriting(OutputUsage outputUsage) {
         assert(!isInitialized);
         this->writableTexture = true;
+        this->outputUsage = outputUsage;
     }
 
     void Texture::initialize() {
@@ -209,7 +211,8 @@ namespace urchin {
             transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);
             copyBufferToImage(stagingBuffer, textureImage);
             if (!hasMipmap()) {
-                transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1);
+                VkImageLayout newLayout = outputUsage == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL;
+                transitionImageLayout(textureImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, newLayout, 1);
             } else {
                 generateMipmaps(textureImage, getVkFormat());
             }
@@ -223,7 +226,7 @@ namespace urchin {
         return width * height * getBytesByPixel() * (layer / nbImages);
     }
 
-    VkImageUsageFlags Texture::getImageUsage() const { //TODO review for compute
+    VkImageUsageFlags Texture::getImageUsage() const {
         VkImageUsageFlags usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
         usage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT; //for mipmap (if exist) and capture
 
@@ -231,7 +234,7 @@ namespace urchin {
             usage |= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
         } else if (writableTexture) {
             usage |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-            usage |= VK_IMAGE_USAGE_STORAGE_BIT; //TODO add this usage only when required
+            usage |= VK_IMAGE_USAGE_STORAGE_BIT; //TODO add this usage only when required (outputUsage == OutputUsage::COMPUTE ?)
         }
         return usage;
     }
@@ -267,6 +270,12 @@ namespace urchin {
 
                 sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
                 destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+            } else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_GENERAL) { //general is for compute shader output image
+                barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+                barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT;
+
+                sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+                destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
             } else {
                 throw std::invalid_argument("Unsupported layout transition from " + std::to_string(oldLayout) + " to " + std::to_string(newLayout));
             }

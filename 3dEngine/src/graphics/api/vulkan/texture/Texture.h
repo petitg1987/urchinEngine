@@ -24,6 +24,11 @@ namespace urchin {
         FLOAT_32
     };
 
+    enum class OutputUsage {
+        GRAPHICS,
+        COMPUTE
+    };
+
     class Texture final : public Resource {
         public:
             friend class GenericRenderer;
@@ -43,7 +48,7 @@ namespace urchin {
             static std::shared_ptr<Texture> buildEmptyArrayRg(std::string);
 
             void enableMipmap();
-            void enableTextureWriting();
+            void enableTextureWriting(OutputUsage);
 
             void initialize();
 
@@ -90,6 +95,7 @@ namespace urchin {
             uint32_t mipLevels;
             std::optional<bool> bHasTransparency;
             bool writableTexture;
+            OutputUsage outputUsage;
 
             OffscreenRender* lastTextureWriter;
             VkImage textureImage;

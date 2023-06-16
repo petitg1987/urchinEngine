@@ -78,7 +78,7 @@ namespace urchin {
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
             }
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(ambientOcclusionTexture);
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(ambientOcclusionTexture, LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
             renderTarget->initialize();
         }
 
@@ -137,7 +137,6 @@ namespace urchin {
 //                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
 //                ->build();
 
-        //TODO avoid cast to OffscreenRender due to NullRenderTarget
         compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionCompShader)
                 ->addUniformData(sizeof(projection), &projection) //binding 0
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
@@ -146,7 +145,7 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
                 ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
-                ->addUniformTextureOutput(static_cast<OffscreenRender*>(renderTarget.get())->getOutputTexture(0)) //binding 7
+                ->addUniformTextureOutput(ambientOcclusionTexture) //binding 7
                 ->build();
     }
 

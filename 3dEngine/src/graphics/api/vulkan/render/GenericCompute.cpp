@@ -253,7 +253,7 @@ namespace urchin {
             std::size_t startIndex = imageOutputInfosArray.size();
 
             VkDescriptorImageInfo imageInfo{};
-            imageInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL; //TODO not sure about that !
+            imageInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL; //TODO should be also used in OffscreenRender#165
             imageInfo.imageView = uniformTextureOutput->getImageView();
             //TODO imageInfo.sampler = uniformTextureOutput->getParam().getTextureSampler();
             imageOutputInfosArray.emplace_back(imageInfo);
