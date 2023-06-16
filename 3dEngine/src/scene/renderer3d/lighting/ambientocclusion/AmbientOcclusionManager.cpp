@@ -164,7 +164,7 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
 
         if (renderTarget->isValidRenderTarget()) {
-            ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
+            //TODO ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
             ambientOcclusionCompShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants));
         } else {
             ambientOcclusionShader = ShaderBuilder::createNullShader();
