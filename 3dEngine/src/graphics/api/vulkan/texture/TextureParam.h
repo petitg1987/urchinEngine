@@ -6,8 +6,7 @@ namespace urchin {
 
     class TextureParam {
         public:
-            friend class GenericRenderer;
-            friend class GenericCompute;
+            friend class PipelineProcessor;
 
             enum ReadMode {
                 EDGE_CLAMP,

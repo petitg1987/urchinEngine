@@ -31,8 +31,7 @@ namespace urchin {
 
     class Texture final : public Resource {
         public:
-            friend class GenericRenderer;
-            friend class GenericCompute;
+            friend class PipelineProcessor;
             friend class RenderTarget;
             friend class OffscreenRender;
             friend class ScreenRender;
