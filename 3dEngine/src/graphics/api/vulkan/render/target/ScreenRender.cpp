@@ -239,7 +239,7 @@ namespace urchin {
         VkResult resultAcquireImage = vkAcquireNextImageKHR(logicalDevice, swapChainHandler.getSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrameIndex], VK_NULL_HANDLE, &vkImageIndex);
         if (resultAcquireImage == VK_ERROR_OUT_OF_DATE_KHR) { //after window resize (never had the case !) or when window is minimized with Alt+Tab or Win+D
             onResize();
-            std::ranges::for_each(getRenderDependencies(), [frameIndex](OffscreenRender* rd){ rd->markSubmitSemaphoreUnused(frameIndex); });
+            std::ranges::for_each(getOffscreenRenderDependencies(), [frameIndex](OffscreenRender* ord){ ord->markSubmitSemaphoreUnused(frameIndex); });
             return;
         } else if (resultAcquireImage != VK_SUCCESS && resultAcquireImage != VK_SUBOPTIMAL_KHR /* Continue with suboptimal image because already acquired */) {
             throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::string(string_VkResult(resultAcquireImage)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));

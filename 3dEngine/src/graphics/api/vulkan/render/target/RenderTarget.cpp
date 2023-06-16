@@ -338,21 +338,21 @@ namespace urchin {
         return renderPass;
     }
 
-    std::span<OffscreenRender*> RenderTarget::getRenderDependencies() const {
-        renderDependencies.clear(); //TODO rename render to processor ?
+    std::span<OffscreenRender*> RenderTarget::getOffscreenRenderDependencies() const {
+        offscreenRenderDependencies.clear();
         for (auto& processor : processors) {
             if (processor->isEnabled()) {
                 const std::span<OffscreenRender*>& renderTextureWriter = processor->getTexturesWriter();
-                renderDependencies.insert(renderDependencies.end(), renderTextureWriter.begin(), renderTextureWriter.end());
+                offscreenRenderDependencies.insert(offscreenRenderDependencies.end(), renderTextureWriter.begin(), renderTextureWriter.end());
             }
         }
         if (externalDepthTexture) {
             assert(externalDepthTexture->getLastTextureWriter());
-            renderDependencies.push_back(externalDepthTexture->getLastTextureWriter());
+            offscreenRenderDependencies.push_back(externalDepthTexture->getLastTextureWriter());
         }
 
-        VectorUtil::removeDuplicates(renderDependencies);
-        return renderDependencies;
+        VectorUtil::removeDuplicates(offscreenRenderDependencies);
+        return offscreenRenderDependencies;
     }
 
     void RenderTarget::configureWaitSemaphore(std::uint32_t frameIndex, VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
@@ -364,8 +364,8 @@ namespace urchin {
             queueSubmitWaitStages.emplace_back(additionalSemaphore->waitDstStageMask);
         }
 
-        for (OffscreenRender* renderDependency : getRenderDependencies()) {
-            VkSemaphore waitSemaphore = renderDependency->popSubmitSemaphore(frameIndex);
+        for (OffscreenRender* offscreenRenderDependency : getOffscreenRenderDependencies()) {
+            VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameIndex);
             if (waitSemaphore) {
                 queueSubmitWaitSemaphores.emplace_back(waitSemaphore);
                 queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
