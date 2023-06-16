@@ -162,7 +162,7 @@ namespace urchin {
         for (const auto& outputTexture : outputTextures) {
             bool clearOnLoad = outputTexture.clearColor.has_value();
             bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
-            VkImageLayout finalLayout = outputTexture.outputUsage == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL;
+            VkImageLayout finalLayout = outputTexture.outputUsage == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL; //TODO if mandatory ?
             attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, finalLayout));
             VkAttachmentReference colorAttachmentRef{};
             colorAttachmentRef.attachment = attachmentIndex++;

@@ -238,8 +238,12 @@ namespace urchin {
             usage |= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
         } else if (writableTexture) {
             usage |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-            usage |= VK_IMAGE_USAGE_STORAGE_BIT; //TODO add this usage only when required (outputUsage == OutputUsage::COMPUTE ?)
         }
+
+        if (outputUsage == OutputUsage::COMPUTE) {
+            usage |= VK_IMAGE_USAGE_STORAGE_BIT;
+        }
+
         return usage;
     }
 
