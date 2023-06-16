@@ -32,7 +32,9 @@ layout(binding = 6) uniform sampler2D noiseTex;
 layout (binding = 7, r8) uniform writeonly image2D outputImage;
 
 void main() {
-    //vec4 pixel = imageLoad(normalAndAmbientTex, ivec2(gl_GlobalInvocationID.xy)).rgba;
-    vec4 pixel = texture(normalAndAmbientTex, ivec2(gl_GlobalInvocationID.xy));
-    imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), pixel);
+    const uvec2 threadPos = uvec2(gl_GlobalInvocationID.xy);
+    vec2 texCoords = vec2(threadPos) / vec2(2560, 1440);
+
+    vec4 pixel = texture(normalAndAmbientTex, texCoords).rgba;
+    imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixel.g));
 }
