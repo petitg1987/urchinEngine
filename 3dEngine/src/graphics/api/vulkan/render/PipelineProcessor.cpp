@@ -336,7 +336,8 @@ namespace urchin {
         return texturesWriter;
     }
 
-    void PipelineProcessor::updateShaderUniforms(uint32_t frameIndex) {
+    void PipelineProcessor::updatePipelineProcessorData(uint32_t frameIndex) {
+        //update shader uniforms
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
                 auto& dataContainer = uniformData[uniformDataIndex];

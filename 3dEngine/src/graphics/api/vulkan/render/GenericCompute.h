@@ -18,7 +18,6 @@ namespace urchin {
             void initialize() override;
             void cleanup() override;
 
-            void updateGraphicData(uint32_t) override;
             void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
 
             bool isInitialized;

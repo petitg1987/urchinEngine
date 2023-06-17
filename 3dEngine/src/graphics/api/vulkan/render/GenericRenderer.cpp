@@ -183,7 +183,7 @@ namespace urchin {
         this->scissorSize = scissorSize;
     }
 
-    void GenericRenderer::updateGraphicData(uint32_t frameIndex) {
+    void GenericRenderer::updatePipelineProcessorData(uint32_t frameIndex) {
         //update data (vertex & vertex attributes)
         #ifdef URCHIN_DEBUG
             std::size_t dataCount = data[0].getDataCount();
@@ -210,7 +210,7 @@ namespace urchin {
         }
 
         //update shader uniforms
-        updateShaderUniforms(frameIndex);
+        PipelineProcessor::updatePipelineProcessorData(frameIndex);
     }
 
     void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {

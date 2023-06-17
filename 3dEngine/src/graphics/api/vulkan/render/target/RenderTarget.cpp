@@ -377,12 +377,12 @@ namespace urchin {
         submitInfo.pWaitDstStageMask = queueSubmitWaitStages.data();
     }
 
-    void RenderTarget::updateGraphicData(uint32_t frameIndex) const {
+    void RenderTarget::updatePipelineProcessorData(uint32_t frameIndex) const {
         ScopeProfiler sp(Profiler::graphic(), "upShaderData");
 
         for (auto& processor : processors) {
             if (processor->isEnabled()) {
-                processor->updateGraphicData(frameIndex);
+                processor->updatePipelineProcessorData(frameIndex);
             }
         }
     }

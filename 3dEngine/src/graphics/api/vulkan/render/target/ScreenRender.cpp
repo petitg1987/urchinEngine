@@ -245,7 +245,7 @@ namespace urchin {
             throw std::runtime_error("Failed to acquire swap chain image with error code '" + std::string(string_VkResult(resultAcquireImage)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
-        updateGraphicData(vkImageIndex);
+        updatePipelineProcessorData(vkImageIndex);
         updateCommandBuffers(vkImageIndex, clearValues);
 
         if (imagesFences[vkImageIndex] != VK_NULL_HANDLE) {

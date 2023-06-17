@@ -69,13 +69,13 @@ Game engine library in C++20: 3D, Physics, Sound, Network, IA, Map Editor
     ```
     git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
     cmake -DCMAKE_BUILD_TYPE=Debug -S ./ -B .build/debug/
-    cmake --build .build/debug/ -- -j 10
+    cmake --build .build/debug/ -- -j 8
     ```
   * Release:
     ```
     git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S ./ -B .build/release/
-    cmake --build .build/release/ -- -j 10
+    cmake --build .build/release/ -- -j 8
     ```
 * Execute tests:
   ```

@@ -48,7 +48,7 @@ namespace urchin {
             void createIndexBuffer();
             void destroyIndexBuffer();
 
-            void updateGraphicData(uint32_t) override;
+            void updatePipelineProcessorData(uint32_t) override;
             void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
 
             bool isInitialized;

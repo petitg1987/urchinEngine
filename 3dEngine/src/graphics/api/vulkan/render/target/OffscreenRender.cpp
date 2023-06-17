@@ -241,7 +241,7 @@ namespace urchin {
         }
 
         updateTexturesWriter();
-        updateGraphicData(0);
+        updatePipelineProcessorData(0);
         updateCommandBuffers(0, clearValues);
 
         VkSubmitInfo submitInfo{};

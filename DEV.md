@@ -56,12 +56,12 @@
     * Name: `Debug`
     * Build type: `Debug`
     * Build directory: `.build/debug`
-    * Build options: `-j 10`
+    * Build options: `-j 8`
   * Profile **Release**:
     * Name: `RelWithDebInfo`
     * Build type: `RelWithDebInfo`
     * Build directory: `.build/release`
-    * Build options: `-j 10`
+    * Build options: `-j 8`
 * Add CMake applications
   * Application **testExecutor (monkey)**:
     * Target/executable: `testExecutor`

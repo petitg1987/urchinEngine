@@ -40,7 +40,7 @@ namespace urchin {
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
             std::span<OffscreenRender*> getTexturesWriter() const;
 
-            virtual void updateGraphicData(uint32_t) = 0;
+            virtual void updatePipelineProcessorData(uint32_t);
             bool needCommandBufferRefresh(std::size_t) const;
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
 
@@ -58,7 +58,6 @@ namespace urchin {
             void updateDescriptorSets();
             void updateDescriptorSets(std::size_t);
             void destroyDescriptorSetsAndPool();
-            void updateShaderUniforms(uint32_t);
 
             void markDrawCommandsDirty();
             std::vector<VkDescriptorSet>& getDescriptorSets();

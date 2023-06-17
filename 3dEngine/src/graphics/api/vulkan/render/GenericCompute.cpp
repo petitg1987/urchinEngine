@@ -57,10 +57,6 @@ namespace urchin {
         return false;
     }
 
-    void GenericCompute::updateGraphicData(uint32_t frameIndex) {
-        updateShaderUniforms(frameIndex);
-    }
-
     void GenericCompute::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufComp");
 

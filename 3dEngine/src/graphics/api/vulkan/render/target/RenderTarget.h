@@ -81,7 +81,7 @@ namespace urchin {
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;
-            void updateGraphicData(uint32_t) const;
+            void updatePipelineProcessorData(uint32_t) const;
             void updateCommandBuffers(uint32_t, const std::vector<VkClearValue>&);
 
             bool isInitialized;
