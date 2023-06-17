@@ -55,10 +55,6 @@ namespace urchin {
         return shader;
     }
 
-    bool PipelineProcessor::needCommandBufferRefresh(std::size_t frameIndex) const {
-        return drawCommandsDirty || descriptorSetsDirty[frameIndex];
-    }
-
     bool PipelineProcessor::isEnabled() const {
         return bIsEnabled;
     }
@@ -340,10 +336,6 @@ namespace urchin {
         return texturesWriter;
     }
 
-    void PipelineProcessor::markDrawCommandsDirty() {
-        drawCommandsDirty = true;
-    }
-
     void PipelineProcessor::updateShaderUniforms(uint32_t frameIndex) {
         for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
             if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
@@ -356,8 +348,16 @@ namespace urchin {
         }
     }
 
+    void PipelineProcessor::markDrawCommandsDirty() {
+        drawCommandsDirty = true;
+    }
+
     std::vector<VkDescriptorSet>& PipelineProcessor::getDescriptorSets() {
         return descriptorSets;
+    }
+
+    bool PipelineProcessor::needCommandBufferRefresh(std::size_t frameIndex) const {
+        return drawCommandsDirty || descriptorSetsDirty[frameIndex];
     }
 
     std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {

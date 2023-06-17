@@ -9,10 +9,8 @@
 
 namespace urchin {
 
-    class PipelineProcessor { //TODO re-sort methods
+    class PipelineProcessor {
         public:
-            friend class RenderTarget;
-
             PipelineProcessor(std::string, RenderTarget&, const Shader&,
                               const std::vector<ShaderDataContainer>&,
                               const std::vector<std::vector<std::shared_ptr<TextureReader>>>&,
@@ -22,25 +20,29 @@ namespace urchin {
             const std::string& getName() const;
             const RenderTarget& getRenderTarget() const;
             const Shader& getShader() const;
-            bool needCommandBufferRefresh(std::size_t) const;
+
+            virtual void initialize() = 0;
+            virtual void cleanup() = 0;
 
             bool isEnabled() const;
             void enableRenderer(unsigned int);
             void disableRenderer();
             unsigned int getRenderingOrder() const;
-
             virtual bool isDepthTestEnabled() const = 0;
             std::size_t getPipelineId() const;
             PipelineType getPipelineType() const;
 
             void updateUniformData(std::size_t, const void*);
-
             void updateUniformTextureReader(std::size_t, const std::shared_ptr<TextureReader>&);
             const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t) const;
             const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t, std::size_t) const;
             void updateUniformTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
             const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
             std::span<OffscreenRender*> getTexturesWriter() const;
+
+            virtual void updateGraphicData(uint32_t) = 0;
+            bool needCommandBufferRefresh(std::size_t) const;
+            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
 
         protected:
             void setupPipelineBuilder(std::unique_ptr<PipelineBuilder>);
@@ -56,32 +58,26 @@ namespace urchin {
             void updateDescriptorSets();
             void updateDescriptorSets(std::size_t);
             void destroyDescriptorSetsAndPool();
+            void updateShaderUniforms(uint32_t);
 
             void markDrawCommandsDirty();
-            void updateShaderUniforms(uint32_t);
             std::vector<VkDescriptorSet>& getDescriptorSets();
-
-        private:
-            virtual void initialize() = 0;
-            virtual void cleanup() = 0;
-
-            virtual void updateGraphicData(uint32_t) = 0;
-            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
             virtual void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) = 0;
 
+        private:
             std::string name;
             RenderTarget& renderTarget;
             const Shader& shader;
 
             bool bIsEnabled;
             unsigned int renderingOrder;
+            std::unique_ptr<PipelineBuilder> pipelineBuilder;
+            std::shared_ptr<Pipeline> pipeline;
+
             std::vector<ShaderDataContainer> uniformData;
             std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             std::vector<std::shared_ptr<Texture>> uniformTextureOutputs;
             mutable std::vector<OffscreenRender*> texturesWriter;
-
-            std::unique_ptr<PipelineBuilder> pipelineBuilder;
-            std::shared_ptr<Pipeline> pipeline;
 
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
