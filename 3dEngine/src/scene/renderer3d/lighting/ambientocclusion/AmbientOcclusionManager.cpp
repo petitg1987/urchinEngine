@@ -79,7 +79,7 @@ namespace urchin {
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
             }
-            //TODO output texture on render is probably useless (no need render pass, frame buffer, etc...) ?
+            //TODO output texture on render is probably useless (no need render pass, frame buffer) ?
             static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(ambientOcclusionTexture, LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
             renderTarget->initialize();
         }
