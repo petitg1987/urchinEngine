@@ -79,6 +79,7 @@ namespace urchin {
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
             }
+            //TODO output texture on render is probably useless (no need render pass, frame buffer, etc...) ?
             static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(ambientOcclusionTexture, LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
             renderTarget->initialize();
         }
@@ -120,7 +121,7 @@ namespace urchin {
         Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
 
         if (USE_COMPUTE_SHADER) {
-            compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2<int>(16, 16))
+            compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2<int>(16, 16)) //TODO 16x16 test different size for perf
                     ->addUniformData(sizeof(projection), &projection) //binding 0
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
                     ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2

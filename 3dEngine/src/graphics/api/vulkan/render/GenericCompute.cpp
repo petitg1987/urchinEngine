@@ -67,7 +67,8 @@ namespace urchin {
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[frameIndex], 0, nullptr);
 
-        vkCmdDispatch(commandBuffer, (uint32_t)getRenderTarget().getWidth() / (uint32_t)threadLocalSize.X, (uint32_t)getRenderTarget().getHeight() / (uint32_t)threadLocalSize.Y, 1); //TODO what about rounding !
+        //TODO what about rounding !
+        vkCmdDispatch(commandBuffer, (uint32_t)getRenderTarget().getWidth() / (uint32_t)threadLocalSize.X, (uint32_t)getRenderTarget().getHeight() / (uint32_t)threadLocalSize.Y, 1);
     }
 
 }

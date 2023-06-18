@@ -100,7 +100,7 @@ namespace urchin {
             //visual data
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
-            std::unique_ptr<GenericRenderer> renderer; //TODO remove
+            std::unique_ptr<GenericRenderer> renderer; //TODO remove if perf/test better
             std::unique_ptr<GenericCompute> compute;
 
             std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
