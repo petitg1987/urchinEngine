@@ -120,8 +120,7 @@ namespace urchin {
         Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
 
         if (USE_COMPUTE_SHADER) {
-            Vector2<int> readSize((int)normalAndAmbientTexture->getWidth(), (int)normalAndAmbientTexture->getHeight());
-            compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, readSize, Vector2<int>(16, 16))
+            compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2<int>(16, 16))
                     ->addUniformData(sizeof(projection), &projection) //binding 0
                     ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
                     ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2

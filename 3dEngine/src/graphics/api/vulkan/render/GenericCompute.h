@@ -14,8 +14,6 @@ namespace urchin {
 
             bool isDepthTestEnabled() const override;
 
-            void updateReadSize(const Vector2<int>&);
-
         private:
             void initialize() override;
             void cleanup() override;
@@ -24,7 +22,6 @@ namespace urchin {
 
             bool isInitialized;
 
-            Vector2<int> readSize;
             Vector2<int> threadLocalSize;
     };
 

@@ -10,7 +10,6 @@ namespace urchin {
             PipelineProcessor(computeBuilder.getName(), computeBuilder.getRenderTarget(), computeBuilder.getShader(),
                               computeBuilder.getUniformData(), computeBuilder.getUniformTextureReaders(), computeBuilder.getUniformTextureOutputs()),
             isInitialized(false),
-            readSize(computeBuilder.getReadSize()),
             threadLocalSize(computeBuilder.getThreadLocalSize()) {
 
         setupPipelineBuilder(std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, getName()));
@@ -55,10 +54,6 @@ namespace urchin {
         }
     }
 
-    void GenericCompute::updateReadSize(const Vector2<int>& readSize) {
-        this->readSize = readSize;
-    }
-
     bool GenericCompute::isDepthTestEnabled() const {
         return false;
     }
@@ -72,7 +67,7 @@ namespace urchin {
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[frameIndex], 0, nullptr);
 
-        vkCmdDispatch(commandBuffer, (uint32_t)readSize.X / (uint32_t)threadLocalSize.X, (uint32_t)readSize.Y / (uint32_t)threadLocalSize.Y, 1); //TODO what about rounding !
+        vkCmdDispatch(commandBuffer, (uint32_t)getRenderTarget().getWidth() / (uint32_t)threadLocalSize.X, (uint32_t)getRenderTarget().getHeight() / (uint32_t)threadLocalSize.Y, 1); //TODO what about rounding !
     }
 
 }
