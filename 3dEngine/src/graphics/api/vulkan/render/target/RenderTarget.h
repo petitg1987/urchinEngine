@@ -45,6 +45,7 @@ namespace urchin {
 
             void addProcessor(PipelineProcessor*);
             void removeProcessor(const PipelineProcessor*);
+            bool hasGraphicsProcessors() const;
             void notifyProcessorEnabled(const PipelineProcessor*);
             void notifyProcessorDisabled(const PipelineProcessor*);
             void disableAllProcessors() const;

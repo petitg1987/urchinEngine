@@ -28,6 +28,7 @@ namespace urchin {
 
     void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor, OutputUsage outputUsage) {
         assert(!isInitialized);
+        assert(outputUsage != OutputUsage::COMPUTE || loadType == LoadType::NO_LOAD);
 
         if (loadType == LoadType::LOAD_CONTENT) {
             if (!texture->isWritableTexture()) {
@@ -151,40 +152,44 @@ namespace urchin {
     }
 
     void OffscreenRender::createRenderPass() {
-        std::vector<VkAttachmentDescription> attachments;
-        uint32_t attachmentIndex = 0;
+        if (hasGraphicsProcessors()) {
+            std::vector<VkAttachmentDescription> attachments;
+            uint32_t attachmentIndex = 0;
 
-        VkAttachmentReference depthAttachmentRef{};
-        if (hasDepthAttachment()) {
-            attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL));
-            depthAttachmentRef.attachment = attachmentIndex++;
-            depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+            VkAttachmentReference depthAttachmentRef{};
+            if (hasDepthAttachment()) {
+                attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL));
+                depthAttachmentRef.attachment = attachmentIndex++;
+                depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+            }
+
+            std::vector<VkAttachmentReference> colorAttachmentRefs;
+            for (const auto& outputTexture: outputTextures) {
+                bool clearOnLoad = outputTexture.clearColor.has_value();
+                bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
+                attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
+                VkAttachmentReference colorAttachmentRef{};
+                colorAttachmentRef.attachment = attachmentIndex++;
+                colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                colorAttachmentRefs.push_back(colorAttachmentRef);
+            }
+
+            RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRefs, attachments);
         }
-
-        std::vector<VkAttachmentReference> colorAttachmentRefs;
-        for (const auto& outputTexture : outputTextures) { //TODO output texture for compute: no need color attachment and render pass
-            bool clearOnLoad = outputTexture.clearColor.has_value();
-            bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
-            attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
-            VkAttachmentReference colorAttachmentRef{};
-            colorAttachmentRef.attachment = attachmentIndex++;
-            colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-            colorAttachmentRefs.push_back(colorAttachmentRef);
-        }
-
-        RenderTarget::createRenderPass(depthAttachmentRef, colorAttachmentRefs, attachments);
     }
 
     void OffscreenRender::createFramebuffers() {
-        std::vector<VkImageView> attachments;
-        if (hasDepthAttachment()) {
-            attachments.emplace_back(depthTexture->getImageView());
-        }
-        for (const auto& outputTexture : outputTextures) {
-            attachments.emplace_back(outputTexture.texture->getImageView());
-        }
+        if (hasGraphicsProcessors()) {
+            std::vector<VkImageView> attachments;
+            if (hasDepthAttachment()) {
+                attachments.emplace_back(depthTexture->getImageView());
+            }
+            for (const auto& outputTexture: outputTextures) {
+                attachments.emplace_back(outputTexture.texture->getImageView());
+            }
 
-        RenderTarget::addNewFrameBuffer(attachments);
+            RenderTarget::addNewFrameBuffer(attachments);
+        }
     }
 
     void OffscreenRender::createFence() {

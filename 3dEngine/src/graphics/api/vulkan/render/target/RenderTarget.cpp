@@ -76,6 +76,7 @@ namespace urchin {
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
             assert(&processor->getRenderTarget() == this);
+            assert(processor->getPipelineType() == PipelineType::GRAPHICS || !hasDepthAttachment());
             assert(processors.empty() || processors[0]->getPipelineType() == processor->getPipelineType());
             for (const auto* p : processors) {
                 assert(p != processor);
@@ -89,6 +90,10 @@ namespace urchin {
     void RenderTarget::removeProcessor(const PipelineProcessor* processor) {
         std::erase(processors, processor);
         processorsDirty = true;
+    }
+
+    bool RenderTarget::hasGraphicsProcessors() const {
+        return processors.empty() || processors[0]->getPipelineType() == PipelineType::GRAPHICS;
     }
 
     void RenderTarget::notifyProcessorEnabled(const PipelineProcessor* processor) {
@@ -243,7 +248,9 @@ namespace urchin {
     }
 
     void RenderTarget::destroyRenderPass() {
-        vkDestroyRenderPass(GraphicsSetupService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
+        if (renderPass) {
+            vkDestroyRenderPass(GraphicsSetupService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
+        }
     }
 
     void RenderTarget::createDepthResources() {
@@ -416,7 +423,7 @@ namespace urchin {
             }
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-            if (sortedEnabledProcessors.empty() || sortedEnabledProcessors[0]->getPipelineType() == PipelineType::GRAPHICS) {
+            if (hasGraphicsProcessors()) {
                 VkRenderPassBeginInfo renderPassInfo{};
                 renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
                 renderPassInfo.renderPass = renderPass;
@@ -432,7 +439,7 @@ namespace urchin {
             for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) {
                 boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
             }
-            if (sortedEnabledProcessors.empty() || sortedEnabledProcessors[0]->getPipelineType() == PipelineType::GRAPHICS) {
+            if (hasGraphicsProcessors()) {
                 vkCmdEndRenderPass(commandBuffers[frameIndex]);
             }
             DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);
