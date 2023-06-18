@@ -55,6 +55,10 @@ namespace urchin {
         }
     }
 
+    void GenericCompute::updateReadSize(const Vector2<int>& readSize) {
+        this->readSize = readSize;
+    }
+
     bool GenericCompute::isDepthTestEnabled() const {
         return false;
     }
