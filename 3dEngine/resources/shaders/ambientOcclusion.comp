@@ -8,7 +8,7 @@ layout(constant_id = 4) const float DISTANCE_END_ATTENUATION = 0.0;
 layout(constant_id = 5) const uint NOISE_TEXTURE_SIZE = 0;
 layout(constant_id = 6) const float BIAS = 0.0;
 
-layout (local_size_x = 16, local_size_y = 16) in;
+layout (local_size_x = 16, local_size_y = 16) in; //TODO need to control limit ?!
 layout(std140, set = 0, binding = 0) uniform Projection {
     mat4 mInverseProjection;
     mat4 mProjection;
@@ -19,7 +19,7 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 } positioningData;
 layout(std140, set = 0, binding = 2) uniform KernelData {
     vec4 samples[KERNEL_SAMPLES];
-} kernelData; //TODO RenderDoc: 1024 needed, 560 provided !
+} kernelData;
 layout(std140, set = 0, binding = 3) uniform Scene {
     vec2 aoResolution;
 } scene;
@@ -36,8 +36,7 @@ vec3 fetchEyePosition(vec2 texCoord, float depthValue) {
         texCoord.s * 2.0 - 1.0,
         texCoord.t * 2.0 - 1.0,
         depthValue,
-        1.0
-    );
+        1.0);
     vec4 position = projection.mInverseProjection * texPosition;
     position /= position.w;
     return vec3(position);
@@ -45,11 +44,10 @@ vec3 fetchEyePosition(vec2 texCoord, float depthValue) {
 
 vec3 fetchPosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
-    texCoord.s * 2.0 - 1.0,
-    texCoord.t * 2.0 - 1.0,
-    depthValue,
-    1.0
-    );
+        texCoord.s * 2.0 - 1.0,
+        texCoord.t * 2.0 - 1.0,
+        depthValue,
+        1.0);
     vec4 position = positioningData.mInverseViewProjection * texPosition;
     position /= position.w;
     return vec3(position);
@@ -57,7 +55,8 @@ vec3 fetchPosition(vec2 texCoord, float depthValue) {
 
 void main() {
     const uvec2 threadPos = uvec2(gl_GlobalInvocationID.xy);
-    vec2 texCoordinates = vec2(threadPos) / vec2(2560, 1440);
+    //vec2 texCoordinates = vec2(threadPos) / vec2(2560, 1440);
+    vec2 texCoordinates = vec2(threadPos) / vec2(2560 / 2, 1440 / 2); //TODO avoid hardcoded ?!
 
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     if (normalAndAmbient.a >= 0.9999) { //no lighting

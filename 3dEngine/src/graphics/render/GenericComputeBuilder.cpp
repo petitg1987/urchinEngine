@@ -4,15 +4,17 @@
 
 namespace urchin {
 
-    GenericComputeBuilder::GenericComputeBuilder(std::string name, RenderTarget& renderTarget, const Shader& shader) :
+    GenericComputeBuilder::GenericComputeBuilder(std::string name, RenderTarget& renderTarget, const Shader& shader, const Vector2<int>& readSize, const Vector2<int>& threadLocalSize) :
             name(std::move(name)),
             renderTarget(renderTarget),
-            shader(shader) {
+            shader(shader),
+            readSize(readSize),
+            threadLocalSize(threadLocalSize) {
 
     }
 
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::create(std::string name, RenderTarget& renderTarget, const Shader& shader) {
-        return std::shared_ptr<GenericComputeBuilder>(new GenericComputeBuilder(std::move(name), renderTarget, shader));
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::create(std::string name, RenderTarget& renderTarget, const Shader& shader, const Vector2<int>& readSize, const Vector2<int>& threadLocalSize) {
+        return std::shared_ptr<GenericComputeBuilder>(new GenericComputeBuilder(std::move(name), renderTarget, shader, readSize, threadLocalSize));
     }
 
     const std::string& GenericComputeBuilder::getName() const {
@@ -25,6 +27,14 @@ namespace urchin {
 
     const Shader& GenericComputeBuilder::getShader() const {
         return shader;
+    }
+
+    const Vector2<int>& GenericComputeBuilder::getReadSize() const {
+        return readSize;
+    }
+
+    const Vector2<int>& GenericComputeBuilder::getThreadLocalSize() const {
+        return threadLocalSize;
     }
 
     /**

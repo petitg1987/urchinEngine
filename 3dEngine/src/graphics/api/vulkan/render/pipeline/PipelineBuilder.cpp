@@ -113,7 +113,7 @@ namespace urchin {
             throw std::runtime_error("Render target not setup on pipeline");
         } else if (!shader) {
             throw std::runtime_error("Shader not setup on pipeline");
-        } if (!uniformData) {
+        } else if (!uniformData) {
             throw std::runtime_error("Uniform data not setup on pipeline");
         } else if (!uniformTextureReaders) {
             throw std::runtime_error("Uniform texture readers not setup on pipeline");
@@ -472,7 +472,7 @@ namespace urchin {
         throw std::runtime_error("Unknown blend factor: " + std::to_string((int)blendFactor));
     }
 
-    void PipelineBuilder::createComputePipeline(const std::shared_ptr<Pipeline>& pipeline) {
+    void PipelineBuilder::createComputePipeline(const std::shared_ptr<Pipeline>& pipeline) const {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};

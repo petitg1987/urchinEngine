@@ -21,6 +21,9 @@ namespace urchin {
             void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
 
             bool isInitialized;
+
+            Vector2<int> readSize;
+            Vector2<int> threadLocalSize;
     };
 
 }
