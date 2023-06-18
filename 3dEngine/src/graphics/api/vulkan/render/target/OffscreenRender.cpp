@@ -162,7 +162,7 @@ namespace urchin {
         }
 
         std::vector<VkAttachmentReference> colorAttachmentRefs;
-        for (const auto& outputTexture : outputTextures) {
+        for (const auto& outputTexture : outputTextures) { //TODO output texture for compute: no need color attachment and render pass
             bool clearOnLoad = outputTexture.clearColor.has_value();
             bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
             attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
