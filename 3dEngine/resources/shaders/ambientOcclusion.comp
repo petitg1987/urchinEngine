@@ -55,7 +55,7 @@ vec3 fetchPosition(vec2 texCoord, float depthValue) {
 
 void main() {
     const uvec2 threadPos = uvec2(gl_GlobalInvocationID.xy);
-    vec2 texCoordinates = vec2(threadPos) / vec2(2560 / 2, 1440 / 2); //TODO avoid hardcoded ?!
+    vec2 texCoordinates = vec2(threadPos) / scene.aoResolution;
 
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     if (normalAndAmbient.a >= 0.9999) { //no lighting
