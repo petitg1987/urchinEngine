@@ -106,14 +106,17 @@ namespace urchin {
     }
 
     unsigned int OffscreenRender::getWidth() const {
+        assert(!outputTextures.empty());
         return outputTextures[0].texture->getWidth();
     }
 
     unsigned int OffscreenRender::getHeight() const {
+        assert(!outputTextures.empty());
         return outputTextures[0].texture->getHeight();
     }
 
     unsigned int OffscreenRender::getLayer() const {
+        assert(!outputTextures.empty());
         return outputTextures[0].texture->getLayer();
     }
 
