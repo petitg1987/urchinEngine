@@ -14,6 +14,7 @@ namespace urchin {
 
     //debug parameters
     bool DEBUG_EXPORT_SSAO_KERNEL = false;
+    bool USE_COMPUTE_SHADER = true;
 
     AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useNullRenderTarget) :
             config(config),
@@ -116,38 +117,41 @@ namespace urchin {
 
         createOrUpdateAOShader();
 
-//        std::vector<Point2<float>> vertexCoord = {
-//                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-//                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
-//        };
-//        std::vector<Point2<float>> textureCoord = {
-//                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-//                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
-//        };
         Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
-//        renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
-//                ->addData(vertexCoord)
-//                ->addData(textureCoord)
-//                ->addUniformData(sizeof(projection), &projection) //binding 0
-//                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
-//                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
-//                ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
-//                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
-//                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
-//                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
-//                ->build();
 
-        Vector2<int> readSize((int)normalAndAmbientTexture->getWidth(), (int)normalAndAmbientTexture->getHeight());
-        compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionCompShader, readSize, Vector2<int>(16, 16))
-                ->addUniformData(sizeof(projection), &projection) //binding 0
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
-                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
-                ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
-                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
-                ->addUniformTextureOutput(ambientOcclusionTexture) //binding 7
-                ->build();
+        if (USE_COMPUTE_SHADER) {
+            Vector2<int> readSize((int)normalAndAmbientTexture->getWidth(), (int)normalAndAmbientTexture->getHeight());
+            compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, readSize, Vector2<int>(16, 16))
+                    ->addUniformData(sizeof(projection), &projection) //binding 0
+                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+                    ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
+                    ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
+                    ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
+                    ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
+                    ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
+                    ->addUniformTextureOutput(ambientOcclusionTexture) //binding 7
+                    ->build();
+        } else {
+            std::vector<Point2<float>> vertexCoord = {
+                    Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
+                    Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+            };
+            std::vector<Point2<float>> textureCoord = {
+                    Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
+                    Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+            };
+            renderer = GenericRendererBuilder::create("ambient occlusion", *renderTarget, *ambientOcclusionShader, ShapeType::TRIANGLE)
+                    ->addData(vertexCoord)
+                    ->addData(textureCoord)
+                    ->addUniformData(sizeof(projection), &projection) //binding 0
+                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
+                    ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
+                    ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
+                    ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
+                    ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
+                    ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
+                    ->build();
+        }
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
@@ -165,11 +169,13 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
 
         if (renderTarget->isValidRenderTarget()) {
-            //TODO ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
-            ambientOcclusionCompShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants));
+            if (USE_COMPUTE_SHADER) {
+                ambientOcclusionShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants));
+            } else {
+                ambientOcclusionShader = ShaderBuilder::createShader("ambientOcclusion.vert.spv", "", "ambientOcclusion.frag.spv", std::move(shaderConstants));
+            }
         } else {
             ambientOcclusionShader = ShaderBuilder::createNullShader();
-            ambientOcclusionCompShader = ShaderBuilder::createNullShader();
         }
     }
 
