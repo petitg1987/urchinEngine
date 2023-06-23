@@ -8,7 +8,7 @@ layout(constant_id = 4) const float DISTANCE_END_ATTENUATION = 0.0;
 layout(constant_id = 5) const uint NOISE_TEXTURE_SIZE = 0;
 layout(constant_id = 6) const float BIAS = 0.0;
 
-layout (local_size_x = 16, local_size_y = 16) in;
+layout (local_size_x = 8, local_size_y = 8) in;
 layout(std140, set = 0, binding = 0) uniform Projection {
     mat4 mInverseProjection;
     mat4 mProjection;
@@ -23,9 +23,7 @@ layout(std140, set = 0, binding = 2) uniform KernelData {
 layout(std140, set = 0, binding = 3) uniform Scene {
     vec2 aoResolution;
 } scene;
-//layout (binding = 4, r32f) uniform readonly image2D depthTex;
-//layout (binding = 5, rgba8) uniform readonly image2D normalAndAmbientTex;
-//layout (binding = 6, rgba8) uniform readonly image2D noiseTex;
+
 layout(binding = 4) uniform sampler2D depthTex;
 layout(binding = 5) uniform sampler2D normalAndAmbientTex;
 layout(binding = 6) uniform sampler2D noiseTex;

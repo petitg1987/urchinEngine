@@ -9,7 +9,9 @@ namespace urchin {
             renderTarget(renderTarget),
             shader(shader),
             threadLocalSize(threadLocalSize) {
-
+        if ((uint32_t)(threadLocalSize.X * threadLocalSize.Y) > MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
+            throw std::runtime_error("Compute work group invocation exceed the limit of " + std::to_string(MAX_COMPUTE_WORK_GROUP_INVOCATIONS));
+        }
     }
 
     std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::create(std::string name, RenderTarget& renderTarget, const Shader& shader, const Vector2<int>& threadLocalSize) {

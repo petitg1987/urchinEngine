@@ -6,6 +6,7 @@
 #include <graphics/api/vulkan/setup/handler/DeviceHandler.h>
 #include <graphics/api/vulkan/setup/handler/QueueHandler.h>
 #include <graphics/api/vulkan/render/handler/SwapChainHandler.h>
+#include <graphics/render/GenericComputeBuilder.h>
 using namespace urchin;
 
 namespace urchin {
@@ -179,6 +180,12 @@ namespace urchin {
         SwapChainSupportDetails swapChainSupport = SwapChainHandler::querySwapChainSupport(physicalDeviceToCheck);
         if (swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
             return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing adequate swap chain support");
+        }
+
+        //check max compute work group invocations
+        if (deviceProperties.limits.maxComputeWorkGroupInvocations < GenericComputeBuilder::MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
+            std::string valueOverMin = std::to_string(deviceProperties.limits.maxComputeWorkGroupInvocations) + "/" + std::to_string(GenericComputeBuilder::MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
+            return PhysicalDeviceSuitability(physicalDeviceToCheck, "minimum requirement for compute work group invocations is insufficient (" + valueOverMin + ")");
         }
 
         int score = 0;

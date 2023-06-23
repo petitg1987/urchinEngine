@@ -6,6 +6,10 @@ namespace urchin {
 
     class GenericComputeBuilder : public std::enable_shared_from_this<GenericComputeBuilder> {
         public:
+            //Value of 128 is the minimum defined in the Vulkan spec.
+            //Note: most of the graphics card can support 256 (see https://vulkan.gpuinfo.org/displaydevicelimit.php?name=maxComputeWorkGroupInvocations&platform=all)
+            static constexpr uint32_t MAX_COMPUTE_WORK_GROUP_INVOCATIONS = 128;
+
             static std::shared_ptr<GenericComputeBuilder> create(std::string, RenderTarget&, const Shader&, const Vector2<int>&);
 
             const std::string& getName() const;
