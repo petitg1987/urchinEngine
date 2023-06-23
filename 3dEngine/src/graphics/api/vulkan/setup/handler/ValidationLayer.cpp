@@ -98,7 +98,7 @@ namespace urchin {
         }
 
         assert(validationLayer.size() == 1);
-        return std::ranges::any_of(availableLayers, [&](const auto& layerProperties) {
+        return std::ranges::any_of(availableLayers, [this](const auto& layerProperties) {
             return std::strcmp(validationLayer[0], layerProperties.layerName) == 0;
         });
     }
