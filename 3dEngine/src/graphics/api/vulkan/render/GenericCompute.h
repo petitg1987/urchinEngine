@@ -12,6 +12,7 @@ namespace urchin {
             explicit GenericCompute(const GenericComputeBuilder&);
             ~GenericCompute() override;
 
+            bool isGraphicsPipeline() const override;
             bool isDepthTestEnabled() const override;
 
         private:

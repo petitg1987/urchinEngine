@@ -28,6 +28,7 @@ namespace urchin {
             explicit GenericRenderer(const GenericRendererBuilder&);
             ~GenericRenderer() override;
 
+            bool isGraphicsPipeline() const override;
             bool isDepthTestEnabled() const override;
 
             void updateData(std::size_t, const std::vector<Point2<float>>&);

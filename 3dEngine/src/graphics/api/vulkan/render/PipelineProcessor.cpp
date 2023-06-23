@@ -99,10 +99,12 @@ namespace urchin {
     }
 
     std::size_t PipelineProcessor::getPipelineId() const {
+        assert(pipeline);
         return pipeline->getId();
     }
 
     PipelineType PipelineProcessor::getPipelineType() const {
+        assert(pipeline);
         return pipeline->getType();
     }
 

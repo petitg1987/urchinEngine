@@ -152,7 +152,7 @@ namespace urchin {
     }
 
     void OffscreenRender::createRenderPass() {
-        if (hasGraphicsProcessors()) {
+        if (couldHaveGraphicsProcessors()) {
             std::vector<VkAttachmentDescription> attachments;
             uint32_t attachmentIndex = 0;
 
@@ -179,7 +179,7 @@ namespace urchin {
     }
 
     void OffscreenRender::createFramebuffers() {
-        if (hasGraphicsProcessors()) {
+        if (couldHaveGraphicsProcessors()) {
             std::vector<VkImageView> attachments;
             if (hasDepthAttachment()) {
                 attachments.emplace_back(depthTexture->getImageView());

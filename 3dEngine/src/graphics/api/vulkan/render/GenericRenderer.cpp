@@ -76,6 +76,10 @@ namespace urchin {
         }
     }
 
+    bool GenericRenderer::isGraphicsPipeline() const {
+        return true;
+    }
+
     bool GenericRenderer::isDepthTestEnabled() const {
         return depthTestEnabled;
     }

@@ -28,6 +28,7 @@ namespace urchin {
             void enableRenderer(unsigned int);
             void disableRenderer();
             unsigned int getRenderingOrder() const;
+            virtual bool isGraphicsPipeline() const = 0;
             virtual bool isDepthTestEnabled() const = 0;
             std::size_t getPipelineId() const;
             PipelineType getPipelineType() const;

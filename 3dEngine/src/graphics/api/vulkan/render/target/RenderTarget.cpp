@@ -92,8 +92,8 @@ namespace urchin {
         processorsDirty = true;
     }
 
-    bool RenderTarget::hasGraphicsProcessors() const {
-        return processors.empty() || processors[0]->getPipelineType() == PipelineType::GRAPHICS;
+    bool RenderTarget::couldHaveGraphicsProcessors() const {
+        return processors.empty() || processors[0]->isGraphicsPipeline();
     }
 
     void RenderTarget::notifyProcessorEnabled(const PipelineProcessor* processor) {
@@ -250,6 +250,7 @@ namespace urchin {
     void RenderTarget::destroyRenderPass() {
         if (renderPass) {
             vkDestroyRenderPass(GraphicsSetupService::instance().getDevices().getLogicalDevice(), renderPass, nullptr);
+            renderPass = nullptr;
         }
     }
 
@@ -423,7 +424,7 @@ namespace urchin {
             }
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-            if (hasGraphicsProcessors()) {
+            if (couldHaveGraphicsProcessors()) {
                 VkRenderPassBeginInfo renderPassInfo{};
                 renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
                 renderPassInfo.renderPass = renderPass;
@@ -439,7 +440,7 @@ namespace urchin {
             for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) {
                 boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
             }
-            if (hasGraphicsProcessors()) {
+            if (couldHaveGraphicsProcessors()) {
                 vkCmdEndRenderPass(commandBuffers[frameIndex]);
             }
             DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);
