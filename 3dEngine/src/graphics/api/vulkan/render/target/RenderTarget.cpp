@@ -76,8 +76,8 @@ namespace urchin {
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
             assert(&processor->getRenderTarget() == this);
-            assert(processor->getPipelineType() == PipelineType::GRAPHICS || !hasDepthAttachment());
-            assert(processors.empty() || processors[0]->getPipelineType() == processor->getPipelineType());
+            assert(!isValidRenderTarget() || (processor->isGraphicsPipeline() || !hasDepthAttachment()));
+            assert(processors.empty() || processors[0]->isGraphicsPipeline() == processor->isGraphicsPipeline());
             for (const auto* p : processors) {
                 assert(p != processor);
             }
