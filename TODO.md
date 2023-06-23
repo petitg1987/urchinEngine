@@ -37,8 +37,6 @@
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
 * Lighting
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
-  * **OPTIMIZATION** (`medium`): Use compute shaders for the bloom effect
-  * **OPTIMIZATION** (`medium`): Use compute shaders for AO
 * Landscape
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
   * **OPTIMIZATION** (`medium`): Do not build grass quadtree which are 100% discarded by grass mask

@@ -36,6 +36,7 @@ namespace urchin {
             void clearRenderers();
 
             std::unique_ptr<Shader> createShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
+            std::unique_ptr<Shader> createComputeShader(const std::string&, std::unique_ptr<ShaderConstants>);
 
             static constexpr float UP_SAMPLE_SCALE = 0.95f;
 
@@ -53,7 +54,7 @@ namespace urchin {
 
             //pre-filter
             std::unique_ptr<RenderTarget> preFilterRenderTarget;
-            std::unique_ptr<GenericRenderer> preFilterRenderer;
+            std::unique_ptr<GenericCompute> preFilterCompute;
             std::unique_ptr<Shader> preFilterShader;
             struct {
                 alignas(16) Vector3<float> softCurveParams;
@@ -63,7 +64,7 @@ namespace urchin {
             //down sample
             std::unique_ptr<Shader> downSampleShader;
             std::vector<std::unique_ptr<RenderTarget>> downSampleRenderTargets;
-            std::vector<std::unique_ptr<GenericRenderer>> downSampleRenderers;
+            std::vector<std::unique_ptr<GenericCompute>> downSampleComputes;
 
             //up sample
             std::unique_ptr<Shader> upSampleShader;

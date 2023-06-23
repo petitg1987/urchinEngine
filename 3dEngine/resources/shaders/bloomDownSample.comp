@@ -5,16 +5,21 @@
 
 layout(constant_id = 0) const uint QUALITY_TEXTURE_FETCH = 0;
 
+layout(local_size_x = 8, local_size_y = 8) in;
 layout(std140, set = 0, binding = 0) uniform Tex {
     vec2 texelSize;
 } tex;
 layout(binding = 1) uniform sampler2D stepTexture;
-
-layout(location = 0) in vec2 texCoordinates;
-
-layout(location = 0) out vec4 fragColor;
+layout(binding = 2, r11f_g11f_b10f) uniform writeonly image2D outputImage;
 
 void main() {
+    ivec2 texSize = imageSize(outputImage);
+    ivec2 threadPos = ivec2(gl_GlobalInvocationID.xy);
+    if (threadPos.x >= texSize.x || threadPos.y >= texSize.y) {
+        return;
+    }
+    vec2 texCoordinates = vec2(threadPos) / vec2(texSize);
+
     vec3 texValue;
     if (QUALITY_TEXTURE_FETCH == 0) {
         texValue = downSampleBlur13Fetch(stepTexture, texCoordinates, tex.texelSize);
@@ -24,5 +29,5 @@ void main() {
         texValue = texture(stepTexture, texCoordinates).rgb;
     }
 
-    fragColor = vec4(texValue, 1.0);
+    imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(texValue, 1.0));
 }

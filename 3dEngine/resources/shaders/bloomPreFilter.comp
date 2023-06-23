@@ -5,6 +5,7 @@
 
 layout(constant_id = 0) const uint QUALITY_TEXTURE_FETCH = 0;
 
+layout(local_size_x = 8, local_size_y = 8) in;
 layout(std140, set = 0, binding = 0) uniform PreFilterTweak {
     vec3 softCurveParams;
     float threshold;
@@ -13,10 +14,7 @@ layout(std140, set = 0, binding = 1) uniform Tex {
     vec2 texelSize;
 } tex;
 layout(binding = 2) uniform sampler2D inputHdrTexture;
-
-layout(location = 0) in vec2 texCoordinates;
-
-layout(location = 0) out vec4 fragColor;
+layout(binding = 3, r11f_g11f_b10f) uniform writeonly image2D outputImage;
 
 float computeSoftContribution(float brightness) {
     //See /scene/renderer3d/postprocess/bloom/_doc/bloomPrefilterFormula.ods for formula details
@@ -25,6 +23,13 @@ float computeSoftContribution(float brightness) {
 }
 
 void main() {
+    ivec2 texSize = imageSize(outputImage);
+    ivec2 threadPos = ivec2(gl_GlobalInvocationID.xy);
+    if (threadPos.x >= texSize.x || threadPos.y >= texSize.y) {
+        return;
+    }
+    vec2 texCoordinates = vec2(threadPos) / vec2(texSize);
+
     vec3 hdrColor;
     if (QUALITY_TEXTURE_FETCH == 0) {
         hdrColor = downSampleBlur13Fetch(inputHdrTexture, texCoordinates, tex.texelSize);
@@ -37,5 +42,5 @@ void main() {
     float brightness = max(max(hdrColor.x, hdrColor.y), hdrColor.z);
     float contribution = computeSoftContribution(brightness);
 
-    fragColor = vec4(hdrColor * contribution, 1.0);
+    imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(hdrColor * contribution, 1.0));
 }
