@@ -54,7 +54,12 @@ vec3 fetchPosition(vec2 texCoord, float depthValue) {
 }
 
 void main() {
-    const uvec2 threadPos = uvec2(gl_GlobalInvocationID.xy);
+    ivec2 texSize = imageSize(outputImage);
+    ivec2 threadPos = ivec2(gl_GlobalInvocationID.xy);
+    if (threadPos.x >= texSize.x || threadPos.y >= texSize.y) {
+        return;
+    }
+
     vec2 texCoordinates = vec2(threadPos) / scene.aoResolution;
 
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));

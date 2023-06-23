@@ -71,8 +71,9 @@ namespace urchin {
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, getPipeline().getPipelineLayout(), 0, 1, &getDescriptorSets()[frameIndex], 0, nullptr);
 
-        //TODO what about rounding !
-        vkCmdDispatch(commandBuffer, (uint32_t)getRenderTarget().getWidth() / (uint32_t)threadLocalSize.X, (uint32_t)getRenderTarget().getHeight() / (uint32_t)threadLocalSize.Y, 1);
+        auto numGroupX = (uint32_t)MathFunction::ceilToInt((float)getRenderTarget().getWidth() / (float)threadLocalSize.X);
+        auto numGroupY = (uint32_t)MathFunction::ceilToInt((float)getRenderTarget().getHeight() / (float)threadLocalSize.Y);
+        vkCmdDispatch(commandBuffer, numGroupX, numGroupY, 1);
     }
 
 }
