@@ -14,15 +14,15 @@ namespace urchin {
             TransparentManager(bool, LightManager&);
             ~TransparentManager();
 
-            void onTextureUpdate(const std::shared_ptr<Texture>&);
+            void onTextureUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onCameraProjectionUpdate(const Camera&);
 
             const ModelSetDisplayer& getModelSetDisplayer() const;
             void updateModels(const std::vector<Model*>&) const;
             void removeModel(Model*) const;
 
-            void updateTransparentTextures(std::uint32_t, unsigned int, const Camera&) const;
-            void loadTransparentTextures(GenericRenderer&, std::size_t, std::size_t) const;
+            const std::shared_ptr<Texture>& getOutputTexture() const;
+            void drawTransparentModels(std::uint32_t, unsigned int, const Camera&) const;
 
         private:
             struct ModelTransparentShaderConst {
@@ -41,9 +41,9 @@ namespace urchin {
             const Camera* camera;
 
             std::shared_ptr<Texture> depthTexture;
+            std::shared_ptr<Texture> illuminatedTexture;
             std::unique_ptr<RenderTarget> renderTarget;
-            std::shared_ptr<Texture> accumulationTexture;
-            std::shared_ptr<Texture> revealTexture;
+            std::shared_ptr<Texture> outputTexture;
 
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
     };

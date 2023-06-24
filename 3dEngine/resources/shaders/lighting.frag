@@ -50,9 +50,7 @@ layout(binding = 7) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 
 layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
 layout(binding = 9) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
 layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 11) uniform sampler2D transparencyAccumulationTex; //transparency accumulation (4 * 16 bits)
-layout(binding = 12) uniform sampler2D transparencyRevealTex; //transparency reveal (1 * 8 bits)
-layout(binding = 13) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
+layout(binding = 11) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -140,24 +138,6 @@ vec3 addFog(vec3 baseColor, vec4 position) {
     return mix(fog.color, baseColor, visibility);
 }
 
-vec3 addTransparentModels(vec3 srcAlbedo) {
-    float reveal = texture(transparencyRevealTex, texCoordinates).r; //(1 - obj1.material.alpha) * (1 - obj2.material.alpha) * ...
-    if (reveal > 0.99999) {
-        //fully transparent case: object fully transparent or no object
-        return srcAlbedo;
-    }
-
-    vec4 accumulation = texture(transparencyAccumulationTex, texCoordinates); //(obj1.material.rgb * obj1.material.a, obj1.material.a) * weight1 + ...
-    if (isinf(maxComponent(abs(accumulation.rgb)))) { //suppress overflow
-        accumulation.rgb = vec3(accumulation.a);
-    }
-
-    vec4 averageColor = vec4(vec3(accumulation.rgb / max(accumulation.a, 0.00001)), 1.0 - reveal);
-
-    //apply blending manually (equivalent to: srcFactor=SRC_ALPHA, dstFactor=ONE_MINUS_SRC_ALPHA)
-    return averageColor.a * averageColor.rgb + (1 - averageColor.a) * srcAlbedo.rgb;
-}
-
 float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
     float alpha = roughness * roughness;
     float alpha2 = alpha * alpha;
@@ -189,6 +169,7 @@ vec3 fresnelSchlick(vec3 halfWay, vec3 vertexToCameraPos, vec3 baseReflectivity)
 }
 
 void main() {
+    float alphaValue = 1.0f;
     float depthValue = texture(depthTex, texCoordinates).r;
     vec4 albedoAndEmissive = texture(albedoAndEmissiveTex, texCoordinates);
     vec4 normalAndAmbient = texture(normalAndAmbientTex, texCoordinates);
@@ -203,7 +184,7 @@ void main() {
         vec3 normal = normalize(vec3(normalAndAmbient) * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
         vec3 modelAmbient = albedo * modelAmbientFactor;
 
-        fragColor = vec4(lightsData.globalAmbient, 1.0); //start with global ambient
+        fragColor = vec4(lightsData.globalAmbient, alphaValue); //start with global ambient
 
         if (visualOption.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
@@ -253,10 +234,9 @@ void main() {
             fragColor.rgb += shadowAttenuation * (bidirectionalReflectanceDist * lightRadiance * lightValues.NdotL); //update with PBR formula
         }
     } else { //do not apply lighting (e.g. skybox, geometry models...)
-        fragColor.rgb = albedo * (1.0 + emissiveFactor); //albedo + add emissive lighting
+        fragColor.rgba = vec4(albedo * (1.0 + emissiveFactor), alphaValue); //albedo + add emissive lighting
     }
 
-    fragColor.rgb = addTransparentModels(fragColor.rgb);
     fragColor.rgb = addFog(fragColor.rgb, worldPosition);
 
     //DEBUG: add color to shadow map splits

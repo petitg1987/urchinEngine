@@ -1,7 +1,6 @@
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
-#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
@@ -21,10 +20,11 @@ namespace urchin {
         }
     }
 
-    void TransparentManager::onTextureUpdate(const std::shared_ptr<Texture>& depthTexture) {
+    void TransparentManager::onTextureUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& illuminatedTexture) {
         this->sceneWidth = depthTexture->getWidth();
         this->sceneHeight = depthTexture->getHeight();
         this->depthTexture = depthTexture;
+        this->illuminatedTexture = illuminatedTexture;
 
         createOrUpdateRendering();
     }
@@ -43,22 +43,20 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        accumulationTexture = Texture::build("transparent: accumulation", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT);
-        revealTexture = Texture::build("transparent: reveal", sceneWidth, sceneHeight, TextureFormat::GRAYSCALE_8_INT);
+        outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT); //TODO should contain illuminated texture value ?! (vkCmdCopyBufferToImage + pipeline barriers)
 
         if (useNullRenderTarget) {
             if (!renderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>(accumulationTexture->getWidth(), accumulationTexture->getHeight());
+                renderTarget = std::make_unique<NullRenderTarget>(outputTexture->getWidth(), outputTexture->getHeight());
             }
         } else {
             if (renderTarget) {
                 static_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
             } else {
-                renderTarget = std::make_unique<OffscreenRender>("transparent - accum/reveal", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
+                renderTarget = std::make_unique<OffscreenRender>("transparent", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
             }
             renderTarget->setExternalDepthTexture(depthTexture);
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(accumulationTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(0.0f, 0.0f, 0.0f, 0.0f)));
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(revealTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(1.0f, 1.0f, 1.0f, 1.0f)));
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture, LoadType::LOAD_CLEAR, std::make_optional(Vector4<float>(0.0f, 0.0f, 0.0f, 1.0f)));
             renderTarget->initialize();
         }
     }
@@ -73,13 +71,10 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &modelTransparentConstData);
 
-        BlendFunction accumulationBlend = BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE);
-        BlendFunction revealBlend = BlendFunction::build(BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR, BlendFactor::ZERO, BlendFactor::ONE_MINUS_SRC_COLOR);
-
         modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
         modelSetDisplayer->setupShader("modelTransparent.vert.spv", "", "modelTransparent.frag.spv", std::move(shaderConstants));
         modelSetDisplayer->setupDepthOperations(true, false /* disable depth write */);
-        modelSetDisplayer->setupBlendFunctions({accumulationBlend, revealBlend});
+        modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
@@ -92,7 +87,7 @@ namespace urchin {
     }
 
     void TransparentManager::updateModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->updateModels(models);
+        modelSetDisplayer->updateModels(models); //TODO sort them back to front
     }
 
     void TransparentManager::removeModel(Model* model) const {
@@ -101,20 +96,17 @@ namespace urchin {
         }
     }
 
-    void TransparentManager::updateTransparentTextures(std::uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
+    const std::shared_ptr<Texture>& TransparentManager::getOutputTexture() const {
+        return outputTexture;
+    }
+
+    void TransparentManager::drawTransparentModels(std::uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
         renderTarget->disableAllProcessors();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
         renderTarget->render(frameIndex, numDependenciesToTransparentTextures);
-    }
-
-    void TransparentManager::loadTransparentTextures(GenericRenderer& lightingRenderer, std::size_t accumulationTextureUnit, std::size_t revealTextureUnit) const {
-        if (lightingRenderer.getUniformTextureReader(accumulationTextureUnit)->getTexture() != accumulationTexture.get()) {
-            lightingRenderer.updateUniformTextureReader(accumulationTextureUnit, TextureReader::build(accumulationTexture, TextureParam::buildLinear()));
-            lightingRenderer.updateUniformTextureReader(revealTextureUnit, TextureReader::build(revealTexture, TextureParam::buildLinear()));
-        }
     }
 
 }

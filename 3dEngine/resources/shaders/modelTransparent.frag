@@ -34,23 +34,9 @@ layout(location = 2) in vec3 n;
 layout(location = 3) in vec2 texCoordinates;
 layout(location = 4) in vec4 worldPosition;
 
-layout(location = 0) out vec4 accumulationTexture;
-layout(location = 1) out float revealTexture;
+layout(location = 0) out vec4 fragColor;
 
-void fillTransparentTextures(vec4 fragColor) {
-    float depth = gl_FragCoord.z; //from 0.0 (near plane) to 1.0 (far plane)
-    float linearizedDepth = (cameraPlanes.nearPlane * cameraPlanes.farPlane) /
-            (depth * (cameraPlanes.nearPlane - cameraPlanes.farPlane) + cameraPlanes.farPlane); //linearized depth from near plane value to far plane value
-
-    //Weight formulas from paper: http://jcgt.org/published/0002/02/09/
-    //Info: formula (10) not work so well when the camera is close to the transparent models {weight = max(0.01, 3000.0 * pow(1.0 - depth, 3.0))}
-    float weight = max(0.01, min(3000.0, 10.0 / (0.00001 + pow(abs(linearizedDepth) / 5.0, 2.0) + pow(abs(linearizedDepth) / 200.0, 6.0)))); //formula (7)
-
-    accumulationTexture = vec4(fragColor.rgb * fragColor.a, fragColor.a) * weight;
-    revealTexture = fragColor.a;
-}
-
-void main() {
+void main() { //TODO review
     vec4 albedo = texture(albedoTex, texCoordinates);
     if (albedo.a < 0.01) {
         discard;
@@ -61,7 +47,7 @@ void main() {
     vec3 normal = tbnMatrix * texNormal;
     float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
 
-    vec4 fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    fragColor = vec4(0.0, 0.0, 0.0, 1.0);
     if (materialData.ambientFactor < 0.9999) { //apply lighting
         vec3 modelAmbient = albedo.rgb * materialData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
@@ -80,6 +66,4 @@ void main() {
     } else { //do not apply lighting
         fragColor = vec4(albedo.rgb * (1.0 + emissiveFactor), albedo.a); //albedo + add emissive lighting
     }
-
-    fillTransparentTextures(fragColor);
 }

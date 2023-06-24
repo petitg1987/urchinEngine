@@ -304,12 +304,19 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
         updateScene(dt);
+
         deferredRendering(frameIndex, dt);
+
         lightingPassRendering(frameIndex);
+
+        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
+        transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
+
         if (isAntiAliasingActivated) {
             unsigned int numDependenciesToAATexture = 2 /* bloom pre-filter & bloom combine (screen target) */;
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
+
         bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);
 
         screenRenderingOrder++;
@@ -383,18 +390,16 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 8
                 ->addUniformTextureReader(TextureReader::build(materialTexture, TextureParam::buildNearest())) //binding 9
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest())) //binding 10 - ambient occlusion
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyRgba("transparent: empty accumulation"), TextureParam::buildNearest())) //binding 11 - transparency: accumulation
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("transparent: empty reveal"), TextureParam::buildNearest())) //binding 12 - transparency: reveal
-                ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 13
+                ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 11
                 ->build();
         ambientOcclusionManager.onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
-        transparentManager.onTextureUpdate(deferredRenderTarget->getDepthTexture());
+        transparentManager.onTextureUpdate(deferredRenderTarget->getDepthTexture(), illuminatedTexture);
 
         //post process rendering
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.onTextureUpdate(illuminatedTexture);
+            antiAliasingApplier.onTextureUpdate(transparentManager.getOutputTexture());
         }
-        bloomEffectApplier.onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier.getOutputTexture() : illuminatedTexture);
+        bloomEffectApplier.onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier.getOutputTexture() : transparentManager.getOutputTexture());
 
         refreshDebugFramebuffers = true;
     }
@@ -498,13 +503,10 @@ namespace urchin {
             }
             ambientOcclusionManager.updateAOTexture(frameIndex, numDependenciesToAOTexture, *camera);
         }
-
-        unsigned int numDependenciesToTransparentTextures = 1 /* second pass */;
-        transparentManager.updateTransparentTextures(frameIndex, numDependenciesToTransparentTextures, *camera);
     }
 
     unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
-        unsigned int numDependenciesToFirstPassOutput = 2 /* transparent/accum & second pass */;
+        unsigned int numDependenciesToFirstPassOutput = 1 /* second pass */;
         if (visualOption.isAmbientOcclusionActivated) {
             if (ambientOcclusionManager.getConfig().isBlurActivated) {
                 numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
@@ -512,6 +514,7 @@ namespace urchin {
                 numDependenciesToFirstPassOutput += 1 /* AO raw texture */;
             }
         }
+        numDependenciesToFirstPassOutput += 1 /* transparent */;
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)
         }
@@ -563,12 +566,8 @@ namespace urchin {
             ambientOcclusionManager.loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
         }
 
-        constexpr std::size_t transparentAccumulationTexUnit = 5;
-        constexpr std::size_t transparentRevealTexUnit = 6;
-        transparentManager.loadTransparentTextures(*lightingRenderer, transparentAccumulationTexUnit, transparentRevealTexUnit);
-
         if (visualOption.isShadowActivated) {
-            constexpr std::size_t shadowMapTexUnit = 7;
+            constexpr std::size_t shadowMapTexUnit = 5;
             shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
         }
 
@@ -576,14 +575,9 @@ namespace urchin {
     }
 
     unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
-        unsigned int numDependenciesToSecondPassOutput;
-        if (isAntiAliasingActivated) {
-            numDependenciesToSecondPassOutput = 1 /* anti aliasing */;
-            if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
-                numDependenciesToSecondPassOutput++; //bloom combine (screen target)
-            }
-        } else {
-            numDependenciesToSecondPassOutput = 2 /* bloom pre-filter && bloom combine (screen target) */;
+        unsigned int numDependenciesToSecondPassOutput = 1 /* transparent */;
+        if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) { //TODO review/test
+            numDependenciesToSecondPassOutput++; //bloom combine (screen target)
         }
         return numDependenciesToSecondPassOutput;
     }
