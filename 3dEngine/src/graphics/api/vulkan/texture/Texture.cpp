@@ -109,6 +109,38 @@ namespace urchin {
         this->outputUsage = outputUsage;
     }
 
+    void Texture::copyTo(Texture& dstTexture) { //TODO review everythink
+        CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("copy textures");
+        {
+            //add barrier here too ?
+
+            VkImageCopy imageCopyRegion{};
+            imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            imageCopyRegion.srcSubresource.layerCount = 1;
+            imageCopyRegion.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            imageCopyRegion.dstSubresource.layerCount = 1;
+            imageCopyRegion.extent.width = getWidth();
+            imageCopyRegion.extent.height = getHeight();
+            imageCopyRegion.extent.depth = getLayer();
+
+            vkCmdCopyImage(commandBufferData.commandBuffer, getImage(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, dstTexture.getImage(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, 1, &imageCopyRegion);
+
+//            VkImageMemoryBarrier imageMemoryBarrier {};
+//            imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+//            imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+//            imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+//            imageMemoryBarrier.srcAccessMask = srcAccessMask;
+//            imageMemoryBarrier.dstAccessMask = dstAccessMask;
+//            imageMemoryBarrier.oldLayout = oldLayout;
+//            imageMemoryBarrier.newLayout = newLayout;
+//            imageMemoryBarrier.image = image;
+//            imageMemoryBarrier.subresourceRange = VkImageSubresourceRange{VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1};
+//
+//            vkCmdPipelineBarrier(copyCmd, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &imageMemoryBarrier);
+        }
+        CommandBufferHelper::endSingleTimeCommands(commandBufferData);
+    }
+
     void Texture::initialize() {
         if (!isInitialized) {
             VkImageViewType imageViewType;
@@ -417,6 +449,10 @@ namespace urchin {
             return 16;
         }
         throw std::runtime_error("Unknown texture format: " + std::to_string((int)format));
+    }
+
+    VkImage Texture::getImage() const {
+        return textureImage;
     }
 
     VkImageView Texture::getImageView() const {

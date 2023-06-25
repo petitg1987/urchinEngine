@@ -575,7 +575,7 @@ namespace urchin {
     }
 
     unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
-        unsigned int numDependenciesToSecondPassOutput = 1 /* transparent */;
+        unsigned int numDependenciesToSecondPassOutput = 0 /* transparent */; //TODO use 1
         if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) { //TODO review/test
             numDependenciesToSecondPassOutput++; //bloom combine (screen target)
         }

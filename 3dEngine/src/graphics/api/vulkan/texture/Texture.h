@@ -48,6 +48,7 @@ namespace urchin {
 
             void enableMipmap();
             void enableTextureWriting(OutputUsage);
+            void copyTo(Texture&);
 
             void initialize();
 
@@ -80,6 +81,7 @@ namespace urchin {
             OffscreenRender* getLastTextureWriter() const;
 
             unsigned int getBytesByPixel() const;
+            VkImage getImage() const;
             VkImageView getImageView() const;
             VkFormat getVkFormat() const;
 

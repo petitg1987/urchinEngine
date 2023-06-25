@@ -43,7 +43,7 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT); //TODO should contain illuminated texture value ?! (vkCmdCopyBufferToImage + pipeline barriers)
+        outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT);
 
         if (useNullRenderTarget) {
             if (!renderTarget) {
@@ -103,6 +103,8 @@ namespace urchin {
     void TransparentManager::drawTransparentModels(std::uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
+
+        illuminatedTexture->copyTo(*outputTexture);
 
         renderTarget->disableAllProcessors();
         modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
