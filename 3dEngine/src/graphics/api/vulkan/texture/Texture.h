@@ -79,6 +79,8 @@ namespace urchin {
             bool isWritableTexture() const;
             void setLastTextureWriter(OffscreenRender*);
             OffscreenRender* getLastTextureWriter() const;
+            void cmdPipelineBarrierStart(VkImage, VkCommandBuffer, VkAccessFlags, VkAccessFlags, VkImageLayout, VkImageLayout) const;
+            void cmdPipelineBarrierEnd(VkImage, VkCommandBuffer, VkAccessFlags, VkAccessFlags, VkImageLayout, VkImageLayout) const;
 
             unsigned int getBytesByPixel() const;
             VkImage getImage() const;
