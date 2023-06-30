@@ -109,10 +109,9 @@ namespace urchin {
         this->outputUsage = outputUsage;
     }
 
-    void Texture::copyTo(Texture& dstTexture, VkCommandBuffer copyCmd) { //TODO review everythink
-        cmdPipelineBarrierStart(getImage(), copyCmd, VK_ACCESS_SHADER_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
-
-        cmdPipelineBarrierStart(dstTexture.getImage(), copyCmd, VK_ACCESS_NONE_KHR, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+    void Texture::copyTo(Texture& dstTexture, VkCommandBuffer cmdBuffer) {
+        cmdPipelineBarrierStart(getImage(), cmdBuffer, VK_ACCESS_SHADER_READ_BIT, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+        cmdPipelineBarrierStart(dstTexture.getImage(), cmdBuffer, VK_ACCESS_NONE_KHR, VK_ACCESS_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
         VkImageCopy imageCopyRegion{};
         imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
@@ -123,11 +122,10 @@ namespace urchin {
         imageCopyRegion.extent.height = getHeight();
         imageCopyRegion.extent.depth = getLayer();
 
-        vkCmdCopyImage(copyCmd, getImage(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstTexture.getImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
+        vkCmdCopyImage(cmdBuffer, getImage(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstTexture.getImage(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
 
-        cmdPipelineBarrierEnd(dstTexture.getImage(), copyCmd, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_SHADER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-
-        cmdPipelineBarrierEnd(getImage(), copyCmd, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_SHADER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+        cmdPipelineBarrierEnd(dstTexture.getImage(), cmdBuffer, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_SHADER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+        cmdPipelineBarrierEnd(getImage(), cmdBuffer, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_SHADER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
     }
 
     void Texture::cmdPipelineBarrierStart(VkImage image, VkCommandBuffer copyCmd, VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask, VkImageLayout oldLayout, VkImageLayout newLayout) const {

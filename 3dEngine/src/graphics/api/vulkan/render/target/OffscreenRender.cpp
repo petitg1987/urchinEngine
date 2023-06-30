@@ -258,7 +258,7 @@ namespace urchin {
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = commandBuffers.data();
         submitInfo.signalSemaphoreCount = numDependenciesToOutputs;
-        submitInfo.pSignalSemaphores = submitSemaphores.data();
+        submitInfo.pSignalSemaphores = numDependenciesToOutputs > 0 ? submitSemaphores.data() : nullptr;
         remainingSubmitSemaphores = numDependenciesToOutputs;
         submitSemaphoresFrameIndex = frameIndex;
 

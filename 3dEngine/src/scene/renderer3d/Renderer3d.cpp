@@ -313,7 +313,7 @@ namespace urchin {
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2 /* bloom pre-filter & bloom combine (screen target) */;
+            unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine (screen target)
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
 
@@ -467,7 +467,7 @@ namespace urchin {
 
         //deferred shadow map
         if (visualOption.isShadowActivated) {
-            unsigned int numDependenciesToShadowMaps = 1 /* second pass */;
+            unsigned int numDependenciesToShadowMaps = 1; //second pass
             shadowManager.updateShadowMaps(frameIndex, numDependenciesToShadowMaps);
         }
 
@@ -497,7 +497,7 @@ namespace urchin {
 
         //deferred ambient occlusion
         if (visualOption.isAmbientOcclusionActivated) {
-            unsigned int numDependenciesToAOTexture = 1 /* second pass */;
+            unsigned int numDependenciesToAOTexture = 1; //second pass
             if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
                 numDependenciesToAOTexture++;
             }
@@ -506,15 +506,15 @@ namespace urchin {
     }
 
     unsigned int Renderer3d::computeDependenciesToFirstPassOutput() const {
-        unsigned int numDependenciesToFirstPassOutput = 1 /* second pass */;
+        unsigned int numDependenciesToFirstPassOutput = 1; //second pass
         if (visualOption.isAmbientOcclusionActivated) {
             if (ambientOcclusionManager.getConfig().isBlurActivated) {
-                numDependenciesToFirstPassOutput += 3 /* AO raw texture & AO vertical filter & AO horizontal filter */;
+                numDependenciesToFirstPassOutput += 3; //AO raw texture & AO vertical filter & AO horizontal filter
             } else {
-                numDependenciesToFirstPassOutput += 1 /* AO raw texture */;
+                numDependenciesToFirstPassOutput += 1; //AO raw texture
             }
         }
-        numDependenciesToFirstPassOutput += 1 /* transparent */;
+        numDependenciesToFirstPassOutput += 1; //transparent
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)
         }
@@ -575,8 +575,8 @@ namespace urchin {
     }
 
     unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
-        unsigned int numDependenciesToSecondPassOutput = 0 /* transparent */; //TODO use 1 ? (+ check if everything work with AA disabled)
-        if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) { //TODO review/test
+        unsigned int numDependenciesToSecondPassOutput = 0; //transparent use second pass output but outside render pass with barrier (no need semaphore)
+        if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
             numDependenciesToSecondPassOutput++; //bloom combine (screen target)
         }
         return numDependenciesToSecondPassOutput;
