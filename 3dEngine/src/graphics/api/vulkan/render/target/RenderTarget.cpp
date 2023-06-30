@@ -19,7 +19,9 @@ namespace urchin {
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
-            processorsDirty(false) {
+            processorsDirty(false),
+            srcTexture(nullptr),
+            dstTexture(nullptr) {
         Logger::instance().logInfo("Create render target: " + this->name);
     }
 
@@ -424,6 +426,12 @@ namespace urchin {
             }
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
+
+            //TODO ugly copy !
+            if (srcTexture != nullptr && dstTexture != nullptr) {
+                srcTexture->copyTo(*dstTexture, commandBuffers[frameIndex]);
+            }
+
             if (couldHaveGraphicsProcessors()) {
                 VkRenderPassBeginInfo renderPassInfo{};
                 renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -452,6 +460,15 @@ namespace urchin {
 
             processorsDirty = false;
         }
+    }
+
+    void RenderTarget::setTexturesToCopy(Texture& srcTexture, Texture& dstTexture) {
+        dstTexture.enableTextureWriting(OutputUsage::GRAPHICS);
+        dstTexture.initialize();
+
+        this->srcTexture = &srcTexture;
+        this->dstTexture = &dstTexture;
+        this->processorsDirty = true;
     }
 
 }

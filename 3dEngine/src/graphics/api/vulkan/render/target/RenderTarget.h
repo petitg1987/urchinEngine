@@ -52,6 +52,8 @@ namespace urchin {
 
             virtual void render(std::uint32_t, unsigned int) = 0;
 
+            void setTexturesToCopy(Texture&, Texture&);
+
         protected:
             struct WaitSemaphore {
                 VkSemaphore waitSemaphore;
@@ -106,6 +108,9 @@ namespace urchin {
             std::vector<PipelineProcessor*> processors;
             std::vector<PipelineProcessor*> sortedEnabledProcessors;
             bool processorsDirty;
+
+            Texture* srcTexture;
+            Texture* dstTexture;
     };
 
 }

@@ -48,7 +48,7 @@ namespace urchin {
 
             void enableMipmap();
             void enableTextureWriting(OutputUsage);
-            void copyTo(Texture&);
+            void copyTo(Texture&, VkCommandBuffer);
 
             void initialize();
 
