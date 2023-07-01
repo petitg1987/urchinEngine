@@ -79,7 +79,7 @@ namespace urchin {
         modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
-        modelSetDisplayer->setupInstancing(false); //no instancing to be able to sort models
+        modelSetDisplayer->setupDisplayModelsInOrder(true);
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
 
         modelSetDisplayer->initialize(*renderTarget);
@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     void TransparentManager::updateModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->updateModels(models);
+        modelSetDisplayer->updateModels(models); //TODO sort models!
     }
 
     void TransparentManager::removeModel(Model* model) const {
@@ -107,8 +107,12 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
+        auto modelsSortFunction = [](const Model* model1, const Model* model2) {
+            return model1 > model2; //TODO impl model sort from back to front (return false if equals ?)
+        };
+
         renderTarget->disableAllProcessors();
-        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix());
+        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelsSortFunction);
         renderTarget->render(frameIndex, numDependenciesToTransparentTextures);
     }
 

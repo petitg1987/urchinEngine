@@ -21,6 +21,8 @@ namespace urchin {
     */
     class ModelSetDisplayer final : public Observer {
         public:
+            using ModelSortFunction = bool (*)(const Model*, const Model*);
+
             explicit ModelSetDisplayer(DisplayMode displayMode);
             ~ModelSetDisplayer() override;
 
@@ -29,7 +31,7 @@ namespace urchin {
             void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
             void setupDepthOperations(bool, bool);
             void setupFaceCull(bool);
-            void setupInstancing(bool);
+            void setupDisplayModelsInOrder(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
@@ -41,6 +43,7 @@ namespace urchin {
             bool isDisplayerExist(const Model&) const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&);
+            void prepareRendering(unsigned int&, const Matrix4<float>&, ModelSortFunction);
 
             void drawBBox(GeometryContainer&) const;
             void drawBaseBones(GeometryContainer&) const;
@@ -68,7 +71,7 @@ namespace urchin {
             bool depthTestEnabled;
             bool depthWriteEnabled;
             bool enableFaceCull;
-            bool enableInstancing;
+            bool displayModelsInOrder;
             std::vector<BlendFunction> blendFunctions;
             std::unique_ptr<MeshFilter> meshFilter;
 

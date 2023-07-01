@@ -13,7 +13,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true),
-            enableInstancing(true),
+            displayModelsInOrder(false),
             renderTarget(nullptr) {
 
     }
@@ -66,8 +66,8 @@ namespace urchin {
         clearDisplayers();
     }
 
-    void ModelSetDisplayer::setupInstancing(bool enableInstancing) {
-        this->enableInstancing = enableInstancing;
+    void ModelSetDisplayer::setupDisplayModelsInOrder(bool displayModelsInOrder) {
+        this->displayModelsInOrder = displayModelsInOrder;
         clearDisplayers();
     }
 
@@ -89,7 +89,7 @@ namespace urchin {
 
             bool canUpdateDisplayer = false;
             std::size_t newModelInstanceId = ModelDisplayable::INSTANCING_DENY_ID;
-            if (enableInstancing) {
+            if (!displayModelsInOrder) {
                 newModelInstanceId = model->computeInstanceId(displayMode);
             }
             if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
@@ -187,7 +187,7 @@ namespace urchin {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
                 std::size_t modelInstanceId = ModelDisplayable::INSTANCING_DENY_ID;
-                if (enableInstancing) {
+                if (!displayModelsInOrder) {
                     modelInstanceId = model->computeInstanceId(displayMode);
                 }
 
@@ -257,18 +257,42 @@ namespace urchin {
             throw std::runtime_error("Model displayer must be initialized before call display");
         } else if (!renderTarget) {
             throw std::runtime_error("Render target must be specified before call display");
+        } else if (displayModelsInOrder) {
+            throw std::runtime_error("Call other method to display model in order");
         }
 
         activeModelDisplayers.clear();
-        for (const Model* model : models) {
+        for (const Model* model: models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             if (activeModelDisplayers.insert(modelInstanceDisplayer).second) {
                 modelInstanceDisplayer->resetRenderingModels();
             }
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
-        for (const ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) { //TODO sort then only for transparent (increase rendering order) (+ assert no instancing)
+        for (const ModelInstanceDisplayer* activeModelDisplayer: activeModelDisplayers) {
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
+        }
+    }
+
+    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, ModelSortFunction modelSortFunction) {
+        ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
+
+        if (!isInitialized) {
+            throw std::runtime_error("Model displayer must be initialized before call display");
+        } else if (!renderTarget) {
+            throw std::runtime_error("Render target must be specified before call display");
+        } else if (!displayModelsInOrder) {
+            throw std::runtime_error("Call other method to display model unordered");
+        }
+
+        std::ranges::sort(models, modelSortFunction);
+        for (const Model* model: models) {
+            ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            modelInstanceDisplayer->resetRenderingModels();
+            modelInstanceDisplayer->registerRenderingModel(*model);
+
+            renderingOrder++;
+            modelInstanceDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
 
