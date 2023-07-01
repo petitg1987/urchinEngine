@@ -36,7 +36,7 @@ layout(location = 4) in vec4 worldPosition;
 
 layout(location = 0) out vec4 fragColor;
 
-void main() { //TODO review
+void main() {
     vec4 albedo = texture(albedoTex, texCoordinates);
     if (albedo.a < 0.01) {
         discard;
@@ -47,7 +47,6 @@ void main() { //TODO review
     vec3 normal = tbnMatrix * texNormal;
     float emissiveFactor = materialData.encodedEmissiveFactor * MAX_EMISSIVE_FACTOR;
 
-    fragColor = vec4(0.0, 0.0, 0.0, 1.0);
     if (materialData.ambientFactor < 0.9999) { //apply lighting
         vec3 modelAmbient = albedo.rgb * materialData.ambientFactor;
         fragColor = vec4(lightsData.globalAmbient, albedo.a);
