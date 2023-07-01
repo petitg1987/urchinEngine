@@ -44,6 +44,7 @@ namespace urchin {
 
     void TransparentManager::createOrUpdateTextures() {
         outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT);
+        outputTexture->enableTextureWriting(OutputUsage::GRAPHICS);
 
         if (useNullRenderTarget) {
             if (!renderTarget) {
@@ -55,8 +56,8 @@ namespace urchin {
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("transparent", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
             }
-            renderTarget->setTexturesToCopy(*illuminatedTexture, *outputTexture);
             renderTarget->setExternalDepthTexture(depthTexture);
+            renderTarget->addPreRenderTextureCopier(TextureCopier(*illuminatedTexture, *outputTexture));
             static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture, LoadType::LOAD_CONTENT);
             renderTarget->initialize();
         }

@@ -32,6 +32,7 @@ namespace urchin {
     class Texture final : public Resource {
         public:
             friend class PipelineProcessor;
+            friend class TextureCopier;
             friend class RenderTarget;
             friend class OffscreenRender;
             friend class ScreenRender;
@@ -48,7 +49,6 @@ namespace urchin {
 
             void enableMipmap();
             void enableTextureWriting(OutputUsage);
-            void copyTo(Texture&, VkCommandBuffer);
 
             void initialize();
 
@@ -79,8 +79,6 @@ namespace urchin {
             bool isWritableTexture() const;
             void setLastTextureWriter(OffscreenRender*);
             OffscreenRender* getLastTextureWriter() const;
-            void cmdPipelineBarrierStart(VkImage, VkCommandBuffer, VkAccessFlags, VkAccessFlags, VkImageLayout, VkImageLayout) const;
-            void cmdPipelineBarrierEnd(VkImage, VkCommandBuffer, VkAccessFlags, VkAccessFlags, VkImageLayout, VkImageLayout) const;
 
             unsigned int getBytesByPixel() const;
             VkImage getImage() const;

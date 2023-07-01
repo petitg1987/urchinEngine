@@ -19,9 +19,8 @@ namespace urchin {
             renderPass(nullptr),
             renderPassCompatibilityId(0),
             commandPool(nullptr),
-            processorsDirty(false),
-            srcTexture(nullptr),
-            dstTexture(nullptr) {
+            copiersDirty(false),
+            processorsDirty(false) {
         Logger::instance().logInfo("Create render target: " + this->name);
     }
 
@@ -73,6 +72,17 @@ namespace urchin {
             return externalDepthTexture;
         }
         throw std::runtime_error("Unknown depth attachment type '" + std::to_string(depthAttachmentType) + "' on render target: " + getName());
+    }
+
+    void RenderTarget::addPreRenderTextureCopier(TextureCopier textureCopier) {
+        preRenderTextureCopier.emplace_back(textureCopier);
+        preRenderTextureCopier.back().initialize();
+
+        copiersDirty = true;
+    }
+
+    void RenderTarget::removeAllPreRenderTextureCopiers() {
+        preRenderTextureCopier.clear();
     }
 
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
@@ -143,8 +153,8 @@ namespace urchin {
         });
     }
 
-    bool RenderTarget::areProcessorsDirty() const {
-        return processorsDirty;
+    bool RenderTarget::areProcessorsOrCopiersDirty() const {
+        return processorsDirty || copiersDirty;
     }
 
     VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
@@ -426,9 +436,8 @@ namespace urchin {
             }
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-            //TODO ugly copy !
-            if (srcTexture != nullptr && dstTexture != nullptr) {
-                srcTexture->copyTo(*dstTexture, commandBuffers[frameIndex]);
+            for (const TextureCopier& textureCopier : preRenderTextureCopier) {
+                textureCopier.executeCopy(commandBuffers[frameIndex]);
             }
             if (couldHaveGraphicsProcessors()) {
                 VkRenderPassBeginInfo renderPassInfo{};
@@ -456,17 +465,9 @@ namespace urchin {
                 throw std::runtime_error("Failed to record command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on render target: " + getName());
             }
 
+            copiersDirty = false;
             processorsDirty = false;
         }
-    }
-
-    void RenderTarget::setTexturesToCopy(Texture& srcTexture, Texture& dstTexture) {
-        dstTexture.enableTextureWriting(OutputUsage::GRAPHICS);
-        dstTexture.initialize();
-
-        this->srcTexture = &srcTexture;
-        this->dstTexture = &dstTexture;
-        this->processorsDirty = true;
     }
 
 }

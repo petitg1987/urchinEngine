@@ -6,6 +6,7 @@
 
 #include <UrchinCommon.h>
 #include <graphics/api/vulkan/texture/Texture.h>
+#include <graphics/api/vulkan/render/TextureCopier.h>
 
 namespace urchin {
 
@@ -43,6 +44,8 @@ namespace urchin {
             void setExternalDepthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
+            void addPreRenderTextureCopier(TextureCopier);
+            void removeAllPreRenderTextureCopiers();
             void addProcessor(PipelineProcessor*);
             void removeProcessor(const PipelineProcessor*);
             bool couldHaveGraphicsProcessors() const;
@@ -51,8 +54,6 @@ namespace urchin {
             void disableAllProcessors() const;
 
             virtual void render(std::uint32_t, unsigned int) = 0;
-
-            void setTexturesToCopy(Texture&, Texture&);
 
         protected:
             struct WaitSemaphore {
@@ -64,7 +65,7 @@ namespace urchin {
             void cleanupProcessors() const;
             std::span<PipelineProcessor* const> getProcessors() const;
             bool hasProcessor() const;
-            bool areProcessorsDirty() const;
+            bool areProcessorsOrCopiersDirty() const;
 
             VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
             VkAttachmentDescription buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
@@ -105,12 +106,11 @@ namespace urchin {
             mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
             mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
 
+            std::vector<TextureCopier> preRenderTextureCopier;
+            bool copiersDirty;
             std::vector<PipelineProcessor*> processors;
             std::vector<PipelineProcessor*> sortedEnabledProcessors;
             bool processorsDirty;
-
-            Texture* srcTexture;
-            Texture* dstTexture;
     };
 
 }

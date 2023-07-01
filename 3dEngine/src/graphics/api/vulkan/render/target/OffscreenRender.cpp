@@ -302,7 +302,7 @@ namespace urchin {
     }
 
     bool OffscreenRender::needCommandBufferRefresh(std::size_t frameIndex) const {
-        if (areProcessorsDirty()) {
+        if (areProcessorsOrCopiersDirty()) {
             return true;
         }
 
