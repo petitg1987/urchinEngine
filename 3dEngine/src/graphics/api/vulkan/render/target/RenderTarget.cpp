@@ -426,12 +426,10 @@ namespace urchin {
             }
 
             DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
-
             //TODO ugly copy !
             if (srcTexture != nullptr && dstTexture != nullptr) {
                 srcTexture->copyTo(*dstTexture, commandBuffers[frameIndex]);
             }
-
             if (couldHaveGraphicsProcessors()) {
                 VkRenderPassBeginInfo renderPassInfo{};
                 renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;

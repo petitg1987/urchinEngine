@@ -1,4 +1,4 @@
-#version 450
+#version 460
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(constant_id = 0) const bool IS_VERTICAL_BLUR = true;

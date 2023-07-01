@@ -1,4 +1,4 @@
-#version 450
+#version 460
 
 layout(constant_id = 0) const uint KERNEL_SAMPLES = 64; //must be equals to AmbientOcclusionManager::KERNEL_SAMPLES_SHADER_LIMIT
 layout(constant_id = 1) const float RADIUS = 0.0;
