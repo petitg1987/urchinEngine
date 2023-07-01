@@ -90,7 +90,7 @@ namespace urchin {
     }
 
     void TransparentManager::updateModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->updateModels(models); //TODO sort models!
+        modelSetDisplayer->updateModels(models);
     }
 
     void TransparentManager::removeModel(Model* model) const {
@@ -107,12 +107,19 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
-        auto modelsSortFunction = [](const Model* model1, const Model* model2) {
-            return model1 > model2; //TODO impl model sort from back to front (return false if equals ?)
+        const void* cameraUserData = static_cast<const void*>(&camera);
+        auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
+            const auto* camera = static_cast<const Camera *>(userData);
+            float cameraToModel1 = camera->getPosition().squareDistance(model1->getTransform().getPosition());
+            float cameraToModel2 = camera->getPosition().squareDistance(model2->getTransform().getPosition());
+            if (cameraToModel1 == cameraToModel2) {
+                return model1 < model2; //random but ensure the "strict weak ordering" required by std::sort
+            }
+            return cameraToModel1 > cameraToModel2; //TODO check sign (< or > ?)
         };
 
         renderTarget->disableAllProcessors();
-        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelsSortFunction);
+        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelSorter, cameraUserData);
         renderTarget->render(frameIndex, numDependenciesToTransparentTextures);
     }
 

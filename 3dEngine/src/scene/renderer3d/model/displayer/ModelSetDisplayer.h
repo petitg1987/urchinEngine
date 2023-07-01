@@ -21,7 +21,7 @@ namespace urchin {
     */
     class ModelSetDisplayer final : public Observer {
         public:
-            using ModelSortFunction = bool (*)(const Model*, const Model*);
+            using ModelSortFunction = bool (*)(const Model*, const Model*, const void*);
 
             explicit ModelSetDisplayer(DisplayMode displayMode);
             ~ModelSetDisplayer() override;
@@ -43,7 +43,7 @@ namespace urchin {
             bool isDisplayerExist(const Model&) const;
 
             void prepareRendering(unsigned int, const Matrix4<float>&);
-            void prepareRendering(unsigned int&, const Matrix4<float>&, ModelSortFunction);
+            void prepareRendering(unsigned int&, const Matrix4<float>&, const ModelSortFunction&, const void*);
 
             void drawBBox(GeometryContainer&) const;
             void drawBaseBones(GeometryContainer&) const;

@@ -274,7 +274,7 @@ namespace urchin {
         }
     }
 
-    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, ModelSortFunction modelSortFunction) {
+    void ModelSetDisplayer::prepareRendering(unsigned int& renderingOrder, const Matrix4<float>& projectionViewMatrix, const ModelSortFunction& modelSorter, const void* userData) {
         ScopeProfiler sp(Profiler::graphic(), "modelPreRender");
 
         if (!isInitialized) {
@@ -285,7 +285,9 @@ namespace urchin {
             throw std::runtime_error("Call other method to display model unordered");
         }
 
-        std::ranges::sort(models, modelSortFunction);
+        std::ranges::sort(models, [&modelSorter, &userData](const Model* model1, const Model* model2) {
+            return modelSorter(model1, model2, userData);
+        });
         for (const Model* model: models) {
             ModelInstanceDisplayer* modelInstanceDisplayer = findModelInstanceDisplayer(*model);
             modelInstanceDisplayer->resetRenderingModels();
