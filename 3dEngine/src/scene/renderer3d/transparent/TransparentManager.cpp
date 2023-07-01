@@ -88,7 +88,7 @@ namespace urchin {
     }
 
     void TransparentManager::updateModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->updateModels(models); //TODO sort them back to front
+        modelSetDisplayer->updateModels(models); //TODO sort them back to front (/!\ instancing)
     }
 
     void TransparentManager::removeModel(Model* model) const {

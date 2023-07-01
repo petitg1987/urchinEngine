@@ -56,7 +56,7 @@ void main() {
     if (threadPos.x >= texSize.x || threadPos.y >= texSize.y) {
         return;
     }
-    vec2 texCoordinates = vec2(threadPos) / vec2(texSize);
+    vec2 texCoordinates = (vec2(threadPos) + 0.5) / vec2(texSize);
 
     vec4 normalAndAmbient = vec4(texture(normalAndAmbientTex, texCoordinates));
     if (normalAndAmbient.a >= 0.9999) { //no lighting

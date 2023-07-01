@@ -18,7 +18,7 @@ void main() {
     if (threadPos.x >= texSize.x || threadPos.y >= texSize.y) {
         return;
     }
-    vec2 texCoordinates = vec2(threadPos) / vec2(texSize);
+    vec2 texCoordinates = (vec2(threadPos) + 0.5) / vec2(texSize);
 
     vec3 texValue;
     if (QUALITY_TEXTURE_FETCH == 0) {
