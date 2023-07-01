@@ -79,6 +79,7 @@ namespace urchin {
         modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
+        modelSetDisplayer->setupInstancing(false); //no instancing to be able to sort models
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
 
         modelSetDisplayer->initialize(*renderTarget);
@@ -89,7 +90,7 @@ namespace urchin {
     }
 
     void TransparentManager::updateModels(const std::vector<Model*>& models) const {
-        modelSetDisplayer->updateModels(models); //TODO sort them back to front (/!\ instancing)
+        modelSetDisplayer->updateModels(models);
     }
 
     void TransparentManager::removeModel(Model* model) const {

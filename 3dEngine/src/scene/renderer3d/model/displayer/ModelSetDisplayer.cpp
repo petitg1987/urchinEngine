@@ -13,6 +13,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true),
+            enableInstancing(true),
             renderTarget(nullptr) {
 
     }
@@ -65,6 +66,11 @@ namespace urchin {
         clearDisplayers();
     }
 
+    void ModelSetDisplayer::setupInstancing(bool enableInstancing) {
+        this->enableInstancing = enableInstancing;
+        clearDisplayers();
+    }
+
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         this->blendFunctions = blendFunctions;
         clearDisplayers();
@@ -82,7 +88,10 @@ namespace urchin {
             }
 
             bool canUpdateDisplayer = false;
-            std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
+            std::size_t newModelInstanceId = ModelDisplayable::INSTANCING_DENY_ID;
+            if (enableInstancing) {
+                newModelInstanceId = model->computeInstanceId(displayMode);
+            }
             if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
                 if (displayer->getInstanceCount() <= 1 && !modelInstanceDisplayers.contains(newModelInstanceId)) {
                     //case: displayer is not shared and there isn't other displayer matching the new instance ID
@@ -177,7 +186,10 @@ namespace urchin {
         for (Model* model : models) {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
-                std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+                std::size_t modelInstanceId = ModelDisplayable::INSTANCING_DENY_ID;
+                if (enableInstancing) {
+                    modelInstanceId = model->computeInstanceId(displayMode);
+                }
 
                 ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
                 if (currentModelInstanceDisplayer) {
@@ -255,7 +267,7 @@ namespace urchin {
             }
             modelInstanceDisplayer->registerRenderingModel(*model);
         }
-        for (const ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) {
+        for (const ModelInstanceDisplayer* activeModelDisplayer : activeModelDisplayers) { //TODO sort then only for transparent (increase rendering order) (+ assert no instancing)
             activeModelDisplayer->prepareRendering(renderingOrder, projectionViewMatrix, meshFilter.get());
         }
     }
