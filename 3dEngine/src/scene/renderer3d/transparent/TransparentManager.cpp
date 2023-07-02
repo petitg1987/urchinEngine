@@ -114,7 +114,7 @@ namespace urchin {
             if (cameraToModel1 == cameraToModel2) {
                 return model1 < model2; //random but ensure the "strict weak ordering" required by std::sort
             }
-            return cameraToModel1 > cameraToModel2; //TODO check sign (< or > ?)
+            return cameraToModel1 > cameraToModel2;
         };
 
         renderTarget->disableAllProcessors();
