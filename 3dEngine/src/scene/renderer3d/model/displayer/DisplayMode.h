@@ -11,6 +11,10 @@ namespace urchin {
             * Material information: roughness & metalness (output unit: 2) */
         DEFAULT_MODE = 0,
 
+        /* DEFAULT_MODE_NO_INSTANCING provide:
+            * Same as DEFAULT_MODE but without instancing */
+        DEFAULT_NO_INSTANCING_MODE,
+
         /* DEPTH_ONLY_MODE provide:
             * Depth information */
         DEPTH_ONLY_MODE

@@ -73,13 +73,12 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &modelTransparentConstData);
 
-        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_MODE);
+        modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE);
         modelSetDisplayer->setupShader("modelTransparent.vert.spv", "", "modelTransparent.frag.spv", std::move(shaderConstants));
         modelSetDisplayer->setupDepthOperations(true, false /* disable depth write */);
         modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);
-        modelSetDisplayer->setupDisplayModelsInOrder(true);
         modelSetDisplayer->setupCustomShaderVariable(std::make_unique<TransparentModelShaderVariable>(camera->getNearPlane(), camera->getFarPlane(), lightManager));
 
         modelSetDisplayer->initialize(*renderTarget);

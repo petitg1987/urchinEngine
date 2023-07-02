@@ -79,7 +79,7 @@ namespace urchin {
                     ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
                     ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
 
-            if (displayMode == DisplayMode::DEFAULT_MODE) {
+            if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
                 meshRendererBuilder->instanceData(instanceMatrices.size(), VariableType::TWO_MAT4, (const float*)instanceMatrices.data());
             } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
@@ -110,7 +110,7 @@ namespace urchin {
                 meshRendererBuilder->enableTransparency(blendFunctions);
             }
 
-            if (displayMode == DisplayMode::DEFAULT_MODE) {
+            if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 const UvScale& uvScale = mesh.getMaterial().getUvScale();
                 meshRendererBuilder
                         ->addData(uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv())
@@ -134,7 +134,7 @@ namespace urchin {
             if (model->isMeshUpdated(meshIndex)) {
                 const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                 meshRenderer->updateData(0, mesh.getVertices());
-                if (displayMode == DisplayMode::DEFAULT_MODE) {
+                if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                     meshRenderer->updateData(2, mesh.getNormals());
                     meshRenderer->updateData(3, mesh.getTangents());
                 }
@@ -148,7 +148,7 @@ namespace urchin {
         for (const auto& meshRenderer : meshRenderers) {
             if (model->isMeshUpdated(meshIndex)) {
                 const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
-                if (displayMode == DisplayMode::DEFAULT_MODE) {
+                if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                     meshRenderer->updateData(1, mesh.getUv());
                 }
             }
@@ -157,7 +157,7 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::updateMaterial(const Model* model) const {
-        if (displayMode == DisplayMode::DEFAULT_MODE) {
+        if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer : meshRenderers) {
                 if (model->isMeshUpdated(meshIndex)) {
@@ -184,7 +184,7 @@ namespace urchin {
     }
 
     void ModelInstanceDisplayer::updateScale() const {
-        if (displayMode == DisplayMode::DEFAULT_MODE) {
+        if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
             unsigned int meshIndex = 0;
             for (const auto& meshRenderer: meshRenderers) {
                 const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
@@ -279,7 +279,7 @@ namespace urchin {
             assert(model.computeInstanceId(displayMode) == instanceId);
         #endif
 
-        if (displayMode == DisplayMode::DEFAULT_MODE) {
+        if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
             InstanceMatrix instanceMatrix;
             instanceMatrix.modelMatrix = model.getTransform().getTransformMatrix();
             instanceMatrix.normalMatrix = instanceMatrix.modelMatrix.inverse().transpose();
@@ -301,7 +301,7 @@ namespace urchin {
                 continue;
             }
 
-            if (displayMode == DisplayMode::DEFAULT_MODE) {
+            if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 meshRenderer->updateInstanceData(instanceMatrices.size(), (const float*) instanceMatrices.data());
             } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
                 meshRenderer->updateInstanceData(instanceModelMatrices.size(), (const float*) instanceModelMatrices.data());

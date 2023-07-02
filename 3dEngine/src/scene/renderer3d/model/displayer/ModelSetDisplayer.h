@@ -31,7 +31,6 @@ namespace urchin {
             void setupCustomShaderVariable(std::unique_ptr<CustomModelShaderVariable>);
             void setupDepthOperations(bool, bool);
             void setupFaceCull(bool);
-            void setupDisplayModelsInOrder(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
@@ -71,7 +70,6 @@ namespace urchin {
             bool depthTestEnabled;
             bool depthWriteEnabled;
             bool enableFaceCull;
-            bool displayModelsInOrder;
             std::vector<BlendFunction> blendFunctions;
             std::unique_ptr<MeshFilter> meshFilter;
 

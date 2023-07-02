@@ -13,7 +13,6 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true),
-            displayModelsInOrder(false),
             renderTarget(nullptr) {
 
     }
@@ -66,11 +65,6 @@ namespace urchin {
         clearDisplayers();
     }
 
-    void ModelSetDisplayer::setupDisplayModelsInOrder(bool displayModelsInOrder) {
-        this->displayModelsInOrder = displayModelsInOrder;
-        clearDisplayers();
-    }
-
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         this->blendFunctions = blendFunctions;
         clearDisplayers();
@@ -88,10 +82,7 @@ namespace urchin {
             }
 
             bool canUpdateDisplayer = false;
-            std::size_t newModelInstanceId = ModelDisplayable::INSTANCING_DENY_ID;
-            if (!displayModelsInOrder) {
-                newModelInstanceId = model->computeInstanceId(displayMode);
-            }
+            std::size_t newModelInstanceId = model->computeInstanceId(displayMode);
             if (newModelInstanceId != ModelDisplayable::INSTANCING_DENY_ID && displayer->getInstanceId() != ModelDisplayable::INSTANCING_DENY_ID) {
                 if (displayer->getInstanceCount() <= 1 && !modelInstanceDisplayers.contains(newModelInstanceId)) {
                     //case: displayer is not shared and there isn't other displayer matching the new instance ID
@@ -186,10 +177,7 @@ namespace urchin {
         for (Model* model : models) {
             if (!meshFilter || meshFilter->isAccepted(*model)) {
                 this->models.push_back(model);
-                std::size_t modelInstanceId = ModelDisplayable::INSTANCING_DENY_ID;
-                if (!displayModelsInOrder) {
-                    modelInstanceId = model->computeInstanceId(displayMode);
-                }
+                std::size_t modelInstanceId = model->computeInstanceId(displayMode);
 
                 ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
                 if (currentModelInstanceDisplayer) {
@@ -257,8 +245,6 @@ namespace urchin {
             throw std::runtime_error("Model displayer must be initialized before call display");
         } else if (!renderTarget) {
             throw std::runtime_error("Render target must be specified before call display");
-        } else if (displayModelsInOrder) {
-            throw std::runtime_error("Call other method to display model in order");
         }
 
         activeModelDisplayers.clear();
@@ -281,8 +267,6 @@ namespace urchin {
             throw std::runtime_error("Model displayer must be initialized before call display");
         } else if (!renderTarget) {
             throw std::runtime_error("Render target must be specified before call display");
-        } else if (!displayModelsInOrder) {
-            throw std::runtime_error("Call other method to display model unordered");
         }
 
         std::ranges::sort(models, [&modelSorter, &userData](const Model* model1, const Model* model2) {
