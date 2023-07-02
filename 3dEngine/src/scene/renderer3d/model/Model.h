@@ -72,8 +72,6 @@ namespace urchin {
             ShadowBehavior getShadowBehavior() const;
             void setCullBehavior(CullBehavior);
             CullBehavior getCullBehavior() const;
-            void setTranslucencyPriority(int);
-            int getTranslucencyPriority() const;
             bool isOriginalVerticesOrUvUpdated() const;
             bool isMeshUpdated(unsigned int) const;
 
@@ -112,7 +110,6 @@ namespace urchin {
             //properties
             ShadowBehavior shadowBehavior;
             CullBehavior cullBehavior;
-            int translucencyPriority;
             std::vector<bool> meshesUpdated;
             bool originalVerticesOrUvUpdated;
     };

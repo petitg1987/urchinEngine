@@ -108,10 +108,6 @@ namespace urchin {
 
         const void* cameraUserData = static_cast<const void*>(&camera);
         auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
-            if (model1->getTranslucencyPriority() != model2->getTranslucencyPriority()) {
-                return model1->getTranslucencyPriority() < model2->getTranslucencyPriority();
-            }
-
             const auto* camera = static_cast<const Camera *>(userData);
             float cameraToModel1 = camera->getPosition().squareDistance(model1->getTransform().getPosition());
             float cameraToModel2 = camera->getPosition().squareDistance(model2->getTransform().getPosition());

@@ -13,7 +13,6 @@ namespace urchin {
             stopAnimationAtLastFrame(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
             cullBehavior(CullBehavior::CULL),
-            translucencyPriority(0),
             originalVerticesOrUvUpdated(false) {
         if (!meshesFilename.empty()) {
             auto constMeshes = ResourceRetriever::instance().getResource<ConstMeshes>(meshesFilename);
@@ -30,7 +29,6 @@ namespace urchin {
             stopAnimationAtLastFrame(false),
             shadowBehavior(ShadowBehavior::RECEIVER_AND_CASTER),
             cullBehavior(CullBehavior::CULL),
-            translucencyPriority(0),
             originalVerticesOrUvUpdated(false) {
         initialize();
     }
@@ -354,18 +352,6 @@ namespace urchin {
 
     Model::CullBehavior Model::getCullBehavior() const {
         return cullBehavior;
-    }
-
-    /*
-     * Override the default display priority of transparency models.
-     * A model with a high translucency priority will be rendered over all other models.
-     */
-    void Model::setTranslucencyPriority(int translucencyPriority) {
-        this->translucencyPriority = translucencyPriority;
-    }
-
-    int Model::getTranslucencyPriority() const {
-        return translucencyPriority;
     }
 
     bool Model::isOriginalVerticesOrUvUpdated() const {
