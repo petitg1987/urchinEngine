@@ -106,36 +106,41 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 
-        const void* cameraUserData = static_cast<const void*>(&camera);
-        auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
-            const auto* camera = static_cast<const Camera *>(userData);
+        struct SortUserData {
+            const Camera* camera = nullptr;
+            std::map<const Model*, float> distancesToCamera;
+        } sortUserData;
 
-            auto findModelPosition = [](const Model* model, const Camera *camera) {//TODO optimize with cache ?t
-                Point3<float> modelPosition = model->getTransform().getPosition();
-                if (!camera->getFrustum().collideWithPoint(model->getTransform().getPosition())) {
-                    Line3D<float> line(model->getAABBox().getMin(), model->getAABBox().getMax());
-                    Point3<float> intersection1;
-                    Point3<float> intersection2;
-                    bool hasIntersections = false;
-                    camera->getFrustum().planesIntersectPoints(line, intersection1, intersection2, hasIntersections);
-                    if (hasIntersections) {
-                        return LineSegment3D<float>(intersection1, intersection2).closestPoint(camera->getPosition()); //TODO check it's correct
-                    }
+        sortUserData.camera = &camera;
+        for (const Model* model : modelSetDisplayer->getModels()) {
+            Point3<float> modelPosition = model->getTransform().getPosition();
+            if (!camera.getFrustum().collideWithPoint(model->getTransform().getPosition())) {
+                Line3D<float> line(model->getAABBox().getMin(), model->getAABBox().getMax());
+                Point3<float> intersection1;
+                Point3<float> intersection2;
+                bool hasIntersections = false;
+                camera.getFrustum().planesIntersectPoints(line, intersection1, intersection2, hasIntersections);
+                if (hasIntersections) {
+                    modelPosition = LineSegment3D<float>(intersection1, intersection2).closestPoint(camera.getPosition()); //TODO check it's correct
                 }
-                return modelPosition;
-            };
-
-            float cameraToModel1 = camera->getPosition().squareDistance(findModelPosition(model1, camera));
-            float cameraToModel2 = camera->getPosition().squareDistance(findModelPosition(model2, camera));
-            if (cameraToModel1 != cameraToModel2) {
-                return cameraToModel1 > cameraToModel2;
             }
 
+            float distanceToCamera = camera.getPosition().squareDistance(modelPosition);
+            sortUserData.distancesToCamera.try_emplace(model, distanceToCamera);
+        }
+
+        auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
+            const auto* sortUserData = static_cast<const SortUserData*>(userData);
+            float distanceCameraToModel1 = sortUserData->distancesToCamera.at(model1);
+            float distanceCameraToModel2 = sortUserData->distancesToCamera.at(model2);
+            if (distanceCameraToModel1 != distanceCameraToModel2) {
+                return distanceCameraToModel1 > distanceCameraToModel2;
+            }
             return model1 > model2; //random but ensure the "strict weak ordering" required by std::sort
         };
 
         renderTarget->disableAllProcessors();
-        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelSorter, cameraUserData);
+        modelSetDisplayer->prepareRendering(renderingOrder, camera.getProjectionViewMatrix(), modelSorter, &sortUserData);
         renderTarget->render(frameIndex, numDependenciesToTransparentTextures);
     }
 
