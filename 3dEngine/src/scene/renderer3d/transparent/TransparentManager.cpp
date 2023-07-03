@@ -114,17 +114,10 @@ namespace urchin {
         SortUserData sortUserData = {.camera = &camera, .modelsDistanceToCamera = {}};
         for (const Model* model : modelSetDisplayer->getModels()) {
             Point3<float> modelPosition = model->getTransform().getPosition();
-            if (!camera.getFrustum().collideWithPoint(model->getTransform().getPosition())) {
-                Line3D<float> line(model->getAABBox().getMin(), model->getAABBox().getMax());
-                Point3<float> intersection1;
-                Point3<float> intersection2;
-                bool hasIntersections = false;
-                camera.getFrustum().planesIntersectPoints(line, intersection1, intersection2, hasIntersections);
-                if (hasIntersections) {
-                    modelPosition = LineSegment3D<float>(intersection1, intersection2).closestPoint(camera.getPosition()); //TODO check it's correct
-                }
+            if (!camera.getFrustum().collideWithPoint(modelPosition)) {
+                LineSegment3D<float> modelLineSegment(model->getAABBox().getMin(), model->getAABBox().getMax());
+                modelPosition = modelLineSegment.closestPoint(camera.getPosition());
             }
-
             float distanceToCamera = camera.getPosition().squareDistance(modelPosition);
             sortUserData.modelsDistanceToCamera.try_emplace(model, distanceToCamera);
         }
