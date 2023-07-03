@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     std::vector<std::string> ValidationLayer::getRequiredExtensions() const {
-        if (validationLevel >= 2) {
+        if (validationLevel >= 1) {
             return {VK_EXT_DEBUG_UTILS_EXTENSION_NAME};
         }
         return {};

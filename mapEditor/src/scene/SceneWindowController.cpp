@@ -35,7 +35,6 @@ namespace urchin {
         extensions.emplace_back("VK_KHR_win32_surface"); //Windows
         extensions.emplace_back("VK_EXT_metal_surface"); //Mac OS
         extensions.emplace_back("VK_KHR_android_surface"); //Android
-        extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 
         std::vector<std::string> requiredExtensions;
         for (auto& extension : extensions) {
