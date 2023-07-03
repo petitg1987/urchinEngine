@@ -244,19 +244,18 @@ namespace urchin {
         return std::ranges::all_of(planes, [&sphere](const auto& plane){ return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius(); });
     }
 
-    template<class T> void Frustum<T>::planesIntersectPoints(const Line3D<T>& line, Point3<T>& intersectionPoint1, bool& hasIntersection1, Point3<T>& intersectionPoint2, bool& hasIntersection2) const {
-        hasIntersection1 = false;
-        hasIntersection2 = false;
+    template<class T> void Frustum<T>::planesIntersectPoints(const Line3D<T>& line, Point3<T>& intersectionPoint1, Point3<T>& intersectionPoint2, bool& hasIntersections) const {
+        hasIntersections = false;
         for (const auto& plane : planes) {
             bool hasPlaneIntersection = false;
             Point3<T> planeIntersectionPoint = plane.intersectPoint(line, hasPlaneIntersection);
             if (hasPlaneIntersection) {
-                if (!hasIntersection1) {
+                if (!hasIntersections) {
                     intersectionPoint1 = planeIntersectionPoint;
-                    hasIntersection1 = true;
+                    intersectionPoint2 = planeIntersectionPoint; //security in case second intersection is not catch due to rounding error
+                    hasIntersections = true;
                 } else {
                     intersectionPoint2 = planeIntersectionPoint;
-                    hasIntersection2 = true;
                     break;
                 }
             }

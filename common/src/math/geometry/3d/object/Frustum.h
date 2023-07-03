@@ -48,7 +48,7 @@ namespace urchin {
             bool collideWithPoint(const Point3<T>&) const override;
             bool collideWithAABBox(const AABBox<T>&) const override;
             bool collideWithSphere(const Sphere<T>&) const override;
-            void planesIntersectPoints(const Line3D<T>&, Point3<T>&, bool&, Point3<T>&, bool&) const;
+            void planesIntersectPoints(const Line3D<T>&, Point3<T>&, Point3<T>&, bool&) const;
 
         private:
             void buildData();

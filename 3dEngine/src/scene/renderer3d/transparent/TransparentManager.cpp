@@ -110,26 +110,20 @@ namespace urchin {
         auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
             const auto* camera = static_cast<const Camera *>(userData);
 
-            auto findModelPosition = [](const Model* model, const Camera *camera) {
+            auto findModelPosition = [](const Model* model, const Camera *camera) {//TODO optimize with cache ?t
                 Point3<float> modelPosition = model->getTransform().getPosition();
                 if (!camera->getFrustum().collideWithPoint(model->getTransform().getPosition())) {
                     Line3D<float> line(model->getAABBox().getMin(), model->getAABBox().getMax());
                     Point3<float> intersection1;
                     Point3<float> intersection2;
-                    bool hasIntersection1 = false;
-                    bool hasIntersection2 = false;
-                    camera->getFrustum().planesIntersectPoints(line, intersection1, hasIntersection1, intersection2, hasIntersection2);
-
-                    if (hasIntersection1 && hasIntersection2) {
-                        Line3D<float> line(intersection1, intersection2);
-                        return line.orthogonalProjection(camera->getPosition()); //TODO check it's correct
-                    } else if (hasIntersection1) {
-                        return intersection1;
+                    bool hasIntersections = false;
+                    camera->getFrustum().planesIntersectPoints(line, intersection1, intersection2, hasIntersections);
+                    if (hasIntersections) {
+                        return LineSegment3D<float>(intersection1, intersection2).closestPoint(camera->getPosition()); //TODO check it's correct
                     }
                 }
                 return modelPosition;
             };
-
 
             float cameraToModel1 = camera->getPosition().squareDistance(findModelPosition(model1, camera));
             float cameraToModel2 = camera->getPosition().squareDistance(findModelPosition(model2, camera));
