@@ -108,10 +108,10 @@ namespace urchin {
 
         struct SortUserData {
             const Camera* camera = nullptr;
-            std::map<const Model*, float> distancesToCamera;
-        } sortUserData;
+            std::map<const Model*, float> modelsDistanceToCamera;
+        };
 
-        sortUserData.camera = &camera;
+        SortUserData sortUserData = {.camera = &camera, .modelsDistanceToCamera = {}};
         for (const Model* model : modelSetDisplayer->getModels()) {
             Point3<float> modelPosition = model->getTransform().getPosition();
             if (!camera.getFrustum().collideWithPoint(model->getTransform().getPosition())) {
@@ -126,13 +126,13 @@ namespace urchin {
             }
 
             float distanceToCamera = camera.getPosition().squareDistance(modelPosition);
-            sortUserData.distancesToCamera.try_emplace(model, distanceToCamera);
+            sortUserData.modelsDistanceToCamera.try_emplace(model, distanceToCamera);
         }
 
         auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
             const auto* sortUserData = static_cast<const SortUserData*>(userData);
-            float distanceCameraToModel1 = sortUserData->distancesToCamera.at(model1);
-            float distanceCameraToModel2 = sortUserData->distancesToCamera.at(model2);
+            float distanceCameraToModel1 = sortUserData->modelsDistanceToCamera.at(model1);
+            float distanceCameraToModel2 = sortUserData->modelsDistanceToCamera.at(model2);
             if (distanceCameraToModel1 != distanceCameraToModel2) {
                 return distanceCameraToModel1 > distanceCameraToModel2;
             }
