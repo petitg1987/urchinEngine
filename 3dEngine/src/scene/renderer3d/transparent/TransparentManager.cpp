@@ -53,6 +53,7 @@ namespace urchin {
         } else {
             if (renderTarget) {
                 static_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
+                renderTarget->removeAllPreRenderTextureCopiers();
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("transparent", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
             }
