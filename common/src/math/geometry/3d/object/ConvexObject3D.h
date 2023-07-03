@@ -43,8 +43,6 @@ namespace urchin {
 
             virtual Point3<T> getSupportPoint(const Vector3<T>&) const = 0;
 
-            std::string toString() const;
-
         private:
             ConvexObjectType objectType;
     };

@@ -2,8 +2,6 @@
 #include <algorithm>
 
 #include <math/geometry/3d/object/Frustum.h>
-#include <math/geometry/3d/Line3D.h>
-#include <math/algebra/point/Point4.h>
 #include <math/trigonometry/AngleConverter.h>
 
 namespace urchin {
@@ -210,7 +208,7 @@ namespace urchin {
     }
 
     template<class T> bool Frustum<T>::collideWithPoint(const Point3<T>& point) const {
-        return std::ranges::all_of(planes, [&point](const auto& plane){return plane.distance(point) <= 0.0;});
+        return std::ranges::all_of(planes, [&point](const Plane<T>& plane){return plane.distance(point) <= 0.0;});
     }
 
     /**
@@ -244,6 +242,25 @@ namespace urchin {
     */
     template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T>& sphere) const {
         return std::ranges::all_of(planes, [&sphere](const auto& plane){ return plane.distance(sphere.getCenterOfMass()) <= sphere.getRadius(); });
+    }
+
+    template<class T> void Frustum<T>::planesIntersectPoints(const Line3D<T>& line, Point3<T>& intersectionPoint1, bool& hasIntersection1, Point3<T>& intersectionPoint2, bool& hasIntersection2) const {
+        hasIntersection1 = false;
+        hasIntersection2 = false;
+        for (const auto& plane : planes) {
+            bool hasPlaneIntersection = false;
+            Point3<T> planeIntersectionPoint = plane.intersectPoint(line, hasPlaneIntersection);
+            if (hasPlaneIntersection) {
+                if (!hasIntersection1) {
+                    intersectionPoint1 = planeIntersectionPoint;
+                    hasIntersection1 = true;
+                } else {
+                    intersectionPoint2 = planeIntersectionPoint;
+                    hasIntersection2 = true;
+                    break;
+                }
+            }
+        }
     }
 
     template<class T> Frustum<T> operator *(const Matrix4<T>& m, const Frustum<T>& frustum) {

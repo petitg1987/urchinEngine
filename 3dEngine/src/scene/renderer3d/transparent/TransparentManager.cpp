@@ -109,8 +109,30 @@ namespace urchin {
         const void* cameraUserData = static_cast<const void*>(&camera);
         auto modelSorter = [](const Model* model1, const Model* model2, const void* userData) {
             const auto* camera = static_cast<const Camera *>(userData);
-            float cameraToModel1 = camera->getPosition().squareDistance(model1->getTransform().getPosition());
-            float cameraToModel2 = camera->getPosition().squareDistance(model2->getTransform().getPosition());
+
+            auto findModelPosition = [](const Model* model, const Camera *camera) {
+                Point3<float> modelPosition = model->getTransform().getPosition();
+                if (!camera->getFrustum().collideWithPoint(model->getTransform().getPosition())) {
+                    Line3D<float> line(model->getAABBox().getMin(), model->getAABBox().getMax());
+                    Point3<float> intersection1;
+                    Point3<float> intersection2;
+                    bool hasIntersection1 = false;
+                    bool hasIntersection2 = false;
+                    camera->getFrustum().planesIntersectPoints(line, intersection1, hasIntersection1, intersection2, hasIntersection2);
+
+                    if (hasIntersection1 && hasIntersection2) {
+                        Line3D<float> line(intersection1, intersection2);
+                        return line.orthogonalProjection(camera->getPosition()); //TODO check it's correct
+                    } else if (hasIntersection1) {
+                        return intersection1;
+                    }
+                }
+                return modelPosition;
+            };
+
+
+            float cameraToModel1 = camera->getPosition().squareDistance(findModelPosition(model1, camera));
+            float cameraToModel2 = camera->getPosition().squareDistance(findModelPosition(model2, camera));
             if (cameraToModel1 != cameraToModel2) {
                 return cameraToModel1 > cameraToModel2;
             }
