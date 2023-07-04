@@ -15,6 +15,7 @@ namespace urchin {
     bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
     bool DEBUG_DISPLAY_MATERIAL_BUFFER = false;
     bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
+    bool DEBUG_DISPLAY_TRANSPARENT_BUFFER = false;
     bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
     bool DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA = false;
     bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
@@ -310,6 +311,9 @@ namespace urchin {
         lightingPassRendering(frameIndex);
 
         unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
+        if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
+            numDependenciesToTransparentTextures += 1;
+        }
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         if (isAntiAliasingActivated) {
@@ -623,6 +627,13 @@ namespace urchin {
                 auto textureRenderer = std::make_unique<TextureRenderer>(illuminatedTexture, TextureRenderer::DEFAULT_VALUE);
                 textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
                 textureRenderer->initialize("[DEBUG] illuminated texture", finalRenderTarget, sceneWidth, sceneHeight);
+                debugFramebuffers.emplace_back(std::move(textureRenderer));
+            }
+
+            if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
+                auto textureRenderer = std::make_unique<TextureRenderer>(transparentManager.getOutputTexture(), TextureRenderer::DEFAULT_VALUE);
+                textureRenderer->setPosition(TextureRenderer::CENTER_X, TextureRenderer::BOTTOM);
+                textureRenderer->initialize("[DEBUG] transparent texture", finalRenderTarget, sceneWidth, sceneHeight);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));
             }
 
