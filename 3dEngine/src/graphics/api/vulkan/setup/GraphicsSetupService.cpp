@@ -103,7 +103,7 @@ namespace urchin {
 
         VkResult result = vkCreateInstance(&instanceCreateInfo, nullptr, &vkInstance);
         if (result != VK_SUCCESS) {
-            throw UserAuthorityException("Failed to create Vulkan instance with error code: " + std::string(string_VkResult(result)), "Upgrade your graphic drivers to support better Vulkan");
+            throw UserAuthorityException("Failed to create Vulkan instance with error code: " + std::string(string_VkResult(result)), "Upgrade your graphic drivers to support Vulkan");
         }
     }
 
