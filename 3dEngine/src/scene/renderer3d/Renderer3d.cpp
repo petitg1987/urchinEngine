@@ -392,14 +392,6 @@ namespace urchin {
                 ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest())) //binding 10 - ambient occlusion
                 ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 11
                 ->build();
-        ambientOcclusionManager.onTextureUpdate(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
-        transparentManager.onTextureUpdate(deferredRenderTarget->getDepthTexture(), illuminatedTexture);
-
-        //post process rendering
-        if (isAntiAliasingActivated) {
-            antiAliasingApplier.onTextureUpdate(transparentManager.getOutputTexture());
-        }
-        bloomEffectApplier.onTextureUpdate(isAntiAliasingActivated ? antiAliasingApplier.getOutputTexture() : transparentManager.getOutputTexture());
 
         refreshDebugFramebuffers = true;
     }
@@ -431,6 +423,18 @@ namespace urchin {
 
     void Renderer3d::updateScene(float dt) {
         ScopeProfiler sp(Profiler::graphic(), "updateScene");
+
+        //refresh input textures
+        if (visualOption.isAmbientOcclusionActivated) {
+            ambientOcclusionManager.refreshInputTextures(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
+        }
+        transparentManager.refreshInputTextures(deferredRenderTarget->getDepthTexture(), illuminatedTexture);
+        if (isAntiAliasingActivated) {
+            antiAliasingApplier.refreshInputTexture(transparentManager.getOutputTexture());
+            bloomEffectApplier.refreshInputTexture(antiAliasingApplier.getOutputTexture());
+        } else {
+            bloomEffectApplier.refreshInputTexture(transparentManager.getOutputTexture());
+        }
 
         //refresh the model occlusion culler
         modelOcclusionCuller.refresh();

@@ -25,12 +25,14 @@ namespace urchin {
         clearRenderers();
     }
 
-    void BloomEffectApplier::onTextureUpdate(const std::shared_ptr<Texture>& inputHdrTexture) {
-        this->inputHdrTexture = inputHdrTexture;
-        this->sceneWidth = inputHdrTexture->getWidth();
-        this->sceneHeight = inputHdrTexture->getHeight();
+    void BloomEffectApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputHdrTexture) {
+        if (inputHdrTexture.get() != this->inputHdrTexture.get()) {
+            this->inputHdrTexture = inputHdrTexture;
+            this->sceneWidth = inputHdrTexture->getWidth();
+            this->sceneHeight = inputHdrTexture->getHeight();
 
-        refreshRenderers();
+            refreshRenderers();
+        }
     }
 
     void BloomEffectApplier::onGammaFactorUpdate(float gammaFactor) {

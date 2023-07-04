@@ -17,21 +17,23 @@ namespace urchin {
         clearRenderer();
     }
 
-    void AntiAliasingApplier::onTextureUpdate(const std::shared_ptr<Texture>& inputTexture) {
-        this->invSceneSize = Point2<float>(1.0f / (float)inputTexture->getWidth(), 1.0f / (float)inputTexture->getHeight());
-        this->inputTexture = inputTexture;
+    void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
+        if (inputTexture.get() != this->inputTexture.get()) {
+            this->invSceneSize = Point2<float>(1.0f / (float) inputTexture->getWidth(), 1.0f / (float) inputTexture->getHeight());
+            this->inputTexture = inputTexture;
 
-        clearRenderer();
-        outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
-        if (useNullRenderTarget) {
-            renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
-        } else {
-            renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
-            renderTarget->initialize();
+            clearRenderer();
+            outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+            if (useNullRenderTarget) {
+                renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
+            } else {
+                renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
+                static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
+                renderTarget->initialize();
+            }
+
+            createOrUpdateRenderer();
         }
-
-        createOrUpdateRenderer();
     }
 
     const std::shared_ptr<Texture>& AntiAliasingApplier::getOutputTexture() const {

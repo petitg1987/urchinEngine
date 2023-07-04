@@ -22,7 +22,7 @@ namespace urchin {
             BloomEffectApplier(const Config&, RenderTarget&, float);
             ~BloomEffectApplier();
 
-            void onTextureUpdate(const std::shared_ptr<Texture>&);
+            void refreshInputTexture(const std::shared_ptr<Texture>&);
             void onGammaFactorUpdate(float);
 
             void updateConfig(const Config&);

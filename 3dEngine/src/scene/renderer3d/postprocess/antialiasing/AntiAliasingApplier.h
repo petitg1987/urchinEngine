@@ -21,7 +21,7 @@ namespace urchin {
             AntiAliasingApplier(const Config&, bool);
             ~AntiAliasingApplier();
 
-            void onTextureUpdate(const std::shared_ptr<Texture>&);
+            void refreshInputTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateConfig(const Config&);

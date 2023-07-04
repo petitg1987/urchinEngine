@@ -34,12 +34,24 @@ namespace urchin {
         }
     }
 
-    void AmbientOcclusionManager::onTextureUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
-        this->sceneResolution = Vector2<float>((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
-        this->depthTexture = depthTexture;
-        this->normalAndAmbientTexture = normalAndAmbientTexture;
+    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera& camera) {
+        nearPlane = camera.getNearPlane();
+        farPlane = camera.getFarPlane();
+
+        projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
+        projection.projectionMatrix = camera.getProjectionMatrix();
 
         createOrUpdateAO();
+    }
+
+    void AmbientOcclusionManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
+        if (depthTexture.get() != this->depthTexture.get() || normalAndAmbientTexture.get() != this->normalAndAmbientTexture.get()) {
+            this->sceneResolution = Vector2<float>((float) depthTexture->getWidth(), (float) depthTexture->getHeight());
+            this->depthTexture = depthTexture;
+            this->normalAndAmbientTexture = normalAndAmbientTexture;
+
+            createOrUpdateAO();
+        }
     }
 
     void AmbientOcclusionManager::createOrUpdateAO() {
@@ -200,16 +212,6 @@ namespace urchin {
         svgExporter.generateSVG();
     }
 
-    void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera& camera) {
-        nearPlane = camera.getNearPlane();
-        farPlane = camera.getFarPlane();
-
-        projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
-        projection.projectionMatrix = camera.getProjectionMatrix();
-
-        createOrUpdateAO();
-    }
-
     void AmbientOcclusionManager::updateConfig(const Config& config) {
         if (this->config.textureSize != config.textureSize ||
                 this->config.textureBits != config.textureBits ||
@@ -251,14 +253,6 @@ namespace urchin {
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));
     }
 
-    const std::shared_ptr<Texture>& AmbientOcclusionManager::getAmbientOcclusionTexture() const {
-        if (config.isBlurActivated) {
-            return horizontalBlurFilter->getTexture();
-        }
-
-        return ambientOcclusionTexture;
-    }
-
     void AmbientOcclusionManager::updateAOTexture(std::uint32_t frameIndex, unsigned int numDependenciesToAOTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
@@ -281,6 +275,13 @@ namespace urchin {
             unsigned int numDependenciesToRawAOTexture = numDependenciesToAOTexture;
             renderTarget->render(frameIndex, numDependenciesToRawAOTexture);
         }
+    }
+
+    const std::shared_ptr<Texture>& AmbientOcclusionManager::getAmbientOcclusionTexture() const {
+        if (config.isBlurActivated) {
+            return horizontalBlurFilter->getTexture();
+        }
+        return ambientOcclusionTexture;
     }
 
     void AmbientOcclusionManager::loadAOTexture(GenericRenderer& lightingRenderer, std::size_t aoTextureUnit) const {

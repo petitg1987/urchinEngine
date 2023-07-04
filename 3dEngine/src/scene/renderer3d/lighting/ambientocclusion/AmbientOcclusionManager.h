@@ -37,15 +37,16 @@ namespace urchin {
             AmbientOcclusionManager(const Config&, bool);
             ~AmbientOcclusionManager();
 
-            void onTextureUpdate(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             void onCameraProjectionUpdate(const Camera&);
+
+            void refreshInputTextures(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
-
             void updateAOTexture(std::uint32_t, unsigned int, const Camera&);
+
+            const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
             void loadAOTexture(GenericRenderer&, std::size_t) const;
 
         private:

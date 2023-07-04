@@ -20,19 +20,21 @@ namespace urchin {
         }
     }
 
-    void TransparentManager::onTextureUpdate(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& illuminatedTexture) {
-        this->sceneWidth = depthTexture->getWidth();
-        this->sceneHeight = depthTexture->getHeight();
-        this->depthTexture = depthTexture;
-        this->illuminatedTexture = illuminatedTexture;
-
-        createOrUpdateRendering();
-    }
-
     void TransparentManager::onCameraProjectionUpdate(const Camera& camera) {
         this->camera = &camera;
 
         createOrUpdateRendering();
+    }
+
+    void TransparentManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& illuminatedTexture) {
+        if (depthTexture.get() != this->depthTexture.get() || illuminatedTexture.get() != this->illuminatedTexture.get()) {
+            this->sceneWidth = depthTexture->getWidth();
+            this->sceneHeight = depthTexture->getHeight();
+            this->depthTexture = depthTexture;
+            this->illuminatedTexture = illuminatedTexture;
+
+            createOrUpdateRendering();
+        }
     }
 
     void TransparentManager::createOrUpdateRendering() {
