@@ -1,4 +1,4 @@
-#include <vulkan/vk_enum_string_helper.h>
+#include <vulkan/generated/vk_enum_string_helper.h>
 
 #include <graphics/api/vulkan/render/pipeline/PipelineBuilder.h>
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>

@@ -1,6 +1,6 @@
 #include <cstring>
 #include <cassert>
-#include <vulkan/vk_enum_string_helper.h>
+#include <vulkan/generated/vk_enum_string_helper.h>
 #include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/setup/handler/DeviceHandler.h>

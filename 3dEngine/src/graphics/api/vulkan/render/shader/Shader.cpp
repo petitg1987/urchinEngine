@@ -1,4 +1,4 @@
-#include <vulkan/vk_enum_string_helper.h>
+#include <vulkan/generated/vk_enum_string_helper.h>
 
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>

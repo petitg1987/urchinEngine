@@ -1,4 +1,4 @@
-#include <vulkan/vk_enum_string_helper.h>
+#include <vulkan/generated/vk_enum_string_helper.h>
 #include <cassert>
 #include <string>
 #include <stdexcept>
