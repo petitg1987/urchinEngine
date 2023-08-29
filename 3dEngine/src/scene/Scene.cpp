@@ -247,9 +247,9 @@ namespace urchin {
         return true;
     }
 
-    bool Scene::onMouseMove(double mouseX, double mouseY) {
+    bool Scene::onMouseMove(double mouseX, double mouseY, double deltaMouseX, double deltaMouseY) {
         for (auto* activeRenderer : std::initializer_list<Renderer*>{activeUiRenderers, activeRenderer3d}) {
-            if (activeRenderer && !activeRenderer->onMouseMove(mouseX, mouseY)) {
+            if (activeRenderer && !activeRenderer->onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY)) {
                 return false;
             }
         }

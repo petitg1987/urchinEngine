@@ -193,7 +193,7 @@ namespace urchin {
         return true;
     }
 
-    bool UIRenderer::onMouseMove(double mouseX, double mouseY) {
+    bool UIRenderer::onMouseMove(double mouseX, double mouseY, double, double) {
         this->rawMouseX = mouseX;
         this->rawMouseY = mouseY;
 

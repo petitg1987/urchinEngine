@@ -49,7 +49,7 @@ namespace urchin {
             bool onKeyPress(InputDeviceKey) override;
             bool onKeyRelease(InputDeviceKey) override;
             bool onChar(char32_t) override;
-            bool onMouseMove(double, double) override;
+            bool onMouseMove(double, double, double, double) override;
             bool onCursorMove();
             bool onScroll(double) override;
             void onDisable() override;

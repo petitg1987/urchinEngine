@@ -44,9 +44,9 @@ namespace urchin {
         return true;
     }
 
-    bool UiContainer::onMouseMove(double mouseX, double mouseY) const {
+    bool UiContainer::onMouseMove(double mouseX, double mouseY, double deltaMouseX, double deltaMouseY) const {
         for (const auto& ui : uis) {
-            if (!ui->onMouseMove(mouseX, mouseY)) {
+            if (!ui->onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY)) {
                 return false;
             }
         }

@@ -98,8 +98,6 @@ namespace urchin {
             bool invertYAxis;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
-            double previousMouseX;
-            double previousMouseY;
     };
 
 }

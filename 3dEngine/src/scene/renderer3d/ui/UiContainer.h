@@ -18,7 +18,7 @@ namespace urchin {
             bool onKeyPress(InputDeviceKey) const;
             bool onKeyRelease(InputDeviceKey) const;
             bool onChar(char32_t) const;
-            bool onMouseMove(double, double) const;
+            bool onMouseMove(double, double, double, double) const;
             bool onScroll(double) const;
 
             UIRenderer& newUI3dRenderer(const Transform<float>&, const Point2<int>&, const Point2<float>&, float);

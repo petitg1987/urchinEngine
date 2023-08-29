@@ -275,11 +275,11 @@ namespace urchin {
         return uiContainer.onChar(unicodeCharacter);
     }
 
-    bool Renderer3d::onMouseMove(double mouseX, double mouseY) {
+    bool Renderer3d::onMouseMove(double mouseX, double mouseY, double deltaMouseX, double deltaMouseY) {
         bool propagateEvent = true;
         if (!paused) {
-            camera->onMouseMove(mouseX, mouseY); //ignore 'propagateEvent' on purpose: UI must stay aware of event even when camera move
-            propagateEvent = uiContainer.onMouseMove(mouseX, mouseY);
+            camera->onMouseMove(deltaMouseX, deltaMouseY); //ignore 'propagateEvent' on purpose: UI must stay aware of event even when camera move
+            propagateEvent = uiContainer.onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY);
         }
         return propagateEvent;
     }

@@ -48,7 +48,7 @@ namespace urchin {
             bool onKeyPress(InputDeviceKey);
             bool onKeyRelease(InputDeviceKey);
             bool onChar(char32_t);
-            bool onMouseMove(double, double);
+            bool onMouseMove(double, double, double, double);
             bool onScroll(double);
 
             //render
