@@ -124,9 +124,6 @@ namespace urchin {
                 MMB,
                 MOUSE_F1,
                 MOUSE_F2,
-                MOUSE_F3,
-                MOUSE_F4,
-                MOUSE_F5,
 
                 UNKNOWN_KEY = 9999
             };

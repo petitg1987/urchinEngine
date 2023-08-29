@@ -78,9 +78,6 @@ namespace urchin {
         keysLabelMap[Control::Key::MMB] = "Mouse Wheel";
         keysLabelMap[Control::Key::MOUSE_F1] = "Mouse F1";
         keysLabelMap[Control::Key::MOUSE_F2] = "Mouse F2";
-        keysLabelMap[Control::Key::MOUSE_F3] = "Mouse F3";
-        keysLabelMap[Control::Key::MOUSE_F4] = "Mouse F4";
-        keysLabelMap[Control::Key::MOUSE_F5] = "Mouse F5";
 
         keysLabelMap[Control::Key::UNKNOWN_KEY] = "[UNKNOWN]";
     }
