@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <utility>
 #include <thread>
-#include <vulkan/generated/vk_enum_string_helper.h>
+#include <libs/vkenum/vk_enum.h>
 
 #include <graphics/api/vulkan/render/target/ScreenRender.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>

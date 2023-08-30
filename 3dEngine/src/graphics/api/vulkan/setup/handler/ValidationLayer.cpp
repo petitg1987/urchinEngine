@@ -1,5 +1,5 @@
 #include <cstring>
-#include <vulkan/generated/vk_enum_string_helper.h>
+#include <libs/vkenum/vk_enum.h>
 #include <UrchinCommon.h>
 
 #include <graphics/api/vulkan/setup/handler/ValidationLayer.h>

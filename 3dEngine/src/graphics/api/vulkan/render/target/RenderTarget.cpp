@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <cassert>
-#include <vulkan/generated/vk_enum_string_helper.h>
+#include <libs/vkenum/vk_enum.h>
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
