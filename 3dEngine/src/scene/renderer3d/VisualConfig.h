@@ -12,6 +12,9 @@ namespace urchin {
         public:
             VisualConfig();
 
+            void setRenderingScale(float);
+            float getRenderingScale() const;
+
             void activateShadow(bool);
             bool isShadowActivated() const;
             void setShadowConfig(const ShadowManager::Config&);
@@ -34,6 +37,8 @@ namespace urchin {
             const TerrainContainer::Config& getTerrainConfig() const;
 
         private:
+            float renderingScale;
+
             bool shadowActivated;
             ShadowManager::Config shadowConfig;
 

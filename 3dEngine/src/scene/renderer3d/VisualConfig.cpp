@@ -3,6 +3,7 @@
 namespace urchin {
 
     VisualConfig::VisualConfig() :
+            renderingScale(1.0f),
             shadowActivated(true),
             shadowConfig({}),
             ambientOcclusionActivated(true),
@@ -12,6 +13,14 @@ namespace urchin {
             bloomConfig({}),
             terrainConfig({}) {
 
+    }
+
+    void VisualConfig::setRenderingScale(float renderingScale) {
+        this->renderingScale = renderingScale;
+    }
+
+    float VisualConfig::getRenderingScale() const {
+        return renderingScale;
     }
 
     void VisualConfig::activateShadow(bool shadowActivated) {

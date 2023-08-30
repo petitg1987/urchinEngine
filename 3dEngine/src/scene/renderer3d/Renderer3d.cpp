@@ -31,7 +31,7 @@ namespace urchin {
             sceneHeight(finalRenderTarget.getHeight()),
             paused(true),
             camera(std::move(camera)),
-            renderingScale(1.0f),
+            renderingScale(visualConfig.getRenderingScale()),
 
             //deferred rendering
             deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
