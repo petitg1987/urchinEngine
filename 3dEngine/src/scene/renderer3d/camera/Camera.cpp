@@ -1,5 +1,3 @@
-#include <limits>
-
 #include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
@@ -24,8 +22,6 @@ namespace urchin {
         float verticalFovAngle = computeVerticalFovAngle();
         baseFrustum = Frustum<float>(verticalFovAngle, 1.0f, nearPlane, farPlane);
         frustum = Frustum<float>(verticalFovAngle, 1.0f, nearPlane, farPlane);
-
-        resetPreviousMousePosition();
     }
 
     void Camera::initialize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -73,15 +69,8 @@ namespace urchin {
         return 1.0f;
     }
 
-    void Camera::resetPreviousMousePosition(double /*previousMouseX*/, double /*previousMouseY*/) {
-        //TODO remove ?
-    }
-
-    void Camera::useMouseToMoveCamera(bool use, bool resetMousePosition) {
+    void Camera::useMouseToMoveCamera(bool use) {
         useMouse = use;
-        if (useMouse && resetMousePosition) {
-            resetPreviousMousePosition();
-        }
     }
 
     bool Camera::isUseMouseToMoveCamera() const {

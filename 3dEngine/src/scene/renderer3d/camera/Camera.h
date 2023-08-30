@@ -21,8 +21,7 @@ namespace urchin {
             unsigned int getSceneWidth() const;
             unsigned int getSceneHeight() const;
 
-            void resetPreviousMousePosition(double previousMouseX = std::numeric_limits<double>::max(), double previousMouseY = std::numeric_limits<double>::max());
-            void useMouseToMoveCamera(bool, bool resetMousePosition = true);
+            void useMouseToMoveCamera(bool);
             bool isUseMouseToMoveCamera() const;
             void setMouseSensitivityPercentage(float);
             void setInvertYAxis(bool);

@@ -306,7 +306,6 @@ namespace urchin {
     }
 
     void Renderer3d::unpause() {
-        camera->resetPreviousMousePosition();
         paused = false;
     }
 
