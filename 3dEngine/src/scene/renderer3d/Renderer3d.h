@@ -48,6 +48,7 @@ namespace urchin {
             SkyContainer& getSkyContainer();
             LightManager& getLightManager();
             ShadowManager& getShadowManager();
+            void updateRenderingScale(float);
             void activateShadow(bool);
             bool isShadowActivated() const;
             AmbientOcclusionManager& getAmbientOcclusionManager();
@@ -115,6 +116,7 @@ namespace urchin {
             unsigned int sceneHeight;
             bool paused;
             std::shared_ptr<Camera> camera;
+            float renderingScale;
 
             //deferred rendering
             std::unique_ptr<RenderTarget> deferredRenderTarget;

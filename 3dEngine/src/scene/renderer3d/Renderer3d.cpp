@@ -31,6 +31,7 @@ namespace urchin {
             sceneHeight(finalRenderTarget.getHeight()),
             paused(true),
             camera(std::move(camera)),
+            renderingScale(1.0f),
 
             //deferred rendering
             deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
@@ -150,6 +151,14 @@ namespace urchin {
 
     ShadowManager& Renderer3d::getShadowManager() {
         return shadowManager;
+    }
+
+    void Renderer3d::updateRenderingScale(float renderingScale) {
+        if (this->renderingScale != renderingScale) {
+            this->renderingScale = renderingScale;
+
+            createOrUpdateLightingPass();
+        }
     }
 
     void Renderer3d::activateShadow(bool isShadowActivated) {
@@ -342,10 +351,13 @@ namespace urchin {
     }
 
     void Renderer3d::createOrUpdateLightingPass() {
+        unsigned int renderingSceneWidth = MathFunction::roundToUInt((float)sceneWidth * renderingScale);
+        unsigned int renderingSceneHeight = MathFunction::roundToUInt((float)sceneHeight * renderingScale);
+
         //deferred rendering
-        albedoTexture = Texture::build("albedo", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT);
-        normalAndAmbientTexture = Texture::build("normal and ambient", sceneWidth, sceneHeight, TextureFormat::RGBA_8_INT);
-        materialTexture = Texture::build("material", sceneWidth, sceneHeight, TextureFormat::RG_8_INT);
+        albedoTexture = Texture::build("albedo", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_8_INT);
+        normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_8_INT);
+        materialTexture = Texture::build("material", renderingSceneWidth, renderingSceneHeight, TextureFormat::RG_8_INT);
         if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
             auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
             deferredOffscreenRenderTarget->resetOutputTextures();
@@ -356,7 +368,7 @@ namespace urchin {
         }
 
         //lighting pass rendering
-        illuminatedTexture = Texture::build("illuminated scene", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT);
+        illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_16_FLOAT);
         if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
             auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
             offscreenLightingRenderTarget->resetOutputTextures();
