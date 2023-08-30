@@ -118,7 +118,7 @@ namespace urchin {
         for (const Model* model : modelSetDisplayer->getModels()) {
             Point3<float> modelPosition = model->getTransform().getPosition();
             if (!camera.getFrustum().collideWithPoint(modelPosition)) {
-                LineSegment3D<float> modelLineSegment(model->getAABBox().getMin(), model->getAABBox().getMax());
+                LineSegment3D modelLineSegment(model->getAABBox().getMin(), model->getAABBox().getMax());
                 modelPosition = modelLineSegment.closestPoint(camera.getPosition());
             }
             float distanceToCamera = camera.getPosition().squareDistance(modelPosition);

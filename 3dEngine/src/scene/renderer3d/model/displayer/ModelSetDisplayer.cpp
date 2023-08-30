@@ -76,7 +76,7 @@ namespace urchin {
 
     void ModelSetDisplayer::notify(Observable* observable, int notificationType) {
         if (const Model* model = dynamic_cast<Model*>(observable)) {
-            ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
+            const ModelInstanceDisplayer* displayer = findModelInstanceDisplayer(*model);
             if (!displayer) {
                 return;
             }
