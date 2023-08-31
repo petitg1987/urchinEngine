@@ -285,7 +285,7 @@ namespace urchin {
     }
 
     bool Textarea::isCharacterAllowed(char32_t unicodeCharacter) const {
-        if (!UnicodeUtil::isCharacterDisplayable(unicodeCharacter)) {
+        if (!UnicodeUtil::isCharacterDisplayable(unicodeCharacter) && unicodeCharacter != '\n') {
             return false;
         }
         return allowedCharacters.empty() || std::ranges::find(allowedCharacters, unicodeCharacter) != allowedCharacters.end();
