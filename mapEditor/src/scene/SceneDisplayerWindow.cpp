@@ -306,11 +306,17 @@ namespace urchin {
 
     void SceneDisplayerWindow::mouseMoveEvent(QMouseEvent* event) {
         //mouse coordinate computed in pixel
-        this->mouseX = (double)event->x() * devicePixelRatio();
-        this->mouseY = (double)event->y() * devicePixelRatio();
+        double newMouseX = (double)event->x() * devicePixelRatio();
+        double newMouseY = (double)event->y() * devicePixelRatio();
+
+        double deltaMouseX = newMouseX - mouseX;
+        double deltaMouseY = newMouseY - mouseY;
+
+        this->mouseX = newMouseX;
+        this->mouseY = newMouseY;
 
         if (sceneDisplayer) {
-            bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY);
+            bool propagateEvent = sceneDisplayer->getScene().onMouseMove(mouseX, mouseY, deltaMouseX, deltaMouseY);
             if (propagateEvent && sceneDisplayer->getObjectMoveController()) {
                 sceneDisplayer->getObjectMoveController()->onMouseMove(mouseX, mouseY);
             }

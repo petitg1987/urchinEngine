@@ -21,9 +21,7 @@ namespace urchin {
         private:
             static constexpr char DATA_DELIMITER = '@';
 
-            double mouseXBeforeMove;
-            double mouseYBeforeMove;
-            unsigned int mouseUpdateCount;
+            bool disableNextMouseEvent;
             MouseController& mouseController;
     };
 
