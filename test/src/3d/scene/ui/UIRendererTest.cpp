@@ -14,7 +14,7 @@ void UIRendererTest::focusState() {
     uiRenderer->addWidget(container);
     auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
 
     AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetState::FOCUS);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::FOCUS);
@@ -26,7 +26,7 @@ void UIRendererTest::noFocusStateBecauseOutsideContainer() {
     uiRenderer->addWidget(container);
     auto widget = StaticBitmap::create(container.get(), Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
 
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
 
     AssertHelper::assertIntEquals(container->getWidgetState(), Widget::WidgetState::DEFAULT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
@@ -37,7 +37,7 @@ void UIRendererTest::clickingState() {
     auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::CLICKING);
 
@@ -50,7 +50,7 @@ void UIRendererTest::noClickingStateBecauseMouseOutside() {
     auto widget = StaticBitmap::create(nullptr, Position(20.0f, 20.0f, PIXEL), Size(60.0f, 60.0f, PIXEL), "ui/widget/empty.png");
     uiRenderer->addWidget(widget);
 
-    uiRenderer->onMouseMove(10.0, 10.0);
+    uiRenderer->onMouseMove(10.0, 10.0, 0.0, 0.0);
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
 }
@@ -62,10 +62,10 @@ void UIRendererTest::focusLostEvent() {
     bool focusLost = false;
     widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
     uiRenderer->addWidget(widget);
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
     assert(focused);
 
-    uiRenderer->onMouseMove(110.0, 50.0);
+    uiRenderer->onMouseMove(110.0, 50.0, 0.0, 0.0);
 
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
     AssertHelper::assertTrue(focusLost);
@@ -78,11 +78,11 @@ void UIRendererTest::focusLostEventWithClick() {
     bool focusLost = false;
     widget->addEventListener(std::make_unique<FocusEventListener>(focused, focusLost));
     uiRenderer->addWidget(widget);
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
     assert(focused);
 
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
-    uiRenderer->onMouseMove(110.0, 50.0);
+    uiRenderer->onMouseMove(110.0, 50.0, 0.0, 0.0);
     uiRenderer->onKeyRelease(InputDeviceKey::MOUSE_LEFT);
 
     AssertHelper::assertIntEquals(widget->getWidgetState(), Widget::WidgetState::DEFAULT);
@@ -148,7 +148,7 @@ void UIRendererTest::buttonRemoveParentContainer() {
     Text* textPTr = text.lock().get();
     AssertHelper::assertTrue(uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT);
 
     AssertHelper::assertTrue(childContainer.expired());
@@ -181,7 +181,7 @@ void UIRendererTest::containerWithLazyWidgets() {
     auto lazyWidget1 = LazyWidget::create(container.get(), Position(1.0f, 1.0f, PIXEL), Size(1.0f, 50.0f, PIXEL), loadChildrenFunction);
     auto lazyWidget2 = LazyWidget::create(container.get(), Position(1.0f, 101.0f, PIXEL), Size(1.0f, 50.0f, PIXEL), loadChildrenFunction);
     StaticBitmap::create(container.get(), Position(0.0f, 1000.0f, PIXEL), Size(1.0f, 1.0f, PIXEL), "ui/widget/empty.png");
-    uiRenderer->onMouseMove(50.0, 50.0);
+    uiRenderer->onMouseMove(50.0, 50.0, 0.0, 0.0);
 
     AssertHelper::assertUnsignedIntEquals(lazyWidget1->getChildren().size(), 1);
     AssertHelper::assertUnsignedIntEquals(lazyWidget2->getChildren().size(), 0);

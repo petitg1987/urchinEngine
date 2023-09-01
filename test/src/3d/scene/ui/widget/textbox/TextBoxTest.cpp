@@ -11,7 +11,7 @@ void TextBoxTest::textShift() {
     uiRenderer->addWidget(textBox);
 
     std::string textValue = "abcdefg"; //text box can only display 'abcdef'
-    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over text box
+    uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over text box
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
@@ -30,7 +30,7 @@ void TextBoxTest::textSelection() {
     uiRenderer->addWidget(textBox);
 
     std::string textValue = "0123456789"; //text box can only display the text partially
-    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over text box
+    uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over text box
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate text box
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));

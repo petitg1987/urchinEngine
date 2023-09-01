@@ -11,7 +11,7 @@ void TextareaTest::textCut() {
     uiRenderer->addWidget(textarea);
 
     std::string textValue = "mmmmmm"; //textarea can only display 'mmm' on one line
-    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over textarea
+    uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate textarea
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
@@ -21,7 +21,7 @@ void TextareaTest::textCut() {
     AssertHelper::assertTrue(textarea->getTextWidget().getCutTextLines()[1].text == WStringConvertA().from_bytes("mmm"));
 
     float endOfLinePosX = textarea->getWidth() - 1.0f /* outline right */ - 10.0f /* scrollbar width */ - TextFieldConst::TEXT_AND_SCROLLBAR_SHIFT;
-    uiRenderer->onMouseMove(endOfLinePosX, 1.0f); //move mouse at end of first line
+    uiRenderer->onMouseMove(endOfLinePosX, 1.0, 0.0, 0.0); //move mouse at end of first line
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //place cursor at end of first line
     for (std::size_t i = 0; i < 3; ++i) {
         uiRenderer->onKeyPress(InputDeviceKey::DELETE_KEY);
@@ -41,7 +41,7 @@ void TextareaTest::textCopyPaste() {
     uiRenderer->addWidget(textarea);
 
     std::string textValue = "123";
-    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over textarea
+    uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate textarea
     for (char textLetter : textValue) {
         uiRenderer->onChar(static_cast<char32_t>(textLetter));
@@ -51,7 +51,7 @@ void TextareaTest::textCopyPaste() {
     uiRenderer->onKeyPress(InputDeviceKey::A); //select all
     uiRenderer->onKeyPress(InputDeviceKey::C); //copy
     uiRenderer->onKeyRelease(InputDeviceKey::CTRL);
-    uiRenderer->onMouseMove(endOfLinePosX, 1.0f); //move mouse at end of first line
+    uiRenderer->onMouseMove(endOfLinePosX, 1.0f, 0.0, 0.0); //move mouse at end of first line
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //place cursor at end of first line
     uiRenderer->onKeyPress(InputDeviceKey::CTRL);
     uiRenderer->onKeyPress(InputDeviceKey::V); //paste
@@ -65,7 +65,7 @@ void TextareaTest::leftArrowWithSelection() {
     auto textarea = Textarea::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(500.0f, 100.0f, PIXEL), "test");
     uiRenderer->addWidget(textarea);
 
-    uiRenderer->onMouseMove(1.0f, 1.0f); //move mouse over textarea
+    uiRenderer->onMouseMove(1.0, 1.0, 0.0, 0.0); //move mouse over textarea
     uiRenderer->onKeyPress(InputDeviceKey::MOUSE_LEFT); //activate textarea
     uiRenderer->onChar(static_cast<char32_t>('a'));
     uiRenderer->onChar(static_cast<char32_t>('b'));
