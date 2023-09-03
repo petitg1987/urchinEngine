@@ -9,18 +9,22 @@ namespace urchin {
 
     class SceneDisplayerWindow;
 
-    struct QtSurfaceCreator final : public urchin::SurfaceCreator {
-        explicit QtSurfaceCreator(SceneDisplayerWindow*);
-        void* createSurface(void*) override;
+    class QtSurfaceCreator final : public urchin::SurfaceCreator {
+        public:
+            explicit QtSurfaceCreator(SceneDisplayerWindow*);
+            void* createSurface(void*) override;
 
-        SceneDisplayerWindow *window;
+        private:
+            SceneDisplayerWindow *window;
     };
 
-    struct QtFramebufferSizeRetriever final : public urchin::FramebufferSizeRetriever {
-        explicit QtFramebufferSizeRetriever(SceneDisplayerWindow*);
-        void getFramebufferSizeInPixel(unsigned int&, unsigned int&) const override;
+    class QtFramebufferSizeRetriever final : public urchin::FramebufferSizeRetriever {
+        public:
+            explicit QtFramebufferSizeRetriever(SceneDisplayerWindow*);
+            void getFramebufferSizeInPixel(unsigned int&, unsigned int&) const override;
 
-        SceneDisplayerWindow *window;
+        private:
+            SceneDisplayerWindow *window;
     };
 
     class SceneWindowController {

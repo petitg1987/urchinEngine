@@ -190,19 +190,22 @@ namespace urchin {
     }
 
     VkExtent2D SwapChainHandler::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) const {
+        VkExtent2D swapExtent;
         if (capabilities.currentExtent.width != UINT32_MAX) {
-            return capabilities.currentExtent;
+            swapExtent = capabilities.currentExtent;
         } else {
             unsigned int widthInPixel;
             unsigned int heightInPixel;
             GraphicsSetupService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(widthInPixel, heightInPixel);
 
-            VkExtent2D actualExtent = {widthInPixel, heightInPixel};
-            actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
-            actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
-
-            return actualExtent;
+            swapExtent.width = std::clamp(widthInPixel, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
+            swapExtent.height = std::clamp(heightInPixel, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
         }
+
+        if (swapExtent.width == 0 || swapExtent.height == 0) {
+            Logger::instance().logError("Swap chain extent size is invalid: " + std::to_string(swapExtent.width) + "x" + std::to_string(swapExtent.height));
+        }
+        return swapExtent;
     }
 
 }

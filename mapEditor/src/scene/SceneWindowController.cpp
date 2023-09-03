@@ -17,9 +17,16 @@ namespace urchin {
     }
 
     void QtFramebufferSizeRetriever::getFramebufferSizeInPixel(unsigned int& widthInPixel, unsigned int& heightInPixel) const {
-        QSize windowSize = window->size() * window->devicePixelRatio();
-        widthInPixel = (unsigned int)windowSize.width();
-        heightInPixel = (unsigned int)windowSize.height();
+        widthInPixel = 0;
+        heightInPixel = 0;
+
+        //When the window is minimized or Alt+Tabbed: "SDL_Vulkan_GetDrawableSize" return a valid size (2560x1440) but "VkSurfaceCapabilitiesKHR#currentExtent" contains a zero size (0x0)
+        //Therefore, we return an invalid size here to avoid creating a swap chain with a wrong image extend
+        if (!window->windowStates().testFlag(Qt::WindowMinimized)) {
+            QSize windowSize = window->size() * window->devicePixelRatio();
+            widthInPixel = windowSize.width() > 1 ? (unsigned int)windowSize.width() : 0;
+            heightInPixel = windowSize.height() > 1 ? (unsigned int)windowSize.height() : 0;
+        }
     }
 
     SceneWindowController::SceneWindowController(SceneDisplayerWindow* window) :

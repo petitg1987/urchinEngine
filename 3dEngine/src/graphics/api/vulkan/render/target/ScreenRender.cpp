@@ -73,7 +73,7 @@ namespace urchin {
         unsigned int sceneHeight;
         GraphicsSetupService::instance().getFramebufferSizeRetriever()->getFramebufferSizeInPixel(sceneWidth, sceneHeight);
 
-        if (sceneWidth > 1 && sceneHeight > 1) { //size is generally invalid when window is minimized on Windows
+        if (sceneWidth != 0 && sceneHeight != 0) { //size is generally invalid when window is minimized on Windows
             cleanup();
             initialize();
         }
