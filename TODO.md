@@ -28,7 +28,8 @@
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
   * **NEW FEATURE** (`minor`): Use mipmap and multisample antialiasing (MSAA) on the shadow map
   * **NEW FEATURE** (`medium`): Implement a shadow map warping (trapezoid or camera space)
-  * **NEW FEATURE** (`major`): Implement PCSS (+use tips from "GPUGems2: efficient-soft-edged-shadows-using" article)
+  * **NEW FEATURE** (`major`): Implement stabilized shadow (see <https://www.junkship.net/News/2020/11/22/shadow-of-a-doubt-part-2>)
+  * **NEW FEATURE** (`major`): Replace variance shadow map by PCF & PCSS (+use tips from "GPUGems2: efficient-soft-edged-shadows-using" article)
   * **NEW FEATURE** (`minor`): Find solution to have a soft transition between shadow cascade
   * **NEW FEATURE** (`minor`): Enable anisotropy on shadow map in ShadowManager::loadShadowMaps
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager#updateVisibleModels / Renderer3d#updateModelsInFrustum
