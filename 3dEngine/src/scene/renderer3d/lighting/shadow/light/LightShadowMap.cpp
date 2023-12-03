@@ -74,6 +74,10 @@ namespace urchin {
         return nbShadowMaps;
     }
 
+    unsigned int LightShadowMap::getShadowMapSize() const {
+        return shadowMapTexture->getWidth();
+    }
+
     void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
         assert(renderTarget);
         std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};

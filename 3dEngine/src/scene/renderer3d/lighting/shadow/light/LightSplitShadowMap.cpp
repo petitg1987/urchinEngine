@@ -5,12 +5,13 @@ namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
-            useSceneDependentProjection(ConfigService::instance().getBoolValue("shadow.useSceneDependentProjection")){
+            useSceneDependentProjection(ConfigService::instance().getBoolValue("shadow.useSceneDependentProjection")),
+            previousCenter(Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)) {
 
     }
 
-    void LightSplitShadowMap::update(const Frustum<float>& splitFrustums) {
-        AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums, lightShadowMap->getLightViewMatrix());
+    void LightSplitShadowMap::update(const Frustum<float>& splitFrustum) {
+        AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustum, lightShadowMap->getLightViewMatrix());
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
         models.clear();
@@ -25,6 +26,38 @@ namespace urchin {
         } else {
             updateShadowCasterReceiverBox(aabboxSceneIndependent);
         }
+
+        //1. use prev center to recalibrate the matrix
+        Point2<float> roundOffset = stabilizeShadows(lightProjectionMatrix * lightShadowMap->getLightViewMatrix(), previousCenter);
+        lightProjectionMatrix.a14 += roundOffset.X;
+        lightProjectionMatrix.a24 += roundOffset.Y;
+
+        //2. compute previousCenter to match perfectly a pixel on shadow map
+        previousCenter = Point4<float>(splitFrustum.computeCenterPosition(), 1.0f);
+        previousCenter = stabilizeShadows2(lightProjectionMatrix * lightShadowMap->getLightViewMatrix(), previousCenter);
+
+
+
+
+//TODO check stabilizeShadows2 is correct (adjusted and adjusted (2) must be equals)
+//        previousCenter = Point4<float>(splitFrustum.computeCenterPosition(), 1.0f);
+//        std::cout<<"Original: "<<previousCenter<<std::endl;
+//        previousCenter = stabilizeShadows2(getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix(), previousCenter);
+//        std::cout<<"Ajusted: "<<previousCenter<<std::endl;
+//        previousCenter = stabilizeShadows2(getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix(), previousCenter);
+//        std::cout<<"Ajusted (2): "<<previousCenter<<std::endl<<std::endl;
+
+//TODO check stabilizeShadows is correct (offset (1) & (2) must be zero
+//        previousCenter = Point4<float>(splitFrustum.computeCenterPosition(), 1.0f);
+//        Point2<float> roundOffsetO = stabilizeShadows(getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix(), previousCenter);
+//        std::cout<<"Before offset: "<<roundOffsetO<<std::endl;
+//        Matrix4<float> trans = Matrix4<float>::buildTranslation(roundOffsetO.X, roundOffsetO.Y, 0.0f);
+//        Point2<float> roundOffset2 = stabilizeShadows(trans * getLightProjectionMatrix() * lightShadowMap->getLightViewMatrix(), previousCenter);
+//        std::cout<<"After offset (1): "<<roundOffset2<<std::endl;
+//        lightProjectionMatrix.a14 += roundOffsetO.X;
+//        lightProjectionMatrix.a24 += roundOffsetO.Y;
+//        Point2<float> roundOffset3 = stabilizeShadows(lightProjectionMatrix * lightShadowMap->getLightViewMatrix(), previousCenter);
+//        std::cout<<"After offset (2): "<<roundOffset3<<std::endl<<std::endl;
     }
 
     const AABBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
@@ -126,6 +159,35 @@ namespace urchin {
     void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox) {
         this->shadowCasterReceiverBox = shadowCasterReceiverBox;
         this->lightProjectionMatrix = shadowCasterReceiverBox.toProjectionMatrix();
+    }
+
+    Point2<float> LightSplitShadowMap::stabilizeShadows(const Matrix4<float>& projViewMatrix, const Point4<float>& point) const {
+        Point4<float> shadowTexCoord;
+        Point3<float> roundedShadowTexCoord = computeRoundedShadowTexCoord(projViewMatrix, point, shadowTexCoord);
+
+        Point2<float> roundOffset = Point2<float>(roundedShadowTexCoord.X, roundedShadowTexCoord.Y) - Point2<float>(shadowTexCoord.X, shadowTexCoord.Y);
+        roundOffset = ((roundOffset / (float)lightShadowMap->getShadowMapSize()) * 2.0f);
+        return roundOffset;
+    }
+
+    Point4<float> LightSplitShadowMap::stabilizeShadows2(const Matrix4<float>& projViewMatrix, const Point4<float>& point) const {
+        Point4<float> shadowTexCoord;
+        Point3<float> roundedShadowTexCoord = computeRoundedShadowTexCoord(projViewMatrix, point, shadowTexCoord);
+
+        roundedShadowTexCoord = (roundedShadowTexCoord / (float)lightShadowMap->getShadowMapSize() * 2.0f) - 1.0f;
+        return projViewMatrix.inverse() * Point4<float>(roundedShadowTexCoord.X, roundedShadowTexCoord.Y, roundedShadowTexCoord.Z, 1.0f);
+    }
+
+    /**
+     * @param shadowTexCoord [out] Shadow texture coordinate (not rounded)
+     */
+    Point3<float> LightSplitShadowMap::computeRoundedShadowTexCoord(const Matrix4<float>& projViewMatrix, const Point4<float>& point, Point4<float>& shadowTexCoord) const {
+        float halfPixelSize = (0.5f / (float)lightShadowMap->getShadowMapSize()); //TODO or 0.0f ?
+
+        shadowTexCoord = projViewMatrix * point; //coordinates from -1.0 to 1.0
+        shadowTexCoord = (shadowTexCoord + 1.0f) * 0.5f * (float)lightShadowMap->getShadowMapSize(); //coordinates from 0 to shadowMapSize
+
+        return Point3<float>(std::round(shadowTexCoord.X + halfPixelSize) - halfPixelSize, std::round(shadowTexCoord.Y + halfPixelSize) - halfPixelSize, shadowTexCoord.Z);
     }
 
 }
