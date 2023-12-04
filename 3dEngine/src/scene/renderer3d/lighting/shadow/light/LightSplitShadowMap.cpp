@@ -159,7 +159,7 @@ namespace urchin {
         Point4<float> shadowTexCoord = lightProjectionViewMatrix * worldPoint; //coordinates from -1.0 to 1.0
         shadowTexCoord = (shadowTexCoord + 1.0f) * 0.5f * (float)lightShadowMap->getShadowMapSize(); //coordinates from 0 to shadowMapSize
 
-        float halfPixelSize = (0.5f / (float)lightShadowMap->getShadowMapSize());
+        float halfPixelSize = 0.5f;
         Point3<float> shadowTexCoordOnPixelCenter(std::round(shadowTexCoord.X + halfPixelSize) - halfPixelSize, std::round(shadowTexCoord.Y + halfPixelSize) - halfPixelSize, shadowTexCoord.Z);
 
         return std::make_pair(shadowTexCoord, shadowTexCoordOnPixelCenter);
