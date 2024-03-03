@@ -28,7 +28,7 @@
 * Install Vulkan library:
   * Install Vulkan SDK in default folder (C:\VulkanSDK): https://vulkan.lunarg.com/sdk/home#windows
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
-  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.3.261.0/Bin /home/greg/vulkan-bin`
+  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.3.275.0/Bin /home/greg/vulkan-bin`
   * Update ~/.bash_profile to add binaries in Mingw64 PATH: `PATH="${PATH}:/home/greg/vulkan-bin"`
   * *Info*: vuklan-1.dll can be found in the runtime zip: https://vulkan.lunarg.com/sdk/home#windows
   * *Info*: Do not uninstall Vulkan SDK application because it is required for validation layer & during release process to compile shaders
