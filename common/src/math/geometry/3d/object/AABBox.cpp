@@ -121,7 +121,7 @@ namespace urchin {
                 signZ * boxShape.getHalfSize(2) * (T)2.0);
     }
 
-    template<class T> std::vector<Point3<T>> AABBox<T>::getPoints() const {
+    template<class T> std::vector<Point3<T>> AABBox<T>::getPoints() const { //TODO use std::array ?
         std::vector<Point3<T>> result;
         result.reserve(8);
 

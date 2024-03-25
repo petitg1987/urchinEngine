@@ -20,10 +20,8 @@ namespace urchin {
             std::span<Model* const> getModels() const;
 
         private:
-            AABBox<float> createSceneIndependentBox(const Frustum<float>&, const Matrix4<float>&) const;
+            void computeLightProjection(const Frustum<float>&, const Matrix4<float>&);
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
-            AABBox<float> buildSceneDependentBox(const AABBox<float>&, const OBBox<float>&) const;
-            void updateShadowCasterReceiverBox(const AABBox<float>&);
 
             void stabilizeShadow(const Point3<float>&);
             Point2<float> computePixelCenteringDelta(const Matrix4<float>&, const Point4<float>&) const;
@@ -32,7 +30,6 @@ namespace urchin {
 
             const LightShadowMap* lightShadowMap;
 
-            const bool useSceneDependentProjection;
             Matrix4<float> lightProjectionMatrix;
             AABBox<float> shadowCasterReceiverBox;
             Point4<float> previousCenter;

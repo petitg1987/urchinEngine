@@ -5,29 +5,19 @@ namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
-            useSceneDependentProjection(ConfigService::instance().getBoolValue("shadow.useSceneDependentProjection")),
             previousCenter(Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)) {
 
     }
 
     void LightSplitShadowMap::update(const Frustum<float>& splitFrustum) {
-        AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustum, lightShadowMap->getLightViewMatrix());
-        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
+        computeLightProjection(splitFrustum, lightShadowMap->getLightViewMatrix());
+        stabilizeShadow(splitFrustum.computeCenterPosition());
 
         models.clear();
+        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(shadowCasterReceiverBox);
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, [](const Model *const model) {
-            //receiver only are required for variance shadow map to work correctly (see 8.4.5: https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-8-summed-area-variance-shadow-maps)
-            return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER || model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY;
+            return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
         });
-
-        if (useSceneDependentProjection) {
-            AABBox<float> aabboxSceneDependent = buildSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace);
-            updateShadowCasterReceiverBox(aabboxSceneDependent);
-        } else {
-            updateShadowCasterReceiverBox(aabboxSceneIndependent);
-        }
-
-        stabilizeShadow(splitFrustum.computeCenterPosition());
     }
 
     const AABBox<float> &LightSplitShadowMap::getShadowCasterReceiverBox() const {
@@ -45,17 +35,28 @@ namespace urchin {
         return models;
     }
 
-    /**
-     * @return Box in light space containing shadow caster and receiver (scene independent)
-     */
-    AABBox<float> LightSplitShadowMap::createSceneIndependentBox(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) const {
-        ScopeProfiler sp(Profiler::graphic(), "sceneIndepBox");
+    void LightSplitShadowMap::computeLightProjection(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) { //TODO review method comment / organization
+        ScopeProfiler sp(Profiler::graphic(), "compLightProj");
 
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
+        Point3<float> frustumCenter = frustumLightSpace.computeCenterPosition();
+        float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
+
+        float frustumRadius = 0.0f;
+        for (const Point3<float>& frustumPoint : frustumLightSpace.getFrustumPoints()) {
+            frustumRadius = std::max(frustumRadius, frustumCenter.squareDistance(frustumPoint));
+        }
+        frustumRadius = std::ceil(std::sqrt(frustumRadius));
+
+        std::array<Point3<float>, 4> lighrProjectionVertex;
+        lighrProjectionVertex[0] = frustumCenter + Point3<float>(frustumRadius, frustumRadius, frustumRadius);
+        lighrProjectionVertex[1] = Point3<float>(lighrProjectionVertex[0].X, lighrProjectionVertex[0].Y, nearCapZ);
+        lighrProjectionVertex[2] = frustumCenter - Point3<float>(frustumRadius, frustumRadius, frustumRadius);
+        lighrProjectionVertex[3] = Point3<float>(lighrProjectionVertex[2].X, lighrProjectionVertex[2].Y, nearCapZ);
+        this->lightProjectionMatrix = AABBox<float>(lighrProjectionVertex).toProjectionMatrix();
 
         //determine point belonging to shadow caster/receiver box
         std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;
-        float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
         for (std::size_t i = 0; i < 8; ++i) {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
@@ -65,9 +66,7 @@ namespace urchin {
             //add shadow caster points
             shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
         }
-
-        //build shadow receiver/caster bounding box from points
-        return AABBox<float>(shadowReceiverAndCasterVertex);
+        this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
     }
 
     float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {
@@ -78,57 +77,6 @@ namespace urchin {
             }
         }
         return nearestPointFromLight + lightShadowMap->getViewingShadowDistance();
-    }
-
-    /**
-     * Build box in light space containing shadow caster and receiver (scene dependent)
-     */
-    AABBox<float> LightSplitShadowMap::buildSceneDependentBox(const AABBox<float>& aabboxSceneIndependent, const OBBox<float>& obboxSceneIndependentViewSpace) const {
-        ScopeProfiler sp(Profiler::graphic(), "sceneDepBox");
-
-        unsigned int modelsCount = 0;
-        AABBox<float> modelsAabbox = AABBox<float>::initMergeableAABBox();
-
-        for (const auto& model : models) {
-            if (model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_ONLY) [[unlikely]] {
-                continue;
-            }
-
-            if (model->getSplitAABBoxes().size() == 1) [[likely]] {
-                modelsAabbox = modelsAabbox.merge(lightShadowMap->getLightViewMatrix() * model->getSplitAABBoxes()[0]);
-                modelsCount++;
-            } else {
-                for (const auto& splitAABBox : model->getSplitAABBoxes()) {
-                    if (obboxSceneIndependentViewSpace.toAABBox().collideWithAABBox(splitAABBox)) {
-                        modelsAabbox = modelsAabbox.merge(lightShadowMap->getLightViewMatrix() * splitAABBox);
-                        modelsCount++;
-                    }
-                }
-            }
-        }
-
-        AABBox aabboxSceneDependent(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 0.0f));
-        if (modelsCount > 0) {
-            Point3 cutMin(
-                    std::min(std::max(modelsAabbox.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
-                    std::min(std::max(modelsAabbox.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
-                    aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
-
-            Point3 cutMax(
-                    std::max(std::min(modelsAabbox.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
-                    std::max(std::min(modelsAabbox.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
-                    std::max(std::min(modelsAabbox.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
-
-            aabboxSceneDependent = AABBox<float>(cutMin, cutMax);
-        }
-
-        //avoid aabbox of size zero when there is no model or when all models are outside the aabboxSceneIndependent
-        return AABBox<float>(aabboxSceneDependent.getMin() - LIGHT_BOX_MARGIN, aabboxSceneDependent.getMax() + LIGHT_BOX_MARGIN);
-    }
-
-    void LightSplitShadowMap::updateShadowCasterReceiverBox(const AABBox<float>& shadowCasterReceiverBox) {
-        this->shadowCasterReceiverBox = shadowCasterReceiverBox;
-        this->lightProjectionMatrix = shadowCasterReceiverBox.toProjectionMatrix();
     }
 
     void LightSplitShadowMap::stabilizeShadow(const Point3<float>& splitFrustumCenter) {
