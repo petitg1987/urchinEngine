@@ -37,7 +37,7 @@ namespace urchin {
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
-        if ((getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_8_INT)
+        if ((getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT)
                 && getTextureType() == TextureType::DEFAULT) {
             return "texFilterBilateralBlur";
         }

@@ -47,7 +47,7 @@ namespace urchin {
 
         if (getTextureType() != TextureType::DEFAULT) {
             throw std::invalid_argument("Unsupported texture type for bilateral blur filter: " + std::to_string((int)getTextureType()));
-        } else if (getTextureFormat() != TextureFormat::GRAYSCALE_8_INT && getTextureFormat() != TextureFormat::GRAYSCALE_16_FLOAT) {
+        } else if (getTextureFormat() != TextureFormat::GRAYSCALE_8_INT && getTextureFormat() != TextureFormat::GRAYSCALE_16_FLOAT && getTextureFormat() != TextureFormat::GRAYSCALE_32_FLOAT) {
             throw std::invalid_argument("Unsupported texture format for bilateral blur filter: " + std::to_string((int)getTextureFormat()));
         }
 

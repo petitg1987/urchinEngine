@@ -23,6 +23,7 @@ namespace urchin {
         filterOutMessages.emplace_back("vkQueuePresentKHR(): Returned error VK_ERROR_OUT_OF_DATE_KHR"); //error VK_ERROR_OUT_OF_DATE_KHR is handled by the application
         filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development/production
         filterOutMessages.emplace_back("but only supports loader interface version 4"); //caused by wrong packaging of Ubuntu 21.10
+        filterOutMessages.emplace_back("Skipping this driver"); //wrong driver installed (e.g.: libvulkan_virtio.so)
     }
 
     void ValidationLayer::initializeDebugMessengerForInstance(VkInstanceCreateInfo& instanceCreateInfo) {

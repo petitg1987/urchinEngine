@@ -76,21 +76,6 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(float shadowMapZ, vec2 moments, float NdotL) {
-    float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
-    float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
-    float shadowMapZBias = shadowMapZ - bias;
-    if (shadowMapZBias <= moments.x) { //is in hard/full shadow
-        return 1.0; //no attentuation / no shadow
-    }
-
-    float variance = moments.y - (moments.x * moments.x);
-    float d = shadowMapZBias - moments.x;
-    float pMax = variance / (variance + d * d);
-    pMax = linearStep(0.75, 1.0, pMax); //reduce light bleeding where first parameter is at the graphic designer appreciation
-    return max(pMax, NdotL / 10.0); //hijack to apply normal map in shadow
-}
-
 float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
     float shadowAttenuation = 1.0; //1.0 = no shadow
 
@@ -103,15 +88,12 @@ float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 posi
                 shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
                 shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
-                vec2 moments = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).rg;
-                shadowAttenuation = computeShadowAttenuation(shadowCoord.z, moments, NdotL);
-
-                //DEBUG: shadow without variance shadow map feature:
-                /*shadowAttenuation = 1.0;
-                float sDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
-                if (shadowCoord.z - 0.001 > sDepth) {
-                    shadowAttenuation = 0.0;
-                } */
+                float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
+                float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
+                float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
+                if (shadowCoord.z - bias > shadowDepth) {
+                    shadowAttenuation = max(0.0, NdotL / 5.0);//hijack to apply normal map in shadow
+                }
             }
 
             break;
