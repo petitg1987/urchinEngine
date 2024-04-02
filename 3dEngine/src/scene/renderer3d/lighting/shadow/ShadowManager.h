@@ -84,7 +84,6 @@ namespace urchin {
             //scene information
             LightManager& lightManager;
             ModelOcclusionCuller& modelOcclusionCuller;
-            Matrix4<float> projectionMatrix;
             std::vector<Model*> visibleModels;
 
             //shadow information
@@ -92,7 +91,7 @@ namespace urchin {
             std::vector<Frustum<float>> splitFrustums;
             std::map<Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
-            std::array<float, SHADOW_MAPS_SHADER_LIMIT * 4> depthSplitDistance; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
+            std::array<float, (std::size_t)(SHADOW_MAPS_SHADER_LIMIT) * 4> shaderSplitDistance; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
 
             //shadow lights information
             std::vector<Matrix4<float>> lightProjectionViewMatrices;

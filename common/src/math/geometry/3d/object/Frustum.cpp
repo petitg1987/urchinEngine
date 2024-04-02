@@ -125,9 +125,7 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Frustum<T>::computeCenterPosition() const {
-        Point3<T> nearCenter((frustumPoints[NTL] + frustumPoints[NBR]) / (T)2.0);
-        Point3<T> farCenter((frustumPoints[FTL] + frustumPoints[FBR]) / (T)2.0);
-        return (nearCenter + farCenter) / (T)2.0;
+        return (frustumPoints[NTL] + frustumPoints[NBR] + frustumPoints[FTL] + frustumPoints[FBR]) / (T)4.0;
     }
 
     template<class T> Point3<T> Frustum<T>::getSupportPoint(const Vector3<T>& direction) const {

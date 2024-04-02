@@ -32,7 +32,7 @@ layout(std140, set = 0, binding = 3) uniform ShadowLight {
     mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * NUMBER_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 4) uniform ShadowMap {
-    float depthSplitDistance[NUMBER_SHADOW_MAPS];
+    float splitDistance[NUMBER_SHADOW_MAPS];
 } shadowMap;
 
 //fog
@@ -76,12 +76,13 @@ float maxComponent(vec3 components) {
     return max(max(components.x, components.y), components.z);
 }
 
-float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 position, float NdotL) {
+float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     float shadowAttenuation = 1.0; //1.0 = no shadow
+    float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (depthValue < shadowMap.depthSplitDistance[i]) {
-            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * position;
+        if (cameraToPositionDist < shadowMap.splitDistance[i]) {
+            vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition;
 
             //model has produceShadow flag to true ?
             if (shadowCoord.s <= 1.0 && shadowCoord.s >= -1.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= -1.0) {
@@ -103,14 +104,14 @@ float computeShadowAttenuation(int shadowLightIndex, float depthValue, vec4 posi
     return shadowAttenuation;
 }
 
-vec3 addFog(vec3 baseColor, vec4 position) {
+vec3 addFog(vec3 baseColor, vec4 worldPosition) {
     if (!fog.hasFog || positioningData.viewPosition.y > fog.maxHeight) {
         return baseColor;
     }
 
-    vec3 lineVector = position.xyz - positioningData.viewPosition;
+    vec3 lineVector = worldPosition.xyz - positioningData.viewPosition;
     float t = (fog.maxHeight - positioningData.viewPosition.y) / lineVector.y;
-    vec3 correctedPosition = position.xyz;
+    vec3 correctedPosition = worldPosition.xyz;
     if (t > 0.0 && t < 1.0) {
         correctedPosition = positioningData.viewPosition + (t * lineVector);
     }
@@ -208,7 +209,7 @@ void main() {
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
             if (visualOption.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
-                shadowAttenuation = computeShadowAttenuation(shadowLightIndex, depthValue, worldPosition, lightValues.NdotL);
+                shadowAttenuation = computeShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL);
                 shadowLightIndex++;
             }
 
@@ -222,14 +223,15 @@ void main() {
     fragColor.rgb = addFog(fragColor.rgb, worldPosition);
 
     //DEBUG: add color to shadow map splits
-    /* const float colorValue = 0.25;
+    const float colorValue = 0.25;
     vec4 splitColors[5] = vec4[](
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
+    float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (depthValue < shadowMap.depthSplitDistance[i]) {
+        if (cameraToPositionDist < shadowMap.splitDistance[i]) {
             fragColor += splitColors[i % 5];
             break;
         }
-    } */
+    }
 }

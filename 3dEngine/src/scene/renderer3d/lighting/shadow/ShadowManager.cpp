@@ -13,7 +13,7 @@ namespace urchin {
             config(config),
             lightManager(lightManager),
             modelOcclusionCuller(modelOcclusionCuller),
-            depthSplitDistance({}) {
+            shaderSplitDistance({}) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
@@ -21,17 +21,15 @@ namespace urchin {
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        std::size_t mLightProjectionViewSize = getMaxShadowLights() * config.nbShadowMaps;
+        std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights() * config.nbShadowMaps);
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         lightingRendererBuilder
                 ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, depthSplitDistance.data());
+                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, shaderSplitDistance.data());
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
-        this->projectionMatrix = camera.getProjectionMatrix();
-
         splitFrustum(camera.getFrustum());
         updateShadowLights();
     }
@@ -224,7 +222,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
+    void ShadowManager::splitFrustum(const Frustum<float>& frustum) { //TODO review !
         splitDistances.clear();
         splitFrustums.clear();
 
@@ -293,12 +291,11 @@ namespace urchin {
         }
 
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
-            float currSplitDistance = splitDistances[shadowMapIndex];
-            depthSplitDistance[shadowMapIndex * 4] = (projectionMatrix(2, 2) * -currSplitDistance + projectionMatrix(2, 3)) / currSplitDistance;
+            shaderSplitDistance[shadowMapIndex * 4] = splitDistances[shadowMapIndex];
         }
 
         lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());
-        lightingRenderer.updateUniformData(4, depthSplitDistance.data());
+        lightingRenderer.updateUniformData(4, shaderSplitDistance.data());
     }
 
 }
