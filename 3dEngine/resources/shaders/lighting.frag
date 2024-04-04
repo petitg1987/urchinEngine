@@ -81,7 +81,9 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
     float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (cameraToPositionDist < shadowMap.splitData[i].w) {
+        float frustumCenterDist = distance(vec3(worldPosition), shadowMap.splitData[i].xyz);
+        float frustumRadius = shadowMap.splitData[i].w;
+        if (frustumCenterDist < frustumRadius) {
             vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition;
 
             //model has produceShadow flag to true ?
@@ -227,9 +229,10 @@ void main() {
     vec4 splitColors[5] = vec4[](
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
-    float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (cameraToPositionDist < shadowMap.splitData[i].w) {
+        float frustumCenterDist = distance(vec3(worldPosition), shadowMap.splitData[i].xyz);
+        float frustumRadius = shadowMap.splitData[i].w;
+        if (frustumCenterDist < frustumRadius) {
             fragColor += splitColors[i % 5];
             break;
         }
