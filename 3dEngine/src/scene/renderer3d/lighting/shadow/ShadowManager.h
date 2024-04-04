@@ -5,6 +5,7 @@
 #include <memory>
 #include <UrchinCommon.h>
 
+#include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
 #include <scene/renderer3d/lighting/light/Light.h>
@@ -53,7 +54,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            const std::vector<Frustum<float>>& getSplitFrustums() const;
+            const std::vector<SplitFrustum>& getSplitFrustums() const;
             const std::shared_ptr<Texture>& getEmptyShadowMapTexture() const;
             const LightShadowMap& getLightShadowMap(const Light*) const;
 
@@ -87,11 +88,10 @@ namespace urchin {
             std::vector<Model*> visibleModels;
 
             //shadow information
-            std::vector<float> splitDistances;
-            std::vector<Frustum<float>> splitFrustums;
+            std::vector<SplitFrustum> splitFrustums;
             std::map<Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
-            std::array<float, (std::size_t)(SHADOW_MAPS_SHADER_LIMIT) * 4> shaderSplitDistance; //multiply by 4 because only 1 float over 4 are transferred to the shader due to memory alignment
+            std::array<Point4<float>, (std::size_t)(SHADOW_MAPS_SHADER_LIMIT)> splitData;
 
             //shadow lights information
             std::vector<Matrix4<float>> lightProjectionViewMatrices;

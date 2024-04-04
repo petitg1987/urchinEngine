@@ -9,9 +9,9 @@ namespace urchin {
 
     }
 
-    void LightSplitShadowMap::update(const Frustum<float>& splitFrustum) {
+    void LightSplitShadowMap::update(const SplitFrustum& splitFrustum) {
         computeLightProjection(splitFrustum, lightShadowMap->getLightViewMatrix());
-        stabilizeShadow(splitFrustum.computeCenterPosition());
+        stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
         models.clear();
         OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(shadowCasterReceiverBox);
@@ -35,25 +35,21 @@ namespace urchin {
         return models;
     }
 
-    void LightSplitShadowMap::computeLightProjection(const Frustum<float>& splitFrustum, const Matrix4<float>& lightViewMatrix) { //TODO review method comment / organization
+    void LightSplitShadowMap::computeLightProjection(const SplitFrustum& splitFrustum, const Matrix4<float>& lightViewMatrix) { //TODO review method comment / organization
         ScopeProfiler sp(Profiler::graphic(), "compLightProj");
 
-        const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum;
+        const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
         Point3<float> frustumCenter = frustumLightSpace.computeCenterPosition();
+        float frustumRadius = splitFrustum.getBoundingSphereRadius();
+
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
-        float frustumRadius = 0.0f;
-        for (const Point3<float>& frustumPoint : frustumLightSpace.getFrustumPoints()) {
-            frustumRadius = std::max(frustumRadius, frustumCenter.squareDistance(frustumPoint));
-        }
-        frustumRadius = std::ceil(std::sqrt(frustumRadius));
-
-        std::array<Point3<float>, 4> lighrProjectionVertex;
-        lighrProjectionVertex[0] = frustumCenter + Point3<float>(frustumRadius, frustumRadius, frustumRadius);
-        lighrProjectionVertex[1] = Point3<float>(lighrProjectionVertex[0].X, lighrProjectionVertex[0].Y, nearCapZ);
-        lighrProjectionVertex[2] = frustumCenter - Point3<float>(frustumRadius, frustumRadius, frustumRadius);
-        lighrProjectionVertex[3] = Point3<float>(lighrProjectionVertex[2].X, lighrProjectionVertex[2].Y, nearCapZ);
-        this->lightProjectionMatrix = AABBox<float>(lighrProjectionVertex).toProjectionMatrix();
+        std::array<Point3<float>, 4> lightProjectionVertex;
+        lightProjectionVertex[0] = frustumCenter + Point3<float>(frustumRadius, frustumRadius, frustumRadius);
+        lightProjectionVertex[1] = Point3<float>(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
+        lightProjectionVertex[2] = frustumCenter - Point3<float>(frustumRadius, frustumRadius, frustumRadius);
+        lightProjectionVertex[3] = Point3<float>(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
+        this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
 
         //determine point belonging to shadow caster/receiver box
         std::array<Point3<float>, 16> shadowReceiverAndCasterVertex;

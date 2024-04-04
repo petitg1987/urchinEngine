@@ -13,7 +13,7 @@ namespace urchin {
             config(config),
             lightManager(lightManager),
             modelOcclusionCuller(modelOcclusionCuller),
-            shaderSplitDistance({}) {
+            splitData({}) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
@@ -21,12 +21,12 @@ namespace urchin {
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
-        std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights() * config.nbShadowMaps);
+        std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         lightingRendererBuilder
                 ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(config.nbShadowMaps * sizeof(float) * 4, shaderSplitDistance.data());
+                ->addUniformData(config.nbShadowMaps * sizeof(Point4<float>), splitData.data());
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
@@ -100,7 +100,7 @@ namespace urchin {
         }
     }
 
-    const std::vector<Frustum<float>>& ShadowManager::getSplitFrustums() const {
+    const std::vector<SplitFrustum>& ShadowManager::getSplitFrustums() const {
         return splitFrustums;
     }
 
@@ -222,8 +222,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::splitFrustum(const Frustum<float>& frustum) { //TODO review !
-        splitDistances.clear();
+    void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
         splitFrustums.clear();
 
         float sliceLength = config.viewingShadowDistance / (float)(pow(2, config.nbShadowMaps) - 1);
@@ -232,8 +231,8 @@ namespace urchin {
             auto nbSlices = (float)(pow(2, i) - 1);
             float splitDistance = sliceLength * nbSlices;
 
-            splitDistances.push_back(splitDistance);
-            splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+            splitFrustums.emplace_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+
             previousSplitDistance = splitDistance;
         }
         #ifdef URCHIN_DEBUG
@@ -291,11 +290,11 @@ namespace urchin {
         }
 
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
-            shaderSplitDistance[shadowMapIndex * 4] = splitDistances[shadowMapIndex];
+            splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getFrustumCenter(), splitFrustums[shadowMapIndex].getBoundingSphereRadius());
         }
 
         lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());
-        lightingRenderer.updateUniformData(4, shaderSplitDistance.data());
+        lightingRenderer.updateUniformData(4, splitData.data());
     }
 
 }

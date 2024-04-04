@@ -3,6 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
+#include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
 #include <scene/renderer3d/model/Model.h>
 
 namespace urchin {
@@ -13,14 +14,14 @@ namespace urchin {
 
             explicit LightSplitShadowMap(const LightShadowMap*);
 
-            void update(const Frustum<float>&);
+            void update(const SplitFrustum&);
 
             const AABBox<float> &getShadowCasterReceiverBox() const;
             const Matrix4<float>& getLightProjectionMatrix() const;
             std::span<Model* const> getModels() const;
 
         private:
-            void computeLightProjection(const Frustum<float>&, const Matrix4<float>&);
+            void computeLightProjection(const SplitFrustum&, const Matrix4<float>&);
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
 
             void stabilizeShadow(const Point3<float>&);

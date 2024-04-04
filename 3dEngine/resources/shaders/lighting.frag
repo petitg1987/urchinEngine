@@ -32,7 +32,7 @@ layout(std140, set = 0, binding = 3) uniform ShadowLight {
     mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * NUMBER_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
 layout(std140, set = 0, binding = 4) uniform ShadowMap {
-    float splitDistance[NUMBER_SHADOW_MAPS];
+    vec4 splitData[NUMBER_SHADOW_MAPS];
 } shadowMap;
 
 //fog
@@ -81,7 +81,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
     float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (cameraToPositionDist < shadowMap.splitDistance[i]) {
+        if (cameraToPositionDist < shadowMap.splitData[i].w) {
             vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition;
 
             //model has produceShadow flag to true ?
@@ -229,7 +229,7 @@ void main() {
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
     float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        if (cameraToPositionDist < shadowMap.splitDistance[i]) {
+        if (cameraToPositionDist < shadowMap.splitData[i].w) {
             fragColor += splitColors[i % 5];
             break;
         }
