@@ -37,7 +37,7 @@ namespace urchin {
             const Vector3<T>& getNormalizedAxis(unsigned int) const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
-            std::vector<Point3<T>> getPoints() const;
+            std::array<Point3<T>, 8> getPoints() const;
             T getVolume() const;
 
             [[nodiscard]] AABBox<T> moveAABBox(const Transform<T>&) const;
