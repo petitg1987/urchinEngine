@@ -8,7 +8,7 @@ namespace urchin {
 
     template<class T> Frustum<T>::Frustum() :
             ConvexObject3D<T>(ConvexObjectType::FRUSTUM) {
-        buildFrustum(90.0, 1.0, 0.01f, 1.0);
+        buildFrustum((T)90.0, (T)1.0, (T)0.01, (T)1.0);
     }
 
     /**
@@ -17,9 +17,9 @@ namespace urchin {
     * Default frustum view direction: z axis
     * Default frustum up vector: y axis
     */
-    template<class T> Frustum<T>::Frustum(T fovYAngle, T ratio, T nearDistance, T farDistance) :
+    template<class T> Frustum<T>::Frustum(T verticalFovAngle, T ratio, T nearDistance, T farDistance) :
             ConvexObject3D<T>(ConvexObjectType::FRUSTUM) {
-        buildFrustum(fovYAngle, ratio, nearDistance, farDistance);
+        buildFrustum(verticalFovAngle, ratio, nearDistance, farDistance);
     }
 
     /**
@@ -54,14 +54,14 @@ namespace urchin {
         T farHalfWidth = farHalfHeight * ratio;
 
         //building frustum points
-        frustumPoints[0] = Point3<T>(-nearHalfWidth, nearHalfHeight, -nearDistance); //ntl
-        frustumPoints[1] = Point3<T>(nearHalfWidth, nearHalfHeight, -nearDistance); //ntr
-        frustumPoints[2] = Point3<T>(-nearHalfWidth, -nearHalfHeight, -nearDistance); //nbl
-        frustumPoints[3] = Point3<T>(nearHalfWidth, -nearHalfHeight, -nearDistance); //nbr
-        frustumPoints[4] = Point3<T>(-farHalfWidth, farHalfHeight, -farDistance); //ftl
-        frustumPoints[5] = Point3<T>(farHalfWidth, farHalfHeight, -farDistance); //ftr
-        frustumPoints[6] = Point3<T>(-farHalfWidth, -farHalfHeight, -farDistance); //fbl
-        frustumPoints[7] = Point3<T>(farHalfWidth, -farHalfHeight, -farDistance); //fbr
+        frustumPoints[NTL] = Point3<T>(-nearHalfWidth, nearHalfHeight, -nearDistance);
+        frustumPoints[NTR] = Point3<T>(nearHalfWidth, nearHalfHeight, -nearDistance);
+        frustumPoints[NBL] = Point3<T>(-nearHalfWidth, -nearHalfHeight, -nearDistance);
+        frustumPoints[NBR] = Point3<T>(nearHalfWidth, -nearHalfHeight, -nearDistance);
+        frustumPoints[FTL] = Point3<T>(-farHalfWidth, farHalfHeight, -farDistance);
+        frustumPoints[FTR] = Point3<T>(farHalfWidth, farHalfHeight, -farDistance);
+        frustumPoints[FBL] = Point3<T>(-farHalfWidth, -farHalfHeight, -farDistance);
+        frustumPoints[FBR] = Point3<T>(farHalfWidth, -farHalfHeight, -farDistance);
 
         //building frustum data
         buildData();
@@ -125,6 +125,10 @@ namespace urchin {
     }
 
     template<class T> Point3<T> Frustum<T>::computeCenterPosition() const {
+        return (frustumPoints[NTL] + frustumPoints[NBR] + frustumPoints[FTL] + frustumPoints[FBR]) / (T)4.0;
+    }
+
+    template<class T> Point3<T> Frustum<T>::computeBoundingSphereCenter() const { //TODO review
         return (frustumPoints[NTL] + frustumPoints[NBR] + frustumPoints[FTL] + frustumPoints[FBR]) / (T)4.0;
     }
 

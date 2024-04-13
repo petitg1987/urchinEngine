@@ -5,7 +5,4 @@
       <configuration sdkName="Python 3.9 (.venv)" />
     </facet>
   </component>
-  <component name="SonarLintModuleSettings">
-    <option name="uniqueId" value="42a71bdb-1df8-467b-9143-76cbee8b0223" />
-  </component>
 </module>

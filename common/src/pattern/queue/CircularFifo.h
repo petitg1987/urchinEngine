@@ -18,7 +18,7 @@ namespace urchin {
             bool pop(T&);
 
         private:
-            std::size_t increment(std::size_t) const;
+            [[nodiscard]] std::size_t increment(std::size_t) const;
 
             std::atomic<std::size_t> head;
             std::atomic<std::size_t> tail;

@@ -39,6 +39,7 @@ namespace urchin {
             const Point3<T>& getFrustumPoint(FrustumPoint frustumPoint) const;
             const Point3<T>& getEyePosition() const;
             Point3<T> computeCenterPosition() const;
+            Point3<T> computeBoundingSphereCenter() const;
 
             Point3<T> getSupportPoint(const Vector3<T>&) const override;
             T computeNearDistance() const;

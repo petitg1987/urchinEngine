@@ -4,7 +4,7 @@ namespace urchin {
 
     SplitFrustum::SplitFrustum(const Frustum<float>& frustum) :
             frustum(frustum),
-            frustumCenter(frustum.computeCenterPosition()),
+            frustumCenter(frustum.computeBoundingSphereCenter()),
             frustumRadius(0.0f) {
         for (const Point3<float>& frustumPoint : frustum.getFrustumPoints()) {
             frustumRadius = std::max(frustumRadius, frustumCenter.squareDistance(frustumPoint));

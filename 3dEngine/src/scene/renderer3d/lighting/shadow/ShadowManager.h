@@ -18,7 +18,7 @@
 namespace urchin {
 
     /**
-    * Manager for shadow mapping (parallel-split shadow maps and variance shadow maps)
+    * Manager for shadow mapping (parallel-split shadow maps & stabilized shadow maps)
     */
     class ShadowManager final : public Observer, public Observable {
         public:

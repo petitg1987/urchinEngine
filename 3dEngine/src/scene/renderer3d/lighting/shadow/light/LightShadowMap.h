@@ -56,7 +56,7 @@ namespace urchin {
 
             std::unique_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
-            std::shared_ptr<Texture> shadowMapTexture; //shadow map texture (variance shadow map)
+            std::shared_ptr<Texture> shadowMapTexture; //shadow map texture
             std::vector<std::unique_ptr<const TextureFilter>> textureFilters; //shadow map filters
 
             Matrix4<float> lightViewMatrix;
