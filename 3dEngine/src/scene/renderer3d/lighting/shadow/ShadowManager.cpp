@@ -290,7 +290,7 @@ namespace urchin {
         }
 
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
-            splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getFrustumCenter(), splitFrustums[shadowMapIndex].getBoundingSphereRadius());
+            splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
 
         lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());

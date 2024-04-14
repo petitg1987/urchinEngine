@@ -39,8 +39,8 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "compLightProj");
 
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
-        Point3<float> frustumCenter = frustumLightSpace.computeCenterPosition();
-        float frustumRadius = splitFrustum.getBoundingSphereRadius();
+        Point3<float> frustumCenter = (lightViewMatrix * Point4<float>(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
+        float frustumRadius = splitFrustum.getBoundingSphere().getRadius();
 
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 

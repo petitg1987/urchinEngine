@@ -3,6 +3,7 @@
 
 #include <math/geometry/3d/object/Frustum.h>
 #include <math/trigonometry/AngleConverter.h>
+#include <math/algorithm/MinEnclosingSphere.h>
 
 namespace urchin {
 
@@ -128,8 +129,13 @@ namespace urchin {
         return (frustumPoints[NTL] + frustumPoints[NBR] + frustumPoints[FTL] + frustumPoints[FBR]) / (T)4.0;
     }
 
-    template<class T> Point3<T> Frustum<T>::computeBoundingSphereCenter() const { //TODO review
-        return (frustumPoints[NTL] + frustumPoints[NBR] + frustumPoints[FTL] + frustumPoints[FBR]) / (T)4.0;
+    template<class T> Sphere<T> Frustum<T>::computeBoundingSphere() const {
+        std::array<Point3<T>, 4> relevantPoints;
+        relevantPoints[0] = frustumPoints[NTL];
+        relevantPoints[1] = frustumPoints[NBR];
+        relevantPoints[2] = frustumPoints[FTL];
+        relevantPoints[3] = frustumPoints[FBR];
+        return MinEnclosingSphere<T>().compute(relevantPoints);
     }
 
     template<class T> Point3<T> Frustum<T>::getSupportPoint(const Vector3<T>& direction) const {

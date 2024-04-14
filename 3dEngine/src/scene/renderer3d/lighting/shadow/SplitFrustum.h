@@ -8,14 +8,12 @@ namespace urchin {
 
             const Frustum<float>& getFrustum() const;
 
-            const Point3<float>& getFrustumCenter() const;
-            float getBoundingSphereRadius() const;
+            const Sphere<float>& getBoundingSphere() const;
 
         private:
             Frustum<float> frustum;
 
-            Point3<float> frustumCenter;
-            float frustumRadius;
+            Sphere<float> boundingSphere;
     };
 
 }
