@@ -3,9 +3,10 @@
 namespace urchin {
 
     SplitFrustum::SplitFrustum(const Frustum<float>& frustum) :
-            frustum(frustum),
-            boundingSphere(frustum.computeBoundingSphere()) { //TODO ceil round the radius ?
-
+            frustum(frustum) {
+        Sphere<float> frustumBoundingSphere = frustum.computeBoundingSphere();
+        float enlargedRadius = std::ceil(frustumBoundingSphere.getRadius() + 0.05f);
+        boundingSphere = Sphere<float>(enlargedRadius, frustumBoundingSphere.getCenterOfMass());
     }
 
     const Frustum<float>& SplitFrustum::getFrustum() const {
