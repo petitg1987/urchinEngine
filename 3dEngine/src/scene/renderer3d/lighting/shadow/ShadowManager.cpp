@@ -225,14 +225,14 @@ namespace urchin {
     void ShadowManager::splitFrustum(const Frustum<float>& frustum) {
         splitFrustums.clear();
 
-        float sliceLength = config.viewingShadowDistance / (float)(pow(2, config.nbShadowMaps) - 1);
+        constexpr float ADJUSTMENT_EXPONENT = 1.4f; //1.0 = linear distribution, >1.0 = exponential distribution
         float previousSplitDistance = 0.0f;
         for (unsigned int i = 1; i <= config.nbShadowMaps; ++i) {
-            auto nbSlices = (float)(pow(2, i) - 1);
-            float splitDistance = sliceLength * nbSlices;
+            float linearSplitPerc = (float)i / (float)config.nbShadowMaps;
+            float splitPerc = std::pow(linearSplitPerc, ADJUSTMENT_EXPONENT);
+            float splitDistance = config.viewingShadowDistance * splitPerc;
 
             splitFrustums.emplace_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
-
             previousSplitDistance = splitDistance;
         }
         #ifdef URCHIN_DEBUG

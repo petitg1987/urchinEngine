@@ -5,7 +5,7 @@ namespace urchin {
     SplitFrustum::SplitFrustum(const Frustum<float>& frustum) :
             frustum(frustum) {
         Sphere<float> frustumBoundingSphere = frustum.computeBoundingSphere();
-        float enlargedRadius = std::ceil(frustumBoundingSphere.getRadius() + 0.05f);
+        float enlargedRadius = std::ceil(frustumBoundingSphere.getRadius() + 0.01f);
         boundingSphere = Sphere<float>(enlargedRadius, frustumBoundingSphere.getCenterOfMass());
     }
 
