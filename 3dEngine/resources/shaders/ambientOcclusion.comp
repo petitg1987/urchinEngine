@@ -5,8 +5,7 @@ layout(constant_id = 1) const float RADIUS = 0.0;
 layout(constant_id = 2) const float AO_STRENGTH = 0.0;
 layout(constant_id = 3) const float DISTANCE_START_ATTENUATION = 0.0;
 layout(constant_id = 4) const float DISTANCE_END_ATTENUATION = 0.0;
-layout(constant_id = 5) const uint NOISE_TEXTURE_SIZE = 0;
-layout(constant_id = 6) const float BIAS = 0.0;
+layout(constant_id = 5) const float BIAS = 0.0;
 
 layout(local_size_x = 8, local_size_y = 8) in;
 layout(std140, set = 0, binding = 0) uniform Projection {
@@ -20,13 +19,10 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 layout(std140, set = 0, binding = 2) uniform KernelData {
     vec4 samples[KERNEL_SAMPLES];
 } kernelData;
-layout(std140, set = 0, binding = 3) uniform Scene {
-    vec2 aoResolution;
-} scene;
-layout(binding = 4) uniform sampler2D depthTex;
-layout(binding = 5) uniform sampler2D normalAndAmbientTex;
-layout(binding = 6) uniform sampler2D noiseTex;
-layout(binding = 7, r8) uniform writeonly image2D outputImage;
+layout(binding = 3) uniform sampler2D depthTex;
+layout(binding = 4) uniform sampler2D normalAndAmbientTex;
+layout(binding = 5) uniform sampler2D noiseTex;
+layout(binding = 6, r8) uniform writeonly image2D outputImage;
 
 vec3 fetchEyePosition(vec2 texCoord, float depthValue) {
     vec4 texPosition = vec4(
@@ -77,8 +73,9 @@ void main() {
 
     vec3 position = fetchPosition(texCoordinates, depthValue);
     vec3 normal = normalAndAmbient.xyz * 2.0 - 1.0;
-    vec2 noiseScale = vec2(scene.aoResolution.x / NOISE_TEXTURE_SIZE, scene.aoResolution.y / NOISE_TEXTURE_SIZE);
-    vec3 randomVector = normalize(texture(noiseTex, texCoordinates * noiseScale).xyz * 2.0 - 1.0);
+    float randomTexCoordinateX = fract(position.x * 4.12); //random but stable when moving the camera
+    float randomTexCoordinateY = fract(position.y * 3.12); //random but stable when moving the camera
+    vec3 randomVector = normalize(texture(noiseTex, vec2(randomTexCoordinateX, randomTexCoordinateY)).xyz * 2.0 - 1.0);
 
     vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
     vec3 bitangent = cross(normal, tangent);

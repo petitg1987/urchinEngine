@@ -128,29 +128,26 @@ namespace urchin {
 
         createOrUpdateAOShader();
 
-        Vector2<float> aoResolution = sceneResolution / (float)retrieveTextureSizeFactor();
         compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2<int>(8, 8))
                 ->addUniformData(sizeof(projection), &projection) //binding 0
                 ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
                 ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
-                ->addUniformData(sizeof(aoResolution), &aoResolution) //binding 3
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 4
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 5
-                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 6
-                ->addUniformTextureOutput(ambientOcclusionTexture) //binding 7
+                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 3
+                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 4
+                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 5
+                ->addUniformTextureOutput(ambientOcclusionTexture) //binding 6
                 ->build();
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
         AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.distanceStartAttenuation,
-                                                config.distanceEndAttenuation, config.noiseTextureSize, config.bias};
+                                                config.distanceEndAttenuation, config.bias};
         std::vector<std::size_t> variablesSize = {
                 sizeof(AmbientOcclusionShaderConst::kernelSamples),
                 sizeof(AmbientOcclusionShaderConst::radius),
                 sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength),
                 sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
                 sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
-                sizeof(AmbientOcclusionShaderConst::noiseTextureSize),
                 sizeof(AmbientOcclusionShaderConst::bias)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
