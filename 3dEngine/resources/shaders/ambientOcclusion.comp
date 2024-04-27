@@ -5,7 +5,8 @@ layout(constant_id = 1) const float RADIUS = 0.0;
 layout(constant_id = 2) const float AO_STRENGTH = 0.0;
 layout(constant_id = 3) const float DISTANCE_START_ATTENUATION = 0.0;
 layout(constant_id = 4) const float DISTANCE_END_ATTENUATION = 0.0;
-layout(constant_id = 5) const float BIAS = 0.0;
+layout(constant_id = 5) const float BIAS_MULTIPLIER = 0.0;
+layout(constant_id = 6) const float BIAS_DISTANCE_MULTIPLIER = 0.0;
 
 layout(local_size_x = 8, local_size_y = 8) in;
 layout(std140, set = 0, binding = 0) uniform Projection {
@@ -62,13 +63,9 @@ void main() {
 
     float depthValue = texture(depthTex, texCoordinates).r;
     float distance = abs(fetchEyePosition(texCoordinates, depthValue).z);
-
-    float distanceReduceFactor = 1.0;
     if (distance > DISTANCE_END_ATTENUATION) {
         imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(0.0));
         return;
-    } else if (distance > DISTANCE_START_ATTENUATION) {
-        distanceReduceFactor = (DISTANCE_END_ATTENUATION - distance) / (DISTANCE_END_ATTENUATION - DISTANCE_START_ATTENUATION);
     }
 
     vec3 position = fetchPosition(texCoordinates, depthValue);
@@ -81,9 +78,11 @@ void main() {
     vec3 bitangent = cross(normal, tangent);
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
+    float distanceBias = (distance * BIAS_DISTANCE_MULTIPLIER) * BIAS_MULTIPLIER; //increase bias with distance due to float imprecision
+
     float occlusion = 0.0;
     for (int i = 0; i < KERNEL_SAMPLES; ++i) {
-        vec3 sampleVectorWorldSpace = kernelMatrix * kernelData.samples[i].xyz;
+        vec3 sampleVectorWorldSpace = normalize(kernelMatrix * kernelData.samples[i].xyz);
         vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
         vec4 samplePointEyeSpace = positioningData.mView * vec4(samplePointWorldSpace, 1.0);
         vec4 samplePointClipSpace = projection.mProjection * samplePointEyeSpace;
@@ -94,9 +93,9 @@ void main() {
         vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
         float rangeCheck = smoothstep(0.0, 1.0, RADIUS / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
-        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + BIAS ? 1.0 : 0.0) * rangeCheck;
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + distanceBias ? rangeCheck : 0.0);
     }
 
-    float aoValue = (occlusion / float(KERNEL_SAMPLES)) * distanceReduceFactor * AO_STRENGTH;
+    float aoValue = (occlusion / float(KERNEL_SAMPLES)) * AO_STRENGTH;
     imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(aoValue));
 }

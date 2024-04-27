@@ -23,12 +23,13 @@ namespace urchin {
                 AOTextureSize textureSize = AOTextureSize::HALF_SIZE;
                 AOTextureBits textureBits = AOTextureBits::AO_8_BITS;
                 unsigned int kernelSamples = 32;
-                float radius = 0.15f; //scope radius in units
-                float ambientOcclusionStrength = 0.20f;
-                float distanceStartAttenuation = 11.0f; //distance in units
-                float distanceEndAttenuation = 12.0f; //distance in units
+                float radius = 0.06f; //scope radius in units
+                float ambientOcclusionStrength = 0.10f;
+                float distanceStartAttenuation = 13.0f; //distance in units
+                float distanceEndAttenuation = 14.0f; //distance in units
                 unsigned int noiseTextureSize = 64;
-                float bias = 0.04f;
+                float biasMultiplier = 0.002f;
+                float biasDistanceMultiplier = 1.9f;
                 bool isBlurActivated = true;
                 unsigned int blurSize = 7;
                 float blurSharpness = 40.0f;
@@ -56,7 +57,8 @@ namespace urchin {
                 float ambientOcclusionStrength;
                 float depthStartAttenuation;
                 float depthEndAttenuation;
-                float bias;
+                float biasMultiplier;
+                float biasDistanceMultiplier;
             };
 
             void checkConfig() const;

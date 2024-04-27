@@ -141,14 +141,15 @@ namespace urchin {
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
         AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.distanceStartAttenuation,
-                                                config.distanceEndAttenuation, config.bias};
+                                                config.distanceEndAttenuation, config.biasMultiplier, config.biasDistanceMultiplier};
         std::vector<std::size_t> variablesSize = {
                 sizeof(AmbientOcclusionShaderConst::kernelSamples),
                 sizeof(AmbientOcclusionShaderConst::radius),
                 sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength),
                 sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
                 sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
-                sizeof(AmbientOcclusionShaderConst::bias)
+                sizeof(AmbientOcclusionShaderConst::biasMultiplier),
+                sizeof(AmbientOcclusionShaderConst::biasDistanceMultiplier),
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
 
@@ -218,7 +219,8 @@ namespace urchin {
                 this->config.distanceStartAttenuation != config.distanceStartAttenuation ||
                 this->config.distanceEndAttenuation != config.distanceEndAttenuation ||
                 this->config.noiseTextureSize != config.noiseTextureSize ||
-                this->config.bias != config.bias ||
+                this->config.biasMultiplier != config.biasMultiplier ||
+                this->config.biasDistanceMultiplier != config.biasDistanceMultiplier ||
                 this->config.isBlurActivated != config.isBlurActivated ||
                 this->config.blurSize != config.blurSize ||
                 this->config.blurSharpness != config.blurSharpness) {
