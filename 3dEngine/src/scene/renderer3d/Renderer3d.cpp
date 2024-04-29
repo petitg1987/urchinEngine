@@ -577,7 +577,7 @@ namespace urchin {
         constexpr std::size_t lightsDataUniformIndex = 2;
         lightManager.loadVisibleLights(*lightingRenderer, lightsDataUniformIndex);
 
-        constexpr std::size_t fogUniformIndex = 5;
+        constexpr std::size_t fogUniformIndex = 6;
         fogContainer.loadFog(*lightingRenderer, fogUniformIndex);
 
         if (visualOption.isAmbientOcclusionActivated) {
@@ -587,7 +587,10 @@ namespace urchin {
 
         if (visualOption.isShadowActivated) {
             constexpr std::size_t shadowMapTexUnit = 5;
-            shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit);
+            constexpr std::size_t shadowLightUniformIndex = 3;
+            constexpr std::size_t shadowMapDataUniformIndex = 4;
+            constexpr std::size_t shadowMapInfoUniformIndex = 5;
+            shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit, shadowLightUniformIndex, shadowMapDataUniformIndex, shadowMapInfoUniformIndex);
         }
 
         lightingRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());

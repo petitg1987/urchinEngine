@@ -63,7 +63,7 @@ namespace urchin {
             void removeModel(Model*) const;
 
             void updateShadowMaps(std::uint32_t, unsigned int) const;
-            void loadShadowMaps(GenericRenderer&, std::size_t);
+            void loadShadowMaps(GenericRenderer&, std::size_t, std::size_t, std::size_t, std::size_t);
 
         private:
             //light handling
@@ -78,8 +78,8 @@ namespace urchin {
             //shadow map quality
             void checkConfig() const;
             static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
-            static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.0002f;
-            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0005f;
+            static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.0006f; //TODO review value
+            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.004f; //TODO review value
             Config config;
 
             //scene information

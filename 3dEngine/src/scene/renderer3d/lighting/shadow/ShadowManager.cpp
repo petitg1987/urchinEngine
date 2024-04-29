@@ -24,9 +24,12 @@ namespace urchin {
         std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
+        auto shadowMapResolution = (float)config.shadowMapResolution;
+
         lightingRendererBuilder
                 ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(config.nbShadowMaps * sizeof(Point4<float>), splitData.data());
+                ->addUniformData(config.nbShadowMaps * sizeof(Point4<float>), splitData.data())
+                ->addUniformData(sizeof(config.shadowMapResolution), &shadowMapResolution);
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
@@ -256,7 +259,8 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit) {
+    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit, std::size_t shadowLightUniformIndex,
+                                       std::size_t shadowMapDataUniformIndex, std::size_t shadowMapInfoUniformIndex) {
         std::size_t shadowLightIndex = 0;
         for (const Light* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
@@ -293,8 +297,11 @@ namespace urchin {
             splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
 
-        lightingRenderer.updateUniformData(3, lightProjectionViewMatrices.data());
-        lightingRenderer.updateUniformData(4, splitData.data());
+        auto shadowMapResolution = (float)config.shadowMapResolution;
+
+        lightingRenderer.updateUniformData(shadowLightUniformIndex, lightProjectionViewMatrices.data());
+        lightingRenderer.updateUniformData(shadowMapDataUniformIndex, splitData.data());
+        lightingRenderer.updateUniformData(shadowMapInfoUniformIndex, &shadowMapResolution);
     }
 
 }

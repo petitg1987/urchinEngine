@@ -31,12 +31,15 @@ layout(std140, set = 0, binding = 2) uniform LightsData {
 layout(std140, set = 0, binding = 3) uniform ShadowLight {
     mat4 mLightProjectionView[MAX_SHADOW_LIGHTS * NUMBER_SHADOW_MAPS]; //use 1 dim. table because 2 dim. tables are bugged (only in RenderDoc ?)
 } shadowLight;
-layout(std140, set = 0, binding = 4) uniform ShadowMap {
+layout(std140, set = 0, binding = 4) uniform ShadowMapData {
     vec4 splitData[NUMBER_SHADOW_MAPS];
-} shadowMap;
+} shadowMapData;
+layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
+    float shadowMapResolution;
+} shadowMapInfo;
 
 //fog
-layout(std140, set = 0, binding = 5) uniform Fog {
+layout(std140, set = 0, binding = 6) uniform Fog {
     bool hasFog;
     float density;
     float gradient;
@@ -45,12 +48,12 @@ layout(std140, set = 0, binding = 5) uniform Fog {
 } fog;
 
 //deferred textures
-layout(binding = 6) uniform sampler2D depthTex; //depth (32 bits)
-layout(binding = 7) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 bits) + emissive factor (8 bits)
-layout(binding = 8) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 9) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
-layout(binding = 10) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 11) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
+layout(binding = 7) uniform sampler2D depthTex; //depth (32 bits)
+layout(binding = 8) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 bits) + emissive factor (8 bits)
+layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
+layout(binding = 10) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
+layout(binding = 11) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
+layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -81,23 +84,27 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
     float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        float frustumCenterDist = distance(vec3(worldPosition), shadowMap.splitData[i].xyz);
-        float frustumRadius = shadowMap.splitData[i].w;
+        float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
+        float frustumRadius = shadowMapData.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
             vec4 shadowCoord = shadowLight.mLightProjectionView[shadowLightIndex * MAX_SHADOW_LIGHTS + i] * worldPosition;
+            shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
+            shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
 
-            //model has produceShadow flag to true ?
-            if (shadowCoord.s <= 1.0 && shadowCoord.s >= -1.0 && shadowCoord.t <= 1.0 && shadowCoord.t >= -1.0) {
-                shadowCoord.s = (shadowCoord.s / 2.0) + 0.5;
-                shadowCoord.t = (shadowCoord.t / 2.0) + 0.5;
+            float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
+            float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
-                float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
-                float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
-                float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
-                if (shadowCoord.z - bias > shadowDepth) {
-                    shadowAttenuation = max(0.0, NdotL / 5.0);//hijack to apply normal map in shadow
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    vec2 shadowMapOffset = vec2(x, y) * (1.0 / float(shadowMapInfo.shadowMapResolution)); //TODO hardoced value
+                    float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
+                    if (shadowCoord.z - bias > shadowDepth) {
+                        //shadowAttenuation += max(0.0, NdotL / 5.0);//hijack to apply normal map in shadow
+                        shadowAttenuation -= 1.0 / 9.0;//hijack to apply normal map in shadow
+                    }
                 }
             }
+            //shadowAttenuation /= 9.0;
 
             break;
         }
@@ -225,16 +232,16 @@ void main() {
     fragColor.rgb = addFog(fragColor.rgb, worldPosition);
 
     //DEBUG: add color to shadow map splits
-    const float colorValue = 0.25;
+    /* const float colorValue = 0.25;
     vec4 splitColors[5] = vec4[](
         vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
         vec4(colorValue, 0.0, colorValue, 1.0), vec4(colorValue, colorValue, 0.0, 1.0));
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
-        float frustumCenterDist = distance(vec3(worldPosition), shadowMap.splitData[i].xyz);
-        float frustumRadius = shadowMap.splitData[i].w;
+        float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
+        float frustumRadius = shadowMapData.splitData[i].w;
         if (frustumCenterDist < frustumRadius) {
             fragColor += splitColors[i % 5];
             break;
         }
-    }
+    }*/
 }
