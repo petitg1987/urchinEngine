@@ -30,6 +30,6 @@ namespace urchin {
         Point2<float> minPoint(center - radius);
         Point2<float> maxPoint(center + radius);
 
-        return Rectangle2D<float>(minPoint, maxPoint);
+        return {minPoint, maxPoint};
     }
 }

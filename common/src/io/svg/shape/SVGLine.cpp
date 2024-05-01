@@ -31,6 +31,6 @@ namespace urchin {
         Point2 minPoint(std::min(line.getA().X, line.getB().X), std::min(line.getA().Y, line.getB().Y));
         Point2 maxPoint(std::max(line.getA().X, line.getB().X), std::max(line.getA().Y, line.getB().Y));
 
-        return Rectangle2D<float>(minPoint, maxPoint);
+        return {minPoint, maxPoint};
     }
 }

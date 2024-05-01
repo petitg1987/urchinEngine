@@ -45,6 +45,6 @@ namespace urchin {
             }
         }
 
-        return Rectangle2D<float>(minPoint, maxPoint);
+        return {minPoint, maxPoint};
     }
 }

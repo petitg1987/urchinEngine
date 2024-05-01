@@ -4,6 +4,7 @@
 
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
+#include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
 #include <texture/filter/TextureFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 
@@ -18,6 +19,9 @@ namespace urchin {
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
         emptyShadowMapTexture = Texture::buildEmptyArrayRg("empty shadow map");
+
+        //TODO review
+        OffsetTextureGenerator offsetTextureGenerator(5, 3);
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {

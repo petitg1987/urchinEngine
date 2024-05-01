@@ -30,6 +30,7 @@ namespace urchin {
             std::string getStyle() const;
             std::string toColorString(SVGColor) const;
 
+        private:
             SVGColor color;
             float opacity;
             SVGColor strokeColor;
