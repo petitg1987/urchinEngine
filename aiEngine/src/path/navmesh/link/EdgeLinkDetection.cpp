@@ -85,16 +85,16 @@ namespace urchin {
      * @param touchingEndRange [out] Touching end range
      */
     bool EdgeLinkDetection::hasCollinearEdgesLink(const LineSegment3D<float>& startEdge, const LineSegment3D<float>& endEdge,
-                                                     float& touchingStartRange, float& touchingEndRange) const {
-        Point3 minIntersection(NAN, NAN, NAN);
-        Point3 maxIntersection(NAN, NAN, NAN);
+                                                  float& touchingStartRange, float& touchingEndRange) const {
+        Point3 minIntersection(0.0f, 0.0f, 0.0f);
+        Point3 maxIntersection(0.0f, 0.0f, 0.0f);
         for (std::size_t i = 0; i < 3; ++i) {
             minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
             maxIntersection[i] = std::min(std::max(startEdge.getA()[i], startEdge.getB()[i]), std::max(endEdge.getA()[i], endEdge.getB()[i]));
 
             if (minIntersection[i] > maxIntersection[i] + equalityDistanceThreshold) { //collinear edges are not touching each other
-                touchingStartRange = NAN;
-                touchingEndRange = NAN;
+                touchingStartRange = 0.0f;
+                touchingEndRange = 0.0f;
                 return false;
             }
         }

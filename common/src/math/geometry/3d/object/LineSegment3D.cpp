@@ -4,8 +4,8 @@ namespace urchin {
 
     template<class T> LineSegment3D<T>::LineSegment3D() :
             ConvexObject3D<T>(ConvexObjectType::LINE_SEGMENT),
-            a(Point3<T>(NAN, NAN, NAN)),
-            b(Point3<T>(NAN, NAN, NAN)) {
+            a(Point3<T>(0.0, 0.0, 0.0)),
+            b(Point3<T>(0.0, 0.0, 0.0)) {
 
     }
 

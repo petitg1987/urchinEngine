@@ -1,4 +1,3 @@
-#include <cmath>
 #include <cassert>
 
 #include <path/navmesh/link/EdgeLinkResult.h>
@@ -15,15 +14,15 @@ namespace urchin {
     }
 
     EdgeLinkResult EdgeLinkResult::noEdgeLink() {
-        return EdgeLinkResult(false, false, NAN, NAN);
+        return {false, false, 0.0f, 0.0f};
     }
 
     EdgeLinkResult EdgeLinkResult::collinearEdgeLink(float jumpStartRange, float jumpEndRange) {
-        return EdgeLinkResult(true, false, jumpStartRange, jumpEndRange);
+        return {true, false, jumpStartRange, jumpEndRange};
     }
 
     EdgeLinkResult EdgeLinkResult::edgeJump(float jumpStartRange, float jumpEndRange) {
-        return EdgeLinkResult(true, true, jumpStartRange, jumpEndRange);
+        return {true, true, jumpStartRange, jumpEndRange};
     }
 
     bool EdgeLinkResult::hasEdgesLink() const {

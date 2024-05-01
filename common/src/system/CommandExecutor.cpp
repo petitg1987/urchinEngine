@@ -3,7 +3,6 @@
 #include <stdexcept>
 
 #include <system/CommandExecutor.h>
-#include <util/StringUtil.h>
 
 namespace urchin {
 

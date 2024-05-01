@@ -2,8 +2,6 @@
 
 #include <math/geometry/2d/util/ResizeConvexHull2DService.h>
 #include <math/geometry/2d/util/ResizePolygon2DService.h>
-#include <math/algebra/point/Point2.h>
-#include <math/algebra/vector/Vector2.h>
 
 namespace urchin {
 
