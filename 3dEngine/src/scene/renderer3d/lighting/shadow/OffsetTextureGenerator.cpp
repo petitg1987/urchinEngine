@@ -33,12 +33,11 @@ namespace urchin {
                         float pixelRandomX = ((float)filterX + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
                         float pixelRandomY = ((float)filterY + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
 
-                        //TODO use warping
-                        //float warpedX = std::sqrt(pixelRandomY) * std::cos(2.0f * MathValue::PI_FLOAT * pixelRandomX);
-                        //float warpedY = std::sqrt(pixelRandomY) * std::sin(2.0f * MathValue::PI_FLOAT * pixelRandomX);
+                        float warpedX = std::sqrt(pixelRandomY) * std::cos(2.0f * MathValue::PI_FLOAT * pixelRandomX);
+                        float warpedY = std::sqrt(pixelRandomY) * std::sin(2.0f * MathValue::PI_FLOAT * pixelRandomX);
 
-                        textureData[index].X = pixelRandomX;
-                        textureData[index].Y = pixelRandomY;
+                        textureData[index].X = warpedX;
+                        textureData[index].Y = warpedY;
                         index++;
                     }
                 }
@@ -51,26 +50,23 @@ namespace urchin {
     void OffsetTextureGenerator::exportSVG(std::string filename, const std::vector<Vector2<float>>& textureData) const {
         SVGExporter svgExporter(std::move(filename));
 
-        float separatorDistance = 2.0f;
-        float pixelSize = 1.0f / (float)filterXYSize;
+        float separatorDistance = 3.0f;
 
         std::size_t index = 0;
         for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
             float xOffset = (float)texX * separatorDistance;
             for (unsigned int texY = 0; texY < textureXYSize; ++texY) {
                 float yOffset = (float)texY * separatorDistance;
+
+                std::vector<Point2<float>> pixelPoints;
+                pixelPoints.emplace_back(xOffset - 1.0f, -(yOffset - 1.0f));
+                pixelPoints.emplace_back(xOffset + 1.0f, -(yOffset - 1.0f));
+                pixelPoints.emplace_back(xOffset + 1.0f, -(yOffset + 1.0f));
+                pixelPoints.emplace_back(xOffset - 1.0f, -(yOffset + 1.0f));
+                svgExporter.addShape(std::make_unique<SVGPolygon>(pixelPoints, SVGPolygon::LIME));
+
                 for (unsigned int filterX = 0; filterX < filterXYSize; ++filterX) {
-                    float xPixelOffset = xOffset + (float)filterX * pixelSize;
                     for (unsigned int filterY = 0; filterY < filterXYSize; ++filterY) {
-                        float yPixelOffset = yOffset + (float)filterY * pixelSize;
-
-                        std::vector<Point2<float>> pixelPoints;
-                        pixelPoints.emplace_back(xPixelOffset, -yPixelOffset);
-                        pixelPoints.emplace_back(xPixelOffset + pixelSize, -yPixelOffset);
-                        pixelPoints.emplace_back(xPixelOffset + pixelSize, -(yPixelOffset + pixelSize));
-                        pixelPoints.emplace_back(xPixelOffset, -(yPixelOffset + pixelSize));
-                        svgExporter.addShape(std::make_unique<SVGPolygon>(pixelPoints, SVGPolygon::LIME));
-
                         svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(xOffset + textureData[index].X, -(yOffset + textureData[index].Y)), 0.01f, SVGPolygon::BLUE));
                         index++;
                     }
