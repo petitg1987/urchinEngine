@@ -13,7 +13,7 @@
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_EXPORT_SSAO_KERNEL = false;
+    bool DEBUG_EXPORT_SSAO_KERNEL = true;
 
     AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useNullRenderTarget) :
             config(config),
@@ -203,9 +203,9 @@ namespace urchin {
 
     void AmbientOcclusionManager::exportSVG(std::string filename, const std::vector<Vector4<float>>& ssaoKernel) const {
         SVGExporter svgExporter(std::move(filename));
-        svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0f, 0.0f), 1.0f, SVGPolygon::BLUE));
+        svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0f, 0.0f), 1.0f, SVGColor::BLUE));
         for (const auto& kernel : ssaoKernel) {
-            svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.01f, SVGPolygon::LIME));
+            svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.01f, SVGColor::LIME));
         }
         svgExporter.generateSVG();
     }

@@ -64,18 +64,18 @@ namespace urchin {
                 float yOffset = (float)texY * DIST_SEPARATION;
 
                 std::vector<Point2<float>> pixelPoints;
-                pixelPoints.emplace_back(xOffset - 1.0f, -(yOffset - 1.0f));
-                pixelPoints.emplace_back(xOffset + 1.0f, -(yOffset - 1.0f));
-                pixelPoints.emplace_back(xOffset + 1.0f, -(yOffset + 1.0f));
-                pixelPoints.emplace_back(xOffset - 1.0f, -(yOffset + 1.0f));
-                svgExporter.addShape(std::make_unique<SVGPolygon>(pixelPoints, SVGPolygon::LIME)); //TODO why negate yOffset ?
+                pixelPoints.emplace_back(xOffset - 1.0f, yOffset - 1.0f);
+                pixelPoints.emplace_back(xOffset + 1.0f, yOffset - 1.0f);
+                pixelPoints.emplace_back(xOffset + 1.0f, yOffset + 1.0f);
+                pixelPoints.emplace_back(xOffset - 1.0f, yOffset + 1.0f);
+                svgExporter.addShape(std::make_unique<SVGPolygon>(pixelPoints, SVGColor::LIME));
 
                 unsigned int filterIndex = 0;
                 for (unsigned int filterX = 0; filterX < filterXYSize; ++filterX) {
                     for (unsigned int filterY = 0; filterY < filterXYSize; ++filterY) {
-                        SVGShape::SVGColor color = filterIndex < 4 ? SVGPolygon::RED : SVGPolygon::BLUE;
-                        Point2<float> startVector(xOffset, -yOffset);
-                        Point2<float> endVector(xOffset + textureData[texX][texY][filterIndex].X, -(yOffset + textureData[texX][texY][filterIndex].Y));
+                        SVGColor color = filterIndex < 4 ? SVGColor::RED : SVGColor::BLUE;
+                        Point2<float> startVector(xOffset, yOffset);
+                        Point2<float> endVector(xOffset + textureData[texX][texY][filterIndex].X, yOffset + textureData[texX][texY][filterIndex].Y);
                         svgExporter.addShape(std::make_unique<SVGLine>(LineSegment2D<float>(startVector, endVector), color, 0.005f));
                         svgExporter.addShape(std::make_unique<SVGCircle>(endVector, 0.02f, color));
                         filterIndex++;

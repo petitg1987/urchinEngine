@@ -6,11 +6,9 @@
 namespace urchin {
 
     SVGPolygon::SVGPolygon(std::vector<Point2<float>> polygonPoints, SVGColor color, float opacity) :
-            SVGShape(color, SVGShape::BLACK, 0.0f, opacity),
+            SVGShape(color, SVGColor::BLACK, 0.0f, opacity),
             polygonPoints(std::move(polygonPoints)) {
-        for (auto& polygonPoint : this->polygonPoints) { //SVG Y axis is upside down
-            polygonPoint.Y = -polygonPoint.Y;
-        }
+
     }
 
     std::string SVGPolygon::getShapeTag() const {

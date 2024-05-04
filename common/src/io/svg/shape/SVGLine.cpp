@@ -3,9 +3,9 @@
 namespace urchin {
 
     SVGLine::SVGLine(const LineSegment2D<float>& line, SVGColor strokeColor, float strokeSize, float opacity) :
-            SVGShape(SVGShape::BLACK, strokeColor, strokeSize, opacity),
-            line(LineSegment2D<float>(Point2<float>(), Point2<float>())) {
-        this->line = LineSegment2D<float>(Point2<float>(line.getA().X, -line.getA().Y), Point2<float>(line.getB().X, -line.getB().Y));
+            SVGShape(SVGColor::BLACK, strokeColor, strokeSize, opacity),
+            line(line) {
+
     }
 
     std::string SVGLine::getShapeTag() const {

@@ -43,12 +43,12 @@ namespace urchin {
                 Point3<float> p2 = polygon->getPoint(triangle->getIndices()[1]);
                 Point3<float> p3 = polygon->getPoint(triangle->getIndices()[2]);
 
-                trianglePoints.emplace_back(p1.X, -p1.Z);
-                trianglePoints.emplace_back(p2.X, -p2.Z);
-                trianglePoints.emplace_back(p3.X, -p3.Z);
+                trianglePoints.emplace_back(p1.X, p1.Z);
+                trianglePoints.emplace_back(p2.X, p2.Z);
+                trianglePoints.emplace_back(p3.X, p3.Z);
 
-                auto svgPolygon = std::make_unique<SVGPolygon>(trianglePoints, SVGPolygon::LIME, 0.5f);
-                svgPolygon->setStroke(SVGPolygon::RED, 0.05f);
+                auto svgPolygon = std::make_unique<SVGPolygon>(trianglePoints, SVGColor::LIME, 0.5f);
+                svgPolygon->setStroke(SVGColor::RED, 0.05f);
                 svgExporter.addShape(std::move(svgPolygon));
             }
         }
@@ -60,7 +60,7 @@ namespace urchin {
                     Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
                     LineSegment2D line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
-                    SVGPolygon::SVGColor linkColor = (link->getLinkType() == NavLinkType::JUMP) ? SVGPolygon::ORANGE : SVGPolygon::BLUE;
+                    SVGColor linkColor = (link->getLinkType() == NavLinkType::JUMP) ? SVGColor::ORANGE : SVGColor::BLUE;
                     auto svgLine = std::make_unique<SVGLine>(line, linkColor, 0.5f);
                     svgLine->setStroke(linkColor, 0.05f);
                     svgExporter.addShape(std::move(svgLine));

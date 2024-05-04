@@ -10,6 +10,7 @@
 #include <io/file/PropertyFileHandler.h>
 #include <io/file/FileReader.h>
 #include <io/svg/SVGExporter.h>
+#include <io/svg/SVGColor.h>
 #include <io/svg/shape/SVGPolygon.h>
 #include <io/svg/shape/SVGLine.h>
 #include <io/svg/shape/SVGCircle.h>
