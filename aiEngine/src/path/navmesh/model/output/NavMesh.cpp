@@ -43,9 +43,9 @@ namespace urchin {
                 Point3<float> p2 = polygon->getPoint(triangle->getIndices()[1]);
                 Point3<float> p3 = polygon->getPoint(triangle->getIndices()[2]);
 
-                trianglePoints.emplace_back(Point2<float>(p1.X, -p1.Z));
-                trianglePoints.emplace_back(Point2<float>(p2.X, -p2.Z));
-                trianglePoints.emplace_back(Point2<float>(p3.X, -p3.Z));
+                trianglePoints.emplace_back(p1.X, -p1.Z);
+                trianglePoints.emplace_back(p2.X, -p2.Z);
+                trianglePoints.emplace_back(p3.X, -p3.Z);
 
                 auto svgPolygon = std::make_unique<SVGPolygon>(trianglePoints, SVGPolygon::LIME, 0.5f);
                 svgPolygon->setStroke(SVGPolygon::RED, 0.05f);

@@ -76,7 +76,7 @@ namespace SEB_NAMESPACE {
   {
   public: // construction and deletion:
 
-    Subspan(unsigned int dim, const PointAccessor& S, int i);
+    Subspan(unsigned int dim, const PointAccessor& S, unsigned int i);
     // Constructs an instance representing the affine hull aff(M) of M={p},
     // where p is the point S[i] from S.
     //

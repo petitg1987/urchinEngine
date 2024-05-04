@@ -18,7 +18,7 @@ namespace urchin {
                 YELLOW
             };
 
-            SVGShape(SVGColor, float);
+            SVGShape(SVGColor, SVGColor, float, float);
             virtual ~SVGShape() = default;
 
             void setStroke(SVGColor, float);
@@ -32,9 +32,9 @@ namespace urchin {
 
         private:
             SVGColor color;
-            float opacity;
             SVGColor strokeColor;
             float strokeSize;
+            float opacity;
     };
 
 }

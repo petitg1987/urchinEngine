@@ -2,11 +2,11 @@
 
 namespace urchin {
 
-    SVGShape::SVGShape(SVGColor color, float opacity) :
+    SVGShape::SVGShape(SVGColor color, SVGColor strokeColor, float strokeSize, float opacity) :
             color(color),
-            opacity(opacity),
-            strokeColor(SVGShape::BLACK),
-            strokeSize(0) {
+            strokeColor(strokeColor),
+            strokeSize(strokeSize),
+            opacity(opacity) {
 
     }
 

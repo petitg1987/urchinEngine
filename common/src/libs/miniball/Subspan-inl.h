@@ -51,7 +51,7 @@ namespace SEB_NAMESPACE {
   }
 
   template<typename Float, class Pt, class PointAccessor>
-  Subspan<Float, Pt, PointAccessor>::Subspan(unsigned int dim, const PointAccessor& S, int index)
+  Subspan<Float, Pt, PointAccessor>::Subspan(unsigned int dim, const PointAccessor& S, unsigned int index)
   : S(S), membership(S.size()), dim(dim), members(dim+1)
   {
     // allocate storage for Q, R, u, and w:
@@ -94,16 +94,16 @@ namespace SEB_NAMESPACE {
 
     // compute S[i] - origin into u:
     for (unsigned int i=0; i<dim; ++i)
-      u[i] = S[index][i] - SEB_AFFINE_ORIGIN[i];
+      u[i] = S[(unsigned long)index][i] - SEB_AFFINE_ORIGIN[i];
 
     // appends new column u to R and updates QR-decomposition,
     // routine work with old r:
     append_column();
 
     // move origin index and insert new index:
-    membership[index] = true;
+    membership[(unsigned long)index] = true;
     members[r+1] = members[r];
-    members[r]   = index;
+    members[r]   = (unsigned int)index;
     ++r;
 
     SEB_LOG ("ranks",r << std::endl);
@@ -229,7 +229,7 @@ namespace SEB_NAMESPACE {
     // where s = \sum_{i\in M} \lambda_i.-- We compute the coefficient
     // (1-s) of the origin in the variable origin_lambda:
     Float origin_lambda = 1;
-    for (int j = r-1; j>=0; --j) {
+    for (int j = (int)r-1; j>=0; --j) {
       for (unsigned int k=(unsigned int)j+1; k<r; ++k)
         w[j] -= *(lambdas+k) * R[k][j];
       origin_lambda -= *(lambdas+j) = w[j] / R[j][j];

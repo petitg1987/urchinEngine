@@ -4,8 +4,9 @@
 #include <io/svg/shape/SVGPolygon.h>
 
 namespace urchin {
+
     SVGPolygon::SVGPolygon(std::vector<Point2<float>> polygonPoints, SVGColor color, float opacity) :
-            SVGShape(color, opacity),
+            SVGShape(color, SVGShape::BLACK, 0.0f, opacity),
             polygonPoints(std::move(polygonPoints)) {
         for (auto& polygonPoint : this->polygonPoints) { //SVG Y axis is upside down
             polygonPoint.Y = -polygonPoint.Y;

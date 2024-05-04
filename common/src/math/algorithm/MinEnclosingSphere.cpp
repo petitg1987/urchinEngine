@@ -13,7 +13,7 @@ namespace urchin {
 
         Seb::Smallest_enclosing_ball<double> miniball(DIMENSION, mbPoints);
 
-        const Seb::Smallest_enclosing_ball<double>::Coordinate_iterator centerIt = miniball.center_begin();
+        Seb::Smallest_enclosing_ball<double>::Coordinate_iterator centerIt = miniball.center_begin();
         return {(T)miniball.radius(), Point3<T>((T)centerIt[0], (T)centerIt[1], (T)centerIt[2])};
     }
 

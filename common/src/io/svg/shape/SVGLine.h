@@ -9,7 +9,7 @@ namespace urchin {
 
     class SVGLine final : public SVGShape {
         public:
-            SVGLine(const LineSegment2D<float>&, SVGColor, float opacity = 1.0f);
+            SVGLine(const LineSegment2D<float>&, SVGColor, float strokeSize, float opacity = 1.0f);
 
             std::string getShapeTag() const override;
             Rectangle2D<float> computeRectangle() const override;

@@ -27,7 +27,7 @@ namespace SEB_NAMESPACE {
   {
   public: // iterator-type to iterate over the center coordinates of
 	  // the miniball (cf. center_begin() below):
-    typedef Float *Coordinate_iterator;
+    typedef const Float *Coordinate_iterator;
 
   public: // construction and destruction:
 
