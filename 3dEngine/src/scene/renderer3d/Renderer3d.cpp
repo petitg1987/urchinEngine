@@ -582,7 +582,7 @@ namespace urchin {
         }
 
         if (visualOption.isShadowActivated) {
-            shadowManager.loadShadowMaps(*lightingRenderer, SM_TEX_UNIFORM_BINDING, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING);
+            shadowManager.loadShadowMaps(*lightingRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING, SM_TEX_UNIFORM_BINDING);
         }
 
         lightingRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());

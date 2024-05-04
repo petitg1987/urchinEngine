@@ -264,8 +264,8 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, uint32_t texUniformBinding, uint32_t viewProjMatricesUniformBinding,
-                                       uint32_t splitDataUniformBinding, uint32_t shadowMapResolutionUniformBinding) {
+    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t splitDataUniformBinding,
+                                       uint32_t shadowMapResolutionUniformBinding, uint32_t texUniformBinding) {
         std::size_t shadowLightIndex = 0;
         for (const Light* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
@@ -301,9 +301,7 @@ namespace urchin {
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
             splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
-
         auto shadowMapResolution = (float)config.shadowMapResolution;
-
         lightingRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
         lightingRenderer.updateUniformData(splitDataUniformBinding, splitData.data());
         lightingRenderer.updateUniformData(shadowMapResolutionUniformBinding, &shadowMapResolution);
