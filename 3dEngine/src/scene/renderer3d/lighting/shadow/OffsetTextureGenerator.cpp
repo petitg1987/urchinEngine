@@ -6,7 +6,7 @@
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_EXPORT_TEXTURE_DATA = true;
+    bool DEBUG_EXPORT_TEXTURE_DATA = false;
 
     OffsetTextureGenerator::OffsetTextureGenerator(unsigned int textureXYSize, unsigned int filterXYSize) :
             textureXYSize(textureXYSize),
@@ -16,8 +16,12 @@ namespace urchin {
             exportSVG(SystemInfo::homeDirectory() + "shadowMapOffsetTextureData.svg", textureData);
         }
 
-        unsigned int depth = filterXYSize * filterXYSize / 2;
-        std::shared_ptr<Texture> noiseTexture = Texture::buildArray("SM noise", textureXYSize, textureXYSize, depth, TextureFormat::RGBA_8_INT, textureData.data(), TextureDataType::INT_8);
+        unsigned int depth = filterXYSize * filterXYSize;
+        offsetTexture = Texture::buildArray("SM noise", textureXYSize, textureXYSize, depth, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+    }
+
+    std::shared_ptr<Texture> OffsetTextureGenerator::getOffsetTexture() const {
+        return offsetTexture;
     }
 
     std::vector<std::vector<std::vector<Vector2<float>>>> OffsetTextureGenerator::generateTextureData() const {
@@ -39,6 +43,7 @@ namespace urchin {
                         float pixelRandomX = ((float)u + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
                         float pixelRandomY = ((float)v + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
 
+                        //see https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-17-efficient-soft-edged-shadows-using
                         float warpedX = std::sqrt(pixelRandomY) * std::cos(2.0f * MathValue::PI_FLOAT * pixelRandomX);
                         float warpedY = std::sqrt(pixelRandomY) * std::sin(2.0f * MathValue::PI_FLOAT * pixelRandomX);
 

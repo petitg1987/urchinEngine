@@ -21,7 +21,7 @@ namespace urchin {
         emptyShadowMapTexture = Texture::buildEmptyArrayRg("empty shadow map");
 
         //TODO review
-        OffsetTextureGenerator offsetTextureGenerator(10, 4);
+        OffsetTextureGenerator offsetTextureGenerator(10, 3);
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
