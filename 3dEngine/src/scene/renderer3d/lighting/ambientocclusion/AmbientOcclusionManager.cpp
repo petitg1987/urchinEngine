@@ -129,13 +129,13 @@ namespace urchin {
         createOrUpdateAOShader();
 
         compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2<int>(8, 8))
-                ->addUniformData(sizeof(projection), &projection) //binding 0
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 1
-                ->addUniformData(sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data()) //binding 2
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())) //binding 3
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 4
-                ->addUniformTextureReader(TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest())) //binding 5
-                ->addUniformTextureOutput(ambientOcclusionTexture) //binding 6
+                ->addUniformData(PROJECTION_UNIFORM_BINDING, sizeof(projection), &projection)
+                ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                ->addUniformData(SSAO_KERNEL_UNIFORM_BINDING, sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data())
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(NOISE_TEX_UNIFORM_BINDING, TextureReader::build(noiseTexture, TextureParam::buildRepeatNearest()))
+                ->addUniformTextureOutput(AO_TEX_UNIFORM_BINDING, ambientOcclusionTexture)
                 ->build();
     }
 
@@ -258,7 +258,7 @@ namespace urchin {
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
         positioningData.viewMatrix = camera.getViewMatrix();
         if (compute) {
-            compute->updateUniformData(1, &positioningData);
+            compute->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         }
 
         if (config.isBlurActivated) {
@@ -283,9 +283,9 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::loadAOTexture(GenericRenderer& lightingRenderer, std::size_t aoTextureUnit) const {
-        if (lightingRenderer.getUniformTextureReader(aoTextureUnit)->getTexture() != getAmbientOcclusionTexture().get()) {
-            lightingRenderer.updateUniformTextureReader(aoTextureUnit, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
+    void AmbientOcclusionManager::loadAOTexture(GenericRenderer& lightingRenderer, uint32_t aoTextureUniformBinding) const {
+        if (lightingRenderer.getUniformTextureReader(aoTextureUniformBinding)->getTexture() != getAmbientOcclusionTexture().get()) {
+            lightingRenderer.updateUniformTextureReader(aoTextureUniformBinding, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }
 

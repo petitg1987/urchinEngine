@@ -63,8 +63,8 @@ namespace urchin {
         renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *fxaaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(invSceneSize), &invSceneSize) //binding 0
-                ->addUniformTextureReader(TextureReader::build(inputTexture, TextureParam::buildLinear())) //binding 1
+                ->addUniformData(INV_SCENE_SIZE_UNIFORM_BINDING, sizeof(invSceneSize), &invSceneSize)
+                ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputTexture, TextureParam::buildLinear()))
                 ->build();
     }
 

@@ -40,6 +40,23 @@ namespace urchin {
 
             static constexpr float UP_SAMPLE_SCALE = 0.95f;
 
+            static constexpr uint32_t PF_TWEAK_UNIFORM_BINDING = 0;
+            static constexpr uint32_t PF_TEXEL_SIZE_UNIFORM_BINDING = 1;
+            static constexpr uint32_t PF_INPUT_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t PF_OUTPUT_TEX_UNIFORM_BINDING = 3;
+
+            static constexpr uint32_t DS_TEXEL_SIZE_UNIFORM_BINDING = 0;
+            static constexpr uint32_t DS_INPUT_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t DS_OUTPUT_TEX_UNIFORM_BINDING = 2;
+
+            static constexpr uint32_t US_TEXEL_SIZE_UNIFORM_BINDING = 0;
+            static constexpr uint32_t US_INPUT_TEX_UNIFORM_BINDING = 1;
+
+            static constexpr uint32_t CR_TEXEL_SIZE_UNIFORM_BINDING = 0;
+            static constexpr uint32_t CR_GAMMA_UNIFORM_BINDING = 1;
+            static constexpr uint32_t CR_BLOOM_STEP_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t CR_HDR_TEX_UNIFORM_BINDING = 3;
+
             struct BloomShadersConst {
                 uint32_t qualityTextureFetch;
                 float upSampleScale;

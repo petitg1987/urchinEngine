@@ -28,7 +28,8 @@ namespace urchin {
             void setupCullFaceOperation(bool);
             void setupPolygonMode(PolygonMode);
             void setupData(const std::vector<DataContainer>&, const DataContainer*);
-            void setupUniform(const std::vector<ShaderDataContainer>&, const std::vector<std::vector<std::shared_ptr<TextureReader>>>&, const std::vector<std::shared_ptr<Texture>>&);
+            void setupUniform(const std::map<uint32_t, ShaderDataContainer>&, const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>&,
+                    const std::map<uint32_t, std::shared_ptr<Texture>>&);
 
             std::shared_ptr<Pipeline> buildPipeline();
 
@@ -53,9 +54,9 @@ namespace urchin {
 
             const std::vector<DataContainer>* data;
             const DataContainer* instanceData;
-            const std::vector<ShaderDataContainer>* uniformData;
-            const std::vector<std::vector<std::shared_ptr<TextureReader>>>* uniformTextureReaders;
-            const std::vector<std::shared_ptr<Texture>>* uniformTextureOutputs;
+            const std::map<uint32_t, ShaderDataContainer>* uniformData;
+            const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>* uniformTextureReaders;
+            const std::map<uint32_t, std::shared_ptr<Texture>>* uniformTextureOutputs;
 
             std::vector<BlendFunction> blendFunctions;
             bool depthTestEnabled;

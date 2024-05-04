@@ -50,6 +50,9 @@ namespace urchin {
             void createOrUpdateRenderer();
             void createOrUpdateFxaaShader();
 
+            static constexpr uint32_t INV_SCENE_SIZE_UNIFORM_BINDING = 0;
+            static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 1;
+
             //properties
             bool useNullRenderTarget;
             Config config;

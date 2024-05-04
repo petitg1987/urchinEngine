@@ -35,6 +35,11 @@ namespace urchin {
 
             static constexpr unsigned int KERNEL_RADIUS_SHADER_LIMIT = 9; //must be equals to 'NB_TEXTURE_FETCH' in texFilterBilateralBlur shader
 
+            static constexpr uint32_t CAMERA_PLANES_UNIFORM_BINDING = 0;
+            static constexpr uint32_t OFFSETS_DATA_UNIFORM_BINDING = 1;
+            static constexpr uint32_t SRC_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 3;
+
             std::shared_ptr<Texture> depthTexture; //source texture
 
             BlurDirection blurDirection;

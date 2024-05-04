@@ -24,16 +24,17 @@ namespace urchin {
         OffsetTextureGenerator offsetTextureGenerator(10, 3);
     }
 
-    void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) {
+    void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder, uint32_t projViewMatricesUniformBinding,
+                                              uint32_t splitDataUniformBinding, uint32_t shadowMapResolutionUniformBinding) {
         std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         auto shadowMapResolution = (float)config.shadowMapResolution;
 
         lightingRendererBuilder
-                ->addUniformData(mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
-                ->addUniformData(config.nbShadowMaps * sizeof(Point4<float>), splitData.data())
-                ->addUniformData(sizeof(config.shadowMapResolution), &shadowMapResolution);
+                ->addUniformData(projViewMatricesUniformBinding, mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
+                ->addUniformData(splitDataUniformBinding, config.nbShadowMaps * sizeof(Point4<float>), splitData.data())
+                ->addUniformData(shadowMapResolutionUniformBinding, sizeof(config.shadowMapResolution), &shadowMapResolution);
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
@@ -263,20 +264,20 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, std::size_t shadowMapTexUnit, std::size_t shadowLightUniformIndex,
-                                       std::size_t shadowMapDataUniformIndex, std::size_t shadowMapInfoUniformIndex) {
+    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, uint32_t texUniformBinding, uint32_t viewProjMatricesUniformBinding,
+                                       uint32_t splitDataUniformBinding, uint32_t shadowMapResolutionUniformBinding) {
         std::size_t shadowLightIndex = 0;
         for (const Light* visibleLight : lightManager.getVisibleLights()) {
             if (visibleLight->isProduceShadow()) {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const auto& lightShadowMap = lightShadowMaps.find(const_cast<Light*>(visibleLight))->second;
 
-                if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture().get()) {
+                if (lightingRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture().get()) {
                     //Info: anisotropy is disabled because it's causing artifact on AMD GPU
                     // Artifact: https://computergraphics.stackexchange.com/questions/5146/cascaded-shadow-maps-seams-between-cascades
                     // Solution: https://learn.microsoft.com/fr-be/windows/win32/dxtecharts/cascaded-shadow-maps?redirectedfrom=MSDN
                     TextureParam textureParam = TextureParam::build(TextureParam::ReadMode::EDGE_CLAMP, TextureParam::ReadQuality::LINEAR, TextureParam::Anisotropy::NO_ANISOTROPY);
-                    lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), std::move(textureParam)));
+                    lightingRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), std::move(textureParam)));
                 }
 
                 unsigned int shadowMapIndex = 0;
@@ -291,9 +292,9 @@ namespace urchin {
         }
 
         for (auto i = (unsigned int)shadowLightIndex; i < getMaxShadowLights(); ++i) {
-            if (lightingRenderer.getUniformTextureReader(shadowMapTexUnit, i)->getTexture() != getEmptyShadowMapTexture().get()) {
+            if (lightingRenderer.getUniformTextureReader(texUniformBinding, i)->getTexture() != getEmptyShadowMapTexture().get()) {
                 //when a shadow light is removed or moved of position: reset the texture to an empty one to free the texture memory
-                lightingRenderer.updateUniformTextureReaderArray(shadowMapTexUnit, i, TextureReader::build(getEmptyShadowMapTexture(), TextureParam::buildNearest()));
+                lightingRenderer.updateUniformTextureReaderArray(texUniformBinding, i, TextureReader::build(getEmptyShadowMapTexture(), TextureParam::buildNearest()));
             }
         }
 
@@ -303,9 +304,9 @@ namespace urchin {
 
         auto shadowMapResolution = (float)config.shadowMapResolution;
 
-        lightingRenderer.updateUniformData(shadowLightUniformIndex, lightProjectionViewMatrices.data());
-        lightingRenderer.updateUniformData(shadowMapDataUniformIndex, splitData.data());
-        lightingRenderer.updateUniformData(shadowMapInfoUniformIndex, &shadowMapResolution);
+        lightingRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
+        lightingRenderer.updateUniformData(splitDataUniformBinding, splitData.data());
+        lightingRenderer.updateUniformData(shadowMapResolutionUniformBinding, &shadowMapResolution);
     }
 
 }

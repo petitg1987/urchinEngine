@@ -20,9 +20,9 @@ namespace urchin {
         }
     }
 
-    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder) const {
+    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder, uint32_t lightsDataUniformBinding) const {
         lightingRendererBuilder
-                ->addUniformData(sizeof(LightsData), &lightsData);
+                ->addUniformData(lightsDataUniformBinding, sizeof(LightsData), &lightsData);
     }
 
     OctreeManager<Light>& LightManager::getLightOctreeManager() {
@@ -121,7 +121,7 @@ namespace urchin {
         std::ranges::sort(visibleLights, std::greater<>());
     }
 
-    void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer, std::size_t lightsDataUniformIndex) {
+    void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer, uint32_t lightsDataUniformBinding) {
         std::span<Light* const> lights = getVisibleLights();
 
         for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
@@ -158,7 +158,7 @@ namespace urchin {
             }
         }
 
-        lightingRenderer.updateUniformData(lightsDataUniformIndex, &lightsData);
+        lightingRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
     }
 
     void LightManager::postUpdateVisibleLights() {

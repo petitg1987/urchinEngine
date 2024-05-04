@@ -48,7 +48,7 @@ namespace urchin {
             void updateAOTexture(std::uint32_t, unsigned int, const Camera&);
 
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
-            void loadAOTexture(GenericRenderer&, std::size_t) const;
+            void loadAOTexture(GenericRenderer&, uint32_t) const;
 
         private:
             struct AmbientOcclusionShaderConst {
@@ -74,6 +74,14 @@ namespace urchin {
             int retrieveTextureSizeFactor() const;
 
             static constexpr unsigned int KERNEL_SAMPLES_SHADER_LIMIT = 64; //must be equals to 'KERNEL_SAMPLES' in AO shader
+
+            static constexpr uint32_t PROJECTION_UNIFORM_BINDING = 0;
+            static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 1;
+            static constexpr uint32_t SSAO_KERNEL_UNIFORM_BINDING = 2;
+            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 3;
+            static constexpr uint32_t NORMAL_AMBIENT_TEX_UNIFORM_BINDING = 4;
+            static constexpr uint32_t NOISE_TEX_UNIFORM_BINDING = 5;
+            static constexpr uint32_t AO_TEX_UNIFORM_BINDING = 6;
 
             //general data
             Config config;

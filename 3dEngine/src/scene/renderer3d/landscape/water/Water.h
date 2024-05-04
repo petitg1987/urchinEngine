@@ -65,6 +65,11 @@ namespace urchin {
             void updateRenderer();
             void buildUnderwaterFog();
 
+            static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
+            static constexpr uint32_t WATER_PROPS_UNIFORM_BINDING = 1;
+            static constexpr uint32_t NORMAL_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t DUDV_TEX_UNIFORM_BINDING = 3;
+
             bool isInitialized;
 
             RenderTarget* renderTarget;

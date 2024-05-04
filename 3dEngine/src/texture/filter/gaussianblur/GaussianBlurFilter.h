@@ -35,6 +35,10 @@ namespace urchin {
 
             static constexpr unsigned int TEXTURE_FETCH_SHADER_LIMIT = 9; //must be equals to 'KERNEL_RADIUS' in texFilterGaussianBlurVec2Array shader
 
+            static constexpr uint32_t OFFSETS_DATA_UNIFORM_BINDING = 0;
+            static constexpr uint32_t WEIGHTS_DATA_UNIFORM_BINDING = 1;
+            static constexpr uint32_t SRC_TEX_UNIFORM_BINDING = 2;
+
             BlurDirection blurDirection;
             unsigned int blurSize;
 

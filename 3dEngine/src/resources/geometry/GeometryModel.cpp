@@ -32,8 +32,8 @@ namespace urchin {
         Matrix4<float> projectionViewModelMatrix;
         auto rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                 ->addData(vertexArray)
-                ->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix) //binding 0
-                ->addUniformData(sizeof(color), &color) //binding 1
+                ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
+                ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color)
                 ->polygonMode(polygonMode);
 
         if (!indices.empty()) {
@@ -68,7 +68,7 @@ namespace urchin {
     void GeometryModel::setColor(float red, float green, float blue) {
         color = Vector3<float>(red, green, blue);
         if (renderer) {
-            renderer->updateUniformData(1, &color);
+            renderer->updateUniformData(COLOR_UNIFORM_BINDING, &color);
         }
     }
 
@@ -109,7 +109,7 @@ namespace urchin {
         }
 
         Matrix4<float> projectionViewModelMatrix = projectionViewMatrix * modelMatrix;
-        renderer->updateUniformData(0, &projectionViewModelMatrix);
+        renderer->updateUniformData(PVM_MATRIX_UNIFORM_BINDING, &projectionViewModelMatrix);
         renderer->enableRenderer(renderingOrder);
     }
 

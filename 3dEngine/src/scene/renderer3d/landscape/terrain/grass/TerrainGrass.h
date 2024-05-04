@@ -62,6 +62,13 @@ namespace urchin {
             // - 50%: two grass can have the same position (-50% on one grass and +50% on another grass)
             static constexpr float GRASS_POSITION_RANDOM_PERCENTAGE = 0.35f;
 
+            static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
+            static constexpr uint32_t GRASS_PROPS_UNIFORM_BINDING = 1;
+            static constexpr uint32_t TERRAIN_POSITIONING_DATA_UNIFORM_BINDING = 2;
+            static constexpr uint32_t AMBIENT_UNIFORM_BINDING = 3;
+            static constexpr uint32_t GRASS_TEX_UNIFORM_BINDING = 4;
+            static constexpr uint32_t GRASS_TEX_MASK_UNIFORM_BINDING = 5;
+
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 

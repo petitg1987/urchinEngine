@@ -38,6 +38,9 @@ namespace urchin {
             void prepareRendering(unsigned int, const Matrix4<float>&) const;
 
         private:
+            static constexpr uint32_t PVM_MATRIX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t COLOR_UNIFORM_BINDING = 1;
+
             bool isInitialized;
 
             RenderTarget* renderTarget;

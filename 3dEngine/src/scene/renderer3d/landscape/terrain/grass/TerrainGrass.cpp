@@ -59,7 +59,7 @@ namespace urchin {
         terrainPositioningData.maxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(2, &terrainPositioningData);
+            renderer->updateUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, &terrainPositioningData);
         }
     }
 
@@ -68,7 +68,7 @@ namespace urchin {
         this->ambient = ambient;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(3, &ambient);
+            renderer->updateUniformData(AMBIENT_UNIFORM_BINDING, &ambient);
         }
     }
 
@@ -197,12 +197,12 @@ namespace urchin {
                         ->disableCullFace()
                         ->addData(grassQuadtree->getGrassVertices())
                         ->addData(grassQuadtree->getGrassNormals())
-                        ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
-                        ->addUniformData(sizeof(grassProperties), &grassProperties) //binding 1
-                        ->addUniformData(sizeof(terrainPositioningData), &terrainPositioningData) //binding 2
-                        ->addUniformData(sizeof(ambient), &ambient) //binding 3
-                        ->addUniformTextureReader(TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 4
-                        ->addUniformTextureReader(TextureReader::build(grassMaskTexture, TextureParam::buildLinear())) //binding 5
+                        ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                        ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
+                        ->addUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, sizeof(terrainPositioningData), &terrainPositioningData)
+                        ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
+                        ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                        ->addUniformTextureReader(GRASS_TEX_MASK_UNIFORM_BINDING, TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
                         ->build();
 
                 grassQuadtree->setRenderer(std::move(renderer));
@@ -277,7 +277,7 @@ namespace urchin {
         grassProperties.displayDistance = grassDisplayDistance;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(1, &grassProperties);
+            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
         }
     }
 
@@ -289,7 +289,7 @@ namespace urchin {
         grassProperties.height = grassHeight;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(1, &grassProperties);
+            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
         }
     }
 
@@ -301,7 +301,7 @@ namespace urchin {
         grassProperties.length = grassLength;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(1, &grassProperties);
+            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
         }
     }
 
@@ -313,7 +313,7 @@ namespace urchin {
         grassProperties.numGrassInTex = (int)numGrassInTex;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(1, &grassProperties);
+            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
         }
     }
 
@@ -335,7 +335,7 @@ namespace urchin {
         grassProperties.windDirection = windDirection.normalize();
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(1, &grassProperties);
+            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
         }
     }
 
@@ -347,7 +347,7 @@ namespace urchin {
         grassProperties.windStrength = windStrength;
 
         for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(1, &grassProperties);
+            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
         }
     }
 
@@ -370,7 +370,7 @@ namespace urchin {
 
                 if (grassQuadtreeBox && camera.getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
-                        grassQuadtree->getRenderer()->updateUniformData(0, &positioningData);
+                        grassQuadtree->getRenderer()->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
                         grassQuadtree->getRenderer()->enableRenderer(renderingOrder);
                     } else {
                         for (const auto& child : grassQuadtree->getChildren()) {

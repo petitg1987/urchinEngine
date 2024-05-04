@@ -110,6 +110,20 @@ namespace urchin {
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();
 
+            static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
+            static constexpr uint32_t VISUAL_OPTION_UNIFORM_BINDING = 1;
+            static constexpr uint32_t LIGHTS_DATA_UNIFORM_BINDING = 2;
+            static constexpr uint32_t SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING = 3;
+            static constexpr uint32_t SM_SPLIT_DATA_UNIFORM_BINDING = 4;
+            static constexpr uint32_t SM_RESOLUTION_UNIFORM_BINDING = 5;
+            static constexpr uint32_t FOG_UNIFORM_BINDING = 6;
+            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 7;
+            static constexpr uint32_t ALBEDO_TEX_UNIFORM_BINDING = 8;
+            static constexpr uint32_t NORMAL_AMBIENT_TEX_UNIFORM_BINDING = 9;
+            static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 10;
+            static constexpr uint32_t AO_TEX_UNIFORM_BINDING = 11;
+            static constexpr uint32_t SM_TEX_UNIFORM_BINDING = 12;
+
             //scene properties
             RenderTarget& finalRenderTarget;
             unsigned int sceneWidth;

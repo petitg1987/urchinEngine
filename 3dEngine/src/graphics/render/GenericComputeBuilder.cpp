@@ -42,33 +42,48 @@ namespace urchin {
      *   - N=16 for embedded struct
      *   - N=16 for an array (important: the array elements are rounded up to 16 bytes. Therefore, an array of float (4 bytes) in C++ won't match an array of float in the shader.)
      */
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformData(std::size_t dataSize, const void* dataPtr) {
-        if (!uniformTextureReaders.empty()) {
-            throw std::runtime_error("Adding uniform data after uniform texture is discouraged. Uniform binding ID start first with all data and then with all textures.");
-        }
-        uniformData.emplace_back(dataSize, dataPtr);
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformData(uint32_t uniformBinding, std::size_t dataSize, const void* dataPtr) {
+        #ifdef URCHIN_DEBUG
+            assert(!uniformData.contains(uniformBinding));
+            assert(!uniformTextureReaders.contains(uniformBinding));
+            assert(!uniformTextureOutputs.contains(uniformBinding));
+        #endif
+
+        uniformData.insert({uniformBinding, {dataSize, dataPtr}});
         return shared_from_this();
     }
 
-    const std::vector<ShaderDataContainer>& GenericComputeBuilder::getUniformData() const {
+    const std::map<uint32_t, ShaderDataContainer>& GenericComputeBuilder::getUniformData() const {
         return uniformData;
     }
 
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureReader(const std::shared_ptr<TextureReader>& textureReader) {
-        uniformTextureReaders.push_back({textureReader});
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureReader(uint32_t uniformBinding, const std::shared_ptr<TextureReader>& textureReader) {
+        #ifdef URCHIN_DEBUG
+            assert(!uniformData.contains(uniformBinding));
+            assert(!uniformTextureReaders.contains(uniformBinding));
+            assert(!uniformTextureOutputs.contains(uniformBinding));
+        #endif
+
+        uniformTextureReaders.insert({uniformBinding, {textureReader}});
         return shared_from_this();
     }
 
-    const std::vector<std::vector<std::shared_ptr<TextureReader>>>& GenericComputeBuilder::getUniformTextureReaders() const {
+    const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& GenericComputeBuilder::getUniformTextureReaders() const {
         return uniformTextureReaders;
     }
 
-    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureOutput(const std::shared_ptr<Texture>& textureOutput) {
-        uniformTextureOutputs.push_back(textureOutput);
+    std::shared_ptr<GenericComputeBuilder> GenericComputeBuilder::addUniformTextureOutput(uint32_t uniformBinding, const std::shared_ptr<Texture>& textureOutput) {
+        #ifdef URCHIN_DEBUG
+            assert(!uniformData.contains(uniformBinding));
+            assert(!uniformTextureReaders.contains(uniformBinding));
+            assert(!uniformTextureOutputs.contains(uniformBinding));
+        #endif
+
+        uniformTextureOutputs.insert({uniformBinding, textureOutput});
         return shared_from_this();
     }
 
-    const std::vector<std::shared_ptr<Texture>>& GenericComputeBuilder::getUniformTextureOutputs() const {
+    const std::map<uint32_t, std::shared_ptr<Texture>>& GenericComputeBuilder::getUniformTextureOutputs() const {
         return uniformTextureOutputs;
     }
 

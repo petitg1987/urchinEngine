@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/pipeline/Pipeline.h>
@@ -12,9 +14,9 @@ namespace urchin {
     class PipelineProcessor {
         public:
             PipelineProcessor(std::string, RenderTarget&, const Shader&,
-                              const std::vector<ShaderDataContainer>&,
-                              const std::vector<std::vector<std::shared_ptr<TextureReader>>>&,
-                              const std::vector<std::shared_ptr<Texture>>&);
+                              const std::map<uint32_t, ShaderDataContainer>&,
+                              const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>&,
+                              const std::map<uint32_t, std::shared_ptr<Texture>>&);
             virtual ~PipelineProcessor();
 
             const std::string& getName() const;
@@ -33,12 +35,12 @@ namespace urchin {
             std::size_t getPipelineId() const;
             PipelineType getPipelineType() const;
 
-            void updateUniformData(std::size_t, const void*);
-            void updateUniformTextureReader(std::size_t, const std::shared_ptr<TextureReader>&);
-            const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t) const;
-            const std::shared_ptr<TextureReader>& getUniformTextureReader(std::size_t, std::size_t) const;
-            void updateUniformTextureReaderArray(std::size_t, std::size_t, const std::shared_ptr<TextureReader>&);
-            const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(std::size_t) const;
+            void updateUniformData(uint32_t, const void*);
+            void updateUniformTextureReader(uint32_t, const std::shared_ptr<TextureReader>&);
+            const std::shared_ptr<TextureReader>& getUniformTextureReader(uint32_t) const;
+            const std::shared_ptr<TextureReader>& getUniformTextureReader(uint32_t, std::size_t) const;
+            void updateUniformTextureReaderArray(uint32_t, std::size_t, const std::shared_ptr<TextureReader>&);
+            const std::vector<std::shared_ptr<TextureReader>>& getUniformTextureReaderArray(uint32_t) const;
             std::span<OffscreenRender*> getTexturesWriter() const;
 
             virtual void updatePipelineProcessorData(uint32_t);
@@ -74,14 +76,14 @@ namespace urchin {
             std::unique_ptr<PipelineBuilder> pipelineBuilder;
             std::shared_ptr<Pipeline> pipeline;
 
-            std::vector<ShaderDataContainer> uniformData;
-            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
-            std::vector<std::shared_ptr<Texture>> uniformTextureOutputs;
+            std::map<uint32_t, ShaderDataContainer> uniformData;
+            std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::map<uint32_t, std::shared_ptr<Texture>> uniformTextureOutputs;
             mutable std::vector<OffscreenRender*> texturesWriter;
 
             VkDescriptorPool descriptorPool;
             std::vector<VkDescriptorSet> descriptorSets;
-            std::vector<AlterableBufferHandler> uniformsBuffers;
+            std::map<uint32_t, AlterableBufferHandler> uniformsBuffers;
             std::vector<VkWriteDescriptorSet> descriptorWrites;
             std::vector<VkDescriptorBufferInfo> bufferInfos;
             std::vector<VkDescriptorImageInfo> imageInfosArray;

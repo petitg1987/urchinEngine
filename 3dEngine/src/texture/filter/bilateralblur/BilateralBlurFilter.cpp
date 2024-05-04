@@ -33,7 +33,7 @@ namespace urchin {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = farPlane;
 
-        getTextureRenderer().updateUniformData(0, &cameraPlanes);
+        getTextureRenderer().updateUniformData(CAMERA_PLANES_UNIFORM_BINDING, &cameraPlanes);
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
@@ -51,10 +51,10 @@ namespace urchin {
         }
 
         textureRendererBuilder
-                ->addUniformData(sizeof(cameraPlanes), &cameraPlanes) //binding 0
-                ->addUniformData(offsetsShaderData.size() * sizeof(float), offsetsShaderData.data()) //binding 1
-                ->addUniformTextureReader(sourceTextureReader) //binding 2
-                ->addUniformTextureReader(TextureReader::build(depthTexture, TextureParam::buildNearest())); //binding 3
+                ->addUniformData(CAMERA_PLANES_UNIFORM_BINDING, sizeof(cameraPlanes), &cameraPlanes)
+                ->addUniformData(OFFSETS_DATA_UNIFORM_BINDING, offsetsShaderData.size() * sizeof(float), offsetsShaderData.data())
+                ->addUniformTextureReader(SRC_TEX_UNIFORM_BINDING, sourceTextureReader)
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
     std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {

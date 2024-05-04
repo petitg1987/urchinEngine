@@ -76,8 +76,8 @@ namespace urchin {
             auto meshRendererBuilder = GenericRendererBuilder::create("mesh - " + meshName, renderTarget, this->shader, ShapeType::TRIANGLE)
                     ->addData(mesh.getVertices())
                     ->indices(constMesh.getTrianglesIndices())
-                    ->addUniformData(sizeof(projectionMatrix), &projectionMatrix) //binding 0
-                    ->addUniformData(sizeof(materialData), &materialData); //binding 1 (only used in DEFAULT_MODE)
+                    ->addUniformData(PROJ_MATRIX_UNIFORM_BINDING, sizeof(projectionMatrix), &projectionMatrix)
+                    ->addUniformData(MAT_DATA_UNIFORM_BINDING, sizeof(materialData), &materialData); //only used in DEFAULT_MODE
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
@@ -88,13 +88,14 @@ namespace urchin {
             }
 
             if (customShaderVariable) {
-                customShaderVariable->setupMeshRenderer(meshRendererBuilder); //binding 2 & 3 (optional)
+                customShaderVariable->setupMeshRenderer(meshRendererBuilder, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING);
             }
-            int missingUniformData = 4 - (int)meshRendererBuilder->getUniformData().size();
-            assert(missingUniformData >= 0);
-            for (int i = 0; i < missingUniformData; ++i) {
-                int customDummyValue = 0;
-                meshRendererBuilder->addUniformData(sizeof(customDummyValue), &customDummyValue); //binding 2 & 3
+            int customDummyValue = 0;
+            if (!meshRendererBuilder->getUniformData().contains(CUSTOM1_UNIFORM_BINDING)) {
+                meshRendererBuilder->addUniformData(CUSTOM1_UNIFORM_BINDING, sizeof(customDummyValue), &customDummyValue);
+            }
+            if (!meshRendererBuilder->getUniformData().contains(CUSTOM2_UNIFORM_BINDING)) {
+                meshRendererBuilder->addUniformData(CUSTOM2_UNIFORM_BINDING, sizeof(customDummyValue), &customDummyValue);
             }
 
             if (depthTestEnabled && mesh.getMaterial().isDepthTestEnabled()) {
@@ -116,10 +117,10 @@ namespace urchin {
                         ->addData(uvScale.hasScaling() ? scaleUv(mesh.getUv(), mesh.getNormals(), uvScale) : mesh.getUv())
                         ->addData(mesh.getNormals())
                         ->addData(mesh.getTangents())
-                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh))) //binding 4
-                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh))) //binding 5
-                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh))) //binding 6
-                        ->addUniformTextureReader(TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh))); //binding 7
+                        ->addUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)))
+                        ->addUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)))
+                        ->addUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)))
+                        ->addUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());
@@ -163,19 +164,19 @@ namespace urchin {
                 if (model->isMeshUpdated(meshIndex)) {
                     const Mesh& mesh = getReferenceModel().getMeshes()->getMesh(meshIndex);
                     fillMaterialData(mesh);
-                    meshRenderer->updateUniformData(1, &materialData);
+                    meshRenderer->updateUniformData(MAT_DATA_UNIFORM_BINDING, &materialData);
 
-                    if (meshRenderer->getUniformTextureReader(0)->getTexture() != mesh.getMaterial().getAlbedoTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(0, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)));
+                    if (meshRenderer->getUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING)->getTexture() != mesh.getMaterial().getAlbedoTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(MAT_ALBEDO_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getAlbedoTexture(), buildTextureParam(mesh)));
                     }
-                    if (meshRenderer->getUniformTextureReader(1)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(1, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
+                    if (meshRenderer->getUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING)->getTexture() != mesh.getMaterial().getNormalTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)));
                     }
-                    if (meshRenderer->getUniformTextureReader(2)->getTexture() != mesh.getMaterial().getRoughnessTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(2, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)));
+                    if (meshRenderer->getUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING)->getTexture() != mesh.getMaterial().getRoughnessTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)));
                     }
-                    if (meshRenderer->getUniformTextureReader(3)->getTexture() != mesh.getMaterial().getMetalnessTexture().get()) {
-                        meshRenderer->updateUniformTextureReader(3, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
+                    if (meshRenderer->getUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING)->getTexture() != mesh.getMaterial().getMetalnessTexture().get()) {
+                        meshRenderer->updateUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
                     }
                 }
                 meshIndex++;
@@ -306,9 +307,9 @@ namespace urchin {
             } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
                 meshRenderer->updateInstanceData(instanceModelMatrices.size(), (const float*) instanceModelMatrices.data());
             }
-            meshRenderer->updateUniformData(0, &projectionViewMatrix);
+            meshRenderer->updateUniformData(PROJ_MATRIX_UNIFORM_BINDING, &projectionViewMatrix);
             if (customShaderVariable) {
-                customShaderVariable->loadCustomShaderVariables(*meshRenderer);
+                customShaderVariable->loadCustomShaderVariables(*meshRenderer, CUSTOM1_UNIFORM_BINDING, CUSTOM2_UNIFORM_BINDING);
             }
 
             meshRenderer->enableRenderer(renderingOrder);

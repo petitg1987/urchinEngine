@@ -17,14 +17,14 @@ namespace urchin {
             const Shader& getShader() const;
             const Vector2<int>& getThreadLocalSize() const;
 
-            std::shared_ptr<GenericComputeBuilder> addUniformData(std::size_t, const void*);
-            const std::vector<ShaderDataContainer>& getUniformData() const;
+            std::shared_ptr<GenericComputeBuilder> addUniformData(uint32_t, std::size_t, const void*);
+            const std::map<uint32_t, ShaderDataContainer>& getUniformData() const;
 
-            std::shared_ptr<GenericComputeBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
-            const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
+            std::shared_ptr<GenericComputeBuilder> addUniformTextureReader(uint32_t, const std::shared_ptr<TextureReader>&);
+            const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
-            std::shared_ptr<GenericComputeBuilder> addUniformTextureOutput(const std::shared_ptr<Texture>&);
-            const std::vector<std::shared_ptr<Texture>>& getUniformTextureOutputs() const;
+            std::shared_ptr<GenericComputeBuilder> addUniformTextureOutput(uint32_t, const std::shared_ptr<Texture>&);
+            const std::map<uint32_t, std::shared_ptr<Texture>>& getUniformTextureOutputs() const;
 
             std::unique_ptr<GenericCompute> build();
 
@@ -36,9 +36,9 @@ namespace urchin {
             const Shader& shader;
             Vector2<int> threadLocalSize;
 
-            std::vector<ShaderDataContainer> uniformData;
-            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
-            std::vector<std::shared_ptr<Texture>> uniformTextureOutputs;
+            std::map<uint32_t, ShaderDataContainer> uniformData;
+            std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::map<uint32_t, std::shared_ptr<Texture>> uniformTextureOutputs;
     };
 
 }

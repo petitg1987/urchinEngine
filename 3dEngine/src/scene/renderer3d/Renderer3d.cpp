@@ -242,7 +242,7 @@ namespace urchin {
             unregisterModelForAnimation(*model);
             return modelOcclusionCuller.removeModel(model);
         }
-        return std::shared_ptr<Model>(nullptr);
+        return {nullptr};
     }
 
     /**
@@ -389,23 +389,23 @@ namespace urchin {
         auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *lightingRenderTarget, *lightingShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
-                ->addUniformData(sizeof(visualOption), &visualOption); //binding 1
-        lightManager.setupLightingRenderer(lightingRendererBuilder); //binding 2
-        shadowManager.setupLightingRenderer(lightingRendererBuilder); //binding 3 & 4
-        fogContainer.setupLightingRenderer(lightingRendererBuilder); //binding 5
+                ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                ->addUniformData(VISUAL_OPTION_UNIFORM_BINDING, sizeof(visualOption), &visualOption);
+        lightManager.setupLightingRenderer(lightingRendererBuilder, LIGHTS_DATA_UNIFORM_BINDING);
+        shadowManager.setupLightingRenderer(lightingRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING);
+        fogContainer.setupLightingRenderer(lightingRendererBuilder, FOG_UNIFORM_BINDING);
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
         for (unsigned int i = 0; i < shadowManager.getMaxShadowLights(); ++i) {
             shadowMapTextureReaders.push_back(TextureReader::build(shadowManager.getEmptyShadowMapTexture(), TextureParam::buildNearest()));
         }
         lightingRenderer = lightingRendererBuilder
-                ->addUniformTextureReader(TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest())) //binding 6
-                ->addUniformTextureReader(TextureReader::build(albedoTexture, TextureParam::buildNearest())) //binding 7
-                ->addUniformTextureReader(TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest())) //binding 8
-                ->addUniformTextureReader(TextureReader::build(materialTexture, TextureParam::buildNearest())) //binding 9
-                ->addUniformTextureReader(TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest())) //binding 10 - ambient occlusion
-                ->addUniformTextureReaderArray(shadowMapTextureReaders) //binding 11
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
+                ->addUniformTextureReader(ALBEDO_TEX_UNIFORM_BINDING, TextureReader::build(albedoTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(AO_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest()))
+                ->addUniformTextureReaderArray(SM_TEX_UNIFORM_BINDING, shadowMapTextureReaders)
                 ->build();
 
         refreshDebugFramebuffers = true;
@@ -571,26 +571,18 @@ namespace urchin {
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
         positioningData.viewPosition = camera->getPosition();
-        constexpr std::size_t positioningDataUniformIndex = 0;
-        lightingRenderer->updateUniformData(positioningDataUniformIndex, &positioningData);
+        lightingRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
 
-        constexpr std::size_t lightsDataUniformIndex = 2;
-        lightManager.loadVisibleLights(*lightingRenderer, lightsDataUniformIndex);
+        lightManager.loadVisibleLights(*lightingRenderer, LIGHTS_DATA_UNIFORM_BINDING);
 
-        constexpr std::size_t fogUniformIndex = 6;
-        fogContainer.loadFog(*lightingRenderer, fogUniformIndex);
+        fogContainer.loadFog(*lightingRenderer, FOG_UNIFORM_BINDING);
 
         if (visualOption.isAmbientOcclusionActivated) {
-            constexpr std::size_t ambientOcclusionTexUnit = 4;
-            ambientOcclusionManager.loadAOTexture(*lightingRenderer, ambientOcclusionTexUnit);
+            ambientOcclusionManager.loadAOTexture(*lightingRenderer, AO_TEX_UNIFORM_BINDING);
         }
 
         if (visualOption.isShadowActivated) {
-            constexpr std::size_t shadowMapTexUnit = 5;
-            constexpr std::size_t shadowLightUniformIndex = 3;
-            constexpr std::size_t shadowMapDataUniformIndex = 4;
-            constexpr std::size_t shadowMapInfoUniformIndex = 5;
-            shadowManager.loadShadowMaps(*lightingRenderer, shadowMapTexUnit, shadowLightUniformIndex, shadowMapDataUniformIndex, shadowMapInfoUniformIndex);
+            shadowManager.loadShadowMaps(*lightingRenderer, SM_TEX_UNIFORM_BINDING, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING);
         }
 
         lightingRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());

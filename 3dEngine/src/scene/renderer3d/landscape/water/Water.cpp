@@ -65,10 +65,10 @@ namespace urchin {
                     ->enableDepthWrite()
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
-                    ->addUniformData(sizeof(positioningData), &positioningData) //binding 0
-                    ->addUniformData(sizeof(waterProperties), &waterProperties) //binding 1
-                    ->addUniformTextureReader(TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 2
-                    ->addUniformTextureReader(TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY))) //binding 3
+                    ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                    ->addUniformData(WATER_PROPS_UNIFORM_BINDING, sizeof(waterProperties), &waterProperties)
+                    ->addUniformTextureReader(NORMAL_TEX_UNIFORM_BINDING, TextureReader::build(normalTexture, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
+                    ->addUniformTextureReader(DUDV_TEX_UNIFORM_BINDING, TextureReader::build(dudvMap, TextureParam::build(TextureParam::REPEAT, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
                     ->build();
         }
 
@@ -115,7 +115,7 @@ namespace urchin {
         waterProperties.color = waterColor;
 
         if (waterRenderer) {
-            waterRenderer->updateUniformData(1, &waterProperties);
+            waterRenderer->updateUniformData(WATER_PROPS_UNIFORM_BINDING, &waterProperties);
         }
     }
 
@@ -175,7 +175,7 @@ namespace urchin {
         waterProperties.waveSpeed = waveSpeed;
 
         if (waterRenderer) {
-            waterRenderer->updateUniformData(1, &waterProperties);
+            waterRenderer->updateUniformData(WATER_PROPS_UNIFORM_BINDING, &waterProperties);
         }
     }
 
@@ -187,7 +187,7 @@ namespace urchin {
         waterProperties.waveStrength = waveStrength;
 
         if (waterRenderer) {
-            waterRenderer->updateUniformData(1, &waterProperties);
+            waterRenderer->updateUniformData(WATER_PROPS_UNIFORM_BINDING, &waterProperties);
         }
     }
 
@@ -251,7 +251,7 @@ namespace urchin {
             positioningData.projectionViewMatrix = camera.getProjectionViewMatrix();
             positioningData.sumTimeStep += dt;
 
-            waterRenderer->updateUniformData(0, &positioningData);
+            waterRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
             waterRenderer->enableRenderer(renderingOrder);
         }
     }

@@ -30,7 +30,6 @@ namespace urchin {
     void TerrainMaterials::initializeMaterial(const std::vector<std::string>& materialFilenames) {
         assert(materialFilenames.size() <= MAX_MATERIAL);
 
-        materials.resize(MAX_MATERIAL);
         for (std::size_t i = 0; i < MAX_MATERIAL; ++i) {
             if (materialFilenames.size() > i && !materialFilenames[i].empty()) {
                 materials[i] = ResourceRetriever::instance().getResource<Material>(materialFilenames[i], {});
@@ -53,10 +52,10 @@ namespace urchin {
     }
 
     Vector2<float> TerrainMaterials::getStRepeat() const {
-        return Vector2<float>(sRepeat, tRepeat);
+        return {sRepeat, tRepeat};
     }
 
-    const std::vector<std::shared_ptr<Material>>& TerrainMaterials::getMaterials() const {
+    const std::array<std::shared_ptr<Material>, TerrainMaterials::MAX_MATERIAL>& TerrainMaterials::getMaterials() const {
         return materials;
     }
 
@@ -68,7 +67,7 @@ namespace urchin {
                 float s = (float)x / (float)xSize * sRepeat;
                 float t = (float)z / (float)zSize * tRepeat;
 
-                texCoordinates.emplace_back(Point2<float>(s, t));
+                texCoordinates.emplace_back(s, t);
             }
         }
     }

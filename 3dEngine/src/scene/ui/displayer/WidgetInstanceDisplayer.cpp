@@ -54,12 +54,12 @@ namespace urchin {
                     0.0f, 0.0f, 0.0f, 1.0f);
         }
 
-        rendererBuilder->addUniformData(sizeof(normalMatrix), &normalMatrix); //binding 0
-        rendererBuilder->addUniformData(sizeof(projectionViewModelMatrix), &projectionViewModelMatrix); //binding 1
+        rendererBuilder->addUniformData(NORMAL_MATRIX_UNIFORM_BINDING, sizeof(normalMatrix), &normalMatrix);
+        rendererBuilder->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix);
 
         colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
-        rendererBuilder->addUniformData(sizeof(colorParams), &colorParams); //binding 2
+        rendererBuilder->addUniformData(COLOR_PARAMS_UNIFORM_BINDING, sizeof(colorParams), &colorParams);
 
         coordinates.clear();
         getReferenceWidget().retrieveVertexCoordinates(coordinates);
@@ -77,7 +77,7 @@ namespace urchin {
             rendererBuilder->setScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
         }
 
-        rendererBuilder->addUniformTextureReader(TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy()))); //binding 3
+        rendererBuilder->addUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
 
         renderer = rendererBuilder->build();
 
@@ -85,7 +85,7 @@ namespace urchin {
     }
 
     void WidgetInstanceDisplayer::updateTexture() {
-        renderer->updateUniformTextureReader(0, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
+        renderer->updateUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
     void WidgetInstanceDisplayer::updateScissor() {
@@ -107,7 +107,7 @@ namespace urchin {
 
     void WidgetInstanceDisplayer::updateAlphaFactor() {
         colorParams.alphaFactor = getReferenceWidget().getAlphaFactor();
-        renderer->updateUniformData(2, &colorParams);
+        renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams);
     }
 
     void WidgetInstanceDisplayer::onUiRendererSizeUpdated() {
@@ -117,13 +117,13 @@ namespace urchin {
                     0.0f, 2.0f / (float) uiRenderer.getUiResolution().Y, -1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f, 0.0f,
                     0.0f, 0.0f, 0.0f, 1.0f);
-            renderer->updateUniformData(1, &projectionViewModelMatrix);
+            renderer->updateUniformData(PVM_MATRIX_UNIFORM_BINDING, &projectionViewModelMatrix);
         }
     }
 
     void WidgetInstanceDisplayer::onGammaFactorUpdated() {
         colorParams.gammaFactor = uiRenderer.getGammaFactor();
-        renderer->updateUniformData(2, &colorParams);
+        renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams);
     }
 
     const WidgetSetDisplayer& WidgetInstanceDisplayer::getWidgetSetDisplayer() const {
@@ -219,7 +219,7 @@ namespace urchin {
     void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {
         if (uiRenderer.getUi3dData()) {
             Matrix4<float> uiProjectionViewMatrix = projectionViewMatrix * uiRenderer.getUi3dData()->modelMatrix;
-            renderer->updateUniformData(1, &uiProjectionViewMatrix);
+            renderer->updateUniformData(PVM_MATRIX_UNIFORM_BINDING, &uiProjectionViewMatrix);
         }
 
         renderer->updateInstanceData(instanceModelMatrices.size(), (const float*)instanceModelMatrices.data());

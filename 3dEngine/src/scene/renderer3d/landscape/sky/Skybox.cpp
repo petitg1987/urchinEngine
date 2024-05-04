@@ -132,8 +132,8 @@ namespace urchin {
         skyboxRenderer = GenericRendererBuilder::create("skybox", renderTarget, *skyboxShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(projectionViewMatrix), &projectionViewMatrix) //binding 0
-                ->addUniformTextureReader(TextureReader::build(skyboxTexture, TextureParam::buildNearest())) //binding 1
+                ->addUniformData(PROJ_VIEW_UNIFORM_BINDING, sizeof(projectionViewMatrix), &projectionViewMatrix)
+                ->addUniformTextureReader(SKYBOX_TEX_UNIFORM_BINDING, TextureReader::build(skyboxTexture, TextureParam::buildNearest()))
                 ->build();
 
         this->isInitialized = true;
@@ -155,7 +155,7 @@ namespace urchin {
         assert(isInitialized);
         translationMatrix = Matrix4<float>::buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
         Matrix4<float> skyboxProjectionViewMatrix = projectionViewMatrix * translationMatrix;
-        skyboxRenderer->updateUniformData(0, &skyboxProjectionViewMatrix);
+        skyboxRenderer->updateUniformData(PROJ_VIEW_UNIFORM_BINDING, &skyboxProjectionViewMatrix);
 
         skyboxRenderer->enableRenderer(renderingOrder);
     }

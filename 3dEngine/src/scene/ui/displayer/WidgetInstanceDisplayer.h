@@ -37,6 +37,11 @@ namespace urchin {
             Widget& getReferenceWidget() const;
             TextureParam::Anisotropy getTextureAnisotropy() const;
 
+            static constexpr uint32_t NORMAL_MATRIX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t PVM_MATRIX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t COLOR_PARAMS_UNIFORM_BINDING = 2;
+            static constexpr uint32_t TEX_UNIFORM_BINDING = 3;
+
             bool isInitialized;
 
             const WidgetSetDisplayer& widgetSetDisplayer;

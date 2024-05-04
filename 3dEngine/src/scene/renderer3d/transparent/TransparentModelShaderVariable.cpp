@@ -9,15 +9,15 @@ namespace urchin {
         cameraPlanes.farPlane = fatPlane;
     }
 
-    void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
+    void TransparentModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t uniformBinding2) {
         assert(meshRendererBuilder->getUniformData().size() == 2);
         meshRendererBuilder
-                ->addUniformData(sizeof(cameraPlanes), &cameraPlanes); //binding 2
-        lightManager.setupLightingRenderer(meshRendererBuilder); //binding 3
+                ->addUniformData(uniformBinding1, sizeof(cameraPlanes), &cameraPlanes);
+        lightManager.setupLightingRenderer(meshRendererBuilder, uniformBinding2);
     }
 
-    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
-        lightManager.loadVisibleLights(meshRenderer, 3);
+    void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t, uint32_t uniformBinding2) {
+        lightManager.loadVisibleLights(meshRenderer, uniformBinding2);
     }
 
 }

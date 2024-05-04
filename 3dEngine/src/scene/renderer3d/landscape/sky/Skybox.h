@@ -25,6 +25,9 @@ namespace urchin {
             void prepareRendering(unsigned int, const Matrix4<float>&, const Point3<float>&);
 
         private:
+            static constexpr uint32_t PROJ_VIEW_UNIFORM_BINDING = 0;
+            static constexpr uint32_t SKYBOX_TEX_UNIFORM_BINDING = 1;
+
             bool isInitialized;
             std::vector<std::string> filenames;
 

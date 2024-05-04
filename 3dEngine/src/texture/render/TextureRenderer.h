@@ -50,6 +50,10 @@ namespace urchin {
 
             void initializeShader();
 
+            static constexpr uint32_t PROJ_MATRIX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t RENDERING_DATA_UNIFORM_BINDING = 1;
+            static constexpr uint32_t TEX_UNIFORM_BINDING = 2;
+
             bool isInitialized;
 
             TextureRenderer::CoordinateX coordinateX;

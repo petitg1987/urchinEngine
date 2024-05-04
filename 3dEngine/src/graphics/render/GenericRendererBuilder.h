@@ -32,12 +32,12 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> indices(const std::vector<uint32_t>&);
             const std::shared_ptr<IndexContainer>& getIndices() const;
 
-            std::shared_ptr<GenericRendererBuilder> addUniformData(std::size_t, const void*);
-            const std::vector<ShaderDataContainer>& getUniformData() const;
+            std::shared_ptr<GenericRendererBuilder> addUniformData(uint32_t, std::size_t, const void*);
+            const std::map<uint32_t, ShaderDataContainer>& getUniformData() const;
 
-            std::shared_ptr<GenericRendererBuilder> addUniformTextureReader(const std::shared_ptr<TextureReader>&);
-            std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(const std::vector<std::shared_ptr<TextureReader>>&);
-            const std::vector<std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
+            std::shared_ptr<GenericRendererBuilder> addUniformTextureReader(uint32_t, const std::shared_ptr<TextureReader>&);
+            std::shared_ptr<GenericRendererBuilder> addUniformTextureReaderArray(uint32_t, const std::vector<std::shared_ptr<TextureReader>>&);
+            const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& getUniformTextureReaders() const;
 
             std::shared_ptr<GenericRendererBuilder> enableTransparency(const std::vector<BlendFunction>&);
             const std::vector<BlendFunction>& getBlendFunctions() const;
@@ -71,8 +71,8 @@ namespace urchin {
             std::vector<DataContainer> data;
             std::shared_ptr<DataContainer> mInstanceData;
             std::shared_ptr<IndexContainer> mIndices;
-            std::vector<ShaderDataContainer> uniformData;
-            std::vector<std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
+            std::map<uint32_t, ShaderDataContainer> uniformData;
+            std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>> uniformTextureReaders;
             std::vector<BlendFunction> blendFunctions;
             bool customScissor;
             Vector2<int> scissorOffset;

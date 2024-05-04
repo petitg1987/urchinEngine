@@ -9,9 +9,9 @@
 namespace urchin {
 
     PipelineProcessor::PipelineProcessor(std::string name, RenderTarget& renderTarget, const Shader& shader,
-                                         const std::vector<ShaderDataContainer>& uniformData,
-                                         const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders,
-                                         const std::vector<std::shared_ptr<Texture>>& uniformTextureOutputs) :
+                                         const std::map<uint32_t, ShaderDataContainer>& uniformData,
+                                         const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders,
+                                         const std::map<uint32_t, std::shared_ptr<Texture>>& uniformTextureOutputs) :
             name(std::move(name)),
             renderTarget(renderTarget),
             shader(shader),
@@ -26,12 +26,12 @@ namespace urchin {
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
         if (getRenderTarget().isValidRenderTarget()) {
-            for (const auto& uniformTextureReaderArray: uniformTextureReaders) {
-                for (const auto& uniformTextureReader: uniformTextureReaderArray) {
+            for (const auto& [uniformBinding, uniformTextureReaderArray] : uniformTextureReaders) {
+                for (const auto& uniformTextureReader : uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
                 }
             }
-            for (const auto& uniformTextureOutput: uniformTextureOutputs) {
+            for (const auto& [uniformBinding, uniformTextureOutput] : uniformTextureOutputs) {
                 uniformTextureOutput->initialize();
             }
         }
@@ -109,17 +109,16 @@ namespace urchin {
     }
 
     void PipelineProcessor::createUniformBuffers() {
-        uniformsBuffers.resize(uniformData.size());
-        for (std::size_t dataIndex = 0; dataIndex < uniformData.size(); ++dataIndex) {
-            ShaderDataContainer& shaderDataContainer = uniformData[dataIndex];
-            std::string bufferName = getName() + " - uniform" + std::to_string(dataIndex);
-            uniformsBuffers[dataIndex].initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
+        for (auto& [uniformBinding, shaderDataContainer] : uniformData) {
+            std::string bufferName = getName() + " - uniform" + std::to_string(uniformBinding);
+            uniformsBuffers.insert({uniformBinding, AlterableBufferHandler()});
+            uniformsBuffers.at(uniformBinding).initialize(bufferName, BufferHandler::UNIFORM, BufferHandler::DYNAMIC, getRenderTarget().getNumFramebuffer(), shaderDataContainer.getDataSize(), shaderDataContainer.getData());
             shaderDataContainer.markDataAsProcessed();
         }
     }
 
     void PipelineProcessor::destroyUniformBuffers() {
-        for (auto& uniformsBuffer : uniformsBuffers) {
+        for (auto& [uniformBinding, uniformsBuffer] : uniformsBuffers) {
             uniformsBuffer.cleanup();
         }
         uniformsBuffers.clear();
@@ -135,7 +134,7 @@ namespace urchin {
         poolSizes[0].descriptorCount = (uint32_t)uboDescriptorCount;
 
         int uniformTexReadersCount = 0;
-        std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.size();});
+        std::ranges::for_each(uniformTextureReaders, [&](auto& r){uniformTexReadersCount += (int)r.second.size();});
         int textureDescriptorCount = std::max(1, (int)getRenderTarget().getNumFramebuffer() * uniformTexReadersCount);
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         poolSizes[1].descriptorCount = (uint32_t)textureDescriptorCount;
@@ -184,14 +183,13 @@ namespace urchin {
     void PipelineProcessor::updateDescriptorSets(std::size_t frameIndex) {
         descriptorWrites.clear();
         descriptorWrites.reserve(uniformData.size() + uniformTextureReaders.size() + uniformTextureOutputs.size());
-        uint32_t shaderUniformBinding = 0;
 
         //uniform buffer objects
         bufferInfos.clear();
         bufferInfos.reserve(uniformData.size());
-        for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
+        for (const auto& [uniformBinding, uniformSingleData] : uniformData) {
             VkDescriptorBufferInfo bufferInfo{};
-            bufferInfo.buffer = uniformsBuffers[uniformDataIndex].getBuffer(frameIndex);
+            bufferInfo.buffer = uniformsBuffers.at(uniformBinding).getBuffer(frameIndex);
             bufferInfo.offset = 0;
             bufferInfo.range = VK_WHOLE_SIZE;
             bufferInfos.emplace_back(bufferInfo);
@@ -199,7 +197,7 @@ namespace urchin {
             VkWriteDescriptorSet uniformDescriptorWrites{};
             uniformDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             uniformDescriptorWrites.dstSet = descriptorSets[frameIndex];
-            uniformDescriptorWrites.dstBinding = shaderUniformBinding++;
+            uniformDescriptorWrites.dstBinding = uniformBinding;
             uniformDescriptorWrites.dstArrayElement = 0;
             uniformDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uniformDescriptorWrites.descriptorCount = 1;
@@ -209,8 +207,8 @@ namespace urchin {
 
         //textures
         imageInfosArray.clear();
-        imageInfosArray.reserve(std::accumulate(uniformTextureReaders.begin(), uniformTextureReaders.end(), 0uL, [](std::size_t sum, const auto& utr) { return sum + utr.size(); }));
-        for (const std::vector<std::shared_ptr<TextureReader>>& uniformTextureReaderArray : uniformTextureReaders) {
+        imageInfosArray.reserve(std::accumulate(uniformTextureReaders.begin(), uniformTextureReaders.end(), 0uL, [](std::size_t sum, const auto& utr) { return sum + utr.second.size(); }));
+        for (const auto& [uniformBiding, uniformTextureReaderArray] : uniformTextureReaders) {
             std::size_t startIndex = imageInfosArray.size();
 
             for (const std::shared_ptr<TextureReader>& uniformTextureReader : uniformTextureReaderArray) {
@@ -230,7 +228,7 @@ namespace urchin {
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
-            textureDescriptorWrites.dstBinding = shaderUniformBinding++;
+            textureDescriptorWrites.dstBinding = uniformBiding;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             textureDescriptorWrites.descriptorCount = (uint32_t)uniformTextureReaderArray.size();
@@ -241,7 +239,7 @@ namespace urchin {
         //texture outputs
         imageOutputInfosArray.clear();
         imageOutputInfosArray.reserve(uniformTextureOutputs.size());
-        for (const std::shared_ptr<Texture>& uniformTextureOutput : uniformTextureOutputs) {
+        for (const auto& [uniformBinding, uniformTextureOutput] : uniformTextureOutputs) {
             std::size_t startIndex = imageOutputInfosArray.size();
 
             VkDescriptorImageInfo imageInfo{};
@@ -253,7 +251,7 @@ namespace urchin {
             VkWriteDescriptorSet textureDescriptorWrites{};
             textureDescriptorWrites.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
             textureDescriptorWrites.dstSet = descriptorSets[frameIndex];
-            textureDescriptorWrites.dstBinding = shaderUniformBinding++;
+            textureDescriptorWrites.dstBinding = uniformBinding;
             textureDescriptorWrites.dstArrayElement = 0;
             textureDescriptorWrites.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
             textureDescriptorWrites.descriptorCount = (uint32_t)1;
@@ -270,63 +268,63 @@ namespace urchin {
         vkDestroyDescriptorPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), descriptorPool, nullptr);
     }
 
-    void PipelineProcessor::updateUniformData(std::size_t uniformDataIndex, const void* dataPtr) {
+    void PipelineProcessor::updateUniformData(uint32_t uniformBinding, const void* dataPtr) {
         #ifdef URCHIN_DEBUG
-            assert(uniformData.size() > uniformDataIndex);
+            assert(uniformData.contains(uniformBinding));
         #endif
 
         if (getRenderTarget().isValidRenderTarget()) {
-            uniformData[uniformDataIndex].updateData(dataPtr);
+            uniformData.at(uniformBinding).updateData(dataPtr);
         }
     }
 
-    void PipelineProcessor::updateUniformTextureReader(std::size_t uniformTexPosition, const std::shared_ptr<TextureReader>& textureReader) {
+    void PipelineProcessor::updateUniformTextureReader(uint32_t uniformBinding, const std::shared_ptr<TextureReader>& textureReader) {
         if (getRenderTarget().isValidRenderTarget()) {
-            updateUniformTextureReaderArray(uniformTexPosition, 0, textureReader);
+            updateUniformTextureReaderArray(uniformBinding, 0, textureReader);
         }
     }
 
-    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(std::size_t uniformTexPosition) const {
+    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(uint32_t uniformBinding) const {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.size() > uniformTexPosition);
-            assert(uniformTextureReaders[uniformTexPosition].size() == 1);
+            assert(uniformTextureReaders.contains(uniformBinding));
+            assert(uniformTextureReaders.at(uniformBinding).size() == 1);
         #endif
-        return getUniformTextureReaderArray(uniformTexPosition)[0];
+        return getUniformTextureReaderArray(uniformBinding)[0];
     }
 
-    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(std::size_t uniformTexPosition, std::size_t textureIndex) const {
+    const std::shared_ptr<TextureReader>& PipelineProcessor::getUniformTextureReader(uint32_t uniformBinding, std::size_t textureIndex) const {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.size() > uniformTexPosition);
-            assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+            assert(uniformTextureReaders.contains(uniformBinding));
+            assert(uniformTextureReaders.at(uniformBinding).size() > textureIndex);
         #endif
-        return getUniformTextureReaderArray(uniformTexPosition)[textureIndex];
+        return getUniformTextureReaderArray(uniformBinding)[textureIndex];
     }
 
-    void PipelineProcessor::updateUniformTextureReaderArray(std::size_t uniformTexPosition, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
+    void PipelineProcessor::updateUniformTextureReaderArray(uint32_t uniformBinding, std::size_t textureIndex, const std::shared_ptr<TextureReader>& textureReader) {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.size() > uniformTexPosition);
-            assert(uniformTextureReaders[uniformTexPosition].size() > textureIndex);
+            assert(uniformTextureReaders.contains(uniformBinding));
+            assert(uniformTextureReaders.at(uniformBinding).size() > textureIndex);
         #endif
 
         if (getRenderTarget().isValidRenderTarget()) {
             textureReader->initialize();
-            uniformTextureReaders[uniformTexPosition][textureIndex] = textureReader;
+            uniformTextureReaders.at(uniformBinding)[textureIndex] = textureReader;
 
             std::fill(descriptorSetsDirty.begin(), descriptorSetsDirty.end(), true);
         }
     }
 
-    const std::vector<std::shared_ptr<TextureReader>>& PipelineProcessor::getUniformTextureReaderArray(std::size_t textureIndex) const {
+    const std::vector<std::shared_ptr<TextureReader>>& PipelineProcessor::getUniformTextureReaderArray(uint32_t uniformBinding) const {
         #ifdef URCHIN_DEBUG
-            assert(uniformTextureReaders.size() > textureIndex);
+            assert(uniformTextureReaders.contains(uniformBinding));
         #endif
-        return uniformTextureReaders[textureIndex];
+        return uniformTextureReaders.at(uniformBinding);
     }
 
     std::span<OffscreenRender*> PipelineProcessor::getTexturesWriter() const {
         texturesWriter.clear();
 
-        for (auto& uniformTextureReaderArray : uniformTextureReaders) {
+        for (auto& [uniformBinding, uniformTextureReaderArray] : uniformTextureReaders) {
             for (auto& uniformTextureReader : uniformTextureReaderArray) {
                 auto* lastTextureWriter = uniformTextureReader->getTexture()->getLastTextureWriter();
                 if (lastTextureWriter) {
@@ -340,10 +338,9 @@ namespace urchin {
 
     void PipelineProcessor::updatePipelineProcessorData(uint32_t frameIndex) {
         //update shader uniforms
-        for (std::size_t uniformDataIndex = 0; uniformDataIndex < uniformData.size(); ++uniformDataIndex) {
-            if (uniformData[uniformDataIndex].hasNewData(frameIndex)) {
-                auto& dataContainer = uniformData[uniformDataIndex];
-                if (uniformsBuffers[uniformDataIndex].updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData())) {
+        for (auto& [uniformBinding, dataContainer] : uniformData) {
+            if (dataContainer.hasNewData(frameIndex)) {
+                if (uniformsBuffers.at(uniformBinding).updateData(frameIndex, dataContainer.getDataSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
                 dataContainer.markDataAsProcessed(frameIndex);

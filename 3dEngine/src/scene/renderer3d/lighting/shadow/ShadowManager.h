@@ -43,7 +43,7 @@ namespace urchin {
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
             ~ShadowManager() override = default;
 
-            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&);
+            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t);
             void onCameraProjectionUpdate(const Camera&);
             void notify(Observable*, int) override;
 
@@ -63,7 +63,7 @@ namespace urchin {
             void removeModel(Model*) const;
 
             void updateShadowMaps(std::uint32_t, unsigned int) const;
-            void loadShadowMaps(GenericRenderer&, std::size_t, std::size_t, std::size_t, std::size_t);
+            void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t);
 
         private:
             //light handling

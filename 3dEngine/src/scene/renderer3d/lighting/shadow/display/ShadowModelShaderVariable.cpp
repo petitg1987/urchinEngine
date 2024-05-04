@@ -11,7 +11,7 @@ namespace urchin {
 
     }
 
-    void ShadowModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder) {
+    void ShadowModelShaderVariable::setupMeshRenderer(const std::shared_ptr<GenericRendererBuilder>& meshRendererBuilder, uint32_t uniformBinding1, uint32_t) {
         assert(meshRendererBuilder->getUniformData().size() == 2);
 
         if (shadowData.projectionMatrices.size() < lightShadowMap->getNumberShadowMaps()) {
@@ -19,13 +19,13 @@ namespace urchin {
                     + ") is not expected to exceed " + std::to_string(shadowData.projectionMatrices.size()));
         }
         std::size_t shadowDataSize = lightShadowMap->getNumberShadowMaps() * sizeof(Matrix4<float>);
-        meshRendererBuilder->addUniformData(shadowDataSize, &shadowData); //binding 2
+        meshRendererBuilder->addUniformData(uniformBinding1, shadowDataSize, &shadowData);
     }
 
-    void ShadowModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer) {
+    void ShadowModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t uniformBinding1, uint32_t) {
         refreshShaderVariables();
 
-        meshRenderer.updateUniformData(2, &shadowData);
+        meshRenderer.updateUniformData(uniformBinding1, &shadowData);
     }
 
     void ShadowModelShaderVariable::refreshShaderVariables() {

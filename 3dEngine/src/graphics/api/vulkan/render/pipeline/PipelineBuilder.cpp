@@ -80,8 +80,8 @@ namespace urchin {
         this->instanceData = instanceData;
     }
 
-    void PipelineBuilder::setupUniform(const std::vector<ShaderDataContainer>& uniformData, const std::vector<std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders,
-                                       const std::vector<std::shared_ptr<Texture>>& uniformTextureOutputs) {
+    void PipelineBuilder::setupUniform(const std::map<uint32_t, ShaderDataContainer>& uniformData, const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>& uniformTextureReaders,
+                                       const std::map<uint32_t, std::shared_ptr<Texture>>& uniformTextureOutputs) {
         this->uniformData = &uniformData;
         this->uniformTextureReaders = &uniformTextureReaders;
         this->uniformTextureOutputs = &uniformTextureOutputs;
@@ -162,7 +162,6 @@ namespace urchin {
     void PipelineBuilder::createDescriptorSetLayout(const std::shared_ptr<Pipeline>& pipeline) const {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        uint32_t shaderUniformBinding = 0;
         std::vector<VkDescriptorSetLayoutBinding> bindings;
 
         VkShaderStageFlags stageFlags = 0;
@@ -172,10 +171,9 @@ namespace urchin {
             stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
         }
 
-        for (auto& uniformSingleData : *uniformData) {
-            std::ignore = uniformSingleData;
+        for (const auto& [uniformBinding, uniformSingleData] : *uniformData) {
             VkDescriptorSetLayoutBinding uboLayoutBinding{};
-            uboLayoutBinding.binding = shaderUniformBinding++;
+            uboLayoutBinding.binding = uniformBinding;
             uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             uboLayoutBinding.descriptorCount = 1;
             uboLayoutBinding.stageFlags = stageFlags;
@@ -183,9 +181,9 @@ namespace urchin {
             bindings.emplace_back(uboLayoutBinding);
         }
 
-        for (auto& uniformTextureReader : *uniformTextureReaders) {
+        for (const auto& [uniformBinding, uniformTextureReader] : *uniformTextureReaders) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-            samplerLayoutBinding.binding = shaderUniformBinding++;
+            samplerLayoutBinding.binding = uniformBinding;
             samplerLayoutBinding.descriptorCount = (uint32_t)uniformTextureReader.size();
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             samplerLayoutBinding.pImmutableSamplers = nullptr;
@@ -193,9 +191,9 @@ namespace urchin {
             bindings.emplace_back(samplerLayoutBinding);
         }
 
-        for (std::size_t i = 0; i < uniformTextureOutputs->size(); ++i) {
+        for (const auto& [uniformBinding, uniformTextureOutput] : *uniformTextureOutputs) {
             VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-            samplerLayoutBinding.binding = shaderUniformBinding++;
+            samplerLayoutBinding.binding = uniformBinding;
             samplerLayoutBinding.descriptorCount = (uint32_t)1;
             samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
             samplerLayoutBinding.pImmutableSamplers = nullptr;

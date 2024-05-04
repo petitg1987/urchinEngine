@@ -39,7 +39,7 @@ namespace urchin {
         this->gammaFactor = gammaFactor;
 
         if (combineRenderer) {
-            combineRenderer->updateUniformData(1, &gammaFactor);
+            combineRenderer->updateUniformData(CR_GAMMA_UNIFORM_BINDING, &gammaFactor);
         }
     }
 
@@ -92,10 +92,10 @@ namespace urchin {
 
         Point2 texelSize(1.0f / (float)inputHdrTexture->getWidth(), 1.0f / (float)inputHdrTexture->getHeight());
         preFilterCompute = GenericComputeBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, Vector2<int>(8, 8))
-                ->addUniformData(sizeof(preFilterTweak), &preFilterTweak) //binding 0
-                ->addUniformData(sizeof(texelSize), &texelSize) //binding 1
-                ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 2
-                ->addUniformTextureOutput(bloomStepTextures[0]) //binding 3
+                ->addUniformData(PF_TWEAK_UNIFORM_BINDING, sizeof(preFilterTweak), &preFilterTweak)
+                ->addUniformData(PF_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
+                ->addUniformTextureReader(PF_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputHdrTexture, TextureParam::buildLinear()))
+                ->addUniformTextureOutput(PF_OUTPUT_TEX_UNIFORM_BINDING, bloomStepTextures[0])
                 ->build();
 
         //down sample
@@ -114,9 +114,9 @@ namespace urchin {
 
             Point2 texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
             downSampleComputes.push_back(GenericComputeBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, Vector2<int>(8, 8))
-                    ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
-                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear())) //binding 1
-                    ->addUniformTextureOutput(bloomStepTextures[outTexIndex]) //binding 2
+                    ->addUniformData(DS_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
+                    ->addUniformTextureReader(DS_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear()))
+                    ->addUniformTextureOutput(DS_OUTPUT_TEX_UNIFORM_BINDING, bloomStepTextures[outTexIndex])
                     ->build());
             downSampleRenderTargets.push_back(std::move(downSampleRenderTarget));
         }
@@ -139,8 +139,8 @@ namespace urchin {
             upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample " + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
-                    ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
-                    ->addUniformTextureReader(TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear())) //binding 1
+                    ->addUniformData(US_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
+                    ->addUniformTextureReader(US_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear()))
                     ->enableTransparency({BlendFunction::build(BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE, BlendFactor::ONE)})
                     ->build());
             upSampleRenderTargets.push_back(std::move(upSampleRenderTarget));
@@ -152,10 +152,10 @@ namespace urchin {
         combineRenderer = GenericRendererBuilder::create("bloom - combine", outputRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(sizeof(texelSize), &texelSize) //binding 0
-                ->addUniformData(sizeof(gammaFactor), &gammaFactor) //binding 1
-                ->addUniformTextureReader(TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear())) //binding 2
-                ->addUniformTextureReader(TextureReader::build(inputHdrTexture, TextureParam::buildLinear())) //binding 3
+                ->addUniformData(CR_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
+                ->addUniformData(CR_GAMMA_UNIFORM_BINDING, sizeof(gammaFactor), &gammaFactor)
+                ->addUniformTextureReader(CR_BLOOM_STEP_TEX_UNIFORM_BINDING, TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear()))
+                ->addUniformTextureReader(CR_HDR_TEX_UNIFORM_BINDING, TextureReader::build(inputHdrTexture, TextureParam::buildLinear()))
                 ->build();
     }
 
