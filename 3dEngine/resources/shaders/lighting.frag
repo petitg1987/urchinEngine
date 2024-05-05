@@ -94,14 +94,15 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
             float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
+            float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)) / shadowMapInfo.offsetSampleCount; //NdotL is a hijack to apply normal map in shadow
+
             for (int layer = 0; layer < shadowMapInfo.offsetSampleCount; ++layer) { //TODO stop if x first point are all in shadow/light
-                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(texCoordinates, layer)).rg * (1.0f / shadowMapInfo.shadowMapResolution); //TODO move division outside loop
+                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(texCoordinates, layer)).rg * (1.0f / shadowMapInfo.shadowMapResolution);
                 float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
                 if (shadowCoord.z - bias > shadowDepth) {
-                    totalShadow += 1.0 - max(0.0, NdotL / 5.0); //hijack to apply normal map in shadow //TODO do max outside loop ?
+                    totalShadow += singleShadowQuantity;
                 }
             }
-            totalShadow /= shadowMapInfo.offsetSampleCount;
 
             break;
         }

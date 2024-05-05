@@ -9,14 +9,25 @@ namespace urchin {
 
     OffsetTextureGenerator::OffsetTextureGenerator(unsigned int textureXYSize, unsigned int filterXYSize) :
             textureXYSize(textureXYSize),
-            filterXYSize(filterXYSize) { //TODO handle value of 0
-        std::vector<Vector2<float>> textureData = generateTextureData();
-        if (DEBUG_EXPORT_TEXTURE_DATA) {
-            exportSVG(SystemInfo::homeDirectory() + "shadowMapOffsetTextureData.svg", textureData);
-        }
+            filterXYSize(filterXYSize) {
 
-        unsigned int layer = filterXYSize * filterXYSize;
-        offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, layer, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+        #ifdef URCHIN_DEBUG
+            assert(textureXYSize > 0);
+            assert(filterXYSize > 0);
+        #endif
+
+        if (filterXYSize == 1) {
+            std::vector<Vector2<float>> textureData = {Vector2<float>(0.0f, 0.0f)};
+            offsetTexture = Texture::buildArray("SM offset", 1, 1, 1, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+        } else {
+            std::vector<Vector2<float>> textureData = generateTextureData();
+            if (DEBUG_EXPORT_TEXTURE_DATA) {
+                exportSVG(SystemInfo::homeDirectory() + "shadowMapOffsetTextureData.svg", textureData);
+            }
+
+            unsigned int layer = filterXYSize * filterXYSize;
+            offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, layer, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+        }
     }
 
     std::shared_ptr<Texture> OffsetTextureGenerator::getOffsetTexture() const {

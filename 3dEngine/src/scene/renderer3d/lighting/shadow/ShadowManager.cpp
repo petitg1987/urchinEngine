@@ -107,8 +107,8 @@ namespace urchin {
             throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(config.nbShadowMaps));
         } else if (config.nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMaps));
-        } else if (config.blurFilterXYSize == 1) {
-            throw std::invalid_argument("Size of the blur filter must be different from 1. Value: " + std::to_string(config.blurFilterXYSize));
+        } else if (config.blurFilterXYSize == 0) {
+            throw std::invalid_argument("Size of the blur filter must be greater than 1. Value: " + std::to_string(config.blurFilterXYSize));
         }
     }
 
