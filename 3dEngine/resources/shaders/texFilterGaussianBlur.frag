@@ -11,22 +11,22 @@ layout(std140, set = 0, binding = 1) uniform WeightsBlurData {
     float weights[NB_TEXTURE_FETCH];
 } weightsBlurData;
 
-layout(binding = 2) uniform sampler2DArray tex;
+layout(binding = 2) uniform sampler2D tex;
 
-layout(location = 0) in vec3 texCoordinates;
+layout(location = 0) in vec2 texCoordinates;
 
-layout(location = 0) out vec2 fragColor;
+layout(location = 0) out float fragColor;
 
 void main() {
-    fragColor = vec2(0.0, 0.0);
+    fragColor = 0.0;
 
     if (IS_VERTICAL_BLUR) {
         for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
-            fragColor += weightsBlurData.weights[i] * texture(tex, vec3(texCoordinates.x, texCoordinates.y + offsetsBlurData.offsets[i], texCoordinates.z)).rg;
+            fragColor += weightsBlurData.weights[i] * texture(tex, vec2(texCoordinates.x, texCoordinates.y + offsetsBlurData.offsets[i])).r;
         }
     } else {
         for (int i = 0; i < NB_TEXTURE_FETCH; ++i) {
-            fragColor += weightsBlurData.weights[i] * texture(tex, vec3(texCoordinates.x + offsetsBlurData.offsets[i], texCoordinates.y, texCoordinates.z)).rg;
+            fragColor += weightsBlurData.weights[i] * texture(tex, vec2(texCoordinates.x + offsetsBlurData.offsets[i], texCoordinates.y)).r;
         }
     }
 }

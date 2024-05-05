@@ -31,7 +31,6 @@ namespace urchin {
             TextureType getTextureType() const;
             unsigned int getTextureWidth() const;
             unsigned int getTextureHeight() const;
-            unsigned int getTextureLayer() const;
 
             const Shader& getTextureFilterShader() const;
             GenericRenderer& getTextureRenderer() const;
@@ -40,7 +39,6 @@ namespace urchin {
             void initializeTexture();
             void initializeDisplay();
 
-            static constexpr unsigned int TEXTURE_LAYER_SHADER_LIMIT = 10; //must be equals to 'TEXTURE_LAYER_SHADER_LIMIT' in texFilter shaders
             bool isInitialized;
             bool useNullRenderTarget;
             std::string name;
@@ -52,7 +50,6 @@ namespace urchin {
             unsigned int textureWidth;
             unsigned int textureHeight;
             TextureType textureType;
-            unsigned int textureNumberLayer;
             TextureFormat textureFormat;
 
             std::unique_ptr<RenderTarget> renderTarget;

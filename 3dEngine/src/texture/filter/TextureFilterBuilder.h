@@ -28,9 +28,6 @@ namespace urchin {
             T* textureType(TextureType);
             TextureType getTextureType() const;
 
-            T* textureNumberLayer(unsigned int);
-            unsigned int getTextureNumberLayer() const;
-
             T* textureFormat(TextureFormat);
             TextureFormat getTextureFormat() const;
 
@@ -50,7 +47,6 @@ namespace urchin {
             unsigned int textureWidth;
             unsigned int textureHeight;
             TextureType pTextureType;
-            unsigned int pTextureNumberLayer;
             TextureFormat pTextureFormat;
     };
 

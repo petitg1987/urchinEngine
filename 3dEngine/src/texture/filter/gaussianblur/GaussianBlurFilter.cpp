@@ -31,8 +31,9 @@ namespace urchin {
     }
 
     std::string GaussianBlurFilter::getShaderName() const {
-        if (getTextureFormat() == TextureFormat::RG_32_FLOAT && getTextureType() == TextureType::ARRAY) {
-            return "texFilterGaussianBlurVec2Array";
+        if ((getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT)
+                && getTextureType() == TextureType::DEFAULT) {
+            return "texFilterGaussianBlur";
         }
         throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string((int)getTextureFormat()) + " - " + std::to_string((int)getTextureType()));
     }
@@ -95,8 +96,7 @@ namespace urchin {
         return weightsLinearSampling;
     }
 
-    std::vector<float> GaussianBlurFilter::computeOffsetsLinearSampling(const std::vector<float>& weights,
-            const std::vector<float>& weightsLinearSampling) const {
+    std::vector<float> GaussianBlurFilter::computeOffsetsLinearSampling(const std::vector<float>& weights, const std::vector<float>& weightsLinearSampling) const {
         std::vector<float> offsetsLinearSampling(nbTextureFetch);
 
         int firstOffset = -MathFunction::floorToInt((float)blurSize / 2.0f);

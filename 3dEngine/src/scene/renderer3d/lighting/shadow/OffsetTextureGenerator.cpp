@@ -9,7 +9,7 @@ namespace urchin {
 
     OffsetTextureGenerator::OffsetTextureGenerator(unsigned int textureXYSize, unsigned int filterXYSize) :
             textureXYSize(textureXYSize),
-            filterXYSize(filterXYSize) {
+            filterXYSize(filterXYSize) { //TODO handle value of 0
         std::vector<Vector2<float>> textureData = generateTextureData();
         if (DEBUG_EXPORT_TEXTURE_DATA) {
             exportSVG(SystemInfo::homeDirectory() + "shadowMapOffsetTextureData.svg", textureData);

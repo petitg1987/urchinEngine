@@ -78,6 +78,10 @@ namespace urchin {
         return shadowMapTexture->getWidth();
     }
 
+    const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
+        return shadowMapTexture;
+    }
+
     void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
         assert(renderTarget);
         std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};
@@ -105,34 +109,6 @@ namespace urchin {
         return lightSplitShadowMaps;
     }
 
-    void LightShadowMap::addTextureFilter(std::unique_ptr<TextureFilter> textureFilter) {
-        textureFilters.push_back(std::move(textureFilter));
-    }
-
-    bool LightShadowMap::hasTextureFilter() const {
-        return !textureFilters.empty();
-    }
-
-    void LightShadowMap::applyTextureFilters(std::uint32_t frameIndex, unsigned int numDependenciesToOutput) const {
-        for (std::size_t i = 0; i < textureFilters.size(); ++i) {
-            if (i == textureFilters.size() - 1) {
-                unsigned int numDependenciesToFilterOutputs = numDependenciesToOutput;
-                textureFilters[i]->applyFilter(frameIndex, numDependenciesToFilterOutputs);
-            } else {
-                unsigned int numDependenciesToFilterOutputs = 1 /*next filter */;
-                textureFilters[i]->applyFilter(frameIndex, numDependenciesToFilterOutputs);
-            }
-        }
-    }
-
-    const std::shared_ptr<Texture>& LightShadowMap::getFilteredShadowMapTexture() const {
-        if (textureFilters.empty()) {
-            return shadowMapTexture;
-        }
-
-        return textureFilters.back()->getTexture();
-    }
-
     const Matrix4<float>& LightShadowMap::getLightViewMatrix() const {
         return lightViewMatrix;
     }
@@ -151,11 +127,11 @@ namespace urchin {
         return models;
     }
 
-    void LightShadowMap::renderModels(std::uint32_t frameIndex, unsigned int numDependenciesToRawShadowMaps, unsigned int renderingOrder) const {
+    void LightShadowMap::renderModels(std::uint32_t frameIndex, unsigned int numDependenciesToShadowMaps, unsigned int renderingOrder) const {
         shadowModelSetDisplayer->updateModels(retrieveModels());
 
         renderTarget->disableAllProcessors();
         shadowModelSetDisplayer->prepareRendering(renderingOrder, lightViewMatrix);
-        renderTarget->render(frameIndex, numDependenciesToRawShadowMaps);
+        renderTarget->render(frameIndex, numDependenciesToShadowMaps);
     }
 }

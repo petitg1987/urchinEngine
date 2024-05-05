@@ -22,13 +22,6 @@ namespace urchin {
     */
     class ShadowManager final : public Observer, public Observable {
         public:
-            enum BlurShadow {
-                NO_BLUR = 0,
-                LOW = 3,
-                MEDIUM = 5,
-                HIGH = 7
-            };
-
             enum NotificationType {
                 NUMBER_SHADOW_MAPS_UPDATE
             };
@@ -37,7 +30,7 @@ namespace urchin {
                 unsigned int nbShadowMaps = 5;
                 unsigned int shadowMapResolution = 1024;
                 float viewingShadowDistance = 75.0;
-                BlurShadow blurShadow = BlurShadow::MEDIUM;
+                unsigned int blurFilterXYSize = 3;
             };
 
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
@@ -66,6 +59,9 @@ namespace urchin {
             void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
 
         private:
+            //global shadow handling
+            void updateShadowMapOffsets();
+
             //light handling
             void addShadowLight(Light&);
             void removeShadowLight(Light&);

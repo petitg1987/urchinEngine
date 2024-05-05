@@ -5,8 +5,6 @@
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/shadow/light/LightSplitShadowMap.h>
 #include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
-#include <texture/filter/TextureFilter.h>
-#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 
 namespace urchin {
 
@@ -14,15 +12,13 @@ namespace urchin {
             config(config),
             lightManager(lightManager),
             modelOcclusionCuller(modelOcclusionCuller),
-            splitData({}) {
+            splitData({}),
+            shadowMapInfo({}) {
         lightManager.addObserver(this, LightManager::ADD_LIGHT);
         lightManager.addObserver(this, LightManager::REMOVE_LIGHT);
 
         emptyShadowMapTexture = Texture::buildEmptyArrayRg("empty shadow map");
-
-        //TODO review
-        OffsetTextureGenerator offsetTextureGenerator(10, 3);
-        shadowMapOffsetTexture = offsetTextureGenerator.getOffsetTexture();
+        updateShadowMapOffsets();
     }
 
     void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder, uint32_t projViewMatricesUniformBinding,
@@ -31,7 +27,7 @@ namespace urchin {
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         shadowMapInfo.shadowMapResolution = (float)config.shadowMapResolution;
-        shadowMapInfo.offsetSampleCount = 9; //TODO hardcoded !
+        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
 
         lightingRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
@@ -85,8 +81,9 @@ namespace urchin {
         if (this->config.nbShadowMaps != config.nbShadowMaps ||
                 this->config.shadowMapResolution != config.shadowMapResolution ||
                 this->config.viewingShadowDistance != config.viewingShadowDistance ||
-                this->config.blurShadow != config.blurShadow) {
+                this->config.blurFilterXYSize != config.blurFilterXYSize) {
             bool nbShadowMapUpdated = this->config.nbShadowMaps != config.nbShadowMaps;
+            bool blurFilterUpdated = this->config.blurFilterXYSize != config.blurFilterXYSize;
 
             this->config = config;
             checkConfig();
@@ -94,6 +91,9 @@ namespace urchin {
             updateShadowLights();
             if (nbShadowMapUpdated) {
                 notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+            }
+            if (blurFilterUpdated) {
+                updateShadowMapOffsets();
             }
         }
     }
@@ -107,6 +107,8 @@ namespace urchin {
             throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(config.nbShadowMaps));
         } else if (config.nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMaps));
+        } else if (config.blurFilterXYSize == 1) {
+            throw std::invalid_argument("Size of the blur filter must be different from 1. Value: " + std::to_string(config.blurFilterXYSize));
         }
     }
 
@@ -157,6 +159,10 @@ namespace urchin {
         }
     }
 
+    void ShadowManager::updateShadowMapOffsets() {
+        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterXYSize).getOffsetTexture();
+    }
+
     void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
 
@@ -170,30 +176,6 @@ namespace urchin {
         auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOcclusionCuller, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
         for (unsigned int i = 0; i < config.nbShadowMaps; ++i) {
             newLightShadowMap->addLightSplitShadowMap();
-        }
-
-        //add shadow map filter
-        if (config.blurShadow != BlurShadow::NO_BLUR) { //TODO remove
-            std::unique_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(false, "shadow map - vertical gaussian blur filter", shadowMapTexture)
-                    ->textureSize(config.shadowMapResolution, config.shadowMapResolution)
-                    ->textureType(TextureType::ARRAY)
-                    ->textureNumberLayer(config.nbShadowMaps)
-                    ->textureFormat(TextureFormat::RG_32_FLOAT)
-                    ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
-                    ->blurSize((unsigned int)config.blurShadow)
-                    ->build();
-
-            std::unique_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(false, "shadow map - horizontal gaussian blur filter", verticalBlurFilter->getTexture())
-                    ->textureSize(config.shadowMapResolution, config.shadowMapResolution)
-                    ->textureType(TextureType::ARRAY)
-                    ->textureNumberLayer(config.nbShadowMaps)
-                    ->textureFormat(TextureFormat::RG_32_FLOAT)
-                    ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
-                    ->blurSize((unsigned int)config.blurShadow)
-                    ->build();
-
-            newLightShadowMap->addTextureFilter(std::move(verticalBlurFilter));
-            newLightShadowMap->addTextureFilter(std::move(horizontalBlurFilter));
         }
 
         lightShadowMaps[&light] = std::move(newLightShadowMap);
@@ -252,17 +234,10 @@ namespace urchin {
 
     void ShadowManager::updateShadowMaps(std::uint32_t frameIndex, unsigned int numDependenciesToShadowMaps) const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
-        unsigned int renderingOrder = 0;
 
+        unsigned int renderingOrder = 0;
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
-            if (lightShadowMap->hasTextureFilter()) {
-                unsigned int numDependenciesToRawShadowMaps = 1 /* first texture filter */;
-                lightShadowMap->renderModels(frameIndex, numDependenciesToRawShadowMaps, renderingOrder);
-                lightShadowMap->applyTextureFilters(frameIndex, numDependenciesToShadowMaps);
-            } else {
-                unsigned int numDependenciesToRawShadowMaps = numDependenciesToShadowMaps;
-                lightShadowMap->renderModels(frameIndex, numDependenciesToRawShadowMaps, renderingOrder);
-            }
+            lightShadowMap->renderModels(frameIndex, numDependenciesToShadowMaps, renderingOrder);
         }
     }
 
@@ -275,12 +250,12 @@ namespace urchin {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                if (lightingRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getFilteredShadowMapTexture().get()) {
+                if (lightingRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getShadowMapTexture().get()) {
                     //Info: anisotropy is disabled because it's causing artifact on AMD GPU
                     // Artifact: https://computergraphics.stackexchange.com/questions/5146/cascaded-shadow-maps-seams-between-cascades
                     // Solution: https://learn.microsoft.com/fr-be/windows/win32/dxtecharts/cascaded-shadow-maps?redirectedfrom=MSDN
                     TextureParam textureParam = TextureParam::build(TextureParam::ReadMode::EDGE_CLAMP, TextureParam::ReadQuality::LINEAR, TextureParam::Anisotropy::NO_ANISOTROPY);
-                    lightingRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getFilteredShadowMapTexture(), std::move(textureParam)));
+                    lightingRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
                 }
 
                 unsigned int shadowMapIndex = 0;
@@ -310,7 +285,7 @@ namespace urchin {
         lightingRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
         shadowMapInfo.shadowMapResolution = (float)config.shadowMapResolution;
-        shadowMapInfo.offsetSampleCount = 9; //TODO hardcoded
+        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
         lightingRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
 
         //shadow map offset texture

@@ -27,8 +27,6 @@ namespace urchin {
     void TextureFilter::initializeTexture() {
         if (textureType == TextureType::DEFAULT) {
             texture = Texture::build(name, textureWidth, textureHeight, textureFormat);
-        } else if (textureType == TextureType::ARRAY) {
-            texture = Texture::buildArray(name, textureWidth, textureHeight, textureNumberLayer, textureFormat);
         } else {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
         }
@@ -49,9 +47,7 @@ namespace urchin {
         if (useNullRenderTarget) {
             textureFilterShader = ShaderBuilder::createNullShader();
         } else {
-            if (textureType == TextureType::ARRAY) {
-                textureFilterShader = ShaderBuilder::createShader("texFilterArray.vert.spv", "texFilterArray.geom.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
-            } else if (textureType == TextureType::DEFAULT) {
+            if (textureType == TextureType::DEFAULT) {
                 textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else {
                 throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
@@ -69,14 +65,6 @@ namespace urchin {
         auto textureRendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord);
-        if (textureType == TextureType::ARRAY) {
-            std::vector<float> textureLayerIds;
-            textureLayerIds.reserve(textureNumberLayer);
-            for (unsigned int i = 0; i < textureNumberLayer; ++i) {
-                textureLayerIds.emplace_back((float)i);
-            }
-            textureRendererBuilder->instanceData(textureLayerIds.size(), VariableType::FLOAT, (const float*)textureLayerIds.data());
-        }
         auto sourceTargetReader = TextureReader::build(sourceTexture, TextureParam::buildLinear());
         completeRenderer(textureRendererBuilder, sourceTargetReader);
 
@@ -101,10 +89,6 @@ namespace urchin {
 
     unsigned int TextureFilter::getTextureHeight() const {
         return textureHeight;
-    }
-
-    unsigned int TextureFilter::getTextureLayer() const {
-        return textureNumberLayer;
     }
 
     const Shader& TextureFilter::getTextureFilterShader() const {

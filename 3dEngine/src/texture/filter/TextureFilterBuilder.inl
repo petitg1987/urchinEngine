@@ -5,7 +5,6 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool bUseNullRen
         textureWidth(1024),
         textureHeight(1024),
         pTextureType(TextureType::DEFAULT),
-        pTextureNumberLayer(1),
         pTextureFormat(TextureFormat::RGBA_8_INT) {
 
 }
@@ -43,15 +42,6 @@ template<class T> T* TextureFilterBuilder<T>::textureType(TextureType textureTyp
 
 template<class T> TextureType TextureFilterBuilder<T>::getTextureType() const {
     return pTextureType;
-}
-
-template<class T> T* TextureFilterBuilder<T>::textureNumberLayer(unsigned int textureNumberLayer) {
-    this->pTextureNumberLayer = textureNumberLayer;
-    return _this();
-}
-
-template<class T> unsigned int TextureFilterBuilder<T>::getTextureNumberLayer() const {
-    return pTextureNumberLayer;
 }
 
 template<class T> T* TextureFilterBuilder<T>::textureFormat(TextureFormat textureFormat) {
