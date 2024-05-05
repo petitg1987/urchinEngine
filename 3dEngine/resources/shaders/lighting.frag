@@ -83,8 +83,6 @@ float maxComponent(vec3 components) {
 
 float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
     float totalShadow = 0.0f;
-    float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition); //TODO not used ?
-
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
         float frustumRadius = shadowMapData.splitData[i].w;
@@ -96,17 +94,14 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
             float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
-            //vec2 texOffset = texture(shadowMapOffsetTex, vec3(shadowCoord.st, 0)).rg;
-            for (int y = -1; y <= 1; ++y) {
-                for (int x = -1; x <= 1; ++x) {
-                    vec2 shadowMapOffset = vec2(x, y) * (1.0 / float(shadowMapInfo.shadowMapResolution));
-                    float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
-                    if (shadowCoord.z - bias > shadowDepth) {
-                        totalShadow += 1.0 - max(0.0, NdotL / 5.0);  //hijack to apply normal map in shadow
-                    }
+            for (int layer = 0; layer < shadowMapInfo.offsetSampleCount; ++layer) { //TODO stop if x first point are all in shadow/light
+                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(texCoordinates, layer)).rg * (1.0f / shadowMapInfo.shadowMapResolution); //TODO move division outside loop
+                float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
+                if (shadowCoord.z - bias > shadowDepth) {
+                    totalShadow += 1.0 - max(0.0, NdotL / 5.0); //hijack to apply normal map in shadow //TODO do max outside loop ?
                 }
             }
-            totalShadow /= 9.0;
+            totalShadow /= shadowMapInfo.offsetSampleCount;
 
             break;
         }

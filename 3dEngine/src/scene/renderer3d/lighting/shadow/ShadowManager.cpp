@@ -30,12 +30,13 @@ namespace urchin {
         std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
-        auto shadowMapResolution = (float)config.shadowMapResolution;
+        shadowMapInfo.shadowMapResolution = (float)config.shadowMapResolution;
+        shadowMapInfo.offsetSampleCount = 9; //TODO hardcoded !
 
         lightingRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
                 ->addUniformData(shadowMapDataUniformBinding, config.nbShadowMaps * sizeof(Point4<float>), splitData.data())
-                ->addUniformData(shadowMapInfoUniformBinding, sizeof(config.shadowMapResolution), &shadowMapResolution);
+                ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
     }
 
     void ShadowManager::onCameraProjectionUpdate(const Camera& camera) {
@@ -314,7 +315,7 @@ namespace urchin {
 
         //shadow map offset texture
         if (lightingRenderer.getUniformTextureReader(offsetTexUniformBinding)->getTexture() != shadowMapOffsetTexture.get()) {
-            lightingRenderer.updateUniformTextureReader(offsetTexUniformBinding, TextureReader::build(shadowMapOffsetTexture, TextureParam::buildRepeatLinear()));
+            lightingRenderer.updateUniformTextureReader(offsetTexUniformBinding, TextureReader::build(shadowMapOffsetTexture, TextureParam::buildRepeatNearest()));
         }
     }
 
