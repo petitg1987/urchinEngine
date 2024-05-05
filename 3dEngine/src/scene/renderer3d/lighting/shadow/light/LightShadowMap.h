@@ -24,7 +24,7 @@ namespace urchin {
 
             void notify(Observable*, int) override;
 
-            const Light& getLight() const;
+            Light& getLight() const;
             const ModelOcclusionCuller& getModelOcclusionCuller() const;
             float getViewingShadowDistance() const;
             unsigned int getNumberShadowMaps() const;

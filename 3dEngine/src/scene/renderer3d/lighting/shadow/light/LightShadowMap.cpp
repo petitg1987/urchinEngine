@@ -58,7 +58,7 @@ namespace urchin {
         }
     }
 
-    const Light& LightShadowMap::getLight() const {
+    Light& LightShadowMap::getLight() const {
         return light;
     }
 

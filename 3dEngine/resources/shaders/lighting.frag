@@ -36,6 +36,7 @@ layout(std140, set = 0, binding = 4) uniform ShadowMapData {
 } shadowMapData;
 layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
     float shadowMapResolution;
+    int offsetSampleCount;
 } shadowMapInfo;
 
 //fog
@@ -53,8 +54,8 @@ layout(binding = 8) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 
 layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
 layout(binding = 10) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
 layout(binding = 11) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (16/32 bits * nbSplit * nbLight)
-layout(binding = 13) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (2 * 32 bits)
+layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (32 bits * nbSplit * nbLight)
+layout(binding = 13) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (32 bits)
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -81,8 +82,8 @@ float maxComponent(vec3 components) {
 }
 
 float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float NdotL) {
-    float shadowAttenuation = 1.0; //1.0 = no shadow
-    float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition);
+    float totalShadow = 0.0f;
+    float cameraToPositionDist = distance(vec3(worldPosition), positioningData.viewPosition); //TODO not used ?
 
     for (int i = 0; i < NUMBER_SHADOW_MAPS; ++i) {
         float frustumCenterDist = distance(vec3(worldPosition), shadowMapData.splitData[i].xyz);
@@ -95,23 +96,23 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
             float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
+            //vec2 texOffset = texture(shadowMapOffsetTex, vec3(shadowCoord.st, 0)).rg;
             for (int y = -1; y <= 1; ++y) {
                 for (int x = -1; x <= 1; ++x) {
-                    vec2 shadowMapOffset = vec2(x, y) * (1.0 / float(shadowMapInfo.shadowMapResolution)); //TODO hardoced value
+                    vec2 shadowMapOffset = vec2(x, y) * (1.0 / float(shadowMapInfo.shadowMapResolution));
                     float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
                     if (shadowCoord.z - bias > shadowDepth) {
-                        //shadowAttenuation += max(0.0, NdotL / 5.0);//hijack to apply normal map in shadow
-                        shadowAttenuation -= 1.0 / 9.0;//hijack to apply normal map in shadow
+                        totalShadow += 1.0 - max(0.0, NdotL / 5.0);  //hijack to apply normal map in shadow
                     }
                 }
             }
-            //shadowAttenuation /= 9.0;
+            totalShadow /= 9.0;
 
             break;
         }
     }
 
-    return shadowAttenuation;
+    return 1.0 - totalShadow;
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {

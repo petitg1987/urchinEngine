@@ -89,10 +89,14 @@ namespace urchin {
 
             //shadow information
             std::vector<SplitFrustum> splitFrustums;
-            std::map<Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
+            std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
             std::array<Point4<float>, (std::size_t)(SHADOW_MAPS_SHADER_LIMIT)> splitData;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
+            struct {
+                alignas(4) float shadowMapResolution;
+                alignas(4) int offsetSampleCount;
+            } shadowMapInfo;
 
             //shadow lights information
             std::vector<Matrix4<float>> lightProjectionViewMatrices;

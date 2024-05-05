@@ -392,7 +392,7 @@ namespace urchin {
                 ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformData(VISUAL_OPTION_UNIFORM_BINDING, sizeof(visualOption), &visualOption);
         lightManager.setupLightingRenderer(lightingRendererBuilder, LIGHTS_DATA_UNIFORM_BINDING);
-        shadowManager.setupLightingRenderer(lightingRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING);
+        shadowManager.setupLightingRenderer(lightingRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING);
         fogContainer.setupLightingRenderer(lightingRendererBuilder, FOG_UNIFORM_BINDING);
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
@@ -583,7 +583,7 @@ namespace urchin {
         }
 
         if (visualOption.isShadowActivated) {
-            shadowManager.loadShadowMaps(*lightingRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING,
+            shadowManager.loadShadowMaps(*lightingRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING,
                                          SM_TEX_UNIFORM_BINDING, SM_OFFSET_TEX_UNIFORM_BINDING);
         }
 

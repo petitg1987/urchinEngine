@@ -114,8 +114,8 @@ namespace urchin {
             static constexpr uint32_t VISUAL_OPTION_UNIFORM_BINDING = 1;
             static constexpr uint32_t LIGHTS_DATA_UNIFORM_BINDING = 2;
             static constexpr uint32_t SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING = 3;
-            static constexpr uint32_t SM_SPLIT_DATA_UNIFORM_BINDING = 4;
-            static constexpr uint32_t SM_RESOLUTION_UNIFORM_BINDING = 5;
+            static constexpr uint32_t SM_DATA_UNIFORM_BINDING = 4;
+            static constexpr uint32_t SM_INFO_UNIFORM_BINDING = 5;
             static constexpr uint32_t FOG_UNIFORM_BINDING = 6;
             static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 7;
             static constexpr uint32_t ALBEDO_TEX_UNIFORM_BINDING = 8;
