@@ -3,7 +3,7 @@
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_PRINT_ISLANDS = false;
+    const bool DEBUG_PRINT_ISLANDS = False();
 
     BodyActiveStateUpdater::BodyActiveStateUpdater(const BodyContainer& bodyContainer) :
             bodyContainer(bodyContainer),

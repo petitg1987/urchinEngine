@@ -16,7 +16,7 @@
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_EXPORT_NAV_MESH = false;
+    const bool DEBUG_EXPORT_NAV_MESH = False();
 
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance().getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),

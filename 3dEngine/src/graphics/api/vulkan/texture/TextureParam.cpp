@@ -25,23 +25,23 @@ namespace urchin {
     }
 
     TextureParam TextureParam::buildNearest() {
-        return TextureParam(ReadMode::EDGE_CLAMP, ReadQuality::NEAREST, Anisotropy::NO_ANISOTROPY);
+        return {ReadMode::EDGE_CLAMP, ReadQuality::NEAREST, Anisotropy::NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::buildLinear() {
-        return TextureParam(ReadMode::EDGE_CLAMP, ReadQuality::LINEAR, Anisotropy::NO_ANISOTROPY);
+        return {ReadMode::EDGE_CLAMP, ReadQuality::LINEAR, Anisotropy::NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::buildRepeatNearest() {
-        return TextureParam(ReadMode::REPEAT, ReadQuality::NEAREST, Anisotropy::NO_ANISOTROPY);
+        return {ReadMode::REPEAT, ReadQuality::NEAREST, Anisotropy::NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::buildRepeatLinear() {
-        return TextureParam(ReadMode::REPEAT, ReadQuality::LINEAR, Anisotropy::NO_ANISOTROPY);
+        return {ReadMode::REPEAT, ReadQuality::LINEAR, Anisotropy::NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::build(ReadMode readMode, ReadQuality readQuality, Anisotropy anisotropy) {
-        return TextureParam(readMode, readQuality, anisotropy);
+        return {readMode, readQuality, anisotropy};
     }
 
     void TextureParam::initialize(uint32_t mipLevels) {

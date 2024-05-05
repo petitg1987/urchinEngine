@@ -63,7 +63,7 @@ namespace urchin {
             void removeModel(Model*) const;
 
             void updateShadowMaps(std::uint32_t, unsigned int) const;
-            void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t);
+            void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
 
         private:
             //light handling
@@ -92,6 +92,7 @@ namespace urchin {
             std::map<Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
             std::array<Point4<float>, (std::size_t)(SHADOW_MAPS_SHADER_LIMIT)> splitData;
+            std::shared_ptr<Texture> shadowMapOffsetTexture;
 
             //shadow lights information
             std::vector<Matrix4<float>> lightProjectionViewMatrices;

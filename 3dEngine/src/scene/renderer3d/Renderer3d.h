@@ -123,6 +123,7 @@ namespace urchin {
             static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 10;
             static constexpr uint32_t AO_TEX_UNIFORM_BINDING = 11;
             static constexpr uint32_t SM_TEX_UNIFORM_BINDING = 12;
+            static constexpr uint32_t SM_OFFSET_TEX_UNIFORM_BINDING = 13;
 
             //scene properties
             RenderTarget& finalRenderTarget;

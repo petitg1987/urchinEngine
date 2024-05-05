@@ -13,7 +13,7 @@
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_EXPORT_SSAO_KERNEL = false;
+    const bool DEBUG_EXPORT_SSAO_KERNEL = False();
 
     AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useNullRenderTarget) :
             config(config),

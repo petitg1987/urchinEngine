@@ -10,17 +10,17 @@
 namespace urchin {
 
     //debug parameters
-    bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
-    bool DEBUG_DISPLAY_ALBEDO_BUFFER = false;
-    bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
-    bool DEBUG_DISPLAY_MATERIAL_BUFFER = false;
-    bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = false;
-    bool DEBUG_DISPLAY_TRANSPARENT_BUFFER = false;
-    bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
-    bool DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA = false;
-    bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
-    bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
-    bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
+    const bool DEBUG_DISPLAY_DEPTH_BUFFER = False();
+    const bool DEBUG_DISPLAY_ALBEDO_BUFFER = False();
+    const bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = False();
+    const bool DEBUG_DISPLAY_MATERIAL_BUFFER = False();
+    const bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = False();
+    const bool DEBUG_DISPLAY_TRANSPARENT_BUFFER = False();
+    const bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = False();
+    const bool DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA = False();
+    const bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = False();
+    const bool DEBUG_DISPLAY_MODEL_BASE_BONES = False();
+    const bool DEBUG_DISPLAY_LIGHTS_OCTREE = False();
 
     Renderer3d::Renderer3d(float gammaFactor, RenderTarget& finalRenderTarget, std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, I18nService& i18nService) :
             Renderer(gammaFactor),
@@ -406,6 +406,7 @@ namespace urchin {
                 ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(AO_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyGreyscale("empty AO"), TextureParam::buildNearest()))
                 ->addUniformTextureReaderArray(SM_TEX_UNIFORM_BINDING, shadowMapTextureReaders)
+                ->addUniformTextureReader(SM_OFFSET_TEX_UNIFORM_BINDING, TextureReader::build(Texture::buildEmptyArrayRg("empty SM offset"), TextureParam::buildNearest()))
                 ->build();
 
         refreshDebugFramebuffers = true;
@@ -582,7 +583,8 @@ namespace urchin {
         }
 
         if (visualOption.isShadowActivated) {
-            shadowManager.loadShadowMaps(*lightingRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING, SM_TEX_UNIFORM_BINDING);
+            shadowManager.loadShadowMaps(*lightingRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_SPLIT_DATA_UNIFORM_BINDING, SM_RESOLUTION_UNIFORM_BINDING,
+                                         SM_TEX_UNIFORM_BINDING, SM_OFFSET_TEX_UNIFORM_BINDING);
         }
 
         lightingRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());

@@ -53,7 +53,8 @@ layout(binding = 8) uniform sampler2D albedoAndEmissiveTex; //albedo RGB (3 * 8 
 layout(binding = 9) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
 layout(binding = 10) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
 layout(binding = 11) uniform sampler2D ambientOcclusionTex; //ambient occlusion (8 or 16 bits)
-layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (2 * 32 bits * nbSplit * nbLight)
+layout(binding = 12) uniform sampler2DArray shadowMapTex[MAX_SHADOW_LIGHTS]; //shadow maps for each lights (16/32 bits * nbSplit * nbLight)
+layout(binding = 13) uniform sampler2DArray shadowMapOffsetTex; //shadow maps offset (2 * 32 bits)
 
 layout(location = 0) in vec2 texCoordinates;
 
