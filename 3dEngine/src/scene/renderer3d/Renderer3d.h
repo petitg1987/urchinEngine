@@ -112,7 +112,7 @@ namespace urchin {
             void postUpdateScene();
 
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
-            static constexpr uint32_t VISUAL_OPTION_UNIFORM_BINDING = 1;
+            static constexpr uint32_t SCENE_INFO_UNIFORM_BINDING = 1;
             static constexpr uint32_t LIGHTS_DATA_UNIFORM_BINDING = 2;
             static constexpr uint32_t SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING = 3;
             static constexpr uint32_t SM_DATA_UNIFORM_BINDING = 4;
@@ -167,9 +167,10 @@ namespace urchin {
                 alignas(16) Point3<float> viewPosition;
             } positioningData;
             struct {
+                alignas(8) Point2<float> sceneSize;
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
-            } visualOption;
+            } sceneInfo;
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
             BloomEffectApplier bloomEffectApplier;

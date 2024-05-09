@@ -17,10 +17,11 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mInverseViewProjection;
     vec3 viewPosition;
 } positioningData;
-layout(std140, set = 0, binding = 1) uniform VisualOption {
+layout(std140, set = 0, binding = 1) uniform SceneInfo {
+    vec2 sceneSize;
     bool hasShadow;
     bool hasAmbientOcclusion;
-} visualOption;
+} sceneInfo;
 
 //lighting
 layout(std140, set = 0, binding = 2) uniform LightsData {
@@ -96,10 +97,10 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
             float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
-            const float SOFT_EDGE_LENGTH = 1.25f; //highest value requires highest bias
+            const float SOFT_EDGE_LENGTH = 1.25f; //highest value requires highest bias //TODO do dynamic bias
             int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
             float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
-            ivec2 offsetTexCoordinate = ivec2(texCoordinates * vec2(2560.0, 1440.0)) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE); //TODO hardcoded
+            ivec2 offsetTexCoordinate = ivec2(texCoordinates * sceneInfo.sceneSize) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE);
 
             int testPointsInShadow = 0;
             int offsetSampleIndex = 0;
@@ -203,7 +204,7 @@ void main() {
 
         fragColor = vec4(lightsData.globalAmbient, alphaValue); //start with global ambient
 
-        if (visualOption.hasAmbientOcclusion) {
+        if (sceneInfo.hasAmbientOcclusion) {
             float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
             fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor); //subtract ambient occlusion
         }
@@ -242,7 +243,7 @@ void main() {
 
             //shadow
             float shadowAttenuation = 1.0; //1.0 = no shadow
-            if (visualOption.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
+            if (sceneInfo.hasShadow && (lightsData.lightsInfo[lightIndex].lightFlags & LIGHT_FLAG_PRODUCE_SHADOW) != 0) {
                 shadowAttenuation = computeShadowAttenuation(shadowLightIndex, worldPosition, lightValues.NdotL);
                 shadowLightIndex++;
             }
