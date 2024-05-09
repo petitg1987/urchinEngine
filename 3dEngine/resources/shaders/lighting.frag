@@ -124,6 +124,13 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             }
             totalShadow /= offsetSampleIndex;
 
+            //DEBUG: fetch shadow map one time, no PCF filter
+            /* totalShadow = 0.0f;
+            float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
+            if (shadowCoord.z - bias > shadowDepth) {
+                totalShadow  = 1.0f;
+            }*/
+
             break;
         }
     }
