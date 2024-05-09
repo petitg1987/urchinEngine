@@ -9,7 +9,8 @@ layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to L
 layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
 layout(constant_id = 3) const float SHADOW_MAP_CONSTANT_BIAS = 0.0;
 layout(constant_id = 4) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
-layout(constant_id = 5) const float MAX_EMISSIVE_FACTOR = 0.0;
+layout(constant_id = 5) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
+layout(constant_id = 6) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
@@ -98,7 +99,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             const float SOFT_EDGE_LENGTH = 1.25f; //highest value requires highest bias
             int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
             float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
-            ivec2 offsetTexCoordinate = ivec2(texCoordinates * vec2(2560.0, 1440.0)) % ivec2(10, 10); //TODO hardcoded
+            ivec2 offsetTexCoordinate = ivec2(texCoordinates * vec2(2560.0, 1440.0)) % ivec2(SHADOW_MAP_OFFSET_TEX_SIZE, SHADOW_MAP_OFFSET_TEX_SIZE); //TODO hardcoded
 
             int testPointsInShadow = 0;
             int offsetSampleIndex = 0;

@@ -44,6 +44,7 @@ namespace urchin {
             unsigned int getMaxShadowLights() const;
             float getShadowMapConstantBias() const;
             float getShadowMapSlopeBiasFactor() const;
+            unsigned int getShadowMapOffsetTexSize() const;
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -74,9 +75,10 @@ namespace urchin {
 
             //shadow map quality
             void checkConfig() const;
-            static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
+            static constexpr unsigned int SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
             static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.00025f;
             static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.002f;
+            static constexpr unsigned int SHADOW_MAP_OFFSET_TEX_SIZE = 10;
             Config config;
 
             //scene information
@@ -88,7 +90,7 @@ namespace urchin {
             std::vector<SplitFrustum> splitFrustums;
             std::map<const Light*, std::unique_ptr<LightShadowMap>> lightShadowMaps;
             std::shared_ptr<Texture> emptyShadowMapTexture;
-            std::array<Point4<float>, (std::size_t)(SHADOW_MAPS_SHADER_LIMIT)> splitData;
+            std::array<Point4<float>, (std::size_t)SHADOW_MAPS_SHADER_LIMIT> splitData;
             std::shared_ptr<Texture> shadowMapOffsetTexture;
             struct {
                 alignas(4) float shadowMapInvSize;

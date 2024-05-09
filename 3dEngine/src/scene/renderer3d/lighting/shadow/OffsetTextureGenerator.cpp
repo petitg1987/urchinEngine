@@ -68,37 +68,30 @@ namespace urchin {
         return textureData;
     }
 
-    void OffsetTextureGenerator::exportSVG(std::string filename, const std::vector<Vector2<float>>& textureData) const { //TODO review
+    void OffsetTextureGenerator::exportSVG(std::string filename, const std::vector<Vector2<float>>& textureData) const {
         constexpr float DIST_SEPARATION = 3.0f;
-        unsigned int filterSampleCount = filterBoxSize * filterBoxSize;
 
         SVGExporter svgExporter(std::move(filename));
-        for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
-            float xOffset = (float)texX * DIST_SEPARATION;
-            for (unsigned int texY = 0; texY < textureXYSize; ++texY) {
-                float yOffset = (float)texY * DIST_SEPARATION;
+        unsigned int filterIndex = 0;
+        for (unsigned int filterX = 0; filterX < filterBoxSize; ++filterX) {
+            for (unsigned int filterY = 0; filterY < filterBoxSize; ++filterY) {
 
-                std::vector<Point2<float>> pixelPoints = {
-                    {xOffset - 1.0f, yOffset - 1.0f},
-                    {xOffset + 1.0f, yOffset - 1.0f},
-                    {xOffset + 1.0f, yOffset + 1.0f},
-                    {xOffset - 1.0f, yOffset + 1.0f}
-                };
-                svgExporter.addShape(std::make_unique<SVGPolygon>(pixelPoints, SVGColor::LIME));
+                for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
+                    float xOffset = (float)texX * DIST_SEPARATION;
+                    for (unsigned int texY = 0; texY < textureXYSize; ++texY) {
+                        float yOffset = (float)texY * DIST_SEPARATION;
 
-                unsigned int filterIndex = 0;
-                for (unsigned int filterX = 0; filterX < filterBoxSize; ++filterX) {
-                    for (unsigned int filterY = 0; filterY < filterBoxSize; ++filterY) {
-                        std::size_t index = (texX * textureXYSize * filterSampleCount) + (texY * filterSampleCount) + filterIndex;
+                        std::size_t index = (filterIndex * textureXYSize * textureXYSize) + (texX * textureXYSize) + texY;
 
                         SVGColor color = filterIndex < 4 ? SVGColor::RED : SVGColor::BLUE;
                         Point2<float> startVector(xOffset, yOffset);
                         Point2<float> endVector(xOffset + textureData[index].X, yOffset + textureData[index].Y);
                         svgExporter.addShape(std::make_unique<SVGLine>(LineSegment2D<float>(startVector, endVector), color, 0.005f));
                         svgExporter.addShape(std::make_unique<SVGCircle>(endVector, 0.02f, color));
-                        filterIndex++;
                     }
                 }
+
+                filterIndex++;
             }
         }
 

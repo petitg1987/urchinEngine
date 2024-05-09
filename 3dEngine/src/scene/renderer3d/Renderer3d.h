@@ -89,6 +89,7 @@ namespace urchin {
                 uint32_t numberShadowMaps;
                 float shadowMapConstantBias;
                 float shadowMapSlopeBiasFactor;
+                uint32_t shadowMapOffsetTexSize;
                 float maxEmissiveFactor;
             };
 

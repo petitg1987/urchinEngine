@@ -78,6 +78,10 @@ namespace urchin {
         return SHADOW_MAP_SLOPE_BIAS_FACTOR;
     }
 
+    unsigned int ShadowManager::getShadowMapOffsetTexSize() const {
+        return SHADOW_MAP_OFFSET_TEX_SIZE;
+    }
+
     void ShadowManager::updateConfig(const Config& config) {
         if (this->config.nbShadowMaps != config.nbShadowMaps ||
                 this->config.shadowMapResolution != config.shadowMapResolution ||
@@ -161,7 +165,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateShadowMapOffsets() {
-        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterBoxSize).getOffsetTexture();
+        shadowMapOffsetTexture = OffsetTextureGenerator(getShadowMapOffsetTexSize(), config.blurFilterBoxSize).getOffsetTexture();
     }
 
     void ShadowManager::addShadowLight(Light& light) {

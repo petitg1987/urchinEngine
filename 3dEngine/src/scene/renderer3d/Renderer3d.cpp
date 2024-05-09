@@ -419,6 +419,7 @@ namespace urchin {
         lightingConstData.numberShadowMaps = shadowManager.getConfig().nbShadowMaps;
         lightingConstData.shadowMapConstantBias = shadowManager.getShadowMapConstantBias();
         lightingConstData.shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor();
+        lightingConstData.shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize();
         lightingConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
         std::vector<std::size_t> variablesSize = {
                 sizeof(LightingShaderConst::maxLights),
@@ -426,6 +427,7 @@ namespace urchin {
                 sizeof(LightingShaderConst::numberShadowMaps),
                 sizeof(LightingShaderConst::shadowMapConstantBias),
                 sizeof(LightingShaderConst::shadowMapSlopeBiasFactor),
+                sizeof(LightingShaderConst::shadowMapOffsetTexSize),
                 sizeof(LightingShaderConst::maxEmissiveFactor)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
