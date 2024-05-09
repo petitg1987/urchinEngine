@@ -62,7 +62,7 @@ namespace urchin {
             //add shadow caster points
             shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
         }
-        this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex); //TODO different box from lightProjectionMatrix ?
+        this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
     }
 
     float LightSplitShadowMap::computeNearZForSceneIndependentBox(const Frustum<float>& splitFrustumLightSpace) const {

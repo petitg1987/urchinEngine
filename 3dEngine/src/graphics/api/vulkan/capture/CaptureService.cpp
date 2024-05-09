@@ -17,7 +17,7 @@ namespace urchin {
         std::vector<unsigned char> imageData;
         unsigned int dstWidth = (width == 0) ? srcWidth : width;
         unsigned int dstHeight = (height == 0) ? srcHeight : height;
-        imageData.resize(dstWidth * dstHeight * 4, 255);
+        imageData.resize((std::size_t)dstWidth * dstHeight * 4, 255);
 
         //create the linear tiled destination image to copy to and to read the memory from
         VmaAllocation imageMemory;
@@ -61,7 +61,7 @@ namespace urchin {
         unsigned char* dataDestination;
         vmaMapMemory(allocator, imageMemory, (void**)&dataDestination);
         {
-            dataDestination += subResourceLayout.offset;
+            std::advance(dataDestination, subResourceLayout.offset);
 
             std::array<VkFormat, 3> formatsBGRA = {VK_FORMAT_B8G8R8A8_SRGB, VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_B8G8R8A8_SNORM};
             bool bgraToRgba = std::ranges::find(formatsBGRA, imageFormat) != formatsBGRA.end();
@@ -74,7 +74,7 @@ namespace urchin {
                 srcIndexY = std::clamp(srcIndexY, (std::size_t)0, srcHeight - (std::size_t)1);
 
                 for (unsigned int x = 0; x < dstWidth; ++x) {
-                    std::size_t srcIndexX = ((unsigned int)(scaleX * ((float)x + 1.0f)) - 1) * 4;
+                    std::size_t srcIndexX = ((std::size_t)(scaleX * ((float)x + 1.0f)) - 1) * 4;
                     srcIndexX = std::clamp(srcIndexX, (std::size_t)0, srcWidth * (std::size_t)4 - (std::size_t)1);
 
                     std::size_t srcIndex = (srcIndexY * subResourceLayout.rowPitch) + srcIndexX;
