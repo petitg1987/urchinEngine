@@ -26,7 +26,7 @@ namespace urchin {
             }
 
             unsigned int filterSize = filterXYSize * filterXYSize;
-            offsetTexture = Texture::buildArray("SM offset", filterSize, textureXYSize, textureXYSize, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+            offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, filterSize, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
         }
     }
 
@@ -45,10 +45,10 @@ namespace urchin {
         textureData.resize(numVector);
 
         std::size_t index = 0;
-        for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
-            for (unsigned int texY = 0; texY < textureXYSize; ++texY) {
-                for (int v = (int)filterXYSize - 1; v >= 0; --v) {
-                    for (unsigned int u = 0; u < filterXYSize; ++u) {
+        for (int v = (int)filterXYSize - 1; v >= 0; --v) {
+            for (unsigned int u = 0; u < filterXYSize; ++u) {
+                for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
+                    for (unsigned int texY = 0; texY < textureXYSize; ++texY) {
                         float pixelRandomX = ((float)u + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
                         float pixelRandomY = ((float)v + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
 
@@ -68,7 +68,7 @@ namespace urchin {
         return textureData;
     }
 
-    void OffsetTextureGenerator::exportSVG(std::string filename, const std::vector<Vector2<float>>& textureData) const {
+    void OffsetTextureGenerator::exportSVG(std::string filename, const std::vector<Vector2<float>>& textureData) const { //TODO review
         constexpr float DIST_SEPARATION = 3.0f;
         unsigned int filterCount = filterXYSize * filterXYSize;
 

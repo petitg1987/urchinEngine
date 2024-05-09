@@ -161,7 +161,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateShadowMapOffsets() {
-        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterXYSize).getOffsetTexture();
+        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterXYSize).getOffsetTexture(); //TODO review size
     }
 
     void ShadowManager::addShadowLight(Light& light) {
