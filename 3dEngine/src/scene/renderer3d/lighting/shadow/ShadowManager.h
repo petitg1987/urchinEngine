@@ -29,7 +29,7 @@ namespace urchin {
             struct Config {
                 unsigned int nbShadowMaps = 5;
                 unsigned int shadowMapResolution = 1024;
-                unsigned int blurFilterXYSize = 3;
+                unsigned int blurFilterBoxSize = 3;
                 float shadowStrengthFactor = 1.0f;
                 float viewingShadowDistance = 75.0f;
             };

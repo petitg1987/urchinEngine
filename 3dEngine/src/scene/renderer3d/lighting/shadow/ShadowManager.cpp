@@ -27,7 +27,7 @@ namespace urchin {
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
-        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
+        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
 
         lightingRendererBuilder
@@ -82,9 +82,9 @@ namespace urchin {
         if (this->config.nbShadowMaps != config.nbShadowMaps ||
                 this->config.shadowMapResolution != config.shadowMapResolution ||
                 this->config.viewingShadowDistance != config.viewingShadowDistance ||
-                this->config.blurFilterXYSize != config.blurFilterXYSize) {
+                this->config.blurFilterBoxSize != config.blurFilterBoxSize) {
             bool nbShadowMapUpdated = this->config.nbShadowMaps != config.nbShadowMaps;
-            bool blurFilterUpdated = this->config.blurFilterXYSize != config.blurFilterXYSize;
+            bool blurFilterUpdated = this->config.blurFilterBoxSize != config.blurFilterBoxSize;
 
             this->config = config;
             checkConfig();
@@ -108,8 +108,8 @@ namespace urchin {
             throw std::invalid_argument("Number of shadow maps must be greater than one. Value: " + std::to_string(config.nbShadowMaps));
         } else if (config.nbShadowMaps > SHADOW_MAPS_SHADER_LIMIT) {
             throw std::invalid_argument("Number of shadow maps must be lower than " + std::to_string(SHADOW_MAPS_SHADER_LIMIT) + ". Value: " + std::to_string(config.nbShadowMaps));
-        } else if (config.blurFilterXYSize == 0) {
-            throw std::invalid_argument("Size of the blur filter must be greater than 1. Value: " + std::to_string(config.blurFilterXYSize));
+        } else if (config.blurFilterBoxSize == 0) {
+            throw std::invalid_argument("Size of the blur filter box must be greater or equal to 1. Value: " + std::to_string(config.blurFilterBoxSize));
         }
     }
 
@@ -161,7 +161,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateShadowMapOffsets() {
-        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterXYSize).getOffsetTexture();
+        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterBoxSize).getOffsetTexture();
     }
 
     void ShadowManager::addShadowLight(Light& light) {
@@ -286,7 +286,7 @@ namespace urchin {
         lightingRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
-        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
+        shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
         lightingRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
 

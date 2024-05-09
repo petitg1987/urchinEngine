@@ -7,16 +7,16 @@ namespace urchin {
     //debug parameters
     const bool DEBUG_EXPORT_TEXTURE_DATA = False();
 
-    OffsetTextureGenerator::OffsetTextureGenerator(unsigned int textureXYSize, unsigned int filterXYSize) :
+    OffsetTextureGenerator::OffsetTextureGenerator(unsigned int textureXYSize, unsigned int filterBoxSize) :
             textureXYSize(textureXYSize),
-            filterXYSize(filterXYSize) {
+            filterBoxSize(filterBoxSize) {
 
         #ifdef URCHIN_DEBUG
             assert(textureXYSize > 0);
-            assert(filterXYSize > 0);
+            assert(filterBoxSize > 0);
         #endif
 
-        if (filterXYSize == 1) {
+        if (filterBoxSize == 1) {
             std::vector<Vector2<float>> textureData = {Vector2<float>(0.0f, 0.0f)};
             offsetTexture = Texture::buildArray("SM offset", 1, 1, 1, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
         } else {
@@ -25,7 +25,7 @@ namespace urchin {
                 exportSVG(SystemInfo::homeDirectory() + "shadowMapOffsetTextureData.svg", textureData);
             }
 
-            unsigned int filterSize = filterXYSize * filterXYSize;
+            unsigned int filterSize = filterBoxSize * filterBoxSize;
             offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, filterSize, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
         }
     }
@@ -35,7 +35,7 @@ namespace urchin {
     }
 
     std::vector<Vector2<float>> OffsetTextureGenerator::generateTextureData() const {
-        std::size_t numVector = (std::size_t)textureXYSize * textureXYSize * filterXYSize * filterXYSize;
+        std::size_t numVector = (std::size_t)textureXYSize * textureXYSize * filterBoxSize * filterBoxSize;
 
         unsigned int seed = 0; //no need to generate different random numbers at each start
         std::uniform_real_distribution<float> randomFloats(-0.5f, 0.5f);
@@ -45,12 +45,12 @@ namespace urchin {
         textureData.resize(numVector);
 
         std::size_t index = 0;
-        for (int v = (int)filterXYSize - 1; v >= 0; --v) {
-            for (unsigned int u = 0; u < filterXYSize; ++u) {
+        for (int v = (int)filterBoxSize - 1; v >= 0; --v) {
+            for (unsigned int u = 0; u < filterBoxSize; ++u) {
                 for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
                     for (unsigned int texY = 0; texY < textureXYSize; ++texY) {
-                        float pixelRandomX = ((float)u + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
-                        float pixelRandomY = ((float)v + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterXYSize;
+                        float pixelRandomX = ((float)u + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterBoxSize;
+                        float pixelRandomY = ((float)v + 0.5f /* move to pixel center */ + randomFloats(generator) /* random inside the pixel */) / (float)filterBoxSize;
 
                         //see https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-17-efficient-soft-edged-shadows-using
                         float warpedX = std::sqrt(pixelRandomY) * std::cos(2.0f * MathValue::PI_FLOAT * pixelRandomX);
@@ -70,7 +70,7 @@ namespace urchin {
 
     void OffsetTextureGenerator::exportSVG(std::string filename, const std::vector<Vector2<float>>& textureData) const { //TODO review
         constexpr float DIST_SEPARATION = 3.0f;
-        unsigned int filterCount = filterXYSize * filterXYSize;
+        unsigned int filterSampleCount = filterBoxSize * filterBoxSize;
 
         SVGExporter svgExporter(std::move(filename));
         for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
@@ -87,9 +87,9 @@ namespace urchin {
                 svgExporter.addShape(std::make_unique<SVGPolygon>(pixelPoints, SVGColor::LIME));
 
                 unsigned int filterIndex = 0;
-                for (unsigned int filterX = 0; filterX < filterXYSize; ++filterX) {
-                    for (unsigned int filterY = 0; filterY < filterXYSize; ++filterY) {
-                        std::size_t index = (texX * textureXYSize * filterCount) + (texY * filterCount) + filterIndex;
+                for (unsigned int filterX = 0; filterX < filterBoxSize; ++filterX) {
+                    for (unsigned int filterY = 0; filterY < filterBoxSize; ++filterY) {
+                        std::size_t index = (texX * textureXYSize * filterSampleCount) + (texY * filterSampleCount) + filterIndex;
 
                         SVGColor color = filterIndex < 4 ? SVGColor::RED : SVGColor::BLUE;
                         Point2<float> startVector(xOffset, yOffset);

@@ -17,7 +17,7 @@ namespace urchin {
             void exportSVG(std::string, const std::vector<Vector2<float>>&) const;
 
             unsigned int textureXYSize;
-            unsigned int filterXYSize;
+            unsigned int filterBoxSize;
 
             std::shared_ptr<Texture> offsetTexture;
     };
