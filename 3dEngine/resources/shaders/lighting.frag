@@ -98,7 +98,8 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             int testPointsQuantity = max(5, int(shadowMapInfo.offsetSampleCount / 2.0));
 
             int testPointsInShadow = 0;
-            for (int offsetSampleIndex = 0; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
+            int offsetSampleIndex = 0;
+            for (; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
                 float offsetSampleTexCoord = offsetSampleIndex / float(shadowMapInfo.offsetSampleCount);
                 vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(offsetSampleTexCoord, texCoordinates.x, texCoordinates.y)).rg * shadowMapInfo.shadowMapInvSize; //TODO multiple offset vector ?
                 float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
@@ -108,10 +109,8 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
                 }
             }
 
-            if (testPointsInShadow == 0 || testPointsInShadow == testPointsQuantity) {
-                totalShadow /= testPointsQuantity;
-            } else {
-                for (int offsetSampleIndex = testPointsQuantity; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
+            if (testPointsInShadow != 0 && testPointsInShadow != testPointsQuantity) {
+                for (offsetSampleIndex = testPointsQuantity; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
                     float offsetSampleTexCoord = offsetSampleIndex / float(shadowMapInfo.offsetSampleCount);
                     vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(offsetSampleTexCoord, texCoordinates.x, texCoordinates.y)).rg * shadowMapInfo.shadowMapInvSize;
                     float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
@@ -119,8 +118,8 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
                         totalShadow += singleShadowQuantity;
                     }
                 }
-                totalShadow /= shadowMapInfo.offsetSampleCount;
             }
+            totalShadow /= offsetSampleIndex;
 
             break;
         }
