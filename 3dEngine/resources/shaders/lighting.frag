@@ -35,7 +35,7 @@ layout(std140, set = 0, binding = 4) uniform ShadowMapData {
     vec4 splitData[NUMBER_SHADOW_MAPS];
 } shadowMapData;
 layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
-    float shadowMapResolution;
+    float shadowMapInvSize;
     int offsetSampleCount;
 } shadowMapInfo;
 
@@ -94,21 +94,39 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
             float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
-            float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)) / shadowMapInfo.offsetSampleCount; //NdotL is a hijack to apply normal map in shadow
+            float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
+            int testPointsQuantity = max(5, int(shadowMapInfo.offsetSampleCount / 2.0));
 
-            for (int layer = 0; layer < shadowMapInfo.offsetSampleCount; ++layer) { //TODO stop if x first point are all in shadow/light
-                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(texCoordinates, layer)).rg * (1.0f / shadowMapInfo.shadowMapResolution);
+            int testPointsInShadow = 0;
+            for (int offsetSampleIndex = 0; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
+                float offsetSampleTexCoord = offsetSampleIndex / float(shadowMapInfo.offsetSampleCount);
+                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(offsetSampleTexCoord, texCoordinates.x, texCoordinates.y)).rg * shadowMapInfo.shadowMapInvSize; //TODO multiple offset vector ?
                 float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
                 if (shadowCoord.z - bias > shadowDepth) {
                     totalShadow += singleShadowQuantity;
+                    testPointsInShadow++;
                 }
+            }
+
+            if (testPointsInShadow == 0 || testPointsInShadow == testPointsQuantity) {
+                totalShadow /= testPointsQuantity;
+            } else {
+                for (int offsetSampleIndex = testPointsQuantity; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
+                    float offsetSampleTexCoord = offsetSampleIndex / float(shadowMapInfo.offsetSampleCount);
+                    vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(offsetSampleTexCoord, texCoordinates.x, texCoordinates.y)).rg * shadowMapInfo.shadowMapInvSize;
+                    float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
+                    if (shadowCoord.z - bias > shadowDepth) {
+                        totalShadow += singleShadowQuantity;
+                    }
+                }
+                totalShadow /= shadowMapInfo.offsetSampleCount;
             }
 
             break;
         }
     }
 
-    return 1.0 - totalShadow;
+    return min(1.0, 1.2 - totalShadow); //TODO shadow strength
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {

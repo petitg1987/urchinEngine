@@ -35,8 +35,10 @@ namespace urchin {
                 if (dataType == TextureDataType::INT_16 && format == TextureFormat::GRAYSCALE_16_FLOAT) {
                     throw std::runtime_error("Conversion of input data (int 16 bits) into texture data (float 16 bits) not implemented");
                 } else {
-                    auto imageDataCharPtr = static_cast<const uint8_t*>(imageDataPtr);
-                    this->dataPtr.emplace_back(imageDataCharPtr, imageDataCharPtr + getImageSize());
+                    auto imageDataCharPtrStart = static_cast<const uint8_t*>(imageDataPtr);
+                    auto imageDataCharPtrEnd = imageDataCharPtrStart;
+                    std::advance(imageDataCharPtrEnd, getImageSize());
+                    this->dataPtr.emplace_back(imageDataCharPtrStart, imageDataCharPtrEnd);
                 }
             } else {
                 std::vector<uint8_t> emptyData(0);
@@ -202,7 +204,8 @@ namespace urchin {
         vmaMapMemory(allocator, stagingBufferMemory, &dataDestination);
         {
             for (unsigned int imageIndex = 0; imageIndex < dataPtr.size(); ++imageIndex) {
-                void* dataDestinationStartIndex = static_cast<uint8_t*>(dataDestination) + (imageIndex * getImageSize());
+                auto dataDestinationStartIndex = static_cast<uint8_t*>(dataDestination);
+                std::advance(dataDestinationStartIndex, imageIndex * getImageSize());
                 std::memcpy(dataDestinationStartIndex, dataPtr[imageIndex].data(), dataPtr[imageIndex].size());
             }
         }
@@ -227,7 +230,7 @@ namespace urchin {
     }
 
     std::size_t Texture::getImageSize() const {
-        return width * height * getBytesByPixel() * (layer / nbImages);
+        return (std::size_t)width * height * getBytesByPixel() * (layer / nbImages);
     }
 
     VkImageUsageFlags Texture::getImageUsage() const {
@@ -298,9 +301,9 @@ namespace urchin {
         {
             std::vector<VkBufferImageCopy> regions;
             regions.reserve(layer);
-            for (unsigned int i = 0; i < layer; i++) {
+            for (uint32_t i = 0; i < layer; i++) {
                 VkBufferImageCopy region{};
-                region.bufferOffset = width * height * getBytesByPixel() * i;
+                region.bufferOffset = (std::size_t)width * height * getBytesByPixel() * i;
                 region.bufferRowLength = 0; //next two values defined to "0" mean that pixels are tightly packed in memory
                 region.bufferImageHeight = 0;
                 region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;

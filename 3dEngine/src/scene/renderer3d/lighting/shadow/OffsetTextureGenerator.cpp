@@ -1,5 +1,5 @@
 #include <random>
-
+#include <logger/Logger.h>
 #include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
 
 namespace urchin {
@@ -25,8 +25,8 @@ namespace urchin {
                 exportSVG(SystemInfo::homeDirectory() + "shadowMapOffsetTextureData.svg", textureData);
             }
 
-            unsigned int layer = filterXYSize * filterXYSize;
-            offsetTexture = Texture::buildArray("SM offset", textureXYSize, textureXYSize, layer, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
+            unsigned int filterSize = filterXYSize * filterXYSize;
+            offsetTexture = Texture::buildArray("SM offset", filterSize, textureXYSize, textureXYSize, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
         }
     }
 
@@ -35,12 +35,14 @@ namespace urchin {
     }
 
     std::vector<Vector2<float>> OffsetTextureGenerator::generateTextureData() const {
+        std::size_t numVector = (std::size_t)textureXYSize * textureXYSize * filterXYSize * filterXYSize;
+
         unsigned int seed = 0; //no need to generate different random numbers at each start
         std::uniform_real_distribution<float> randomFloats(-0.5f, 0.5f);
         std::default_random_engine generator(seed);
 
         std::vector<Vector2<float>> textureData;
-        textureData.resize((std::size_t)textureXYSize * textureXYSize * filterXYSize * filterXYSize);
+        textureData.resize(numVector);
 
         std::size_t index = 0;
         for (unsigned int texX = 0; texX < textureXYSize; ++texX) {
@@ -56,6 +58,7 @@ namespace urchin {
 
                         textureData[index].X = warpedX;
                         textureData[index].Y = warpedY;
+
                         index++;
                     }
                 }

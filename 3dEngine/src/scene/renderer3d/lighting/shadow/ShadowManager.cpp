@@ -26,7 +26,7 @@ namespace urchin {
         std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
 
-        shadowMapInfo.shadowMapResolution = (float)config.shadowMapResolution;
+        shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
 
         lightingRendererBuilder
@@ -284,7 +284,7 @@ namespace urchin {
         }
         lightingRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
-        shadowMapInfo.shadowMapResolution = (float)config.shadowMapResolution;
+        shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
         lightingRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
 
