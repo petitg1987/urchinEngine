@@ -5,7 +5,7 @@
 #include <AssertHelper.h>
 using namespace urchin;
 
-void LightSplitShadowMapTest::modelsInFrustumSplit() {
+void LightSplitShadowMapTest::modelsInFrustumSplit() { //TODO fix tests
     auto modelOcclusionCuller = buildModelOcclusionCuller({
         Point3<float>(1.0f, 2.0f, -3.0f),
         Point3<float>(1.0f, 2.0f, -10.0f)
