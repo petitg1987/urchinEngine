@@ -55,8 +55,8 @@ namespace urchin {
         for (std::size_t i = 0; i < 8; ++i) {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
-            shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver points
-            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster points
+            shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
+            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
         }
         this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
     }
