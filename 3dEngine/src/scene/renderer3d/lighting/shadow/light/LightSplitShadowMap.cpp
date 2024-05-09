@@ -10,7 +10,7 @@ namespace urchin {
     }
 
     void LightSplitShadowMap::update(const SplitFrustum& splitFrustum) {
-        computeLightProjection(splitFrustum, lightShadowMap->getLightViewMatrix());
+        computeLightScope(splitFrustum, lightShadowMap->getLightViewMatrix());
         stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
         models.clear();
@@ -35,13 +35,12 @@ namespace urchin {
         return models;
     }
 
-    void LightSplitShadowMap::computeLightProjection(const SplitFrustum& splitFrustum, const Matrix4<float>& lightViewMatrix) { //TODO review method comment / organization
-        ScopeProfiler sp(Profiler::graphic(), "compLightProj");
+    void LightSplitShadowMap::computeLightScope(const SplitFrustum& splitFrustum, const Matrix4<float>& lightViewMatrix) {
+        ScopeProfiler sp(Profiler::graphic(), "compLightScope");
 
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
         Point3<float> frustumCenter = (lightViewMatrix * Point4<float>(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
         float frustumRadius = splitFrustum.getBoundingSphere().getRadius();
-
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
         std::array<Point3<float>, 4> lightProjectionVertex;
@@ -56,11 +55,8 @@ namespace urchin {
         for (std::size_t i = 0; i < 8; ++i) {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
-            //add shadow receiver points
-            shadowReceiverAndCasterVertex[i * 2] = frustumPoint;
-
-            //add shadow caster points
-            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
+            shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver points
+            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster points
         }
         this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
     }

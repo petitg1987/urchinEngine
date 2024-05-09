@@ -21,7 +21,7 @@ namespace urchin {
             std::span<Model* const> getModels() const;
 
         private:
-            void computeLightProjection(const SplitFrustum&, const Matrix4<float>&);
+            void computeLightScope(const SplitFrustum&, const Matrix4<float>&);
             float computeNearZForSceneIndependentBox(const Frustum<float>&) const;
 
             void stabilizeShadow(const Point3<float>&);
