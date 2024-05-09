@@ -161,7 +161,7 @@ namespace urchin {
     }
 
     void ShadowManager::updateShadowMapOffsets() {
-        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterXYSize).getOffsetTexture(); //TODO review size
+        shadowMapOffsetTexture = OffsetTextureGenerator(10, config.blurFilterXYSize).getOffsetTexture();
     }
 
     void ShadowManager::addShadowLight(Light& light) {
@@ -292,7 +292,7 @@ namespace urchin {
 
         //shadow map offset texture
         if (lightingRenderer.getUniformTextureReader(offsetTexUniformBinding)->getTexture() != shadowMapOffsetTexture.get()) {
-            lightingRenderer.updateUniformTextureReader(offsetTexUniformBinding, TextureReader::build(shadowMapOffsetTexture, TextureParam::buildRepeatNearest()));
+            lightingRenderer.updateUniformTextureReader(offsetTexUniformBinding, TextureReader::build(shadowMapOffsetTexture, TextureParam::buildNearest()));
         }
     }
 

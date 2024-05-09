@@ -95,14 +95,15 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             float slopeBias = (1.0 - NdotL) * SHADOW_MAP_SLOPE_BIAS_FACTOR;
             float bias = SHADOW_MAP_CONSTANT_BIAS + slopeBias;
 
-            int testPointsQuantity = max(5, int(shadowMapInfo.offsetSampleCount / 2.0));
-            //int testPointsQuantity = min(4, shadowMapInfo.offsetSampleCount); //TODO not working well
+            const float SOFT_EDGE_LENGTH = 1.25f; //highest value requires highest bias
+            int testPointsQuantity = min(5, shadowMapInfo.offsetSampleCount);
             float singleShadowQuantity = (1.0 - max(0.0, NdotL / 5.0)); //NdotL is a hijack to apply normal map in shadow
+            ivec2 offsetTexCoordinate = ivec2(texCoordinates * vec2(2560.0, 1440.0)) % ivec2(10, 10); //TODO hardcoded
 
             int testPointsInShadow = 0;
             int offsetSampleIndex = 0;
             for (; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
-                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(texCoordinates, offsetSampleIndex)).rg * shadowMapInfo.shadowMapInvSize;
+                vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInfo.shadowMapInvSize;
                 float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
                 if (shadowCoord.z - bias > shadowDepth) {
                     totalShadow += singleShadowQuantity;
@@ -111,14 +112,15 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             }
 
             if (testPointsInShadow != 0 && testPointsInShadow != testPointsQuantity) {
-                for (offsetSampleIndex = testPointsQuantity; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
-                    vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(texCoordinates, offsetSampleIndex)).rg * shadowMapInfo.shadowMapInvSize;
+                for (; offsetSampleIndex < shadowMapInfo.offsetSampleCount; ++offsetSampleIndex) {
+                    vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInfo.shadowMapInvSize;
                     float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
                     if (shadowCoord.z - bias > shadowDepth) {
                         totalShadow += singleShadowQuantity;
                     }
                 }
             }
+
             totalShadow /= offsetSampleIndex;
 
             //DEBUG: fetch shadow map one time, no PCF filter

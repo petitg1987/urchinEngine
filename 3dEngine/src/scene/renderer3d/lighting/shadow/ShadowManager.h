@@ -76,7 +76,7 @@ namespace urchin {
             void checkConfig() const;
             static constexpr uint32_t SHADOW_MAPS_SHADER_LIMIT = 7; //must be equals to 'NUMBER_SHADOW_MAPS' in lighting shader
             static constexpr float SHADOW_MAP_CONSTANT_BIAS = 0.00025f;
-            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0015f;
+            static constexpr float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.002f;
             Config config;
 
             //scene information
