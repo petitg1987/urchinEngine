@@ -25,7 +25,7 @@ namespace urchin {
                 unsigned int kernelSamples = 32;
                 float radius = 0.06f; //scope radius in units
                 float ambientOcclusionStrength = 0.10f;
-                float distanceStartAttenuation = 13.0f; //distance in units
+                float distanceStartAttenuation = 12.0f; //distance in units
                 float distanceEndAttenuation = 14.0f; //distance in units
                 unsigned int noiseTextureSize = 64;
                 float biasMultiplier = 0.002f;
