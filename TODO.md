@@ -6,9 +6,7 @@
 # 3d Engine
 * Graphics API
   * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo#pSpecializationInfo) instead of uniform for values infrequently refreshed
-  * **OPTIMIZATION** (`major`): Improve the render binding:
-    * Solution 1 (old): create descriptor sets by binding frequency: one for global (view matrix), one for material and one per-object (model matrix) (see <https://www.youtube.com/watch?v=d5p44idnZLQ>)
-    * Solution 2 (modern): use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
+  * **OPTIMIZATION** (`major`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
@@ -27,11 +25,6 @@
 * Shadow
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
   * **NEW FEATURE** (`minor`): Use mipmap and multisample antialiasing (MSAA) on the shadow map
-  * **NEW FEATURE** (`medium`): Implement a shadow map warping (trapezoid or camera space)
-  * **NEW FEATURE** (`major`): Implement stabilized shadow (see <https://www.junkship.net/News/2020/11/22/shadow-of-a-doubt-part-2>)
-  * **NEW FEATURE** (`major`): Replace variance shadow map by PCF & PCSS (+use tips from "GPUGems2: efficient-soft-edged-shadows-using" article)
-  * **NEW FEATURE** (`minor`): Find solution to have a soft transition between shadow cascade
-  * **NEW FEATURE** (`minor`): Enable anisotropy on shadow map in ShadowManager::loadShadowMaps
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager#updateVisibleModels / Renderer3d#updateModelsInFrustum
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
   * **OPTIMIZATION** (`minor`): Use models LOD
