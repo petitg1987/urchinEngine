@@ -28,6 +28,7 @@ namespace urchin {
 
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
+        shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
 
         lightingRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
@@ -286,6 +287,7 @@ namespace urchin {
 
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterXYSize * config.blurFilterXYSize);
+        shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
         lightingRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
 
         //shadow map offset texture

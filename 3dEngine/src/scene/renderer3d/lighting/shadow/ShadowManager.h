@@ -29,8 +29,9 @@ namespace urchin {
             struct Config {
                 unsigned int nbShadowMaps = 5;
                 unsigned int shadowMapResolution = 1024;
-                float viewingShadowDistance = 75.0;
                 unsigned int blurFilterXYSize = 3;
+                float shadowStrengthFactor = 1.0f;
+                float viewingShadowDistance = 75.0f;
             };
 
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
@@ -92,6 +93,7 @@ namespace urchin {
             struct {
                 alignas(4) float shadowMapInvSize;
                 alignas(4) int offsetSampleCount;
+                alignas(4) float shadowStrengthFactor;
             } shadowMapInfo;
 
             //shadow lights information

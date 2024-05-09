@@ -37,6 +37,7 @@ layout(std140, set = 0, binding = 4) uniform ShadowMapData {
 layout(std140, set = 0, binding = 5) uniform ShadowMapInfo {
     float shadowMapInvSize;
     int offsetSampleCount;
+    float shadowStrengthFactor;
 } shadowMapInfo;
 
 //fog
@@ -101,7 +102,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             int offsetSampleIndex = 0;
             for (; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
                 float offsetSampleTexCoord = offsetSampleIndex / float(shadowMapInfo.offsetSampleCount);
-                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(offsetSampleTexCoord, texCoordinates.x, texCoordinates.y)).rg * shadowMapInfo.shadowMapInvSize; //TODO multiple offset vector ?
+                vec2 shadowMapOffset = texture(shadowMapOffsetTex, vec3(offsetSampleTexCoord, texCoordinates.x, texCoordinates.y)).rg * shadowMapInfo.shadowMapInvSize;
                 float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
                 if (shadowCoord.z - bias > shadowDepth) {
                     totalShadow += singleShadowQuantity;
@@ -125,7 +126,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
         }
     }
 
-    return min(1.0, 1.2 - totalShadow); //TODO shadow strength
+    return 1.0 - totalShadow * shadowMapInfo.shadowStrengthFactor;
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
