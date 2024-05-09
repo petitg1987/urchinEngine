@@ -128,7 +128,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
         }
     }
 
-    return 1.0 - totalShadow * shadowMapInfo.shadowStrengthFactor;
+    return 1.0 - (totalShadow * shadowMapInfo.shadowStrengthFactor);
 }
 
 vec3 addFog(vec3 baseColor, vec4 worldPosition) {
