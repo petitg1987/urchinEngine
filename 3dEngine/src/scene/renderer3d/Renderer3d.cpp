@@ -34,24 +34,24 @@ namespace urchin {
             renderingScale(visualConfig.getRenderingScale()),
 
             //deferred rendering
-            deferredRenderTarget(finalRenderTarget.isValidRenderTarget() ?
+            deferredFirstPassRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             modelOcclusionCuller(ModelOcclusionCuller()),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
-            terrainContainer(TerrainContainer(visualConfig.getTerrainConfig(), *deferredRenderTarget)),
-            waterContainer(WaterContainer(*deferredRenderTarget)),
-            uiContainer(UiContainer(*deferredRenderTarget, i18nService)),
-            geometryContainer(GeometryContainer(*deferredRenderTarget)),
-            skyContainer(SkyContainer(*deferredRenderTarget)),
+            terrainContainer(TerrainContainer(visualConfig.getTerrainConfig(), *deferredFirstPassRenderTarget)),
+            waterContainer(WaterContainer(*deferredFirstPassRenderTarget)),
+            uiContainer(UiContainer(*deferredFirstPassRenderTarget, i18nService)),
+            geometryContainer(GeometryContainer(*deferredFirstPassRenderTarget)),
+            skyContainer(SkyContainer(*deferredFirstPassRenderTarget)),
             lightManager(LightManager()),
             ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), !finalRenderTarget.isValidRenderTarget())),
             transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
             //lighting pass rendering
-            lightingRenderTarget(finalRenderTarget.isValidRenderTarget() ?
+            deferredSecondPassRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
             positioningData({}),
@@ -72,19 +72,19 @@ namespace urchin {
         //deferred rendering
         modelSetDisplayer.setupShader("model.vert.spv", "", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
-        modelSetDisplayer.initialize(*deferredRenderTarget);
+        modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         //lighting pass rendering
         sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
         sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
         sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
-        createOrUpdateLightingPass();
+        createOrUpdateDeferredPasses();
     }
 
     Renderer3d::~Renderer3d() {
-        lightingRenderTarget->cleanup();
-        deferredRenderTarget->cleanup();
+        deferredSecondPassRenderTarget->cleanup();
+        deferredFirstPassRenderTarget->cleanup();
     }
 
     void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
@@ -95,13 +95,13 @@ namespace urchin {
         //camera
         camera->onResize(sceneWidth, sceneHeight);
 
-        createOrUpdateLightingPass();
+        createOrUpdateDeferredPasses();
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
         if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
-                createOrUpdateLightingPass();
+                createOrUpdateDeferredPasses();
             }
         } else if (dynamic_cast<Camera*>(observable)) {
             if (notificationType == Camera::PROJECTION_UPDATE) {
@@ -158,7 +158,7 @@ namespace urchin {
         if (this->renderingScale != renderingScale) {
             this->renderingScale = renderingScale;
 
-            createOrUpdateLightingPass();
+            createOrUpdateDeferredPasses();
         }
     }
 
@@ -166,7 +166,7 @@ namespace urchin {
         if (sceneInfo.isShadowActivated != isShadowActivated) {
             sceneInfo.isShadowActivated = isShadowActivated;
 
-            createOrUpdateLightingPass();
+            createOrUpdateDeferredPasses();
         }
     }
 
@@ -181,7 +181,7 @@ namespace urchin {
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
         if (sceneInfo.isAmbientOcclusionActivated != isAmbientOcclusionActivated) {
             sceneInfo.isAmbientOcclusionActivated = isAmbientOcclusionActivated;
-            createOrUpdateLightingPass();
+            createOrUpdateDeferredPasses();
         }
     }
 
@@ -204,7 +204,7 @@ namespace urchin {
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
         if (this->isAntiAliasingActivated != isAntiAliasingActivated) {
             this->isAntiAliasingActivated = isAntiAliasingActivated;
-            createOrUpdateLightingPass();
+            createOrUpdateDeferredPasses();
         }
     }
 
@@ -350,34 +350,34 @@ namespace urchin {
         model.removeObserver(this, Model::ANIMATION_STARTED);
     }
 
-    void Renderer3d::createOrUpdateLightingPass() {
+    void Renderer3d::createOrUpdateDeferredPasses() {
         unsigned int renderingSceneWidth = MathFunction::roundToUInt((float)sceneWidth * renderingScale);
         unsigned int renderingSceneHeight = MathFunction::roundToUInt((float)sceneHeight * renderingScale);
 
-        //deferred rendering
+        //deferred first pass
         albedoTexture = Texture::build("albedo", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_8_INT);
         normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_8_INT);
         materialTexture = Texture::build("material", renderingSceneWidth, renderingSceneHeight, TextureFormat::RG_8_INT);
-        if (deferredRenderTarget && deferredRenderTarget->isValidRenderTarget()) {
-            auto* deferredOffscreenRenderTarget = static_cast<OffscreenRender*>(deferredRenderTarget.get());
-            deferredOffscreenRenderTarget->resetOutputTextures();
-            deferredOffscreenRenderTarget->addOutputTexture(albedoTexture);
-            deferredOffscreenRenderTarget->addOutputTexture(normalAndAmbientTexture);
-            deferredOffscreenRenderTarget->addOutputTexture(materialTexture);
-            deferredOffscreenRenderTarget->initialize();
+        if (deferredFirstPassRenderTarget && deferredFirstPassRenderTarget->isValidRenderTarget()) {
+            auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
+            deferredFirstPassOffscreenRender->resetOutputTextures();
+            deferredFirstPassOffscreenRender->addOutputTexture(albedoTexture);
+            deferredFirstPassOffscreenRender->addOutputTexture(normalAndAmbientTexture);
+            deferredFirstPassOffscreenRender->addOutputTexture(materialTexture);
+            deferredFirstPassOffscreenRender->initialize();
         }
 
-        //lighting pass rendering
+        //deferred second pass
         sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
         illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_16_FLOAT);
-        if (lightingRenderTarget && lightingRenderTarget->isValidRenderTarget()) {
-            auto* offscreenLightingRenderTarget = static_cast<OffscreenRender*>(lightingRenderTarget.get());
-            offscreenLightingRenderTarget->resetOutputTextures();
-            offscreenLightingRenderTarget->addOutputTexture(illuminatedTexture);
-            offscreenLightingRenderTarget->initialize();
+        if (deferredSecondPassRenderTarget && deferredSecondPassRenderTarget->isValidRenderTarget()) {
+            auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());
+            deferredSecondPassOffscreenRender->resetOutputTextures();
+            deferredSecondPassOffscreenRender->addOutputTexture(illuminatedTexture);
+            deferredSecondPassOffscreenRender->initialize();
         }
 
-        createOrUpdateLightingShader();
+        createOrUpdateDeferredSecondPassShader();
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
@@ -388,21 +388,21 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
 
-        auto lightingRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *lightingRenderTarget, *lightingShader, ShapeType::TRIANGLE)
+        auto deferredSecondPassRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *deferredSecondPassRenderTarget, *deferredSecondPassShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformData(SCENE_INFO_UNIFORM_BINDING, sizeof(sceneInfo), &sceneInfo);
-        lightManager.setupLightingRenderer(lightingRendererBuilder, LIGHTS_DATA_UNIFORM_BINDING);
-        shadowManager.setupLightingRenderer(lightingRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING);
-        fogContainer.setupLightingRenderer(lightingRendererBuilder, FOG_UNIFORM_BINDING);
+        lightManager.setupLightingRenderer(deferredSecondPassRendererBuilder, LIGHTS_DATA_UNIFORM_BINDING);
+        shadowManager.setupLightingRenderer(deferredSecondPassRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING);
+        fogContainer.setupLightingRenderer(deferredSecondPassRendererBuilder, FOG_UNIFORM_BINDING);
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
         for (unsigned int i = 0; i < shadowManager.getMaxShadowLights(); ++i) {
             shadowMapTextureReaders.push_back(TextureReader::build(shadowManager.getEmptyShadowMapTexture(), TextureParam::buildNearest()));
         }
-        lightingRenderer = lightingRendererBuilder
-                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(deferredRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
+        deferredSecondPassRenderer = deferredSecondPassRendererBuilder
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(deferredFirstPassRenderTarget->getDepthTexture(), TextureParam::buildNearest()))
                 ->addUniformTextureReader(ALBEDO_TEX_UNIFORM_BINDING, TextureReader::build(albedoTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
@@ -414,7 +414,7 @@ namespace urchin {
         refreshDebugFramebuffers = true;
     }
 
-    void Renderer3d::createOrUpdateLightingShader() {
+    void Renderer3d::createOrUpdateDeferredSecondPassShader() {
         LightingShaderConst lightingConstData{};
         lightingConstData.maxLights = lightManager.getMaxLights();
         lightingConstData.maxShadowLights = shadowManager.getMaxShadowLights();
@@ -434,10 +434,10 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
 
-        if (lightingRenderTarget->isValidRenderTarget()) {
-            lightingShader = ShaderBuilder::createShader("lighting.vert.spv", "", "lighting.frag.spv", std::move(shaderConstants));
+        if (deferredSecondPassRenderTarget->isValidRenderTarget()) {
+            deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "", "deferredSecondPass.frag.spv", std::move(shaderConstants));
         } else {
-            lightingShader = ShaderBuilder::createNullShader();
+            deferredSecondPassShader = ShaderBuilder::createNullShader();
         }
     }
 
@@ -446,9 +446,9 @@ namespace urchin {
 
         //refresh input textures
         if (sceneInfo.isAmbientOcclusionActivated) {
-            ambientOcclusionManager.refreshInputTextures(deferredRenderTarget->getDepthTexture(), normalAndAmbientTexture);
+            ambientOcclusionManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture);
         }
-        transparentManager.refreshInputTextures(deferredRenderTarget->getDepthTexture(), illuminatedTexture);
+        transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), illuminatedTexture);
         if (isAntiAliasingActivated) {
             antiAliasingApplier.refreshInputTexture(transparentManager.getOutputTexture());
             bloomEffectApplier.refreshInputTexture(antiAliasingApplier.getOutputTexture());
@@ -496,7 +496,7 @@ namespace urchin {
         }
 
         //deferred scene (depth, albedo, normal, ambient...)
-        deferredRenderTarget->disableAllProcessors();
+        deferredFirstPassRenderTarget->disableAllProcessors();
 
         unsigned int deferredRenderingOrder = 0;
         skyContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix(), camera->getPosition());
@@ -517,7 +517,7 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        deferredRenderTarget->render(frameIndex, computeDependenciesToFirstPassOutput());
+        deferredFirstPassRenderTarget->render(frameIndex, computeDependenciesToFirstPassOutput());
 
         //deferred ambient occlusion
         if (sceneInfo.isAmbientOcclusionActivated) {
@@ -576,22 +576,22 @@ namespace urchin {
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
         positioningData.viewPosition = camera->getPosition();
-        lightingRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
+        deferredSecondPassRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
 
-        lightManager.loadVisibleLights(*lightingRenderer, LIGHTS_DATA_UNIFORM_BINDING);
+        lightManager.loadVisibleLights(*deferredSecondPassRenderer, LIGHTS_DATA_UNIFORM_BINDING);
 
-        fogContainer.loadFog(*lightingRenderer, FOG_UNIFORM_BINDING);
+        fogContainer.loadFog(*deferredSecondPassRenderer, FOG_UNIFORM_BINDING);
 
         if (sceneInfo.isAmbientOcclusionActivated) {
-            ambientOcclusionManager.loadAOTexture(*lightingRenderer, AO_TEX_UNIFORM_BINDING);
+            ambientOcclusionManager.loadAOTexture(*deferredSecondPassRenderer, AO_TEX_UNIFORM_BINDING);
         }
 
         if (sceneInfo.isShadowActivated) {
-            shadowManager.loadShadowMaps(*lightingRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING,
+            shadowManager.loadShadowMaps(*deferredSecondPassRenderer, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING,
                                          SM_TEX_UNIFORM_BINDING, SM_OFFSET_TEX_UNIFORM_BINDING);
         }
 
-        lightingRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());
+        deferredSecondPassRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());
     }
 
     unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
@@ -608,7 +608,7 @@ namespace urchin {
             refreshDebugFramebuffers = false;
 
             if (DEBUG_DISPLAY_DEPTH_BUFFER) {
-                auto textureRenderer = std::make_unique<TextureRenderer>(deferredRenderTarget->getDepthTexture(), TextureRenderer::GRAYSCALE_VALUE);
+                auto textureRenderer = std::make_unique<TextureRenderer>(deferredFirstPassRenderTarget->getDepthTexture(), TextureRenderer::GRAYSCALE_VALUE);
                 textureRenderer->setPosition(TextureRenderer::LEFT, TextureRenderer::TOP);
                 textureRenderer->initialize("[DEBUG] depth texture", finalRenderTarget, sceneWidth, sceneHeight, 0.95f, 1.0f);
                 debugFramebuffers.emplace_back(std::move(textureRenderer));

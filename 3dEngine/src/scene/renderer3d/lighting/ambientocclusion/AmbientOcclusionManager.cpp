@@ -283,9 +283,9 @@ namespace urchin {
         return ambientOcclusionTexture;
     }
 
-    void AmbientOcclusionManager::loadAOTexture(GenericRenderer& lightingRenderer, uint32_t aoTextureUniformBinding) const {
-        if (lightingRenderer.getUniformTextureReader(aoTextureUniformBinding)->getTexture() != getAmbientOcclusionTexture().get()) {
-            lightingRenderer.updateUniformTextureReader(aoTextureUniformBinding, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
+    void AmbientOcclusionManager::loadAOTexture(GenericRenderer& deferredSecondPassRenderer, uint32_t aoTextureUniformBinding) const {
+        if (deferredSecondPassRenderer.getUniformTextureReader(aoTextureUniformBinding)->getTexture() != getAmbientOcclusionTexture().get()) {
+            deferredSecondPassRenderer.updateUniformTextureReader(aoTextureUniformBinding, TextureReader::build(getAmbientOcclusionTexture(), TextureParam::buildLinear()));
         }
     }
 

@@ -20,8 +20,8 @@ namespace urchin {
         }
     }
 
-    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder, uint32_t lightsDataUniformBinding) const {
-        lightingRendererBuilder
+    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t lightsDataUniformBinding) const {
+        deferredSecondPassRendererBuilder
                 ->addUniformData(lightsDataUniformBinding, sizeof(LightsData), &lightsData);
     }
 
@@ -121,7 +121,7 @@ namespace urchin {
         std::ranges::sort(visibleLights, std::greater<>());
     }
 
-    void LightManager::loadVisibleLights(GenericRenderer& lightingRenderer, uint32_t lightsDataUniformBinding) {
+    void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataUniformBinding) {
         std::span<Light* const> lights = getVisibleLights();
 
         for (unsigned int i = 0; i < MAX_LIGHTS; ++i) {
@@ -158,7 +158,7 @@ namespace urchin {
             }
         }
 
-        lightingRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
+        deferredSecondPassRenderer.updateUniformData(lightsDataUniformBinding, &lightsData);
     }
 
     void LightManager::postUpdateVisibleLights() {

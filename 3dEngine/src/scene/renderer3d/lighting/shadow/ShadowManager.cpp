@@ -21,7 +21,7 @@ namespace urchin {
         updateShadowMapOffsets();
     }
 
-    void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder, uint32_t projViewMatricesUniformBinding,
+    void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
                                               uint32_t shadowMapDataUniformBinding, uint32_t shadowMapInfoUniformBinding) {
         std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});
@@ -30,7 +30,7 @@ namespace urchin {
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
 
-        lightingRendererBuilder
+        deferredSecondPassRendererBuilder
                 ->addUniformData(projViewMatricesUniformBinding, mLightProjectionViewSize * sizeof(Matrix4<float>), lightProjectionViewMatrices.data())
                 ->addUniformData(shadowMapDataUniformBinding, config.nbShadowMaps * sizeof(Point4<float>), splitData.data())
                 ->addUniformData(shadowMapInfoUniformBinding, sizeof(shadowMapInfo), &shadowMapInfo);
@@ -246,7 +246,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::loadShadowMaps(GenericRenderer& lightingRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t shadowMapDataUniformBinding,
+    void ShadowManager::loadShadowMaps(GenericRenderer& deferredSecondPassRenderer, uint32_t viewProjMatricesUniformBinding, uint32_t shadowMapDataUniformBinding,
                                        uint32_t shadowMapInfoUniformBinding, uint32_t texUniformBinding, uint32_t offsetTexUniformBinding) {
         //shadow map texture
         std::size_t shadowLightIndex = 0;
@@ -255,12 +255,12 @@ namespace urchin {
                 assert(shadowLightIndex < getMaxShadowLights());
                 const auto& lightShadowMap = lightShadowMaps.find(visibleLight)->second;
 
-                if (lightingRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getShadowMapTexture().get()) {
+                if (deferredSecondPassRenderer.getUniformTextureReader(texUniformBinding, shadowLightIndex)->getTexture() != lightShadowMap->getShadowMapTexture().get()) {
                     //Info: anisotropy is disabled because it's causing artifact on AMD GPU
                     // Artifact: https://computergraphics.stackexchange.com/questions/5146/cascaded-shadow-maps-seams-between-cascades
                     // Solution: https://learn.microsoft.com/fr-be/windows/win32/dxtecharts/cascaded-shadow-maps?redirectedfrom=MSDN
                     TextureParam textureParam = TextureParam::build(TextureParam::ReadMode::EDGE_CLAMP, TextureParam::ReadQuality::LINEAR, TextureParam::Anisotropy::NO_ANISOTROPY);
-                    lightingRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
+                    deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, shadowLightIndex, TextureReader::build(lightShadowMap->getShadowMapTexture(), std::move(textureParam)));
                 }
 
                 unsigned int shadowMapIndex = 0;
@@ -275,28 +275,28 @@ namespace urchin {
         }
 
         for (auto i = (unsigned int)shadowLightIndex; i < getMaxShadowLights(); ++i) {
-            if (lightingRenderer.getUniformTextureReader(texUniformBinding, i)->getTexture() != getEmptyShadowMapTexture().get()) {
+            if (deferredSecondPassRenderer.getUniformTextureReader(texUniformBinding, i)->getTexture() != getEmptyShadowMapTexture().get()) {
                 //when a shadow light is removed or moved of position: reset the texture to an empty one to free the texture memory
-                lightingRenderer.updateUniformTextureReaderArray(texUniformBinding, i, TextureReader::build(getEmptyShadowMapTexture(), TextureParam::buildNearest()));
+                deferredSecondPassRenderer.updateUniformTextureReaderArray(texUniformBinding, i, TextureReader::build(getEmptyShadowMapTexture(), TextureParam::buildNearest()));
             }
         }
 
         //uniform data
-        lightingRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
+        deferredSecondPassRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
 
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
             splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
-        lightingRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
+        deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 
         shadowMapInfo.shadowMapInvSize = 1.0f / (float)config.shadowMapResolution;
         shadowMapInfo.offsetSampleCount = (int)(config.blurFilterBoxSize * config.blurFilterBoxSize);
         shadowMapInfo.shadowStrengthFactor = config.shadowStrengthFactor;
-        lightingRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
+        deferredSecondPassRenderer.updateUniformData(shadowMapInfoUniformBinding, &shadowMapInfo);
 
         //shadow map offset texture
-        if (lightingRenderer.getUniformTextureReader(offsetTexUniformBinding)->getTexture() != shadowMapOffsetTexture.get()) {
-            lightingRenderer.updateUniformTextureReader(offsetTexUniformBinding, TextureReader::build(shadowMapOffsetTexture, TextureParam::buildNearest()));
+        if (deferredSecondPassRenderer.getUniformTextureReader(offsetTexUniformBinding)->getTexture() != shadowMapOffsetTexture.get()) {
+            deferredSecondPassRenderer.updateUniformTextureReader(offsetTexUniformBinding, TextureReader::build(shadowMapOffsetTexture, TextureParam::buildNearest()));
         }
     }
 

@@ -100,8 +100,8 @@ namespace urchin {
             void unregisterModelForAnimation(Model&);
 
             //scene
-            void createOrUpdateLightingPass();
-            void createOrUpdateLightingShader();
+            void createOrUpdateDeferredPasses();
+            void createOrUpdateDeferredSecondPassShader();
             void updateScene(float);
             void deferredRendering(std::uint32_t, float);
             unsigned int computeDependenciesToFirstPassOutput() const;
@@ -135,7 +135,7 @@ namespace urchin {
             float renderingScale;
 
             //deferred rendering
-            std::unique_ptr<RenderTarget> deferredRenderTarget;
+            std::unique_ptr<RenderTarget> deferredFirstPassRenderTarget;
             ModelOcclusionCuller modelOcclusionCuller;
             ModelSetDisplayer modelSetDisplayer;
             std::unordered_set<Model*> modelsAnimated;
@@ -158,10 +158,10 @@ namespace urchin {
             std::shared_ptr<Texture> materialTexture;
             std::shared_ptr<Texture> illuminatedTexture;
 
-            //lighting pass rendering + post process
-            std::unique_ptr<RenderTarget> lightingRenderTarget;
-            std::unique_ptr<GenericRenderer> lightingRenderer;
-            std::unique_ptr<Shader> lightingShader;
+            //deferred second pass rendering + post process
+            std::unique_ptr<RenderTarget> deferredSecondPassRenderTarget;
+            std::unique_ptr<GenericRenderer> deferredSecondPassRenderer;
+            std::unique_ptr<Shader> deferredSecondPassShader;
             struct {
                 alignas(16) Matrix4<float> inverseProjectionViewMatrix;
                 alignas(16) Point3<float> viewPosition;

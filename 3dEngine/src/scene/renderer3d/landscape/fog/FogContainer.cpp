@@ -24,11 +24,11 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogContainer::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& lightingRendererBuilder, uint32_t fogUniformBinding) const {
-        lightingRendererBuilder->addUniformData(fogUniformBinding, sizeof(fogData), &fogData);
+    void FogContainer::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t fogUniformBinding) const {
+        deferredSecondPassRendererBuilder->addUniformData(fogUniformBinding, sizeof(fogData), &fogData);
     }
 
-    void FogContainer::loadFog(GenericRenderer& lightingRenderer, uint32_t fogUniformBinding) {
+    void FogContainer::loadFog(GenericRenderer& deferredSecondPassRenderer, uint32_t fogUniformBinding) {
         fogData = {};
         fogData.hasFog = !fogs.empty();
         if (!fogs.empty()) {
@@ -38,7 +38,7 @@ namespace urchin {
             fogData.color = fogs.top()->getColor();
         }
 
-        lightingRenderer.updateUniformData(fogUniformBinding, &fogData);
+        deferredSecondPassRenderer.updateUniformData(fogUniformBinding, &fogData);
     }
 
 }
