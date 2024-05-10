@@ -231,20 +231,24 @@ namespace urchin {
         subpass.pDepthStencilAttachment = hasDepthAttachment() ? &depthAttachmentRef : nullptr;
         subpass.inputAttachmentCount = 0;
 
+        VkMemoryBarrier2 memoryBarrier{};
+        memoryBarrier.sType = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2_KHR;
+        memoryBarrier.pNext = nullptr;
+        //Before move on to the current sub-pass, the previous sub-pass must have finished the defined stages in this variable:
+        memoryBarrier.srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
+        //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask':
+        memoryBarrier.dstStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
+        //All memory access type needed by the previous sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
+        memoryBarrier.srcAccessMask = VK_ACCESS_2_MEMORY_WRITE_BIT | VK_ACCESS_2_MEMORY_READ_BIT;
+        //All memory access type needed by the current sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
+        memoryBarrier.dstAccessMask = VK_ACCESS_2_MEMORY_WRITE_BIT | VK_ACCESS_2_MEMORY_READ_BIT;
+
         VkSubpassDependency2 dependency{};
         dependency.sType = VK_STRUCTURE_TYPE_SUBPASS_DEPENDENCY_2;
-        //VK_SUBPASS_EXTERNAL reference the sub-pass of the previous render pass:
-        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-        //Index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes:
-        dependency.dstSubpass = 0;
-        //Before move on to the current sub-pass, the previous sub-pass must have finished the defined stages in this variable:
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask':
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-        //All memory access type needed by the previous sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
-        dependency.srcAccessMask = VK_ACCESS_MEMORY_WRITE_BIT | VK_ACCESS_MEMORY_READ_BIT;
-        //All memory access type needed by the current sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
-        dependency.dstAccessMask = VK_ACCESS_MEMORY_WRITE_BIT | VK_ACCESS_MEMORY_READ_BIT;
+        dependency.pNext = &memoryBarrier;
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL; //VK_SUBPASS_EXTERNAL reference the sub-pass of the previous render pass
+        dependency.dstSubpass = 0; //Index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes
+        dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
 
         VkRenderPassCreateInfo2 renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO_2;
