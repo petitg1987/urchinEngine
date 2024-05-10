@@ -13,7 +13,7 @@ namespace urchin {
         assert(meshRendererBuilder->getUniformData().size() == 2);
         meshRendererBuilder
                 ->addUniformData(uniformBinding1, sizeof(cameraPlanes), &cameraPlanes);
-        lightManager.setupLightingRenderer(meshRendererBuilder, uniformBinding2);
+        lightManager.setupDeferredSecondPassRenderer(meshRendererBuilder, uniformBinding2);
     }
 
     void TransparentModelShaderVariable::loadCustomShaderVariables(GenericRenderer& meshRenderer, uint32_t, uint32_t uniformBinding2) {

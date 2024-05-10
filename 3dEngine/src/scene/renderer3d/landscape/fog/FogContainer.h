@@ -17,7 +17,7 @@ namespace urchin {
             void popFog();
             const Fog* getActiveFog() const;
 
-            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t) const;
+            void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t) const;
 
             void loadFog(GenericRenderer&, uint32_t);
 

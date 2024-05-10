@@ -37,7 +37,7 @@ namespace urchin {
             ShadowManager(const Config&, LightManager&, ModelOcclusionCuller&);
             ~ShadowManager() override = default;
 
-            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t);
+            void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t, uint32_t, uint32_t);
             void onCameraProjectionUpdate(const Camera&);
             void notify(Observable*, int) override;
 

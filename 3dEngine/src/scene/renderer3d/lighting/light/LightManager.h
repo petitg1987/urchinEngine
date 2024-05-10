@@ -20,7 +20,7 @@ namespace urchin {
                 REMOVE_LIGHT, //A light has been removed
             };
 
-            void setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t) const;
+            void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t) const;
             OctreeManager<Light>& getLightOctreeManager();
             Light* getLastUpdatedLight();
 

@@ -21,7 +21,7 @@ namespace urchin {
         updateShadowMapOffsets();
     }
 
-    void ShadowManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
+    void ShadowManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t projViewMatricesUniformBinding,
                                               uint32_t shadowMapDataUniformBinding, uint32_t shadowMapInfoUniformBinding) {
         std::size_t mLightProjectionViewSize = (std::size_t)(getMaxShadowLights()) * config.nbShadowMaps;
         lightProjectionViewMatrices.resize(mLightProjectionViewSize, Matrix4<float>{});

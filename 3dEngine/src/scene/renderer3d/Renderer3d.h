@@ -83,7 +83,7 @@ namespace urchin {
             void prepareRendering(std::uint32_t, float, unsigned int&) override;
 
         private:
-            struct LightingShaderConst {
+            struct DeferredSecondPassShaderConst {
                 uint32_t maxLights;
                 uint32_t maxShadowLights;
                 uint32_t numberShadowMaps;
@@ -103,10 +103,10 @@ namespace urchin {
             void createOrUpdateDeferredPasses();
             void createOrUpdateDeferredSecondPassShader();
             void updateScene(float);
-            void deferredRendering(std::uint32_t, float);
+            void renderDeferredFirstPass(std::uint32_t, float);
             unsigned int computeDependenciesToFirstPassOutput() const;
             void renderDebugSceneData(GeometryContainer&);
-            void lightingPassRendering(std::uint32_t);
+            void renderDeferredSecondPass(std::uint32_t);
             unsigned int computeDependenciesToSecondPassOutput() const;
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();

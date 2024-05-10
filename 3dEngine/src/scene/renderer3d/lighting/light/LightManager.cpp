@@ -20,7 +20,7 @@ namespace urchin {
         }
     }
 
-    void LightManager::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t lightsDataUniformBinding) const {
+    void LightManager::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t lightsDataUniformBinding) const {
         deferredSecondPassRendererBuilder
                 ->addUniformData(lightsDataUniformBinding, sizeof(LightsData), &lightsData);
     }

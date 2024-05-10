@@ -24,7 +24,7 @@ namespace urchin {
         return fogs.top();
     }
 
-    void FogContainer::setupLightingRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t fogUniformBinding) const {
+    void FogContainer::setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>& deferredSecondPassRendererBuilder, uint32_t fogUniformBinding) const {
         deferredSecondPassRendererBuilder->addUniformData(fogUniformBinding, sizeof(fogData), &fogData);
     }
 

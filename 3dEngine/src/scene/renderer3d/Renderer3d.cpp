@@ -33,7 +33,7 @@ namespace urchin {
             camera(std::move(camera)),
             renderingScale(visualConfig.getRenderingScale()),
 
-            //deferred rendering
+            //deferred first pass
             deferredFirstPassRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
@@ -50,7 +50,7 @@ namespace urchin {
             transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
-            //lighting pass rendering
+            //deferred second pass
             deferredSecondPassRenderTarget(finalRenderTarget.isValidRenderTarget() ?
                     std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)) :
                     std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
@@ -69,16 +69,16 @@ namespace urchin {
         this->camera->addObserver(this, Camera::PROJECTION_UPDATE);
         this->camera->initialize(sceneWidth, sceneHeight);
 
-        //deferred rendering
+        //deferred passes
         modelSetDisplayer.setupShader("model.vert.spv", "", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
-        //lighting pass rendering
         sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
         sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
         sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
+
         createOrUpdateDeferredPasses();
     }
 
@@ -315,9 +315,8 @@ namespace urchin {
 
         updateScene(dt);
 
-        deferredRendering(frameIndex, dt);
-
-        lightingPassRendering(frameIndex);
+        renderDeferredFirstPass(frameIndex, dt);
+        renderDeferredSecondPass(frameIndex);
 
         unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
         if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
@@ -393,9 +392,9 @@ namespace urchin {
                 ->addData(textureCoord)
                 ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformData(SCENE_INFO_UNIFORM_BINDING, sizeof(sceneInfo), &sceneInfo);
-        lightManager.setupLightingRenderer(deferredSecondPassRendererBuilder, LIGHTS_DATA_UNIFORM_BINDING);
-        shadowManager.setupLightingRenderer(deferredSecondPassRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING);
-        fogContainer.setupLightingRenderer(deferredSecondPassRendererBuilder, FOG_UNIFORM_BINDING);
+        lightManager.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, LIGHTS_DATA_UNIFORM_BINDING);
+        shadowManager.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, SM_PROJ_VIEW_MATRICES_UNIFORM_BINDING, SM_DATA_UNIFORM_BINDING, SM_INFO_UNIFORM_BINDING);
+        fogContainer.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, FOG_UNIFORM_BINDING);
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
         for (unsigned int i = 0; i < shadowManager.getMaxShadowLights(); ++i) {
@@ -415,24 +414,24 @@ namespace urchin {
     }
 
     void Renderer3d::createOrUpdateDeferredSecondPassShader() {
-        LightingShaderConst lightingConstData{};
-        lightingConstData.maxLights = lightManager.getMaxLights();
-        lightingConstData.maxShadowLights = shadowManager.getMaxShadowLights();
-        lightingConstData.numberShadowMaps = shadowManager.getConfig().nbShadowMaps;
-        lightingConstData.shadowMapConstantBias = shadowManager.getShadowMapConstantBias();
-        lightingConstData.shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor();
-        lightingConstData.shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize();
-        lightingConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
+        DeferredSecondPassShaderConst deferredSecondPassConstData{};
+        deferredSecondPassConstData.maxLights = lightManager.getMaxLights();
+        deferredSecondPassConstData.maxShadowLights = shadowManager.getMaxShadowLights();
+        deferredSecondPassConstData.numberShadowMaps = shadowManager.getConfig().nbShadowMaps;
+        deferredSecondPassConstData.shadowMapConstantBias = shadowManager.getShadowMapConstantBias();
+        deferredSecondPassConstData.shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor();
+        deferredSecondPassConstData.shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize();
+        deferredSecondPassConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
         std::vector<std::size_t> variablesSize = {
-                sizeof(LightingShaderConst::maxLights),
-                sizeof(LightingShaderConst::maxShadowLights),
-                sizeof(LightingShaderConst::numberShadowMaps),
-                sizeof(LightingShaderConst::shadowMapConstantBias),
-                sizeof(LightingShaderConst::shadowMapSlopeBiasFactor),
-                sizeof(LightingShaderConst::shadowMapOffsetTexSize),
-                sizeof(LightingShaderConst::maxEmissiveFactor)
+                sizeof(DeferredSecondPassShaderConst::maxLights),
+                sizeof(DeferredSecondPassShaderConst::maxShadowLights),
+                sizeof(DeferredSecondPassShaderConst::numberShadowMaps),
+                sizeof(DeferredSecondPassShaderConst::shadowMapConstantBias),
+                sizeof(DeferredSecondPassShaderConst::shadowMapSlopeBiasFactor),
+                sizeof(DeferredSecondPassShaderConst::shadowMapOffsetTexSize),
+                sizeof(DeferredSecondPassShaderConst::maxEmissiveFactor)
         };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &lightingConstData);
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &deferredSecondPassConstData);
 
         if (deferredSecondPassRenderTarget->isValidRenderTarget()) {
             deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "", "deferredSecondPass.frag.spv", std::move(shaderConstants));
@@ -486,8 +485,8 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, albedo, normal, etc. into buffers.
      */
-    void Renderer3d::deferredRendering(std::uint32_t frameIndex, float dt) {
-        ScopeProfiler sp(Profiler::graphic(), "deferredRender");
+    void Renderer3d::renderDeferredFirstPass(std::uint32_t frameIndex, float dt) {
+        ScopeProfiler sp(Profiler::graphic(), "renFirstPass");
 
         //deferred shadow map
         if (sceneInfo.isShadowActivated) {
@@ -569,10 +568,10 @@ namespace urchin {
 
     /**
      * Second pass of deferred shading algorithm.
-     * Compute lighting in pixel shader and render the scene to screen.
+     * Compute lighting in pixel shader to render the scene.
      */
-    void Renderer3d::lightingPassRendering(std::uint32_t frameIndex) {
-        ScopeProfiler sp(Profiler::graphic(), "lightPassRender");
+    void Renderer3d::renderDeferredSecondPass(std::uint32_t frameIndex) {
+        ScopeProfiler sp(Profiler::graphic(), "renSecondPass");
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
         positioningData.viewPosition = camera->getPosition();

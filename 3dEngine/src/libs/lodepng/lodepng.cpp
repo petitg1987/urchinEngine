@@ -339,7 +339,7 @@ static void lodepng_set32bitInt(unsigned char* buffer, unsigned value)
 #ifdef LODEPNG_COMPILE_ENCODER
 static void lodepng_add32bitInt(ucvector* buffer, unsigned value)
 {
-    ucvector_resize(buffer, buffer->size + 4); /*todos: give error if resize failed*/
+    ucvector_resize(buffer, buffer->size + 4); /*to dos: give error if resize failed*/
     lodepng_set32bitInt(&buffer->data[buffer->size - 4], value);
 }
 #endif /*LODEPNG_COMPILE_ENCODER*/
