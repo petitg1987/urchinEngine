@@ -37,7 +37,7 @@ foreach (shaderFile ${shaderFiles})
 
     add_custom_command( OUTPUT ${compiledShadersDir}/${compiledShaderName}
             DEPENDS "${shadersDir}/${shaderFilename};${commonShaderFiles}"
-            COMMAND glslc --target-env=vulkan1.2 -fshader-stage=${shaderStage} -O -g -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})
+            COMMAND glslc --target-env=vulkan1.3 -fshader-stage=${shaderStage} -O -g -Werror ${shadersDir}/${shaderFilename} -o ${compiledShadersDir}/${compiledShaderName})
     set(compiledShaderNames "${compiledShadersDir}/${compiledShaderName};${compiledShaderNames}")
 endforeach()
 add_custom_target(urchinShader ALL DEPENDS "${compiledShaderNames}")
