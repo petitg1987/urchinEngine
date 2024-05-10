@@ -157,8 +157,9 @@ namespace urchin {
         return processorsDirty || copiersDirty;
     }
 
-    VkAttachmentDescription RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
-        VkAttachmentDescription depthAttachment{};
+    VkAttachmentDescription2 RenderTarget::buildDepthAttachment(VkImageLayout finalLayout) const {
+        VkAttachmentDescription2 depthAttachment{};
+        depthAttachment.sType = VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_2;
         depthAttachment.format = VK_FORMAT_D32_SFLOAT;
         depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 
@@ -185,9 +186,10 @@ namespace urchin {
         return depthAttachment;
     }
 
-    VkAttachmentDescription RenderTarget::buildAttachment(VkFormat format, bool clearOnLoad, bool loadContent, VkImageLayout finalLayout) const {
+    VkAttachmentDescription2 RenderTarget::buildAttachment(VkFormat format, bool clearOnLoad, bool loadContent, VkImageLayout finalLayout) const {
         assert(!clearOnLoad || !loadContent);
-        VkAttachmentDescription colorAttachment{};
+        VkAttachmentDescription2 colorAttachment{};
+        colorAttachment.sType = VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_2;
         colorAttachment.format = format;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
         if (clearOnLoad) {
@@ -206,8 +208,8 @@ namespace urchin {
         return colorAttachment;
     }
 
-    void RenderTarget::createRenderPass(const VkAttachmentReference& depthAttachmentRef, const std::vector<VkAttachmentReference>& colorAttachmentRefs,
-                                        const std::vector<VkAttachmentDescription>& attachments) {
+    void RenderTarget::createRenderPass(const VkAttachmentReference2& depthAttachmentRef, const std::vector<VkAttachmentReference2>& colorAttachmentRefs,
+                                        const std::vector<VkAttachmentDescription2>& attachments) {
 
         //See https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/vkspec.html#renderpass-compatibility for details
         renderPassCompatibilityId = 0;
@@ -221,14 +223,16 @@ namespace urchin {
             HashUtil::combine(renderPassCompatibilityId, attachment.format, attachment.samples, attachment.flags);
         }
 
-        VkSubpassDescription subpass{};
+        VkSubpassDescription2 subpass{};
+        subpass.sType = VK_STRUCTURE_TYPE_SUBPASS_DESCRIPTION_2;
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         subpass.colorAttachmentCount = (uint32_t)colorAttachmentRefs.size();
         subpass.pColorAttachments = colorAttachmentRefs.empty() ? nullptr : colorAttachmentRefs.data(); //position determine index in the shader (layout(location = 0) out vec4 outColor)
         subpass.pDepthStencilAttachment = hasDepthAttachment() ? &depthAttachmentRef : nullptr;
         subpass.inputAttachmentCount = 0;
 
-        VkSubpassDependency dependency{};
+        VkSubpassDependency2 dependency{};
+        dependency.sType = VK_STRUCTURE_TYPE_SUBPASS_DEPENDENCY_2;
         //VK_SUBPASS_EXTERNAL reference the sub-pass of the previous render pass:
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         //Index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes:
@@ -242,8 +246,8 @@ namespace urchin {
         //All memory access type needed by the current sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
         dependency.dstAccessMask = VK_ACCESS_MEMORY_WRITE_BIT | VK_ACCESS_MEMORY_READ_BIT;
 
-        VkRenderPassCreateInfo renderPassInfo{};
-        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+        VkRenderPassCreateInfo2 renderPassInfo{};
+        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO_2;
         renderPassInfo.attachmentCount = (uint32_t)attachments.size();
         renderPassInfo.pAttachments = attachments.empty() ? nullptr : attachments.data();
         renderPassInfo.subpassCount = 1;
@@ -251,7 +255,7 @@ namespace urchin {
         renderPassInfo.dependencyCount = 1;
         renderPassInfo.pDependencies = &dependency;
 
-        VkResult result = vkCreateRenderPass(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
+        VkResult result = vkCreateRenderPass2(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
         if (result != VK_SUCCESS) {
             throw std::runtime_error("Failed to create render pass with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
         }

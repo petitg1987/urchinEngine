@@ -67,9 +67,9 @@ namespace urchin {
             bool hasProcessor() const;
             bool areProcessorsOrCopiersDirty() const;
 
-            VkAttachmentDescription buildDepthAttachment(VkImageLayout) const;
-            VkAttachmentDescription buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
-            void createRenderPass(const VkAttachmentReference&, const std::vector<VkAttachmentReference>&, const std::vector<VkAttachmentDescription>&);
+            VkAttachmentDescription2 buildDepthAttachment(VkImageLayout) const;
+            VkAttachmentDescription2 buildAttachment(VkFormat, bool, bool, VkImageLayout) const;
+            void createRenderPass(const VkAttachmentReference2&, const std::vector<VkAttachmentReference2>&, const std::vector<VkAttachmentDescription2>&);
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();

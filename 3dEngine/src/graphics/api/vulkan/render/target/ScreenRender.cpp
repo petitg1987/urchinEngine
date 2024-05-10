@@ -146,19 +146,21 @@ namespace urchin {
     }
 
     void ScreenRender::createRenderPass() {
-        std::vector<VkAttachmentDescription> attachments;
+        std::vector<VkAttachmentDescription2> attachments;
         uint32_t attachmentIndex = 0;
 
-        VkAttachmentReference depthAttachmentRef{};
+        VkAttachmentReference2 depthAttachmentRef{};
+        depthAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
         if (hasDepthAttachment()) {
             attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL));
             depthAttachmentRef.attachment = attachmentIndex++;
             depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         }
 
-        std::vector<VkAttachmentReference> colorAttachmentRefs;
+        std::vector<VkAttachmentReference2> colorAttachmentRefs;
         attachments.emplace_back(buildAttachment(swapChainHandler.getImageFormat(), false, false, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR));
-        VkAttachmentReference colorAttachmentRef{};
+        VkAttachmentReference2 colorAttachmentRef{};
+        colorAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
         colorAttachmentRef.attachment = attachmentIndex;
         colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
         colorAttachmentRefs.push_back(colorAttachmentRef);

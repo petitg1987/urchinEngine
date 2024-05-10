@@ -153,23 +153,25 @@ namespace urchin {
 
     void OffscreenRender::createRenderPass() {
         if (couldHaveGraphicsProcessors()) {
-            std::vector<VkAttachmentDescription> attachments;
+            std::vector<VkAttachmentDescription2> attachments;
             uint32_t attachmentIndex = 0;
 
-            VkAttachmentReference depthAttachmentRef{};
+            VkAttachmentReference2 depthAttachmentRef{};
+            depthAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
             if (hasDepthAttachment()) {
                 attachments.emplace_back(buildDepthAttachment(VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL));
                 depthAttachmentRef.attachment = attachmentIndex++;
                 depthAttachmentRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
             }
 
-            std::vector<VkAttachmentReference> colorAttachmentRefs;
+            std::vector<VkAttachmentReference2> colorAttachmentRefs;
             for (const auto& outputTexture: outputTextures) {
                 bool clearOnLoad = outputTexture.clearColor.has_value();
                 bool loadContent = outputTexture.loadOperation == LoadType::LOAD_CONTENT;
                 VkImageLayout finalLayout = outputTexture.texture->getOutputUsage() == OutputUsage::GRAPHICS ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL : VK_IMAGE_LAYOUT_GENERAL;
                 attachments.emplace_back(buildAttachment(outputTexture.texture->getVkFormat(), clearOnLoad, loadContent, finalLayout));
-                VkAttachmentReference colorAttachmentRef{};
+                VkAttachmentReference2 colorAttachmentRef{};
+                colorAttachmentRef.sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
                 colorAttachmentRef.attachment = attachmentIndex++;
                 colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
                 colorAttachmentRefs.push_back(colorAttachmentRef);
