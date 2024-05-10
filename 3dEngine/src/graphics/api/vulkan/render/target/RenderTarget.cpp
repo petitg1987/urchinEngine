@@ -233,7 +233,7 @@ namespace urchin {
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         //Index of the current sub-pass. Always 0 because this engine does not have multiple sub-passes:
         dependency.dstSubpass = 0;
-        //Before move on to the current sub-pass, the previous sub-pass must have finish the defined stages in this variable:
+        //Before move on to the current sub-pass, the previous sub-pass must have finished the defined stages in this variable:
         dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
         //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask':
         dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
