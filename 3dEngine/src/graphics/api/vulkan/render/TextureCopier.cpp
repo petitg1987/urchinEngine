@@ -41,8 +41,8 @@ namespace urchin {
         imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
         imageMemoryBarrier.srcAccessMask = srcAccessMask;
         imageMemoryBarrier.dstAccessMask = dstAccessMask;
-        imageMemoryBarrier.srcStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-        imageMemoryBarrier.dstStageMask = VK_PIPELINE_STAGE_TRANSFER_BIT;
+        imageMemoryBarrier.srcStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
+        imageMemoryBarrier.dstStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
         imageMemoryBarrier.oldLayout = oldLayout;
         imageMemoryBarrier.newLayout = newLayout;
         imageMemoryBarrier.image = image;
@@ -63,8 +63,8 @@ namespace urchin {
         imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
         imageMemoryBarrier.srcAccessMask = srcAccessMask;
         imageMemoryBarrier.dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT;
-        imageMemoryBarrier.srcStageMask = VK_PIPELINE_STAGE_TRANSFER_BIT;
-        imageMemoryBarrier.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+        imageMemoryBarrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+        imageMemoryBarrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
         imageMemoryBarrier.oldLayout = oldLayout;
         imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
         imageMemoryBarrier.image = image;
