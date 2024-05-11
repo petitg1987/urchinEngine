@@ -35,21 +35,23 @@ namespace urchin {
             surface(nullptr),
             physicalDevice(nullptr),
             logicalDevice(nullptr) {
-        //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php / https://vulkan.gpuinfo.org/listfeaturescore12.php):
+        //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php / https://vulkan.gpuinfo.org/listfeaturescore12.php / https://vulkan.gpuinfo.org/listfeaturescore13.php):
         physicalDeviceRequiredFeatures = {
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"), //78.7%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"), //99.2%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "file mode non solid"), //81.3%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //90.8%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"), //83.41%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"), //99.44%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "fill mode non solid"), //77.06%
+                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //91.34%
         };
         if (ConfigService::instance().getBoolValue("graphicsDebug.enableRobustBufferAccess")) {
             physicalDeviceRequiredFeatures.emplace_back(offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), "robust buffer access"); //100%
         }
         physicalDeviceRequiredVulkan12Features = {
-                //About "shaderOutputLayer & "shaderOutputViewportIndex" features: a device lost error occurs on Intel GPU when gl_Layer is used in vertex shader:
+                //About "shaderOutputLayer" & "shaderOutputViewportIndex" features: a device lost error occurs on Intel GPU when gl_Layer is used in vertex shader:
                 // - Reason: unknown. Cause could be somewhere else because even without these features, the engine crashes randomly with device lost on Intel UDH Graphics 620.
-                // - Tested graphics cards: Intel Iris Plus Graphics, Intel UHD Graphics
-                // - Test date: 18/04/2022
+                // - Tested graphics cards on 18/04/2022: Intel Iris Plus Graphics, Intel UHD Graphics
+        };
+        physicalDeviceRequiredVulkan13Features = {
+            PhysicalDeviceFeature(offsetof(VkPhysicalDeviceVulkan13Features, synchronization2), "synchronization 2"), //99.88%
         };
         physicalDeviceRequiredExtensions = {
                 std::make_pair<const char*, std::string>(VK_KHR_SWAPCHAIN_EXTENSION_NAME, "swap chain"),
@@ -137,27 +139,40 @@ namespace urchin {
         for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
             auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset);
             if (!isFeatureAvailable) {
-                return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support");
+                return {physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support"};
             }
         }
 
         VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
         deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
-        VkPhysicalDeviceFeatures2 deviceFeatures2{};
-        deviceFeatures2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-        deviceFeatures2.pNext = &deviceVulkan12Features;
-        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures2);
+        VkPhysicalDeviceFeatures2 deviceFeatures12{};
+        deviceFeatures12.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+        deviceFeatures12.pNext = &deviceVulkan12Features;
+        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures12);
         for (const auto& requiredFeature : physicalDeviceRequiredVulkan12Features) {
             auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + requiredFeature.offset);
             if (!isFeatureAvailable) {
-                return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support");
+                return {physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support"};
+            }
+        }
+
+        VkPhysicalDeviceVulkan13Features deviceVulkan13Features{};
+        deviceVulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+        VkPhysicalDeviceFeatures2 deviceFeatures13{};
+        deviceFeatures13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+        deviceFeatures13.pNext = &deviceVulkan13Features;
+        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures13);
+        for (const auto& requiredFeature : physicalDeviceRequiredVulkan13Features) {
+            auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan13Features) + requiredFeature.offset);
+            if (!isFeatureAvailable) {
+                return {physicalDeviceToCheck, "missing " + requiredFeature.featureDescription + " support"};
             }
         }
 
         //check required extensions
         for (const auto& [extensionName, extensionDescription] : physicalDeviceRequiredExtensions) {
             if (!checkPhysicalDeviceExtensionSupport(physicalDeviceToCheck, extensionName)) {
-                return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing " + extensionDescription + " support");
+                return {physicalDeviceToCheck, "missing " + extensionDescription + " support"};
             }
         }
 
@@ -173,19 +188,19 @@ namespace urchin {
         QueueHandler queueFamilyHandler;
         queueFamilyHandler.initializeQueueFamilies(physicalDeviceToCheck, surface);
         if (!queueFamilyHandler.isAllQueueFamiliesFound()) {
-            return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing a queue family support");
+            return {physicalDeviceToCheck, "missing a queue family support"};
         }
 
         //check swap chain is adequate
         SwapChainSupportDetails swapChainSupport = SwapChainHandler::querySwapChainSupport(physicalDeviceToCheck);
         if (swapChainSupport.formats.empty() || swapChainSupport.presentModes.empty()) {
-            return PhysicalDeviceSuitability(physicalDeviceToCheck, "missing adequate swap chain support");
+            return {physicalDeviceToCheck, "missing adequate swap chain support"};
         }
 
         //check max compute work group invocations
         if (deviceProperties.limits.maxComputeWorkGroupInvocations < GenericComputeBuilder::MAX_COMPUTE_WORK_GROUP_INVOCATIONS) {
             std::string valueOverMin = std::to_string(deviceProperties.limits.maxComputeWorkGroupInvocations) + "/" + std::to_string(GenericComputeBuilder::MAX_COMPUTE_WORK_GROUP_INVOCATIONS);
-            return PhysicalDeviceSuitability(physicalDeviceToCheck, "minimum requirement for compute work group invocations is insufficient (" + valueOverMin + ")");
+            return {physicalDeviceToCheck, "minimum requirement for compute work group invocations is insufficient (" + valueOverMin + ")"};
         }
 
         int score = 0;
@@ -193,7 +208,7 @@ namespace urchin {
             score += 10000;
         }
         score += (int)deviceProperties.limits.maxImageDimension2D; //indicator of the device performance/quality
-        return PhysicalDeviceSuitability(physicalDeviceToCheck, score);
+        return {physicalDeviceToCheck, score};
     }
 
     bool DeviceHandler::checkPhysicalDeviceExtensionSupport(VkPhysicalDevice physicalDeviceToCheck, const char* extensionName) const {
@@ -269,6 +284,13 @@ namespace urchin {
             *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + requiredFeature.offset) = true;
         }
         createInfo.pNext = &deviceVulkan12Features;
+
+        VkPhysicalDeviceVulkan13Features deviceVulkan13Features{};
+        deviceVulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+        for (const auto& requiredFeature : physicalDeviceRequiredVulkan13Features) {
+            *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan13Features) + requiredFeature.offset) = true;
+        }
+        deviceVulkan12Features.pNext = &deviceVulkan13Features;
 
         VkDevice device;
         VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);

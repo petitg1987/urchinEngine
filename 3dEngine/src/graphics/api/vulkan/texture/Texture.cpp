@@ -253,8 +253,8 @@ namespace urchin {
     void Texture::transitionImageLayout(VkImage image, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t layoutMipLevels) const {
         CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("layout transition for: " + getName());
         {
-            VkImageMemoryBarrier barrier{};
-            barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+            VkImageMemoryBarrier2 barrier{};
+            barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
             barrier.oldLayout = oldLayout;
             barrier.newLayout = newLayout;
             barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
@@ -266,32 +266,31 @@ namespace urchin {
             barrier.subresourceRange.baseArrayLayer = 0;
             barrier.subresourceRange.layerCount = layer;
 
-            VkPipelineStageFlags sourceStage;
-            VkPipelineStageFlags destinationStage;
-
             if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
                 barrier.srcAccessMask = 0;
                 barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-
-                sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-                destinationStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+                barrier.srcStageMask = VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
+                barrier.dstStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
             } else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
                 barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
                 barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-
-                sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-                destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+                barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+                barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
             } else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_GENERAL) { //general is for compute shader output image
                 barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
                 barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT;
-
-                sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-                destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+                barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+                barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
             } else {
                 throw std::invalid_argument("Unsupported layout transition from " + std::to_string(oldLayout) + " to " + std::to_string(newLayout));
             }
 
-            vkCmdPipelineBarrier(commandBufferData.commandBuffer, sourceStage, destinationStage, 0, 0, nullptr, 0, nullptr,1, &barrier);
+            VkDependencyInfo dependencyInfo{};
+            dependencyInfo.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+            dependencyInfo.imageMemoryBarrierCount = 1;
+            dependencyInfo.pImageMemoryBarriers = &barrier;
+
+            vkCmdPipelineBarrier2(commandBufferData.commandBuffer, &dependencyInfo);
         }
         CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }
@@ -299,10 +298,11 @@ namespace urchin {
     void Texture::copyBufferToImage(VkBuffer buffer, VkImage image) const {
         CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("copy for: " + getName());
         {
-            std::vector<VkBufferImageCopy> regions;
+            std::vector<VkBufferImageCopy2> regions;
             regions.reserve(layer);
             for (uint32_t i = 0; i < layer; i++) {
-                VkBufferImageCopy region{};
+                VkBufferImageCopy2 region{};
+                region.sType = VK_STRUCTURE_TYPE_BUFFER_IMAGE_COPY_2;
                 region.bufferOffset = (std::size_t)width * height * getBytesByPixel() * i;
                 region.bufferRowLength = 0; //next two values defined to "0" mean that pixels are tightly packed in memory
                 region.bufferImageHeight = 0;
@@ -315,7 +315,16 @@ namespace urchin {
                 regions.emplace_back(region);
             }
 
-            vkCmdCopyBufferToImage(commandBufferData.commandBuffer, buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, (uint32_t)regions.size(), regions.data());
+            VkCopyBufferToImageInfo2 copyBufferToImageInfo{};
+            copyBufferToImageInfo.sType = VK_STRUCTURE_TYPE_COPY_BUFFER_TO_IMAGE_INFO_2;
+            copyBufferToImageInfo.srcBuffer = buffer;
+            copyBufferToImageInfo.dstImage = image;
+            copyBufferToImageInfo.dstImageLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+            copyBufferToImageInfo.regionCount = (uint32_t)regions.size();
+            copyBufferToImageInfo.pRegions = regions.data();
+
+            vkCmdCopyBufferToImage2(commandBufferData.commandBuffer, &copyBufferToImageInfo);
+
         }
         CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }
@@ -330,8 +339,8 @@ namespace urchin {
 
         CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("mipmap for: " + getName());
         {
-            VkImageMemoryBarrier barrier{};
-            barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+            VkImageMemoryBarrier2 barrier{};
+            barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
             barrier.image = image;
             barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
@@ -340,6 +349,11 @@ namespace urchin {
             barrier.subresourceRange.layerCount = layer;
             barrier.subresourceRange.levelCount = 1;
 
+            VkDependencyInfo dependencyInfo{};
+            dependencyInfo.sType = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+            dependencyInfo.imageMemoryBarrierCount = 1;
+            dependencyInfo.pImageMemoryBarriers = &barrier;
+
             auto mipWidth = (int32_t) width;
             auto mipHeight = (int32_t) height;
 
@@ -347,10 +361,12 @@ namespace urchin {
                 barrier.subresourceRange.baseMipLevel = i - 1;
                 barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
                 barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-                barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-                barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+                barrier.srcAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+                barrier.dstAccessMask = VK_ACCESS_2_TRANSFER_READ_BIT;
+                barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+                barrier.dstStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
 
-                vkCmdPipelineBarrier(commandBufferData.commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+                vkCmdPipelineBarrier2(commandBufferData.commandBuffer, &dependencyInfo);
 
                 VkImageBlit blit{};
                 blit.srcOffsets[0] = {0, 0, 0};
@@ -370,10 +386,12 @@ namespace urchin {
 
                 barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
                 barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-                barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+                barrier.srcAccessMask = VK_ACCESS_2_TRANSFER_READ_BIT;
+                barrier.dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT;
+                barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+                barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
 
-                vkCmdPipelineBarrier(commandBufferData.commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+                vkCmdPipelineBarrier2(commandBufferData.commandBuffer, &dependencyInfo);
 
                 if (mipWidth > 1) {
                     mipWidth /= 2;
@@ -386,10 +404,12 @@ namespace urchin {
             barrier.subresourceRange.baseMipLevel = mipLevels - 1;
             barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
             barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-            barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            barrier.srcAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+            barrier.dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT;
+            barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+            barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
 
-            vkCmdPipelineBarrier(commandBufferData.commandBuffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+            vkCmdPipelineBarrier2(commandBufferData.commandBuffer, &dependencyInfo);
         }
         CommandBufferHelper::endSingleTimeCommands(commandBufferData);
     }

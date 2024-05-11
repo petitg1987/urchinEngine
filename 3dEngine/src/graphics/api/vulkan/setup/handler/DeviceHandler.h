@@ -44,6 +44,7 @@ namespace urchin {
 
             std::vector<PhysicalDeviceFeature> physicalDeviceRequiredFeatures;
             std::vector<PhysicalDeviceFeature> physicalDeviceRequiredVulkan12Features;
+            std::vector<PhysicalDeviceFeature> physicalDeviceRequiredVulkan13Features;
             std::vector<std::pair<const char*, std::string>> physicalDeviceRequiredExtensions;
             std::vector<std::pair<const char*, std::string>> physicalDeviceOptionalExtensions;
             std::map<VkPhysicalDevice, std::vector<const char*>> physicalDeviceOptionalExtensionsSupported;
