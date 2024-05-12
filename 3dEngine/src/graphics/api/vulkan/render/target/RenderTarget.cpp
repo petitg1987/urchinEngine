@@ -383,26 +383,26 @@ namespace urchin {
         return offscreenRenderDependencies;
     }
 
-    void RenderTarget::configureWaitSemaphore(std::uint32_t frameIndex, VkSubmitInfo& submitInfo, std::optional<WaitSemaphore> additionalSemaphore) const {
-        queueSubmitWaitSemaphores.clear();
-        queueSubmitWaitStages.clear();
+    void RenderTarget::configureWaitSemaphore(std::uint32_t frameIndex, VkSubmitInfo2& submitInfo, std::optional<VkSemaphoreSubmitInfo> additionalSemaphoreSubmitInfo) const {
+        queueSubmitWaitSemaphoreSubmitInfos.clear();
 
-        if (additionalSemaphore.has_value()) {
-            queueSubmitWaitSemaphores.emplace_back(additionalSemaphore->waitSemaphore);
-            queueSubmitWaitStages.emplace_back(additionalSemaphore->waitDstStageMask);
+        if (additionalSemaphoreSubmitInfo.has_value()) {
+            queueSubmitWaitSemaphoreSubmitInfos.emplace_back(additionalSemaphoreSubmitInfo.value());
         }
 
         for (OffscreenRender* offscreenRenderDependency : getOffscreenRenderDependencies()) {
             VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameIndex);
             if (waitSemaphore) {
-                queueSubmitWaitSemaphores.emplace_back(waitSemaphore);
-                queueSubmitWaitStages.emplace_back(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */);
+                VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
+                semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+                semaphoreSubmitInfo.semaphore = waitSemaphore;
+                semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */;
+                queueSubmitWaitSemaphoreSubmitInfos.emplace_back(semaphoreSubmitInfo);
             }
         }
 
-        submitInfo.waitSemaphoreCount = (uint32_t)queueSubmitWaitSemaphores.size();
-        submitInfo.pWaitSemaphores = queueSubmitWaitSemaphores.empty() ? nullptr : queueSubmitWaitSemaphores.data();
-        submitInfo.pWaitDstStageMask = queueSubmitWaitStages.data();
+        submitInfo.waitSemaphoreInfoCount = (uint32_t)queueSubmitWaitSemaphoreSubmitInfos.size();
+        submitInfo.pWaitSemaphoreInfos = queueSubmitWaitSemaphoreSubmitInfos.empty() ? nullptr : queueSubmitWaitSemaphoreSubmitInfos.data();
     }
 
     void RenderTarget::updatePipelineProcessorData(uint32_t frameIndex) const {

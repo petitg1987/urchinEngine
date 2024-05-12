@@ -228,7 +228,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'currentFrameIndex'.
+        //Fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'currentFrameIndex'.
         VkResult resultWaitForFences = vkWaitForFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex], VK_TRUE, UINT64_MAX);
         if (resultWaitForFences != VK_SUCCESS && resultWaitForFences != VK_TIMEOUT) {
             throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(resultWaitForFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
@@ -262,22 +262,37 @@ namespace urchin {
         imagesFences[vkImageIndex] = commandBufferFences[currentFrameIndex]; //mark the image as now being in use by this frame
 
         //Semaphores (GPU-GPU sync) to wait command buffers execution before present the image.
-        std::array<VkSemaphore, 1> queuePresentWaitSemaphores = {renderFinishedSemaphores[currentFrameIndex]};
+        VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
+        semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+        semaphoreSubmitInfo.semaphore = renderFinishedSemaphores[currentFrameIndex];
+        semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
+        semaphoreSubmitInfo.deviceIndex = 0;
+
         //Semaphores (GPU-GPU sync) to wait image available before executing command buffers.
-        auto waitSemaphore = WaitSemaphore{imageAvailableSemaphores[currentFrameIndex], VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-        VkSubmitInfo submitInfo{};
-        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        configureWaitSemaphore(frameIndex, submitInfo, waitSemaphore);
-        submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = &commandBuffers[vkImageIndex];
-        submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores = queuePresentWaitSemaphores.data();
+        VkSemaphoreSubmitInfo imageAvailableSemaphoreSubmitInfo{};
+        imageAvailableSemaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+        imageAvailableSemaphoreSubmitInfo.semaphore = imageAvailableSemaphores[currentFrameIndex];
+        imageAvailableSemaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+        imageAvailableSemaphoreSubmitInfo.deviceIndex = 0;
+
+        VkCommandBufferSubmitInfo commandBufferSubmitInfo{};
+        commandBufferSubmitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+        commandBufferSubmitInfo.commandBuffer = commandBuffers[vkImageIndex];
+        commandBufferSubmitInfo.deviceMask = 0;
+
+        VkSubmitInfo2 submitInfo{};
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+        configureWaitSemaphore(frameIndex, submitInfo, imageAvailableSemaphoreSubmitInfo);
+        submitInfo.commandBufferInfoCount = 1;
+        submitInfo.pCommandBufferInfos = &commandBufferSubmitInfo;
+        submitInfo.signalSemaphoreInfoCount = 1;
+        submitInfo.pSignalSemaphoreInfos = &semaphoreSubmitInfo;
 
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFences[currentFrameIndex]);
         if (resultResetFences != VK_SUCCESS) {
             throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
-        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
+        VkResult resultQueueSubmit = vkQueueSubmit2(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, commandBufferFences[currentFrameIndex]);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
@@ -286,7 +301,7 @@ namespace urchin {
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         presentInfo.waitSemaphoreCount = 1;
-        presentInfo.pWaitSemaphores = queuePresentWaitSemaphores.data();
+        presentInfo.pWaitSemaphores = &renderFinishedSemaphores[currentFrameIndex];
         presentInfo.swapchainCount = 1;
         presentInfo.pSwapchains = swapChains.data();
         presentInfo.pImageIndices = &vkImageIndex;
@@ -321,7 +336,7 @@ namespace urchin {
 
         for (unsigned int frameIndex = 0; frameIndex < MAX_CONCURRENT_FRAMES; ++frameIndex) {
             if (frameIndex != currentFrameIndex) { //current command buffer already idle due to 'vkWaitForFences' previously executed in 'render' method
-                //fence (CPU-GPU sync) to wait completion of vkQueueSubmit for the frame 'frameIndex'
+                //fence (CPU-GPU sync) to wait completion of vkQueueSubmit2 for the frame 'frameIndex'
                 VkResult result = vkWaitForFences(GraphicsSetupService::instance().getDevices().getLogicalDevice(), 1, &commandBufferFences[frameIndex], VK_TRUE, UINT64_MAX);
                 if (result != VK_SUCCESS && result != VK_TIMEOUT) {
                     throw std::runtime_error("Failed to wait for fence with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());

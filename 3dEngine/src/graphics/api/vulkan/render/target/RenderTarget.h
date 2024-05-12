@@ -56,11 +56,6 @@ namespace urchin {
             virtual void render(std::uint32_t, unsigned int) = 0;
 
         protected:
-            struct WaitSemaphore {
-                VkSemaphore waitSemaphore;
-                VkPipelineStageFlagBits waitDstStageMask;
-            };
-
             void initializeProcessors();
             void cleanupProcessors() const;
             std::span<PipelineProcessor* const> getProcessors() const;
@@ -81,7 +76,7 @@ namespace urchin {
 
             VkRenderPass getRenderPass() const;
             std::span<OffscreenRender*> getOffscreenRenderDependencies() const;
-            void configureWaitSemaphore(std::uint32_t, VkSubmitInfo&, std::optional<WaitSemaphore>) const;
+            void configureWaitSemaphore(std::uint32_t, VkSubmitInfo2&, std::optional<VkSemaphoreSubmitInfo>) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;
@@ -103,8 +98,7 @@ namespace urchin {
             VkCommandPool commandPool;
 
             mutable std::vector<OffscreenRender*> offscreenRenderDependencies;
-            mutable std::vector<VkSemaphore> queueSubmitWaitSemaphores;
-            mutable std::vector<VkPipelineStageFlags> queueSubmitWaitStages;
+            mutable std::vector<VkSemaphoreSubmitInfo> queueSubmitWaitSemaphoreSubmitInfos;
 
             std::vector<TextureCopier> preRenderTextureCopier;
             bool copiersDirty;

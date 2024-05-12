@@ -39,12 +39,17 @@ namespace urchin {
             throw std::runtime_error("Failed to end command buffer with error code '" + std::string(string_VkResult(resultEndCmdBuffer)) + "' on " + std::string(commandBufferData.name));
         }
 
-        VkSubmitInfo submitInfo{};
-        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        submitInfo.commandBufferCount = 1;
-        submitInfo.pCommandBuffers = &commandBufferData.commandBuffer;
+        VkCommandBufferSubmitInfo commandBufferSubmitInfo{};
+        commandBufferSubmitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+        commandBufferSubmitInfo.commandBuffer = commandBufferData.commandBuffer;
+        commandBufferSubmitInfo.deviceMask = 0;
 
-        VkResult resultQueueSubmit = vkQueueSubmit(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, VK_NULL_HANDLE);
+        VkSubmitInfo2 submitInfo{};
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+        submitInfo.commandBufferInfoCount = 1;
+        submitInfo.pCommandBufferInfos = &commandBufferSubmitInfo;
+
+        VkResult resultQueueSubmit = vkQueueSubmit2(GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueue(), 1, &submitInfo, VK_NULL_HANDLE);
         if (resultQueueSubmit != VK_SUCCESS) {
             throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on " + std::string(commandBufferData.name));
         }
