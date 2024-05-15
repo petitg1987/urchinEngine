@@ -88,8 +88,8 @@ namespace urchin {
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
             assert(&processor->getRenderTarget() == this);
-            assert(!isValidRenderTarget() || (processor->isGraphicsPipeline() || !hasDepthAttachment()));
-            assert(processors.empty() || processors[0]->isGraphicsPipeline() == processor->isGraphicsPipeline());
+            assert(!isValidRenderTarget() || (processor->isGraphicsProcessor() || !hasDepthAttachment()));
+            assert(processors.empty() || (processors[0]->isGraphicsProcessor() == processor->isGraphicsProcessor() && processors[0]->isComputeProcessor() == processor->isComputeProcessor()));
             for (const auto* p : processors) {
                 assert(p != processor);
             }
@@ -105,7 +105,15 @@ namespace urchin {
     }
 
     bool RenderTarget::couldHaveGraphicsProcessors() const {
-        return processors.empty() || processors[0]->isGraphicsPipeline();
+        return processors.empty() || processors[0]->isGraphicsProcessor();
+    }
+
+    bool RenderTarget::hasGraphicsProcessors() const {
+        return !processors.empty() && processors[0]->isGraphicsProcessor();
+    }
+
+    bool RenderTarget::hasComputeProcessors() const {
+        return !processors.empty() && processors[0]->isComputeProcessor();
     }
 
     void RenderTarget::notifyProcessorEnabled(const PipelineProcessor* processor) {
@@ -237,7 +245,7 @@ namespace urchin {
         //Before move on to the current sub-pass, the previous sub-pass must have finished the defined stages in this variable:
         memoryBarrier.srcStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
         //The current sub-pass can be executed until the specified stage and then must wait the previous sub-pass reach the stage specified in 'srcStageMask':
-        memoryBarrier.dstStageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
+        memoryBarrier.dstStageMask = VK_PIPELINE_STAGE_2_ALL_GRAPHICS_BIT;
         //All memory access type needed by the previous sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
         memoryBarrier.srcAccessMask = VK_ACCESS_2_MEMORY_WRITE_BIT | VK_ACCESS_2_MEMORY_READ_BIT;
         //All memory access type needed by the current sub-pass (Allow the GPU to better handle memory cache. Example: if write is done in src, the dst must refresh the cache to read)
@@ -396,7 +404,9 @@ namespace urchin {
                 VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
                 semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
                 semaphoreSubmitInfo.semaphore = waitSemaphore;
-                semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT /* for depth attachment */;
+                //wait until all stage masks have been reached in the previous renders (=offscreenRenderDependency) to start the execution
+                semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
+
                 queueSubmitWaitSemaphoreSubmitInfos.emplace_back(semaphoreSubmitInfo);
             }
         }
@@ -447,7 +457,7 @@ namespace urchin {
             for (const TextureCopier& textureCopier : preRenderTextureCopier) {
                 textureCopier.executeCopy(commandBuffers[frameIndex]);
             }
-            if (couldHaveGraphicsProcessors()) {
+            if (hasGraphicsProcessors()) {
                 VkRenderPassBeginInfo renderPassInfo{};
                 renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
                 renderPassInfo.renderPass = renderPass;
@@ -463,7 +473,7 @@ namespace urchin {
             for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) {
                 boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, boundPipelineId);
             }
-            if (couldHaveGraphicsProcessors()) {
+            if (hasGraphicsProcessors()) {
                 vkCmdEndRenderPass(commandBuffers[frameIndex]);
             }
             DebugLabelHelper::endDebugRegion(commandBuffers[frameIndex]);

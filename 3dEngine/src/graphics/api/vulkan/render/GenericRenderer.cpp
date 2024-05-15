@@ -76,8 +76,12 @@ namespace urchin {
         }
     }
 
-    bool GenericRenderer::isGraphicsPipeline() const {
+    bool GenericRenderer::isGraphicsProcessor() const {
         return true;
+    }
+
+    bool GenericRenderer::isComputeProcessor() const {
+        return false;
     }
 
     bool GenericRenderer::isDepthTestEnabled() const {
