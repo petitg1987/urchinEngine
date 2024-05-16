@@ -45,10 +45,10 @@ namespace urchin {
             vkCmdCopyImage(copyCmdData.commandBuffer, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
 
             //transition destination image to general layout, which is the required layout for mapping the image memory later on
-            cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_WRITE_BIT, VK_ACCESS_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
+            cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, VK_ACCESS_2_TRANSFER_WRITE_BIT, VK_ACCESS_2_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
 
             //transition back the image after the blit is done
-            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_TRANSFER_READ_BIT, VK_ACCESS_NONE_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+            cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_2_TRANSFER_READ_BIT, VK_ACCESS_NONE_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
         }
         CommandBufferHelper::endSingleTimeCommands(copyCmdData);
 
