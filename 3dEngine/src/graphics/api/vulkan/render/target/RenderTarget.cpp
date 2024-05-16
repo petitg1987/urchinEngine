@@ -398,15 +398,23 @@ namespace urchin {
             queueSubmitWaitSemaphoreSubmitInfos.emplace_back(additionalSemaphoreSubmitInfo.value());
         }
 
+        VkPipelineStageFlags2 stageMask = VK_PIPELINE_STAGE_2_NONE;
+        if (hasGraphicsProcessors()) {
+            stageMask |= VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+            if (hasDepthAttachment()) {
+                stageMask |= VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
+            }
+        } else if (hasComputeProcessors()) {
+            stageMask |= VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
+        }
+
         for (OffscreenRender* offscreenRenderDependency : getOffscreenRenderDependencies()) {
             VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameIndex);
             if (waitSemaphore) {
                 VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
                 semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
                 semaphoreSubmitInfo.semaphore = waitSemaphore;
-                //wait until all stage masks have been reached in the previous renders (=offscreenRenderDependency) to start the execution
-                semaphoreSubmitInfo.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK_PIPELINE_STAGE_2_EARLY_FRAGMENT_TESTS_BIT;
-
+                semaphoreSubmitInfo.stageMask = stageMask; //wait at specified stages to receive the semaphore signal and continue the execution
                 queueSubmitWaitSemaphoreSubmitInfos.emplace_back(semaphoreSubmitInfo);
             }
         }
