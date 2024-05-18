@@ -298,21 +298,21 @@ namespace urchin {
     void Texture::copyBufferToImage(VkBuffer buffer, VkImage image) const {
         CommandBufferData commandBufferData = CommandBufferHelper::beginSingleTimeCommands("copy for: " + getName());
         {
-            std::vector<VkBufferImageCopy2> regions;
-            regions.reserve(layer);
+            std::vector<VkBufferImageCopy2> bufferImageCopies;
+            bufferImageCopies.reserve(layer);
             for (uint32_t i = 0; i < layer; i++) {
-                VkBufferImageCopy2 region{};
-                region.sType = VK_STRUCTURE_TYPE_BUFFER_IMAGE_COPY_2;
-                region.bufferOffset = (std::size_t)width * height * getBytesByPixel() * i;
-                region.bufferRowLength = 0; //next two values defined to "0" mean that pixels are tightly packed in memory
-                region.bufferImageHeight = 0;
-                region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-                region.imageSubresource.mipLevel = 0;
-                region.imageSubresource.baseArrayLayer = i;
-                region.imageSubresource.layerCount = 1;
-                region.imageOffset = {0, 0, 0};
-                region.imageExtent = {width, height, 1};
-                regions.emplace_back(region);
+                VkBufferImageCopy2 bufferImageCopy{};
+                bufferImageCopy.sType = VK_STRUCTURE_TYPE_BUFFER_IMAGE_COPY_2;
+                bufferImageCopy.bufferOffset = (std::size_t)width * height * getBytesByPixel() * i;
+                bufferImageCopy.bufferRowLength = 0; //next two values defined to "0" mean that pixels are tightly packed in memory
+                bufferImageCopy.bufferImageHeight = 0;
+                bufferImageCopy.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                bufferImageCopy.imageSubresource.mipLevel = 0;
+                bufferImageCopy.imageSubresource.baseArrayLayer = i;
+                bufferImageCopy.imageSubresource.layerCount = 1;
+                bufferImageCopy.imageOffset = {0, 0, 0};
+                bufferImageCopy.imageExtent = {width, height, 1};
+                bufferImageCopies.emplace_back(bufferImageCopy);
             }
 
             VkCopyBufferToImageInfo2 copyBufferToImageInfo{};
@@ -320,8 +320,8 @@ namespace urchin {
             copyBufferToImageInfo.srcBuffer = buffer;
             copyBufferToImageInfo.dstImage = image;
             copyBufferToImageInfo.dstImageLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
-            copyBufferToImageInfo.regionCount = (uint32_t)regions.size();
-            copyBufferToImageInfo.pRegions = regions.data();
+            copyBufferToImageInfo.regionCount = (uint32_t)bufferImageCopies.size();
+            copyBufferToImageInfo.pRegions = bufferImageCopies.data();
 
             vkCmdCopyBufferToImage2(commandBufferData.commandBuffer, &copyBufferToImageInfo);
 
@@ -368,21 +368,32 @@ namespace urchin {
 
                 vkCmdPipelineBarrier2(commandBufferData.commandBuffer, &dependencyInfo);
 
-                VkImageBlit blit{};
-                blit.srcOffsets[0] = {0, 0, 0};
-                blit.srcOffsets[1] = {mipWidth, mipHeight, 1};
-                blit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-                blit.srcSubresource.mipLevel = i - 1;
-                blit.srcSubresource.baseArrayLayer = 0;
-                blit.srcSubresource.layerCount = 1;
-                blit.dstOffsets[0] = {0, 0, 0};
-                blit.dstOffsets[1] = {mipWidth > 1 ? mipWidth / 2 : 1, mipHeight > 1 ? mipHeight / 2 : 1, 1};
-                blit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-                blit.dstSubresource.mipLevel = i;
-                blit.dstSubresource.baseArrayLayer = 0;
-                blit.dstSubresource.layerCount = layer;
+                VkImageBlit2 imageBlit{};
+                imageBlit.sType = VK_STRUCTURE_TYPE_IMAGE_BLIT_2;
+                imageBlit.srcOffsets[0] = {0, 0, 0};
+                imageBlit.srcOffsets[1] = {mipWidth, mipHeight, 1};
+                imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                imageBlit.srcSubresource.mipLevel = i - 1;
+                imageBlit.srcSubresource.baseArrayLayer = 0;
+                imageBlit.srcSubresource.layerCount = 1;
+                imageBlit.dstOffsets[0] = {0, 0, 0};
+                imageBlit.dstOffsets[1] = {mipWidth > 1 ? mipWidth / 2 : 1, mipHeight > 1 ? mipHeight / 2 : 1, 1};
+                imageBlit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+                imageBlit.dstSubresource.mipLevel = i;
+                imageBlit.dstSubresource.baseArrayLayer = 0;
+                imageBlit.dstSubresource.layerCount = layer;
 
-                vkCmdBlitImage(commandBufferData.commandBuffer, image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &blit, VK_FILTER_LINEAR);
+                VkBlitImageInfo2 blitImageInfo{};
+                blitImageInfo.sType = VK_STRUCTURE_TYPE_BLIT_IMAGE_INFO_2;
+                blitImageInfo.srcImage = image;
+                blitImageInfo.srcImageLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+                blitImageInfo.dstImage = image;
+                blitImageInfo.dstImageLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+                blitImageInfo.regionCount = 1;
+                blitImageInfo.pRegions = &imageBlit;
+                blitImageInfo.filter = VK_FILTER_LINEAR;
+
+                vkCmdBlitImage2(commandBufferData.commandBuffer, &blitImageInfo);
 
                 barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
                 barrier.newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
