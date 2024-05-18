@@ -268,17 +268,17 @@ namespace urchin {
 
             if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
                 barrier.srcAccessMask = 0;
-                barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+                barrier.dstAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
                 barrier.srcStageMask = VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
                 barrier.dstStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
             } else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
-                barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-                barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+                barrier.srcAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+                barrier.dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT;
                 barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
                 barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
             } else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_GENERAL) { //general is for compute shader output image
-                barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-                barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT;
+                barrier.srcAccessMask = VK_ACCESS_2_TRANSFER_WRITE_BIT;
+                barrier.dstAccessMask = VK_ACCESS_2_SHADER_READ_BIT | VK_ACCESS_2_SHADER_WRITE_BIT;
                 barrier.srcStageMask = VK_PIPELINE_STAGE_2_TRANSFER_BIT;
                 barrier.dstStageMask = VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT | VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
             } else {
