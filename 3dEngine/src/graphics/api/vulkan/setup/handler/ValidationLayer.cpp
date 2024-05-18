@@ -24,6 +24,9 @@ namespace urchin {
         filterOutMessages.emplace_back("Attempting to enable extension VK_EXT_debug_utils"); //allow validation layer to be active for debug/development/production
         filterOutMessages.emplace_back("but only supports loader interface version 4"); //caused by wrong packaging of Ubuntu 21.10
         filterOutMessages.emplace_back("Skipping this driver"); //wrong driver installed (e.g.: libvulkan_virtio.so)
+        filterOutMessages.emplace_back("Buffer device address validation option was enabled"); //warning on validation option enabled but extension not enabled
+        filterOutMessages.emplace_back("Ray query validation option was enabled"); //warning on validation option enabled but extension not enabled
+        filterOutMessages.emplace_back("gpuav_validate_copies option was enabled"); //warning on validation option enabled but extension not enabled
     }
 
     void ValidationLayer::initializeDebugMessengerForInstance(VkInstanceCreateInfo& instanceCreateInfo) {
@@ -113,10 +116,16 @@ namespace urchin {
 
     VKAPI_ATTR VkBool32 VKAPI_CALL ValidationLayer::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void*) {
         auto validationMessage = std::string(pCallbackData->pMessage);
-        if (severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+        if (severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT && !ignoreValidationMessage(validationMessage)) {
+            std::string errorMessage = "Vulkan validation layer error: " + validationMessage;
+
+            #ifdef URCHIN_DEBUG
+                std::cout << errorMessage << std::endl;
+            #endif
+
             static unsigned int numErrorsLogged = 0;
-            if (!ignoreValidationMessage(validationMessage) && numErrorsLogged < MAX_ERRORS_LOG) {
-                Logger::instance().logError("Vulkan validation layer error: " + validationMessage);
+            if (numErrorsLogged < MAX_ERRORS_LOG) {
+                Logger::instance().logError(errorMessage);
                 numErrorsLogged++;
             }
         } else {
