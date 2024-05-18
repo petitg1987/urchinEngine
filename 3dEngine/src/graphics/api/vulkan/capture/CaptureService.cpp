@@ -21,10 +21,10 @@ namespace urchin {
 
         //create the linear tiled destination image to copy to and to read the memory from
         VmaAllocation imageMemory;
-        VkImage dstImage = ImageHelper::createImage("screenshot", srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
+        VkImage dstImage = ImageHelper::createImage("screenshotImg", srcWidth, srcHeight, 1, 1, false, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_DST_BIT, imageMemory);
 
         //do the actual blit from the image to our host visible destination image
-        CommandBufferData copyCmdData = CommandBufferHelper::beginSingleTimeCommands("screenshot");
+        CommandBufferData copyCmdData = CommandBufferHelper::beginSingleTimeCommands("screenshotCmd");
         {
             //transition destination image to transfer destination layout
             cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, 0, VK_ACCESS_2_TRANSFER_WRITE_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
@@ -32,17 +32,27 @@ namespace urchin {
             //transition image to transfer source layout
             cmdPipelineBarrier(srcImage, copyCmdData.commandBuffer, VK_ACCESS_2_NONE_KHR, VK_ACCESS_2_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
 
-            VkImageCopy imageCopyRegion{};
-            imageCopyRegion.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-            imageCopyRegion.srcSubresource.layerCount = 1;
-            imageCopyRegion.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-            imageCopyRegion.dstSubresource.layerCount = 1;
-            imageCopyRegion.extent.width = srcWidth;
-            imageCopyRegion.extent.height = srcHeight;
-            imageCopyRegion.extent.depth = 1;
+            VkImageCopy2 imageCopy{};
+            imageCopy.sType = VK_STRUCTURE_TYPE_IMAGE_COPY_2;
+            imageCopy.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            imageCopy.srcSubresource.layerCount = 1;
+            imageCopy.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            imageCopy.dstSubresource.layerCount = 1;
+            imageCopy.extent.width = srcWidth;
+            imageCopy.extent.height = srcHeight;
+            imageCopy.extent.depth = 1;
+
+            VkCopyImageInfo2 copyImageInfo{};
+            copyImageInfo.sType = VK_STRUCTURE_TYPE_COPY_IMAGE_INFO_2;
+            copyImageInfo.srcImage = srcImage;
+            copyImageInfo.srcImageLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+            copyImageInfo.dstImage = dstImage;
+            copyImageInfo.dstImageLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+            copyImageInfo.regionCount = 1;
+            copyImageInfo.pRegions = &imageCopy;
 
             //issue the copy command
-            vkCmdCopyImage(copyCmdData.commandBuffer, srcImage, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dstImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &imageCopyRegion);
+            vkCmdCopyImage2(copyCmdData.commandBuffer, &copyImageInfo);
 
             //transition destination image to general layout, which is the required layout for mapping the image memory later on
             cmdPipelineBarrier(dstImage, copyCmdData.commandBuffer, VK_ACCESS_2_TRANSFER_WRITE_BIT, VK_ACCESS_2_MEMORY_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
