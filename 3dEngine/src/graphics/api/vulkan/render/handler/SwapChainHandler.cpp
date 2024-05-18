@@ -190,7 +190,7 @@ namespace urchin {
     }
 
     VkExtent2D SwapChainHandler::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) const {
-        VkExtent2D swapExtent;
+        VkExtent2D swapExtent{};
         if (capabilities.currentExtent.width != UINT32_MAX) {
             swapExtent = capabilities.currentExtent;
         } else {

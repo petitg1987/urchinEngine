@@ -41,7 +41,7 @@ namespace urchin {
         }
         DebugLabelHelper::nameObject(DebugLabelHelper::IMAGE, image, imageName);
 
-        VkMemoryRequirements memRequirements;
+        VkMemoryRequirements memRequirements{};
         vkGetImageMemoryRequirements(logicalDevice, image, &memRequirements);
 
         VmaAllocationCreateInfo allocCreateInfo{};
@@ -91,7 +91,7 @@ namespace urchin {
     void ImageHelper::checkFormatSupport(VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage) {
         VkFormatFeatureFlags features = usageFlagToFeatureFlag(usage);
 
-        VkFormatProperties props;
+        VkFormatProperties props{};
         vkGetPhysicalDeviceFormatProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), format, &props);
 
         if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) != features) {

@@ -286,7 +286,7 @@ namespace urchin {
         viewport.height = (float)renderTarget->getHeight();
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
-        VkRect2D scissor;
+        VkRect2D scissor{};
         scissor.offset = {.x = 0, .y = 0};
         scissor.extent = {.width = renderTarget->getWidth(), .height = renderTarget->getHeight()};
         VkPipelineViewportStateCreateInfo viewportState{};

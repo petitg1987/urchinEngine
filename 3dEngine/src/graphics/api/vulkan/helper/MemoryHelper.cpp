@@ -7,7 +7,7 @@
 namespace urchin {
 
     uint32_t MemoryHelper::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
-        VkPhysicalDeviceMemoryProperties memProperties;
+        VkPhysicalDeviceMemoryProperties memProperties{};
         vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
 
         for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
@@ -21,7 +21,7 @@ namespace urchin {
 
     void MemoryHelper::checkMemoryUsage() {
         if (GraphicsSetupService::instance().getDevices().isMemoryBudgetExtSupported()) {
-            VkPhysicalDeviceMemoryProperties memProperties;
+            VkPhysicalDeviceMemoryProperties memProperties{};
             vkGetPhysicalDeviceMemoryProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &memProperties);
 
             std::array<VmaBudget, VK_MAX_MEMORY_HEAPS> budgets{};

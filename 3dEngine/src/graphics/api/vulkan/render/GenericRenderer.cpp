@@ -236,7 +236,7 @@ namespace urchin {
             rawVertexBuffers.emplace_back(vertexBuffer.getBuffer(frameIndex));
         }
 
-        VkRect2D scissor = {};
+        VkRect2D scissor{};
         scissor.offset = {.x = scissorOffset.X, .y = scissorOffset.Y};
         scissor.extent = {.width = (unsigned int)scissorSize.X, .height = (unsigned int)scissorSize.Y};
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
