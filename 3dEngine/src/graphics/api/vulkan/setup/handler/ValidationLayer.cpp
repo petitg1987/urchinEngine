@@ -120,7 +120,7 @@ namespace urchin {
             std::string errorMessage = "Vulkan validation layer error: " + validationMessage;
 
             #ifdef URCHIN_DEBUG
-                std::cout << errorMessage << std::endl;
+                std::cerr << errorMessage << std::endl;
             #endif
 
             static unsigned int numErrorsLogged = 0;
