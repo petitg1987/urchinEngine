@@ -324,6 +324,7 @@ namespace urchin {
 
         for (const Model* instanceModel : instanceModels) {
             aabboxModels.push_back(std::make_shared<AABBoxModel>(instanceModel->getAABBox()));
+            aabboxModels.back()->setPolygonMode(PolygonMode::WIREFRAME);
             geometryContainer.addGeometry(aabboxModels.back());
         }
     }

@@ -26,7 +26,6 @@ namespace urchin {
 
         if (!contactSpheres.empty()) {
             contactSpheresModel = std::make_shared<SphereModel>(contactSpheres, 7);
-            contactSpheresModel->setPolygonMode(PolygonMode::FILL);
             renderer3d.getGeometryContainer().addGeometry(contactSpheresModel);
         }
     }

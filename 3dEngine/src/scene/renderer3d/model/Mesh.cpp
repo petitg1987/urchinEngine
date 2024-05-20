@@ -93,7 +93,6 @@ namespace urchin {
         }
         boneSphereModels = std::make_shared<SphereModel>(sphereBonePoints, 7);
         boneSphereModels->setAlwaysVisible(true);
-        boneSphereModels->setPolygonMode(PolygonMode::FILL);
         boneSphereModels->setModelMatrix(modelMatrix);
         geometryContainer.addGeometry(boneSphereModels);
     }

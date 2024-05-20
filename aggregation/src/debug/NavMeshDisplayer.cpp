@@ -94,7 +94,6 @@ namespace urchin {
     void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, const Vector3<float>& color) {
         model->setColor(color.X, color.Y, color.Z);
         model->disableCullFace();
-        model->setPolygonMode(PolygonMode::FILL);
         navMeshModels.push_back(model);
         renderer3d.getGeometryContainer().addGeometry(std::move(model));
     }

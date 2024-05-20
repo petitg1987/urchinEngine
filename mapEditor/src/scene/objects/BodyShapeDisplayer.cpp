@@ -37,6 +37,7 @@ namespace urchin {
 
                 auto geometryModel = std::make_unique<AABBoxModel>(heightfieldAABBox);
                 geometryModel->setColor(0.0f, 1.0f, 0.0f);
+                geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 bodyShapeModels.push_back(std::move(geometryModel));
             } else if (bodyShape.isCompound()) {
                 const auto& compoundShape = static_cast<const CollisionCompoundShape&>(bodyShape);
@@ -51,6 +52,7 @@ namespace urchin {
                     } else {
                         geometryModel->setColor(0.0f, 1.0f, 0.0f);
                     }
+                    geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                     bodyShapeModels.push_back(std::move(geometryModel));
                 }
             } else if (bodyShape.isConvex()) {
@@ -59,6 +61,7 @@ namespace urchin {
 
                 auto geometryModel = retrieveSingleGeometry(bodyShape.getShapeType(), *bodyObject);
                 geometryModel->setColor(0.0f, 1.0f, 0.0f);
+                geometryModel->setPolygonMode(PolygonMode::WIREFRAME);
                 bodyShapeModels.push_back(std::move(geometryModel));
             } else {
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape.getShapeType()));

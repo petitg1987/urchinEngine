@@ -26,6 +26,7 @@ namespace urchin {
 
                 auto boundingBoxModel = std::make_unique<AABBoxModel>(omnidirectionalLight->getAABBox());
                 boundingBoxModel->setColor(1.0f, 0.5f, 0.0f);
+                boundingBoxModel->setPolygonMode(PolygonMode::WIREFRAME);
                 lightScopeModels.push_back(std::move(boundingBoxModel));
             } else if (const auto* spotLight = dynamic_cast<const SpotLight*>(light)) {
                 auto coneModel = std::make_unique<ConeModel>(spotLight->getConeScope(), 25);
@@ -34,6 +35,7 @@ namespace urchin {
 
                 auto boundingBoxModel = std::make_unique<AABBoxModel>(spotLight->getAABBox());
                 boundingBoxModel->setColor(1.0f, 0.5f, 0.0f);
+                boundingBoxModel->setPolygonMode(PolygonMode::WIREFRAME);
                 lightScopeModels.push_back(std::move(boundingBoxModel));
             }
 

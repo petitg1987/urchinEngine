@@ -8,7 +8,7 @@ namespace urchin {
             isInitialized(false),
             renderTarget(nullptr),
             color(Vector3<float>(0.0f, 1.0f, 0.0f)),
-            polygonMode(PolygonMode::WIREFRAME),
+            polygonMode(PolygonMode::FILL),
             alwaysVisible(false),
             cullFaceDisabled(false) {
     }

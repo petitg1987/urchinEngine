@@ -1,3 +1,4 @@
+
 template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel(const OctreeManager<T>& octreeManager) {
     auto leafOctrees = octreeManager.getAllLeafOctrees();
 
@@ -8,5 +9,7 @@ template<class T> std::unique_ptr<AABBoxModel> OctreeRenderer::createOctreeModel
         aabboxes.push_back(leafOctree->getAABBox());
     }
 
-    return std::make_unique<AABBoxModel>(aabboxes);
+    auto boxModel = std::make_unique<AABBoxModel>(aabboxes);
+    boxModel->setPolygonMode(PolygonMode::WIREFRAME);
+    return boxModel;
 }
