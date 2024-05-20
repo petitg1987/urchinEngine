@@ -10,6 +10,7 @@ namespace urchin {
             renderTarget(nullptr),
             color(Vector3<float>(0.0f, 1.0f, 0.0f)),
             polygonMode(PolygonMode::FILL),
+            wireframeLineWidth(0.0075f),
             alwaysVisible(false),
             cullFaceDisabled(false) {
     }
@@ -32,12 +33,7 @@ namespace urchin {
         std::vector<uint32_t> indices;
         std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
 
-        if (polygonMode == PolygonMode::FILL) {
-            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())->addData(vertexArray);
-            if (!indices.empty()) {
-                rendererBuilder->indices(indices);
-            }
-        } else if (polygonMode == PolygonMode::WIREFRAME) {
+        if (polygonMode == PolygonMode::WIREFRAME) {
             if (getShapeType() != ShapeType::TRIANGLE) {
                 throw std::runtime_error("Unsupported shape type for wireframe rendering: " + std::to_string((int)getShapeType()));
             }
@@ -57,22 +53,19 @@ namespace urchin {
                 }
             }
 
-            //TODO fix crash on planet object
-            LineModel linesModel(lines, 0.005f); //TODO hardcoded ! + use lineModel not good
+            LineModel linesModel(lines, wireframeLineWidth); //TODO use lineModel not good
             indices.clear();
             vertexArray = linesModel.retrieveVertexArray(indices);
-
-            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())->addData(vertexArray);
-            if (!indices.empty()) {
-                rendererBuilder->indices(indices);
-            }
-        } else {
-            throw std::runtime_error("Unknown polygon mode: " + std::to_string((int)polygonMode));
         }
 
         Matrix4<float> projectionViewModelMatrix;
-        rendererBuilder->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix);
-        rendererBuilder->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
+        rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
+                ->addData(vertexArray)
+                ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
+                ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
+        if (!indices.empty()) {
+            rendererBuilder->indices(indices);
+        }
 
         if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();
@@ -108,6 +101,11 @@ namespace urchin {
 
     void GeometryModel::setPolygonMode(PolygonMode polygonMode) {
         this->polygonMode = polygonMode;
+        refreshRenderer();
+    }
+
+    void GeometryModel::setWireframeLineWidth(float wireframeLineWidth) {
+        this->wireframeLineWidth = wireframeLineWidth;
         refreshRenderer();
     }
 

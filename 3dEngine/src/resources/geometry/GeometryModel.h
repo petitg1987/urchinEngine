@@ -19,6 +19,7 @@ namespace urchin {
 
             PolygonMode getPolygonMode() const;
             void setPolygonMode(PolygonMode);
+            void setWireframeLineWidth(float);
 
             bool isAlwaysVisible() const;
             void setAlwaysVisible(bool);
@@ -51,6 +52,7 @@ namespace urchin {
 
             Vector3<float> color;
             PolygonMode polygonMode;
+            float wireframeLineWidth;
             bool alwaysVisible;
             bool cullFaceDisabled;
     };

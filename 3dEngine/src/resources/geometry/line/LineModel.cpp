@@ -24,6 +24,9 @@ namespace urchin {
         float degree120 = AngleConverter<float>::toRadian(120);
         for (const auto& line : lines) {
             Vector3<float> lineVector = line.toVector().normalize();
+            if (lineVector.squareLength() < 0.001f) {
+                continue;
+            }
             Quaternion<float> qRotation = Quaternion<float>::fromAxisAngle(lineVector, degree120);
 
             Vector3<float> perpendicularVector1 = lineVector.perpendicularVector().normalize() * lineWidth;
