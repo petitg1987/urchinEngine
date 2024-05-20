@@ -4,7 +4,6 @@
 #include <graphics/api/vulkan/render/pipeline/PipelineContainer.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
-#include <graphics/render/data/PolygonMode.h>
 #include <graphics/render/data/BlendFunction.h>
 #include <graphics/texture/TextureReader.h>
 
@@ -23,8 +22,7 @@ namespace urchin {
             uniformTextureOutputs(nullptr),
             depthTestEnabled(false),
             depthWriteEnabled(false),
-            cullFaceEnabled(true),
-            polygonMode(PolygonMode::FILL) {
+            cullFaceEnabled(true) {
 
     }
 
@@ -63,13 +61,6 @@ namespace urchin {
             throw std::runtime_error("Cull face operation only exist on graphics pipeline");
         }
         this->cullFaceEnabled = cullFaceEnabled;
-    }
-
-    void PipelineBuilder::setupPolygonMode(PolygonMode polygonMode) {
-        if (pipelineType != PipelineType::GRAPHICS) {
-            throw std::runtime_error("Polygon mode only exist on graphics pipeline");
-        }
-        this->polygonMode = polygonMode;
     }
 
     void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const DataContainer* instanceData) {
@@ -154,7 +145,7 @@ namespace urchin {
                 renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getRenderPassCompatibilityId(),
                 shader->getShaderId(),
                 shapeType,
-                depthTestEnabled, depthWriteEnabled, cullFaceEnabled, polygonMode);
+                depthTestEnabled, depthWriteEnabled, cullFaceEnabled);
 
         return hash;
     }
@@ -300,7 +291,7 @@ namespace urchin {
         VkPipelineRasterizationStateCreateInfo rasterization{};
         rasterization.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         rasterization.rasterizerDiscardEnable = VK_FALSE;
-        rasterization.polygonMode = (polygonMode == PolygonMode::WIREFRAME) ? VK_POLYGON_MODE_LINE : VK_POLYGON_MODE_FILL;
+        rasterization.polygonMode = VK_POLYGON_MODE_FILL;
         rasterization.lineWidth = 1.0f; //do not use a value != 1.0f: less than 60% of graphic cards support it
         rasterization.cullMode = cullFaceEnabled ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE;
         rasterization.frontFace = VK_FRONT_FACE_CLOCKWISE;

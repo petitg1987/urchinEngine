@@ -1,6 +1,7 @@
 #include <resources/geometry/GeometryModel.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
+#include <resources/geometry/line/LineModel.h>
 
 namespace urchin {
 
@@ -26,23 +27,52 @@ namespace urchin {
         }
 
         shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv");
+        std::shared_ptr<GenericRendererBuilder> rendererBuilder;
 
         std::vector<uint32_t> indices;
         std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
+
+        if (polygonMode == PolygonMode::FILL) {
+            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())->addData(vertexArray);
+            if (!indices.empty()) {
+                rendererBuilder->indices(indices);
+            }
+        } else if (polygonMode == PolygonMode::WIREFRAME) {
+            if (getShapeType() != ShapeType::TRIANGLE) {
+                throw std::runtime_error("Unsupported shape type for wireframe rendering: " + std::to_string((int)getShapeType()));
+            }
+
+            std::vector<LineSegment3D<float>> lines;
+            if (!indices.empty()) {
+                for (std::size_t i = 0; i < indices.size(); i+=3) {
+                    lines.emplace_back(vertexArray[indices[i]], vertexArray[indices[i + 1]]);
+                    lines.emplace_back(vertexArray[indices[i + 1]], vertexArray[indices[i + 2]]);
+                    lines.emplace_back(vertexArray[indices[i + 2]], vertexArray[indices[i]]);
+                }
+            } else {
+                for (std::size_t i = 0; i < vertexArray.size(); i+=3) {
+                    lines.emplace_back(vertexArray[i], vertexArray[i + 1]);
+                    lines.emplace_back(vertexArray[i + 1], vertexArray[i + 2]);
+                    lines.emplace_back(vertexArray[i + 2], vertexArray[i]);
+                }
+            }
+
+            //TODO fix crash on planet object
+            LineModel linesModel(lines, 0.005f); //TODO hardcoded ! + use lineModel not good
+            indices.clear();
+            vertexArray = linesModel.retrieveVertexArray(indices);
+
+            rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())->addData(vertexArray);
+            if (!indices.empty()) {
+                rendererBuilder->indices(indices);
+            }
+        } else {
+            throw std::runtime_error("Unknown polygon mode: " + std::to_string((int)polygonMode));
+        }
+
         Matrix4<float> projectionViewModelMatrix;
-        auto rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
-                ->addData(vertexArray)
-                ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
-                ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color)
-                ->polygonMode(polygonMode);
-
-        if (!indices.empty()) {
-            rendererBuilder->indices(indices);
-        }
-
-        if (polygonMode == PolygonMode::WIREFRAME) {
-            rendererBuilder->disableCullFace();
-        }
+        rendererBuilder->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix);
+        rendererBuilder->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);
 
         if (!alwaysVisible) {
             rendererBuilder->enableDepthTest();

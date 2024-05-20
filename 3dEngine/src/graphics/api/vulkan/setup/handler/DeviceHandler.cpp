@@ -33,7 +33,6 @@ namespace urchin {
         physicalDeviceRequiredFeatures = {
                 PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, geometryShader), .featureDescription = "geometry shader"}, //83.41%
                 PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, independentBlend), .featureDescription = "independent blend"}, //99.44%
-                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), .featureDescription = "fill mode non solid"}, //77.06%
                 PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), .featureDescription = "anisotropy"} //91.34%
         };
         if (ConfigService::instance().getBoolValue("graphicsDebug.enableRobustBufferAccess")) {

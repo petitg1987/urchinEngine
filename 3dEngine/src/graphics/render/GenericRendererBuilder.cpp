@@ -14,8 +14,7 @@ namespace urchin {
             scissorSize(Vector2<int>((int)renderTarget.getWidth(), (int)renderTarget.getHeight())),
             depthTestEnabled(false),
             depthWriteEnabled(false),
-            cullFaceEnabled(true),
-            pPolygonMode(PolygonMode::FILL) {
+            cullFaceEnabled(true) {
 
     }
 
@@ -178,15 +177,6 @@ namespace urchin {
 
     bool GenericRendererBuilder::isCullFaceEnabled() const {
         return cullFaceEnabled;
-    }
-
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::polygonMode(PolygonMode pPolygonMode) {
-        this->pPolygonMode = pPolygonMode;
-        return shared_from_this();
-    }
-
-    PolygonMode GenericRendererBuilder::getPolygonMode() const {
-        return pPolygonMode;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {

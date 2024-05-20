@@ -29,7 +29,6 @@ namespace urchin {
         getPipelineBuilder().setupBlendFunctions(rendererBuilder.getBlendFunctions());
         getPipelineBuilder().setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
         getPipelineBuilder().setupCullFaceOperation(rendererBuilder.isCullFaceEnabled());
-        getPipelineBuilder().setupPolygonMode(rendererBuilder.getPolygonMode());
 
         initialize();
     }
