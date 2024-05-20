@@ -52,6 +52,7 @@
 #include <resources/ResourceRetriever.h>
 #include <resources/material/MaterialBuilder.h>
 #include <resources/geometry/GeometryModel.h>
+#include <resources/geometry/line/LineModel.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
 #include <resources/geometry/capsule/CapsuleModel.h>
 #include <resources/geometry/cylinder/CylinderModel.h>
