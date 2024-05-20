@@ -7,8 +7,6 @@
 namespace urchin {
 
     struct PhysicalDeviceFeature {
-        PhysicalDeviceFeature(unsigned long, std::string);
-
         unsigned long offset;
         std::string featureDescription;
     };

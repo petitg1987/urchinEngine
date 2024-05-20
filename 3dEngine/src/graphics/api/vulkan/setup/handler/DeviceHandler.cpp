@@ -11,12 +11,6 @@ using namespace urchin;
 
 namespace urchin {
 
-    PhysicalDeviceFeature::PhysicalDeviceFeature(unsigned long offset, std::string featureDescription) :
-            offset(offset),
-            featureDescription(std::move(featureDescription)) {
-
-    }
-
     PhysicalDeviceSuitability::PhysicalDeviceSuitability(VkPhysicalDevice physicalDevice, int score) :
             physicalDevice(physicalDevice),
             score(score) {
@@ -37,10 +31,10 @@ namespace urchin {
             logicalDevice(nullptr) {
         //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php / https://vulkan.gpuinfo.org/listfeaturescore12.php / https://vulkan.gpuinfo.org/listfeaturescore13.php):
         physicalDeviceRequiredFeatures = {
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, geometryShader), "geometry shader"), //83.41%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, independentBlend), "independent blend"), //99.44%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), "fill mode non solid"), //77.06%
-                PhysicalDeviceFeature(offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), "anisotropy") //91.34%
+                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, geometryShader), .featureDescription = "geometry shader"}, //83.41%
+                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, independentBlend), .featureDescription = "independent blend"}, //99.44%
+                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, fillModeNonSolid), .featureDescription = "fill mode non solid"}, //77.06%
+                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), .featureDescription = "anisotropy"} //91.34%
         };
         if (ConfigService::instance().getBoolValue("graphicsDebug.enableRobustBufferAccess")) {
             physicalDeviceRequiredFeatures.emplace_back(offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), "robust buffer access"); //100%
@@ -249,11 +243,6 @@ namespace urchin {
             queueCreateInfos.push_back(queueCreateInfo);
         }
 
-        VkPhysicalDeviceFeatures deviceFeatures{};
-        for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
-            *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset) = true;
-        }
-
         std::vector<const char*> physicalDeviceExtensions;
         std::ranges::for_each(physicalDeviceRequiredExtensions, [&physicalDeviceExtensions](std::pair<const char*, std::string>& ext) {
             physicalDeviceExtensions.emplace_back(ext.first);
@@ -270,27 +259,33 @@ namespace urchin {
                 }
             }
         });
-        VkDeviceCreateInfo createInfo{};
-        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
-        createInfo.pQueueCreateInfos = queueCreateInfos.data();
-        createInfo.pEnabledFeatures = &deviceFeatures;
-        createInfo.enabledExtensionCount = (uint32_t)physicalDeviceExtensions.size();
-        createInfo.ppEnabledExtensionNames = physicalDeviceExtensions.empty() ? nullptr : physicalDeviceExtensions.data();
+
+        VkPhysicalDeviceFeatures deviceFeatures{};
+        for (const auto& requiredFeature : physicalDeviceRequiredFeatures) {
+            *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + requiredFeature.offset) = true;
+        }
 
         VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
         deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
         for (const auto& requiredFeature : physicalDeviceRequiredVulkan12Features) {
             *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + requiredFeature.offset) = true;
         }
-        createInfo.pNext = &deviceVulkan12Features;
 
         VkPhysicalDeviceVulkan13Features deviceVulkan13Features{};
         deviceVulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
         for (const auto& requiredFeature : physicalDeviceRequiredVulkan13Features) {
             *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan13Features) + requiredFeature.offset) = true;
         }
+
+        VkDeviceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
+        createInfo.pQueueCreateInfos = queueCreateInfos.data();
+        createInfo.pEnabledFeatures = &deviceFeatures;
+        createInfo.pNext = &deviceVulkan12Features;
         deviceVulkan12Features.pNext = &deviceVulkan13Features;
+        createInfo.enabledExtensionCount = (uint32_t)physicalDeviceExtensions.size();
+        createInfo.ppEnabledExtensionNames = physicalDeviceExtensions.empty() ? nullptr : physicalDeviceExtensions.data();
 
         VkDevice device;
         VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);
