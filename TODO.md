@@ -5,18 +5,18 @@
 
 # 3d Engine
 * Graphics API
-  * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo#pSpecializationInfo) instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`major`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
+  * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo#pSpecializationInfo) instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
+  * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
   * **NEW FEATURE** (`minor`): Use reverse depth for far distant view (see <https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
   * **OPTIMIZATION** (`minor`): Avoid sending shader variables values at each frame when there is no change in Renderer3d#deferredRendering
-  * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
 * Model
+  * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
   * **OPTIMIZATION** (`medium`): Draw calls batching
     * Tips: different types of batching are possible: static, dynamic, for shadow map (see <https://docs.unity3d.com/Manual/DrawCallBatching.html>)
-  * **OPTIMIZATION** (`major`): Remove the ModelInstanceDisplayer in ModelSetDisplayer#removeModelFromDisplayer() for models not displayed for a long time
   * **OPTIMIZATION** (`medium`): Make UV coordinates part of the instancing
     * Tips: avoid to send full UV coordinates at each frame by using a Vulkan Descriptor Indexing to access to an array of UV by index
   * **OPTIMIZATION** (`medium`): Parallelize the creation of the ModelDisplayer
@@ -24,11 +24,11 @@
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
-  * **NEW FEATURE** (`minor`): Use mipmap and multisample antialiasing (MSAA) on the shadow map
   * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager#updateVisibleModels / Renderer3d#updateModelsInFrustum
     * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
-  * **OPTIMIZATION** (`minor`): Use models LOD
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
+  * **NEW FEATURE** (`minor`): Use mipmap on the shadow map
+  * **OPTIMIZATION** (`minor`): Use models LOD
 * Lighting
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Landscape
@@ -44,29 +44,29 @@
   * **IMPROVEMENT** (`minor`): Handle scrollable containers in UI 3d
   * **NEW FEATURE** (`minor`): Combo list
 * Graphic effect
-  * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
   * **NEW FEATURE** (`medium`): Decal (bullet impact, blood spread...)
+  * **NEW FEATURE** (`minor`): Water transparency (see <https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 
 # AI engine
 * Navigation mesh
-  * **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
   * **BUG** (`major`): Surrounded faces are not walkable (NavMeshGeneratorTest#surroundedWalkableFace)
   * **BUG** (`major`): Union of room walls create wrong polygons (PolygonsUnionTest#roomPolygonsUnion)
-  * **BUG** (`medium`): Jump links visualization are not exact
-  * **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
   * **NEW FEATURE** (`major`): Add possibility to exclude dynamic objects from navigation mesh
     * Note: worth it only when steering behaviour will be implemented in pathfinding
+  * **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
+  * **BUG** (`medium`): Jump links visualization are not exact
+  * **OPTIMIZATION** (`medium`): Exclude very small objects from navigation mesh
+  * **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
+  * **NEW FEATURE** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
   * **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator#createNavigationPolygon()
   * **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a rough simplification on self obstacles polygons
-  * **OPTIMIZATION** (`medium`): Exclude very small objects from navigation mesh
   * **NEW FEATURE** (`minor`): Exclude fast moving objects as walkable face
   * **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
-  * **NEW FEATURE** (`medium`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
 * Pathfinding
-  * **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
-  * **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
   * **NEW FEATURE** (`major`): Implement steering behaviour (see <https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
   * **NEW FEATURE** (`major`): AICharacterController should refresh path points each time the path request is updated 
+  * **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
+  * **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
 
 # Network engine
 
@@ -89,9 +89,9 @@
 
 # Sound engine
 * Sound trigger
+  * **NEW FEATURE** (`major`): Review spatial sound creation to avoid manual creation of the sphere shape trigger matching the spatial sound properties
   * **NEW FEATURE** (`medium`): Support convex hull sound shape
   * **NEW FEATURE** (`medium`): Support portal IN and portal OUT to trigger sound
-  * **NEW FEATURE** (`major`): Review spatial sound creation to avoid manual creation of the sphere shape trigger matching the spatial sound properties
 * Listener    
   * **NEW FEATURE** (`minor`): Define a velocity to the listener
 
