@@ -47,16 +47,13 @@ namespace urchin {
             }
 
             if (!triangleMeshPoints.empty()) {
-                auto meshModel = std::make_shared<TrianglesModel>(toDisplayPoints(triangleMeshPoints, 0.02f));
-                addNavMeshModel(meshModel, PolygonMode::FILL, Vector3<float>(0.0, 0.0, 1.0));
-
-                auto meshWireframeModel = std::make_shared<TrianglesModel>(toDisplayPoints(triangleMeshPoints, 0.025f));
-                addNavMeshModel(meshWireframeModel, PolygonMode::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
+                auto meshModel = std::make_shared<TrianglesModel>(toDisplayPoints(triangleMeshPoints, 0.02f, 0.98f));
+                addNavMeshModel(meshModel, Vector3<float>(0.0, 0.0, 1.0));
             }
 
             if (!triangleJumpPoints.empty()) {
                 auto jumpModel = std::make_shared<TrianglesModel>(triangleJumpPoints);
-                addNavMeshModel(jumpModel, PolygonMode::FILL, Vector3<float>(0.5, 0.0, 0.5));
+                addNavMeshModel(jumpModel, Vector3<float>(0.5, 0.0, 0.5));
             }
 
             loadedNavMeshId = navMesh.getUpdateId();
@@ -70,20 +67,34 @@ namespace urchin {
         navMeshModels.clear();
     }
 
-    std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>>& points, float yElevation) const {
+    std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>>& points, float yElevation, float shrinkFactor) const {
         std::vector<Point3<float>> displayPoints;
         displayPoints.reserve(points.size());
+
+        //elevation
         for (const auto& point : points) {
-            displayPoints.emplace_back(Point3<float>(point.X, point.Y + yElevation, point.Z));
+            displayPoints.emplace_back(point.X, point.Y + yElevation, point.Z);
+        }
+
+        //shrink triangles
+        for (std::size_t i = 0; i < displayPoints.size(); i += 3) {
+            Point3<float> a = displayPoints[i];
+            Point3<float> b = displayPoints[i + 1];
+            Point3<float> c = displayPoints[i + 2];
+            Point3<float> centroid = (a + b + c) / 3.0f;
+
+            displayPoints[i] = centroid + shrinkFactor * (a - centroid);
+            displayPoints[i + 1] = centroid + shrinkFactor * (b - centroid);
+            displayPoints[i + 2] = centroid + shrinkFactor * (c - centroid);
         }
 
         return displayPoints;
     }
 
-    void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, PolygonMode polygonMode, const Vector3<float>& color) {
+    void NavMeshDisplayer::addNavMeshModel(std::shared_ptr<GeometryModel> model, const Vector3<float>& color) {
         model->setColor(color.X, color.Y, color.Z);
         model->disableCullFace();
-        model->setPolygonMode(polygonMode);
+        model->setPolygonMode(PolygonMode::FILL);
         navMeshModels.push_back(model);
         renderer3d.getGeometryContainer().addGeometry(std::move(model));
     }

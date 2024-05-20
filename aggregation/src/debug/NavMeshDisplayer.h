@@ -16,8 +16,8 @@ namespace urchin {
             void clearDisplay();
 
         private:
-            std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>>&, float) const;
-            void addNavMeshModel(std::shared_ptr<GeometryModel>, PolygonMode, const Vector3<float>&);
+            std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>>&, float, float) const;
+            void addNavMeshModel(std::shared_ptr<GeometryModel>, const Vector3<float>&);
 
             AIEnvironment& aiEnvironment;
             Renderer3d& renderer3d;
