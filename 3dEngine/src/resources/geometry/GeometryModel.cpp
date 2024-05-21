@@ -40,12 +40,14 @@ namespace urchin {
 
             std::vector<LineSegment3D<float>> lines;
             if (!indices.empty()) {
+                lines.reserve(3ul * indices.size());
                 for (std::size_t i = 0; i < indices.size(); i+=3) {
                     lines.emplace_back(vertexArray[indices[i]], vertexArray[indices[i + 1]]);
                     lines.emplace_back(vertexArray[indices[i + 1]], vertexArray[indices[i + 2]]);
                     lines.emplace_back(vertexArray[indices[i + 2]], vertexArray[indices[i]]);
                 }
             } else {
+                lines.reserve(3ul * vertexArray.size());
                 for (std::size_t i = 0; i < vertexArray.size(); i+=3) {
                     lines.emplace_back(vertexArray[i], vertexArray[i + 1]);
                     lines.emplace_back(vertexArray[i + 1], vertexArray[i + 2]);
