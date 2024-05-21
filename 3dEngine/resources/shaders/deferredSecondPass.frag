@@ -105,9 +105,10 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             int testPointsInShadow = 0;
             int offsetSampleIndex = 0;
             for (; offsetSampleIndex < testPointsQuantity; ++offsetSampleIndex) {
-                vec2 shadowMapOffset = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH * shadowMapInfo.shadowMapInvSize;
+                vec2 shadowMapOffsetVector = texelFetch(shadowMapOffsetTex, ivec3(offsetTexCoordinate, offsetSampleIndex), 0).xy * SOFT_EDGE_LENGTH;
+                vec2 shadowMapOffset = shadowMapOffsetVector * shadowMapInfo.shadowMapInvSize;
                 float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st + shadowMapOffset, i)).r;
-                float adjustedBias = bias * (1.0 + dot(shadowMapOffset, shadowMapOffset));
+                float adjustedBias = bias * (1.0 + dot(shadowMapOffsetVector, shadowMapOffsetVector) * 0.9);
                 if (shadowCoord.z - adjustedBias > shadowDepth) {
                     totalShadow += singleShadowQuantity;
                     testPointsInShadow++;
