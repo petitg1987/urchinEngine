@@ -10,14 +10,13 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> OBBoxModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
-        indices.reserve(6 * 6);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(8);
-
+        vertexArray.reserve(8ul);
         for (unsigned int i = 0; i < 8; ++i) {
             vertexArray.push_back(obbox.getPoint(i));
         }
-        
+
+        indices.reserve(6ul * 6ul);
         //back
         indices.push_back(7);
         indices.push_back(3);

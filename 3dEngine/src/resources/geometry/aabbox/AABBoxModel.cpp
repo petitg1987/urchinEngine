@@ -15,10 +15,8 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> AABBoxModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
-        indices.reserve(aabboxes.size() * 6 * 6);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(aabboxes.size() * 8);
-
+        vertexArray.reserve(8ul * aabboxes.size());
         for (const auto& aabbox : aabboxes) {
             vertexArray.emplace_back(aabbox.getMax().X, aabbox.getMax().Y, aabbox.getMax().Z);
             vertexArray.emplace_back(aabbox.getMax().X, aabbox.getMax().Y, aabbox.getMin().Z);
@@ -30,6 +28,7 @@ namespace urchin {
             vertexArray.emplace_back(aabbox.getMin().X, aabbox.getMin().Y, aabbox.getMin().Z);
         }
 
+        indices.reserve(6ul * 6ul * aabboxes.size());
         for (uint32_t i = 0; i < aabboxes.size(); ++i) {
             uint32_t startIndex = i * 8;
             

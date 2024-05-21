@@ -14,7 +14,7 @@ namespace urchin {
 
     std::vector<Point3<float>> CapsuleModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(6 * sides + 2 * (6 * (slices / 2) * slices));
+        vertexArray.reserve(6ul * sides + 2ul * (6ul * (slices / 2ul) * slices));
 
         float radius = capsule.getRadius();
         float halfCylinderHeight = capsule.getCylinderHeight() / 2.0f;

@@ -12,9 +12,8 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> ConeModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
-        indices.reserve(6 * slices);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(slices + 2);
+        vertexArray.reserve(slices + 2ul);
 
         float radius = cone.getRadius();
         float angle = (2.0f * MathValue::PI_FLOAT) / (float)slices;
@@ -46,6 +45,7 @@ namespace urchin {
         vertexArray.push_back(cone.getCenterOfMass() + topPoint);
         vertexArray.push_back(cone.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, -cone.getHeight() * (1.0f / 4.0f), 0.0f)));
 
+        indices.reserve(6ul * slices);
         for (unsigned int i = 0; i < slices; i++) {
             uint32_t baseIndex = i;
             uint32_t nextBaseIndex = (i == slices - 1) ? 0 : i + 1;

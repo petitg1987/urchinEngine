@@ -18,7 +18,7 @@ namespace urchin {
 
     std::vector<Point3<float>> SphereModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(spheres.size() * 6 * slices * slices);
+        vertexArray.reserve(6ul * slices * slices * spheres.size());
 
         for (const Sphere<float>& sphere : spheres) {
             float radius = sphere.getRadius();

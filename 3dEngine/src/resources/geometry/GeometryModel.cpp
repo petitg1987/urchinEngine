@@ -53,9 +53,8 @@ namespace urchin {
                 }
             }
 
-            LineModel linesModel(lines, wireframeLineWidth); //TODO use lineModel not good
             indices.clear();
-            vertexArray = linesModel.retrieveVertexArray(indices);
+            vertexArray = linesToVertexArray(lines, indices);
         }
 
         Matrix4<float> projectionViewModelMatrix;
@@ -78,6 +77,52 @@ namespace urchin {
 
         renderer = rendererBuilder->build();
         renderer->disableRenderer(); //in case this method is called after 'renderTarget->disableAllRenderers()'
+    }
+
+    std::vector<Point3<float>> GeometryModel::linesToVertexArray(const std::vector<LineSegment3D<float>>& lines, std::vector<uint32_t>& indices) const {
+        std::vector<Point3<float>> vertexArray;
+        vertexArray.reserve(6ul * lines.size());
+
+        float oneThirdRotation = AngleConverter<float>::toRadian(120);
+        for (const auto& line : lines) {
+            Vector3<float> lineVector = line.toVector().normalize();
+            if (lineVector.squareLength() < 0.001f) {
+                continue;
+            }
+            Quaternion<float> qRotation = Quaternion<float>::fromAxisAngle(lineVector, oneThirdRotation);
+
+            Vector3<float> perpendicularVector1 = lineVector.perpendicularVector().normalize() * wireframeLineWidth;
+            Vector3<float> perpendicularVector2 = qRotation.rotateVector(perpendicularVector1);
+            Vector3<float> perpendicularVector3 = qRotation.rotateVector(perpendicularVector2);
+
+            vertexArray.emplace_back(line.getA().translate(perpendicularVector1));
+            vertexArray.emplace_back(line.getA().translate(perpendicularVector2));
+            vertexArray.emplace_back(line.getA().translate(perpendicularVector3));
+
+            vertexArray.emplace_back(line.getB().translate(perpendicularVector1));
+            vertexArray.emplace_back(line.getB().translate(perpendicularVector2));
+            vertexArray.emplace_back(line.getB().translate(perpendicularVector3));
+        }
+
+        indices.reserve(18ul * lines.size());
+        for (uint32_t i = 0; i < lines.size(); ++i) {
+            uint32_t startIndex = i * 6;
+
+            std::array<uint32_t, 18> faceIndices = {
+                //face 1
+                startIndex + 3, startIndex + 1, startIndex + 0,
+                startIndex + 1, startIndex + 3, startIndex + 4,
+                //face 2
+                startIndex + 4, startIndex + 2, startIndex + 1,
+                startIndex + 2, startIndex + 4, startIndex + 5,
+                //face 3
+                startIndex + 5, startIndex + 0, startIndex + 2,
+                startIndex + 0, startIndex + 5, startIndex + 3
+            };
+            indices.insert(indices.end(), std::begin(faceIndices), std::end(faceIndices));
+        }
+
+        return vertexArray;
     }
 
     const RenderTarget& GeometryModel::getRenderTarget() const {

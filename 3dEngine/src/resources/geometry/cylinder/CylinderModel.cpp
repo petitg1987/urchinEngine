@@ -12,9 +12,8 @@ namespace urchin {
     }
 
     std::vector<Point3<float>> CylinderModel::retrieveVertexArray(std::vector<uint32_t>& indices) const {
-        indices.reserve(6 * sides);
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve((2 * sides) + 2);
+        vertexArray.reserve((2ul * sides) + 2ul);
 
         float radius = cylinder.getRadius();
         float halfHeight = cylinder.getHeight() / 2.0f;
@@ -40,6 +39,7 @@ namespace urchin {
         vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, halfHeight)));
         vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, -halfHeight)));
 
+        indices.reserve(6ul * sides);
         for (uint32_t i = 0; i < sides; i++) {
             uint32_t leftPos = i * 2;
             uint32_t leftNeg = i * 2 + 1;

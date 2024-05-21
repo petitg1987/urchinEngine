@@ -11,7 +11,7 @@ namespace urchin {
 
     std::vector<Point3<float>> ConvexHullModel::retrieveVertexArray(std::vector<uint32_t>&) const {
         std::vector<Point3<float>> vertexArray;
-        vertexArray.reserve(convexHull.getIndexedTriangles().size() * 3);
+        vertexArray.reserve(convexHull.getIndexedTriangles().size() * 3ul);
 
         auto& convexHullPoints = convexHull.getConvexHullPoints();
         for (const auto& [triangleId, triangle] : convexHull.getIndexedTriangles()) {

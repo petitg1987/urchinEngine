@@ -12,13 +12,12 @@ namespace urchin {
             explicit LineModel(const LineSegment3D<float>&, float lineWidth = 0.05f);
             explicit LineModel(std::vector<LineSegment3D<float>>, float lineWidth = 0.05f);
 
-       //TODO  protected:
+        protected:
             std::vector<Point3<float>> retrieveVertexArray(std::vector<uint32_t>&) const override;
             ShapeType getShapeType() const override;
 
         private:
             std::vector<LineSegment3D<float>> lines;
-            float lineWidth;
     };
 
 }
