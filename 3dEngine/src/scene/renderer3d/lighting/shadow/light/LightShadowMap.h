@@ -39,8 +39,6 @@ namespace urchin {
             void renderModels(std::uint32_t, unsigned int, unsigned int) const;
 
         private:
-            void createOrUpdateShadowModelSetDisplayer(unsigned int);
-
             void updateLightViewMatrix();
             std::span<Model*> retrieveModels() const;
 
@@ -51,7 +49,7 @@ namespace urchin {
 
             std::unique_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
             std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
-            std::shared_ptr<Texture> shadowMapTexture; //shadow map texture
+            std::shared_ptr<Texture> shadowMapTexture;
 
             Matrix4<float> lightViewMatrix;
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;

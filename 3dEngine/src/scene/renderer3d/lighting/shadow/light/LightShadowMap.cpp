@@ -18,12 +18,16 @@ namespace urchin {
             //The shadow map must be cleared with the farthest depth value (1.0f).
             //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
             Vector4 clearShadowMapColor(1.0f, -1.0f, -1.0f, -1.0f);
-
             renderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
             renderTarget->addOutputTexture(shadowMapTexture, LoadType::LOAD_CLEAR, std::make_optional(clearShadowMapColor));
             renderTarget->initialize();
 
-            createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
+            std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};
+            auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
+            shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
+            shadowModelSetDisplayer->setupShader("modelDepthOnly.vert.spv", "modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
+            shadowModelSetDisplayer->initialize(*renderTarget);
+            shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
         }
 
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
@@ -90,17 +94,6 @@ namespace urchin {
 
     const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
         return shadowMapTexture;
-    }
-
-    void LightShadowMap::createOrUpdateShadowModelSetDisplayer(unsigned int nbShadowMaps) {
-        assert(renderTarget);
-        std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesDescriptions, &nbShadowMaps);
-
-        shadowModelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEPTH_ONLY_MODE);
-        shadowModelSetDisplayer->setupShader("modelDepthOnly.vert.spv", "modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
-        shadowModelSetDisplayer->initialize(*renderTarget);
-        shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
     }
 
     /**
