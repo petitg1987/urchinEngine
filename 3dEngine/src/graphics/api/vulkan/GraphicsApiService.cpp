@@ -15,6 +15,10 @@ namespace urchin {
         GraphicsSetupService::destroySurface();
     }
 
+    bool GraphicsApiService::isInitialized() {
+        return GraphicsSetupService::instance().isInitialized();
+    }
+
     void GraphicsApiService::initialize(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) const {
         GraphicsSetupService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), framebufferSizeRetriever);
     }

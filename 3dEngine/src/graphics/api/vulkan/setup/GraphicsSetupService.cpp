@@ -55,6 +55,10 @@ namespace urchin {
         }
     }
 
+    bool GraphicsSetupService::isInitialized() const {
+        return apiGraphicInitialized;
+    }
+
     void GraphicsSetupService::initialize(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, FramebufferSizeRetriever& framebufferSizeRetriever) {
         this->framebufferSizeRetriever = &framebufferSizeRetriever;
 

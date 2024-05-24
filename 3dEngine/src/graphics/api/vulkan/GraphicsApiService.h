@@ -14,6 +14,7 @@ namespace urchin {
             static void enableUniqueSurface();
             static void destroySurface();
 
+            bool isInitialized();
             void initialize(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, FramebufferSizeRetriever&) const;
 
             void frameStart(std::uint32_t) const;

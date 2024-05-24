@@ -12,13 +12,13 @@ void LightSplitShadowMapTest::modelsInFrustumSplit() {
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
     auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
-    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, shadowMapTexture, 3, nullptr);
-    auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, 2048, 3);
+    const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
-    lightSplitShadowMap.update(splitFrustum);
+    lightSplitShadowMap->update(splitFrustum);
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 2);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 2);
 }
 
 void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
@@ -29,13 +29,13 @@ void LightSplitShadowMapTest::modelsOutsideFrustumSplit() {
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
     auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
-    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, shadowMapTexture, 3, nullptr);
-    auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, 2048, 3);
+    const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
-    lightSplitShadowMap.update(splitFrustum);
+    lightSplitShadowMap->update(splitFrustum);
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 0);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 0);
 }
 
 void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
@@ -44,13 +44,13 @@ void LightSplitShadowMapTest::modelOutsideFrustumProducingShadow() {
     });
     auto light = std::make_unique<SunLight>(Vector3<float>(1.0f, 0.0f, 0.0f));
     auto shadowMapTexture = Texture::build("sm", 2048, 2048, TextureFormat::DEPTH_32_FLOAT);
-    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, shadowMapTexture, 3, nullptr);
-    auto lightSplitShadowMap = lightShadowMap->addLightSplitShadowMap();
+    auto lightShadowMap = std::make_unique<LightShadowMap>(*light, *modelOcclusionCuller, 300.0f, 2048, 3);
+    const auto &lightSplitShadowMap = lightShadowMap->getLightSplitShadowMaps()[0];
 
     SplitFrustum splitFrustum(Frustum(90.0f, 1.0f, 0.01f, 100.0f));
-    lightSplitShadowMap.update(splitFrustum);
+    lightSplitShadowMap->update(splitFrustum);
 
-    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap.getModels().size(), 1);
+    AssertHelper::assertUnsignedIntEquals(lightSplitShadowMap->getModels().size(), 1);
 }
 
 std::unique_ptr<ModelOcclusionCuller> LightSplitShadowMapTest::buildModelOcclusionCuller(const std::vector<Point3<float>> &modelPositions) {

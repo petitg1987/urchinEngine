@@ -170,20 +170,7 @@ namespace urchin {
 
     void ShadowManager::addShadowLight(Light& light) {
         ScopeProfiler sp(Profiler::graphic(), "addShadowLight");
-
-        auto shadowMapRenderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
-        auto shadowMapTexture = Texture::buildArray("shadow map", config.shadowMapResolution, config.shadowMapResolution, config.nbShadowMaps, TextureFormat::GRAYSCALE_32_FLOAT);
-        //The shadow map must be cleared with the farthest depth value (1.0f).
-        //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
-        Vector4 clearShadowMapColor(1.0f, -1.0f, -1.0f, -1.0f);
-        shadowMapRenderTarget->addOutputTexture(shadowMapTexture, LoadType::LOAD_CLEAR, std::make_optional(clearShadowMapColor));
-
-        auto newLightShadowMap = std::make_unique<LightShadowMap>(light, modelOcclusionCuller, config.viewingShadowDistance, shadowMapTexture, config.nbShadowMaps, std::move(shadowMapRenderTarget));
-        for (unsigned int i = 0; i < config.nbShadowMaps; ++i) {
-            newLightShadowMap->addLightSplitShadowMap();
-        }
-
-        lightShadowMaps[&light] = std::move(newLightShadowMap);
+        lightShadowMaps[&light] = std::make_unique<LightShadowMap>(light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
     }
 
     void ShadowManager::removeShadowLight(Light& light) {

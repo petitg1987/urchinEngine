@@ -7,17 +7,27 @@
 
 namespace urchin {
 
-    LightShadowMap::LightShadowMap(Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float viewingShadowDistance, std::shared_ptr<Texture> shadowMapTexture,
-                                   unsigned int nbShadowMaps, std::unique_ptr<OffscreenRender> renderTarget) :
+    LightShadowMap::LightShadowMap(Light& light, const ModelOcclusionCuller& modelOcclusionCuller, float viewingShadowDistance, unsigned int shadowMapResolution, unsigned int nbShadowMaps) :
             light(light),
             modelOcclusionCuller(modelOcclusionCuller),
             viewingShadowDistance(viewingShadowDistance),
-            nbShadowMaps(nbShadowMaps),
-            renderTarget(std::move(renderTarget)),
-            shadowMapTexture(std::move(shadowMapTexture)) {
-        if (this->renderTarget) { //only false for unit tests
-            this->renderTarget->initialize();
+            nbShadowMaps(nbShadowMaps) {
+
+        shadowMapTexture = Texture::buildArray("shadow map", shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::GRAYSCALE_32_FLOAT);
+        if (GraphicsApiService::instance().isInitialized()) { //only false for unit tests
+            //The shadow map must be cleared with the farthest depth value (1.0f).
+            //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
+            Vector4 clearShadowMapColor(1.0f, -1.0f, -1.0f, -1.0f);
+
+            renderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
+            renderTarget->addOutputTexture(shadowMapTexture, LoadType::LOAD_CLEAR, std::make_optional(clearShadowMapColor));
+            renderTarget->initialize();
+
             createOrUpdateShadowModelSetDisplayer(nbShadowMaps);
+        }
+
+        for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.
+            lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
         }
         updateLightViewMatrix();
         light.addObserver(this, Light::LIGHT_MOVE);
@@ -91,15 +101,6 @@ namespace urchin {
         shadowModelSetDisplayer->setupShader("modelDepthOnly.vert.spv", "modelShadowMap.geom.spv", "modelShadowMap.frag.spv", std::move(shaderConstants));
         shadowModelSetDisplayer->initialize(*renderTarget);
         shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
-    }
-
-    /**
-     * First split to add must be the split nearest to the eye.
-     */
-    LightSplitShadowMap& LightShadowMap::addLightSplitShadowMap() {
-        lightSplitShadowMaps.push_back(std::make_unique<LightSplitShadowMap>(this));
-        assert(lightSplitShadowMaps.size() <= nbShadowMaps);
-        return *lightSplitShadowMaps.back();
     }
 
     /**

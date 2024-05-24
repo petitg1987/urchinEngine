@@ -19,7 +19,7 @@ namespace urchin {
 
     class LightShadowMap final : public Observer {
         public:
-            LightShadowMap(Light&, const ModelOcclusionCuller&, float, std::shared_ptr<Texture>, unsigned int, std::unique_ptr<OffscreenRender>);
+            LightShadowMap(Light&, const ModelOcclusionCuller&, float, unsigned int, unsigned int);
             ~LightShadowMap() override;
 
             void notify(Observable*, int) override;
@@ -31,7 +31,6 @@ namespace urchin {
             unsigned int getShadowMapSize() const;
             const std::shared_ptr<Texture>& getShadowMapTexture() const;
 
-            LightSplitShadowMap& addLightSplitShadowMap();
             const std::vector<std::unique_ptr<LightSplitShadowMap>>& getLightSplitShadowMaps() const;
 
             const Matrix4<float>& getLightViewMatrix() const;
