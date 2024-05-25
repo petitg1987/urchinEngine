@@ -13,13 +13,9 @@ namespace urchin {
             viewingShadowDistance(viewingShadowDistance),
             nbShadowMaps(nbShadowMaps) {
 
-        shadowMapTexture = Texture::buildArray("shadow map", shadowMapResolution, shadowMapResolution, nbShadowMaps, TextureFormat::GRAYSCALE_32_FLOAT);
         if (GraphicsApiService::instance().isInitialized()) { //only false for unit tests
-            //The shadow map must be cleared with the farthest depth value (1.0f).
-            //Indeed, the shadow map is read with some imprecision and unwritten pixel could be fetched and would lead to artifact on world borders.
-            Vector4 clearShadowMapColor(1.0f, -1.0f, -1.0f, -1.0f);
-            renderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::LOCAL_DEPTH_ATTACHMENT);
-            renderTarget->addOutputTexture(shadowMapTexture, LoadType::LOAD_CLEAR, std::make_optional(clearShadowMapColor));
+            renderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::SHARED_DEPTH_ATTACHMENT);
+            renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbShadowMaps);
             renderTarget->initialize();
 
             std::vector<std::size_t> variablesDescriptions = {sizeof(nbShadowMaps)};
@@ -89,11 +85,11 @@ namespace urchin {
     }
 
     unsigned int LightShadowMap::getShadowMapSize() const {
-        return shadowMapTexture->getWidth();
+        return renderTarget->getWidth();
     }
 
     const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {
-        return shadowMapTexture;
+        return renderTarget->getDepthTexture();
     }
 
     /**

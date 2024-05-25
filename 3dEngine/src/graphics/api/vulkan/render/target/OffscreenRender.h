@@ -29,6 +29,7 @@ namespace urchin {
             explicit OffscreenRender(std::string, DepthAttachmentType);
             ~OffscreenRender() override;
 
+            void setOutputSize(unsigned int, unsigned int, unsigned int);
             void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, std::optional<Vector4<float>> = std::nullopt, OutputUsage = OutputUsage::GRAPHICS);
             void resetOutputTextures();
             std::shared_ptr<Texture>& getOutputTexture(std::size_t);
@@ -62,6 +63,10 @@ namespace urchin {
             void waitCommandBuffersIdle() const override;
 
             static constexpr std::size_t MAX_SUBMIT_SEMAPHORES = 6;
+
+            unsigned int width;
+            unsigned int height;
+            unsigned int layer;
 
             std::vector<VkClearValue> clearValues;
             std::vector<OutputTexture> outputTextures;

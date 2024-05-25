@@ -10,6 +10,9 @@ namespace urchin {
 
     OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
             RenderTarget(std::move(name), depthAttachmentType),
+            width(0),
+            height(0),
+            layer(0),
             commandBufferFence(nullptr),
             submitSemaphores({}),
             submitSemaphoresFrameIndex(0),
@@ -26,10 +29,24 @@ namespace urchin {
         resetOutputTextures();
     }
 
+    void OffscreenRender::setOutputSize(unsigned int width, unsigned int height, unsigned int layer) {
+        assert(!isInitialized);
+
+        this->width = width;
+        this->height = height;
+        this->layer = layer;
+    }
+
     void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor, OutputUsage outputUsage) {
         assert(!isInitialized);
         assert(outputUsage != OutputUsage::COMPUTE || loadType == LoadType::NO_LOAD);
-        assert(outputTextures.empty() || outputTextures.back().texture->getLayer() == texture->getLayer());
+        assert(layer == 0 || layer == texture->getLayer());
+
+        if (width == 0 && height == 0 && layer == 0) {
+            width = texture->getWidth();
+            height = texture->getHeight();
+            layer = texture->getLayer();
+        }
 
         if (loadType == LoadType::LOAD_CONTENT) {
             if (!texture->isWritableTexture()) {
@@ -71,7 +88,6 @@ namespace urchin {
     void OffscreenRender::initialize() {
         ScopeProfiler sp(Profiler::graphic(), "offRenderInit");
         assert(!isInitialized);
-        assert(!outputTextures.empty());
 
         initializeClearValues();
         createRenderPass();
@@ -108,18 +124,18 @@ namespace urchin {
     }
 
     unsigned int OffscreenRender::getWidth() const {
-        assert(!outputTextures.empty());
-        return outputTextures[0].texture->getWidth();
+        assert(width != 0);
+        return width;
     }
 
     unsigned int OffscreenRender::getHeight() const {
-        assert(!outputTextures.empty());
-        return outputTextures[0].texture->getHeight();
+        assert(height != 0);
+        return height;
     }
 
     unsigned int OffscreenRender::getLayer() const {
-        assert(!outputTextures.empty());
-        return outputTextures[0].texture->getLayer();
+        assert(layer != 0);
+        return layer;
     }
 
     std::size_t OffscreenRender::getNumColorAttachment() const {

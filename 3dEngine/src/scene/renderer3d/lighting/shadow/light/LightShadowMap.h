@@ -47,9 +47,8 @@ namespace urchin {
             float viewingShadowDistance;
             unsigned int nbShadowMaps;
 
-            std::unique_ptr<OffscreenRender> renderTarget; //target containing shadow map(s)
+            std::unique_ptr<OffscreenRender> renderTarget;
             std::unique_ptr<ModelSetDisplayer> shadowModelSetDisplayer;
-            std::shared_ptr<Texture> shadowMapTexture;
 
             Matrix4<float> lightViewMatrix;
             std::vector<std::unique_ptr<LightSplitShadowMap>> lightSplitShadowMaps;
