@@ -86,7 +86,7 @@ namespace urchin {
             }
         } else {
             if (renderTarget) {
-                static_cast<OffscreenRender*>(renderTarget.get())->resetOutputTextures();
+                static_cast<OffscreenRender*>(renderTarget.get())->resetOutput();
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
             }

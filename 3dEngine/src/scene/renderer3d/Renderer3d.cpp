@@ -359,7 +359,7 @@ namespace urchin {
         materialTexture = Texture::build("material", renderingSceneWidth, renderingSceneHeight, TextureFormat::RG_8_INT);
         if (deferredFirstPassRenderTarget && deferredFirstPassRenderTarget->isValidRenderTarget()) {
             auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
-            deferredFirstPassOffscreenRender->resetOutputTextures();
+            deferredFirstPassOffscreenRender->resetOutput();
             deferredFirstPassOffscreenRender->addOutputTexture(albedoTexture);
             deferredFirstPassOffscreenRender->addOutputTexture(normalAndAmbientTexture);
             deferredFirstPassOffscreenRender->addOutputTexture(materialTexture);
@@ -371,7 +371,7 @@ namespace urchin {
         illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_16_FLOAT);
         if (deferredSecondPassRenderTarget && deferredSecondPassRenderTarget->isValidRenderTarget()) {
             auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());
-            deferredSecondPassOffscreenRender->resetOutputTextures();
+            deferredSecondPassOffscreenRender->resetOutput();
             deferredSecondPassOffscreenRender->addOutputTexture(illuminatedTexture);
             deferredSecondPassOffscreenRender->initialize();
         }

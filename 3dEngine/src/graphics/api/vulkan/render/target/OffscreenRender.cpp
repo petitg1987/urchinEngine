@@ -26,7 +26,7 @@ namespace urchin {
             Logger::instance().logWarning("Offscreen render not cleanup before destruction: " + getName());
             OffscreenRender::cleanup();
         }
-        resetOutputTextures();
+        resetOutput();
     }
 
     void OffscreenRender::setOutputSize(unsigned int width, unsigned int height, unsigned int layer) {
@@ -64,7 +64,12 @@ namespace urchin {
         outputTextures.emplace_back(OutputTexture{texture, loadType, clearColor, outputUsage});
     }
 
-    void OffscreenRender::resetOutputTextures() {
+    std::shared_ptr<Texture>& OffscreenRender::getOutputTexture(std::size_t index) {
+        assert(outputTextures.size() > index);
+        return outputTextures[index].texture;
+    }
+
+    void OffscreenRender::resetOutput() {
         for (const auto& outputTexture : outputTextures) {
             if (outputTexture.texture->getLastTextureWriter() == this) {
                 outputTexture.texture->setLastTextureWriter(nullptr);
@@ -78,11 +83,10 @@ namespace urchin {
         if (isInitialized) {
             cleanup();
         }
-    }
 
-    std::shared_ptr<Texture>& OffscreenRender::getOutputTexture(std::size_t index) {
-        assert(outputTextures.size() > index);
-        return outputTextures[index].texture;
+        width = 0;
+        height = 0;
+        layer = 0;
     }
 
     void OffscreenRender::initialize() {
