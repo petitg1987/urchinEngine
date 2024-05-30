@@ -83,6 +83,7 @@ namespace urchin {
             unsigned int getBytesByPixel() const;
             VkImage getImage() const;
             VkImageView getImageView() const;
+            std::vector<VkImageView> getWritableImageViews() const;
             VkFormat getVkFormat() const;
 
             bool isInitialized;
@@ -103,6 +104,7 @@ namespace urchin {
             VkImage textureImage;
             VmaAllocation textureImageMemory;
             VkImageView textureImageView;
+            std::vector<VkImageView> writableTextureImageViews;
     };
 
 }

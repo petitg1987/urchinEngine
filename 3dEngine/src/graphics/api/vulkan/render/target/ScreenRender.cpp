@@ -134,7 +134,7 @@ namespace urchin {
 
         for (size_t i = 0; i < swapChainHandler.getSwapChainImages().size(); i++) {
             VkImage image = swapChainHandler.getSwapChainImages()[i];
-            swapChainImageViews[i] = ImageHelper::createImageView(image, VK_IMAGE_VIEW_TYPE_2D, swapChainHandler.getImageFormat(), VK_IMAGE_ASPECT_COLOR_BIT, 1, 1);
+            swapChainImageViews[i] = ImageHelper::createImageViews(image, VK_IMAGE_VIEW_TYPE_2D, swapChainHandler.getImageFormat(), VK_IMAGE_ASPECT_COLOR_BIT, 1, 1, false)[0];
         }
     }
 
@@ -170,13 +170,17 @@ namespace urchin {
 
     void ScreenRender::createFramebuffers() {
         for (auto& swapChainImageView : swapChainImageViews) {
-            std::vector<VkImageView> attachments;
-            if (hasDepthAttachment()) {
-                attachments.emplace_back(depthTexture->getImageView());
-            }
-            attachments.emplace_back(swapChainImageView);
+            std::vector<std::vector<VkImageView>> attachments;
+            attachments.resize(1); //1 layer for screen rendering
 
-            RenderTarget::addNewFrameBuffer(attachments);
+            std::size_t layerIndex = 0;
+            attachments[layerIndex].reserve(hasDepthAttachment() ? 2 : 1);
+            if (hasDepthAttachment()) {
+                attachments[layerIndex].emplace_back(depthTexture->getImageView());
+            }
+            attachments[layerIndex].emplace_back(swapChainImageView);
+
+            RenderTarget::addFramebuffers(attachments);
         }
     }
 

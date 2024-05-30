@@ -204,15 +204,22 @@ namespace urchin {
 
     void OffscreenRender::createFramebuffers() {
         if (couldHaveGraphicsProcessors()) {
-            std::vector<VkImageView> attachments;
-            if (hasDepthAttachment()) {
-                attachments.emplace_back(depthTexture->getImageView());
-            }
-            for (const auto& outputTexture: outputTextures) {
-                attachments.emplace_back(outputTexture.texture->getImageView());
+            std::vector<std::vector<VkImageView>> attachments;
+            attachments.resize(getLayer());
+
+            for(std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
+                attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
+                if (hasDepthAttachment()) {
+                    std::vector<VkImageView> depthImageView = depthTexture->getWritableImageViews();
+                    attachments[layerIndex].emplace_back(depthImageView.at(layerIndex));
+                }
+                for (const auto& outputTexture: outputTextures) {
+                    std::vector<VkImageView> outputTextureImageViews = outputTexture.texture->getWritableImageViews();
+                    attachments[layerIndex].emplace_back(outputTextureImageViews.at(layerIndex));
+                }
             }
 
-            RenderTarget::addNewFrameBuffer(attachments);
+            RenderTarget::addFramebuffers(attachments);
         }
     }
 

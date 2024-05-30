@@ -70,7 +70,7 @@ namespace urchin {
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();
-            void addNewFrameBuffer(std::span<VkImageView>);
+            void addFramebuffers(std::vector<std::vector<VkImageView>>);
             void destroyFramebuffers();
             void createCommandBuffers();
             void createCommandPool();
@@ -96,7 +96,7 @@ namespace urchin {
             std::shared_ptr<Texture> externalDepthTexture;
             VkRenderPass renderPass;
             std::size_t renderPassCompatibilityId;
-            std::vector<VkFramebuffer> framebuffers;
+            std::vector<std::vector<VkFramebuffer>> framebuffers; //frameBuffers[frameIndex][layer]
             VkCommandPool commandPool;
 
             mutable std::vector<OffscreenRender*> offscreenRenderDependencies;

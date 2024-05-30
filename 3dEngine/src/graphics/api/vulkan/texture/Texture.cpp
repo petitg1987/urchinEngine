@@ -127,7 +127,10 @@ namespace urchin {
             createTextureImage();
 
             VkImageAspectFlags aspectFlags = isDepthFormat() ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
-            textureImageView = ImageHelper::createImageView(textureImage, imageViewType, getVkFormat(), aspectFlags, layer, mipLevels);
+            textureImageView = ImageHelper::createImageViews(textureImage, imageViewType, getVkFormat(), aspectFlags, layer, mipLevels, false)[0];
+            if (writableTexture) {
+                writableTextureImageViews = ImageHelper::createImageViews(textureImage, imageViewType, getVkFormat(), aspectFlags, layer, mipLevels, true);
+            }
 
             isInitialized = true;
         }
@@ -138,6 +141,10 @@ namespace urchin {
             auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
             vkDestroyImageView(logicalDevice, textureImageView, nullptr);
+            for (const auto& writableTextureImageView : writableTextureImageViews) {
+                vkDestroyImageView(logicalDevice, writableTextureImageView, nullptr);
+            }
+            writableTextureImageViews.clear();
 
             vkDestroyImage(logicalDevice, textureImage, nullptr);
             vmaFreeMemory(GraphicsSetupService::instance().getAllocator(), textureImageMemory);
@@ -460,6 +467,12 @@ namespace urchin {
     VkImageView Texture::getImageView() const {
         assert(isInitialized);
         return textureImageView;
+    }
+
+    std::vector<VkImageView> Texture::getWritableImageViews() const {
+        assert(isInitialized);
+        assert(!writableTextureImageViews.empty());
+        return writableTextureImageViews;
     }
 
     VkFormat Texture::getVkFormat() const {

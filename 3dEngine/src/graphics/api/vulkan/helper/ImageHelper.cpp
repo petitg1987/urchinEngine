@@ -65,27 +65,33 @@ namespace urchin {
         return image;
     }
 
-    VkImageView ImageHelper::createImageView(VkImage image, VkImageViewType type, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t layerCount, uint32_t mipLevels) {
+    std::vector<VkImageView> ImageHelper::createImageViews(VkImage image, VkImageViewType type, VkFormat format, VkImageAspectFlags aspectFlags, uint32_t layerCount,
+                                                           uint32_t mipLevels, bool createOneViewByLayer) {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        VkImageViewCreateInfo viewInfo{};
-        viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        viewInfo.image = image;
-        viewInfo.viewType = type;
-        viewInfo.format = format;
-        viewInfo.subresourceRange.aspectMask = aspectFlags;
-        viewInfo.subresourceRange.baseMipLevel = 0;
-        viewInfo.subresourceRange.levelCount = mipLevels;
-        viewInfo.subresourceRange.baseArrayLayer = 0;
-        viewInfo.subresourceRange.layerCount = layerCount;
+        uint32_t numImageViews = createOneViewByLayer ? layerCount : 1;
+        std::vector<VkImageView> imageViews;
+        imageViews.resize(numImageViews);
 
-        VkImageView imageView;
-        VkResult result = vkCreateImageView(logicalDevice, &viewInfo, nullptr, &imageView);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create image view (format: " + std::string(string_VkFormat(format)) + ") with error code: " + std::string(string_VkResult(result)));
+        for(uint32_t imageViewIndex = 0; imageViewIndex < numImageViews; ++imageViewIndex) {
+            VkImageViewCreateInfo viewInfo{};
+            viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            viewInfo.image = image;
+            viewInfo.viewType = type;
+            viewInfo.format = format;
+            viewInfo.subresourceRange.aspectMask = aspectFlags;
+            viewInfo.subresourceRange.baseMipLevel = 0;
+            viewInfo.subresourceRange.levelCount = mipLevels;
+            viewInfo.subresourceRange.baseArrayLayer = imageViewIndex;
+            viewInfo.subresourceRange.layerCount = createOneViewByLayer ? 1 : layerCount;
+
+            VkResult result = vkCreateImageView(logicalDevice, &viewInfo, nullptr, &imageViews[imageViewIndex]);
+            if (result != VK_SUCCESS) {
+                throw std::runtime_error("Failed to create image view (format: " + std::string(string_VkFormat(format)) + ") with error code: " + std::string(string_VkResult(result)));
+            }
         }
 
-        return imageView;
+        return imageViews;
     }
 
     void ImageHelper::checkFormatSupport(VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage) {

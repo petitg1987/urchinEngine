@@ -9,7 +9,7 @@ namespace urchin {
     class ImageHelper {
         public:
             static VkImage createImage(const std::string&, uint32_t, uint32_t, uint32_t, uint32_t, bool, VkFormat, VkImageTiling, VkImageUsageFlags, VmaAllocation&);
-            static VkImageView createImageView(VkImage, VkImageViewType, VkFormat, VkImageAspectFlags, uint32_t, uint32_t);
+            static std::vector<VkImageView> createImageViews(VkImage, VkImageViewType, VkFormat, VkImageAspectFlags, uint32_t, uint32_t, bool);
 
         private:
             static void checkFormatSupport(VkFormat, VkImageTiling, VkFormatFeatureFlags);
