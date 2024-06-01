@@ -24,6 +24,7 @@ namespace urchin {
             shadowModelSetDisplayer->setupShader("modelShadowMap.vert.spv", "", "modelShadowMap.frag.spv", std::move(shaderConstants));
             shadowModelSetDisplayer->initialize(*renderTarget);
             shadowModelSetDisplayer->setupCustomShaderVariable(std::make_unique<ShadowModelShaderVariable>(this));
+            shadowModelSetDisplayer->setupLayerIndexDataInShader(true);
         }
 
         for (unsigned int i = 0; i < nbShadowMaps; ++i) { //First split is the split nearest to the eye.

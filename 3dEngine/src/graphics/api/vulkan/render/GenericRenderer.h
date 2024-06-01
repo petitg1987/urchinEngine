@@ -51,7 +51,7 @@ namespace urchin {
             void destroyIndexBuffer();
 
             void updatePipelineProcessorData(uint32_t) override;
-            void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) override;
+            void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t) override;
 
             bool isInitialized;
 
@@ -63,6 +63,7 @@ namespace urchin {
             Vector2<int> scissorSize;
 
             bool depthTestEnabled;
+            bool layerIndexDataInShaderEnabled;
             std::vector<AlterableBufferHandler> vertexBuffers;
             AlterableBufferHandler instanceVertexBuffer;
             AlterableBufferHandler indexBuffer;

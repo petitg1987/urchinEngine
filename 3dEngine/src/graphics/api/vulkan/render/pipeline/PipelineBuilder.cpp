@@ -22,7 +22,8 @@ namespace urchin {
             uniformTextureOutputs(nullptr),
             depthTestEnabled(false),
             depthWriteEnabled(false),
-            cullFaceEnabled(true) {
+            cullFaceEnabled(true),
+            layerIndexDataInShaderEnabled(false) {
 
     }
 
@@ -61,6 +62,10 @@ namespace urchin {
             throw std::runtime_error("Cull face operation only exist on graphics pipeline");
         }
         this->cullFaceEnabled = cullFaceEnabled;
+    }
+
+    void PipelineBuilder::setupLayerIndexDataInShader(bool layerIndexDataInShaderEnabled) {
+        this->layerIndexDataInShaderEnabled = layerIndexDataInShaderEnabled;
     }
 
     void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const DataContainer* instanceData) {
@@ -145,7 +150,7 @@ namespace urchin {
                 renderTarget->getWidth(), renderTarget->getHeight(), renderTarget->getRenderPassCompatibilityId(),
                 shader->getShaderId(),
                 shapeType,
-                depthTestEnabled, depthWriteEnabled, cullFaceEnabled);
+                depthTestEnabled, depthWriteEnabled, cullFaceEnabled, layerIndexDataInShaderEnabled);
 
         return hash;
     }
@@ -363,12 +368,22 @@ namespace urchin {
         pipelineDynamicStateCreateInfo.pDynamicStates = dynamicsStates.data();
 
         //pipeline layout (used to transfer uniform to shaders)
+        VkPushConstantRange pushConstantRange{};
+        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+        pushConstantRange.offset = 0;
+        pushConstantRange.size = sizeof(int);
+
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         pipelineLayoutInfo.setLayoutCount = 1;
         pipelineLayoutInfo.pSetLayouts = &pipeline->getDescriptorSetLayout();
-        pipelineLayoutInfo.pushConstantRangeCount = 0;
-        pipelineLayoutInfo.pPushConstantRanges = nullptr;
+        if (layerIndexDataInShaderEnabled) {
+            pipelineLayoutInfo.pushConstantRangeCount = 1;
+            pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
+        } else {
+            pipelineLayoutInfo.pushConstantRangeCount = 0;
+            pipelineLayoutInfo.pPushConstantRanges = nullptr;
+        }
         VkResult pipelineLayoutResult = vkCreatePipelineLayout(logicalDevice, &pipelineLayoutInfo, nullptr, &pipeline->pipelineLayout());
         if (pipelineLayoutResult != VK_SUCCESS) {
             throw std::runtime_error("Failed to create pipeline layout with error code: " + std::string(string_VkResult(pipelineLayoutResult)));

@@ -13,6 +13,7 @@ namespace urchin {
             depthTestEnabled(true),
             depthWriteEnabled(true),
             enableFaceCull(true),
+            enableLayerIndexDataInShader(false),
             renderTarget(nullptr) {
 
     }
@@ -67,6 +68,11 @@ namespace urchin {
 
     void ModelSetDisplayer::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
         this->blendFunctions = blendFunctions;
+        clearDisplayers();
+    }
+
+    void ModelSetDisplayer::setupLayerIndexDataInShader(bool enableLayerIndexDataInShader) {
+        this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
         clearDisplayers();
     }
 
@@ -207,6 +213,7 @@ namespace urchin {
                 modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
                 modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
                 modelInstanceDisplayer->setupFaceCull(enableFaceCull);
+                modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
                 addModelToDisplayer(*model, *modelInstanceDisplayer);
                 modelInstanceDisplayer->initialize();
                 if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {

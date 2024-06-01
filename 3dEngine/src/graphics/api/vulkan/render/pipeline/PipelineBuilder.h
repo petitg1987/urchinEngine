@@ -26,6 +26,7 @@ namespace urchin {
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupDepthOperations(bool, bool);
             void setupCullFaceOperation(bool);
+            void setupLayerIndexDataInShader(bool);
             void setupData(const std::vector<DataContainer>&, const DataContainer*);
             void setupUniform(const std::map<uint32_t, ShaderDataContainer>&, const std::map<uint32_t, std::vector<std::shared_ptr<TextureReader>>>&,
                     const std::map<uint32_t, std::shared_ptr<Texture>>&);
@@ -61,6 +62,7 @@ namespace urchin {
             bool depthTestEnabled;
             bool depthWriteEnabled;
             bool cullFaceEnabled;
+            bool layerIndexDataInShaderEnabled;
     };
 
 }

@@ -32,6 +32,7 @@ namespace urchin {
             void setupDepthOperations(bool, bool);
             void setupFaceCull(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
+            void setupLayerIndexDataInShader(bool);
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
             void notify(Observable*, int) override;
@@ -71,6 +72,7 @@ namespace urchin {
             bool depthWriteEnabled;
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
+            bool enableLayerIndexDataInShader;
             std::unique_ptr<MeshFilter> meshFilter;
 
             RenderTarget* renderTarget;

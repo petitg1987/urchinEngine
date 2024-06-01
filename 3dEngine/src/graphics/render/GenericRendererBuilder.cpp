@@ -14,7 +14,8 @@ namespace urchin {
             scissorSize(Vector2<int>((int)renderTarget.getWidth(), (int)renderTarget.getHeight())),
             depthTestEnabled(false),
             depthWriteEnabled(false),
-            cullFaceEnabled(true) {
+            cullFaceEnabled(true),
+            layerIndexDataInShaderEnabled(false) {
 
     }
 
@@ -177,6 +178,15 @@ namespace urchin {
 
     bool GenericRendererBuilder::isCullFaceEnabled() const {
         return cullFaceEnabled;
+    }
+
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::enableLayerIndexDataInShader() {
+        layerIndexDataInShaderEnabled = true;
+        return shared_from_this();
+    }
+
+    bool GenericRendererBuilder::isLayerIndexDataInShaderEnabled() const {
+        return layerIndexDataInShaderEnabled;
     }
 
     std::unique_ptr<GenericRenderer> GenericRendererBuilder::build() {

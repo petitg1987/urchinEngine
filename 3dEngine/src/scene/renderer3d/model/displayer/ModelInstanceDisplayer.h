@@ -21,6 +21,7 @@ namespace urchin {
             void setupDepthOperations(bool, bool);
             void setupFaceCull(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
+            void setupLayerIndexDataInShader(bool);
 
             void initialize();
 
@@ -87,6 +88,7 @@ namespace urchin {
             bool depthWriteEnabled;
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
+            bool enableLayerIndexDataInShader;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::vector<std::shared_ptr<AABBoxModel>> aabboxModels;

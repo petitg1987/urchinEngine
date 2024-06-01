@@ -20,7 +20,8 @@ namespace urchin {
             customScissor(rendererBuilder.hasCustomScissor()),
             scissorOffset(rendererBuilder.getScissorOffset()),
             scissorSize(rendererBuilder.getScissorSize()),
-            depthTestEnabled(rendererBuilder.isDepthTestEnabled()) {
+            depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
+            layerIndexDataInShaderEnabled(rendererBuilder.isLayerIndexDataInShaderEnabled()) {
 
         setupPipelineBuilder(std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, getName()));
         getPipelineBuilder().setupRenderTarget(getRenderTarget());
@@ -29,6 +30,7 @@ namespace urchin {
         getPipelineBuilder().setupBlendFunctions(rendererBuilder.getBlendFunctions());
         getPipelineBuilder().setupDepthOperations(rendererBuilder.isDepthTestEnabled(), rendererBuilder.isDepthWriteEnabled());
         getPipelineBuilder().setupCullFaceOperation(rendererBuilder.isCullFaceEnabled());
+        getPipelineBuilder().setupLayerIndexDataInShader(rendererBuilder.isLayerIndexDataInShaderEnabled());
 
         initialize();
     }
@@ -220,7 +222,7 @@ namespace urchin {
         PipelineProcessor::updatePipelineProcessorData(frameIndex);
     }
 
-    void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {
+    void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufRender");
 
         if (boundPipelineId != getPipeline().getId()) {
@@ -255,6 +257,11 @@ namespace urchin {
         } else {
             auto vertexCount = (uint32_t)data[0].getDataCount();
             vkCmdDraw(commandBuffer, vertexCount, instanceCount, 0, 0);
+        }
+
+        if (layerIndexDataInShaderEnabled) {
+            int layerIndexInt = (int)layerIndex;
+            vkCmdPushConstants(commandBuffer, getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(int), &layerIndexInt);
         }
     }
 

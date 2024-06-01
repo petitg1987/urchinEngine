@@ -46,7 +46,7 @@ namespace urchin {
 
             virtual void updatePipelineProcessorData(uint32_t);
             bool needCommandBufferRefresh(std::size_t) const;
-            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t);
+            std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t);
 
         protected:
             void setupPipelineBuilder(std::unique_ptr<PipelineBuilder>);
@@ -65,7 +65,7 @@ namespace urchin {
 
             void markDrawCommandsDirty();
             std::vector<VkDescriptorSet>& getDescriptorSets();
-            virtual void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t) = 0;
+            virtual void doUpdateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t) = 0;
 
         private:
             std::string name;

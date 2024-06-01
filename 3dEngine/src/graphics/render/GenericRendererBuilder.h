@@ -55,6 +55,9 @@ namespace urchin {
             std::shared_ptr<GenericRendererBuilder> disableCullFace();
             bool isCullFaceEnabled() const;
 
+            std::shared_ptr<GenericRendererBuilder> enableLayerIndexDataInShader();
+            bool isLayerIndexDataInShaderEnabled() const;
+
             std::unique_ptr<GenericRenderer> build();
 
         private:
@@ -77,6 +80,7 @@ namespace urchin {
             bool depthTestEnabled;
             bool depthWriteEnabled;
             bool cullFaceEnabled;
+            bool layerIndexDataInShaderEnabled;
     };
 
 }

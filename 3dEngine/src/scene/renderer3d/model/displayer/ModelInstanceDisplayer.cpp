@@ -18,7 +18,8 @@ namespace urchin {
             customShaderVariable(nullptr),
             depthTestEnabled(true),
             depthWriteEnabled(true),
-            enableFaceCull(true) {
+            enableFaceCull(true),
+            enableLayerIndexDataInShader(false) {
 
     }
 
@@ -56,6 +57,13 @@ namespace urchin {
             throw std::runtime_error("Can not define blend functions on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
         }
         this->blendFunctions = blendFunctions;
+    }
+
+    void ModelInstanceDisplayer::setupLayerIndexDataInShader(bool enableLayerIndexDataInShader) {
+        if (isInitialized) {
+            throw std::runtime_error("Can not define layer index data flag on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
+        }
+        this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
     }
 
     void ModelInstanceDisplayer::initialize() {
@@ -109,6 +117,9 @@ namespace urchin {
             }
             if (!blendFunctions.empty()) {
                 meshRendererBuilder->enableTransparency(blendFunctions);
+            }
+            if (enableLayerIndexDataInShader) {
+                meshRendererBuilder->enableLayerIndexDataInShader();
             }
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {

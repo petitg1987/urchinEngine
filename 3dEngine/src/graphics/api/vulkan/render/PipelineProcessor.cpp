@@ -356,17 +356,17 @@ namespace urchin {
         return descriptorSets;
     }
 
-    bool PipelineProcessor::needCommandBufferRefresh(std::size_t frameIndex) const {
-        return drawCommandsDirty || descriptorSetsDirty[frameIndex];
+    bool PipelineProcessor::needCommandBufferRefresh(std::size_t) const { //TODO mark dirty if several output layer !
+        return true; //drawCommandsDirty || descriptorSetsDirty[frameIndex];
     }
 
-    std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t boundPipelineId) {
+    std::size_t PipelineProcessor::updateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
         if (descriptorSetsDirty[frameIndex]) {
             updateDescriptorSets(frameIndex);
             descriptorSetsDirty[frameIndex] = false;
         }
 
-        doUpdateCommandBuffer(commandBuffer, frameIndex, boundPipelineId);
+        doUpdateCommandBuffer(commandBuffer, frameIndex, layerIndex, boundPipelineId);
 
         drawCommandsDirty = false;
         return getPipeline().getId();
