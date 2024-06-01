@@ -322,7 +322,7 @@ namespace urchin {
 
                 VkFramebufferCreateInfo framebufferInfo{};
                 framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-                framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo //TODO is it true ?
+                framebufferInfo.renderPass = renderPass; //render pass must have the same number and type of attachments as the framebufferInfo
                 framebufferInfo.attachmentCount = (uint32_t) attachments[layerIndex].size();
                 framebufferInfo.pAttachments = attachments[layerIndex].data();
                 framebufferInfo.width = getWidth();

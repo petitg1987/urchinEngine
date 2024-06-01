@@ -222,11 +222,20 @@ namespace urchin {
         PipelineProcessor::updatePipelineProcessorData(frameIndex);
     }
 
+    bool GenericRenderer::needCommandBufferRefresh(std::size_t frameIndex) const {
+        return layerIndexDataInShaderEnabled || PipelineProcessor::needCommandBufferRefresh(frameIndex);
+    }
+
     void GenericRenderer::doUpdateCommandBuffer(VkCommandBuffer commandBuffer, std::size_t frameIndex, std::size_t layerIndex, std::size_t boundPipelineId) {
         ScopeProfiler sp(Profiler::graphic(), "upCmdBufRender");
 
         if (boundPipelineId != getPipeline().getId()) {
             vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, getPipeline().getVkPipeline());
+        }
+
+        if (layerIndexDataInShaderEnabled) {
+            int layerIndexInt = (int)layerIndex;
+            vkCmdPushConstants(commandBuffer, getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(int), &layerIndexInt);
         }
 
         std::array<VkDeviceSize, 20> offsets = {0};
@@ -257,11 +266,6 @@ namespace urchin {
         } else {
             auto vertexCount = (uint32_t)data[0].getDataCount();
             vkCmdDraw(commandBuffer, vertexCount, instanceCount, 0, 0);
-        }
-
-        if (layerIndexDataInShaderEnabled) {
-            int layerIndexInt = (int)layerIndex;
-            vkCmdPushConstants(commandBuffer, getPipeline().getPipelineLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(int), &layerIndexInt);
         }
     }
 

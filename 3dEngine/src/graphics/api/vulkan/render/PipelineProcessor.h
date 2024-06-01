@@ -45,7 +45,7 @@ namespace urchin {
             std::span<OffscreenRender*> getTexturesWriter() const;
 
             virtual void updatePipelineProcessorData(uint32_t);
-            bool needCommandBufferRefresh(std::size_t) const;
+            virtual bool needCommandBufferRefresh(std::size_t) const;
             std::size_t updateCommandBuffer(VkCommandBuffer, std::size_t, std::size_t, std::size_t);
 
         protected:
