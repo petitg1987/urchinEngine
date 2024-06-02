@@ -179,48 +179,49 @@ namespace urchin {
         assert(renderTarget);
 
         this->models.clear();
-
         for (Model* model : models) {
-            if (!meshFilter || meshFilter->isAccepted(*model)) {
-                this->models.push_back(model);
-                std::size_t modelInstanceId = model->computeInstanceId(displayMode);
+            if (meshFilter && !meshFilter->isAccepted(*model)) {
+                continue;
+            }
 
-                ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
-                if (currentModelInstanceDisplayer) {
-                    if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
-                        continue; //the model displayer attached to the model is still valid
-                    }
-                    removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
-                }
+            this->models.push_back(model);
+            std::size_t modelInstanceId = model->computeInstanceId(displayMode);
 
-                if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-                    const auto& itFind = modelDisplayers.find(model);
-                    if (itFind != modelDisplayers.end()) {
-                        assert(itFind->second->getInstanceCount() == 0);
-                        addModelToDisplayer(*model, *itFind->second);
-                        continue; //the model displayer used in past for this model has been found
-                    }
-                } else {
-                    const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
-                    if (itFind != modelInstanceDisplayers.end()) {
-                        addModelToDisplayer(*model, *itFind->second);
-                        continue; //a matching model instance displayer has been found for the model
-                    }
+            ModelInstanceDisplayer* currentModelInstanceDisplayer = findModelInstanceDisplayer(*model);
+            if (currentModelInstanceDisplayer) {
+                if (currentModelInstanceDisplayer->getInstanceId() == modelInstanceId) {
+                    continue; //the model displayer attached to the model is still valid
                 }
+                removeModelFromDisplayer(*model, *currentModelInstanceDisplayer);
+            }
 
-                auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, displayMode, *renderTarget, *modelShader);
-                modelInstanceDisplayer->setupCustomShaderVariable(customShaderVariable.get());
-                modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
-                modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
-                modelInstanceDisplayer->setupFaceCull(enableFaceCull);
-                modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
-                addModelToDisplayer(*model, *modelInstanceDisplayer);
-                modelInstanceDisplayer->initialize();
-                if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
-                    modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
-                } else {
-                    modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
+            if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
+                const auto& itFind = modelDisplayers.find(model);
+                if (itFind != modelDisplayers.end()) {
+                    assert(itFind->second->getInstanceCount() == 0);
+                    addModelToDisplayer(*model, *itFind->second);
+                    continue; //the model displayer used in past for this model has been found
                 }
+            } else {
+                const auto& itFind = modelInstanceDisplayers.find(modelInstanceId);
+                if (itFind != modelInstanceDisplayers.end()) {
+                    addModelToDisplayer(*model, *itFind->second);
+                    continue; //a matching model instance displayer has been found for the model
+                }
+            }
+
+            auto modelInstanceDisplayer = std::make_unique<ModelInstanceDisplayer>(*this, displayMode, *renderTarget, *modelShader);
+            modelInstanceDisplayer->setupCustomShaderVariable(customShaderVariable.get());
+            modelInstanceDisplayer->setupDepthOperations(depthTestEnabled, depthWriteEnabled);
+            modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
+            modelInstanceDisplayer->setupFaceCull(enableFaceCull);
+            modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
+            addModelToDisplayer(*model, *modelInstanceDisplayer);
+            modelInstanceDisplayer->initialize();
+            if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {
+                modelDisplayers.try_emplace(model, std::move(modelInstanceDisplayer));
+            } else {
+                modelInstanceDisplayers.try_emplace(modelInstanceId, std::move(modelInstanceDisplayer));
             }
         }
     }

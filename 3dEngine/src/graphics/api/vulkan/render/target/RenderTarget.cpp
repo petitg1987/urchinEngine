@@ -490,7 +490,7 @@ namespace urchin {
                     vkCmdBeginRenderPass(commandBuffers[frameIndex], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
                 }
                 std::size_t boundPipelineId = 0;
-                for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) { //TODO have sortedEnabledProcessors by layer
+                for (PipelineProcessor* pipelineProcessor: sortedEnabledProcessors) {
                     boundPipelineId = pipelineProcessor->updateCommandBuffer(commandBuffers[frameIndex], frameIndex, layerIndex, boundPipelineId);
                 }
                 if (hasGraphicsProcessors()) {
