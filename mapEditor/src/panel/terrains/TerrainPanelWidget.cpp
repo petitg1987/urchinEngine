@@ -257,7 +257,7 @@ namespace urchin {
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearGrassMaskFilename()));
 
-        auto* numGrassInTexLabel= new QLabel("Num grass in tex:");
+        auto* numGrassInTexLabel= new QLabel("Tex num grass:");
         grassLayout->addWidget(numGrassInTexLabel, 3, 0);
 
         numGrassInTex = new QSpinBox();

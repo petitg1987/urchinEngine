@@ -69,7 +69,7 @@ namespace urchin {
             static constexpr uint32_t GRASS_TEX_UNIFORM_BINDING = 4;
             static constexpr uint32_t GRASS_TEX_MASK_UNIFORM_BINDING = 5;
 
-            const float grassPatchSize;
+            const float grassParcelSize;
             const unsigned int grassQuadtreeDepth;
 
             bool bIsInitialized;

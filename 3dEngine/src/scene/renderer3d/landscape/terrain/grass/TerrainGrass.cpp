@@ -12,7 +12,7 @@
 namespace urchin {
 
     TerrainGrass::TerrainGrass(const std::string& grassTextureFilename) :
-            grassPatchSize(ConfigService::instance().getFloatValue("terrain.grassPatchSize")),
+            grassParcelSize(ConfigService::instance().getFloatValue("terrain.grassParcelSize")),
             grassQuadtreeDepth(ConfigService::instance().getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             bIsInitialized(false),
             renderTarget(nullptr),
@@ -83,18 +83,20 @@ namespace urchin {
             std::default_random_engine generator(seed);
             std::uniform_real_distribution<float> distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
 
-            auto grassXQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
-            auto grassZQuantity = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
+            float terrainSizeX = mesh->getXZScale() * (float)mesh->getXSize();
+            float terrainSizeZ = mesh->getXZScale() * (float)mesh->getZSize();
+            unsigned int parcelQuantityX = MathFunction::roundToUInt(terrainSizeX / grassParcelSize);
+            unsigned int parcelQuantityZ = MathFunction::roundToUInt(terrainSizeZ / grassParcelSize);
+            float parcelSizeX = terrainSizeX / (float)parcelQuantityX;
+            float parcelSizeZ = terrainSizeZ / (float)parcelQuantityZ;
 
-            auto patchQuantityX = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
-            auto patchQuantityZ = MathFunction::roundToUInt(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
-            float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / (float)patchQuantityX;
-            float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / (float)patchQuantityZ;
+            unsigned int grassXQuantity = MathFunction::roundToUInt(terrainSizeX * grassQuantity);
+            unsigned int grassZQuantity = MathFunction::roundToUInt(terrainSizeZ * grassQuantity);
 
-            std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassPatches;
-            leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
-            for (unsigned int i = 0; i < patchQuantityX * patchQuantityZ; ++i) {
-                leafGrassPatches.push_back(std::make_unique<TerrainGrassQuadtree>());
+            std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
+            leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
+            for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
+                leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
             }
 
             float startX = mesh->getVertices()[0].X;
@@ -118,19 +120,19 @@ namespace urchin {
                             Point3 globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
                             Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
-                            unsigned int patchXIndex = std::min((unsigned int)((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
-                            unsigned int patchZIndex = std::min((unsigned int)((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
-                            unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
+                            unsigned int parcelXIndex = std::min((unsigned int)((xValue - startX) / parcelSizeX), parcelQuantityX);
+                            unsigned int parcelZIndex = std::min((unsigned int)((zValue - startZ) / parcelSizeZ), parcelQuantityZ);
+                            unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
 
-                            leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
+                            leafGrassParcels[parcelIndex]->addVertex(globalGrassVertex, grassNormal);
                         }
                     }
                 });
             }
             std::ranges::for_each(threads, [](std::jthread& x){x.join();});
 
-            createRenderers(leafGrassPatches);
-            buildGrassQuadtree(std::move(leafGrassPatches), patchQuantityX, patchQuantityZ);
+            createRenderers(leafGrassParcels);
+            buildGrassQuadtree(std::move(leafGrassParcels), parcelQuantityX, parcelQuantityZ);
         }
     }
 
@@ -147,8 +149,8 @@ namespace urchin {
         return xIndex + zIndex * mesh->getXSize();
     }
 
-    void TerrainGrass::buildGrassQuadtree(std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
-        std::vector<std::unique_ptr<TerrainGrassQuadtree>> childrenGrassQuadtree = std::move(leafGrassPatches);
+    void TerrainGrass::buildGrassQuadtree(std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels, unsigned int leafQuantityX, unsigned int leafQuantityZ) {
+        std::vector<std::unique_ptr<TerrainGrassQuadtree>> childrenGrassQuadtree = std::move(leafGrassParcels);
         unsigned int childrenNbQuadtreeX = leafQuantityX;
         unsigned int childrenNbQuadtreeZ = leafQuantityZ;
 
@@ -188,9 +190,9 @@ namespace urchin {
         mainGrassQuadtree = std::make_unique<TerrainGrassQuadtree>(std::move(childrenGrassQuadtree));
     }
 
-    void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassPatches) {
+    void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) {
         if (grassTexture && renderTarget) {
-            for (auto& grassQuadtree : leafGrassPatches) {
+            for (auto& grassQuadtree : leafGrassParcels) {
                 auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
                         ->enableDepthTest()
                         ->enableDepthWrite()

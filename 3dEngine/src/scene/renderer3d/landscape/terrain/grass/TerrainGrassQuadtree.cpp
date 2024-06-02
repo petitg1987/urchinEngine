@@ -46,9 +46,9 @@ namespace urchin {
         return bbox.get();
     }
 
-    void TerrainGrassQuadtree::addChild(std::unique_ptr<TerrainGrassQuadtree> grassPatchOctree) {
+    void TerrainGrassQuadtree::addChild(std::unique_ptr<TerrainGrassQuadtree> grassParcelOctree) {
         assert(bbox == nullptr);
-        children.push_back(std::move(grassPatchOctree));
+        children.push_back(std::move(grassParcelOctree));
     }
 
     const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& TerrainGrassQuadtree::getChildren() const {
