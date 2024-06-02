@@ -141,21 +141,6 @@ namespace urchin {
         for (const auto& [light, lightShadowMap] : lightShadowMaps) {
             updateLightSplitsShadowMap(*lightShadowMap);
         }
-
-        //store all visible models from all lights
-        visibleModels.clear();
-        for (const auto& [light, lightShadowMap] : lightShadowMaps) {
-            for (const auto& lightSplitShadowMap : lightShadowMap->getLightSplitShadowMaps()) {
-                OctreeableHelper<Model>::merge(visibleModels, lightSplitShadowMap->getModels());
-            }
-        }
-    }
-
-    /**
-     * @return All visible models from all lights
-     */
-    std::span<Model* const> ShadowManager::getVisibleModels() const {
-        return visibleModels;
     }
 
     void ShadowManager::removeModel(Model* model) const {

@@ -11,6 +11,7 @@ namespace urchin {
             light(light),
             modelOcclusionCuller(modelOcclusionCuller),
             viewingShadowDistance(viewingShadowDistance),
+            shadowMapResolution(shadowMapResolution),
             nbShadowMaps(nbShadowMaps) {
 
         if (GraphicsApiService::instance().isInitialized()) { //only false for unit tests
@@ -86,7 +87,7 @@ namespace urchin {
     }
 
     unsigned int LightShadowMap::getShadowMapSize() const {
-        return renderTarget->getWidth();
+        return shadowMapResolution;
     }
 
     const std::shared_ptr<Texture>& LightShadowMap::getShadowMapTexture() const {

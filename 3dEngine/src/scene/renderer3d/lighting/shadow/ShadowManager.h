@@ -54,7 +54,6 @@ namespace urchin {
             const LightShadowMap& getLightShadowMap(const Light*) const;
 
             void updateVisibleModels(const Frustum<float>&);
-            std::span<Model* const> getVisibleModels() const;
             void removeModel(Model*) const;
 
             void updateShadowMaps(std::uint32_t, unsigned int) const;
@@ -84,7 +83,6 @@ namespace urchin {
             //scene information
             LightManager& lightManager;
             ModelOcclusionCuller& modelOcclusionCuller;
-            std::vector<Model*> visibleModels;
 
             //shadow information
             std::vector<SplitFrustum> splitFrustums;

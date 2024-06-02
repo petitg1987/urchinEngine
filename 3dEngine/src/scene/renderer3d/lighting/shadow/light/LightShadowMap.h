@@ -45,6 +45,7 @@ namespace urchin {
             Light& light;
             const ModelOcclusionCuller& modelOcclusionCuller;
             float viewingShadowDistance;
+            unsigned int shadowMapResolution;
             unsigned int nbShadowMaps;
 
             std::unique_ptr<OffscreenRender> renderTarget;
