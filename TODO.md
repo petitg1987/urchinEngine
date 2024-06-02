@@ -7,7 +7,7 @@
 * Graphics API
   * **OPTIMIZATION** (`major`): Use bind-less rendering technique to bind almost everything at frame start (see <https://www.youtube.com/watch?v=SVm0HanVTRw> and <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>)
   * **OPTIMIZATION** (`medium`): Check secondary command buffers usage for better performance
-  * **OPTIMIZATION** (`minor`): Use shader constants (VkPipelineShaderStageCreateInfo#pSpecializationInfo) instead of uniform for values infrequently refreshed
+  * **OPTIMIZATION** (`minor`): Use shader constants instead of uniform for values infrequently refreshed
   * **OPTIMIZATION** (`minor`): Use Vulkan 1.2 timeline semaphores instead of semaphores/fences
 * Rendering
   * **NEW FEATURE** (`medium`): Implement a better culling technique (GPU driven rendering: <https://vkguide.dev/docs/gpudriven/gpu_driven_engines/>, coherent hierarchical culling revisited, software occlusion culling)
@@ -27,6 +27,7 @@
   * **OPTIMIZATION** (`medium`): Avoid to render all the frustum models for each cascade: use the split frustum models instead
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
   * **OPTIMIZATION** (`minor`): Use models LOD
+  * **OPTIMIZATION** (`minor`): Create specific render passes with less restrictive memory barrier between the shadow map cascades rendering
 * Lighting
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Landscape
