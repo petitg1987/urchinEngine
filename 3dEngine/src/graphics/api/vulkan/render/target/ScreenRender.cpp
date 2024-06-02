@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     ScreenRender::~ScreenRender() {
-        if (isInitialized) {
+        if (isInitialized()) {
             Logger::instance().logWarning("Screen render not cleanup before destruction");
             ScreenRender::cleanup();
         }
@@ -29,7 +29,7 @@ namespace urchin {
 
     void ScreenRender::initialize() {
         ScopeProfiler sp(Profiler::graphic(), "scrRenderInit");
-        assert(!isInitialized);
+        assert(!isInitialized());
 
         initializeClearValues();
         swapChainHandler.initialize(verticalSyncEnabled);
@@ -43,11 +43,11 @@ namespace urchin {
 
         initializeProcessors();
 
-        isInitialized = true;
+        setInitialized(true);
     }
 
     void ScreenRender::cleanup() {
-        if (isInitialized) {
+        if (isInitialized()) {
             VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
                 Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
@@ -64,7 +64,7 @@ namespace urchin {
             swapChainHandler.cleanup();
             clearValues.clear();
 
-            isInitialized = false;
+            setInitialized(false);
         }
     }
 
@@ -84,7 +84,7 @@ namespace urchin {
             ScopeProfiler sp(Profiler::graphic(), "upVertSync");
             this->verticalSyncEnabled = verticalSyncEnabled;
 
-            if (isInitialized) {
+            if (isInitialized()) {
                 cleanup();
                 initialize();
             }
@@ -176,7 +176,7 @@ namespace urchin {
             std::size_t layerIndex = 0;
             attachments[layerIndex].reserve(hasDepthAttachment() ? 2 : 1);
             if (hasDepthAttachment()) {
-                attachments[layerIndex].emplace_back(depthTexture->getImageView());
+                attachments[layerIndex].emplace_back(getDepthTexture()->getImageView());
             }
             attachments[layerIndex].emplace_back(swapChainImageView);
 
@@ -281,7 +281,7 @@ namespace urchin {
 
         VkCommandBufferSubmitInfo commandBufferSubmitInfo{};
         commandBufferSubmitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
-        commandBufferSubmitInfo.commandBuffer = commandBuffers[vkImageIndex];
+        commandBufferSubmitInfo.commandBuffer = getCommandBuffer(vkImageIndex);
         commandBufferSubmitInfo.deviceMask = 0;
 
         VkSubmitInfo2 submitInfo{};

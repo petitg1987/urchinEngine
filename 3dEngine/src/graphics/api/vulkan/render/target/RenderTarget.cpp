@@ -13,7 +13,7 @@
 namespace urchin {
 
     RenderTarget::RenderTarget(std::string name, DepthAttachmentType depthAttachmentType) :
-            isInitialized(false),
+            bIsInitialized(false),
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
@@ -28,6 +28,14 @@ namespace urchin {
         //Processors must be destroyed before its render target.
         //Indeed, the processors' destructor will fail to unlink render target and the processor.
         assert(processors.empty());
+    }
+
+    bool RenderTarget::isInitialized() const {
+        return bIsInitialized;
+    }
+
+    void RenderTarget::setInitialized(bool isInitialized) {
+        this->bIsInitialized = isInitialized;
     }
 
     std::string RenderTarget::getName() const {
@@ -54,11 +62,15 @@ namespace urchin {
      * Provide a depth texture created in another render target
      */
     void RenderTarget::setExternalDepthTexture(const std::shared_ptr<Texture>& externalDepthTexture) {
-        assert(!isInitialized);
+        assert(!bIsInitialized);
         if (depthAttachmentType != EXTERNAL_DEPTH_ATTACHMENT) {
             throw std::runtime_error("Can not define an external depth texture on render target: " + getName() + ". Wrong type of depth attachment: " + std::to_string(depthAttachmentType));
         }
         this->externalDepthTexture = externalDepthTexture;
+    }
+
+    bool RenderTarget::hasDepthTexture() const {
+        return depthTexture != nullptr;
     }
 
     const std::shared_ptr<Texture>& RenderTarget::getDepthTexture() const {
@@ -298,7 +310,9 @@ namespace urchin {
                     depthTexture = Texture::buildArray(name + " - depth", getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT);
                 }
                 depthTexture->enableTextureWriting(OutputUsage::GRAPHICS);
-                depthTexture->initialize();
+                if (isValidRenderTarget()) {
+                    depthTexture->initialize();
+                }
             }
         }
     }
@@ -346,6 +360,18 @@ namespace urchin {
         framebuffers.clear();
     }
 
+    void RenderTarget::createCommandPool() {
+        VkCommandPoolCreateInfo poolInfo{};
+        poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        poolInfo.queueFamilyIndex = GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueueFamily();
+        poolInfo.flags = 0;
+
+        VkResult result = vkCreateCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
+        if (result != VK_SUCCESS) {
+            throw std::runtime_error("Failed to create command pool with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
+        }
+    }
+
     void RenderTarget::createCommandBuffers() {
         commandBuffers.resize(getNumFramebuffer());
 
@@ -365,24 +391,16 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::createCommandPool() {
-        VkCommandPoolCreateInfo poolInfo{};
-        poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolInfo.queueFamilyIndex = GraphicsSetupService::instance().getQueues().getGraphicsAndComputeQueueFamily();
-        poolInfo.flags = 0;
-
-        VkResult result = vkCreateCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), &poolInfo, nullptr, &commandPool);
-        if (result != VK_SUCCESS) {
-            throw std::runtime_error("Failed to create command pool with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
-        }
-    }
-
     void RenderTarget::destroyCommandBuffersAndPool() {
         vkDestroyCommandPool(GraphicsSetupService::instance().getDevices().getLogicalDevice(), commandPool, nullptr);
     }
 
     VkRenderPass RenderTarget::getRenderPass() const {
         return renderPass;
+    }
+
+    VkCommandBuffer RenderTarget::getCommandBuffer(std::size_t cmdBufferIndex) const {
+        return commandBuffers[cmdBufferIndex];
     }
 
     std::span<OffscreenRender*> RenderTarget::getOffscreenRenderDependencies() const {

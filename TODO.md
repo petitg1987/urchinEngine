@@ -24,10 +24,8 @@
   * **NEW FEATURE** (`medium`): Allow transparency on geometry models
 * Shadow
   * **NEW FEATURE** (`major`): Shadow on omnidirectional light (check Sascha Willems: deferredshadows)
-  * **OPTIMIZATION** (`medium`): Improve performance of ShadowManager#updateVisibleModels / Renderer3d#updateModelsInFrustum
-    * Tips: re-use models in the second method + call octree manager one times for all frustum splits. Then, split the models for each split (only for scene dependent shadow map projection)
+  * **OPTIMIZATION** (`medium`): Avoid to render all the frustum models for each cascade: use the split frustum models instead
   * **OPTIMIZATION** (`medium`): Create shadow map texture only for visible lights
-  * **NEW FEATURE** (`minor`): Use mipmap on the shadow map
   * **OPTIMIZATION** (`minor`): Use models LOD
 * Lighting
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance

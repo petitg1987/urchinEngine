@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     OffscreenRender::~OffscreenRender() {
-        if (isInitialized) {
+        if (isInitialized()) {
             Logger::instance().logWarning("Offscreen render not cleanup before destruction: " + getName());
             OffscreenRender::cleanup();
         }
@@ -30,7 +30,7 @@ namespace urchin {
     }
 
     void OffscreenRender::setOutputSize(unsigned int width, unsigned int height, unsigned int layer) {
-        assert(!isInitialized);
+        assert(!isInitialized());
 
         this->width = width;
         this->height = height;
@@ -38,7 +38,7 @@ namespace urchin {
     }
 
     void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor, OutputUsage outputUsage) {
-        assert(!isInitialized);
+        assert(!isInitialized());
         assert(outputUsage != OutputUsage::COMPUTE || loadType == LoadType::NO_LOAD);
         assert(layer == 0 || layer == texture->getLayer());
 
@@ -76,11 +76,11 @@ namespace urchin {
             }
         }
         outputTextures.clear();
-        if (depthTexture && depthTexture->getLastTextureWriter() == this) {
-            depthTexture->setLastTextureWriter(nullptr);
+        if (hasDepthTexture() && getDepthTexture()->getLastTextureWriter() == this) {
+            getDepthTexture()->setLastTextureWriter(nullptr);
         }
 
-        if (isInitialized) {
+        if (isInitialized()) {
             cleanup();
         }
 
@@ -91,7 +91,7 @@ namespace urchin {
 
     void OffscreenRender::initialize() {
         ScopeProfiler sp(Profiler::graphic(), "offRenderInit");
-        assert(!isInitialized);
+        assert(!isInitialized());
 
         initializeClearValues();
         createRenderPass();
@@ -103,12 +103,11 @@ namespace urchin {
         createSemaphores();
 
         initializeProcessors();
-
-        isInitialized = true;
+        setInitialized(true);
     }
 
     void OffscreenRender::cleanup() {
-        assert(isInitialized);
+        assert(isInitialized());
         VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
         if (result != VK_SUCCESS) {
             Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
@@ -124,7 +123,7 @@ namespace urchin {
         destroyRenderPass();
         clearValues.clear();
 
-        isInitialized = false;
+        setInitialized(false);
     }
 
     unsigned int OffscreenRender::getWidth() const {
@@ -210,7 +209,7 @@ namespace urchin {
             for(std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                 attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
                 if (hasDepthAttachment()) {
-                    std::vector<VkImageView> depthImageView = depthTexture->getWritableImageViews();
+                    std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews();
                     attachments[layerIndex].emplace_back(depthImageView.at(layerIndex));
                 }
                 for (const auto& outputTexture: outputTextures) {
@@ -284,7 +283,7 @@ namespace urchin {
 
         VkCommandBufferSubmitInfo commandBufferSubmitInfo{};
         commandBufferSubmitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
-        commandBufferSubmitInfo.commandBuffer = commandBuffers[0];
+        commandBufferSubmitInfo.commandBuffer = getCommandBuffer(0);
         commandBufferSubmitInfo.deviceMask = 0;
 
         std::array<VkSemaphoreSubmitInfo, MAX_SUBMIT_SEMAPHORES> submitSemaphoreSubmitInfo{};
@@ -321,9 +320,9 @@ namespace urchin {
             outputTexture.texture->setLastTextureWriter(this);
         }
 
-        if (depthTexture && depthTexture->isWritableTexture()
+        if (hasDepthTexture() && getDepthTexture()->isWritableTexture()
                 && getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT /* currently, assume that write is not done in the external depth attachment: could be not true anymore in the future ! */) {
-            depthTexture->setLastTextureWriter(this);
+            getDepthTexture()->setLastTextureWriter(this);
         }
     }
 

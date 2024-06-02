@@ -42,6 +42,7 @@ namespace urchin {
             bool hasDepthAttachment() const;
             DepthAttachmentType getDepthAttachmentType() const;
             void setExternalDepthTexture(const std::shared_ptr<Texture>&);
+            bool hasDepthTexture() const;
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
             void addPreRenderTextureCopier(TextureCopier);
@@ -58,6 +59,9 @@ namespace urchin {
             virtual void render(std::uint32_t, unsigned int) = 0;
 
         protected:
+            bool isInitialized() const;
+            void setInitialized(bool);
+
             void initializeProcessors();
             void cleanupProcessors() const;
             std::span<PipelineProcessor* const> getProcessors() const;
@@ -72,11 +76,13 @@ namespace urchin {
             void destroyDepthResources();
             void addFramebuffers(std::vector<std::vector<VkImageView>>);
             void destroyFramebuffers();
-            void createCommandBuffers();
             void createCommandPool();
+            void createCommandBuffers();
             void destroyCommandBuffersAndPool();
 
             VkRenderPass getRenderPass() const;
+            VkCommandBuffer getCommandBuffer(std::size_t) const;
+
             std::span<OffscreenRender*> getOffscreenRenderDependencies() const;
             void configureWaitSemaphore(std::uint32_t, VkSubmitInfo2&, std::optional<VkSemaphoreSubmitInfo>) const;
 
@@ -85,19 +91,18 @@ namespace urchin {
             void updatePipelineProcessorData(uint32_t) const;
             void updateCommandBuffers(uint32_t, const std::vector<VkClearValue>&);
 
-            bool isInitialized;
-
-            std::shared_ptr<Texture> depthTexture;
-            std::vector<VkCommandBuffer> commandBuffers;
-
         private:
+            bool bIsInitialized;
+
             std::string name;
             DepthAttachmentType depthAttachmentType;
             std::shared_ptr<Texture> externalDepthTexture;
             VkRenderPass renderPass;
             std::size_t renderPassCompatibilityId;
-            std::vector<std::vector<VkFramebuffer>> framebuffers; //frameBuffers[frameIndex][layer]
+            std::shared_ptr<Texture> depthTexture;
+            std::vector<std::vector<VkFramebuffer>> framebuffers; //frameBuffers[frameIndex][layerIndex]
             VkCommandPool commandPool;
+            std::vector<VkCommandBuffer> commandBuffers;
 
             mutable std::vector<OffscreenRender*> offscreenRenderDependencies;
             mutable std::vector<VkSemaphoreSubmitInfo> queueSubmitWaitSemaphoreSubmitInfos;
