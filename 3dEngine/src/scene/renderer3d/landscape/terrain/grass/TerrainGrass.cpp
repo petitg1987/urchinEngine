@@ -115,7 +115,7 @@ namespace urchin {
                             float xValue = xFixedValue + distribution(generator);
                             float zValue = (startZ + (float)zIndex / grassQuantity) + distribution(generator);
                             unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
-                            float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
+                            float yValue = mesh->getVertices()[vertexIndex].Y + terrainPosition.Y;
 
                             //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
                             Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
