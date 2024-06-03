@@ -73,68 +73,69 @@ namespace urchin {
     }
 
     void TerrainGrass::generateGrass(const TerrainMesh* mesh, const Point3<float>& terrainPosition) {
-        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
-
-        if (mesh) {
-            this->mesh = mesh;
-            this->terrainPosition = terrainPosition;
-
-            unsigned int seed = 0; //no need to generate different random numbers at each start
-            std::default_random_engine generator(seed);
-            std::uniform_real_distribution<float> distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
-
-            float terrainSizeX = mesh->getXZScale() * (float)mesh->getXSize();
-            float terrainSizeZ = mesh->getXZScale() * (float)mesh->getZSize();
-            unsigned int parcelQuantityX = MathFunction::roundToUInt(terrainSizeX / grassParcelSize);
-            unsigned int parcelQuantityZ = MathFunction::roundToUInt(terrainSizeZ / grassParcelSize);
-            float parcelSizeX = terrainSizeX / (float)parcelQuantityX;
-            float parcelSizeZ = terrainSizeZ / (float)parcelQuantityZ;
-
-            unsigned int grassXQuantity = MathFunction::roundToUInt(terrainSizeX * grassQuantity);
-            unsigned int grassZQuantity = MathFunction::roundToUInt(terrainSizeZ * grassQuantity);
-
-            std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
-            leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
-            for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
-                leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
-            }
-
-            float startX = mesh->getVertices()[0].X;
-            float startZ = mesh->getVertices()[0].Z;
-
-            std::vector<std::jthread> threads(NUM_THREADS);
-            for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
-                unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
-                unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
-
-                threads[threadI] = std::jthread([&, beginX, endX]() {
-                    for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
-                        const float xFixedValue = startX + (float)xIndex / grassQuantity;
-
-                        for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
-                            float xValue = xFixedValue + distribution(generator);
-                            float zValue = (startZ + (float)zIndex / grassQuantity) + distribution(generator);
-                            unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
-                            float yValue = mesh->getVertices()[vertexIndex].Y + terrainPosition.Y;
-
-                            //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
-                            Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
-                            Point3 globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
-
-                            unsigned int parcelXIndex = std::min((unsigned int)((xValue - startX) / parcelSizeX), parcelQuantityX);
-                            unsigned int parcelZIndex = std::min((unsigned int)((zValue - startZ) / parcelSizeZ), parcelQuantityZ);
-                            unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
-
-                            leafGrassParcels[parcelIndex]->addVertex(globalGrassVertex, grassNormal);
-                        }
-                    }
-                });
-            }
-            std::ranges::for_each(threads, [](std::jthread& x){x.join();});
-
-            createRenderers(leafGrassParcels);
-            buildGrassQuadtree(std::move(leafGrassParcels), parcelQuantityX, parcelQuantityZ);
+        if (!mesh) {
+            return;
         }
+
+        this->mesh = mesh;
+        this->terrainPosition = terrainPosition;
+
+        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
+        unsigned int seed = 0; //no need to generate different random numbers at each start
+        std::default_random_engine generator(seed);
+        std::uniform_real_distribution<float> distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
+
+        float terrainSizeX = mesh->getXZScale() * (float)mesh->getXSize();
+        float terrainSizeZ = mesh->getXZScale() * (float)mesh->getZSize();
+        unsigned int parcelQuantityX = MathFunction::roundToUInt(terrainSizeX / grassParcelSize);
+        unsigned int parcelQuantityZ = MathFunction::roundToUInt(terrainSizeZ / grassParcelSize);
+        float parcelSizeX = terrainSizeX / (float)parcelQuantityX;
+        float parcelSizeZ = terrainSizeZ / (float)parcelQuantityZ;
+
+        unsigned int grassXQuantity = MathFunction::roundToUInt(terrainSizeX * grassQuantity);
+        unsigned int grassZQuantity = MathFunction::roundToUInt(terrainSizeZ * grassQuantity);
+
+        std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
+        leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
+        for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
+            leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
+        }
+
+        float startX = mesh->getVertices()[0].X;
+        float startZ = mesh->getVertices()[0].Z;
+
+        std::vector<std::jthread> threads(NUM_THREADS);
+        for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
+            unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
+            unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
+
+            threads[threadI] = std::jthread([&, beginX, endX]() {
+                for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
+                    const float xFixedValue = startX + (float)xIndex / grassQuantity;
+
+                    for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
+                        float xValue = xFixedValue + distribution(generator);
+                        float zValue = (startZ + (float)zIndex / grassQuantity) + distribution(generator);
+                        unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
+                        float yValue = mesh->getVertices()[vertexIndex].Y + terrainPosition.Y;
+
+                        //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
+                        Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
+                        Point3 globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
+
+                        unsigned int parcelXIndex = std::min((unsigned int)((xValue - startX) / parcelSizeX), parcelQuantityX);
+                        unsigned int parcelZIndex = std::min((unsigned int)((zValue - startZ) / parcelSizeZ), parcelQuantityZ);
+                        unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
+
+                        leafGrassParcels[parcelIndex]->addVertex(globalGrassVertex, grassNormal);
+                    }
+                }
+            });
+        }
+        std::ranges::for_each(threads, [](std::jthread& x){x.join();});
+
+        createRenderers(leafGrassParcels);
+        buildGrassQuadtree(std::move(leafGrassParcels), parcelQuantityX, parcelQuantityZ);
     }
 
     unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float>& localXzCoordinate) const {
