@@ -118,6 +118,9 @@ namespace urchin {
                             float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
 
                             Point3 globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
+
+                            //Use the same normal as terrain to have identical lighting.
+                            //Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
                             Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
                             unsigned int parcelXIndex = std::min((unsigned int)((xValue - startX) / parcelSizeX), parcelQuantityX);
