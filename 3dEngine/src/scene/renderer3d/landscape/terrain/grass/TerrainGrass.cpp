@@ -21,6 +21,8 @@ namespace urchin {
             terrainPositioningData({}),
             ambient(0.5f),
             mesh(nullptr),
+            grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)),
+            grassMaskTextureParam(TextureParam::buildLinear()),
             grassQuantity(0.0f) {
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
@@ -205,8 +207,8 @@ namespace urchin {
                         ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
                         ->addUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, sizeof(terrainPositioningData), &terrainPositioningData)
                         ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
-                        ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)))
-                        ->addUniformTextureReader(GRASS_TEX_MASK_UNIFORM_BINDING, TextureReader::build(grassMaskTexture, TextureParam::buildLinear()))
+                        ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
+                        ->addUniformTextureReader(GRASS_TEX_MASK_UNIFORM_BINDING, TextureReader::build(grassMaskTexture, grassMaskTextureParam))
                         ->build();
 
                 grassQuadtree->setRenderer(std::move(renderer));
@@ -250,6 +252,10 @@ namespace urchin {
             grassTexture = nullptr;
         } else {
             grassTexture = ResourceRetriever::instance().getResource<Texture>(this->grassTextureFilename, {{"mipMap", "1"}});
+
+            for (auto* renderer: getAllRenderers()) {
+                renderer->updateUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam));
+            }
         }
     }
 
@@ -269,6 +275,10 @@ namespace urchin {
             grassMaskTexture = Texture::build("default grass mask", 1, 1, TextureFormat::GRAYSCALE_8_INT, grassMaskColor.data(), TextureDataType::INT_8);
         } else {
             grassMaskTexture = ResourceRetriever::instance().getResource<Texture>(this->grassMaskFilename, {{"mipMap", "0"}});
+        }
+
+        for (auto* renderer: getAllRenderers()) {
+            renderer->updateUniformTextureReader(GRASS_TEX_MASK_UNIFORM_BINDING, TextureReader::build(grassMaskTexture, grassMaskTextureParam));
         }
     }
 

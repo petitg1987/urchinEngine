@@ -17,6 +17,19 @@ namespace urchin {
 
     }
 
+    TextureParam::TextureParam(const TextureParam& textureParam) :
+            isInitialized(false),
+            readMode(textureParam.readMode),
+            readQuality(textureParam.readQuality),
+            anisotropy(textureParam.anisotropy),
+            textureSampler(nullptr),
+            samplerCacheKey(0) {
+        if (textureParam.isInitialized) {
+            //limited copy constructor to avoid handling of TextureSamplerCache#SharedSampler#useCount
+            throw std::runtime_error("Unsupported operation: cannot copy an already initialized TextureParam");
+        }
+    }
+
     TextureParam::~TextureParam() {
         if (isInitialized) {
             Logger::instance().logWarning("Texture parameter not cleanup before destruction");

@@ -100,7 +100,9 @@ namespace urchin {
             Point3<float> terrainPosition;
 
             std::shared_ptr<Texture> grassTexture;
+            TextureParam grassTextureParam;
             std::shared_ptr<Texture> grassMaskTexture;
+            TextureParam grassMaskTextureParam;
             std::string grassTextureFilename;
             std::string grassMaskFilename;
             std::unique_ptr<TerrainGrassQuadtree> mainGrassQuadtree;
