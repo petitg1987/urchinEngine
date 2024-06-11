@@ -40,6 +40,15 @@ namespace urchin {
         return format;
     }
 
+    unsigned int Image::getComponentCount() const {
+        if (format == ImageFormat::IMAGE_RGBA) {
+            return 4;
+        } else if (format == ImageFormat::IMAGE_GRAYSCALE) {
+            return 1;
+        }
+        throw std::runtime_error("Unknown image format: " + std::to_string(format));
+    }
+
     Image::ChannelPrecision Image::getChannelPrecision() const {
         return channelPrecision;
     }

@@ -22,7 +22,6 @@ namespace urchin {
             ambient(0.5f),
             mesh(nullptr),
             grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)),
-            grassMaskTextureParam(TextureParam::buildLinear()),
             grassQuantity(0.0f) {
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
@@ -93,18 +92,19 @@ namespace urchin {
         unsigned int parcelQuantityZ = MathFunction::roundToUInt(terrainSizeZ / grassParcelSize);
         float parcelSizeX = terrainSizeX / (float)parcelQuantityX;
         float parcelSizeZ = terrainSizeZ / (float)parcelQuantityZ;
-
         unsigned int grassXQuantity = MathFunction::roundToUInt(terrainSizeX * grassQuantity);
         unsigned int grassZQuantity = MathFunction::roundToUInt(terrainSizeZ * grassQuantity);
+
+        std::shared_ptr<Image> grassMaskImage;
+        if (!grassMaskFilename.empty()) {
+            grassMaskImage = ResourceRetriever::instance().getResource<Image>(this->grassMaskFilename);
+        }
 
         std::vector<std::unique_ptr<TerrainGrassQuadtree>> leafGrassParcels;
         leafGrassParcels.reserve((std::size_t)parcelQuantityX * parcelQuantityZ);
         for (unsigned int i = 0; i < parcelQuantityX * parcelQuantityZ; ++i) {
             leafGrassParcels.push_back(std::make_unique<TerrainGrassQuadtree>());
         }
-
-        float startX = mesh->getVertices()[0].X;
-        float startZ = mesh->getVertices()[0].Z;
 
         std::vector<std::jthread> threads(NUM_THREADS);
         for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
@@ -113,20 +113,28 @@ namespace urchin {
 
             threads[threadI] = std::jthread([&, beginX, endX]() {
                 for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
-                    const float xFixedValue = startX + (float)xIndex / grassQuantity;
-
                     for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
-                        float xValue = xFixedValue + distribution(generator);
-                        float zValue = (startZ + (float)zIndex / grassQuantity) + distribution(generator);
-                        unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
-                        float yValue = mesh->getVertices()[vertexIndex].Y + terrainPosition.Y;
+                        float xValue = ((float)xIndex / grassQuantity) + distribution(generator);
+                        float zValue = ((float)zIndex / grassQuantity) + distribution(generator);
+                        if (xValue <= 0.0f || xValue >= terrainSizeX || zValue <= 0.0f || zValue >= terrainSizeZ) {
+                            continue;
+                        }
+
+                        if (discardGrass(grassMaskImage.get(), xValue, zValue, terrainSizeX, terrainSizeZ)) {
+                            continue;
+                        }
 
                         //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
+                        unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
                         Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
-                        Point3 globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
 
-                        unsigned int parcelXIndex = std::min((unsigned int)((xValue - startX) / parcelSizeX), parcelQuantityX);
-                        unsigned int parcelZIndex = std::min((unsigned int)((zValue - startZ) / parcelSizeZ), parcelQuantityZ);
+                        float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;
+                        float globalZValue = terrainPosition.Z + mesh->getVertices()[0].Z + zValue;
+                        float globalYValue = terrainPosition.Y + mesh->getVertices()[vertexIndex].Y;
+                        Point3 globalGrassVertex(globalXValue, globalYValue, globalZValue);
+
+                        unsigned int parcelXIndex = std::min((unsigned int)(xValue / parcelSizeX), parcelQuantityX);
+                        unsigned int parcelZIndex = std::min((unsigned int)(zValue / parcelSizeZ), parcelQuantityZ);
                         unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
 
                         leafGrassParcels[parcelIndex]->addVertex(globalGrassVertex, grassNormal);
@@ -140,15 +148,27 @@ namespace urchin {
         buildGrassQuadtree(std::move(leafGrassParcels), parcelQuantityX, parcelQuantityZ);
     }
 
-    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float>& localXzCoordinate) const {
-        Point3 localCoordinate(localXzCoordinate.X, 0.0f, localXzCoordinate.Y);
-        Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
+    bool TerrainGrass::discardGrass(const Image* grassMaskImage, float xValue, float zValue, float terrainSizeX, float terrainSizeZ) const {
+        if (grassMaskImage != nullptr) {
+            unsigned int texelX = MathFunction::roundToUInt((xValue / terrainSizeX) * (float)grassMaskImage->getWidth());
+            unsigned int texelY = MathFunction::roundToUInt((zValue / terrainSizeZ) * (float)grassMaskImage->getHeight());
+            unsigned int texelIndex = (texelY * grassMaskImage->getWidth() + texelX) * grassMaskImage->getComponentCount();
+            unsigned int adjustedTexelIndex = std::clamp(texelIndex, 0u, (unsigned int)grassMaskImage->getTexels().size());
 
+            unsigned char xImg = grassMaskImage->getTexels()[adjustedTexelIndex];
+            if (xImg > 127) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float>& localXzCoordinate) const {
         float xInterval = mesh->getVertices()[1].X - mesh->getVertices()[0].X;
-        unsigned int xIndex = std::clamp(MathFunction::roundToUInt(farLeftCoordinate.X / xInterval), 0u, mesh->getXSize() - 1);
+        unsigned int xIndex = std::clamp(MathFunction::roundToUInt(localXzCoordinate.X / xInterval), 0u, mesh->getXSize() - 1);
 
         float zInterval = mesh->getVertices()[mesh->getXSize()].Z - mesh->getVertices()[0].Z;
-        unsigned int zIndex = std::clamp(MathFunction::roundToUInt(farLeftCoordinate.Z / zInterval), 0u, mesh->getZSize() - 1);
+        unsigned int zIndex = std::clamp(MathFunction::roundToUInt(localXzCoordinate.Y / zInterval), 0u, mesh->getZSize() - 1);
 
         return xIndex + zIndex * mesh->getXSize();
     }
@@ -197,21 +217,22 @@ namespace urchin {
     void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) {
         if (grassTexture && renderTarget) {
             for (auto& grassQuadtree : leafGrassParcels) {
-                auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
-                        ->enableDepthTest()
-                        ->enableDepthWrite()
-                        ->disableCullFace()
-                        ->addData(grassQuadtree->getGrassVertices())
-                        ->addData(grassQuadtree->getGrassNormals())
-                        ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
-                        ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
-                        ->addUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, sizeof(terrainPositioningData), &terrainPositioningData)
-                        ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
-                        ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
-                        ->addUniformTextureReader(GRASS_TEX_MASK_UNIFORM_BINDING, TextureReader::build(grassMaskTexture, grassMaskTextureParam))
-                        ->build();
+                if (!grassQuadtree->getGrassVertices().empty()) {
+                    auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
+                            ->enableDepthTest()
+                            ->enableDepthWrite()
+                            ->disableCullFace()
+                            ->addData(grassQuadtree->getGrassVertices())
+                            ->addData(grassQuadtree->getGrassNormals())
+                            ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
+                            ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
+                            ->addUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, sizeof(terrainPositioningData), &terrainPositioningData)
+                            ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
+                            ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
+                            ->build();
 
-                grassQuadtree->setRenderer(std::move(renderer));
+                    grassQuadtree->setRenderer(std::move(renderer));
+                }
             }
         }
     }
@@ -270,16 +291,7 @@ namespace urchin {
             this->grassMaskFilename = FileSystem::instance().getResourcesDirectory() + std::move(grassMaskFilename);
         }
 
-        if (this->grassMaskFilename.empty()) {
-            std::vector<unsigned char> grassMaskColor({0});
-            grassMaskTexture = Texture::build("default grass mask", 1, 1, TextureFormat::GRAYSCALE_8_INT, grassMaskColor.data(), TextureDataType::INT_8);
-        } else {
-            grassMaskTexture = ResourceRetriever::instance().getResource<Texture>(this->grassMaskFilename, {{"mipMap", "0"}});
-        }
-
-        for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformTextureReader(GRASS_TEX_MASK_UNIFORM_BINDING, TextureReader::build(grassMaskTexture, grassMaskTextureParam));
-        }
+        generateGrass(mesh, terrainPosition);
     }
 
     float TerrainGrass::getGrassDisplayDistance() const {
@@ -384,8 +396,10 @@ namespace urchin {
 
                 if (grassQuadtreeBox && camera.getFrustum().cutFrustum(grassProperties.displayDistance).collideWithAABBox(*grassQuadtreeBox)) {
                     if (grassQuadtree->isLeaf()) {
-                        grassQuadtree->getRenderer()->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
-                        grassQuadtree->getRenderer()->enableRenderer(renderingOrder);
+                        if (grassQuadtree->getRenderer()) {
+                            grassQuadtree->getRenderer()->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
+                            grassQuadtree->getRenderer()->enableRenderer(renderingOrder);
+                        }
                     } else {
                         for (const auto& child : grassQuadtree->getChildren()) {
                             grassQuadtrees.push_back(child.get());

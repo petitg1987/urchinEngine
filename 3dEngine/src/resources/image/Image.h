@@ -27,6 +27,7 @@ namespace urchin {
             unsigned int getHeight() const;
             float getRatio() const;
             ImageFormat getImageFormat() const;
+            unsigned int getComponentCount() const;
             ChannelPrecision getChannelPrecision() const;
             const std::vector<unsigned char>& getTexels() const;
             const std::vector<uint16_t>& getTexels16Bits() const;

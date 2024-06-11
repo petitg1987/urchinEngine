@@ -30,15 +30,16 @@ namespace urchin {
                     bbox = std::make_unique<AABBox<float>>(grassVertices);
                 }
             } else {
-                const auto* localBboxPtr = children[0]->getBox();
-                if (localBboxPtr) {
-                    AABBox<float> localBbox = *localBboxPtr;
-                    for (std::size_t i = 1; i < children.size(); ++i) {
-                        localBbox = localBbox.merge(*children[i]->getBox());
+                bbox = std::unique_ptr<AABBox<float>>(nullptr);
+                for (const auto& child : children) {
+                    const AABBox<float>* childBox = child->getBox();
+                    if (childBox) {
+                        if (bbox) {
+                            *bbox = bbox->merge(*childBox);
+                        } else {
+                            bbox = std::make_unique<AABBox<float>>(*childBox);
+                        }
                     }
-                    bbox = std::make_unique<AABBox<float>>(localBbox);
-                } else {
-                    bbox = std::unique_ptr<AABBox<float>>(nullptr);
                 }
             }
         }

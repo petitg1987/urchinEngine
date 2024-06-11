@@ -52,6 +52,7 @@ namespace urchin {
 
         private:
             void generateGrass(const TerrainMesh*, const Point3<float>&);
+            bool discardGrass(const Image*, float, float, float, float) const;
             unsigned int retrieveVertexIndex(const Point2<float>&) const;
             void buildGrassQuadtree(std::vector<std::unique_ptr<TerrainGrassQuadtree>>, unsigned int, unsigned int);
             void createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>&);
@@ -67,7 +68,6 @@ namespace urchin {
             static constexpr uint32_t TERRAIN_POSITIONING_DATA_UNIFORM_BINDING = 2;
             static constexpr uint32_t AMBIENT_UNIFORM_BINDING = 3;
             static constexpr uint32_t GRASS_TEX_UNIFORM_BINDING = 4;
-            static constexpr uint32_t GRASS_TEX_MASK_UNIFORM_BINDING = 5;
 
             const float grassParcelSize;
             const unsigned int grassQuadtreeDepth;
@@ -101,8 +101,6 @@ namespace urchin {
 
             std::shared_ptr<Texture> grassTexture;
             TextureParam grassTextureParam;
-            std::shared_ptr<Texture> grassMaskTexture;
-            TextureParam grassMaskTextureParam;
             std::string grassTextureFilename;
             std::string grassMaskFilename;
             std::unique_ptr<TerrainGrassQuadtree> mainGrassQuadtree;

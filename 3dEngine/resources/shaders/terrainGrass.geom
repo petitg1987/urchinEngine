@@ -18,7 +18,6 @@ layout(std140, set = 0, binding = 2) uniform TerrainPositioningData {
     vec3 minPoint;
     vec3 maxPoint;
 } terrainPositioningData;
-layout(binding = 5) uniform sampler2D grassMaskTex;
 
 layout(points) in;
 layout(triangle_strip, max_vertices = 12) out;
@@ -56,19 +55,12 @@ int randomInt(int min, int max, vec3 seed) {
 void main() {
     vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
 
-    float s = (grassCenterPosition.x - terrainPositioningData.minPoint.x) / (terrainPositioningData.maxPoint.x - terrainPositioningData.minPoint.x);
-    float t = (grassCenterPosition.z - terrainPositioningData.minPoint.z) / (terrainPositioningData.maxPoint.z - terrainPositioningData.minPoint.z);
-    vec4 grassMask = texture(grassMaskTex, vec2(s, t));
-    if (grassMask.x > 0.5) {
-        return;
-    }
-
     float grassYShift = 0.0;
     float grassCameraDistance = distance(grassCenterPosition, positioningData.cameraPosition);
     float startReduceHeightDistance = grassProperties.displayDistance * 0.9;
     if (grassCameraDistance > grassProperties.displayDistance) {
         return;
-    }else if (grassCameraDistance > startReduceHeightDistance) {
+    } else if (grassCameraDistance > startReduceHeightDistance) {
         float grassHeightReducePercentage = (grassCameraDistance - startReduceHeightDistance) / (grassProperties.displayDistance - startReduceHeightDistance);
         grassYShift = - grassHeightReducePercentage * grassProperties.height;
     }
@@ -82,7 +74,7 @@ void main() {
     float windPower = 0.5 + sin(grassCenterPosition.x / 30.0 + grassCenterPosition.z / 30.0 + positioningData.sumTimeStep * (1.2 + grassProperties.windStrength / 20.0));
     if (windPower > 0.0) {
         windPower = windPower * 0.3;
-    }else{
+    } else {
         windPower = windPower * 0.2;
     }
     windPower *= grassProperties.windStrength;
