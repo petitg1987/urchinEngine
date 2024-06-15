@@ -89,10 +89,10 @@ namespace urchin {
 
             if (displayMode == DisplayMode::DEFAULT_MODE || displayMode == DisplayMode::DEFAULT_NO_INSTANCING_MODE) {
                 instanceMatrices.emplace_back(InstanceMatrix{.modelMatrix = Matrix4<float>(), .normalMatrix = Matrix4<float>()});
-                meshRendererBuilder->instanceData(instanceMatrices.size(), VariableType::TWO_MAT4, (const float*)instanceMatrices.data());
+                meshRendererBuilder->instanceData(instanceMatrices.size(), {VariableType::MAT4_FLOAT, VariableType::MAT4_FLOAT}, (const float*)instanceMatrices.data());
             } else if (displayMode == DisplayMode::DEPTH_ONLY_MODE) {
                 instanceModelMatrices.emplace_back();
-                meshRendererBuilder->instanceData(instanceModelMatrices.size(), VariableType::MAT4, (const float*)instanceModelMatrices.data());
+                meshRendererBuilder->instanceData(instanceModelMatrices.size(), {VariableType::MAT4_FLOAT}, (const float*)instanceModelMatrices.data());
             }
 
             if (customShaderVariable) {

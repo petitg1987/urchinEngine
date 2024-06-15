@@ -41,19 +41,22 @@ namespace urchin {
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point2<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        data.emplace_back(DataType::FLOAT, VariableType::VEC2, dataPtr.size(), dataPtr.data());
+        std::vector<VariableType> variableTypes = {VariableType::VEC2_FLOAT};
+        data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point3<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        data.emplace_back(DataType::FLOAT, VariableType::VEC3, dataPtr.size(), dataPtr.data());
+        std::vector<VariableType> variableTypes = {VariableType::VEC3_FLOAT};
+        data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Vector3<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        data.emplace_back(DataType::FLOAT, VariableType::VEC3, dataPtr.size(), dataPtr.data());
+        std::vector<VariableType> variableTypes = {VariableType::VEC3_FLOAT};
+        data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
@@ -61,8 +64,8 @@ namespace urchin {
         return data;
     }
 
-    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::instanceData(std::size_t instanceCount, VariableType variableType, const float* dataPtr) {
-        mInstanceData = std::make_shared<DataContainer>(DataType::FLOAT, variableType, instanceCount, dataPtr);
+    std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::instanceData(std::size_t instanceCount, std::vector<VariableType> variableTypes, const float* dataPtr) {
+        mInstanceData = std::make_shared<DataContainer>(std::move(variableTypes), instanceCount, dataPtr);
         return shared_from_this();
     }
 

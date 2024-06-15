@@ -129,17 +129,17 @@ namespace urchin {
     std::size_t PipelineBuilder::computePipelineHash() const {
         std::size_t hash = 0;
 
-        unsigned int repeatCount;
+        //unsigned int repeatCount;
         if (data) {
             HashUtil::combine(hash, data->size());
-            for (const DataContainer& singleData: *data) {
-                HashUtil::combine(hash, getVulkanFormat(singleData, repeatCount));
-                HashUtil::combine(hash, repeatCount);
-            }
+            //for (const DataContainer& singleData: *data) {
+                //TODO HashUtil::combine(hash, getVulkanFormat(singleData, repeatCount));
+                //HashUtil::combine(hash, repeatCount);
+            //}
         }
         if (instanceData) {
-            HashUtil::combine(hash, getVulkanFormat(*instanceData, repeatCount));
-            HashUtil::combine(hash, repeatCount);
+            //TODO HashUtil::combine(hash, getVulkanFormat(*instanceData, repeatCount));
+            //HashUtil::combine(hash, repeatCount);
         }
 
         for (const BlendFunction& bf : blendFunctions) {
@@ -223,20 +223,25 @@ namespace urchin {
         for (const auto& singleData : *data) {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
-            bindingDescription.stride = (uint32_t)singleData.getDataSize();
+            bindingDescription.stride = (uint32_t)singleData.getVariablesSize();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
             bindingDescriptions.emplace_back(bindingDescription);
 
-            unsigned int repeatCount = 0;
-            VkFormat attributeFormat = getVulkanFormat(singleData, repeatCount);
-            for (unsigned int i = 0; i < repeatCount; ++i) {
-                VkVertexInputAttributeDescription attributeDescription{};
-                attributeDescription.binding = binding;
-                attributeDescription.location = shaderLocation;
-                attributeDescription.format = attributeFormat;
-                attributeDescription.offset = (uint32_t)(i * (singleData.getDataSize() / repeatCount));
-                attributeDescriptions.emplace_back(attributeDescription);
-                shaderLocation++;
+            unsigned int offset = 0;
+            for (VariableType variableType : singleData.getVariableTypes()) {
+                unsigned int repeatCount = 0;
+                VkFormat attributeFormat = getVulkanFormat(variableType, repeatCount);
+                for (unsigned int i = 0; i < repeatCount; ++i) {
+                    VkVertexInputAttributeDescription attributeDescription{};
+                    attributeDescription.binding = binding;
+                    attributeDescription.location = shaderLocation;
+                    attributeDescription.format = attributeFormat;
+                    attributeDescription.offset = (uint32_t)offset;
+                    attributeDescriptions.emplace_back(attributeDescription);
+
+                    offset += singleData.getVariableSize(variableType) / repeatCount;
+                    shaderLocation++;
+                }
             }
             binding++;
         }
@@ -244,20 +249,25 @@ namespace urchin {
         if (instanceData) {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
-            bindingDescription.stride = (uint32_t)instanceData->getDataSize();
+            bindingDescription.stride = (uint32_t)instanceData->getVariablesSize();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
             bindingDescriptions.emplace_back(bindingDescription);
 
-            unsigned int repeatCount = 0;
-            VkFormat attributeFormat = getVulkanFormat(*instanceData, repeatCount);
-            for (unsigned int i = 0; i < repeatCount; ++i) {
-                VkVertexInputAttributeDescription attributeDescription{};
-                attributeDescription.binding = binding;
-                attributeDescription.location = shaderLocation;
-                attributeDescription.format = attributeFormat;
-                attributeDescription.offset = (uint32_t)(i * (instanceData->getDataSize() / repeatCount));
-                attributeDescriptions.emplace_back(attributeDescription);
-                shaderLocation++;
+            unsigned int offset = 0;
+            for (VariableType variableType : instanceData->getVariableTypes()) {
+                unsigned int repeatCount = 0;
+                VkFormat attributeFormat = getVulkanFormat(variableType, repeatCount);
+                for (unsigned int i = 0; i < repeatCount; ++i) {
+                    VkVertexInputAttributeDescription attributeDescription{};
+                    attributeDescription.binding = binding;
+                    attributeDescription.location = shaderLocation;
+                    attributeDescription.format = attributeFormat;
+                    attributeDescription.offset = (uint32_t)offset;
+                    attributeDescriptions.emplace_back(attributeDescription);
+
+                    offset += instanceData->getVariableSize(variableType) / repeatCount;
+                    shaderLocation++;
+                }
             }
         }
 
@@ -438,27 +448,21 @@ namespace urchin {
     /**
      * @param repeatCount [out] Number of data repetition
      */
-    VkFormat PipelineBuilder::getVulkanFormat(const DataContainer& dataContainer, unsigned int& repeatCount) const {
-        if (dataContainer.getDataType() == DataType::FLOAT) {
-            if (dataContainer.getVariableType() == VariableType::FLOAT) {
-                repeatCount = 1;
-                return VK_FORMAT_R32_SFLOAT;
-            } else if (dataContainer.getVariableType() == VariableType::VEC2) {
-                repeatCount = 1;
-                return VK_FORMAT_R32G32_SFLOAT;
-            } else if (dataContainer.getVariableType() == VariableType::VEC3) {
-                repeatCount = 1;
-                return VK_FORMAT_R32G32B32_SFLOAT;
-            } else if (dataContainer.getVariableType() == VariableType::MAT4) {
-                repeatCount = 4;
-                return VK_FORMAT_R32G32B32A32_SFLOAT;
-            } else if (dataContainer.getVariableType() == VariableType::TWO_MAT4) {
-                repeatCount = 8;
-                return VK_FORMAT_R32G32B32A32_SFLOAT;
-            }
-            throw std::runtime_error("Unknown variable type: " + std::to_string((int)dataContainer.getVariableType()));
+    VkFormat PipelineBuilder::getVulkanFormat(VariableType variableType, unsigned int& repeatCount) const {
+        if (variableType == VariableType::FLOAT) {
+            repeatCount = 1;
+            return VK_FORMAT_R32_SFLOAT;
+        } else if (variableType == VariableType::VEC2_FLOAT) {
+            repeatCount = 1;
+            return VK_FORMAT_R32G32_SFLOAT;
+        } else if (variableType == VariableType::VEC3_FLOAT) {
+            repeatCount = 1;
+            return VK_FORMAT_R32G32B32_SFLOAT;
+        } else if (variableType == VariableType::MAT4_FLOAT) {
+            repeatCount = 4;
+            return VK_FORMAT_R32G32B32A32_SFLOAT;
         }
-        throw std::runtime_error("Unknown data type: " + std::to_string((int)dataContainer.getDataType()));
+        throw std::runtime_error("Unknown variable type: " + std::to_string((int)variableType));
     }
 
     VkBlendFactor PipelineBuilder::toVkBlenderFactor(BlendFactor blendFactor) const {

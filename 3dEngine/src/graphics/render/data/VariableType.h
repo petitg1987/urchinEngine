@@ -4,10 +4,9 @@ namespace urchin {
 
     enum class VariableType {
         FLOAT,
-        VEC2,
-        VEC3,
-        MAT4,
-        TWO_MAT4
+        VEC2_FLOAT,
+        VEC3_FLOAT,
+        MAT4_FLOAT
     };
 
 }

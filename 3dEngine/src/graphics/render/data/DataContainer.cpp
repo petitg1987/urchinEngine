@@ -1,14 +1,14 @@
 #include <stdexcept>
 #include <cstring>
 #include <algorithm>
+#include <utility>
 
 #include <graphics/render/data/DataContainer.h>
 
 namespace urchin {
 
-    DataContainer::DataContainer(DataType dataType, VariableType variableType, std::size_t dataCount, const void* ptr) :
-            dataType(dataType),
-            variableType(variableType),
+    DataContainer::DataContainer(std::vector<VariableType> variableTypes, std::size_t dataCount, const void* ptr) :
+            variableTypes(std::move(variableTypes)),
             dataCount(dataCount),
             bHasNewData({}) {
         this->ptr = ::operator new(getBufferSize());
@@ -18,8 +18,7 @@ namespace urchin {
     }
 
     DataContainer::DataContainer(const DataContainer& src) :
-            dataType(src.dataType),
-            variableType(src.variableType),
+            variableTypes(src.variableTypes),
             dataCount(src.dataCount),
             bHasNewData(src.bHasNewData) {
         this->ptr = ::operator new(getBufferSize());
@@ -27,8 +26,7 @@ namespace urchin {
     }
 
     DataContainer::DataContainer(DataContainer&& src) noexcept :
-            dataType(src.dataType),
-            variableType(src.variableType),
+            variableTypes(std::move(src.variableTypes)),
             dataCount(src.dataCount),
             ptr(src.ptr),
             bHasNewData(src.bHasNewData) {
@@ -58,12 +56,29 @@ namespace urchin {
         return ptr;
     }
 
-    VariableType DataContainer::getVariableType() const {
-        return variableType;
+    const std::vector<VariableType>& DataContainer::getVariableTypes() const {
+        return variableTypes;
     }
 
-    DataType DataContainer::getDataType() const {
-        return dataType;
+    unsigned int DataContainer::getVariableSize(VariableType variableType) const {
+        if (variableType == VariableType::FLOAT) {
+            return 1 * sizeof(float);
+        } else if (variableType == VariableType::VEC2_FLOAT) {
+            return 2 * sizeof(float);
+        } else if (variableType == VariableType::VEC3_FLOAT) {
+            return 3 * sizeof(float);
+        } else if (variableType == VariableType::MAT4_FLOAT) {
+            return 16 * sizeof(float);
+        }
+        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)variableType));
+    }
+
+    unsigned int DataContainer::getVariablesSize() const {
+        unsigned int variablesSize = 0;
+        for(VariableType variableType : variableTypes) {
+            variablesSize += getVariableSize(variableType);
+        }
+        return variablesSize;
     }
 
     /**
@@ -74,39 +89,10 @@ namespace urchin {
     }
 
     /**
-     * @return Memory size of one data (= vector/point)
-     */
-    std::size_t DataContainer::getDataSize() const {
-        return getTypeSize() * getVariableSize();
-    }
-
-    /**
      * @return Memory size of all the data (= vector/point)
      */
     std::size_t DataContainer::getBufferSize() const {
-        return getTypeSize() * getVariableSize() * dataCount;
-    }
-
-    unsigned int DataContainer::getTypeSize() const {
-        if (dataType == DataType::FLOAT) {
-            return sizeof(float);
-        }
-        throw std::runtime_error("Unknown data type: " + std::to_string((int)dataType));
-    }
-
-    unsigned int DataContainer::getVariableSize() const {
-        if (variableType == VariableType::FLOAT) {
-            return 1;
-        } else if (variableType == VariableType::VEC2) {
-            return 2;
-        } else if (variableType == VariableType::VEC3) {
-            return 3;
-        } else if (variableType == VariableType::MAT4) {
-            return 16;
-        } else if (variableType == VariableType::TWO_MAT4) {
-            return 32;
-        }
-        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)variableType));
+        return getVariablesSize() * dataCount;
     }
 
     bool DataContainer::hasNewData(uint32_t frameIndex) const {

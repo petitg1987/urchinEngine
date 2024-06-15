@@ -70,7 +70,7 @@ namespace urchin {
         rendererBuilder->addData(coordinates);
 
         instanceModelMatrices.emplace_back();
-        rendererBuilder->instanceData(instanceModelMatrices.size(), VariableType::MAT4, (const float*)instanceModelMatrices.data());
+        rendererBuilder->instanceData(instanceModelMatrices.size(), {VariableType::MAT4_FLOAT}, (const float*)instanceModelMatrices.data());
 
         std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
         if (scissor.has_value()) {

@@ -3,14 +3,13 @@
 #include <cstdlib>
 #include <array>
 
-#include <graphics/render/data/DataType.h>
 #include <graphics/render/data/VariableType.h>
 
 namespace urchin {
 
     class DataContainer {
         public:
-            DataContainer(DataType, VariableType, std::size_t, const void*);
+            DataContainer(std::vector<VariableType>, std::size_t, const void*);
             DataContainer(const DataContainer&);
             DataContainer& operator=(const DataContainer&) = delete;
             DataContainer(DataContainer&&) noexcept;
@@ -20,10 +19,10 @@ namespace urchin {
             void replaceData(std::size_t, const void*);
 
             const void* getData() const;
-            VariableType getVariableType() const;
-            DataType getDataType() const;
+            const std::vector<VariableType>& getVariableTypes() const;
+            unsigned int getVariableSize(VariableType) const;
+            unsigned int getVariablesSize() const;
             std::size_t getDataCount() const;
-            std::size_t getDataSize() const;
             std::size_t getBufferSize() const;
 
             bool hasNewData(uint32_t) const;
@@ -31,12 +30,10 @@ namespace urchin {
             void markDataAsProcessed();
 
         private:
-            unsigned int getTypeSize() const;
-            unsigned int getVariableSize() const;
+
             void markDataAsNew();
 
-            DataType dataType;
-            VariableType variableType;
+            std::vector<VariableType> variableTypes;
             std::size_t dataCount;
             void* ptr;
 

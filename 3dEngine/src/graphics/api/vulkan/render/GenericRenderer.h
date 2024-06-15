@@ -6,7 +6,6 @@
 
 #include <graphics/render/shader/ShaderDataContainer.h>
 #include <graphics/render/data/ShapeType.h>
-#include <graphics/render/data/DataType.h>
 #include <graphics/render/data/VariableType.h>
 #include <graphics/render/data/PolygonMode.h>
 #include <graphics/render/data/DataContainer.h>

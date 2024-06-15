@@ -43,7 +43,7 @@ namespace urchin {
             bool isShapeTypeListTopology() const;
             void createComputePipeline(const std::shared_ptr<Pipeline>&) const;
 
-            VkFormat getVulkanFormat(const DataContainer&, unsigned int&) const;
+            VkFormat getVulkanFormat(VariableType, unsigned int&) const;
             VkBlendFactor toVkBlenderFactor(BlendFactor) const;
 
             PipelineType pipelineType;
