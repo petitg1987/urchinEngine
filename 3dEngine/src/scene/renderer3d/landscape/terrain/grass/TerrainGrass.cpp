@@ -222,6 +222,10 @@ namespace urchin {
             std::vector<Point2<float>> grassUv;
             grassUv.reserve(directions.size() * 6);
 
+            unsigned int seed = 0; //no need to generate different random numbers at each start
+            std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)grassProperties.numGrassInTex - 1);
+            std::default_random_engine generator(seed);
+
             for (const Vector3<float>& direction : directions) {
                 Point3<float> topLeft = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(-direction * grassHalfLength);
                 Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfLength);
@@ -235,12 +239,15 @@ namespace urchin {
                 grassVertex.push_back(topRight);
                 grassVertex.push_back(bottomRight);
 
-                grassUv.emplace_back(0.0f, 0.0f);
-                grassUv.emplace_back(1.0f, 0.0f);
-                grassUv.emplace_back(0.0f, 1.0f);
-                grassUv.emplace_back(0.0f, 1.0f);
-                grassUv.emplace_back(1.0f, 0.0f);
-                grassUv.emplace_back(1.0f, 1.0f);
+                float startTexX = (float)randomInts(generator) * (1.0f / (float)grassProperties.numGrassInTex);
+                float endTexX = startTexX + (1.0f / (float)grassProperties.numGrassInTex);
+
+                grassUv.emplace_back(startTexX, 0.0f);
+                grassUv.emplace_back(endTexX, 0.0f);
+                grassUv.emplace_back(startTexX, 1.0f);
+                grassUv.emplace_back(startTexX, 1.0f);
+                grassUv.emplace_back(endTexX, 0.0f);
+                grassUv.emplace_back(endTexX, 1.0f);
             }
 
             for (auto& grassQuadtree : leafGrassParcels) {
@@ -362,7 +369,7 @@ namespace urchin {
         return (unsigned int)grassProperties.numGrassInTex;
     }
 
-    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
+    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) { //TODO refresh rendered (+check other props)
         grassProperties.numGrassInTex = (int)numGrassInTex;
 
         for (auto* renderer: getAllRenderers()) {
