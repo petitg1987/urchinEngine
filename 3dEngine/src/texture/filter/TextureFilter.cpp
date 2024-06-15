@@ -48,7 +48,7 @@ namespace urchin {
             textureFilterShader = ShaderBuilder::createNullShader();
         } else {
             if (textureType == TextureType::DEFAULT) {
-                textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", "", getShaderName() + ".frag.spv", std::move(shaderConstants));
+                textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
             } else {
                 throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
             }

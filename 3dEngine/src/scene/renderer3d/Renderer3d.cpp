@@ -70,7 +70,7 @@ namespace urchin {
         this->camera->initialize(sceneWidth, sceneHeight);
 
         //deferred passes
-        modelSetDisplayer.setupShader("model.vert.spv", "", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
+        modelSetDisplayer.setupShader("model.vert.spv", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
@@ -434,7 +434,7 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &deferredSecondPassConstData);
 
         if (deferredSecondPassRenderTarget->isValidRenderTarget()) {
-            deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "", "deferredSecondPass.frag.spv", std::move(shaderConstants));
+            deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "deferredSecondPass.frag.spv", std::move(shaderConstants));
         } else {
             deferredSecondPassShader = ShaderBuilder::createNullShader();
         }

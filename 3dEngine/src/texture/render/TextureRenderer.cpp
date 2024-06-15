@@ -193,7 +193,7 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &trConstData);
 
         std::string fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag.spv" : "displayTextureArray.frag.spv";
-        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", "", fragShaderName, std::move(shaderConstants));
+        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", fragShaderName, std::move(shaderConstants));
     }
 
     void TextureRenderer::prepareRendering(unsigned int renderingOrder) const {

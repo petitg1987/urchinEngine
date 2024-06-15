@@ -14,7 +14,7 @@ namespace urchin {
             materials(std::move(materials)),
             grass(TerrainGrass("")),
             ambient(0.0f) {
-        terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "", "terrain.frag.spv");
+        terrainShader = ShaderBuilder::createShader("terrain.vert.spv", "terrain.frag.spv");
 
         setPosition(position);
         setAmbient(0.3f);

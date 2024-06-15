@@ -31,7 +31,7 @@ namespace urchin {
         if (renderTarget.isValidRenderTarget()) {
             assert(!vertexShaderName.empty());
             assert(!fragmentShaderName.empty());
-            modelShader = ShaderBuilder::createShader(vertexShaderName, geometryShaderName, fragmentShaderName, std::move(shaderConstants));
+            modelShader = ShaderBuilder::createShader(vertexShaderName, fragmentShaderName, std::move(shaderConstants));
         } else {
             modelShader = ShaderBuilder::createNullShader();
         }
@@ -39,13 +39,12 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void ModelSetDisplayer::setupShader(std::string vertexShaderName, std::string geometryShaderName, std::string fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
+    void ModelSetDisplayer::setupShader(std::string vertexShaderName, std::string fragmentShaderName, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (isInitialized) {
             throw std::runtime_error("Impossible to set custom shader once the model displayer initialized.");
         }
 
         this->vertexShaderName = std::move(vertexShaderName);
-        this->geometryShaderName = std::move(geometryShaderName);
         this->fragmentShaderName = std::move(fragmentShaderName);
         this->shaderConstants = std::move(shaderConstants);
     }

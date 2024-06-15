@@ -16,7 +16,7 @@ namespace urchin {
             tRepeat(0.0f),
             density(0.0f),
             gradient(0.0f) {
-        waterShader = ShaderBuilder::createShader("water.vert.spv", "", "water.frag.spv");
+        waterShader = ShaderBuilder::createShader("water.vert.spv", "water.frag.spv");
 
         //general properties
         setCenterPosition(Point3<float>(0.0f, 0.0f, 0.0f));

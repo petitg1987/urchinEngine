@@ -24,7 +24,7 @@ namespace urchin {
             bCanInteractWithUi(true),
             widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)) {
         if (renderTarget.isValidRenderTarget()) {
-            uiShader = ShaderBuilder::createShader("ui.vert.spv", "", "ui.frag.spv");
+            uiShader = ShaderBuilder::createShader("ui.vert.spv", "ui.frag.spv");
         } else {
             uiShader = ShaderBuilder::createNullShader();
         }
@@ -70,7 +70,7 @@ namespace urchin {
         if (renderTarget.isValidRenderTarget()) {
             std::vector<std::size_t> variablesSize = {sizeof(ambient)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
-            this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "", "ui3d.frag.spv", std::move(shaderConstants));
+            this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "ui3d.frag.spv", std::move(shaderConstants));
         }
 
         onResize((unsigned int)uiResolution.X, (unsigned int)uiResolution.Y);

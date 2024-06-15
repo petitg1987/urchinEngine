@@ -187,7 +187,7 @@ namespace urchin {
 
     std::unique_ptr<Shader> BloomEffectApplier::createShader(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
         if (outputRenderTarget.isValidRenderTarget()) {
-            return ShaderBuilder::createShader(vertexShaderFilename, "", fragmentShaderFilename, std::move(shaderConstants));
+            return ShaderBuilder::createShader(vertexShaderFilename, fragmentShaderFilename, std::move(shaderConstants));
         } else {
             return ShaderBuilder::createNullShader();
         }

@@ -26,7 +26,7 @@ namespace urchin {
             return;
         }
 
-        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "", "displayGeometry.frag.spv");
+        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv");
         std::shared_ptr<GenericRendererBuilder> rendererBuilder;
 
         std::vector<uint32_t> indices;

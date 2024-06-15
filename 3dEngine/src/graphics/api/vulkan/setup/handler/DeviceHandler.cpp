@@ -31,7 +31,6 @@ namespace urchin {
             logicalDevice(nullptr) {
         //List of features and extensions required to run the engine (support percentage: https://vulkan.gpuinfo.org/listfeaturescore10.php / https://vulkan.gpuinfo.org/listfeaturescore12.php / https://vulkan.gpuinfo.org/listfeaturescore13.php):
         physicalDeviceRequiredFeatures = {
-                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, geometryShader), .featureDescription = "geometry shader"}, //83.41%
                 PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, independentBlend), .featureDescription = "independent blend"}, //99.44%
                 PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), .featureDescription = "anisotropy"} //91.34%
         };

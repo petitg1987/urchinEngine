@@ -32,7 +32,6 @@
   * **NEW FEATURE** (`minor`): Implement scalable ambient obscurance
 * Landscape
   * **OPTIMIZATION** (`medium`): Terrain class should have methods for LOD (usable for physics and AI)
-  * **NEW FEATURE** (`medium`): Replace grass geometry shader by instantiation
   * **NEW FEATURE** (`minor`): Use material textures (normal map...) for terrain
   * **NEW FEATURE** (`minor`): Add auto shadow on terrain
 * UI
