@@ -6,6 +6,14 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
     vec3 cameraPosition;
     float sumTimeStep;
 } positioningData;
+layout(std140, set = 0, binding = 1) uniform GrassProperties {
+    float displayDistance;
+    float height;
+    float grassLength;
+    int numGrassInTex;
+    float windStrength;
+    vec3 windDirection;
+} grassProperties;
 
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec2 texCoord;
@@ -22,5 +30,19 @@ void main() {
     normal = grassNormal;
     texCoordinates = texCoord;
 
-    gl_Position = positioningData.mProjectionView * vec4(grassPosition + vertexPosition, 1.0);
+    vec3 grassGlobalPosition = grassPosition + vertexPosition;
+
+    if (texCoordinates.y < 0.5) { //top of the grass
+        float windPower = 0.5 + sin(grassGlobalPosition.x / 30.0 + grassGlobalPosition.z / 30.0 + positioningData.sumTimeStep * (1.2 + grassProperties.windStrength / 20.0));
+        if (windPower > 0.0) {
+            windPower = windPower * 0.3;
+        } else {
+            windPower = windPower * 0.2;
+        }
+        windPower *= grassProperties.windStrength;
+
+        grassGlobalPosition += grassProperties.windDirection * windPower;
+    }
+
+    gl_Position = positioningData.mProjectionView * vec4(grassGlobalPosition, 1.0);
 }

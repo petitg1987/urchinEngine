@@ -3,10 +3,10 @@
 
 layout(constant_id = 0) const float GRASS_ALPHA_TEST = 0.0;
 
-layout(std140, set = 0, binding = 3) uniform Lighting {
+layout(std140, set = 0, binding = 2) uniform Lighting {
     float ambient;
 } lighting;
-layout(binding = 4) uniform sampler2D grassTex;
+layout(binding = 3) uniform sampler2D grassTex;
 
 layout(location = 0) in vec3 normal;
 layout(location = 1) in vec2 texCoordinates;

@@ -65,9 +65,8 @@ namespace urchin {
 
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 0;
             static constexpr uint32_t GRASS_PROPS_UNIFORM_BINDING = 1;
-            static constexpr uint32_t TERRAIN_POSITIONING_DATA_UNIFORM_BINDING = 2;
-            static constexpr uint32_t AMBIENT_UNIFORM_BINDING = 3;
-            static constexpr uint32_t GRASS_TEX_UNIFORM_BINDING = 4;
+            static constexpr uint32_t AMBIENT_UNIFORM_BINDING = 2;
+            static constexpr uint32_t GRASS_TEX_UNIFORM_BINDING = 3;
 
             const float grassParcelSize;
             const unsigned int grassQuadtreeDepth;
@@ -89,10 +88,6 @@ namespace urchin {
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;
             } grassProperties;
-            struct {
-                alignas(16) Point3<float> minPoint;
-                alignas(16) Point3<float> maxPoint;
-            } terrainPositioningData;
             Matrix4<float> projectionMatrix;
             float ambient;
 

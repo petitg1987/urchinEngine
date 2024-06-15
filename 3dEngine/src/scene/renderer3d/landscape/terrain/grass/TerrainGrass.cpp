@@ -18,7 +18,6 @@ namespace urchin {
             renderTarget(nullptr),
             positioningData({}),
             grassProperties({}),
-            terrainPositioningData({}),
             ambient(0.5f),
             mesh(nullptr),
             grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)),
@@ -55,13 +54,6 @@ namespace urchin {
         assert(bIsInitialized);
         assert(mesh);
         generateGrass(mesh, terrainPosition);
-
-        terrainPositioningData.minPoint = mesh->getVertices()[0];
-        terrainPositioningData.maxPoint = mesh->getVertices()[mesh->getXSize() * mesh->getZSize() - 1];
-
-        for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, &terrainPositioningData);
-        }
     }
 
     void TerrainGrass::refreshWith(float ambient) {
@@ -261,8 +253,7 @@ namespace urchin {
                             ->addData(grassUv)
                             ->instanceData(grassQuadtree->getGrassInstanceData().size(), {VariableType::VEC3_FLOAT, VariableType::VEC3_FLOAT}, (const float *)grassQuadtree->getGrassInstanceData().data())
                             ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
-                            ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
-                            ->addUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, sizeof(terrainPositioningData), &terrainPositioningData)
+                            ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties) //TODO remove unused data
                             ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
                             ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
                             ->build();
