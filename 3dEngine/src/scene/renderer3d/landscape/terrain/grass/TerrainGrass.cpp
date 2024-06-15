@@ -211,27 +211,27 @@ namespace urchin {
 
 //TODO extract in method
             float grassHalfLength = grassProperties.length / 2.0f;
-            float piOver180 = MathValue::PI_FLOAT / 180.0f;
-            std::array<Vector3<float>, 3> directions;
-            directions[0] = Vector3<float>(1.0, 0.0, 0.0);
-            directions[1] = Vector3<float>(std::cos(45.0f * piOver180), 0.0f, std::sin(45.0f * piOver180));
-            directions[2] = Vector3<float>(std::cos(-45.0f * piOver180), 0.0f, std::sin(-45.0f * piOver180));
+            float degree45 = 45.0f * MathValue::PI_FLOAT / 180.0f;
+            std::array<Vector3<float>, 3> directions = {
+                Vector3<float>(1.0, 0.0, 0.0),
+                Vector3<float>(std::cos(degree45), 0.0f, std::sin(degree45)),
+                Vector3<float>(std::cos(-degree45), 0.0f, std::sin(-degree45))
+            };
+
+            unsigned int seed = 0; //no need to generate different random numbers at each start
+            std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)grassProperties.numGrassInTex - 1);
+            std::default_random_engine generator(seed);
 
             std::vector<Point3<float>> grassVertex;
             grassVertex.reserve(directions.size() * 6);
             std::vector<Point2<float>> grassUv;
             grassUv.reserve(directions.size() * 6);
 
-            unsigned int seed = 0; //no need to generate different random numbers at each start
-            std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)grassProperties.numGrassInTex - 1);
-            std::default_random_engine generator(seed);
-
-            for (const Vector3<float>& direction : directions) {
+            for (const Vector3<float>& direction : directions) { //TODO slitghly randomly rotate grass ?
                 Point3<float> topLeft = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(-direction * grassHalfLength);
                 Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfLength);
                 Point3<float> topRight = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(direction * grassHalfLength);
                 Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfLength);
-
                 grassVertex.push_back(topLeft);
                 grassVertex.push_back(topRight);
                 grassVertex.push_back(bottomLeft);
@@ -241,7 +241,6 @@ namespace urchin {
 
                 float startTexX = (float)randomInts(generator) * (1.0f / (float)grassProperties.numGrassInTex);
                 float endTexX = startTexX + (1.0f / (float)grassProperties.numGrassInTex);
-
                 grassUv.emplace_back(startTexX, 0.0f);
                 grassUv.emplace_back(endTexX, 0.0f);
                 grassUv.emplace_back(startTexX, 1.0f);
