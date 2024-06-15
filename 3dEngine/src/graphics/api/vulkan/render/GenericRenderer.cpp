@@ -45,7 +45,7 @@ namespace urchin {
 
         if (getRenderTarget().isValidRenderTarget()) {
             createPipeline();
-            createVertexBuffers();
+            createDataBuffers();
             createIndexBuffer();
             createUniformBuffers();
             createDescriptorPool();
@@ -68,7 +68,7 @@ namespace urchin {
                     destroyDescriptorSetsAndPool();
                     destroyUniformBuffers();
                     destroyIndexBuffer();
-                    destroyVertexBuffers();
+                    destroyDataBuffers();
                     destroyPipeline();
                 }
             }
@@ -94,31 +94,31 @@ namespace urchin {
         PipelineProcessor::createPipeline();
     }
 
-    void GenericRenderer::createVertexBuffers() {
-        vertexBuffers.resize(data.size());
+    void GenericRenderer::createDataBuffers() {
+        dataBuffers.resize(data.size());
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             DataContainer& dataContainer = data[dataIndex];
-            std::string bufferName = getName() + " - vertex" + std::to_string(dataIndex);
-            vertexBuffers[dataIndex].initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
+            std::string bufferName = getName() + " - data" + std::to_string(dataIndex);
+            dataBuffers[dataIndex].initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), dataContainer.getBufferSize(), dataContainer.getData());
             dataContainer.markDataAsProcessed();
         }
 
         if (instanceData) {
-            std::string bufferName = getName() + " - instance";
-            instanceVertexBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
+            std::string bufferName = getName() + " - instanceData";
+            instanceDataBuffer.initialize(bufferName, BufferHandler::VERTEX, BufferHandler::STATIC, getRenderTarget().getNumFramebuffer(), instanceData->getBufferSize(), instanceData->getData());
             instanceData->markDataAsProcessed();
         }
     }
 
-    void GenericRenderer::destroyVertexBuffers() {
+    void GenericRenderer::destroyDataBuffers() {
         if (instanceData) {
-            instanceVertexBuffer.cleanup();
+            instanceDataBuffer.cleanup();
         }
 
-        for (auto& vertexBuffer : vertexBuffers) {
-            vertexBuffer.cleanup();
+        for (auto& dataBuffer : dataBuffers) {
+            dataBuffer.cleanup();
         }
-        vertexBuffers.clear();
+        dataBuffers.clear();
     }
 
     void GenericRenderer::createIndexBuffer() {
@@ -203,7 +203,7 @@ namespace urchin {
         for (std::size_t dataIndex = 0; dataIndex < data.size(); ++dataIndex) {
             if (data[dataIndex].hasNewData(frameIndex)) {
                 DataContainer& dataContainer = data[dataIndex];
-                if (vertexBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData())) {
+                if (dataBuffers[dataIndex].updateData(frameIndex, dataContainer.getBufferSize(), dataContainer.getData())) {
                     markDrawCommandsDirty();
                 }
                 dataContainer.markDataAsProcessed(frameIndex);
@@ -212,7 +212,7 @@ namespace urchin {
 
         //update instance data
         if (instanceData && instanceData->hasNewData(frameIndex)) {
-            if (instanceVertexBuffer.updateData(frameIndex, instanceData->getBufferSize(), instanceData->getData())) {
+            if (instanceDataBuffer.updateData(frameIndex, instanceData->getBufferSize(), instanceData->getData())) {
                 markDrawCommandsDirty();
             }
             instanceData->markDataAsProcessed(frameIndex);
@@ -242,8 +242,8 @@ namespace urchin {
         assert(offsets.size() >= data.size());
 
         rawVertexBuffers.clear();
-        for (const auto& vertexBuffer : vertexBuffers) {
-            rawVertexBuffers.emplace_back(vertexBuffer.getBuffer(frameIndex));
+        for (const auto& dataBuffer : dataBuffers) {
+            rawVertexBuffers.emplace_back(dataBuffer.getBuffer(frameIndex));
         }
 
         VkRect2D scissor{};
@@ -256,7 +256,7 @@ namespace urchin {
         uint32_t instanceCount = 1;
         if (instanceData) {
             auto firstBinding = (uint32_t)data.size();
-            VkBuffer buffer = instanceVertexBuffer.getBuffer(frameIndex);
+            VkBuffer buffer = instanceDataBuffer.getBuffer(frameIndex);
             vkCmdBindVertexBuffers(commandBuffer, firstBinding, 1, &buffer, offsets.data());
             instanceCount = (uint32_t)instanceData->getDataCount();
         }

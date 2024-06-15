@@ -45,8 +45,8 @@ namespace urchin {
             void cleanup() override;
 
             void createPipeline() override;
-            void createVertexBuffers();
-            void destroyVertexBuffers();
+            void createDataBuffers();
+            void destroyDataBuffers();
             void createIndexBuffer();
             void destroyIndexBuffer();
 
@@ -65,8 +65,8 @@ namespace urchin {
 
             bool depthTestEnabled;
             bool layerIndexDataInShaderEnabled;
-            std::vector<AlterableBufferHandler> vertexBuffers;
-            AlterableBufferHandler instanceVertexBuffer;
+            std::vector<AlterableBufferHandler> dataBuffers;
+            AlterableBufferHandler instanceDataBuffer;
             AlterableBufferHandler indexBuffer;
 
             std::vector<VkBuffer> rawVertexBuffers;
