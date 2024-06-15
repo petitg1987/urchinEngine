@@ -33,9 +33,7 @@ void main() {
     vec3 grassGlobalPosition = grassPosition + vertexPosition;
 
     if (texCoordinates.y < 0.5) { //top of the grass
-
-        float grassYShift = 0.0;
-        float grassCameraDistance = distance(grassGlobalPosition, positioningData.cameraPosition);
+        float grassCameraDistance = distance(grassPosition, positioningData.cameraPosition);
         float startReduceHeightDistance = grassProperties.displayDistance * 0.9;
         if (grassCameraDistance > startReduceHeightDistance) {
             float grassHeightReducePercentage = 1.0f;
@@ -44,7 +42,6 @@ void main() {
             }
             grassGlobalPosition.y -= grassHeightReducePercentage * grassProperties.height;
         }
-
 
         float windPower = 0.5 + sin(grassGlobalPosition.x / 30.0 + grassGlobalPosition.z / 30.0 + positioningData.sumTimeStep * (1.2 + grassProperties.windStrength / 20.0));
         if (windPower > 0.0) {
