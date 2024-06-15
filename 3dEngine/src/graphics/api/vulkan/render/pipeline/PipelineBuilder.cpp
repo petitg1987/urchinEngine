@@ -132,14 +132,16 @@ namespace urchin {
         //unsigned int repeatCount;
         if (data) {
             HashUtil::combine(hash, data->size());
-            //for (const DataContainer& singleData: *data) {
-                //TODO HashUtil::combine(hash, getVulkanFormat(singleData, repeatCount));
-                //HashUtil::combine(hash, repeatCount);
-            //}
+            for (const DataContainer& singleData: *data) {
+                for (std::size_t variableTypeIndex = 0; variableTypeIndex < singleData.getVariableTypes().size(); ++variableTypeIndex) {
+                    HashUtil::combine(hash, singleData.getVariableSize(variableTypeIndex));
+                }
+            }
         }
         if (instanceData) {
-            //TODO HashUtil::combine(hash, getVulkanFormat(*instanceData, repeatCount));
-            //HashUtil::combine(hash, repeatCount);
+            for (std::size_t variableTypeIndex = 0; variableTypeIndex < instanceData->getVariableTypes().size(); ++variableTypeIndex) {
+                HashUtil::combine(hash, instanceData->getVariableSize(variableTypeIndex));
+            }
         }
 
         for (const BlendFunction& bf : blendFunctions) {
@@ -223,14 +225,14 @@ namespace urchin {
         for (const auto& singleData : *data) {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
-            bindingDescription.stride = (uint32_t)singleData.getVariablesSize();
+            bindingDescription.stride = (uint32_t)singleData.getVariableSizes();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
             bindingDescriptions.emplace_back(bindingDescription);
 
             unsigned int offset = 0;
-            for (VariableType variableType : singleData.getVariableTypes()) {
+            for (std::size_t variableTypeIndex = 0; variableTypeIndex < singleData.getVariableTypes().size(); ++variableTypeIndex) {
                 unsigned int repeatCount = 0;
-                VkFormat attributeFormat = getVulkanFormat(variableType, repeatCount);
+                VkFormat attributeFormat = getVulkanFormat(singleData.getVariableTypes()[variableTypeIndex], repeatCount);
                 for (unsigned int i = 0; i < repeatCount; ++i) {
                     VkVertexInputAttributeDescription attributeDescription{};
                     attributeDescription.binding = binding;
@@ -239,7 +241,7 @@ namespace urchin {
                     attributeDescription.offset = (uint32_t)offset;
                     attributeDescriptions.emplace_back(attributeDescription);
 
-                    offset += singleData.getVariableSize(variableType) / repeatCount;
+                    offset += singleData.getVariableSize(variableTypeIndex) / repeatCount;
                     shaderLocation++;
                 }
             }
@@ -249,14 +251,14 @@ namespace urchin {
         if (instanceData) {
             VkVertexInputBindingDescription bindingDescription{};
             bindingDescription.binding = binding; //binding for vkCmdBindVertexBuffers(..., firstBinding, ...)
-            bindingDescription.stride = (uint32_t)instanceData->getVariablesSize();
+            bindingDescription.stride = (uint32_t)instanceData->getVariableSizes();
             bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
             bindingDescriptions.emplace_back(bindingDescription);
 
             unsigned int offset = 0;
-            for (VariableType variableType : instanceData->getVariableTypes()) {
+            for (std::size_t variableTypeIndex = 0; variableTypeIndex < instanceData->getVariableTypes().size(); ++variableTypeIndex) {
                 unsigned int repeatCount = 0;
-                VkFormat attributeFormat = getVulkanFormat(variableType, repeatCount);
+                VkFormat attributeFormat = getVulkanFormat(instanceData->getVariableTypes()[variableTypeIndex], repeatCount);
                 for (unsigned int i = 0; i < repeatCount; ++i) {
                     VkVertexInputAttributeDescription attributeDescription{};
                     attributeDescription.binding = binding;
@@ -265,7 +267,7 @@ namespace urchin {
                     attributeDescription.offset = (uint32_t)offset;
                     attributeDescriptions.emplace_back(attributeDescription);
 
-                    offset += instanceData->getVariableSize(variableType) / repeatCount;
+                    offset += instanceData->getVariableSize(variableTypeIndex) / repeatCount;
                     shaderLocation++;
                 }
             }

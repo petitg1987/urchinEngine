@@ -1,7 +1,8 @@
 #pragma once
 
-#include <cstdlib>
+#include <cstdint>
 #include <array>
+#include <vector>
 
 #include <graphics/render/data/VariableType.h>
 
@@ -20,8 +21,8 @@ namespace urchin {
 
             const void* getData() const;
             const std::vector<VariableType>& getVariableTypes() const;
-            unsigned int getVariableSize(VariableType) const;
-            unsigned int getVariablesSize() const;
+            unsigned int getVariableSize(std::size_t) const;
+            unsigned int getVariableSizes() const;
             std::size_t getDataCount() const;
             std::size_t getBufferSize() const;
 
@@ -30,7 +31,6 @@ namespace urchin {
             void markDataAsProcessed();
 
         private:
-
             void markDataAsNew();
 
             std::vector<VariableType> variableTypes;

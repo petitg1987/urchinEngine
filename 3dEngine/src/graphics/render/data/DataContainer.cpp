@@ -60,39 +60,33 @@ namespace urchin {
         return variableTypes;
     }
 
-    unsigned int DataContainer::getVariableSize(VariableType variableType) const {
-        if (variableType == VariableType::FLOAT) {
-            return 1 * sizeof(float);
-        } else if (variableType == VariableType::VEC2_FLOAT) {
-            return 2 * sizeof(float);
-        } else if (variableType == VariableType::VEC3_FLOAT) {
-            return 3 * sizeof(float);
-        } else if (variableType == VariableType::MAT4_FLOAT) {
-            return 16 * sizeof(float);
+    unsigned int DataContainer::getVariableSize(std::size_t variableTypeIndex) const {
+        if (variableTypes[variableTypeIndex] == VariableType::FLOAT) {
+            return sizeof(float) * 1;
+        } else if (variableTypes[variableTypeIndex] == VariableType::VEC2_FLOAT) {
+            return sizeof(float) * 2;
+        } else if (variableTypes[variableTypeIndex] == VariableType::VEC3_FLOAT) {
+            return sizeof(float) * 3;
+        } else if (variableTypes[variableTypeIndex] == VariableType::MAT4_FLOAT) {
+            return sizeof(float) * 16;
         }
-        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)variableType));
+        throw std::runtime_error("Unknown data dimension: " + std::to_string((int)variableTypes[variableTypeIndex]));
     }
 
-    unsigned int DataContainer::getVariablesSize() const {
-        unsigned int variablesSize = 0;
-        for(VariableType variableType : variableTypes) {
-            variablesSize += getVariableSize(variableType);
+    unsigned int DataContainer::getVariableSizes() const {
+        unsigned int variableSizes = 0;
+        for (std::size_t variableTypeIndex = 0; variableTypeIndex < variableTypes.size(); ++variableTypeIndex) {
+            variableSizes += getVariableSize(variableTypeIndex);
         }
-        return variablesSize;
+        return variableSizes;
     }
 
-    /**
-     * @return Number of data (= vector/point). Example: a quad has 4 data/points.
-     */
     std::size_t DataContainer::getDataCount() const {
         return dataCount;
     }
 
-    /**
-     * @return Memory size of all the data (= vector/point)
-     */
     std::size_t DataContainer::getBufferSize() const {
-        return getVariablesSize() * dataCount;
+        return getVariableSizes() * dataCount;
     }
 
     bool DataContainer::hasNewData(uint32_t frameIndex) const {

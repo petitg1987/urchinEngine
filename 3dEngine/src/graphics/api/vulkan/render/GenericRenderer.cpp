@@ -137,8 +137,6 @@ namespace urchin {
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point2<float>>& dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
-            //TODO assert(data[dataIndex].getVariableType() == VariableType::VEC2);
-            //TODO assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
 
         if (getRenderTarget().isValidRenderTarget()) {
@@ -149,8 +147,6 @@ namespace urchin {
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Point3<float>>& dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
-            //TODO assert(data[dataIndex].getVariableType() == VariableType::VEC3);
-            //TODO assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
 
         if (getRenderTarget().isValidRenderTarget()) {
@@ -161,8 +157,6 @@ namespace urchin {
     void GenericRenderer::updateData(std::size_t dataIndex, const std::vector<Vector3<float>>& dataPtr) {
         #ifdef URCHIN_DEBUG
             assert(data.size() > dataIndex);
-            //TODO assert(data[dataIndex].getVariableType() == VariableType::VEC3);
-            //TODO assert(data[dataIndex].getDataType() == DataType::FLOAT);
         #endif
 
         if (getRenderTarget().isValidRenderTarget()) {
@@ -171,10 +165,6 @@ namespace urchin {
     }
 
     void GenericRenderer::updateInstanceData(std::size_t instanceCount, const float* dataPtr) const {
-        #ifdef URCHIN_DEBUG
-            //TODO assert(instanceData->getDataType() == DataType::FLOAT);
-        #endif
-
         if (getRenderTarget().isValidRenderTarget()) {
             instanceData->replaceData(instanceCount, dataPtr);
         }
