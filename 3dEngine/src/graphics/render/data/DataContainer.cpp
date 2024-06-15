@@ -61,6 +61,8 @@ namespace urchin {
     }
 
     unsigned int DataContainer::getVariableSize(std::size_t variableTypeIndex) const {
+        assert(variableTypes.size() > variableTypeIndex);
+
         if (variableTypes[variableTypeIndex] == VariableType::FLOAT) {
             return sizeof(float) * 1;
         } else if (variableTypes[variableTypeIndex] == VariableType::VEC2_FLOAT) {
