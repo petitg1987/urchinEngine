@@ -24,10 +24,15 @@ namespace urchin {
     const AABBox<float>* TerrainGrassQuadtree::getBox() const {
         if (!bbox) {
             if (isLeaf()) {
-                if (grassVertices.empty()) {
+                if (grassInstanceData.empty()) {
                     bbox = std::unique_ptr<AABBox<float>>(nullptr);
                 } else {
-                    bbox = std::make_unique<AABBox<float>>(grassVertices);
+                    std::vector<Point3<float>> grassPositions;
+                    grassPositions.reserve(grassInstanceData.size());
+                    for(const GrassInstanceData& singleGrassInstanceData : grassInstanceData) {
+                        grassPositions.push_back(singleGrassInstanceData.grassPosition);
+                    }
+                    bbox = std::make_unique<AABBox<float>>(grassPositions);
                 }
             } else {
                 bbox = std::unique_ptr<AABBox<float>>(nullptr);
@@ -56,24 +61,16 @@ namespace urchin {
         return children;
     }
 
-    /**
-     * Add vertex with its associate normal. Method is thread-safe.
-     */
-    void TerrainGrassQuadtree::addVertex(const Point3<float>& vertex, const Vector3<float>& normal) {
+    void TerrainGrassQuadtree::addGrassInstanceData(const Point3<float>& grassPosition, const Vector3<float>& grassNormal) {
         std::scoped_lock<std::mutex> lock(mutexAddVertex);
 
         assert(children.empty());
         assert(bbox == nullptr);
-
-        grassVertices.push_back(vertex);
-        normals.push_back(normal);
+        grassInstanceData.emplace_back(GrassInstanceData{.grassPosition = grassPosition, .grassNormal = grassNormal});
     }
 
-    const std::vector<Point3<float>>& TerrainGrassQuadtree::getGrassVertices() const {
-        return grassVertices;
+    const std::vector<GrassInstanceData>& TerrainGrassQuadtree::getGrassInstanceData() const {
+        return grassInstanceData;
     }
 
-    const std::vector<Vector3<float>>& TerrainGrassQuadtree::getGrassNormals() const {
-        return normals;
-    }
 }

@@ -26,7 +26,7 @@ namespace urchin {
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &grassAlphaTest);
-        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "terrainGrass.geom.spv", "terrainGrass.frag.spv", std::move(shaderConstants));
+        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "", "terrainGrass.frag.spv", std::move(shaderConstants));
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
@@ -131,13 +131,13 @@ namespace urchin {
                         float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;
                         float globalZValue = terrainPosition.Z + mesh->getVertices()[0].Z + zValue;
                         float globalYValue = terrainPosition.Y + mesh->getVertices()[vertexIndex].Y;
-                        Point3 globalGrassVertex(globalXValue, globalYValue, globalZValue);
+                        Point3 globalGrassPosition(globalXValue, globalYValue, globalZValue);
 
                         unsigned int parcelXIndex = std::min((unsigned int)(xValue / parcelSizeX), parcelQuantityX);
                         unsigned int parcelZIndex = std::min((unsigned int)(zValue / parcelSizeZ), parcelQuantityZ);
                         unsigned int parcelIndex = (parcelZIndex * parcelQuantityX) + parcelXIndex;
 
-                        leafGrassParcels[parcelIndex]->addVertex(globalGrassVertex, grassNormal);
+                        leafGrassParcels[parcelIndex]->addGrassInstanceData(globalGrassPosition, grassNormal);
                     }
                 }
             });
@@ -216,14 +216,50 @@ namespace urchin {
 
     void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) {
         if (grassTexture && renderTarget) {
+
+//TODO extract in method
+            float grassHalfLength = grassProperties.length / 2.0f;
+            float piOver180 = MathValue::PI_FLOAT / 180.0f;
+            std::array<Vector3<float>, 3> directions;
+            directions[0] = Vector3<float>(1.0, 0.0, 0.0);
+            directions[1] = Vector3<float>(std::cos(45.0f * piOver180), 0.0f, std::sin(45.0f * piOver180));
+            directions[2] = Vector3<float>(std::cos(-45.0f * piOver180), 0.0f, std::sin(-45.0f * piOver180));
+
+            std::vector<Point3<float>> grassVertex;
+            grassVertex.reserve(directions.size() * 6);
+            std::vector<Point2<float>> grassUv;
+            grassUv.reserve(directions.size() * 6);
+
+            for (const Vector3<float>& direction : directions) {
+                Point3<float> topLeft = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(-direction * grassHalfLength);
+                Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfLength);
+                Point3<float> topRight = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(direction * grassHalfLength);
+                Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfLength);
+
+                grassVertex.push_back(topLeft);
+                grassVertex.push_back(topRight);
+                grassVertex.push_back(bottomLeft);
+                grassVertex.push_back(bottomLeft);
+                grassVertex.push_back(topRight);
+                grassVertex.push_back(bottomRight);
+
+                grassUv.emplace_back(0.0f, 0.0f);
+                grassUv.emplace_back(1.0f, 0.0f);
+                grassUv.emplace_back(0.0f, 1.0f);
+                grassUv.emplace_back(0.0f, 1.0f);
+                grassUv.emplace_back(1.0f, 0.0f);
+                grassUv.emplace_back(1.0f, 1.0f);
+            }
+
             for (auto& grassQuadtree : leafGrassParcels) {
-                if (!grassQuadtree->getGrassVertices().empty()) {
-                    auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::POINT)
+                if (!grassQuadtree->getGrassInstanceData().empty()) {
+                    auto renderer = GenericRendererBuilder::create("grass", *renderTarget, *terrainGrassShader, ShapeType::TRIANGLE)
                             ->enableDepthTest()
                             ->enableDepthWrite()
                             ->disableCullFace()
-                            ->addData(grassQuadtree->getGrassVertices())
-                            ->addData(grassQuadtree->getGrassNormals())
+                            ->addData(grassVertex)
+                            ->addData(grassUv)
+                            ->instanceData(grassQuadtree->getGrassInstanceData().size(), {VariableType::VEC3_FLOAT, VariableType::VEC3_FLOAT}, (const float *)grassQuadtree->getGrassInstanceData().data())
                             ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                             ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
                             ->addUniformData(TERRAIN_POSITIONING_DATA_UNIFORM_BINDING, sizeof(terrainPositioningData), &terrainPositioningData)
