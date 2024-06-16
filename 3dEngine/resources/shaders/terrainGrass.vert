@@ -26,13 +26,54 @@ layout(location = 0) out vec3 normal;
 layout(location = 1) out vec2 texCoordinates;
 invariant gl_Position;
 
+float PHI = 1.61803398874989484820459; //golden ratio
+float PI  = 3.14159265358979323846264; //PI
+float SRT = 1.41421356237309504880169; //square root of two
+
+float randomZeroOne(in vec2 seed) {
+    return fract(sin(dot(seed, vec2(PHI, PI))) * SRT);
+}
+
+float randomFloat(float min, float max, vec3 seed) {
+    vec2 seed2d = vec2(seed.x, seed.y + seed.z);
+    float randomFloatZeroOne = randomZeroOne(seed2d);
+    return min + randomFloatZeroOne * (max - min);
+}
+
+mat3 rotationMatrix(vec3 axis, float angle) {
+    axis = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float oc = 1.0 - c;
+
+    return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
+}
+
 void main() {
     normal = grassNormal;
     texCoordinates = texCoord;
 
-    vec3 grassGlobalPosition = grassPosition + vertexPosition;
+    //initial grass rotation
+    vec3 seed = grassPosition;
+    float initialRotation = randomFloat(0.0, 2.0f * PI, seed);
+    vec3 rotatedVertexPosition = rotationMatrix(vec3(0, 1, 0), initialRotation) * vertexPosition;
 
+    vec3 grassGlobalPosition;
     if (texCoordinates.y < 0.5) { //top of the grass
+        //wind: rotation
+        float rotationSpeed = 0.7f;
+        float rotationAngle = 0.2f;
+        grassGlobalPosition = grassPosition + rotationMatrix(vec3(0, 1, 0), sin(positioningData.sumTimeStep * rotationSpeed) * rotationAngle) * rotatedVertexPosition;
+
+        //wind: side
+        float windPower = 0.5 + sin(grassGlobalPosition.x / 30.0 + grassGlobalPosition.z / 30.0 + positioningData.sumTimeStep * (1.2 + grassProperties.windStrength / 20.0));
+        windPower *= (windPower > 0.0) ? 0.3 : 0.2;
+        windPower *= grassProperties.windStrength;
+        grassGlobalPosition += grassProperties.windDirection * windPower;
+
+        //reduce grass height based on its distance from the camera
         float grassCameraDistance = distance(grassPosition, positioningData.cameraPosition);
         float startReduceHeightDistance = grassProperties.displayDistance * 0.9;
         if (grassCameraDistance > startReduceHeightDistance) {
@@ -42,16 +83,8 @@ void main() {
             }
             grassGlobalPosition.y -= grassHeightReducePercentage * grassProperties.height;
         }
-
-        float windPower = 0.5 + sin(grassGlobalPosition.x / 30.0 + grassGlobalPosition.z / 30.0 + positioningData.sumTimeStep * (1.2 + grassProperties.windStrength / 20.0));
-        if (windPower > 0.0) {
-            windPower = windPower * 0.3;
-        } else {
-            windPower = windPower * 0.2;
-        }
-        windPower *= grassProperties.windStrength;
-
-        grassGlobalPosition += grassProperties.windDirection * windPower;
+    } else {
+        grassGlobalPosition = grassPosition + rotatedVertexPosition;
     }
 
     gl_Position = positioningData.mProjectionView * vec4(grassGlobalPosition, 1.0);

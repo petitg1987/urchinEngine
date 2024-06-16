@@ -211,7 +211,7 @@ namespace urchin {
 
 //TODO extract in method
             float grassHalfLength = grassProperties.length / 2.0f;
-            float degree45 = 45.0f * MathValue::PI_FLOAT / 180.0f;
+            float degree45 = 60.0f * MathValue::PI_FLOAT / 180.0f;
             std::array<Vector3<float>, 3> directions = {
                 Vector3<float>(1.0, 0.0, 0.0),
                 Vector3<float>(std::cos(degree45), 0.0f, std::sin(degree45)),
@@ -227,7 +227,7 @@ namespace urchin {
             std::vector<Point2<float>> grassUv;
             grassUv.reserve(directions.size() * 6);
 
-            for (const Vector3<float>& direction : directions) { //TODO slitghly randomly rotate grass ?
+            for (const Vector3<float>& direction : directions) {
                 Point3<float> topLeft = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(-direction * grassHalfLength);
                 Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfLength);
                 Point3<float> topRight = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(direction * grassHalfLength);
