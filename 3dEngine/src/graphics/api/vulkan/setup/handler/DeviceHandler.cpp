@@ -95,9 +95,7 @@ namespace urchin {
 
     bool DeviceHandler::isAnisotropySupported() const {
         assert(devicesInitialized);
-        VkPhysicalDeviceFeatures deviceFeatures{};
-        vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
-        return deviceFeatures.samplerAnisotropy;
+        return isFeature10Available(physicalDevice, offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy));
     }
 
     bool DeviceHandler::isMemoryBudgetExtSupported() const {
