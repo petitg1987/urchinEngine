@@ -36,6 +36,9 @@ namespace urchin {
             bool isMemoryBudgetExtSupported() const;
 
         private:
+            bool isFeature10Available(VkPhysicalDevice, unsigned long) const;
+            bool isFeature13Available(VkPhysicalDevice, unsigned long) const;
+
             VkPhysicalDevice findPhysicalDevice(VkInstance instance);
             PhysicalDeviceSuitability retrievePhysicalDeviceSuitability(VkPhysicalDevice);
             bool checkPhysicalDeviceExtensionSupport(VkPhysicalDevice, const char*) const;
@@ -43,7 +46,6 @@ namespace urchin {
             VkDevice createLogicalDevice();
 
             std::vector<PhysicalDeviceFeature> physicalDeviceExpectedFeatures;
-            std::vector<PhysicalDeviceFeature> physicalDeviceExpectedVulkan12Features;
             std::vector<PhysicalDeviceFeature> physicalDeviceExpectedVulkan13Features;
             std::vector<std::pair<const char*, std::string>> physicalDeviceRequiredExtensions;
             std::vector<std::pair<const char*, std::string>> physicalDeviceOptionalExtensions;

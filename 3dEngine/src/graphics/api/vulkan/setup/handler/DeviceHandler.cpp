@@ -34,17 +34,12 @@ namespace urchin {
         // Vulkan 1.2: https://vulkan.gpuinfo.org/listfeaturescore12.php
         // Vulkan 1.3: https://vulkan.gpuinfo.org/listfeaturescore13.php
         physicalDeviceExpectedFeatures = {
-                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, independentBlend), .featureDescription = "independent blend", .optional = false}, //99.44%
-                PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), .featureDescription = "anisotropy", .optional = true} //91.34% (optional)
+            PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, independentBlend), .featureDescription = "independent blend", .optional = false}, //99.44%
+            PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, samplerAnisotropy), .featureDescription = "anisotropy", .optional = true} //91.34% (optional)
         };
         if (ConfigService::instance().getBoolValue("graphicsDebug.enableRobustBufferAccess")) {
             physicalDeviceExpectedFeatures.emplace_back(PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceFeatures, robustBufferAccess), .featureDescription = "robust buffer access", .optional = false}); //100%
         }
-        physicalDeviceExpectedVulkan12Features = {
-                //About "shaderOutputLayer" & "shaderOutputViewportIndex" features: a device lost error occurs on Intel GPU when gl_Layer is used in vertex shader:
-                // - Reason: unknown. Cause could be somewhere else because even without these features, the engine crashes randomly with device lost on Intel UDH Graphics 620.
-                // - Tested graphics cards on 18/04/2022: Intel Iris Plus Graphics, Intel UHD Graphics
-        };
         physicalDeviceExpectedVulkan13Features = {
             PhysicalDeviceFeature{.offset = offsetof(VkPhysicalDeviceVulkan13Features, synchronization2), .featureDescription = "synchronization 2", .optional = false}, //99.88%
         };
@@ -80,6 +75,22 @@ namespace urchin {
     VkDevice DeviceHandler::getLogicalDevice() const {
         assert(devicesInitialized);
         return logicalDevice;
+    }
+
+    bool DeviceHandler::isFeature10Available(VkPhysicalDevice physicalDeviceToCheck, unsigned long featureOffset) const {
+        VkPhysicalDeviceFeatures deviceFeatures{};
+        vkGetPhysicalDeviceFeatures(physicalDeviceToCheck, &deviceFeatures);
+        return *reinterpret_cast<VkBool32*>(((char*)&deviceFeatures) + featureOffset);
+    }
+
+    bool DeviceHandler::isFeature13Available(VkPhysicalDevice physicalDeviceToCheck, unsigned long featureOffset) const {
+        VkPhysicalDeviceVulkan13Features deviceVulkan13Features{};
+        deviceVulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+        VkPhysicalDeviceFeatures2 deviceFeatures13{};
+        deviceFeatures13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+        deviceFeatures13.pNext = &deviceVulkan13Features;
+        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures13);
+        return *reinterpret_cast<VkBool32*>(((char*)&deviceVulkan13Features) + featureOffset);
     }
 
     bool DeviceHandler::isAnisotropySupported() const {
@@ -139,10 +150,8 @@ namespace urchin {
         vkGetPhysicalDeviceProperties(physicalDeviceToCheck, &deviceProperties);
 
         //check expected features
-        VkPhysicalDeviceFeatures deviceFeatures{};
-        vkGetPhysicalDeviceFeatures(physicalDeviceToCheck, &deviceFeatures);
         for (const auto& expectedFeature : physicalDeviceExpectedFeatures) {
-            auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + expectedFeature.offset);
+            auto isFeatureAvailable = isFeature10Available(physicalDeviceToCheck, expectedFeature.offset);
             if (isFeatureAvailable) {
                 score += 5000;
             } else if (!expectedFeature.optional) {
@@ -150,29 +159,8 @@ namespace urchin {
             }
         }
 
-        VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
-        deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
-        VkPhysicalDeviceFeatures2 deviceFeatures12{};
-        deviceFeatures12.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-        deviceFeatures12.pNext = &deviceVulkan12Features;
-        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures12);
-        for (const auto& expectedFeature : physicalDeviceExpectedVulkan12Features) {
-            auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + expectedFeature.offset);
-            if (isFeatureAvailable) {
-                score += 5000;
-            } else if (!expectedFeature.optional) {
-                return {physicalDeviceToCheck, "missing " + expectedFeature.featureDescription + " support"};
-            }
-        }
-
-        VkPhysicalDeviceVulkan13Features deviceVulkan13Features{};
-        deviceVulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
-        VkPhysicalDeviceFeatures2 deviceFeatures13{};
-        deviceFeatures13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-        deviceFeatures13.pNext = &deviceVulkan13Features;
-        vkGetPhysicalDeviceFeatures2(physicalDeviceToCheck, &deviceFeatures13);
         for (const auto& expectedFeature : physicalDeviceExpectedVulkan13Features) {
-            auto isFeatureAvailable = *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan13Features) + expectedFeature.offset);
+            auto isFeatureAvailable = isFeature13Available(physicalDeviceToCheck, expectedFeature.offset);
             if (isFeatureAvailable) {
                 score += 5000;
             } else if (!expectedFeature.optional) {
@@ -276,30 +264,25 @@ namespace urchin {
             }
         });
 
-        VkPhysicalDeviceFeatures deviceFeatures{};
+        VkPhysicalDeviceFeatures deviceVulkan10Features{};
         for (const auto& expectedFeature : physicalDeviceExpectedFeatures) {
-            *reinterpret_cast<VkBool32*>(((char *)&deviceFeatures) + expectedFeature.offset) = true;
-        }
-
-        VkPhysicalDeviceVulkan12Features deviceVulkan12Features{};
-        deviceVulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
-        for (const auto& expectedFeature : physicalDeviceExpectedVulkan12Features) {
-            *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan12Features) + expectedFeature.offset) = true;
+            bool enableFeature = expectedFeature.optional ? isFeature10Available(physicalDevice, expectedFeature.offset) : true;
+            *reinterpret_cast<VkBool32*>(((char*)&deviceVulkan10Features) + expectedFeature.offset) = enableFeature;
         }
 
         VkPhysicalDeviceVulkan13Features deviceVulkan13Features{};
         deviceVulkan13Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
         for (const auto& expectedFeature : physicalDeviceExpectedVulkan13Features) {
-            *reinterpret_cast<VkBool32*>(((char *)&deviceVulkan13Features) + expectedFeature.offset) = true;
+            bool enableFeature = expectedFeature.optional ? isFeature13Available(physicalDevice, expectedFeature.offset) : true;
+            *reinterpret_cast<VkBool32*>(((char*)&deviceVulkan13Features) + expectedFeature.offset) = enableFeature;
         }
 
         VkDeviceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         createInfo.queueCreateInfoCount = (uint32_t)queueCreateInfos.size();
         createInfo.pQueueCreateInfos = queueCreateInfos.data();
-        createInfo.pEnabledFeatures = &deviceFeatures;
-        createInfo.pNext = &deviceVulkan12Features;
-        deviceVulkan12Features.pNext = &deviceVulkan13Features;
+        createInfo.pEnabledFeatures = &deviceVulkan10Features;
+        createInfo.pNext = &deviceVulkan13Features;
         createInfo.enabledExtensionCount = (uint32_t)physicalDeviceExtensions.size();
         createInfo.ppEnabledExtensionNames = physicalDeviceExtensions.empty() ? nullptr : physicalDeviceExtensions.data();
 
