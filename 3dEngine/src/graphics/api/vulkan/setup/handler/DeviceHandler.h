@@ -9,6 +9,7 @@ namespace urchin {
     struct PhysicalDeviceFeature {
         unsigned long offset;
         std::string featureDescription;
+        bool optional;
     };
 
     struct PhysicalDeviceSuitability {
@@ -31,6 +32,7 @@ namespace urchin {
             VkPhysicalDevice getPhysicalDevice() const;
             VkDevice getLogicalDevice() const;
 
+            bool isAnisotropySupported() const;
             bool isMemoryBudgetExtSupported() const;
 
         private:
@@ -40,9 +42,9 @@ namespace urchin {
 
             VkDevice createLogicalDevice();
 
-            std::vector<PhysicalDeviceFeature> physicalDeviceRequiredFeatures;
-            std::vector<PhysicalDeviceFeature> physicalDeviceRequiredVulkan12Features;
-            std::vector<PhysicalDeviceFeature> physicalDeviceRequiredVulkan13Features;
+            std::vector<PhysicalDeviceFeature> physicalDeviceExpectedFeatures;
+            std::vector<PhysicalDeviceFeature> physicalDeviceExpectedVulkan12Features;
+            std::vector<PhysicalDeviceFeature> physicalDeviceExpectedVulkan13Features;
             std::vector<std::pair<const char*, std::string>> physicalDeviceRequiredExtensions;
             std::vector<std::pair<const char*, std::string>> physicalDeviceOptionalExtensions;
             std::map<VkPhysicalDevice, std::vector<const char*>> physicalDeviceOptionalExtensionsSupported;

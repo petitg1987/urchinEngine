@@ -65,6 +65,7 @@ namespace urchin {
 
         if (textureSampler == VK_NULL_HANDLE) {
             auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
+            bool enableAnisotropy = needAnisotropy() && GraphicsSetupService::instance().getDevices().isAnisotropySupported();
 
             VkPhysicalDeviceProperties properties{};
             vkGetPhysicalDeviceProperties(GraphicsSetupService::instance().getDevices().getPhysicalDevice(), &properties);
@@ -76,7 +77,7 @@ namespace urchin {
             samplerInfo.addressModeU = getVkReadMode();
             samplerInfo.addressModeV = getVkReadMode();
             samplerInfo.addressModeW = getVkReadMode();
-            samplerInfo.anisotropyEnable = needAnisotropy() ? VK_TRUE : VK_FALSE;
+            samplerInfo.anisotropyEnable = enableAnisotropy ? VK_TRUE : VK_FALSE;
             samplerInfo.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
             samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
             samplerInfo.unnormalizedCoordinates = VK_FALSE;
