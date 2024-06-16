@@ -43,7 +43,7 @@ namespace urchin {
             static constexpr char GRASS_MASK_FILENAME_TAG[] = "grassMaskFilename";
             static constexpr char NUM_GRASS_IN_TEX_TAG[] = "numGrassInTex";
             static constexpr char GRASS_HEIGHT_TAG[] = "grassHeight";
-            static constexpr char GRASS_LENGTH_TAG[] = "grassLength";
+            static constexpr char GRASS_WIDTH_TAG[] = "grassWidth";
             static constexpr char GRASS_QUANTITY_TAG[] = "grassQuantity";
             static constexpr char WIND_DIRECTION_TAG[] = "windDirection";
             static constexpr char WIND_STRENGTH_TAG[] = "windStrength";

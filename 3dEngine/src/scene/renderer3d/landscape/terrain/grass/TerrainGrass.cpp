@@ -17,13 +17,13 @@ namespace urchin {
             bIsInitialized(false),
             renderTarget(nullptr),
             positioningData({}),
-            grassProperties({}),
+            ambient(0.5f),
             grassWidth(5.0f),
             numGrassInTex(1),
-            ambient(0.5f),
+            grassQuantity(0.0f),
+            grassProperties({}),
             mesh(nullptr),
-            grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)),
-            grassQuantity(0.0f) {
+            grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)) {
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &grassAlphaTest);
@@ -33,8 +33,8 @@ namespace urchin {
         setMaskTexture("");
         setNumGrassInTexture(1);
         setGrassDisplayDistance(100.0f);
+        setGrassWidth(1.0f);
         setGrassHeight(1.0f);
-        setGrassLength(1.0f);
         setGrassQuantity(0.1f);
         setWindDirection(Vector3<float>(1.0f, 0.0f, 0.0f));
         setWindStrength(1.0f);
@@ -352,11 +352,11 @@ namespace urchin {
         generateGrass(mesh, terrainPosition);
     }
 
-    float TerrainGrass::getGrassLength() const {
+    float TerrainGrass::getGrassWidth() const {
         return grassWidth;
     }
 
-    void TerrainGrass::setGrassLength(float grassWidth) {
+    void TerrainGrass::setGrassWidth(float grassWidth) {
         this->grassWidth = grassWidth;
 
         generateGrass(mesh, terrainPosition);

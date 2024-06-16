@@ -105,8 +105,8 @@ namespace urchin {
             auto grassHeightChunk = udaParser.getFirstChunk(true, GRASS_HEIGHT_TAG, UdaAttribute(), grassChunk);
             terrain.getGrass().setGrassHeight(grassHeightChunk->getFloatValue());
 
-            auto grassLengthChunk = udaParser.getFirstChunk(true, GRASS_LENGTH_TAG, UdaAttribute(), grassChunk);
-            terrain.getGrass().setGrassLength(grassLengthChunk->getFloatValue());
+            auto grassWidthChunk = udaParser.getFirstChunk(true, GRASS_WIDTH_TAG, UdaAttribute(), grassChunk);
+            terrain.getGrass().setGrassWidth(grassWidthChunk->getFloatValue());
 
             auto grassQuantityChunk = udaParser.getFirstChunk(true, GRASS_QUANTITY_TAG, UdaAttribute(), grassChunk);
             terrain.getGrass().setGrassQuantity(grassQuantityChunk->getFloatValue());
@@ -132,7 +132,7 @@ namespace urchin {
 
         udaParser.createChunk(GRASS_HEIGHT_TAG, UdaAttribute(), &grassChunk).setFloatValue(terrain.getGrass().getGrassHeight());
 
-        udaParser.createChunk(GRASS_LENGTH_TAG, UdaAttribute(), &grassChunk).setFloatValue(terrain.getGrass().getGrassLength());
+        udaParser.createChunk(GRASS_WIDTH_TAG, UdaAttribute(), &grassChunk).setFloatValue(terrain.getGrass().getGrassWidth());
 
         udaParser.createChunk(GRASS_QUANTITY_TAG, UdaAttribute(), &grassChunk).setFloatValue(terrain.getGrass().getGrassQuantity());
 

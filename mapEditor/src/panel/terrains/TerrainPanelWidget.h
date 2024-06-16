@@ -76,7 +76,7 @@ namespace urchin {
             QSpinBox* numGrassInTex;
             QDoubleSpinBox* grassQuantity;
             QDoubleSpinBox* grassHeight;
-            QDoubleSpinBox* grassLength;
+            QDoubleSpinBox* grassWidth;
             QDoubleSpinBox* windDirectionX;
             QDoubleSpinBox* windDirectionY;
             QDoubleSpinBox* windDirectionZ;

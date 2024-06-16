@@ -35,7 +35,7 @@ namespace urchin {
             grassTextureFilenameText(nullptr),
             grassMaskFilenameText(nullptr),
             numGrassInTex(nullptr),
-            grassQuantity(nullptr), grassHeight(nullptr), grassLength(nullptr),
+            grassQuantity(nullptr), grassHeight(nullptr), grassWidth(nullptr),
             windDirectionX(nullptr), windDirectionY(nullptr), windDirectionZ(nullptr), windStrength(nullptr) {
         auto* mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
@@ -277,7 +277,7 @@ namespace urchin {
         grassQuantity->setSingleStep(0.1);
         connect(grassQuantity, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        auto* grassHeightLabel= new QLabel("Height/length:");
+        auto* grassHeightLabel= new QLabel("Height/width:");
         grassLayout->addWidget(grassHeightLabel, 5, 0);
 
         grassHeight = new QDoubleSpinBox();
@@ -287,12 +287,12 @@ namespace urchin {
         grassHeight->setSingleStep(0.05);
         connect(grassHeight, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        grassLength = new QDoubleSpinBox();
-        grassLayout->addWidget(grassLength, 5, 2);
-        SpinBoxStyleHelper::applyDefaultStyleOn(grassLength);
-        grassLength->setMinimum(0.0);
-        grassLength->setSingleStep(0.05);
-        connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
+        grassWidth = new QDoubleSpinBox();
+        grassLayout->addWidget(grassWidth, 5, 2);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassWidth);
+        grassWidth->setMinimum(0.0);
+        grassWidth->setSingleStep(0.05);
+        connect(grassWidth, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         auto* windDirectionLabel= new QLabel("Wind direction:");
         grassLayout->addWidget(windDirectionLabel, 6, 0);
@@ -397,7 +397,7 @@ namespace urchin {
         this->grassMaskFilenameText->setText(QString::fromStdString(relativeGrassMaskFilename));
         this->numGrassInTex->setValue((int)terrainGrass.getNumGrassInTexture());
         this->grassHeight->setValue(terrainGrass.getGrassHeight());
-        this->grassLength->setValue(terrainGrass.getGrassLength());
+        this->grassWidth->setValue(terrainGrass.getGrassWidth());
         this->grassQuantity->setValue(terrainGrass.getGrassQuantity());
         this->windDirectionX->setValue(terrainGrass.getWindDirection().X);
         this->windDirectionY->setValue(terrainGrass.getWindDirection().Y);
@@ -469,7 +469,7 @@ namespace urchin {
             auto numGrassInTexValue = (unsigned int)numGrassInTex->value();
             Vector3 windDirection((float)windDirectionX->value(), (float)windDirectionY->value(), (float)windDirectionZ->value());
             terrainController->updateTerrainGrass(terrainEntity, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
-                                                       (float)grassHeight->value(), (float)grassLength->value(), windDirection, (float)windStrength->value());
+                                                       (float)grassHeight->value(), (float)grassWidth->value(), windDirection, (float)windStrength->value());
         }
     }
 

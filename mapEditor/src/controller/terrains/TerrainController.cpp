@@ -71,7 +71,7 @@ namespace urchin {
     }
 
     const TerrainEntity& TerrainController::updateTerrainGrass(const TerrainEntity& constTerrainEntity, std::string grassTextureFilename, std::string grassMaskFilename,
-                                                               unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
+                                                               unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassWidth,
                                                                const Vector3<float>& windDirection, float windStrength) {
         const TerrainEntity& terrainEntity = findTerrainEntity(constTerrainEntity);
         Terrain* terrain = terrainEntity.getTerrain();
@@ -84,7 +84,7 @@ namespace urchin {
             terrainGrass.setGrassQuantity(grassQuantity);
         }
         terrainGrass.setGrassHeight(grassHeight);
-        terrainGrass.setGrassLength(grassLength);
+        terrainGrass.setGrassWidth(grassWidth);
         terrainGrass.setWindDirection(windDirection);
         terrainGrass.setWindStrength(windStrength);
 

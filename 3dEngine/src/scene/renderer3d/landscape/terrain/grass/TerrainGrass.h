@@ -33,8 +33,8 @@ namespace urchin {
             float getGrassHeight() const;
             void setGrassHeight(float);
 
-            float getGrassLength() const;
-            void setGrassLength(float);
+            float getGrassWidth() const;
+            void setGrassWidth(float);
 
             unsigned int getNumGrassInTexture() const;
             void setNumGrassInTexture(unsigned int);
@@ -80,17 +80,19 @@ namespace urchin {
                 alignas(16) Point3<float> cameraPosition;
                 alignas(4) float sumTimeStep;
             } positioningData;
+
+            float ambient;
+            float grassWidth;
+            int numGrassInTex;
+            float grassQuantity;
             struct {
                 alignas(4) float displayDistance;
                 alignas(4) float grassHeight;
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;
             } grassProperties;
-            float grassWidth;
-            int numGrassInTex;
-            float ambient;
-            Matrix4<float> projectionMatrix;
 
+            Matrix4<float> projectionMatrix;
             const TerrainMesh* mesh;
             Point3<float> terrainPosition;
 
@@ -100,7 +102,6 @@ namespace urchin {
             std::string grassMaskFilename;
             std::unique_ptr<TerrainGrassQuadtree> mainGrassQuadtree;
             mutable std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
-            float grassQuantity; //TODO move with other props
     };
 
 }
