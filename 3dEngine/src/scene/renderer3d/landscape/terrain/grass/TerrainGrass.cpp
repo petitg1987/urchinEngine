@@ -241,11 +241,11 @@ namespace urchin {
      */
     void TerrainGrass::generateGrassMesh(std::vector<Point3<float>>& grassVertex, std::vector<Point2<float>>& grassUv) const {
         float grassHalfWidth = grassWidth / 2.0f;
-        float degree45 = 60.0f * MathValue::PI_FLOAT / 180.0f;
+        float degree60 = 60.0f * MathValue::PI_FLOAT / 180.0f;
         std::array<Vector3<float>, 3> directions = {
             Vector3<float>(1.0, 0.0, 0.0),
-            Vector3<float>(std::cos(degree45), 0.0f, std::sin(degree45)),
-            Vector3<float>(std::cos(-degree45), 0.0f, std::sin(-degree45))
+            Vector3<float>(std::cos(degree60), 0.0f, std::sin(degree60)),
+            Vector3<float>(std::cos(-degree60), 0.0f, std::sin(-degree60))
         };
 
         unsigned int seed = 0; //no need to generate different random numbers at each start
