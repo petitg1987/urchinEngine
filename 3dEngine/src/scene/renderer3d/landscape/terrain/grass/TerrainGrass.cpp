@@ -210,46 +210,9 @@ namespace urchin {
 
     void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) {
         if (grassTexture && renderTarget) {
-
-//TODO extract in method
-            float grassHalfWidth = grassWidth / 2.0f;
-            float degree45 = 60.0f * MathValue::PI_FLOAT / 180.0f;
-            std::array<Vector3<float>, 3> directions = {
-                Vector3<float>(1.0, 0.0, 0.0),
-                Vector3<float>(std::cos(degree45), 0.0f, std::sin(degree45)),
-                Vector3<float>(std::cos(-degree45), 0.0f, std::sin(-degree45))
-            };
-
-            unsigned int seed = 0; //no need to generate different random numbers at each start
-            std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)numGrassInTex - 1);
-            std::default_random_engine generator(seed);
-
             std::vector<Point3<float>> grassVertex;
-            grassVertex.reserve(directions.size() * 6);
             std::vector<Point2<float>> grassUv;
-            grassUv.reserve(directions.size() * 6);
-
-            for (const Vector3<float>& direction : directions) {
-                Point3<float> topLeft = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(-direction * grassHalfWidth);
-                Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfWidth);
-                Point3<float> topRight = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(direction * grassHalfWidth);
-                Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfWidth);
-                grassVertex.push_back(topLeft);
-                grassVertex.push_back(topRight);
-                grassVertex.push_back(bottomLeft);
-                grassVertex.push_back(bottomLeft);
-                grassVertex.push_back(topRight);
-                grassVertex.push_back(bottomRight);
-
-                float startTexX = (float)randomInts(generator) * (1.0f / (float)numGrassInTex);
-                float endTexX = startTexX + (1.0f / (float)numGrassInTex);
-                grassUv.emplace_back(startTexX, 0.0f);
-                grassUv.emplace_back(endTexX, 0.0f);
-                grassUv.emplace_back(startTexX, 1.0f);
-                grassUv.emplace_back(startTexX, 1.0f);
-                grassUv.emplace_back(endTexX, 0.0f);
-                grassUv.emplace_back(endTexX, 1.0f);
-            }
+            generateGrassMesh(grassVertex, grassUv);
 
             for (auto& grassQuadtree : leafGrassParcels) {
                 if (!grassQuadtree->getGrassInstanceData().empty()) {
@@ -269,6 +232,49 @@ namespace urchin {
                     grassQuadtree->setRenderer(std::move(renderer));
                 }
             }
+        }
+    }
+
+    /**
+     * @param grassVertex [out] Grass vertices
+     * @param grassUv [out] Grass UV texture coordinates
+     */
+    void TerrainGrass::generateGrassMesh(std::vector<Point3<float>>& grassVertex, std::vector<Point2<float>>& grassUv) const {
+        float grassHalfWidth = grassWidth / 2.0f;
+        float degree45 = 60.0f * MathValue::PI_FLOAT / 180.0f;
+        std::array<Vector3<float>, 3> directions = {
+            Vector3<float>(1.0, 0.0, 0.0),
+            Vector3<float>(std::cos(degree45), 0.0f, std::sin(degree45)),
+            Vector3<float>(std::cos(-degree45), 0.0f, std::sin(-degree45))
+        };
+
+        unsigned int seed = 0; //no need to generate different random numbers at each start
+        std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)numGrassInTex - 1);
+        std::default_random_engine generator(seed);
+
+        grassVertex.reserve(directions.size() * 6);
+        grassUv.reserve(directions.size() * 6);
+
+        for (const Vector3<float>& direction : directions) {
+            Point3<float> topLeft = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(-direction * grassHalfWidth);
+            Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfWidth);
+            Point3<float> topRight = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(direction * grassHalfWidth);
+            Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfWidth);
+            grassVertex.push_back(topLeft);
+            grassVertex.push_back(topRight);
+            grassVertex.push_back(bottomLeft);
+            grassVertex.push_back(bottomLeft);
+            grassVertex.push_back(topRight);
+            grassVertex.push_back(bottomRight);
+
+            float startTexX = (float)randomInts(generator) * (1.0f / (float)numGrassInTex);
+            float endTexX = startTexX + (1.0f / (float)numGrassInTex);
+            grassUv.emplace_back(startTexX, 0.0f);
+            grassUv.emplace_back(endTexX, 0.0f);
+            grassUv.emplace_back(startTexX, 1.0f);
+            grassUv.emplace_back(startTexX, 1.0f);
+            grassUv.emplace_back(endTexX, 0.0f);
+            grassUv.emplace_back(endTexX, 1.0f);
         }
     }
 
