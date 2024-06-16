@@ -8,9 +8,7 @@ layout(std140, set = 0, binding = 0) uniform PositioningData {
 } positioningData;
 layout(std140, set = 0, binding = 1) uniform GrassProperties {
     float displayDistance;
-    float height;
-    float grassLength;
-    int numGrassInTex;
+    float grassHeight;
     float windStrength;
     vec3 windDirection;
 } grassProperties;
@@ -76,7 +74,7 @@ void main() {
             if (grassCameraDistance < grassProperties.displayDistance) {
                 grassHeightReducePercentage = (grassCameraDistance - startReduceHeightDistance) / (grassProperties.displayDistance - startReduceHeightDistance);
             }
-            grassGlobalPosition.y -= grassHeightReducePercentage * grassProperties.height;
+            grassGlobalPosition.y -= grassHeightReducePercentage * grassProperties.grassHeight;
         }
     } else {
         grassGlobalPosition = grassPosition + rotatedVertexPosition;

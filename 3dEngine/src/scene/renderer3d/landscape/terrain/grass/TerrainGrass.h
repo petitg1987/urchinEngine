@@ -82,14 +82,14 @@ namespace urchin {
             } positioningData;
             struct {
                 alignas(4) float displayDistance;
-                alignas(4) float height;
-                alignas(4) float length; //TODO remove ?
-                alignas(4) int numGrassInTex; //TODO remove ?
+                alignas(4) float grassHeight;
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;
             } grassProperties;
-            Matrix4<float> projectionMatrix;
+            float grassWidth;
+            int numGrassInTex;
             float ambient;
+            Matrix4<float> projectionMatrix;
 
             const TerrainMesh* mesh;
             Point3<float> terrainPosition;
@@ -100,7 +100,7 @@ namespace urchin {
             std::string grassMaskFilename;
             std::unique_ptr<TerrainGrassQuadtree> mainGrassQuadtree;
             mutable std::vector<const TerrainGrassQuadtree*> grassQuadtrees;
-            float grassQuantity;
+            float grassQuantity; //TODO move with other props
     };
 
 }

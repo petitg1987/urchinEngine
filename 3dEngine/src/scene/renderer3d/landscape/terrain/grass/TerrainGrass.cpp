@@ -18,6 +18,8 @@ namespace urchin {
             renderTarget(nullptr),
             positioningData({}),
             grassProperties({}),
+            grassWidth(5.0f),
+            numGrassInTex(1),
             ambient(0.5f),
             mesh(nullptr),
             grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)),
@@ -210,7 +212,7 @@ namespace urchin {
         if (grassTexture && renderTarget) {
 
 //TODO extract in method
-            float grassHalfLength = grassProperties.length / 2.0f;
+            float grassHalfWidth = grassWidth / 2.0f;
             float degree45 = 60.0f * MathValue::PI_FLOAT / 180.0f;
             std::array<Vector3<float>, 3> directions = {
                 Vector3<float>(1.0, 0.0, 0.0),
@@ -219,7 +221,7 @@ namespace urchin {
             };
 
             unsigned int seed = 0; //no need to generate different random numbers at each start
-            std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)grassProperties.numGrassInTex - 1);
+            std::uniform_int_distribution<std::mt19937::result_type> randomInts(0, (unsigned long)numGrassInTex - 1);
             std::default_random_engine generator(seed);
 
             std::vector<Point3<float>> grassVertex;
@@ -228,10 +230,10 @@ namespace urchin {
             grassUv.reserve(directions.size() * 6);
 
             for (const Vector3<float>& direction : directions) {
-                Point3<float> topLeft = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(-direction * grassHalfLength);
-                Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfLength);
-                Point3<float> topRight = Point3<float>(0.0f, grassProperties.height, 0.0f).translate(direction * grassHalfLength);
-                Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfLength);
+                Point3<float> topLeft = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(-direction * grassHalfWidth);
+                Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfWidth);
+                Point3<float> topRight = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(direction * grassHalfWidth);
+                Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfWidth);
                 grassVertex.push_back(topLeft);
                 grassVertex.push_back(topRight);
                 grassVertex.push_back(bottomLeft);
@@ -239,8 +241,8 @@ namespace urchin {
                 grassVertex.push_back(topRight);
                 grassVertex.push_back(bottomRight);
 
-                float startTexX = (float)randomInts(generator) * (1.0f / (float)grassProperties.numGrassInTex);
-                float endTexX = startTexX + (1.0f / (float)grassProperties.numGrassInTex);
+                float startTexX = (float)randomInts(generator) * (1.0f / (float)numGrassInTex);
+                float endTexX = startTexX + (1.0f / (float)numGrassInTex);
                 grassUv.emplace_back(startTexX, 0.0f);
                 grassUv.emplace_back(endTexX, 0.0f);
                 grassUv.emplace_back(startTexX, 1.0f);
@@ -259,7 +261,7 @@ namespace urchin {
                             ->addData(grassUv)
                             ->instanceData(grassQuadtree->getGrassInstanceData().size(), {VariableType::VEC3_FLOAT, VariableType::VEC3_FLOAT}, (const float *)grassQuadtree->getGrassInstanceData().data())
                             ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
-                            ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties) //TODO remove unused data
+                            ->addUniformData(GRASS_PROPS_UNIFORM_BINDING, sizeof(grassProperties), &grassProperties)
                             ->addUniformData(AMBIENT_UNIFORM_BINDING, sizeof(ambient), &ambient)
                             ->addUniformTextureReader(GRASS_TEX_UNIFORM_BINDING, TextureReader::build(grassTexture, grassTextureParam))
                             ->build();
@@ -341,39 +343,33 @@ namespace urchin {
     }
 
     float TerrainGrass::getGrassHeight() const {
-        return grassProperties.height;
+        return grassProperties.grassHeight;
     }
 
     void TerrainGrass::setGrassHeight(float grassHeight) {
-        grassProperties.height = grassHeight;
+        grassProperties.grassHeight = grassHeight;
 
-        for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
-        }
+        generateGrass(mesh, terrainPosition);
     }
 
     float TerrainGrass::getGrassLength() const {
-        return grassProperties.length;
+        return grassWidth;
     }
 
-    void TerrainGrass::setGrassLength(float grassLength) {
-        grassProperties.length = grassLength;
+    void TerrainGrass::setGrassLength(float grassWidth) {
+        this->grassWidth = grassWidth;
 
-        for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
-        }
+        generateGrass(mesh, terrainPosition);
     }
 
     unsigned int TerrainGrass::getNumGrassInTexture() const {
-        return (unsigned int)grassProperties.numGrassInTex;
+        return (unsigned int)numGrassInTex;
     }
 
-    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) { //TODO refresh rendered (+check other props)
-        grassProperties.numGrassInTex = (int)numGrassInTex;
+    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex) {
+        this->numGrassInTex = (int)numGrassInTex;
 
-        for (auto* renderer: getAllRenderers()) {
-            renderer->updateUniformData(GRASS_PROPS_UNIFORM_BINDING, &grassProperties);
-        }
+        generateGrass(mesh, terrainPosition);
     }
 
     float TerrainGrass::getGrassQuantity() const {
