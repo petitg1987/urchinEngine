@@ -26,12 +26,8 @@ layout(location = 0) out vec3 normal;
 layout(location = 1) out vec2 texCoordinates;
 invariant gl_Position;
 
-float PHI = 1.61803398874989484820459; //golden ratio
-float PI  = 3.14159265358979323846264; //PI
-float SRT = 1.41421356237309504880169; //square root of two
-
 float randomZeroOne(in vec2 seed) {
-    return fract(sin(dot(seed, vec2(PHI, PI))) * SRT);
+    return fract(sin(dot(seed, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 float randomFloat(float min, float max, vec3 seed) {
@@ -41,7 +37,6 @@ float randomFloat(float min, float max, vec3 seed) {
 }
 
 mat3 rotationMatrix(vec3 axis, float angle) {
-    axis = normalize(axis);
     float s = sin(angle);
     float c = cos(angle);
     float oc = 1.0 - c;
@@ -57,7 +52,7 @@ void main() {
 
     //initial grass rotation
     vec3 seed = grassPosition;
-    float initialRotation = randomFloat(0.0, 2.0f * PI, seed);
+    float initialRotation = randomFloat(0.0, 6.283185307, seed); //from 0 to 2 * PI
     vec3 rotatedVertexPosition = rotationMatrix(vec3(0, 1, 0), initialRotation) * vertexPosition;
 
     vec3 grassGlobalPosition;

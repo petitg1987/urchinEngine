@@ -83,8 +83,8 @@ namespace urchin {
             struct {
                 alignas(4) float displayDistance;
                 alignas(4) float height;
-                alignas(4) float length;
-                alignas(4) int numGrassInTex;
+                alignas(4) float length; //TODO remove ?
+                alignas(4) int numGrassInTex; //TODO remove ?
                 alignas(4) float windStrength;
                 alignas(16) Vector3<float> windDirection;
             } grassProperties;
