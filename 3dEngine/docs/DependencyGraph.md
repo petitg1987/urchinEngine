@@ -2,19 +2,19 @@
 
 ```mermaid
 graph BT
-    A(Screen - Bloom Combine) --> B(Bloom - Up/Down/Pre-Filter)
-    B --> B
-    B --> C(Anti Aliasing)
-    A --> C
-    C --> D(Transparent)
-    D --> E(Deferred Second Pass)
-    E --> H(Shadow Map)
-    E --> K(Deferred First Pass - Albedo/Normal/Mat)
-    D --> K
-    E --> M(Ambient Occlusion - Horizontal Bilateral)
-    M --> K
-    M --> N(Ambient Occlusion - Vertical Bilateral)
-    N --> K
-    N --> O(Ambient Occlusion)
-    O --> K
+    Screen(Screen - Bloom Combine) --> Bloom(Bloom - Up/Down/Pre-Filter)
+    Bloom --> Bloom
+    Bloom --> AntiAliasing(Anti Aliasing)
+    Screen --> AntiAliasing
+    AntiAliasing --> Transparent(Transparent)
+    Transparent --> DefFSecondPass(Deferred Second Pass)
+    DefFSecondPass --> H(Shadow Map)
+    DefFSecondPass --> DefFirstPass(Deferred First Pass - Albedo/Normal/Mat)
+    Transparent --> DefFirstPass
+    DefFSecondPass --> AmbientOcclusionHor(Ambient Occlusion - Horizontal Bilateral)
+    AmbientOcclusionHor --> DefFirstPass
+    AmbientOcclusionHor --> AmbientOcclusionVert(Ambient Occlusion - Vertical Bilateral)
+    AmbientOcclusionVert --> DefFirstPass
+    AmbientOcclusionVert --> AmbientOcclusion(Ambient Occlusion)
+    AmbientOcclusion --> DefFirstPass
 ```
