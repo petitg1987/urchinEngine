@@ -58,6 +58,8 @@ namespace urchin {
             sceneInfo({}),
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), !finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
+            reflectionApplier(ReflectionApplier(!finalRenderTarget.isValidRenderTarget())),
+            isReflectionActivated(true),
             bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget, getGammaFactor())),
 
             //debug
@@ -318,15 +320,20 @@ namespace urchin {
         renderDeferredFirstPass(frameIndex, dt);
         renderDeferredSecondPass(frameIndex);
 
-        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
+        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated || isReflectionActivated  ? 1 /* AA or reflection */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
         if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
             numDependenciesToTransparentTextures += 1;
         }
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine (screen target)
+            unsigned int numDependenciesToAATexture = isReflectionActivated ? 1 /* reflection*/ : 2 /* bloom pre-filter & bloom combine (screen target) */;
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
+        }
+
+        if (isReflectionActivated) {
+            unsigned int numDependenciesToReflectionTexture = 2; //bloom pre-filter & bloom combine (screen target)
+            reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionTexture);
         }
 
         bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);
@@ -447,13 +454,22 @@ namespace urchin {
         if (sceneInfo.isAmbientOcclusionActivated) {
             ambientOcclusionManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture);
         }
-        transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), illuminatedTexture);
+
+        std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
+        transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
+        currentSceneTexture = transparentManager.getOutputTexture();
+
         if (isAntiAliasingActivated) {
             antiAliasingApplier.refreshInputTexture(transparentManager.getOutputTexture());
-            bloomEffectApplier.refreshInputTexture(antiAliasingApplier.getOutputTexture());
-        } else {
-            bloomEffectApplier.refreshInputTexture(transparentManager.getOutputTexture());
+            currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
+
+        if (isReflectionActivated) {
+            reflectionApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture, materialTexture, currentSceneTexture);
+            currentSceneTexture = reflectionApplier.getOutputTexture();
+        }
+
+        bloomEffectApplier.refreshInputTexture(currentSceneTexture);
 
         //refresh the model occlusion culler
         modelOcclusionCuller.refresh();

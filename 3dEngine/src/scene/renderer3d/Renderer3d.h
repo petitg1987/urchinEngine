@@ -9,6 +9,7 @@
 #include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
+#include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
@@ -173,6 +174,8 @@ namespace urchin {
             } sceneInfo;
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
+            ReflectionApplier reflectionApplier;
+            bool isReflectionActivated; //TODO setup it
             BloomEffectApplier bloomEffectApplier;
 
             //debug
