@@ -7,6 +7,7 @@ namespace urchin {
     class ReflectionApplier {
         public:
             explicit ReflectionApplier(bool);
+            ~ReflectionApplier();
 
             void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
@@ -18,7 +19,10 @@ namespace urchin {
             void createOrUpdateRenderer();
             void createOrUpdateShader();
 
-            static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t NORMAL_AMBIENT_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 2;
+            static constexpr uint32_t ILLUMINATED_TEX_UNIFORM_BINDING = 3;
 
             bool useNullRenderTarget;
 

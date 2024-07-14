@@ -10,6 +10,10 @@ namespace urchin {
 
     }
 
+    ReflectionApplier::~ReflectionApplier() {
+        clearRenderer();
+    }
+
     void ReflectionApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture,
                                                 const std::shared_ptr<Texture>& materialTexture, const std::shared_ptr<Texture>& illuminatedTexture) {
         if (depthTexture.get() != this->depthTexture.get()
@@ -17,8 +21,8 @@ namespace urchin {
                 || materialTexture.get() != this->materialTexture.get()
                 || illuminatedTexture.get() != this->illuminatedTexture.get()) {
             this->depthTexture = depthTexture;
-            this->normalAndAmbientTexture = normalAndAmbientTexture; //TODO review doc on dependencies graph
-            this->materialTexture = materialTexture; //TODO review doc on dependencies graph
+            this->normalAndAmbientTexture = normalAndAmbientTexture;
+            this->materialTexture = materialTexture;
             this->illuminatedTexture = illuminatedTexture;
 
             clearRenderer();
@@ -58,7 +62,10 @@ namespace urchin {
         renderer = GenericRendererBuilder::create("reflection", *renderTarget, *shader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(INPUT_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(ILLUMINATED_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
                 ->build();
     }
 

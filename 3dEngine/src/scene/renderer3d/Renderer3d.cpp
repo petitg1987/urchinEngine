@@ -554,6 +554,9 @@ namespace urchin {
             }
         }
         numDependenciesToFirstPassOutput += 1; //transparent
+        if (isReflectionActivated) {
+            numDependenciesToFirstPassOutput += 1; //reflection
+        }
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)
         }
