@@ -11,7 +11,7 @@ namespace urchin {
     }
 
     ReflectionApplier::~ReflectionApplier() {
-        clearRenderer();
+        clearRenderers();
     }
 
     void ReflectionApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture,
@@ -25,31 +25,46 @@ namespace urchin {
             this->materialTexture = materialTexture;
             this->illuminatedTexture = illuminatedTexture;
 
-            clearRenderer();
-            outputTexture = Texture::build("reflection", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+            clearRenderers();
+
+            reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
             if (useNullRenderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
+                reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
             } else {
-                renderTarget = std::make_unique<OffscreenRender>("reflection", RenderTarget::NO_DEPTH_ATTACHMENT);
-                static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
-                renderTarget->initialize();
+                reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflectionColor", RenderTarget::NO_DEPTH_ATTACHMENT);
+                static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorOutputTexture);
+                reflectionColorRenderTarget->initialize();
             }
 
-            createOrUpdateRenderer();
+            reflectionCombineOutputTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+            if (useNullRenderTarget) {
+                reflectionCombineRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
+            } else {
+                reflectionCombineRenderTarget = std::make_unique<OffscreenRender>("reflectionCombine", RenderTarget::NO_DEPTH_ATTACHMENT);
+                static_cast<OffscreenRender*>(reflectionCombineRenderTarget.get())->addOutputTexture(reflectionCombineOutputTexture);
+                reflectionCombineRenderTarget->initialize();
+            }
+
+            createOrUpdateRenderers();
         }
     }
 
-    void ReflectionApplier::clearRenderer() {
-        renderer.reset();
+    void ReflectionApplier::clearRenderers() {
+        reflectionColorRenderer.reset();
+        if (reflectionColorRenderTarget) {
+            reflectionColorRenderTarget->cleanup();
+            reflectionColorRenderTarget.reset();
+        }
 
-        if (renderTarget) {
-            renderTarget->cleanup();
-            renderTarget.reset();
+        reflectionCombineRenderer.reset();
+        if (reflectionCombineRenderTarget) {
+            reflectionCombineRenderTarget->cleanup();
+            reflectionCombineRenderTarget.reset();
         }
     }
 
-    void ReflectionApplier::createOrUpdateRenderer() {
-        createOrUpdateShader();
+    void ReflectionApplier::createOrUpdateRenderers() {
+        createOrUpdateShaders();
 
         std::vector<Point2<float>> vertexCoord = {
                 Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
@@ -59,32 +74,48 @@ namespace urchin {
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
                 Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
         };
-        renderer = GenericRendererBuilder::create("reflection", *renderTarget, *shader, ShapeType::TRIANGLE)
+
+        reflectionColorRenderer = GenericRendererBuilder::create("reflectionColor", *reflectionColorRenderTarget, *reflectionColorShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
-                ->addUniformTextureReader(ILLUMINATED_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(R_COLOR_ILLUMINATED_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
+                ->build();
+
+        reflectionCombineRenderer = GenericRendererBuilder::create("reflectionCombine", *reflectionCombineRenderTarget, *reflectionCombineShader, ShapeType::TRIANGLE)
+                ->addData(vertexCoord)
+                ->addData(textureCoord)
+                ->addUniformTextureReader(REFLECTION_COLOR_TEX_UNIFORM_BINDING, TextureReader::build(reflectionColorOutputTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
                 ->build();
     }
 
-    void ReflectionApplier::createOrUpdateShader() {
-        if (renderTarget->isValidRenderTarget()) {
-            shader = ShaderBuilder::createShader("reflection.vert.spv", "reflection.frag.spv");
+    void ReflectionApplier::createOrUpdateShaders() {
+        if (reflectionColorRenderTarget->isValidRenderTarget()) {
+            reflectionColorShader = ShaderBuilder::createShader("reflectionColor.vert.spv", "reflectionColor.frag.spv");
         } else {
-            shader = ShaderBuilder::createNullShader();
+            reflectionColorShader = ShaderBuilder::createNullShader();
+        }
+
+        if (reflectionCombineRenderTarget->isValidRenderTarget()) {
+            reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv");
+        } else {
+            reflectionCombineShader = ShaderBuilder::createNullShader();
         }
     }
 
     const std::shared_ptr<Texture>& ReflectionApplier::getOutputTexture() const {
-        return outputTexture;
+        return reflectionCombineOutputTexture;
     }
 
     void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionTexture) const {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
-        renderTarget->render(frameIndex, numDependenciesToReflectionTexture);
+        unsigned int numDependenciesToReflectionColorTexture = 1;
+        reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);
+        reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionTexture);
     }
 
 }

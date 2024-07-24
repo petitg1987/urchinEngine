@@ -327,7 +327,7 @@ namespace urchin {
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = isReflectionActivated ? 1 /* reflection*/ : 2 /* bloom pre-filter & bloom combine (screen target) */;
+            unsigned int numDependenciesToAATexture = 2; //(reflection color & reflection combine) or (bloom pre-filter & bloom combine (screen target))
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
 
