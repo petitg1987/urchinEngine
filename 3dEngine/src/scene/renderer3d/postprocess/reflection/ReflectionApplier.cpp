@@ -11,7 +11,13 @@ namespace urchin {
     }
 
     ReflectionApplier::~ReflectionApplier() {
-        clearRenderers();
+        clearRenderingObjects();
+    }
+
+    void ReflectionApplier::onCameraProjectionUpdate(const Camera& camera) {
+        projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
+
+        createOrUpdateRenderingObjects();
     }
 
     void ReflectionApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture,
@@ -25,31 +31,20 @@ namespace urchin {
             this->materialTexture = materialTexture;
             this->illuminatedTexture = illuminatedTexture;
 
-            clearRenderers();
+            createOrUpdateRenderingObjects();
+        }
+    }
 
-            reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
-            if (useNullRenderTarget) {
-                reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
-            } else {
-                reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflectionColor", RenderTarget::NO_DEPTH_ATTACHMENT);
-                static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorOutputTexture);
-                reflectionColorRenderTarget->initialize();
-            }
+    void ReflectionApplier::createOrUpdateRenderingObjects() {
+        clearRenderingObjects();
 
-            reflectionCombineOutputTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
-            if (useNullRenderTarget) {
-                reflectionCombineRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
-            } else {
-                reflectionCombineRenderTarget = std::make_unique<OffscreenRender>("reflectionCombine", RenderTarget::NO_DEPTH_ATTACHMENT);
-                static_cast<OffscreenRender*>(reflectionCombineRenderTarget.get())->addOutputTexture(reflectionCombineOutputTexture);
-                reflectionCombineRenderTarget->initialize();
-            }
-
+        if (depthTexture) {
+            createOrUpdateRenderTargets();
             createOrUpdateRenderers();
         }
     }
 
-    void ReflectionApplier::clearRenderers() {
+    void ReflectionApplier::clearRenderingObjects() {
         reflectionColorRenderer.reset();
         if (reflectionColorRenderTarget) {
             reflectionColorRenderTarget->cleanup();
@@ -60,6 +55,26 @@ namespace urchin {
         if (reflectionCombineRenderTarget) {
             reflectionCombineRenderTarget->cleanup();
             reflectionCombineRenderTarget.reset();
+        }
+    }
+
+    void ReflectionApplier::createOrUpdateRenderTargets() {
+        reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+        if (useNullRenderTarget) {
+            reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
+        } else {
+            reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflectionColor", RenderTarget::NO_DEPTH_ATTACHMENT);
+            static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorOutputTexture);
+            reflectionColorRenderTarget->initialize();
+        }
+
+        reflectionCombineOutputTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+        if (useNullRenderTarget) {
+            reflectionCombineRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
+        } else {
+            reflectionCombineRenderTarget = std::make_unique<OffscreenRender>("reflectionCombine", RenderTarget::NO_DEPTH_ATTACHMENT);
+            static_cast<OffscreenRender*>(reflectionCombineRenderTarget.get())->addOutputTexture(reflectionCombineOutputTexture);
+            reflectionCombineRenderTarget->initialize();
         }
     }
 
@@ -78,6 +93,7 @@ namespace urchin {
         reflectionColorRenderer = GenericRendererBuilder::create("reflectionColor", *reflectionColorRenderTarget, *reflectionColorShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
+                ->addUniformData(PROJECTION_UNIFORM_BINDING, sizeof(projection), &projection)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))

@@ -221,6 +221,7 @@ namespace urchin {
         shadowManager.onCameraProjectionUpdate(*camera);
         ambientOcclusionManager.onCameraProjectionUpdate(*camera);
         transparentManager.onCameraProjectionUpdate(*camera);
+        reflectionApplier.onCameraProjectionUpdate(*camera);
         refreshDebugFramebuffers = true;
     }
 

@@ -14,10 +14,8 @@ graph BT
     DeferredSecondPass --> ShadowMap(Shadow Map)
     DeferredSecondPass --> DeferredFirstPass
     Transparent --> DeferredFirstPass
-    DeferredSecondPass --> AmbientOcclusionHor(Ambient Occlusion - Horizontal Blur)
-    AmbientOcclusionHor --> DeferredFirstPass
-    AmbientOcclusionHor --> AmbientOcclusionVert(Ambient Occlusion - Vertical Blur)
-    AmbientOcclusionVert --> DeferredFirstPass
-    AmbientOcclusionVert --> AmbientOcclusion(Ambient Occlusion)
+    DeferredSecondPass --> AmbientOcclusionBlur(Ambient Occlusion - Horizontal/Vert Blur)
+    AmbientOcclusionBlur --> DeferredFirstPass
+    AmbientOcclusionBlur --> AmbientOcclusion(Ambient Occlusion)
     AmbientOcclusion --> DeferredFirstPass
 ```

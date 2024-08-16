@@ -63,8 +63,8 @@ namespace urchin {
 
             void checkConfig() const;
 
-            void createOrUpdateAO();
-            void createOrUpdateAOTexture();
+            void createOrUpdateRenderingObjects();
+            void createOrUpdateRenderTarget();
             void createOrUpdateRenderer();
             void createOrUpdateAOShader();
             void generateKernelSamples();

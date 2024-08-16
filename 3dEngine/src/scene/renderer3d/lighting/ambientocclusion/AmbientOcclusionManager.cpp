@@ -41,7 +41,7 @@ namespace urchin {
         projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
         projection.projectionMatrix = camera.getProjectionMatrix();
 
-        createOrUpdateAO();
+        createOrUpdateRenderingObjects();
     }
 
     void AmbientOcclusionManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
@@ -50,23 +50,23 @@ namespace urchin {
             this->depthTexture = depthTexture;
             this->normalAndAmbientTexture = normalAndAmbientTexture;
 
-            createOrUpdateAO();
+            createOrUpdateRenderingObjects();
         }
     }
 
-    void AmbientOcclusionManager::createOrUpdateAO() {
+    void AmbientOcclusionManager::createOrUpdateRenderingObjects() {
         if (depthTexture) {
             ScopeProfiler sp(Profiler::graphic(), "updateAO");
 
             generateKernelSamples();
             generateNoiseTexture();
 
-            createOrUpdateAOTexture();
+            createOrUpdateRenderTarget();
             createOrUpdateRenderer();
         }
     }
 
-    void AmbientOcclusionManager::createOrUpdateAOTexture() {
+    void AmbientOcclusionManager::createOrUpdateRenderTarget() {
         TextureFormat textureFormat;
         if (config.textureBits == AOTextureBits::AO_8_BITS) {
             textureFormat = TextureFormat::GRAYSCALE_8_INT;
@@ -228,7 +228,7 @@ namespace urchin {
             this->config = config;
             checkConfig();
 
-            createOrUpdateAO();
+            createOrUpdateRenderingObjects();
         }
     }
 
