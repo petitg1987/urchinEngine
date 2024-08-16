@@ -15,6 +15,7 @@ namespace urchin {
     }
 
     void ReflectionApplier::onCameraProjectionUpdate(const Camera& camera) {
+        projection.projectionMatrix = camera.getProjectionMatrix();
         projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
 
         createOrUpdateRenderingObjects();

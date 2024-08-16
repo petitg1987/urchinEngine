@@ -3,6 +3,7 @@
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
+    mat4 mProjection;
     mat4 mInverseProjection;
 } positioningData;
 
@@ -28,8 +29,25 @@ vec4 fetchViewSpacePosition(vec2 texCoord, float depthValue) {
 }
 
 void main() {
+    //TODO const
+    float maxDistance = 8;
+
     float depthValue = texture(depthTex, texCoordinates).r;
-    vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates, depthValue);
+    vec3 normal = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
+    vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates, depthValue); //TODO (remove comment): named positionFrom in tuto
+
+    vec3 pivot = normalize(reflect(viewSpacePosition.xyz, normal));
+    vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView
+    vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0); //TODO (remove comment): named endView
+
+    vec4 startFrag = positioningData.mProjection * startViewSpacePosition; //TODO is it equals to viewSpacePosition ?
+    startFrag.xyz /= startFrag.w;
+    startFrag.xy = startFrag.xy * 0.5 + 0.5;
+    //startFrag.xy *= texSize;
+    vec4 endFrag = positioningData.mProjection * endViewSpacePosition;
+    endFrag.xyz /= endFrag.w;
+    endFrag.xy = endFrag.xy * 0.5 + 0.5;
+    //endFrag.xy *= texSize;
 
     vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     fragColor = vec4(color, 1.0);

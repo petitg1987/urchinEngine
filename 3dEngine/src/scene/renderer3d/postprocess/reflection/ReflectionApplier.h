@@ -36,6 +36,7 @@ namespace urchin {
             bool useNullRenderTarget;
 
             struct {
+                alignas(16) Matrix4<float> projectionMatrix;
                 alignas(16) Matrix4<float> inverseProjectionMatrix;
             } projection;
 
