@@ -1,7 +1,6 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
-//global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
     mat4 mProjection;
     mat4 mInverseProjection;
@@ -30,8 +29,9 @@ vec4 fetchViewSpacePosition(vec2 texCoord, float depthValue) {
 
 void main() {
     //TODO const
-    float maxDistance = 8;
+    float maxDistance = 8.0;
 
+    vec2 sceneSize = textureSize(depthTex, 0);
     float depthValue = texture(depthTex, texCoordinates).r;
     vec3 normal = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
     vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates, depthValue); //TODO (remove comment): named positionFrom in tuto
@@ -43,11 +43,12 @@ void main() {
     vec4 startFrag = positioningData.mProjection * startViewSpacePosition; //TODO is it equals to viewSpacePosition ?
     startFrag.xyz /= startFrag.w;
     startFrag.xy = startFrag.xy * 0.5 + 0.5;
-    //startFrag.xy *= texSize;
+    startFrag.xy *= sceneSize;
+
     vec4 endFrag = positioningData.mProjection * endViewSpacePosition;
     endFrag.xyz /= endFrag.w;
     endFrag.xy = endFrag.xy * 0.5 + 0.5;
-    //endFrag.xy *= texSize;
+    endFrag.xy *= sceneSize;
 
     vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     fragColor = vec4(color, 1.0);

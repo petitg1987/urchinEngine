@@ -34,17 +34,15 @@ namespace urchin {
             static constexpr uint32_t R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING = 1;
 
             bool useNullRenderTarget;
-
-            struct {
-                alignas(16) Matrix4<float> projectionMatrix;
-                alignas(16) Matrix4<float> inverseProjectionMatrix;
-            } projection;
-
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
             std::shared_ptr<Texture> materialTexture;
             std::shared_ptr<Texture> illuminatedTexture;
 
+            struct {
+                alignas(16) Matrix4<float> projectionMatrix;
+                alignas(16) Matrix4<float> inverseProjectionMatrix;
+            } projection;
             std::shared_ptr<Texture> reflectionColorOutputTexture;
             std::unique_ptr<RenderTarget> reflectionColorRenderTarget;
             std::unique_ptr<Shader> reflectionColorShader;
