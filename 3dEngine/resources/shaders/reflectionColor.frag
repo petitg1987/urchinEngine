@@ -27,6 +27,14 @@ vec4 fetchViewSpacePosition(vec2 texCoord, float depthValue) {
     return worldPosition;
 }
 
+vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
+    vec4 endFrag = positioningData.mProjection * viewSpacePosition;
+    endFrag.xyz /= endFrag.w;
+    endFrag.xy = endFrag.xy * 0.5 + 0.5;
+    endFrag.xy *= sceneSize;
+    return endFrag.xy;
+}
+
 void main() {
     //TODO const
     float maxDistance = 8.0;
@@ -40,15 +48,8 @@ void main() {
     vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView
     vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0); //TODO (remove comment): named endView
 
-    vec4 startFrag = positioningData.mProjection * startViewSpacePosition; //TODO is it equals to viewSpacePosition ?
-    startFrag.xyz /= startFrag.w;
-    startFrag.xy = startFrag.xy * 0.5 + 0.5;
-    startFrag.xy *= sceneSize;
-
-    vec4 endFrag = positioningData.mProjection * endViewSpacePosition;
-    endFrag.xyz /= endFrag.w;
-    endFrag.xy = endFrag.xy * 0.5 + 0.5;
-    endFrag.xy *= sceneSize;
+    vec2 startFrag = computeFragPosition(startViewSpacePosition, sceneSize); //TODO is it equals to texCoordinates ?
+    vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
 
     vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     fragColor = vec4(color, 1.0);
