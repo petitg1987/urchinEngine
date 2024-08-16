@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include <math/algebra/point/Point3.h>
 #include <math/algebra/vector/Vector3.h>
 

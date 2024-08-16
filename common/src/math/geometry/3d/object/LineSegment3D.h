@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <vector>
+#include <array>
 
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/Line3D.h>

@@ -1,6 +1,7 @@
-#include <io/svg/SVGExporter.h>
-
 #include <utility>
+#include <memory>
+
+#include <io/svg/SVGExporter.h>
 
 namespace urchin {
     SVGExporter::SVGExporter(std::string filename) :

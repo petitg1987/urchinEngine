@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <array>
 
 #include <math/geometry/3d/shape/ConvexShape3D.h>
 #include <math/algebra/point/Point3.h>

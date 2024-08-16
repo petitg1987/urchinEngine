@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include <io/uda/UdaAttribute.h>
 #include <math/algebra/point/Point2.h>

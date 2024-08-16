@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/shape/CylinderShape.h>
 #include <math/algebra/point/Point3.h>

@@ -45,7 +45,7 @@ if (WIN32)
     SET(VULKAN_LIB vulkan-1)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
-    set(FREETYPE_LIB freetype.a png16.a brotlidec.a brotlicommon.a z.a)
+    set(FREETYPE_LIB freetype.a bz2.a png16.a brotlidec.a brotlicommon.a z.a)
     SET(VULKAN_LIB vulkan)
 endif()
 

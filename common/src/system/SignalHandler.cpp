@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <array>
 #ifdef _WIN32
     #include <windows.h>
     #include <imagehlp.h>
