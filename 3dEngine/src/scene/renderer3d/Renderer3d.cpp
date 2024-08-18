@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <locale>
 
 #include <scene/renderer3d/Renderer3d.h>
 #include <scene/renderer3d/OpaqueMeshFilter.h>
@@ -405,6 +404,7 @@ namespace urchin {
         fogContainer.setupDeferredSecondPassRenderer(deferredSecondPassRendererBuilder, FOG_UNIFORM_BINDING);
 
         std::vector<std::shared_ptr<TextureReader>> shadowMapTextureReaders;
+        shadowMapTextureReaders.reserve(shadowManager.getMaxShadowLights());
         for (unsigned int i = 0; i < shadowManager.getMaxShadowLights(); ++i) {
             shadowMapTextureReaders.push_back(TextureReader::build(shadowManager.getEmptyShadowMapTexture(), TextureParam::buildNearest()));
         }
