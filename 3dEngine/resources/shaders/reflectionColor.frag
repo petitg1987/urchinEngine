@@ -46,7 +46,7 @@ void main() {
     vec2 sceneSize = textureSize(depthTex, 0);
     float depthValue = texture(depthTex, texCoordinates).r;
     vec3 normalWorlsSpace = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
-    vec3 normalViewSpace = normalize(positioningData.mView * vec4(normalWorlsSpace, 1.0)).xyz;
+    vec3 normalViewSpace = normalize(mat3(positioningData.mView) * normalWorlsSpace);
     vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates, depthValue); //TODO (remove comment): named positionFrom in tuto
 
     vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
