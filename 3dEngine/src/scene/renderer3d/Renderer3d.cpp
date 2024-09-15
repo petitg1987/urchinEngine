@@ -333,7 +333,7 @@ namespace urchin {
 
         if (isReflectionActivated) {
             unsigned int numDependenciesToReflectionTexture = 2; //bloom pre-filter & bloom combine (screen target)
-            reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionTexture);
+            reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionTexture, *camera);
         }
 
         bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);

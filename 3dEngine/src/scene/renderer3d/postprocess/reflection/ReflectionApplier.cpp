@@ -15,10 +15,12 @@ namespace urchin {
     }
 
     void ReflectionApplier::onCameraProjectionUpdate(const Camera& camera) {
-        projection.projectionMatrix = camera.getProjectionMatrix();
-        projection.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
+        projectionData.projectionMatrix = camera.getProjectionMatrix();
+        projectionData.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
 
-        createOrUpdateRenderingObjects();
+        if (reflectionColorRenderer) {
+            reflectionColorRenderer->updateUniformData(PROJECTION_DATA_UNIFORM_BINDING, &projectionData);
+        }
     }
 
     void ReflectionApplier::refreshInputTexture(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture,
@@ -94,7 +96,8 @@ namespace urchin {
         reflectionColorRenderer = GenericRendererBuilder::create("reflectionColor", *reflectionColorRenderTarget, *reflectionColorShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformData(PROJECTION_UNIFORM_BINDING, sizeof(projection), &projection)
+                ->addUniformData(PROJECTION_DATA_UNIFORM_BINDING, sizeof(projectionData), &projectionData)
+                ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(NORMAL_AMBIENT_TEX_UNIFORM_BINDING, TextureReader::build(normalAndAmbientTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(MATERIAL_TEX_UNIFORM_BINDING, TextureReader::build(materialTexture, TextureParam::buildNearest()))
@@ -127,11 +130,14 @@ namespace urchin {
         return reflectionCombineOutputTexture;
     }
 
-    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionTexture) const {
+    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
         unsigned int numDependenciesToReflectionColorTexture = 1;
+        positioningData.viewMatrix = camera.getViewMatrix();
+        reflectionColorRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);
+
         reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionTexture);
     }
 
