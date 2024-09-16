@@ -51,10 +51,10 @@ void main() {
 
     vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
     vec3 pivot = normalize(reflect(cameraToPositionVec, normalViewSpace));
-    vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView
+    vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView + remove variable if not used
     vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0); //TODO (remove comment): named endView
 
-    vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(startViewSpacePosition, sceneSize);
+    vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
 
     //DEBUG: visualize the startFrag and endFrag. Red circle is a startFrag and the center of the screen is the corresponding endFrag.
