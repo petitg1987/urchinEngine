@@ -54,13 +54,15 @@ void main() {
     vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView
     vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0); //TODO (remove comment): named endView
 
-    vec2 startFrag = computeFragPosition(startViewSpacePosition, sceneSize); //TODO equals to texCoordinates * sceneSize
+    vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(startViewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
 
-    if (endFrag.x > 1280.0 - 20.0f && endFrag.x < 1280.0 + 20.0f && endFrag.y > 720.0 - 20.0f && endFrag.y < 720.0 + 20.0f) {
+    //DEBUG: visualize the startFrag and endFrag. Red circle is a startFrag and the center of the screen is the corresponding endFrag.
+    /* if (distance(endFrag, sceneSize / 2.0f) < 10.0) {
         fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-    } else {
-        vec3 color = texture(illuminatedTex, texCoordinates).rgb;
-        fragColor = vec4(color, 1.0);
-    }
+        return;
+    } */
+
+    vec3 color = texture(illuminatedTex, texCoordinates).rgb;
+    fragColor = vec4(color, 1.0);
 }
