@@ -78,8 +78,8 @@ void main() {
         frag += increment;
         vec2 uv = frag / sceneSize;
 
-        float depthValue = texture(depthTex, uv).r;
-        vec4 viewSpacePositionTo = fetchViewSpacePosition(uv, depthValue);
+        float fragDepthValue = texture(depthTex, uv).r;
+        vec4 viewSpacePositionTo = fetchViewSpacePosition(uv, fragDepthValue);
 
         float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
         progressionScreenSpace = clamp(progressionScreenSpace, 0.0, 1.0);
