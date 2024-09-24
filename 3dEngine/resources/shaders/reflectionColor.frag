@@ -41,9 +41,9 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 
 void main() {
     //TODO const
-    float maxDistance = 1.0;
-    float skipPixelCount = 1.0; //TODO (remove comment): named resolution in tuto + change to 3.0
-    float thickness = 0.05;
+    float maxDistance = 10.0;
+    float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
+    float thickness = 0.1;
 
     vec2 sceneSize = textureSize(depthTex, 0);
     float depthValue = texture(depthTex, texCoordinates).r;
@@ -58,6 +58,8 @@ void main() {
 
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
+    endFrag.x = clamp(endFrag.x, 0, sceneSize.x);
+    endFrag.y = clamp(endFrag.y, 0, sceneSize.y);
 
     //DEBUG: visualize the startFrag and endFrag. Red circle is a startFrag and the center of the screen is the corresponding endFrag.
     /* if (distance(endFrag, sceneSize / 2.0f) < 10.0) {
