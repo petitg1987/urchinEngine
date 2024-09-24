@@ -42,8 +42,8 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 void main() {
     //TODO const
     float maxDistance = 1.0;
-    float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
-    float thickness   = 0.5;
+    float skipPixelCount = 1.0; //TODO (remove comment): named resolution in tuto + change to 3.0
+    float thickness = 0.05;
 
     vec2 sceneSize = textureSize(depthTex, 0);
     float depthValue = texture(depthTex, texCoordinates).r;
@@ -88,8 +88,7 @@ void main() {
         //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
         float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progressionScreenSpace);
 
-        float deltaDepth = viewDistance - viewSpacePositionTo.z;
-        if (deltaDepth > 0 && deltaDepth < thickness) {
+        if (viewDistance < viewSpacePositionTo.z - thickness) {
             hasHit = 1;
             break;
         }
