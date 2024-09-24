@@ -72,7 +72,7 @@ void main() {
     vec2 increment = vec2(deltaX, deltaY) / max(stepNumber, 0.001);
 
     //first pass
-    int hit = 0;
+    int hasHit = 0;
     vec2 frag = startFrag;
     for (int i = 0; i < int(stepNumber); ++i) {
         frag += increment;
@@ -81,21 +81,21 @@ void main() {
         float depthValue = texture(depthTex, uv).r;
         vec4 viewSpacePositionTo = fetchViewSpacePosition(uv, depthValue);
 
-        float progression = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
-        progression = clamp(progression, 0.0, 1.0);
+        float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
+        progressionScreenSpace = clamp(progressionScreenSpace, 0.0, 1.0);
 
-        //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progression)" but with perspective-correct interpolation
+        //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progressionScreenSpace)" but with perspective-correct interpolation
         //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
-        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progression);
+        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progressionScreenSpace);
 
         float deltaDepth = viewDistance - viewSpacePositionTo.z;
         if (deltaDepth > 0 && deltaDepth < thickness) {
-            hit = 1;
+            hasHit = 1;
             break;
         }
     }
 
-    if (hit == 1) {
+    if (hasHit == 1) {
         fragColor = vec4(1.0, 0.0, 0.0, 1.0);
         return;
     }
