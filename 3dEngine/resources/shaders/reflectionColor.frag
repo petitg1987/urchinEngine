@@ -42,6 +42,8 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 void main() {
     //TODO const
     float maxDistance = 1.0;
+    float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
+    float thickness   = 0.5;
 
     vec2 sceneSize = textureSize(depthTex, 0);
     float depthValue = texture(depthTex, texCoordinates).r;
@@ -51,7 +53,7 @@ void main() {
 
     vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
     vec3 pivot = normalize(reflect(cameraToPositionVec, normalViewSpace));
-    vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView + remove variable if not used
+    vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView
     vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0); //TODO (remove comment): named endView
 
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
@@ -62,6 +64,41 @@ void main() {
         fragColor = vec4(1.0, 0.0, 0.0, 1.0);
         return;
     } */
+
+    float deltaX = endFrag.x - startFrag.x;
+    float deltaY = endFrag.y - startFrag.y;
+    float useX = abs(deltaX) >= abs(deltaY) ? 1.0 : 0.0;
+    float stepNumber = mix(abs(deltaY), abs(deltaX), useX) / skipPixelCount; //TODO (remove comment): named delta in tuto
+    vec2 increment = vec2(deltaX, deltaY) / max(stepNumber, 0.001);
+
+    //first pass
+    int hit = 0;
+    vec2 frag = startFrag;
+    for (int i = 0; i < int(stepNumber); ++i) {
+        frag += increment;
+        vec2 uv = frag / sceneSize;
+
+        float depthValue = texture(depthTex, uv).r;
+        vec4 viewSpacePositionTo = fetchViewSpacePosition(uv, depthValue);
+
+        float progression = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
+        progression = clamp(progression, 0.0, 1.0);
+
+        //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progression)" but with perspective-correct interpolation
+        //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
+        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progression);
+
+        float deltaDepth = viewDistance - viewSpacePositionTo.z;
+        if (deltaDepth > 0 && deltaDepth < thickness) {
+            hit = 1;
+            break;
+        }
+    }
+
+    if (hit == 1) {
+        fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        return;
+    }
 
     vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     fragColor = vec4(color, 1.0);
