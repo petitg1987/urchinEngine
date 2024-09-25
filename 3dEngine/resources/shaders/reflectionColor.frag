@@ -44,7 +44,7 @@ void main() {
     //TODO const
     float maxDistance = 15.0;
     float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
-    float depthEpsilon = 0.5; //TODO used ?
+    float depthEpsilon = 5.0; //TODO used ?
     int numSteps = 10;
 
     vec2 sceneSize = textureSize(depthTex, 0);
@@ -119,7 +119,7 @@ void main() {
         float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
         vec4 viewSpacePositionTo = fetchViewSpacePosition(fragUv);
 
-        if (viewDistance < viewSpacePositionTo.z) { //TODO review collision check: see tuto
+        if (viewDistance < viewSpacePositionTo.z + depthEpsilon) { //TODO review collision check: see tuto
             secondPassHasHit = 1;
             hitBoundary2 = hitBoundaryMiddle;
         } else {
@@ -133,7 +133,7 @@ void main() {
         return;
     } */
 
-    if (firstPassHasHit == 1) { //TODO second hit ?
+    if (secondPassHasHit == 1) { //TODO second hit ?
         vec3 color = texture(illuminatedTex, fragUv).rgb;
         //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
         fragColor = vec4(color, 1.0);
