@@ -69,7 +69,7 @@ void main() {
     } */
 
     vec2 frag = startFrag;
-    vec2 fragUv = frag / sceneSize;
+    vec2 fragUv = texCoordinates;
     float hitBoundary1 = 0.0;
     float hitBoundary2 = 0.0;
 
@@ -110,29 +110,33 @@ void main() {
 
     //SECOND PASS
     int secondPassHasHit = 0;
-    hitBoundary2 = hitBoundary1 + ((hitBoundary2 - hitBoundary1) / 2.0);
-
     int secondPassSteps = numSteps * firstPassHasHit;
     for (int i = 0; i < secondPassSteps; ++i) {
-        frag = mix(startFrag.xy, endFrag.xy, hitBoundary2);
+        float hitBoundaryMiddle = (hitBoundary1 + hitBoundary2) / 2.0;
+        frag = mix(startFrag.xy, endFrag.xy, hitBoundaryMiddle);
         fragUv = frag / sceneSize;
 
-        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundary2);
+        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
         vec4 viewSpacePositionTo = fetchViewSpacePosition(fragUv);
 
         if (viewDistance < viewSpacePositionTo.z) { //TODO review collision check: see tuto
             secondPassHasHit = 1;
-            hitBoundary2 = hitBoundary1 + ((hitBoundary2 - hitBoundary1) / 2.0);
+            hitBoundary2 = hitBoundaryMiddle;
         } else {
-            float temp = hitBoundary2;
-            hitBoundary2 = hitBoundary2 + ((hitBoundary2 - hitBoundary1) / 2.0);
-            hitBoundary1 = temp;
+            hitBoundary1 = hitBoundaryMiddle;
         }
     }
 
     //DEBUG: visualize the hit in red
-    if (secondPassHasHit == 1) {
+    /* if (secondPassHasHit == 1) {
         fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        return;
+    } */
+
+    if (firstPassHasHit == 1) { //TODO second hit ?
+        vec3 color = texture(illuminatedTex, fragUv).rgb;
+        //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+        fragColor = vec4(color, 1.0);
         return;
     }
 
