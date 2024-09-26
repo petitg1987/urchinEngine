@@ -44,7 +44,7 @@ void main() {
     //TODO const
     float maxDistance = 15.0;
     float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
-    float depthEpsilon = 5.0; //TODO used ?
+    float thickness = 0.5; //TODO used ?
     int numSteps = 10;
 
     vec2 sceneSize = textureSize(depthTex, 0);
@@ -92,8 +92,9 @@ void main() {
         //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
         float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progressionScreenSpace);
         vec4 viewSpacePositionTo = fetchViewSpacePosition(fragUv);
+        float depth = viewSpacePositionTo.z - viewDistance;
 
-        if (viewDistance < viewSpacePositionTo.z) { //TODO review collision check: see tuto
+        if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
             firstPassHasHit = 1;
             hitBoundary1 = progressionScreenSpace;
             break;
@@ -118,12 +119,13 @@ void main() {
 
         float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
         vec4 viewSpacePositionTo = fetchViewSpacePosition(fragUv);
+        float depth = viewSpacePositionTo.z - viewDistance;
 
-        if (viewDistance < viewSpacePositionTo.z + depthEpsilon) { //TODO review collision check: see tuto
+        if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
             secondPassHasHit = 1;
-            hitBoundary2 = hitBoundaryMiddle;
-        } else {
             hitBoundary1 = hitBoundaryMiddle;
+        } else {
+            hitBoundary2 = hitBoundaryMiddle;
         }
     }
 
