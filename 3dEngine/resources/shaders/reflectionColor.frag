@@ -70,8 +70,12 @@ void main() {
 
     vec2 frag = startFrag;
     vec2 fragUv = texCoordinates;
+
     float hitBoundary1 = 0.0;
     float hitBoundary2 = 0.0;
+
+    float depth = thickness;
+    vec4 viewSpacePositionTo = viewSpacePosition;
 
     //FIRST PASS
     int firstPassHasHit = 0;
@@ -91,7 +95,7 @@ void main() {
         //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progressionScreenSpace)" but with perspective-correct interpolation
         //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
         float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progressionScreenSpace);
-        vec4 viewSpacePositionTo = fetchViewSpacePosition(fragUv);
+        viewSpacePositionTo = fetchViewSpacePosition(fragUv);
         float depth = viewSpacePositionTo.z - viewDistance;
 
         if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
@@ -118,8 +122,8 @@ void main() {
         fragUv = frag / sceneSize;
 
         float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
-        vec4 viewSpacePositionTo = fetchViewSpacePosition(fragUv);
-        float depth = viewSpacePositionTo.z - viewDistance;
+        viewSpacePositionTo = fetchViewSpacePosition(fragUv);
+        depth = viewSpacePositionTo.z - viewDistance;
 
         if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
             secondPassHasHit = 1;
@@ -135,13 +139,21 @@ void main() {
         return;
     } */
 
-    if (secondPassHasHit == 1) { //TODO second hit ?
-        vec3 color = texture(illuminatedTex, fragUv).rgb;
-        //fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        fragColor = vec4(color, 1.0);
-        return;
-    }
 
-    vec3 color = texture(illuminatedTex, texCoordinates).rgb;
-    fragColor = vec4(color, 1.0);
+//TODO remove
+//    if ((1.0 - clamp( depth / thickness, 0, 1)) < 0.5) {
+//        fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+//        return;
+//    }
+
+    float visibility = secondPassHasHit
+        * (1.0 - max(dot(-cameraToPositionVec, pivot), 0.0)) //Eliminate reflection rays pointing to camera and probably hitting something behind the camera
+        * (1.0 - clamp(depth / thickness, 0, 1)) //TODO comment
+        * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / maxDistance, 0.0, 1.0)) //TODO comment
+        * (fragUv.x < 0.0 || fragUv.x > 1.0 ? 0.0 : 1.0)
+        * (fragUv.y < 0.0 || fragUv.y > 1.0 ? 0.0 : 1.0);
+
+    vec3 color = (1.0 - visibility) * texture(illuminatedTex, texCoordinates).rgb;
+    vec3 reflectionColor = visibility * texture(illuminatedTex, fragUv).rgb;
+    fragColor = vec4(color + reflectionColor, 1.0);
 }
