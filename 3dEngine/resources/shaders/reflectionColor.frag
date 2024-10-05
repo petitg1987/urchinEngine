@@ -151,7 +151,7 @@ void main() {
         * (fragUv.y < 0.0 || fragUv.y > 1.0 ? 0.0 : 1.0);
     visibility = clamp(visibility, 0, 1);
 
-    vec3 color = (1.0 - visibility) * texture(illuminatedTex, texCoordinates).rgb;
-    vec3 reflectionColor = visibility * texture(illuminatedTex, fragUv).rgb;
-    fragColor = vec4(color + reflectionColor, 1.0);
+    vec3 color = texture(illuminatedTex, texCoordinates).rgb;
+    vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
+    fragColor = vec4(mix(color, reflectionColor, visibility), 1.0);
 }
