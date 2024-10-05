@@ -44,10 +44,10 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 
 void main() {
     //TODO const
-    float maxDistance = 15.0;
-    float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
+    float maxDistance = 8.0;
+    float skipPixelCount = 10.0; //TODO (remove comment): named resolution in tuto
     float thickness = 0.5;
-    int numSteps = 10;
+    int numSteps = 8;
 
     vec2 sceneSize = textureSize(depthTex, 0);
     vec3 normalWorlsSpace = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
