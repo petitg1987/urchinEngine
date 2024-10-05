@@ -149,6 +149,7 @@ void main() {
         * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / maxDistance, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
         * (fragUv.x < 0.0 || fragUv.x > 1.0 ? 0.0 : 1.0)
         * (fragUv.y < 0.0 || fragUv.y > 1.0 ? 0.0 : 1.0);
+    visibility = clamp(visibility, 0, 1);
 
     vec3 color = (1.0 - visibility) * texture(illuminatedTex, texCoordinates).rgb;
     vec3 reflectionColor = visibility * texture(illuminatedTex, fragUv).rgb;
