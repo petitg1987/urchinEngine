@@ -106,6 +106,8 @@ void main() {
             } else {
                 hitBoundary2 = hitBoundary1;
             }
+        } else {
+            break;
         }
     }
 
