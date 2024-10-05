@@ -6,13 +6,15 @@ layout(std140, set = 0, binding = 0) uniform ProjectionData {
     mat4 mInverseProjection;
 } projectionData;
 
-layout(std140, set = 0, binding = 1) uniform PositioningData {
+layout(std140, set = 0, binding = 1) uniform PositioningData { //TODO remove the not used one
     mat4 mView;
+    mat4 mInverseProjectionView;
+    vec3 cameraPosition;
 } positioningData;
 
 layout(binding = 2) uniform sampler2D depthTex;
 layout(binding = 3) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 4) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
+layout(binding = 4) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits) //TODO remove if not used
 layout(binding = 5) uniform sampler2D illuminatedTex;
 
 layout(location = 0) in vec2 texCoordinates;
@@ -44,7 +46,7 @@ void main() {
     //TODO const
     float maxDistance = 15.0;
     float skipPixelCount = 3.0; //TODO (remove comment): named resolution in tuto
-    float thickness = 0.5; //TODO used ?
+    float thickness = 0.5;
     int numSteps = 10;
 
     vec2 sceneSize = textureSize(depthTex, 0);
@@ -59,8 +61,6 @@ void main() {
 
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
-    endFrag.x = clamp(endFrag.x, 0, sceneSize.x);
-    endFrag.y = clamp(endFrag.y, 0, sceneSize.y);
 
     //DEBUG: visualize the startFrag and endFrag. Red circle is a startFrag and the center of the screen is the corresponding endFrag.
     /* if (distance(endFrag, sceneSize / 2.0f) < 10.0) {
@@ -89,21 +89,23 @@ void main() {
         frag += increment;
         fragUv = frag / sceneSize;
 
-        float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
-        progressionScreenSpace = clamp(progressionScreenSpace, 0.0, 1.0);
+        if (fragUv.x > 0.0 && fragUv.x < 1.0 && fragUv.y > 0.0 && fragUv.y < 1.0) {
+            float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
+            progressionScreenSpace = clamp(progressionScreenSpace, 0.0, 1.0);
 
-        //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progressionScreenSpace)" but with perspective-correct interpolation
-        //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
-        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progressionScreenSpace);
-        viewSpacePositionTo = fetchViewSpacePosition(fragUv);
-        float depth = viewSpacePositionTo.z - viewDistance;
+            //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progressionScreenSpace)" but with perspective-correct interpolation
+            //See https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
+            float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, progressionScreenSpace);
+            viewSpacePositionTo = fetchViewSpacePosition(fragUv);
+            float depth = viewSpacePositionTo.z - viewDistance;
 
-        if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
-            firstPassHasHit = 1;
-            hitBoundary1 = progressionScreenSpace;
-            break;
-        } else {
-            hitBoundary2 = hitBoundary1;
+            if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
+                firstPassHasHit = 1;
+                hitBoundary1 = progressionScreenSpace;
+                break;
+            } else {
+                hitBoundary2 = hitBoundary1;
+            }
         }
     }
 
@@ -121,15 +123,17 @@ void main() {
         frag = mix(startFrag.xy, endFrag.xy, hitBoundaryMiddle);
         fragUv = frag / sceneSize;
 
-        float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
-        viewSpacePositionTo = fetchViewSpacePosition(fragUv);
-        depth = viewSpacePositionTo.z - viewDistance;
+        if (fragUv.x > 0.0 && fragUv.x < 1.0 && fragUv.y > 0.0 && fragUv.y < 1.0) {
+            float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
+            viewSpacePositionTo = fetchViewSpacePosition(fragUv);
+            depth = viewSpacePositionTo.z - viewDistance;
 
-        if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
-            secondPassHasHit = 1;
-            hitBoundary1 = hitBoundaryMiddle;
-        } else {
-            hitBoundary2 = hitBoundaryMiddle;
+            if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
+                secondPassHasHit = 1;
+                hitBoundary1 = hitBoundaryMiddle;
+            } else {
+                hitBoundary2 = hitBoundaryMiddle;
+            }
         }
     }
 

@@ -135,6 +135,8 @@ namespace urchin {
 
         unsigned int numDependenciesToReflectionColorTexture = 1;
         positioningData.viewMatrix = camera.getViewMatrix();
+        positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();
+        positioningData.cameraPosition = camera.getPosition();
         reflectionColorRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);
 
