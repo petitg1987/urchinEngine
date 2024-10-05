@@ -36,7 +36,7 @@ vec4 fetchViewSpacePosition(vec2 texCoord) {
 
 vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
     vec4 fragValue = projectionData.mProjection * viewSpacePosition;
-    fragValue.xyz /= fragValue.w;
+    fragValue.xy /= fragValue.w;
     fragValue.xy = fragValue.xy * 0.5 + 0.5;
     fragValue.xy *= sceneSize;
     return fragValue.xy;
@@ -45,19 +45,19 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 void main() {
     //TODO const
     float maxDistance = 8.0;
-    float skipPixelCount = 10.0; //TODO (remove comment): named resolution in tuto
+    float skipPixelCount = 5.0;
     float thickness = 0.5;
     int numSteps = 8;
 
     vec2 sceneSize = textureSize(depthTex, 0);
     vec3 normalWorlsSpace = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
     vec3 normalViewSpace = normalize(mat3(positioningData.mView) * normalWorlsSpace);
-    vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates); //TODO (remove comment): named positionFrom in tuto
+    vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates);
 
     vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
     vec3 pivot = normalize(reflect(cameraToPositionVec, normalViewSpace));
-    vec4 startViewSpacePosition = viewSpacePosition; //TODO (remove comment): named startView
-    vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0); //TODO (remove comment): named endView
+    vec4 startViewSpacePosition = viewSpacePosition;
+    vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0);
 
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
@@ -82,7 +82,7 @@ void main() {
     float deltaX = endFrag.x - startFrag.x;
     float deltaY = endFrag.y - startFrag.y;
     float useX = abs(deltaX) >= abs(deltaY) ? 1.0 : 0.0;
-    float firstPassSteps = mix(abs(deltaY), abs(deltaX), useX) / skipPixelCount; //TODO (remove comment): named delta in tuto
+    float firstPassSteps = mix(abs(deltaY), abs(deltaX), useX) / skipPixelCount;
     vec2 increment = vec2(deltaX, deltaY) / max(firstPassSteps, 0.001);
 
     for (int i = 0; i < int(firstPassSteps); ++i) {
@@ -90,7 +90,7 @@ void main() {
         fragUv = frag / sceneSize;
 
         if (fragUv.x > 0.0 && fragUv.x < 1.0 && fragUv.y > 0.0 && fragUv.y < 1.0) {
-            float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX); //TODO (remove comment): named search1 in tuto
+            float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX);
             progressionScreenSpace = clamp(progressionScreenSpace, 0.0, 1.0);
 
             //Similar to "mix(startViewSpacePosition.z, endViewSpacePosition.z, progressionScreenSpace)" but with perspective-correct interpolation
