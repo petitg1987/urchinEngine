@@ -46,8 +46,6 @@ namespace urchin {
             } projectionData;
             struct {
                 alignas(16) Matrix4<float> viewMatrix;
-                alignas(16) Matrix4<float> inverseProjectionViewMatrix;
-                alignas(16) Point3<float> cameraPosition;
             } positioningData;
             std::shared_ptr<Texture> reflectionColorOutputTexture;
             std::unique_ptr<RenderTarget> reflectionColorRenderTarget;

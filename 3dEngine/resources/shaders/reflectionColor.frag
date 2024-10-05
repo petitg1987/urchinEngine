@@ -6,10 +6,8 @@ layout(std140, set = 0, binding = 0) uniform ProjectionData {
     mat4 mInverseProjection;
 } projectionData;
 
-layout(std140, set = 0, binding = 1) uniform PositioningData { //TODO remove the not used one
+layout(std140, set = 0, binding = 1) uniform PositioningData {
     mat4 mView;
-    mat4 mInverseProjectionView;
-    vec3 cameraPosition;
 } positioningData;
 
 layout(binding = 2) uniform sampler2D depthTex;
@@ -145,17 +143,10 @@ void main() {
         return;
     } */
 
-
-//TODO remove
-//    if ((1.0 - clamp( depth / thickness, 0, 1)) < 0.5) {
-//        fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-//        return;
-//    }
-
     float visibility = secondPassHasHit
         * (1.0 - max(dot(-cameraToPositionVec, pivot), 0.0)) //Eliminate reflection rays pointing to camera and probably hitting something behind the camera
-        * (1.0 - clamp(depth / thickness, 0, 1)) //TODO comment
-        * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / maxDistance, 0.0, 1.0)) //TODO comment
+        * (1.0 - clamp(depth / thickness, 0, 1)) //Fade out the reflection point when the exact collision point is not foundTODO comment
+        * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / maxDistance, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
         * (fragUv.x < 0.0 || fragUv.x > 1.0 ? 0.0 : 1.0)
         * (fragUv.y < 0.0 || fragUv.y > 1.0 ? 0.0 : 1.0);
 
