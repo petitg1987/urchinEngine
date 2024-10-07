@@ -12,7 +12,7 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 
 layout(binding = 2) uniform sampler2D depthTex;
 layout(binding = 3) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
-layout(binding = 4) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits) //TODO remove if not used
+layout(binding = 4) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
 layout(binding = 5) uniform sampler2D illuminatedTex;
 
 layout(location = 0) in vec2 texCoordinates;
@@ -46,6 +46,13 @@ void main() {
     float skipPixelCount = 5.0;
     float thickness = 0.5;
     int numSteps = 8;
+
+    vec3 color = texture(illuminatedTex, texCoordinates).rgb;
+    float roughness = texture(materialTex, texCoordinates).r;
+    if (roughness > 0.90) {
+        fragColor = vec4(color, 1.0);
+        return;
+    }
 
     vec2 sceneSize = textureSize(depthTex, 0);
     vec3 normalWorlsSpace = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
@@ -143,15 +150,15 @@ void main() {
         return;
     } */
 
+    float edgeThreshold = 0.2;
     float visibility = secondPassHasHit
         * (1.0 - max(dot(-cameraToPositionVec, pivot), 0.0)) //Eliminate reflection rays pointing to camera and probably hitting something behind the camera
         * (1.0 - clamp(depth / thickness, 0, 1)) //Fade out the reflection point when the exact collision point is not foundTODO comment
         * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / maxDistance, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
-        * (fragUv.x < 0.0 || fragUv.x > 1.0 ? 0.0 : 1.0)
-        * (fragUv.y < 0.0 || fragUv.y > 1.0 ? 0.0 : 1.0);
-    visibility = clamp(visibility, 0, 1);
+        * smoothstep(0.0, edgeThreshold, fragUv.x) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.x)) //Fade out on screen edge X
+        * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
+        * (1.0 - roughness);
 
-    vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
     fragColor = vec4(mix(color, reflectionColor, visibility), 1.0);
 }
