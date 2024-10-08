@@ -2,11 +2,10 @@
 
 layout(constant_id = 0) const uint KERNEL_SAMPLES = 64; //must be equals to AmbientOcclusionManager::KERNEL_SAMPLES_SHADER_LIMIT
 layout(constant_id = 1) const float RADIUS = 0.0;
-layout(constant_id = 2) const float AO_STRENGTH = 0.0;
-layout(constant_id = 3) const float DISTANCE_START_ATTENUATION = 0.0;
-layout(constant_id = 4) const float DISTANCE_END_ATTENUATION = 0.0;
-layout(constant_id = 5) const float BIAS_MULTIPLIER = 0.0;
-layout(constant_id = 6) const float BIAS_DISTANCE_MULTIPLIER = 0.0;
+layout(constant_id = 2) const float DISTANCE_START_ATTENUATION = 0.0;
+layout(constant_id = 3) const float DISTANCE_END_ATTENUATION = 0.0;
+layout(constant_id = 4) const float BIAS_MULTIPLIER = 0.0;
+layout(constant_id = 5) const float BIAS_DISTANCE_MULTIPLIER = 0.0;
 
 layout(local_size_x = 8, local_size_y = 8) in;
 layout(std140, set = 0, binding = 0) uniform Projection {
@@ -96,6 +95,6 @@ void main() {
         occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + distanceBias ? rangeCheck : 0.0);
     }
 
-    float aoValue = (occlusion / float(KERNEL_SAMPLES)) * AO_STRENGTH;
+    float aoValue = occlusion / float(KERNEL_SAMPLES);
     imageStore(outputImage, ivec2(gl_GlobalInvocationID.xy), vec4(aoValue));
 }

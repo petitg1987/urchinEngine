@@ -8,8 +8,11 @@
 
 namespace urchin {
 
-    class AmbientOcclusionManager {
+    class AmbientOcclusionManager : public Observable {
         public:
+            enum NotificationType {
+                AMBIENT_OCCLUSION_STRENGTH_UPDATE
+            };
             enum AOTextureSize {
                 FULL_SIZE = 0,
                 HALF_SIZE = 1
@@ -36,11 +39,13 @@ namespace urchin {
             };
 
             AmbientOcclusionManager(const Config&, bool);
-            ~AmbientOcclusionManager();
+            ~AmbientOcclusionManager() override;
 
             void onCameraProjectionUpdate(const Camera&);
 
             void refreshInputTextures(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
+
+            float getAmbientOcclusionStrength() const;
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -54,7 +59,6 @@ namespace urchin {
             struct AmbientOcclusionShaderConst {
                 uint32_t kernelSamples;
                 float radius;
-                float ambientOcclusionStrength;
                 float depthStartAttenuation;
                 float depthEndAttenuation;
                 float biasMultiplier;

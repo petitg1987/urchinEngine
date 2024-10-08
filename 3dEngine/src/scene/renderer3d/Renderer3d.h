@@ -86,6 +86,7 @@ namespace urchin {
         private:
             struct DeferredSecondPassShaderConst {
                 uint32_t maxLights;
+                float ambientOcclusionStrength;
                 uint32_t maxShadowLights;
                 uint32_t numberShadowMaps;
                 float shadowMapConstantBias;

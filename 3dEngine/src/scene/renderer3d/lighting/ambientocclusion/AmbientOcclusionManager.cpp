@@ -140,12 +140,11 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.ambientOcclusionStrength, config.distanceStartAttenuation,
+        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.distanceStartAttenuation,
                                                 config.distanceEndAttenuation, config.biasMultiplier, config.biasDistanceMultiplier};
         std::vector<std::size_t> variablesSize = {
                 sizeof(AmbientOcclusionShaderConst::kernelSamples),
                 sizeof(AmbientOcclusionShaderConst::radius),
-                sizeof(AmbientOcclusionShaderConst::ambientOcclusionStrength),
                 sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
                 sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
                 sizeof(AmbientOcclusionShaderConst::biasMultiplier),
@@ -210,6 +209,10 @@ namespace urchin {
         svgExporter.generateSVG();
     }
 
+    float AmbientOcclusionManager::getAmbientOcclusionStrength() const {
+        return config.ambientOcclusionStrength;
+    }
+
     void AmbientOcclusionManager::updateConfig(const Config& config) {
         if (this->config.textureSize != config.textureSize ||
                 this->config.textureBits != config.textureBits ||
@@ -224,11 +227,15 @@ namespace urchin {
                 this->config.isBlurActivated != config.isBlurActivated ||
                 this->config.blurSize != config.blurSize ||
                 this->config.blurSharpness != config.blurSharpness) {
+            bool ambientOcclusionStrengthUpdated = this->config.ambientOcclusionStrength != config.ambientOcclusionStrength;
 
             this->config = config;
             checkConfig();
 
             createOrUpdateRenderingObjects();
+            if (ambientOcclusionStrengthUpdated) {
+                notifyObservers(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
+            }
         }
     }
 

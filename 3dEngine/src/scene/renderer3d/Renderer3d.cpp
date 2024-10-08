@@ -74,6 +74,7 @@ namespace urchin {
         modelSetDisplayer.setupShader("model.vert.spv", "model.frag.spv", std::unique_ptr<ShaderConstants>(nullptr));
         modelSetDisplayer.setupMeshFilter(std::make_unique<OpaqueMeshFilter>());
         modelSetDisplayer.initialize(*deferredFirstPassRenderTarget);
+        ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
         sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
@@ -100,7 +101,11 @@ namespace urchin {
     }
 
     void Renderer3d::notify(Observable* observable, int notificationType) {
-        if (dynamic_cast<ShadowManager*>(observable)) {
+        if (dynamic_cast<AmbientOcclusionManager*>(observable)) {
+            if (notificationType == AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE) {
+                createOrUpdateDeferredPasses();
+            }
+        } else if (dynamic_cast<ShadowManager*>(observable)) {
             if (notificationType == ShadowManager::NUMBER_SHADOW_MAPS_UPDATE) {
                 createOrUpdateDeferredPasses();
             }
@@ -424,6 +429,7 @@ namespace urchin {
     void Renderer3d::createOrUpdateDeferredSecondPassShader() {
         DeferredSecondPassShaderConst deferredSecondPassConstData{};
         deferredSecondPassConstData.maxLights = lightManager.getMaxLights();
+        deferredSecondPassConstData.ambientOcclusionStrength = ambientOcclusionManager.getAmbientOcclusionStrength();
         deferredSecondPassConstData.maxShadowLights = shadowManager.getMaxShadowLights();
         deferredSecondPassConstData.numberShadowMaps = shadowManager.getConfig().nbShadowMaps;
         deferredSecondPassConstData.shadowMapConstantBias = shadowManager.getShadowMapConstantBias();
@@ -432,6 +438,7 @@ namespace urchin {
         deferredSecondPassConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
         std::vector<std::size_t> variablesSize = {
                 sizeof(DeferredSecondPassShaderConst::maxLights),
+                sizeof(DeferredSecondPassShaderConst::ambientOcclusionStrength),
                 sizeof(DeferredSecondPassShaderConst::maxShadowLights),
                 sizeof(DeferredSecondPassShaderConst::numberShadowMaps),
                 sizeof(DeferredSecondPassShaderConst::shadowMapConstantBias),

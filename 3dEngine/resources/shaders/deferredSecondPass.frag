@@ -5,12 +5,13 @@
 #include "_lightingFunctions.frag"
 
 layout(constant_id = 0) const uint MAX_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
-layout(constant_id = 1) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
-layout(constant_id = 2) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
-layout(constant_id = 3) const float SHADOW_MAP_CONSTANT_BIAS = 0.0;
-layout(constant_id = 4) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
-layout(constant_id = 5) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
-layout(constant_id = 6) const float MAX_EMISSIVE_FACTOR = 0.0;
+layout(constant_id = 1) const float AO_STRENGTH = 0.0;
+layout(constant_id = 2) const uint MAX_SHADOW_LIGHTS = 15; //must be equals to LightManager::LIGHTS_SHADER_LIMIT
+layout(constant_id = 3) const uint NUMBER_SHADOW_MAPS = 7; //must be equals to ShadowManager::SHADOW_MAPS_SHADER_LIMIT
+layout(constant_id = 4) const float SHADOW_MAP_CONSTANT_BIAS = 0.0;
+layout(constant_id = 5) const float SHADOW_MAP_SLOPE_BIAS_FACTOR = 0.0;
+layout(constant_id = 6) const int SHADOW_MAP_OFFSET_TEX_SIZE = 0;
+layout(constant_id = 7) const float MAX_EMISSIVE_FACTOR = 0.0;
 
 //global
 layout(std140, set = 0, binding = 0) uniform PositioningData {
@@ -208,7 +209,7 @@ void main() {
         fragColor = vec4(lightsData.globalAmbient, alphaValue); //start with global ambient
 
         if (sceneInfo.hasAmbientOcclusion) {
-            float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r;
+            float ambientOcclusionFactor = texture(ambientOcclusionTex, texCoordinates).r * AO_STRENGTH;
             fragColor.rgb -= vec3(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor); //subtract ambient occlusion
         }
 
