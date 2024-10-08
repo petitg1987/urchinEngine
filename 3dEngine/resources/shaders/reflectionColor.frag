@@ -42,10 +42,10 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 
 void main() {
     //TODO const
-    float maxDistance = 8.0;
+    float maxDistance = 3.0;
     float skipPixelCount = 5.0;
     float thickness = 0.5;
-    int numSteps = 8;
+    int numSteps = 11;
 
     vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     float materialRoughness = texture(materialTex, texCoordinates).r;
