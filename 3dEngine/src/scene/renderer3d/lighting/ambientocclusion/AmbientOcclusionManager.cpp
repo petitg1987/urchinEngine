@@ -140,19 +140,25 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        AmbientOcclusionShaderConst aoConstData{config.kernelSamples, config.radius, config.distanceStartAttenuation,
-                                                config.distanceEndAttenuation, config.biasMultiplier, config.biasDistanceMultiplier};
-        std::vector<std::size_t> variablesSize = {
-                sizeof(AmbientOcclusionShaderConst::kernelSamples),
-                sizeof(AmbientOcclusionShaderConst::radius),
-                sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
-                sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
-                sizeof(AmbientOcclusionShaderConst::biasMultiplier),
-                sizeof(AmbientOcclusionShaderConst::biasDistanceMultiplier),
-        };
-        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
-
         if (renderTarget->isValidRenderTarget()) {
+            AmbientOcclusionShaderConst aoConstData{
+                    .kernelSamples = config.kernelSamples,
+                    .radius = config.radius,
+                    .depthStartAttenuation = config.distanceStartAttenuation,
+                    .depthEndAttenuation = config.distanceEndAttenuation,
+                    .biasMultiplier = config.biasMultiplier,
+                    .biasDistanceMultiplier = config.biasDistanceMultiplier
+            };
+            std::vector<std::size_t> variablesSize = {
+                    sizeof(AmbientOcclusionShaderConst::kernelSamples),
+                    sizeof(AmbientOcclusionShaderConst::radius),
+                    sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
+                    sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
+                    sizeof(AmbientOcclusionShaderConst::biasMultiplier),
+                    sizeof(AmbientOcclusionShaderConst::biasDistanceMultiplier),
+            };
+            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
+
             ambientOcclusionShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants));
         } else {
             ambientOcclusionShader = ShaderBuilder::createNullShader();

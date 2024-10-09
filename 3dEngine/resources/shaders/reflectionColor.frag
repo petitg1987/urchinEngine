@@ -1,6 +1,11 @@
 #version 460
 #extension GL_ARB_separate_shader_objects : enable
 
+layout(constant_id = 0) const float MAX_DISTANCE = 0.0;
+layout(constant_id = 1) const float HIT_THRESHOLD = 0.0;
+layout(constant_id = 2) const float FIRST_PASS_SKIP_PIXEL_COUNT = 0.0;
+layout(constant_id = 3) const uint SECOND_PASS_NUM_STEPS = 0;
+
 layout(std140, set = 0, binding = 0) uniform ProjectionData {
     mat4 mProjection;
     mat4 mInverseProjection;
@@ -41,16 +46,10 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 }
 
 void main() {
-    //TODO const
-    float maxDistance = 3.0;
-    float skipPixelCount = 5.0;
-    float thickness = 0.5;
-    int numSteps = 11;
-
     vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     float materialRoughness = texture(materialTex, texCoordinates).r;
     if (materialRoughness > 0.90) {
-        fragColor = vec4(color, 1.0);
+        fragColor = vec4(color, 1.0); //TODO no combination in this shader
         return;
     }
 
@@ -62,7 +61,7 @@ void main() {
     vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
     vec3 pivot = normalize(reflect(cameraToPositionVec, normalViewSpace));
     vec4 startViewSpacePosition = viewSpacePosition;
-    vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * maxDistance), 1.0);
+    vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * MAX_DISTANCE), 1.0);
 
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
@@ -79,7 +78,7 @@ void main() {
     float hitBoundary1 = 0.0;
     float hitBoundary2 = 0.0;
 
-    float depth = thickness;
+    float depth = HIT_THRESHOLD;
     vec4 viewSpacePositionTo = viewSpacePosition;
 
     //FIRST PASS
@@ -87,7 +86,7 @@ void main() {
     float deltaX = endFrag.x - startFrag.x;
     float deltaY = endFrag.y - startFrag.y;
     float useX = abs(deltaX) >= abs(deltaY) ? 1.0 : 0.0;
-    float firstPassSteps = mix(abs(deltaY), abs(deltaX), useX) / skipPixelCount;
+    float firstPassSteps = mix(abs(deltaY), abs(deltaX), useX) / FIRST_PASS_SKIP_PIXEL_COUNT;
     vec2 increment = vec2(deltaX, deltaY) / max(firstPassSteps, 0.001);
 
     for (int i = 0; i < int(firstPassSteps); ++i) {
@@ -104,7 +103,7 @@ void main() {
             viewSpacePositionTo = fetchViewSpacePosition(fragUv);
             float depth = viewSpacePositionTo.z - viewDistance;
 
-            if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
+            if (depth > 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
                 firstPassHasHit = 1;
                 hitBoundary1 = progressionScreenSpace;
                 break;
@@ -124,8 +123,8 @@ void main() {
 
     //SECOND PASS
     int secondPassHasHit = 0;
-    int secondPassSteps = numSteps * firstPassHasHit;
-    for (int i = 0; i < secondPassSteps; ++i) {
+    uint secondPassSteps = SECOND_PASS_NUM_STEPS * firstPassHasHit;
+    for (uint i = 0; i < secondPassSteps; ++i) {
         float hitBoundaryMiddle = (hitBoundary1 + hitBoundary2) / 2.0;
         frag = mix(startFrag.xy, endFrag.xy, hitBoundaryMiddle);
         fragUv = frag / sceneSize;
@@ -135,7 +134,7 @@ void main() {
             viewSpacePositionTo = fetchViewSpacePosition(fragUv);
             depth = viewSpacePositionTo.z - viewDistance;
 
-            if (depth > 0.0 /* hit found */ && depth < thickness /* hit is close to viewSpacePositionTo */) {
+            if (depth > 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
                 secondPassHasHit = 1;
                 hitBoundary1 = hitBoundaryMiddle;
             } else {
@@ -153,12 +152,12 @@ void main() {
     float edgeThreshold = 0.2;
     float visibility = secondPassHasHit
         * (1.0 - max(dot(-cameraToPositionVec, pivot), 0.0)) //Eliminate reflection rays pointing to camera and probably hitting something behind the camera
-        * (1.0 - clamp(depth / thickness, 0, 1)) //Fade out the reflection point when the exact collision point is not foundTODO comment
-        * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / maxDistance, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
+        * (1.0 - clamp(depth / HIT_THRESHOLD, 0.0, 1.0)) //Fade out the reflection point when the exact hit point is not found
+        * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / MAX_DISTANCE, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
         * smoothstep(0.0, edgeThreshold, fragUv.x) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.x)) //Fade out on screen edge X
         * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
         * (1.0 - materialRoughness);
 
     vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
-    fragColor = vec4(mix(color, reflectionColor, visibility), 1.0);
+    fragColor = vec4(mix(color, reflectionColor, visibility), 1.0); //TODO no combination in this shader
 }

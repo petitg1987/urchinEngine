@@ -7,6 +7,20 @@ namespace urchin {
 
     class ReflectionApplier {
         public:
+            enum ReflectionTextureSize {
+                FULL_SIZE = 0,
+                HALF_SIZE = 1
+            };
+
+            struct Config {
+                ReflectionTextureSize textureSize = ReflectionTextureSize::HALF_SIZE;
+                float maxDistance = 3.5;
+                float hitThreshold = 0.5;
+                float firstPass_skipPixelCount = 5.0;
+                unsigned int secondPass_numSteps = 11;
+                float reflectionStrength = 0.5;
+            };
+
             explicit ReflectionApplier(bool);
             ~ReflectionApplier();
 
@@ -18,6 +32,13 @@ namespace urchin {
             void applyReflection(std::uint32_t, unsigned int, const Camera&);
 
         private:
+            struct ReflectionColorShaderConst {
+                float maxDistance;
+                float hitThreshold;
+                float firstPass_skipPixelCount;
+                uint32_t secondPass_numSteps;
+            };
+
             void createOrUpdateRenderingObjects();
             void clearRenderingObjects();
             void createOrUpdateRenderTargets();
@@ -34,6 +55,7 @@ namespace urchin {
             static constexpr uint32_t REFLECTION_COLOR_TEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING = 1;
 
+            Config config;
             bool useNullRenderTarget;
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;

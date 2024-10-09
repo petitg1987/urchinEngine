@@ -78,7 +78,7 @@ namespace urchin {
 
         modelSetDisplayer = std::make_unique<ModelSetDisplayer>(DisplayMode::DEFAULT_NO_INSTANCING_MODE);
         modelSetDisplayer->setupShader("modelTransparent.vert.spv", "modelTransparent.frag.spv", std::move(shaderConstants));
-        modelSetDisplayer->setupDepthOperations(true, false /* disable depth write */);
+        modelSetDisplayer->setupDepthOperations(true, true /* enable depth write: required by reflection step */);
         modelSetDisplayer->setupBlendFunctions({BlendFunction::buildDefault()});
         modelSetDisplayer->setupMeshFilter(std::make_unique<TransparentMeshFilter>());
         modelSetDisplayer->setupFaceCull(false);

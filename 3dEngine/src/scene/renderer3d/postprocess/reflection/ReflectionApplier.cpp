@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
-        reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+        reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_8_INT);
         if (useNullRenderTarget) {
             reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
         } else {
@@ -71,7 +71,7 @@ namespace urchin {
             reflectionColorRenderTarget->initialize();
         }
 
-        reflectionCombineOutputTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+        reflectionCombineOutputTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT); //TODO correct format ?
         if (useNullRenderTarget) {
             reflectionCombineRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
         } else {
@@ -114,7 +114,21 @@ namespace urchin {
 
     void ReflectionApplier::createOrUpdateShaders() {
         if (reflectionColorRenderTarget->isValidRenderTarget()) {
-            reflectionColorShader = ShaderBuilder::createShader("reflectionColor.vert.spv", "reflectionColor.frag.spv");
+            ReflectionColorShaderConst rcConstData{
+                    .maxDistance = config.maxDistance,
+                    .hitThreshold = config.hitThreshold,
+                    .firstPass_skipPixelCount = config.firstPass_skipPixelCount,
+                    .secondPass_numSteps = config.secondPass_numSteps
+            };
+            std::vector<std::size_t> variablesSize = {
+                    sizeof(ReflectionColorShaderConst::maxDistance),
+                    sizeof(ReflectionColorShaderConst::hitThreshold),
+                    sizeof(ReflectionColorShaderConst::firstPass_skipPixelCount),
+                    sizeof(ReflectionColorShaderConst::secondPass_numSteps),
+            };
+            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &rcConstData);
+
+            reflectionColorShader = ShaderBuilder::createShader("reflectionColor.vert.spv", "reflectionColor.frag.spv", std::move(shaderConstants));
         } else {
             reflectionColorShader = ShaderBuilder::createNullShader();
         }
