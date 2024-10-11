@@ -62,9 +62,11 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
-        reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT); //TODO change in 8_int (check bloom is OK)
+        auto reflectionColorTextureSizeX = (unsigned int)((float)depthTexture->getWidth() / (float)retrieveTextureSizeFactor());
+        auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
+        reflectionColorOutputTexture = Texture::build("reflectionColor", reflectionColorTextureSizeX, reflectionColorTextureSizeY, TextureFormat::RGBA_8_INT);
         if (useNullRenderTarget) {
-            reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
+            reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(reflectionColorTextureSizeX, reflectionColorTextureSizeY);
         } else {
             reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflectionColor", RenderTarget::NO_DEPTH_ATTACHMENT);
             static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorOutputTexture);
@@ -146,6 +148,15 @@ namespace urchin {
         } else {
             reflectionCombineShader = ShaderBuilder::createNullShader();
         }
+    }
+
+    int ReflectionApplier::retrieveTextureSizeFactor() const {
+        if (config.textureSize == ReflectionTextureSize::FULL_SIZE) {
+            return 1;
+        } else if (config.textureSize == ReflectionTextureSize::HALF_SIZE) {
+            return 2;
+        }
+        throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));
     }
 
     const std::shared_ptr<Texture>& ReflectionApplier::getOutputTexture() const {

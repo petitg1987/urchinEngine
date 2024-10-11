@@ -157,6 +157,6 @@ void main() {
         * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
         * (1.0 - materialRoughness);
 
-    vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb; //TODO do not access if visibility = 0 ?
+    vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
     fragColor = vec4(reflectionColor, visibility);
 }

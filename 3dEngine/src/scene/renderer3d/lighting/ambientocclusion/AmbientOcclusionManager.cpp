@@ -82,7 +82,7 @@ namespace urchin {
 
         if (useNullRenderTarget) {
             if (!renderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>((unsigned int)sceneResolution.X, (unsigned int)sceneResolution.Y);
+                renderTarget = std::make_unique<NullRenderTarget>(textureSizeX, textureSizeY);
             }
         } else {
             if (renderTarget) {
@@ -261,7 +261,6 @@ namespace urchin {
         } else if (config.textureSize == AOTextureSize::HALF_SIZE) {
             return 2;
         }
-
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));
     }
 

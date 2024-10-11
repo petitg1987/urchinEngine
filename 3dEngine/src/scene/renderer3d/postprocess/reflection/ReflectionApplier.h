@@ -51,6 +51,8 @@ namespace urchin {
             void createOrUpdateRenderers();
             void createOrUpdateShaders();
 
+            int retrieveTextureSizeFactor() const;
+
             static constexpr uint32_t PROJECTION_DATA_UNIFORM_BINDING = 0;
             static constexpr uint32_t POSITIONING_DATA_UNIFORM_BINDING = 1;
             static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 2;
