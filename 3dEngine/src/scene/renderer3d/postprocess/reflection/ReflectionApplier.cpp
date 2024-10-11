@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
-        reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_8_INT);
+        reflectionColorOutputTexture = Texture::build("reflectionColor", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT); //TODO change in 8_int (check bloom is OK)
         if (useNullRenderTarget) {
             reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
         } else {
@@ -114,7 +114,7 @@ namespace urchin {
 
     void ReflectionApplier::createOrUpdateShaders() {
         if (reflectionColorRenderTarget->isValidRenderTarget()) {
-            ReflectionColorShaderConst rcConstData{
+            ReflectionColorShaderConst rcConstData {
                     .maxDistance = config.maxDistance,
                     .hitThreshold = config.hitThreshold,
                     .firstPass_skipPixelCount = config.firstPass_skipPixelCount,
@@ -134,7 +134,15 @@ namespace urchin {
         }
 
         if (reflectionCombineRenderTarget->isValidRenderTarget()) {
-            reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv");
+            ReflectionCombineShaderConst rcConstData{
+                    .reflectionStrength = config.reflectionStrength, //apply reflection strength after AO blur to not lose color precision on 8bit texture
+            };
+            std::vector<std::size_t> variablesSize = {
+                    sizeof(ReflectionCombineShaderConst::reflectionStrength),
+            };
+            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &rcConstData);
+
+            reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv", std::move(shaderConstants));
         } else {
             reflectionCombineShader = ShaderBuilder::createNullShader();
         }
@@ -142,6 +150,23 @@ namespace urchin {
 
     const std::shared_ptr<Texture>& ReflectionApplier::getOutputTexture() const {
         return reflectionCombineOutputTexture;
+    }
+
+    void ReflectionApplier::updateConfig(const Config& config) {
+        if (this->config.textureSize != config.textureSize ||
+                this->config.maxDistance != config.maxDistance ||
+                this->config.hitThreshold != config.hitThreshold ||
+                this->config.firstPass_skipPixelCount != config.firstPass_skipPixelCount ||
+                this->config.secondPass_numSteps != config.secondPass_numSteps ||
+                this->config.reflectionStrength != config.reflectionStrength) {
+            this->config = config;
+
+            createOrUpdateRenderingObjects();
+        }
+    }
+
+    const ReflectionApplier::Config& ReflectionApplier::getConfig() const {
+        return config;
     }
 
     void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionTexture, const Camera& camera) {

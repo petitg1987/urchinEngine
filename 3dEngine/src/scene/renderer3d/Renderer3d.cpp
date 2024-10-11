@@ -427,15 +427,16 @@ namespace urchin {
     }
 
     void Renderer3d::createOrUpdateDeferredSecondPassShader() {
-        DeferredSecondPassShaderConst deferredSecondPassConstData{};
-        deferredSecondPassConstData.maxLights = lightManager.getMaxLights();
-        deferredSecondPassConstData.ambientOcclusionStrength = ambientOcclusionManager.getAmbientOcclusionStrength();
-        deferredSecondPassConstData.maxShadowLights = shadowManager.getMaxShadowLights();
-        deferredSecondPassConstData.numberShadowMaps = shadowManager.getConfig().nbShadowMaps;
-        deferredSecondPassConstData.shadowMapConstantBias = shadowManager.getShadowMapConstantBias();
-        deferredSecondPassConstData.shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor();
-        deferredSecondPassConstData.shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize();
-        deferredSecondPassConstData.maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR;
+        DeferredSecondPassShaderConst deferredSecondPassConstData {
+                .maxLights = lightManager.getMaxLights(),
+                .ambientOcclusionStrength = ambientOcclusionManager.getAmbientOcclusionStrength(), //apply AO strength after AO blur to not lose color precision on 8bit texture
+                .maxShadowLights = shadowManager.getMaxShadowLights(),
+                .numberShadowMaps = shadowManager.getConfig().nbShadowMaps,
+                .shadowMapConstantBias = shadowManager.getShadowMapConstantBias(),
+                .shadowMapSlopeBiasFactor = shadowManager.getShadowMapSlopeBiasFactor(),
+                .shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize(),
+                .maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR
+        };
         std::vector<std::size_t> variablesSize = {
                 sizeof(DeferredSecondPassShaderConst::maxLights),
                 sizeof(DeferredSecondPassShaderConst::ambientOcclusionStrength),

@@ -29,6 +29,9 @@ namespace urchin {
             void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getOutputTexture() const;
 
+            void updateConfig(const Config&);
+            const Config& getConfig() const;
+
             void applyReflection(std::uint32_t, unsigned int, const Camera&);
 
         private:
@@ -37,6 +40,9 @@ namespace urchin {
                 float hitThreshold;
                 float firstPass_skipPixelCount;
                 uint32_t secondPass_numSteps;
+            };
+            struct ReflectionCombineShaderConst {
+                float reflectionStrength;
             };
 
             void createOrUpdateRenderingObjects();
