@@ -58,8 +58,8 @@ namespace urchin {
             static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 4;
             static constexpr uint32_t R_COLOR_ILLUMINATED_TEX_UNIFORM_BINDING = 5;
 
-            static constexpr uint32_t REFLECTION_COLOR_TEX_UNIFORM_BINDING = 0;
-            static constexpr uint32_t R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t REFLECTION_COLOR_TEX_UNIFORM_BINDING = 1;
 
             Config config;
             bool useNullRenderTarget;

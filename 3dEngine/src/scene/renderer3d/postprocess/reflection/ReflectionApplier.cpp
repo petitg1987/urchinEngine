@@ -107,8 +107,8 @@ namespace urchin {
         reflectionCombineRenderer = GenericRendererBuilder::create("reflectionCombine", *reflectionCombineRenderTarget, *reflectionCombineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
-                ->addUniformTextureReader(REFLECTION_COLOR_TEX_UNIFORM_BINDING, TextureReader::build(reflectionColorOutputTexture, TextureParam::buildNearest()))
                 ->addUniformTextureReader(R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
+                ->addUniformTextureReader(REFLECTION_COLOR_TEX_UNIFORM_BINDING, TextureReader::build(reflectionColorOutputTexture, TextureParam::buildNearest()))
                 ->build();
     }
 

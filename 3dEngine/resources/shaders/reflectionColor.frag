@@ -46,10 +46,9 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 }
 
 void main() {
-    vec3 color = texture(illuminatedTex, texCoordinates).rgb;
     float materialRoughness = texture(materialTex, texCoordinates).r;
     if (materialRoughness > 0.90) {
-        fragColor = vec4(color, 1.0); //TODO no combination in this shader
+        fragColor = vec4(0.5, 0.5, 0.5, 0.0);
         return;
     }
 
@@ -158,6 +157,6 @@ void main() {
         * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
         * (1.0 - materialRoughness);
 
-    vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
-    fragColor = vec4(mix(color, reflectionColor, visibility), 1.0); //TODO no combination in this shader
+    vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb; //TODO do not access if visibility = 0 ?
+    fragColor = vec4(reflectionColor, visibility);
 }
