@@ -20,11 +20,7 @@ namespace urchin {
             useNullRenderTarget(useNullRenderTarget),
             nearPlane(0.0f),
             farPlane(0.0f),
-
-            positioningData({}),
-
-            verticalBlurFilter(nullptr),
-            horizontalBlurFilter(nullptr) {
+            positioningData({}) {
 
     }
 

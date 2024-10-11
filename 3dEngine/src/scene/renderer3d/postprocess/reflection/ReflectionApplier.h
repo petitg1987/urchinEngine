@@ -2,6 +2,7 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/camera/Camera.h>
+#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
 
 namespace urchin {
 
@@ -19,6 +20,8 @@ namespace urchin {
                 float firstPass_skipPixelCount = 5.0;
                 unsigned int secondPass_numSteps = 11;
                 float reflectionStrength = 0.5;
+                unsigned int blurSize = 7;
+                float blurSharpness = 40.0f;
             };
 
             explicit ReflectionApplier(bool);
@@ -65,6 +68,9 @@ namespace urchin {
 
             Config config;
             bool useNullRenderTarget;
+            float nearPlane;
+            float farPlane;
+
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
             std::shared_ptr<Texture> materialTexture;
@@ -77,12 +83,15 @@ namespace urchin {
             struct {
                 alignas(16) Matrix4<float> viewMatrix;
             } positioningData;
-            std::shared_ptr<Texture> reflectionColorOutputTexture;
+            std::shared_ptr<Texture> reflectionColorTexture;
             std::unique_ptr<RenderTarget> reflectionColorRenderTarget;
             std::unique_ptr<Shader> reflectionColorShader;
             std::unique_ptr<GenericRenderer> reflectionColorRenderer;
 
-            std::shared_ptr<Texture> reflectionCombineOutputTexture;
+            std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
+            std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;
+
+            std::shared_ptr<Texture> reflectionCombineTexture;
             std::unique_ptr<RenderTarget> reflectionCombineRenderTarget;
             std::unique_ptr<Shader> reflectionCombineShader;
             std::unique_ptr<GenericRenderer> reflectionCombineRenderer;

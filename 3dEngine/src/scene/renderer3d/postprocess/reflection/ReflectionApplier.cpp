@@ -1,4 +1,5 @@
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
+#include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/target/NullRenderTarget.h>
@@ -6,7 +7,9 @@
 namespace urchin {
 
     ReflectionApplier::ReflectionApplier(bool useNullRenderTarget) :
-            useNullRenderTarget(useNullRenderTarget) {
+            useNullRenderTarget(useNullRenderTarget),
+            nearPlane(0.0f),
+            farPlane(0.0f) {
 
     }
 
@@ -15,6 +18,9 @@ namespace urchin {
     }
 
     void ReflectionApplier::onCameraProjectionUpdate(const Camera& camera) {
+        nearPlane = camera.getNearPlane();
+        farPlane = camera.getFarPlane();
+
         projectionData.projectionMatrix = camera.getProjectionMatrix();
         projectionData.inverseProjectionMatrix = camera.getProjectionInverseMatrix();
 
@@ -62,23 +68,47 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
+        TextureFormat reflectionColorTextureFormat = TextureFormat::RGBA_8_INT;
         auto reflectionColorTextureSizeX = (unsigned int)((float)depthTexture->getWidth() / (float)retrieveTextureSizeFactor());
         auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
-        reflectionColorOutputTexture = Texture::build("reflectionColor", reflectionColorTextureSizeX, reflectionColorTextureSizeY, TextureFormat::RGBA_8_INT);
+        reflectionColorTexture = Texture::build("reflectionColor", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);
         if (useNullRenderTarget) {
             reflectionColorRenderTarget = std::make_unique<NullRenderTarget>(reflectionColorTextureSizeX, reflectionColorTextureSizeY);
         } else {
             reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflectionColor", RenderTarget::NO_DEPTH_ATTACHMENT);
-            static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorOutputTexture);
+            static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorTexture);
             reflectionColorRenderTarget->initialize();
         }
 
-        reflectionCombineOutputTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT); //TODO correct format ?
+        verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(useNullRenderTarget, "reflection color - vertical bilateral blur filter", reflectionColorTexture)
+                ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
+                ->textureType(TextureType::DEFAULT)
+                ->textureFormat(reflectionColorTextureFormat)
+                ->depthTexture(depthTexture)
+                ->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
+                ->blurSize(config.blurSize)
+                ->blurSharpness(config.blurSharpness)
+                ->buildBilateralBlur();
+
+        horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>(useNullRenderTarget, "reflection color - horizontal bilateral blur filter", verticalBlurFilter->getTexture())
+                ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
+                ->textureType(TextureType::DEFAULT)
+                ->textureFormat(reflectionColorTextureFormat)
+                ->depthTexture(depthTexture)
+                ->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
+                ->blurSize(config.blurSize)
+                ->blurSharpness(config.blurSharpness)
+                ->buildBilateralBlur();
+
+        verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+        horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+
+        reflectionCombineTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT); //TODO format should come from renderer3d
         if (useNullRenderTarget) {
             reflectionCombineRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
         } else {
             reflectionCombineRenderTarget = std::make_unique<OffscreenRender>("reflectionCombine", RenderTarget::NO_DEPTH_ATTACHMENT);
-            static_cast<OffscreenRender*>(reflectionCombineRenderTarget.get())->addOutputTexture(reflectionCombineOutputTexture);
+            static_cast<OffscreenRender*>(reflectionCombineRenderTarget.get())->addOutputTexture(reflectionCombineTexture);
             reflectionCombineRenderTarget->initialize();
         }
     }
@@ -110,7 +140,7 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING, TextureReader::build(illuminatedTexture, TextureParam::buildLinear()))
-                ->addUniformTextureReader(REFLECTION_COLOR_TEX_UNIFORM_BINDING, TextureReader::build(reflectionColorOutputTexture, TextureParam::buildNearest()))
+                ->addUniformTextureReader(REFLECTION_COLOR_TEX_UNIFORM_BINDING, TextureReader::build(horizontalBlurFilter->getTexture(), TextureParam::buildNearest()))
                 ->build();
     }
 
@@ -160,7 +190,7 @@ namespace urchin {
     }
 
     const std::shared_ptr<Texture>& ReflectionApplier::getOutputTexture() const {
-        return reflectionCombineOutputTexture;
+        return reflectionCombineTexture;
     }
 
     void ReflectionApplier::updateConfig(const Config& config) {
@@ -169,7 +199,9 @@ namespace urchin {
                 this->config.hitThreshold != config.hitThreshold ||
                 this->config.firstPass_skipPixelCount != config.firstPass_skipPixelCount ||
                 this->config.secondPass_numSteps != config.secondPass_numSteps ||
-                this->config.reflectionStrength != config.reflectionStrength) {
+                this->config.reflectionStrength != config.reflectionStrength ||
+                this->config.blurSize != config.blurSize ||
+                this->config.blurSharpness != config.blurSharpness) {
             this->config = config;
 
             createOrUpdateRenderingObjects();
@@ -187,6 +219,12 @@ namespace urchin {
         positioningData.viewMatrix = camera.getViewMatrix();
         reflectionColorRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);
+
+        unsigned int numDependenciesToVerticalBlurFilterOutputs = 1 /* horizontal blur filter */;
+        verticalBlurFilter->applyFilter(frameIndex, numDependenciesToVerticalBlurFilterOutputs);
+
+        unsigned int numDependenciesToHorizontalBlurFilterOutputs = 1 /* reflection combine */;
+        horizontalBlurFilter->applyFilter(frameIndex, numDependenciesToHorizontalBlurFilterOutputs);
 
         reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionTexture);
     }
