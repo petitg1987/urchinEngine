@@ -212,7 +212,7 @@ namespace urchin {
         return config;
     }
 
-    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionTexture, const Camera& camera) {
+    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
         unsigned int numDependenciesToReflectionColorTexture = 1;
@@ -226,7 +226,7 @@ namespace urchin {
         unsigned int numDependenciesToHorizontalBlurFilterOutputs = 1 /* reflection combine */;
         horizontalBlurFilter->applyFilter(frameIndex, numDependenciesToHorizontalBlurFilterOutputs);
 
-        reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionTexture);
+        reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionCombineTexture);
     }
 
 }
