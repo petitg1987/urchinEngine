@@ -15,12 +15,12 @@ namespace urchin {
 
             struct Config {
                 ReflectionTextureSize textureSize = ReflectionTextureSize::HALF_SIZE;
-                float maxDistance = 3.5;
-                float hitThreshold = 0.5;
-                float firstPass_skipPixelCount = 5.0;
-                unsigned int secondPass_numSteps = 11;
-                float reflectionStrength = 0.5;
-                unsigned int blurSize = 9;
+                float maxDistance = 2.5f;
+                float hitThreshold = 0.4f;
+                float firstPass_skipPixelCount = 5.0f;
+                unsigned int secondPass_numSteps = 10;
+                float reflectionStrength = 0.45f;
+                unsigned int blurSize = 7;
                 float blurSharpness = 40.0f;
             };
 

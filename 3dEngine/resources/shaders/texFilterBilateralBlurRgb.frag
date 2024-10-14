@@ -20,7 +20,7 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out vec4 fragColor;
 
-vec3 computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearizedDepthCenterValue, inout float totalWeight) {
+vec4 computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearizedDepthCenterValue, inout float totalWeight) {
     float depthValue = texture(depthTex, texCoordinates + uvOffset).r;
     float linearizedDepthValue = linearizeDepth(depthValue, cameraPlanes.nearPlane, cameraPlanes.farPlane);
     float zDiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
@@ -28,7 +28,7 @@ vec3 computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearized
     float weight = exp2(blurFalloff - zDiff * zDiff);
     totalWeight += weight;
 
-    vec3 texValue = texture(tex, texCoordinates + uvOffset).rgb;
+    vec4 texValue = texture(tex, texCoordinates + uvOffset).rgba;
     return texValue * weight;
 }
 
@@ -41,8 +41,8 @@ void main() {
     fragColor = texture(tex, texCoordinates).rgba;
     for (int i = 1; i <= KERNEL_RADIUS; ++i) {
         float blurFalloff = -float(i * i) / (2.0 * blurSigma * blurSigma);
-        fragColor.rgb += computeBlurWeightedValue(blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);
-        fragColor.rgb += computeBlurWeightedValue(-blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);
+        fragColor += computeBlurWeightedValue(blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);
+        fragColor += computeBlurWeightedValue(-blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);
     }
-    fragColor.rgb /= totalWeight;
+    fragColor /= totalWeight;
 }
