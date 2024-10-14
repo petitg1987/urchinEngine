@@ -62,7 +62,7 @@ namespace urchin {
             bool needCommandBufferRefresh(std::size_t) const override;
             void waitCommandBuffersIdle() const override;
 
-            static constexpr std::size_t MAX_SUBMIT_SEMAPHORES = 6;
+            static constexpr std::size_t MAX_SUBMIT_SEMAPHORES = 10;
 
             unsigned int width;
             unsigned int height;

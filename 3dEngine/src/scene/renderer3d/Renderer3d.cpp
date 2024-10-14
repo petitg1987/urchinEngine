@@ -332,7 +332,7 @@ namespace urchin {
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2; //(reflection color & reflection combine) or (bloom pre-filter & bloom combine (screen target))
+            unsigned int numDependenciesToAATexture = isReflectionActivated ? 2 : 2; //(reflection color && reflection combine) or (bloom pre-filter & bloom combine (screen target))
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
 
@@ -564,7 +564,7 @@ namespace urchin {
         }
         numDependenciesToFirstPassOutput += 1; //transparent
         if (isReflectionActivated) {
-            numDependenciesToFirstPassOutput += 1; //reflection
+            numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
         }
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++; //bloom combine (screen target)

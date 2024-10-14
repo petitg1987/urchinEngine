@@ -26,7 +26,7 @@ namespace urchin {
             throw std::invalid_argument("Kernel radius value is limited to " + std::to_string(KERNEL_RADIUS_SHADER_LIMIT) + ". Value: " + std::to_string(kernelRadius));
         }
 
-        offsets = computeOffsets();
+        computeUvOffsets();
     }
 
     void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
@@ -37,49 +37,56 @@ namespace urchin {
     }
 
     std::string BilateralBlurFilter::getShaderName() const {
-        if ((getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT)
-                && getTextureType() == TextureType::DEFAULT) {
-            return "texFilterBilateralBlur";
+        if (getTextureType() != TextureType::DEFAULT) {
+            throw std::runtime_error("Unimplemented bilateral blur filter for texture type: " + std::to_string((int)getTextureType()));
         }
-        throw std::runtime_error("Unimplemented bilateral blur filter for: " + std::to_string((int)getTextureFormat()) + " - " + std::to_string((int)getTextureType()));
+
+        if (getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT) {
+            return "texFilterBilateralBlur";
+        } else if (getTextureFormat() == TextureFormat::RGBA_8_INT || getTextureFormat() == TextureFormat::RGBA_16_FLOAT || getTextureFormat() == TextureFormat::RGBA_32_FLOAT) {
+            return "texFilterBilateralBlurRgb";
+        } else {
+            throw std::runtime_error("Unimplemented bilateral blur filter for texture format: " + std::to_string((int)getTextureFormat()));
+        }
     }
 
     void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
-        std::vector<float> offsetsShaderData(offsets.size() * 4, 0.0f);
-        for (std::size_t i = 0; i< offsets.size(); ++i) {
-            offsetsShaderData[i * 4] = offsets[i];
+        std::vector<float> uvOffsetsShaderData(uvOffsets.size() * 4, 0.0f);
+        for (std::size_t i = 0; i < uvOffsets.size(); ++i) {
+            uvOffsetsShaderData[i * 4] = uvOffsets[i].X;
+            uvOffsetsShaderData[(i * 4) + 1] = uvOffsets[i].Y;
         }
 
         textureRendererBuilder
                 ->addUniformData(CAMERA_PLANES_UNIFORM_BINDING, sizeof(cameraPlanes), &cameraPlanes)
-                ->addUniformData(OFFSETS_DATA_UNIFORM_BINDING, offsetsShaderData.size() * sizeof(float), offsetsShaderData.data())
+                ->addUniformData(OFFSETS_DATA_UNIFORM_BINDING, uvOffsetsShaderData.size() * sizeof(float), uvOffsetsShaderData.data())
                 ->addUniformTextureReader(SRC_TEX_UNIFORM_BINDING, sourceTextureReader)
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
     std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {
         BilateralBlurShaderConst bilateralBlurData{};
-        bilateralBlurData.isVerticalBlur = blurDirection == BlurDirection::VERTICAL;
         bilateralBlurData.kernelRadius = kernelRadius;
         bilateralBlurData.blurSharpness = blurSharpness;
         std::vector<std::size_t> variablesSize = {
-                sizeof(BilateralBlurShaderConst::isVerticalBlur),
                 sizeof(BilateralBlurShaderConst::kernelRadius),
                 sizeof(BilateralBlurShaderConst::blurSharpness)
         };
         return std::make_unique<ShaderConstants>(variablesSize, &bilateralBlurData);
     }
 
-    std::vector<float> BilateralBlurFilter::computeOffsets() const {
-        std::vector<float> offsets(kernelRadius, 0.0f);
+    void BilateralBlurFilter::computeUvOffsets() {
+        uvOffsets.resize(kernelRadius, Vector2<float>(0.0f, 0.0f));
 
         if (textureSize != 0) {
             float pixelSize = 1.0f / (float)textureSize;
             for (unsigned int i = 1; i <= kernelRadius; ++i) {
-                offsets[i - 1] = pixelSize * (float)i;
+                if (blurDirection == BlurDirection::VERTICAL) {
+                    uvOffsets[i - 1] = Vector2<float>(0.0f, pixelSize * (float)i);
+                } else {
+                    uvOffsets[i - 1] = Vector2<float>(pixelSize * (float)i, 0.0f);
+                }
             }
         }
-
-        return offsets;
     }
 }
