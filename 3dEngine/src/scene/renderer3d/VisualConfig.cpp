@@ -11,6 +11,8 @@ namespace urchin {
             antiAliasingActivated(true),
             antiAliasingConfig({}),
             bloomConfig({}),
+            reflectionActivated(true),
+            reflectionConfig({}),
             terrainConfig({}) {
 
     }
@@ -77,6 +79,22 @@ namespace urchin {
 
     const BloomEffectApplier::Config& VisualConfig::getBloomConfig() const {
         return bloomConfig;
+    }
+
+    void VisualConfig::activateReflection(bool reflectionActivated) {
+        this->reflectionActivated = reflectionActivated;
+    }
+
+    bool VisualConfig::isReflectionActivated() const {
+        return reflectionActivated;
+    }
+
+    void VisualConfig::setReflectionConfig(const ReflectionApplier::Config& reflectionConfig) {
+        this->reflectionConfig = reflectionConfig;
+    }
+
+    const ReflectionApplier::Config& VisualConfig::getReflectionConfig() const {
+        return reflectionConfig;
     }
 
     void VisualConfig::setTerrainConfig(const TerrainContainer::Config& terrainConfig) {

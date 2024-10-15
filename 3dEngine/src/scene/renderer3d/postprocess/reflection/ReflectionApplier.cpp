@@ -6,7 +6,8 @@
 
 namespace urchin {
 
-    ReflectionApplier::ReflectionApplier(bool useNullRenderTarget) :
+    ReflectionApplier::ReflectionApplier(const Config& config, bool useNullRenderTarget) :
+            config(config),
             useNullRenderTarget(useNullRenderTarget),
             nearPlane(0.0f),
             farPlane(0.0f) {

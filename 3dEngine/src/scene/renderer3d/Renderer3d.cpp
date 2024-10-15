@@ -57,9 +57,9 @@ namespace urchin {
             sceneInfo({}),
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), !finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
-            reflectionApplier(ReflectionApplier(!finalRenderTarget.isValidRenderTarget())),
-            isReflectionActivated(true),
             bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget, getGammaFactor())),
+            reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), !finalRenderTarget.isValidRenderTarget())),
+            isReflectionActivated(visualConfig.isReflectionActivated()),
 
             //debug
             refreshDebugFramebuffers(true) {
@@ -156,22 +156,9 @@ namespace urchin {
         return lightManager;
     }
 
-    ShadowManager& Renderer3d::getShadowManager() {
-        return shadowManager;
-    }
-
-    void Renderer3d::updateRenderingScale(float renderingScale) {
-        if (this->renderingScale != renderingScale) {
-            this->renderingScale = renderingScale;
-
-            createOrUpdateDeferredPasses();
-        }
-    }
-
     void Renderer3d::activateShadow(bool isShadowActivated) {
         if (sceneInfo.isShadowActivated != isShadowActivated) {
             sceneInfo.isShadowActivated = isShadowActivated;
-
             createOrUpdateDeferredPasses();
         }
     }
@@ -180,8 +167,8 @@ namespace urchin {
         return sceneInfo.isShadowActivated;
     }
 
-    AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() {
-        return ambientOcclusionManager;
+    ShadowManager& Renderer3d::getShadowManager() {
+        return shadowManager;
     }
 
     void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated) {
@@ -195,8 +182,19 @@ namespace urchin {
         return sceneInfo.isAmbientOcclusionActivated;
     }
 
+    AmbientOcclusionManager& Renderer3d::getAmbientOcclusionManager() {
+        return ambientOcclusionManager;
+    }
+
     TransparentManager& Renderer3d::getTransparentManager() {
         return transparentManager;
+    }
+
+    void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
+        if (this->isAntiAliasingActivated != isAntiAliasingActivated) {
+            this->isAntiAliasingActivated = isAntiAliasingActivated;
+            createOrUpdateDeferredPasses(); //TODO is it required ?
+        }
     }
 
     AntiAliasingApplier& Renderer3d::getAntiAliasingApplier() {
@@ -207,9 +205,20 @@ namespace urchin {
         return bloomEffectApplier;
     }
 
-    void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
-        if (this->isAntiAliasingActivated != isAntiAliasingActivated) {
-            this->isAntiAliasingActivated = isAntiAliasingActivated;
+    void Renderer3d::activateReflection(bool isReflectionActivated) {
+        if (this->isReflectionActivated != isReflectionActivated) {
+            this->isReflectionActivated = isReflectionActivated;
+            createOrUpdateDeferredPasses(); //TODO is it required ?
+        }
+    }
+
+    ReflectionApplier& Renderer3d::getReflectionApplier() {
+        return reflectionApplier;
+    }
+
+    void Renderer3d::updateRenderingScale(float renderingScale) {
+        if (this->renderingScale != renderingScale) {
+            this->renderingScale = renderingScale;
             createOrUpdateDeferredPasses();
         }
     }
@@ -325,7 +334,7 @@ namespace urchin {
         renderDeferredFirstPass(frameIndex, dt);
         renderDeferredSecondPass(frameIndex);
 
-        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated || isReflectionActivated  ? 1 /* AA or reflection */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
+        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated || isReflectionActivated ? 1 /* AA or reflection */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
         if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
             numDependenciesToTransparentTextures += 1;
         }
@@ -557,9 +566,9 @@ namespace urchin {
         unsigned int numDependenciesToFirstPassOutput = 1; //second pass
         if (sceneInfo.isAmbientOcclusionActivated) {
             if (ambientOcclusionManager.getConfig().isBlurActivated) {
-                numDependenciesToFirstPassOutput += 3; //AO raw texture & AO vertical filter & AO horizontal filter
+                numDependenciesToFirstPassOutput += 3; //AO texture & AO blur (vertical & horizontal)
             } else {
-                numDependenciesToFirstPassOutput += 1; //AO raw texture
+                numDependenciesToFirstPassOutput += 1; //AO texture
             }
         }
         numDependenciesToFirstPassOutput += 1; //transparent

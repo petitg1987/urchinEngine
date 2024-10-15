@@ -4,6 +4,7 @@
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
+#include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <scene/renderer3d/landscape/terrain/TerrainContainer.h>
 
 namespace urchin {
@@ -33,6 +34,11 @@ namespace urchin {
             void setBloomConfig(const BloomEffectApplier::Config&);
             const BloomEffectApplier::Config& getBloomConfig() const;
 
+            void activateReflection(bool);
+            bool isReflectionActivated() const;
+            void setReflectionConfig(const ReflectionApplier::Config&);
+            const ReflectionApplier::Config& getReflectionConfig() const;
+
             void setTerrainConfig(const TerrainContainer::Config&);
             const TerrainContainer::Config& getTerrainConfig() const;
 
@@ -49,6 +55,9 @@ namespace urchin {
             AntiAliasingApplier::Config antiAliasingConfig;
 
             BloomEffectApplier::Config bloomConfig;
+
+            bool reflectionActivated;
+            ReflectionApplier::Config reflectionConfig;
 
             TerrainContainer::Config terrainConfig;
     };

@@ -48,17 +48,19 @@ namespace urchin {
             GeometryContainer& getGeometryContainer();
             SkyContainer& getSkyContainer();
             LightManager& getLightManager();
-            ShadowManager& getShadowManager();
-            void updateRenderingScale(float);
             void activateShadow(bool);
             bool isShadowActivated() const;
-            AmbientOcclusionManager& getAmbientOcclusionManager();
+            ShadowManager& getShadowManager();
             void activateAmbientOcclusion(bool);
             bool isAmbientOcclusionActivated() const;
+            AmbientOcclusionManager& getAmbientOcclusionManager();
             TransparentManager& getTransparentManager();
+            void activateAntiAliasing(bool);
             AntiAliasingApplier& getAntiAliasingApplier();
             BloomEffectApplier& getBloomEffectApplier();
-            void activateAntiAliasing(bool);
+            void activateReflection(bool);
+            ReflectionApplier& getReflectionApplier();
+            void updateRenderingScale(float);
             void applyUpdatedGammaFactor() override;
 
             //camera
@@ -175,9 +177,9 @@ namespace urchin {
             } sceneInfo;
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
+            BloomEffectApplier bloomEffectApplier;
             ReflectionApplier reflectionApplier;
             bool isReflectionActivated; //TODO setup it
-            BloomEffectApplier bloomEffectApplier;
 
             //debug
             bool refreshDebugFramebuffers;

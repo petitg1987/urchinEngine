@@ -24,7 +24,7 @@ namespace urchin {
                 float blurSharpness = 40.0f;
             };
 
-            explicit ReflectionApplier(bool);
+            ReflectionApplier(const Config&, bool);
             ~ReflectionApplier();
 
             void onCameraProjectionUpdate(const Camera&);
