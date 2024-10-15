@@ -133,7 +133,7 @@ void main() {
             viewSpacePositionTo = fetchViewSpacePosition(fragUv);
             depth = viewSpacePositionTo.z - viewDistance;
 
-            if (depth >= 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
+            if (depth >= -0.01 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
                 secondPassHasHit = 1;
                 hitBoundary1 = hitBoundaryMiddle;
             } else {

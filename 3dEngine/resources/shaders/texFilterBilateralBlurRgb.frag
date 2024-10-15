@@ -25,7 +25,7 @@ vec4 computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearized
     float linearizedDepthValue = linearizeDepth(depthValue, cameraPlanes.nearPlane, cameraPlanes.farPlane);
     float zDiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
 
-    float weight = exp2(blurFalloff - zDiff * zDiff);
+    float weight = exp(blurFalloff - zDiff * zDiff);
     totalWeight += weight;
 
     vec4 texValue = texture(tex, texCoordinates + uvOffset).rgba;
