@@ -92,7 +92,7 @@ void main() {
         frag += increment;
         fragUv = frag / sceneSize;
 
-        if (fragUv.x > 0.0 && fragUv.x < 1.0 && fragUv.y > 0.0 && fragUv.y < 1.0) {
+        if (fragUv.x >= 0.0 && fragUv.x <= 1.0 && fragUv.y >= 0.0 && fragUv.y <= 1.0) {
             float progressionScreenSpace = mix((frag.y - startFrag.y) / deltaY, (frag.x - startFrag.x) / deltaX, useX);
             progressionScreenSpace = clamp(progressionScreenSpace, 0.0, 1.0);
 
@@ -102,7 +102,7 @@ void main() {
             viewSpacePositionTo = fetchViewSpacePosition(fragUv);
             float depth = viewSpacePositionTo.z - viewDistance;
 
-            if (depth > 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
+            if (depth >= 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
                 firstPassHasHit = 1;
                 hitBoundary1 = progressionScreenSpace;
                 break;
@@ -128,12 +128,12 @@ void main() {
         frag = mix(startFrag.xy, endFrag.xy, hitBoundaryMiddle);
         fragUv = frag / sceneSize;
 
-        if (fragUv.x > 0.0 && fragUv.x < 1.0 && fragUv.y > 0.0 && fragUv.y < 1.0) {
+        if (fragUv.x >= 0.0 && fragUv.x <= 1.0 && fragUv.y >= 0.0 && fragUv.y <= 1.0) {
             float viewDistance = (startViewSpacePosition.z * endViewSpacePosition.z) / mix(endViewSpacePosition.z, startViewSpacePosition.z, hitBoundaryMiddle);
             viewSpacePositionTo = fetchViewSpacePosition(fragUv);
             depth = viewSpacePositionTo.z - viewDistance;
 
-            if (depth > 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
+            if (depth >= 0.0 /* hit found */ && depth < HIT_THRESHOLD /* hit is close to viewSpacePositionTo */) {
                 secondPassHasHit = 1;
                 hitBoundary1 = hitBoundaryMiddle;
             } else {
