@@ -191,10 +191,7 @@ namespace urchin {
     }
 
     void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated) {
-        if (this->isAntiAliasingActivated != isAntiAliasingActivated) {
-            this->isAntiAliasingActivated = isAntiAliasingActivated;
-            createOrUpdateDeferredPasses(); //TODO is it required ?
-        }
+        this->isAntiAliasingActivated = isAntiAliasingActivated;
     }
 
     AntiAliasingApplier& Renderer3d::getAntiAliasingApplier() {
@@ -206,10 +203,7 @@ namespace urchin {
     }
 
     void Renderer3d::activateReflection(bool isReflectionActivated) {
-        if (this->isReflectionActivated != isReflectionActivated) {
-            this->isReflectionActivated = isReflectionActivated;
-            createOrUpdateDeferredPasses(); //TODO is it required ?
-        }
+        this->isReflectionActivated = isReflectionActivated;
     }
 
     ReflectionApplier& Renderer3d::getReflectionApplier() {
