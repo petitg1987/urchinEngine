@@ -82,7 +82,7 @@ namespace urchin {
             reflectionColorRenderTarget->initialize();
         }
 
-        verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "reflection color - vertical blur filter", reflectionColorTexture)
+        verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "reflection color - vertical blur", reflectionColorTexture)
                 ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
                 ->textureType(TextureType::DEFAULT)
                 ->textureFormat(reflectionColorTextureFormat)
@@ -92,7 +92,7 @@ namespace urchin {
                 ->blurSharpness(config.blurSharpness)
                 ->buildGaussianBlur();
 
-        horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "reflection color - horizontal blur filter", verticalBlurFilter->getTexture())
+        horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "reflection color - horizontal blur", verticalBlurFilter->getTexture())
                 ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
                 ->textureType(TextureType::DEFAULT)
                 ->textureFormat(reflectionColorTextureFormat)

@@ -91,7 +91,7 @@ namespace urchin {
         }
 
         if (config.isBlurActivated) {
-            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - vertical blur filter", ambientOcclusionTexture)
+            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - vertical blur", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -101,7 +101,7 @@ namespace urchin {
                     ->blurSharpness(config.blurSharpness)
                     ->buildGaussianBlur();
 
-            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal blur filter", verticalBlurFilter->getTexture())
+            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal blur", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
