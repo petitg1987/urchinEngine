@@ -31,11 +31,15 @@ namespace urchin {
     }
 
     std::string GaussianBlurFilter::getShaderName() const {
-        if ((getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT)
-                && getTextureType() == TextureType::DEFAULT) {
-            return "texFilterGaussianBlur";
+        if (getTextureType() != TextureType::DEFAULT) {
+            throw std::runtime_error("Unimplemented gaussian blur filter for texture type: " + std::to_string((int)getTextureType()));
         }
-        throw std::runtime_error("Unimplemented gaussian blur filter for: " + std::to_string((int)getTextureFormat()) + " - " + std::to_string((int)getTextureType()));
+
+        if (getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT) {
+            return "texFilterGaussianBlur";
+        } else {
+            throw std::runtime_error("Unimplemented gaussian blur filter for texture format: " + std::to_string((int)getTextureFormat()));
+        }
     }
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
