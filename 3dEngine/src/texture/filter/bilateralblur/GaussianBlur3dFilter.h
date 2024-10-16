@@ -9,14 +9,14 @@ namespace urchin {
 
     class BilateralBlurFilterBuilder;
 
-    class BilateralBlurFilter final : public TextureFilter {
+    class GaussianBlur3dFilter final : public TextureFilter {
         public:
             enum BlurDirection {
                 VERTICAL,
                 HORIZONTAL
             };
 
-            BilateralBlurFilter(const BilateralBlurFilterBuilder*, BlurDirection);
+            GaussianBlur3dFilter(const BilateralBlurFilterBuilder*, BlurDirection);
 
             void onCameraProjectionUpdate(float, float);
 

@@ -1,13 +1,13 @@
 #include <stdexcept>
 
-#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
+#include <texture/filter/bilateralblur/GaussianBlur3dFilter.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    BilateralBlurFilter::BilateralBlurFilter(const BilateralBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
+    GaussianBlur3dFilter::GaussianBlur3dFilter(const BilateralBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
             TextureFilter(textureFilterBuilder),
             depthTexture(textureFilterBuilder->getDepthTexture()),
             blurDirection(blurDirection),
@@ -29,16 +29,16 @@ namespace urchin {
         computeUvOffsets();
     }
 
-    void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
+    void GaussianBlur3dFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = farPlane;
 
         getTextureRenderer().updateUniformData(CAMERA_PLANES_UNIFORM_BINDING, &cameraPlanes);
     }
 
-    std::string BilateralBlurFilter::getShaderName() const {
+    std::string GaussianBlur3dFilter::getShaderName() const {
         if (getTextureType() != TextureType::DEFAULT) {
-            throw std::runtime_error("Unimplemented bilateral blur filter for texture type: " + std::to_string((int)getTextureType()));
+            throw std::runtime_error("Unimplemented gaussian blur 3d filter for texture type: " + std::to_string((int)getTextureType()));
         }
 
         if (getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT) {
@@ -46,11 +46,11 @@ namespace urchin {
         } else if (getTextureFormat() == TextureFormat::RGBA_8_INT || getTextureFormat() == TextureFormat::RGBA_16_FLOAT || getTextureFormat() == TextureFormat::RGBA_32_FLOAT) {
             return "texFilterGaussianBlur3dRgb";
         } else {
-            throw std::runtime_error("Unimplemented bilateral blur filter for texture format: " + std::to_string((int)getTextureFormat()));
+            throw std::runtime_error("Unimplemented gaussian blur 3d filter for texture format: " + std::to_string((int)getTextureFormat()));
         }
     }
 
-    void BilateralBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
+    void GaussianBlur3dFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         std::vector<float> uvOffsetsShaderData(uvOffsets.size() * 4, 0.0f);
         for (std::size_t i = 0; i < uvOffsets.size(); ++i) {
             uvOffsetsShaderData[i * 4] = uvOffsets[i].X;
@@ -64,7 +64,7 @@ namespace urchin {
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
-    std::unique_ptr<ShaderConstants> BilateralBlurFilter::buildShaderConstants() const {
+    std::unique_ptr<ShaderConstants> GaussianBlur3dFilter::buildShaderConstants() const {
         BilateralBlurShaderConst bilateralBlurData{};
         bilateralBlurData.kernelRadius = kernelRadius;
         bilateralBlurData.blurSharpness = blurSharpness;
@@ -75,7 +75,7 @@ namespace urchin {
         return std::make_unique<ShaderConstants>(variablesSize, &bilateralBlurData);
     }
 
-    void BilateralBlurFilter::computeUvOffsets() {
+    void GaussianBlur3dFilter::computeUvOffsets() {
         uvOffsets.resize(kernelRadius, Vector2<float>(0.0f, 0.0f));
 
         if (textureSize != 0) {

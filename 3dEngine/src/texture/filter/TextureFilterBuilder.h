@@ -6,7 +6,7 @@
 
 #include <texture/filter/TextureFilter.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilter.h>
-#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
+#include <texture/filter/bilateralblur/GaussianBlur3dFilter.h>
 #include <graphics/texture/TextureType.h>
 
 namespace urchin {

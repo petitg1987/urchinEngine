@@ -4,7 +4,7 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <texture/filter/bilateralblur/BilateralBlurFilter.h>
+#include <texture/filter/bilateralblur/GaussianBlur3dFilter.h>
 
 namespace urchin {
 
@@ -116,8 +116,8 @@ namespace urchin {
             std::shared_ptr<Texture> normalAndAmbientTexture;
             std::unique_ptr<GenericCompute> compute;
 
-            std::unique_ptr<BilateralBlurFilter> verticalBlurFilter;
-            std::unique_ptr<BilateralBlurFilter> horizontalBlurFilter;
+            std::unique_ptr<GaussianBlur3dFilter> verticalBlurFilter;
+            std::unique_ptr<GaussianBlur3dFilter> horizontalBlurFilter;
     };
 
 }

@@ -54,9 +54,9 @@ namespace urchin {
 
         std::unique_ptr<TextureFilter> textureFilter;
         if (pBlurDirection == BlurDirection::HORIZONTAL_BLUR) {
-            textureFilter = std::make_unique<BilateralBlurFilter>(this, BilateralBlurFilter::HORIZONTAL);
+            textureFilter = std::make_unique<GaussianBlur3dFilter>(this, GaussianBlur3dFilter::HORIZONTAL);
         } else if (pBlurDirection == BlurDirection::VERTICAL_BLUR) {
-            textureFilter = std::make_unique<BilateralBlurFilter>(this, BilateralBlurFilter::VERTICAL);
+            textureFilter = std::make_unique<GaussianBlur3dFilter>(this, GaussianBlur3dFilter::VERTICAL);
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
@@ -66,9 +66,9 @@ namespace urchin {
         return textureFilter;
     }
 
-    std::unique_ptr<BilateralBlurFilter> BilateralBlurFilterBuilder::buildBilateralBlur() {
+    std::unique_ptr<GaussianBlur3dFilter> BilateralBlurFilterBuilder::buildBilateralBlur() {
         std::unique_ptr<TextureFilter> bilateralBlurFilter = build();
-        return std::unique_ptr<BilateralBlurFilter>(static_cast<BilateralBlurFilter*>(bilateralBlurFilter.release()));
+        return std::unique_ptr<GaussianBlur3dFilter>(static_cast<GaussianBlur3dFilter*>(bilateralBlurFilter.release()));
     }
 
 }
