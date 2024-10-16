@@ -1,5 +1,6 @@
 #include <map>
 
+#include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
@@ -23,7 +24,7 @@ namespace urchin {
             this->inputTexture = inputTexture;
 
             clearRenderer();
-            outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), TextureFormat::RGBA_16_FLOAT);
+            outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
             if (useNullRenderTarget) {
                 renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
             } else {

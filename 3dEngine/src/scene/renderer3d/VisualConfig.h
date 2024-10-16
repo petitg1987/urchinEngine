@@ -11,6 +11,8 @@ namespace urchin {
 
     class VisualConfig {
         public:
+            static const TextureFormat SCENE_TEXTURE_FORMAT;
+
             VisualConfig();
 
             void setRenderingScale(float);

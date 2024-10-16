@@ -1,3 +1,4 @@
+#include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
@@ -45,7 +46,7 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, TextureFormat::RGBA_16_FLOAT);
+        outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
         outputTexture->enableTextureWriting(OutputUsage::GRAPHICS);
 
         if (useNullRenderTarget) {

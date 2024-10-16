@@ -1,3 +1,4 @@
+#include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -104,7 +105,7 @@ namespace urchin {
         verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
         horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 
-        reflectionCombineTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), TextureFormat::RGBA_16_FLOAT); //TODO format should come from renderer3d
+        reflectionCombineTexture = Texture::build("reflectionCombine", depthTexture->getWidth(), depthTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
         if (useNullRenderTarget) {
             reflectionCombineRenderTarget = std::make_unique<NullRenderTarget>(depthTexture->getWidth(), depthTexture->getHeight());
         } else {

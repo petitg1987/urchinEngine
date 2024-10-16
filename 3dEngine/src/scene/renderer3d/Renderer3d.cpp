@@ -383,7 +383,7 @@ namespace urchin {
 
         //deferred second pass
         sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
-        illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, TextureFormat::RGBA_16_FLOAT);
+        illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
         if (deferredSecondPassRenderTarget && deferredSecondPassRenderTarget->isValidRenderTarget()) {
             auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());
             deferredSecondPassOffscreenRender->resetOutput();

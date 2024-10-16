@@ -2,6 +2,9 @@
 
 namespace urchin {
 
+    //static
+    const TextureFormat VisualConfig::SCENE_TEXTURE_FORMAT = TextureFormat::RGBA_16_FLOAT;
+
     VisualConfig::VisualConfig() :
             renderingScale(1.0f),
             shadowActivated(true),
