@@ -179,7 +179,7 @@ namespace urchin {
             bool isAntiAliasingActivated;
             BloomEffectApplier bloomEffectApplier;
             ReflectionApplier reflectionApplier;
-            bool isReflectionActivated; //TODO setup it
+            bool isReflectionActivated;
 
             //debug
             bool refreshDebugFramebuffers;
