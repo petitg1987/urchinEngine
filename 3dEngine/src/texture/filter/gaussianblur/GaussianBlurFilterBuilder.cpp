@@ -1,8 +1,8 @@
-#include <texture/filter/gaussianblur3d/GaussianBlur3dFilterBuilder.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 
 namespace urchin {
 
-    GaussianBlur3dFilterBuilder::GaussianBlur3dFilterBuilder(bool bUseNullRenderTarget, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
+    GaussianBlurFilterBuilder::GaussianBlurFilterBuilder(bool bUseNullRenderTarget, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
             TextureFilterBuilder(bUseNullRenderTarget, std::move(name), sourceTexture),
             pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
             pBlurSize(3), //3x3 blur
@@ -10,39 +10,39 @@ namespace urchin {
 
     }
 
-    GaussianBlur3dFilterBuilder* GaussianBlur3dFilterBuilder::blurDirection(BlurDirection blurDirection) {
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurDirection(BlurDirection blurDirection) {
         this->pBlurDirection = blurDirection;
         return this;
     }
 
-    GaussianBlur3dFilterBuilder* GaussianBlur3dFilterBuilder::blurSize(unsigned int blurSize) {
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurSize(unsigned int blurSize) {
         this->pBlurSize = blurSize;
         return this;
     }
 
-    unsigned int GaussianBlur3dFilterBuilder::getBlurSize() const {
+    unsigned int GaussianBlurFilterBuilder::getBlurSize() const {
         return pBlurSize;
     }
 
-    GaussianBlur3dFilterBuilder* GaussianBlur3dFilterBuilder::blurSharpness(float pBlurSharpness) {
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurSharpness(float pBlurSharpness) {
         this->pBlurSharpness = pBlurSharpness;
         return this;
     }
 
-    float GaussianBlur3dFilterBuilder::getBlurSharpness() const {
+    float GaussianBlurFilterBuilder::getBlurSharpness() const {
         return pBlurSharpness;
     }
 
-    GaussianBlur3dFilterBuilder* GaussianBlur3dFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {
         this->pDepthTexture = depthTexture;
         return this;
     }
 
-    const std::shared_ptr<Texture>& GaussianBlur3dFilterBuilder::getDepthTexture() const {
+    const std::shared_ptr<Texture>& GaussianBlurFilterBuilder::getDepthTexture() const {
         return pDepthTexture;
     }
 
-    std::unique_ptr<TextureFilter> GaussianBlur3dFilterBuilder::build() {
+    std::unique_ptr<TextureFilter> GaussianBlurFilterBuilder::build() {
         assert(getDepthTexture());
 
         if (getTextureType() != TextureType::DEFAULT) {
@@ -54,9 +54,9 @@ namespace urchin {
 
         std::unique_ptr<TextureFilter> textureFilter;
         if (pBlurDirection == BlurDirection::HORIZONTAL_BLUR) {
-            textureFilter = std::make_unique<GaussianBlur3dFilter>(this, GaussianBlur3dFilter::HORIZONTAL);
+            textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
         } else if (pBlurDirection == BlurDirection::VERTICAL_BLUR) {
-            textureFilter = std::make_unique<GaussianBlur3dFilter>(this, GaussianBlur3dFilter::VERTICAL);
+            textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
         }
@@ -66,9 +66,9 @@ namespace urchin {
         return textureFilter;
     }
 
-    std::unique_ptr<GaussianBlur3dFilter> GaussianBlur3dFilterBuilder::buildGaussianBlur3d() {
-        std::unique_ptr<TextureFilter> gaussianBlur3dFilter = build();
-        return std::unique_ptr<GaussianBlur3dFilter>(static_cast<GaussianBlur3dFilter*>(gaussianBlur3dFilter.release()));
+    std::unique_ptr<GaussianBlurFilter> GaussianBlurFilterBuilder::buildGaussianBlur() {
+        std::unique_ptr<TextureFilter> gaussianBlurFilter = build();
+        return std::unique_ptr<GaussianBlurFilter>(static_cast<GaussianBlurFilter*>(gaussianBlurFilter.release()));
     }
 
 }

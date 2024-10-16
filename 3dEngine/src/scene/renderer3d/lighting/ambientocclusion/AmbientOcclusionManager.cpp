@@ -4,7 +4,7 @@
 #include <random>
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
-#include <texture/filter/gaussianblur3d/GaussianBlur3dFilterBuilder.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/GenericComputeBuilder.h>
@@ -91,25 +91,25 @@ namespace urchin {
         }
 
         if (config.isBlurActivated) {
-            verticalBlurFilter = std::make_unique<GaussianBlur3dFilterBuilder>(useNullRenderTarget, "ambient occlusion - vertical blur filter", ambientOcclusionTexture)
+            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - vertical blur filter", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
                     ->depthTexture(depthTexture)
-                    ->blurDirection(GaussianBlur3dFilterBuilder::VERTICAL_BLUR)
+                    ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
                     ->blurSize(config.blurSize)
                     ->blurSharpness(config.blurSharpness)
-                    ->buildGaussianBlur3d();
+                    ->buildGaussianBlur();
 
-            horizontalBlurFilter = std::make_unique<GaussianBlur3dFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal blur filter", verticalBlurFilter->getTexture())
+            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal blur filter", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
                     ->depthTexture(depthTexture)
-                    ->blurDirection(GaussianBlur3dFilterBuilder::HORIZONTAL_BLUR)
+                    ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
                     ->blurSize(config.blurSize)
                     ->blurSharpness(config.blurSharpness)
-                    ->buildGaussianBlur3d();
+                    ->buildGaussianBlur();
 
             verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
             horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);

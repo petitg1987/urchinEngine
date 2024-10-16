@@ -2,7 +2,7 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <texture/filter/gaussianblur3d/GaussianBlur3dFilter.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilter.h>
 
 namespace urchin {
 
@@ -88,8 +88,8 @@ namespace urchin {
             std::unique_ptr<Shader> reflectionColorShader;
             std::unique_ptr<GenericRenderer> reflectionColorRenderer;
 
-            std::unique_ptr<GaussianBlur3dFilter> verticalBlurFilter;
-            std::unique_ptr<GaussianBlur3dFilter> horizontalBlurFilter;
+            std::unique_ptr<GaussianBlurFilter> verticalBlurFilter;
+            std::unique_ptr<GaussianBlurFilter> horizontalBlurFilter;
 
             std::shared_ptr<Texture> reflectionCombineTexture;
             std::unique_ptr<RenderTarget> reflectionCombineRenderTarget;

@@ -3,7 +3,7 @@
 
 #include "_transformFunctions.frag"
 
-layout(constant_id = 0) const uint KERNEL_RADIUS = 9; //must be equals to GaussianBlur3dFilter::KERNEL_RADIUS_SHADER_LIMIT
+layout(constant_id = 0) const uint KERNEL_RADIUS = 9; //must be equals to GaussianBlurFilter::KERNEL_RADIUS_SHADER_LIMIT
 layout(constant_id = 1) const float BLUR_SHARPNESS = 0.0;
 
 layout(std140, set = 0, binding = 0) uniform CameraPlanes {
@@ -18,9 +18,9 @@ layout(binding = 3) uniform sampler2D depthTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
-layout(location = 0) out float fragColor;
+layout(location = 0) out vec4 fragColor;
 
-float computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearizedDepthCenterValue, inout float totalWeight) {
+vec4 computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearizedDepthCenterValue, inout float totalWeight) {
     float depthValue = texture(depthTex, texCoordinates + uvOffset).r;
     float linearizedDepthValue = linearizeDepth(depthValue, cameraPlanes.nearPlane, cameraPlanes.farPlane);
     float zDiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
@@ -28,7 +28,7 @@ float computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearize
     float weight = exp(blurFalloff - zDiff * zDiff);
     totalWeight += weight;
 
-    float texValue = texture(tex, texCoordinates + uvOffset).r;
+    vec4 texValue = texture(tex, texCoordinates + uvOffset).rgba;
     return texValue * weight;
 }
 
@@ -38,7 +38,7 @@ void main() {
     float linearizedDepthCenterValue = linearizeDepth(depthCenterValue, cameraPlanes.nearPlane, cameraPlanes.farPlane);
     float totalWeight = 1.0;
 
-    fragColor = texture(tex, texCoordinates).r;
+    fragColor = texture(tex, texCoordinates).rgba;
     for (int i = 1; i <= KERNEL_RADIUS; ++i) {
         float blurFalloff = -float(i * i) / (2.0 * blurSigma * blurSigma);
         fragColor += computeBlurWeightedValue(blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);

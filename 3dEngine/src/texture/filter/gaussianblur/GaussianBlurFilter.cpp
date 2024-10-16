@@ -1,13 +1,13 @@
 #include <stdexcept>
 
-#include <texture/filter/gaussianblur3d/GaussianBlur3dFilter.h>
-#include <texture/filter/gaussianblur3d/GaussianBlur3dFilterBuilder.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilter.h>
+#include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    GaussianBlur3dFilter::GaussianBlur3dFilter(const GaussianBlur3dFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
+    GaussianBlurFilter::GaussianBlurFilter(const GaussianBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
             TextureFilter(textureFilterBuilder),
             depthTexture(textureFilterBuilder->getDepthTexture()),
             blurDirection(blurDirection),
@@ -29,28 +29,28 @@ namespace urchin {
         computeUvOffsets();
     }
 
-    void GaussianBlur3dFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
+    void GaussianBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
         cameraPlanes.nearPlane = nearPlane;
         cameraPlanes.farPlane = farPlane;
 
         getTextureRenderer().updateUniformData(CAMERA_PLANES_UNIFORM_BINDING, &cameraPlanes);
     }
 
-    std::string GaussianBlur3dFilter::getShaderName() const {
+    std::string GaussianBlurFilter::getShaderName() const {
         if (getTextureType() != TextureType::DEFAULT) {
-            throw std::runtime_error("Unimplemented gaussian blur 3d filter for texture type: " + std::to_string((int)getTextureType()));
+            throw std::runtime_error("Unimplemented gaussian blur filter for texture type: " + std::to_string((int)getTextureType()));
         }
 
         if (getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT) {
-            return "texFilterGaussianBlur3d";
+            return "texFilterGaussianBlur";
         } else if (getTextureFormat() == TextureFormat::RGBA_8_INT || getTextureFormat() == TextureFormat::RGBA_16_FLOAT || getTextureFormat() == TextureFormat::RGBA_32_FLOAT) {
-            return "texFilterGaussianBlur3dRgb";
+            return "texFilterGaussianBlurRgb";
         } else {
-            throw std::runtime_error("Unimplemented gaussian blur 3d filter for texture format: " + std::to_string((int)getTextureFormat()));
+            throw std::runtime_error("Unimplemented gaussian blur filter for texture format: " + std::to_string((int)getTextureFormat()));
         }
     }
 
-    void GaussianBlur3dFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
+    void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         std::vector<float> uvOffsetsShaderData(uvOffsets.size() * 4, 0.0f);
         for (std::size_t i = 0; i < uvOffsets.size(); ++i) {
             uvOffsetsShaderData[i * 4] = uvOffsets[i].X;
@@ -64,18 +64,18 @@ namespace urchin {
                 ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()));
     }
 
-    std::unique_ptr<ShaderConstants> GaussianBlur3dFilter::buildShaderConstants() const {
-        GaussianBlur3dShaderConst gaussianBlur3dData{};
-        gaussianBlur3dData.kernelRadius = kernelRadius;
-        gaussianBlur3dData.blurSharpness = blurSharpness;
+    std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
+        GaussianBlurShaderConst gaussianBlurData{};
+        gaussianBlurData.kernelRadius = kernelRadius;
+        gaussianBlurData.blurSharpness = blurSharpness;
         std::vector<std::size_t> variablesSize = {
-                sizeof(GaussianBlur3dShaderConst::kernelRadius),
-                sizeof(GaussianBlur3dShaderConst::blurSharpness)
+                sizeof(GaussianBlurShaderConst::kernelRadius),
+                sizeof(GaussianBlurShaderConst::blurSharpness)
         };
-        return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlur3dData);
+        return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlurData);
     }
 
-    void GaussianBlur3dFilter::computeUvOffsets() {
+    void GaussianBlurFilter::computeUvOffsets() {
         uvOffsets.resize(kernelRadius, Vector2<float>(0.0f, 0.0f));
 
         if (textureSize != 0) {
