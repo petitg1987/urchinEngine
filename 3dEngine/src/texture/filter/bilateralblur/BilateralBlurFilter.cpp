@@ -42,9 +42,9 @@ namespace urchin {
         }
 
         if (getTextureFormat() == TextureFormat::GRAYSCALE_8_INT || getTextureFormat() == TextureFormat::GRAYSCALE_16_FLOAT || getTextureFormat() == TextureFormat::GRAYSCALE_32_FLOAT) {
-            return "texFilterBilateralBlur";
+            return "texFilterGaussianBlur3d";
         } else if (getTextureFormat() == TextureFormat::RGBA_8_INT || getTextureFormat() == TextureFormat::RGBA_16_FLOAT || getTextureFormat() == TextureFormat::RGBA_32_FLOAT) {
-            return "texFilterBilateralBlurRgb";
+            return "texFilterGaussianBlur3dRgb";
         } else {
             throw std::runtime_error("Unimplemented bilateral blur filter for texture format: " + std::to_string((int)getTextureFormat()));
         }
