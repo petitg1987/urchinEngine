@@ -4,7 +4,7 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <texture/filter/bilateralblur/GaussianBlur3dFilter.h>
+#include <texture/filter/gaussianblur3d/GaussianBlur3dFilter.h>
 
 namespace urchin {
 

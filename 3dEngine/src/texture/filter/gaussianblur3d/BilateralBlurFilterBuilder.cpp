@@ -1,4 +1,4 @@
-#include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
+#include <texture/filter/gaussianblur3d/BilateralBlurFilterBuilder.h>
 
 namespace urchin {
 

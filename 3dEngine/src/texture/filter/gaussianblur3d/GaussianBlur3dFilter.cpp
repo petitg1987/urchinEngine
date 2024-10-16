@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include <texture/filter/bilateralblur/GaussianBlur3dFilter.h>
-#include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
+#include <texture/filter/gaussianblur3d/GaussianBlur3dFilter.h>
+#include <texture/filter/gaussianblur3d/BilateralBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 

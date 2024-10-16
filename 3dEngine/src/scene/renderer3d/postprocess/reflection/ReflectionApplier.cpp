@@ -1,6 +1,6 @@
 #include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
-#include <texture/filter/bilateralblur/BilateralBlurFilterBuilder.h>
+#include <texture/filter/gaussianblur3d/BilateralBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/target/NullRenderTarget.h>
