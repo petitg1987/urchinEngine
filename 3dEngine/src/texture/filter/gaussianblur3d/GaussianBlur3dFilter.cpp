@@ -1,13 +1,13 @@
 #include <stdexcept>
 
 #include <texture/filter/gaussianblur3d/GaussianBlur3dFilter.h>
-#include <texture/filter/gaussianblur3d/BilateralBlurFilterBuilder.h>
+#include <texture/filter/gaussianblur3d/GaussianBlur3dFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 
 namespace urchin {
 
-    GaussianBlur3dFilter::GaussianBlur3dFilter(const BilateralBlurFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
+    GaussianBlur3dFilter::GaussianBlur3dFilter(const GaussianBlur3dFilterBuilder* textureFilterBuilder, BlurDirection blurDirection):
             TextureFilter(textureFilterBuilder),
             depthTexture(textureFilterBuilder->getDepthTexture()),
             blurDirection(blurDirection),
@@ -65,14 +65,14 @@ namespace urchin {
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlur3dFilter::buildShaderConstants() const {
-        BilateralBlurShaderConst bilateralBlurData{};
-        bilateralBlurData.kernelRadius = kernelRadius;
-        bilateralBlurData.blurSharpness = blurSharpness;
+        GaussianBlur3dShaderConst gaussianBlur3dData{};
+        gaussianBlur3dData.kernelRadius = kernelRadius;
+        gaussianBlur3dData.blurSharpness = blurSharpness;
         std::vector<std::size_t> variablesSize = {
-                sizeof(BilateralBlurShaderConst::kernelRadius),
-                sizeof(BilateralBlurShaderConst::blurSharpness)
+                sizeof(GaussianBlur3dShaderConst::kernelRadius),
+                sizeof(GaussianBlur3dShaderConst::blurSharpness)
         };
-        return std::make_unique<ShaderConstants>(variablesSize, &bilateralBlurData);
+        return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlur3dData);
     }
 
     void GaussianBlur3dFilter::computeUvOffsets() {

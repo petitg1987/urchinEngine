@@ -3,7 +3,7 @@
 
 #include "_transformFunctions.frag"
 
-layout(constant_id = 0) const uint KERNEL_RADIUS = 9; //must be equals to BilateralBlurFilter::KERNEL_RADIUS_SHADER_LIMIT
+layout(constant_id = 0) const uint KERNEL_RADIUS = 9; //must be equals to GaussianBlur3dFilter::KERNEL_RADIUS_SHADER_LIMIT
 layout(constant_id = 1) const float BLUR_SHARPNESS = 0.0;
 
 layout(std140, set = 0, binding = 0) uniform CameraPlanes {

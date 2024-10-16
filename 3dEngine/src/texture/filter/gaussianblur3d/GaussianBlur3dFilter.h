@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class BilateralBlurFilterBuilder;
+    class GaussianBlur3dFilterBuilder;
 
     class GaussianBlur3dFilter final : public TextureFilter {
         public:
@@ -16,12 +16,12 @@ namespace urchin {
                 HORIZONTAL
             };
 
-            GaussianBlur3dFilter(const BilateralBlurFilterBuilder*, BlurDirection);
+            GaussianBlur3dFilter(const GaussianBlur3dFilterBuilder*, BlurDirection);
 
             void onCameraProjectionUpdate(float, float);
 
         private:
-            struct BilateralBlurShaderConst {
+            struct GaussianBlur3dShaderConst {
                 uint32_t kernelRadius;
                 float blurSharpness;
             };
@@ -32,7 +32,7 @@ namespace urchin {
 
             void computeUvOffsets();
 
-            static constexpr unsigned int KERNEL_RADIUS_SHADER_LIMIT = 9; //must be equals to 'NB_TEXTURE_FETCH' in texFilterBilateralBlur shader
+            static constexpr unsigned int KERNEL_RADIUS_SHADER_LIMIT = 9; //must be equals to 'NB_TEXTURE_FETCH' in texFilterGaussianBlur3d shader
 
             static constexpr uint32_t CAMERA_PLANES_UNIFORM_BINDING = 0;
             static constexpr uint32_t OFFSETS_DATA_UNIFORM_BINDING = 1;

@@ -4,29 +4,29 @@
 
 namespace urchin {
 
-    class BilateralBlurFilterBuilder final : public TextureFilterBuilder<BilateralBlurFilterBuilder> {
+    class GaussianBlur3dFilterBuilder final : public TextureFilterBuilder<GaussianBlur3dFilterBuilder> {
         public:
             enum BlurDirection {
                 HORIZONTAL_BLUR,
                 VERTICAL_BLUR
             };
 
-            BilateralBlurFilterBuilder(bool, std::string, const std::shared_ptr<Texture>&);
-            ~BilateralBlurFilterBuilder() override = default;
+            GaussianBlur3dFilterBuilder(bool, std::string, const std::shared_ptr<Texture>&);
+            ~GaussianBlur3dFilterBuilder() override = default;
 
-            BilateralBlurFilterBuilder* blurDirection(BlurDirection);
+            GaussianBlur3dFilterBuilder* blurDirection(BlurDirection);
 
-            BilateralBlurFilterBuilder* blurSize(unsigned int);
+            GaussianBlur3dFilterBuilder* blurSize(unsigned int);
             unsigned int getBlurSize() const;
 
-            BilateralBlurFilterBuilder* blurSharpness(float);
+            GaussianBlur3dFilterBuilder* blurSharpness(float);
             float getBlurSharpness() const;
 
-            BilateralBlurFilterBuilder* depthTexture(const std::shared_ptr<Texture>&);
+            GaussianBlur3dFilterBuilder* depthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getDepthTexture() const;
 
             std::unique_ptr<TextureFilter> build() override;
-            std::unique_ptr<GaussianBlur3dFilter> buildBilateralBlur();
+            std::unique_ptr<GaussianBlur3dFilter> buildGaussianBlur3d();
 
         private:
             BlurDirection pBlurDirection;
