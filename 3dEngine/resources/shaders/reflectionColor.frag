@@ -3,8 +3,8 @@
 
 layout(constant_id = 0) const float MAX_DISTANCE = 0.0;
 layout(constant_id = 1) const float HIT_THRESHOLD = 0.0;
-layout(constant_id = 2) const float FIRST_PASS_SKIP_PIXEL_COUNT = 0.0;
-layout(constant_id = 3) const uint SECOND_PASS_NUM_STEPS = 0;
+layout(constant_id = 2) const float SKIP_PIXEL_COUNT_ON_FIRST_PASS = 0.0;
+layout(constant_id = 3) const uint NUM_STEPS_ON_SECOND_PASS = 0;
 
 layout(std140, set = 0, binding = 0) uniform ProjectionData {
     mat4 mProjection;
@@ -85,7 +85,7 @@ void main() {
     float deltaX = endFrag.x - startFrag.x;
     float deltaY = endFrag.y - startFrag.y;
     float useX = abs(deltaX) >= abs(deltaY) ? 1.0 : 0.0;
-    float firstPassSteps = mix(abs(deltaY), abs(deltaX), useX) / FIRST_PASS_SKIP_PIXEL_COUNT;
+    float firstPassSteps = mix(abs(deltaY), abs(deltaX), useX) / SKIP_PIXEL_COUNT_ON_FIRST_PASS;
     vec2 increment = vec2(deltaX, deltaY) / max(firstPassSteps, 0.001);
 
     for (int i = 0; i < int(firstPassSteps); ++i) {
@@ -122,7 +122,7 @@ void main() {
 
     //SECOND PASS
     int secondPassHasHit = 0;
-    uint secondPassSteps = SECOND_PASS_NUM_STEPS * firstPassHasHit;
+    uint secondPassSteps = NUM_STEPS_ON_SECOND_PASS * firstPassHasHit;
     for (uint i = 0; i < secondPassSteps; ++i) {
         float hitBoundaryMiddle = (hitBoundary1 + hitBoundary2) / 2.0;
         frag = mix(startFrag.xy, endFrag.xy, hitBoundaryMiddle);

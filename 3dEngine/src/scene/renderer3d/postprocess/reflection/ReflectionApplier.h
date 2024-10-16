@@ -17,8 +17,8 @@ namespace urchin {
                 ReflectionTextureSize textureSize = ReflectionTextureSize::HALF_SIZE;
                 float maxDistance = 2.5f;
                 float hitThreshold = 0.3f;
-                float firstPass_skipPixelCount = 6.0f;
-                unsigned int secondPass_numSteps = 8;
+                float skipPixelCountOnFirstPass = 6.0f;
+                unsigned int numStepsOnSecondPass = 8;
                 float reflectionStrength = 0.4f;
                 unsigned int blurSize = 5;
                 float blurSharpness = 40.0f;
@@ -41,8 +41,8 @@ namespace urchin {
             struct ReflectionColorShaderConst {
                 float maxDistance;
                 float hitThreshold;
-                float firstPass_skipPixelCount;
-                uint32_t secondPass_numSteps;
+                float skipPixelCountOnFirstPass;
+                uint32_t numStepsOnSecondPass;
             };
             struct ReflectionCombineShaderConst {
                 float reflectionStrength;

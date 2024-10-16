@@ -150,14 +150,14 @@ namespace urchin {
             ReflectionColorShaderConst rcConstData {
                     .maxDistance = config.maxDistance,
                     .hitThreshold = config.hitThreshold,
-                    .firstPass_skipPixelCount = config.firstPass_skipPixelCount,
-                    .secondPass_numSteps = config.secondPass_numSteps
+                    .skipPixelCountOnFirstPass = config.skipPixelCountOnFirstPass,
+                    .numStepsOnSecondPass = config.numStepsOnSecondPass
             };
             std::vector<std::size_t> variablesSize = {
                     sizeof(ReflectionColorShaderConst::maxDistance),
                     sizeof(ReflectionColorShaderConst::hitThreshold),
-                    sizeof(ReflectionColorShaderConst::firstPass_skipPixelCount),
-                    sizeof(ReflectionColorShaderConst::secondPass_numSteps),
+                    sizeof(ReflectionColorShaderConst::skipPixelCountOnFirstPass),
+                    sizeof(ReflectionColorShaderConst::numStepsOnSecondPass),
             };
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &rcConstData);
 
@@ -198,8 +198,8 @@ namespace urchin {
         if (this->config.textureSize != config.textureSize ||
                 this->config.maxDistance != config.maxDistance ||
                 this->config.hitThreshold != config.hitThreshold ||
-                this->config.firstPass_skipPixelCount != config.firstPass_skipPixelCount ||
-                this->config.secondPass_numSteps != config.secondPass_numSteps ||
+                this->config.skipPixelCountOnFirstPass != config.skipPixelCountOnFirstPass ||
+                this->config.numStepsOnSecondPass != config.numStepsOnSecondPass ||
                 this->config.reflectionStrength != config.reflectionStrength ||
                 this->config.blurSize != config.blurSize ||
                 this->config.blurSharpness != config.blurSharpness) {
