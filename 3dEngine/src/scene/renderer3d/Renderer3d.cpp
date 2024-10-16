@@ -328,7 +328,7 @@ namespace urchin {
         renderDeferredFirstPass(frameIndex, dt);
         renderDeferredSecondPass(frameIndex);
 
-        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated || isReflectionActivated ? 1 /* AA or reflection */ : 2 /* bloom pre-filter & bloom combine (screen target) */;
+        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* AA or reflection */ : 2 /* (reflection color && reflection combine) or (bloom pre-filter & bloom combine (screen target)) */;
         if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
             numDependenciesToTransparentTextures += 1;
         }
