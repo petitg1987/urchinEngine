@@ -65,8 +65,8 @@ namespace urchin {
         auto textureRendererBuilder = GenericRendererBuilder::create(name, *renderTarget, *textureFilterShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord);
-        auto sourceTargetReader = TextureReader::build(sourceTexture, TextureParam::buildLinear());
-        completeRenderer(textureRendererBuilder, sourceTargetReader);
+        auto sourceTextureReader = TextureReader::build(sourceTexture, TextureParam::buildNearest());
+        completeRenderer(textureRendererBuilder, sourceTextureReader);
 
         textureRenderer = textureRendererBuilder->build();
     }
