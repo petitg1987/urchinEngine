@@ -5,8 +5,8 @@ namespace urchin {
     GaussianBlurFilterBuilder::GaussianBlurFilterBuilder(bool bUseNullRenderTarget, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
             TextureFilterBuilder(bUseNullRenderTarget, std::move(name), sourceTexture),
             pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
-            pBlurSize(3), //3x3 blur
-            pBlurSharpness(40.0) {
+            pBlurRadius(3),
+            pMaxBlurDistance(10.0) {
 
     }
 
@@ -15,22 +15,22 @@ namespace urchin {
         return this;
     }
 
-    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurSize(unsigned int blurSize) {
-        this->pBlurSize = blurSize;
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurRadius(unsigned int blurRadius) {
+        this->pBlurRadius = blurRadius;
         return this;
     }
 
-    unsigned int GaussianBlurFilterBuilder::getBlurSize() const {
-        return pBlurSize;
+    unsigned int GaussianBlurFilterBuilder::getBlurRadius() const {
+        return pBlurRadius;
     }
 
-    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::blurSharpness(float pBlurSharpness) {
-        this->pBlurSharpness = pBlurSharpness;
+    GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::maxBlurDistance(float maxBlurDistance) {
+        this->pMaxBlurDistance = maxBlurDistance;
         return this;
     }
 
-    float GaussianBlurFilterBuilder::getBlurSharpness() const {
-        return pBlurSharpness;
+    float GaussianBlurFilterBuilder::getMaxBlurDistance() const {
+        return pMaxBlurDistance;
     }
 
     GaussianBlurFilterBuilder* GaussianBlurFilterBuilder::depthTexture(const std::shared_ptr<Texture>& depthTexture) {

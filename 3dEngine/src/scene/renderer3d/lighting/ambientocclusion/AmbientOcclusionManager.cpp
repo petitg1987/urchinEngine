@@ -97,8 +97,8 @@ namespace urchin {
                     ->textureFormat(textureFormat)
                     ->depthTexture(depthTexture)
                     ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
-                    ->blurSize(config.blurSize)
-                    ->blurSharpness(config.blurSharpness)
+                    ->blurRadius(config.blurRadius)
+                    ->maxBlurDistance(config.maxBlurDistance)
                     ->buildGaussianBlur();
 
             horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal blur", verticalBlurFilter->getTexture())
@@ -107,8 +107,8 @@ namespace urchin {
                     ->textureFormat(textureFormat)
                     ->depthTexture(depthTexture)
                     ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
-                    ->blurSize(config.blurSize)
-                    ->blurSharpness(config.blurSharpness)
+                    ->blurRadius(config.blurRadius)
+                    ->maxBlurDistance(config.maxBlurDistance)
                     ->buildGaussianBlur();
 
             verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
@@ -227,8 +227,8 @@ namespace urchin {
                 this->config.biasMultiplier != config.biasMultiplier ||
                 this->config.biasDistanceMultiplier != config.biasDistanceMultiplier ||
                 this->config.isBlurActivated != config.isBlurActivated ||
-                this->config.blurSize != config.blurSize ||
-                this->config.blurSharpness != config.blurSharpness) {
+                this->config.blurRadius != config.blurRadius ||
+                this->config.maxBlurDistance != config.maxBlurDistance) {
             bool ambientOcclusionStrengthUpdated = this->config.ambientOcclusionStrength != config.ambientOcclusionStrength;
 
             this->config = config;

@@ -17,11 +17,11 @@ namespace urchin {
 
             GaussianBlurFilterBuilder* blurDirection(BlurDirection);
 
-            GaussianBlurFilterBuilder* blurSize(unsigned int);
-            unsigned int getBlurSize() const;
+            GaussianBlurFilterBuilder* blurRadius(unsigned int);
+            unsigned int getBlurRadius() const;
 
-            GaussianBlurFilterBuilder* blurSharpness(float);
-            float getBlurSharpness() const;
+            GaussianBlurFilterBuilder* maxBlurDistance(float);
+            float getMaxBlurDistance() const;
 
             GaussianBlurFilterBuilder* depthTexture(const std::shared_ptr<Texture>&);
             const std::shared_ptr<Texture>& getDepthTexture() const;
@@ -31,8 +31,8 @@ namespace urchin {
 
         private:
             BlurDirection pBlurDirection;
-            unsigned int pBlurSize;
-            float pBlurSharpness;
+            unsigned int pBlurRadius;
+            float pMaxBlurDistance;
             std::shared_ptr<Texture> pDepthTexture;
     };
 

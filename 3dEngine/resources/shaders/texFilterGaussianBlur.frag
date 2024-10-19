@@ -3,15 +3,15 @@
 
 #include "_transformFunctions.frag"
 
-layout(constant_id = 0) const uint KERNEL_RADIUS = 9; //must be equals to GaussianBlurFilter::KERNEL_RADIUS_SHADER_LIMIT
-layout(constant_id = 1) const float BLUR_SHARPNESS = 0.0;
+layout(constant_id = 0) const uint BLUR_RADIUS = 1;
+layout(constant_id = 1) const float MAX_BLUR_DISTANCE = 10.0;
 
 layout(std140, set = 0, binding = 0) uniform CameraPlanes {
     float nearPlane;
     float farPlane;
 } cameraPlanes;
 layout(std140, set = 0, binding = 1) uniform BlurData {
-    vec2 uvOffsets[KERNEL_RADIUS];
+    vec2 direction;
 } blurData;
 layout(binding = 2) uniform sampler2D tex;
 layout(binding = 3) uniform sampler2D depthTex;
@@ -20,29 +20,34 @@ layout(location = 0) in vec2 texCoordinates;
 
 layout(location = 0) out float fragColor;
 
-float computeBlurWeightedValue(vec2 uvOffset, float blurFalloff, float linearizedDepthCenterValue, inout float totalWeight) {
-    float depthValue = texture(depthTex, texCoordinates + uvOffset).r;
-    float linearizedDepthValue = linearizeDepth(depthValue, cameraPlanes.nearPlane, cameraPlanes.farPlane);
-    float zDiff = (linearizedDepthValue - linearizedDepthCenterValue) * BLUR_SHARPNESS;
+float gaussian(float x, float sigma) {
+    const float sqrt2pi = 2.50662827463;
+    return exp(-0.5 * (x * x) / (sigma * sigma)) / (sqrt2pi * sigma);
+}
 
-    float weight = exp(blurFalloff - zDiff * zDiff);
-    totalWeight += weight;
-
+float computeBlurWeightedValue(vec2 uvOffset, float i, float linearDepth, inout float totalWeight) {
     float texValue = texture(tex, texCoordinates + uvOffset).r;
+    float weight = gaussian(i, float(BLUR_RADIUS));
+
+    totalWeight += weight;
     return texValue * weight;
 }
 
 void main() {
-    const float blurSigma = (float(KERNEL_RADIUS) + 1.0) * 0.5;
-    float depthCenterValue = texture(depthTex, texCoordinates).r;
-    float linearizedDepthCenterValue = linearizeDepth(depthCenterValue, cameraPlanes.nearPlane, cameraPlanes.farPlane);
-    float totalWeight = 1.0;
+    vec2 pixelSize = 1.0 / textureSize(tex, 0);
 
-    fragColor = texture(tex, texCoordinates).r;
-    for (int i = 1; i <= KERNEL_RADIUS; ++i) {
-        float blurFalloff = -float(i * i) / (2.0 * blurSigma * blurSigma);
-        fragColor += computeBlurWeightedValue(blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);
-        fragColor += computeBlurWeightedValue(-blurData.uvOffsets[i], blurFalloff, linearizedDepthCenterValue, totalWeight);
+    float depth = texture(depthTex, texCoordinates).r;
+    float linearDepth = linearizeDepth(depth, cameraPlanes.nearPlane, cameraPlanes.farPlane) * cameraPlanes.farPlane;
+    float blurRadius = mix(0.0, BLUR_RADIUS, max(0.0, 1.0 - (linearDepth / MAX_BLUR_DISTANCE)));
+    int blurRadiusInt = int(ceil(blurRadius));
+
+    float totalWeight = 0.0;
+    fragColor = computeBlurWeightedValue(vec2(0.0, 0.0), 0.0, linearDepth, totalWeight);
+
+    for (int i = 1; i <= blurRadiusInt; ++i) {
+        vec2 uvOffset = i * pixelSize * blurData.direction;
+        fragColor += computeBlurWeightedValue(uvOffset, float(i), linearDepth, totalWeight);
+        fragColor += computeBlurWeightedValue(-uvOffset, float(i), linearDepth, totalWeight);
     }
     fragColor /= totalWeight;
 }

@@ -34,8 +34,8 @@ namespace urchin {
                 float biasMultiplier = 0.002f;
                 float biasDistanceMultiplier = 1.9f;
                 bool isBlurActivated = true;
-                unsigned int blurSize = 7;
-                float blurSharpness = 40.0f;
+                unsigned int blurRadius = 3;
+                float maxBlurDistance = 10.0f;
             };
 
             AmbientOcclusionManager(const Config&, bool);

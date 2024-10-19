@@ -11,22 +11,13 @@ namespace urchin {
             TextureFilter(textureFilterBuilder),
             depthTexture(textureFilterBuilder->getDepthTexture()),
             blurDirection(blurDirection),
-            blurSharpness(textureFilterBuilder->getBlurSharpness()),
+            blurRadius(textureFilterBuilder->getBlurRadius()),
+            maxBlurDistance(textureFilterBuilder->getMaxBlurDistance()),
             textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()),
             cameraPlanes({}) {
-        unsigned int blurSize = textureFilterBuilder->getBlurSize();
-        if (blurSize <= 1) {
-            throw std::invalid_argument("Blur size must be greater than one. Value: " + std::to_string(blurSize));
-        } else if (blurSize % 2 == 0) {
-            throw std::invalid_argument("Blur size must be an odd number. Value: " + std::to_string(blurSize));
+        if (blurRadius <= 0) {
+            throw std::invalid_argument("Blur size must be greater than zero. Value: " + std::to_string(blurRadius));
         }
-
-        kernelRadius = textureFilterBuilder->getBlurSize() / 2;
-        if (kernelRadius > KERNEL_RADIUS_SHADER_LIMIT) {
-            throw std::invalid_argument("Kernel radius value is limited to " + std::to_string(KERNEL_RADIUS_SHADER_LIMIT) + ". Value: " + std::to_string(kernelRadius));
-        }
-
-        computeUvOffsets();
     }
 
     void GaussianBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane) {
@@ -51,42 +42,29 @@ namespace urchin {
     }
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
-        std::vector<float> uvOffsetsShaderData(uvOffsets.size() * 4, 0.0f);
-        for (std::size_t i = 0; i < uvOffsets.size(); ++i) {
-            uvOffsetsShaderData[i * 4] = uvOffsets[i].X;
-            uvOffsetsShaderData[(i * 4) + 1] = uvOffsets[i].Y;
+        Vector2<float> directionVector;
+        if (blurDirection == BlurDirection::VERTICAL) {
+            directionVector = Vector2<float>(0.0f, 1.0f);
+        } else {
+            directionVector = Vector2<float>(1.0f, 0.0f);
         }
 
         textureRendererBuilder
                 ->addUniformData(CAMERA_PLANES_UNIFORM_BINDING, sizeof(cameraPlanes), &cameraPlanes)
-                ->addUniformData(OFFSETS_DATA_UNIFORM_BINDING, uvOffsetsShaderData.size() * sizeof(float), uvOffsetsShaderData.data())
+                ->addUniformData(BLUR_DATA_UNIFORM_BINDING, sizeof(directionVector), &directionVector)
                 ->addUniformTextureReader(SRC_TEX_UNIFORM_BINDING, sourceTextureReader)
-                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildNearest()));
+                ->addUniformTextureReader(DEPTH_TEX_UNIFORM_BINDING, TextureReader::build(depthTexture, TextureParam::buildLinear()));
     }
 
     std::unique_ptr<ShaderConstants> GaussianBlurFilter::buildShaderConstants() const {
         GaussianBlurShaderConst gaussianBlurData{};
-        gaussianBlurData.kernelRadius = kernelRadius;
-        gaussianBlurData.blurSharpness = blurSharpness;
+        gaussianBlurData.blurRadius = blurRadius;
+        gaussianBlurData.maxBlurDistance = maxBlurDistance;
         std::vector<std::size_t> variablesSize = {
-                sizeof(GaussianBlurShaderConst::kernelRadius),
-                sizeof(GaussianBlurShaderConst::blurSharpness)
+                sizeof(GaussianBlurShaderConst::blurRadius),
+                sizeof(GaussianBlurShaderConst::maxBlurDistance)
         };
         return std::make_unique<ShaderConstants>(variablesSize, &gaussianBlurData);
     }
 
-    void GaussianBlurFilter::computeUvOffsets() {
-        uvOffsets.resize(kernelRadius, Vector2<float>(0.0f, 0.0f));
-
-        if (textureSize != 0) {
-            float pixelSize = 1.0f / (float)textureSize;
-            for (unsigned int i = 1; i <= kernelRadius; ++i) {
-                if (blurDirection == BlurDirection::VERTICAL) {
-                    uvOffsets[i - 1] = Vector2<float>(0.0f, pixelSize * (float)i);
-                } else {
-                    uvOffsets[i - 1] = Vector2<float>(pixelSize * (float)i, 0.0f);
-                }
-            }
-        }
-    }
 }

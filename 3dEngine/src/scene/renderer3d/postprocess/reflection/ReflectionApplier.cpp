@@ -88,8 +88,8 @@ namespace urchin {
                 ->textureFormat(reflectionColorTextureFormat)
                 ->depthTexture(depthTexture)
                 ->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
-                ->blurSize(config.blurSize)
-                ->blurSharpness(config.blurSharpness)
+                ->blurRadius(config.blurRadius)
+                ->maxBlurDistance(config.maxBlurDistance)
                 ->buildGaussianBlur();
 
         horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "reflection color - horizontal blur", verticalBlurFilter->getTexture())
@@ -98,8 +98,8 @@ namespace urchin {
                 ->textureFormat(reflectionColorTextureFormat)
                 ->depthTexture(depthTexture)
                 ->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
-                ->blurSize(config.blurSize)
-                ->blurSharpness(config.blurSharpness)
+                ->blurRadius(config.blurRadius)
+                ->maxBlurDistance(config.maxBlurDistance)
                 ->buildGaussianBlur();
 
         verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
@@ -202,8 +202,8 @@ namespace urchin {
                 this->config.skipPixelCountOnFirstPass != config.skipPixelCountOnFirstPass ||
                 this->config.numStepsOnSecondPass != config.numStepsOnSecondPass ||
                 this->config.reflectionStrength != config.reflectionStrength ||
-                this->config.blurSize != config.blurSize ||
-                this->config.blurSharpness != config.blurSharpness) {
+                this->config.blurRadius != config.blurRadius ||
+                this->config.maxBlurDistance != config.maxBlurDistance) {
             this->config = config;
 
             createOrUpdateRenderingObjects();
