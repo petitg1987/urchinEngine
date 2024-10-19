@@ -20,7 +20,7 @@ namespace urchin {
                 float skipPixelCountOnFirstPass = 3.0f;
                 unsigned int numStepsOnSecondPass = 8;
                 float reflectionStrength = 0.5f;
-                unsigned int blurRadius = 3;
+                unsigned int blurRadius = 4;
                 float maxBlurDistance = 10.0f;
             };
 
