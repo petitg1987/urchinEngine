@@ -46,8 +46,9 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 }
 
 void main() {
+    const float MAX_MATERIAL_ROUGHNESS = 0.9;
     float materialRoughness = texture(materialTex, texCoordinates).r;
-    if (materialRoughness > 0.90) {
+    if (materialRoughness > MAX_MATERIAL_ROUGHNESS) {
         fragColor = vec4(0.5, 0.5, 0.5, 0.0);
         return;
     }
@@ -155,7 +156,7 @@ void main() {
         * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / MAX_DISTANCE, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
         * smoothstep(0.0, edgeThreshold, fragUv.x) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.x)) //Fade out on screen edge X
         * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
-        * (1.0 - materialRoughness);
+        * (MAX_MATERIAL_ROUGHNESS - materialRoughness);
 
     vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
     fragColor = vec4(reflectionColor, visibility);
