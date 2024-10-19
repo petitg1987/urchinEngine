@@ -11,14 +11,14 @@ graph BT
     ReflectionColorBlur --> ReflectionColor(Reflection Color)
     ReflectionColorBlur -->|depth| DeferredFirstPass(Deferred First Pass - Albedo/Normal/Mat)
     ReflectionColor --> AntiAliasing(Anti Aliasing)
-    ReflectionColor -->|depth/normal/mat| DeferredFirstPass
+    ReflectionColor --> DeferredFirstPass
     AntiAliasing --> Transparent(Transparent)
     Transparent --> DeferredSecondPass(Deferred Second Pass)
     DeferredSecondPass --> ShadowMap(Shadow Map)
     DeferredSecondPass --> DeferredFirstPass
     Transparent --> DeferredFirstPass
     DeferredSecondPass --> AmbientOcclusionBlur(Ambient Occlusion - Horizontal/Vert Blur)
-    AmbientOcclusionBlur --> DeferredFirstPass
+    AmbientOcclusionBlur -->|depth| DeferredFirstPass
     AmbientOcclusionBlur --> AmbientOcclusion(Ambient Occlusion)
     AmbientOcclusion --> DeferredFirstPass
 ```
