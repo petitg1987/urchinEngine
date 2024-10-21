@@ -57,8 +57,8 @@ namespace urchin {
             sceneInfo({}),
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), !finalRenderTarget.isValidRenderTarget())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
-            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget, getGammaFactor())),
-            reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), !finalRenderTarget.isValidRenderTarget())),
+            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), !finalRenderTarget.isValidRenderTarget(), getGammaFactor())),
+            reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), finalRenderTarget)),
             isReflectionActivated(visualConfig.isReflectionActivated()),
 
             //debug
@@ -328,23 +328,23 @@ namespace urchin {
         renderDeferredFirstPass(frameIndex, dt);
         renderDeferredSecondPass(frameIndex);
 
-        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* AA or reflection */ : 2 /* (reflection color && reflection combine) or (bloom pre-filter & bloom combine (screen target)) */;
+        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* AA */ : 2 /* bloom pre-filter & bloom combine */;
         if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
             numDependenciesToTransparentTextures += 1;
         }
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         if (isAntiAliasingActivated) {
-            unsigned int numDependenciesToAATexture = 2; //(reflection color && reflection combine) or (bloom pre-filter & bloom combine (screen target))
+            unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
 
-        if (isReflectionActivated) {
-            unsigned int numDependenciesToReflectionCombineTexture = 2; //bloom pre-filter & bloom combine (screen target)
-            reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionCombineTexture, *camera);
-        }
+        unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color && reflection combine */ : 1 /* screen */;
+        bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomCombineTexture);
 
-        bloomEffectApplier.applyBloom(frameIndex, screenRenderingOrder);
+        if (isReflectionActivated) {
+            reflectionApplier.applyReflection(frameIndex, screenRenderingOrder, *camera);
+        }
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -476,12 +476,12 @@ namespace urchin {
             currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
 
+        bloomEffectApplier.refreshInputTexture(currentSceneTexture);
+        currentSceneTexture = bloomEffectApplier.getOutputTexture();
+
         if (isReflectionActivated) {
             reflectionApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture, materialTexture, currentSceneTexture);
-            currentSceneTexture = reflectionApplier.getOutputTexture();
         }
-
-        bloomEffectApplier.refreshInputTexture(currentSceneTexture);
 
         //refresh the model occlusion culler
         modelOcclusionCuller.refresh();

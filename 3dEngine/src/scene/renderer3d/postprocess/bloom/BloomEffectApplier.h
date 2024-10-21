@@ -19,11 +19,12 @@ namespace urchin {
                 TextureFetchQuality textureFetchQuality = BEST_QUALITY;
             };
 
-            BloomEffectApplier(const Config&, RenderTarget&, float);
+            BloomEffectApplier(const Config&, bool, float);
             ~BloomEffectApplier();
 
             void refreshInputTexture(const std::shared_ptr<Texture>&);
             void onGammaFactorUpdate(float);
+            const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -63,11 +64,12 @@ namespace urchin {
             };
 
             Config config;
-            RenderTarget& outputRenderTarget;
+            bool useNullRenderTarget;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;
             std::vector<std::shared_ptr<Texture>> bloomStepTextures;
+            std::shared_ptr<Texture> bloomCombineTexture;
 
             //pre-filter
             std::unique_ptr<RenderTarget> preFilterRenderTarget;
@@ -90,6 +92,7 @@ namespace urchin {
 
             //combine
             std::unique_ptr<Shader> combineShader;
+            std::unique_ptr<RenderTarget> combineRenderTarget;
             std::unique_ptr<GenericRenderer> combineRenderer;
             float gammaFactor;
     };

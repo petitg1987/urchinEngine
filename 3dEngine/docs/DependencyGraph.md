@@ -2,15 +2,15 @@
 
 ```mermaid
 graph BT
-    Screen(Screen - Bloom Combine) --> Bloom(Bloom - Up/Down/Pre-Filter)
-    Screen --> ReflectionCombine(Reflection Combine)
-    Bloom --> Bloom
-    Bloom --> ReflectionCombine
-    ReflectionCombine --> AntiAliasing(Anti Aliasing)
+    ReflectionCombine(Reflection Combine - Screen) --> BloomCombine(Bloom Combine)
     ReflectionCombine --> ReflectionColorBlur(Reflection Color - Horizontal/Vert Blur)
     ReflectionColorBlur --> ReflectionColor(Reflection Color)
     ReflectionColorBlur -->|depth| DeferredFirstPass(Deferred First Pass - Albedo/Normal/Mat)
-    ReflectionColor --> AntiAliasing(Anti Aliasing)
+    ReflectionColor --> BloomCombine
+    BloomCombine --> BloomFilterUpDown(Bloom - Filter/Up/Down)
+    BloomCombine --> AntiAliasing(Anti Aliasing)
+    BloomFilterUpDown --> BloomFilterUpDown
+    BloomFilterUpDown --> AntiAliasing
     ReflectionColor --> DeferredFirstPass
     AntiAliasing --> Transparent(Transparent)
     Transparent --> DeferredSecondPass(Deferred Second Pass)

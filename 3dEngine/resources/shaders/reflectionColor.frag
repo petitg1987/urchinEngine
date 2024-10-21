@@ -18,7 +18,7 @@ layout(std140, set = 0, binding = 1) uniform PositioningData {
 layout(binding = 2) uniform sampler2D depthTex;
 layout(binding = 3) uniform sampler2D normalAndAmbientTex; //normal XYZ (3 * 8 bits) + ambient factor (8 bits)
 layout(binding = 4) uniform sampler2D materialTex; //roughness (8 bits) + metalness (8 bits)
-layout(binding = 5) uniform sampler2D illuminatedTex;
+layout(binding = 5) uniform sampler2D sceneTex;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -158,6 +158,6 @@ void main() {
         * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
         * (MAX_MATERIAL_ROUGHNESS - materialRoughness);
 
-    vec3 reflectionColor = texture(illuminatedTex, fragUv).rgb;
+    vec3 reflectionColor = texture(sceneTex, fragUv).rgb;
     fragColor = vec4(reflectionColor, visibility);
 }

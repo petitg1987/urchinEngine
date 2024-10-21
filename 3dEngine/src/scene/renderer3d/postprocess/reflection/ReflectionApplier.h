@@ -24,13 +24,12 @@ namespace urchin {
                 float maxBlurDistance = 10.0f;
             };
 
-            ReflectionApplier(const Config&, bool);
+            ReflectionApplier(const Config&, RenderTarget&);
             ~ReflectionApplier();
 
             void onCameraProjectionUpdate(const Camera&);
 
             void refreshInputTexture(const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&, const std::shared_ptr<Texture>&);
-            const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateConfig(const Config&);
             const Config& getConfig() const;
@@ -61,20 +60,20 @@ namespace urchin {
             static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 2;
             static constexpr uint32_t NORMAL_AMBIENT_TEX_UNIFORM_BINDING = 3;
             static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 4;
-            static constexpr uint32_t R_COLOR_ILLUMINATED_TEX_UNIFORM_BINDING = 5;
+            static constexpr uint32_t R_COLOR_SCENE_TEX_UNIFORM_BINDING = 5;
 
-            static constexpr uint32_t R_COMBINE_ILLUMINATED_TEX_UNIFORM_BINDING = 0;
+            static constexpr uint32_t R_COMBINE_SCENE_TEX_UNIFORM_BINDING = 0;
             static constexpr uint32_t REFLECTION_COLOR_TEX_UNIFORM_BINDING = 1;
 
             Config config;
-            bool useNullRenderTarget;
+            RenderTarget& outputRenderTarget;
             float nearPlane;
             float farPlane;
 
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
             std::shared_ptr<Texture> materialTexture;
-            std::shared_ptr<Texture> illuminatedTexture;
+            std::shared_ptr<Texture> sceneTexture;
 
             struct {
                 alignas(16) Matrix4<float> projectionMatrix;
@@ -91,8 +90,6 @@ namespace urchin {
             std::unique_ptr<GaussianBlurFilter> verticalBlurFilter;
             std::unique_ptr<GaussianBlurFilter> horizontalBlurFilter;
 
-            std::shared_ptr<Texture> reflectionCombineTexture;
-            std::unique_ptr<RenderTarget> reflectionCombineRenderTarget;
             std::unique_ptr<Shader> reflectionCombineShader;
             std::unique_ptr<GenericRenderer> reflectionCombineRenderer;
     };
