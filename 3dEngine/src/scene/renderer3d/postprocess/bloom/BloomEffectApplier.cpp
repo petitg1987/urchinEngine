@@ -133,7 +133,7 @@ namespace urchin {
 
             std::unique_ptr<RenderTarget> upSampleRenderTarget;
             if (!useNullRenderTarget) {
-                upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample" + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
+                upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), RenderTarget::NO_DEPTH_ATTACHMENT);
                 static_cast<OffscreenRender*>(upSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::LOAD_CONTENT);
                 upSampleRenderTarget->initialize();
             } else {
@@ -141,7 +141,7 @@ namespace urchin {
             }
 
             Point2 texelSize(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
-            upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample" + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
+            upSampleRenderers.push_back(GenericRendererBuilder::create("bloom - up sample " + std::to_string(i), *upSampleRenderTarget, *upSampleShader, ShapeType::TRIANGLE)
                     ->addData(vertexCoord)
                     ->addData(textureCoord)
                     ->addUniformData(US_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
