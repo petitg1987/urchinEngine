@@ -11,14 +11,14 @@ graph BT
     BloomCombine --> AntiAliasing(Anti Aliasing)
     BloomFilterUpDown --> BloomFilterUpDown
     BloomFilterUpDown --> AntiAliasing
-    ReflectionColor --> DeferredFirstPass
+    ReflectionColor -->|depth / normal / mat| DeferredFirstPass
     AntiAliasing --> Transparent(Transparent)
     Transparent --> DeferredSecondPass(Deferred Second Pass)
     DeferredSecondPass --> ShadowMap(Shadow Map)
-    DeferredSecondPass --> DeferredFirstPass
-    Transparent --> DeferredFirstPass
+    DeferredSecondPass -->|depth / albedo / normal / mat| DeferredFirstPass
+    Transparent -->|albedo| DeferredFirstPass
     DeferredSecondPass --> AmbientOcclusionBlur(Ambient Occlusion - Horizontal/Vert Blur)
     AmbientOcclusionBlur -->|depth| DeferredFirstPass
     AmbientOcclusionBlur --> AmbientOcclusion(Ambient Occlusion)
-    AmbientOcclusion --> DeferredFirstPass
+    AmbientOcclusion -->|depth / normal| DeferredFirstPass
 ```
