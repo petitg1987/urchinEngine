@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <utility>
 #include <queue>
 
@@ -19,15 +18,12 @@ namespace urchin {
             i18nService(i18nService),
             clipboard(std::make_unique<ClipboardLocal>()),
             uiResolution((int)renderTarget.getWidth(), (int)renderTarget.getHeight()),
+            uiShader(ShaderBuilder::createShader("ui.vert.spv", "ui.frag.spv", renderTarget.isTestMode())),
             rawMouseX(0.0),
             rawMouseY(0.0),
             bCanInteractWithUi(true),
             widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)) {
-        if (!renderTarget.isTestMode()) {
-            uiShader = ShaderBuilder::createShader("ui.vert.spv", "ui.frag.spv");
-        } else {
-            uiShader = ShaderBuilder::createNullShader();
-        }
+
     }
 
     UIRenderer::~UIRenderer() {
@@ -67,11 +63,9 @@ namespace urchin {
         ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
         ui3dData->uiSphereBounding = Sphere<float>(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
 
-        if (!renderTarget.isTestMode()) {
-            std::vector<std::size_t> variablesSize = {sizeof(ambient)};
-            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
-            this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "ui3d.frag.spv", std::move(shaderConstants));
-        }
+        std::vector<std::size_t> variablesSize = {sizeof(ambient)};
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
+        this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "ui3d.frag.spv", std::move(shaderConstants), renderTarget.isTestMode());
 
         onResize((unsigned int)uiResolution.X, (unsigned int)uiResolution.Y);
         if (camera) {

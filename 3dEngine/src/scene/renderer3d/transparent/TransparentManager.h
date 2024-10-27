@@ -34,7 +34,7 @@ namespace urchin {
             void createOrUpdateTextures();
             void createOrUpdateModelSetDisplayer();
 
-            bool useSimulationRenderTarget;
+            bool isTestMode;
             LightManager& lightManager;
             unsigned int sceneWidth;
             unsigned int sceneHeight;

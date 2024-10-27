@@ -89,7 +89,7 @@ namespace urchin {
 
             //general data
             Config config;
-            bool useSimulationRenderTarget;
+            bool isTestMode;
             float nearPlane;
             float farPlane;
 

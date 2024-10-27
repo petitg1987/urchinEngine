@@ -48,7 +48,7 @@ namespace urchin {
                 uint32_t isInverseGrayscaleValue;
             };
 
-            void initializeShader();
+            void initializeShader(bool);
 
             static constexpr uint32_t PROJ_MATRIX_UNIFORM_BINDING = 0;
             static constexpr uint32_t RENDERING_DATA_UNIFORM_BINDING = 1;

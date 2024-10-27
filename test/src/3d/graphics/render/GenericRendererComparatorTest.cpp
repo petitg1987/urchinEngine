@@ -10,7 +10,7 @@ void GenericRendererComparatorTest::depthTestOrdering() {
     std::vector<GenericRenderer*> renderers;
     OffscreenRender offscreenRender("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
     offscreenRender.setOutputSize(1920, 1080, 1);
-    std::unique_ptr<Shader> shader = ShaderBuilder::createNullShader();
+    std::unique_ptr<Shader> shader = ShaderBuilder::createShader("", "", true);
     //rendering order: 1, no depth test
     std::unique_ptr<GenericRenderer> r1 = GenericRendererBuilder::create("r1", offscreenRender, *shader, ShapeType::TRIANGLE)->build();
     r1->disableRenderer();

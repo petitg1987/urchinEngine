@@ -29,13 +29,9 @@ namespace urchin {
         }
         this->renderTarget = &renderTarget;
 
-        if (!renderTarget.isTestMode()) {
-            assert(!vertexShaderName.empty());
-            assert(!fragmentShaderName.empty());
-            modelShader = ShaderBuilder::createShader(vertexShaderName, fragmentShaderName, std::move(shaderConstants));
-        } else {
-            modelShader = ShaderBuilder::createNullShader();
-        }
+        assert(!vertexShaderName.empty());
+        assert(!fragmentShaderName.empty());
+        modelShader = ShaderBuilder::createShader(vertexShaderName, fragmentShaderName, std::move(shaderConstants), renderTarget.isTestMode());
 
         isInitialized = true;
     }

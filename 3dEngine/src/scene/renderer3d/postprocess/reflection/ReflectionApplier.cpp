@@ -129,39 +129,29 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateShaders() {
-        if (!reflectionColorRenderTarget->isTestMode()) {
-            ReflectionColorShaderConst rcConstData {
-                    .maxDistance = config.maxDistance,
-                    .hitThreshold = config.hitThreshold,
-                    .skipPixelCountOnFirstPass = config.skipPixelCountOnFirstPass,
-                    .numStepsOnSecondPass = config.numStepsOnSecondPass
-            };
-            std::vector<std::size_t> variablesSize = {
-                    sizeof(ReflectionColorShaderConst::maxDistance),
-                    sizeof(ReflectionColorShaderConst::hitThreshold),
-                    sizeof(ReflectionColorShaderConst::skipPixelCountOnFirstPass),
-                    sizeof(ReflectionColorShaderConst::numStepsOnSecondPass),
-            };
-            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &rcConstData);
+        ReflectionColorShaderConst reflectionColorConstData {
+                .maxDistance = config.maxDistance,
+                .hitThreshold = config.hitThreshold,
+                .skipPixelCountOnFirstPass = config.skipPixelCountOnFirstPass,
+                .numStepsOnSecondPass = config.numStepsOnSecondPass
+        };
+        std::vector<std::size_t> reflectionColorVariablesSize = {
+                sizeof(ReflectionColorShaderConst::maxDistance),
+                sizeof(ReflectionColorShaderConst::hitThreshold),
+                sizeof(ReflectionColorShaderConst::skipPixelCountOnFirstPass),
+                sizeof(ReflectionColorShaderConst::numStepsOnSecondPass),
+        };
+        auto reflectionColorShaderConstants = std::make_unique<ShaderConstants>(reflectionColorVariablesSize, &reflectionColorConstData);
+        reflectionColorShader = ShaderBuilder::createShader("reflectionColor.vert.spv", "reflectionColor.frag.spv", std::move(reflectionColorShaderConstants), reflectionColorRenderTarget->isTestMode());
 
-            reflectionColorShader = ShaderBuilder::createShader("reflectionColor.vert.spv", "reflectionColor.frag.spv", std::move(shaderConstants));
-        } else {
-            reflectionColorShader = ShaderBuilder::createNullShader();
-        }
-
-        if (!outputRenderTarget.isTestMode()) {
-            ReflectionCombineShaderConst rcConstData{
-                    .reflectionStrength = config.reflectionStrength, //apply reflection strength after AO blur to not lose color precision on 8bit texture
-            };
-            std::vector<std::size_t> variablesSize = {
-                    sizeof(ReflectionCombineShaderConst::reflectionStrength),
-            };
-            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &rcConstData);
-
-            reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv", std::move(shaderConstants));
-        } else {
-            reflectionCombineShader = ShaderBuilder::createNullShader();
-        }
+        ReflectionCombineShaderConst reflectionCombineConstData {
+                .reflectionStrength = config.reflectionStrength, //apply reflection strength after AO blur to not lose color precision on 8bit texture
+        };
+        std::vector<std::size_t> reflectionCombineVariablesSize = {
+                sizeof(ReflectionCombineShaderConst::reflectionStrength),
+        };
+        auto reflectionCombineShaderConstants = std::make_unique<ShaderConstants>(reflectionCombineVariablesSize, &reflectionCombineConstData);
+        reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv", std::move(reflectionCombineShaderConstants), outputRenderTarget.isTestMode());
     }
 
     int ReflectionApplier::retrieveTextureSizeFactor() const {

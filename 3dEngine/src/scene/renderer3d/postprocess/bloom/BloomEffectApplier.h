@@ -36,9 +36,6 @@ namespace urchin {
             void refreshRenderers();
             void clearRenderers();
 
-            std::unique_ptr<Shader> createShader(const std::string&, const std::string&, std::unique_ptr<ShaderConstants>);
-            std::unique_ptr<Shader> createComputeShader(const std::string&, std::unique_ptr<ShaderConstants>);
-
             static constexpr float UP_SAMPLE_SCALE = 0.95f;
 
             static constexpr uint32_t PF_TWEAK_UNIFORM_BINDING = 0;
@@ -64,7 +61,7 @@ namespace urchin {
             };
 
             Config config;
-            bool useSimulationRenderTarget;
+            bool isTestMode;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;

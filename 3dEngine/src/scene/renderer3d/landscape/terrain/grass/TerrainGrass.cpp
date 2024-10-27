@@ -27,7 +27,7 @@ namespace urchin {
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
         std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &grassAlphaTest);
-        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "terrainGrass.frag.spv", std::move(shaderConstants));
+        terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "terrainGrass.frag.spv", std::move(shaderConstants), false);
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");

@@ -96,7 +96,7 @@ namespace urchin {
         this->renderingData.minColorRange = minColorRange;
         this->renderingData.maxColorRange = maxColorRange;
 
-        initializeShader();
+        initializeShader(renderTarget.isTestMode());
 
         float minX;
         float maxX;
@@ -180,7 +180,7 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void TextureRenderer::initializeShader() {
+    void TextureRenderer::initializeShader(bool isTestMode) {
         TextureRendererShaderConst trConstData{};
         trConstData.isDefaultValue = colorType == ColorType::DEFAULT_VALUE;
         trConstData.isGrayscaleValue = colorType == ColorType::GRAYSCALE_VALUE;
@@ -193,7 +193,7 @@ namespace urchin {
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &trConstData);
 
         std::string fragShaderName = (renderingData.layer == -1) ? "displayTexture.frag.spv" : "displayTextureArray.frag.spv";
-        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", fragShaderName, std::move(shaderConstants));
+        displayTextureShader = ShaderBuilder::createShader("displayTexture.vert.spv", fragShaderName, std::move(shaderConstants), isTestMode);
     }
 
     void TextureRenderer::prepareRendering(unsigned int renderingOrder) const {

@@ -7,8 +7,8 @@
 
 namespace urchin {
 
-    AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool useSimulationRenderTarget) :
-            useSimulationRenderTarget(useSimulationRenderTarget),
+    AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool isTestMode) :
+            isTestMode(isTestMode),
             config(config) {
 
     }
@@ -24,7 +24,7 @@ namespace urchin {
 
             clearRenderer();
             outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
-            renderTarget = std::make_unique<OffscreenRender>("anti aliasing", useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+            renderTarget = std::make_unique<OffscreenRender>("anti aliasing", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
             renderTarget->addOutputTexture(outputTexture);
             renderTarget->initialize();
 
@@ -90,12 +90,7 @@ namespace urchin {
                 sizeof(AntiAliasingShaderConst::qualityP11)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
-
-        if (!renderTarget->isTestMode()) {
-            fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants));
-        } else {
-            fxaaShader = ShaderBuilder::createNullShader();
-        }
+        fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants), renderTarget->isTestMode());
     }
 
     void AntiAliasingApplier::updateConfig(const Config& config) {

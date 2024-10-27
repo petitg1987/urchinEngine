@@ -446,12 +446,7 @@ namespace urchin {
                 sizeof(DeferredSecondPassShaderConst::maxEmissiveFactor)
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &deferredSecondPassConstData);
-
-        if (!deferredSecondPassRenderTarget->isTestMode()) {
-            deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "deferredSecondPass.frag.spv", std::move(shaderConstants));
-        } else {
-            deferredSecondPassShader = ShaderBuilder::createNullShader();
-        }
+        deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "deferredSecondPass.frag.spv", std::move(shaderConstants), deferredSecondPassRenderTarget->isTestMode());
     }
 
     void Renderer3d::updateScene(float dt) {

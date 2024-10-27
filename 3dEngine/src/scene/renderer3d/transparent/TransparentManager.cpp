@@ -4,8 +4,8 @@
 
 namespace urchin {
 
-    TransparentManager::TransparentManager(bool useSimulationRenderTarget, LightManager& lightManager) :
-            useSimulationRenderTarget(useSimulationRenderTarget),
+    TransparentManager::TransparentManager(bool isTestMode, LightManager& lightManager) :
+            isTestMode(isTestMode),
             lightManager(lightManager),
             sceneWidth(0),
             sceneHeight(0),
@@ -47,7 +47,7 @@ namespace urchin {
         if (renderTarget) {
             renderTarget->resetOutput();
         } else {
-            renderTarget = std::make_unique<OffscreenRender>("transparent", useSimulationRenderTarget, RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
+            renderTarget = std::make_unique<OffscreenRender>("transparent", isTestMode, RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
         }
         renderTarget->setExternalDepthTexture(depthTexture);
         renderTarget->addOutputTexture(sceneTexture, LoadType::LOAD_CONTENT);

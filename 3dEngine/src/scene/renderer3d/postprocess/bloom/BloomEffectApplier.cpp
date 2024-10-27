@@ -6,9 +6,9 @@
 
 namespace urchin {
 
-    BloomEffectApplier::BloomEffectApplier(const Config& config, bool useSimulationRenderTarget, float gammaFactor) :
+    BloomEffectApplier::BloomEffectApplier(const Config& config, bool isTestMode, float gammaFactor) :
             config(config),
-            useSimulationRenderTarget(useSimulationRenderTarget),
+            isTestMode(isTestMode),
             sceneWidth(0),
             sceneHeight(0),
             preFilterTweak({}),
@@ -84,11 +84,8 @@ namespace urchin {
         std::vector<std::size_t> upSampleVarSize = {sizeof(bloomShadersConst.qualityTextureFetch), sizeof(bloomShadersConst.upSampleScale)};
 
         //pre-filter
-        preFilterShader = createComputeShader("bloomPreFilter.comp.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
-        if (useSimulationRenderTarget) {
-            preFilterShader = ShaderBuilder::createNullShader();
-        }
-        preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+        preFilterShader = ShaderBuilder::createComputeShader("bloomPreFilter.comp.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst), isTestMode);
+        preFilterRenderTarget = std::make_unique<OffscreenRender>("bloom - pre filter", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         static_cast<OffscreenRender*>(preFilterRenderTarget.get())->addOutputTexture(bloomStepTextures[0], LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
         preFilterRenderTarget->initialize();
 
@@ -101,11 +98,11 @@ namespace urchin {
                 ->build();
 
         //down sample
-        downSampleShader = createComputeShader("bloomDownSample.comp.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst));
+        downSampleShader = ShaderBuilder::createComputeShader("bloomDownSample.comp.spv", std::make_unique<ShaderConstants>(downSampleVarSize, &bloomShadersConst), isTestMode);
         for (std::size_t outTexIndex = 1, i = 0; outTexIndex < bloomStepTextures.size(); ++outTexIndex, ++i) {
             std::size_t srcTexIndex = outTexIndex - 1;
 
-            std::unique_ptr<RenderTarget> downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+            std::unique_ptr<RenderTarget> downSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - down sample " + std::to_string(i), isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
             static_cast<OffscreenRender*>(downSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
             downSampleRenderTarget->initialize();
 
@@ -119,11 +116,11 @@ namespace urchin {
         }
 
         //up sample
-        upSampleShader = createShader("bloomUpSample.vert.spv", "bloomUpSample.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst));
+        upSampleShader = ShaderBuilder::createShader("bloomUpSample.vert.spv", "bloomUpSample.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst), isTestMode);
         for (std::size_t srcTexIndex = bloomStepTextures.size() - 1, i = 0; srcTexIndex > 0; --srcTexIndex, ++i) {
             std::size_t outTexIndex = srcTexIndex - 1;
 
-            std::unique_ptr<RenderTarget> upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+            std::unique_ptr<RenderTarget> upSampleRenderTarget = std::make_unique<OffscreenRender>("bloom - up sample " + std::to_string(i), isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
             static_cast<OffscreenRender*>(upSampleRenderTarget.get())->addOutputTexture(bloomStepTextures[outTexIndex], LoadType::LOAD_CONTENT);
             upSampleRenderTarget->initialize();
 
@@ -140,11 +137,11 @@ namespace urchin {
 
         //combine
         bloomCombineTexture = Texture::build("bloom - combine", sceneWidth, sceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
-        combineRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+        combineRenderTarget = std::make_unique<OffscreenRender>("bloom - combine", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         static_cast<OffscreenRender*>(combineRenderTarget.get())->addOutputTexture(bloomCombineTexture);
         combineRenderTarget->initialize();
 
-        combineShader = createShader("bloomCombine.vert.spv", "bloomCombine.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst));
+        combineShader = ShaderBuilder::createShader("bloomCombine.vert.spv", "bloomCombine.frag.spv", std::make_unique<ShaderConstants>(upSampleVarSize, &bloomShadersConst), isTestMode);
         texelSize = Point2<float>(1.0f / (float)bloomStepTextures[0]->getWidth(), 1.0f / (float)bloomStepTextures[0]->getHeight());
         combineRenderer = GenericRendererBuilder::create("bloom - combine", *combineRenderTarget, *combineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
@@ -182,22 +179,6 @@ namespace urchin {
         if (preFilterRenderTarget) {
             preFilterRenderTarget->cleanup();
             preFilterRenderTarget.reset();
-        }
-    }
-
-    std::unique_ptr<Shader> BloomEffectApplier::createShader(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
-        if (!useSimulationRenderTarget) {
-            return ShaderBuilder::createShader(vertexShaderFilename, fragmentShaderFilename, std::move(shaderConstants));
-        } else {
-            return ShaderBuilder::createNullShader();
-        }
-    }
-
-    std::unique_ptr<Shader> BloomEffectApplier::createComputeShader(const std::string& computeShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
-        if (!useSimulationRenderTarget) {
-            return ShaderBuilder::createComputeShader(computeShaderFilename, std::move(shaderConstants));
-        } else {
-            return ShaderBuilder::createNullShader();
         }
     }
 

@@ -7,12 +7,16 @@
 
 namespace urchin {
 
-    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename) {
-        return createShader(vertexShaderFilename, fragmentShaderFilename, std::unique_ptr<ShaderConstants>());
+    std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename, bool isTestMode) {
+        return createShader(vertexShaderFilename, fragmentShaderFilename, std::unique_ptr<ShaderConstants>(), isTestMode);
     }
 
     std::unique_ptr<Shader> ShaderBuilder::createShader(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename,
-                                                        std::unique_ptr<ShaderConstants> shaderConstants) {
+                                                        std::unique_ptr<ShaderConstants> shaderConstants, bool isTestMode) {
+        if (isTestMode) {
+            return createTestingShader();
+        }
+
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
         std::string shadersDirectory = ShaderConfig::instance().getShadersDirectory();
 
@@ -25,7 +29,11 @@ namespace urchin {
         return std::make_unique<Shader>(shaderId, shaderName, shaderSources, std::move(shaderConstants));
     }
 
-    std::unique_ptr<Shader> ShaderBuilder::createComputeShader(const std::string& computeShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants) {
+    std::unique_ptr<Shader> ShaderBuilder::createComputeShader(const std::string& computeShaderFilename, std::unique_ptr<ShaderConstants> shaderConstants, bool isTestMode) {
+        if (isTestMode) {
+            return createTestingShader();
+        }
+
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
         std::string shadersDirectory = ShaderConfig::instance().getShadersDirectory();
 
@@ -36,10 +44,7 @@ namespace urchin {
         return std::make_unique<Shader>(shaderId, shaderName, shaderSources, std::move(shaderConstants));
     }
 
-    /**
-     * Shader which does nothing (useful for testing)
-     */
-    std::unique_ptr<Shader> ShaderBuilder::createNullShader() { //TODO remove
+    std::unique_ptr<Shader> ShaderBuilder::createTestingShader() {
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
         return std::make_unique<Shader>(0, "_null_", shaderSources, std::unique_ptr<ShaderConstants>());
     }

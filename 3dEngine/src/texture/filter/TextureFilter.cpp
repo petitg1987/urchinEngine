@@ -38,15 +38,10 @@ namespace urchin {
     void TextureFilter::initializeDisplay() {
         assert(renderTarget);
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
-
-        if (isTestMode) {
-            textureFilterShader = ShaderBuilder::createNullShader();
+        if (textureType == TextureType::DEFAULT) {
+            textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", getShaderName() + ".frag.spv", std::move(shaderConstants), isTestMode);
         } else {
-            if (textureType == TextureType::DEFAULT) {
-                textureFilterShader = ShaderBuilder::createShader("texFilter.vert.spv", getShaderName() + ".frag.spv", std::move(shaderConstants));
-            } else {
-                throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
-            }
+            throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
         }
 
         std::vector<Point2<float>> vertexCoord = {

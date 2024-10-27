@@ -26,8 +26,7 @@ namespace urchin {
             return;
         }
 
-        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv");
-        std::shared_ptr<GenericRendererBuilder> rendererBuilder;
+        shader = ShaderBuilder::createShader("displayGeometry.vert.spv", "displayGeometry.frag.spv", renderTarget->isTestMode());
 
         std::vector<uint32_t> indices;
         std::vector<Point3<float>> vertexArray = retrieveVertexArray(indices);
@@ -59,7 +58,7 @@ namespace urchin {
         }
 
         Matrix4<float> projectionViewModelMatrix;
-        rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
+        std::shared_ptr<GenericRendererBuilder> rendererBuilder = GenericRendererBuilder::create("geometry model", *renderTarget, *shader, getShapeType())
                 ->addData(vertexArray)
                 ->addUniformData(PVM_MATRIX_UNIFORM_BINDING, sizeof(projectionViewModelMatrix), &projectionViewModelMatrix)
                 ->addUniformData(COLOR_UNIFORM_BINDING, sizeof(color), &color);

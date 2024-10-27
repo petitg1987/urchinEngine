@@ -14,9 +14,9 @@ namespace urchin {
     //debug parameters
     const bool DEBUG_EXPORT_SSAO_KERNEL = False();
 
-    AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useSimulationRenderTarget) :
+    AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool isTestMode) :
             config(config),
-            useSimulationRenderTarget(useSimulationRenderTarget),
+            isTestMode(isTestMode),
             nearPlane(0.0f),
             farPlane(0.0f),
             positioningData({}) {
@@ -78,13 +78,13 @@ namespace urchin {
         if (renderTarget) {
             renderTarget->resetOutput();
         } else {
-            renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+            renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         }
         renderTarget->addOutputTexture(ambientOcclusionTexture, LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
         renderTarget->initialize();
 
         if (config.isBlurActivated) {
-            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useSimulationRenderTarget, "ambient occlusion - vertical blur", ambientOcclusionTexture)
+            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(isTestMode, "ambient occlusion - vertical blur", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -94,7 +94,7 @@ namespace urchin {
                     ->maxBlurDistance(config.maxBlurDistance)
                     ->buildGaussianBlur();
 
-            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useSimulationRenderTarget, "ambient occlusion - horizontal blur", verticalBlurFilter->getTexture())
+            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(isTestMode, "ambient occlusion - horizontal blur", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -129,29 +129,24 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        if (!renderTarget->isTestMode()) {
-            AmbientOcclusionShaderConst aoConstData{
-                    .kernelSamples = config.kernelSamples,
-                    .radius = config.radius,
-                    .depthStartAttenuation = config.distanceStartAttenuation,
-                    .depthEndAttenuation = config.distanceEndAttenuation,
-                    .biasMultiplier = config.biasMultiplier,
-                    .biasDistanceMultiplier = config.biasDistanceMultiplier
-            };
-            std::vector<std::size_t> variablesSize = {
-                    sizeof(AmbientOcclusionShaderConst::kernelSamples),
-                    sizeof(AmbientOcclusionShaderConst::radius),
-                    sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
-                    sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
-                    sizeof(AmbientOcclusionShaderConst::biasMultiplier),
-                    sizeof(AmbientOcclusionShaderConst::biasDistanceMultiplier),
-            };
-            auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
-
-            ambientOcclusionShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants));
-        } else {
-            ambientOcclusionShader = ShaderBuilder::createNullShader();
-        }
+        AmbientOcclusionShaderConst aoConstData{
+                .kernelSamples = config.kernelSamples,
+                .radius = config.radius,
+                .depthStartAttenuation = config.distanceStartAttenuation,
+                .depthEndAttenuation = config.distanceEndAttenuation,
+                .biasMultiplier = config.biasMultiplier,
+                .biasDistanceMultiplier = config.biasDistanceMultiplier
+        };
+        std::vector<std::size_t> variablesSize = {
+                sizeof(AmbientOcclusionShaderConst::kernelSamples),
+                sizeof(AmbientOcclusionShaderConst::radius),
+                sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
+                sizeof(AmbientOcclusionShaderConst::depthEndAttenuation),
+                sizeof(AmbientOcclusionShaderConst::biasMultiplier),
+                sizeof(AmbientOcclusionShaderConst::biasDistanceMultiplier),
+        };
+        auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &aoConstData);
+        ambientOcclusionShader = ShaderBuilder::createComputeShader("ambientOcclusion.comp.spv", std::move(shaderConstants), renderTarget->isTestMode());
     }
 
     void AmbientOcclusionManager::generateKernelSamples() {

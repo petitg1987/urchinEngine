@@ -54,7 +54,7 @@ namespace urchin {
             static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 1;
 
             //properties
-            bool useSimulationRenderTarget;
+            bool isTestMode;
             Config config;
 
             //display
