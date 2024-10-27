@@ -41,9 +41,8 @@ namespace urchin {
             const Camera* camera;
 
             std::shared_ptr<Texture> depthTexture;
-            std::shared_ptr<Texture> illuminatedTexture;
+            std::shared_ptr<Texture> sceneTexture;
             std::unique_ptr<RenderTarget> renderTarget;
-            std::shared_ptr<Texture> outputTexture;
 
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
     };

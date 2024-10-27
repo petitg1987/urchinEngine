@@ -1,4 +1,3 @@
-#include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
@@ -27,12 +26,12 @@ namespace urchin {
         createOrUpdateRendering();
     }
 
-    void TransparentManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& illuminatedTexture) {
-        if (depthTexture.get() != this->depthTexture.get() || illuminatedTexture.get() != this->illuminatedTexture.get()) {
+    void TransparentManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& sceneTexture) {
+        if (depthTexture.get() != this->depthTexture.get() || sceneTexture.get() != this->sceneTexture.get()) {
             this->sceneWidth = depthTexture->getWidth();
             this->sceneHeight = depthTexture->getHeight();
             this->depthTexture = depthTexture;
-            this->illuminatedTexture = illuminatedTexture;
+            this->sceneTexture = sceneTexture;
 
             createOrUpdateRendering();
         }
@@ -46,23 +45,18 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        outputTexture = Texture::build("transparent", sceneWidth, sceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
-        outputTexture->enableTextureWriting(OutputUsage::GRAPHICS);
-
         if (useNullRenderTarget) {
             if (!renderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>(outputTexture->getWidth(), outputTexture->getHeight());
+                renderTarget = std::make_unique<NullRenderTarget>(sceneWidth, sceneHeight);
             }
         } else {
             if (renderTarget) {
                 static_cast<OffscreenRender*>(renderTarget.get())->resetOutput();
-                renderTarget->removeAllPreRenderTextureCopiers();
             } else {
                 renderTarget = std::make_unique<OffscreenRender>("transparent", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
             }
             renderTarget->setExternalDepthTexture(depthTexture);
-            renderTarget->addPreRenderTextureCopier(TextureCopier(*illuminatedTexture, *outputTexture)); //TODO copy ?
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture, LoadType::LOAD_CONTENT);
+            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(sceneTexture, LoadType::LOAD_CONTENT);
             renderTarget->initialize();
         }
     }
@@ -103,7 +97,7 @@ namespace urchin {
     }
 
     const std::shared_ptr<Texture>& TransparentManager::getOutputTexture() const {
-        return outputTexture;
+        return sceneTexture;
     }
 
     void TransparentManager::drawTransparentModels(std::uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
