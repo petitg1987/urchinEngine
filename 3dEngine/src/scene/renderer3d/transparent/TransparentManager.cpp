@@ -61,7 +61,7 @@ namespace urchin {
                 renderTarget = std::make_unique<OffscreenRender>("transparent", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
             }
             renderTarget->setExternalDepthTexture(depthTexture);
-            renderTarget->addPreRenderTextureCopier(TextureCopier(*illuminatedTexture, *outputTexture));
+            renderTarget->addPreRenderTextureCopier(TextureCopier(*illuminatedTexture, *outputTexture)); //TODO copy ?
             static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture, LoadType::LOAD_CONTENT);
             renderTarget->initialize();
         }

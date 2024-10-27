@@ -123,7 +123,7 @@ namespace urchin {
             static constexpr uint32_t SM_INFO_UNIFORM_BINDING = 5;
             static constexpr uint32_t FOG_UNIFORM_BINDING = 6;
             static constexpr uint32_t DEPTH_TEX_UNIFORM_BINDING = 7;
-            static constexpr uint32_t ALBEDO_TEX_UNIFORM_BINDING = 8;
+            static constexpr uint32_t ALBEDO_EMISSIVE_TEX_UNIFORM_BINDING = 8;
             static constexpr uint32_t NORMAL_AMBIENT_TEX_UNIFORM_BINDING = 9;
             static constexpr uint32_t MATERIAL_TEX_UNIFORM_BINDING = 10;
             static constexpr uint32_t AO_TEX_UNIFORM_BINDING = 11;
@@ -157,7 +157,7 @@ namespace urchin {
             TransparentManager transparentManager;
             ShadowManager shadowManager;
 
-            std::shared_ptr<Texture> albedoTexture;
+            std::shared_ptr<Texture> albedoAndEmissiveTexture;
             std::shared_ptr<Texture> normalAndAmbientTexture;
             std::shared_ptr<Texture> materialTexture;
             std::shared_ptr<Texture> illuminatedTexture;

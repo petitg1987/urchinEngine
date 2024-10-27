@@ -326,10 +326,10 @@ namespace urchin {
         }
     }
 
-    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint32_t frameIndex) {
+    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint32_t frameIndex, const std::string& requester) {
         if (submitSemaphoresFrameIndex == frameIndex) {
             if (remainingSubmitSemaphores == 0) {
-                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex));
+                throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex) + " (requester: " + requester + ")");
             }
             return submitSemaphores[--remainingSubmitSemaphores];
         }
@@ -340,7 +340,7 @@ namespace urchin {
     }
 
     void OffscreenRender::markSubmitSemaphoreUnused(std::uint32_t frameIndex) {
-        popSubmitSemaphore(frameIndex);
+        popSubmitSemaphore(frameIndex, getName());
         submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }
 

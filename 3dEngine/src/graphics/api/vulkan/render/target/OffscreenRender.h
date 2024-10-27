@@ -56,7 +56,7 @@ namespace urchin {
 
             void updateTexturesWriter();
 
-            VkSemaphore popSubmitSemaphore(std::uint32_t);
+            VkSemaphore popSubmitSemaphore(std::uint32_t, const std::string&);
             void markSubmitSemaphoreUnused(std::uint32_t);
 
             bool needCommandBufferRefresh(std::size_t) const override;

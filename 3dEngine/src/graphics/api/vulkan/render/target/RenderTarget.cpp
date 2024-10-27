@@ -438,7 +438,7 @@ namespace urchin {
         }
 
         for (OffscreenRender* offscreenRenderDependency : getOffscreenRenderDependencies()) {
-            VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameIndex);
+            VkSemaphore waitSemaphore = offscreenRenderDependency->popSubmitSemaphore(frameIndex, name);
             if (waitSemaphore) {
                 VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
                 semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
