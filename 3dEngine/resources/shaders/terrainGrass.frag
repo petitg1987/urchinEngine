@@ -18,8 +18,9 @@ layout(location = 2) out vec2 fragPbr;
 void main() {
     vec4 color = texture(grassTex, texCoordinates);
 
-    if (color.a < GRASS_ALPHA_TEST)
+    if (color.a < GRASS_ALPHA_TEST) {
         discard;
+    }
 
     fragAlbedoAndEmissive = vec4(color.rgb, 0.0);
     fragNormalAndAmbient = vec4(normal, lighting.ambient);

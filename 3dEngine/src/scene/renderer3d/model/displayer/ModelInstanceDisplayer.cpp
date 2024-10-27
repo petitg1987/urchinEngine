@@ -66,6 +66,13 @@ namespace urchin {
         this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
     }
 
+    void ModelInstanceDisplayer::setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>& textureReaders) {
+        if (isInitialized) {
+            throw std::runtime_error("Can not define a custom texture on an initialized model displayer: " + getReferenceModel().getConstMeshes()->getName());
+        }
+        this->textureReaders = textureReaders;
+    }
+
     void ModelInstanceDisplayer::initialize() {
         if (isInitialized) {
             throw std::runtime_error("Model displayer is already initialized: " + getReferenceModel().getConstMeshes()->getName());
@@ -132,6 +139,13 @@ namespace urchin {
                         ->addUniformTextureReader(MAT_NORMAL_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getNormalTexture(), buildTextureParam(mesh)))
                         ->addUniformTextureReader(MAT_ROUGHNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getRoughnessTexture(), buildTextureParam(mesh)))
                         ->addUniformTextureReader(MAT_METALNESS_UNIFORM_BINDING, TextureReader::build(mesh.getMaterial().getMetalnessTexture(), buildTextureParam(mesh)));
+
+                if (textureReaders[0]) {
+                    meshRendererBuilder->addUniformTextureReader(CUSTOM1_TEX_UNIFORM_BINDING, textureReaders[0]);
+                }
+                if (textureReaders[1]) {
+                    meshRendererBuilder->addUniformTextureReader(CUSTOM2_TEX_UNIFORM_BINDING, textureReaders[1]);
+                }
             }
 
             meshRenderers.push_back(meshRendererBuilder->build());

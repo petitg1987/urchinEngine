@@ -33,6 +33,7 @@ namespace urchin {
             void setupFaceCull(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupLayerIndexDataInShader(bool);
+            void setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>&);
             void setupMeshFilter(std::unique_ptr<MeshFilter>);
 
             void notify(Observable*, int) override;
@@ -72,6 +73,7 @@ namespace urchin {
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
             bool enableLayerIndexDataInShader;
+            std::array<std::shared_ptr<TextureReader>, 2> textureReaders;
             std::unique_ptr<MeshFilter> meshFilter;
 
             RenderTarget* renderTarget;

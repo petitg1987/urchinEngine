@@ -14,6 +14,7 @@ namespace urchin {
             depthWriteEnabled(true),
             enableFaceCull(true),
             enableLayerIndexDataInShader(false),
+            textureReaders({}),
             renderTarget(nullptr) {
 
     }
@@ -72,6 +73,11 @@ namespace urchin {
 
     void ModelSetDisplayer::setupLayerIndexDataInShader(bool enableLayerIndexDataInShader) {
         this->enableLayerIndexDataInShader = enableLayerIndexDataInShader;
+        clearDisplayers();
+    }
+
+    void ModelSetDisplayer::setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>& textureReaders) {
+        this->textureReaders = textureReaders;
         clearDisplayers();
     }
 
@@ -215,6 +221,7 @@ namespace urchin {
             modelInstanceDisplayer->setupBlendFunctions(blendFunctions);
             modelInstanceDisplayer->setupFaceCull(enableFaceCull);
             modelInstanceDisplayer->setupLayerIndexDataInShader(enableLayerIndexDataInShader);
+            modelInstanceDisplayer->setupCustomTextures(textureReaders);
             addModelToDisplayer(*model, *modelInstanceDisplayer);
             modelInstanceDisplayer->initialize();
             if (modelInstanceId == ModelDisplayable::INSTANCING_DENY_ID) {

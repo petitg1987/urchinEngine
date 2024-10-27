@@ -22,6 +22,7 @@ namespace urchin {
             void setupFaceCull(bool);
             void setupBlendFunctions(const std::vector<BlendFunction>&);
             void setupLayerIndexDataInShader(bool);
+            void setupCustomTextures(const std::array<std::shared_ptr<TextureReader>, 2>&);
 
             void initialize();
 
@@ -61,6 +62,8 @@ namespace urchin {
             static constexpr uint32_t MAT_NORMAL_UNIFORM_BINDING = 5;
             static constexpr uint32_t MAT_ROUGHNESS_UNIFORM_BINDING = 6;
             static constexpr uint32_t MAT_METALNESS_UNIFORM_BINDING = 7;
+            static constexpr uint32_t CUSTOM1_TEX_UNIFORM_BINDING = 8;
+            static constexpr uint32_t CUSTOM2_TEX_UNIFORM_BINDING = 9;
 
             bool isInitialized;
 
@@ -89,6 +92,7 @@ namespace urchin {
             bool enableFaceCull;
             std::vector<BlendFunction> blendFunctions;
             bool enableLayerIndexDataInShader;
+            std::array<std::shared_ptr<TextureReader>, 2> textureReaders;
 
             std::vector<std::unique_ptr<GenericRenderer>> meshRenderers;
             std::vector<std::shared_ptr<AABBoxModel>> aabboxModels;
