@@ -43,7 +43,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "genRenderInit");
         assert(!isInitialized);
 
-        if (!getRenderTarget().isSimulationRenderTarget()) {
+        if (!getRenderTarget().isTestMode()) {
             createPipeline();
             createDataBuffers();
             createIndexBuffer();
@@ -60,7 +60,7 @@ namespace urchin {
 
     void GenericRenderer::cleanup() {
         if (isInitialized) {
-            if (!getRenderTarget().isSimulationRenderTarget()) {
+            if (!getRenderTarget().isTestMode()) {
                 VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());
@@ -139,7 +139,7 @@ namespace urchin {
             assert(data.size() > dataIndex);
         #endif
 
-        if (!getRenderTarget().isSimulationRenderTarget()) {
+        if (!getRenderTarget().isTestMode()) {
             data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
         }
     }
@@ -149,7 +149,7 @@ namespace urchin {
             assert(data.size() > dataIndex);
         #endif
 
-        if (!getRenderTarget().isSimulationRenderTarget()) {
+        if (!getRenderTarget().isTestMode()) {
             data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
         }
     }
@@ -159,13 +159,13 @@ namespace urchin {
             assert(data.size() > dataIndex);
         #endif
 
-        if (!getRenderTarget().isSimulationRenderTarget()) {
+        if (!getRenderTarget().isTestMode()) {
             data[dataIndex].replaceData(dataPtr.size(), dataPtr.data());
         }
     }
 
     void GenericRenderer::updateInstanceData(std::size_t instanceCount, const float* dataPtr) const {
-        if (!getRenderTarget().isSimulationRenderTarget()) {
+        if (!getRenderTarget().isTestMode()) {
             instanceData->replaceData(instanceCount, dataPtr);
         }
     }

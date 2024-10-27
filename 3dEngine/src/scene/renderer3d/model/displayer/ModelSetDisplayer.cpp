@@ -29,7 +29,7 @@ namespace urchin {
         }
         this->renderTarget = &renderTarget;
 
-        if (!renderTarget.isSimulationRenderTarget()) {
+        if (!renderTarget.isTestMode()) {
             assert(!vertexShaderName.empty());
             assert(!fragmentShaderName.empty());
             modelShader = ShaderBuilder::createShader(vertexShaderName, fragmentShaderName, std::move(shaderConstants));

@@ -32,7 +32,7 @@ namespace urchin {
             renderingScale(visualConfig.getRenderingScale()),
 
             //deferred first pass
-            deferredFirstPassRenderTarget(std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", finalRenderTarget.isSimulationRenderTarget(), RenderTarget::SHARED_DEPTH_ATTACHMENT))),
+            deferredFirstPassRenderTarget(std::unique_ptr<OffscreenRender>(new OffscreenRender("deferred rendering - first pass", finalRenderTarget.isTestMode(), RenderTarget::SHARED_DEPTH_ATTACHMENT))),
             modelOcclusionCuller(ModelOcclusionCuller()),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
@@ -42,17 +42,17 @@ namespace urchin {
             geometryContainer(GeometryContainer(*deferredFirstPassRenderTarget)),
             skyContainer(SkyContainer(*deferredFirstPassRenderTarget)),
             lightManager(LightManager()),
-            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), finalRenderTarget.isSimulationRenderTarget())),
-            transparentManager(TransparentManager(finalRenderTarget.isSimulationRenderTarget(), lightManager)),
+            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), finalRenderTarget.isTestMode())),
+            transparentManager(TransparentManager(finalRenderTarget.isTestMode(), lightManager)),
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
             //deferred second pass
-            deferredSecondPassRenderTarget(std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", finalRenderTarget.isSimulationRenderTarget(), RenderTarget::NO_DEPTH_ATTACHMENT))),
+            deferredSecondPassRenderTarget(std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", finalRenderTarget.isTestMode(), RenderTarget::NO_DEPTH_ATTACHMENT))),
             positioningData({}),
             sceneInfo({}),
-            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), finalRenderTarget.isSimulationRenderTarget())),
+            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), finalRenderTarget.isTestMode())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
-            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isSimulationRenderTarget(), getGammaFactor())),
+            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isTestMode(), getGammaFactor())),
             reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), finalRenderTarget)),
             isReflectionActivated(visualConfig.isReflectionActivated()),
 
@@ -447,7 +447,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &deferredSecondPassConstData);
 
-        if (!deferredSecondPassRenderTarget->isSimulationRenderTarget()) {
+        if (!deferredSecondPassRenderTarget->isTestMode()) {
             deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "deferredSecondPass.frag.spv", std::move(shaderConstants));
         } else {
             deferredSecondPassShader = ShaderBuilder::createNullShader();

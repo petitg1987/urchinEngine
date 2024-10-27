@@ -69,11 +69,11 @@ namespace urchin {
         auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
         reflectionColorTexture = Texture::build("reflection color", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);
 
-        reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflection color", outputRenderTarget.isSimulationRenderTarget(), RenderTarget::NO_DEPTH_ATTACHMENT);
+        reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflection color", outputRenderTarget.isTestMode(), RenderTarget::NO_DEPTH_ATTACHMENT);
         static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorTexture);
         reflectionColorRenderTarget->initialize();
 
-        verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(outputRenderTarget.isSimulationRenderTarget(), "reflection color - vertical blur", reflectionColorTexture)
+        verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(outputRenderTarget.isTestMode(), "reflection color - vertical blur", reflectionColorTexture)
                 ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
                 ->textureType(TextureType::DEFAULT)
                 ->textureFormat(reflectionColorTextureFormat)
@@ -83,7 +83,7 @@ namespace urchin {
                 ->maxBlurDistance(config.maxBlurDistance)
                 ->buildGaussianBlur();
 
-        horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(outputRenderTarget.isSimulationRenderTarget(), "reflection color - horizontal blur", verticalBlurFilter->getTexture())
+        horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(outputRenderTarget.isTestMode(), "reflection color - horizontal blur", verticalBlurFilter->getTexture())
                 ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
                 ->textureType(TextureType::DEFAULT)
                 ->textureFormat(reflectionColorTextureFormat)
@@ -129,7 +129,7 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateShaders() {
-        if (!reflectionColorRenderTarget->isSimulationRenderTarget()) {
+        if (!reflectionColorRenderTarget->isTestMode()) {
             ReflectionColorShaderConst rcConstData {
                     .maxDistance = config.maxDistance,
                     .hitThreshold = config.hitThreshold,
@@ -149,7 +149,7 @@ namespace urchin {
             reflectionColorShader = ShaderBuilder::createNullShader();
         }
 
-        if (!outputRenderTarget.isSimulationRenderTarget()) {
+        if (!outputRenderTarget.isTestMode()) {
             ReflectionCombineShaderConst rcConstData{
                     .reflectionStrength = config.reflectionStrength, //apply reflection strength after AO blur to not lose color precision on 8bit texture
             };

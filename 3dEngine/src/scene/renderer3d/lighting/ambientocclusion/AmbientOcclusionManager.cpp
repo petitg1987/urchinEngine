@@ -129,7 +129,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        if (!renderTarget->isSimulationRenderTarget()) {
+        if (!renderTarget->isTestMode()) {
             AmbientOcclusionShaderConst aoConstData{
                     .kernelSamples = config.kernelSamples,
                     .radius = config.radius,

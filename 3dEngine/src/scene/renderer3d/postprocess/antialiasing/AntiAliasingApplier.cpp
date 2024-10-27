@@ -91,7 +91,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
 
-        if (!renderTarget->isSimulationRenderTarget()) {
+        if (!renderTarget->isTestMode()) {
             fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants));
         } else {
             fxaaShader = ShaderBuilder::createNullShader();

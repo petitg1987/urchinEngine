@@ -12,9 +12,9 @@
 
 namespace urchin {
 
-    RenderTarget::RenderTarget(std::string name, bool isSimulationRenderTarget, DepthAttachmentType depthAttachmentType) :
+    RenderTarget::RenderTarget(std::string name, bool isTestMode, DepthAttachmentType depthAttachmentType) :
             bIsInitialized(false),
-            bIsSimulationRenderTarget(isSimulationRenderTarget),
+            bIsTestMode(isTestMode),
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
@@ -43,8 +43,8 @@ namespace urchin {
         return name;
     }
 
-    bool RenderTarget::isSimulationRenderTarget() const {
-        return bIsSimulationRenderTarget;
+    bool RenderTarget::isTestMode() const {
+        return bIsTestMode;
     }
 
     std::size_t RenderTarget::getRenderPassCompatibilityId() const {
@@ -101,7 +101,7 @@ namespace urchin {
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
             assert(&processor->getRenderTarget() == this);
-            assert(isSimulationRenderTarget() || (processor->isGraphicsProcessor() || !hasDepthAttachment()));
+            assert(isTestMode() || (processor->isGraphicsProcessor() || !hasDepthAttachment()));
             assert(processors.empty() || (processors[0]->isGraphicsProcessor() == processor->isGraphicsProcessor() && processors[0]->isComputeProcessor() == processor->isComputeProcessor()));
             for (const auto* p : processors) {
                 assert(p != processor);
@@ -311,7 +311,7 @@ namespace urchin {
                     depthTexture = Texture::buildArray(name + " - depth", getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT);
                 }
                 depthTexture->enableTextureWriting(OutputUsage::GRAPHICS);
-                if (!isSimulationRenderTarget()) {
+                if (!isTestMode()) {
                     depthTexture->initialize();
                 }
             }

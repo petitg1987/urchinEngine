@@ -30,7 +30,7 @@ namespace urchin {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
         }
 
-        renderTarget = std::make_unique<OffscreenRender>(name, useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+        renderTarget = std::make_unique<OffscreenRender>(name, isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
         renderTarget->addOutputTexture(texture);
         renderTarget->initialize();
     }
@@ -39,7 +39,7 @@ namespace urchin {
         assert(renderTarget);
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
 
-        if (useSimulationRenderTarget) {
+        if (isTestMode) {
             textureFilterShader = ShaderBuilder::createNullShader();
         } else {
             if (textureType == TextureType::DEFAULT) {

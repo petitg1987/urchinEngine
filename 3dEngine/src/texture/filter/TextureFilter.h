@@ -40,7 +40,7 @@ namespace urchin {
             void initializeDisplay();
 
             bool isInitialized;
-            bool useSimulationRenderTarget;
+            bool isTestMode;
             std::string name;
 
             //source texture

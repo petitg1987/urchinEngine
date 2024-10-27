@@ -31,7 +31,7 @@ namespace urchin {
             virtual void cleanup() = 0;
 
             std::string getName() const;
-            bool isSimulationRenderTarget() const;
+            bool isTestMode() const;
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
             virtual unsigned int getLayer() const = 0;
@@ -93,7 +93,7 @@ namespace urchin {
 
         private:
             bool bIsInitialized;
-            bool bIsSimulationRenderTarget;
+            bool bIsTestMode;
 
             std::string name;
             DepthAttachmentType depthAttachmentType;

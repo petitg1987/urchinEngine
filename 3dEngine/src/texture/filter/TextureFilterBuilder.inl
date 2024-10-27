@@ -1,5 +1,5 @@
-template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool bSimulationRenderTarget, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
-        bUseSimulationRenderTarget(bSimulationRenderTarget),
+template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool isTestMode, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
+        bIsTestMode(isTestMode),
         name(std::move(name)),
         sourceTexture(sourceTexture),
         textureWidth(1024),
@@ -9,8 +9,8 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool bSimulation
 
 }
 
-template<class T> bool TextureFilterBuilder<T>::useSimulationRenderTarget() const {
-    return bUseSimulationRenderTarget;
+template<class T> bool TextureFilterBuilder<T>::isTestMode() const {
+    return bIsTestMode;
 }
 
 template<class T> const std::string& TextureFilterBuilder<T>::getName() const {

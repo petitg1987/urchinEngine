@@ -1,6 +1,6 @@
 template<class BUILDER> TextureFilter::TextureFilter(const TextureFilterBuilder<BUILDER>* textureFilterBuilder):
         isInitialized(false),
-        useSimulationRenderTarget(textureFilterBuilder->useSimulationRenderTarget()),
+        isTestMode(textureFilterBuilder->isTestMode()),
         name(textureFilterBuilder->getName()),
         sourceTexture(textureFilterBuilder->getSourceTexture()),
         textureWidth(textureFilterBuilder->getTextureWidth()),

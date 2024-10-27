@@ -8,8 +8,8 @@
 
 namespace urchin {
 
-    OffscreenRender::OffscreenRender(std::string name, bool isSimulationRenderTarget, DepthAttachmentType depthAttachmentType) :
-            RenderTarget(std::move(name), isSimulationRenderTarget, depthAttachmentType),
+    OffscreenRender::OffscreenRender(std::string name, bool isTestMode, DepthAttachmentType depthAttachmentType) :
+            RenderTarget(std::move(name), isTestMode, depthAttachmentType),
             width(0),
             height(0),
             layer(0),
@@ -58,7 +58,7 @@ namespace urchin {
             }
 
             texture->enableTextureWriting(outputUsage);
-            if (!isSimulationRenderTarget()) {
+            if (!isTestMode()) {
                 texture->initialize();
             }
         }
@@ -96,11 +96,11 @@ namespace urchin {
         assert(!isInitialized());
 
         initializeClearValues();
-        if (!isSimulationRenderTarget()) {
+        if (!isTestMode()) {
             createRenderPass();
         }
         createDepthResources();
-        if (!isSimulationRenderTarget()) {
+        if (!isTestMode()) {
             createFramebuffers();
             createCommandPool();
             createCommandBuffers();
@@ -114,7 +114,7 @@ namespace urchin {
 
     void OffscreenRender::cleanup() {
         assert(isInitialized());
-        if (!isSimulationRenderTarget()) {
+        if (!isTestMode()) {
             VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
             if (result != VK_SUCCESS) {
                 Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
@@ -123,14 +123,14 @@ namespace urchin {
 
         cleanupProcessors();
 
-        if (!isSimulationRenderTarget()) {
+        if (!isTestMode()) {
             destroySemaphores();
             destroyFence();
             destroyCommandBuffersAndPool();
             destroyFramebuffers();
         }
         destroyDepthResources();
-        if (!isSimulationRenderTarget()) {
+        if (!isTestMode()) {
             destroyRenderPass();
         }
         clearValues.clear();
