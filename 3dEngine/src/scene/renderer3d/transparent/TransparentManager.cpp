@@ -1,12 +1,11 @@
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/transparent/TransparentModelShaderVariable.h>
 #include <scene/renderer3d/transparent/TransparentMeshFilter.h>
-#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
-    TransparentManager::TransparentManager(bool useNullRenderTarget, LightManager& lightManager) :
-            useNullRenderTarget(useNullRenderTarget),
+    TransparentManager::TransparentManager(bool useSimulationRenderTarget, LightManager& lightManager) :
+            useSimulationRenderTarget(useSimulationRenderTarget),
             lightManager(lightManager),
             sceneWidth(0),
             sceneHeight(0),
@@ -45,20 +44,14 @@ namespace urchin {
     }
 
     void TransparentManager::createOrUpdateTextures() {
-        if (useNullRenderTarget) {
-            if (!renderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>(sceneWidth, sceneHeight);
-            }
+        if (renderTarget) {
+            renderTarget->resetOutput();
         } else {
-            if (renderTarget) {
-                static_cast<OffscreenRender*>(renderTarget.get())->resetOutput();
-            } else {
-                renderTarget = std::make_unique<OffscreenRender>("transparent", RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
-            }
-            renderTarget->setExternalDepthTexture(depthTexture);
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(sceneTexture, LoadType::LOAD_CONTENT);
-            renderTarget->initialize();
+            renderTarget = std::make_unique<OffscreenRender>("transparent", useSimulationRenderTarget, RenderTarget::EXTERNAL_DEPTH_ATTACHMENT);
         }
+        renderTarget->setExternalDepthTexture(depthTexture);
+        renderTarget->addOutputTexture(sceneTexture, LoadType::LOAD_CONTENT);
+        renderTarget->initialize();
     }
 
     void TransparentManager::createOrUpdateModelSetDisplayer() {

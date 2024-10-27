@@ -64,7 +64,7 @@ namespace urchin {
             };
 
             Config config;
-            bool useNullRenderTarget;
+            bool useSimulationRenderTarget;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
             std::shared_ptr<Texture> inputHdrTexture;

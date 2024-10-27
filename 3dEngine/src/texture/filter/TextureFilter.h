@@ -40,7 +40,7 @@ namespace urchin {
             void initializeDisplay();
 
             bool isInitialized;
-            bool useNullRenderTarget;
+            bool useSimulationRenderTarget;
             std::string name;
 
             //source texture
@@ -52,7 +52,7 @@ namespace urchin {
             TextureType textureType;
             TextureFormat textureFormat;
 
-            std::unique_ptr<RenderTarget> renderTarget;
+            std::unique_ptr<OffscreenRender> renderTarget;
             std::shared_ptr<Texture> texture;
 
             std::unique_ptr<GenericRenderer> textureRenderer;

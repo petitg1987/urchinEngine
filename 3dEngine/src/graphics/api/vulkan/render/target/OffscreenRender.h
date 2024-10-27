@@ -26,7 +26,7 @@ namespace urchin {
             friend class RenderTarget;
             friend class ScreenRender;
 
-            explicit OffscreenRender(std::string, DepthAttachmentType);
+            explicit OffscreenRender(std::string, bool, DepthAttachmentType);
             ~OffscreenRender() override;
 
             void setOutputSize(unsigned int, unsigned int, unsigned int);

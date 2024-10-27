@@ -8,8 +8,8 @@
 
 namespace urchin {
 
-    OffscreenRender::OffscreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
-            RenderTarget(std::move(name), depthAttachmentType),
+    OffscreenRender::OffscreenRender(std::string name, bool isSimulationRenderTarget, DepthAttachmentType depthAttachmentType) :
+            RenderTarget(std::move(name), isSimulationRenderTarget, depthAttachmentType),
             width(0),
             height(0),
             layer(0),
@@ -58,10 +58,12 @@ namespace urchin {
             }
 
             texture->enableTextureWriting(outputUsage);
-            texture->initialize();
+            if (!isSimulationRenderTarget()) {
+                texture->initialize();
+            }
         }
 
-        outputTextures.emplace_back(OutputTexture{texture, loadType, clearColor, outputUsage});
+        outputTextures.emplace_back(OutputTexture{.texture=texture, .loadOperation=loadType, .clearColor=clearColor, .outputUsage=outputUsage});
     }
 
     std::shared_ptr<Texture>& OffscreenRender::getOutputTexture(std::size_t index) {
@@ -94,13 +96,17 @@ namespace urchin {
         assert(!isInitialized());
 
         initializeClearValues();
-        createRenderPass();
+        if (!isSimulationRenderTarget()) {
+            createRenderPass();
+        }
         createDepthResources();
-        createFramebuffers();
-        createCommandPool();
-        createCommandBuffers();
-        createFence();
-        createSemaphores();
+        if (!isSimulationRenderTarget()) {
+            createFramebuffers();
+            createCommandPool();
+            createCommandBuffers();
+            createFence();
+            createSemaphores();
+        }
 
         initializeProcessors();
         setInitialized(true);
@@ -108,19 +114,25 @@ namespace urchin {
 
     void OffscreenRender::cleanup() {
         assert(isInitialized());
-        VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
-        if (result != VK_SUCCESS) {
-            Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
+        if (!isSimulationRenderTarget()) {
+            VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
+            if (result != VK_SUCCESS) {
+                Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on render target: " + getName());
+            }
         }
 
         cleanupProcessors();
 
-        destroySemaphores();
-        destroyFence();
-        destroyCommandBuffersAndPool();
-        destroyFramebuffers();
+        if (!isSimulationRenderTarget()) {
+            destroySemaphores();
+            destroyFence();
+            destroyCommandBuffersAndPool();
+            destroyFramebuffers();
+        }
         destroyDepthResources();
-        destroyRenderPass();
+        if (!isSimulationRenderTarget()) {
+            destroyRenderPass();
+        }
         clearValues.clear();
 
         setInitialized(false);
@@ -158,7 +170,7 @@ namespace urchin {
         if (hasLoadClear) {
             if (hasDepthAttachment()) {
                 VkClearValue clearDepth{};
-                clearDepth.depthStencil = {1.0f, 0};
+                clearDepth.depthStencil = {.depth=1.0f, .stencil=0};
                 clearValues.emplace_back(clearDepth);
             }
 

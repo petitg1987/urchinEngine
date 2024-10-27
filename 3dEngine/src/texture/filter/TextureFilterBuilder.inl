@@ -1,5 +1,5 @@
-template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool bUseNullRenderTarget, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
-        bUseNullRenderTarget(bUseNullRenderTarget),
+template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool bSimulationRenderTarget, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
+        bUseSimulationRenderTarget(bSimulationRenderTarget),
         name(std::move(name)),
         sourceTexture(sourceTexture),
         textureWidth(1024),
@@ -9,8 +9,8 @@ template<class T> TextureFilterBuilder<T>::TextureFilterBuilder(bool bUseNullRen
 
 }
 
-template<class T> bool TextureFilterBuilder<T>::useNullRenderTarget() const {
-    return bUseNullRenderTarget;
+template<class T> bool TextureFilterBuilder<T>::useSimulationRenderTarget() const {
+    return bUseSimulationRenderTarget;
 }
 
 template<class T> const std::string& TextureFilterBuilder<T>::getName() const {

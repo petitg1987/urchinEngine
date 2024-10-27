@@ -12,8 +12,8 @@
 
 namespace urchin {
 
-    ScreenRender::ScreenRender(std::string name, DepthAttachmentType depthAttachmentType) :
-            RenderTarget(std::move(name), depthAttachmentType),
+    ScreenRender::ScreenRender(std::string name, bool isSimulationRenderTarget, DepthAttachmentType depthAttachmentType) :
+            RenderTarget(std::move(name), isSimulationRenderTarget, depthAttachmentType),
             verticalSyncEnabled(true),
             vkImageIndex(std::numeric_limits<uint32_t>::max()),
             currentFrameIndex(0) {

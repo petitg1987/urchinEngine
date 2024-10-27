@@ -15,6 +15,6 @@ class TextBoxTest : public CppUnit::TestFixture {
     private:
         std::unique_ptr<urchin::UIRenderer> setupUiRenderer();
 
-        std::unique_ptr<urchin::RenderTarget> renderTarget;
+        std::unique_ptr<urchin::OffscreenRender> renderTarget;
         std::unique_ptr<urchin::I18nService> i18nService;
 };

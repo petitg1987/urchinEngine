@@ -12,8 +12,9 @@
 
 namespace urchin {
 
-    RenderTarget::RenderTarget(std::string name, DepthAttachmentType depthAttachmentType) :
+    RenderTarget::RenderTarget(std::string name, bool isSimulationRenderTarget, DepthAttachmentType depthAttachmentType) :
             bIsInitialized(false),
+            bIsSimulationRenderTarget(isSimulationRenderTarget),
             name(std::move(name)),
             depthAttachmentType(depthAttachmentType),
             renderPass(nullptr),
@@ -42,8 +43,8 @@ namespace urchin {
         return name;
     }
 
-    bool RenderTarget::isValidRenderTarget() const {
-        return true;
+    bool RenderTarget::isSimulationRenderTarget() const {
+        return bIsSimulationRenderTarget;
     }
 
     std::size_t RenderTarget::getRenderPassCompatibilityId() const {
@@ -100,7 +101,7 @@ namespace urchin {
     void RenderTarget::addProcessor(PipelineProcessor* processor) {
         #ifdef URCHIN_DEBUG
             assert(&processor->getRenderTarget() == this);
-            assert(!isValidRenderTarget() || (processor->isGraphicsProcessor() || !hasDepthAttachment()));
+            assert(isSimulationRenderTarget() || (processor->isGraphicsProcessor() || !hasDepthAttachment()));
             assert(processors.empty() || (processors[0]->isGraphicsProcessor() == processor->isGraphicsProcessor() && processors[0]->isComputeProcessor() == processor->isComputeProcessor()));
             for (const auto* p : processors) {
                 assert(p != processor);
@@ -310,7 +311,7 @@ namespace urchin {
                     depthTexture = Texture::buildArray(name + " - depth", getWidth(), getHeight(), getLayer(), TextureFormat::DEPTH_32_FLOAT);
                 }
                 depthTexture->enableTextureWriting(OutputUsage::GRAPHICS);
-                if (isValidRenderTarget()) {
+                if (!isSimulationRenderTarget()) {
                     depthTexture->initialize();
                 }
             }
@@ -500,8 +501,8 @@ namespace urchin {
                     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
                     renderPassInfo.renderPass = renderPass;
                     renderPassInfo.framebuffer = framebuffers[frameIndex][layerIndex];
-                    renderPassInfo.renderArea.offset = {0, 0};
-                    renderPassInfo.renderArea.extent = {getWidth(), getHeight()};
+                    renderPassInfo.renderArea.offset = {.x=0, .y=0};
+                    renderPassInfo.renderArea.extent = {.width=getWidth(), .height=getHeight()};
                     renderPassInfo.clearValueCount = (uint32_t)clearValues.size();
                     renderPassInfo.pClearValues = clearValues.empty() ? nullptr : clearValues.data();
 

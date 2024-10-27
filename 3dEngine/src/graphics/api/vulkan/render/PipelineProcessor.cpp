@@ -25,7 +25,7 @@ namespace urchin {
 
         descriptorSetsDirty.resize(getRenderTarget().getNumFramebuffer(), false);
 
-        if (getRenderTarget().isValidRenderTarget()) {
+        if (!getRenderTarget().isSimulationRenderTarget()) {
             for (const auto& [uniformBinding, uniformTextureReaderArray] : uniformTextureReaders) {
                 for (const auto& uniformTextureReader : uniformTextureReaderArray) {
                     uniformTextureReader->initialize();
@@ -273,13 +273,13 @@ namespace urchin {
             assert(uniformData.contains(uniformBinding));
         #endif
 
-        if (getRenderTarget().isValidRenderTarget()) {
+        if (!getRenderTarget().isSimulationRenderTarget()) {
             uniformData.at(uniformBinding).updateData(dataPtr);
         }
     }
 
     void PipelineProcessor::updateUniformTextureReader(uint32_t uniformBinding, const std::shared_ptr<TextureReader>& textureReader) {
-        if (getRenderTarget().isValidRenderTarget()) {
+        if (!getRenderTarget().isSimulationRenderTarget()) {
             updateUniformTextureReaderArray(uniformBinding, 0, textureReader);
         }
     }
@@ -306,7 +306,7 @@ namespace urchin {
             assert(uniformTextureReaders.at(uniformBinding).size() > textureIndex);
         #endif
 
-        if (getRenderTarget().isValidRenderTarget()) {
+        if (!getRenderTarget().isSimulationRenderTarget()) {
             textureReader->initialize();
             uniformTextureReaders.at(uniformBinding)[textureIndex] = textureReader;
 

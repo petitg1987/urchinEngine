@@ -3,7 +3,6 @@
 #include <texture/filter/TextureFilter.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
@@ -31,20 +30,16 @@ namespace urchin {
             throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string((int)textureType));
         }
 
-        if (useNullRenderTarget) {
-            renderTarget = std::make_unique<NullRenderTarget>(texture->getWidth(), texture->getHeight());
-        } else {
-            renderTarget = std::make_unique<OffscreenRender>(name, RenderTarget::NO_DEPTH_ATTACHMENT);
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(texture);
-            renderTarget->initialize();
-        }
+        renderTarget = std::make_unique<OffscreenRender>(name, useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+        renderTarget->addOutputTexture(texture);
+        renderTarget->initialize();
     }
 
     void TextureFilter::initializeDisplay() {
         assert(renderTarget);
         std::unique_ptr<ShaderConstants> shaderConstants = buildShaderConstants();
 
-        if (useNullRenderTarget) {
+        if (useSimulationRenderTarget) {
             textureFilterShader = ShaderBuilder::createNullShader();
         } else {
             if (textureType == TextureType::DEFAULT) {

@@ -4,12 +4,11 @@
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
-    AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool useNullRenderTarget) :
-            useNullRenderTarget(useNullRenderTarget),
+    AntiAliasingApplier::AntiAliasingApplier(const Config& config, bool useSimulationRenderTarget) :
+            useSimulationRenderTarget(useSimulationRenderTarget),
             config(config) {
 
     }
@@ -25,13 +24,9 @@ namespace urchin {
 
             clearRenderer();
             outputTexture = Texture::build("anti aliased", inputTexture->getWidth(), inputTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
-            if (useNullRenderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>(inputTexture->getWidth(), inputTexture->getHeight());
-            } else {
-                renderTarget = std::make_unique<OffscreenRender>("anti aliasing", RenderTarget::NO_DEPTH_ATTACHMENT);
-                static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(outputTexture);
-                renderTarget->initialize();
-            }
+            renderTarget = std::make_unique<OffscreenRender>("anti aliasing", useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
+            renderTarget->addOutputTexture(outputTexture);
+            renderTarget->initialize();
 
             createOrUpdateRenderer();
         }
@@ -96,7 +91,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &antiAliasingShaderConst);
 
-        if (renderTarget->isValidRenderTarget()) {
+        if (!renderTarget->isSimulationRenderTarget()) {
             fxaaShader = ShaderBuilder::createShader("fxaa.vert.spv", "fxaa.frag.spv", std::move(shaderConstants));
         } else {
             fxaaShader = ShaderBuilder::createNullShader();

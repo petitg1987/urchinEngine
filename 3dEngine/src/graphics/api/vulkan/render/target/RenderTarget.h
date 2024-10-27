@@ -24,14 +24,14 @@ namespace urchin {
                 EXTERNAL_DEPTH_ATTACHMENT //existing depth attachment from another render target (must be provided via 'setExternalDepthTexture')
             };
 
-            explicit RenderTarget(std::string, DepthAttachmentType);
+            explicit RenderTarget(std::string, bool, DepthAttachmentType);
             virtual ~RenderTarget();
 
             virtual void initialize() = 0;
             virtual void cleanup() = 0;
 
             std::string getName() const;
-            virtual bool isValidRenderTarget() const;
+            bool isSimulationRenderTarget() const;
             virtual unsigned int getWidth() const = 0;
             virtual unsigned int getHeight() const = 0;
             virtual unsigned int getLayer() const = 0;
@@ -93,6 +93,7 @@ namespace urchin {
 
         private:
             bool bIsInitialized;
+            bool bIsSimulationRenderTarget;
 
             std::string name;
             DepthAttachmentType depthAttachmentType;

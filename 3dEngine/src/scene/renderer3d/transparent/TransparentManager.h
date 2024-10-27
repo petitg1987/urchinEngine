@@ -34,7 +34,7 @@ namespace urchin {
             void createOrUpdateTextures();
             void createOrUpdateModelSetDisplayer();
 
-            bool useNullRenderTarget;
+            bool useSimulationRenderTarget;
             LightManager& lightManager;
             unsigned int sceneWidth;
             unsigned int sceneHeight;
@@ -42,7 +42,7 @@ namespace urchin {
 
             std::shared_ptr<Texture> depthTexture;
             std::shared_ptr<Texture> sceneTexture;
-            std::unique_ptr<RenderTarget> renderTarget;
+            std::unique_ptr<OffscreenRender> renderTarget;
 
             std::unique_ptr<ModelSetDisplayer> modelSetDisplayer;
     };

@@ -89,12 +89,12 @@ namespace urchin {
 
             //general data
             Config config;
-            bool useNullRenderTarget;
+            bool useSimulationRenderTarget;
             float nearPlane;
             float farPlane;
 
             //frame buffer object
-            std::unique_ptr<RenderTarget> renderTarget;
+            std::unique_ptr<OffscreenRender> renderTarget;
             std::shared_ptr<Texture> ambientOcclusionTexture;
 
             //ambient occlusion shader

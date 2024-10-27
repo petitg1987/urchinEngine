@@ -23,7 +23,7 @@ namespace urchin {
             rawMouseY(0.0),
             bCanInteractWithUi(true),
             widgetSetDisplayer(std::make_unique<WidgetSetDisplayer>(*this)) {
-        if (renderTarget.isValidRenderTarget()) {
+        if (!renderTarget.isSimulationRenderTarget()) {
             uiShader = ShaderBuilder::createShader("ui.vert.spv", "ui.frag.spv");
         } else {
             uiShader = ShaderBuilder::createNullShader();
@@ -67,7 +67,7 @@ namespace urchin {
         ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
         ui3dData->uiSphereBounding = Sphere<float>(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
 
-        if (renderTarget.isValidRenderTarget()) {
+        if (!renderTarget.isSimulationRenderTarget()) {
             std::vector<std::size_t> variablesSize = {sizeof(ambient)};
             auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
             this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "ui3d.frag.spv", std::move(shaderConstants));

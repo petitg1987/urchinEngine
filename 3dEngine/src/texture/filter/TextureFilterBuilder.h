@@ -14,7 +14,7 @@ namespace urchin {
             TextureFilterBuilder(bool, std::string, const std::shared_ptr<Texture>&);
             virtual ~TextureFilterBuilder() = default;
 
-            bool useNullRenderTarget() const;
+            bool useSimulationRenderTarget() const;
             const std::string& getName() const;
 
             const std::shared_ptr<Texture>& getSourceTexture() const;
@@ -35,7 +35,7 @@ namespace urchin {
             T* _this();
 
             //general
-            bool bUseNullRenderTarget;
+            bool bUseSimulationRenderTarget;
             std::string name;
 
             //source texture

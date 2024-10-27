@@ -27,7 +27,7 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "genCompInit");
         assert(!isInitialized);
 
-        if (getRenderTarget().isValidRenderTarget()) {
+        if (!getRenderTarget().isSimulationRenderTarget()) {
             createPipeline();
             createUniformBuffers();
             createDescriptorPool();
@@ -39,7 +39,7 @@ namespace urchin {
 
     void GenericCompute::cleanup() {
         if (isInitialized) {
-            if (getRenderTarget().isValidRenderTarget()) {
+            if (!getRenderTarget().isSimulationRenderTarget()) {
                 VkResult result = vkDeviceWaitIdle(GraphicsSetupService::instance().getDevices().getLogicalDevice());
                 if (result != VK_SUCCESS) {
                     Logger::instance().logError("Failed to wait for device idle with error code '" + std::string(string_VkResult(result)) + "' on renderer: " + getName());

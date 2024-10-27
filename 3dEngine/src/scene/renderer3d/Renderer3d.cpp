@@ -4,7 +4,6 @@
 #include <scene/renderer3d/OpaqueMeshFilter.h>
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
-#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
@@ -33,9 +32,7 @@ namespace urchin {
             renderingScale(visualConfig.getRenderingScale()),
 
             //deferred first pass
-            deferredFirstPassRenderTarget(finalRenderTarget.isValidRenderTarget() ?
-                    std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", RenderTarget::SHARED_DEPTH_ATTACHMENT)) :
-                    std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
+            deferredFirstPassRenderTarget(std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - first pass", finalRenderTarget.isSimulationRenderTarget(), RenderTarget::SHARED_DEPTH_ATTACHMENT))),
             modelOcclusionCuller(ModelOcclusionCuller()),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
@@ -45,19 +42,17 @@ namespace urchin {
             geometryContainer(GeometryContainer(*deferredFirstPassRenderTarget)),
             skyContainer(SkyContainer(*deferredFirstPassRenderTarget)),
             lightManager(LightManager()),
-            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), !finalRenderTarget.isValidRenderTarget())),
-            transparentManager(TransparentManager(!finalRenderTarget.isValidRenderTarget(), lightManager)),
+            ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), finalRenderTarget.isSimulationRenderTarget())),
+            transparentManager(TransparentManager(finalRenderTarget.isSimulationRenderTarget(), lightManager)),
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
             //deferred second pass
-            deferredSecondPassRenderTarget(finalRenderTarget.isValidRenderTarget() ?
-                    std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", RenderTarget::NO_DEPTH_ATTACHMENT)) :
-                    std::unique_ptr<RenderTarget>(new NullRenderTarget(finalRenderTarget.getWidth(), finalRenderTarget.getHeight()))),
+            deferredSecondPassRenderTarget(std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", finalRenderTarget.isSimulationRenderTarget(), RenderTarget::NO_DEPTH_ATTACHMENT))),
             positioningData({}),
             sceneInfo({}),
-            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), !finalRenderTarget.isValidRenderTarget())),
+            antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), finalRenderTarget.isSimulationRenderTarget())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
-            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), !finalRenderTarget.isValidRenderTarget(), getGammaFactor())),
+            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isSimulationRenderTarget(), getGammaFactor())),
             reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), finalRenderTarget)),
             isReflectionActivated(visualConfig.isReflectionActivated()),
 
@@ -372,7 +367,7 @@ namespace urchin {
         albedoAndEmissiveTexture = Texture::build("albedo and emissive", renderingSceneWidth, renderingSceneHeight, VisualConfig::ALBEDO_AND_EMISSIVE_TEXTURE_FORMAT);
         normalAndAmbientTexture = Texture::build("normal and ambient", renderingSceneWidth, renderingSceneHeight, VisualConfig::NORMAL_AND_AMBIENT_TEXTURE_FORMAT);
         materialTexture = Texture::build("material", renderingSceneWidth, renderingSceneHeight, VisualConfig::MATERIAL_TEXTURE_FORMAT);
-        if (deferredFirstPassRenderTarget && deferredFirstPassRenderTarget->isValidRenderTarget()) {
+        if (deferredFirstPassRenderTarget) {
             auto* deferredFirstPassOffscreenRender = static_cast<OffscreenRender*>(deferredFirstPassRenderTarget.get());
             deferredFirstPassOffscreenRender->resetOutput();
             deferredFirstPassOffscreenRender->addOutputTexture(albedoAndEmissiveTexture);
@@ -384,7 +379,7 @@ namespace urchin {
         //deferred second pass
         sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
         illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
-        if (deferredSecondPassRenderTarget && deferredSecondPassRenderTarget->isValidRenderTarget()) {
+        if (deferredSecondPassRenderTarget) {
             auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());
             deferredSecondPassOffscreenRender->resetOutput();
             deferredSecondPassOffscreenRender->addOutputTexture(illuminatedTexture);
@@ -452,7 +447,7 @@ namespace urchin {
         };
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &deferredSecondPassConstData);
 
-        if (deferredSecondPassRenderTarget->isValidRenderTarget()) {
+        if (!deferredSecondPassRenderTarget->isSimulationRenderTarget()) {
             deferredSecondPassShader = ShaderBuilder::createShader("deferredSecondPass.vert.spv", "deferredSecondPass.frag.spv", std::move(shaderConstants));
         } else {
             deferredSecondPassShader = ShaderBuilder::createNullShader();

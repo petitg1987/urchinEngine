@@ -8,23 +8,24 @@ using namespace urchin;
 
 void GenericRendererComparatorTest::depthTestOrdering() {
     std::vector<GenericRenderer*> renderers;
-    NullRenderTarget nullRenderTarget(1920, 1080);
+    OffscreenRender offscreenRender("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
+    offscreenRender.setOutputSize(1920, 1080, 1);
     std::unique_ptr<Shader> shader = ShaderBuilder::createNullShader();
     //rendering order: 1, no depth test
-    std::unique_ptr<GenericRenderer> r1 = GenericRendererBuilder::create("r1", nullRenderTarget, *shader, ShapeType::TRIANGLE)->build();
+    std::unique_ptr<GenericRenderer> r1 = GenericRendererBuilder::create("r1", offscreenRender, *shader, ShapeType::TRIANGLE)->build();
     r1->disableRenderer();
     r1->enableRenderer(1);
     renderers.push_back(r1.get());
     //rendering order: 1, depth test
-    std::unique_ptr<GenericRenderer> r2 = GenericRendererBuilder::create("r2", nullRenderTarget, *shader, ShapeType::TRIANGLE)->enableDepthTest()->build();
+    std::unique_ptr<GenericRenderer> r2 = GenericRendererBuilder::create("r2", offscreenRender, *shader, ShapeType::TRIANGLE)->enableDepthTest()->build();
     r2->disableRenderer();
     r2->enableRenderer(1);
     renderers.push_back(r2.get());
     //rendering order: 0, no depth test
-    std::unique_ptr<GenericRenderer> r3 = GenericRendererBuilder::create("r3", nullRenderTarget, *shader, ShapeType::TRIANGLE)->build();
+    std::unique_ptr<GenericRenderer> r3 = GenericRendererBuilder::create("r3", offscreenRender, *shader, ShapeType::TRIANGLE)->build();
     renderers.push_back(r3.get());
     //rendering order: 0, depth test
-    std::unique_ptr<GenericRenderer> r4 = GenericRendererBuilder::create("r4", nullRenderTarget, *shader, ShapeType::TRIANGLE)->enableDepthTest()->build();
+    std::unique_ptr<GenericRenderer> r4 = GenericRendererBuilder::create("r4", offscreenRender, *shader, ShapeType::TRIANGLE)->enableDepthTest()->build();
     renderers.push_back(r4.get());
 
     std::ranges::sort(renderers, PipelineProcessorComparator());

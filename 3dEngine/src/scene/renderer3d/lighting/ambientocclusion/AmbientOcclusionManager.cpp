@@ -8,16 +8,15 @@
 #include <graphics/render/shader/ShaderBuilder.h>
 #include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/GenericComputeBuilder.h>
-#include <graphics/render/target/NullRenderTarget.h>
 
 namespace urchin {
 
     //debug parameters
     const bool DEBUG_EXPORT_SSAO_KERNEL = False();
 
-    AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useNullRenderTarget) :
+    AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool useSimulationRenderTarget) :
             config(config),
-            useNullRenderTarget(useNullRenderTarget),
+            useSimulationRenderTarget(useSimulationRenderTarget),
             nearPlane(0.0f),
             farPlane(0.0f),
             positioningData({}) {
@@ -42,7 +41,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
         if (depthTexture.get() != this->depthTexture.get() || normalAndAmbientTexture.get() != this->normalAndAmbientTexture.get()) {
-            this->sceneResolution = Vector2<float>((float) depthTexture->getWidth(), (float) depthTexture->getHeight());
+            this->sceneResolution = Vector2<float>((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
             this->depthTexture = depthTexture;
             this->normalAndAmbientTexture = normalAndAmbientTexture;
 
@@ -76,22 +75,16 @@ namespace urchin {
         auto textureSizeY = (unsigned int)(sceneResolution.Y / (float)retrieveTextureSizeFactor());
         ambientOcclusionTexture = Texture::build("ambient occlusion", textureSizeX, textureSizeY, textureFormat);
 
-        if (useNullRenderTarget) {
-            if (!renderTarget) {
-                renderTarget = std::make_unique<NullRenderTarget>(textureSizeX, textureSizeY);
-            }
+        if (renderTarget) {
+            renderTarget->resetOutput();
         } else {
-            if (renderTarget) {
-                static_cast<OffscreenRender*>(renderTarget.get())->resetOutput();
-            } else {
-                renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", RenderTarget::NO_DEPTH_ATTACHMENT);
-            }
-            static_cast<OffscreenRender*>(renderTarget.get())->addOutputTexture(ambientOcclusionTexture, LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
-            renderTarget->initialize();
+            renderTarget = std::make_unique<OffscreenRender>("ambient occlusion", useSimulationRenderTarget, RenderTarget::NO_DEPTH_ATTACHMENT);
         }
+        renderTarget->addOutputTexture(ambientOcclusionTexture, LoadType::NO_LOAD, std::nullopt, OutputUsage::COMPUTE);
+        renderTarget->initialize();
 
         if (config.isBlurActivated) {
-            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - vertical blur", ambientOcclusionTexture)
+            verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useSimulationRenderTarget, "ambient occlusion - vertical blur", ambientOcclusionTexture)
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -101,7 +94,7 @@ namespace urchin {
                     ->maxBlurDistance(config.maxBlurDistance)
                     ->buildGaussianBlur();
 
-            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useNullRenderTarget, "ambient occlusion - horizontal blur", verticalBlurFilter->getTexture())
+            horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(useSimulationRenderTarget, "ambient occlusion - horizontal blur", verticalBlurFilter->getTexture())
                     ->textureSize(textureSizeX, textureSizeY)
                     ->textureType(TextureType::DEFAULT)
                     ->textureFormat(textureFormat)
@@ -136,7 +129,7 @@ namespace urchin {
     }
 
     void AmbientOcclusionManager::createOrUpdateAOShader() {
-        if (renderTarget->isValidRenderTarget()) {
+        if (!renderTarget->isSimulationRenderTarget()) {
             AmbientOcclusionShaderConst aoConstData{
                     .kernelSamples = config.kernelSamples,
                     .radius = config.radius,

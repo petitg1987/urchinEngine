@@ -39,7 +39,7 @@ namespace urchin {
     /**
      * Shader which does nothing (useful for testing)
      */
-    std::unique_ptr<Shader> ShaderBuilder::createNullShader() {
+    std::unique_ptr<Shader> ShaderBuilder::createNullShader() { //TODO remove
         std::vector<std::pair<Shader::ShaderType, std::vector<char>>> shaderSources;
         return std::make_unique<Shader>(0, "_null_", shaderSources, std::unique_ptr<ShaderConstants>());
     }

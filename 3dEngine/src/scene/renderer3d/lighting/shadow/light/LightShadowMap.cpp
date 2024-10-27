@@ -15,7 +15,7 @@ namespace urchin {
             nbShadowMaps(nbShadowMaps) {
 
         if (GraphicsApiService::instance().isInitialized()) { //only false for unit tests
-            renderTarget = std::make_unique<OffscreenRender>("shadow map", RenderTarget::SHARED_DEPTH_ATTACHMENT);
+            renderTarget = std::make_unique<OffscreenRender>("shadow map", false, RenderTarget::SHARED_DEPTH_ATTACHMENT);
             renderTarget->setOutputSize(shadowMapResolution, shadowMapResolution, nbShadowMaps);
             renderTarget->initialize();
 

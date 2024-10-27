@@ -54,11 +54,11 @@ namespace urchin {
             static constexpr uint32_t INPUT_TEX_UNIFORM_BINDING = 1;
 
             //properties
-            bool useNullRenderTarget;
+            bool useSimulationRenderTarget;
             Config config;
 
             //display
-            std::unique_ptr<RenderTarget> renderTarget;
+            std::unique_ptr<OffscreenRender> renderTarget;
             std::shared_ptr<Texture> inputTexture;
             std::shared_ptr<Texture> outputTexture;
             std::unique_ptr<Shader> fxaaShader;

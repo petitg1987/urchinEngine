@@ -108,7 +108,8 @@ void TextTest::emptyLineAndCut() {
 }
 
 std::unique_ptr<UIRenderer> TextTest::setupUiRenderer() {
-    renderTarget = std::make_unique<NullRenderTarget>(1920, 1080);
+    renderTarget = std::make_unique<OffscreenRender>("test", true, RenderTarget::NO_DEPTH_ATTACHMENT);
+    renderTarget->setOutputSize(1920, 1080, 1);
     i18nService = std::make_unique<I18nService>();
     UISkinService::instance().setSkin("ui/skinDefinition.uda");
 

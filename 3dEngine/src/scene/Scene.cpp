@@ -17,7 +17,7 @@ namespace urchin {
             fpsForDisplay(0),
             fpsLimit(-1),
             frameIndex(0),
-            screenRenderTarget(ScreenRender("screen", RenderTarget::NO_DEPTH_ATTACHMENT)),
+            screenRenderTarget(ScreenRender("screen", false, RenderTarget::NO_DEPTH_ATTACHMENT)),
             activeRenderer3d(nullptr),
             activeUiRenderers(nullptr),
             gammaFactor(1.0f) {
@@ -46,8 +46,8 @@ namespace urchin {
     }
 
     void Scene::onResize() {
-        unsigned int newSceneWidth;
-        unsigned int newSceneHeight;
+        unsigned int newSceneWidth = 0;
+        unsigned int newSceneHeight = 0;
         framebufferSizeRetriever->getFramebufferSizeInPixel(newSceneWidth, newSceneHeight);
 
         if ((newSceneWidth != 0 && newSceneHeight != 0) && (sceneWidth != newSceneWidth || sceneHeight != newSceneHeight)) {
@@ -150,11 +150,11 @@ namespace urchin {
 
     Renderer3d& Scene::newRenderer3d(std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, bool enable) {
         auto renderer3d = std::make_unique<Renderer3d>(gammaFactor, screenRenderTarget, std::move(camera), visualConfig, i18nService);
-        if (enable) {
-            enableRenderer3d(renderer3d.get());
-        }
 
         renderers3d.push_back(std::move(renderer3d));
+        if (enable) {
+            enableRenderer3d(renderers3d.back().get());
+        }
         return *renderers3d.back();
     }
 
@@ -179,11 +179,11 @@ namespace urchin {
 
     UIRenderer& Scene::newUIRenderer(bool enable) {
         auto uiRenderer = std::make_unique<UIRenderer>(gammaFactor, screenRenderTarget, i18nService);
-        if (enable) {
-            enableUIRenderer(uiRenderer.get());
-        }
 
         uiRenderers.push_back(std::move(uiRenderer));
+        if (enable) {
+            enableUIRenderer(uiRenderers.back().get());
+        }
         return *uiRenderers.back();
     }
 
