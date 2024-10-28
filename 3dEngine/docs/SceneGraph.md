@@ -2,23 +2,45 @@
 
 ```mermaid
 graph BT
-    ReflectionCombine(Reflection Combine - Screen) --> BloomCombine(Bloom Combine)
-    ReflectionCombine --> ReflectionColorBlur(Reflection Color - Horizontal/Vert Blur)
-    ReflectionColorBlur --> ReflectionColor(Reflection Color)
-    ReflectionColorBlur -->|depth| DeferredFirstPass(Deferred First Pass - Albedo/Normal/Mat)
-    ReflectionColor --> BloomCombine
-    BloomCombine --> BloomFilterUpDown(Bloom - Filter/Up/Down)
-    BloomCombine --> AntiAliasing(Anti Aliasing)
+    DeferredFirstPass(Deferred First Pass - Depth/Albedo/Normal/Mat)
+    ShadowMap(Shadow Map)
+    AmbientOcclusion(Ambient Occlusion)
+    AmbientOcclusionBlur(Ambient Occlusion - Horiz/Vert Blur)
+    DeferredSecondPass(Deferred Second Pass)
+    AntiAliasing(Anti Aliasing)
+    BloomFilterUpDown(Bloom - Filter/Up/Down)
+    BloomCombine(Bloom Combine)
+    ReflectionColor(Reflection Color)
+    ReflectionColorBlur(Reflection Color - Horiz/Vert Blur)
+    ReflectionCombine(Reflection Combine)
+    Transparent(Transparent)
+    Screen(Screen)
+    
+    
+    DeferredSecondPass --> ShadowMap
+    DeferredSecondPass -->|Depth / Albedo / Normal / Mat| DeferredFirstPass
+    DeferredSecondPass --> AmbientOcclusionBlur
+    
+    AmbientOcclusion -->|Depth / Normal| DeferredFirstPass
+    AmbientOcclusionBlur -->|Depth| DeferredFirstPass
+    AmbientOcclusionBlur --> AmbientOcclusion
+    
+    AntiAliasing --> DeferredSecondPass
+    
+    BloomCombine --> BloomFilterUpDown
+    BloomCombine --> AntiAliasing
     BloomFilterUpDown --> BloomFilterUpDown
     BloomFilterUpDown --> AntiAliasing
-    ReflectionColor -->|depth / normal / mat| DeferredFirstPass
-    AntiAliasing --> Transparent(Transparent)
-    Transparent --> DeferredSecondPass(Deferred Second Pass)
-    DeferredSecondPass --> ShadowMap(Shadow Map)
-    DeferredSecondPass -->|depth / albedo / normal / mat| DeferredFirstPass
-    Transparent -->|albedo| DeferredFirstPass
-    DeferredSecondPass --> AmbientOcclusionBlur(Ambient Occlusion - Horizontal/Vert Blur)
-    AmbientOcclusionBlur -->|depth| DeferredFirstPass
-    AmbientOcclusionBlur --> AmbientOcclusion(Ambient Occlusion)
-    AmbientOcclusion -->|depth / normal| DeferredFirstPass
+    
+    ReflectionColor --> BloomCombine
+    ReflectionColor -->|Depth / Normal / Mat| DeferredFirstPass
+    ReflectionCombine --> BloomCombine
+    ReflectionCombine --> ReflectionColorBlur
+    ReflectionColorBlur --> ReflectionColor
+    ReflectionColorBlur -->|Depth| DeferredFirstPass
+    
+    Transparent --> ReflectionCombine
+    Transparent -->|Depth| DeferredFirstPass
+    
+    Screen --> Transparent
 ```

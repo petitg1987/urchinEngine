@@ -24,7 +24,7 @@ namespace urchin {
                 float maxBlurDistance = 7.0f;
             };
 
-            ReflectionApplier(const Config&, RenderTarget&);
+            ReflectionApplier(const Config&, bool);
             ~ReflectionApplier();
 
             void onCameraProjectionUpdate(const Camera&);
@@ -34,6 +34,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
+            const std::shared_ptr<Texture>& getOutputTexture() const;
             void applyReflection(std::uint32_t, unsigned int, const Camera&);
 
         private:
@@ -66,7 +67,7 @@ namespace urchin {
             static constexpr uint32_t REFLECTION_COLOR_TEX_UNIFORM_BINDING = 1;
 
             Config config;
-            RenderTarget& outputRenderTarget;
+            bool isTestMode;
             float nearPlane;
             float farPlane;
 
@@ -83,13 +84,15 @@ namespace urchin {
                 alignas(16) Matrix4<float> viewMatrix;
             } positioningData;
             std::shared_ptr<Texture> reflectionColorTexture;
-            std::unique_ptr<RenderTarget> reflectionColorRenderTarget;
+            std::unique_ptr<OffscreenRender> reflectionColorRenderTarget;
             std::unique_ptr<Shader> reflectionColorShader;
             std::unique_ptr<GenericRenderer> reflectionColorRenderer;
 
             std::unique_ptr<GaussianBlurFilter> verticalBlurFilter;
             std::unique_ptr<GaussianBlurFilter> horizontalBlurFilter;
 
+            std::shared_ptr<Texture> reflectionCombineTexture;
+            std::unique_ptr<OffscreenRender> reflectionCombineRenderTarget;
             std::unique_ptr<Shader> reflectionCombineShader;
             std::unique_ptr<GenericRenderer> reflectionCombineRenderer;
     };

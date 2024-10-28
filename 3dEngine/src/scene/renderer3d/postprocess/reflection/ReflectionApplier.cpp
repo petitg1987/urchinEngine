@@ -1,3 +1,4 @@
+#include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -5,9 +6,9 @@
 
 namespace urchin {
 
-    ReflectionApplier::ReflectionApplier(const Config& config, RenderTarget& outputRenderTarget) :
+    ReflectionApplier::ReflectionApplier(const Config& config, bool isTestMode) :
             config(config),
-            outputRenderTarget(outputRenderTarget),
+            isTestMode(isTestMode),
             nearPlane(0.0f),
             farPlane(0.0f) {
 
@@ -61,6 +62,10 @@ namespace urchin {
         }
 
         reflectionCombineRenderer.reset();
+        if (reflectionCombineRenderTarget) {
+            reflectionCombineRenderTarget->cleanup();
+            reflectionCombineRenderTarget.reset();
+        }
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
@@ -68,12 +73,11 @@ namespace urchin {
         auto reflectionColorTextureSizeX = (unsigned int)((float)depthTexture->getWidth() / (float)retrieveTextureSizeFactor());
         auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
         reflectionColorTexture = Texture::build("reflection color", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);
-
-        reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflection color", outputRenderTarget.isTestMode(), RenderTarget::NO_DEPTH_ATTACHMENT);
-        static_cast<OffscreenRender*>(reflectionColorRenderTarget.get())->addOutputTexture(reflectionColorTexture);
+        reflectionColorRenderTarget = std::make_unique<OffscreenRender>("reflection color", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
+        reflectionColorRenderTarget->addOutputTexture(reflectionColorTexture);
         reflectionColorRenderTarget->initialize();
 
-        verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(outputRenderTarget.isTestMode(), "reflection color - vertical blur", reflectionColorTexture)
+        verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(isTestMode, "reflection color - vertical blur", reflectionColorTexture)
                 ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
                 ->textureType(TextureType::DEFAULT)
                 ->textureFormat(reflectionColorTextureFormat)
@@ -83,7 +87,7 @@ namespace urchin {
                 ->maxBlurDistance(config.maxBlurDistance)
                 ->buildGaussianBlur();
 
-        horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(outputRenderTarget.isTestMode(), "reflection color - horizontal blur", verticalBlurFilter->getTexture())
+        horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>(isTestMode, "reflection color - horizontal blur", verticalBlurFilter->getTexture())
                 ->textureSize(reflectionColorTextureSizeX, reflectionColorTextureSizeY)
                 ->textureType(TextureType::DEFAULT)
                 ->textureFormat(reflectionColorTextureFormat)
@@ -95,6 +99,11 @@ namespace urchin {
 
         verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
         horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+
+        reflectionCombineTexture = Texture::build("reflection combine", depthTexture->getWidth(), depthTexture->getHeight(), VisualConfig::SCENE_TEXTURE_FORMAT);
+        reflectionCombineRenderTarget = std::make_unique<OffscreenRender>("reflection combine", isTestMode, RenderTarget::NO_DEPTH_ATTACHMENT);
+        reflectionCombineRenderTarget->addOutputTexture(reflectionCombineTexture);
+        reflectionCombineRenderTarget->initialize();
     }
 
     void ReflectionApplier::createOrUpdateRenderers() {
@@ -120,7 +129,7 @@ namespace urchin {
                 ->addUniformTextureReader(R_COLOR_SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
                 ->build();
 
-        reflectionCombineRenderer = GenericRendererBuilder::create("reflection combine", outputRenderTarget, *reflectionCombineShader, ShapeType::TRIANGLE)
+        reflectionCombineRenderer = GenericRendererBuilder::create("reflection combine", *reflectionCombineRenderTarget, *reflectionCombineShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformTextureReader(R_COMBINE_SCENE_TEX_UNIFORM_BINDING, TextureReader::build(sceneTexture, TextureParam::buildNearest()))
@@ -151,7 +160,7 @@ namespace urchin {
                 sizeof(ReflectionCombineShaderConst::reflectionStrength),
         };
         auto reflectionCombineShaderConstants = std::make_unique<ShaderConstants>(reflectionCombineVariablesSize, &reflectionCombineConstData);
-        reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv", std::move(reflectionCombineShaderConstants), outputRenderTarget.isTestMode());
+        reflectionCombineShader = ShaderBuilder::createShader("reflectionCombine.vert.spv", "reflectionCombine.frag.spv", std::move(reflectionCombineShaderConstants), reflectionCombineRenderTarget->isTestMode());
     }
 
     int ReflectionApplier::retrieveTextureSizeFactor() const {
@@ -182,10 +191,14 @@ namespace urchin {
         return config;
     }
 
-    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int renderingOrder, const Camera& camera) {
+    const std::shared_ptr<Texture>& ReflectionApplier::getOutputTexture() const {
+        return reflectionCombineTexture;
+    }
+
+    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
-        unsigned int numDependenciesToReflectionColorTexture = 1;
+        unsigned int numDependenciesToReflectionColorTexture = 1; /* vertical blur filter */;
         positioningData.viewMatrix = camera.getViewMatrix();
         reflectionColorRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);
@@ -196,7 +209,7 @@ namespace urchin {
         unsigned int numDependenciesToHorizontalBlurFilterOutputs = 1 /* reflection combine */;
         horizontalBlurFilter->applyFilter(frameIndex, numDependenciesToHorizontalBlurFilterOutputs);
 
-        reflectionCombineRenderer->enableRenderer(renderingOrder);
+        reflectionCombineRenderTarget->render(frameIndex, numDependenciesToReflectionCombineTexture);
     }
 
 }

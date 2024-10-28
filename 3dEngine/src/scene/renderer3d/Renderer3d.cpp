@@ -32,7 +32,7 @@ namespace urchin {
             renderingScale(visualConfig.getRenderingScale()),
 
             //deferred first pass
-            deferredFirstPassRenderTarget(std::unique_ptr<OffscreenRender>(new OffscreenRender("deferred rendering - first pass", finalRenderTarget.isTestMode(), RenderTarget::SHARED_DEPTH_ATTACHMENT))),
+            deferredFirstPassRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - first pass", finalRenderTarget.isTestMode(), RenderTarget::SHARED_DEPTH_ATTACHMENT)),
             modelOcclusionCuller(ModelOcclusionCuller()),
             modelSetDisplayer(ModelSetDisplayer(DisplayMode::DEFAULT_MODE)),
             fogContainer(FogContainer()),
@@ -43,17 +43,17 @@ namespace urchin {
             skyContainer(SkyContainer(*deferredFirstPassRenderTarget)),
             lightManager(LightManager()),
             ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), finalRenderTarget.isTestMode())),
-            transparentManager(TransparentManager(finalRenderTarget.isTestMode(), lightManager)),
+            transparentManager(TransparentManager(finalRenderTarget.isTestMode(), lightManager)), //TODO re-order
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
             //deferred second pass
-            deferredSecondPassRenderTarget(std::unique_ptr<RenderTarget>(new OffscreenRender("deferred rendering - second pass", finalRenderTarget.isTestMode(), RenderTarget::NO_DEPTH_ATTACHMENT))),
+            deferredSecondPassRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", finalRenderTarget.isTestMode(), RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             sceneInfo({}),
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), finalRenderTarget.isTestMode())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
             bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isTestMode(), getGammaFactor())),
-            reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), finalRenderTarget)),
+            reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), finalRenderTarget.isTestMode())),
             isReflectionActivated(visualConfig.isReflectionActivated()),
 
             //debug
@@ -323,23 +323,24 @@ namespace urchin {
         renderDeferredFirstPass(frameIndex, dt);
         renderDeferredSecondPass(frameIndex);
 
-        unsigned int numDependenciesToTransparentTextures = isAntiAliasingActivated ? 1 /* AA */ : 2 /* bloom pre-filter & bloom combine */;
-        if (DEBUG_DISPLAY_TRANSPARENT_BUFFER) {
-            numDependenciesToTransparentTextures += 1;
-        }
-        transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
-
         if (isAntiAliasingActivated) {
             unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
 
-        unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color && reflection combine */ : 1 /* screen */;
+        unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color && reflection combine */ : 1 /* transparent */;
         bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomCombineTexture);
 
         if (isReflectionActivated) {
-            reflectionApplier.applyReflection(frameIndex, screenRenderingOrder, *camera);
+            unsigned int numDependenciesToReflectionCombineTexture = 0; //transparent use second pass output but outside render pass with barrier (no need semaphore) //TODO ?
+            reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionCombineTexture, *camera);
         }
+
+        unsigned int numDependenciesToTransparentTextures = 0; //screen //TODO change ?
+        transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
+
+        //TODO display on screen
+        //reflectionCombineRenderer->enableRenderer(renderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -458,11 +459,8 @@ namespace urchin {
         }
 
         std::shared_ptr<Texture> currentSceneTexture = illuminatedTexture;
-        transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
-        currentSceneTexture = transparentManager.getOutputTexture();
-
         if (isAntiAliasingActivated) {
-            antiAliasingApplier.refreshInputTexture(transparentManager.getOutputTexture());
+            antiAliasingApplier.refreshInputTexture(currentSceneTexture);
             currentSceneTexture = antiAliasingApplier.getOutputTexture();
         }
 
@@ -471,7 +469,13 @@ namespace urchin {
 
         if (isReflectionActivated) {
             reflectionApplier.refreshInputTexture(deferredFirstPassRenderTarget->getDepthTexture(), normalAndAmbientTexture, materialTexture, currentSceneTexture);
+            currentSceneTexture = reflectionApplier.getOutputTexture();
         }
+
+        transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
+        currentSceneTexture = transparentManager.getOutputTexture();
+
+        //TODO display currentSceneTexture on screen
 
         //refresh the model occlusion culler
         modelOcclusionCuller.refresh();
@@ -560,7 +564,7 @@ namespace urchin {
             numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
         }
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
-            numDependenciesToFirstPassOutput++; //bloom combine (screen target)
+            numDependenciesToFirstPassOutput++;
         }
         return numDependenciesToFirstPassOutput;
     }
@@ -615,9 +619,9 @@ namespace urchin {
     }
 
     unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
-        unsigned int numDependenciesToSecondPassOutput = 0; //transparent use second pass output but outside render pass with barrier (no need semaphore)
+        unsigned int numDependenciesToSecondPassOutput = 1; //anti-aliasing
         if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
-            numDependenciesToSecondPassOutput++; //bloom combine (screen target)
+            numDependenciesToSecondPassOutput++;
         }
         return numDependenciesToSecondPassOutput;
     }
