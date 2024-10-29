@@ -9,11 +9,8 @@ layout(constant_id = 1) const float SAMPLE_SCALE = 1.0;
 layout(std140, set = 0, binding = 0) uniform Tex {
     vec2 texelSize;
 } tex;
-layout(std140, set = 0, binding = 1) uniform ColorParams {
-    float gammaFactor;
-} colorParams;
-layout(binding = 2) uniform sampler2D lastBloomStepTexture;
-layout(binding = 3) uniform sampler2D inputHdrTexture;
+layout(binding = 1) uniform sampler2D lastBloomStepTexture;
+layout(binding = 2) uniform sampler2D inputHdrTexture;
 
 layout(location = 0) in vec2 texCoordinates;
 
@@ -36,5 +33,5 @@ void main() {
     vec3 hdrColor = texture(inputHdrTexture, texCoordinates).rgb;
 
     vec3 ldrColor = toneMapping(hdrColor + bloomValue);
-    fragColor = vec4(ldrColor * colorParams.gammaFactor, 1.0);
+    fragColor = vec4(ldrColor, 1.0);
 }

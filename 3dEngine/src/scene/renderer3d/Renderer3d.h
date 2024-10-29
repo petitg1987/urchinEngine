@@ -11,6 +11,7 @@
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <scene/renderer3d/postprocess/reflection/ReflectionApplier.h>
 #include <scene/renderer3d/postprocess/bloom/BloomEffectApplier.h>
+#include <scene/renderer3d/postprocess/output/OutputRenderer.h>
 #include <scene/renderer3d/transparent/TransparentManager.h>
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <scene/renderer3d/lighting/shadow/ShadowManager.h>
@@ -154,7 +155,6 @@ namespace urchin {
             SkyContainer skyContainer;
             LightManager lightManager;
             AmbientOcclusionManager ambientOcclusionManager;
-            TransparentManager transparentManager;
             ShadowManager shadowManager;
 
             std::shared_ptr<Texture> albedoAndEmissiveTexture;
@@ -175,11 +175,15 @@ namespace urchin {
                 alignas(4) bool isShadowActivated;
                 alignas(4) bool isAmbientOcclusionActivated;
             } sceneInfo;
+
+            //post processing
             AntiAliasingApplier antiAliasingApplier;
             bool isAntiAliasingActivated;
             BloomEffectApplier bloomEffectApplier;
             ReflectionApplier reflectionApplier;
             bool isReflectionActivated;
+            TransparentManager transparentManager;
+            OutputRenderer outputRenderer;
 
             //debug
             bool refreshDebugFramebuffers;

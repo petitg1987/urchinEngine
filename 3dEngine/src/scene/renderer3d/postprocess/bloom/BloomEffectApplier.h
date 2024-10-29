@@ -19,11 +19,10 @@ namespace urchin {
                 TextureFetchQuality textureFetchQuality = BEST_QUALITY;
             };
 
-            BloomEffectApplier(const Config&, bool, float);
+            BloomEffectApplier(const Config&, bool);
             ~BloomEffectApplier();
 
             void refreshInputTexture(const std::shared_ptr<Texture>&);
-            void onGammaFactorUpdate(float);
             const std::shared_ptr<Texture>& getOutputTexture() const;
 
             void updateConfig(const Config&);
@@ -51,9 +50,8 @@ namespace urchin {
             static constexpr uint32_t US_INPUT_TEX_UNIFORM_BINDING = 1;
 
             static constexpr uint32_t CR_TEXEL_SIZE_UNIFORM_BINDING = 0;
-            static constexpr uint32_t CR_GAMMA_UNIFORM_BINDING = 1;
-            static constexpr uint32_t CR_BLOOM_STEP_TEX_UNIFORM_BINDING = 2;
-            static constexpr uint32_t CR_HDR_TEX_UNIFORM_BINDING = 3;
+            static constexpr uint32_t CR_BLOOM_STEP_TEX_UNIFORM_BINDING = 1;
+            static constexpr uint32_t CR_HDR_TEX_UNIFORM_BINDING = 2;
 
             struct BloomShadersConst {
                 uint32_t qualityTextureFetch;
@@ -91,7 +89,6 @@ namespace urchin {
             std::unique_ptr<Shader> combineShader;
             std::unique_ptr<RenderTarget> combineRenderTarget;
             std::unique_ptr<GenericRenderer> combineRenderer;
-            float gammaFactor;
     };
 
 }

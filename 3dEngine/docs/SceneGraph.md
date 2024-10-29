@@ -14,7 +14,7 @@ graph BT
     ReflectionColorBlur(Reflection Color - Horiz/Vert Blur)
     ReflectionCombine(Reflection Combine)
     Transparent(Transparent)
-    Screen(Screen)
+    OutputRenderer(Output Renderer)
     
     
     DeferredSecondPass --> ShadowMap
@@ -42,5 +42,5 @@ graph BT
     Transparent --> ReflectionCombine
     Transparent -->|Depth| DeferredFirstPass
     
-    Screen --> Transparent
+    OutputRenderer --> Transparent
 ```

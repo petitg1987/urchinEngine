@@ -43,18 +43,21 @@ namespace urchin {
             skyContainer(SkyContainer(*deferredFirstPassRenderTarget)),
             lightManager(LightManager()),
             ambientOcclusionManager(AmbientOcclusionManager(visualConfig.getAmbientOcclusionConfig(), finalRenderTarget.isTestMode())),
-            transparentManager(TransparentManager(finalRenderTarget.isTestMode(), lightManager)), //TODO re-order
             shadowManager(ShadowManager(visualConfig.getShadowConfig(), lightManager, modelOcclusionCuller)),
 
             //deferred second pass
             deferredSecondPassRenderTarget(std::make_unique<OffscreenRender>("deferred rendering - second pass", finalRenderTarget.isTestMode(), RenderTarget::NO_DEPTH_ATTACHMENT)),
             positioningData({}),
             sceneInfo({}),
+
+            //post processing
             antiAliasingApplier(AntiAliasingApplier(visualConfig.getAntiAliasingConfig(), finalRenderTarget.isTestMode())),
             isAntiAliasingActivated(visualConfig.isAntiAliasingActivated()),
-            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isTestMode(), getGammaFactor())),
+            bloomEffectApplier(BloomEffectApplier(visualConfig.getBloomConfig(), finalRenderTarget.isTestMode())),
             reflectionApplier(ReflectionApplier(visualConfig.getReflectionConfig(), finalRenderTarget.isTestMode())),
             isReflectionActivated(visualConfig.isReflectionActivated()),
+            transparentManager(TransparentManager(finalRenderTarget.isTestMode(), lightManager)),
+            outputRenderer(OutputRenderer(finalRenderTarget, getGammaFactor())),
 
             //debug
             refreshDebugFramebuffers(true) {
@@ -213,7 +216,7 @@ namespace urchin {
     }
 
     void Renderer3d::applyUpdatedGammaFactor() {
-        bloomEffectApplier.onGammaFactorUpdate(getGammaFactor());
+        outputRenderer.onGammaFactorUpdate(getGammaFactor());
     }
 
     void Renderer3d::onCameraProjectionUpdate() {
@@ -222,8 +225,8 @@ namespace urchin {
         uiContainer.onCameraProjectionUpdate(*camera);
         shadowManager.onCameraProjectionUpdate(*camera);
         ambientOcclusionManager.onCameraProjectionUpdate(*camera);
-        transparentManager.onCameraProjectionUpdate(*camera);
         reflectionApplier.onCameraProjectionUpdate(*camera);
+        transparentManager.onCameraProjectionUpdate(*camera);
         refreshDebugFramebuffers = true;
     }
 
@@ -332,15 +335,14 @@ namespace urchin {
         bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomCombineTexture);
 
         if (isReflectionActivated) {
-            unsigned int numDependenciesToReflectionCombineTexture = 0; //transparent use second pass output but outside render pass with barrier (no need semaphore) //TODO ?
+            unsigned int numDependenciesToReflectionCombineTexture = 0; //transparent use second pass output but outside render pass with barrier (no need semaphore) //TODO why ?
             reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionCombineTexture, *camera);
         }
 
-        unsigned int numDependenciesToTransparentTextures = 0; //screen //TODO change ?
+        unsigned int numDependenciesToTransparentTextures = 1; //screen
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
-        //TODO display on screen
-        //reflectionCombineRenderer->enableRenderer(renderingOrder);
+        outputRenderer.render(screenRenderingOrder);
 
         screenRenderingOrder++;
         renderDebugFramebuffers(screenRenderingOrder);
@@ -475,7 +477,7 @@ namespace urchin {
         transparentManager.refreshInputTextures(deferredFirstPassRenderTarget->getDepthTexture(), currentSceneTexture);
         currentSceneTexture = transparentManager.getOutputTexture();
 
-        //TODO display currentSceneTexture on screen
+        outputRenderer.refreshInputTexture(currentSceneTexture);
 
         //refresh the model occlusion culler
         modelOcclusionCuller.refresh();

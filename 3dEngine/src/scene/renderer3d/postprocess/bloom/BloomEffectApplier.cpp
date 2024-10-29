@@ -6,13 +6,12 @@
 
 namespace urchin {
 
-    BloomEffectApplier::BloomEffectApplier(const Config& config, bool isTestMode, float gammaFactor) :
+    BloomEffectApplier::BloomEffectApplier(const Config& config, bool isTestMode) :
             config(config),
             isTestMode(isTestMode),
             sceneWidth(0),
             sceneHeight(0),
-            preFilterTweak({}),
-            gammaFactor(gammaFactor) {
+            preFilterTweak({}) {
         float filterSoftCurve = ConfigService::instance().getFloatValue("bloom.filterSoftCurve");
         float threshold = ConfigService::instance().getFloatValue("bloom.filterThreshold");
         preFilterTweak.softCurveParams.X = threshold - filterSoftCurve;
@@ -32,14 +31,6 @@ namespace urchin {
             this->sceneHeight = inputHdrTexture->getHeight();
 
             refreshRenderers();
-        }
-    }
-
-    void BloomEffectApplier::onGammaFactorUpdate(float gammaFactor) {
-        this->gammaFactor = gammaFactor;
-
-        if (combineRenderer) {
-            combineRenderer->updateUniformData(CR_GAMMA_UNIFORM_BINDING, &gammaFactor);
         }
     }
 
@@ -147,7 +138,6 @@ namespace urchin {
                 ->addData(vertexCoord)
                 ->addData(textureCoord)
                 ->addUniformData(CR_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
-                ->addUniformData(CR_GAMMA_UNIFORM_BINDING, sizeof(gammaFactor), &gammaFactor)
                 ->addUniformTextureReader(CR_BLOOM_STEP_TEX_UNIFORM_BINDING, TextureReader::build(bloomStepTextures[0], TextureParam::buildLinear()))
                 ->addUniformTextureReader(CR_HDR_TEX_UNIFORM_BINDING, TextureReader::build(inputHdrTexture, TextureParam::buildLinear()))
                 ->build();
