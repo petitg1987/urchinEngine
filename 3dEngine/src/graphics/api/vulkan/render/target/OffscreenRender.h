@@ -56,6 +56,7 @@ namespace urchin {
 
             void updateTexturesWriter();
 
+            void fillWithOutputTexturesOffscreenRenderDependencies(std::vector<OffscreenRender*> &) const override;
             VkSemaphore popSubmitSemaphore(std::uint32_t, const std::string&);
             void markSubmitSemaphoreUnused(std::uint32_t);
 

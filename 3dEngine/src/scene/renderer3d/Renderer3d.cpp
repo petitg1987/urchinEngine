@@ -331,11 +331,11 @@ namespace urchin {
             antiAliasingApplier.applyAntiAliasing(frameIndex, numDependenciesToAATexture);
         }
 
-        unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color && reflection combine */ : 1 /* transparent */;
+        unsigned int numDependenciesToBloomCombineTexture = isReflectionActivated ? 2 /* reflection color & reflection combine */ : 1 /* transparent */;
         bloomEffectApplier.applyBloom(frameIndex, numDependenciesToBloomCombineTexture);
 
         if (isReflectionActivated) {
-            unsigned int numDependenciesToReflectionCombineTexture = 0; //transparent use second pass output but outside render pass with barrier (no need semaphore) //TODO why ?
+            unsigned int numDependenciesToReflectionCombineTexture = 1; //transparent
             reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionCombineTexture, *camera);
         }
 
@@ -621,7 +621,7 @@ namespace urchin {
     }
 
     unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
-        unsigned int numDependenciesToSecondPassOutput = 1; //anti-aliasing
+        unsigned int numDependenciesToSecondPassOutput = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine */;
         if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
             numDependenciesToSecondPassOutput++;
         }

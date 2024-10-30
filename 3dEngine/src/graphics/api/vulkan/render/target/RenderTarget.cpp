@@ -416,9 +416,14 @@ namespace urchin {
             assert(externalDepthTexture->getLastTextureWriter());
             offscreenRenderDependencies.push_back(externalDepthTexture->getLastTextureWriter());
         }
+        fillWithOutputTexturesOffscreenRenderDependencies(offscreenRenderDependencies);
 
         VectorUtil::removeDuplicates(offscreenRenderDependencies);
         return offscreenRenderDependencies;
+    }
+
+    void RenderTarget::fillWithOutputTexturesOffscreenRenderDependencies(std::vector<OffscreenRender*> &) const {
+        //see override methods
     }
 
     void RenderTarget::configureWaitSemaphore(std::uint32_t frameIndex, VkSubmitInfo2& submitInfo, std::optional<VkSemaphoreSubmitInfo> additionalSemaphoreSubmitInfo) const {

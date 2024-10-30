@@ -289,7 +289,6 @@ namespace urchin {
             submitSemaphoresStale = false;
         }
 
-        updateTexturesWriter();
         updatePipelineProcessorData(0);
         updateCommandBuffers(0, clearValues);
 
@@ -317,6 +316,8 @@ namespace urchin {
         remainingSubmitSemaphores = numDependenciesToOutputs;
         submitSemaphoresFrameIndex = frameIndex;
 
+        updateTexturesWriter();
+
         VkResult resultResetFences = vkResetFences(logicalDevice, 1, &commandBufferFence);
         if (resultResetFences != VK_SUCCESS) {
             throw std::runtime_error("Failed to reset fences with error code '" + std::string(string_VkResult(resultResetFences)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
@@ -335,6 +336,14 @@ namespace urchin {
         if (hasDepthTexture() && getDepthTexture()->isWritableTexture()
                 && getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT /* currently, assume that write is not done in the external depth attachment: could be not true anymore in the future ! */) {
             getDepthTexture()->setLastTextureWriter(this);
+        }
+    }
+
+    void OffscreenRender::fillWithOutputTexturesOffscreenRenderDependencies(std::vector<OffscreenRender*> &offscreenRenderDependencies) const {
+        for(const auto& outputTexture : outputTextures) {
+            if (outputTexture.loadOperation == LoadType::LOAD_CONTENT) {
+                offscreenRenderDependencies.push_back(outputTexture.texture->getLastTextureWriter());
+            }
         }
     }
 

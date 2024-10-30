@@ -84,6 +84,7 @@ namespace urchin {
             VkCommandBuffer getCommandBuffer(std::size_t) const;
 
             std::span<OffscreenRender*> getOffscreenRenderDependencies() const;
+            virtual void fillWithOutputTexturesOffscreenRenderDependencies(std::vector<OffscreenRender*> &) const;
             void configureWaitSemaphore(std::uint32_t, VkSubmitInfo2&, std::optional<VkSemaphoreSubmitInfo>) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
