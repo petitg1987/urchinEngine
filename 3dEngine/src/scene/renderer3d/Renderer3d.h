@@ -108,11 +108,10 @@ namespace urchin {
             void createOrUpdateDeferredPasses();
             void createOrUpdateDeferredSecondPassShader();
             void updateScene(float);
-            void renderDeferredFirstPass(std::uint32_t, float);
+            void renderDeferredFirstPass(std::uint32_t, float, unsigned int);
             unsigned int computeDependenciesToFirstPassOutput() const;
             void renderDebugSceneData(GeometryContainer&);
-            void renderDeferredSecondPass(std::uint32_t);
-            unsigned int computeDependenciesToSecondPassOutput() const;
+            void renderDeferredSecondPass(std::uint32_t, unsigned int);
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();
 

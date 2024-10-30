@@ -323,8 +323,12 @@ namespace urchin {
 
         updateScene(dt);
 
-        renderDeferredFirstPass(frameIndex, dt);
-        renderDeferredSecondPass(frameIndex);
+        unsigned int numDependenciesToFirstPassOutput = computeDependenciesToFirstPassOutput();
+        renderDeferredFirstPass(frameIndex, dt, numDependenciesToFirstPassOutput);
+
+        unsigned int numDependenciesToSecondPassOutput = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine */;
+        numDependenciesToSecondPassOutput += DEBUG_DISPLAY_ILLUMINATED_BUFFER ? 1 : 0;
+        renderDeferredSecondPass(frameIndex, numDependenciesToSecondPassOutput);
 
         if (isAntiAliasingActivated) {
             unsigned int numDependenciesToAATexture = 2; //bloom pre-filter & bloom combine
@@ -339,7 +343,7 @@ namespace urchin {
             reflectionApplier.applyReflection(frameIndex, numDependenciesToReflectionCombineTexture, *camera);
         }
 
-        unsigned int numDependenciesToTransparentTextures = 1; //screen
+        unsigned int numDependenciesToTransparentTextures = 1; //output renderer
         transparentManager.drawTransparentModels(frameIndex, numDependenciesToTransparentTextures, *camera);
 
         outputRenderer.render(screenRenderingOrder);
@@ -509,7 +513,7 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, albedo, normal, etc. into buffers.
      */
-    void Renderer3d::renderDeferredFirstPass(std::uint32_t frameIndex, float dt) {
+    void Renderer3d::renderDeferredFirstPass(std::uint32_t frameIndex, float dt, unsigned int numDependenciesToFirstPassOutput) {
         ScopeProfiler sp(Profiler::graphic(), "renFirstPass");
 
         //deferred shadow map
@@ -518,7 +522,7 @@ namespace urchin {
             shadowManager.updateShadowMaps(frameIndex, numDependenciesToShadowMaps);
         }
 
-        //deferred scene (depth, albedo, normal, ambient...)
+        //deferred scene (depth, albedo, normal...)
         deferredFirstPassRenderTarget->disableAllProcessors();
 
         unsigned int deferredRenderingOrder = 0;
@@ -540,14 +544,12 @@ namespace urchin {
         deferredRenderingOrder++;
         geometryContainer.prepareRendering(deferredRenderingOrder, camera->getProjectionViewMatrix());
 
-        deferredFirstPassRenderTarget->render(frameIndex, computeDependenciesToFirstPassOutput());
+        deferredFirstPassRenderTarget->render(frameIndex, numDependenciesToFirstPassOutput);
 
         //deferred ambient occlusion
         if (sceneInfo.isAmbientOcclusionActivated) {
             unsigned int numDependenciesToAOTexture = 1; //second pass
-            if (DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER) {
-                numDependenciesToAOTexture++;
-            }
+            numDependenciesToAOTexture += DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER ? 1 : 0;
             ambientOcclusionManager.updateAOTexture(frameIndex, numDependenciesToAOTexture, *camera);
         }
     }
@@ -561,10 +563,10 @@ namespace urchin {
                 numDependenciesToFirstPassOutput += 1; //AO texture
             }
         }
-        numDependenciesToFirstPassOutput += 1; //transparent
         if (isReflectionActivated) {
             numDependenciesToFirstPassOutput += 3; //reflection color & reflection blur (vertical & horizontal)
         }
+        numDependenciesToFirstPassOutput += 1; //transparent
         if (DEBUG_DISPLAY_DEPTH_BUFFER || DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER || DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER || DEBUG_DISPLAY_MATERIAL_BUFFER) {
             numDependenciesToFirstPassOutput++;
         }
@@ -597,7 +599,7 @@ namespace urchin {
      * Second pass of deferred shading algorithm.
      * Compute lighting in pixel shader to render the scene.
      */
-    void Renderer3d::renderDeferredSecondPass(std::uint32_t frameIndex) {
+    void Renderer3d::renderDeferredSecondPass(std::uint32_t frameIndex, unsigned int numDependenciesToSecondPassOutput) {
         ScopeProfiler sp(Profiler::graphic(), "renSecondPass");
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();
@@ -617,15 +619,7 @@ namespace urchin {
                                          SM_TEX_UNIFORM_BINDING, SM_OFFSET_TEX_UNIFORM_BINDING);
         }
 
-        deferredSecondPassRenderTarget->render(frameIndex, computeDependenciesToSecondPassOutput());
-    }
-
-    unsigned int Renderer3d::computeDependenciesToSecondPassOutput() const {
-        unsigned int numDependenciesToSecondPassOutput = isAntiAliasingActivated ? 1 /* anti-aliasing */ : 2 /* bloom pre-filter & bloom combine */;
-        if (DEBUG_DISPLAY_ILLUMINATED_BUFFER) {
-            numDependenciesToSecondPassOutput++;
-        }
-        return numDependenciesToSecondPassOutput;
+        deferredSecondPassRenderTarget->render(frameIndex, numDependenciesToSecondPassOutput);
     }
 
     void Renderer3d::renderDebugFramebuffers(unsigned int renderingOrder) {

@@ -133,7 +133,7 @@ float computeShadowAttenuation(int shadowLightIndex, vec4 worldPosition, float N
             /* totalShadow = 0.0f;
             float shadowDepth = texture(shadowMapTex[shadowLightIndex], vec3(shadowCoord.st, i)).r;
             if (shadowCoord.z - bias > shadowDepth) {
-                totalShadow  = 1.0f;
+                totalShadow = 1.0f;
             }*/
 
             break;
@@ -163,7 +163,7 @@ vec3 addFog(vec3 baseColor, vec4 worldPosition) {
 float distributionGGX(vec3 normal, vec3 halfWay, float roughness) {
     float alpha = roughness * roughness;
     float alpha2 = alpha * alpha;
-    float NdotH  = max(dot(normal, halfWay), 0.0);
+    float NdotH = max(dot(normal, halfWay), 0.0);
     float NdotH2 = NdotH * NdotH;
     float denom = (NdotH2 * (alpha2 - 1.0) + 1.0);
     denom = 3.14159265 * denom * denom;

@@ -12,7 +12,7 @@ namespace urchin {
 
     void CaptureService::takeCapture(const std::string& filename, VkImage srcImage, VkFormat imageFormat, unsigned int srcWidth, unsigned int srcHeight, unsigned int width, unsigned int height) const {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
-        auto allocator =  GraphicsSetupService::instance().getAllocator();
+        auto allocator = GraphicsSetupService::instance().getAllocator();
 
         std::vector<unsigned char> imageData;
         unsigned int dstWidth = (width == 0) ? srcWidth : width;

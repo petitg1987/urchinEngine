@@ -318,7 +318,7 @@ namespace urchin {
                     float depth = manifoldContactPoint.getDepth();
 
                     if (depth < MAX_DEPTH_TO_RECOVER) {
-                        Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
+                        Vector3<float> normal = manifoldContactPoint.getNormalFromObject2() * sign;
                         Vector3<float> moveVector = normal * depth * RECOVER_FACTORS[subStepIndex];
 
                         characterTransform.setPosition(characterTransform.getPosition().translate(moveVector));

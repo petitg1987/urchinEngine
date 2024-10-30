@@ -23,7 +23,7 @@ namespace urchin {
         Point3<T> maxPoint = getPoints()[0];
 
         for (unsigned int i = 1; i < 3; ++i) {
-            T currentPointDotDirection  = getPoints()[i].toVector().dotProduct(direction);
+            T currentPointDotDirection = getPoints()[i].toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = getPoints()[i];

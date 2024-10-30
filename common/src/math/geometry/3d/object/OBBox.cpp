@@ -162,7 +162,7 @@ namespace urchin {
 
         for (unsigned int i = 1; i < 8; ++i) {
             Vector3<T> currentPointVector = getVectorPoint(i);
-            T currentDotProduct  = currentPointVector.dotProduct(direction);
+            T currentDotProduct = currentPointVector.dotProduct(direction);
             if (currentDotProduct > maxDotProduct) {
                 maxDotProduct = currentDotProduct;
                 bestPointVector = currentPointVector;

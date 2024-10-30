@@ -36,7 +36,7 @@ namespace urchin {
         qOrientation = orientation;
 
         mOrientation = qOrientation.toMatrix4();
-        mTransform =  mPosition * mOrientation * mScale;
+        mTransform = mPosition * mOrientation * mScale;
     }
 
     template<class T> const Quaternion<T> &Transform<T>::getOrientation() const {

@@ -149,7 +149,7 @@ namespace urchin {
         Point3<T> maxPoint = points.begin()->second.point;
 
         for (const auto& itPoints : points) {
-            T currentPointDotDirection  = itPoints.second.point.toVector().dotProduct(direction);
+            T currentPointDotDirection = itPoints.second.point.toVector().dotProduct(direction);
             if (currentPointDotDirection > maxPointDotDirection) {
                 maxPointDotDirection = currentPointDotDirection;
                 maxPoint = itPoints.second.point;

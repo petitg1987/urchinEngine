@@ -134,7 +134,7 @@ namespace urchin {
         float depthBias = biasFactor * invDeltaTime * commonData.depth;
         float restitutionBias = 0.0f;
         if (normalRelativeVelocity > restitutionVelocityThreshold) {
-            restitutionBias =  -restitution * normalRelativeVelocity;
+            restitutionBias = -restitution * normalRelativeVelocity;
         }
         impulseSolvingData.bias = std::min(depthBias, restitutionBias);
 
