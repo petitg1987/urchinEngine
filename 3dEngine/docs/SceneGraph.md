@@ -1,4 +1,4 @@
-# Dependency graph
+# Scene Graph
 
 ```mermaid
 graph BT
