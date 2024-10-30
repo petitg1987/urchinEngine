@@ -5,7 +5,6 @@
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/setup/GraphicsSetupService.h>
 #include <graphics/api/vulkan/helper/DebugLabelHelper.h>
-#include <graphics/api/vulkan/helper/ImageHelper.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 #include <graphics/api/vulkan/render/target/OffscreenRender.h>
 #include <graphics/render/PipelineProcessorComparator.h>

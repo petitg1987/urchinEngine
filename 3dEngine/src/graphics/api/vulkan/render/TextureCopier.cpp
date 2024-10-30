@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    void TextureCopier::initialize() {
+    void TextureCopier::initialize() const {
         if (!destinationTexture.isWritableTexture()) {
             throw std::runtime_error("Destination texture must be writable: " + destinationTexture.getName());
         }

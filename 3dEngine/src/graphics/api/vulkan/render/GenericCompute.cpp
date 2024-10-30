@@ -12,7 +12,7 @@ namespace urchin {
             isInitialized(false),
             threadLocalSize(computeBuilder.getThreadLocalSize()) {
 
-        setupPipelineBuilder(std::make_unique<PipelineBuilder>(PipelineType::COMPUTE, getName()));
+        setupPipelineBuilder(std::make_unique<PipelineBuilder>(COMPUTE, getName()));
         getPipelineBuilder().setupRenderTarget(getRenderTarget());
         getPipelineBuilder().setupShader(getShader());
 

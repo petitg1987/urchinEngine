@@ -8,7 +8,7 @@ namespace urchin {
         public:
             TextureCopier(Texture&, Texture&);
 
-            void initialize();
+            void initialize() const;
 
             void executeCopy(VkCommandBuffer) const;
 

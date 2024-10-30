@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include <utility>
-#include <thread>
 #include <libs/vkenum/vk_enum.h>
 
 #include <graphics/api/vulkan/render/target/ScreenRender.h>

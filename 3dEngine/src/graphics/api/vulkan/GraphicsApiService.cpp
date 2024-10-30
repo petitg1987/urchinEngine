@@ -15,7 +15,7 @@ namespace urchin {
         GraphicsSetupService::destroySurface();
     }
 
-    bool GraphicsApiService::isInitialized() {
+    bool GraphicsApiService::isInitialized() const {
         return GraphicsSetupService::instance().isInitialized();
     }
 
