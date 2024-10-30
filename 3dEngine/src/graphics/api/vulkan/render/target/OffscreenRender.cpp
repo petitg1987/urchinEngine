@@ -218,7 +218,7 @@ namespace urchin {
             std::vector<std::vector<VkImageView>> attachments;
             attachments.resize(getLayer());
 
-            for(std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
+            for (std::size_t layerIndex = 0; layerIndex < getLayer(); ++layerIndex) {
                 attachments[layerIndex].reserve((hasDepthAttachment() ? 1 : 0) + outputTextures.size());
                 if (hasDepthAttachment()) {
                     std::vector<VkImageView> depthImageView = getDepthTexture()->getWritableImageViews();
@@ -298,7 +298,7 @@ namespace urchin {
         commandBufferSubmitInfo.deviceMask = 0;
 
         std::array<VkSemaphoreSubmitInfo, MAX_SUBMIT_SEMAPHORES> submitSemaphoreSubmitInfo{};
-        for(unsigned int i = 0; i < numDependenciesToOutputs; ++i) {
+        for (unsigned int i = 0; i < numDependenciesToOutputs; ++i) {
             VkSemaphoreSubmitInfo semaphoreSubmitInfo{};
             semaphoreSubmitInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
             semaphoreSubmitInfo.semaphore = submitSemaphores[i];
@@ -339,8 +339,8 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::fillWithOutputTexturesOffscreenRenderDependencies(std::vector<OffscreenRender*> &offscreenRenderDependencies) const {
-        for(const auto& outputTexture : outputTextures) {
+    void OffscreenRender::fillAdditionalOffscreenRenderDependencies(std::vector<OffscreenRender*> &offscreenRenderDependencies) const {
+        for (const auto& outputTexture : outputTextures) {
             if (outputTexture.loadOperation == LoadType::LOAD_CONTENT) {
                 offscreenRenderDependencies.push_back(outputTexture.texture->getLastTextureWriter());
             }

@@ -176,7 +176,7 @@ namespace urchin {
             bool propagatePressKeyEvent = true;
 
             //engine
-            if(!event->text().isEmpty()) {
+            if (!event->text().isEmpty()) {
                 propagatePressKeyEvent = sceneDisplayer->getScene().onChar((unsigned int)event->text().toLatin1()[0]);
             }
             if (propagatePressKeyEvent) {

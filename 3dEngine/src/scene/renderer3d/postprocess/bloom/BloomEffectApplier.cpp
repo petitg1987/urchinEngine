@@ -207,7 +207,7 @@ namespace urchin {
             downSampleRenderTarget->render(frameIndex, numDependenciesToDownSampleOutput);
         }
 
-        for(const auto& upSampleRenderTarget : upSampleRenderTargets) {
+        for (const auto& upSampleRenderTarget : upSampleRenderTargets) {
             unsigned int numDependenciesToUpSampleOutput = 1; //next up sample OR bloom combine
             upSampleRenderTarget->render(frameIndex, numDependenciesToUpSampleOutput);
         }

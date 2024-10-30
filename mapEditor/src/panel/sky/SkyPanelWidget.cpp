@@ -203,7 +203,7 @@ namespace urchin {
     void SkyPanelWidget::setupSkyDataFrom(const Skybox* skybox) {
         disableSkyEvent = true;
         std::size_t fileIndex = 0;
-        for(QLineEdit* skyboxFilenameText : {xnSkyboxFilenameText, xpSkyboxFilenameText, ynSkyboxFilenameText, ypSkyboxFilenameText, znSkyboxFilenameText, zpSkyboxFilenameText}) {
+        for (QLineEdit* skyboxFilenameText : {xnSkyboxFilenameText, xpSkyboxFilenameText, ynSkyboxFilenameText, ypSkyboxFilenameText, znSkyboxFilenameText, zpSkyboxFilenameText}) {
             if (skybox != nullptr) {
                 std::string relativeFilename = PathUtil::computeRelativePath(FileSystem::instance().getResourcesDirectory(), skybox->getFilenames()[fileIndex]);
                 skyboxFilenameText->setText(QString::fromStdString(relativeFilename));

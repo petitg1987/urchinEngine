@@ -233,7 +233,7 @@ namespace urchin {
                 [this](){ return Rectangle3D<T>({getPoint(1), getPoint(5), getPoint(7), getPoint(3)}); } //back
         };
 
-        for(std::size_t i = 0; i < faceRectangles.size(); ++i) {
+        for (std::size_t i = 0; i < faceRectangles.size(); ++i) {
             bool hasRectangleIntersection;
             bool hasPlaneIntersection;
             Point3<T> intersectionPoint = faceRectangles[i]().intersectPoint(line, hasRectangleIntersection, hasPlaneIntersection);

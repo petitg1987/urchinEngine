@@ -29,7 +29,7 @@ namespace urchin {
                 } else {
                     std::vector<Point3<float>> grassPositions;
                     grassPositions.reserve(grassInstanceData.size());
-                    for(const GrassInstanceData& singleGrassInstanceData : grassInstanceData) {
+                    for (const GrassInstanceData& singleGrassInstanceData : grassInstanceData) {
                         grassPositions.push_back(singleGrassInstanceData.grassPosition);
                     }
                     bbox = std::make_unique<AABBox<float>>(grassPositions);

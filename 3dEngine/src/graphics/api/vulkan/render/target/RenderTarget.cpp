@@ -416,13 +416,13 @@ namespace urchin {
             assert(externalDepthTexture->getLastTextureWriter());
             offscreenRenderDependencies.push_back(externalDepthTexture->getLastTextureWriter());
         }
-        fillWithOutputTexturesOffscreenRenderDependencies(offscreenRenderDependencies);
+        fillAdditionalOffscreenRenderDependencies(offscreenRenderDependencies);
 
         VectorUtil::removeDuplicates(offscreenRenderDependencies);
         return offscreenRenderDependencies;
     }
 
-    void RenderTarget::fillWithOutputTexturesOffscreenRenderDependencies(std::vector<OffscreenRender*> &) const {
+    void RenderTarget::fillAdditionalOffscreenRenderDependencies(std::vector<OffscreenRender*> &) const {
         //see override methods
     }
 

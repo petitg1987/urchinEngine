@@ -73,7 +73,7 @@ namespace urchin {
         std::vector<VkImageView> imageViews;
         imageViews.resize(numImageViews);
 
-        for(uint32_t imageViewIndex = 0; imageViewIndex < numImageViews; ++imageViewIndex) {
+        for (uint32_t imageViewIndex = 0; imageViewIndex < numImageViews; ++imageViewIndex) {
             VkImageViewCreateInfo viewInfo{};
             viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             viewInfo.image = image;
