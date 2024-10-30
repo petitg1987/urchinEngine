@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <map>
 #include <vector>
 
 #include <graphics/api/GraphicsApi.h>

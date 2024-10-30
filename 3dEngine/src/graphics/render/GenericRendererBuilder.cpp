@@ -10,8 +10,8 @@ namespace urchin {
             shader(shader),
             shapeType(shapeType),
             customScissor(false),
-            scissorOffset(Vector2<int>(0, 0)),
-            scissorSize(Vector2<int>((int)renderTarget.getWidth(), (int)renderTarget.getHeight())),
+            scissorOffset(Vector2(0, 0)),
+            scissorSize(Vector2((int)renderTarget.getWidth(), (int)renderTarget.getHeight())),
             depthTestEnabled(false),
             depthWriteEnabled(false),
             cullFaceEnabled(true),
@@ -41,21 +41,21 @@ namespace urchin {
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point2<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        std::vector<VariableType> variableTypes = {VariableType::VEC2_FLOAT};
+        std::vector variableTypes = {VariableType::VEC2_FLOAT};
         data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Point3<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        std::vector<VariableType> variableTypes = {VariableType::VEC3_FLOAT};
+        std::vector variableTypes = {VariableType::VEC3_FLOAT};
         data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
 
     std::shared_ptr<GenericRendererBuilder> GenericRendererBuilder::addData(const std::vector<Vector3<float>>& dataPtr) {
         assert(data.empty() || dataPtr.size() == data[0].getDataCount());
-        std::vector<VariableType> variableTypes = {VariableType::VEC3_FLOAT};
+        std::vector variableTypes = {VariableType::VEC3_FLOAT};
         data.emplace_back(std::move(variableTypes), dataPtr.size(), dataPtr.data());
         return shared_from_this();
     }
