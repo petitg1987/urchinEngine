@@ -46,23 +46,30 @@ vec2 computeFragPosition(vec4 viewSpacePosition, vec2 sceneSize) {
 }
 
 void main() {
-    const float MAX_MATERIAL_ROUGHNESS = 0.9;
-    float materialRoughness = texture(materialTex, texCoordinates).r;
-    if (materialRoughness > MAX_MATERIAL_ROUGHNESS) {
-        fragColor = vec4(0.5, 0.5, 0.5, 0.0);
+    vec3 normalWorlsSpace = texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0;
+    vec3 normalViewSpace = normalize(mat3(positioningData.mView) * normalWorlsSpace);
+    vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates);
+    vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
+    vec3 pivot = normalize(reflect(cameraToPositionVec, normalViewSpace));
+
+    float visibility = 1.0 - max(dot(-cameraToPositionVec, pivot), 0.0); //Eliminate reflection rays pointing to camera and probably hitting something behind the camera;
+    if (visibility < 0.075) {
+        fragColor = vec4(0.0, 0.0, 0.0, 0.0);
         return;
     }
 
-    vec2 sceneSize = textureSize(depthTex, 0);
-    vec3 normalWorlsSpace = normalize(texture(normalAndAmbientTex, texCoordinates).xyz * 2.0 - 1.0); //normalize is required (for good specular) because normal is stored in 3 * 8 bits only
-    vec3 normalViewSpace = normalize(mat3(positioningData.mView) * normalWorlsSpace);
-    vec4 viewSpacePosition = fetchViewSpacePosition(texCoordinates);
+    const float MAX_MATERIAL_ROUGHNESS = 0.9;
+    float materialRoughness = texture(materialTex, texCoordinates).r;
+    visibility *= (MAX_MATERIAL_ROUGHNESS - materialRoughness);
+    if (visibility < 0.075) {
+        fragColor = vec4(0.0, 0.0, 0.0, 0.0);
+        return;
+    }
 
-    vec3 cameraToPositionVec = normalize(viewSpacePosition.xyz);
-    vec3 pivot = normalize(reflect(cameraToPositionVec, normalViewSpace));
     vec4 startViewSpacePosition = viewSpacePosition;
     vec4 endViewSpacePosition = vec4(viewSpacePosition.xyz + (pivot * MAX_DISTANCE), 1.0);
 
+    vec2 sceneSize = textureSize(depthTex, 0);
     vec2 startFrag = texCoordinates * sceneSize; //=computeFragPosition(viewSpacePosition, sceneSize);
     vec2 endFrag = computeFragPosition(endViewSpacePosition, sceneSize);
 
@@ -149,14 +156,12 @@ void main() {
         return;
     } */
 
-    float edgeThreshold = 0.2;
-    float visibility = secondPassHasHit
-        * (1.0 - max(dot(-cameraToPositionVec, pivot), 0.0)) //Eliminate reflection rays pointing to camera and probably hitting something behind the camera
+    const float EDGE_THRESHOLD = 0.2;
+    visibility *= secondPassHasHit
         * (1.0 - clamp(depth / HIT_THRESHOLD, 0.0, 1.0)) //Fade out the reflection point when the exact hit point is not found
         * (1.0 - clamp(length(viewSpacePositionTo - viewSpacePosition) / MAX_DISTANCE, 0.0, 1.0)) //Fade out the reflection based on how far way the reflected point is from the initial starting point
-        * smoothstep(0.0, edgeThreshold, fragUv.x) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.x)) //Fade out on screen edge X
-        * smoothstep(0.0, edgeThreshold, fragUv.y) * (1.0 - smoothstep(1.0 - edgeThreshold, 1.0, fragUv.y)) //Fade out on screen edge Y
-        * (MAX_MATERIAL_ROUGHNESS - materialRoughness);
+        * smoothstep(0.0, EDGE_THRESHOLD, fragUv.x) * (1.0 - smoothstep(1.0 - EDGE_THRESHOLD, 1.0, fragUv.x)) //Fade out on screen edge X
+        * smoothstep(0.0, EDGE_THRESHOLD, fragUv.y) * (1.0 - smoothstep(1.0 - EDGE_THRESHOLD, 1.0, fragUv.y)); //Fade out on screen edge Y
 
     vec3 reflectionColor = texture(sceneTex, fragUv).rgb;
     fragColor = vec4(reflectionColor, visibility);
