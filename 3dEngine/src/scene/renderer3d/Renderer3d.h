@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <memory>
 #include <vector>
 #include <UrchinCommon.h>
@@ -24,7 +23,6 @@
 #include <scene/renderer3d/landscape/sky/SkyContainer.h>
 #include <scene/renderer3d/ui/UiContainer.h>
 #include <resources/geometry/GeometryContainer.h>
-#include <resources/geometry/GeometryModel.h>
 #include <graphics/api/GraphicsApi.h>
 #include <texture/render/TextureRenderer.h>
 

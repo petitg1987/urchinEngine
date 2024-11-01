@@ -1,12 +1,9 @@
-#include <map>
 #include <string>
-#include <locale>
 #include <random>
 
 #include <scene/renderer3d/lighting/ambientocclusion/AmbientOcclusionManager.h>
 #include <texture/filter/gaussianblur/GaussianBlurFilterBuilder.h>
 #include <graphics/render/shader/ShaderBuilder.h>
-#include <graphics/render/GenericRendererBuilder.h>
 #include <graphics/render/GenericComputeBuilder.h>
 
 namespace urchin {

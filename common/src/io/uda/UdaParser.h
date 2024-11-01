@@ -3,7 +3,6 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <fstream>
 
 #include <io/uda/UdaAttribute.h>
 #include <io/uda/UdaChunk.h>

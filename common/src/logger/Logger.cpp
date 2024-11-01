@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <map>
+#include <thread>
 
 #include <logger/Logger.h>
 #include <logger/FileLogger.h>

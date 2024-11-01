@@ -2,11 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <fstream>
 
-#include <math/algebra/point/Point2.h>
 #include <io/svg/shape/SVGShape.h>
-#include <io/svg/shape/SVGPolygon.h>
 
 namespace urchin {
 

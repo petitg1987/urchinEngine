@@ -31,7 +31,7 @@ namespace urchin {
         std::vector<char> bytes(readSize);
         ifs.read(bytes.data(), static_cast<std::streamsize>(readSize));
 
-        return std::string(bytes.data(), readSize);
+        return {bytes.data(), readSize};
     }
 
     std::string FileLogger::retrieveTarget() const {

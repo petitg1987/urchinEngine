@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-
 #include <pattern/singleton/Singleton.h>
 
 namespace urchin {

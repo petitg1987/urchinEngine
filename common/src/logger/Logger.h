@@ -1,9 +1,7 @@
 #pragma once
 
 #include <string>
-#include <sstream>
 #include <memory>
-#include <thread>
 #include <iostream>
 
 namespace urchin {
