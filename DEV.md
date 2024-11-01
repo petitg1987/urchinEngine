@@ -35,8 +35,8 @@
   ```
   Pacman -S unzip openssl-devel
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
-  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-7.82.0.zip
-  unzip curl-7.82.0.zip && cd /tmp/curl/curl-7.82.0
+  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-8.10.1.zip
+  unzip curl-8.10.1.zip && cd /tmp/curl/curl-8.10.1
   ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2
   make V=1
   make install #create library in /usr/local/lib/libcurl.a
@@ -55,12 +55,12 @@
     * Name: `Debug`
     * Build type: `Debug`
     * Build directory: `.build/debug`
-    * Build options: `-j 8`
+    * Build options: `-j 14`
   * Profile **Release**:
     * Name: `RelWithDebInfo`
     * Build type: `RelWithDebInfo`
     * Build directory: `.build/release`
-    * Build options: `-j 8`
+    * Build options: `-j 14`
 * Add CMake applications
   * Application **testExecutor (monkey)**:
     * Target/executable: `testExecutor`
