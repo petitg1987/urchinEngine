@@ -10,9 +10,9 @@
 
 ## Windows
 * Install Msys2 application and libraries:
-  * Install with default values: https://sourceforge.net/projects/msys2/
+  * Install with default values: https://www.msys2.org/
   * Add in PATH variable: "C:\msys64\mingw64\bin"
-  * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg`
+  * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg make`
 * Install Freetype library:
   * Copy https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz in: "C:\msys64\home\greg"
   * Execute: `./configure --with-zlib=no && make && make install`
@@ -27,7 +27,7 @@
 * Install Vulkan library:
   * Install Vulkan SDK in default folder (C:\VulkanSDK): https://vulkan.lunarg.com/sdk/home#windows
   * Copy lib & include respectively in "C:\msys64\mingw64\lib" and in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
-  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.3.275.0/Bin /home/greg/vulkan-bin`
+  * Create link to binaries in Mingw64 (adapt path): `ln -s ${HOMEDRIVE}/VulkanSDK/1.3.296.0/Bin /home/greg/vulkan-bin`
   * Update ~/.bash_profile to add binaries in Mingw64 PATH: `PATH="${PATH}:/home/greg/vulkan-bin"`
   * *Info*: vuklan-1.dll can be found in the runtime zip: https://vulkan.lunarg.com/sdk/home#windows
   * *Info*: Do not uninstall Vulkan SDK application because it is required for validation layer & during release process to compile shaders
