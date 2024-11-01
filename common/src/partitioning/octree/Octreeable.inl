@@ -24,7 +24,7 @@ template<class T> Octreeable<T>::~Octreeable() {
  * Method to be called when octreeable moving
  */
 template<class T> void Octreeable<T>::notifyOctreeableMove() {
-    notifyObservers(this, Octreeable::MOVE);
+    notifyObservers(this, MOVE);
 
     if (refOctree.size() > 0) { //octreeable can move in an octree only if it's attached to an octree
         bIsMovingInOctree = true;

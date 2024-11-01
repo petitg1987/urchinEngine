@@ -4,9 +4,9 @@
 
 namespace urchin {
 
-    class FileSystem : public Singleton<FileSystem> {
+    class FileSystem final : public Singleton<FileSystem> {
         public:
-            friend class Singleton<FileSystem>;
+            friend class Singleton;
 
             void setupResourcesDirectory(std::string);
             const std::string& getResourcesDirectory() const;

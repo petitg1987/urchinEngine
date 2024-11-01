@@ -128,7 +128,7 @@ namespace urchin {
                 UNKNOWN_KEY = 9999
             };
 
-            const std::map<Control::Key, std::string>& getKeysLabelMap() const;
+            const std::map<Key, std::string>& getKeysLabelMap() const;
 
         private:
             static ControlData controlData;

@@ -8,7 +8,7 @@ namespace urchin {
     /**
     * Represents a rectangle aligned on axis
     */
-    template<class T> class RectangleShape : public ConvexShape2D {
+    template<class T> class RectangleShape final : public ConvexShape2D {
         public:
             explicit RectangleShape(const Vector2<T>&);
 

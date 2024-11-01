@@ -83,7 +83,7 @@ namespace urchin {
             Point3<T> intersectionPoint = Plane<T>(p1, p2, p3).intersectPoint(line, hasPlaneInteraction);
             if (hasPlaneInteraction) {
                 bool hasTriangleIntersection = Triangle3D<T>(p1, p2, p3).projectedPointInsideTriangle(intersectionPoint);
-                if (hasTriangleIntersection && (!hasIntersection || (line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint)))) {
+                if (hasTriangleIntersection && (!hasIntersection || line.getA().squareDistance(intersectionPoint) < line.getA().squareDistance(bestIntersectionPoint))) {
                     bestIntersectionPoint = intersectionPoint;
                     hasIntersection = true;
                 }

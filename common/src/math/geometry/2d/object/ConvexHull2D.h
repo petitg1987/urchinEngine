@@ -11,7 +11,7 @@ namespace urchin {
     /**
     * Represents a convex hull 2D
     */
-    template<class T> class ConvexHull2D : public ConvexObject2D<T> {
+    template<class T> class ConvexHull2D final : public ConvexObject2D<T> {
         public:
             template<class U> friend class ResizeConvexHull2DService;
 
@@ -21,7 +21,7 @@ namespace urchin {
 
             const std::vector<Point2<T>>& getPoints() const;
 
-            Point2<T> getSupportPoint(const Vector2<T>&) const;
+            Point2<T> getSupportPoint(const Vector2<T>&) const override;
             T area() const;
 
             std::unique_ptr<ConvexHull2D<T>> resize(T) const;

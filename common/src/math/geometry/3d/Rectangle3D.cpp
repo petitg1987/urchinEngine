@@ -1,3 +1,5 @@
+#include <limits>
+
 #include <math/geometry/3d/Rectangle3D.h>
 
 namespace urchin {

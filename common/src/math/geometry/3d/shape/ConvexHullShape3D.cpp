@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <limits>
 
 #include <math/geometry/3d/shape/ConvexHullShape3D.h>
 #include <math/geometry/3d/util/ResizeConvexHull3DService.h>
@@ -39,7 +40,7 @@ namespace urchin {
     /**
      * Points of convex hull shape indexed to be used with indexed triangles.
      */
-    template<class T> const typename std::map<std::size_t, ConvexHullPoint<T>> &ConvexHullShape3D<T>::getConvexHullPoints() const {
+    template<class T> const std::map<std::size_t, ConvexHullPoint<T>> &ConvexHullShape3D<T>::getConvexHullPoints() const {
         return points;
     }
 
@@ -58,9 +59,9 @@ namespace urchin {
     }
 
     /**
-     * Triangles of convex hull shape where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
+     * Triangles of convex hull shape where points are sorted in counterclockwise direction in a right hand coordinate system (Z+ directed to the observer).
      */
-    template<class T> const typename std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHullShape3D<T>::getIndexedTriangles() const {
+    template<class T> const std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHullShape3D<T>::getIndexedTriangles() const {
         return indexedTriangles;
     }
 

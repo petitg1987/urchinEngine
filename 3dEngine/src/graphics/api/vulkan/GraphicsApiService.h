@@ -9,7 +9,7 @@ namespace urchin {
 
     class GraphicsApiService : public Singleton<GraphicsApiService> {
         public:
-            friend class Singleton<GraphicsApiService>;
+            friend class Singleton;
 
             static void enableUniqueSurface();
             static void destroySurface();

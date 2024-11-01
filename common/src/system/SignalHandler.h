@@ -18,9 +18,9 @@ namespace urchin {
             virtual void onSignalReceived(unsigned long) = 0;
     };
 
-    class SignalHandler : public Singleton<SignalHandler> {
+    class SignalHandler final : public Singleton<SignalHandler> {
         public:
-            friend class Singleton<SignalHandler>;
+            friend class Singleton;
 
             enum ErrorSimulationType {
                 SEGMENTATION_FAULT,

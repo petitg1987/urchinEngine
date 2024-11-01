@@ -153,7 +153,7 @@ namespace urchin {
             const Point3<T>& pointD = getPoint(3); //pointD is the last point added to the simplex
 
             std::array<T, 4> barycentrics = {0.0, 0.0, 0.0, 0.0};
-            const unsigned short voronoiRegionMask = 14u; //test all voronoi regions except the one which doesn't include the new point added (pointD)
+            constexpr unsigned short voronoiRegionMask = 14u; //test all voronoi regions except the one which doesn't include the new point added (pointD)
             closestPointToOrigin = Tetrahedron<T>(pointA, pointB, pointC, pointD).closestPoint(Point3<T>(0.0, 0.0, 0.0), barycentrics, voronoiRegionMask);
             setBarycentric(0, barycentrics[0]);
             setBarycentric(1, barycentrics[1]);

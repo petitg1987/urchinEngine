@@ -1,5 +1,6 @@
 #include <cassert>
 #include <limits>
+#include <cmath>
 
 #include <math/geometry/3d/object/AABBox.h>
 
@@ -139,7 +140,7 @@ namespace urchin {
     }
 
     template<class T> AABBox<T> AABBox<T>::moveAABBox(const Transform<T>& transform) const {
-        return transform.getTransformMatrix() * (*this);
+        return transform.getTransformMatrix() * *this;
     }
 
     /**
@@ -147,7 +148,7 @@ namespace urchin {
      */
     template<class T> Matrix4<T> AABBox<T>::toProjectionMatrix() const {
         T tx = -((max.X + min.X) / (max.X - min.X));
-        T ty = ((max.Y + min.Y) / (max.Y - min.Y));
+        T ty = (max.Y + min.Y) / (max.Y - min.Y);
         T tz = (T)0.5 - (T)0.5 * ((-min.Z - max.Z) / (-min.Z + max.Z));
 
         return Matrix4<T>(

@@ -3,7 +3,7 @@
 namespace urchin {
 
     SVGLine::SVGLine(const LineSegment2D<float>& line, SVGColor strokeColor, float strokeSize, float opacity) :
-            SVGShape(SVGColor::BLACK, strokeColor, strokeSize, opacity),
+            SVGShape(BLACK, strokeColor, strokeSize, opacity),
             line(line) {
 
     }

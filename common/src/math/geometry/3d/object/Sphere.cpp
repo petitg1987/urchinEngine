@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <math/geometry/3d/object/Sphere.h>
 #include <math/geometry/3d/object/AABBox.h>
 #include <math/geometry/3d/Line3D.h>

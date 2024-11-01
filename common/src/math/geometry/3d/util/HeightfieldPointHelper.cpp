@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 
 #include <math/geometry/3d/util/HeightfieldPointHelper.h>
 #include <math/algorithm/MathFunction.h>

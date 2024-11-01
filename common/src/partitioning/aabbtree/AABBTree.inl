@@ -171,10 +171,10 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects() {
                 it = removeObject(leaf->getNodeData());
                 addObject(std::move(clonedNodeData));
             } else {
-                it++;
+                ++it;
             }
         } else {
-            it++;
+            ++it;
         }
     }
 }

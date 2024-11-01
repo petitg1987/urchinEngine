@@ -13,9 +13,9 @@ namespace urchin {
     }
 
     std::string DateTimeUtil::timePointToDateTime(std::chrono::system_clock::time_point timePoint, Format format) {
-        if (format == Format::DATE_HOUR_MIN_SEC) {
+        if (format == DATE_HOUR_MIN_SEC) {
             return timePointToCustomFormat(timePoint, "%Y-%m-%d %X");
-        } else if (format == Format::DATE_HOUR_MIN) {
+        } else if (format == DATE_HOUR_MIN) {
             return timePointToCustomFormat(timePoint, "%Y-%m-%d %H:%M");
         }
         throw std::runtime_error("Unknown requested date time format: " + std::to_string(format));
@@ -37,7 +37,7 @@ namespace urchin {
 
     std::string DateTimeUtil::epochToDateTime(uint64_t epochSeconds) {
         auto timePoint = std::chrono::system_clock::time_point{std::chrono::seconds{epochSeconds}};
-        return timePointToDateTime(timePoint, Format::DATE_HOUR_MIN_SEC);
+        return timePointToDateTime(timePoint, DATE_HOUR_MIN_SEC);
     }
 
 }

@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    template<class T> class ConvexHullShape2D : public ConvexShape2D {
+    template<class T> class ConvexHullShape2D final : public ConvexShape2D {
         public:
             ConvexHullShape2D() = default;
             explicit ConvexHullShape2D(const std::vector<Point2<T>>&);

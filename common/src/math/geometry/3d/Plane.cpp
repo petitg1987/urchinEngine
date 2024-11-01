@@ -1,5 +1,6 @@
 #include <sstream>
 #include <cassert>
+#include <limits>
 
 #include <math/geometry/3d/Plane.h>
 

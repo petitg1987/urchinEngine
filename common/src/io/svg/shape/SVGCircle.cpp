@@ -3,7 +3,7 @@
 namespace urchin {
 
     SVGCircle::SVGCircle(const Point2<float>& center, float radius, SVGColor color, float opacity) :
-            SVGShape(color, SVGColor::BLACK, 0.0f, opacity),
+            SVGShape(color, BLACK, 0.0f, opacity),
             center(center),
             radius(radius) {
 

@@ -167,9 +167,9 @@ namespace urchin {
                     StringUtil::insensitiveEquals(layoutId, "00000813") /* Belgian (Period) */ ||
                     StringUtil::insensitiveEquals(layoutId, "0001080c") /* Belgian (Comma) */ ||
                     StringUtil::insensitiveEquals(layoutId, "0000040c") /* French */) {
-                return KeyboardLayout::AZERTY;
+                return AZERTY;
             }
-            return KeyboardLayout::DEFAULT;
+            return DEFAULT;
         #else
             const std::string LAYOUT_LABEL = "layout:";
             std::string xKeyboardInfo = CommandExecutor::execute("setxkbmap -query"); //only work with X11
@@ -181,10 +181,10 @@ namespace urchin {
                 std::string layout = xKeyboardInfo.substr(layoutBeginLocation, searchLength);
                 StringUtil::trim(layout);
                 if (StringUtil::insensitiveEquals(layout, "fr") || StringUtil::insensitiveEquals(layout, "be")) {
-                    return KeyboardLayout::AZERTY;
+                    return AZERTY;
                 }
             }
-            return KeyboardLayout::DEFAULT;
+            return DEFAULT;
         #endif
     }
 

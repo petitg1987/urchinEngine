@@ -9,14 +9,14 @@
 
 namespace urchin {
 
-    template<class T> class LineSegment2D : public ConvexObject2D<T> {
+    template<class T> class LineSegment2D final : public ConvexObject2D<T> {
         public:
             LineSegment2D(const Point2<T>&, const Point2<T>&);
 
             const Point2<T>& getA() const;
             const Point2<T>& getB() const;
 
-            Point2<T> getSupportPoint(const Vector2<T>&) const;
+            Point2<T> getSupportPoint(const Vector2<T>&) const override;
             Point2<T> closestPoint(const Point2<T>&, std::array<T, 2>&) const;
             T squareDistance(const Point2<T>&) const;
             bool onSegment(const Point2<T>&) const;

@@ -23,19 +23,19 @@ namespace urchin {
 
     std::string SVGShape::toColorString(SVGColor color) const {
         switch(color) {
-            case SVGColor::BLACK:
+            case BLACK:
                 return "black";
-            case SVGColor::LIME:
+            case LIME:
                 return "lime";
-            case SVGColor::RED:
+            case RED:
                 return "red";
-            case SVGColor::BLUE:
+            case BLUE:
                 return "blue";
-            case SVGColor::ORANGE:
+            case ORANGE:
                 return "orange";
-            case SVGColor::GREEN:
+            case GREEN:
                 return "green";
-            case SVGColor::YELLOW:
+            case YELLOW:
                 return "yellow";
             default:
                 throw std::runtime_error("Unknown SVG color: " + std::to_string(color));

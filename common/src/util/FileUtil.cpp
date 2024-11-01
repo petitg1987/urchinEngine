@@ -57,7 +57,7 @@ namespace urchin {
         checkDirectory(dstDirectory);
         for (const auto& srcFileEntry : std::filesystem::directory_iterator(srcDirectory)) {
             if (srcFileEntry.is_regular_file()) {
-                std::string dstFile = dstDirectory + FileUtil::getFileName(pathToString(srcFileEntry.path()));
+                std::string dstFile = dstDirectory + getFileName(pathToString(srcFileEntry.path()));
                 if (!isFileExist(dstFile)) {
                     copyFile(srcFileEntry.path(), dstFile);
                 }

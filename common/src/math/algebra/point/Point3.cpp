@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <math/algebra/point/Point3.h>
 #include <math/algorithm/MathFunction.h>
 

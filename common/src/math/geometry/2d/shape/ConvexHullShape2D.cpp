@@ -37,7 +37,7 @@ namespace urchin {
 
         //build upper convex hull
         unsigned int t = k + 1;
-        for (int i = (int)nbPoints - 2; i >= 0; i--) {
+        for (int i = (int)nbPoints - 2; i >= 0; --i) {
             while (k >= t && Line2D<T>(convexHullPoints[k - 2], convexHullPoints[k-1]).ccw(sortedPoints[(std::size_t)i]) <= 0.0) { //clockwise detected, we remove the point
                 k--;
             }
@@ -47,7 +47,7 @@ namespace urchin {
             }
         }
 
-        convexHullPoints.resize((unsigned long)(std::max(((int)k) - 1, 0))); //k-1: remove the last point which is the same that the first point of lower list
+        convexHullPoints.resize((unsigned long)std::max(((int)k) - 1, 0)); //k-1: remove the last point which is the same that the first point of lower list
     }
 
     template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>>& ccwConvexPoints) {
@@ -81,10 +81,8 @@ namespace urchin {
 
     template<class T> T ConvexHullShape2D<T>::area() const {
         T area = 0.0;
-        std::size_t j;
-
         for (std::size_t i = 0; i < convexHullPoints.size(); i++) {
-            j = (i + 1) % convexHullPoints.size();
+            std::size_t j = (i + 1) % convexHullPoints.size();
             area += convexHullPoints[i].X * convexHullPoints[j].Y;
             area -= convexHullPoints[i].Y * convexHullPoints[j].X;
         }

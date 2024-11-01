@@ -10,9 +10,9 @@ namespace urchin {
     /**
     * Service to handle configuration properties files
     */
-    class ConfigService : public ThreadSafeSingleton<ConfigService> {
+    class ConfigService final : public ThreadSafeSingleton<ConfigService> {
         public:
-            friend class ThreadSafeSingleton<ConfigService>;
+            friend class ThreadSafeSingleton;
 
             void loadProperties(const std::string&);
             void loadProperties(const std::string&, const std::string&);

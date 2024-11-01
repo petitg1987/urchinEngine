@@ -78,7 +78,7 @@ namespace urchin {
     }
 
     template<class T> bool LineSegment2D<T>::onSegment(const Point2<T>& p) const {
-        T orientation = ((p.Y - a.Y) * (b.X - p.X) - (p.X - a.X) * (b.Y - p.Y));
+        T orientation = (p.Y - a.Y) * (b.X - p.X) - (p.X - a.X) * (b.Y - p.Y);
         if (orientation == (T)0) {
             return p.X <= std::max(a.X, b.X) && p.X >= std::min(a.X, b.X)
                    && p.Y <= std::max(a.Y, b.Y) && p.Y >= std::min(a.Y, b.Y);

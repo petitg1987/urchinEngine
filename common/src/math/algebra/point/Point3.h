@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <cmath>
 
 #include <math/algebra/point/Point2.h>
 #include <math/algebra/vector/Vector2.h>
