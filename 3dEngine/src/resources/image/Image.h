@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class Image : public Resource {
+    class Image final : public Resource {
         public:
             enum ImageFormat {
                 IMAGE_RGBA,

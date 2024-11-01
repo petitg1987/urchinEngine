@@ -4,14 +4,13 @@
 #include <memory>
 
 #include <graphics/api/GraphicsApi.h>
-#include <resources/image/Image.h>
 #include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/landscape/fog/FogContainer.h>
 #include <scene/renderer3d/landscape/fog/Fog.h>
 
 namespace urchin {
 
-    class Water : public Observable {
+    class Water final : public Observable {
         public:
             Water();
             ~Water() override = default;

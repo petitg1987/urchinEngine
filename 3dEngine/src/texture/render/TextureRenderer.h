@@ -29,10 +29,10 @@ namespace urchin {
                 INVERSE_GRAYSCALE_VALUE
             };
 
-            TextureRenderer(std::shared_ptr<Texture>, TextureRenderer::ColorType);
-            TextureRenderer(std::shared_ptr<Texture>, unsigned int, TextureRenderer::ColorType);
+            TextureRenderer(std::shared_ptr<Texture>, ColorType);
+            TextureRenderer(std::shared_ptr<Texture>, unsigned int, ColorType);
 
-            void setPosition(TextureRenderer::CoordinateX, TextureRenderer::CoordinateY);
+            void setPosition(CoordinateX, CoordinateY);
             void setSize(float, float, float, float);
             void setFullScreen(bool);
             void enableTransparency();
@@ -56,8 +56,8 @@ namespace urchin {
 
             bool isInitialized;
 
-            TextureRenderer::CoordinateX coordinateX;
-            TextureRenderer::CoordinateY coordinateY;
+            CoordinateX coordinateX;
+            CoordinateY coordinateY;
             bool fullScreen;
             bool transparencyEnabled;
             float userMinX;

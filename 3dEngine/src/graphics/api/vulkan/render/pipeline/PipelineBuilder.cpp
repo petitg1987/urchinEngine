@@ -36,21 +36,21 @@ namespace urchin {
     }
 
     void PipelineBuilder::setupShapeType(const ShapeType& shapeType) {
-        if (pipelineType != PipelineType::GRAPHICS) {
+        if (pipelineType != GRAPHICS) {
             throw std::runtime_error("Shape type only exist on graphics pipeline");
         }
         this->shapeType = shapeType;
     }
 
     void PipelineBuilder::setupBlendFunctions(const std::vector<BlendFunction>& blendFunctions) {
-        if (pipelineType != PipelineType::GRAPHICS) {
+        if (pipelineType != GRAPHICS) {
             throw std::runtime_error("Blend functions only exist on graphics pipeline");
         }
         this->blendFunctions = blendFunctions;
     }
 
     void PipelineBuilder::setupDepthOperations(bool depthTestEnabled, bool depthWriteEnabled) {
-        if (pipelineType != PipelineType::GRAPHICS) {
+        if (pipelineType != GRAPHICS) {
             throw std::runtime_error("Depth operations only exist on graphics pipeline");
         }
         this->depthTestEnabled = depthTestEnabled;
@@ -58,7 +58,7 @@ namespace urchin {
     }
 
     void PipelineBuilder::setupCullFaceOperation(bool cullFaceEnabled) {
-        if (pipelineType != PipelineType::GRAPHICS) {
+        if (pipelineType != GRAPHICS) {
             throw std::runtime_error("Cull face operation only exist on graphics pipeline");
         }
         this->cullFaceEnabled = cullFaceEnabled;
@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     void PipelineBuilder::setupData(const std::vector<DataContainer>& data, const DataContainer* instanceData) {
-        if (pipelineType != PipelineType::GRAPHICS) {
+        if (pipelineType != GRAPHICS) {
             throw std::runtime_error("Data only exist on graphics pipeline");
         }
         this->data = &data;
@@ -92,9 +92,9 @@ namespace urchin {
             pipeline = std::make_shared<Pipeline>(pipelineType, pipelineHash, name);
 
             createDescriptorSetLayout(pipeline);
-            if (pipelineType == PipelineType::GRAPHICS) {
+            if (pipelineType == GRAPHICS) {
                 createGraphicsPipeline(pipeline);
-            } else if (pipelineType == PipelineType::COMPUTE) {
+            } else if (pipelineType == COMPUTE) {
                 createComputePipeline(pipeline);
             }
 
@@ -117,7 +117,7 @@ namespace urchin {
             throw std::runtime_error("Uniform texture outputs not setup on pipeline");
         }
 
-        if (pipelineType == PipelineType::GRAPHICS) {
+        if (pipelineType == GRAPHICS) {
             if (!data || data->empty()) {
                 throw std::runtime_error("Data not setup on pipeline");
             }else if ((depthTestEnabled || depthWriteEnabled) && !renderTarget->hasDepthAttachment()) {
@@ -163,9 +163,9 @@ namespace urchin {
         std::vector<VkDescriptorSetLayoutBinding> bindings;
 
         VkShaderStageFlags stageFlags = 0;
-        if (pipelineType == PipelineType::GRAPHICS) {
+        if (pipelineType == GRAPHICS) {
             stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
-        } else if (pipelineType == PipelineType::COMPUTE) {
+        } else if (pipelineType == COMPUTE) {
             stageFlags = VK_SHADER_STAGE_COMPUTE_BIT;
         }
 

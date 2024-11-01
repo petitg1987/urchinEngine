@@ -18,7 +18,7 @@ namespace urchin {
             template<class FILTER> void getModelsInOBBox(const OBBox<float>&, std::vector<Model*>&, const FILTER&) const;
             std::vector<std::shared_ptr<Model>> getAllModels() const;
 
-            std::unique_ptr<AABBoxModel> createDebugGeometries();
+            std::unique_ptr<AABBoxModel> createDebugGeometries() const;
 
             void refresh();
             void postRefresh();

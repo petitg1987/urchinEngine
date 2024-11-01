@@ -11,8 +11,6 @@
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
 #include <scene/renderer3d/model/displayer/ModelInstanceDisplayer.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
-#include <scene/renderer3d/camera/Camera.h>
-#include <resources/geometry/GeometryContainer.h>
 
 namespace urchin {
 

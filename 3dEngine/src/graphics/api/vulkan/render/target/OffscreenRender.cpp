@@ -161,7 +161,7 @@ namespace urchin {
     }
 
     void OffscreenRender::initializeClearValues() {
-        bool hasLoadClear = hasDepthAttachment() && getDepthAttachmentType() != DepthAttachmentType::EXTERNAL_DEPTH_ATTACHMENT;
+        bool hasLoadClear = hasDepthAttachment() && getDepthAttachmentType() != EXTERNAL_DEPTH_ATTACHMENT;
         for (const auto& outputTexture : outputTextures) {
             hasLoadClear = hasLoadClear || outputTexture.loadOperation == LoadType::LOAD_CLEAR;
         }

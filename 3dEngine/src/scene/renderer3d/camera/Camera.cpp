@@ -6,9 +6,9 @@ namespace urchin {
             MOUSE_SENSITIVITY_FACTOR(ConfigService::instance().getFloatValue("camera.mouseSensitivityFactor")),
             mView(Matrix4<float>()),
             mProjection(Matrix4<float>()),
-            position(Point3<float>(0.0f, 0.0f, 0.0f)),
-            view(Vector3<float>(0.0f, 0.0f, -1.0f)),
-            up(Vector3<float>(0.0f, 1.0f, 0.0f)),
+            position(Point3(0.0f, 0.0f, 0.0f)),
+            view(Vector3(0.0f, 0.0f, -1.0f)),
+            up(Vector3(0.0f, 1.0f, 0.0f)),
             horizontalFovAngle(horizontalFovAngle),
             nearPlane(nearPlane),
             farPlane(farPlane),
@@ -20,8 +20,8 @@ namespace urchin {
             sceneWidth(0),
             sceneHeight(0) {
         float verticalFovAngle = computeVerticalFovAngle();
-        baseFrustum = Frustum<float>(verticalFovAngle, 1.0f, nearPlane, farPlane);
-        frustum = Frustum<float>(verticalFovAngle, 1.0f, nearPlane, farPlane);
+        baseFrustum = Frustum(verticalFovAngle, 1.0f, nearPlane, farPlane);
+        frustum = Frustum(verticalFovAngle, 1.0f, nearPlane, farPlane);
     }
 
     void Camera::initialize(unsigned int sceneWidth, unsigned int sceneHeight) {

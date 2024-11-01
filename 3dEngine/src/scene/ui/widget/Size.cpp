@@ -9,11 +9,11 @@ namespace urchin {
             widthType(widthType),
             height(height),
             heightType(heightType) {
-        if (widthType == LengthType::RATIO_TO_WIDTH) {
+        if (widthType == RATIO_TO_WIDTH) {
             throw std::invalid_argument("Width length can not be relative to itself");
-        } else if (heightType == LengthType::RATIO_TO_HEIGHT) {
+        } else if (heightType == RATIO_TO_HEIGHT) {
             throw std::invalid_argument("Height length can not be relative to itself");
-        } else if (widthType == LengthType::RATIO_TO_HEIGHT && heightType == LengthType::RATIO_TO_WIDTH) {
+        } else if (widthType == RATIO_TO_HEIGHT && heightType == RATIO_TO_WIDTH) {
             throw std::invalid_argument("Both length can not be relative to each other");
         }
     }

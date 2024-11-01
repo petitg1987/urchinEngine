@@ -184,11 +184,9 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA8bits(const std::vector<unsigned char>& data, unsigned int imageSize, const std::vector<unsigned char>& colorMap, std::vector<unsigned char>& texels) const {
-        unsigned char color;
-
         for (unsigned int i = 0; i < imageSize; ++i) {
             //reads index color byte
-            color = data[i];
+            unsigned char color = data[i];
 
             //converts to RGB 24 bits
             texels[(i * 3) + 2] = colorMap[(color * 3) + 0];
@@ -198,11 +196,9 @@ namespace urchin {
     }
 
     void LoaderTGA::readTGA16bits(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
-        unsigned short color;
-
         for (unsigned int i = 0, j = 0;i < imageSize; ++i, j += 2) {
             //reads color word
-            color = (unsigned short)(data[j] + (data[j + 1] << 8u));
+            auto color = (unsigned short)(data[j] + (data[j + 1] << 8u));
 
             //converts BGR to RGB
             texels[(i * 3) + 0] = static_cast<unsigned char>(((color & 0x7C00u) >> 10u) << 3u);
@@ -371,18 +367,16 @@ namespace urchin {
 
     void LoaderTGA::readTGAGray8bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         unsigned int j = 0;
-        unsigned char color;
-        unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
         while (ptrIndex < imageSize) {
             //reads first byte
-            packetHeader = data[j++];
+            unsigned char packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
             if (packetHeader & 0x80u) {
                 //run-length packet
-                color = data[j++];
+                unsigned char color = data[j++];
 
                 for (unsigned int i = 0; i < size; ++i, ptrIndex++) {
                     texels[ptrIndex] = color;

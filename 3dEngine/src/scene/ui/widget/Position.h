@@ -8,8 +8,8 @@ namespace urchin {
 
     class Position {
         public:
-            Position(float, LengthType, float, LengthType, RelativeTo = RelativeTo::PARENT_LEFT_TOP, RefPoint = RefPoint::LEFT_TOP);
-            Position(float, float, LengthType, RelativeTo = RelativeTo::PARENT_LEFT_TOP, RefPoint = RefPoint::LEFT_TOP);
+            Position(float, LengthType, float, LengthType, RelativeTo = PARENT_LEFT_TOP, RefPoint = RefPoint::LEFT_TOP);
+            Position(float, float, LengthType, RelativeTo = PARENT_LEFT_TOP, RefPoint = RefPoint::LEFT_TOP);
 
             float getX() const;
             LengthType getXType() const;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include <scene/ui/widget/Widget.h>
 
 namespace urchin {

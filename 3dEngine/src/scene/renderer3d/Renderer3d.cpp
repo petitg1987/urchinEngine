@@ -75,7 +75,7 @@ namespace urchin {
         ambientOcclusionManager.addObserver(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
         shadowManager.addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 
-        sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
+        sceneInfo.sceneSize = Point2((float)sceneWidth, (float)sceneHeight);
         sceneInfo.isShadowActivated = visualConfig.isShadowActivated();
         sceneInfo.isAmbientOcclusionActivated = visualConfig.isAmbientOcclusionActivated();
 
@@ -384,7 +384,7 @@ namespace urchin {
         }
 
         //deferred second pass
-        sceneInfo.sceneSize = Point2<float>((float)sceneWidth, (float)sceneHeight);
+        sceneInfo.sceneSize = Point2((float)sceneWidth, (float)sceneHeight);
         illuminatedTexture = Texture::build("illuminated scene", renderingSceneWidth, renderingSceneHeight, VisualConfig::SCENE_TEXTURE_FORMAT);
         if (deferredSecondPassRenderTarget) {
             auto* deferredSecondPassOffscreenRender = static_cast<OffscreenRender*>(deferredSecondPassRenderTarget.get());
@@ -395,13 +395,13 @@ namespace urchin {
 
         createOrUpdateDeferredSecondPassShader();
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+        std::vector vertexCoord = {
+                Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
+                Point2(-1.0f, -1.0f), Point2(1.0f, 1.0f), Point2(-1.0f, 1.0f)
         };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        std::vector textureCoord = {
+                Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
+                Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
 
         auto deferredSecondPassRendererBuilder = GenericRendererBuilder::create("deferred rendering - second pass", *deferredSecondPassRenderTarget, *deferredSecondPassShader, ShapeType::TRIANGLE)
@@ -442,7 +442,7 @@ namespace urchin {
                 .shadowMapOffsetTexSize = shadowManager.getShadowMapOffsetTexSize(),
                 .maxEmissiveFactor = Material::MAX_EMISSIVE_FACTOR
         };
-        std::vector<std::size_t> variablesSize = {
+        std::vector variablesSize = {
                 sizeof(DeferredSecondPassShaderConst::maxLights),
                 sizeof(DeferredSecondPassShaderConst::ambientOcclusionStrength),
                 sizeof(DeferredSecondPassShaderConst::maxShadowLights),

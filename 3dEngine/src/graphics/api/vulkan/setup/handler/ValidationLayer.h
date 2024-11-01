@@ -21,7 +21,7 @@ namespace urchin {
             void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) const;
             static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT, VkDebugUtilsMessageTypeFlagsEXT, const VkDebugUtilsMessengerCallbackDataEXT*, void*);
             VkResult createDebugUtilsMessengerEXT(VkInstance, const VkDebugUtilsMessengerCreateInfoEXT*);
-            void destroyDebugUtilsMessengerEXT(VkInstance);
+            void destroyDebugUtilsMessengerEXT(VkInstance) const;
             static bool ignoreValidationMessage(std::string_view);
 
             static constexpr unsigned int MAX_ERRORS_LOG = 50;

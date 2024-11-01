@@ -17,7 +17,7 @@ namespace urchin {
 
     class GraphicsSetupService final : public Singleton<GraphicsSetupService> {
         public:
-            friend class Singleton<GraphicsSetupService>;
+            friend class Singleton;
 
             ~GraphicsSetupService() override;
 

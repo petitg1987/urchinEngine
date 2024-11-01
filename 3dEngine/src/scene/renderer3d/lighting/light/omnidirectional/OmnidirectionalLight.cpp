@@ -27,7 +27,7 @@ namespace urchin {
 
         computeScope();
 
-        notifyObservers(this, Light::LIGHT_MOVE);
+        notifyObservers(this, LIGHT_MOVE);
     }
 
     const Point3<float>& OmnidirectionalLight::getPosition() const {
@@ -39,7 +39,7 @@ namespace urchin {
     }
 
     Light::LightType OmnidirectionalLight::getLightType() const {
-        return Light::LightType::OMNIDIRECTIONAL;
+        return LightType::OMNIDIRECTIONAL;
     }
 
     const AABBox<float>& OmnidirectionalLight::getAABBox() const {
@@ -73,7 +73,7 @@ namespace urchin {
      * Computes the sphere scope representing light affectation zone
      */
     void OmnidirectionalLight::computeScope() {
-        float radius = -std::log(Light::ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
+        float radius = -std::log(ATTENUATION_NO_EFFECT) / getExponentialAttenuation();
         sphereScope = std::make_unique<Sphere<float>>(radius, getPosition());
         bboxScope = std::make_unique<AABBox<float>>(getPosition() - radius, getPosition() + radius);
 

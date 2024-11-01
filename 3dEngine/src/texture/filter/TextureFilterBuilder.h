@@ -2,7 +2,6 @@
 
 #include <string>
 #include <memory>
-#include <stdexcept>
 
 #include <texture/filter/TextureFilter.h>
 #include <graphics/texture/TextureType.h>

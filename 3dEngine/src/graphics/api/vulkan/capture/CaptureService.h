@@ -8,7 +8,7 @@ namespace urchin {
 
     class CaptureService : public Singleton<CaptureService> {
         public:
-            friend class Singleton<CaptureService>;
+            friend class Singleton;
 
             void takeCapture(const std::string&, VkImage, VkFormat, unsigned int, unsigned int, unsigned int = 0, unsigned int = 0) const;
 

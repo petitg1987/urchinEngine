@@ -4,7 +4,6 @@
 #include <scene/ui/widget/container/Container.h>
 #include <scene/ui/widget/window/Window.h>
 #include <scene/ui/widget/WidgetTypeUtil.h>
-#include <scene/ui/displayer/WidgetInstanceDisplayer.h>
 #include <scene/ui/displayer/WidgetSetDisplayer.h>
 #include <scene/ui/UIRenderer.h>
 #include <scene/InputDeviceKey.h>
@@ -16,10 +15,10 @@ namespace urchin {
             mouseX(0),
             mouseY(0),
             parent(nullptr),
-            widgetState(Widget::DEFAULT),
+            widgetState(DEFAULT),
             position(position),
             size(size),
-            scale(Vector2<float>(1.0f, 1.0f)),
+            scale(Vector2(1.0f, 1.0f)),
             rotationZ(0.0f),
             alphaFactor(1.0f),
             bIsVisible(true) {
@@ -259,25 +258,25 @@ namespace urchin {
 
     float Widget::getGlobalPositionX() const {
         float startPosition = 0;
-        if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
-                || position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
-                || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY) { //left
+        if (position.getRelativeTo() == PARENT_LEFT_TOP
+                || position.getRelativeTo() == PARENT_LEFT_BOTTOM
+                || position.getRelativeTo() == PARENT_LEFT_CENTERY) { //left
             if (parent) {
                 startPosition = parent->getGlobalPositionX() + (float)parent->getOutline().leftWidth;
             } else {
                 startPosition = 0.0f;
             }
-        } else if (position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
-                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
-                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //right
+        } else if (position.getRelativeTo() == PARENT_RIGHT_TOP
+                || position.getRelativeTo() == PARENT_RIGHT_BOTTOM
+                || position.getRelativeTo() == PARENT_RIGHT_CENTERY) { //right
             if (parent) {
                 startPosition = parent->getGlobalPositionX() - (float)parent->getOutline().rightWidth + parent->getWidth();
             } else {
                 startPosition = (float)getSceneSize().X;
             }
-        } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
-                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP
-                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //center X
+        } else if (position.getRelativeTo() == PARENT_CENTER_XY
+                || position.getRelativeTo() == PARENT_CENTERX_TOP
+                || position.getRelativeTo() == PARENT_CENTERX_BOTTOM) { //center X
             if (parent) {
                 startPosition = parent->getGlobalPositionX() + (float)parent->getOutline().leftWidth + parent->getWidth() / 2.0f;
             } else {
@@ -296,25 +295,25 @@ namespace urchin {
 
     float Widget::getGlobalPositionY() const {
         float startPosition = 0;
-        if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_TOP
-                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_TOP
-                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_TOP) { //top
+        if (position.getRelativeTo() == PARENT_LEFT_TOP
+                || position.getRelativeTo() == PARENT_RIGHT_TOP
+                || position.getRelativeTo() == PARENT_CENTERX_TOP) { //top
             if (parent) {
                 startPosition = parent->getGlobalPositionY() + (float)parent->getOutline().topWidth;
             } else {
                 startPosition = 0.0f;
             }
-        } else if (position.getRelativeTo() == RelativeTo::PARENT_LEFT_BOTTOM
-                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_BOTTOM
-                || position.getRelativeTo() == RelativeTo::PARENT_CENTERX_BOTTOM) { //bottom
+        } else if (position.getRelativeTo() == PARENT_LEFT_BOTTOM
+                || position.getRelativeTo() == PARENT_RIGHT_BOTTOM
+                || position.getRelativeTo() == PARENT_CENTERX_BOTTOM) { //bottom
             if (parent) {
                 startPosition = parent->getGlobalPositionY() - (float)parent->getOutline().bottomWidth + parent->getHeight();
             } else {
                 startPosition = (float)getSceneSize().Y;
             }
-        } else if (position.getRelativeTo() == RelativeTo::PARENT_CENTER_XY
-                || position.getRelativeTo() == RelativeTo::PARENT_LEFT_CENTERY
-                || position.getRelativeTo() == RelativeTo::PARENT_RIGHT_CENTERY) { //center Y
+        } else if (position.getRelativeTo() == PARENT_CENTER_XY
+                || position.getRelativeTo() == PARENT_LEFT_CENTERY
+                || position.getRelativeTo() == PARENT_RIGHT_CENTERY) { //center Y
             if (parent) {
                 startPosition = parent->getGlobalPositionY() + (float)parent->getOutline().topWidth + parent->getHeight() / 2.0f;
             } else {
@@ -366,9 +365,8 @@ namespace urchin {
     }
 
     Rectangle2D<int> Widget::widgetRectangle() const {
-        return Rectangle2D<int>(
-                Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight()));
+        return {Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+            Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + (int)getHeight())};
     }
 
     void Widget::updateScale(const Vector2<float>& scale) {

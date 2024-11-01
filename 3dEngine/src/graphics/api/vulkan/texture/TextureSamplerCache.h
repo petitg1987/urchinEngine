@@ -18,7 +18,7 @@ namespace urchin {
      */
     class TextureSamplerCache final : public Singleton<TextureSamplerCache> {
         public:
-            friend class Singleton<TextureSamplerCache>;
+            friend class Singleton;
             ~TextureSamplerCache() override;
 
             uint64_t computeKey(TextureParam::ReadMode, TextureParam::ReadQuality, TextureParam::Anisotropy, uint32_t) const;

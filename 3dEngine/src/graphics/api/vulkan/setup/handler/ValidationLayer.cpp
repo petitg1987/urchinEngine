@@ -143,7 +143,7 @@ namespace urchin {
         }
     }
 
-    void ValidationLayer::destroyDebugUtilsMessengerEXT(VkInstance instance) {
+    void ValidationLayer::destroyDebugUtilsMessengerEXT(VkInstance instance) const {
         auto func = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
         if (func != nullptr) {
             func(instance, debugMessenger, nullptr);
@@ -151,7 +151,7 @@ namespace urchin {
     }
 
     bool ValidationLayer::ignoreValidationMessage(std::string_view validationMessage) {
-        return std::ranges::any_of(filterOutMessages, [&validationMessage](const auto& filterOutMessage){
+        return std::ranges::any_of(filterOutMessages, [&validationMessage](const auto& filterOutMessage) {
             return validationMessage.find(filterOutMessage) != std::string::npos;
         });
     }

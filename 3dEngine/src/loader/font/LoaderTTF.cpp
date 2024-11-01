@@ -10,8 +10,8 @@
 namespace urchin {
 
     std::shared_ptr<Font> LoaderTTF::loadFromFile(const std::string& ttfFilename, const std::map<std::string, std::string, std::less<>>& params) {
-        assert(params.find("fontSize") != params.end());
-        assert(params.find("fontColor") != params.end());
+        assert(params.contains("fontSize"));
+        assert(params.contains("fontColor"));
         unsigned int fontSize = TypeConverter::toUnsignedInt(params.find("fontSize")->second);
         Vector3<float> fontColor = TypeConverter::toVector3(params.find("fontColor")->second);
         std::array<unsigned char, 3> fontColor255 = {static_cast<unsigned char>(fontColor.X * 255), static_cast<unsigned char>(fontColor.Y * 255), static_cast<unsigned char>(fontColor.Z * 255)};

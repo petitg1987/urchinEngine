@@ -10,7 +10,7 @@ namespace urchin {
 
     class ResourceContainer final : public ThreadSafeSingleton<ResourceContainer> {
         public:
-            friend class ThreadSafeSingleton<ResourceContainer>;
+            friend class ThreadSafeSingleton;
 
             ~ResourceContainer() override;
 

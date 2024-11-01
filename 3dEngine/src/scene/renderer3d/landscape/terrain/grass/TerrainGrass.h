@@ -55,7 +55,7 @@ namespace urchin {
             bool discardGrass(const Image*, float, float, float, float) const;
             unsigned int retrieveVertexIndex(const Point2<float>&) const;
             void buildGrassQuadtree(std::vector<std::unique_ptr<TerrainGrassQuadtree>>, unsigned int, unsigned int);
-            void createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>&);
+            void createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>&) const;
             void generateGrassMesh(std::vector<Point3<float>>&, std::vector<Point2<float>>&) const;
             std::vector<GenericRenderer*> getAllRenderers() const;
 

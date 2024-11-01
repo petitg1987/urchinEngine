@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <limits>
 #include <utility>
 
 #include <resources/model/ConstMesh.h>

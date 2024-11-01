@@ -56,22 +56,22 @@ namespace urchin {
         std::string rightButtonString = rightButtonTextChunk->getStringValue();
 
         //buttons
-        leftButton = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL, getPosition().getRelativeTo(), getPosition().getReferencePoint()), buttonsTextSkin, leftButtonString);
+        leftButton = Text::create(this, Position(-1.0f, -1.0f, PIXEL, getPosition().getRelativeTo(), getPosition().getReferencePoint()), buttonsTextSkin, leftButtonString);
         setupLeftButtonListeners();
         float leftButtonXPos = 0.0f;
         float leftButtonYPos = (getHeight() - leftButton->getHeight()) / 2.0f;
-        leftButton->updatePosition(Position(leftButtonXPos, leftButtonYPos, LengthType::PIXEL));
+        leftButton->updatePosition(Position(leftButtonXPos, leftButtonYPos, PIXEL));
 
-        rightButton = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), buttonsTextSkin, rightButtonString);
+        rightButton = Text::create(this, Position(-1.0f, -1.0f, PIXEL), buttonsTextSkin, rightButtonString);
         setupRightButtonListeners();
         float rightButtonXPos = getWidth() - rightButton->getWidth();
         float rightButtonYPos = (getHeight() - rightButton->getHeight()) / 2.0f;
-        rightButton->updatePosition(Position(rightButtonXPos, rightButtonYPos, LengthType::PIXEL));
+        rightButton->updatePosition(Position(rightButtonXPos, rightButtonYPos, PIXEL));
 
         //values
         valuesText.resize(values.size(), std::shared_ptr<Text>(nullptr));
         for (std::size_t i = 0; i < values.size(); ++i) {
-            valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, LengthType::PIXEL), valuesTextSkin, values[i]);
+            valuesText[i] = Text::create(this, Position(-1.0f, -1.0f, PIXEL), valuesTextSkin, values[i]);
             valuesText[i]->setIsVisible(false);
         }
         valuesText[selectedIndex]->setIsVisible(true);
@@ -140,7 +140,7 @@ namespace urchin {
         //update the text position because the text size is updated when the UI language is changed
         float posX = (getWidth() - valuesText[selectedIndex]->getWidth()) / 2.0f;
         float posY = (getHeight() - valuesText[selectedIndex]->getHeight()) / 2.0f;
-        valuesText[selectedIndex]->updatePosition(Position(posX, posY, LengthType::PIXEL));
+        valuesText[selectedIndex]->updatePosition(Position(posX, posY, PIXEL));
     }
 
     Sequence::ButtonSequenceEventListener::ButtonSequenceEventListener(Sequence* sequence, bool isLeftButton) :

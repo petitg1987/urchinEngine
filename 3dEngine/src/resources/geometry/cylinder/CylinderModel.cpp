@@ -26,18 +26,18 @@ namespace urchin {
         } else if (cylinderOrientation == CylinderShape<float>::CYLINDER_Y) {
             qCylinderOrientation = Quaternion<float>::rotationX(MathValue::PI_FLOAT / 2.0f);
         } else if (cylinderOrientation == CylinderShape<float>::CYLINDER_Z) {
-            qCylinderOrientation = Quaternion<float>(0.0f, 0.0f, 0.0f, 1.0f);
+            qCylinderOrientation = Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
         }
 
         Quaternion<float> localOrientation = cylinder.getOrientation() * qCylinderOrientation;
         for (unsigned int i = 0; i < sides; i++) {
             float x1 = std::cos((float)i * angle) * radius;
             float y1 = std::sin((float)i * angle) * radius;
-            vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, halfHeight)));
-            vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(x1, y1, -halfHeight)));
+            vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3(x1, y1, halfHeight)));
+            vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3(x1, y1, -halfHeight)));
         }
-        vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, halfHeight)));
-        vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3<float>(0.0f, 0.0f, -halfHeight)));
+        vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3(0.0f, 0.0f, halfHeight)));
+        vertexArray.push_back(cylinder.getCenterOfMass() + localOrientation.rotatePoint(Point3(0.0f, 0.0f, -halfHeight)));
 
         indices.reserve(6ul * sides);
         for (uint32_t i = 0; i < sides; i++) {

@@ -45,13 +45,13 @@ namespace urchin {
     void OutputRenderer::createOrUpdateRenderer() {
         createOrUpdateShaders();
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+        std::vector vertexCoord = {
+                Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
+                Point2(-1.0f, -1.0f), Point2(1.0f, 1.0f), Point2(-1.0f, 1.0f)
         };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        std::vector textureCoord = {
+                Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
+                Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
 
         outputRenderer = GenericRendererBuilder::create("output renderer", outputRenderTarget, *outputShader, ShapeType::TRIANGLE)
@@ -66,7 +66,7 @@ namespace urchin {
         outputShader = ShaderBuilder::createShader("outputRenderer.vert.spv", "outputRenderer.frag.spv", outputRenderTarget.isTestMode());
     }
 
-    void OutputRenderer::render(unsigned int renderingOrder) {
+    void OutputRenderer::render(unsigned int renderingOrder) const {
         ScopeProfiler sp(Profiler::graphic(), "outRenderer");
 
         outputRenderer->enableRenderer(renderingOrder);

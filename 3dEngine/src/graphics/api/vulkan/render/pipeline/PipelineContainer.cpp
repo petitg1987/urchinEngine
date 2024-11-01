@@ -19,7 +19,7 @@ namespace urchin {
 
     void PipelineContainer::addPipeline(const std::shared_ptr<Pipeline>& pipeline) {
         #ifdef URCHIN_DEBUG
-            assert(pipelines.find(pipeline->getId()) == pipelines.end());
+            assert(!pipelines.contains(pipeline->getId()));
         #endif
         pipelines.try_emplace(pipeline->getId(), pipeline);
     }

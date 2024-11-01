@@ -7,7 +7,7 @@ namespace urchin {
 
     class ShaderConfig : public Singleton<ShaderConfig> {
         public:
-            friend class Singleton<ShaderConfig>;
+            friend class Singleton;
 
             void replaceShadersParentDirectoryBy(std::string);
 

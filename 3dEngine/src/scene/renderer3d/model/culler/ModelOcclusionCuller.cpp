@@ -78,7 +78,7 @@ namespace urchin {
         return allModels;
     }
 
-    std::unique_ptr<AABBoxModel> ModelOcclusionCuller::createDebugGeometries() {
+    std::unique_ptr<AABBoxModel> ModelOcclusionCuller::createDebugGeometries() const {
         return OctreeRenderer::createOctreeModel(modelOctreeManager);
     }
 

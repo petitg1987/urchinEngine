@@ -495,7 +495,7 @@ namespace urchin {
                 throw std::runtime_error("Failed to begin recording command buffer with error code '" + std::string(string_VkResult(resultCmdBuffer)) + "' on render target: " + getName());
             }
 
-            DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4<float>(0.9f, 1.0f, 0.8f, 1.0f));
+            DebugLabelHelper::beginDebugRegion(commandBuffers[frameIndex], name, Vector4(0.9f, 1.0f, 0.8f, 1.0f));
             for (const TextureCopier& textureCopier : preRenderTextureCopier) {
                 textureCopier.executeCopy(commandBuffers[frameIndex]);
             }

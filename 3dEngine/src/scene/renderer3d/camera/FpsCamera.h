@@ -9,7 +9,7 @@ namespace urchin {
      * - mouse allow to rotate camera based on mouse movements
      * - directional keys allow to move camera forward/backward/left/right
      */
-    class FpsCamera : public Camera {
+    class FpsCamera final : public Camera {
         public:
             FpsCamera(float, float, float);
             ~FpsCamera() override = default;

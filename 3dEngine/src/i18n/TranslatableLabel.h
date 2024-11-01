@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 #include <i18n/LanguageTranslator.h>
 
 namespace urchin {

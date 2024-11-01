@@ -56,14 +56,14 @@ namespace urchin {
 
         ui3dData->normalMatrix = ui3dData->modelMatrix.inverse().transpose();
 
-        Point3<float> topLeft = (ui3dData->modelMatrix * Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)).toPoint3();
-        Point3<float> topRight = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, 0.0f, 0.0f, 1.0f)).toPoint3();
-        Point3<float> bottomRight = (ui3dData->modelMatrix * Point4<float>((float)uiResolution.X, (float)uiResolution.Y, 0.0f, 1.0f)).toPoint3();
+        Point3<float> topLeft = (ui3dData->modelMatrix * Point4(0.0f, 0.0f, 0.0f, 1.0f)).toPoint3();
+        Point3<float> topRight = (ui3dData->modelMatrix * Point4((float)uiResolution.X, 0.0f, 0.0f, 1.0f)).toPoint3();
+        Point3<float> bottomRight = (ui3dData->modelMatrix * Point4((float)uiResolution.X, (float)uiResolution.Y, 0.0f, 1.0f)).toPoint3();
         ui3dData->uiPlane.buildFrom3Points(topLeft, bottomRight, topRight);
         ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
         ui3dData->uiSphereBounding = Sphere<float>(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
 
-        std::vector<std::size_t> variablesSize = {sizeof(ambient)};
+        std::vector variablesSize = {sizeof(ambient)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
         this->uiShader = ShaderBuilder::createShader("ui3d.vert.spv", "ui3d.frag.spv", std::move(shaderConstants), renderTarget.isTestMode());
 
@@ -233,10 +233,10 @@ namespace urchin {
             }
 
             Point2<float> pointer;
-            if (ui3dData->pointerType == UI3dPointerType::MOUSE) {
-                pointer = Point2<float>((float)rawMouseX, (float)rawMouseY);
-            } else if (ui3dData->pointerType == UI3dPointerType::SCREEN_CENTER) {
-                pointer = Point2<float>((float)renderTarget.getWidth() / 2.0f, (float)renderTarget.getHeight() / 2.0f);
+            if (ui3dData->pointerType == MOUSE) {
+                pointer = Point2((float)rawMouseX, (float)rawMouseY);
+            } else if (ui3dData->pointerType == SCREEN_CENTER) {
+                pointer = Point2((float)renderTarget.getWidth() / 2.0f, (float)renderTarget.getHeight() / 2.0f);
             } else {
                  throw std::runtime_error("Unknown pointer type: " + std::to_string(ui3dData->pointerType));
             }
@@ -259,11 +259,11 @@ namespace urchin {
                 return false; //cursor outside UI plane
             }
 
-            adjustedMouseCoord = Point2<int>((int)mouseScreen.X, (int)mouseScreen.Y);
+            adjustedMouseCoord = Point2((int)mouseScreen.X, (int)mouseScreen.Y);
             return true;
         }
 
-        adjustedMouseCoord = Point2<int>((int)rawMouseX, (int)rawMouseY);
+        adjustedMouseCoord = Point2((int)rawMouseX, (int)rawMouseY);
         return true;
     }
 
@@ -292,7 +292,7 @@ namespace urchin {
         return i18nService;
     }
 
-    Clipboard& UIRenderer::getClipboard() {
+    Clipboard& UIRenderer::getClipboard() const {
         return *clipboard;
     }
 

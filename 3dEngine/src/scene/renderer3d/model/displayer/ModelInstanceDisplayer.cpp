@@ -295,12 +295,12 @@ namespace urchin {
         return (unsigned int)instanceModels.size();
     }
 
-    void ModelInstanceDisplayer::resetRenderingModels() {
+    void ModelInstanceDisplayer::resetRenderingModels() const {
         instanceMatrices.clear();
         instanceModelMatrices.clear();
     }
 
-    void ModelInstanceDisplayer::registerRenderingModel(const Model& model) {
+    void ModelInstanceDisplayer::registerRenderingModel(const Model& model) const {
         #ifdef URCHIN_DEBUG
             assert(model.computeInstanceId(displayMode) == instanceId);
         #endif

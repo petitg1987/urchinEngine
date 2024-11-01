@@ -43,10 +43,10 @@ namespace urchin {
 
     void GaussianBlurFilter::completeRenderer(const std::shared_ptr<GenericRendererBuilder>& textureRendererBuilder, const std::shared_ptr<TextureReader>& sourceTextureReader) {
         Vector2<float> directionVector;
-        if (blurDirection == BlurDirection::VERTICAL) {
-            directionVector = Vector2<float>(0.0f, 1.0f);
+        if (blurDirection == VERTICAL) {
+            directionVector = Vector2(0.0f, 1.0f);
         } else {
-            directionVector = Vector2<float>(1.0f, 0.0f);
+            directionVector = Vector2(1.0f, 0.0f);
         }
 
         textureRendererBuilder
@@ -60,7 +60,7 @@ namespace urchin {
         GaussianBlurShaderConst gaussianBlurData{};
         gaussianBlurData.blurRadius = blurRadius;
         gaussianBlurData.maxBlurDistance = maxBlurDistance;
-        std::vector<std::size_t> variablesSize = {
+        std::vector variablesSize = {
                 sizeof(GaussianBlurShaderConst::blurRadius),
                 sizeof(GaussianBlurShaderConst::maxBlurDistance)
         };

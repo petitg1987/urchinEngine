@@ -2,8 +2,6 @@
 
 #include <chrono>
 #include <vector>
-#include <array>
-#include <UrchinCommon.h>
 
 #include <scene/InputDeviceKey.h>
 #include <scene/renderer3d/Renderer3d.h>

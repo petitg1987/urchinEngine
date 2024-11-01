@@ -1,6 +1,5 @@
 #pragma once
 
-#include <set>
 #include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
@@ -56,7 +55,7 @@ namespace urchin {
 
             RenderTarget& getRenderTarget() const;
             I18nService& getI18nService() const;
-            Clipboard& getClipboard();
+            Clipboard& getClipboard() const;
             const Point2<int>& getUiResolution() const;
             Shader& getShader() const;
             UI3dData* getUi3dData() const;

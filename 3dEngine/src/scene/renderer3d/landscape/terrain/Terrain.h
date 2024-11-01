@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <memory>
 #include <UrchinCommon.h>
 
@@ -10,7 +8,6 @@
 #include <scene/renderer3d/landscape/terrain/TerrainMesh.h>
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
 #include <scene/renderer3d/camera/Camera.h>
-#include <resources/image/Image.h>
 
 namespace urchin {
 

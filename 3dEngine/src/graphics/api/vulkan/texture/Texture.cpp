@@ -7,7 +7,6 @@
 #include <graphics/api/vulkan/helper/BufferHelper.h>
 #include <graphics/api/vulkan/helper/CommandBufferHelper.h>
 #include <graphics/api/vulkan/helper/ImageHelper.h>
-#include <pattern/singleton/Singleton.h>
 
 namespace urchin {
 
@@ -52,14 +51,14 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::build(std::string name, unsigned int width, unsigned int height, TextureFormat format, const void* dataPtr, TextureDataType textureDataType) {
-        std::vector<const void*> allDataPtr(1, dataPtr);
+        std::vector allDataPtr(1, dataPtr);
         auto texture = std::shared_ptr<Texture>(new Texture(TextureType::DEFAULT, width, height, 1, format, allDataPtr, textureDataType));
         texture->setName(std::move(name));
         return texture;
     }
 
     std::shared_ptr<Texture> Texture::buildArray(std::string name, unsigned int width, unsigned int height, unsigned int layer, TextureFormat format, const void* dataPtr, TextureDataType textureDataType) {
-        std::vector<const void*> allDataPtr(1, dataPtr);
+        std::vector allDataPtr(1, dataPtr);
         auto texture = std::shared_ptr<Texture>(new Texture(TextureType::ARRAY, width, height, layer, format, allDataPtr, textureDataType));
         texture->setName(std::move(name));
         return texture;
@@ -90,7 +89,7 @@ namespace urchin {
     }
 
     std::shared_ptr<Texture> Texture::buildEmptyArrayRg(std::string name) {
-        std::array<float, 4> textureArrayData = {
+        std::array textureArrayData = {
                 0.0f, 0.25f,
                 0.5f, 1.0f
         };

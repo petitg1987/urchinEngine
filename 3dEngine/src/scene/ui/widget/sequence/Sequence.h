@@ -44,7 +44,7 @@ namespace urchin {
 
             std::shared_ptr<EventListener> leftButtonEventListener;
             std::shared_ptr<EventListener> rightButtonEventListener;
-            class ButtonSequenceEventListener : public EventListener {
+            class ButtonSequenceEventListener final : public EventListener {
                 public:
                     ButtonSequenceEventListener(Sequence*, bool);
                     bool onMouseLeftClickRelease(Widget*) override;

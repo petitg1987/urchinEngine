@@ -18,7 +18,7 @@ namespace urchin {
      * Contains all the constant/common data for an animation.
      * Two identical models can use the instance of this class.
      */
-    class ConstAnimation : public Resource {
+    class ConstAnimation final : public Resource {
         public:
             ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, std::vector<std::vector<Bone>>, std::vector<AABBox<float>>);
             ~ConstAnimation() override = default;

@@ -109,13 +109,13 @@ namespace urchin {
     void ReflectionApplier::createOrUpdateRenderers() {
         createOrUpdateShaders();
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+        std::vector vertexCoord = {
+                Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
+                Point2(-1.0f, -1.0f), Point2(1.0f, 1.0f), Point2(-1.0f, 1.0f)
         };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        std::vector textureCoord = {
+                Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
+                Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
 
         reflectionColorRenderer = GenericRendererBuilder::create("reflection color", *reflectionColorRenderTarget, *reflectionColorShader, ShapeType::TRIANGLE)
@@ -164,9 +164,9 @@ namespace urchin {
     }
 
     int ReflectionApplier::retrieveTextureSizeFactor() const {
-        if (config.textureSize == ReflectionTextureSize::FULL_SIZE) {
+        if (config.textureSize == FULL_SIZE) {
             return 1;
-        } else if (config.textureSize == ReflectionTextureSize::HALF_SIZE) {
+        } else if (config.textureSize == HALF_SIZE) {
             return 2;
         }
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));

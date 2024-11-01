@@ -1,7 +1,6 @@
 #pragma once
 
 #include <graphics/api/vulkan/render/target/RenderTarget.h>
-#include <scene/renderer3d/camera/Camera.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
 #include <graphics/api/vulkan/render/GenericRenderer.h>
 
@@ -15,7 +14,7 @@ namespace urchin {
             void refreshInputTexture(const std::shared_ptr<Texture>&);
             void onGammaFactorUpdate(float);
 
-            void render(unsigned int);
+            void render(unsigned int) const;
 
         private:
             void createOrUpdateRenderingObjects();

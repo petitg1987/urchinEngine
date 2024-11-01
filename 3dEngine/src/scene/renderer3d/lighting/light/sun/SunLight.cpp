@@ -13,7 +13,7 @@ namespace urchin {
         this->directions.clear();
         this->directions.emplace_back(direction);
 
-        notifyObservers(this, Light::LIGHT_MOVE);
+        notifyObservers(this, LIGHT_MOVE);
     }
 
     const std::vector<Vector3<float>>& SunLight::getDirections() const {
@@ -25,7 +25,7 @@ namespace urchin {
     }
 
     Light::LightType SunLight::getLightType() const {
-        return Light::LightType::SUN;
+        return LightType::SUN;
     }
 
     const AABBox<float>& SunLight::getAABBox() const {

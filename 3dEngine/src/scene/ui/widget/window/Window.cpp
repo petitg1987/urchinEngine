@@ -36,8 +36,8 @@ namespace urchin {
 
         if (!titleKey.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), windowChunk);
-            title = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), i18n(titleKey));
-            title->updatePosition(Position(0.0f, -((float)getOutline().topWidth + title->getHeight()) / 2.0f, LengthType::PIXEL));
+            title = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), i18n(titleKey));
+            title->updatePosition(Position(0.0f, -((float)getOutline().topWidth + title->getHeight()) / 2.0f, PIXEL));
         }
     }
 
@@ -52,10 +52,10 @@ namespace urchin {
     bool Window::onKeyPressEvent(InputDeviceKey key) {
         bool propagateEvent = true;
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            Rectangle2D titleZone(Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                                  Point2<int>((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY() + getOutline().topWidth));
-            Rectangle2D closeZone(Point2<int>((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
-                                  Point2<int>((int)getGlobalPositionX() + (int) getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
+            Rectangle2D titleZone(Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                                  Point2((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY() + getOutline().topWidth));
+            Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
+                                  Point2((int)getGlobalPositionX() + (int) getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
 
             if (!getUi3dData() && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
                 mousePositionX = getMouseX() - MathFunction::roundToInt(getPositionX());
@@ -63,11 +63,11 @@ namespace urchin {
                 state = MOVING;
             }
 
-            if (closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = CLOSING;
             }
 
-            if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 notifyObservers(this, SET_IN_FOREGROUND);
                 propagateEvent = false;
             }
@@ -77,9 +77,9 @@ namespace urchin {
     }
 
     bool Window::onKeyReleaseEvent(InputDeviceKey key) {
-        Rectangle2D closeZone(Point2<int>((int)getGlobalPositionX() + ((int)getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
-                              Point2<int>((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
-        if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+        Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int)getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
+                              Point2((int)getGlobalPositionX() + (int)getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
+        if (key == InputDeviceKey::MOUSE_LEFT && state == CLOSING && closeZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
             setIsVisible(false);
         }
 
@@ -101,7 +101,7 @@ namespace urchin {
                                     positionLengthY, getPosition().getYType(),
                                     getPosition().getRelativeTo(), getPosition().getReferencePoint()));
             propagateEvent = false;
-        } else if (widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
+        } else if (widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
             propagateEvent = false;
         }
 

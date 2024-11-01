@@ -7,10 +7,10 @@
 
 namespace urchin {
 
-    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, TextureRenderer::ColorType colorType) :
+    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, ColorType colorType) :
             isInitialized(false),
-            coordinateX(TextureRenderer::LEFT),
-            coordinateY(TextureRenderer::BOTTOM),
+            coordinateX(LEFT),
+            coordinateY(BOTTOM),
             fullScreen(false),
             transparencyEnabled(false),
             userMinX(0.0),
@@ -25,10 +25,10 @@ namespace urchin {
         renderingData.layer = -1;
     }
 
-    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, unsigned int layer, TextureRenderer::ColorType colorType) :
+    TextureRenderer::TextureRenderer(std::shared_ptr<Texture> texture, unsigned int layer, ColorType colorType) :
             isInitialized(false),
-            coordinateX(TextureRenderer::LEFT),
-            coordinateY(TextureRenderer::BOTTOM),
+            coordinateX(LEFT),
+            coordinateY(BOTTOM),
             fullScreen(false),
             transparencyEnabled(false),
             userMinX(0.0),
@@ -45,7 +45,7 @@ namespace urchin {
         renderingData.layer = (int)layer;
     }
 
-    void TextureRenderer::setPosition(TextureRenderer::CoordinateX coordinateX, TextureRenderer::CoordinateY coordinateY) {
+    void TextureRenderer::setPosition(CoordinateX coordinateX, CoordinateY coordinateY) {
         if (isInitialized) {
             throw std::runtime_error("No position update allowed after initialization.");
         }
@@ -109,19 +109,19 @@ namespace urchin {
             maxY = (float)sceneHeight;
         } else {
             switch(coordinateX) {
-                case TextureRenderer::LEFT:
+                case LEFT:
                     minX = (float)sceneWidth * 0.025f;
                     maxX = (float)sceneWidth * 0.325f;
                     break;
-                case TextureRenderer::CENTER_X:
+                case CENTER_X:
                     minX = (float)sceneWidth * 0.35f;
                     maxX = (float)sceneWidth * 0.65f;
                     break;
-                case TextureRenderer::RIGHT:
+                case RIGHT:
                     minX = (float)sceneWidth * 0.675f;
                     maxX = (float)sceneWidth * 0.975f;
                     break;
-                case TextureRenderer::USER_DEFINED_X:
+                case USER_DEFINED_X:
                     minX = userMinX;
                     maxX = userMaxX;
                     break;
@@ -130,19 +130,19 @@ namespace urchin {
             }
 
             switch(coordinateY) {
-                case TextureRenderer::BOTTOM:
+                case BOTTOM:
                     minY = (float)sceneHeight * 0.675f;
                     maxY = (float)sceneHeight * 0.975f;
                     break;
-                case TextureRenderer::CENTER_Y:
+                case CENTER_Y:
                     minY = (float)sceneHeight * 0.35f;
                     maxY = (float)sceneHeight * 0.65f;
                     break;
-                case TextureRenderer::TOP:
+                case TOP:
                     minY = (float)sceneHeight * 0.025f;
                     maxY = (float)sceneHeight * 0.325f;
                     break;
-                case TextureRenderer::USER_DEFINED_Y:
+                case USER_DEFINED_Y:
                     minY = userMinY;
                     maxY = userMaxY;
                     break;
@@ -158,13 +158,13 @@ namespace urchin {
                               0.0f, 0.0f, 0.0f, 1.0f);
 
         //update the display
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(minX, minY), Point2<float>(maxX, minY), Point2<float>(maxX, maxY),
-                Point2<float>(minX, minY), Point2<float>(maxX, maxY), Point2<float>(minX, maxY)
+        std::vector vertexCoord = {
+                Point2(minX, minY), Point2(maxX, minY), Point2(maxX, maxY),
+                Point2(minX, minY), Point2(maxX, maxY), Point2(minX, maxY)
         };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        std::vector textureCoord = {
+                Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
+                Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
         auto rendererBuilder = GenericRendererBuilder::create(std::move(name), renderTarget, *displayTextureShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)
@@ -182,10 +182,10 @@ namespace urchin {
 
     void TextureRenderer::initializeShader(bool isTestMode) {
         TextureRendererShaderConst trConstData{};
-        trConstData.isDefaultValue = colorType == ColorType::DEFAULT_VALUE;
-        trConstData.isGrayscaleValue = colorType == ColorType::GRAYSCALE_VALUE;
-        trConstData.isInverseGrayscaleValue = colorType == ColorType::INVERSE_GRAYSCALE_VALUE;
-        std::vector<std::size_t> variablesSize = {
+        trConstData.isDefaultValue = colorType == DEFAULT_VALUE;
+        trConstData.isGrayscaleValue = colorType == GRAYSCALE_VALUE;
+        trConstData.isInverseGrayscaleValue = colorType == INVERSE_GRAYSCALE_VALUE;
+        std::vector variablesSize = {
                 sizeof(TextureRendererShaderConst::isDefaultValue),
                 sizeof(TextureRendererShaderConst::isGrayscaleValue),
                 sizeof(TextureRendererShaderConst::isInverseGrayscaleValue)

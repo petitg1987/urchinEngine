@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     void UIAnimationTranslate::initializeAnimation() {
-        startPosition = Point2<float>(getWidget().getPosition().getX(), getWidget().getPosition().getY());
+        startPosition = Point2(getWidget().getPosition().getX(), getWidget().getPosition().getY());
     }
 
     void UIAnimationTranslate::doAnimation(float dt) {

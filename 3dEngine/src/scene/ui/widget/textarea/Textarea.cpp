@@ -112,14 +112,14 @@ namespace urchin {
         if (key == InputDeviceKey::CTRL) {
             ctrlKeyPressed = true;
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
-            if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 changeTexture(texTextareaFocus);
 
                 Rectangle2D textZone(
-                        Point2<int>((int)getGlobalPositionX(), (int)getGlobalPositionY()),
-                        Point2<int>((int)getGlobalPositionX() + (int)getWidth() - (int)scrollbarWidthInPixel, (int)getGlobalPositionY() + (int)getHeight()));
-                if (textZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+                        Point2((int)getGlobalPositionX(), (int)getGlobalPositionY()),
+                        Point2((int)getGlobalPositionX() + (int)getWidth() - (int)scrollbarWidthInPixel, (int)getGlobalPositionY() + (int)getHeight()));
+                if (textZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                     int localMouseX = getMouseX() - MathFunction::roundToInt(text->getGlobalPositionX());
                     int localMouseY = getMouseY() - MathFunction::roundToInt(text->getGlobalPositionY());
                     cursorIndex = computeCursorIndex(localMouseX, localMouseY);
@@ -418,8 +418,8 @@ namespace urchin {
             std::size_t endOfCurrentLineIndex = text->baseTextIndexToEndOfLineIndex(currentSelectionIndex);
             endOfCurrentLineIndex = std::min(endOfCurrentLineIndex, displaySelectionEndIndex);
 
-            Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
-            Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex, WordCutIndexPositioning::END_OF_LINE) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
+            Point2<int> displaySelectionStartPos = computeCursorPosition(currentSelectionIndex, WordCutIndexPositioning::BEGIN_OF_NEXT_LINE) + Point2(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
+            Point2<int> displaySelectionEndPos = computeCursorPosition(endOfCurrentLineIndex, WordCutIndexPositioning::END_OF_LINE) + Point2(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
             Position selectionPosition((float) displaySelectionStartPos.X, (float) displaySelectionStartPos.Y, PIXEL);
             Size selectionSize((float) (displaySelectionEndPos.X - displaySelectionStartPos.X), (float) (displaySelectionEndPos.Y - displaySelectionStartPos.Y), PIXEL);

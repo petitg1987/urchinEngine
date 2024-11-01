@@ -2,11 +2,9 @@
 
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/displayer/DisplayMode.h>
-#include <scene/renderer3d/camera/Camera.h>
 #include <scene/renderer3d/model/displayer/MeshFilter.h>
 #include <scene/renderer3d/model/displayer/CustomModelShaderVariable.h>
 #include <resources/geometry/aabbox/AABBoxModel.h>
-#include <resources/geometry/GeometryContainer.h>
 
 namespace urchin {
 
@@ -40,8 +38,8 @@ namespace urchin {
             void removeInstanceModel(Model&);
             unsigned int getInstanceCount() const;
 
-            void resetRenderingModels();
-            void registerRenderingModel(const Model&);
+            void resetRenderingModels() const;
+            void registerRenderingModel(const Model&) const;
             void prepareRendering(unsigned int, const Matrix4<float>&, const MeshFilter*) const;
 
             void drawBBox(GeometryContainer&);

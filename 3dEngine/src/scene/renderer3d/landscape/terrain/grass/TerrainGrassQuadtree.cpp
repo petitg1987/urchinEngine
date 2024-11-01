@@ -62,7 +62,7 @@ namespace urchin {
     }
 
     void TerrainGrassQuadtree::addGrassInstanceData(const Point3<float>& grassPosition, const Vector3<float>& grassNormal) {
-        std::scoped_lock<std::mutex> lock(mutexAddVertex);
+        std::scoped_lock lock(mutexAddVertex);
 
         assert(children.empty());
         assert(bbox == nullptr);

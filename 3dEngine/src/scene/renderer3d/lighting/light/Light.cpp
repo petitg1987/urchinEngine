@@ -36,7 +36,7 @@ namespace urchin {
     void Light::setProduceShadow(bool produceShadow) {
         this->produceShadow = produceShadow;
 
-        notifyObservers(this, Light::PRODUCE_SHADOW);
+        notifyObservers(this, PRODUCE_SHADOW);
     }
 
     bool Light::isProduceShadow() const {

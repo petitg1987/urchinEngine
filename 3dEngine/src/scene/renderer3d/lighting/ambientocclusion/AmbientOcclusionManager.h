@@ -8,7 +8,7 @@
 
 namespace urchin {
 
-    class AmbientOcclusionManager : public Observable {
+    class AmbientOcclusionManager final : public Observable {
         public:
             enum NotificationType {
                 AMBIENT_OCCLUSION_STRENGTH_UPDATE

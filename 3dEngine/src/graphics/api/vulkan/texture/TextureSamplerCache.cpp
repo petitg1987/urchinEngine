@@ -18,7 +18,7 @@ namespace urchin {
 
     void TextureSamplerCache::registerTextureSampler(uint64_t key, VkSampler sampler) {
         #ifdef URCHIN_DEBUG
-            assert(samplersCache.find(key) == samplersCache.end());
+            assert(!samplersCache.contains(key));
         #endif
 
         SharedSampler sharedSampler = {1, sampler};

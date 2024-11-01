@@ -38,7 +38,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::refreshInputTextures(const std::shared_ptr<Texture>& depthTexture, const std::shared_ptr<Texture>& normalAndAmbientTexture) {
         if (depthTexture.get() != this->depthTexture.get() || normalAndAmbientTexture.get() != this->normalAndAmbientTexture.get()) {
-            this->sceneResolution = Vector2<float>((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
+            this->sceneResolution = Vector2((float)depthTexture->getWidth(), (float)depthTexture->getHeight());
             this->depthTexture = depthTexture;
             this->normalAndAmbientTexture = normalAndAmbientTexture;
 
@@ -114,7 +114,7 @@ namespace urchin {
 
         createOrUpdateAOShader();
 
-        compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2<int>(8, 8))
+        compute = GenericComputeBuilder::create("ambient occlusion comp", *renderTarget, *ambientOcclusionShader, Vector2(8, 8))
                 ->addUniformData(PROJECTION_UNIFORM_BINDING, sizeof(projection), &projection)
                 ->addUniformData(POSITIONING_DATA_UNIFORM_BINDING, sizeof(positioningData), &positioningData)
                 ->addUniformData(SSAO_KERNEL_UNIFORM_BINDING, sizeof(Vector4<float>) * ssaoKernel.size(), ssaoKernel.data())
@@ -148,7 +148,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::generateKernelSamples() {
         unsigned int seed = 0; //no need to generate different random numbers at each start
-        std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
+        std::uniform_real_distribution randomFloats(0.0f, 1.0f);
         std::default_random_engine generator(seed);
 
         ssaoKernel.resize(config.kernelSamples);
@@ -189,9 +189,9 @@ namespace urchin {
 
     void AmbientOcclusionManager::exportSVG(std::string filename, const std::vector<Vector4<float>>& ssaoKernel) const {
         SVGExporter svgExporter(std::move(filename));
-        svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(0.0f, 0.0f), 1.0f, SVGColor::BLUE));
+        svgExporter.addShape(std::make_unique<SVGCircle>(Point2(0.0f, 0.0f), 1.0f, BLUE));
         for (const auto& kernel : ssaoKernel) {
-            svgExporter.addShape(std::make_unique<SVGCircle>(Point2<float>(kernel.X, kernel.Y), 0.01f, SVGColor::LIME));
+            svgExporter.addShape(std::make_unique<SVGCircle>(Point2(kernel.X, kernel.Y), 0.01f, LIME));
         }
         svgExporter.generateSVG();
     }

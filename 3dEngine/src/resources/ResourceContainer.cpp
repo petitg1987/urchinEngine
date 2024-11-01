@@ -17,9 +17,9 @@ namespace urchin {
     }
 
     void ResourceContainer::addResource(const std::shared_ptr<Resource>& resource) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
         #ifdef URCHIN_DEBUG
-            assert(resources.find(resource->getId()) == resources.end());
+            assert(!resources.contains(resource->getId()));
         #endif
         resources.try_emplace(resource->getId(), resource);
     }
@@ -29,7 +29,7 @@ namespace urchin {
     }
 
     void ResourceContainer::cleanResources(bool forceClean) {
-        std::scoped_lock<std::mutex> lock(mutex);
+        std::scoped_lock lock(mutex);
 
         bool resourcesDestroyed;
         do {

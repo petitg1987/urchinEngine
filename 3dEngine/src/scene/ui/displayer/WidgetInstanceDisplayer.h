@@ -15,8 +15,8 @@ namespace urchin {
 
             void onUiRendererSizeUpdated();
             void onGammaFactorUpdated();
-            void updateTexture();
-            void updateScissor();
+            void updateTexture() const;
+            void updateScissor() const;
             void updateCoordinates();
             void updateAlphaFactor();
 
@@ -29,8 +29,8 @@ namespace urchin {
             void removeInstanceWidget(Widget&);
             unsigned int getInstanceCount() const;
 
-            void resetRenderingWidgets();
-            void registerRenderingWidget(const Widget&);
+            void resetRenderingWidgets() const;
+            void registerRenderingWidget(const Widget&) const;
             void prepareRendering(unsigned int, const Matrix4<float>&) const;
 
         private:

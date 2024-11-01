@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include <resources/Resource.h>
 #include <resources/image/Image.h>
 #include <resources/material/UvScale.h>
@@ -11,7 +9,7 @@ namespace urchin {
 
     class MaterialBuilder;
 
-    class Material : public Resource {
+    class Material final : public Resource {
         public:
             explicit Material(const MaterialBuilder&);
             ~Material() override = default;

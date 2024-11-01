@@ -8,10 +8,11 @@ namespace urchin {
 
     bool UnicodeUtil::isCharacterDisplayable(char32_t unicodeCharacter) {
         return isCharacterManaged(unicodeCharacter)
+                && unicodeCharacter != 8 //ignore 'Backspace' unicode
+               && unicodeCharacter != 127 //ignore 'Delete' unicode
                && unicodeCharacter > 0x1F //ignore 'Controls C0' unicode
-               && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F) //ignore 'Controls C1' unicode
-               && unicodeCharacter != 8 //ignore 'Backspace' unicode
-               && unicodeCharacter != 127; //ignore 'Delete' unicode
+               && (unicodeCharacter < 0x80 || unicodeCharacter > 0x9F); //ignore 'Controls C1' unicode
+
     }
 
 }

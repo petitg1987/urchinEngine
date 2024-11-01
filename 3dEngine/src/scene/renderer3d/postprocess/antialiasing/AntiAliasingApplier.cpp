@@ -1,5 +1,3 @@
-#include <map>
-
 #include <scene/renderer3d/VisualConfig.h>
 #include <scene/renderer3d/postprocess/antialiasing/AntiAliasingApplier.h>
 #include <graphics/render/shader/ShaderBuilder.h>
@@ -19,7 +17,7 @@ namespace urchin {
 
     void AntiAliasingApplier::refreshInputTexture(const std::shared_ptr<Texture>& inputTexture) {
         if (inputTexture.get() != this->inputTexture.get()) {
-            this->invSceneSize = Point2<float>(1.0f / (float) inputTexture->getWidth(), 1.0f / (float) inputTexture->getHeight());
+            this->invSceneSize = Point2(1.0f / (float) inputTexture->getWidth(), 1.0f / (float) inputTexture->getHeight());
             this->inputTexture = inputTexture;
 
             clearRenderer();
@@ -48,13 +46,13 @@ namespace urchin {
     void AntiAliasingApplier::createOrUpdateRenderer() {
         createOrUpdateFxaaShader();
 
-        std::vector<Point2<float>> vertexCoord = {
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, -1.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(-1.0f, -1.0f), Point2<float>(1.0f, 1.0f), Point2<float>(-1.0f, 1.0f)
+        std::vector vertexCoord = {
+                Point2(-1.0f, -1.0f), Point2(1.0f, -1.0f), Point2(1.0f, 1.0f),
+                Point2(-1.0f, -1.0f), Point2(1.0f, 1.0f), Point2(-1.0f, 1.0f)
         };
-        std::vector<Point2<float>> textureCoord = {
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 0.0f), Point2<float>(1.0f, 1.0f),
-                Point2<float>(0.0f, 0.0f), Point2<float>(1.0f, 1.0f), Point2<float>(0.0f, 1.0f)
+        std::vector textureCoord = {
+                Point2(0.0f, 0.0f), Point2(1.0f, 0.0f), Point2(1.0f, 1.0f),
+                Point2(0.0f, 0.0f), Point2(1.0f, 1.0f), Point2(0.0f, 1.0f)
         };
         renderer = GenericRendererBuilder::create("anti aliasing", *renderTarget, *fxaaShader, ShapeType::TRIANGLE)
                 ->addData(vertexCoord)

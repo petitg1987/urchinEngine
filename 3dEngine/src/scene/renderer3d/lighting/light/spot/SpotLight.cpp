@@ -23,7 +23,7 @@ namespace urchin {
 
         computeScope();
 
-        notifyObservers(this, Light::LIGHT_MOVE);
+        notifyObservers(this, LIGHT_MOVE);
     }
 
     const Point3<float>& SpotLight::getPosition() const {
@@ -36,7 +36,7 @@ namespace urchin {
 
         computeScope();
 
-        notifyObservers(this, Light::LIGHT_MOVE);
+        notifyObservers(this, LIGHT_MOVE);
     }
 
     const std::vector<Vector3<float>>& SpotLight::getDirections() const {
@@ -79,7 +79,7 @@ namespace urchin {
     }
 
     Light::LightType SpotLight::getLightType() const {
-        return Light::LightType::SPOT;
+        return LightType::SPOT;
     }
 
     const AABBox<float>& SpotLight::getAABBox() const {

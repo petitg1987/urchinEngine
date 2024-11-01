@@ -86,46 +86,46 @@ namespace urchin {
         skyboxShader = ShaderBuilder::createShader("skybox.vert.spv", "skybox.frag.spv", renderTarget.isTestMode());
 
         constexpr float SIZE = 10.0f;
-        std::vector<Point3<float>> vertexCoord = {
+        std::vector vertexCoord = {
             //x negative:
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, -SIZE),
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE),
+            Point3(-SIZE, -SIZE, SIZE), Point3(-SIZE, SIZE, SIZE), Point3(-SIZE, SIZE, -SIZE),
+            Point3(-SIZE, -SIZE, SIZE), Point3(-SIZE, SIZE, -SIZE), Point3(-SIZE, -SIZE, -SIZE),
             //x positive:
-            Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, SIZE),
-            Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(SIZE, -SIZE, SIZE),
+            Point3(SIZE, -SIZE, -SIZE), Point3(SIZE, SIZE, -SIZE), Point3(SIZE, SIZE, SIZE),
+            Point3(SIZE, -SIZE, -SIZE), Point3(SIZE, SIZE, SIZE), Point3(SIZE, -SIZE, SIZE),
             //y negative:
-            Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(SIZE, -SIZE, SIZE),
-            Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(-SIZE, -SIZE, SIZE),
+            Point3(-SIZE, -SIZE, -SIZE), Point3(SIZE, -SIZE, -SIZE), Point3(SIZE, -SIZE, SIZE),
+            Point3(-SIZE, -SIZE, -SIZE), Point3(SIZE, -SIZE, SIZE), Point3(-SIZE, -SIZE, SIZE),
             //y positive:
-            Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(SIZE, SIZE, -SIZE),
-            Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(-SIZE, SIZE, -SIZE),
+            Point3(-SIZE, SIZE, SIZE), Point3(SIZE, SIZE, SIZE), Point3(SIZE, SIZE, -SIZE),
+            Point3(-SIZE, SIZE, SIZE), Point3(SIZE, SIZE, -SIZE), Point3(-SIZE, SIZE, -SIZE),
             //z negative:
-            Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE),
-            Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, -SIZE, -SIZE),
+            Point3(-SIZE, -SIZE, -SIZE), Point3(-SIZE, SIZE, -SIZE), Point3(SIZE, SIZE, -SIZE),
+            Point3(-SIZE, -SIZE, -SIZE), Point3(SIZE, SIZE, -SIZE), Point3(SIZE, -SIZE, -SIZE),
             //z positive:
-            Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE),
-            Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(-SIZE, -SIZE, SIZE),
+            Point3(SIZE, -SIZE, SIZE), Point3(SIZE, SIZE, SIZE), Point3(-SIZE, SIZE, SIZE),
+            Point3(SIZE, -SIZE, SIZE), Point3(-SIZE, SIZE, SIZE), Point3(-SIZE, -SIZE, SIZE),
         };
 
-        std::vector<Point3<float>> textureCoord = {
+        std::vector textureCoord = {
             //x negative:
-            Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(SIZE, SIZE, -SIZE),
-            Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, -SIZE, -SIZE),
+            Point3(SIZE, -SIZE, SIZE), Point3(SIZE, SIZE, SIZE), Point3(SIZE, SIZE, -SIZE),
+            Point3(SIZE, -SIZE, SIZE), Point3(SIZE, SIZE, -SIZE), Point3(SIZE, -SIZE, -SIZE),
             //x positive:
-            Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(-SIZE, SIZE, SIZE),
-            Point3<float>(-SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(-SIZE, -SIZE, SIZE),
+            Point3(-SIZE, -SIZE, -SIZE), Point3(-SIZE, SIZE, -SIZE), Point3(-SIZE, SIZE, SIZE),
+            Point3(-SIZE, -SIZE, -SIZE), Point3(-SIZE, SIZE, SIZE), Point3(-SIZE, -SIZE, SIZE),
             //y negative:
-            Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, SIZE),
-            Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE),
+            Point3(-SIZE, SIZE, -SIZE), Point3(SIZE, SIZE, -SIZE), Point3(SIZE, SIZE, SIZE),
+            Point3(-SIZE, SIZE, -SIZE), Point3(SIZE, SIZE, SIZE), Point3(-SIZE, SIZE, SIZE),
             //y positive:
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, -SIZE),
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE),
+            Point3(-SIZE, -SIZE, SIZE), Point3(SIZE, -SIZE, SIZE), Point3(SIZE, -SIZE, -SIZE),
+            Point3(-SIZE, -SIZE, SIZE), Point3(SIZE, -SIZE, -SIZE), Point3(-SIZE, -SIZE, -SIZE),
             //z negative:
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(-SIZE, SIZE, SIZE), Point3<float>(SIZE, SIZE, SIZE),
-            Point3<float>(-SIZE, -SIZE, SIZE), Point3<float>(SIZE, SIZE, SIZE), Point3<float>(SIZE, -SIZE, SIZE),
+            Point3(-SIZE, -SIZE, SIZE), Point3(-SIZE, SIZE, SIZE), Point3(SIZE, SIZE, SIZE),
+            Point3(-SIZE, -SIZE, SIZE), Point3(SIZE, SIZE, SIZE), Point3(SIZE, -SIZE, SIZE),
             //z positive:
-            Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(SIZE, SIZE, -SIZE), Point3<float>(-SIZE, SIZE, -SIZE),
-            Point3<float>(SIZE, -SIZE, -SIZE), Point3<float>(-SIZE, SIZE, -SIZE), Point3<float>(-SIZE, -SIZE, -SIZE)
+            Point3(SIZE, -SIZE, -SIZE), Point3(SIZE, SIZE, -SIZE), Point3(-SIZE, SIZE, -SIZE),
+            Point3(SIZE, -SIZE, -SIZE), Point3(-SIZE, SIZE, -SIZE), Point3(-SIZE, -SIZE, -SIZE)
         };
 
         Matrix4<float> projectionViewMatrix;

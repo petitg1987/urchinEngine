@@ -6,7 +6,7 @@
 
 namespace urchin {
 
-    Shader::Shader(std::size_t shaderId, std::string shaderName, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
+    Shader::Shader(std::size_t shaderId, std::string shaderName, const std::vector<std::pair<ShaderType, std::vector<char>>>& shaderSources, std::unique_ptr<ShaderConstants> shaderConstants) :
             shaderId(shaderId),
             shaderName(std::move(shaderName)),
             shaderConstants(std::move(shaderConstants)) {
@@ -90,14 +90,12 @@ namespace urchin {
         return specializationMapEntry;
     }
 
-    VkShaderStageFlagBits Shader::toShaderStageFlag(Shader::ShaderType shaderType) {
-        if (shaderType == Shader::ShaderType::VERTEX) {
+    VkShaderStageFlagBits Shader::toShaderStageFlag(ShaderType shaderType) {
+        if (shaderType == VERTEX) {
             return VK_SHADER_STAGE_VERTEX_BIT;
-        } else if (shaderType == Shader::ShaderType::GEOMETRY) {
-            return VK_SHADER_STAGE_GEOMETRY_BIT;
-        } else if (shaderType == Shader::ShaderType::FRAGMENT) {
+        } else if (shaderType == FRAGMENT) {
             return VK_SHADER_STAGE_FRAGMENT_BIT;
-        } else if (shaderType == Shader::ShaderType::COMPUTE) {
+        } else if (shaderType == COMPUTE) {
             return VK_SHADER_STAGE_COMPUTE_BIT;
         }
         throw std::invalid_argument("Unknown shader type: " + std::to_string(shaderType));

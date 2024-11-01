@@ -1,11 +1,9 @@
 #pragma once
 
-#include <map>
 #include <memory>
 #include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
-#include <resources/image/Image.h>
 #include <scene/ui/widget/LengthType.h>
 
 namespace urchin {
@@ -24,7 +22,7 @@ namespace urchin {
 
     class UISkinService : public Singleton<UISkinService> {
         public:
-            friend class Singleton<UISkinService>;
+            friend class Singleton;
 
             void setSkin(const std::string&);
 

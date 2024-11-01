@@ -158,7 +158,7 @@ namespace urchin {
         lightShadowMaps[&light] = std::make_unique<LightShadowMap>(light, modelOcclusionCuller, config.viewingShadowDistance, config.shadowMapResolution, config.nbShadowMaps);
     }
 
-    void ShadowManager::removeShadowLight(Light& light) {
+    void ShadowManager::removeShadowLight(const Light& light) {
         lightShadowMaps.erase(&light);
     }
 
@@ -178,7 +178,7 @@ namespace urchin {
         }
     }
 
-    void ShadowManager::updateLightSplitsShadowMap(const LightShadowMap& lightShadowMap) {
+    void ShadowManager::updateLightSplitsShadowMap(const LightShadowMap& lightShadowMap) const {
         ScopeProfiler sp(Profiler::graphic(), "upFrustumShadow");
 
         if (lightShadowMap.getLight().getLightType() == Light::LightType::SUN) {
@@ -257,7 +257,7 @@ namespace urchin {
         deferredSecondPassRenderer.updateUniformData(viewProjMatricesUniformBinding, lightProjectionViewMatrices.data());
 
         for (std::size_t shadowMapIndex = 0; shadowMapIndex < (std::size_t)config.nbShadowMaps; ++shadowMapIndex) {
-            splitData[shadowMapIndex] = Point4<float>(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
+            splitData[shadowMapIndex] = Point4(splitFrustums[shadowMapIndex].getBoundingSphere().getCenterOfMass(), splitFrustums[shadowMapIndex].getBoundingSphere().getRadius());
         }
         deferredSecondPassRenderer.updateUniformData(shadowMapDataUniformBinding, splitData.data());
 

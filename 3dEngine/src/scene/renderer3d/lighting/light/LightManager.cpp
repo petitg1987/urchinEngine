@@ -34,7 +34,7 @@ namespace urchin {
         notifyObservers(this, notificationType);
     }
 
-    Light* LightManager::getLastUpdatedLight() {
+    Light* LightManager::getLastUpdatedLight() const {
         return lastUpdatedLight;
     }
 
@@ -64,7 +64,7 @@ namespace urchin {
                 lightOctreeManager.addOctreeable(std::move(light));
             }
 
-            onLightEvent(lightPtr, LightManager::ADD_LIGHT);
+            onLightEvent(lightPtr, ADD_LIGHT);
         }
     }
 
@@ -82,7 +82,7 @@ namespace urchin {
             } else {
                 removedLight = lightOctreeManager.removeOctreeable(light);
             }
-            onLightEvent(removedLight.get(), LightManager::REMOVE_LIGHT);
+            onLightEvent(removedLight.get(), REMOVE_LIGHT);
         }
         return removedLight;
     }
@@ -136,14 +136,14 @@ namespace urchin {
                 lightsData.lightsInfo[i].lightColor = light->getLightColor();
 
                 if (lights[i]->getLightType() == Light::LightType::SUN) {
-                    const auto* sunLight = static_cast<const SunLight*>(light);
+                    const auto* sunLight = dynamic_cast<const SunLight*>(light);
                     lightsData.lightsInfo[i].direction = sunLight->getDirections()[0];
                 } else if (lights[i]->getLightType() == Light::LightType::OMNIDIRECTIONAL) {
-                    const auto* omnidirectionalLight = static_cast<const OmnidirectionalLight*>(light);
+                    const auto* omnidirectionalLight = dynamic_cast<const OmnidirectionalLight*>(light);
                     lightsData.lightsInfo[i].position = omnidirectionalLight->getPosition();
                     lightsData.lightsInfo[i].exponentialAttenuation = omnidirectionalLight->getExponentialAttenuation();
                 } else if (lights[i]->getLightType() == Light::LightType::SPOT) {
-                    const auto* spotLight = static_cast<const SpotLight*>(light);
+                    const auto* spotLight = dynamic_cast<const SpotLight*>(light);
                     lightsData.lightsInfo[i].position = spotLight->getPosition();
                     lightsData.lightsInfo[i].direction = spotLight->getDirections()[0];
                     lightsData.lightsInfo[i].exponentialAttenuation = spotLight->getExponentialAttenuation();

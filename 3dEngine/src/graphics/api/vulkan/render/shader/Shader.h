@@ -21,12 +21,11 @@ namespace urchin {
         public:
             enum ShaderType {
                 VERTEX,
-                GEOMETRY,
                 FRAGMENT,
                 COMPUTE
             };
 
-            Shader(std::size_t, std::string, const std::vector<std::pair<Shader::ShaderType, std::vector<char>>>&, std::unique_ptr<ShaderConstants>);
+            Shader(std::size_t, std::string, const std::vector<std::pair<ShaderType, std::vector<char>>>&, std::unique_ptr<ShaderConstants>);
             ~Shader();
 
             std::size_t getShaderId() const;
@@ -36,7 +35,7 @@ namespace urchin {
             void fillShaderModule(ShaderStageData&, const std::vector<char>&) const;
             void fillPipelineShaderStage(ShaderStageData&, ShaderType) const;
             static VkSpecializationMapEntry createSpecializationMapEntry(uint32_t, uint32_t, std::size_t);
-            static VkShaderStageFlagBits toShaderStageFlag(Shader::ShaderType);
+            static VkShaderStageFlagBits toShaderStageFlag(ShaderType);
 
             std::size_t shaderId;
             std::string shaderName;

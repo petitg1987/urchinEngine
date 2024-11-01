@@ -65,11 +65,11 @@ namespace urchin {
 
             //light handling
             void addShadowLight(Light&);
-            void removeShadowLight(Light&);
+            void removeShadowLight(const Light&);
             void updateShadowLights();
 
             //splits handling
-            void updateLightSplitsShadowMap(const LightShadowMap&);
+            void updateLightSplitsShadowMap(const LightShadowMap&) const;
             void splitFrustum(const Frustum<float>&);
 
             //shadow map quality

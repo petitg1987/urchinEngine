@@ -240,12 +240,12 @@ namespace urchin {
         if (camera.getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera.getPosition().X, camera.getPosition().Z))) {
             if (fogContainer.getActiveFog() != underwaterFog.get()) {
                 fogContainer.pushFog(underwaterFog.get());
-                notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
+                notifyObservers(this, MOVE_UNDER_WATER);
             }
         } else {
             if (fogContainer.getActiveFog() == underwaterFog.get()) {
                 fogContainer.popFog();
-                notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
+                notifyObservers(this, MOVE_ABOVE_WATER);
             }
 
             positioningData.projectionViewMatrix = camera.getProjectionViewMatrix();

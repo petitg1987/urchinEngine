@@ -1,8 +1,6 @@
 #include <random>
-#include <stack>
 #include <cassert>
 #include <thread>
-#include <functional>
 
 #include <scene/renderer3d/landscape/terrain/grass/TerrainGrass.h>
 #include <resources/ResourceRetriever.h>
@@ -25,7 +23,7 @@ namespace urchin {
             mesh(nullptr),
             grassTextureParam(TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, TextureParam::ANISOTROPY)) {
         float grassAlphaTest = ConfigService::instance().getFloatValue("terrain.grassAlphaTest");
-        std::vector<std::size_t> variablesSize = {sizeof(grassAlphaTest)};
+        std::vector variablesSize = {sizeof(grassAlphaTest)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &grassAlphaTest);
         terrainGrassShader = ShaderBuilder::createShader("terrainGrass.vert.spv", "terrainGrass.frag.spv", std::move(shaderConstants), false);
 
@@ -36,7 +34,7 @@ namespace urchin {
         setGrassWidth(1.0f);
         setGrassHeight(1.0f);
         setGrassQuantity(0.1f);
-        setWindDirection(Vector3<float>(1.0f, 0.0f, 0.0f));
+        setWindDirection(Vector3(1.0f, 0.0f, 0.0f));
         setWindStrength(1.0f);
     }
 
@@ -78,7 +76,7 @@ namespace urchin {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
         unsigned int seed = 0; //no need to generate different random numbers at each start
         std::default_random_engine generator(seed);
-        std::uniform_real_distribution<float> distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
+        std::uniform_real_distribution distribution(-GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity, GRASS_POSITION_RANDOM_PERCENTAGE / grassQuantity);
 
         float terrainSizeX = mesh->getXZScale() * (float)mesh->getXSize();
         float terrainSizeZ = mesh->getXZScale() * (float)mesh->getZSize();
@@ -120,7 +118,7 @@ namespace urchin {
 
                         //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
                         unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
-                        Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
+                        Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
 
                         float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;
                         float globalZValue = terrainPosition.Z + mesh->getVertices()[0].Z + zValue;
@@ -208,7 +206,7 @@ namespace urchin {
         mainGrassQuadtree = std::make_unique<TerrainGrassQuadtree>(std::move(childrenGrassQuadtree));
     }
 
-    void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) {
+    void TerrainGrass::createRenderers(const std::vector<std::unique_ptr<TerrainGrassQuadtree>>& leafGrassParcels) const {
         if (grassTexture && renderTarget) {
             std::vector<Point3<float>> grassVertex;
             std::vector<Point2<float>> grassUv;
@@ -242,10 +240,10 @@ namespace urchin {
     void TerrainGrass::generateGrassMesh(std::vector<Point3<float>>& grassVertex, std::vector<Point2<float>>& grassUv) const {
         float grassHalfWidth = grassWidth / 2.0f;
         float degree60 = 60.0f * MathValue::PI_FLOAT / 180.0f;
-        std::array<Vector3<float>, 3> directions = {
-            Vector3<float>(1.0, 0.0, 0.0),
-            Vector3<float>(std::cos(degree60), 0.0f, std::sin(degree60)),
-            Vector3<float>(std::cos(-degree60), 0.0f, std::sin(-degree60))
+        std::array directions = {
+            Vector3(1.0f, 0.0f, 0.0f),
+            Vector3(std::cos(degree60), 0.0f, std::sin(degree60)),
+            Vector3(std::cos(-degree60), 0.0f, std::sin(-degree60))
         };
 
         unsigned int seed = 0; //no need to generate different random numbers at each start
@@ -256,10 +254,10 @@ namespace urchin {
         grassUv.reserve(directions.size() * 6);
 
         for (const Vector3<float>& direction : directions) {
-            Point3<float> topLeft = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(-direction * grassHalfWidth);
-            Point3<float> bottomLeft = Point3<float>(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfWidth);
-            Point3<float> topRight = Point3<float>(0.0f, grassProperties.grassHeight, 0.0f).translate(direction * grassHalfWidth);
-            Point3<float> bottomRight = Point3<float>(0.0f, 0.0f, 0.0f).translate(direction * grassHalfWidth);
+            Point3<float> topLeft = Point3(0.0f, grassProperties.grassHeight, 0.0f).translate(-direction * grassHalfWidth);
+            Point3<float> bottomLeft = Point3(0.0f, 0.0f, 0.0f).translate(-direction * grassHalfWidth);
+            Point3<float> topRight = Point3(0.0f, grassProperties.grassHeight, 0.0f).translate(direction * grassHalfWidth);
+            Point3<float> bottomRight = Point3(0.0f, 0.0f, 0.0f).translate(direction * grassHalfWidth);
             grassVertex.push_back(topLeft);
             grassVertex.push_back(topRight);
             grassVertex.push_back(bottomLeft);

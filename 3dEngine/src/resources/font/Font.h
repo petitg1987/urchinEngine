@@ -16,7 +16,7 @@ namespace urchin {
         std::vector<unsigned char> buf;
     };
 
-    class Font : public Resource {
+    class Font final : public Resource {
         public:
             Font(unsigned int, const Vector3<float>&, std::shared_ptr<Texture>, std::array<Glyph, UnicodeUtil::NUM_CHARACTERS>, unsigned int, unsigned int, unsigned int);
             ~Font() override = default;

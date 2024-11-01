@@ -44,10 +44,10 @@ namespace urchin {
             throw std::runtime_error("Cursor and line images must have the same width");
         }
 
-        scrollbarLine = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, LengthType::PIXEL),
-                                             Size(scrollbarWidth.value, scrollbarWidth.type, scrollableWidget.getHeight(), LengthType::PIXEL), lineImageFilename);
-        scrollbarCursor = StaticBitmap::create(scrollbarLine.get(), Position(0.0f, 0.0f, LengthType::PIXEL),
-                                               Size(scrollbarWidth.value, scrollbarWidth.type, cursorImageRatio, LengthType::RATIO_TO_WIDTH), cursorImageFilename);
+        scrollbarLine = StaticBitmap::create(&scrollableWidget, Position(scrollableWidget.getWidth() - cursorWidthInPixel, 0.0f, PIXEL),
+                                             Size(scrollbarWidth.value, scrollbarWidth.type, scrollableWidget.getHeight(), PIXEL), lineImageFilename);
+        scrollbarCursor = StaticBitmap::create(scrollbarLine.get(), Position(0.0f, 0.0f, PIXEL),
+                                               Size(scrollbarWidth.value, scrollbarWidth.type, cursorImageRatio, RATIO_TO_WIDTH), cursorImageFilename);
 
         //update scrollbar
         onScrollableWidgetsUpdated();
@@ -73,9 +73,9 @@ namespace urchin {
 
     bool Scrollbar::onKeyPressEvent(InputDeviceKey key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            if (scrollbarCursor->widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            if (scrollbarCursor->widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
                 state = CURSOR_SELECTED;
-            } else if (scrollbarLine->widgetRectangle().collideWithPoint(Point2<int>(mouseX, mouseY))) {
+            } else if (scrollbarLine->widgetRectangle().collideWithPoint(Point2(mouseX, mouseY))) {
                 updateScrollingPosition(mouseY);
                 state = CURSOR_SELECTED;
             }

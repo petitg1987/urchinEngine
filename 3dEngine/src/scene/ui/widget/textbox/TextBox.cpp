@@ -1,5 +1,4 @@
 #include <utility>
-#include <codecvt>
 #include <UrchinCommon.h>
 
 #include <scene/ui/widget/textbox/TextBox.h>
@@ -110,7 +109,7 @@ namespace urchin {
         if (key == InputDeviceKey::CTRL) {
             ctrlKeyPressed = true;
         } else if (key == InputDeviceKey::MOUSE_LEFT) {
-            if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = ACTIVE;
                 changeTexture(texTextBoxFocus);
 
@@ -363,8 +362,8 @@ namespace urchin {
         std::size_t displaySelectionStartIndex = std::min(selectionStartIndex, cursorIndex);
         std::size_t displaySelectionEndIndex = std::max(selectionStartIndex, cursorIndex);
 
-        Point2<int> displaySelectionStartPos = computeCursorPosition(displaySelectionStartIndex) + Point2<int>(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
-        Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2<int>(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
+        Point2<int> displaySelectionStartPos = computeCursorPosition(displaySelectionStartIndex) + Point2(0, -(int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL);
+        Point2<int> displaySelectionEndPos = computeCursorPosition(displaySelectionEndIndex) + Point2(0, (int)text->getFont().getHeight() + (int)TextFieldConst::CURSOR_HEIGHT_MARGIN_PIXEL * 2);
 
         selectionImage->updatePosition(Position((float)displaySelectionStartPos.X, (float)displaySelectionStartPos.Y, PIXEL, PARENT_LEFT_CENTERY, RefPoint::LEFT_CENTERY));
         float sizeX = std::min((float)(displaySelectionEndPos.X - displaySelectionStartPos.X), (float)maxWidthText - (float)displaySelectionStartPos.X);

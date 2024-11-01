@@ -82,9 +82,9 @@ namespace urchin {
 
                         std::size_t index = (filterIndex * textureXYSize * textureXYSize) + (texX * textureXYSize) + texY;
 
-                        SVGColor color = filterIndex < 4 ? SVGColor::RED : SVGColor::BLUE;
-                        Point2<float> startVector(xOffset, yOffset);
-                        Point2<float> endVector(xOffset + textureData[index].X, yOffset + textureData[index].Y);
+                        SVGColor color = filterIndex < 4 ? RED : BLUE;
+                        Point2 startVector(xOffset, yOffset);
+                        Point2 endVector(xOffset + textureData[index].X, yOffset + textureData[index].Y);
                         svgExporter.addShape(std::make_unique<SVGLine>(LineSegment2D<float>(startVector, endVector), color, 0.005f));
                         svgExporter.addShape(std::make_unique<SVGCircle>(endVector, 0.02f, color));
                     }

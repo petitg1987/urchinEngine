@@ -87,7 +87,7 @@ namespace urchin {
 
             //combine
             std::unique_ptr<Shader> combineShader;
-            std::unique_ptr<RenderTarget> combineRenderTarget;
+            std::unique_ptr<OffscreenRender> combineRenderTarget;
             std::unique_ptr<GenericRenderer> combineRenderer;
     };
 

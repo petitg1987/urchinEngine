@@ -7,7 +7,7 @@
 namespace urchin {
 
     Model::Model(const std::string& meshesFilename) :
-            defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
+            defaultModelAABBoxes({getDefaultModelLocalAABBox()}),
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
@@ -22,7 +22,7 @@ namespace urchin {
     }
 
     Model::Model(std::unique_ptr<Meshes> meshes) :
-            defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
+            defaultModelAABBoxes({getDefaultModelLocalAABBox()}),
             meshes(std::move(meshes)),
             activeAnimation(nullptr),
             isModelAnimated(false),
@@ -35,7 +35,7 @@ namespace urchin {
 
     Model::Model(const Model& model) :
             Octreeable(model),
-            defaultModelAABBoxes({Model::getDefaultModelLocalAABBox()}),
+            defaultModelAABBoxes({getDefaultModelLocalAABBox()}),
             activeAnimation(nullptr),
             isModelAnimated(false),
             stopAnimationAtLastFrame(false),
@@ -118,7 +118,7 @@ namespace urchin {
         stopAnimationAtLastFrame = (animLoop == AnimRepeat::ONCE);
 
         onMoving(transform);
-        notifyObservers(this, Model::ANIMATION_STARTED);
+        notifyObservers(this, ANIMATION_STARTED);
     }
 
     void Model::stopAnimation(bool immediate) {
@@ -186,7 +186,7 @@ namespace urchin {
                 activeAnimation->onMoving(newTransform);
             }
         } else {
-            defaultModelAABBoxes[0] = Model::getDefaultModelLocalAABBox().moveAABBox(transform);
+            defaultModelAABBoxes[0] = getDefaultModelLocalAABBox().moveAABBox(transform);
         }
 
         if (getCullBehavior() == CullBehavior::CULL) {
@@ -201,14 +201,14 @@ namespace urchin {
             meshesUpdated[updatedMeshIndex] = true;
         }
         originalVerticesOrUvUpdated = true;
-        notifyObservers(this, Model::MESH_VERTICES_UPDATED);
+        notifyObservers(this, MESH_VERTICES_UPDATED);
     }
 
     void Model::notifyMeshVerticesUpdated() {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), true);
 
         originalVerticesOrUvUpdated = true;
-        notifyObservers(this, Model::MESH_VERTICES_UPDATED);
+        notifyObservers(this, MESH_VERTICES_UPDATED);
     }
 
     void Model::notifyMeshVerticesUpdated(unsigned int updatedMeshIndex) {
@@ -216,7 +216,7 @@ namespace urchin {
         meshesUpdated[updatedMeshIndex] = true;
 
         originalVerticesOrUvUpdated = true;
-        notifyObservers(this, Model::MESH_VERTICES_UPDATED);
+        notifyObservers(this, MESH_VERTICES_UPDATED);
     }
 
     void Model::notifyMeshUvUpdated(unsigned int updatedMeshIndex) {
@@ -224,14 +224,14 @@ namespace urchin {
         meshesUpdated[updatedMeshIndex] = true;
 
         originalVerticesOrUvUpdated = true;
-        notifyObservers(this, Model::MESH_UV_UPDATED);
+        notifyObservers(this, MESH_UV_UPDATED);
     }
 
     void Model::notifyMeshMaterialUpdated(unsigned int updatedMeshIndex) {
         std::fill(meshesUpdated.begin(), meshesUpdated.end(), false);
         meshesUpdated[updatedMeshIndex] = true;
 
-        notifyObservers(this, Model::MATERIAL_UPDATED);
+        notifyObservers(this, MATERIAL_UPDATED);
     }
 
     std::string Model::getName() const {
@@ -291,7 +291,7 @@ namespace urchin {
         } else if (meshes) {
             return meshes->getLocalMeshesAABBox();
         } else {
-            return Model::getDefaultModelLocalAABBox();
+            return getDefaultModelLocalAABBox();
         }
     }
 
@@ -313,7 +313,7 @@ namespace urchin {
         if (scale != transform.getScale()) {
             transform.setScale(scale);
             onMoving(transform);
-            notifyObservers(this, Model::SCALE_UPDATED);
+            notifyObservers(this, SCALE_UPDATED);
         }
     }
 
@@ -323,7 +323,7 @@ namespace urchin {
             this->transform = transform;
             onMoving(transform);
             if (scaleUpdated) {
-                notifyObservers(this, NotificationType::SCALE_UPDATED);
+                notifyObservers(this, SCALE_UPDATED);
             }
         }
     }
@@ -346,7 +346,7 @@ namespace urchin {
     void Model::setCullBehavior(CullBehavior cullBehavior) {
         if (this->cullBehavior != cullBehavior) {
             this->cullBehavior = cullBehavior;
-            notifyObservers(this, Model::CULL_BEHAVIOR_UPDATED);
+            notifyObservers(this, CULL_BEHAVIOR_UPDATED);
         }
     }
 
@@ -367,7 +367,7 @@ namespace urchin {
             if (stopAnimationAtLastFrame && activeAnimation->getCurrentFrame() + 1 >= activeAnimation->getConstAnimation().getNumberFrames()) {
                 stopAnimation(true);
                 stopAnimationAtLastFrame = false;
-                notifyObservers(this, Model::ANIMATION_ENDED);
+                notifyObservers(this, ANIMATION_ENDED);
             } else {
                 activeAnimation->animate(dt);
                 notifyMeshVerticesUpdatedByAnimation();

@@ -23,7 +23,7 @@ namespace urchin {
             }
         }
 
-        localFramesBBox = AABBox<float>(this->localFrameBBoxes[0].getMin(), this->localFrameBBoxes[0].getMax());
+        localFramesBBox = AABBox(this->localFrameBBoxes[0].getMin(), this->localFrameBBoxes[0].getMax());
         for (unsigned int i = 0; i < numFrames; ++i) {
             localFramesBBox = localFramesBBox.merge(this->localFrameBBoxes[i]);
         }

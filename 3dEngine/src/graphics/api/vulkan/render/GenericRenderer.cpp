@@ -172,8 +172,8 @@ namespace urchin {
 
     void GenericRenderer::resetScissor() {
         this->customScissor = false;
-        this->scissorOffset = Vector2<int>(0, 0);
-        this->scissorSize = Vector2<int>((int)getRenderTarget().getWidth(), (int)getRenderTarget().getHeight());
+        this->scissorOffset = Vector2(0, 0);
+        this->scissorSize = Vector2((int)getRenderTarget().getWidth(), (int)getRenderTarget().getHeight());
     }
 
     void GenericRenderer::updateScissor(Vector2<int> scissorOffset, Vector2<int> scissorSize) {

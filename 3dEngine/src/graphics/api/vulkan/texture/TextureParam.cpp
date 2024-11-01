@@ -38,19 +38,19 @@ namespace urchin {
     }
 
     TextureParam TextureParam::buildNearest() {
-        return {ReadMode::EDGE_CLAMP, ReadQuality::NEAREST, Anisotropy::NO_ANISOTROPY};
+        return {EDGE_CLAMP, NEAREST, NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::buildLinear() {
-        return {ReadMode::EDGE_CLAMP, ReadQuality::LINEAR, Anisotropy::NO_ANISOTROPY};
+        return {EDGE_CLAMP, LINEAR, NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::buildRepeatNearest() {
-        return {ReadMode::REPEAT, ReadQuality::NEAREST, Anisotropy::NO_ANISOTROPY};
+        return {REPEAT, NEAREST, NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::buildRepeatLinear() {
-        return {ReadMode::REPEAT, ReadQuality::LINEAR, Anisotropy::NO_ANISOTROPY};
+        return {REPEAT, LINEAR, NO_ANISOTROPY};
     }
 
     TextureParam TextureParam::build(ReadMode readMode, ReadQuality readQuality, Anisotropy anisotropy) {

@@ -20,20 +20,20 @@ namespace urchin {
         unsigned int height;
         lodepng::State state = {};
 
-        if (colorType == LodePNGColorType::LCT_RGB || colorType == LodePNGColorType::LCT_RGBA) {
+        if (colorType == LCT_RGB || colorType == LCT_RGBA) {
             if (bitDepth == 8) {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_RGBA;
                 std::vector<unsigned char> pixels8Bits = decode(filename, state, png, width, height);
                 bool hasTransparency = false;
-                if (colorType == LodePNGColorType::LCT_RGBA) {
+                if (colorType == LCT_RGBA) {
                     hasTransparency = isPixelsHaveTransparency(pixels8Bits);
                 }
                 return std::make_shared<Image>(width, height, Image::IMAGE_RGBA, std::move(pixels8Bits), hasTransparency);
             } else {
                 throw std::invalid_argument("Unsupported number of bits for PNG image: " + std::to_string(bitDepth));
             }
-        } else if (colorType == LodePNGColorType::LCT_GREY) {
+        } else if (colorType == LCT_GREY) {
             if (bitDepth == 8) {
                 state.info_raw.bitdepth = 8;
                 state.info_raw.colortype = LCT_GREY;

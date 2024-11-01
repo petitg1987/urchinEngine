@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef WIN32
     #include <vulkan/vk_enum_string_helper.h>
 #else

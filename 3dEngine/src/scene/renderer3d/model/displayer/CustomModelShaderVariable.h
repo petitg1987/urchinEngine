@@ -1,8 +1,5 @@
 #pragma once
 
-#include <UrchinCommon.h>
-
-#include <scene/renderer3d/model/Model.h>
 #include <graphics/api/GraphicsApi.h>
 #include <graphics/render/GenericRendererBuilder.h>
 

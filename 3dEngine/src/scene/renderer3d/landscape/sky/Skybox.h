@@ -7,7 +7,6 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <resources/image/Image.h>
-#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

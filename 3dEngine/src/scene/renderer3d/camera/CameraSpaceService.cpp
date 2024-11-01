@@ -8,11 +8,9 @@ namespace urchin {
     }
 
     Point2<float> CameraSpaceService::worldSpacePointToScreenSpace(const Point3<float>& worldSpacePoint) const {
-        Point4<float> pointClipSpace = camera.getProjectionViewMatrix() * Point4<float>(worldSpacePoint, 1.0f);
+        Point4<float> pointClipSpace = camera.getProjectionViewMatrix() * Point4(worldSpacePoint, 1.0f);
         Point4<float> pointNdcSpace = pointClipSpace.divideByW();
-        return Point2<float>(
-                ((pointNdcSpace.X + 1.0f) / 2.0f) * ((float)camera.getSceneWidth()),
-                ((pointNdcSpace.Y + 1.0f) / 2.0f) * ((float)camera.getSceneHeight()));
+        return {((pointNdcSpace.X + 1.0f) / 2.0f) * ((float)camera.getSceneWidth()), ((pointNdcSpace.Y + 1.0f) / 2.0f) * ((float)camera.getSceneHeight())};
     }
 
     /**
@@ -24,7 +22,7 @@ namespace urchin {
 
         const Point3<float>& rayStart = camera.getPosition();
         Point3<float> rayEnd = rayStart.translate(rayDirectionWorldSpace * rayLength);
-        return Ray<float>(rayStart, rayEnd);
+        return Ray(rayStart, rayEnd);
     }
 
     Line3D<float> CameraSpaceService::screenPointToLine(const Point2<float>& screenPoint) const {
@@ -32,7 +30,7 @@ namespace urchin {
 
         const Point3<float>& point1 = camera.getPosition();
         Point3<float> point2 = point1.translate(lineDirectionWorldSpace);
-        return Line3D<float>(point1, point2);
+        return Line3D(point1, point2);
     }
 
     Vector3<float> CameraSpaceService::screenPointToDirection(const Point2<float>& screenPoint) const {

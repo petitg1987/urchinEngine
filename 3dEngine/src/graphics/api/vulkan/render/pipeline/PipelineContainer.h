@@ -10,7 +10,7 @@ namespace urchin {
 
     class PipelineContainer final : public Singleton<PipelineContainer> {
         public:
-            friend class Singleton<PipelineContainer>;
+            friend class Singleton;
 
             ~PipelineContainer() override;
 

@@ -179,7 +179,7 @@ namespace urchin {
             }
             attachments[layerIndex].emplace_back(swapChainImageView);
 
-            RenderTarget::addFramebuffers(attachments);
+            addFramebuffers(attachments);
         }
     }
 
@@ -300,7 +300,7 @@ namespace urchin {
             throw std::runtime_error("Failed to submit queue with error code '" + std::string(string_VkResult(resultQueueSubmit)) + "' on render target: " + getName() + "/" + std::to_string(frameIndex));
         }
 
-        std::array<VkSwapchainKHR, 1> swapChains = {swapChainHandler.getSwapChain()};
+        std::array swapChains = {swapChainHandler.getSwapChain()};
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         presentInfo.waitSemaphoreCount = 1;

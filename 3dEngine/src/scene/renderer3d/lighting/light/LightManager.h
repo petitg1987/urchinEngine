@@ -11,7 +11,7 @@
 
 namespace urchin {
 
-    class LightManager : public Observable {
+    class LightManager final : public Observable {
         public:
             LightManager();
 
@@ -22,7 +22,7 @@ namespace urchin {
 
             void setupDeferredSecondPassRenderer(const std::shared_ptr<GenericRendererBuilder>&, uint32_t) const;
             OctreeManager<Light>& getLightOctreeManager();
-            Light* getLastUpdatedLight();
+            Light* getLastUpdatedLight() const;
 
             unsigned int getMaxLights() const;
             const std::vector<std::shared_ptr<Light>>& getSunLights() const;

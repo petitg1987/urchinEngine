@@ -47,7 +47,7 @@ namespace urchin {
             normalMatrix = uiRenderer.getUi3dData()->normalMatrix;
         } else {
             rendererBuilder->enableTransparency({BlendFunction::buildDefault()});
-            projectionViewModelMatrix = Matrix4<float>( //orthogonal matrix with origin at top left screen
+            projectionViewModelMatrix = Matrix4( //orthogonal matrix with origin at top left screen
                     2.0f / (float) uiRenderer.getUiResolution().X, 0.0f, -1.0f, 0.0f,
                     0.0f, 2.0f / (float) uiRenderer.getUiResolution().Y, -1.0f, 0.0f,
                     0.0f, 0.0f, 1.0f, 0.0f,
@@ -84,11 +84,11 @@ namespace urchin {
         isInitialized = true;
     }
 
-    void WidgetInstanceDisplayer::updateTexture() {
+    void WidgetInstanceDisplayer::updateTexture() const {
         renderer->updateUniformTextureReader(TEX_UNIFORM_BINDING, TextureReader::build(getReferenceWidget().getTexture(), TextureParam::build(TextureParam::EDGE_CLAMP, TextureParam::LINEAR, getTextureAnisotropy())));
     }
 
-    void WidgetInstanceDisplayer::updateScissor() {
+    void WidgetInstanceDisplayer::updateScissor() const {
         std::optional<Scissor> scissor = getReferenceWidget().retrieveScissor();
         if (scissor.has_value()) {
             renderer->updateScissor(scissor.value().getScissorOffset(), scissor.value().getScissorSize());
@@ -183,11 +183,11 @@ namespace urchin {
         return (unsigned int)instanceWidgets.size();
     }
 
-    void WidgetInstanceDisplayer::resetRenderingWidgets() {
+    void WidgetInstanceDisplayer::resetRenderingWidgets() const {
         instanceModelMatrices.clear();
     }
 
-    void WidgetInstanceDisplayer::registerRenderingWidget(const Widget& widget) {
+    void WidgetInstanceDisplayer::registerRenderingWidget(const Widget& widget) const {
         #ifdef URCHIN_DEBUG
             assert(widget.computeInstanceId() == instanceId);
         #endif
@@ -209,11 +209,11 @@ namespace urchin {
         float transOriginY = -widget.getHeight() / 2.0f;
         float sinRotate = std::sin(widget.getRotation());
         float cosRotate = std::cos(widget.getRotation());
-        instanceModelMatrices.emplace_back(Matrix4<float>(
+        instanceModelMatrices.emplace_back(
                 widget.getScale().X * cosRotate, widget.getScale().Y * -sinRotate, 0.0f, transX + (transOriginX * widget.getScale().X * cosRotate) + (transOriginY * widget.getScale().Y * -sinRotate),
                 widget.getScale().X * sinRotate, widget.getScale().Y * cosRotate, 0.0f, transY + (transOriginX * widget.getScale().X * sinRotate) + (transOriginY * widget.getScale().Y * cosRotate),
                 0.0f, 0.0, 1.0f, zBias,
-                0.0f, 0.0f, 0.0f, 1.0f));
+                0.0f, 0.0f, 0.0f, 1.0f);
     }
 
     void WidgetInstanceDisplayer::prepareRendering(unsigned int renderingOrder, const Matrix4<float>& projectionViewMatrix) const {

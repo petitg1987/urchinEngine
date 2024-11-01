@@ -8,7 +8,7 @@ namespace urchin {
             width(width),
             height(height),
             format(format),
-            channelPrecision(ChannelPrecision::CHANNEL_8_INT),
+            channelPrecision(CHANNEL_8_INT),
             texels8(std::move(texels8)),
             bHasTransparency(hasTransparency) {
 
@@ -18,7 +18,7 @@ namespace urchin {
             width(width),
             height(height),
             format(format),
-            channelPrecision(ChannelPrecision::CHANNEL_16_INT),
+            channelPrecision(CHANNEL_16_INT),
             texels16(std::move(texels16)),
             bHasTransparency(hasTransparency) {
 
@@ -41,9 +41,9 @@ namespace urchin {
     }
 
     unsigned int Image::getComponentCount() const {
-        if (format == ImageFormat::IMAGE_RGBA) {
+        if (format == IMAGE_RGBA) {
             return 4;
-        } else if (format == ImageFormat::IMAGE_GRAYSCALE) {
+        } else if (format == IMAGE_GRAYSCALE) {
             return 1;
         }
         throw std::runtime_error("Unknown image format: " + std::to_string(format));
@@ -54,14 +54,14 @@ namespace urchin {
     }
 
     const std::vector<unsigned char>& Image::getTexels() const {
-        if (channelPrecision != ChannelPrecision::CHANNEL_8_INT) {
+        if (channelPrecision != CHANNEL_8_INT) {
             throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
         }
         return texels8;
     }
 
     const std::vector<uint16_t>& Image::getTexels16Bits() const {
-        if (channelPrecision != ChannelPrecision::CHANNEL_16_INT) {
+        if (channelPrecision != CHANNEL_16_INT) {
             throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
         }
         return texels16;
@@ -72,9 +72,9 @@ namespace urchin {
     }
 
     unsigned int Image::retrieveComponentsCount() const {
-        if (format == Image::IMAGE_GRAYSCALE) {
+        if (format == IMAGE_GRAYSCALE) {
             return 1;
-        } else if (format == Image::IMAGE_RGBA) {
+        } else if (format == IMAGE_RGBA) {
             return 4;
         } else {
             throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
@@ -82,16 +82,16 @@ namespace urchin {
     }
 
     TextureFormat Image::retrieveTextureFormat() const {
-        if (format == Image::IMAGE_GRAYSCALE) {
-            if (channelPrecision == Image::CHANNEL_8_INT) {
+        if (format == IMAGE_GRAYSCALE) {
+            if (channelPrecision == CHANNEL_8_INT) {
                 return TextureFormat::GRAYSCALE_8_INT;
-            } else if (channelPrecision == Image::CHANNEL_16_INT) {
+            } else if (channelPrecision == CHANNEL_16_INT) {
                 return TextureFormat::GRAYSCALE_16_FLOAT;
             } else {
                 throw std::runtime_error("Unknown channel precision: " + std::to_string(channelPrecision));
             }
-        } else if (format == Image::IMAGE_RGBA) {
-            if (channelPrecision == Image::CHANNEL_8_INT) {
+        } else if (format == IMAGE_RGBA) {
+            if (channelPrecision == CHANNEL_8_INT) {
                 return TextureFormat::RGBA_8_INT;
             } else {
                 throw std::invalid_argument("Unsupported channel precision for RGBA format: " + std::to_string(channelPrecision));
