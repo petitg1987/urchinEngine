@@ -14,7 +14,7 @@ namespace urchin {
                 itFind->second.push_back(observer);
             }
         } else {
-            std::vector<Observer*> observers = {observer};
+            std::vector observers = {observer};
             mapObservers.try_emplace(notificationType, observers);
         }
     }

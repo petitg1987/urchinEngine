@@ -91,7 +91,7 @@ template<class T> T* GridContainer<T>::getItem(const Point3<int>& gridPosition) 
 }
 
 /**
- * @tparam items [out] All items in grid container
+ * @param items [out] All items in grid container
  */
 template<class T> void GridContainer<T>::getItems(std::vector<T*>& items) const {
     for (std::pair<std::int64_t, ItemSet<T>> element : axisSortedItems[0]) {

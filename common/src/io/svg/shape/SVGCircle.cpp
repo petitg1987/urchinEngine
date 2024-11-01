@@ -28,8 +28,8 @@ namespace urchin {
     }
 
     Rectangle2D<float> SVGCircle::computeRectangle() const {
-        Point2<float> minPoint(center - radius);
-        Point2<float> maxPoint(center + radius);
+        Point2 minPoint(center - radius);
+        Point2 maxPoint(center + radius);
 
         return {minPoint, maxPoint};
     }

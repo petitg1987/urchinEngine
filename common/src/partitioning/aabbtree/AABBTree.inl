@@ -24,7 +24,7 @@ template <class OBJ> AABBNodeData<OBJ>& AABBTree<OBJ>::getNodeData(void* objectP
 
 /**
  *
- * @tparam nodeObjects [out] Returns all node objects in the tree
+ * @param nodeObjects [out] Returns all node objects in the tree
  */
 template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ>& nodeObjects) const {
     browseNodes.clear();
@@ -232,7 +232,7 @@ template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float>& ray, std::vec
 /**
  * Enlarge each node box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
  * @param enlargeNodeBoxHalfSize Specify the size of the enlargement. A size of 0.5 will enlarge the node box from 1.0 (0.5 on left and 0.5 on right).
- * @param objectToExclude Object to exclude from result
+ * @param objectPtrToExclude Object to exclude from result
  * @param objectsAABBoxHitEnlargedRay [out] Objects AABBox hit by the enlarged ray
  */
 template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float>& ray, float enlargeNodeBoxHalfSize, const void* objectPtrToExclude,

@@ -157,67 +157,67 @@ namespace urchin {
 
     Point2<float> TypeConverter::toPoint2(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 2);
-        return Point2<float>(floatValues[0], floatValues[1]);
+        return {floatValues[0], floatValues[1]};
     }
 
     Point2<int> TypeConverter::toPoint2Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 2);
-        return Point2<int>(intValues[0], intValues[1]);
+        return {intValues[0], intValues[1]};
     }
 
     Point3<float> TypeConverter::toPoint3(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 3);
-        return Point3<float>(floatValues[0], floatValues[1], floatValues[2]);
+        return {floatValues[0], floatValues[1], floatValues[2]};
     }
 
     Point3<int> TypeConverter::toPoint3Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 3);
-        return Point3<int>(intValues[0], intValues[1], intValues[2]);
+        return {intValues[0], intValues[1], intValues[2]};
     }
 
     Point4<float> TypeConverter::toPoint4(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 4);
-        return Point4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+        return {floatValues[0], floatValues[1], floatValues[2], floatValues[3]};
     }
 
     Point4<int> TypeConverter::toPoint4Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 4);
-        return Point4<int>(intValues[0], intValues[1], intValues[2], intValues[3]);
+        return {intValues[0], intValues[1], intValues[2], intValues[3]};
     }
 
     Vector2<float> TypeConverter::toVector2(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 2);
-        return Vector2<float>(floatValues[0], floatValues[1]);
+        return {floatValues[0], floatValues[1]};
     }
 
     Vector2<int> TypeConverter::toVector2Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 2);
-        return Vector2<int>(intValues[0], intValues[1]);
+        return {intValues[0], intValues[1]};
     }
 
     Vector3<float> TypeConverter::toVector3(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 3);
-        return Vector3<float>(floatValues[0], floatValues[1], floatValues[2]);
+        return {floatValues[0], floatValues[1], floatValues[2]};
     }
 
     Vector3<int> TypeConverter::toVector3Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 3);
-        return Vector3<int>(intValues[0], intValues[1], intValues[2]);
+        return {intValues[0], intValues[1], intValues[2]};
     }
 
     Vector4<float> TypeConverter::toVector4(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 4);
-        return Vector4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+        return {floatValues[0], floatValues[1], floatValues[2], floatValues[3]};
     }
 
     Vector4<int> TypeConverter::toVector4Int(std::string_view str) {
         std::vector<int> intValues = intSplit(str, 4);
-        return Vector4<int>(intValues[0], intValues[1], intValues[2], intValues[3]);
+        return {intValues[0], intValues[1], intValues[2], intValues[3]};
     }
 
     Quaternion<float> TypeConverter::toQuaternion(std::string_view str) {
         std::vector<float> floatValues = floatSplit(str, 4);
-        return Quaternion<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+        return {floatValues[0], floatValues[1], floatValues[2], floatValues[3]};
     }
 
     long long TypeConverter::toLongLong(float value, float scale) {

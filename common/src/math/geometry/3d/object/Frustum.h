@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include <math/geometry/3d/object/ConvexObject3D.h>
 #include <math/geometry/3d/object/Sphere.h>
 #include <math/geometry/3d/object/AABBox.h>

@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    template<class T> IndexedTriangle2D<T>::IndexedTriangle2D(const std::size_t* indices) :
+    IndexedTriangle2D::IndexedTriangle2D(const std::size_t* indices) :
             indices() {
         assert(indices[0] != indices[1] && indices[0] != indices[2] && indices[1] != indices[2]);
 
@@ -13,7 +13,7 @@ namespace urchin {
         this->indices[2] = indices[2];
     }
 
-    template<class T> IndexedTriangle2D<T>::IndexedTriangle2D(std::size_t index1, std::size_t index2, std::size_t index3) :
+    IndexedTriangle2D::IndexedTriangle2D(std::size_t index1, std::size_t index2, std::size_t index3) :
             indices() {
         assert(index1 != index2 && index1 != index3 && index2 != index3);
 
@@ -22,19 +22,13 @@ namespace urchin {
         this->indices[2] = index3;
     }
 
-    template<class T> const std::array<std::size_t, 3>& IndexedTriangle2D<T>::getIndices() const {
+    const std::array<std::size_t, 3>& IndexedTriangle2D::getIndices() const {
         return indices;
     }
 
-    template<class T> std::size_t IndexedTriangle2D<T>::getIndex(std::size_t index) const {
+    std::size_t IndexedTriangle2D::getIndex(std::size_t index) const {
         assert(index <= 2);
-
         return indices[index];
     }
-
-    //explicit template
-    template class IndexedTriangle2D<float>;
-
-    template class IndexedTriangle2D<double>;
 
 }

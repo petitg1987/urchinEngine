@@ -225,12 +225,12 @@ namespace urchin {
         Point3<T> bestIntersectionPoint(0.0f, 0.0f, 0.0f);
         hasIntersection = false;
         std::array<std::function<Rectangle3D<T>()>, 6> faceRectangles = {
-                [this](){ return Rectangle3D<T>({getPoint(4), getPoint(6), getPoint(7), getPoint(5)}); }, //left
-                [this](){ return Rectangle3D<T>({getPoint(0), getPoint(1), getPoint(3), getPoint(2)}); }, //right
-                [this](){ return Rectangle3D<T>({getPoint(5), getPoint(1), getPoint(0), getPoint(4)}); }, //top
-                [this](){ return Rectangle3D<T>({getPoint(3), getPoint(7), getPoint(6), getPoint(2)}); }, //bottom
-                [this](){ return Rectangle3D<T>({getPoint(4), getPoint(0), getPoint(2), getPoint(6)}); }, //front
-                [this](){ return Rectangle3D<T>({getPoint(1), getPoint(5), getPoint(7), getPoint(3)}); } //back
+                [this] { return Rectangle3D<T>({getPoint(4), getPoint(6), getPoint(7), getPoint(5)}); }, //left
+                [this] { return Rectangle3D<T>({getPoint(0), getPoint(1), getPoint(3), getPoint(2)}); }, //right
+                [this] { return Rectangle3D<T>({getPoint(5), getPoint(1), getPoint(0), getPoint(4)}); }, //top
+                [this] { return Rectangle3D<T>({getPoint(3), getPoint(7), getPoint(6), getPoint(2)}); }, //bottom
+                [this] { return Rectangle3D<T>({getPoint(4), getPoint(0), getPoint(2), getPoint(6)}); }, //front
+                [this] { return Rectangle3D<T>({getPoint(1), getPoint(5), getPoint(7), getPoint(3)}); } //back
         };
 
         for (std::size_t i = 0; i < faceRectangles.size(); ++i) {

@@ -24,7 +24,7 @@ namespace urchin {
     /**
      * Points of convex hull indexed to be used with indexed triangles.
      */
-    template<class T> const typename std::map<std::size_t, ConvexHullPoint<T>> &ConvexHull3D<T>::getConvexHullPoints() const {
+    template<class T> const std::map<std::size_t, ConvexHullPoint<T>> &ConvexHull3D<T>::getConvexHullPoints() const {
         return localizedConvexHullShape.getConvexHullPoints();
     }
 
@@ -38,7 +38,7 @@ namespace urchin {
     /**
      * Triangles of convex hull where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
      */
-    template<class T> const typename std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHull3D<T>::getIndexedTriangles() const {
+    template<class T> const std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHull3D<T>::getIndexedTriangles() const {
         return localizedConvexHullShape.getIndexedTriangles();
     }
 

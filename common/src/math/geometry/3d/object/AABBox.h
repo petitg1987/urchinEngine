@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <limits>
 #include <span>
 
 #include <math/geometry/3d/object/ConvexObject3D.h>

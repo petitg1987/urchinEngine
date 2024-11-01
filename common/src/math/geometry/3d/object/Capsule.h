@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <array>
 
 #include <math/geometry/3d/object/ConvexObject3D.h>

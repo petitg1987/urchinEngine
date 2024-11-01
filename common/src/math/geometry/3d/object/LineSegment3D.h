@@ -19,7 +19,7 @@ namespace urchin {
             const Point3<T>& getA() const;
             const Point3<T>& getB() const;
 
-            Point3<T> getSupportPoint(const Vector3<T>&) const;
+            Point3<T> getSupportPoint(const Vector3<T>&) const override;
             Point3<T> closestPoint(const Point3<T>&) const;
             Point3<T> closestPoint(const Point3<T>&, std::array<T, 2>&) const;
             T squareDistance(const Point3<T>&) const;

@@ -75,7 +75,7 @@ template<class OBJ> void AABBNode<OBJ>::updateAABBox(float fatMargin) {
         Point3 fatMargin3(fatMargin, fatMargin, fatMargin);
         AABBox<float> objectBox = getNodeData().retrieveObjectAABBox();
 
-        aabbox = AABBox<float>(objectBox.getMin()-fatMargin3, objectBox.getMax()+fatMargin3);
+        aabbox = AABBox(objectBox.getMin()-fatMargin3, objectBox.getMax()+fatMargin3);
     } else {
         aabbox = children[0]->getAABBox().merge(children[1]->getAABBox());
     }

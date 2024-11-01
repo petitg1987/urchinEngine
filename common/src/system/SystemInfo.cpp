@@ -60,7 +60,7 @@ namespace urchin {
         #else
             struct sysinfo sysInfo = {};
             if (!sysinfo(&sysInfo)) {
-                return ((uint64_t)sysInfo.totalram) * ((uint64_t)sysInfo.mem_unit);
+                return sysInfo.totalram * ((uint64_t)sysInfo.mem_unit);
             }
             return 0L;
         #endif

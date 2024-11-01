@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <memory>
 
 #include <math/geometry/3d/shape/ConvexShape3D.h>

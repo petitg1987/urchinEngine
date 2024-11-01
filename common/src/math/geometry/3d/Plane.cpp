@@ -13,7 +13,7 @@ namespace urchin {
     }
 
     /**
-     * @param planeNormal Plane normal normalized
+     * @param normalizedNormal Plane normal normalized
      * @param distanceToOrigin Distance to the origin. Positive if dot product between a vector from plane to origin and the normal is positive.
      */
     template<class T> Plane<T>::Plane(const Vector3<T>& normalizedNormal, T distanceToOrigin) :

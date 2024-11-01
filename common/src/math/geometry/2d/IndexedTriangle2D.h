@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    template<class T> class IndexedTriangle2D {
+    class IndexedTriangle2D {
         public:
             explicit IndexedTriangle2D(const std::size_t*);
             IndexedTriangle2D(std::size_t, std::size_t, std::size_t);

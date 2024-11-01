@@ -26,7 +26,7 @@ namespace urchin {
     void LockById::lock(uint_fast32_t id) {
         std::mutex* mutex;
         {
-            std::scoped_lock<std::mutex> lock(accessMutex);
+            std::scoped_lock lock(accessMutex);
             mutex = &mutexById[id];
         }
 
@@ -34,7 +34,7 @@ namespace urchin {
     }
 
     void LockById::unlock(uint_fast32_t id) {
-        std::scoped_lock<std::mutex> lock(accessMutex);
+        std::scoped_lock lock(accessMutex);
         mutexById.find(id)->second.unlock();
     }
 

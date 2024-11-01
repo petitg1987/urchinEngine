@@ -1,9 +1,9 @@
 template<class T> Octree<T>::Octree(const Point3<float>& position, const Vector3<float>& size, float minSize) :
         bbox(AABBox<float>(position, size)) {
     Vector3<float> sizeChild = size;
-    std::vector<float> splitX = {position.X};
-    std::vector<float> splitY = {position.Y};
-    std::vector<float> splitZ = {position.Z};
+    std::vector splitX = {position.X};
+    std::vector splitY = {position.Y};
+    std::vector splitZ = {position.Z};
     if (size.X / 2.0f > minSize) {
         sizeChild.X /= 2.0f;
         splitX.push_back(position.X + sizeChild.X);

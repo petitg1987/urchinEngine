@@ -1,5 +1,3 @@
-#include <algorithm>
-
 #include <math/geometry/3d/util/SortPointsService.h>
 
 namespace urchin {

@@ -29,7 +29,7 @@ namespace urchin {
         std::time_t epochSeconds = std::chrono::system_clock::to_time_t(timePoint);
         std::stringstream ss;
         {
-            std::scoped_lock<std::mutex> lock(localtimeMutex); //mutex for not thread safe localtime function
+            std::scoped_lock lock(localtimeMutex); //mutex for not thread safe localtime function
             ss << std::put_time(std::localtime(&epochSeconds), format.c_str());
         }
         return ss.str();

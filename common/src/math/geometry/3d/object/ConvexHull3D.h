@@ -19,9 +19,9 @@ namespace urchin {
             explicit ConvexHull3D(const std::vector<Point3<T>>&);
             explicit ConvexHull3D(const ConvexHullShape3D<T>&);
 
-            const typename std::map<std::size_t, ConvexHullPoint<T>>& getConvexHullPoints() const;
+            const std::map<std::size_t, ConvexHullPoint<T>>& getConvexHullPoints() const;
             std::vector<Point3<T>> getPoints() const;
-            const typename std::map<std::size_t, IndexedTriangle3D<T>>& getIndexedTriangles() const;
+            const std::map<std::size_t, IndexedTriangle3D<T>>& getIndexedTriangles() const;
 
             std::size_t addNewPoint(const Point3<T>&);
             std::size_t addNewPoint(const Point3<T>&, std::vector<std::size_t>&);

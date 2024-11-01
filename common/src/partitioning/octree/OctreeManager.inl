@@ -76,7 +76,7 @@ template<class T> void OctreeManager<T>::buildOctree(std::vector<std::shared_ptr
             addOctreeable(octreeable);
         }
     } else {
-        mainOctree = std::make_unique<Octree<T>>(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(1.0f, 1.0f, 1.0f), minSize);
+        mainOctree = std::make_unique<Octree<T>>(Point3(0.0f, 0.0f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), minSize);
     }
 
     notifyObservers(this, OCTREE_BUILT);

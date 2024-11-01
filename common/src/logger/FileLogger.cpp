@@ -10,7 +10,6 @@
 namespace urchin {
 
     FileLogger::FileLogger(std::string filename) :
-            Logger(),
             filename(std::move(filename)) {
 
     }
