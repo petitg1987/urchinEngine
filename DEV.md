@@ -14,7 +14,7 @@
   * Add in PATH variable: "C:\msys64\mingw64\bin"
   * In mingw64.exe (not msys2.exe): `Pacman -S mingw-w64-x86_64-cmake mingw-w64-x86_64-toolchain mingw64/mingw-w64-x86_64-gcc mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libogg make`
 * Install Freetype library:
-  * Copy https://download.savannah.gnu.org/releases/freetype/freetype-2.10.1.tar.gz in: "C:\msys64\home\greg"
+  * Copy https://download.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.gz in: "C:\msys64\home\greg"
   * Execute: `./configure --with-zlib=no && make && make install`
   * Copy include in "C:\msys64\mingw64\x86_64-w64-mingw32\include"
   * *Info*: libfreetype-6.dll is in "C:\msys64\mingw64\bin"

@@ -8,7 +8,7 @@ if ((CMAKE_BUILD_TYPE MATCHES "Release") OR (CMAKE_BUILD_TYPE MATCHES "RelWithDe
 endif()
 
 if (WIN32)
-    set(CURL_LIB curl.a advapi32.a crypt32.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a idn2.a gdi32.a zstd.a ws2_32.a iconv unistring psl bcrypt)
+    set(CURL_LIB curl.a advapi32.a crypt32.a bcrypt.a ssl.a crypto.a brotlidec.a brotlicommon.a z.a nghttp2.a idn2.a gdi32.a zstd.a ws2_32.a unistring.a psl.a iconv)
 else()
     include(deps/curl/curl-static.cmake) #only used on Linux because build is too slow on Windows
 
