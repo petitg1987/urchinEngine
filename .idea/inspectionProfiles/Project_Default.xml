@@ -13,6 +13,7 @@
     <inspection_tool class="CppRedundantElseKeywordInsideCompoundStatement" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="CppRedundantParentheses" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="CppRedundantTemplateArguments" enabled="false" level="HINT" enabled_by_default="false" />
+    <inspection_tool class="CppTooWideScope" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="CppTooWideScopeInitStatement" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="OCUnusedGlobalDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedGlobalDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
