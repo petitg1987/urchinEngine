@@ -63,7 +63,7 @@ namespace urchin {
     }
 
     Sound::SoundType SpatialSound::getSoundType() const {
-        return Sound::SPATIAL;
+        return SPATIAL;
     }
 
     void SpatialSound::setPosition(const Point3<float>& position) {

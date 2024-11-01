@@ -7,13 +7,13 @@ namespace urchin {
      */
     SoundSphere::SoundSphere(float radius, const Point3<float>& position, float margin) :
             SoundShape(margin),
-            playTriggerSphere(Sphere<float>(radius, position)),
-            stopTriggerSphere(Sphere<float>(radius + margin, position)) {
+            playTriggerSphere(Sphere(radius, position)),
+            stopTriggerSphere(Sphere(radius + margin, position)) {
 
     }
 
     SoundShape::ShapeType SoundSphere::getShapeType() const {
-        return SoundShape::SPHERE_SHAPE;
+        return SPHERE_SHAPE;
     }
 
     const Sphere<float>& SoundSphere::getPlayTriggerSphere() const {
@@ -33,8 +33,8 @@ namespace urchin {
     }
 
     void SoundSphere::updateCenterPosition(const Point3<float>& position) {
-        playTriggerSphere = Sphere<float>(playTriggerSphere.getRadius(), position);
-        stopTriggerSphere = Sphere<float>(stopTriggerSphere.getRadius(), position);
+        playTriggerSphere = Sphere(playTriggerSphere.getRadius(), position);
+        stopTriggerSphere = Sphere(stopTriggerSphere.getRadius(), position);
     }
 
     bool SoundSphere::pointInsidePlayShape(const Point3<float>& point) const {

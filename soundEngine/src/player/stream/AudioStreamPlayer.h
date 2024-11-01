@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 #include <player/AudioPlayer.h>
 #include <sound/Sound.h>
 
@@ -23,7 +21,7 @@ namespace urchin {
             void stop() override;
 
         private:
-            void play(bool);
+            void play(bool) const;
 
             StreamUpdateWorker& streamUpdateWorker;
     };

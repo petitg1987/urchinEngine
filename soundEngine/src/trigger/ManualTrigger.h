@@ -18,7 +18,7 @@ namespace urchin {
 
             unsigned int countSoundToPlay() const;
 
-            const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) override;
+            const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) override;
 
         private:
             enum ManualTriggerAction {

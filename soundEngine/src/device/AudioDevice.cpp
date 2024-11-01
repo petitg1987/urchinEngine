@@ -42,7 +42,7 @@ namespace urchin {
         }
     }
 
-    void AudioDevice::enable() {
+    void AudioDevice::enable() const {
         bool makeContextCurrentRes = alcMakeContextCurrent(context);
         CheckState::checkContext(device, "make context current");
         if (!makeContextCurrentRes) {

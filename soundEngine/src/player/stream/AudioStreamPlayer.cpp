@@ -41,7 +41,7 @@ namespace urchin {
         streamUpdateWorker.removeTask(*this);
     }
 
-    void AudioStreamPlayer::play(bool playLoop) {
+    void AudioStreamPlayer::play(bool playLoop) const {
         streamUpdateWorker.addTask(*this, playLoop);
 
         alSourcePlay(getSourceId());

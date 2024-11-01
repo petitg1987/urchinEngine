@@ -1,9 +1,6 @@
 #pragma once
 
 #include <typeinfo>
-#include <iostream>
-#include <thread>
-#include <map>
 
 #include <pattern/singleton/SingletonContainer.h>
 #include <pattern/singleton/SingletonInterface.h>

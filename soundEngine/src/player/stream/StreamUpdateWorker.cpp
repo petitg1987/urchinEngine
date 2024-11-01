@@ -1,6 +1,4 @@
 #include <AL/al.h>
-#include <thread>
-#include <iostream>
 #include <UrchinCommon.h>
 
 #include <player/stream/StreamUpdateWorker.h>
@@ -62,15 +60,15 @@ namespace urchin {
             }
         }
 
-        std::scoped_lock<std::mutex> lock(tasksMutex);
+        std::scoped_lock lock(tasksMutex);
         #ifdef URCHIN_DEBUG
-            assert(!std::ranges::any_of(tasks, [&audioStreamPlayer](const auto& task) { return task->getSourceId() == audioStreamPlayer.getSourceId(); }));
+            assert(!std::ranges::any_of(tasks, [&audioStreamPlayer](const auto& t) { return t->getSourceId() == audioStreamPlayer.getSourceId(); }));
         #endif
         tasks.push_back(std::move(task));
     }
 
     void StreamUpdateWorker::removeTask(const AudioStreamPlayer& audioStreamPlayer) {
-        std::scoped_lock<std::mutex> lock(tasksMutex);
+        std::scoped_lock lock(tasksMutex);
 
         auto itFind = std::ranges::find_if(tasks, [&audioStreamPlayer](const auto& task){ return task->getSourceId() == audioStreamPlayer.getSourceId(); });
         if (itFind != tasks.end()) {
@@ -89,7 +87,7 @@ namespace urchin {
 
             while (continueExecution()) {
                 {
-                    std::scoped_lock<std::mutex> lock(tasksMutex);
+                    std::scoped_lock lock(tasksMutex);
 
                     for (auto it = tasks.begin(); it != tasks.end();) {
                         bool taskFinished = processTask(*(*it));

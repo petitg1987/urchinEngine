@@ -29,7 +29,7 @@ namespace urchin {
             PlayBehavior getPlayBehavior() const;
             void setPlayBehavior(PlayBehavior);
 
-            virtual const std::vector<SoundTrigger::TriggerAction>& evaluateTrigger(const Point3<float>&) = 0;
+            virtual const std::vector<TriggerAction>& evaluateTrigger(const Point3<float>&) = 0;
 
         protected:
             std::vector<TriggerAction> triggerActions;

@@ -16,7 +16,7 @@ namespace urchin {
             void initializeSource(ALuint) const override;
             void updateSource(ALuint) override;
 
-            Sound::SoundType getSoundType() const override;
+            SoundType getSoundType() const override;
     };
 
 }

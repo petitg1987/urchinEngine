@@ -7,8 +7,8 @@ namespace urchin {
      */
     SoundBox::SoundBox(const Vector3<float>& halfSizes, const Point3<float>& centerPosition, const Quaternion<float>& orientation, float margin) :
             SoundShape(margin),
-            playTriggerBox(OBBox<float>(halfSizes, centerPosition, orientation)),
-            stopTriggerBox(OBBox<float>(halfSizes + Vector3<float>(margin, margin, margin), centerPosition, orientation)) {
+            playTriggerBox(OBBox(halfSizes, centerPosition, orientation)),
+            stopTriggerBox(OBBox(halfSizes + Vector3(margin, margin, margin), centerPosition, orientation)) {
 
     }
 

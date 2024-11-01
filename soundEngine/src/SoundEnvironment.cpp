@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 #include <SoundEnvironment.h>
+#include <device/AudioDevice.h>
 #include <util/CheckState.h>
 
 namespace urchin {
@@ -107,7 +108,7 @@ namespace urchin {
         struct {
             Vector3<float> frontVector;
             Vector3<float> upVector;
-        } listenerOrientation = {listenerFrontVector, listenerUpVector};
+        } listenerOrientation = {.frontVector=listenerFrontVector, .upVector=listenerUpVector};
         alListenerfv(AL_ORIENTATION, &listenerOrientation.frontVector.X);
         CheckState::check("set listener orientation", listenerOrientation.frontVector, listenerOrientation.upVector);
 
@@ -123,7 +124,7 @@ namespace urchin {
     }
 
     void SoundEnvironment::process() const {
-        process(Point3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 0.0f, 0.0f), Vector3<float>(0.0f, 1.0f, 0.0f));
+        process(Point3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f));
     }
 
 }

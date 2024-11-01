@@ -21,7 +21,7 @@ namespace urchin {
     }
 
     Sound::SoundType GlobalSound::getSoundType() const {
-        return Sound::GLOBAL;
+        return GLOBAL;
     }
 
 }

@@ -63,8 +63,8 @@ namespace urchin {
         return buildSoundComponent(std::move(spatialSound), std::move(zoneTrigger));
     }
 
-    std::shared_ptr<SoundComponent> SoundBuilder::buildSoundComponent(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) {
-        std::shared_ptr<SoundComponent> soundComponent = std::make_unique<SoundComponent>(std::move(sound), std::move(soundTrigger));
+    std::shared_ptr<SoundComponent> SoundBuilder::buildSoundComponent(std::shared_ptr<Sound> sound, std::shared_ptr<SoundTrigger> soundTrigger) const {
+        std::shared_ptr soundComponent = std::make_unique<SoundComponent>(std::move(sound), std::move(soundTrigger));
         soundEnvironment.addSoundComponent(soundComponent);
         return soundComponent;
     }

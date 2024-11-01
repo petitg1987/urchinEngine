@@ -1,11 +1,9 @@
 #pragma once
 
-#include <vector>
 #include <UrchinCommon.h>
 
 #include <sound/Sound.h>
 #include <trigger/SoundTrigger.h>
-#include <player/AudioPlayer.h>
 #include <player/stream/StreamUpdateWorker.h>
 #include <SoundComponent.h>
 

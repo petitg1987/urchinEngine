@@ -1,7 +1,6 @@
 #pragma once
 
 #include <AL/al.h>
-#include <memory>
 
 #include <player/stream/AudioStreamPlayer.h>
 #include <player/filereader/SoundFileReader.h>

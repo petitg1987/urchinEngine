@@ -13,7 +13,7 @@ namespace urchin {
         public:
             SoundBox(const Vector3<float>&, const Point3<float>&, const Quaternion<float>&, float);
 
-            SoundShape::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
 
             const OBBox<float>& getPlayTriggerBox() const;
             const OBBox<float>& getStopTriggerBox() const;

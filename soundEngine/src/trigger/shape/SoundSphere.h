@@ -13,7 +13,7 @@ namespace urchin {
         public:
             SoundSphere(float, const Point3<float>&, float);
 
-            SoundShape::ShapeType getShapeType() const override;
+            ShapeType getShapeType() const override;
 
             const Sphere<float>& getPlayTriggerSphere() const;
             const Sphere<float>& getStopTriggerSphere() const;

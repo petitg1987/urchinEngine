@@ -29,7 +29,7 @@ namespace urchin {
             std::shared_ptr<SoundComponent> newZoneSpatialMusic(std::string, const Point3<float>&, float, std::shared_ptr<ZoneTrigger>);
 
         private:
-            std::shared_ptr<SoundComponent> buildSoundComponent(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>);
+            std::shared_ptr<SoundComponent> buildSoundComponent(std::shared_ptr<Sound>, std::shared_ptr<SoundTrigger>) const;
 
             SoundEnvironment& soundEnvironment;
             ChunkPreLoader chunkPreLoader;

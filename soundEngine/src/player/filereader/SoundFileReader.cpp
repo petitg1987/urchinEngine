@@ -15,7 +15,7 @@ namespace urchin {
             throw std::invalid_argument("Impossible to open sound file " + this->filename);
         }
 
-        const ov_callbacks callbacks = {SoundFileReader::read, SoundFileReader::seek, nullptr, SoundFileReader::tell};
+        constexpr ov_callbacks callbacks = {read, seek, nullptr, tell};
         int loadStatus = ov_open_callbacks(&stream, &vorbisFile, nullptr, 0, callbacks);
         if (loadStatus < 0) {
             throw std::invalid_argument("Impossible to load sound file " + this->filename + ": " + std::to_string(loadStatus));
@@ -24,9 +24,9 @@ namespace urchin {
 
         //determine sound format
         if (getNumberOfChannels() == 1) {
-            format = SoundFormat::MONO_16;
+            format = MONO_16;
         } else if (getNumberOfChannels() == 2) {
-            format = SoundFormat::STEREO_16;
+            format = STEREO_16;
         } else {
             closeSoundFile();
             throw std::domain_error("Unsupported channels: " + std::to_string(getNumberOfChannels()));
@@ -99,7 +99,7 @@ namespace urchin {
     }
 
     int SoundFileReader::seek(void* dataSource, ogg_int64_t offset, int origin) {
-        static const std::vector<std::ios_base::seekdir> seekDirections = {std::ios_base::beg, std::ios_base::cur, std::ios_base::end};
+        static const std::vector seekDirections = {std::ios_base::beg, std::ios_base::cur, std::ios_base::end};
         std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
         stream.seekg(offset, seekDirections.at((unsigned long)origin));
         stream.clear(); //in case we seeked to EOF
