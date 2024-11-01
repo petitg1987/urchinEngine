@@ -45,7 +45,11 @@ if (WIN32)
     SET(VULKAN_LIB vulkan-1)
 else()
     set(LINK_OPT -rdynamic) #necessary for SignalHandler to work correctly
-    set(FREETYPE_LIB freetype.a bz2.a png16.a brotlidec.a brotlicommon.a z.a)
+    if(${CMAKE_VERSION} VERSION_LESS "3.24.0") #for build in Docker image
+        set(FREETYPE_LIB freetype.a png16.a brotlidec.a brotlicommon.a z.a)
+    else()
+        set(FREETYPE_LIB freetype.a bz2.a png16.a brotlidec.a brotlicommon.a z.a)
+    endif()
     SET(VULKAN_LIB vulkan)
 endif()
 
