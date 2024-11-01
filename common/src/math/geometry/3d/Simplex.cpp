@@ -1,5 +1,4 @@
 #include <limits>
-#include <algorithm>
 #include <stdexcept>
 #include <cassert>
 

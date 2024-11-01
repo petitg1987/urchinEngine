@@ -10,13 +10,14 @@
 #include <path/navmesh/csg/PolygonsUnion.h>
 #include <path/navmesh/csg/PolygonsSubtraction.h>
 #include <path/navmesh/link/EdgeLinkDetection.h>
+#include <path/navmesh/triangulation/TriangulationAlgorithm.h>
 #include <input/AIObject.h>
 #include <input/AITerrain.h>
 
 namespace urchin {
 
     //debug parameters
-    const bool DEBUG_EXPORT_NAV_MESH = False();
+    constexpr auto DEBUG_EXPORT_NAV_MESH = False();
 
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance().getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),

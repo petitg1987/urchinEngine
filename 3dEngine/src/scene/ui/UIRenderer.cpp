@@ -10,7 +10,7 @@
 namespace urchin {
 
     //debug parameters
-    const bool DEBUG_DISPLAY_FONT_TEXTURE = False();
+    constexpr auto DEBUG_DISPLAY_FONT_TEXTURE = False();
 
     UIRenderer::UIRenderer(float gammaFactor, RenderTarget& renderTarget, I18nService& i18nService) :
             Renderer(gammaFactor),

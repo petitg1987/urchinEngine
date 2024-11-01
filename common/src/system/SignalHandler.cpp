@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <cassert>
 #include <array>
 #ifdef _WIN32

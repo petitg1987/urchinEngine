@@ -1,11 +1,10 @@
 #include <random>
-#include <logger/Logger.h>
 #include <scene/renderer3d/lighting/shadow/OffsetTextureGenerator.h>
 
 namespace urchin {
 
     //debug parameters
-    const bool DEBUG_EXPORT_TEXTURE_DATA = False();
+    constexpr auto DEBUG_EXPORT_TEXTURE_DATA = False();
 
     OffsetTextureGenerator::OffsetTextureGenerator(unsigned int textureXYSize, unsigned int filterBoxSize) :
             textureXYSize(textureXYSize),

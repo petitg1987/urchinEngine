@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <math/algebra/matrix/Matrix2.h>
 
 namespace urchin {

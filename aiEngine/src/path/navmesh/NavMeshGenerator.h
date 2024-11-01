@@ -15,7 +15,6 @@
 #include <path/navmesh/polytope/Polytope.h>
 #include <path/navmesh/polytope/PolytopeSurface.h>
 #include <path/navmesh/csg/CSGPolygon.h>
-#include <path/navmesh/triangulation/TriangulationAlgorithm.h>
 
 namespace urchin {
 

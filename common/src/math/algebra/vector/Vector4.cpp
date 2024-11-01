@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <math/algebra/vector/Vector4.h>
 #include <math/algorithm/MathFunction.h>
 

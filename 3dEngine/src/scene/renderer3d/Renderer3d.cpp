@@ -8,17 +8,17 @@
 namespace urchin {
 
     //debug parameters
-    const bool DEBUG_DISPLAY_DEPTH_BUFFER = False();
-    const bool DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER = False();
-    const bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = False();
-    const bool DEBUG_DISPLAY_MATERIAL_BUFFER = False();
-    const bool DEBUG_DISPLAY_ILLUMINATED_BUFFER = False();
-    const bool DEBUG_DISPLAY_TRANSPARENT_BUFFER = False();
-    const bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = False();
-    const bool DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA = False();
-    const bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = False();
-    const bool DEBUG_DISPLAY_MODEL_BASE_BONES = False();
-    const bool DEBUG_DISPLAY_LIGHTS_OCTREE = False();
+    constexpr auto DEBUG_DISPLAY_DEPTH_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_ALBEDO_EMISSIVE_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_MATERIAL_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_ILLUMINATED_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_TRANSPARENT_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = False();
+    constexpr auto DEBUG_DISPLAY_MODELS_OCCLUSION_CULLER_DATA = False();
+    constexpr auto DEBUG_DISPLAY_MODELS_BOUNDING_BOX = False();
+    constexpr auto DEBUG_DISPLAY_MODEL_BASE_BONES = False();
+    constexpr auto DEBUG_DISPLAY_LIGHTS_OCTREE = False();
 
     Renderer3d::Renderer3d(float gammaFactor, RenderTarget& finalRenderTarget, std::shared_ptr<Camera> camera, const VisualConfig& visualConfig, I18nService& i18nService) :
             Renderer(gammaFactor),

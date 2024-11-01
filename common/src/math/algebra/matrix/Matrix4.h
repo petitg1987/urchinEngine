@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <cmath>
 #include <iomanip>
 
 #include <math/algebra/matrix/Matrix3.h>

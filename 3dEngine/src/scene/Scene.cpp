@@ -6,7 +6,7 @@
 namespace urchin {
 
     //debug parameters
-    const bool DEBUG_PROFILE_FRAME_BY_FRAME = False();
+    constexpr auto DEBUG_PROFILE_FRAME_BY_FRAME = False();
 
     Scene::Scene(const std::vector<std::string>& windowRequiredExtensions, std::unique_ptr<SurfaceCreator> surfaceCreator, std::unique_ptr<FramebufferSizeRetriever> framebufferSizeRetriever, bool verticalSyncEnabled) :
             framebufferSizeRetriever(std::move(framebufferSizeRetriever)),

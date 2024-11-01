@@ -9,7 +9,7 @@
 namespace urchin {
 
     //debug parameters
-    const bool DEBUG_EXPORT_SSAO_KERNEL = False();
+    constexpr auto DEBUG_EXPORT_SSAO_KERNEL = False();
 
     AmbientOcclusionManager::AmbientOcclusionManager(const Config& config, bool isTestMode) :
             config(config),

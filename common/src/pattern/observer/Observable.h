@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <map>
-#include <memory>
 
 #include <pattern/observer/Observer.h>
 

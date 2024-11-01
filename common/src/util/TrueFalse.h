@@ -3,13 +3,13 @@
 namespace urchin {
 
     struct True {
-        operator bool() const {
+        explicit operator bool() const {
             return true;
         }
     };
 
     struct False {
-        operator bool() const {
+        explicit operator bool() const {
             return false;
         }
     };
