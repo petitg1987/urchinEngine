@@ -44,4 +44,6 @@
 #include <character/CharacterControllerConfig.h>
 #include <character/PhysicsCharacter.h>
 
+#include <utils/math/PhysicsTransform.h>
+
 #include <visualizer/CollisionVisualizer.h>
