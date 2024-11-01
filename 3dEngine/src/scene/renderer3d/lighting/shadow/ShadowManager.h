@@ -7,7 +7,6 @@
 
 #include <scene/renderer3d/lighting/shadow/SplitFrustum.h>
 #include <scene/renderer3d/lighting/shadow/light/LightShadowMap.h>
-#include <scene/renderer3d/lighting/shadow/display/ShadowModelShaderVariable.h>
 #include <scene/renderer3d/lighting/light/Light.h>
 #include <scene/renderer3d/lighting/light/LightManager.h>
 #include <scene/renderer3d/model/Model.h>

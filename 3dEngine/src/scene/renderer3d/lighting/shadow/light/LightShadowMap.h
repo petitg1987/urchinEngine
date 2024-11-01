@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <set>
 #include <memory>
 #include <UrchinCommon.h>
 
@@ -10,7 +9,6 @@
 #include <scene/renderer3d/model/Model.h>
 #include <scene/renderer3d/model/culler/ModelOcclusionCuller.h>
 #include <scene/renderer3d/model/displayer/ModelSetDisplayer.h>
-#include <texture/filter/TextureFilter.h>
 
 namespace urchin {
 

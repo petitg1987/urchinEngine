@@ -4,7 +4,7 @@ namespace urchin {
 
     GaussianBlurFilterBuilder::GaussianBlurFilterBuilder(bool isTestMode, std::string name, const std::shared_ptr<Texture>& sourceTexture) :
             TextureFilterBuilder(isTestMode, std::move(name), sourceTexture),
-            pBlurDirection(BlurDirection::HORIZONTAL_BLUR),
+            pBlurDirection(HORIZONTAL_BLUR),
             pBlurRadius(3),
             pMaxBlurDistance(10.0) {
 
@@ -53,9 +53,9 @@ namespace urchin {
         }
 
         std::unique_ptr<TextureFilter> textureFilter;
-        if (pBlurDirection == BlurDirection::HORIZONTAL_BLUR) {
+        if (pBlurDirection == HORIZONTAL_BLUR) {
             textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
-        } else if (pBlurDirection == BlurDirection::VERTICAL_BLUR) {
+        } else if (pBlurDirection == VERTICAL_BLUR) {
             textureFilter = std::make_unique<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
         } else {
             throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));

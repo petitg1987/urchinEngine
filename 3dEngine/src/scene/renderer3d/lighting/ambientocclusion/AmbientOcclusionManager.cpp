@@ -60,9 +60,9 @@ namespace urchin {
 
     void AmbientOcclusionManager::createOrUpdateRenderTarget() {
         TextureFormat textureFormat;
-        if (config.textureBits == AOTextureBits::AO_8_BITS) {
+        if (config.textureBits == AO_8_BITS) {
             textureFormat = TextureFormat::GRAYSCALE_8_INT;
-        } else if (config.textureBits == AOTextureBits::AO_16_BITS) {
+        } else if (config.textureBits == AO_16_BITS) {
             textureFormat = TextureFormat::GRAYSCALE_16_FLOAT;
         } else {
             throw std::runtime_error("Unknown ambient occlusion texture bits: " + std::to_string(config.textureBits));
@@ -134,7 +134,7 @@ namespace urchin {
                 .biasMultiplier = config.biasMultiplier,
                 .biasDistanceMultiplier = config.biasDistanceMultiplier
         };
-        std::vector<std::size_t> variablesSize = {
+        std::vector variablesSize = {
                 sizeof(AmbientOcclusionShaderConst::kernelSamples),
                 sizeof(AmbientOcclusionShaderConst::radius),
                 sizeof(AmbientOcclusionShaderConst::depthStartAttenuation),
@@ -221,7 +221,7 @@ namespace urchin {
 
             createOrUpdateRenderingObjects();
             if (ambientOcclusionStrengthUpdated) {
-                notifyObservers(this, AmbientOcclusionManager::AMBIENT_OCCLUSION_STRENGTH_UPDATE);
+                notifyObservers(this, AMBIENT_OCCLUSION_STRENGTH_UPDATE);
             }
         }
     }
@@ -237,9 +237,9 @@ namespace urchin {
     }
 
     int AmbientOcclusionManager::retrieveTextureSizeFactor() const {
-        if (config.textureSize == AOTextureSize::FULL_SIZE) {
+        if (config.textureSize == FULL_SIZE) {
             return 1;
-        } else if (config.textureSize == AOTextureSize::HALF_SIZE) {
+        } else if (config.textureSize == HALF_SIZE) {
             return 2;
         }
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));

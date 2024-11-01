@@ -7,17 +7,16 @@
 namespace urchin {
 
     OmnidirectionalLight::OmnidirectionalLight(const Point3<float>& position) :
-            Light(),
             position(position),
             exponentialAttenuation(0.1f),
             sphereScope(nullptr),
             bboxScope(nullptr) {
-        directions.emplace_back(Vector3<float>(1.0f, 0.0f, 0.0f)); //Left
-        directions.emplace_back(Vector3<float>(-1.0f, 0.0f, 0.0f)); //Right
-        directions.emplace_back(Vector3<float>(0.0f, 1.0f, 0.0f)); //Top
-        directions.emplace_back(Vector3<float>(0.0f, -1.0f, 0.0f)); //Bottom
-        directions.emplace_back(Vector3<float>(0.0f, 0.0f, 1.0f)); //Back
-        directions.emplace_back(Vector3<float>(0.0f, 0.0f, -1.0f)); //Front
+        directions.emplace_back(Vector3(1.0f, 0.0f, 0.0f)); //Left
+        directions.emplace_back(Vector3(-1.0f, 0.0f, 0.0f)); //Right
+        directions.emplace_back(Vector3(0.0f, 1.0f, 0.0f)); //Top
+        directions.emplace_back(Vector3(0.0f, -1.0f, 0.0f)); //Bottom
+        directions.emplace_back(Vector3(0.0f, 0.0f, 1.0f)); //Back
+        directions.emplace_back(Vector3(0.0f, 0.0f, -1.0f)); //Front
 
         computeScope();
     }

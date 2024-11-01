@@ -3,7 +3,7 @@
 namespace urchin {
 
     Light::Light() :
-            lightColor(Point3<float>(1.0f, 1.0f, 1.0f)),
+            lightColor(Point3(1.0f, 1.0f, 1.0f)),
             pbrEnabled(true),
             produceShadow(false) {
 

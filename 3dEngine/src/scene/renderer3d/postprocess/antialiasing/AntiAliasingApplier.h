@@ -15,7 +15,7 @@ namespace urchin {
             };
 
             struct Config {
-                Quality quality = AntiAliasingApplier::Quality::HIGH;
+                Quality quality = HIGH;
             };
 
             AntiAliasingApplier(const Config&, bool);

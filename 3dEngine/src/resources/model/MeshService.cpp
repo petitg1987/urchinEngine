@@ -50,7 +50,7 @@ namespace urchin {
         //compute weighted normals
         static std::vector<Vector3<float>> vertexNormals;
         vertexNormals.clear();
-        vertexNormals.resize(constMesh.getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
+        vertexNormals.resize(constMesh.getNumberVertices(), Vector3(0.0f, 0.0f, 0.0f));
 
         std::size_t numTrianglesIndices = constMesh.getTrianglesIndices().size();
         assert(numTrianglesIndices % 3 == 0);
@@ -79,7 +79,7 @@ namespace urchin {
 
         //sum weighted normals of same vertex
         normals.clear();
-        normals.resize(constMesh.getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
+        normals.resize(constMesh.getNumberVertices(), Vector3(0.0f, 0.0f, 0.0f));
         for (unsigned int vertexIndex = 0; vertexIndex < constMesh.getNumberVertices(); ++vertexIndex) {
             unsigned int linkedVerticesGroupId = constMesh.getStructVertex(vertexIndex).linkedVerticesGroupId;
             for (unsigned int linkedVertex : constMesh.getLinkedVertices(linkedVerticesGroupId)) {
@@ -93,8 +93,8 @@ namespace urchin {
             normals[vertexIndex] = normals[vertexIndex].normalize();
 
             //computes tangent
-            Vector3<float> c1 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 0.0f, 1.0f));
-            Vector3<float> c2 = normals[vertexIndex].crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
+            Vector3<float> c1 = normals[vertexIndex].crossProduct(Vector3(0.0f, 0.0f, 1.0f));
+            Vector3<float> c2 = normals[vertexIndex].crossProduct(Vector3(0.0f, 1.0f, 0.0f));
             if (c1.squareLength() > c2.squareLength()) {
                 tangents[vertexIndex] = c1.normalize();
             } else {
@@ -105,7 +105,7 @@ namespace urchin {
 
     void MeshService::computeVertices(const ConstMesh& constMesh, const std::vector<Bone>& skeleton, std::vector<Point3<float>>& vertices) {
         vertices.clear();
-        vertices.resize(constMesh.getNumberVertices(), Point3<float>(0.0f, 0.0f, 0.0f));
+        vertices.resize(constMesh.getNumberVertices(), Point3(0.0f, 0.0f, 0.0f));
         for (unsigned int i = 0; i < constMesh.getNumberVertices(); ++i) {
             //calculate final vertex to draw with weights
             for (int j = 0; j < constMesh.getStructVertex(i).weightCount; ++j) {

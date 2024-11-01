@@ -40,7 +40,7 @@ namespace urchin {
         this->mesh = std::move(mesh);
 
         std::vector<Point2<float>> dummyTextureCoordinates;
-        dummyTextureCoordinates.resize(this->mesh->getVertices().size(), Point2<float>(0.0f, 0.0f));
+        dummyTextureCoordinates.resize(this->mesh->getVertices().size(), Point2(0.0f, 0.0f));
 
         Matrix4<float> projViewMatrix;
         Vector2<float> materialsStRepeat = materials->getStRepeat();

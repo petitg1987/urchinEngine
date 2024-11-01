@@ -2,8 +2,6 @@
 
 #include <string>
 #include <memory>
-#include <codecvt>
-#include <optional>
 #include <regex>
 
 #include <scene/ui/widget/Widget.h>

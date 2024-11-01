@@ -57,7 +57,7 @@ namespace urchin {
         baseFrustum.buildFrustum(verticalFovAngle, ratio, nearPlane, farPlane);
 
         updateComponents();
-        notifyObservers(this, Camera::PROJECTION_UPDATE);
+        notifyObservers(this, PROJECTION_UPDATE);
     }
 
     float Camera::computeVerticalFovAngle() const {
@@ -173,7 +173,7 @@ namespace urchin {
             this->position = position;
 
             updateComponents();
-            notifyObservers(this, Camera::POSITION_UPDATED);
+            notifyObservers(this, POSITION_UPDATED);
         }
     }
 
@@ -182,7 +182,7 @@ namespace urchin {
         position = position.translate(localXAxis * distance);
 
         updateComponents();
-        notifyObservers(this, Camera::POSITION_UPDATED);
+        notifyObservers(this, POSITION_UPDATED);
     }
 
     void Camera::moveOnLocalZAxis(float distance) {
@@ -190,7 +190,7 @@ namespace urchin {
         position = position.translate(localZAxis * distance);
 
         updateComponents();
-        notifyObservers(this, Camera::POSITION_UPDATED);
+        notifyObservers(this, POSITION_UPDATED);
     }
 
     void Camera::rotate(const Quaternion<float>& rotationDelta) {

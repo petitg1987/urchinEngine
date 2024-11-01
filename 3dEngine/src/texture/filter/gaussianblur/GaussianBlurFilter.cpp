@@ -13,7 +13,7 @@ namespace urchin {
             blurDirection(blurDirection),
             blurRadius(textureFilterBuilder->getBlurRadius()),
             maxBlurDistance(textureFilterBuilder->getMaxBlurDistance()),
-            textureSize((BlurDirection::VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()),
+            textureSize((VERTICAL == blurDirection) ? getTextureHeight() : getTextureWidth()),
             cameraPlanes({}) {
         if (blurRadius <= 0) {
             throw std::invalid_argument("Blur size must be greater than zero. Value: " + std::to_string(blurRadius));

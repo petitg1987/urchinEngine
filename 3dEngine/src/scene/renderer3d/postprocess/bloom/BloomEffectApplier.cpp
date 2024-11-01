@@ -81,7 +81,7 @@ namespace urchin {
         preFilterRenderTarget->initialize();
 
         Point2 texelSize(1.0f / (float)inputHdrTexture->getWidth(), 1.0f / (float)inputHdrTexture->getHeight());
-        preFilterCompute = GenericComputeBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, Vector2<int>(8, 8))
+        preFilterCompute = GenericComputeBuilder::create("bloom - pre filter", *preFilterRenderTarget, *preFilterShader, Vector2(8, 8))
                 ->addUniformData(PF_TWEAK_UNIFORM_BINDING, sizeof(preFilterTweak), &preFilterTweak)
                 ->addUniformData(PF_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
                 ->addUniformTextureReader(PF_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(inputHdrTexture, TextureParam::buildLinear()))
@@ -98,7 +98,7 @@ namespace urchin {
             downSampleRenderTarget->initialize();
 
             texelSize = Point2(1.0f / (float)bloomStepTextures[srcTexIndex]->getWidth(), 1.0f / (float)bloomStepTextures[srcTexIndex]->getHeight());
-            downSampleComputes.push_back(GenericComputeBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, Vector2<int>(8, 8))
+            downSampleComputes.push_back(GenericComputeBuilder::create("bloom - down sample " + std::to_string(i), *downSampleRenderTarget, *downSampleShader, Vector2(8, 8))
                     ->addUniformData(DS_TEXEL_SIZE_UNIFORM_BINDING, sizeof(texelSize), &texelSize)
                     ->addUniformTextureReader(DS_INPUT_TEX_UNIFORM_BINDING, TextureReader::build(bloomStepTextures[srcTexIndex], TextureParam::buildLinear()))
                     ->addUniformTextureOutput(DS_OUTPUT_TEX_UNIFORM_BINDING, bloomStepTextures[outTexIndex])

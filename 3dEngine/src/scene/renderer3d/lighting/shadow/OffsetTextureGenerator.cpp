@@ -16,7 +16,7 @@ namespace urchin {
         #endif
 
         if (filterBoxSize == 1) {
-            std::vector<Vector2<float>> textureData = {Vector2<float>(0.0f, 0.0f)};
+            std::vector textureData = {Vector2(0.0f, 0.0f)};
             offsetTexture = Texture::buildArray("SM offset", 1, 1, 1, TextureFormat::RG_32_FLOAT, textureData.data(), TextureDataType::FLOAT_32);
         } else {
             std::vector<Vector2<float>> textureData = generateTextureData();
@@ -37,7 +37,7 @@ namespace urchin {
         std::size_t numVector = (std::size_t)textureXYSize * textureXYSize * filterBoxSize * filterBoxSize;
 
         unsigned int seed = 0; //no need to generate different random numbers at each start
-        std::uniform_real_distribution<float> randomFloats(-0.5f, 0.5f);
+        std::uniform_real_distribution randomFloats(-0.5f, 0.5f);
         std::default_random_engine generator(seed);
 
         std::vector<Vector2<float>> textureData;

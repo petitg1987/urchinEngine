@@ -103,7 +103,7 @@ namespace urchin {
             unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
             unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
-            threads[threadI] = std::jthread([&, beginX, endX]() {
+            threads[threadI] = std::jthread([&, beginX, endX] {
                 for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex) {
                     for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex) {
                         float xValue = ((float)xIndex / grassQuantity) + distribution(generator);
@@ -117,7 +117,7 @@ namespace urchin {
                         }
 
                         //Use the same normal as terrain to have identical lighting. Convert normal range from (-1.0, 1.0) to (0.0, 1.0).
-                        unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
+                        unsigned int vertexIndex = retrieveVertexIndex(Point2(xValue, zValue));
                         Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3(0.5f, 0.5f, 0.5f);
 
                         float globalXValue = terrainPosition.X + mesh->getVertices()[0].X + xValue;

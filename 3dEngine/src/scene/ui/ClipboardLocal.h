@@ -1,6 +1,5 @@
 #pragma once
 
-#include <scene/ui/allocator/StringConverterAllocator.h>
 #include <scene/ui/Clipboard.h>
 
 namespace urchin{

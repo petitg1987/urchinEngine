@@ -72,7 +72,7 @@ namespace urchin {
             antiAliasingShaderConst = {12, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f, 2.0f, 2.0f, 2.0f, 2.0f, 4.0f, 8.0f};
         }
 
-        std::vector<std::size_t> variablesSize = {
+        std::vector variablesSize = {
                 sizeof(AntiAliasingShaderConst::qualityPs),
                 sizeof(AntiAliasingShaderConst::qualityP0),
                 sizeof(AntiAliasingShaderConst::qualityP1),

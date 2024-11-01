@@ -23,7 +23,7 @@ namespace urchin {
             depthTestEnabled(rendererBuilder.isDepthTestEnabled()),
             layerIndexDataInShaderEnabled(rendererBuilder.isLayerIndexDataInShaderEnabled()) {
 
-        setupPipelineBuilder(std::make_unique<PipelineBuilder>(PipelineType::GRAPHICS, getName()));
+        setupPipelineBuilder(std::make_unique<PipelineBuilder>(GRAPHICS, getName()));
         getPipelineBuilder().setupRenderTarget(getRenderTarget());
         getPipelineBuilder().setupShader(getShader());
         getPipelineBuilder().setupShapeType(rendererBuilder.getShapeType());

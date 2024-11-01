@@ -5,7 +5,7 @@ namespace urchin {
 
     LightSplitShadowMap::LightSplitShadowMap(const LightShadowMap* lightShadowMap) :
             lightShadowMap(lightShadowMap),
-            previousCenter(Point4<float>(0.0f, 0.0f, 0.0f, 1.0f)) {
+            previousCenter(Point4(0.0f, 0.0f, 0.0f, 1.0f)) {
 
     }
 
@@ -14,7 +14,7 @@ namespace urchin {
         stabilizeShadow(splitFrustum.getFrustum().computeCenterPosition());
 
         models.clear();
-        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox<float>(shadowCasterReceiverBox);
+        OBBox<float> obboxSceneIndependentViewSpace = lightShadowMap->getLightViewMatrix().inverse() * OBBox(shadowCasterReceiverBox);
         lightShadowMap->getModelOcclusionCuller().getModelsInOBBox(obboxSceneIndependentViewSpace, models, [](const Model *const model) {
             return model->getShadowBehavior() == Model::ShadowBehavior::RECEIVER_AND_CASTER;
         });
@@ -39,14 +39,14 @@ namespace urchin {
         ScopeProfiler sp(Profiler::graphic(), "compLightScope");
 
         const Frustum<float>& frustumLightSpace = lightViewMatrix * splitFrustum.getFrustum();
-        Point3<float> frustumCenter = (lightViewMatrix * Point4<float>(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
+        Point3<float> frustumCenter = (lightViewMatrix * Point4(splitFrustum.getBoundingSphere().getCenterOfMass(), 1.0f)).toPoint3();
         float frustumRadius = splitFrustum.getBoundingSphere().getRadius();
         float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
 
         std::array<Point3<float>, 4> lightProjectionVertex;
-        lightProjectionVertex[0] = frustumCenter + Point3<float>(frustumRadius, frustumRadius, frustumRadius);
+        lightProjectionVertex[0] = frustumCenter + Point3(frustumRadius, frustumRadius, frustumRadius);
         lightProjectionVertex[1] = Point3<float>(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
-        lightProjectionVertex[2] = frustumCenter - Point3<float>(frustumRadius, frustumRadius, frustumRadius);
+        lightProjectionVertex[2] = frustumCenter - Point3(frustumRadius, frustumRadius, frustumRadius);
         lightProjectionVertex[3] = Point3<float>(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
         this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
 
@@ -56,7 +56,7 @@ namespace urchin {
             const Point3<float>& frustumPoint = frustumLightSpace.getFrustumPoints()[i];
 
             shadowReceiverAndCasterVertex[i * 2] = frustumPoint; //shadow receiver point
-            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
+            shadowReceiverAndCasterVertex[i * 2 + 1] = Point3(frustumPoint.X, frustumPoint.Y, nearCapZ); //shadow caster point
         }
         this->shadowCasterReceiverBox = AABBox<float>(shadowReceiverAndCasterVertex);
     }
@@ -78,13 +78,13 @@ namespace urchin {
         lightProjectionMatrix.a24 += centerWorldPointDelta.Y;
 
         //2. compute previousCenter to match perfectly a pixel on shadow map
-        previousCenter = Point4<float>(splitFrustumCenter, 1.0f);
+        previousCenter = Point4(splitFrustumCenter, 1.0f);
         previousCenter = adjustPointOnShadowMapPixel(lightProjectionMatrix * lightShadowMap->getLightViewMatrix(), previousCenter);
     }
 
     Point2<float> LightSplitShadowMap::computePixelCenteringDelta(const Matrix4<float>& lightProjectionViewMatrix, const Point4<float>& worldPoint) const {
         const auto[shadowTexCoord, shadowTexCoordOnPixelCenter] = computeShadowTexCoords(lightProjectionViewMatrix, worldPoint);
-        Point2<float> centerWorldPointDelta = Point2<float>(shadowTexCoordOnPixelCenter.X, shadowTexCoordOnPixelCenter.Y) - Point2<float>(shadowTexCoord.X, shadowTexCoord.Y);
+        Point2<float> centerWorldPointDelta = Point2(shadowTexCoordOnPixelCenter.X, shadowTexCoordOnPixelCenter.Y) - Point2(shadowTexCoord.X, shadowTexCoord.Y);
         centerWorldPointDelta = ((centerWorldPointDelta / (float)lightShadowMap->getShadowMapSize()) * 2.0f);
         return centerWorldPointDelta;
     }
@@ -92,7 +92,7 @@ namespace urchin {
     Point4<float> LightSplitShadowMap::adjustPointOnShadowMapPixel(const Matrix4<float>& lightProjectionViewMatrix, const Point4<float>& worldPoint) const {
         Point3<float> shadowTexCoordOnPixelCenter = computeShadowTexCoords(lightProjectionViewMatrix, worldPoint).second;
         shadowTexCoordOnPixelCenter = (shadowTexCoordOnPixelCenter / (float)lightShadowMap->getShadowMapSize() * 2.0f) - 1.0f;
-        return lightProjectionViewMatrix.inverse() * Point4<float>(shadowTexCoordOnPixelCenter.X, shadowTexCoordOnPixelCenter.Y, shadowTexCoordOnPixelCenter.Z, 1.0f);
+        return lightProjectionViewMatrix.inverse() * Point4(shadowTexCoordOnPixelCenter.X, shadowTexCoordOnPixelCenter.Y, shadowTexCoordOnPixelCenter.Z, 1.0f);
     }
 
     std::pair<Point4<float>, Point3<float>> LightSplitShadowMap::computeShadowTexCoords(const Matrix4<float>& lightProjectionViewMatrix, const Point4<float>& worldPoint) const {
@@ -100,7 +100,7 @@ namespace urchin {
         shadowTexCoord = (shadowTexCoord + 1.0f) * 0.5f * (float)lightShadowMap->getShadowMapSize(); //coordinates from 0 to shadowMapSize
 
         float halfPixelSize = 0.5f;
-        Point3<float> shadowTexCoordOnPixelCenter(std::round(shadowTexCoord.X + halfPixelSize) - halfPixelSize, std::round(shadowTexCoord.Y + halfPixelSize) - halfPixelSize, shadowTexCoord.Z);
+        Point3 shadowTexCoordOnPixelCenter(std::round(shadowTexCoord.X + halfPixelSize) - halfPixelSize, std::round(shadowTexCoord.Y + halfPixelSize) - halfPixelSize, shadowTexCoord.Z);
 
         return std::make_pair(shadowTexCoord, shadowTexCoordOnPixelCenter);
     }

@@ -373,7 +373,7 @@ namespace urchin {
         colorBlending.blendConstants[2] = 0.0f; colorBlending.blendConstants[3] = 0.0f;
 
         //dynamic state
-        std::vector<VkDynamicState> dynamicsStates = {VK_DYNAMIC_STATE_SCISSOR};
+        std::vector dynamicsStates = {VK_DYNAMIC_STATE_SCISSOR};
         VkPipelineDynamicStateCreateInfo pipelineDynamicStateCreateInfo{};
         pipelineDynamicStateCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
         pipelineDynamicStateCreateInfo.dynamicStateCount = (uint32_t)dynamicsStates.size();

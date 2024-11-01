@@ -32,7 +32,7 @@ namespace urchin {
                 throw std::runtime_error("Material albedo must be in range 0.0 - 1.0: " + filename);
             }
 
-            std::vector<unsigned char> rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
+            std::vector rgbaColor({(unsigned char)(255.0f * color.X), (unsigned char)(255.0f * color.Y),
                                                   (unsigned char)(255.0f * color.Z), (unsigned char)(255.0f * color.W)});
             albedoTexture = Texture::build(filename + " - albedo", 1, 1, TextureFormat::RGBA_8_INT, rgbaColor.data(), TextureDataType::INT_8);
             hasTransparency = !MathFunction::isOne(color.W);
@@ -77,7 +77,7 @@ namespace urchin {
                     throw std::runtime_error("Material roughness must be in range 0.05 - 1.0: " + filename);
                 }
 
-                std::vector<unsigned char> roughnessTextureData({(unsigned char) (255.0f * roughness)});
+                std::vector roughnessTextureData({(unsigned char) (255.0f * roughness)});
                 roughnessTexture = Texture::build(filename + " - roughness", 1, 1, TextureFormat::GRAYSCALE_8_INT, roughnessTextureData.data(), TextureDataType::INT_8);
             }
 
@@ -110,7 +110,7 @@ namespace urchin {
                     throw std::runtime_error("Material metalness must be in range 0.0 - 1.0: " + filename);
                 }
 
-                std::vector<unsigned char> metalnessTextureData({(unsigned char) (255.0f * metalness)});
+                std::vector metalnessTextureData({(unsigned char) (255.0f * metalness)});
                 metalnessTexture = Texture::build(filename + " - metalness", 1, 1, TextureFormat::GRAYSCALE_8_INT, metalnessTextureData.data(), TextureDataType::INT_8);
             }
 
@@ -125,8 +125,8 @@ namespace urchin {
             std::string scaleTypeValue = udaParser.getFirstChunk(true, "scaleType", UdaAttribute(), uvScaleChunk)->getStringValue();
             UvScaleType uvScaleType = toUvScaleType(scaleTypeValue, filename);
 
-            MeshScaleAxis uMeshScaleAxis = MeshScaleAxis::NONE;
-            MeshScaleAxis vMeshScaleAxis = MeshScaleAxis::NONE;
+            auto uMeshScaleAxis = MeshScaleAxis::NONE;
+            auto vMeshScaleAxis = MeshScaleAxis::NONE;
             if (uvScaleType == UvScaleType::SCALE_ON_MESH_SCALE) {
                 std::string uMeshScaleAxisValue = udaParser.getFirstChunk(true, "uMeshScaleAxis", UdaAttribute(), uvScaleChunk)->getStringValue();
                 uMeshScaleAxis = toMeshScaleAxis(uMeshScaleAxisValue, filename);

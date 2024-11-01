@@ -66,7 +66,7 @@ namespace urchin {
 
     const AABBox<float> &Model::getDefaultModelLocalAABBox() const {
         //Use a default size of 1, 1, 1: allow to define zone in game through model without mesh. Scale can be used to size up/down the zone.
-        static AABBox defaultModelLocalAABBox(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+        static AABBox defaultModelLocalAABBox(Point3(-0.5f, -0.5f, -0.5f), Point3(0.5f, 0.5f, 0.5f));
         return defaultModelLocalAABBox;
     }
 

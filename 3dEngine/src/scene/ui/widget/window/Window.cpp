@@ -57,7 +57,7 @@ namespace urchin {
             Rectangle2D closeZone(Point2((int)getGlobalPositionX() + ((int) getWidth() - getOutline().rightWidth), (int)getGlobalPositionY()),
                                   Point2((int)getGlobalPositionX() + (int) getWidth(), (int)getGlobalPositionY() + getOutline().topWidth));
 
-            if (!getUi3dData() && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (!getUi3dData() && titleZone.collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 mousePositionX = getMouseX() - MathFunction::roundToInt(getPositionX());
                 mousePositionY = getMouseY() - MathFunction::roundToInt(getPositionY());
                 state = MOVING;

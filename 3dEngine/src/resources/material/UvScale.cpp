@@ -22,9 +22,9 @@ namespace urchin {
             float vScaled = originalUV.Y * ((vMeshScaleAxis == MeshScaleAxis::NONE) ? 1.0f : meshScale[(std::size_t)vMeshScaleAxis]);
             return Point2(uScaled, vScaled);
         } else {
-            auto isXYFace = [&]() { return std::abs(vertexNormal.dotProduct(Vector3(0.0f, 0.0f, 1.0f))) > 0.99f; };
-            auto isXZFace = [&]() { return std::abs(vertexNormal.dotProduct(Vector3(0.0f, 1.0f, 0.0f))) > 0.99f; };
-            auto isYZFace = [&]() { return std::abs(vertexNormal.dotProduct(Vector3(1.0f, 0.0f, 1.0f))) > 0.99f; };
+            auto isXYFace = [&] { return std::abs(vertexNormal.dotProduct(Vector3(0.0f, 0.0f, 1.0f))) > 0.99f; };
+            auto isXZFace = [&] { return std::abs(vertexNormal.dotProduct(Vector3(0.0f, 1.0f, 0.0f))) > 0.99f; };
+            auto isYZFace = [&] { return std::abs(vertexNormal.dotProduct(Vector3(1.0f, 0.0f, 1.0f))) > 0.99f; };
 
             bool scaleOnXYFace = scaleType == UvScaleType::SCALE_ON_AXIS_ALIGNED_FACES || scaleType == UvScaleType::SCALE_ON_XY_FACES;
             bool scaleOnXZFace = scaleType == UvScaleType::SCALE_ON_AXIS_ALIGNED_FACES || scaleType == UvScaleType::SCALE_ON_XZ_FACES;

@@ -196,7 +196,7 @@ namespace urchin {
     void Widget::detachChildren() {
         for (auto it = children.begin(); it != children.end();) {
             if (uiRenderer) {
-                uiRenderer->getWidgetSetDisplayer().removeWidget((*it).get());
+                uiRenderer->getWidgetSetDisplayer().removeWidget(it->get());
             }
             (*it)->parent = nullptr;
             it = children.erase(it);
@@ -246,14 +246,14 @@ namespace urchin {
     * @return Relative position X of the widget
     */
     float Widget::getPositionX() const {
-        return widthLengthToPixel(position.getX(), position.getXType(), [this](){ return getPositionY(); });
+        return widthLengthToPixel(position.getX(), position.getXType(), [this] { return getPositionY(); });
     }
 
     /**
     * @return Relative position Y of the widget
     */
     float Widget::getPositionY() const {
-        return heightLengthToPixel(position.getY(), position.getYType(), [this](){ return getPositionX(); });
+        return heightLengthToPixel(position.getY(), position.getYType(), [this] { return getPositionX(); });
     }
 
     float Widget::getGlobalPositionX() const {
@@ -357,11 +357,11 @@ namespace urchin {
     }
 
     float Widget::getWidth() const {
-        return widthLengthToPixel(size.getWidth(), size.getWidthType(), [this](){ return getHeight(); });
+        return widthLengthToPixel(size.getWidth(), size.getWidthType(), [this] { return getHeight(); });
     }
 
     float Widget::getHeight() const {
-        return heightLengthToPixel(size.getHeight(), size.getHeightType(), [this](){ return getWidth(); });
+        return heightLengthToPixel(size.getHeight(), size.getHeightType(), [this] { return getWidth(); });
     }
 
     Rectangle2D<int> Widget::widgetRectangle() const {
@@ -441,36 +441,36 @@ namespace urchin {
 
         if (scissorContainer) [[unlikely]] {
             return Scissor(
-                    Vector2<int>((int)scissorContainer->getGlobalPositionX(), (int)scissorContainer->getGlobalPositionY()),
-                    Vector2<int>((int)scissorContainer->getWidth(), (int)scissorContainer->getHeight())
+                    Vector2((int)scissorContainer->getGlobalPositionX(), (int)scissorContainer->getGlobalPositionY()),
+                    Vector2((int)scissorContainer->getWidth(), (int)scissorContainer->getHeight())
             );
         }
         return std::nullopt;
     }
 
     float Widget::widthPixelToLength(float widthPixel, LengthType lengthType) const {
-        if (lengthType == LengthType::SCREEN_PERCENT) {
+        if (lengthType == SCREEN_PERCENT) {
             return (widthPixel / (float)getSceneSize().X) * 100.0f;
-        } else if (lengthType == LengthType::CONTAINER_PERCENT) {
+        } else if (lengthType == CONTAINER_PERCENT) {
             const Container* parentContainer = getParentContainer();
             return (widthPixel / (getParentContainer()->getWidth() - (float)parentContainer->getOutline().leftWidth - (float)parentContainer->getOutline().rightWidth)) * 100.0f;
-        } else if (lengthType == LengthType::PARENT_PERCENT) {
+        } else if (lengthType == PARENT_PERCENT) {
             return (widthPixel / (getParent()->getWidth() - (float)getParent()->getOutline().leftWidth - (float)getParent()->getOutline().rightWidth)) * 100.0f;
-        } else if (lengthType == LengthType::PIXEL) {
+        } else if (lengthType == PIXEL) {
             return widthPixel;
         }
         throw std::runtime_error("Unknown/unimplemented length type: " + std::to_string(lengthType));
     }
 
     float Widget::heightPixelToLength(float heightPixel, LengthType lengthType) const {
-        if (lengthType == LengthType::SCREEN_PERCENT) {
+        if (lengthType == SCREEN_PERCENT) {
             return (heightPixel / (float)getSceneSize().Y) * 100.0f;
-        } else if (lengthType == LengthType::CONTAINER_PERCENT) {
+        } else if (lengthType == CONTAINER_PERCENT) {
             const Container* parentContainer = getParentContainer();
             return (heightPixel / (parentContainer->getHeight() - (float)parentContainer->getOutline().bottomWidth - (float)parentContainer->getOutline().topWidth)) * 100.0f;
-        } else if (lengthType == LengthType::PARENT_PERCENT) {
+        } else if (lengthType == PARENT_PERCENT) {
             return (heightPixel / (getParent()->getHeight() - (float)getParent()->getOutline().bottomWidth - (float)getParent()->getOutline().topWidth)) * 100.0f;
-        } else if (lengthType == LengthType::PIXEL) {
+        } else if (lengthType == PIXEL) {
             return heightPixel;
         }
         throw std::runtime_error("Unknown/unimplemented length type: " + std::to_string(lengthType));
@@ -493,7 +493,7 @@ namespace urchin {
             bool widgetStateUpdated = handleWidgetKeyPress(key);
             propagateEvent = onKeyPressEvent(key);
 
-            if (widgetStateUpdated && widgetState == Widget::CLICKING) {
+            if (widgetStateUpdated && widgetState == CLICKING) {
                 for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onMouseLeftClick(this);
                 }
@@ -534,11 +534,11 @@ namespace urchin {
             bool widgetStateUpdated = handleWidgetKeyRelease(key);
             propagateEvent = onKeyReleaseEvent(key);
 
-            if (widgetStateUpdated && widgetState == Widget::FOCUS) {
+            if (widgetStateUpdated && widgetState == FOCUS) {
                 for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onMouseLeftClickRelease(this);
                 }
-            } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
+            } else if (widgetStateUpdated && widgetState == DEFAULT) {
                 for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onFocusLost(this);
                 }
@@ -604,11 +604,11 @@ namespace urchin {
             bool widgetStateUpdated = handleWidgetMouseMove(mouseX, mouseY);
             propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
-            if (widgetStateUpdated && widgetState == Widget::FOCUS) {
+            if (widgetStateUpdated && widgetState == FOCUS) {
                 for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onFocus(this);
                 }
-            } else if (widgetStateUpdated && widgetState == Widget::DEFAULT) {
+            } else if (widgetStateUpdated && widgetState == DEFAULT) {
                 for (const auto& eventListener : eventListeners) {
                     propagateEvent &= eventListener->onFocusLost(this);
                 }

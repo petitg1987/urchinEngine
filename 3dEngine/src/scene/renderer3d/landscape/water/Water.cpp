@@ -19,12 +19,12 @@ namespace urchin {
         waterShader = ShaderBuilder::createShader("water.vert.spv", "water.frag.spv", false);
 
         //general properties
-        setCenterPosition(Point3<float>(0.0f, 0.0f, 0.0f));
+        setCenterPosition(Point3(0.0f, 0.0f, 0.0f));
         setXSize(1000.0f);
         setZSize(1000.0f);
 
         //surface properties
-        setWaterColor(Vector3<float>(0.08f, 0.22f, 0.29f));
+        setWaterColor(Vector3(0.08f, 0.22f, 0.29f));
         setNormalTexture("");
         setDudvMap("");
         setWaveSpeed(0.08f);
@@ -52,13 +52,13 @@ namespace urchin {
             float maxX = xSize / 2.0f + centerPosition.X;
             float maxZ = zSize / 2.0f + centerPosition.Z;
 
-            std::vector<Point3<float>> vertexCoord = {
-                    Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ),
-                    Point3<float>(minX, centerPosition.Y, minZ), Point3<float>(maxX, centerPosition.Y, maxZ), Point3<float>(minX, centerPosition.Y, maxZ)
+            std::vector vertexCoord = {
+                    Point3(minX, centerPosition.Y, minZ), Point3(maxX, centerPosition.Y, minZ), Point3(maxX, centerPosition.Y, maxZ),
+                    Point3(minX, centerPosition.Y, minZ), Point3(maxX, centerPosition.Y, maxZ), Point3(minX, centerPosition.Y, maxZ)
             };
-            std::vector<Point2<float>> textureCoord = {
-                    Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, 0.0f), Point2<float>(sRepeat, tRepeat),
-                    Point2<float>(0.0f, 0.0f), Point2<float>(sRepeat, tRepeat), Point2<float>(0.0f, tRepeat)
+            std::vector textureCoord = {
+                    Point2(0.0f, 0.0f), Point2(sRepeat, 0.0f), Point2(sRepeat, tRepeat),
+                    Point2(0.0f, 0.0f), Point2(sRepeat, tRepeat), Point2(0.0f, tRepeat)
             };
             waterRenderer = GenericRendererBuilder::create("water", *renderTarget, *waterShader, ShapeType::TRIANGLE)
                     ->enableDepthTest()
@@ -237,7 +237,7 @@ namespace urchin {
 
     void Water::prepareRendering(unsigned int renderingOrder, const Camera& camera, FogContainer& fogContainer, float dt) {
         assert(isInitialized);
-        if (camera.getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera.getPosition().X, camera.getPosition().Z))) {
+        if (camera.getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2(camera.getPosition().X, camera.getPosition().Z))) {
             if (fogContainer.getActiveFog() != underwaterFog.get()) {
                 fogContainer.pushFog(underwaterFog.get());
                 notifyObservers(this, MOVE_UNDER_WATER);

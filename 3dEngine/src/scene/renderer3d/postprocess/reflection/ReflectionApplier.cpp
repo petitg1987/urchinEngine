@@ -69,7 +69,7 @@ namespace urchin {
     }
 
     void ReflectionApplier::createOrUpdateRenderTargets() {
-        TextureFormat reflectionColorTextureFormat = TextureFormat::RGBA_8_INT;
+        auto reflectionColorTextureFormat = TextureFormat::RGBA_8_INT;
         auto reflectionColorTextureSizeX = (unsigned int)((float)depthTexture->getWidth() / (float)retrieveTextureSizeFactor());
         auto reflectionColorTextureSizeY = (unsigned int)((float)depthTexture->getHeight() / (float)retrieveTextureSizeFactor());
         reflectionColorTexture = Texture::build("reflection color", reflectionColorTextureSizeX, reflectionColorTextureSizeY, reflectionColorTextureFormat);
@@ -144,7 +144,7 @@ namespace urchin {
                 .skipPixelCountOnFirstPass = config.skipPixelCountOnFirstPass,
                 .numStepsOnSecondPass = config.numStepsOnSecondPass
         };
-        std::vector<std::size_t> reflectionColorVariablesSize = {
+        std::vector reflectionColorVariablesSize = {
                 sizeof(ReflectionColorShaderConst::maxDistance),
                 sizeof(ReflectionColorShaderConst::hitThreshold),
                 sizeof(ReflectionColorShaderConst::skipPixelCountOnFirstPass),
@@ -156,7 +156,7 @@ namespace urchin {
         ReflectionCombineShaderConst reflectionCombineConstData {
                 .reflectionStrength = config.reflectionStrength, //apply reflection strength after AO blur to not lose color precision on 8bit texture
         };
-        std::vector<std::size_t> reflectionCombineVariablesSize = {
+        std::vector reflectionCombineVariablesSize = {
                 sizeof(ReflectionCombineShaderConst::reflectionStrength),
         };
         auto reflectionCombineShaderConstants = std::make_unique<ShaderConstants>(reflectionCombineVariablesSize, &reflectionCombineConstData);
@@ -198,7 +198,7 @@ namespace urchin {
     void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
-        unsigned int numDependenciesToReflectionColorTexture = 1; /* vertical blur filter */;
+        unsigned int numDependenciesToReflectionColorTexture = 1 /* vertical blur filter */;
         positioningData.viewMatrix = camera.getViewMatrix();
         reflectionColorRenderer->updateUniformData(POSITIONING_DATA_UNIFORM_BINDING, &positioningData);
         reflectionColorRenderTarget->render(frameIndex, numDependenciesToReflectionColorTexture);

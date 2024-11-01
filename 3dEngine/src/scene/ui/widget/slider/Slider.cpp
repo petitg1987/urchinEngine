@@ -90,10 +90,10 @@ namespace urchin {
 
     bool Slider::onKeyPressEvent(InputDeviceKey key) {
         if (key == InputDeviceKey::MOUSE_LEFT) {
-            if (cursorImage->widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            if (cursorImage->widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 state = CURSOR_SELECTED;
                 return false;
-            } else if (widgetRectangle().collideWithPoint(Point2<int>(getMouseX(), getMouseY()))) {
+            } else if (widgetRectangle().collideWithPoint(Point2(getMouseX(), getMouseY()))) {
                 updateSliderValue(getMouseX());
                 state = CURSOR_SELECTED;
                 return false;

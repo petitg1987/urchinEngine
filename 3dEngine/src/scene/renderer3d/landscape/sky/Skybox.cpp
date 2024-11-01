@@ -29,7 +29,7 @@ namespace urchin {
         std::vector<std::jthread> loadImageThreads(6);
         for (std::size_t i = 0; i < skyboxImages.size(); ++i) {
             const std::string& filename = filenames[i];
-            loadImageThreads[i] = std::jthread([i, filename, this]() {
+            loadImageThreads[i] = std::jthread([i, filename, this] {
                 if (!filename.empty()) {
                     skyboxImages[i] = ResourceRetriever::instance().getResource<Image>(filename);
                 }

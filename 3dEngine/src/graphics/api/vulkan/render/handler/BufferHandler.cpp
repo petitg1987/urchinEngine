@@ -10,9 +10,9 @@ namespace urchin {
 
     BufferHandler::BufferHandler() :
             isInitialized(false),
-            bufferType(BufferType::VERTEX),
+            bufferType(VERTEX),
             dataSize(0),
-            bufferKind(BufferKind::STATIC),
+            bufferKind(STATIC),
             stagingBuffer(nullptr),
             stagingBufferMemory(nullptr),
             buffer(nullptr),
@@ -96,15 +96,15 @@ namespace urchin {
         deleteBuffer();
 
         VkBufferUsageFlagBits usageType = VK_BUFFER_USAGE_FLAG_BITS_MAX_ENUM;
-        if (bufferType == BufferType::VERTEX) {
+        if (bufferType == VERTEX) {
             usageType = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-        } else if (bufferType == BufferType::INDEX) {
+        } else if (bufferType == INDEX) {
             usageType = VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-        } else if (bufferType == BufferType::UNIFORM) {
+        } else if (bufferType == UNIFORM) {
             usageType = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
         }
 
-        if (bufferKind == BufferKind::STATIC) {
+        if (bufferKind == STATIC) {
             if (!dataPtr) {
                 throw std::runtime_error("Data must be provided at initialization to build a static buffer");
             }
@@ -121,7 +121,7 @@ namespace urchin {
             copyBuffer(stagingBuffer, buffer, bufferSize);
 
             vmaDestroyBuffer(allocator, stagingBuffer, stagingBufferMemory);
-        } else if (bufferKind == BufferKind::DYNAMIC) {
+        } else if (bufferKind == DYNAMIC) {
             buffer = BufferHelper::createBuffer(name, bufferSize, usageType, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, bufferMemory);
 
             if (dataPtr) {

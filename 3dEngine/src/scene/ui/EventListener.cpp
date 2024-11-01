@@ -1,5 +1,4 @@
 #include <scene/ui/EventListener.h>
-#include <scene/ui/widget/Widget.h>
 
 namespace urchin {
 

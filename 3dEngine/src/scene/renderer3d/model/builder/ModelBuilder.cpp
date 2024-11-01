@@ -65,7 +65,7 @@ namespace urchin {
         Bone modelBone = {};
         modelBone.name = "Bone";
         modelBone.parent = -1;
-        modelBone.pos = Point3<float>(0.0f, 0.0f, 0.0f);
+        modelBone.pos = Point3(0.0f, 0.0f, 0.0f);
         modelBone.orient = Quaternion<float>();
         modelBaseSkeleton.push_back(modelBone);
 

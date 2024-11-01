@@ -95,7 +95,7 @@ namespace urchin {
 
             updateShadowLights();
             if (nbShadowMapUpdated) {
-                notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+                notifyObservers(this, NUMBER_SHADOW_MAPS_UPDATE);
             }
             if (blurFilterUpdated) {
                 updateShadowMapOffsets();

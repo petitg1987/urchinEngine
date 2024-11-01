@@ -67,7 +67,7 @@ namespace urchin {
 
             //visual
             std::shared_ptr<Texture> texture;
-            TextureRenderer::ColorType colorType;
+            ColorType colorType;
             std::unique_ptr<GenericRenderer> renderer;
 
             std::unique_ptr<Shader> displayTextureShader;

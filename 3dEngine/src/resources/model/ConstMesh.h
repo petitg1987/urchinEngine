@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include <map>
 #include <UrchinCommon.h>
 
 #include <resources/material/Material.h>

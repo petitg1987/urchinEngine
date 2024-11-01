@@ -38,7 +38,7 @@ namespace urchin {
 
         if (!buttonText.empty()) {
             auto textSkinChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "textSkin", UdaAttribute(), buttonChunk);
-            text = Text::create(this, Position(0.0f, 0.0f, LengthType::PIXEL), textSkinChunk->getStringValue(), i18n(buttonText));
+            text = Text::create(this, Position(0.0f, 0.0f, PIXEL), textSkinChunk->getStringValue(), i18n(buttonText));
         }
     }
 
@@ -84,7 +84,7 @@ namespace urchin {
     void Button::prepareWidgetRendering(float) {
         if (text) {
             //update the text position because the text size is updated when the UI language is changed
-            text->updatePosition(Position((getWidth() - text->getWidth()) / 2.0f, (getHeight() - text->getHeight()) / 2.0f, LengthType::PIXEL));
+            text->updatePosition(Position((getWidth() - text->getWidth()) / 2.0f, (getHeight() - text->getHeight()) / 2.0f, PIXEL));
         }
     }
 

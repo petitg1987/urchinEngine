@@ -13,7 +13,7 @@ namespace urchin {
             lastUpdatedLight(nullptr),
             lightsData({}) {
         static_assert(MAX_LIGHTS < LIGHTS_SHADER_LIMIT);
-        lightsData.globalAmbientColor = Point3<float>(0.0f, 0.0f, 0.0f);
+        lightsData.globalAmbientColor = Point3(0.0f, 0.0f, 0.0f);
         LightInfo emptyLightData{};
         for (auto& light : lightsData.lightsInfo) {
             light = emptyLightData;
@@ -118,7 +118,7 @@ namespace urchin {
          * By sorting visible lights, we make sure that the lights producing shadow are often in same order.
          * Thus, the shadow textures positions/index in shader don't need to be updated at each frame in ShadowManager#loadShadowMaps().
          */
-        std::ranges::sort(visibleLights, std::greater<>());
+        std::ranges::sort(visibleLights, std::greater());
     }
 
     void LightManager::loadVisibleLights(GenericRenderer& deferredSecondPassRenderer, uint32_t lightsDataUniformBinding) {

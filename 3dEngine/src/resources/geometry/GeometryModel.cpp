@@ -7,7 +7,7 @@ namespace urchin {
     GeometryModel::GeometryModel() :
             isInitialized(false),
             renderTarget(nullptr),
-            color(Vector3<float>(0.0f, 1.0f, 0.0f)),
+            color(Vector3(0.0f, 1.0f, 0.0f)),
             polygonMode(PolygonMode::FILL),
             wireframeLineWidth(0.0075f),
             alwaysVisible(false),
@@ -108,7 +108,7 @@ namespace urchin {
         for (uint32_t i = 0; i < lines.size(); ++i) {
             uint32_t startIndex = i * 6;
 
-            std::array<uint32_t, 18> faceIndices = {
+            std::array faceIndices = {
                 //face 1
                 startIndex + 3, startIndex + 1, startIndex + 0,
                 startIndex + 1, startIndex + 3, startIndex + 4,
@@ -134,7 +134,7 @@ namespace urchin {
     }
 
     void GeometryModel::setColor(float red, float green, float blue) {
-        color = Vector3<float>(red, green, blue);
+        color = Vector3(red, green, blue);
         if (renderer) {
             renderer->updateUniformData(COLOR_UNIFORM_BINDING, &color);
         }

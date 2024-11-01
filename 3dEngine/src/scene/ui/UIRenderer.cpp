@@ -61,7 +61,7 @@ namespace urchin {
         Point3<float> bottomRight = (ui3dData->modelMatrix * Point4((float)uiResolution.X, (float)uiResolution.Y, 0.0f, 1.0f)).toPoint3();
         ui3dData->uiPlane.buildFrom3Points(topLeft, bottomRight, topRight);
         ui3dData->uiPosition = (topLeft + bottomRight) / 2.0f;
-        ui3dData->uiSphereBounding = Sphere<float>(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
+        ui3dData->uiSphereBounding = Sphere(ui3dData->uiPosition.distance(bottomRight), ui3dData->uiPosition);
 
         std::vector variablesSize = {sizeof(ambient)};
         auto shaderConstants = std::make_unique<ShaderConstants>(variablesSize, &ambient);
@@ -107,7 +107,7 @@ namespace urchin {
     }
 
     void UIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight) {
-        uiResolution = Point2<int>((int)sceneWidth, (int)sceneHeight);
+        uiResolution = Point2((int)sceneWidth, (int)sceneHeight);
         widgetSetDisplayer->onUiRendererSizeUpdated();
 
         //widgets resize
@@ -241,14 +241,14 @@ namespace urchin {
                  throw std::runtime_error("Unknown pointer type: " + std::to_string(ui3dData->pointerType));
             }
 
-            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2<float>(pointer.X, pointer.Y));
+            Line3D<float> viewLine = CameraSpaceService(*ui3dData->camera).screenPointToLine(Point2(pointer.X, pointer.Y));
             bool hasIntersection = false;
             Point3<float> uiHitPoint = ui3dData->uiPlane.intersectPoint(viewLine, hasIntersection);
             if (!hasIntersection) {
                 return false; //camera is parallel to the UI plane
             }
 
-            Point3<float> intersectionPointClipSpace = (ui3dData->camera->getProjectionViewMatrix() * Point4<float>(uiHitPoint)).toPoint3();
+            Point3<float> intersectionPointClipSpace = (ui3dData->camera->getProjectionViewMatrix() * Point4(uiHitPoint)).toPoint3();
             float clipSpaceX = (2.0f * pointer.X) / ((float) renderTarget.getWidth()) - 1.0f;
             float clipSpaceY = (2.0f * pointer.Y) / ((float) renderTarget.getHeight()) - 1.0f;
             Point4 mousePos(clipSpaceX, clipSpaceY, intersectionPointClipSpace.Z, 1.0f);

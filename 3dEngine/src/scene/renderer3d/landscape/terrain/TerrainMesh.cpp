@@ -157,7 +157,7 @@ namespace urchin {
         for (unsigned int threadI = 0; threadI < NUM_THREADS; threadI++) {
             unsigned int beginI = threadI * numLoopNormalTriangle / NUM_THREADS;
             unsigned int endI = (threadI + 1) == NUM_THREADS ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / NUM_THREADS;
-            threadsNormalTriangle[threadI] = std::jthread([&, beginI, endI, xLineQuantity]() {
+            threadsNormalTriangle[threadI] = std::jthread([&, beginI, endI, xLineQuantity] {
                 for (unsigned int i = beginI; i < endI; i++) {
                     if (indices[i + 2] != GenericRenderer::PRIMITIVE_RESTART_INDEX_VALUE) {
                         Point3<float> point1 = vertices[indices[i]];
@@ -191,7 +191,7 @@ namespace urchin {
             unsigned int beginI = threadI * numLoopNormalVertex / NUM_THREADS;
             unsigned int endI = (threadI + 1) == NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
 
-            threadsNormalVertex[threadI] = std::jthread([&, beginI, endI]() {
+            threadsNormalVertex[threadI] = std::jthread([&, beginI, endI] {
                 for (unsigned int i = beginI; i < endI; i++) {
                     Vector3<float> vertexNormal(0.0, 0.0, 0.0);
                     for (unsigned int triangleIndex : findTriangleIndices(i)) {

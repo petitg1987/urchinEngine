@@ -158,7 +158,7 @@ namespace urchin {
     void PipelineProcessor::createDescriptorSets() {
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
-        std::vector<VkDescriptorSetLayout> layouts(getRenderTarget().getNumFramebuffer(), getPipeline().getDescriptorSetLayout());
+        std::vector layouts(getRenderTarget().getNumFramebuffer(), getPipeline().getDescriptorSetLayout());
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
         allocInfo.descriptorPool = descriptorPool;
