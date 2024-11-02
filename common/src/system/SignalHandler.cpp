@@ -68,7 +68,7 @@ namespace urchin {
                 moduleName = FileUtil::getFileName(moduleBuffer);
             }
 
-            std::string methodName;
+            std::string methodName = "[UnkownMethod]";
             char symbolBuffer[sizeof(IMAGEHLP_SYMBOL) + 255];
             PIMAGEHLP_SYMBOL symbol = (PIMAGEHLP_SYMBOL)symbolBuffer;
             symbol->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL) + 255;
@@ -77,8 +77,8 @@ namespace urchin {
                 methodName = symbol->Name;
             }
 
-            std::string file;
-            unsigned int lineNumber;
+            std::string file = "[UnkownFile]";
+            unsigned int lineNumber = 0;
             DWORD offset = 0;
             IMAGEHLP_LINE line;
             line.SizeOfStruct = sizeof(IMAGEHLP_LINE);

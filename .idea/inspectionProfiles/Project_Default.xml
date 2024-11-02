@@ -6,6 +6,7 @@
     </inspection_tool>
     <inspection_tool class="CppCStyleCast" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="CppDoxygenUndocumentedParameter" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="CppExpressionWithoutSideEffects" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CppLocalVariableMayBeConst" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="CppMemberFunctionMayBeStatic" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="CppParameterMayBeConst" enabled="false" level="HINT" enabled_by_default="false" />
