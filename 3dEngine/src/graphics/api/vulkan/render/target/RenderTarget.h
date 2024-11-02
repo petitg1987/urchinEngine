@@ -56,7 +56,7 @@ namespace urchin {
             void notifyProcessorDisabled(const PipelineProcessor*);
             void disableAllProcessors() const;
 
-            virtual void render(std::uint32_t, unsigned int) = 0;
+            virtual void render(uint32_t, unsigned int) = 0;
 
         protected:
             bool isInitialized() const;
@@ -85,7 +85,7 @@ namespace urchin {
 
             std::span<OffscreenRender*> getOffscreenRenderDependencies() const;
             virtual void fillAdditionalOffscreenRenderDependencies(std::vector<OffscreenRender*> &) const;
-            void configureWaitSemaphore(std::uint32_t, VkSubmitInfo2&, std::optional<VkSemaphoreSubmitInfo>) const;
+            void configureWaitSemaphore(uint32_t, VkSubmitInfo2&, std::optional<VkSemaphoreSubmitInfo>) const;
 
             virtual bool needCommandBufferRefresh(std::size_t) const = 0;
             virtual void waitCommandBuffersIdle() const = 0;

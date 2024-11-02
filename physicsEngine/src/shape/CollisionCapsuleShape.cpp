@@ -4,8 +4,7 @@
 namespace urchin {
 
     CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
-            CollisionShape3D(),
-            capsuleShape(CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation)) {
+            capsuleShape(CapsuleShape(radius, cylinderHeight, capsuleOrientation)) {
         computeSafeMargin();
     }
 
@@ -17,7 +16,7 @@ namespace urchin {
     }
 
     CollisionShape3D::ShapeType CollisionCapsuleShape::getShapeType() const {
-        return CollisionShape3D::CAPSULE_SHAPE;
+        return CAPSULE_SHAPE;
     }
 
     const ConvexShape3D<float>& CollisionCapsuleShape::getSingleShape() const {
@@ -61,14 +60,14 @@ namespace urchin {
         Vector3 boxHalfSizes(getRadius(), getRadius(), getRadius());
         boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3 extend(
+        Point3<float> extend(
                 boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
                 boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
                 boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
         );
 
         const Point3<float>& position = physicsTransform.getPosition();
-        return AABBox<float>(position - extend, position + extend);
+        return AABBox(position - extend, position + extend);
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCapsuleShape::toConvexObject(const PhysicsTransform& physicsTransform) const {

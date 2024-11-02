@@ -76,7 +76,7 @@ namespace urchin {
             int fpsLimit;
 
             //renderer
-            std::uint32_t frameIndex;
+            uint32_t frameIndex;
             ScreenRender screenRenderTarget;
             std::vector<std::unique_ptr<Renderer3d>> renderers3d;
             Renderer3d* activeRenderer3d;

@@ -1,5 +1,4 @@
 #include <sstream>
-#include <algorithm>
 
 #include <shape/CollisionShape3D.h>
 #include <utils/property/EagerPropertyLoader.h>
@@ -20,24 +19,22 @@ namespace urchin {
     }
 
     const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::convexShapes() {
-        static std::vector<CollisionShape3D::ShapeType> convexShapes = {CollisionShape3D::TRIANGLE_SHAPE, CollisionShape3D::SPHERE_SHAPE, CollisionShape3D::CAPSULE_SHAPE,
-                                                                        CollisionShape3D::CYLINDER_SHAPE, CollisionShape3D::BOX_SHAPE, CollisionShape3D::CONVEX_HULL_SHAPE,
-                                                                        CollisionShape3D::CONE_SHAPE};
+        static std::vector convexShapes = {TRIANGLE_SHAPE, SPHERE_SHAPE, CAPSULE_SHAPE, CYLINDER_SHAPE, BOX_SHAPE, CONVEX_HULL_SHAPE, CONE_SHAPE};
         return convexShapes;
     }
 
     const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::concaveShapes() {
-        static std::vector<CollisionShape3D::ShapeType> concaveShapes = {CollisionShape3D::HEIGHTFIELD_SHAPE};
+        static std::vector concaveShapes = {HEIGHTFIELD_SHAPE};
         return concaveShapes;
     }
 
     const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::compoundShapes() {
-        static std::vector<CollisionShape3D::ShapeType> compoundShapes = {CollisionShape3D::COMPOUND_SHAPE};
+        static std::vector compoundShapes = {COMPOUND_SHAPE};
         return compoundShapes;
     }
 
     const std::vector<CollisionShape3D::ShapeType>& CollisionShape3D::sphereShapes() {
-        static std::vector<CollisionShape3D::ShapeType> sphereShapes = {CollisionShape3D::SPHERE_SHAPE};
+        static std::vector sphereShapes = {SPHERE_SHAPE};
         return sphereShapes;
     }
 
@@ -57,7 +54,7 @@ namespace urchin {
 
     void CollisionShape3D::checkInnerMarginQuality(std::string_view shapeId) const {
         if (initialInnerMargin > innerMargin) {
-            constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 200.0;
+            constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 200.0f;
             AABBox<float> aabbox = toAABBox(PhysicsTransform());
             float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
             bool isBigShape = shapeLength > initialInnerMargin * RELATIVE_MARGIN_FACTOR_BIG_SHAPE;

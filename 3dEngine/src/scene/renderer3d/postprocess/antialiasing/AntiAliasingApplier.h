@@ -27,7 +27,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void applyAntiAliasing(std::uint32_t, unsigned int) const;
+            void applyAntiAliasing(uint32_t, unsigned int) const;
 
         private:
             struct AntiAliasingShaderConst {

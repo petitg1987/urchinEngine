@@ -425,7 +425,7 @@ namespace urchin {
         //see override methods
     }
 
-    void RenderTarget::configureWaitSemaphore(std::uint32_t frameIndex, VkSubmitInfo2& submitInfo, std::optional<VkSemaphoreSubmitInfo> additionalSemaphoreSubmitInfo) const {
+    void RenderTarget::configureWaitSemaphore(uint32_t frameIndex, VkSubmitInfo2& submitInfo, std::optional<VkSemaphoreSubmitInfo> additionalSemaphoreSubmitInfo) const {
         queueSubmitWaitSemaphoreSubmitInfos.clear();
 
         if (additionalSemaphoreSubmitInfo.has_value()) {

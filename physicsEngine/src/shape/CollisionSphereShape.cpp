@@ -8,12 +8,12 @@ namespace urchin {
     */
     CollisionSphereShape::CollisionSphereShape(float innerMargin) :
             CollisionShape3D(innerMargin),
-            sphereShape(SphereShape<float>(innerMargin)) {
+            sphereShape(SphereShape(innerMargin)) {
 
     }
 
     CollisionShape3D::ShapeType CollisionSphereShape::getShapeType() const {
-        return CollisionShape3D::SPHERE_SHAPE;
+        return SPHERE_SHAPE;
     }
 
     const ConvexShape3D<float>& CollisionSphereShape::getSingleShape() const {
@@ -37,7 +37,7 @@ namespace urchin {
     AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         const Point3<float>& position = physicsTransform.getPosition();
 
-        return AABBox<float>(position - sphereShape.getRadius(), position + sphereShape.getRadius());
+        return AABBox(position - sphereShape.getRadius(), position + sphereShape.getRadius());
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionSphereShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
@@ -50,7 +50,7 @@ namespace urchin {
 
     Vector3<float> CollisionSphereShape::computeLocalInertia(float mass) const {
         float localInertia = (2.0f / 5.0f) * mass * sphereShape.getRadius() * sphereShape.getRadius();
-        return Vector3<float>(localInertia, localInertia, localInertia);
+        return Vector3(localInertia, localInertia, localInertia);
     }
 
     float CollisionSphereShape::getMaxDistanceToCenter() const {

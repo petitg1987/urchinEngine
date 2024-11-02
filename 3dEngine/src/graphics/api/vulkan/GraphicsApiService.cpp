@@ -23,7 +23,7 @@ namespace urchin {
         GraphicsSetupService::instance().initialize(windowRequiredExtensions, std::move(surfaceCreator), framebufferSizeRetriever);
     }
 
-    void GraphicsApiService::frameStart(std::uint32_t frameIndex) const {
+    void GraphicsApiService::frameStart(uint32_t frameIndex) const {
         //required for memory budget: https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/staying_within_budget.html
         vmaSetCurrentFrameIndex(GraphicsSetupService::instance().getAllocator(), frameIndex);
     }

@@ -4,19 +4,17 @@
 namespace urchin {
 
     CollisionTriangleShape::CollisionTriangleShape(const std::array<Point3<float>, 3>& points) :
-            CollisionShape3D(),
             triangleShape(TriangleShape3D<float>(points)) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
     CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float> triangleShape) :
-            CollisionShape3D(),
             triangleShape(std::move(triangleShape)) {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
     CollisionShape3D::ShapeType CollisionTriangleShape::getShapeType() const {
-        return CollisionShape3D::TRIANGLE_SHAPE;
+        return TRIANGLE_SHAPE;
     }
 
     const ConvexShape3D<float>& CollisionTriangleShape::getSingleShape() const {

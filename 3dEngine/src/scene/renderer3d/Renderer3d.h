@@ -82,7 +82,7 @@ namespace urchin {
             //scene
             void pause();
             void unpause();
-            void prepareRendering(std::uint32_t, float, unsigned int&) override;
+            void prepareRendering(uint32_t, float, unsigned int&) override;
 
         private:
             struct DeferredSecondPassShaderConst {
@@ -106,10 +106,10 @@ namespace urchin {
             void createOrUpdateDeferredPasses();
             void createOrUpdateDeferredSecondPassShader();
             void updateScene(float);
-            void renderDeferredFirstPass(std::uint32_t, float, unsigned int);
+            void renderDeferredFirstPass(uint32_t, float, unsigned int);
             unsigned int computeDependenciesToFirstPassOutput() const;
             void renderDebugSceneData(GeometryContainer&);
-            void renderDeferredSecondPass(std::uint32_t, unsigned int);
+            void renderDeferredSecondPass(uint32_t, unsigned int);
             void renderDebugFramebuffers(unsigned int);
             void postUpdateScene();
 

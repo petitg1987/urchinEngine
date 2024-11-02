@@ -19,7 +19,7 @@ namespace urchin {
             ConvexHull3D<float>& getConvexHullWithoutMargin() const;
             ConvexHull3D<float>& getConvexHullWithMargin() const;
 
-            CollisionConvexObject3D::ObjectType getObjectType() const override;
+            ObjectType getObjectType() const override;
             Point3<float> getSupportPoint(const Vector3<float>&, bool) const override;
 
             ConvexHull3D<float> retrieveConvexHull() const;

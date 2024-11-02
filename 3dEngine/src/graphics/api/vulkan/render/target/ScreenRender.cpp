@@ -227,7 +227,7 @@ namespace urchin {
         }
     }
 
-    void ScreenRender::render(std::uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
+    void ScreenRender::render(uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "screenRender");
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 

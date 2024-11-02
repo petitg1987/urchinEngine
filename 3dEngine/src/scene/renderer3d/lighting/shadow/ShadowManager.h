@@ -55,7 +55,7 @@ namespace urchin {
             void updateVisibleModels(const Frustum<float>&);
             void removeModel(Model*) const;
 
-            void updateShadowMaps(std::uint32_t, unsigned int) const;
+            void updateShadowMaps(uint32_t, unsigned int) const;
             void loadShadowMaps(GenericRenderer&, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
 
         private:

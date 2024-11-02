@@ -93,7 +93,7 @@ namespace urchin {
         return sceneTexture;
     }
 
-    void TransparentManager::drawTransparentModels(std::uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
+    void TransparentManager::drawTransparentModels(uint32_t frameIndex, unsigned int numDependenciesToTransparentTextures, const Camera& camera) const {
         ScopeProfiler sp(Profiler::graphic(), "updateTransTex");
         unsigned int renderingOrder = 0;
 

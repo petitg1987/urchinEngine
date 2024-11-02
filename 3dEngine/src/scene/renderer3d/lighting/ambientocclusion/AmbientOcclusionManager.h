@@ -50,7 +50,7 @@ namespace urchin {
             void updateConfig(const Config&);
             const Config& getConfig() const;
 
-            void updateAOTexture(std::uint32_t, unsigned int, const Camera&);
+            void updateAOTexture(uint32_t, unsigned int, const Camera&);
 
             const std::shared_ptr<Texture>& getAmbientOcclusionTexture() const;
             void loadAOTexture(GenericRenderer&, uint32_t) const;

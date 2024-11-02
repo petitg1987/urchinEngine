@@ -264,7 +264,7 @@ namespace urchin {
         }
     }
 
-    void OffscreenRender::render(std::uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
+    void OffscreenRender::render(uint32_t frameIndex, unsigned int numDependenciesToOutputs) {
         ScopeProfiler sp(Profiler::graphic(), "offRender");
         auto logicalDevice = GraphicsSetupService::instance().getDevices().getLogicalDevice();
 
@@ -346,7 +346,7 @@ namespace urchin {
         }
     }
 
-    VkSemaphore OffscreenRender::popSubmitSemaphore(std::uint32_t frameIndex, const std::string& requester) {
+    VkSemaphore OffscreenRender::popSubmitSemaphore(uint32_t frameIndex, const std::string& requester) {
         if (submitSemaphoresFrameIndex == frameIndex) {
             if (remainingSubmitSemaphores == 0) {
                 throw std::runtime_error("No more submit semaphore available on render target: " + getName() + "/" + std::to_string(frameIndex) + " (requester: " + requester + ")");
@@ -359,7 +359,7 @@ namespace urchin {
         return nullptr;
     }
 
-    void OffscreenRender::markSubmitSemaphoreUnused(std::uint32_t frameIndex) {
+    void OffscreenRender::markSubmitSemaphoreUnused(uint32_t frameIndex) {
         popSubmitSemaphore(frameIndex, getName());
         submitSemaphoresStale = true; //an unused semaphore is considered as stale
     }

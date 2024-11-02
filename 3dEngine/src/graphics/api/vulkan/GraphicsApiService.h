@@ -17,7 +17,7 @@ namespace urchin {
             bool isInitialized() const;
             void initialize(const std::vector<std::string>&, std::unique_ptr<SurfaceCreator>, FramebufferSizeRetriever&) const;
 
-            void frameStart(std::uint32_t) const;
+            void frameStart(uint32_t) const;
             void frameEnd() const;
 
         private:

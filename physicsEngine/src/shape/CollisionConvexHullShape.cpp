@@ -15,7 +15,6 @@ namespace urchin {
     * @param points Points used to construct the convex hull
     */
     CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>>& points) :
-            CollisionShape3D(),
             convexHullShape(std::make_unique<ConvexHullShape3D<float>>(points)),
             minDistanceToCenter(0.0f),
             maxDistanceToCenter(0.0f) {
@@ -23,7 +22,6 @@ namespace urchin {
     }
 
     CollisionConvexHullShape::CollisionConvexHullShape(std::unique_ptr<ConvexHullShape3D<float>> convexHullShape) :
-            CollisionShape3D(),
             convexHullShape(std::move(convexHullShape)),
             minDistanceToCenter(0.0f),
             maxDistanceToCenter(0.0f) {
@@ -36,7 +34,7 @@ namespace urchin {
             convexHullShapeReduced(std::move(collisionConvexHullShape.convexHullShapeReduced)),
             minDistanceToCenter(std::exchange(collisionConvexHullShape.minDistanceToCenter, 0.0f)),
             maxDistanceToCenter(std::exchange(collisionConvexHullShape.maxDistanceToCenter, 0.0f)) {
-        transformCache[this] = PhysicsTransform(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
+        transformCache[this] = PhysicsTransform(Point3(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
     }
 
     CollisionConvexHullShape::~CollisionConvexHullShape() {
@@ -45,7 +43,7 @@ namespace urchin {
     }
 
     void CollisionConvexHullShape::initialize() {
-        transformCache[this] = PhysicsTransform(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
+        transformCache[this] = PhysicsTransform(Point3(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 
         initializeDistances();
         initializeConvexHullReduced();
@@ -66,7 +64,7 @@ namespace urchin {
     }
 
     CollisionShape3D::ShapeType CollisionConvexHullShape::getShapeType() const {
-        return CollisionShape3D::CONVEX_HULL_SHAPE;
+        return CONVEX_HULL_SHAPE;
     }
 
     const ConvexShape3D<float>& CollisionConvexHullShape::getSingleShape() const {
@@ -149,7 +147,7 @@ namespace urchin {
         float localInertia1 = (1.0f / 12.0f) * mass * (height * height + depth * depth);
         float localInertia2 = (1.0f / 12.0f) * mass * (width * width + depth * depth);
         float localInertia3 = (1.0f / 12.0f) * mass * (width * width + height * height);
-        return Vector3<float>(localInertia1, localInertia2, localInertia3);
+        return Vector3(localInertia1, localInertia2, localInertia3);
     }
 
     float CollisionConvexHullShape::getMaxDistanceToCenter() const {

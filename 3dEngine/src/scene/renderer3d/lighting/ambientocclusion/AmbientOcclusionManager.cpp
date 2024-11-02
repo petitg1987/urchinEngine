@@ -245,7 +245,7 @@ namespace urchin {
         throw std::invalid_argument("Unknown texture size value: " + std::to_string(config.textureSize));
     }
 
-    void AmbientOcclusionManager::updateAOTexture(std::uint32_t frameIndex, unsigned int numDependenciesToAOTexture, const Camera& camera) {
+    void AmbientOcclusionManager::updateAOTexture(uint32_t frameIndex, unsigned int numDependenciesToAOTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "updateAOTexture");
 
         positioningData.inverseProjectionViewMatrix = camera.getProjectionViewInverseMatrix();

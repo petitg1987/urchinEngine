@@ -6,8 +6,7 @@
 namespace urchin {
 
     CollisionBoxShape::CollisionBoxShape(const Vector3<float>& halfSizes) :
-            CollisionShape3D(),
-            boxShape(BoxShape<float>(halfSizes)) {
+            boxShape(BoxShape(halfSizes)) {
         computeSafeMargin();
     }
 
@@ -19,7 +18,7 @@ namespace urchin {
     }
 
     CollisionShape3D::ShapeType CollisionBoxShape::getShapeType() const {
-        return CollisionShape3D::BOX_SHAPE;
+        return BOX_SHAPE;
     }
 
     const ConvexShape3D<float>& CollisionBoxShape::getSingleShape() const {
@@ -40,14 +39,14 @@ namespace urchin {
 
     AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3 extend(
+        Point3<float> extend(
                 boxShape.getHalfSize(0) * std::abs(orientation(0)) + boxShape.getHalfSize(1) * std::abs(orientation(3)) + boxShape.getHalfSize(2) * std::abs(orientation(6)),
                 boxShape.getHalfSize(0) * std::abs(orientation(1)) + boxShape.getHalfSize(1) * std::abs(orientation(4)) + boxShape.getHalfSize(2) * std::abs(orientation(7)),
                 boxShape.getHalfSize(0) * std::abs(orientation(2)) + boxShape.getHalfSize(1) * std::abs(orientation(5)) + boxShape.getHalfSize(2) * std::abs(orientation(8))
         );
 
         const Point3<float>& position = physicsTransform.getPosition();
-        return AABBox<float>(position - extend, position + extend);
+        return AABBox(position - extend, position + extend);
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform& physicsTransform) const {
@@ -69,7 +68,7 @@ namespace urchin {
         float localInertia1 = (1.0f / 12.0f) * mass * (height * height + depth * depth);
         float localInertia2 = (1.0f / 12.0f) * mass * (width * width + depth * depth);
         float localInertia3 = (1.0f / 12.0f) * mass * (width * width + height * height);
-        return Vector3<float>(localInertia1, localInertia2, localInertia3);
+        return Vector3(localInertia1, localInertia2, localInertia3);
     }
 
     float CollisionBoxShape::getMaxDistanceToCenter() const {

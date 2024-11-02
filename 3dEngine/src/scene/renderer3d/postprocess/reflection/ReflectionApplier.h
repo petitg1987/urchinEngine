@@ -35,7 +35,7 @@ namespace urchin {
             const Config& getConfig() const;
 
             const std::shared_ptr<Texture>& getOutputTexture() const;
-            void applyReflection(std::uint32_t, unsigned int, const Camera&);
+            void applyReflection(uint32_t, unsigned int, const Camera&);
 
         private:
             struct ReflectionColorShaderConst {

@@ -193,7 +193,7 @@ namespace urchin {
         }
     }
 
-    void BloomEffectApplier::applyBloom(std::uint32_t frameIndex, unsigned int numDependenciesToBloomCombineTexture) const {
+    void BloomEffectApplier::applyBloom(uint32_t frameIndex, unsigned int numDependenciesToBloomCombineTexture) const {
         ScopeProfiler sp(Profiler::graphic(), "applyBloom");
 
         unsigned int numDependenciesToPreFilterOutput = 2; //first down sample & last up sample

@@ -7,7 +7,6 @@
 namespace urchin {
 
     CollisionHeightfieldShape::CollisionHeightfieldShape(std::vector<Point3<float>> vertices, unsigned int xLength, unsigned int zLength) :
-            CollisionShape3D(),
             vertices(std::move(vertices)),
             xLength(xLength),
             zLength(zLength),
@@ -46,7 +45,7 @@ namespace urchin {
     }
 
     CollisionShape3D::ShapeType CollisionHeightfieldShape::getShapeType() const {
-        return CollisionHeightfieldShape::HEIGHTFIELD_SHAPE;
+        return HEIGHTFIELD_SHAPE;
     }
 
     const ConvexShape3D<float>& CollisionHeightfieldShape::getSingleShape() const {
@@ -75,14 +74,14 @@ namespace urchin {
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform& physicsTransform) const {
         const Matrix3<float>& orientation = physicsTransform.retrieveOrientationMatrix();
-        Point3 extend(
+        Point3<float> extend(
                 localAABBox.getHalfSize(0) * std::abs(orientation(0)) + localAABBox.getHalfSize(1) * std::abs(orientation(3)) + localAABBox.getHalfSize(2) * std::abs(orientation(6)),
                 localAABBox.getHalfSize(0) * std::abs(orientation(1)) + localAABBox.getHalfSize(1) * std::abs(orientation(4)) + localAABBox.getHalfSize(2) * std::abs(orientation(7)),
                 localAABBox.getHalfSize(0) * std::abs(orientation(2)) + localAABBox.getHalfSize(1) * std::abs(orientation(5)) + localAABBox.getHalfSize(2) * std::abs(orientation(8))
         );
 
         const Point3<float>& position = physicsTransform.getPosition();
-        return AABBox<float>(position - extend, position + extend);
+        return AABBox(position - extend, position + extend);
     }
 
     std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionHeightfieldShape::toConvexObject(const PhysicsTransform&) const {
@@ -98,7 +97,7 @@ namespace urchin {
         float localInertia1 = (1.0f / 12.0f) * mass * (height * height + depth * depth);
         float localInertia2 = (1.0f / 12.0f) * mass * (width * width + depth * depth);
         float localInertia3 = (1.0f / 12.0f) * mass * (width * width + height * height);
-        return Vector3<float>(localInertia1, localInertia2, localInertia3);
+        return Vector3(localInertia1, localInertia2, localInertia3);
     }
 
     float CollisionHeightfieldShape::getMaxDistanceToCenter() const {

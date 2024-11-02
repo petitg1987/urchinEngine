@@ -318,7 +318,7 @@ namespace urchin {
         paused = false;
     }
 
-    void Renderer3d::prepareRendering(std::uint32_t frameIndex, float dt, unsigned int& screenRenderingOrder) {
+    void Renderer3d::prepareRendering(uint32_t frameIndex, float dt, unsigned int& screenRenderingOrder) {
         ScopeProfiler sp(Profiler::graphic(), "pre3dRendering");
 
         updateScene(dt);
@@ -513,7 +513,7 @@ namespace urchin {
      * First pass of deferred shading algorithm.
      * Render depth, albedo, normal, etc. into buffers.
      */
-    void Renderer3d::renderDeferredFirstPass(std::uint32_t frameIndex, float dt, unsigned int numDependenciesToFirstPassOutput) {
+    void Renderer3d::renderDeferredFirstPass(uint32_t frameIndex, float dt, unsigned int numDependenciesToFirstPassOutput) {
         ScopeProfiler sp(Profiler::graphic(), "renFirstPass");
 
         //deferred shadow map
@@ -599,7 +599,7 @@ namespace urchin {
      * Second pass of deferred shading algorithm.
      * Compute lighting in pixel shader to render the scene.
      */
-    void Renderer3d::renderDeferredSecondPass(std::uint32_t frameIndex, unsigned int numDependenciesToSecondPassOutput) {
+    void Renderer3d::renderDeferredSecondPass(uint32_t frameIndex, unsigned int numDependenciesToSecondPassOutput) {
         ScopeProfiler sp(Profiler::graphic(), "renSecondPass");
 
         positioningData.inverseProjectionViewMatrix = camera->getProjectionViewInverseMatrix();

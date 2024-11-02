@@ -22,7 +22,7 @@ namespace urchin {
             void removeModel(Model*) const;
 
             const std::shared_ptr<Texture>& getOutputTexture() const;
-            void drawTransparentModels(std::uint32_t, unsigned int, const Camera&) const;
+            void drawTransparentModels(uint32_t, unsigned int, const Camera&) const;
 
         private:
             struct ModelTransparentShaderConst {

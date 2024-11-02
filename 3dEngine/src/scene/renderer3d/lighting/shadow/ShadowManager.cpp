@@ -209,7 +209,7 @@ namespace urchin {
         #endif
     }
 
-    void ShadowManager::updateShadowMaps(std::uint32_t frameIndex, unsigned int numDependenciesToShadowMaps) const {
+    void ShadowManager::updateShadowMaps(uint32_t frameIndex, unsigned int numDependenciesToShadowMaps) const {
         ScopeProfiler sp(Profiler::graphic(), "updateShadowMap");
 
         unsigned int renderingOrder = 0;

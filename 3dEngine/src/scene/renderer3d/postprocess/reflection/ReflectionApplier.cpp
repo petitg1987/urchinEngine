@@ -195,7 +195,7 @@ namespace urchin {
         return reflectionCombineTexture;
     }
 
-    void ReflectionApplier::applyReflection(std::uint32_t frameIndex, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
+    void ReflectionApplier::applyReflection(uint32_t frameIndex, unsigned int numDependenciesToReflectionCombineTexture, const Camera& camera) {
         ScopeProfiler sp(Profiler::graphic(), "applySSR");
 
         unsigned int numDependenciesToReflectionColorTexture = 1 /* vertical blur filter */;
