@@ -26,7 +26,7 @@ namespace urchin {
         objectsPool = std::make_unique<SyncFixedSizePool<CollisionConvexObject3D>>("collisionConvexObjectsPool", maxElementSize, objectsPoolSize);
     }
 
-    SyncFixedSizePool<CollisionConvexObject3D>& CollisionConvexObjectPool::getObjectsPool() {
+    SyncFixedSizePool<CollisionConvexObject3D>& CollisionConvexObjectPool::getObjectsPool() const {
         return *objectsPool;
     }
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <UrchinCommon.h>
-
 #include <shape/CollisionShape3D.h>
 #include <utils/math/PhysicsTransform.h>
 

@@ -2,7 +2,6 @@
 
 #include <UrchinCommon.h>
 
-#include <utils/math/PhysicsTransform.h>
 #include <shape/CollisionTriangleShape.h>
 
 namespace urchin {

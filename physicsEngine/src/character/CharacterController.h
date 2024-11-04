@@ -1,8 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <mutex>
-#include <atomic>
 
 #include <character/PhysicsCharacter.h>
 #include <character/CharacterControllerConfig.h>

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <UrchinCommon.h>
-
 namespace urchin {
 
     struct ImpulseSolvingData {

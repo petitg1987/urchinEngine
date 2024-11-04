@@ -11,12 +11,12 @@ namespace urchin {
     }
 
     void BodyContainer::addBody(std::shared_ptr<AbstractBody> body) {
-        std::scoped_lock<std::mutex> lock(bodiesMutex);
+        std::scoped_lock lock(bodiesMutex);
         bodiesToRefresh.emplace_back(BodyRefresh{nullptr, std::move(body)});
     }
 
     void BodyContainer::removeBody(const AbstractBody& body) {
-        std::scoped_lock<std::mutex> lock(bodiesMutex);
+        std::scoped_lock lock(bodiesMutex);
         bodiesToRefresh.emplace_back(BodyRefresh{&body, std::shared_ptr<AbstractBody>(nullptr)});
     }
 

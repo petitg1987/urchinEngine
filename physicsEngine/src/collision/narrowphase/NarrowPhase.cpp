@@ -74,7 +74,7 @@ namespace urchin {
         }
     }
 
-    CollisionAlgorithm* NarrowPhase::retrieveCollisionAlgorithm(OverlappingPair& overlappingPair) {
+    CollisionAlgorithm* NarrowPhase::retrieveCollisionAlgorithm(OverlappingPair& overlappingPair) const {
         if (!overlappingPair.getCollisionAlgorithm()) {
             AbstractBody& body1 = overlappingPair.getBody1();
             AbstractBody& body2 = overlappingPair.getBody2();

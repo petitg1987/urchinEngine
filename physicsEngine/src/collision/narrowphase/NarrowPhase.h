@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <vector>
-#include <mutex>
 #include <UrchinCommon.h>
 
 #include <collision/ManifoldResult.h>
@@ -31,7 +30,7 @@ namespace urchin {
         private:
             void processOverlappingPairs(const std::vector<std::unique_ptr<OverlappingPair>>&, std::vector<ManifoldResult>&);
             void processOverlappingPair(OverlappingPair&, std::vector<ManifoldResult>&);
-            CollisionAlgorithm* retrieveCollisionAlgorithm(OverlappingPair&);
+            CollisionAlgorithm* retrieveCollisionAlgorithm(OverlappingPair&) const;
 
             void processPredictiveContacts(float, std::vector<ManifoldResult>&) const;
             void handleContinuousCollision(AbstractBody&, const PhysicsTransform&, const PhysicsTransform&, std::vector<ManifoldResult>&) const;

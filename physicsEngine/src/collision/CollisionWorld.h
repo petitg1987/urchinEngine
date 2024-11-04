@@ -16,7 +16,7 @@ namespace urchin {
     /**
     * Collision world: process integration, broad phase and narrow phase
     */
-    class CollisionWorld : public Observable {
+    class CollisionWorld final : public Observable {
         public:
             explicit CollisionWorld(BodyContainer&);
             ~CollisionWorld() override = default;

@@ -3,8 +3,6 @@
 #include <vector>
 #include <UrchinCommon.h>
 
-#include <collision/broadphase/BroadPhaseAlgorithm.h>
-#include <collision/broadphase/PairContainer.h>
 #include <collision/broadphase/aabbtree/AABBTreeAlgorithm.h>
 #include <collision/OverlappingPair.h>
 #include <body/model/AbstractBody.h>

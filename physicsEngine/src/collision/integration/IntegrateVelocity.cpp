@@ -10,7 +10,6 @@ namespace urchin {
 
     /**
      * @param dt Delta of time (sec.) between two simulation steps
-     * @param manifoldResults Constraints to solve
      * @param gravity Gravity expressed in units/s^2
      */
     void IntegrateVelocity::process(float dt, const std::vector<std::unique_ptr<OverlappingPair>>& overlappingPairs, const Vector3<float>& gravity) const {
