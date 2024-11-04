@@ -1,13 +1,8 @@
 #pragma once
 
 #include <string>
-#include <map>
-#include <memory>
 
 #include <UrchinCommon.h>
-#include <Urchin3dEngine.h>
-#include <UrchinSoundEngine.h>
-#include <UrchinAIEngine.h>
 #include <map/Map.h>
 #include <map/save/LoadMapCallback.h>
 

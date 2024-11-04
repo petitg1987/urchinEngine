@@ -1,4 +1,6 @@
 #include <stdexcept>
+#include <Urchin3dEngine.h>
+#include <UrchinAIEngine.h>
 
 #include <map/save/MapSaveService.h>
 #include <map/save/ai/NavMeshAgentEntityReaderWriter.h>
