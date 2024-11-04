@@ -26,7 +26,7 @@ namespace urchin {
         }
     }
 
-    RequestResult RequestExecutor::executeRequest(const HttpRequest& httpRequest, unsigned int requestTimeoutSec) {
+    RequestResult RequestExecutor::executeRequest(const HttpRequest& httpRequest, unsigned int requestTimeoutSec) const {
         curl_easy_reset(curl);
         curl_easy_setopt(curl, CURLOPT_URL, httpRequest.getUrl().c_str());
         curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1); //avoid multi-thread error (see https://stackoverflow.com/questions/30098087/is-libcurl-really-thread-safe)
@@ -46,7 +46,7 @@ namespace urchin {
             curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
         }
 
-        struct curl_slist* curlHttpHeaders = {};
+        curl_slist* curlHttpHeaders = {};
         for (const std::string& header : httpRequest.getHeaders()) {
             curlHttpHeaders = curl_slist_append(curlHttpHeaders, header.c_str());
         }

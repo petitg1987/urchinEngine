@@ -19,11 +19,11 @@ namespace urchin {
     }
 
     HttpRequest HttpRequest::newPostTextPlain(std::string url, std::string body, std::vector<std::string> headers) {
-        return HttpRequest(HttpMethod::POST, std::move(url), std::move(body), std::move(headers));
+        return {HttpMethod::POST, std::move(url), std::move(body), std::move(headers)};
     }
 
     HttpRequest HttpRequest::newGetTextPlain(std::string url, std::vector<std::string> headers) {
-        return HttpRequest(HttpMethod::GET, std::move(url), "", std::move(headers));
+        return {HttpMethod::GET, std::move(url), "", std::move(headers)};
     }
 
     HttpMethod HttpRequest::getHttpMethod() const {
