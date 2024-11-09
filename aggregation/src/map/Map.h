@@ -2,13 +2,11 @@
 
 #include <string>
 #include <list>
-#include <utility>
 
 #include <UrchinCommon.h>
 #include <Urchin3dEngine.h>
 #include <UrchinSoundEngine.h>
 #include <UrchinAIEngine.h>
-#include <map/save/LoadMapCallback.h>
 #include <model/ObjectEntity.h>
 #include <model/LightEntity.h>
 #include <model/TerrainEntity.h>
@@ -69,8 +67,8 @@ namespace urchin {
             void setNavMeshAgentEntity(std::unique_ptr<NavMeshAgentEntity>);
 
             void refresh() const;
-            void pause();
-            void unpause();
+            void pause() const;
+            void unpause() const;
 
         private:
             Renderer3d* renderer3d;

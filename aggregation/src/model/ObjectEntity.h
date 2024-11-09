@@ -37,7 +37,7 @@ namespace urchin {
             void setupAIObject();
 
             void deleteRigidBody();
-            void deleteAIObjects();
+            void deleteAIObjects() const;
 
             Renderer3d* renderer3d;
             PhysicsWorld* physicsWorld;

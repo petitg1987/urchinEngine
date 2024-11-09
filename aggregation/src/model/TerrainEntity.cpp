@@ -103,7 +103,7 @@ namespace urchin {
         rigidBody = nullptr;
     }
 
-    void TerrainEntity::deleteAIObjects() {
+    void TerrainEntity::deleteAIObjects() const {
         if (aiEnvironment && aiTerrain) {
             aiEnvironment->removeEntity(aiTerrain);
         }

@@ -1,8 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <vector>
-#include <Urchin3dEngine.h>
 
 #include <model/SkyEntity.h>
 

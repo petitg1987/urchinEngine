@@ -8,7 +8,7 @@ namespace urchin {
 
     }
 
-    std::unique_ptr<RigidBody> DefaultRigidBodyGenerator::generate(CollisionShape3D::ShapeType shapeType) {
+    std::unique_ptr<RigidBody> DefaultRigidBodyGenerator::generate(CollisionShape3D::ShapeType shapeType) const {
         Transform<float> modelTransform = objectEntity.getModel()->getTransform();
         PhysicsTransform physicsTransform(modelTransform.getPosition(), modelTransform.getOrientation());
         std::unique_ptr<const CollisionShape3D> bodyShape = DefaultBodyShapeGenerator(objectEntity).generate(shapeType);

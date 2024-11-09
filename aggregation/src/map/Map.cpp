@@ -90,7 +90,7 @@ namespace urchin {
         auto itFind = std::ranges::find_if(objectEntities, [&objectEntityToMove](const auto& o){ return o.get() == &objectEntityToMove; });
         if (itFind != objectEntities.end() && itFind != objectEntities.begin()) {
             auto itInsert = itFind;
-            itInsert--;
+            --itInsert;
             objectEntities.splice(itInsert, objectEntities, itFind);
             return true;
         }
@@ -101,7 +101,7 @@ namespace urchin {
         auto itFind = std::ranges::find_if(objectEntities, [&objectEntityToMove](const auto& o){ return o.get() == &objectEntityToMove; });
         if (itFind != objectEntities.end()) {
             auto itInsert = itFind;
-            itInsert++;
+            ++itInsert;
             if (itInsert != objectEntities.end()) {
                 objectEntities.splice(++itInsert, objectEntities, itFind);
                 return true;
@@ -220,7 +220,7 @@ namespace urchin {
         this->navMeshAgentEntity = std::move(navMeshAgentEntity);
     }
 
-    void Map::pause() {
+    void Map::pause() const {
         if (renderer3d) {
             renderer3d->pause();
         }
@@ -235,7 +235,7 @@ namespace urchin {
         }
     }
 
-    void Map::unpause() {
+    void Map::unpause() const {
         if (renderer3d) {
             renderer3d->unpause();
         }
