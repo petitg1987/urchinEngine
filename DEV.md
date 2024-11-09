@@ -35,9 +35,9 @@
   ```
   Pacman -S unzip openssl-devel
   rm /tmp/curl/ -rf && mkdir -p /tmp/curl/ && cd /tmp/curl/
-  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-8.10.1.zip
-  unzip curl-8.10.1.zip && cd /tmp/curl/curl-8.10.1
-  ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn --with-ssl --with-nghttp2
+  wget -P /tmp/curl/ https://curl.haxx.se/download/curl-8.11.0.zip
+  unzip curl-8.11.0.zip && cd /tmp/curl/curl-8.11.0
+  ./configure CPPFLAGS=-DNGHTTP2_STATICLIB --disable-shared --enable-static --prefix=/usr/local --disable-ldap --disable-sspi --disable-ftp --disable-file --disable-dict --disable-telnet --disable-tftp --disable-hsts --disable-alt-svc --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-smb --without-librtmp --without-libidn2 --without-libpsl --with-ssl --with-nghttp2
   make V=1
   make install #create library in /usr/local/lib/libcurl.a
   mv /mingw64/lib/libcurl.a /mingw64/lib/libcurl.a_backup #In case libcurl is installed via package "mingw-w64-x86_64-cmake"
