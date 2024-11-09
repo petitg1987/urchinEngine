@@ -85,7 +85,7 @@ namespace urchin {
                         SVGColor color = filterIndex < 4 ? RED : BLUE;
                         Point2 startVector(xOffset, yOffset);
                         Point2 endVector(xOffset + textureData[index].X, yOffset + textureData[index].Y);
-                        svgExporter.addShape(std::make_unique<SVGLine>(LineSegment2D<float>(startVector, endVector), color, 0.005f));
+                        svgExporter.addShape(std::make_unique<SVGLine>(LineSegment2D(startVector, endVector), color, 0.005f));
                         svgExporter.addShape(std::make_unique<SVGCircle>(endVector, 0.02f, color));
                     }
                 }

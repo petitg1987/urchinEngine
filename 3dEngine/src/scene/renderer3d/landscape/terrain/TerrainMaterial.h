@@ -5,7 +5,6 @@
 #include <UrchinCommon.h>
 
 #include <resources/material/Material.h>
-#include <resources/image/Image.h>
 
 namespace urchin {
 

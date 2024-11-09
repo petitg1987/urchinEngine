@@ -30,7 +30,7 @@ namespace urchin {
             ~OffscreenRender() override;
 
             void setOutputSize(unsigned int, unsigned int, unsigned int);
-            void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, std::optional<Vector4<float>> = std::nullopt, OutputUsage = OutputUsage::GRAPHICS);
+            void addOutputTexture(const std::shared_ptr<Texture>&, LoadType = LoadType::NO_LOAD, const std::optional<Vector4<float>>& = std::nullopt, OutputUsage = OutputUsage::GRAPHICS);
             std::shared_ptr<Texture>& getOutputTexture(std::size_t);
             void resetOutput();
 

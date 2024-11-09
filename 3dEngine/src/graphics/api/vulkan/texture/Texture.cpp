@@ -316,8 +316,8 @@ namespace urchin {
                 bufferImageCopy.imageSubresource.mipLevel = 0;
                 bufferImageCopy.imageSubresource.baseArrayLayer = i;
                 bufferImageCopy.imageSubresource.layerCount = 1;
-                bufferImageCopy.imageOffset = {0, 0, 0};
-                bufferImageCopy.imageExtent = {width, height, 1};
+                bufferImageCopy.imageOffset = {.x=0, .y=0, .z=0};
+                bufferImageCopy.imageExtent = {.width=width, .height=height, .depth=1};
                 bufferImageCopies.emplace_back(bufferImageCopy);
             }
 
@@ -376,14 +376,14 @@ namespace urchin {
 
                 VkImageBlit2 imageBlit{};
                 imageBlit.sType = VK_STRUCTURE_TYPE_IMAGE_BLIT_2;
-                imageBlit.srcOffsets[0] = {0, 0, 0};
-                imageBlit.srcOffsets[1] = {mipWidth, mipHeight, 1};
+                imageBlit.srcOffsets[0] = {.x=0, .y=0, .z=0};
+                imageBlit.srcOffsets[1] = {.x=mipWidth, .y=mipHeight, .z=1};
                 imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
                 imageBlit.srcSubresource.mipLevel = i - 1;
                 imageBlit.srcSubresource.baseArrayLayer = 0;
                 imageBlit.srcSubresource.layerCount = 1;
-                imageBlit.dstOffsets[0] = {0, 0, 0};
-                imageBlit.dstOffsets[1] = {mipWidth > 1 ? mipWidth / 2 : 1, mipHeight > 1 ? mipHeight / 2 : 1, 1};
+                imageBlit.dstOffsets[0] = {.x=0, .y=0, .z=0};
+                imageBlit.dstOffsets[1] = {.x=mipWidth > 1 ? mipWidth / 2 : 1, .y=mipHeight > 1 ? mipHeight / 2 : 1, .z=1};
                 imageBlit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
                 imageBlit.dstSubresource.mipLevel = i;
                 imageBlit.dstSubresource.baseArrayLayer = 0;

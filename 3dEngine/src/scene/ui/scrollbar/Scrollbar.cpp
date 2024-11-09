@@ -35,7 +35,7 @@ namespace urchin {
         Length scrollbarWidth = UISkinService::instance().loadLength(scrollbarChunk, "width");
         auto imageCursor = loadTexture(scrollbarChunk, "imageCursor");
         auto cursorImageRatio = (float)imageCursor->getHeight() / (float)imageCursor->getWidth();
-        float cursorWidthInPixel = scrollableWidget.widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [](){return 0.0f;});
+        float cursorWidthInPixel = scrollableWidget.widthLengthToPixel(scrollbarWidth.value, scrollbarWidth.type, [] {return 0.0f;});
 
         auto lineImageChunk = UISkinService::instance().getSkinReader().getFirstChunk(true, "imageLine", UdaAttribute(), scrollbarChunk);
         std::string lineImageFilename = lineImageChunk->getStringValue();

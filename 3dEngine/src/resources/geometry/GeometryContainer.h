@@ -5,7 +5,6 @@
 
 #include <graphics/api/GraphicsApi.h>
 #include <resources/geometry/GeometryModel.h>
-#include <scene/renderer3d/camera/Camera.h>
 
 namespace urchin {
 

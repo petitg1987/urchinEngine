@@ -13,7 +13,7 @@ namespace urchin {
 
             void initialize();
 
-            void onUiRendererSizeUpdated();
+            void onUiRendererSizeUpdated() const;
             void onGammaFactorUpdated();
             void updateTexture() const;
             void updateScissor() const;

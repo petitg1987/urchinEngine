@@ -45,9 +45,9 @@ namespace urchin {
 
         std::array<Point3<float>, 4> lightProjectionVertex;
         lightProjectionVertex[0] = frustumCenter + Point3(frustumRadius, frustumRadius, frustumRadius);
-        lightProjectionVertex[1] = Point3<float>(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
+        lightProjectionVertex[1] = Point3(lightProjectionVertex[0].X, lightProjectionVertex[0].Y, nearCapZ);
         lightProjectionVertex[2] = frustumCenter - Point3(frustumRadius, frustumRadius, frustumRadius);
-        lightProjectionVertex[3] = Point3<float>(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
+        lightProjectionVertex[3] = Point3(lightProjectionVertex[2].X, lightProjectionVertex[2].Y, nearCapZ);
         this->lightProjectionMatrix = AABBox<float>(lightProjectionVertex).toProjectionMatrix();
 
         //determine point belonging to shadow caster/receiver box

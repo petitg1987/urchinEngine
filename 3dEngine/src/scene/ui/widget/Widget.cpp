@@ -132,7 +132,7 @@ namespace urchin {
     }
 
     const Widget* Widget::getParentRootWidget() const {
-        const Widget* currentWidget = this;
+        auto currentWidget = this;
         do {
             if (currentWidget->isRootWidget()) {
                 return currentWidget;
@@ -425,7 +425,7 @@ namespace urchin {
     }
 
     std::optional<Scissor> Widget::retrieveScissor() const {
-        const Widget *currentWidget = this;
+        auto currentWidget = this;
         const Widget *scissorContainer = nullptr;
 
         while (currentWidget != nullptr) {

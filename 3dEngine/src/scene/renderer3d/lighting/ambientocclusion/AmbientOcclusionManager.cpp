@@ -173,7 +173,7 @@ namespace urchin {
 
     void AmbientOcclusionManager::generateNoiseTexture() {
         unsigned int seed = 0; //no need to generate different random numbers at each start
-        std::uniform_real_distribution<float> randomFloats(0.0f, 255.0f);
+        std::uniform_real_distribution randomFloats(0.0f, 255.0f);
         std::default_random_engine generator(seed);
 
         std::vector<uint8_t> ssaoNoise;

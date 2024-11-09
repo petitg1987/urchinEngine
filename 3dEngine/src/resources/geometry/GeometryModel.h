@@ -3,6 +3,7 @@
 #include <UrchinCommon.h>
 
 #include <graphics/api/GraphicsApi.h>
+#include <graphics/render/data/PolygonMode.h>
 
 namespace urchin {
 

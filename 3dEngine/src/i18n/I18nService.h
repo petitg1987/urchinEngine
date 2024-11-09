@@ -18,7 +18,7 @@ namespace urchin {
 
             void add(TranslatableLabel*);
             void remove(TranslatableLabel*);
-            bool isTranslatableLabelExist(TranslatableLabel*);
+            bool isTranslatableLabelExist(TranslatableLabel*) const;
 
         private:
             void refreshTranslation(TranslatableLabel*);

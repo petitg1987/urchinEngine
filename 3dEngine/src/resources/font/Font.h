@@ -3,7 +3,6 @@
 #include <UrchinCommon.h>
 
 #include <resources/Resource.h>
-#include <resources/image/Image.h>
 #include <resources/font/UnicodeUtil.h>
 #include <graphics/api/GraphicsApi.h>
 

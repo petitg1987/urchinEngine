@@ -11,7 +11,7 @@ namespace urchin {
             variableTypes(std::move(variableTypes)),
             dataCount(dataCount),
             bHasNewData({}) {
-        this->ptr = ::operator new(getBufferSize());
+        this->ptr = operator new(getBufferSize());
         std::memcpy(this->ptr, ptr, getBufferSize());
 
         markDataAsNew();
@@ -21,7 +21,7 @@ namespace urchin {
             variableTypes(src.variableTypes),
             dataCount(src.dataCount),
             bHasNewData(src.bHasNewData) {
-        this->ptr = ::operator new(getBufferSize());
+        this->ptr = operator new(getBufferSize());
         std::memcpy(this->ptr, src.ptr, getBufferSize());
     }
 
@@ -34,16 +34,16 @@ namespace urchin {
     }
 
     DataContainer::~DataContainer() {
-        ::operator delete(ptr);
+        operator delete(ptr);
     }
 
     void DataContainer::replaceData(std::size_t dataCount, const void* ptr) {
         static constexpr std::size_t MAX_MEMORY_RATIO = 5; //to avoid too much memory consumption for nothing
         if (this->dataCount < dataCount || this->dataCount > dataCount * MAX_MEMORY_RATIO) {
-            ::operator delete(this->ptr);
+            operator delete(this->ptr);
 
             this->dataCount = dataCount;
-            this->ptr = ::operator new(getBufferSize());
+            this->ptr = operator new(getBufferSize());
         } else {
             this->dataCount = dataCount;
         }

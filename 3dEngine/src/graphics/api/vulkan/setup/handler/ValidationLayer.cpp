@@ -71,7 +71,7 @@ namespace urchin {
         }
     }
 
-    void ValidationLayer::cleanup() {
+    void ValidationLayer::cleanup() const {
         if (validationLevel >= 2 && instance) {
             destroyDebugUtilsMessengerEXT(instance);
         }

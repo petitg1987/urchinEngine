@@ -21,7 +21,7 @@ namespace urchin {
             assert(!samplersCache.contains(key));
         #endif
 
-        SharedSampler sharedSampler = {1, sampler};
+        SharedSampler sharedSampler = {.useCount=1, .sampler=sampler};
         samplersCache.try_emplace(key, sharedSampler);
     }
 

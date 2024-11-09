@@ -74,7 +74,7 @@ namespace urchin {
             void destroyRenderPass();
             void createDepthResources();
             void destroyDepthResources();
-            void addFramebuffers(std::vector<std::vector<VkImageView>>);
+            void addFramebuffers(const std::vector<std::vector<VkImageView>>&);
             void destroyFramebuffers();
             void createCommandPool();
             void createCommandBuffers();

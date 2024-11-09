@@ -2,8 +2,6 @@
 
 #include <UrchinCommon.h>
 
-#include <graphics/api/vulkan/render/target/ScreenRender.h>
-
 namespace urchin {
 
     class CaptureService : public Singleton<CaptureService> {

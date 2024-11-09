@@ -61,7 +61,7 @@ namespace urchin {
         devicesInitialized = true;
     }
 
-    void DeviceHandler::cleanup() {
+    void DeviceHandler::cleanup() const {
         if (logicalDevice) {
             vkDestroyDevice(logicalDevice, nullptr);
         }
@@ -255,7 +255,7 @@ namespace urchin {
                 physicalDeviceExtensions.emplace_back(ext.first);
             } else {
                 const char* extensionName = ext.first;
-                auto extDescriptionIt = std::ranges::find_if(physicalDeviceOptionalExtensions, [extensionName](const std::pair<const char*, std::string>& ext) { return ext.first == extensionName; });
+                auto extDescriptionIt = std::ranges::find_if(physicalDeviceOptionalExtensions, [extensionName](const std::pair<const char*, std::string>& e) { return e.first == extensionName; });
                 if (extDescriptionIt != physicalDeviceOptionalExtensions.end()) { //should be always true
                     Logger::instance().logInfo("Creating logical device without optional extension: " + extDescriptionIt->second);
                 }

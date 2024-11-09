@@ -39,7 +39,7 @@ namespace urchin {
         translatableLabels.erase(translatableLabel);
     }
 
-    bool I18nService::isTranslatableLabelExist(TranslatableLabel* translatableLabel) {
+    bool I18nService::isTranslatableLabelExist(TranslatableLabel* translatableLabel) const {
         return translatableLabels.contains(translatableLabel);
     }
 

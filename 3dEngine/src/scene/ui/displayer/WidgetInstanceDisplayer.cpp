@@ -110,7 +110,7 @@ namespace urchin {
         renderer->updateUniformData(COLOR_PARAMS_UNIFORM_BINDING, &colorParams);
     }
 
-    void WidgetInstanceDisplayer::onUiRendererSizeUpdated() {
+    void WidgetInstanceDisplayer::onUiRendererSizeUpdated() const {
         if (!uiRenderer.getUi3dData()) {
             Matrix4 projectionViewModelMatrix( //orthogonal matrix with origin at top left screen
                     2.0f / (float) uiRenderer.getUiResolution().X, 0.0f, -1.0f, 0.0f,

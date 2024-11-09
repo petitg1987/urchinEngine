@@ -36,7 +36,7 @@ namespace urchin {
         this->layer = layer;
     }
 
-    void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, std::optional<Vector4<float>> clearColor, OutputUsage outputUsage) {
+    void OffscreenRender::addOutputTexture(const std::shared_ptr<Texture>& texture, LoadType loadType, const std::optional<Vector4<float>>& clearColor, OutputUsage outputUsage) {
         assert(!isInitialized());
         assert(outputUsage != OutputUsage::COMPUTE || loadType == LoadType::NO_LOAD);
         assert(layer == 0 || layer == texture->getLayer());

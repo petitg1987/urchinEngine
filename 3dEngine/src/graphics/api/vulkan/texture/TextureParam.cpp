@@ -117,36 +117,36 @@ namespace urchin {
     }
 
     VkSamplerAddressMode TextureParam::getVkReadMode() const {
-        if (readMode == ReadMode::EDGE_CLAMP) {
+        if (readMode == EDGE_CLAMP) {
             return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-        } else if (readMode == ReadMode::REPEAT) {
+        } else if (readMode == REPEAT) {
             return VK_SAMPLER_ADDRESS_MODE_REPEAT;
         }
         throw std::runtime_error("Unknown texture read mode: " + std::to_string(readMode));
     }
 
     VkFilter TextureParam::getVkReadQuality() const {
-        if (readQuality == ReadQuality::NEAREST) {
+        if (readQuality == NEAREST) {
             return VK_FILTER_NEAREST;
-        } else if (readQuality == ReadQuality::LINEAR) {
+        } else if (readQuality == LINEAR) {
             return VK_FILTER_LINEAR;
         }
         throw std::runtime_error("Unknown texture read quality: " + std::to_string(readQuality));
     }
 
     VkSamplerMipmapMode TextureParam::getVkMipmapReadQuality() const {
-        if (readQuality == ReadQuality::NEAREST) {
+        if (readQuality == NEAREST) {
             return VK_SAMPLER_MIPMAP_MODE_NEAREST;
-        } else if (readQuality == ReadQuality::LINEAR) {
+        } else if (readQuality == LINEAR) {
             return VK_SAMPLER_MIPMAP_MODE_LINEAR;
         }
         throw std::runtime_error("Unknown texture read quality: " + std::to_string(readQuality));
     }
 
     bool TextureParam::needAnisotropy() const {
-        if (anisotropy == Anisotropy::NO_ANISOTROPY) {
+        if (anisotropy == NO_ANISOTROPY) {
             return false;
-        } else if (anisotropy == Anisotropy::ANISOTROPY) {
+        } else if (anisotropy == ANISOTROPY) {
             return true;
         }
         throw std::runtime_error("Unknown anisotropy type: " + std::to_string(anisotropy));

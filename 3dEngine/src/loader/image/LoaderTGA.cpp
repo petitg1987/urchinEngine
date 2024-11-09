@@ -235,12 +235,11 @@ namespace urchin {
     void LoaderTGA::readTGA8bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, const std::vector<unsigned char>& colorMap, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
         unsigned char color;
-        unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
         while (ptrIndex < imageSize * 3) {
             //reads first byte
-            packetHeader = data[j++];
+            unsigned char  packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
             if (packetHeader & 0x80u) {
@@ -268,12 +267,11 @@ namespace urchin {
     void LoaderTGA::readTGA16bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
         unsigned short color;
-        unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
         while (ptrIndex < imageSize * 3) {
             //reads first byte
-            packetHeader = data[j++];
+            unsigned char packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
             if (packetHeader & 0x80u) {
@@ -301,18 +299,16 @@ namespace urchin {
 
     void LoaderTGA::readTGA24bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
-        const unsigned char *rgb;
-        unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
         while (ptrIndex < imageSize * 3) {
             //reads first byte
-            packetHeader = data[j++];
+            unsigned char packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
             if (packetHeader & 0x80u) {
                 //run-length packet
-                rgb = &data[j];
+                const unsigned char *rgb = &data[j];
                 j += 3;
 
                 for (unsigned int i = 0; i < size; ++i, ptrIndex += 3) {
@@ -333,18 +329,16 @@ namespace urchin {
 
     void LoaderTGA::readTGA32bitsRLE(const std::vector<unsigned char>& data, unsigned int imageSize, std::vector<unsigned char>& texels) const {
         std::size_t j = 0;
-        const unsigned char *rgba;
-        unsigned char packetHeader;
         unsigned int ptrIndex = 0;
 
         while (ptrIndex < imageSize * 4) {
             //reads first byte
-            packetHeader = data[j++];
+            unsigned char packetHeader = data[j++];
             unsigned int size = 1 + (packetHeader & 0x7fu);
 
             if (packetHeader & 0x80u) {
                 //run-length packet
-                rgba = &data[j];
+                const unsigned char *rgba = &data[j];
                 j += 4;
 
                 for (unsigned int i = 0; i < size; ++i, ptrIndex += 4) {

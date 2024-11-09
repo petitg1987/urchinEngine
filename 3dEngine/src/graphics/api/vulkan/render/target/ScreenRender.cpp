@@ -123,7 +123,7 @@ namespace urchin {
     void ScreenRender::initializeClearValues() {
         if (hasDepthAttachment()) {
             VkClearValue clearDepth{};
-            clearDepth.depthStencil = {1.0f, 0};
+            clearDepth.depthStencil = {.depth=1.0f, .stencil=0};
             clearValues.emplace_back(clearDepth);
         }
     }

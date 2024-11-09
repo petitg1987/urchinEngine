@@ -323,7 +323,7 @@ namespace urchin {
         }
     }
 
-    void RenderTarget::addFramebuffers(std::vector<std::vector<VkImageView>> attachments) {
+    void RenderTarget::addFramebuffers(const std::vector<std::vector<VkImageView>>& attachments) {
         if (!attachments.empty()) {
             framebuffers.resize(framebuffers.size() + 1);
             std::size_t frameIndex = framebuffers.size() - 1;

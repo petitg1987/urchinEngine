@@ -11,8 +11,6 @@
 #include <scene/renderer3d/model/AnimStart.h>
 #include <scene/renderer3d/model/displayer/ModelDisplayable.h>
 #include <resources/model/ConstMeshes.h>
-#include <resources/model/ConstAnimation.h>
-#include <graphics/api/GraphicsApi.h>
 
 namespace urchin {
 

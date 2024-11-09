@@ -73,8 +73,8 @@ namespace urchin {
 
         this->dataSize = dataSize;
 
-        if (bufferKind == BufferKind::STATIC) {
-            bufferKind = BufferKind::DYNAMIC;
+        if (bufferKind == STATIC) {
+            bufferKind = DYNAMIC;
             createOrRefreshBuffers(dataPtr);
             newBufferCreated = true;
         } else {

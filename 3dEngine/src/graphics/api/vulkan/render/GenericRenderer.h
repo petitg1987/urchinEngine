@@ -5,14 +5,9 @@
 #include <UrchinCommon.h>
 
 #include <graphics/render/shader/ShaderDataContainer.h>
-#include <graphics/render/data/ShapeType.h>
-#include <graphics/render/data/VariableType.h>
-#include <graphics/render/data/PolygonMode.h>
 #include <graphics/render/data/DataContainer.h>
 #include <graphics/render/data/IndexContainer.h>
-#include <graphics/render/data/BlendFunction.h>
 #include <graphics/api/vulkan/render/shader/Shader.h>
-#include <graphics/api/vulkan/render/target/RenderTarget.h>
 #include <graphics/api/vulkan/render/PipelineProcessor.h>
 
 namespace urchin {
