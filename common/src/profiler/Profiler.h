@@ -1,8 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <map>
-#include <stack>
 
 #include <profiler/ProfilerNode.h>
 

@@ -10,8 +10,6 @@ namespace urchin {
         public:
             Vector2() noexcept;
             Vector2(T Xu, T Yu) noexcept;
-            Vector2(const Vector2<T>&) = default;
-            Vector2<T>& operator=(const Vector2<T>&) = default;
 
             void setValues(T, T);
             void setNull();

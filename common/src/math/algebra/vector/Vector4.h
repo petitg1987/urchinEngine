@@ -12,8 +12,6 @@ namespace urchin {
             Vector4() noexcept;
             Vector4(T Xu, T Yu, T Zu, T Wu) noexcept;
             explicit Vector4(const Vector3<T>&, T Wu = 1) noexcept;
-            Vector4(const Vector4<T>&) = default;
-            Vector4<T>& operator=(const Vector4<T>&) = default;
 
             void setValues(T, T, T, T);
             void setNull();

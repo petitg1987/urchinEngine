@@ -5,7 +5,6 @@
 #include <utility>
 #include <cstdint>
 
-#include <util/VectorUtil.h>
 #include <util/StringUtil.h>
 
 namespace urchin {

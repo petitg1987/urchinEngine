@@ -33,8 +33,9 @@ namespace urchin {
         return nullptr;
     }
 
-    void ProfilerNode::addChild(std::unique_ptr<ProfilerNode> child) {
+    ProfilerNode* ProfilerNode::addChild(std::unique_ptr<ProfilerNode> child) {
         children.push_back(std::move(child));
+        return children.back().get();
     }
 
     bool ProfilerNode::isStarted() const {
