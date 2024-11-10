@@ -7,7 +7,6 @@
 
 #include <io/uda/UdaParser.h>
 #include <io/file/FileReader.h>
-#include <config/FileSystem.h>
 #include <util/StringUtil.h>
 
 namespace urchin {
@@ -228,7 +227,7 @@ namespace urchin {
             stack.pop();
 
             unsigned int indentLevel = computeIndentLevel(*node);
-            std::string indent(indentLevel * UdaChunk::INDENT_SPACES, ' ');
+            std::string indent((std::size_t)indentLevel * UdaChunk::INDENT_SPACES, ' ');
 
             file << indent << buildRawContentLine(*node) << '\n';
 

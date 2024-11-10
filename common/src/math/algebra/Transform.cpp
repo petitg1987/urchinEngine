@@ -14,11 +14,11 @@ namespace urchin {
             pPosition(position),
             qOrientation(orientation),
             vScale(scale),
-            mOrientation(orientation.toMatrix4()) {
-        mPosition = Matrix4<T>::buildTranslation(pPosition.X, pPosition.Y, pPosition.Z);
+            mPosition(Matrix4<T>::buildTranslation(pPosition.X, pPosition.Y, pPosition.Z)),
+            mOrientation(orientation.toMatrix4()),
+            mScale(Matrix4<T>::buildScale(vScale.X, vScale.Y, vScale.Z)),
+            mTransform(mPosition * mOrientation * mScale) {
 
-        mScale = Matrix4<T>::buildScale(vScale.X, vScale.Y, vScale.Z);
-        mTransform = mPosition * mOrientation * mScale;
     }
 
     template<class T> void Transform<T>::setPosition(const Point3<T>& position) {

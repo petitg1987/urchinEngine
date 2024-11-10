@@ -16,7 +16,7 @@ namespace urchin {
             Point4(T Xu, T Yu, T Zu, T Wu) noexcept;
             explicit Point4(const Point2<T>&, T Zu = 0, T Wu = 1) noexcept;
             explicit Point4(const Point3<T>&, T Wu = 1) noexcept;
-            explicit Point4(const Vector3<T>&, T wu = 1) noexcept;
+            explicit Point4(const Vector3<T>&, T Wu = 1) noexcept;
             explicit Point4(const Vector4<T>&) ;
             Point4(const Point4<T>&) = default;
             Point4<T>& operator=(const Point4<T>&) = default;
@@ -36,8 +36,8 @@ namespace urchin {
             Point4<T> operator -() const;
             Point4<T> operator +(const Point4<T>&) const;
             Point4<T> operator -(const Point4<T>&) const;
-            const Point4<T>& operator +=(const Point4<T>& v);
-            const Point4<T>& operator -=(const Point4<T>& v);
+            const Point4<T>& operator +=(const Point4<T>&);
+            const Point4<T>& operator -=(const Point4<T>&);
             const Point4<T>& operator *=(T t);
             const Point4<T>& operator /=(T t);
             const Point4<T>& operator +=(T t);

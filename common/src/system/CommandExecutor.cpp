@@ -15,7 +15,7 @@ namespace urchin {
         }
 
         while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-            cmdResult += buffer.data();
+            cmdResult.append(buffer.data());
         }
 
         if (cmdResult.ends_with("\n")) {

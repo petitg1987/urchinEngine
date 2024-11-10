@@ -38,7 +38,7 @@ namespace urchin {
     }
 
 #ifdef _WIN32
-    void SignalHandler::setupSignalHandler() {
+    void SignalHandler::setupSignalHandler() const {
         SetUnhandledExceptionFilter(signalHandler);
     }
 
@@ -108,7 +108,7 @@ namespace urchin {
         return EXCEPTION_EXECUTE_HANDLER;
     }
 #else
-    void SignalHandler::setupSignalHandler() {
+    void SignalHandler::setupSignalHandler() const {
         struct sigaction sigAction = {};
         sigAction.sa_sigaction = &signalHandler;
         sigemptyset(&sigAction.sa_mask);

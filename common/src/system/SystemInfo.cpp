@@ -25,7 +25,7 @@ namespace urchin {
         #ifdef _WIN32
             return "Windows";
         #else
-            struct utsname utsName = {};
+            utsname utsName = {};
             if (!uname(&utsName)) {
                 return std::string(utsName.sysname) + ", " + std::string(utsName.release) + ", " + std::string(utsName.version);
             }

@@ -16,10 +16,6 @@ namespace urchin {
     std::map<std::string, std::string, std::less<>> PropertyFileHandler::loadPropertyFile() const {
         std::map<std::string, std::string, std::less<>> properties;
 
-        std::string propertyName;
-        std::string equalSign;
-        std::string propertyValue;
-
         std::ifstream file(propertiesFilePath, std::ios::in);
         if (!file.is_open()) {
             throw std::invalid_argument("Unable to open file: " + propertiesFilePath);
@@ -40,10 +36,10 @@ namespace urchin {
                 continue;
             }
 
-            propertyName = line.substr(0, equalPosition);
+            std::string  propertyName = line.substr(0, equalPosition);
             StringUtil::trim(propertyName);
 
-            propertyValue = line.substr(equalPosition + 1);
+            std::string propertyValue = line.substr(equalPosition + 1);
             StringUtil::trim(propertyValue);
             StringUtil::replaceAll(propertyValue, "\\n", "\n");
             if (!propertyValue.empty() && propertyValue[0] == '"') { //quoted value

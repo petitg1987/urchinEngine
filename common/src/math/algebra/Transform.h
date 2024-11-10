@@ -12,7 +12,7 @@ namespace urchin {
     template<class T> class Transform {
         public:
             Transform();
-            explicit Transform(const Point3<T>&, const Quaternion<T> &q = Quaternion<T>(), const Vector3<T>& scale = Vector3<T>(1.0, 1.0, 1.0));
+            explicit Transform(const Point3<T>&, const Quaternion<T>& orientation = Quaternion<T>(), const Vector3<T>& scale = Vector3<T>(1.0, 1.0, 1.0));
 
             void setPosition(const Point3<T>&);
             const Point3<T>& getPosition() const;

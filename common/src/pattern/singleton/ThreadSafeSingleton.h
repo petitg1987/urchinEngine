@@ -1,7 +1,6 @@
 #pragma once
 
 #include <typeinfo>
-#include <iostream>
 #include <atomic>
 #include <mutex>
 

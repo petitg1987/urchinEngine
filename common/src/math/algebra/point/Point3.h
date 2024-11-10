@@ -36,8 +36,8 @@ namespace urchin {
             Point3<T> operator -() const;
             Point3<T> operator +(const Point3<T>&) const;
             Point3<T> operator -(const Point3<T>&) const;
-            const Point3<T>& operator +=(const Point3<T>& v);
-            const Point3<T>& operator -=(const Point3<T>& v);
+            const Point3<T>& operator +=(const Point3<T>&);
+            const Point3<T>& operator -=(const Point3<T>&);
             const Point3<T>& operator *=(T t);
             const Point3<T>& operator /=(T t);
             const Point3<T>& operator +=(T t);

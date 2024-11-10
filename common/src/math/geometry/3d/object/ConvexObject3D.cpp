@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <math/geometry/3d/object/ConvexObject3D.h>
 
 namespace urchin {

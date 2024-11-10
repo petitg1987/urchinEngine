@@ -38,7 +38,7 @@ namespace urchin {
         private:
             SignalHandler();
 
-            void setupSignalHandler();
+            void setupSignalHandler() const;
             #ifdef _WIN32
                 static long __stdcall signalHandler(_EXCEPTION_POINTERS*);
             #else
