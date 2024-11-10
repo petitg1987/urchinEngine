@@ -5,7 +5,7 @@
 
 namespace urchin {
 
-    class ShaderConfig : public Singleton<ShaderConfig> {
+    class ShaderConfig final : public Singleton<ShaderConfig> {
         public:
             friend class Singleton;
 

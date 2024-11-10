@@ -7,7 +7,7 @@
 
 namespace urchin {
 
-    class GraphicsApiService : public Singleton<GraphicsApiService> {
+    class GraphicsApiService final : public Singleton<GraphicsApiService> {
         public:
             friend class Singleton;
 

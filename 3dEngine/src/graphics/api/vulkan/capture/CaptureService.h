@@ -4,7 +4,7 @@
 
 namespace urchin {
 
-    class CaptureService : public Singleton<CaptureService> {
+    class CaptureService final : public Singleton<CaptureService> {
         public:
             friend class Singleton;
 

@@ -16,7 +16,7 @@
 
 namespace urchin {
 
-    class ResourceRetriever : public ThreadSafeSingleton<ResourceRetriever> {
+    class ResourceRetriever final : public ThreadSafeSingleton<ResourceRetriever> {
         public:
             static constexpr char SPECIAL_FILENAME_PREFIX = '#';
 

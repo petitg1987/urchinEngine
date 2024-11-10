@@ -20,7 +20,7 @@ namespace urchin {
         LengthType type;
     };
 
-    class UISkinService : public Singleton<UISkinService> {
+    class UISkinService final : public Singleton<UISkinService> {
         public:
             friend class Singleton;
 
