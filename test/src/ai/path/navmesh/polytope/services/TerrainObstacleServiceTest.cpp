@@ -96,10 +96,10 @@ void TerrainObstacleServiceTest::squaresInUForm() {
 CppUnit::Test* TerrainObstacleServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("TerrainObstacleServiceTest");
 
-    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("oneSquare", &TerrainObstacleServiceTest::oneSquare));
-    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoAlignedSquares", &TerrainObstacleServiceTest::twoAlignedSquares));
-    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoSquaresSamePoint", &TerrainObstacleServiceTest::twoSquaresSamePoint));
-    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("squaresInUForm", &TerrainObstacleServiceTest::squaresInUForm));
+    suite->addTest(new CppUnit::TestCaller("oneSquare", &TerrainObstacleServiceTest::oneSquare));
+    suite->addTest(new CppUnit::TestCaller("twoAlignedSquares", &TerrainObstacleServiceTest::twoAlignedSquares));
+    suite->addTest(new CppUnit::TestCaller("twoSquaresSamePoint", &TerrainObstacleServiceTest::twoSquaresSamePoint));
+    suite->addTest(new CppUnit::TestCaller("squaresInUForm", &TerrainObstacleServiceTest::squaresInUForm));
 
     return suite;
 }

@@ -28,7 +28,7 @@ void UdaParserTest::removeChunk() {
 CppUnit::Test* UdaParserTest::suite() {
     auto* suite = new CppUnit::TestSuite("UdaParserTest");
 
-    suite->addTest(new CppUnit::TestCaller<UdaParserTest>("removeChunk", &UdaParserTest::removeChunk));
+    suite->addTest(new CppUnit::TestCaller("removeChunk", &UdaParserTest::removeChunk));
 
     return suite;
 }

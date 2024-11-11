@@ -90,9 +90,9 @@ std::unique_ptr<UIRenderer> TextareaTest::setupUiRenderer() {
 CppUnit::Test* TextareaTest::suite() {
     auto* suite = new CppUnit::TestSuite("TextareaTest");
 
-    suite->addTest(new CppUnit::TestCaller<TextareaTest>("textCut", &TextareaTest::textCut));
-    suite->addTest(new CppUnit::TestCaller<TextareaTest>("textCopyPaste", &TextareaTest::textCopyPaste));
-    suite->addTest(new CppUnit::TestCaller<TextareaTest>("leftArrowWithSelection", &TextareaTest::leftArrowWithSelection));
+    suite->addTest(new CppUnit::TestCaller("textCut", &TextareaTest::textCut));
+    suite->addTest(new CppUnit::TestCaller("textCopyPaste", &TextareaTest::textCopyPaste));
+    suite->addTest(new CppUnit::TestCaller("leftArrowWithSelection", &TextareaTest::leftArrowWithSelection));
 
     return suite;
 }

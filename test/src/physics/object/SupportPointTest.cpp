@@ -80,12 +80,12 @@ void SupportPointTest::convexHullSupportPoint() {
 CppUnit::Test* SupportPointTest::suite() {
     auto* suite = new CppUnit::TestSuite("SupportPointTest");
 
-    suite->addTest(new CppUnit::TestCaller<SupportPointTest>("sphereSupportPoint", &SupportPointTest::sphereSupportPoint));
-    suite->addTest(new CppUnit::TestCaller<SupportPointTest>("boxSupportPoint", &SupportPointTest::boxSupportPoint));
-    suite->addTest(new CppUnit::TestCaller<SupportPointTest>("capsuleSupportPoint", &SupportPointTest::capsuleSupportPoint));
-    suite->addTest(new CppUnit::TestCaller<SupportPointTest>("cylinderSupportPoint", &SupportPointTest::cylinderSupportPoint));
-    suite->addTest(new CppUnit::TestCaller<SupportPointTest>("coneSupportPoint", &SupportPointTest::coneSupportPoint));
-    suite->addTest(new CppUnit::TestCaller<SupportPointTest>("convexHullSupportPoint", &SupportPointTest::convexHullSupportPoint));
+    suite->addTest(new CppUnit::TestCaller("sphereSupportPoint", &SupportPointTest::sphereSupportPoint));
+    suite->addTest(new CppUnit::TestCaller("boxSupportPoint", &SupportPointTest::boxSupportPoint));
+    suite->addTest(new CppUnit::TestCaller("capsuleSupportPoint", &SupportPointTest::capsuleSupportPoint));
+    suite->addTest(new CppUnit::TestCaller("cylinderSupportPoint", &SupportPointTest::cylinderSupportPoint));
+    suite->addTest(new CppUnit::TestCaller("coneSupportPoint", &SupportPointTest::coneSupportPoint));
+    suite->addTest(new CppUnit::TestCaller("convexHullSupportPoint", &SupportPointTest::convexHullSupportPoint));
 
     return suite;
 }

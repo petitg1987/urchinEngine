@@ -134,17 +134,17 @@ void CSGPolygonTest::simplifyFlatAngleAndNearPoints() { //see csgPolygonSimplify
 CppUnit::Test* CSGPolygonTest::suite() {
     auto* suite = new CppUnit::TestSuite("CSGPolygonTest");
 
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifySquare", &CSGPolygonTest::simplifySquare));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyMergeTwoNearPoints", &CSGPolygonTest::simplifyMergeTwoNearPoints));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyWithThreeNearPoints", &CSGPolygonTest::simplifyWithThreeNearPoints));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyMergeStartEndPoints", &CSGPolygonTest::simplifyMergeStartEndPoints));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyFlatTriangle1", &CSGPolygonTest::simplifyFlatTriangle1));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyFlatTriangle2", &CSGPolygonTest::simplifyFlatTriangle2));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyUselessPoint", &CSGPolygonTest::simplifyUselessPoint));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyTwoUselessPoints", &CSGPolygonTest::simplifyTwoUselessPoints));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyCorridor", &CSGPolygonTest::simplifyCorridor));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyCorridorWithClosePoints", &CSGPolygonTest::simplifyCorridorWithClosePoints));
-    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyFlatAngleAndNearPoints", &CSGPolygonTest::simplifyFlatAngleAndNearPoints));
+    suite->addTest(new CppUnit::TestCaller("simplifySquare", &CSGPolygonTest::simplifySquare));
+    suite->addTest(new CppUnit::TestCaller("simplifyMergeTwoNearPoints", &CSGPolygonTest::simplifyMergeTwoNearPoints));
+    suite->addTest(new CppUnit::TestCaller("simplifyWithThreeNearPoints", &CSGPolygonTest::simplifyWithThreeNearPoints));
+    suite->addTest(new CppUnit::TestCaller("simplifyMergeStartEndPoints", &CSGPolygonTest::simplifyMergeStartEndPoints));
+    suite->addTest(new CppUnit::TestCaller("simplifyFlatTriangle1", &CSGPolygonTest::simplifyFlatTriangle1));
+    suite->addTest(new CppUnit::TestCaller("simplifyFlatTriangle2", &CSGPolygonTest::simplifyFlatTriangle2));
+    suite->addTest(new CppUnit::TestCaller("simplifyUselessPoint", &CSGPolygonTest::simplifyUselessPoint));
+    suite->addTest(new CppUnit::TestCaller("simplifyTwoUselessPoints", &CSGPolygonTest::simplifyTwoUselessPoints));
+    suite->addTest(new CppUnit::TestCaller("simplifyCorridor", &CSGPolygonTest::simplifyCorridor));
+    suite->addTest(new CppUnit::TestCaller("simplifyCorridorWithClosePoints", &CSGPolygonTest::simplifyCorridorWithClosePoints));
+    suite->addTest(new CppUnit::TestCaller("simplifyFlatAngleAndNearPoints", &CSGPolygonTest::simplifyFlatAngleAndNearPoints));
 
     return suite;
 }

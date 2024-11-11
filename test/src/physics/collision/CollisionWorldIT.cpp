@@ -189,17 +189,17 @@ std::unique_ptr<BodyContainer> CollisionWorldIT::buildWorld(const Point3<float>&
 CppUnit::Test* CollisionWorldIT::suite() {
     auto* suite = new CppUnit::TestSuite("CollisionWorldIT");
 
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallOnGround", &CollisionWorldIT::fallOnGround));
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdPushOnGround", &CollisionWorldIT::ccdPushOnGround));
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("ccdBounceOnGroundAndRoof", &CollisionWorldIT::ccdBounceOnGroundAndRoof));
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("fallForever", &CollisionWorldIT::fallForever));
+    suite->addTest(new CppUnit::TestCaller("fallOnGround", &CollisionWorldIT::fallOnGround));
+    suite->addTest(new CppUnit::TestCaller("ccdPushOnGround", &CollisionWorldIT::ccdPushOnGround));
+    suite->addTest(new CppUnit::TestCaller("ccdBounceOnGroundAndRoof", &CollisionWorldIT::ccdBounceOnGroundAndRoof));
+    suite->addTest(new CppUnit::TestCaller("fallForever", &CollisionWorldIT::fallForever));
 
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changePositionOnInactiveBody", &CollisionWorldIT::changePositionOnInactiveBody));
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changeMomentumOnInactiveBody", &CollisionWorldIT::changeMomentumOnInactiveBody));
+    suite->addTest(new CppUnit::TestCaller("changePositionOnInactiveBody", &CollisionWorldIT::changePositionOnInactiveBody));
+    suite->addTest(new CppUnit::TestCaller("changeMomentumOnInactiveBody", &CollisionWorldIT::changeMomentumOnInactiveBody));
 
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("changeMass", &CollisionWorldIT::changeMass));
+    suite->addTest(new CppUnit::TestCaller("changeMass", &CollisionWorldIT::changeMass));
 
-    suite->addTest(new CppUnit::TestCaller<CollisionWorldIT>("rayTestWithRemovedBody", &CollisionWorldIT::rayTestWithRemovedBody));
+    suite->addTest(new CppUnit::TestCaller("rayTestWithRemovedBody", &CollisionWorldIT::rayTestWithRemovedBody));
 
     return suite;
 }

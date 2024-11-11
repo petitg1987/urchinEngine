@@ -81,12 +81,12 @@ void SortPointsServiceTest::fourPointsCounterClockwiseYNormal() {
 CppUnit::Test* SortPointsServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("SortPointsServiceTest");
 
-    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("threePointsClockwise", &SortPointsServiceTest::threePointsClockwise));
-    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("threePointsCounterClockwise", &SortPointsServiceTest::threePointsCounterClockwise));
+    suite->addTest(new CppUnit::TestCaller("threePointsClockwise", &SortPointsServiceTest::threePointsClockwise));
+    suite->addTest(new CppUnit::TestCaller("threePointsCounterClockwise", &SortPointsServiceTest::threePointsCounterClockwise));
 
-    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("fourPointsClockwise", &SortPointsServiceTest::fourPointsClockwise));
-    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("fourPointsCounterClockwiseZNormal", &SortPointsServiceTest::fourPointsCounterClockwiseZNormal));
-    suite->addTest(new CppUnit::TestCaller<SortPointsServiceTest>("fourPointsCounterClockwiseYNormal", &SortPointsServiceTest::fourPointsCounterClockwiseYNormal));
+    suite->addTest(new CppUnit::TestCaller("fourPointsClockwise", &SortPointsServiceTest::fourPointsClockwise));
+    suite->addTest(new CppUnit::TestCaller("fourPointsCounterClockwiseZNormal", &SortPointsServiceTest::fourPointsCounterClockwiseZNormal));
+    suite->addTest(new CppUnit::TestCaller("fourPointsCounterClockwiseYNormal", &SortPointsServiceTest::fourPointsCounterClockwiseYNormal));
 
     return suite;
 }

@@ -52,12 +52,12 @@ void StringUtilTest::kebabToCamelCase() {
 CppUnit::Test* StringUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("StringUtilTest");
 
-    suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitString", &StringUtilTest::splitString));
-    suite->addTest(new CppUnit::TestCaller<StringUtilTest>("splitEmptyString", &StringUtilTest::splitEmptyString));
-    suite->addTest(new CppUnit::TestCaller<StringUtilTest>("mergeString", &StringUtilTest::mergeString));
+    suite->addTest(new CppUnit::TestCaller("splitString", &StringUtilTest::splitString));
+    suite->addTest(new CppUnit::TestCaller("splitEmptyString", &StringUtilTest::splitEmptyString));
+    suite->addTest(new CppUnit::TestCaller("mergeString", &StringUtilTest::mergeString));
 
-    suite->addTest(new CppUnit::TestCaller<StringUtilTest>("camelToKebabCase", &StringUtilTest::camelToKebabCase));
-    suite->addTest(new CppUnit::TestCaller<StringUtilTest>("kebabToCamelCase", &StringUtilTest::kebabToCamelCase));
+    suite->addTest(new CppUnit::TestCaller("camelToKebabCase", &StringUtilTest::camelToKebabCase));
+    suite->addTest(new CppUnit::TestCaller("kebabToCamelCase", &StringUtilTest::kebabToCamelCase));
 
     return suite;
 }

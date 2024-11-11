@@ -15,7 +15,7 @@ void Line3DTest::orthogonalProjection() {
 CppUnit::Test* Line3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("Line3DTest");
 
-    suite->addTest(new CppUnit::TestCaller<Line3DTest>("orthogonalProjection", &Line3DTest::orthogonalProjection));
+    suite->addTest(new CppUnit::TestCaller("orthogonalProjection", &Line3DTest::orthogonalProjection));
 
     return suite;
 }

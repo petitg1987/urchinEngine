@@ -33,8 +33,8 @@ void SoundFileReaderTest::cursorAfterMove() {
 CppUnit::Test* SoundFileReaderTest::suite() {
     auto* suite = new CppUnit::TestSuite("SoundFileReaderTest");
 
-    suite->addTest(new CppUnit::TestCaller<SoundFileReaderTest>("cursorAfterRead", &SoundFileReaderTest::cursorAfterRead));
-    suite->addTest(new CppUnit::TestCaller<SoundFileReaderTest>("cursorAfterMove", &SoundFileReaderTest::cursorAfterMove));
+    suite->addTest(new CppUnit::TestCaller("cursorAfterRead", &SoundFileReaderTest::cursorAfterRead));
+    suite->addTest(new CppUnit::TestCaller("cursorAfterMove", &SoundFileReaderTest::cursorAfterMove));
 
     return suite;
 }

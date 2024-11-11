@@ -55,10 +55,10 @@ void ConvexHull3DTest::expandTetrahedron() {
 CppUnit::Test* ConvexHull3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("ConvexHull3DTest");
 
-    suite->addTest(new CppUnit::TestCaller<ConvexHull3DTest>("reduceBox", &ConvexHull3DTest::reduceBox));
+    suite->addTest(new CppUnit::TestCaller("reduceBox", &ConvexHull3DTest::reduceBox));
 
-    suite->addTest(new CppUnit::TestCaller<ConvexHull3DTest>("nullExpandTetrahedron", &ConvexHull3DTest::nullExpandTetrahedron));
-    suite->addTest(new CppUnit::TestCaller<ConvexHull3DTest>("expandTetrahedron", &ConvexHull3DTest::expandTetrahedron));
+    suite->addTest(new CppUnit::TestCaller("nullExpandTetrahedron", &ConvexHull3DTest::nullExpandTetrahedron));
+    suite->addTest(new CppUnit::TestCaller("expandTetrahedron", &ConvexHull3DTest::expandTetrahedron));
 
     return suite;
 }

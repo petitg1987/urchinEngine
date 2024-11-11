@@ -15,7 +15,7 @@ void Line2DTest::orthogonalProjection() {
 CppUnit::Test* Line2DTest::suite() {
     auto* suite = new CppUnit::TestSuite("Line2DTest");
 
-    suite->addTest(new CppUnit::TestCaller<Line2DTest>("orthogonalProjection", &Line2DTest::orthogonalProjection));
+    suite->addTest(new CppUnit::TestCaller("orthogonalProjection", &Line2DTest::orthogonalProjection));
 
     return suite;
 }

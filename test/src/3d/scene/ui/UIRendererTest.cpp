@@ -241,29 +241,29 @@ CppUnit::Test* UIRendererTest::suite() {
     auto* suite = new CppUnit::TestSuite("UIRendererTest");
 
     //widget events
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("focusState", &UIRendererTest::focusState));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("noFocusStateBecauseOutsideContainer", &UIRendererTest::noFocusStateBecauseOutsideContainer));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("clickingState", &UIRendererTest::clickingState));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("noClickingStateBecauseMouseOutside", &UIRendererTest::noClickingStateBecauseMouseOutside));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("focusLostEvent", &UIRendererTest::focusLostEvent));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("focusLostEventWithClick", &UIRendererTest::focusLostEventWithClick));
+    suite->addTest(new CppUnit::TestCaller("focusState", &UIRendererTest::focusState));
+    suite->addTest(new CppUnit::TestCaller("noFocusStateBecauseOutsideContainer", &UIRendererTest::noFocusStateBecauseOutsideContainer));
+    suite->addTest(new CppUnit::TestCaller("clickingState", &UIRendererTest::clickingState));
+    suite->addTest(new CppUnit::TestCaller("noClickingStateBecauseMouseOutside", &UIRendererTest::noClickingStateBecauseMouseOutside));
+    suite->addTest(new CppUnit::TestCaller("focusLostEvent", &UIRendererTest::focusLostEvent));
+    suite->addTest(new CppUnit::TestCaller("focusLostEventWithClick", &UIRendererTest::focusLostEventWithClick));
 
     //positioning
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("parentPixelPosition", &UIRendererTest::parentPixelPosition));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("relativeParentPosition", &UIRendererTest::relativeParentPixelPosition));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("screenPercentagePosition", &UIRendererTest::screenPercentagePosition));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("containerPercentagePosition", &UIRendererTest::containerPercentagePosition));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("relativeLengthSize", &UIRendererTest::relativeLengthSize));
+    suite->addTest(new CppUnit::TestCaller("parentPixelPosition", &UIRendererTest::parentPixelPosition));
+    suite->addTest(new CppUnit::TestCaller("relativeParentPosition", &UIRendererTest::relativeParentPixelPosition));
+    suite->addTest(new CppUnit::TestCaller("screenPercentagePosition", &UIRendererTest::screenPercentagePosition));
+    suite->addTest(new CppUnit::TestCaller("containerPercentagePosition", &UIRendererTest::containerPercentagePosition));
+    suite->addTest(new CppUnit::TestCaller("relativeLengthSize", &UIRendererTest::relativeLengthSize));
 
     //remove tests
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("buttonRemoveParentContainer", &UIRendererTest::buttonRemoveParentContainer));
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("removeUIRendererBeforeWidget", &UIRendererTest::removeUIRendererBeforeWidget));
+    suite->addTest(new CppUnit::TestCaller("buttonRemoveParentContainer", &UIRendererTest::buttonRemoveParentContainer));
+    suite->addTest(new CppUnit::TestCaller("removeUIRendererBeforeWidget", &UIRendererTest::removeUIRendererBeforeWidget));
 
     //lazy loading
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("containerWithLazyWidgets", &UIRendererTest::containerWithLazyWidgets));
+    suite->addTest(new CppUnit::TestCaller("containerWithLazyWidgets", &UIRendererTest::containerWithLazyWidgets));
 
     //rendering
-    suite->addTest(new CppUnit::TestCaller<UIRendererTest>("windowChildRenderingOrder", &UIRendererTest::windowChildRenderingOrder));
+    suite->addTest(new CppUnit::TestCaller("windowChildRenderingOrder", &UIRendererTest::windowChildRenderingOrder));
 
     return suite;
 }

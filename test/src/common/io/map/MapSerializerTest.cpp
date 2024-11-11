@@ -41,9 +41,9 @@ void MapSerializerTest::trickyMapValues() {
 CppUnit::Test* MapSerializerTest::suite() {
     auto* suite = new CppUnit::TestSuite("MapSerializerTest");
 
-    suite->addTest(new CppUnit::TestCaller<MapSerializerTest>("emptyMap", &MapSerializerTest::emptyMap));
-    suite->addTest(new CppUnit::TestCaller<MapSerializerTest>("simpleMap", &MapSerializerTest::simpleMap));
-    suite->addTest(new CppUnit::TestCaller<MapSerializerTest>("trickyMapValues", &MapSerializerTest::trickyMapValues));
+    suite->addTest(new CppUnit::TestCaller("emptyMap", &MapSerializerTest::emptyMap));
+    suite->addTest(new CppUnit::TestCaller("simpleMap", &MapSerializerTest::simpleMap));
+    suite->addTest(new CppUnit::TestCaller("trickyMapValues", &MapSerializerTest::trickyMapValues));
 
     return suite;
 }

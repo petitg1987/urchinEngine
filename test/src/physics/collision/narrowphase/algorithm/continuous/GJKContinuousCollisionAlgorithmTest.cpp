@@ -25,7 +25,7 @@ void GJKContinuousCollisionAlgorithmTest::rayTest() { //test created from error 
 CppUnit::Test* GJKContinuousCollisionAlgorithmTest::suite() {
     auto* suite = new CppUnit::TestSuite("GJKContinuousCollisionAlgorithmTest");
 
-    suite->addTest(new CppUnit::TestCaller<GJKContinuousCollisionAlgorithmTest>("rayTest", &GJKContinuousCollisionAlgorithmTest::rayTest));
+    suite->addTest(new CppUnit::TestCaller("rayTest", &GJKContinuousCollisionAlgorithmTest::rayTest));
 
     return suite;
 }

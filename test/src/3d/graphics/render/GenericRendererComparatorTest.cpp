@@ -39,7 +39,7 @@ void GenericRendererComparatorTest::depthTestOrdering() {
 CppUnit::Test* GenericRendererComparatorTest::suite() {
     auto* suite = new CppUnit::TestSuite("GenericRendererComparatorTest");
 
-    suite->addTest(new CppUnit::TestCaller<GenericRendererComparatorTest>("depthTestOrdering", &GenericRendererComparatorTest::depthTestOrdering));
+    suite->addTest(new CppUnit::TestCaller("depthTestOrdering", &GenericRendererComparatorTest::depthTestOrdering));
 
     return suite;
 }

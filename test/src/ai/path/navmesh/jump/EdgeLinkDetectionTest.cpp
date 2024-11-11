@@ -169,23 +169,23 @@ void EdgeLinkDetectionTest::testCrossEdges() {
 CppUnit::Test* EdgeLinkDetectionTest::suite() {
     auto* suite = new CppUnit::TestSuite("EdgeJumpDetectionTest");
 
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testNearParallelEdges", &EdgeLinkDetectionTest::testNearParallelEdges));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testFarParallelEdges", &EdgeLinkDetectionTest::testFarParallelEdges));
+    suite->addTest(new CppUnit::TestCaller("testNearParallelEdges", &EdgeLinkDetectionTest::testNearParallelEdges));
+    suite->addTest(new CppUnit::TestCaller("testFarParallelEdges", &EdgeLinkDetectionTest::testFarParallelEdges));
 
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testIdenticalEdges", &EdgeLinkDetectionTest::testIdenticalEdges));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testIdenticalEdgesWrongDirection", &EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdges1", &EdgeLinkDetectionTest::testCollinearEdges1));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdges2", &EdgeLinkDetectionTest::testCollinearEdges2));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdges3", &EdgeLinkDetectionTest::testCollinearEdges3));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdgesNoLink", &EdgeLinkDetectionTest::testCollinearEdgesNoLink));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdgesTouchingInOnePoint", &EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdgesWrongDirection", &EdgeLinkDetectionTest::testCollinearEdgesWrongDirection));
+    suite->addTest(new CppUnit::TestCaller("testIdenticalEdges", &EdgeLinkDetectionTest::testIdenticalEdges));
+    suite->addTest(new CppUnit::TestCaller("testIdenticalEdgesWrongDirection", &EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection));
+    suite->addTest(new CppUnit::TestCaller("testCollinearEdges1", &EdgeLinkDetectionTest::testCollinearEdges1));
+    suite->addTest(new CppUnit::TestCaller("testCollinearEdges2", &EdgeLinkDetectionTest::testCollinearEdges2));
+    suite->addTest(new CppUnit::TestCaller("testCollinearEdges3", &EdgeLinkDetectionTest::testCollinearEdges3));
+    suite->addTest(new CppUnit::TestCaller("testCollinearEdgesNoLink", &EdgeLinkDetectionTest::testCollinearEdgesNoLink));
+    suite->addTest(new CppUnit::TestCaller("testCollinearEdgesTouchingInOnePoint", &EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint));
+    suite->addTest(new CppUnit::TestCaller("testCollinearEdgesWrongDirection", &EdgeLinkDetectionTest::testCollinearEdgesWrongDirection));
 
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testWrongStartJumpEdgeDirection", &EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testWrongEndJumpEdgeDirection", &EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection));
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testWrongJumpEdgesDirection", &EdgeLinkDetectionTest::testWrongJumpEdgesDirection));
+    suite->addTest(new CppUnit::TestCaller("testWrongStartJumpEdgeDirection", &EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection));
+    suite->addTest(new CppUnit::TestCaller("testWrongEndJumpEdgeDirection", &EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection));
+    suite->addTest(new CppUnit::TestCaller("testWrongJumpEdgesDirection", &EdgeLinkDetectionTest::testWrongJumpEdgesDirection));
 
-    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCrossEdges", &EdgeLinkDetectionTest::testCrossEdges));
+    suite->addTest(new CppUnit::TestCaller("testCrossEdges", &EdgeLinkDetectionTest::testCrossEdges));
 
     return suite;
 }

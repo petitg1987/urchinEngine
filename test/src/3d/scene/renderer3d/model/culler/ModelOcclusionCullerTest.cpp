@@ -68,8 +68,8 @@ std::unique_ptr<Model> ModelOcclusionCullerTest::buildModel(const Point3<float>&
 CppUnit::Test* ModelOcclusionCullerTest::suite() {
     auto* suite = new CppUnit::TestSuite("ModelOcclusionCullerTest");
 
-    suite->addTest(new CppUnit::TestCaller<ModelOcclusionCullerTest>("movingModel", &ModelOcclusionCullerTest::movingModel));
-    suite->addTest(new CppUnit::TestCaller<ModelOcclusionCullerTest>("updateCullBehavior", &ModelOcclusionCullerTest::updateCullBehavior));
+    suite->addTest(new CppUnit::TestCaller("movingModel", &ModelOcclusionCullerTest::movingModel));
+    suite->addTest(new CppUnit::TestCaller("updateCullBehavior", &ModelOcclusionCullerTest::updateCullBehavior));
 
     return suite;
 }

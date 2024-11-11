@@ -57,12 +57,12 @@ void PathUtilTest::simplifyDirectoryPathWindows() {
 CppUnit::Test* PathUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("PathUtilTest");
 
-    suite->addTest(new CppUnit::TestCaller<PathUtilTest>("relativePath", &PathUtilTest::relativePath));
-    suite->addTest(new CppUnit::TestCaller<PathUtilTest>("relativePathEqual", &PathUtilTest::relativePathEqual));
-    suite->addTest(new CppUnit::TestCaller<PathUtilTest>("relativePathOnDifferentDisk", &PathUtilTest::relativePathOnDifferentDisk));
+    suite->addTest(new CppUnit::TestCaller("relativePath", &PathUtilTest::relativePath));
+    suite->addTest(new CppUnit::TestCaller("relativePathEqual", &PathUtilTest::relativePathEqual));
+    suite->addTest(new CppUnit::TestCaller("relativePathOnDifferentDisk", &PathUtilTest::relativePathOnDifferentDisk));
 
-    suite->addTest(new CppUnit::TestCaller<PathUtilTest>("simplifyDirectoryPathUnix", &PathUtilTest::simplifyDirectoryPathUnix));
-    suite->addTest(new CppUnit::TestCaller<PathUtilTest>("simplifyDirectoryPathWindows", &PathUtilTest::simplifyDirectoryPathWindows));
+    suite->addTest(new CppUnit::TestCaller("simplifyDirectoryPathUnix", &PathUtilTest::simplifyDirectoryPathUnix));
+    suite->addTest(new CppUnit::TestCaller("simplifyDirectoryPathWindows", &PathUtilTest::simplifyDirectoryPathWindows));
 
     return suite;
 }

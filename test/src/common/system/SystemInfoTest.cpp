@@ -33,10 +33,10 @@ void SystemInfoTest::retrieveGraphicsCardNames() {
 CppUnit::Test* SystemInfoTest::suite() {
     auto* suite = new CppUnit::TestSuite("SystemInfoTest");
 
-    suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveOsInfo", &SystemInfoTest::retrieveOsInfo));
-    suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveCpuCores", &SystemInfoTest::retrieveCpuCores));
-    suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveTotalMemory", &SystemInfoTest::retrieveTotalMemory));
-    suite->addTest(new CppUnit::TestCaller<SystemInfoTest>("retrieveGraphicsCardNames", &SystemInfoTest::retrieveGraphicsCardNames));
+    suite->addTest(new CppUnit::TestCaller("retrieveOsInfo", &SystemInfoTest::retrieveOsInfo));
+    suite->addTest(new CppUnit::TestCaller("retrieveCpuCores", &SystemInfoTest::retrieveCpuCores));
+    suite->addTest(new CppUnit::TestCaller("retrieveTotalMemory", &SystemInfoTest::retrieveTotalMemory));
+    suite->addTest(new CppUnit::TestCaller("retrieveGraphicsCardNames", &SystemInfoTest::retrieveGraphicsCardNames));
 
     return suite;
 }

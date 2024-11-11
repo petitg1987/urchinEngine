@@ -75,12 +75,12 @@ void FunnelAlgorithmTest::cornerPath4() {
 CppUnit::Test* FunnelAlgorithmTest::suite() {
     auto* suite = new CppUnit::TestSuite("FunnelAlgorithmTest");
 
-    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("straightPath", &FunnelAlgorithmTest::straightPath));
+    suite->addTest(new CppUnit::TestCaller("straightPath", &FunnelAlgorithmTest::straightPath));
 
-    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("cornerPath1", &FunnelAlgorithmTest::cornerPath1));
-    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("cornerPath2", &FunnelAlgorithmTest::cornerPath2));
-    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("cornerPath3", &FunnelAlgorithmTest::cornerPath3));
-    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("cornerPath4", &FunnelAlgorithmTest::cornerPath4));
+    suite->addTest(new CppUnit::TestCaller("cornerPath1", &FunnelAlgorithmTest::cornerPath1));
+    suite->addTest(new CppUnit::TestCaller("cornerPath2", &FunnelAlgorithmTest::cornerPath2));
+    suite->addTest(new CppUnit::TestCaller("cornerPath3", &FunnelAlgorithmTest::cornerPath3));
+    suite->addTest(new CppUnit::TestCaller("cornerPath4", &FunnelAlgorithmTest::cornerPath4));
 
     return suite;
 }

@@ -23,7 +23,7 @@ void BodyContainerTest::addAndRemoveBody() {
 CppUnit::Test* BodyContainerTest::suite() {
     auto* suite = new CppUnit::TestSuite("BodyContainerTest");
 
-    suite->addTest(new CppUnit::TestCaller<BodyContainerTest>("addSameBodyThrice", &BodyContainerTest::addAndRemoveBody));
+    suite->addTest(new CppUnit::TestCaller("addSameBodyThrice", &BodyContainerTest::addAndRemoveBody));
 
     return suite;
 }

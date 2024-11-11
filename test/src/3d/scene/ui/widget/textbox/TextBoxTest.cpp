@@ -62,8 +62,8 @@ std::unique_ptr<UIRenderer> TextBoxTest::setupUiRenderer() {
 CppUnit::Test* TextBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("TextBoxTest");
 
-    suite->addTest(new CppUnit::TestCaller<TextBoxTest>("textShift", &TextBoxTest::textShift));
-    suite->addTest(new CppUnit::TestCaller<TextBoxTest>("textSelection", &TextBoxTest::textSelection));
+    suite->addTest(new CppUnit::TestCaller("textShift", &TextBoxTest::textShift));
+    suite->addTest(new CppUnit::TestCaller("textSelection", &TextBoxTest::textSelection));
 
     return suite;
 }

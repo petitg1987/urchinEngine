@@ -20,7 +20,7 @@ void ResizePolygon2DServiceTest::reduceTriangle() {
 CppUnit::Test* ResizePolygon2DServiceTest::suite() {
     auto* suite = new CppUnit::TestSuite("ResizePolygon2DServiceTest");
 
-    suite->addTest(new CppUnit::TestCaller<ResizePolygon2DServiceTest>("reduceTriangle", &ResizePolygon2DServiceTest::reduceTriangle));
+    suite->addTest(new CppUnit::TestCaller("reduceTriangle", &ResizePolygon2DServiceTest::reduceTriangle));
 
     return suite;
 }

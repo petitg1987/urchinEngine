@@ -55,12 +55,12 @@ void SphereTest::sphereAABBoxNoCornerCollision() {
 CppUnit::Test* SphereTest::suite() {
     auto* suite = new CppUnit::TestSuite("SphereTest");
 
-    suite->addTest(new CppUnit::TestCaller<SphereTest>("sphereLineIntersection", &SphereTest::sphereLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("sphereLineIntersection", &SphereTest::sphereLineIntersection));
 
-    suite->addTest(new CppUnit::TestCaller<SphereTest>("sphereAABBoxSideCollision", &SphereTest::sphereAABBoxSideCollision));
-    suite->addTest(new CppUnit::TestCaller<SphereTest>("sphereAABBoxNoSideCollision", &SphereTest::sphereAABBoxNoSideCollision));
-    suite->addTest(new CppUnit::TestCaller<SphereTest>("sphereAABBoxCornerCollision", &SphereTest::sphereAABBoxCornerCollision));
-    suite->addTest(new CppUnit::TestCaller<SphereTest>("sphereAABBoxNoCornerCollision", &SphereTest::sphereAABBoxNoCornerCollision));
+    suite->addTest(new CppUnit::TestCaller("sphereAABBoxSideCollision", &SphereTest::sphereAABBoxSideCollision));
+    suite->addTest(new CppUnit::TestCaller("sphereAABBoxNoSideCollision", &SphereTest::sphereAABBoxNoSideCollision));
+    suite->addTest(new CppUnit::TestCaller("sphereAABBoxCornerCollision", &SphereTest::sphereAABBoxCornerCollision));
+    suite->addTest(new CppUnit::TestCaller("sphereAABBoxNoCornerCollision", &SphereTest::sphereAABBoxNoCornerCollision));
 
     return suite;
 }

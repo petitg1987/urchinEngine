@@ -395,39 +395,39 @@ void PolygonsUnionTest::roomPolygonsUnion() {
 CppUnit::Test* PolygonsUnionTest::suite() {
     auto* suite = new CppUnit::TestSuite("PolygonsUnionTest");
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("onePolygonUnion", &PolygonsUnionTest::onePolygonUnion));
+    suite->addTest(new CppUnit::TestCaller("onePolygonUnion", &PolygonsUnionTest::onePolygonUnion));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsNoUnion", &PolygonsUnionTest::twoPolygonsNoUnion));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("polygonInsideAnother", &PolygonsUnionTest::polygonInsideAnother));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("polygonInsideAnotherTouchInOnePoint", &PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsNoUnion", &PolygonsUnionTest::twoPolygonsNoUnion));
+    suite->addTest(new CppUnit::TestCaller("polygonInsideAnother", &PolygonsUnionTest::polygonInsideAnother));
+    suite->addTest(new CppUnit::TestCaller("polygonInsideAnotherTouchInOnePoint", &PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsWithHoleInside", &PolygonsUnionTest::twoPolygonsWithHoleInside));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsWithHoleInside", &PolygonsUnionTest::twoPolygonsWithHoleInside));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnion", &PolygonsUnionTest::twoPolygonsUnion));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionXAligned", &PolygonsUnionTest::twoPolygonsUnionXAligned));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionYAligned", &PolygonsUnionTest::twoPolygonsUnionYAligned));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionYAlmostAligned", &PolygonsUnionTest::twoPolygonsUnionYAlmostAligned));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge1", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge1));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge2", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge2));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge3", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge3));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge4", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge5", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge6", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge6));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsTouchInOnePoint1", &PolygonsUnionTest::twoPolygonsTouchInOnePoint1));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsTouchInOnePoint2", &PolygonsUnionTest::twoPolygonsTouchInOnePoint2));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsNestedTouchInOnePoint", &PolygonsUnionTest::twoPolygonsNestedTouchInOnePoint));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnion", &PolygonsUnionTest::twoPolygonsUnion));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionXAligned", &PolygonsUnionTest::twoPolygonsUnionXAligned));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionYAligned", &PolygonsUnionTest::twoPolygonsUnionYAligned));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionYAlmostAligned", &PolygonsUnionTest::twoPolygonsUnionYAlmostAligned));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAlmostSameEdge1", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge1));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAlmostSameEdge2", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge2));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAlmostSameEdge3", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge3));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAlmostSameEdge4", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAlmostSameEdge5", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAlmostSameEdge6", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge6));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsTouchInOnePoint1", &PolygonsUnionTest::twoPolygonsTouchInOnePoint1));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsTouchInOnePoint2", &PolygonsUnionTest::twoPolygonsTouchInOnePoint2));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsNestedTouchInOnePoint", &PolygonsUnionTest::twoPolygonsNestedTouchInOnePoint));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoIdenticalTriangles", &PolygonsUnionTest::twoIdenticalTriangles));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoIdenticalSquares", &PolygonsUnionTest::twoIdenticalSquares));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoAlmostIdenticalSquares1", &PolygonsUnionTest::twoAlmostIdenticalSquares1));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoAlmostIdenticalSquares2", &PolygonsUnionTest::twoAlmostIdenticalSquares2));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoAlmostIdenticalSquares3", &PolygonsUnionTest::twoAlmostIdenticalSquares3));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoAlmostIdenticalTrapeze", &PolygonsUnionTest::twoAlmostIdenticalTrapeze));
+    suite->addTest(new CppUnit::TestCaller("twoIdenticalTriangles", &PolygonsUnionTest::twoIdenticalTriangles));
+    suite->addTest(new CppUnit::TestCaller("twoIdenticalSquares", &PolygonsUnionTest::twoIdenticalSquares));
+    suite->addTest(new CppUnit::TestCaller("twoAlmostIdenticalSquares1", &PolygonsUnionTest::twoAlmostIdenticalSquares1));
+    suite->addTest(new CppUnit::TestCaller("twoAlmostIdenticalSquares2", &PolygonsUnionTest::twoAlmostIdenticalSquares2));
+    suite->addTest(new CppUnit::TestCaller("twoAlmostIdenticalSquares3", &PolygonsUnionTest::twoAlmostIdenticalSquares3));
+    suite->addTest(new CppUnit::TestCaller("twoAlmostIdenticalTrapeze", &PolygonsUnionTest::twoAlmostIdenticalTrapeze));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("threePolygonsUnion", &PolygonsUnionTest::threePolygonsUnion));
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAndSeparatePolygon", &PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon));
+    suite->addTest(new CppUnit::TestCaller("threePolygonsUnion", &PolygonsUnionTest::threePolygonsUnion));
+    suite->addTest(new CppUnit::TestCaller("twoPolygonsUnionAndSeparatePolygon", &PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("roomPolygonsUnion", &PolygonsUnionTest::roomPolygonsUnion));
+    suite->addTest(new CppUnit::TestCaller("roomPolygonsUnion", &PolygonsUnionTest::roomPolygonsUnion));
 
     return suite;
 }

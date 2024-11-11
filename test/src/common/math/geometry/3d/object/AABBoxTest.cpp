@@ -63,17 +63,17 @@ void AABBoxTest::rayInsideToXPlane() {
 CppUnit::Test* AABBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("AABBoxTest");
 
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayRightToBox", &AABBoxTest::rayRightToBox));
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayRightTopToBox", &AABBoxTest::rayRightTopToBox));
+    suite->addTest(new CppUnit::TestCaller("rayRightToBox", &AABBoxTest::rayRightToBox));
+    suite->addTest(new CppUnit::TestCaller("rayRightTopToBox", &AABBoxTest::rayRightTopToBox));
 
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayInsideBox", &AABBoxTest::rayInsideBox));
+    suite->addTest(new CppUnit::TestCaller("rayInsideBox", &AABBoxTest::rayInsideBox));
 
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayThroughXPlanes", &AABBoxTest::rayThroughXPlanes));
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayThroughYPlanes", &AABBoxTest::rayThroughYPlanes));
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayThroughZPlanes", &AABBoxTest::rayThroughZPlanes));
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayThroughXYPlanes", &AABBoxTest::rayThroughXYPlanes));
+    suite->addTest(new CppUnit::TestCaller("rayThroughXPlanes", &AABBoxTest::rayThroughXPlanes));
+    suite->addTest(new CppUnit::TestCaller("rayThroughYPlanes", &AABBoxTest::rayThroughYPlanes));
+    suite->addTest(new CppUnit::TestCaller("rayThroughZPlanes", &AABBoxTest::rayThroughZPlanes));
+    suite->addTest(new CppUnit::TestCaller("rayThroughXYPlanes", &AABBoxTest::rayThroughXYPlanes));
 
-    suite->addTest(new CppUnit::TestCaller<AABBoxTest>("rayInsideToXPlane", &AABBoxTest::rayInsideToXPlane));
+    suite->addTest(new CppUnit::TestCaller("rayInsideToXPlane", &AABBoxTest::rayInsideToXPlane));
 
     return suite;
 }

@@ -119,10 +119,10 @@ std::unique_ptr<UIRenderer> TextTest::setupUiRenderer() {
 CppUnit::Test* TextTest::suite() {
     auto* suite = new CppUnit::TestSuite("TextTest");
 
-    suite->addTest(new CppUnit::TestCaller<TextTest>("twoLines", &TextTest::twoLines));
-    suite->addTest(new CppUnit::TestCaller<TextTest>("cutWord", &TextTest::cutWord));
-    suite->addTest(new CppUnit::TestCaller<TextTest>("cutMiddleWord", &TextTest::cutMiddleWord));
-    suite->addTest(new CppUnit::TestCaller<TextTest>("emptyLineAndCut", &TextTest::emptyLineAndCut));
+    suite->addTest(new CppUnit::TestCaller("twoLines", &TextTest::twoLines));
+    suite->addTest(new CppUnit::TestCaller("cutWord", &TextTest::cutWord));
+    suite->addTest(new CppUnit::TestCaller("cutMiddleWord", &TextTest::cutMiddleWord));
+    suite->addTest(new CppUnit::TestCaller("emptyLineAndCut", &TextTest::emptyLineAndCut));
 
     return suite;
 }

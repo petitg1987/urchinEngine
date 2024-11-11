@@ -153,14 +153,14 @@ void BodyAABBTreeTest::threeBodiesPairedAndRemove() {
 CppUnit::Test* BodyAABBTreeTest::suite() {
     auto* suite = new CppUnit::TestSuite("BodyAABBTreeTest");
 
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesPairedAndRemove", &BodyAABBTreeTest::twoBodiesPairedAndRemove));
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoBodiesNotPaired", &BodyAABBTreeTest::twoBodiesNotPaired));
+    suite->addTest(new CppUnit::TestCaller("twoBodiesPairedAndRemove", &BodyAABBTreeTest::twoBodiesPairedAndRemove));
+    suite->addTest(new CppUnit::TestCaller("twoBodiesNotPaired", &BodyAABBTreeTest::twoBodiesNotPaired));
 
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("oneGhostBodyAndRemoveIt", &BodyAABBTreeTest::oneGhostBodyAndRemoveIt));
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("oneGhostBodyAndRemoveOther", &BodyAABBTreeTest::oneGhostBodyAndRemoveOther));
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("twoGhostBodies", &BodyAABBTreeTest::twoGhostBodies));
+    suite->addTest(new CppUnit::TestCaller("oneGhostBodyAndRemoveIt", &BodyAABBTreeTest::oneGhostBodyAndRemoveIt));
+    suite->addTest(new CppUnit::TestCaller("oneGhostBodyAndRemoveOther", &BodyAABBTreeTest::oneGhostBodyAndRemoveOther));
+    suite->addTest(new CppUnit::TestCaller("twoGhostBodies", &BodyAABBTreeTest::twoGhostBodies));
 
-    suite->addTest(new CppUnit::TestCaller<BodyAABBTreeTest>("threeBodiesPairedAndRemove", &BodyAABBTreeTest::threeBodiesPairedAndRemove));
+    suite->addTest(new CppUnit::TestCaller("threeBodiesPairedAndRemove", &BodyAABBTreeTest::threeBodiesPairedAndRemove));
 
     return suite;
 }

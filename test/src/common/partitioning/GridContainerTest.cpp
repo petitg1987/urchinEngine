@@ -127,14 +127,14 @@ void GridContainerTest::checkItemExist() {
 CppUnit::Test* GridContainerTest::suite() {
     auto* suite = new CppUnit::TestSuite("GridContainerTest");
 
-    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findXPositiveNeighbor", &GridContainerTest::findXPositiveNeighbor));
-    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findXNegativeNeighbor", &GridContainerTest::findXNegativeNeighbor));
-    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findYPositiveAllDirectNeighbors", &GridContainerTest::findYPositiveAllDirectNeighbors));
-    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("findYNegativeAllDirectNeighbors", &GridContainerTest::findYNegativeAllDirectNeighbors));
+    suite->addTest(new CppUnit::TestCaller("findXPositiveNeighbor", &GridContainerTest::findXPositiveNeighbor));
+    suite->addTest(new CppUnit::TestCaller("findXNegativeNeighbor", &GridContainerTest::findXNegativeNeighbor));
+    suite->addTest(new CppUnit::TestCaller("findYPositiveAllDirectNeighbors", &GridContainerTest::findYPositiveAllDirectNeighbors));
+    suite->addTest(new CppUnit::TestCaller("findYNegativeAllDirectNeighbors", &GridContainerTest::findYNegativeAllDirectNeighbors));
 
-    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("removeNeighbor", &GridContainerTest::removeNeighbor));
+    suite->addTest(new CppUnit::TestCaller("removeNeighbor", &GridContainerTest::removeNeighbor));
 
-    suite->addTest(new CppUnit::TestCaller<GridContainerTest>("checkItemExist", &GridContainerTest::checkItemExist));
+    suite->addTest(new CppUnit::TestCaller("checkItemExist", &GridContainerTest::checkItemExist));
 
     return suite;
 }

@@ -104,12 +104,12 @@ std::vector<PathPoint> PathfindingAStarTest::pathWithJump(std::unique_ptr<NavLin
 CppUnit::Test* PathfindingAStarTest::suite() {
     auto* suite = new CppUnit::TestSuite("PathfindingAStarTest");
 
-    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("straightPath", &PathfindingAStarTest::straightPath));
+    suite->addTest(new CppUnit::TestCaller("straightPath", &PathfindingAStarTest::straightPath));
 
-    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("joinPolygonsPath", &PathfindingAStarTest::joinPolygonsPath));
+    suite->addTest(new CppUnit::TestCaller("joinPolygonsPath", &PathfindingAStarTest::joinPolygonsPath));
 
-    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("jumpWithSmallConstraint", &PathfindingAStarTest::jumpWithSmallConstraint));
-    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("jumpWithBigConstraint", &PathfindingAStarTest::jumpWithBigConstraint));
+    suite->addTest(new CppUnit::TestCaller("jumpWithSmallConstraint", &PathfindingAStarTest::jumpWithSmallConstraint));
+    suite->addTest(new CppUnit::TestCaller("jumpWithBigConstraint", &PathfindingAStarTest::jumpWithBigConstraint));
 
     return suite;
 }

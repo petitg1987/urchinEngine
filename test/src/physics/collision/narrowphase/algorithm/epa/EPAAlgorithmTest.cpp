@@ -261,29 +261,29 @@ CppUnit::Test* EPAAlgorithmTest::suite() {
     auto* suite = new CppUnit::TestSuite("EPABoxTest");
 
     //AABBox
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("identicalAABBox", &EPAAlgorithmTest::identicalAABBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapAABBox", &EPAAlgorithmTest::overlapAABBox));
+    suite->addTest(new CppUnit::TestCaller("identicalAABBox", &EPAAlgorithmTest::identicalAABBox));
+    suite->addTest(new CppUnit::TestCaller("overlapAABBox", &EPAAlgorithmTest::overlapAABBox));
 
     //OBBox
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("identicalOBBox", &EPAAlgorithmTest::identicalOBBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapOnEdgeOBBox", &EPAAlgorithmTest::overlapOnEdgeOBBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapOnCornerOBBox", &EPAAlgorithmTest::overlapOnCornerOBBox));
+    suite->addTest(new CppUnit::TestCaller("identicalOBBox", &EPAAlgorithmTest::identicalOBBox));
+    suite->addTest(new CppUnit::TestCaller("overlapOnEdgeOBBox", &EPAAlgorithmTest::overlapOnEdgeOBBox));
+    suite->addTest(new CppUnit::TestCaller("overlapOnCornerOBBox", &EPAAlgorithmTest::overlapOnCornerOBBox));
 
     //Convex hull
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("identicalBox", &EPAAlgorithmTest::identicalBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("cornerInsideBox", &EPAAlgorithmTest::cornerInsideBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("faceInsideTrapeze", &EPAAlgorithmTest::faceInsideTrapeze));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("cornerInsideHexagon", &EPAAlgorithmTest::cornerInsideHexagon));
+    suite->addTest(new CppUnit::TestCaller("identicalBox", &EPAAlgorithmTest::identicalBox));
+    suite->addTest(new CppUnit::TestCaller("cornerInsideBox", &EPAAlgorithmTest::cornerInsideBox));
+    suite->addTest(new CppUnit::TestCaller("faceInsideTrapeze", &EPAAlgorithmTest::faceInsideTrapeze));
+    suite->addTest(new CppUnit::TestCaller("cornerInsideHexagon", &EPAAlgorithmTest::cornerInsideHexagon));
 
     //Sphere
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("identicalSphere", &EPAAlgorithmTest::identicalSphere));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapSphere", &EPAAlgorithmTest::overlapSphere));
+    suite->addTest(new CppUnit::TestCaller("identicalSphere", &EPAAlgorithmTest::identicalSphere));
+    suite->addTest(new CppUnit::TestCaller("overlapSphere", &EPAAlgorithmTest::overlapSphere));
 
     //Different shape type
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapOBBoxAABBox", &EPAAlgorithmTest::overlapOBBoxAABBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapSphereAndBox", &EPAAlgorithmTest::overlapSphereAndBox));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapCapsuleAndTriangle", &EPAAlgorithmTest::overlapCapsuleAndTriangle));
-    suite->addTest(new CppUnit::TestCaller<EPAAlgorithmTest>("overlapTriangleAndCapsule", &EPAAlgorithmTest::overlapTriangleAndCapsule));
+    suite->addTest(new CppUnit::TestCaller("overlapOBBoxAABBox", &EPAAlgorithmTest::overlapOBBoxAABBox));
+    suite->addTest(new CppUnit::TestCaller("overlapSphereAndBox", &EPAAlgorithmTest::overlapSphereAndBox));
+    suite->addTest(new CppUnit::TestCaller("overlapCapsuleAndTriangle", &EPAAlgorithmTest::overlapCapsuleAndTriangle));
+    suite->addTest(new CppUnit::TestCaller("overlapTriangleAndCapsule", &EPAAlgorithmTest::overlapTriangleAndCapsule));
 
     return suite;
 }

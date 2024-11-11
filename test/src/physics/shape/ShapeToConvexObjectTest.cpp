@@ -88,11 +88,11 @@ void ShapeToConvexObjectTest::sphereConversion() {
 CppUnit::Test* ShapeToConvexObjectTest::suite() {
     auto* suite = new CppUnit::TestSuite("ShapeToConvexObjectTest");
 
-    suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("boxConversion", &ShapeToConvexObjectTest::boxConversion));
-    suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("capsuleConversion", &ShapeToConvexObjectTest::capsuleConversion));
-    suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("cylinderConversion", &ShapeToConvexObjectTest::cylinderConversion));
-    suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("convexHullConversion", &ShapeToConvexObjectTest::convexHullConversion));
-    suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("sphereConversion", &ShapeToConvexObjectTest::sphereConversion));
+    suite->addTest(new CppUnit::TestCaller("boxConversion", &ShapeToConvexObjectTest::boxConversion));
+    suite->addTest(new CppUnit::TestCaller("capsuleConversion", &ShapeToConvexObjectTest::capsuleConversion));
+    suite->addTest(new CppUnit::TestCaller("cylinderConversion", &ShapeToConvexObjectTest::cylinderConversion));
+    suite->addTest(new CppUnit::TestCaller("convexHullConversion", &ShapeToConvexObjectTest::convexHullConversion));
+    suite->addTest(new CppUnit::TestCaller("sphereConversion", &ShapeToConvexObjectTest::sphereConversion));
 
     return suite;
 }

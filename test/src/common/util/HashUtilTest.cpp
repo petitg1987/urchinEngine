@@ -27,8 +27,8 @@ void HashUtilTest::hashFloat() {
 CppUnit::Test* HashUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("HashUtilTest");
 
-    suite->addTest(new CppUnit::TestCaller<HashUtilTest>("hashBool", &HashUtilTest::hashBool));
-    suite->addTest(new CppUnit::TestCaller<HashUtilTest>("hashFloat", &HashUtilTest::hashFloat));
+    suite->addTest(new CppUnit::TestCaller("hashBool", &HashUtilTest::hashBool));
+    suite->addTest(new CppUnit::TestCaller("hashFloat", &HashUtilTest::hashFloat));
 
     return suite;
 }

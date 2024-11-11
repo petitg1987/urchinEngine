@@ -33,10 +33,10 @@ void FileUtilTest::getFilesRecursiveWithSpecialChar() {
 CppUnit::Test* FileUtilTest::suite() {
     auto* suite = new CppUnit::TestSuite("FileUtilTest");
 
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryUnix", &FileUtilTest::getDirectoryUnix));
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getDirectoryWindows", &FileUtilTest::getDirectoryWindows));
+    suite->addTest(new CppUnit::TestCaller("getDirectoryUnix", &FileUtilTest::getDirectoryUnix));
+    suite->addTest(new CppUnit::TestCaller("getDirectoryWindows", &FileUtilTest::getDirectoryWindows));
 
-    suite->addTest(new CppUnit::TestCaller<FileUtilTest>("getFilesRecursiveWithSpecialChar", &FileUtilTest::getFilesRecursiveWithSpecialChar));
+    suite->addTest(new CppUnit::TestCaller("getFilesRecursiveWithSpecialChar", &FileUtilTest::getFilesRecursiveWithSpecialChar));
 
     return suite;
 }

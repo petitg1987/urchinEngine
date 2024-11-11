@@ -14,7 +14,7 @@ void PointTest::triviallyCopyable() {
 CppUnit::Test* PointTest::suite() {
     auto* suite = new CppUnit::TestSuite("PointTest");
 
-    suite->addTest(new CppUnit::TestCaller<PointTest>("triviallyCopyable", &PointTest::triviallyCopyable));
+    suite->addTest(new CppUnit::TestCaller("triviallyCopyable", &PointTest::triviallyCopyable));
 
     return suite;
 }

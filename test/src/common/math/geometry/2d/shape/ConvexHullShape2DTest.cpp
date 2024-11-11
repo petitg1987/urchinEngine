@@ -34,8 +34,8 @@ void ConvexHullShape2DTest::identicalPoints() {
 CppUnit::Test* ConvexHullShape2DTest::suite() {
     auto* suite = new CppUnit::TestSuite("ConvexHullShape2DTest");
 
-    suite->addTest(new CppUnit::TestCaller<ConvexHullShape2DTest>("convexHullBox", &ConvexHullShape2DTest::convexHullBox));
-    suite->addTest(new CppUnit::TestCaller<ConvexHullShape2DTest>("identicalPoints", &ConvexHullShape2DTest::identicalPoints));
+    suite->addTest(new CppUnit::TestCaller("convexHullBox", &ConvexHullShape2DTest::convexHullBox));
+    suite->addTest(new CppUnit::TestCaller("identicalPoints", &ConvexHullShape2DTest::identicalPoints));
 
     return suite;
 }

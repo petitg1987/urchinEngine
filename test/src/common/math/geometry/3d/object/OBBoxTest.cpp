@@ -85,13 +85,13 @@ void OBBoxTest::oBBoxObliqueIntersection() {
 CppUnit::Test* OBBoxTest::suite() {
     auto* suite = new CppUnit::TestSuite("OBBoxTest");
 
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("noIntersection", &OBBoxTest::noIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("leftToRightLineIntersection", &OBBoxTest::leftToRightLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("rightToLeftLineIntersection", &OBBoxTest::rightToLeftLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("farToNearLineIntersection", &OBBoxTest::farToNearLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("nearToFarLineIntersection", &OBBoxTest::nearToFarLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("bottomRightToTopLeftLineIntersection", &OBBoxTest::bottomRightToTopLeftLineIntersection));
-    suite->addTest(new CppUnit::TestCaller<OBBoxTest>("oBBoxObliqueIntersection", &OBBoxTest::oBBoxObliqueIntersection));
+    suite->addTest(new CppUnit::TestCaller("noIntersection", &OBBoxTest::noIntersection));
+    suite->addTest(new CppUnit::TestCaller("leftToRightLineIntersection", &OBBoxTest::leftToRightLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("rightToLeftLineIntersection", &OBBoxTest::rightToLeftLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("farToNearLineIntersection", &OBBoxTest::farToNearLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("nearToFarLineIntersection", &OBBoxTest::nearToFarLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("bottomRightToTopLeftLineIntersection", &OBBoxTest::bottomRightToTopLeftLineIntersection));
+    suite->addTest(new CppUnit::TestCaller("oBBoxObliqueIntersection", &OBBoxTest::oBBoxObliqueIntersection));
 
     return suite;
 }

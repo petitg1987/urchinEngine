@@ -379,33 +379,33 @@ void PolygonsSubtractionTest::polygonsSubtractionCorner4() { //see polygonsSubtr
 CppUnit::Test* PolygonsSubtractionTest::suite() {
     auto* suite = new CppUnit::TestSuite("PolygonsSubtractionTest");
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInsideContactPoint", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactPoint));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInsideContactEdge", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactEdge));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendOutside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMinuendInside", &PolygonsSubtractionTest::polygonsSubtractionMinuendInside));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMinuendInsideContactEdge", &PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSubtrahendInside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSubtrahendInsideContactPoint", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactPoint));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSubtrahendInsideContactEdge", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactEdge));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSubtrahendOutside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionMinuendInside", &PolygonsSubtractionTest::polygonsSubtractionMinuendInside));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionMinuendInsideContactEdge", &PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMiddlePoint", &PolygonsSubtractionTest::polygonsSubtractionMiddlePoint));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionMiddlePoint", &PolygonsSubtractionTest::polygonsSubtractionMiddlePoint));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge1", &PolygonsSubtractionTest::polygonsSubtractionSameEdge1));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionSameEdge2));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge3", &PolygonsSubtractionTest::polygonsSubtractionSameEdge3));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge4", &PolygonsSubtractionTest::polygonsSubtractionSameEdge4));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSameEdge1", &PolygonsSubtractionTest::polygonsSubtractionSameEdge1));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionSameEdge2));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSameEdge3", &PolygonsSubtractionTest::polygonsSubtractionSameEdge3));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionSameEdge4", &PolygonsSubtractionTest::polygonsSubtractionSameEdge4));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge1", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge3", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge3));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge4", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge5", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionTwoSameEdge1", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionTwoSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionTwoSameEdge3", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge3));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionTwoSameEdge4", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionTwoSameEdge5", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMaxIteration", &PolygonsSubtractionTest::polygonsSubtractionMaxIteration));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionMaxIteration", &PolygonsSubtractionTest::polygonsSubtractionMaxIteration));
 
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoIntersectionsOnEdge", &PolygonsSubtractionTest::polygonsSubtractionTwoIntersectionsOnEdge));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionCorner1", &PolygonsSubtractionTest::polygonsSubtractionCorner1));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionCorner2", &PolygonsSubtractionTest::polygonsSubtractionCorner2));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionCorner3", &PolygonsSubtractionTest::polygonsSubtractionCorner3));
-    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionCorner4", &PolygonsSubtractionTest::polygonsSubtractionCorner4));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionTwoIntersectionsOnEdge", &PolygonsSubtractionTest::polygonsSubtractionTwoIntersectionsOnEdge));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionCorner1", &PolygonsSubtractionTest::polygonsSubtractionCorner1));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionCorner2", &PolygonsSubtractionTest::polygonsSubtractionCorner2));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionCorner3", &PolygonsSubtractionTest::polygonsSubtractionCorner3));
+    suite->addTest(new CppUnit::TestCaller("polygonsSubtractionCorner4", &PolygonsSubtractionTest::polygonsSubtractionCorner4));
 
     return suite;
 }

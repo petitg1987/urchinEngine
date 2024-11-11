@@ -185,25 +185,25 @@ void LineSegment2DTest::collinearLinesFullIntersectionOppositeDirection() {
 CppUnit::Test* LineSegment2DTest::suite() {
     auto* suite = new CppUnit::TestSuite("LineSegment2DTest");
 
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("closestPoint", &LineSegment2DTest::closestPoint));
+    suite->addTest(new CppUnit::TestCaller("closestPoint", &LineSegment2DTest::closestPoint));
 
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("noIntersection", &LineSegment2DTest::noIntersection));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("parallelLines", &LineSegment2DTest::parallelLines));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("intersection", &LineSegment2DTest::intersection));
+    suite->addTest(new CppUnit::TestCaller("noIntersection", &LineSegment2DTest::noIntersection));
+    suite->addTest(new CppUnit::TestCaller("parallelLines", &LineSegment2DTest::parallelLines));
+    suite->addTest(new CppUnit::TestCaller("intersection", &LineSegment2DTest::intersection));
 
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("intersectionOnOnePoint", &LineSegment2DTest::intersectionOnOnePoint));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("intersectionOnOnePointInt", &LineSegment2DTest::intersectionOnOnePointInt));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearIntersectionOnOnePoint", &LineSegment2DTest::collinearIntersectionOnOnePoint));
+    suite->addTest(new CppUnit::TestCaller("intersectionOnOnePoint", &LineSegment2DTest::intersectionOnOnePoint));
+    suite->addTest(new CppUnit::TestCaller("intersectionOnOnePointInt", &LineSegment2DTest::intersectionOnOnePointInt));
+    suite->addTest(new CppUnit::TestCaller("collinearIntersectionOnOnePoint", &LineSegment2DTest::collinearIntersectionOnOnePoint));
 
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesNoIntersectionSameDirection", &LineSegment2DTest::collinearLinesNoIntersectionSameDirection));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesNoIntersectionOppositeDirection", &LineSegment2DTest::collinearLinesNoIntersectionOppositeDirection));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesNoIntersectionSameDirection", &LineSegment2DTest::collinearLinesNoIntersectionSameDirection));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesNoIntersectionOppositeDirection", &LineSegment2DTest::collinearLinesNoIntersectionOppositeDirection));
 
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesIntersectionSameDirection", &LineSegment2DTest::collinearLinesIntersectionSameDirection));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesIntersectionSameDirection2", &LineSegment2DTest::collinearLinesIntersectionSameDirection2));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesIntersectionOppositeDirection", &LineSegment2DTest::collinearLinesIntersectionOppositeDirection));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesIntersectionOppositeDirection2", &LineSegment2DTest::collinearLinesIntersectionOppositeDirection2));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesFullIntersectionSameDirection", &LineSegment2DTest::collinearLinesFullIntersectionSameDirection));
-    suite->addTest(new CppUnit::TestCaller<LineSegment2DTest>("collinearLinesFullIntersectionOppositeDirection", &LineSegment2DTest::collinearLinesFullIntersectionOppositeDirection));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesIntersectionSameDirection", &LineSegment2DTest::collinearLinesIntersectionSameDirection));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesIntersectionSameDirection2", &LineSegment2DTest::collinearLinesIntersectionSameDirection2));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesIntersectionOppositeDirection", &LineSegment2DTest::collinearLinesIntersectionOppositeDirection));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesIntersectionOppositeDirection2", &LineSegment2DTest::collinearLinesIntersectionOppositeDirection2));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesFullIntersectionSameDirection", &LineSegment2DTest::collinearLinesFullIntersectionSameDirection));
+    suite->addTest(new CppUnit::TestCaller("collinearLinesFullIntersectionOppositeDirection", &LineSegment2DTest::collinearLinesFullIntersectionOppositeDirection));
 
     return suite;
 }

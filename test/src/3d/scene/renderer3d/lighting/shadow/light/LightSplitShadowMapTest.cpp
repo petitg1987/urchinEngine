@@ -73,9 +73,9 @@ std::unique_ptr<ModelOcclusionCuller> LightSplitShadowMapTest::buildModelOcclusi
 CppUnit::Test* LightSplitShadowMapTest::suite() {
     auto* suite = new CppUnit::TestSuite("ShadowManagerTest");
 
-    suite->addTest(new CppUnit::TestCaller<LightSplitShadowMapTest>("modelsInFrustumSplit", &LightSplitShadowMapTest::modelsInFrustumSplit));
-    suite->addTest(new CppUnit::TestCaller<LightSplitShadowMapTest>("modelsOutsideFrustumSplit", &LightSplitShadowMapTest::modelsOutsideFrustumSplit));
-    suite->addTest(new CppUnit::TestCaller<LightSplitShadowMapTest>("modelOutsideFrustumProducingShadow", &LightSplitShadowMapTest::modelOutsideFrustumProducingShadow));
+    suite->addTest(new CppUnit::TestCaller("modelsInFrustumSplit", &LightSplitShadowMapTest::modelsInFrustumSplit));
+    suite->addTest(new CppUnit::TestCaller("modelsOutsideFrustumSplit", &LightSplitShadowMapTest::modelsOutsideFrustumSplit));
+    suite->addTest(new CppUnit::TestCaller("modelOutsideFrustumProducingShadow", &LightSplitShadowMapTest::modelOutsideFrustumProducingShadow));
 
     return suite;
 }

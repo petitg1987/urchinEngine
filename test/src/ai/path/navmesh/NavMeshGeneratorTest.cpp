@@ -263,17 +263,17 @@ NavMeshAgent NavMeshGeneratorTest::buildNavMeshAgent() const {
 CppUnit::Test* NavMeshGeneratorTest::suite() {
     auto* suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFaceEdge", &NavMeshGeneratorTest::holeOnWalkableFaceEdge));
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOverlapOnWalkableFace", &NavMeshGeneratorTest::holeOverlapOnWalkableFace));
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeAndCrossingHoleOnWalkableFace", &NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller("holeOnWalkableFaceEdge", &NavMeshGeneratorTest::holeOnWalkableFaceEdge));
+    suite->addTest(new CppUnit::TestCaller("holeOverlapOnWalkableFace", &NavMeshGeneratorTest::holeOverlapOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller("holeAndCrossingHoleOnWalkableFace", &NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace));
 
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("surroundedWalkableFace", &NavMeshGeneratorTest::surroundedWalkableFace));
+    suite->addTest(new CppUnit::TestCaller("surroundedWalkableFace", &NavMeshGeneratorTest::surroundedWalkableFace));
 
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("moveHoleOnWalkableFace", &NavMeshGeneratorTest::moveHoleOnWalkableFace));
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("removeHoleFromWalkableFace", &NavMeshGeneratorTest::removeHoleFromWalkableFace));
+    suite->addTest(new CppUnit::TestCaller("moveHoleOnWalkableFace", &NavMeshGeneratorTest::moveHoleOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller("removeHoleFromWalkableFace", &NavMeshGeneratorTest::removeHoleFromWalkableFace));
 
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("linksRecreatedAfterMove", &NavMeshGeneratorTest::linksRecreatedAfterMove));
+    suite->addTest(new CppUnit::TestCaller("linksRecreatedAfterMove", &NavMeshGeneratorTest::linksRecreatedAfterMove));
 
     return suite;
 }

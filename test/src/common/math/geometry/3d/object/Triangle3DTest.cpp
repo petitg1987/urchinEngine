@@ -62,7 +62,7 @@ void Triangle3DTest::closestPoint() {
 CppUnit::Test* Triangle3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("Triangle3DTest");
 
-    suite->addTest(new CppUnit::TestCaller<Triangle3DTest>("closestPoint", &Triangle3DTest::closestPoint));
+    suite->addTest(new CppUnit::TestCaller("closestPoint", &Triangle3DTest::closestPoint));
 
     return suite;
 }

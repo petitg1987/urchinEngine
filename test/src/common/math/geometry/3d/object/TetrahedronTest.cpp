@@ -61,7 +61,7 @@ void TetrahedronTest::closestPoint() {
 CppUnit::Test* TetrahedronTest::suite() {
     auto* suite = new CppUnit::TestSuite("TetrahedronTest");
 
-    suite->addTest(new CppUnit::TestCaller<TetrahedronTest>("closestPoint", &TetrahedronTest::closestPoint));
+    suite->addTest(new CppUnit::TestCaller("closestPoint", &TetrahedronTest::closestPoint));
 
     return suite;
 }

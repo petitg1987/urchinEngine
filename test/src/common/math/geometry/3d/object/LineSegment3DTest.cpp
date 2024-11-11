@@ -31,7 +31,7 @@ void LineSegment3DTest::closestPoint() {
 CppUnit::Test* LineSegment3DTest::suite() {
     auto* suite = new CppUnit::TestSuite("LineSegment3DTest");
 
-    suite->addTest(new CppUnit::TestCaller<LineSegment3DTest>("closestPoint", &LineSegment3DTest::closestPoint));
+    suite->addTest(new CppUnit::TestCaller("closestPoint", &LineSegment3DTest::closestPoint));
 
     return suite;
 }

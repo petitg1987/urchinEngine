@@ -188,16 +188,16 @@ void TriangulationTest::holeInTriangle() {
 CppUnit::Test* TriangulationTest::suite() {
     auto* suite = new CppUnit::TestSuite("TriangulationTest");
 
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cubeTriangulation", &TriangulationTest::cubeTriangulation));
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("twoNearPoints", &TriangulationTest::twoNearPoints));
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("threeAlignedPoints", &TriangulationTest::threeAlignedPoints));
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("alternationPoints", &TriangulationTest::alternationPoints));
+    suite->addTest(new CppUnit::TestCaller("triangleTriangulation", &TriangulationTest::triangleTriangulation));
+    suite->addTest(new CppUnit::TestCaller("cubeTriangulation", &TriangulationTest::cubeTriangulation));
+    suite->addTest(new CppUnit::TestCaller("twoNearPoints", &TriangulationTest::twoNearPoints));
+    suite->addTest(new CppUnit::TestCaller("threeAlignedPoints", &TriangulationTest::threeAlignedPoints));
+    suite->addTest(new CppUnit::TestCaller("alternationPoints", &TriangulationTest::alternationPoints));
 
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation1", &TriangulationTest::cavityTriangulation1));
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation2", &TriangulationTest::cavityTriangulation2));
+    suite->addTest(new CppUnit::TestCaller("cavityTriangulation1", &TriangulationTest::cavityTriangulation1));
+    suite->addTest(new CppUnit::TestCaller("cavityTriangulation2", &TriangulationTest::cavityTriangulation2));
 
-    suite->addTest(new CppUnit::TestCaller<TriangulationTest>("holeInTriangle", &TriangulationTest::holeInTriangle));
+    suite->addTest(new CppUnit::TestCaller("holeInTriangle", &TriangulationTest::holeInTriangle));
 
     return suite;
 }

@@ -14,7 +14,7 @@ void VectorTest::triviallyCopyable() {
 CppUnit::Test* VectorTest::suite() {
     auto* suite = new CppUnit::TestSuite("VectorTest");
 
-    suite->addTest(new CppUnit::TestCaller<VectorTest>("triviallyCopyable", &VectorTest::triviallyCopyable));
+    suite->addTest(new CppUnit::TestCaller("triviallyCopyable", &VectorTest::triviallyCopyable));
 
     return suite;
 }

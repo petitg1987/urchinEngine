@@ -46,7 +46,7 @@ std::unique_ptr<Model> Renderer3dTest::buildModel(const std::string& materialFil
 CppUnit::Test* Renderer3dTest::suite() {
     auto* suite = new CppUnit::TestSuite("Renderer3dTest");
 
-    suite->addTest(new CppUnit::TestCaller<Renderer3dTest>("modelPreWarm", &Renderer3dTest::modelPreWarm));
+    suite->addTest(new CppUnit::TestCaller("modelPreWarm", &Renderer3dTest::modelPreWarm));
 
     return suite;
 }

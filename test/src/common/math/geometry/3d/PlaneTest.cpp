@@ -20,7 +20,7 @@ void PlaneTest::orthogonalProjection() {
 CppUnit::Test* PlaneTest::suite() {
     auto* suite = new CppUnit::TestSuite("PlaneTest");
 
-    suite->addTest(new CppUnit::TestCaller<PlaneTest>("orthogonalProjection", &PlaneTest::orthogonalProjection));
+    suite->addTest(new CppUnit::TestCaller("orthogonalProjection", &PlaneTest::orthogonalProjection));
 
     return suite;
 }

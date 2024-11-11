@@ -178,11 +178,11 @@ std::vector<std::shared_ptr<RigidBody>> CharacterControllerIT::constructCubes(Ph
 CppUnit::Test* CharacterControllerIT::suite() {
     auto* suite = new CppUnit::TestSuite("CharacterControllerIT");
 
-    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("fallingCharacterOnObjects", &CharacterControllerIT::fallingCharacterOnObjects));
-    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("characterMovingOnRemovedObjects", &CharacterControllerIT::characterMovingOnRemovedObjects));
+    suite->addTest(new CppUnit::TestCaller("fallingCharacterOnObjects", &CharacterControllerIT::fallingCharacterOnObjects));
+    suite->addTest(new CppUnit::TestCaller("characterMovingOnRemovedObjects", &CharacterControllerIT::characterMovingOnRemovedObjects));
 
-    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
-    suite->addTest(new CppUnit::TestCaller<CharacterControllerIT>("ccdMovingCharacter", &CharacterControllerIT::ccdMovingCharacter));
+    suite->addTest(new CppUnit::TestCaller("ccdFallingCharacter", &CharacterControllerIT::ccdFallingCharacter));
+    suite->addTest(new CppUnit::TestCaller("ccdMovingCharacter", &CharacterControllerIT::ccdMovingCharacter));
 
     return suite;
 }

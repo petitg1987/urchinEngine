@@ -286,40 +286,40 @@ void QuaternionTest::equalOrientationAndRotation() {
 CppUnit::Test* QuaternionTest::suite() {
     auto* suite = new CppUnit::TestSuite("QuaternionTest");
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyAxisAngleQuaternions9And45", &QuaternionTest::multiplyAxisAngleQuaternions9And45));
+    suite->addTest(new CppUnit::TestCaller("multiplyAxisAngleQuaternions9And45", &QuaternionTest::multiplyAxisAngleQuaternions9And45));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions9And45", &QuaternionTest::multiplyLookAtQuaternions9And45));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions180And45", &QuaternionTest::multiplyLookAtQuaternions180And45));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions180And45UpDown", &QuaternionTest::multiplyLookAtQuaternions180And45UpDown));
+    suite->addTest(new CppUnit::TestCaller("multiplyLookAtQuaternions9And45", &QuaternionTest::multiplyLookAtQuaternions9And45));
+    suite->addTest(new CppUnit::TestCaller("multiplyLookAtQuaternions180And45", &QuaternionTest::multiplyLookAtQuaternions180And45));
+    suite->addTest(new CppUnit::TestCaller("multiplyLookAtQuaternions180And45UpDown", &QuaternionTest::multiplyLookAtQuaternions180And45UpDown));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFrom90AndTo135", &QuaternionTest::rotationFrom90AndTo135));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFrom90AndTo90", &QuaternionTest::rotationFrom90AndTo90));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("rotationFromMinus90AndTo90", &QuaternionTest::rotationFromMinus90AndTo90));
+    suite->addTest(new CppUnit::TestCaller("rotationFrom90AndTo135", &QuaternionTest::rotationFrom90AndTo135));
+    suite->addTest(new CppUnit::TestCaller("rotationFrom90AndTo90", &QuaternionTest::rotationFrom90AndTo90));
+    suite->addTest(new CppUnit::TestCaller("rotationFromMinus90AndTo90", &QuaternionTest::rotationFromMinus90AndTo90));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYZ", &QuaternionTest::eulerXYZ));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZY", &QuaternionTest::eulerXZY));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYXZ", &QuaternionTest::eulerYXZ));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYZX", &QuaternionTest::eulerYZX));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZXY", &QuaternionTest::eulerZXY));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZYX", &QuaternionTest::eulerZYX));
+    suite->addTest(new CppUnit::TestCaller("eulerXYZ", &QuaternionTest::eulerXYZ));
+    suite->addTest(new CppUnit::TestCaller("eulerXZY", &QuaternionTest::eulerXZY));
+    suite->addTest(new CppUnit::TestCaller("eulerYXZ", &QuaternionTest::eulerYXZ));
+    suite->addTest(new CppUnit::TestCaller("eulerYZX", &QuaternionTest::eulerYZX));
+    suite->addTest(new CppUnit::TestCaller("eulerZXY", &QuaternionTest::eulerZXY));
+    suite->addTest(new CppUnit::TestCaller("eulerZYX", &QuaternionTest::eulerZYX));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYX", &QuaternionTest::eulerXYX));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZX", &QuaternionTest::eulerXZX));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYXY", &QuaternionTest::eulerYXY));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYZY", &QuaternionTest::eulerYZY));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZXZ", &QuaternionTest::eulerZXZ));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZYZ", &QuaternionTest::eulerZYZ));
+    suite->addTest(new CppUnit::TestCaller("eulerXYX", &QuaternionTest::eulerXYX));
+    suite->addTest(new CppUnit::TestCaller("eulerXZX", &QuaternionTest::eulerXZX));
+    suite->addTest(new CppUnit::TestCaller("eulerYXY", &QuaternionTest::eulerYXY));
+    suite->addTest(new CppUnit::TestCaller("eulerYZY", &QuaternionTest::eulerYZY));
+    suite->addTest(new CppUnit::TestCaller("eulerZXZ", &QuaternionTest::eulerZXZ));
+    suite->addTest(new CppUnit::TestCaller("eulerZYZ", &QuaternionTest::eulerZYZ));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("slerp50Rotation", &QuaternionTest::slerp50Rotation));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("slerp25Rotation", &QuaternionTest::slerp50Rotation));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("slerpShortestPath", &QuaternionTest::slerpShortestPath));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerp50Rotation", &QuaternionTest::lerp50Rotation));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerp25Rotation", &QuaternionTest::lerp25Rotation));
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerpShortestPath", &QuaternionTest::lerpShortestPath));
+    suite->addTest(new CppUnit::TestCaller("slerp50Rotation", &QuaternionTest::slerp50Rotation));
+    suite->addTest(new CppUnit::TestCaller("slerp25Rotation", &QuaternionTest::slerp50Rotation));
+    suite->addTest(new CppUnit::TestCaller("slerpShortestPath", &QuaternionTest::slerpShortestPath));
+    suite->addTest(new CppUnit::TestCaller("lerp50Rotation", &QuaternionTest::lerp50Rotation));
+    suite->addTest(new CppUnit::TestCaller("lerp25Rotation", &QuaternionTest::lerp25Rotation));
+    suite->addTest(new CppUnit::TestCaller("lerpShortestPath", &QuaternionTest::lerpShortestPath));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("toAxisAngle90", &QuaternionTest::toAxisAngle90));
+    suite->addTest(new CppUnit::TestCaller("toAxisAngle90", &QuaternionTest::toAxisAngle90));
 
-    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("equalOrientationAndRotation", &QuaternionTest::equalOrientationAndRotation));
+    suite->addTest(new CppUnit::TestCaller("equalOrientationAndRotation", &QuaternionTest::equalOrientationAndRotation));
 
     return suite;
 }

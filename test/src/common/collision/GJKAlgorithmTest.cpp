@@ -271,34 +271,34 @@ CppUnit::Test* GJKAlgorithmTest::suite() {
     auto* suite = new CppUnit::TestSuite("GJKAlgorithmTest");
 
     //AABBox
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("identicalAABBox", &GJKAlgorithmTest::identicalAABBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateAABBox", &GJKAlgorithmTest::separateAABBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("overlapAABBox", &GJKAlgorithmTest::overlapAABBox));
+    suite->addTest(new CppUnit::TestCaller("identicalAABBox", &GJKAlgorithmTest::identicalAABBox));
+    suite->addTest(new CppUnit::TestCaller("separateAABBox", &GJKAlgorithmTest::separateAABBox));
+    suite->addTest(new CppUnit::TestCaller("overlapAABBox", &GJKAlgorithmTest::overlapAABBox));
 
     //OBBox
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("identicalOBBox", &GJKAlgorithmTest::identicalOBBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateEdgeOBBox", &GJKAlgorithmTest::separateEdgeOBBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateCornerOBBox", &GJKAlgorithmTest::separateCornerOBBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("overlapOnEdgeOBBox", &GJKAlgorithmTest::overlapOnEdgeOBBox));
+    suite->addTest(new CppUnit::TestCaller("identicalOBBox", &GJKAlgorithmTest::identicalOBBox));
+    suite->addTest(new CppUnit::TestCaller("separateEdgeOBBox", &GJKAlgorithmTest::separateEdgeOBBox));
+    suite->addTest(new CppUnit::TestCaller("separateCornerOBBox", &GJKAlgorithmTest::separateCornerOBBox));
+    suite->addTest(new CppUnit::TestCaller("overlapOnEdgeOBBox", &GJKAlgorithmTest::overlapOnEdgeOBBox));
 
     //Convex hull
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("identicalBox", &GJKAlgorithmTest::identicalBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateBox", &GJKAlgorithmTest::separateBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("cornerInsideBox", &GJKAlgorithmTest::cornerInsideBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("faceInsideTrapeze", &GJKAlgorithmTest::faceInsideTrapeze));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateHexagon", &GJKAlgorithmTest::separateHexagon));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("cornerInsideHexagon", &GJKAlgorithmTest::cornerInsideHexagon));
+    suite->addTest(new CppUnit::TestCaller("identicalBox", &GJKAlgorithmTest::identicalBox));
+    suite->addTest(new CppUnit::TestCaller("separateBox", &GJKAlgorithmTest::separateBox));
+    suite->addTest(new CppUnit::TestCaller("cornerInsideBox", &GJKAlgorithmTest::cornerInsideBox));
+    suite->addTest(new CppUnit::TestCaller("faceInsideTrapeze", &GJKAlgorithmTest::faceInsideTrapeze));
+    suite->addTest(new CppUnit::TestCaller("separateHexagon", &GJKAlgorithmTest::separateHexagon));
+    suite->addTest(new CppUnit::TestCaller("cornerInsideHexagon", &GJKAlgorithmTest::cornerInsideHexagon));
 
     //Sphere
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("identicalSphere", &GJKAlgorithmTest::identicalSphere));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateSphere", &GJKAlgorithmTest::separateSphere));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("overlapSphere", &GJKAlgorithmTest::overlapSphere));
+    suite->addTest(new CppUnit::TestCaller("identicalSphere", &GJKAlgorithmTest::identicalSphere));
+    suite->addTest(new CppUnit::TestCaller("separateSphere", &GJKAlgorithmTest::separateSphere));
+    suite->addTest(new CppUnit::TestCaller("overlapSphere", &GJKAlgorithmTest::overlapSphere));
 
     //Different shape type
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateOBBoxAABBox", &GJKAlgorithmTest::separateOBBoxAABBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("overlapOBBoxAABBox", &GJKAlgorithmTest::overlapOBBoxAABBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("separateSphereAndAABBox", &GJKAlgorithmTest::separateSphereAndAABBox));
-    suite->addTest(new CppUnit::TestCaller<GJKAlgorithmTest>("overlapSphereAndAABBox", &GJKAlgorithmTest::overlapSphereAndAABBox));
+    suite->addTest(new CppUnit::TestCaller("separateOBBoxAABBox", &GJKAlgorithmTest::separateOBBoxAABBox));
+    suite->addTest(new CppUnit::TestCaller("overlapOBBoxAABBox", &GJKAlgorithmTest::overlapOBBoxAABBox));
+    suite->addTest(new CppUnit::TestCaller("separateSphereAndAABBox", &GJKAlgorithmTest::separateSphereAndAABBox));
+    suite->addTest(new CppUnit::TestCaller("overlapSphereAndAABBox", &GJKAlgorithmTest::overlapSphereAndAABBox));
 
     return suite;
 }
