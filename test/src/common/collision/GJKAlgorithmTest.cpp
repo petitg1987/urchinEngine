@@ -80,11 +80,11 @@ void GJKAlgorithmTest::overlapOnEdgeOBBox() {
 }
 
 void GJKAlgorithmTest::identicalBox() {
-    std::vector<Point3<float>> obbPoints1 = {
+    std::vector obbPoints1 = {
             Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
             Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints2 = {
+    std::vector obbPoints2 = {
             Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
             Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };
@@ -97,11 +97,11 @@ void GJKAlgorithmTest::identicalBox() {
 }
 
 void GJKAlgorithmTest::separateBox() {
-    std::vector<Point3<float>> aabbPoints = {
+    std::vector aabbPoints = {
             Point3(0.0f, 1.0f, 0.0f), Point3(1.0f, 1.0f, 0.0f), Point3(1.0f, -1.0f, 0.0f), Point3(0.0f, -1.0f, 0.0f),
             Point3(0.0f, 1.0f, -1.0f), Point3(1.0f, 1.0f, -1.0f), Point3(1.0f, -1.0f, -1.0f), Point3(0.0f, -1.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints = {
+    std::vector obbPoints = {
             Point3(-0.6f, 1.0f, 0.0f), Point3(-0.1f, 0.0f, 0.0f), Point3(-0.6f, -1.0f, 0.0f), Point3(-1.1f, 0.0f, 0.0f),
             Point3(-0.6f, 1.0f, -1.0f), Point3(-0.1f, 0.0f, -1.0f), Point3(-0.6f, -1.0f, -1.0f), Point3(-1.1f, 0.0f, -1.0f)
     };
@@ -120,11 +120,11 @@ void GJKAlgorithmTest::separateBox() {
 }
 
 void GJKAlgorithmTest::cornerInsideBox() {
-    std::vector<Point3<float>> aabbPoints = {
+    std::vector aabbPoints = {
             Point3(0.0f, 1.0f, 0.0f), Point3(1.0f, 1.0f, 0.0f), Point3(1.0f, -1.0f, 0.0f), Point3(0.0f, -1.0f, 0.0f),
             Point3(0.0f, 1.0f, -1.0f), Point3(1.0f, 1.0f, -1.0f), Point3(1.0f, -1.0f, -1.0f), Point3(0.0f, -1.0f, -1.0f)
     };
-    std::vector<Point3<float>> obbPoints = {
+    std::vector obbPoints = {
             Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
             Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };
@@ -137,11 +137,11 @@ void GJKAlgorithmTest::cornerInsideBox() {
 }
 
 void GJKAlgorithmTest::faceInsideTrapeze() {
-    std::vector<Point3<float>> trapezePoints1 = {
+    std::vector trapezePoints1 = {
             Point3(1.0f, 0.0f, 0.0f), Point3(3.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, 1.0f, 0.0f),
             Point3(1.0f, 0.0f, -1.0f), Point3(3.0f, 0.0f, -1.0f), Point3(0.0f, 3.0f, -1.0f), Point3(0.0f, 1.0f, -1.0f),
     };
-    std::vector<Point3<float>> trapezePoints2 = {
+    std::vector trapezePoints2 = {
             Point3(0.0f, -1.0f, 0.0f), Point3(1.0f, 0.8f, 0.0f), Point3(0.8f, 1.0f, 0.0f), Point3(-1.0f, 0.0f, 0.0f),
             Point3(0.0f, -1.0f, -1.0f), Point3(1.0f, 0.8f, -1.0f), Point3(0.8f, 1.0f, -1.0f), Point3(-1.0f, 0.0f, -1.0f),
     };
@@ -154,11 +154,11 @@ void GJKAlgorithmTest::faceInsideTrapeze() {
 }
 
 void GJKAlgorithmTest::separateHexagon() {
-    std::vector<Point3<float>> hexagonPoints1 = {
+    std::vector hexagonPoints1 = {
             Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(1.5f, 1.0f, 0.0f), Point3(1.0f, 2.0f, 0.0f), Point3(0.0f, 2.0f, 0.0f), Point3(-0.5f, 1.0f, 0.0f),
             Point3(0.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f), Point3(1.5f, 1.0f, -1.0f), Point3(1.0f, 2.0f, -1.0f), Point3(0.0f, 2.0f, -1.0f), Point3(-0.5f, 1.0f, -1.0f),
     };
-    std::vector<Point3<float>> hexagonPoints2 = {
+    std::vector hexagonPoints2 = {
             Point3(-2.5f, 0.0f, 0.0f), Point3(-1.5f, 0.0f, 0.0f), Point3(-1.0f, 1.0f, 0.0f), Point3(-1.5f, 2.0f, 0.0f), Point3(-2.5f, 2.0f, 0.0f), Point3(-3.0f, 1.0f, 0.0f),
             Point3(-2.5f, 0.0f, -1.0f), Point3(-1.5f, 0.0f, -1.0f), Point3(-1.0f, 1.0f, -1.0f), Point3(-1.5f, 2.0f, -1.0f), Point3(-2.5f, 2.0f, -1.0f), Point3(-3.0f, 1.0f, -1.0f),
     };
@@ -177,11 +177,11 @@ void GJKAlgorithmTest::separateHexagon() {
 }
 
 void GJKAlgorithmTest::cornerInsideHexagon() {
-    std::vector<Point3<float>> hexagonPoints1 = {
+    std::vector hexagonPoints1 = {
             Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(1.5f, 1.0f, 0.0f), Point3(1.0f, 2.0f, 0.0f), Point3(0.0f, 2.0f, 0.0f), Point3(-0.5f, 1.0f, 0.0f),
             Point3(0.0f, 0.0f, -1.0f), Point3(1.0f, 0.0f, -1.0f), Point3(1.5f, 1.0f, -1.0f), Point3(1.0f, 2.0f, -1.0f), Point3(0.0f, 2.0f, -1.0f), Point3(-0.5f, 1.0f, -1.0f),
     };
-    std::vector<Point3<float>> hexagonPoints2 = {
+    std::vector hexagonPoints2 = {
             Point3(-1.5f, 0.0f, 0.0f), Point3(-0.5f, 0.0f, 0.0f), Point3(0.0f, 1.0f, 0.0f), Point3(-0.5f, 2.0f, 0.0f), Point3(-1.5f, 2.0f, 0.0f), Point3(-2.0f, 1.0f, 0.0f),
             Point3(-1.5f, 0.0f, -1.0f), Point3(-0.5f, 0.0f, -1.0f), Point3(0.0f, 1.0f, -1.0f), Point3(-0.5f, 2.0f, -1.0f), Point3(-1.5f, 2.0f, -1.0f), Point3(-2.0f, 1.0f, -1.0f),
     };

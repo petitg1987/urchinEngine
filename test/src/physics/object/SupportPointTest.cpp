@@ -61,11 +61,11 @@ void SupportPointTest::coneSupportPoint() {
 }
 
 void SupportPointTest::convexHullSupportPoint() {
-    std::vector<Point3<float>> obbPointsWithMargin = {
+    std::vector obbPointsWithMargin = {
             Point3(-0.34f, 1.04f, 0.04f), Point3(0.24f, 0.0f, 0.04f), Point3(-0.34f, -1.04f, 0.04f), Point3(-0.84f, 0.0f, 0.04f),
             Point3(-0.34f, 1.04f, -1.04f), Point3(0.24f, 0.0f, -1.04f), Point3(-0.34f, -1.04f, -1.04f), Point3(-0.84f, 0.0f, -1.04f)
     };
-    std::vector<Point3<float>> obbPointsWithoutMargin = {
+    std::vector obbPointsWithoutMargin = {
             Point3(-0.3f, 1.0f, 0.0f), Point3(0.2f, 0.0f, 0.0f), Point3(-0.3f, -1.0f, 0.0f), Point3(-0.8f, 0.0f, 0.0f),
             Point3(-0.3f, 1.0f, -1.0f), Point3(0.2f, 0.0f, -1.0f), Point3(-0.3f, -1.0f, -1.0f), Point3(-0.8f, 0.0f, -1.0f)
     };

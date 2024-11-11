@@ -57,7 +57,7 @@ void ShapeToConvexObjectTest::cylinderConversion() {
 }
 
 void ShapeToConvexObjectTest::convexHullConversion() {
-    std::vector<Point3<float>> trapezePoints = {
+    std::vector trapezePoints = {
             Point3(1.0f, 0.0f, 0.0f), Point3(3.0f, 0.0f, 0.0f), Point3(0.0f, 3.0f, 0.0f), Point3(0.0f, 1.0f, 0.0f),
             Point3(1.0f, 0.0f, -1.0f), Point3(3.0f, 0.0f, -1.0f), Point3(0.0f, 3.0f, -1.0f), Point3(0.0f, 1.0f, -1.0f),
     };

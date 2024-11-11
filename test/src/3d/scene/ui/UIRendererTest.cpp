@@ -141,10 +141,10 @@ void UIRendererTest::buttonRemoveParentContainer() {
     auto uiRenderer = setupUiRenderer();
     auto container = Container::create(nullptr, Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
     uiRenderer->addWidget(container);
-    std::weak_ptr<Container> childContainer = Container::create(container.get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
-    std::weak_ptr<StaticBitmap> deleteButton = StaticBitmap::create(childContainer.lock().get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
+    std::weak_ptr childContainer = Container::create(container.get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL));
+    std::weak_ptr deleteButton = StaticBitmap::create(childContainer.lock().get(), Position(0.0f, 0.0f, PIXEL), Size(100.0f, 100.0f, PIXEL), "ui/widget/empty.png");
     deleteButton.lock()->addEventListener(std::make_unique<DetachChildrenEventListener>(container.get()));
-    std::weak_ptr<Text> text = Text::create(deleteButton.lock().get(), Position(0.0f, 0.0f, PIXEL), "test", i18n("my.text"));
+    std::weak_ptr text = Text::create(deleteButton.lock().get(), Position(0.0f, 0.0f, PIXEL), "test", i18n("my.text"));
     Text* textPTr = text.lock().get();
     AssertHelper::assertTrue(uiRenderer->getI18nService().isTranslatableLabelExist(textPTr));
 

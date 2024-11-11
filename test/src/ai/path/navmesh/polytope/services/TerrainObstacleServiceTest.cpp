@@ -8,7 +8,7 @@
 using namespace urchin;
 
 void TerrainObstacleServiceTest::oneSquare() {
-    std::vector<Point3<float>> localVertices = {
+    std::vector localVertices = {
             Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 100.0f, 0.0f),
             Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 0.0f, 1.0f),
             Point3(0.0f, 0.0f, 2.0f), Point3(1.0f, 0.0f, 2.0f), Point3(2.0f, 0.0f, 2.0f)
@@ -27,7 +27,7 @@ void TerrainObstacleServiceTest::oneSquare() {
 }
 
 void TerrainObstacleServiceTest::twoAlignedSquares() {
-    std::vector<Point3<float>> localVertices = {
+    std::vector localVertices = {
             Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 100.0f, 0.0f),
             Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 100.0f, 1.0f),
             Point3(0.0f, 0.0f, 2.0f), Point3(1.0f, 0.0f, 2.0f), Point3(2.0f, 0.0f, 2.0f)
@@ -46,7 +46,7 @@ void TerrainObstacleServiceTest::twoAlignedSquares() {
 }
 
 void TerrainObstacleServiceTest::twoSquaresSamePoint() {
-    std::vector<Point3<float>> localVertices = {
+    std::vector localVertices = {
             Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 100.0f, 0.0f),
             Point3(0.0f, 0.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 0.0f, 1.0f),
             Point3(0.0f, 100.0f, 2.0f), Point3(1.0f, 0.0f, 2.0f), Point3(2.0f, 0.0f, 2.0f)
@@ -71,7 +71,7 @@ void TerrainObstacleServiceTest::twoSquaresSamePoint() {
 }
 
 void TerrainObstacleServiceTest::squaresInUForm() {
-    std::vector<Point3<float>> localVertices = {
+    std::vector localVertices = {
             Point3(0.0f, 0.0f, 0.0f), Point3(1.0f, 0.0f, 0.0f), Point3(2.0f, 0.0f, 0.0f), Point3(3.0f, 0.0f, 0.0f),
             Point3(0.0f, 100.0f, 1.0f), Point3(1.0f, 0.0f, 1.0f), Point3(2.0f, 0.0f, 1.0f), Point3(3.0f, 100.0f, 1.0f),
             Point3(0.0f, 100.0f, 2.0f), Point3(1.0f, 100.0f, 2.0f), Point3(2.0f, 100.0f, 2.0f), Point3(3.0f, 100.0f, 2.0f)
